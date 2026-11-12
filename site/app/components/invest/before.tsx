@@ -13,7 +13,7 @@ import { rateWords } from "../../lib/rate-words";
 import { receiptAmounts } from "../../lib/receipt";
 import { sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { Card, MixedName, OptionBars, PanelHead, SourcedTag, TabCards, Tpl, type OptionBar, type TabCard } from "../kit";
+import { Button, Card, MixedName, OptionBars, PanelHead, SourcedTag, TabCards, Tpl, type OptionBar, type TabCard } from "../kit";
 import { Fees } from "./funds";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
@@ -258,9 +258,9 @@ function OtherPair({ view, bundle, pick, v, onPick }: { view: InvestView; bundle
           role,
           pair: (
             <>
-              <button type="button" aria-label={`${c.pair.pickCheapest}: ${nameOf(other)}, ${fundOf(other)}`} onClick={() => onPick(other)} className="text-link underline underline-offset-[3px] hover:no-underline">
+              <Button variant="inline" aria-label={`${c.pair.pickCheapest}: ${nameOf(other)}, ${fundOf(other)}`} onClick={() => onPick(other)}>
                 {pairName(other)}
-              </button>
+              </Button>
               {phone && (
                 <>
                   {" "}

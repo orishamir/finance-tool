@@ -8,7 +8,7 @@ import { fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { IconDrillIn } from "../icons";
-import { ChooseRow, GroupHead, ListRow, MixedName, RowList, TextLink, cx, gershayim } from "../kit";
+import { ChooseRow, GroupHead, ListRow, MixedName, RowList, Section, TextLink, cx, gershayim } from "../kit";
 
 // ---------------------------------------------------------------- the list
 
@@ -120,41 +120,44 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
   const own = figures?.[c.id];
   const page = companyPath(c.id);
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 id={headId} className="text-xl lg:text-2xl font-semibold min-w-0">
-            <MixedName>{c.name}</MixedName>
-          </h2>
-          <TextLink look="line" to={page} className="shrink-0 text-sm">
-            {w.fullPage}
-            <IconDrillIn size={16} />
-          </TextLink>
-        </div>
-        <p className="text-sm">{productsOnSite(c.products.length)}</p>
-        {c.line && (
-          <p className="text-sm text-muted-foreground">
-            {c.line.kind === "members" ? (
-              <>
-                {w.members}{" "}
-                {c.line.names.map((n, i) => (
-                  <span key={n}>
-                    {i > 0 && " · "}
-                    <MixedName>{n}</MixedName>
-                  </span>
-                ))}
-              </>
-            ) : c.line.kind === "tariff" ? (
-              <>
-                {w.tariffAt}
-                <Fig value={own?.line} text={formatValue(c.line.at, "text")} />
-              </>
-            ) : (
-              c.line.text
-            )}
-          </p>
-        )}
-      </div>
+    <Section
+      as="div"
+      headingId={headId}
+      title={<MixedName>{c.name}</MixedName>}
+      action={
+        <TextLink look="line" to={page} className="shrink-0 text-sm">
+          {w.fullPage}
+          <IconDrillIn size={16} />
+        </TextLink>
+      }
+      under={
+        <>
+          <p className="text-sm">{productsOnSite(c.products.length)}</p>
+          {c.line && (
+            <p className="text-sm text-muted-foreground">
+              {c.line.kind === "members" ? (
+                <>
+                  {w.members}{" "}
+                  {c.line.names.map((n, i) => (
+                    <span key={n}>
+                      {i > 0 && " · "}
+                      <MixedName>{n}</MixedName>
+                    </span>
+                  ))}
+                </>
+              ) : c.line.kind === "tariff" ? (
+                <>
+                  {w.tariffAt}
+                  <Fig value={own?.line} text={formatValue(c.line.at, "text")} />
+                </>
+              ) : (
+                c.line.text
+              )}
+            </p>
+          )}
+        </>
+      }
+    >
       <p className="text-[13px] text-muted-foreground">{w.paneHint}</p>
       {types.map((t) => (
         <section key={t} aria-label={w.types[t]} className={cx("flex flex-col gap-2 transition-opacity duration-[var(--duration-base)]", state.type !== "all" && state.type !== t && "opacity-45")}>
@@ -209,7 +212,7 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
           {w.notHere} {missing.map((k) => k.name).join(", ")}
         </p>
       )}
-    </div>
+    </Section>
   );
 }
 

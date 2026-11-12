@@ -7,7 +7,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { companyPage as w } from "../../copy";
-import { MeterBar, OpenRow, ProductPhoneRow, ProductTable, RowArrow, RowList, Section, type ProductColumn, type ProductGroup } from "../kit";
+import { MeterBar, OpenRow, ProductPhoneRow, ProductTable, RowArrow, RowList, Section, TextLink, type ProductColumn, type ProductGroup } from "../kit";
 
 export interface OverviewRow {
   id: string;
@@ -78,9 +78,9 @@ export function OverviewTable({ groups, note }: { groups: { key: string; label?:
     { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, tight: true },
   ];
   const name = (r: OverviewTableRow) => (
-    <Link to={r.to} preventScrollReset className="font-semibold hover:underline focus-visible:outline-2 focus-visible:outline-ring rounded-sm">
+    <TextLink tone="plain" to={r.to} preventScrollReset className="font-semibold">
       {r.title}
-    </Link>
+    </TextLink>
   );
   const tableGroups: ProductGroup[] = groups.map((g) => ({
     key: g.key,

@@ -857,7 +857,7 @@ function CopyCitation({ text }: { text: string }) {
     }
   };
   return (
-    <Button variant="quiet" className="!px-0 -my-3 ms-auto text-xs gap-1" onClick={() => void copy()} aria-live="polite">
+    <Button variant="quiet" flush size="sm" gap="sm" className="ms-auto" onClick={() => void copy()} aria-live="polite">
       {copied ? <IconCheck size={14} className="text-positive" /> : <IconCopy size={14} />}
       <span className={copied ? "text-positive" : undefined}>{copied ? sourceCopy.citation.copied : ruleCardMore.copyCitation}</span>
     </Button>

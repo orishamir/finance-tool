@@ -231,17 +231,28 @@ export function holdingOf(template: HouseTemplate, held: Held): HouseTemplate["h
 export const HELD_UNSAID: Held = { place: "israel", currency: "ILS", payout: "accumulating" };
 
 /**
- * A regulated track's fees as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its
- * fee on each deposit. An empty deposit fee of a product that may charge none (PF-06) and a fee the regulator's data lacks fill nothing.
+ * What a template leaves out of a deal, with why: a line of a house's price list (`line`, its id, or the fee base where two lines apply and
+ * the list does not say which), the whole price list where it prints no line for what the deal holds (`no-holding`), or one of a track's
+ * two fees (`fee`): one the product may not charge (PF-06, `none-by-rule`), or one the regulator's data gives no figure for (`no-value`).
  */
-export function trackTemplateFees(track: TrackLite, data: Pick<FeesData, "templates">, today: string): TemplateFee[] {
-  const fees = trackFees(track, data, today);
-  if (!fees) return [];
-  const num = (v: SiteValue): Num => ({ v: v.value as number, src: sourcedOf(v) });
-  const out: TemplateFee[] = [];
-  if (typeof fees.balance.value === "number" && fees.balance.value >= 0) out.push({ kind: "balance", stages: [{ price: { form: "held", rate: num(fees.balance), per: 12, every: 1 } }] });
-  if (typeof fees.deposit.value === "number" && fees.deposit.value >= 0 && !depositFeeNoneByRule(fees.deposit)) out.push({ kind: "deposit", stages: [{ price: { form: "action", rate: num(fees.deposit) } }] });
-  return out;
+export type LeftOut = { line: string; why: LeftWhy } | { why: "no-holding" } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
+
+/**
+ * A regulated track as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its fee on
+ * each deposit; a deposit fee the product may not charge (PF-06) and a fee the regulator's data has no figure for fill nothing and are
+ * left out, with why.
+ */
+function trackTemplate(track: TrackLite, data: Pick<FeesData, "templates">, today: string): { fees: TemplateFee[]; left: LeftOut[] } {
+  const v = trackFees(track, data, today);
+  const num = (x: SiteValue): Num => ({ v: x.value as number, src: sourcedOf(x) });
+  const fees: TemplateFee[] = [];
+  const left: LeftOut[] = [];
+  if (v && typeof v.balance.value === "number" && v.balance.value >= 0) fees.push({ kind: "balance", stages: [{ price: { form: "held", rate: num(v.balance), per: 12, every: 1 } }] });
+  else left.push({ fee: "balance", why: "no-value" });
+  if (v && depositFeeNoneByRule(v.deposit)) left.push({ fee: "deposit", why: "none-by-rule" });
+  else if (v && typeof v.deposit.value === "number" && v.deposit.value >= 0) fees.push({ kind: "deposit", stages: [{ price: { form: "action", rate: num(v.deposit) } }] });
+  else left.push({ fee: "deposit", why: "no-value" });
+  return { fees, left };
 }
 
 // ---------------------------------------------------------------- the picker, and filling a deal
@@ -249,8 +260,13 @@ export function trackTemplateFees(track: TrackLite, data: Pick<FeesData, "templa
 /** A template a picker offers for a kind: a house's price list, or a track (with its company, to group by). */
 export type TemplateOption = { id: string; name: string; source: "house" } | { id: string; name: string; source: "track"; company: string };
 
-const houseId = (h: HouseTemplate) => `house:${h.id}`;
-const trackId = (t: TrackLite) => `track:${t.id}`;
+const HOUSE = "house:";
+const TRACK = "track:";
+const houseId = (h: HouseTemplate) => `${HOUSE}${h.id}`;
+const trackId = (t: TrackLite) => `${TRACK}${t.id}`;
+
+/** Where a template comes from, by its id: a house's price list or a track. */
+export const templateSource = (id: string): "house" | "track" => (id.startsWith(TRACK) ? "track" : "house");
 
 /**
  * The templates for a kind, for a picker: every house's price list for a securities account; every track the regulator's data maps to the
@@ -262,17 +278,26 @@ export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "hou
   return data.tracks.filter((t) => t.wrapperId === kind).map((t) => ({ id: trackId(t), name: t.name, source: "track", company: t.company }));
 }
 
-/** A template's fees for a deal: a house's for what the deal holds, a track's two. Null where the id names no template of the deal's kind. */
-export function templateFees(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): { name: string; fees: TemplateFee[]; provider?: ProviderKind } | null {
-  if (id.startsWith("house:") && deal.kind === "brokerage-account") {
+/** A template as it fills a deal: its name, its fees for what the deal holds, what it leaves out with why, and a house's provider kind. */
+export interface Template {
+  name: string;
+  fees: TemplateFee[];
+  left: LeftOut[];
+  provider?: ProviderKind;
+}
+
+/** The template `id` for a deal of `deal`'s kind and holding: a house's for what the deal holds, a track's two fees. Null where the id names no template of the deal's kind. */
+export function templateOf(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): Template | null {
+  if (id.startsWith(HOUSE) && deal.kind === "brokerage-account") {
     const h = data.houses.find((x) => houseId(x) === id);
     if (!h) return null;
-    return { name: h.name, fees: holdingOf(h, deal.held ?? HELD_UNSAID)?.fees ?? [], provider: h.provider };
+    const holding = holdingOf(h, deal.held ?? HELD_UNSAID);
+    return { name: h.name, fees: holding?.fees ?? [], left: holding ? holding.left.map(({ lineId, why }) => ({ line: lineId, why })) : [{ why: "no-holding" }], provider: h.provider };
   }
-  if (id.startsWith("track:")) {
+  if (id.startsWith(TRACK)) {
     const t = data.tracks.find((x) => trackId(x) === id);
     if (!t || t.wrapperId !== deal.kind) return null;
-    return { name: `${t.name} (${t.company})`, fees: trackTemplateFees(t, data, today) };
+    return { name: `${t.name} (${t.company})`, ...trackTemplate(t, data, today) };
   }
   return null;
 }
@@ -283,7 +308,7 @@ export function templateFees(deal: FeeDeal, id: string, data: Pick<FeesData, "ho
  * Null where the id names no template of the deal's kind.
  */
 export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
-  const t = templateFees(deal, id, data, today);
+  const t = templateOf(deal, id, data, today);
   if (!t) return null;
   let fees = [...deal.fees];
   for (const f of t.fees) {
@@ -292,43 +317,6 @@ export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses
     else fees = [...fees, { ...f, id: newFeeId() }];
   }
   return { ...deal, fees, template: { id, name: t.name }, ...(t.provider ? { provider: t.provider } : {}) };
-}
-
-/**
- * What a template leaves out of a deal, with why: a line of a house's price list (`line`, its id, or the fee base where two lines apply and
- * the list does not say which), the whole price list where it prints no line for what the deal holds (`no-holding`), or one of a track's
- * two fees (`fee`): one the product may not charge (PF-06, `none-by-rule`), or one the regulator's data gives no figure for (`no-value`).
- */
-export type LeftOut = { line: string; why: LeftWhy } | { why: "no-holding" } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
-
-/** What the template `id` leaves out of a deal of `deal`'s kind and holding (the same reading `templateFees` fills it by); null where `id` names no template of the deal's kind. */
-export function templateLeft(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): LeftOut[] | null {
-  if (id.startsWith("house:") && deal.kind === "brokerage-account") {
-    const h = data.houses.find((x) => houseId(x) === id);
-    if (!h) return null;
-    const holding = holdingOf(h, deal.held ?? HELD_UNSAID);
-    return holding ? holding.left.map(({ lineId, why }) => ({ line: lineId, why })) : [{ why: "no-holding" }];
-  }
-  if (id.startsWith("track:")) {
-    const t = data.tracks.find((x) => trackId(x) === id);
-    if (!t || t.wrapperId !== deal.kind) return null;
-    const fees = trackFees(t, data, today);
-    const left: LeftOut[] = [];
-    if (!fees || typeof fees.balance.value !== "number" || fees.balance.value < 0) left.push({ fee: "balance", why: "no-value" });
-    if (fees && depositFeeNoneByRule(fees.deposit)) left.push({ fee: "deposit", why: "none-by-rule" });
-    else if (!fees || typeof fees.deposit.value !== "number" || fees.deposit.value < 0) left.push({ fee: "deposit", why: "no-value" });
-    return left;
-  }
-  return null;
-}
-
-/** One fee of a deal filled from a template's fee of the same kind; the deal unchanged where the template has none. */
-export function fillFee(deal: FeeDeal, feeId: string, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal {
-  const fee = deal.fees.find((f) => f.id === feeId);
-  const t = templateFees(deal, id, data, today);
-  const from = fee && t?.fees.find((f) => f.kind === fee.kind);
-  if (!fee || !from) return deal;
-  return { ...deal, fees: deal.fees.map((f) => (f.id === feeId ? { ...from, id: feeId } : f)) };
 }
 
 /**

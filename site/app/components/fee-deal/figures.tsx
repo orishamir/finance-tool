@@ -2,14 +2,12 @@
 // both. Its state is the figure's (entered, or sourced from a template with its source a tap away); what it commits becomes the person's.
 import type { ReactNode } from "react";
 import { feeDeal as copy, values as valuesCopy } from "../../copy";
-import type { Fee } from "../../lib/fee-deal/model";
+import { editPrice, withFigure, type Figure, type Side } from "../../lib/fee-deal/edit";
+import { SUM_MAX, type Fee } from "../../lib/fee-deal/model";
 import type { PriceView } from "../../lib/fee-deal/parts";
 import { FigureField, percentCheck } from "../kit";
-import { editPrice, withFigure, type Figure, type Side } from "./edit";
 
-/** The largest sum a deal keeps (model.ts refuses a larger one, and would drop the deal on reading it back). */
-const SUM_MAX = 1_000_000_000;
-
+/** A sum above the largest a deal keeps is refused as it is typed: reading the deal back would drop it (model.ts). */
 const amountCheck = (n: number): string | null => (n < 0 ? valuesCopy.errors.negative : n > SUM_MAX ? copy.panel.tooLarge : null);
 const rateCheck = percentCheck();
 

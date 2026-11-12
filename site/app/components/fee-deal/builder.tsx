@@ -5,17 +5,18 @@ import { useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
+import { setHeld, setKind, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
-import type { Fee, FeeDeal } from "../../lib/fee-deal/model";
-import type { LeftOut } from "../../lib/fee-deal/templates";
+import { BOUND_CURRENCIES, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { refOf } from "../../lib/fee-deal/parts";
+import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import { fmt } from "../../lib/format";
 import { FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
 import { AddLine, Button, Card, ChoiceChips, PickCard, Section, SegmentedControl, Step, Tag, When, monthText, type AddItem } from "../kit";
 import { Num } from "../provenance";
-import { setHeld, setKind, updateFee } from "./edit";
 import { PriceFigure } from "./figures";
-import { TemplateNote, templateSource } from "./picker";
-import { FeeName, StandingTag, feeName, refName } from "./words";
+import { TemplateNote } from "./picker";
+import { FeeName, StandingTag, feeName, perActionWord, refName } from "./words";
 
 const b = copy.builder;
 
@@ -23,7 +24,7 @@ const b = copy.builder;
 function rowWords(kind: FeeKindId, s: StageView, later: boolean): string {
   const p = s.price;
   const unit =
-    p.form === "action" || p.form === "perAction" ? (copy.price.perAction[kind] ?? copy.price.perAction.default!) : p.form === "held" ? copy.price.per[p.per!]! : p.form === "sum" ? copy.price.per[p.every!]! : "";
+    p.form === "action" || p.form === "perAction" ? perActionWord(kind) : p.form === "held" ? copy.price.per[p.per!]! : p.form === "sum" ? copy.price.per[p.every!]! : "";
   const when = s.until ? `${copy.standing.until}${monthText(s.until)}` : later ? b.then : "";
   return [unit, when].filter(Boolean).join(" ");
 }
@@ -45,11 +46,10 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   if (row.insideFund) notes.push(b.facts.insideFund);
   if (row.saleSame !== null) notes.push(row.saleSame ? b.facts.saleSame : b.facts.saleApart);
   if (row.stages[0]!.price.form === "action" && FEE_SHAPES[fee.kind].fields.action?.includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
-  const shown = notes.filter((n) => n !== null && n !== false);
-  if (shown.length === 0) return null;
+  if (notes.length === 0) return null;
   return (
     <ul className="flex flex-col items-start gap-1 text-sm text-muted-foreground sm:items-end">
-      {shown.map((n, k) => (
+      {notes.map((n, k) => (
         <li key={k}>{n}</li>
       ))}
     </ul>
@@ -115,7 +115,7 @@ function HeldChoices({ held, onHeld }: { held: Held | undefined; onHeld: (h: Hel
   return (
     <div className="flex flex-col gap-3">
       <SegmentedControl label={b.place.label} options={opts(["israel", "abroad"] as const, b.place)} value={draft.place ?? null} onChange={(place) => pick({ place })} />
-      <SegmentedControl label={b.currency.label} options={opts(["ILS", "USD", "EUR", "GBP"] as const, b.currency)} value={(draft.currency as "ILS" | "USD" | "EUR" | "GBP" | undefined) ?? null} onChange={(currency) => pick({ currency })} />
+      <SegmentedControl label={b.currency.label} options={opts(BOUND_CURRENCIES, b.currency)} value={BOUND_CURRENCIES.find((c) => c === draft.currency) ?? null} onChange={(currency) => pick({ currency })} />
       <SegmentedControl label={b.payout.label} options={opts(["accumulating", "distributing"] as const, b.payout)} value={draft.payout ?? null} onChange={(payout) => pick({ payout })} />
     </div>
   );
@@ -135,8 +135,14 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
   onAdd: (kind: FeeKindId) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
-  const [picking, setPicking] = useState(false);
-  const [heldOpen, setHeldOpen] = useState(false);
+  // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with both closed. The column
+  // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
+  const [pickingIn, setPickingIn] = useState<string | null>(null);
+  const [heldOpenIn, setHeldOpenIn] = useState<string | null>(null);
+  const picking = pickingIn === deal.id;
+  const heldOpen = heldOpenIn === deal.id;
+  const setPicking = (open: boolean) => setPickingIn(open ? deal.id : null);
+  const setHeldOpen = (open: boolean) => setHeldOpenIn(open ? deal.id : null);
   const onFee = (f: Fee) => onDeal(updateFee(deal, f.id, () => f));
   const rows = new Map(view.rows.map((r) => [r.fee, r]));
   const adds: AddItem[] = [...view.suggestions.usual.map((k) => ({ id: k, label: feeName(k), usual: true })), ...view.suggestions.rarer.map((k) => ({ id: k, label: feeName(k) }))];
@@ -152,7 +158,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
           value={kind?.name}
           action={
             kind && (
-              <Button variant="quiet" size="sm" onClick={() => setPicking((x) => !x)} aria-expanded={picking}>
+              <Button variant="quiet" size="sm" onClick={() => setPicking(!picking)} aria-expanded={picking}>
                 {picking ? b.close : b.kindChange}
               </Button>
             )
@@ -181,13 +187,13 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
             value={view.held && [b.heldSaid[view.held.place], b.heldSaid[view.held.currency] ?? view.held.currency, b.heldSaid[view.held.payout]].join(" · ")}
             action={
               view.held && (
-                <Button variant="quiet" size="sm" onClick={() => setHeldOpen((x) => !x)} aria-expanded={heldOpen}>
+                <Button variant="quiet" size="sm" onClick={() => setHeldOpen(!heldOpen)} aria-expanded={heldOpen}>
                   {heldOpen ? b.close : b.heldChange}
                 </Button>
               )
             }
           >
-            {(!view.held || heldOpen) && <HeldChoices held={view.held} onHeld={(h) => onDeal(setHeld(deal, h))} />}
+            {(!view.held || heldOpen) && <HeldChoices key={deal.id} held={view.held} onHeld={(h) => onDeal(setHeld(deal, h))} />}
           </Step>
         )}
         {kind && !view.holdsFunds && onPickTrack && (
@@ -216,7 +222,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, on
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex min-w-0 flex-col gap-2">
                         <span className="flex flex-wrap items-center gap-2">
-                          <FeeName fee={{ fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }} className="font-semibold" />
+                          <FeeName fee={refOf(fee)} className="font-semibold" />
                           {fee.id === chosen && <Tag tone="primary">{b.chosen}</Tag>}
                         </span>
                         {row ? <RowFigures row={row} fee={fee} onFee={onFee} /> : <p className="text-sm text-muted-foreground">{b.unread}</p>}

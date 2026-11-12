@@ -2,6 +2,7 @@
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { IconCheck } from "../icons";
+import { CARD_PAD, type CardPad } from "./card";
 import { cx } from "./cx";
 import { gershayim } from "./name";
 import { fmt } from "../../lib/format";
@@ -202,10 +203,11 @@ const LIFT_INNER = "[&_:is(a,button,[role=button]):not([data-pick-card])]:relati
  * tapping the option itself"), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
  * figure that opens its source, a fund number that opens its page): they lie above the card's button. The chosen option is not a PickCard;
  * it is marked by an outline and a word. The button is stretched over the card, last inside it; `label` names it for a screen reader.
+ * `pad` takes Card's paddings (`snug` for an option in a list of options); `none`, the default, leaves it to what is inside.
  */
-export function PickCard({ label, onPick, className, children }: { label: string; onPick: () => void; className?: string; children: ReactNode }) {
+export function PickCard({ label, onPick, pad = "none", className, children }: { label: string; onPick: () => void; pad?: CardPad; className?: string; children: ReactNode }) {
   return (
-    <div className={cx("relative rounded-lg border border-border cursor-pointer transition-colors duration-[var(--duration-fast)] hover:bg-accent/60", LIFT_INNER, className)}>
+    <div className={cx("relative rounded-lg border border-border cursor-pointer transition-colors duration-[var(--duration-fast)] hover:bg-accent/60", CARD_PAD[pad], LIFT_INNER, className)}>
       {children}
       <button type="button" data-pick-card aria-label={label} onClick={onPick} className="absolute inset-0 w-full rounded-lg focus-visible:outline-2 focus-visible:outline-ring" />
     </div>

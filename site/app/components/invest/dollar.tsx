@@ -14,9 +14,10 @@ import { MixedName, Callout, ChartLegend, DocLink, PanelHead, FixedTable, Longes
 import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
 
+/** One decimal, for the hedged tile's shortfall in points a year. */
 const one = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 /** A percent isolated for a Hebrew sentence whose words already say up or down: "18.5%", without its sign. */
-const bare = (x: number) => `⁦${one.format(Math.abs(x))}%⁩`;
+const bare = (x: number) => fmt.unsignedPct(x, 1);
 /** A bar's figure and the axis's ticks: a chart's text, already its own left-to-right element. */
 const barLabel = (v: number) => fmt.signedNumber(v, Number.isInteger(v) ? 0 : 1, { isolate: false });
 

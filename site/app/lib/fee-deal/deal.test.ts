@@ -2,8 +2,8 @@
 // deals' side store and the export file that carries them.
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
-import { decodeDeal, dealOfAddress, dealSearch, encodeDeal, parseSubject } from "./link";
-import { blankPrice, engineDeal, feeInOrder, newDeal, newFee, readDeal, typed, type FeeDeal, type Sourced } from "./model";
+import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
+import { blankPrice, engineDeal, feeInOrder, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
 import { DEALS_KEY, parseDeals, savedWith, without } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
 
@@ -112,6 +112,16 @@ describe("readDeal", () => {
   });
 });
 
+describe("new ids", () => {
+  it("never repeat, however many are made in one moment, so a deal filled or opened at once keeps every fee (readDeal refuses a repeated id)", () => {
+    const fees = Array.from({ length: 20_000 }, newFeeId);
+    expect(new Set(fees).size).toBe(fees.length);
+    const deals = Array.from({ length: 2_000 }, newDealId);
+    expect(new Set(deals).size).toBe(deals.length);
+    for (const id of [...fees.slice(0, 50), ...deals.slice(0, 50)]) expect(id).toMatch(/^[a-z0-9-]{1,40}$/);
+  });
+});
+
 describe("the link", () => {
   it("carries a deal both ways, with new ids and each figure's source", () => {
     const d = { ...account(), name: "חשבון", start: "2026-03", provider: "bank" as const, saved: "2026-11-01", template: { id: "house:leumi", name: "לאומי" } };
@@ -137,7 +147,8 @@ describe("the link", () => {
     ["too long", "a".repeat(13_000)],
   ])("opens nothing from a link that is %s", (_, d) => {
     expect(decodeDeal(d)).toBeNull();
-    expect(dealOfAddress(`?d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ kind: null, fees: [] });
+    // an empty deal opens, and the address gave none: the page keeps nothing of it
+    expect(dealOfAddress(`?d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
   });
   it("sets no stray key from a hostile link", () => {
     const hostile = Buffer.from('[1,{"n":"","k":null,"f":[],"__proto__":{"polluted":1},"constructor":{"x":1}},[]]').toString("base64url");
@@ -146,13 +157,13 @@ describe("the link", () => {
     expect(({} as { polluted?: number }).polluted).toBeUndefined();
     expect(Object.keys(d).sort()).toEqual(["fees", "id", "kind", "name"]);
   });
-  it("opens a new deal of the kind ?wrapper= names, and an empty one for a kind that is none", () => {
+  it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", () => {
     const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
-    expect(dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")).toMatchObject({ kind: "brokerage-account", fees: [] });
-    expect(dealOfAddress("?wrapper=nothing", data, "2026-11-12")).toMatchObject({ kind: null });
-    expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ kind: null });
+    expect(dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
+    expect(dealOfAddress("?wrapper=nothing", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
     expect(dealOfAddress("", data, "2026-11-12")).toBeNull();
-    expect(dealSearch(account())).toMatch(/^\?d=[A-Za-z0-9_-]+$/);
     expect(parseSubject("?track=12")).toEqual({ kind: "track", trackId: 12 });
   });
 });

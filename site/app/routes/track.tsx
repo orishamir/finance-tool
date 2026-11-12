@@ -9,7 +9,7 @@ import { DimensionChecklist, type ChecklistRowView } from "../components/guide/s
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter, OwnCompanyPage } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, FeeNum, GemelNetLink, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, KeyValueList, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
@@ -116,12 +116,6 @@ export function meta({ loaderData: data, location }: Route.MetaArgs) {
 export default function TrackPage() {
   const data = useLoaderData<typeof loader>();
   const { track } = data;
-  const row = (label: string, value: React.ReactNode) => (
-    <div className="flex flex-col gap-0.5 py-3 border-b border-border last:border-b-0 md:grid md:grid-cols-[14rem_1fr] md:gap-4">
-      <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd>{value}</dd>
-    </div>
-  );
   // pension fees belong to the fund, not to the track (CAT-39)
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
   // a page about one company's track: its own figures carry no "לפי החברה"
@@ -158,37 +152,44 @@ export default function TrackPage() {
           )}
         </PageHead>
         <Card>
-          <dl className="flex flex-col">
-            {row(copy.labels.manager, <TextLink to={companyPath(track.companyId)}><bdi>{gershayim(track.companyName)}</bdi></TextLink>)}
-            {row(
-              copy.labels.product,
-              <span className="flex flex-wrap items-center gap-x-3">
-                <bdi>{gershayim(track.classification)}</bdi>
-                {data.wrapper && (
-                  <span className="flex flex-wrap items-center gap-x-3 text-sm">
-                    <TextLink look="line" to={guidePath(data.wrapper.id)}>
-                      {copy.toGuide} {data.wrapper.name}
-                      <IconDrillIn size={16} />
-                    </TextLink>
-                    <TextLink look="line" to={trackBrowserPath(data.wrapper.id)}>
-                      {trackBrowser.guideLink.before}
-                      {data.wrapper.name}
-                      {trackBrowser.guideLink.after}
-                      <IconDrillIn size={16} />
-                    </TextLink>
+          <KeyValueList
+            plain
+            wide
+            items={[
+              { id: "manager", label: copy.labels.manager, value: <TextLink to={companyPath(track.companyId)}><bdi>{gershayim(track.companyName)}</bdi></TextLink> },
+              {
+                id: "product",
+                label: copy.labels.product,
+                value: (
+                  <span className="flex flex-wrap items-center gap-x-3">
+                    <bdi>{gershayim(track.classification)}</bdi>
+                    {data.wrapper && (
+                      <span className="flex flex-wrap items-center gap-x-3 text-sm">
+                        <TextLink look="line" to={guidePath(data.wrapper.id)}>
+                          {copy.toGuide} {data.wrapper.name}
+                          <IconDrillIn size={16} />
+                        </TextLink>
+                        <TextLink look="line" to={trackBrowserPath(data.wrapper.id)}>
+                          {trackBrowser.guideLink.before}
+                          {data.wrapper.name}
+                          {trackBrowser.guideLink.after}
+                          <IconDrillIn size={16} />
+                        </TextLink>
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>,
-            )}
-            {track.specialization && row(copy.labels.classification, <bdi>{gershayim(track.specialization)}</bdi>)}
-            {track.subSpecialization && row(copy.labels.holds, <bdi>{gershayim(track.subSpecialization)}</bdi>)}
-            {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
-            {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
-            {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}
-            {data.values.exposure?.currency && row(companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.currency} />)}
-            {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
-            {row(copy.labels.period, <Num value={data.values.period} />)}
-          </dl>
+                ),
+              },
+              ...(track.specialization ? [{ id: "classification", label: copy.labels.classification, value: <bdi>{gershayim(track.specialization)}</bdi> }] : []),
+              ...(track.subSpecialization ? [{ id: "holds", label: copy.labels.holds, value: <bdi>{gershayim(track.subSpecialization)}</bdi> }] : []),
+              { id: "balanceFee", label: feeText(copy.feeBalanceLabel, data.values.balanceFee), value: <FeeNum value={data.values.balanceFee} /> },
+              { id: "depositFee", label: feeText(copy.feeDepositLabel, data.values.depositFee), value: <FeeNum value={data.values.depositFee} /> },
+              ...(data.values.exposure?.stock ? [{ id: "stock", label: companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.stock} /> }] : []),
+              ...(data.values.exposure?.currency ? [{ id: "currency", label: companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.currency} /> }] : []),
+              ...(data.values.inception ? [{ id: "inception", label: copy.labels.inception, value: <Num value={data.values.inception} /> }] : []),
+              { id: "period", label: copy.labels.period, value: <Num value={data.values.period} /> },
+            ]}
+          />
           {data.feePage && <div className="pt-1 border-t border-border">
             <TextLink look="line" to={feesPath({ track: track.fundId })}>
               {feePageLink}

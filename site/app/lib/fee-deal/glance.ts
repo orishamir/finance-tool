@@ -6,8 +6,7 @@
 // standing against its cap (F-113).
 import { dealMarks, groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
-import type { DealKind } from "./kinds";
-import { monthKey, monthOf, type FeeDeal, type MonthKey } from "./model";
+import { monthKey, monthOf, type MonthKey } from "./model";
 import {
   engineGroupKey,
   groupKey,
@@ -18,7 +17,6 @@ import {
   monthsValue,
   priceAt,
   priceView,
-  readDealFor,
   refOf,
   standingView,
   subRead,
@@ -181,9 +179,8 @@ function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
   return groups;
 }
 
-/** The deal at a glance, read on `today` (YYYY-MM-DD) with the kinds' records. */
-export function glance(deal: FeeDeal, kinds: readonly DealKind[], today: string): Glance {
-  const r = readDealFor(deal, kinds, today);
+/** The deal at a glance, from the deal read once (`readDealFor`). */
+export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
   return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread };

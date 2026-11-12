@@ -14,8 +14,7 @@ import { fmt } from "../../lib/format";
 import type { Label } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { Num, Term } from "../provenance";
-import { HelpMark, LabelChip, MeterBar, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
-import { AmountRange, AnchorSpread } from "./deposit-words";
+import { AmountRange, AnchorSpread, HelpMark, LabelChip, MeterBar, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
 import { IconChevronDown } from "../icons";
 
 const muted = "text-sm text-muted-foreground";

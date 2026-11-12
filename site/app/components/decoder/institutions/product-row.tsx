@@ -5,8 +5,7 @@ import { guidePath } from "../../../lib/site-paths";
 import { r4catalogue as copy } from "../../../copy";
 import { IconAlert } from "../../icons";
 import { Num, RuleRef, RulesLine } from "../../provenance";
-import { Card, Disclosure, DoubtNote, GoLink, KeyValueList, LabelRow, MixedName, PrintedQuotes, PrintedText, Tag, When, type KeyValueItem } from "../../kit";
-import { AmountRange, AnchorSpread } from "../../deposits/deposit-words";
+import { AmountRange, AnchorSpread, Card, Disclosure, DoubtNote, GoLink, KeyValueList, LabelRow, MixedName, PrintedQuotes, PrintedText, Tag, When, type KeyValueItem } from "../../kit";
 import { breakText, depositLabels, exitsText, renewText, taxWord, termWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 

@@ -393,9 +393,9 @@ export function asideWords(lines: readonly AsideLineRecord[], company: string): 
   return (
     <>
       {min ? <Tpl t={c.pair.asideLine} vars={{ rate, min: <Num value={ownBy({ ...l.min! } as SiteValue, company)} display={min} /> }} /> : <Tpl t={c.pair.asideLineNoMin} vars={{ rate }} />} {l.not_ranked.reason_he}{" "}
-      <a href={sourceHref(l.not_ranked.source)} target="_blank" rel="noopener noreferrer" title={l.not_ranked.source.title} className="text-link hover:underline">
-        {c.pair.notPossibleSource} ↗
-      </a>
+      <DocLink look="inline" source={l.not_ranked.source}>
+        {c.pair.notPossibleSource}
+      </DocLink>
     </>
   );
 }

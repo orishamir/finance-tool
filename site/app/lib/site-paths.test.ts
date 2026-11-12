@@ -126,8 +126,6 @@ describe("the index page's addresses", () => {
 // page's path, or joins a string onto it, or adds a `?product=` to a path held in a variable, builds it by hand. A fixed address
 // written whole ("/guide", "/indices/sp500") is not built.
 const app = fileURLToPath(new URL("../", import.meta.url));
-// files another piece of work owns; their hand-built addresses are listed where that work is handed over
-const notHere = ["components/kit/", "components/transfer/", "copy.ts", "lib/site-paths.ts"];
 const kinds = "guide|companies|tracks|rules|exposure|documents|fees|indices";
 const handBuilt = [
   new RegExp(`\`/(?:${kinds})(?:[/?#][^\`]*)?\\$\\{`),
@@ -137,17 +135,22 @@ const handBuilt = [
 const walk = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
 
 describe("the site's addresses are built in one place", () => {
+  const read = walk(app)
+    .map((file) => relative(app, file).split(sep).join("/"))
+    .filter((rel) => /\.tsx?$/.test(rel) && !/\.test\.tsx?$/.test(rel) && rel !== "lib/site-paths.ts");
   it("no file outside lib/site-paths.ts builds one by hand", () => {
     const hits: string[] = [];
-    for (const file of walk(app)) {
-      const rel = relative(app, file).split(sep).join("/");
-      if (!/\.tsx?$/.test(rel) || /\.test\.tsx?$/.test(rel) || notHere.some((n) => rel === n || (n.endsWith("/") && rel.startsWith(n)))) continue;
-      readFileSync(file, "utf8")
+    for (const rel of read) {
+      readFileSync(join(app, rel), "utf8")
         .split("\n")
         .forEach((line, i) => {
           if (handBuilt.some((r) => r.test(line))) hits.push(`site/app/${rel}:${i + 1}: ${line.trim().slice(0, 160)}`);
         });
     }
     expect(hits, "build these with lib/site-paths.ts").toEqual([]);
+  });
+  it("reads the fee page's files, the kit's and the transfer page's", () => {
+    for (const dir of ["components/fee-deal/", "lib/fee-deal/", "components/kit/", "components/transfer/"]) expect(read.some((f) => f.startsWith(dir)), dir).toBe(true);
+    expect(read).toContain("copy.ts");
   });
 });

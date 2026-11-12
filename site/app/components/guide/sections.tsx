@@ -219,9 +219,9 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
       </Card>
       <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
       {id && feePage && (
-        <Link to={feesPath({ wrapper: id })} className="text-link hover:underline self-start min-h-target inline-flex items-center">
+        <TextLink look="line" to={feesPath({ wrapper: id })} className="self-start">
           {feePageLink}
-        </Link>
+        </TextLink>
       )}
     </div>
   );
