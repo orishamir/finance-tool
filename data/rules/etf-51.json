@@ -238,8 +238,8 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "p.9",
-      "locator_he": "עמוד 9",
+      "locator": "p.9, chapter ב s.2(6)",
+      "locator_he": "עמוד 9, פרק ב סעיף 2(6)",
       "page": 9,
       "checked": "2026-10-25",
       "qualifier": "(exchange rules, ISA-approved)"

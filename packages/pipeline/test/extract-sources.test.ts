@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { cleanLocator, extractFromLine, findLinks, findQuote, firstPage, pageInUrl, sourceLineOf, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
+import { cleanLocator, extractFromLine, findLinks, findQuote, firstPage, pageInUrl, sourceLineOf, splitPassages, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
 import { readRuleBaseIds, urlInBlock } from "../src/references.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -84,6 +84,44 @@ describe("extract-sources: fixture Source lines", () => {
     // words with no rule still leave the locator in English, whole
     expect(toHebrewLocator("file p.18, Schedule E")).toBeUndefined();
     expect(toHebrewLocator("p.5, s.3 and the table of contents")).toBeUndefined();
+  });
+
+  it("a numbered note, row, chapter, question or table stays in the locator, and reads in Hebrew (2026-11-12)", () => {
+    // each of these words used to cut the locator where it stood, as prose does: "p.5, note 10" came out "p.5"
+    expect(cleanLocator(", p.5, note 10")).toBe("p.5, note 10");
+    expect(cleanLocator(", p.14, table 2, rows סחורות")).toBe("p.14, table 2, rows סחורות");
+    expect(cleanLocator(", p.3, question 5; p.4, question 6")).toBe("p.3, question 5; p.4, question 6");
+    expect(cleanLocator(", p.9, chapter ב s.2(6)")).toBe("p.9, chapter ב s.2(6)");
+    expect(cleanLocator(", p.15, tables ד-14, ד-15")).toBe("p.15, tables ד-14, ד-15");
+    // alone the word is prose, and cuts as before
+    expect(cleanLocator(", p.5, note that the list is longer")).toBe("p.5");
+    expect(cleanLocator(", p.5, rows of the table")).toBe("p.5");
+    expect(toHebrewLocator("p.5, note 10")).toBe("עמוד 5, הערה 10");
+    expect(toHebrewLocator("p.1, notes 3, 13")).toBe("עמוד 1, הערות 3, 13");
+    expect(toHebrewLocator("p.20, note 38 to s.82")).toBe("עמוד 20, הערה 38 לסעיף 82");
+    expect(toHebrewLocator("p.3, question 5; p.4, question 6")).toBe("עמוד 3, שאלה 5; עמוד 4, שאלה 6");
+    expect(toHebrewLocator("p.9, chapter ב s.2(6)")).toBe("עמוד 9, פרק ב סעיף 2(6)");
+    expect(toHebrewLocator("pp.44 to 45 (ch. ז ss.1, 4-5)")).toBe("עמודים 44 עד 45 (פרק ז סעיפים 1, 4-5)");
+    expect(toHebrewLocator("p.15, tables ד-14, ד-15")).toBe("עמוד 15, טבלאות ד-14, ד-15");
+    expect(toHebrewLocator("rows 1 and 29")).toBe("שורות 1 ו־29");
+    expect(toHebrewLocator("p.2, notes 1, 2(ב) and 6")).toBe("עמוד 2, הערות 1, 2(ב) ו־6");
+  });
+
+  it("a remark in brackets that lists pages of its own is not cut into passages, and one that holds brackets goes whole (2026-11-12)", () => {
+    // BRK-66: the second half of the remark became a source "p.2" of its own, ending on the remark's bracket
+    expect(splitPassages('p.2, item 1.3.2 "השלמה למינימום דמי ניהול" (the exemption: p.1, note 9; p.2, note 3)')).toHaveLength(1);
+    expect(splitPassages("p.4, s.1; p.8, s.2 (see p.9; p.10); file p.12 (gazette p.300), s.7")).toEqual(["p.4, s.1", "p.8, s.2 (see p.9; p.10)", "file p.12 (gazette p.300), s.7"]);
+    expect(splitPassages("p.4, s.1; s.2")).toEqual(["p.4, s.1; s.2"]);
+    expect(cleanLocator(", p.110, note 5 (iShares Core S&P 500 UCITS ETF USD (Dist)), ")).toBe("p.110, note 5");
+  });
+
+  it("a link titled by its page keeps that page before the place the text after it names (TXF-48, 2026-11-12)", () => {
+    const line = '- Source: [Annual report 2025](https://example.org/r.pdf#page=104), p.104, note 5, "Dividend income"; [p.119](https://example.org/r.pdf#page=119), note 10, "Non-reclaimable overseas income withholding tax" · checked 2026-11-12 · institution';
+    const { sources } = extractFromLine(line, ctx());
+    expect(sources.map((x) => [x.locator, x.page])).toEqual([
+      ["p.104, note 5", 104],
+      ["p.119, note 10", 119],
+    ]);
   });
 
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {

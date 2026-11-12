@@ -81,8 +81,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.4 (gazette p.218)",
-      "locator_he": "עמוד 4 (עמוד ספר החוקים 218)",
+      "locator": "p.4 (gazette p.218), chapter ב', s.3(א)",
+      "locator_he": "עמוד 4 (עמוד ספר החוקים 218), פרק ב', סעיף 3(א)",
       "page": 4,
       "quote": "על חלק ההכנסה החייבת בהפקדה שאינו עולה על מחצית השכר הממוצע במשק",
       "checked": "2026-10-25"
@@ -95,8 +95,8 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "pp.3-9",
-      "locator_he": "עמודים 3 עד 9",
+      "locator": "pp.3-9, chapter ב', ss.2-11, 18",
+      "locator_he": "עמודים 3 עד 9, פרק ב', סעיפים 2-11, 18",
       "page": 3,
       "checked": "2026-10-25"
     }

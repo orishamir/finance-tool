@@ -47,6 +47,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 30 to 32",
+      "locator_he": "שורות 30 עד 32",
       "checked": "2026-11-03"
     },
     {

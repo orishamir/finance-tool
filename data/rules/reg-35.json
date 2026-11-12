@@ -37,6 +37,7 @@
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "p.6, ch.ב s.1",
+      "locator_he": "עמוד 6, פרק ב סעיף 1",
       "page": 6,
       "quote": "שם החבר, אשר ישמש נאמן עבור לקוחותיו",
       "checked": "2026-11-06"
@@ -50,6 +51,7 @@
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "p.14, ch.ד ss.1, 3",
+      "locator_he": "עמוד 14, פרק ד סעיפים 1, 3",
       "page": 14,
       "quote": "עבור לקוחותיו וחשבון מישנה נפרד לפעילות הנוסטרו של החבר",
       "checked": "2026-11-06"

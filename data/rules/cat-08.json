@@ -20,6 +20,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 13 to 16",
+      "locator_he": "שורות 13 עד 16",
       "quote": "העברות נטו בין הקופות. העברות מקופות גמל אחרות פחות העברות לקופות אחרות",
       "checked": "2026-11-12"
     },
@@ -31,6 +33,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 15 to 16",
+      "locator_he": "שורות 15 עד 16",
       "quote": "העברות בין המסלולים",
       "checked": "2026-11-12"
     },

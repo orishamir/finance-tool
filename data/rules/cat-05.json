@@ -20,6 +20,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 8, 20 to 25",
+      "locator_he": "שורות 8, 20 עד 25",
       "quote": "היה מצטברת ל12 חודשים, הפך למתחילת שנה",
       "checked": "2026-11-12"
     },
@@ -31,6 +33,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 11, 20 to 26",
+      "locator_he": "שורות 11, 20 עד 26",
       "checked": "2026-11-12"
     },
     {
@@ -41,6 +45,8 @@
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
+      "locator": "rows 8, 12 to 17",
+      "locator_he": "שורות 8, 12 עד 17",
       "checked": "2026-11-12"
     },
     {
