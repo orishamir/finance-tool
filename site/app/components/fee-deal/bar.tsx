@@ -2,10 +2,10 @@
 // and that it is kept on this device. Its end holds what the page adds beside the deal (`end`: the saved deals, the link, the template).
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
+import { setName, setStart } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { NAME_MAX, type FeeDeal } from "../../lib/fee-deal/model";
 import { Card, MonthField, Tag, TextField } from "../kit";
-import { setName, setStart } from "./edit";
 
 const w = copy.bar;
 

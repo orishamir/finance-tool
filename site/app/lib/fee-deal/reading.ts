@@ -3,9 +3,9 @@
 import { actionCost, changeKind, curveEnd, dealMarks, groupAction, holdingCost, type ChangeKind, type DealAction, type DealMark, type DealPeriod, type DealSide } from "@finance-tool/engine";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import type { SiteValue } from "../value";
-import { capLine, type CapLine, type DealKind } from "./kinds";
-import { monthKey, type FeeDeal, type MonthKey, type Months, type Stage } from "./model";
-import { markView, monthsValue, priceAt, priceView, readDealFor, refOf, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
+import { capLine, type CapLine } from "./kinds";
+import { monthKey, type MonthKey, type Months, type Stage } from "./model";
+import { markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue } from "./values";
 
@@ -295,10 +295,15 @@ export interface LawPrice {
   standing: StandingView;
 }
 
-/** A fee of the deal whose kind has a line in the record's caps: the line and each of the fee's prices read against it (F-113). */
+/**
+ * A fee of the deal whose kind has a line in the record's caps: the line and each of the fee's prices read against it (F-113), and what
+ * its tag and bar show: the standing of its first price that is judged, and the first later one whose standing differs, with its month.
+ */
 export interface LawRow extends FeeRef {
   cap: CapLine;
   prices: LawPrice[];
+  now?: StandingView;
+  later?: { at: MonthKey; standing: StandingView };
 }
 
 function lawOf(r: DealRead): LawRow[] {
@@ -323,7 +328,10 @@ function lawOf(r: DealRead): LawRow[] {
         last = { stage, row };
       }
     }
-    return [{ ...refOf(fee), cap, prices }];
+    const judged = prices.filter((x) => x.standing.standing.judged);
+    const now = judged[0];
+    const later = now && judged.find((x) => x !== now && !sameStanding(x.standing, now.standing));
+    return [{ ...refOf(fee), cap, prices, ...(now ? { now: now.standing } : {}), ...(later ? { later: { at: later.from, standing: later.standing } } : {}) }];
   });
 }
 
@@ -336,12 +344,10 @@ export interface Reading {
   curves: Curve[];
   undrawn: Undrawn[];
   law: LawRow[];
-  unread: string[];
 }
 
-/** The reading of a deal on `today` (YYYY-MM-DD), with the kinds' records and the site's exchange rates (F-84) for a bound in another currency. */
-export function readingOf(deal: FeeDeal, kinds: readonly DealKind[], today: string, fx: FxSnapshot | null): Reading {
-  const r = readDealFor(deal, kinds, today);
+/** The reading of a deal, from the deal read once (`readDealFor`), with the site's exchange rates (F-84) for a bound in another currency. */
+export function readingOf(r: DealRead, fx: FxSnapshot | null): Reading {
   const { curves, undrawn } = curvesOf(r, fx);
-  return { from: monthKey(r.reading.from), periods: r.reading.periods.map((_, k) => cardOf(r, k)), statements: statementsOf(r), curves, undrawn, law: lawOf(r), unread: r.unread };
+  return { from: monthKey(r.reading.from), periods: r.reading.periods.map((_, k) => cardOf(r, k)), statements: statementsOf(r), curves, undrawn, law: lawOf(r) };
 }

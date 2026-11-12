@@ -8,13 +8,16 @@ import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, readDeal, typed, type FeeDeal } from "./model";
+import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { dealFromTemplate, dealFromTrack, fillDeal, houseTemplate, lineFees, templateLeft, templateOptions } from "./templates";
+import { dealFromTemplate, dealFromTrack, fillDeal, houseTemplate, lineFees, templateOf, templateOptions } from "./templates";
 import { latestSnapshots } from "../providers.server";
 
 const data = feesData();
 const kinds = data.kinds;
 const TODAY = "2026-11-12";
+/** A deal read once on 11.2026, as the page hands it to its views. */
+const read = (deal: FeeDeal) => readDealFor(deal, kinds, TODAY);
 
 const account = (): FeeDeal => ({
   id: "deal-a",
@@ -96,8 +99,9 @@ describe("caps that hold only in a case the deal does not state, and converted p
       expect(standingOf(account, "transfer_out", { form: "perAction", amount: typed(25) }, provider)).toEqual({ judged: false, why: "caveat" });
       expect(standingOf(mm, "trade", { form: "action", rate: typed(0.1) }, provider)).toEqual({ judged: false, why: "caveat" });
     }
-    const p = panel({ ...newDeal("brokerage-account"), provider: "bank", fees: [{ id: "fee-out", kind: "transfer_out", stages: [{ price: { form: "perAction", amount: typed(25) } }] }] }, "fee-out", kinds, TODAY)!;
-    expect(p.stages[0]!.standing).toEqual({ standing: { judged: false, why: "caveat" }, share: null });
+    const row = readingOf(read({ ...newDeal("brokerage-account"), provider: "bank", fees: [{ id: "fee-out", kind: "transfer_out", stages: [{ price: { form: "perAction", amount: typed(25) } }] }] }), data.fx).law[0]!;
+    expect(row.prices[0]!.standing).toEqual({ standing: { judged: false, why: "caveat" }, share: null });
+    expect(row.now).toBeUndefined();
   });
   it("calls a monthly rate from half a percent below a yearly cap to a tenth of a percent above it at it, and one further above it", () => {
     const study = kinds.find((k) => k.id === "keren-hishtalmut")!;
@@ -189,21 +193,21 @@ describe("templates", () => {
   });
   it("says what a template leaves out, with why: a house's lines for the holding, a track's fees the data or the rule leave empty", () => {
     const leumi = data.houses.find((x) => x.id === "leumi")!;
-    const left = templateLeft(account(), "house:leumi", data, TODAY)!;
+    const left = templateOf(account(), "house:leumi", data, TODAY)!.left;
     expect(left).toEqual(leumi.holdings["abroad:USD"]?.left.map((l) => ({ line: l.lineId, why: l.why })) ?? leumi.holdings.abroad!.left.map((l) => ({ line: l.lineId, why: l.why })));
-    expect(templateLeft({ ...account(), held: undefined }, "house:leumi", data, TODAY)).toEqual(leumi.holdings.israel!.left.map((l) => ({ line: l.lineId, why: l.why })));
+    expect(templateOf({ ...account(), held: undefined }, "house:leumi", data, TODAY)?.left).toEqual(leumi.holdings.israel!.left.map((l) => ({ line: l.lineId, why: l.why })));
     const abroadOnly = data.houses.find((x) => !x.holdings.israel && x.holdings.abroad);
-    if (abroadOnly) expect(templateLeft({ ...account(), held: undefined }, `house:${abroadOnly.id}`, data, TODAY)).toEqual([{ why: "no-holding" }]);
+    if (abroadOnly) expect(templateOf({ ...account(), held: undefined }, `house:${abroadOnly.id}`, data, TODAY)?.left).toEqual([{ why: "no-holding" }]);
     // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out
     for (const t of data.tracks.filter((x) => x.wrapperId === "keren-hishtalmut").slice(0, 20)) {
       const deal = newDeal("keren-hishtalmut");
       const filled = fillDeal(deal, `track:${t.id}`, data, TODAY)!;
-      const out = templateLeft(deal, `track:${t.id}`, data, TODAY)!;
+      const out = templateOf(deal, `track:${t.id}`, data, TODAY)!.left;
       expect(out.length + filled.fees.length, `track ${t.id}`).toBe(2);
     }
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
-    expect(templateLeft(newDeal("keren-hishtalmut"), `track:${t.id}`, data, TODAY)).toBeNull();
-    expect(templateLeft(account(), "nothing", data, TODAY)).toBeNull();
+    expect(templateOf(newDeal("keren-hishtalmut"), `track:${t.id}`, data, TODAY)).toBeNull();
+    expect(templateOf(account(), "nothing", data, TODAY)).toBeNull();
   });
   it("opens a new deal from a track, its yearly fee charged each month, both figures sourced", () => {
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
@@ -218,7 +222,7 @@ describe("templates", () => {
 
 describe("the securities account of the picture, on 11.2026", () => {
   it("at a glance: the trade with its conversion at 0.45% and the minimum's mark at 6,000; the fund's 0.07%", () => {
-    const g = glance(account(), kinds, TODAY);
+    const g = glance(read(account()));
     expect(g.from).toBe("2026-11");
     const [trade, held] = g.throughout;
     expect(trade!.on).toEqual({ on: "action", action: "trade" });
@@ -239,7 +243,7 @@ describe("the securities account of the picture, on 11.2026", () => {
     const d = account();
     d.fees.push({ id: "fee-spread", kind: "fx_spread", stages: [{ price: { form: "action", rate: typed(0.1) } }] });
     d.fees[3]!.stages = [{ price: { form: "action", rate: typed(0.2) }, until: "2027-06" }, { price: { form: "action", rate: typed(0.3) } }];
-    const g = glance(d, kinds, TODAY);
+    const g = glance(read(d));
     const trade = g.throughout.find((x) => x.on.on === "action")!;
     expect(trade.fees.map((f) => f.kind)).toEqual(["trade", "fx_spread"]);
     expect(trade.rates).toEqual([]);
@@ -256,7 +260,7 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(now.marks).toEqual([]);
   });
   it("at a glance: gives a group of fees that change its rate today, also where a fee of it is free today", () => {
-    const g = glance(account(), kinds, TODAY);
+    const g = glance(read(account()));
     // custody is free until 03.2028: what is held costs the fund's 0.07% alone today, one fee, so the column adds nothing up
     const held = g.changing.find((x) => x.on.on === "held")!;
     expect(held.rates.map((r) => r.fees.map((f) => f.kind))).toEqual([["fund_management"]]);
@@ -265,13 +269,13 @@ describe("the securities account of the picture, on 11.2026", () => {
     const d = account();
     d.fees.push({ id: "fee-spread", kind: "fx_spread", stages: [{ price: { form: "action", rate: typed(0.1) } }] });
     d.fees[3]!.stages = [{ price: { form: "free" }, until: "2027-06" }, { price: { form: "action", rate: typed(0.2) } }];
-    const trade = glance(d, kinds, TODAY).changing.find((x) => x.on.on === "action")!;
+    const trade = glance(read(d)).changing.find((x) => x.on.on === "action")!;
     expect(trade.fees.map((f) => f.kind)).toEqual(["fx"]);
     expect(trade.rates[0]!.fees.map((f) => f.kind)).toEqual(["trade", "fx_spread"]);
     expect(v(trade.rates[0]!.rate)).toBeCloseTo(0.35, 10);
   });
   it("at a glance: the monthly sum starts in 03.2027, four months on; custody starts in 03.2028 and what is held costs 0.47% a year", () => {
-    const g = glance(account(), kinds, TODAY);
+    const g = glance(read(account()));
     expect(g.dates.map((d) => d.at)).toEqual(["2027-03", "2028-03"]);
     const [first, second] = g.dates;
     expect(v(first!.months)).toBe(4);
@@ -283,21 +287,21 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(v(second!.groups[0]!.rate)).toBeCloseTo(0.47, 10);
   });
   it("in the builder: a row per fee, the minimum said, custody's start, the fund's fee inside the fund, the suggestions", () => {
-    const b = builder(account(), kinds, TODAY);
+    const b = builder(read(account()));
     expect(b.rows.map((r) => r.kind)).toEqual(["trade", "custody", "fixed_period", "fx", "fund_management"]);
     expect(b.rows[0]).toMatchObject({ bounds: { min: true, max: false }, saleSame: true });
-    expect(b.rows[1]!.next).toEqual({ at: "2028-03", side: "all", change: "starts" });
+    expect(b.rows[1]!.next).toEqual({ at: "2028-03", change: "starts" });
     expect(b.rows[1]!.stages).toHaveLength(2);
     expect(b.rows[4]!.insideFund).toBe(true);
     expect(b.rows[3]!.saleSame).toBeNull();
     expect(b.suggestions.usual).toEqual(["transfer_out"]);
     expect(b.suggestions.rarer).toEqual(["fx_spread", "corporate_event", "current_account", "own"]);
-    const paying = builder({ ...account(), held: { place: "abroad", currency: "USD", payout: "distributing" } }, kinds, TODAY);
+    const paying = builder(read({ ...account(), held: { place: "abroad", currency: "USD", payout: "distributing" } }));
     expect(paying.suggestions.usual).toEqual(["distribution_handling", "transfer_out"]);
     expect(b.held).toEqual({ place: "abroad", currency: "USD", payout: "accumulating" });
   });
   it("in the reading: three periods, the sums against custody meeting at 30,000 from 03.2028, and the two curves", () => {
-    const r = readingOf(account(), kinds, TODAY, data.fx);
+    const r = readingOf(read(account()), data.fx);
     expect(r.periods.map((p) => [p.from, p.to])).toEqual([["2026-11", "2027-03"], ["2027-03", "2028-03"], ["2028-03", null]]);
     expect(r.periods[0]).toMatchObject({ current: true, started: true });
     expect(v(r.periods[0]!.left)).toBe(4);
@@ -342,7 +346,7 @@ describe("the securities account of the picture, on 11.2026", () => {
 
 describe("the provident fund of the picture, on 11.2026", () => {
   it("at a glance: the deposit fee at a quarter of its cap; the fee on the savings at 57% of it, at it from 03.2028, sixteen months on", () => {
-    const g = glance(provident(), kinds, TODAY);
+    const g = glance(read(provident()));
     const deposit = g.throughout[0]!;
     expect(deposit.on).toEqual({ on: "action", action: "deposit" });
     expect(deposit.fees[0]!.standing.standing).toMatchObject({ judged: true, standing: "below" });
@@ -356,23 +360,22 @@ describe("the provident fund of the picture, on 11.2026", () => {
     expect(date!.changes[0]).toMatchObject({ kind: "balance", change: "rises", standing: { standing: { judged: true, standing: "at" } } });
   });
   it("in the builder: the fee on the savings below the cap now and at it from 03.2028", () => {
-    const row = builder(provident(), kinds, TODAY).rows[0]!;
+    const row = builder(read(provident())).rows[0]!;
     expect(row.standingNow.standing).toMatchObject({ standing: "below" });
     expect(row.standingLater).toMatchObject({ at: "2028-03", standing: { standing: { standing: "at" } } });
     expect(row.insideFund).toBe(false);
   });
   it("in its panel: two prices, the cap's line, the fields of a share of what is held", () => {
-    const p = panel(provident(), "fee-balance", kinds, TODAY)!;
+    const p = panel(read(provident()), "fee-balance")!;
     expect(p.limited).toBe(true);
-    expect(p.on).toEqual({ on: "held" });
     expect(p.cap).toMatchObject({ state: "value" });
     if (p.cap.state === "value") expect(p.cap.value.value).toBe(1.05);
     expect(p.stages[0]!.fields).toEqual(["rate", "per", "every"]);
     expect(p.sale.allowed).toBe(false);
-    expect(panel(provident(), "nothing", kinds, TODAY)).toBeNull();
+    expect(panel(read(provident()), "nothing")).toBeNull();
   });
   it("in the reading: the law rows read each price against its cap", () => {
-    const r = readingOf(provident(), kinds, TODAY, data.fx);
+    const r = readingOf(read(provident()), data.fx);
     const balance = r.law.find((l) => l.kind === "balance")!;
     expect(balance.prices.map((x) => [x.from, x.to, x.standing.standing])).toEqual([
       ["2026-11", "2028-03", expect.objectContaining({ standing: "below" })],
@@ -387,18 +390,20 @@ describe("a deal the views cannot read whole", () => {
   it("leaves a fee whose prices are out of order out, and names it", () => {
     const d = account();
     d.fees[1]!.stages = [{ price: { form: "free" } }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }];
-    expect(glance(d, kinds, TODAY).unread).toEqual(["fee-custody"]);
-    expect(builder(d, kinds, TODAY).rows.map((r) => r.fee)).not.toContain("fee-custody");
-    expect(panel(d, "fee-custody", kinds, TODAY)).toMatchObject({ inOrder: false });
+    expect(glance(read(d)).unread).toEqual(["fee-custody"]);
+    expect(builder(read(d)).rows.map((r) => r.fee)).not.toContain("fee-custody");
+    // its panel still shows its prices to edit, and the reading has no law row for it
+    expect(panel(read(d), "fee-custody")!.stages).toHaveLength(2);
+    expect(readingOf(read(d), data.fx).law.map((r) => r.fee)).not.toContain("fee-custody");
   });
   it("draws no curve whose bound is in a currency it has no rate for, and says so", () => {
     const d = account();
     d.fees[0]!.stages[0]!.price = { form: "action", rate: typed(0.1), min: typed(7), currency: "USD" };
-    const none = readingOf(d, kinds, TODAY, null);
+    const none = readingOf(read(d), null);
     expect(none.curves.some((c) => c.on === "action")).toBe(false);
     expect(none.undrawn).toMatchObject([{ action: "trade", currency: "USD" }]);
     if (data.fx) {
-      const r = readingOf(d, kinds, TODAY, data.fx);
+      const r = readingOf(read(d), data.fx);
       const c = r.curves.find((x) => x.on === "action")!;
       expect(c.rates).toHaveLength(1);
       expect(c.at[0]).toBeGreaterThan(7000);

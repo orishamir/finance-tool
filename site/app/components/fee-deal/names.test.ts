@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { inputName } from "../provenance-sheets";
 import { feesData } from "../../lib/fees.server";
 import { BOUND_CURRENCIES, newDeal, typed, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { readDealFor } from "../../lib/fee-deal/parts";
 import { rateKey, readingOf } from "../../lib/fee-deal/reading";
 import { inputKey } from "../../lib/fee-deal/values";
 import { feeName } from "./words";
@@ -30,7 +31,7 @@ describe("a deal's input names", () => {
         { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] },
       ],
     };
-    const r = readingOf(deal, data.kinds, "2026-11-12", data.fx);
+    const r = readingOf(readDealFor(deal, data.kinds, "2026-11-12"), data.fx);
     const keys = r.curves.flatMap((c) => Object.keys(c.inputs));
     expect(keys.length).toBeGreaterThan(0);
     if (data.fx) expect(keys).toContain(rateKey("USD"));

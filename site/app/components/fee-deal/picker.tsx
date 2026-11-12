@@ -5,7 +5,7 @@
 import { useId, useMemo, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { countPhrase } from "../../lib/format";
-import type { LeftOut, TemplateOption } from "../../lib/fee-deal/templates";
+import { templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
 import { Disclosure, GroupHead, ListRow, RowList, SearchField } from "../kit";
 import { feeName } from "./words";
@@ -73,9 +73,6 @@ export function TemplatePicker({ open, onClose, anchor, options, left, onPick }:
     </Sheet>
   );
 }
-
-/** Where a template comes from, by its id: a house's price list or a track. */
-export const templateSource = (id: string): "house" | "track" => (id.startsWith("track:") ? "track" : "house");
 
 /**
  * The template a deal was filled from, and what it left out: a price list's lines counted by why, a price list with nothing for what the

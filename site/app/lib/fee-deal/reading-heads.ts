@@ -2,9 +2,9 @@
 // the components only word and draw it: the main change of the periods, the finding of a curve, what the law rows hold, the periods a
 // statement holds in, and which curve each period shows.
 import type { ChangeKind, DealAction, DealSide } from "@finance-tool/engine";
-import type { Curve, LawRow, PeriodCard, Reading, Undrawn } from "../../lib/fee-deal/reading";
-import type { MonthKey } from "../../lib/fee-deal/model";
-import type { FeeRef, MarkView } from "../../lib/fee-deal/parts";
+import type { Curve, LawRow, PeriodCard, Reading, Undrawn } from "./reading";
+import type { MonthKey } from "./model";
+import { refOf, type FeeRef, type MarkView } from "./parts";
 
 // ---------------------------------------------------------------- the periods
 
@@ -24,7 +24,7 @@ export function periodChanges(periods: readonly PeriodCard[]): PeriodChange[] {
     p.rows.flatMap((r) => {
       const out: PeriodChange[] = [];
       const capOf = (s: typeof r.standing): PeriodChange["cap"] => (s.standing.judged && (s.standing.standing === "at" || s.standing.standing === "above") ? s.standing.standing : undefined);
-      const ref: FeeRef = { fee: r.fee, kind: r.kind, ...(r.name ? { name: r.name } : {}) };
+      const ref = refOf(r);
       const push = (side: DealSide, change: ChangeKind | undefined, cap: PeriodChange["cap"]) => change && out.push({ at: p.from, fee: ref, side, change, ...(cap ? { cap } : {}) });
       push(r.sale ? "buy" : "all", r.change, capOf(r.standing));
       if (r.sale) push("sell", r.sale.change, capOf(r.sale.standing));

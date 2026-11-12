@@ -1,8 +1,8 @@
 // The changes the fee page makes to a deal, each a pure function from a deal to the next: the screen calls them and saves what they
 // return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number.
 import type { ProductId } from "@finance-tool/schema";
-import { blankPrice, newFee, retyped, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Stage } from "../../lib/fee-deal/model";
-import { holdsFunds, type FeeKindId, type FormId, type Held } from "../../lib/fee-deal/shapes";
+import { blankPrice, newFee, retyped, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Stage } from "./model";
+import { holdsFunds, type FeeKindId, type FormId, type Held } from "./shapes";
 
 /** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
 export type Side = "buy" | "sell";
