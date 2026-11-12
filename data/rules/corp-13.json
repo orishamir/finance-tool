@@ -129,9 +129,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.183",
-      "locator_he": "עמוד 183",
-      "page": 183,
+      "locator": "file p.45 (gazette p.183)",
+      "locator_he": "עמוד הקובץ 45 (עמוד ספר החוקים 183)",
+      "page": 45,
       "checked": "2026-11-08"
     }
   ]

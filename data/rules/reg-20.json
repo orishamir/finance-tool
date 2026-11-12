@@ -43,9 +43,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.221",
-      "locator_he": "עמוד 221",
-      "page": 221,
+      "locator": "file p.14 (gazette p.221)",
+      "locator_he": "עמוד הקובץ 14 (עמוד ספר החוקים 221)",
+      "page": 14,
       "checked": "2026-11-08"
     },
     {
@@ -85,7 +85,7 @@
       "checked": "2026-11-08"
     },
     {
-      "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf#page=4",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf",
       "title": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
       "title_he": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
       "publisher": "The Knesset",
@@ -99,7 +99,7 @@
       "checked": "2026-11-08"
     },
     {
-      "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf#page=4",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf",
       "title": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
       "title_he": "חוק הגנת הצרכן (תיקון מס' 57), התשע\"ח-2018, ספר החוקים 2741 (25.7.2018)",
       "publisher": "The Knesset",
@@ -113,7 +113,7 @@
       "checked": "2026-11-08"
     },
     {
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf#page=7",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf#page=10",
       "title": "חוק הגנת הצרכן (תיקון מס' 74), התשפ\"ו-2026, ספר החוקים 3569 (22.7.2026)",
       "title_he": "חוק הגנת הצרכן (תיקון מס' 74), התשפ\"ו-2026, ספר החוקים 3569 (22.7.2026)",
       "publisher": "The Knesset",

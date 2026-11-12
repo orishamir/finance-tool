@@ -85,9 +85,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.133, s.3(ג)",
-      "locator_he": "עמוד 133, סעיף 3(ג)",
-      "page": 133,
+      "locator": "file p.3 (gazette p.133), s.3(ג)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 133), סעיף 3(ג)",
+      "page": 3,
       "checked": "2026-11-06"
     },
     {
@@ -152,9 +152,9 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.1459, reg. 6א(ג)",
-      "locator_he": "עמוד 1459, תקנה 6א(ג)",
-      "page": 1459,
+      "locator": "file p.3 (gazette p.1459), reg. 6א(ג)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1459), תקנה 6א(ג)",
+      "page": 3,
       "quote": "התשואה נטו לצורך קביעת זכויות המוטב או המבוטח",
       "checked": "2026-10-31"
     },
@@ -187,9 +187,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.871, s.12(30)",
-      "locator_he": "עמוד 871, סעיף 12(30)",
-      "page": 871,
+      "locator": "file p.42 (gazette p.871), s.12(30)",
+      "locator_he": "עמוד הקובץ 42 (עמוד ספר החוקים 871), סעיף 12(30)",
+      "page": 42,
       "quote": "הוראות סעיפים 31 עד 36 לחוק הפיקוח על קופות גמל יחולו",
       "checked": "2026-11-06",
       "qualifier": "(gazette, as enacted; later amendments of s.1 and s.36א not read)"
@@ -202,9 +202,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.860, s.12(2)(ב)",
-      "locator_he": "עמוד 860, סעיף 12(2)(ב)",
-      "page": 860,
+      "locator": "file p.31 (gazette p.860), s.12(2)(ב)",
+      "locator_he": "עמוד הקובץ 31 (עמוד ספר החוקים 860), סעיף 12(2)(ב)",
+      "page": 31,
       "quote": "תכנית ביטוח שלפיה תגמולי הביטוח שלהם זכאי",
       "checked": "2026-10-31"
     }
