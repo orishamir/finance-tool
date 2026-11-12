@@ -7,11 +7,60 @@ import { fmt } from "./format";
 import type { DepositLabelId, Label, LabelIconKey } from "./labels";
 import { sourceHref } from "./sources";
 
-/** A deposit's exit points in words: none, every so many months, or some (the table prints exits with no fixed interval: daily after a week). */
-export function exitWords(exists: boolean, everyMonths: number | null): string {
-  if (!exists) return copy.exits.none;
-  return everyMonths ? `${copy.exits.every} ${fmt.months(everyMonths)}` : copy.exits.some;
+/**
+ * A deposit's exit points as its record holds them: whether there are any, the interval between them (`every_months`, as the bank prints
+ * how often they come) and the months to the first one (`first_after_months`; null where the bank prints only how often they come, so the
+ * first is not known and never taken to fall one interval after the start).
+ */
+export interface ExitPoints {
+  exists: boolean;
+  everyMonths: number | null;
+  firstMonths: number | null;
 }
+
+/** The record's `exit_points` as `ExitPoints`. */
+export const exitPointsOf = (e: DepositTerms["exit_points"]): ExitPoints => ({ exists: e.exists, everyMonths: e.every_months, firstMonths: e.first_after_months ?? null });
+
+/** The months to the first exit point where the words can say them: a whole number of months (a week, 0.25, has no words here yet). */
+export const exitFirstOf = (e: ExitPoints): number | null => (e.firstMonths !== null && Number.isInteger(e.firstMonths) && e.firstMonths > 0 ? e.firstMonths : null);
+
+/**
+ * When a deposit's exit points come, in words, or null where the record does not say: "כל 3 חודשים" (the interval alone, or a first that
+ * falls one interval after the start), "אחרי 6 חודשים, ואז כל 3 חודשים" (a later first, then the interval), "הראשונה אחרי 6 חודשים" (a first
+ * with no interval). A bank that prints only how often they come is said in its own words, every so many months. Null too where the first
+ * is a figure the words cannot say.
+ */
+export function exitTiming(e: ExitPoints): string | null {
+  const first = exitFirstOf(e);
+  // a first the words cannot say (a week, 0.25 of a month) leaves the timing unsaid: the interval alone would read as the whole of it
+  if (e.firstMonths !== null && first === null) return null;
+  const every = e.everyMonths;
+  if (first !== null && every) return first === every ? `${copy.exits.every} ${fmt.months(every)}` : copy.exits.afterThen(fmt.months(first), fmt.months(every));
+  if (first !== null) return copy.exits.firstAfter(fmt.months(first));
+  return every ? `${copy.exits.every} ${fmt.months(every)}` : null;
+}
+
+/** A deposit's exit points in words: none, when they come, or some (the table prints exits with no fixed interval: daily after a week). */
+export function exitWords(e: ExitPoints): string {
+  if (!e.exists) return copy.exits.none;
+  return exitTiming(e) ?? copy.exits.some;
+}
+
+/**
+ * A deposit's exit points as part of its name on a sheet line, where the name repeats at the bank: "תחנת יציאה כל 3 חודשים", "תחנת יציאה
+ * אחרי 6 חודשים ואז כל 3 חודשים" (no comma: the name is part of a comma-joined list), "תחנת יציאה ראשונה אחרי 6 חודשים", and "עם תחנות יציאה" where the record gives no timing the words can say.
+ */
+export function exitNameWords(e: ExitPoints): string {
+  const timing = exitTiming(e);
+  if (timing === null) return copy.depositKind.exitsSome;
+  const first = exitFirstOf(e);
+  if (first !== null && !e.everyMonths) return copy.depositKind.exitFirstAfter(fmt.months(first));
+  if (first !== null && e.everyMonths && first !== e.everyMonths) return copy.depositKind.exitAfterThen(fmt.months(first), fmt.months(e.everyMonths));
+  return `${copy.depositKind.exits} ${timing}`;
+}
+
+/** A bank page's exit points: as `exitWords`, and where they exist with no timing in the record but the bank prints conditions, a pointer to them. */
+export const exitsText = (e: ExitPoints, conditions: string | null): string => (e.exists && exitTiming(e) === null && conditions ? copy.exits.someCard : exitWords(e));
 
 /**
  * A deposit's or plan's period in words, by the unit its record holds: a weekly deposit is 7 days, never "7 חודשים". Null when the record

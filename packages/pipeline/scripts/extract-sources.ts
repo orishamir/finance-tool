@@ -276,7 +276,10 @@ export function cleanLocator(text: string): string {
   t = t.replace(/\s+/g, " ").trim();
   // an opening parenthesis the cut left unmatched ends the locator there (QA 2026-10-24, F3); a space before a comma is tidied
   while ((t.match(/\(/g) ?? []).length > (t.match(/\)/g) ?? []).length) t = t.slice(0, t.lastIndexOf("(")).trim();
-  t = t.replace(/\s+,/g, ",").replace(/[\s,;:.]+$/, "").replace(/[\s,;]+row$/i, "").trim();
+  // (and before a semicolon, where a remark in brackets stood before it: "p.1, s.1 ; p.2, s.2")
+  t = t.replace(/\s+([,;])/g, "$1").replace(/[\s,;:.]+$/, "").replace(/[\s,;]+row$/i, "").trim();
+  // a closing parenthesis left at the end with none open before it closed a remark the source itself stands in ("…, PDF p.2, s.7 )")
+  while (/\)$/.test(t) && (t.match(/\)/g) ?? []).length > (t.match(/\(/g) ?? []).length) t = t.slice(0, -1).replace(/[\s,;:.]+$/, "");
   if (!/[0-9\u05D0-\u05EA]/.test(t)) return "";
   return t.length > 160 ? t.slice(0, 160).replace(/[\s,;]+\S*$/, "") : t;
 }

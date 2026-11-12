@@ -58,7 +58,7 @@
       "BANK-28"
     ],
     "state": "sourced",
-    "notes": "The product page prints 'ריבית התחלתית 0.65%', 'תוספת ריבית לכל תקופה נוספת 0.15%', 'ריבית בסיום 2.00%'; recorded is the rate at the end of the 5 years. The 447 table carries rows with code 0627 (named 'הו\"ק נזיל חצי שנתי' and 'הו\"ק נזיל חודשי') at 0.0, 0.65, 0.8, 0.95, 1.1, 1.3, 1.45, 1.6, 1.75 and 1.9, rate type 'קבועה', 'עולה גורפת', exits 'חצי שנתית', none saying which station. Rate type on the page 'ריבית קבועה לא צמודה'; break in the 447 table 'קיימת עם קנס שבירה'. Product page: 'ריבית אי רצף תרד ב-0.1% כפוף לקבלת ריבית מינימלית של 0.02%'; 'ניתן להקפיא (לא לבטל) את סכום הוראת הקבע עד 10 הפקדות'. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002)."
+    "notes": "The product page prints 'ריבית התחלתית 0.65%', 'תוספת ריבית לכל תקופה נוספת 0.15%', 'ריבית בסיום 2.00%'; recorded is the rate at the end of the 5 years. The 447 table carries rows with code 0627 (named 'הו\"ק נזיל חצי שנתי' and 'הו\"ק נזיל חודשי') at 0.0, 0.65, 0.8, 0.95, 1.1, 1.3, 1.45, 1.6, 1.75 and 1.9, rate type 'קבועה', 'עולה גורפת', exits 'חצי שנתית', none saying which station. Rate type on the page 'ריבית קבועה לא צמודה'; break in the 447 table 'קיימת עם קנס שבירה'. Product page: 'ריבית אי רצף תרד ב-0.1% כפוף לקבלת ריבית מינימלית של 0.02%'; 'ניתן להקפיא (לא לבטל) את סכום הוראת הקבע עד 10 הפקדות'. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002). Exit points on the product page: 'תחנות מתום חצי שנה וכל חצי שנה לאחר מכן' (library 54e08b1020ace002)."
   },
   "linkage": "none",
   "tax_bucket": {
@@ -139,7 +139,8 @@
   },
   "exit_points": {
     "exists": true,
-    "every_months": 6
+    "every_months": 6,
+    "first_after_months": 6
   },
   "auto_renew": {
     "value": false,

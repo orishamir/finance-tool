@@ -8,6 +8,7 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { depositBrowser as t, r4catalogue as rc } from "../../copy";
 import { HELP_TERMS, accessOf, ascending, interestOn, interestText, isLinked, rowSplit, variantWords, type DbBank, type DbOffer, type DbRow, type RowSplit, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
+import { exitTiming } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import type { Label } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
@@ -221,7 +222,7 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
       </span>
       {row.offers.slice(1).map((o) => (
         <span key={o.id} className="flex items-baseline justify-between gap-3 border-s-2 border-border ps-3">
-          <span className={cx(muted, "whitespace-normal")}>{o.exits.exists && o.exits.everyMonths && rowSplit(row).exits ? `${t.variant.withWords}${accessOf(o)[0]!.words}` : variantWords(row, o)}</span>
+          <span className={cx(muted, "whitespace-normal")}>{o.exits.exists && exitTiming(o.exits) !== null && rowSplit(row).exits ? `${t.variant.withWords}${accessOf(o)[0]!.words}` : variantWords(row, o)}</span>
           <Num value={o.rate_offered} className="font-semibold shrink-0" />
         </span>
       ))}

@@ -163,6 +163,16 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
       else missing.push(`${wrapperId}: "${rec.id}" is linked to ${rec.linkage}; the deposit run has no such linkage`);
       if (missing.length === 0 && linkage) {
         terms.deposit = { termMonths: noTerm ? 1 : (rec.term_months.value as number), linkage };
+        // F-41: a deposit's exit points reach the run as the months to the first one (`first_after_months`) and the interval after
+        // it (`every_months`), each only as a positive whole number of months. Without a first the run knows no exit point: an
+        // interval alone does not say when the first falls (a plan with yearly exit points may open its first after ten years).
+        const whole = (x: number | null | undefined): x is number => typeof x === "number" && Number.isInteger(x) && x > 0;
+        const { exists, first_after_months: firstAfter, every_months: every } = rec.exit_points;
+        // A savings plan that renews keeps the money in a new plan after its term, and the run's count for a plan's piece takes
+        // a plan that has ended as paid out (`pieceAtExitPoint`): such a plan reaches the run with no exit points.
+        const renews = wrapperId === "savings-plan" && rec.auto_renew.value !== false;
+        if (!noTerm && !renews && exists && whole(firstAfter)) terms.deposit.exitFirstMonth = firstAfter;
+        if (!noTerm && !renews && exists && whole(every)) terms.deposit.exitEveryMonths = every;
         if (!noTerm) feeValues.term = { ...rec.term_months };
         feeValues.linkage = textValue(linkage, "text", { source: rec.source, checked: rec.snapshot }, `from the record's linkage "${rec.linkage}"${rec.anchor ? ` and anchor "${rec.anchor}"` : ""}`);
       }

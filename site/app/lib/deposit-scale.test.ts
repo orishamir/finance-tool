@@ -7,7 +7,7 @@ import type { SiteValue } from "./value";
 const v = (value: number): SiteValue => ({ value, unit: "pct_per_year", state: "sourced" }) as unknown as SiteValue;
 
 function offer(id: string, rate: number, extra: Partial<DbOffer> = {}): DbOffer {
-  return { id, bank: "b", term: "y1", name: id, kind: "fixed", linkage: "none", limited: false, labels: [], rate_offered: v(rate), anchor: null, spread: null, amount_range: { min: v(1000), max: null }, breakTerm: "none", exits: { exists: false, everyMonths: null }, ...extra };
+  return { id, bank: "b", term: "y1", name: id, kind: "fixed", linkage: "none", limited: false, labels: [], rate_offered: v(rate), anchor: null, spread: null, amount_range: { min: v(1000), max: null }, breakTerm: "none", exits: { exists: false, everyMonths: null, firstMonths: null }, ...extra };
 }
 
 const data = (offers: DbOffer[]): DbData => ({ today: "2026-11-09", read: "2026-11-09", banks: [], offers, amounts: [], start: 10000 });
