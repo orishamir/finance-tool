@@ -40,9 +40,15 @@ const HINTS = join(here, "quote-fragments-hints.json");
 const CACHE = opt("cache") ?? join(process.env.TMPDIR ?? "/tmp", "quote-fragments-cache");
 const today = israelToday();
 
-/** The same test as site/app/lib/sources.ts `isPdfUrl`. */
+/** The same test as site/app/lib/sources.ts `isPdfUrl` (site/app/lib/quote-fragments-tool.test.ts holds them together). */
 export const isPdfUrl = (url) =>
-  /\.pdf(?:$|[?#])/i.test(url) || /BlobFolder/i.test(url) || /^https:\/\/free-justice\.openapi\.gov\.il\/.*\/Documents\//i.test(url);
+  /\.pdf(?:$|[?#])/i.test(url) || /BlobFolder/i.test(url) || /^https:\/\/free-justice\.openapi\.gov\.il\/.*\/Documents\//i.test(url) || /^https:\/\/api\.justice\.gov\.il\/reshumot\/resolver\?/i.test(url);
+
+/**
+ * The address a page is read at: without its `#`, except a page that routes by it (`…/faq/#/content/56713690`), whose words are only
+ * there at the full address (2026-11-12: Interactive Brokers' FAQ entry was read as the FAQ's front page).
+ */
+export const pageOf = (url) => (/#!?\//.test(url) ? url : url.split("#")[0]);
 
 // ---------------------------------------------------------------- what is cited
 
@@ -183,11 +189,19 @@ const piecesOf = (words) =>
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+/**
+ * How far apart the pieces of a quote joined with " … " may stand on the page, in characters. Bounded on purpose: the match takes the
+ * nearest next piece, and the bound keeps a piece from being paired with the same words in another passage far down the page (the
+ * xnes full-disclosure page prints its promotions' terms one after another, the opening words six times and the closing words twice,
+ * 767 and 90,455 characters after the cited opening). 600 was too short for that record's two pieces, 767 apart (2026-11-12).
+ */
+export const PIECE_GAP = 1500;
+
 /** Every place the quote stands on the folded page: [from, to), its spaces matching a space or a block break. */
 export function occurrences(page, words) {
   const pieces = piecesOf(words);
   if (pieces.length === 0) return [];
-  const pat = pieces.map((p) => escapeRe(p).replace(/ /g, "[ \\n]")).join("[\\s\\S]{0,600}?");
+  const pat = pieces.map((p) => escapeRe(p).replace(/ /g, "[ \\n]")).join(`[\\s\\S]{0,${PIECE_GAP}}?`);
   const re = new RegExp(pat, "gu");
   const out = [];
   for (let m = re.exec(page); m; m = re.exec(page)) {
@@ -440,15 +454,18 @@ async function landsInBrowser(rows, shots) {
   return landed;
 }
 
+/** The hint for a citation: same link, same words as the folded text reads them (a hint written with ״ serves a quote written with "). */
+export const hintFor = (hints, c) => hints.find((h) => h.url === c.url && fold(h.words).text === fold(c.words).text);
+
 async function main() {
   if (opt("browser-check")) return browserCheck(opt("browser-check"));
   const { chromium } = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/")("playwright");
   const only = opt("only");
   const hints = existsSync(HINTS) ? JSON.parse(readFileSync(HINTS, "utf8")) : [];
-  const hintOf = (c) => hints.find((h) => h.url === c.url && h.words === c.words);
+  const hintOf = (c) => hintFor(hints, c);
   const all = citations();
   const todo = all.filter((c) => !only || c.url.includes(only));
-  const urls = [...new Set(todo.map((c) => c.url.split("#")[0]))];
+  const urls = [...new Set(todo.map((c) => pageOf(c.url)))];
   console.log(`${todo.length} quotes on ${urls.length} web pages${only ? ` (only ${only})` : ""}`);
 
   const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
@@ -468,7 +485,7 @@ async function main() {
   const rows = [];
   const report = [];
   for (const c of todo) {
-    const r = pages.get(c.url.split("#")[0]);
+    const r = pages.get(pageOf(c.url));
     const base = { url: c.url, words: c.words, where: c.places.map((p) => p.where) };
     if (!r || r.error) { report.push({ ...base, result: "unreachable", why: r?.error }); continue; }
     if (r.file) { report.push({ ...base, result: "file" }); continue; }
@@ -524,7 +541,7 @@ async function main() {
 
   // keep the earlier rows of a page not read this time, and of a run limited by --only; drop rows no longer cited
   const cited = new Set(all.map((c) => `${c.url}\u0000${c.words}`));
-  const fresh = new Set(todo.filter((c) => { const r = pages.get(c.url.split("#")[0]); return r && !r.error; }).map((c) => `${c.url}\u0000${c.words}`));
+  const fresh = new Set(todo.filter((c) => { const r = pages.get(pageOf(c.url)); return r && !r.error; }).map((c) => `${c.url}\u0000${c.words}`));
   const earlier = existsSync(OUT) ? JSON.parse(readFileSync(OUT, "utf8")) : [];
   const kept = earlier.filter((e) => cited.has(`${e.url}\u0000${e.words}`) && !fresh.has(`${e.url}\u0000${e.words}`));
   const out = [...kept, ...rows].sort((a, b) => a.url.localeCompare(b.url) || a.words.localeCompare(b.words));

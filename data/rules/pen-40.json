@@ -107,6 +107,20 @@
   "scope_settle": "a CMA circular or approval that changed the orphans' share in s.94 of the standard pension bylaw",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.56-57, s.94; p.57",
+      "locator_he": "עמודים 56 עד 57, סעיף 94; עמוד 57",
+      "page": 57,
+      "quote": "30% לכל יתום",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://media.harel-group.co.il/media/slyhz2yj/תקנון-הראל-פנסיה-יוני-2025.pdf",
       "title": "הראל פנסיה – תקנון קרן הפנסיה המקיפה, מהדורה 20, 06/2025",
       "title_he": "הראל פנסיה – תקנון קרן הפנסיה המקיפה, מהדורה 20, 06/2025",
@@ -147,20 +161,6 @@
       "page": 62,
       "quote": "עבור יתום יחיד או יתומים בחלוקה שווה ביניהם",
       "checked": "2026-10-26"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "pp.56-57, s.94",
-      "locator_he": "עמודים 56 עד 57, סעיף 94",
-      "page": 56,
-      "quote": "30% לכל יתום",
-      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",

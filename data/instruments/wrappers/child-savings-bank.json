@@ -22,7 +22,8 @@
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
       "title": "National Insurance Institute, תכנית חיסכון לכל ילד (programme page): opened \"בקופת גמל או בבנק לפי בחירתכם\"",
       "publisher": "National Insurance Institute (BTL)",
-      "strength": "primary"
+      "strength": "primary",
+      "quote": "הביטוח הלאומי פותח תכנית חיסכון אישית לכל ילד הזכאי לקצבת ילדים עד הגיעו לגיל 18, בקופת גמל או בבנק לפי בחירתכם."
     },
     "checked": "2026-10-22",
     "effective_from": null,
@@ -77,7 +78,8 @@
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
         "title": "National Insurance Institute, child savings: withdrawal page (from 18 with a parent's signature, from 21 alone); law 74ג(ב)",
         "publisher": "National Insurance Institute (BTL)",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "את כספי החיסכון ניתן למשוך רק כשהילד יגיע לגיל 18 (בתום החודש בו ימלאו לו 18), למעט במקרים חריגים."
       },
       "checked": "2026-10-22",
       "effective_from": null,
@@ -102,7 +104,8 @@
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
       "title": "National Insurance Institute, child savings: change of saving body or track page (bank track only at an exit station; one-time move of future deposits to a provident fund)",
       "publisher": "National Insurance Institute (BTL)",
-      "strength": "primary"
+      "strength": "primary",
+      "quote": "תוכלו לשנות את מסלול החיסכון רק אם בחרתם במסלול חיסכון עם תחנות יציאה כל 5 שנים. שינוי המסלול אפשרי רק במועד תחנת היציאה."
     },
     "checked": "2026-11-07",
     "effective_from": null,

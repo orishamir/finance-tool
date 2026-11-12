@@ -1,0 +1,37 @@
+{
+  "id": "ETF-71",
+  "title": "The Securities Authority's list of foreign traded funds approved to offer in Israel: 37 funds, all iShares or Invesco",
+  "title_he": "קרנות הסל הזרות שמותר להציע בישראל, לפי רשימת רשות ניירות ערך",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-31",
+  "text_he": "קרן זרה יכולה להציע יחידות לציבור בישראל רק בהיתר של רשות ניירות ערך; הרשימה של הרשות אומרת מי קיבל היתר כזה, ולא עוסקת בקנייה של קרן בחו״ל דרך ברוקר זר. ברשימת קרנות הסל הזרות, כפי שנקראה ב־31.10.2026, יש 37 קרנות, כולן של iShares או של Invesco, ולכל אחת מהן קוד זיהוי בינלאומי אירי; אין בה קרן של Vanguard. הרשות כותבת שהיא לא בודקת את תשקיף הקרן ולא מפקחת על הקרן הזרה או על מי שמנהל אותה, ושהחוק והפיקוח על קרנות נאמנות בישראל לא חלים עליה. דמי הניהול שהרשימה מציגה נכונים לתאריך שלידם, הישן שבהם 27.06.2019, והרשות מפנה לדוחות של מנהל הקרן, ולכן אלה לא בהכרח דמי הניהול של היום.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/tax-foreignfunds-etf-faq",
+      "title": "ISA, foreign traded funds approved to offer their units in Israel",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pages 1 to 5",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/ForeignFunds",
+      "title": "ISA, foreign funds",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-31"
+    }
+  ]
+}

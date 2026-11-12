@@ -314,8 +314,12 @@ export const feesSnapshot = z.strictObject({
   by_amount: z.array(byAmountEntry).optional(),
   /** Who pays the prices on this record: required of a bank's or broker's record by the data check. */
   price_for_he: z.string().min(1).optional(),
-  /** What the documents hold that this record does not use, and why; empty means nothing was found. */
-  left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1) })).optional(),
+  /**
+   * What the documents hold that this record does not use, and why; empty means nothing was found. `why` is the working note. `why_he` is
+   * the same reason in plain Hebrew for the reader, and `could_change_price` says whether leaving it out can make what some reader pays
+   * differ from the price shown (another plan, a tier, a minimum by activity): a page tells the reader of those beside the house's price.
+   */
+  left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1), why_he: z.string().min(1).optional(), could_change_price: z.boolean().optional() })).optional(),
   groups: feeGroups.optional(),
   /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */
   advertising: z.array(advertisingEntry).optional(),

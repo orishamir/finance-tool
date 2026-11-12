@@ -39,6 +39,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6834%2Fheb#page=43",
+      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים) (תיקון), התש\"ע-2009 (קובץ התקנות 6834, 10.12.2009)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.43 (gazette p.233), s.3: reg. 2א(ד)",
+      "locator_he": "עמוד הקובץ 43 (עמוד הרשומות 233), סעיף 3: תקנה 2א(ד)",
+      "page": 43,
+      "checked": "2026-11-08"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
       "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "title_he": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
@@ -59,8 +72,8 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.5, reg. 3: reg. 2א(ה)-(ו)",
-      "locator_he": "עמוד 5, תקנה 3: תקנה 2א(ה)-(ו)",
+      "locator": "p.5 (gazette p.213), reg. 3: reg. 2א(ה)-(ו)",
+      "locator_he": "עמוד 5 (עמוד הרשומות 213), תקנה 3: תקנה 2א(ה)-(ו)",
       "page": 5,
       "checked": "2026-10-25"
     }

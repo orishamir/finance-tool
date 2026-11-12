@@ -30,6 +30,7 @@
       "locator": "p.5",
       "locator_he": "עמוד 5",
       "page": 5,
+      "quote": "קרנות נאמנות",
       "checked": "2026-11-12"
     },
     {
@@ -43,6 +44,7 @@
       "locator": "p.89",
       "locator_he": "עמוד 89",
       "page": 89,
+      "quote": "חבר משמורן, שאינו חבר בורסה, אינו רשאי להגיש הזמנות ליצירה או הוראות לפדיון",
       "checked": "2026-11-12"
     },
     {
@@ -53,6 +55,7 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד",
       "checked": "2026-11-12"
     },
     {
@@ -63,6 +66,7 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "המסחר בישראל מתאפשר לחברות או לפרטים עם פטור מתשלום מס בניירות ערך במקור בלבד",
       "checked": "2026-11-12"
     },
     {
@@ -73,6 +77,7 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "באינטראקטיב ישראל, קנייה ומכירה של ניירות ערך ישראליים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד",
       "checked": "2026-11-12"
     },
     {
@@ -83,6 +88,7 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "shall mean the IB’s online trading platform located at where you can trade in financial instruments and where your Client Account is located",
       "checked": "2026-11-12"
     },
     {
@@ -93,6 +99,7 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "The Company routes client orders for execution to another broker, Interactive Brokers",
       "checked": "2026-11-12"
     },
     {
@@ -103,6 +110,7 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "institution",
+      "quote": "הרשימה לא כוללת חברים משמורנים",
       "checked": "2026-11-12"
     },
     {
@@ -113,6 +121,7 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "institution",
+      "quote": "חבר משמורן (אינו פועל במסחר כחבר)",
       "checked": "2026-11-12"
     }
   ]

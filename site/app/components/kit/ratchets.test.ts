@@ -222,17 +222,9 @@ describe("ratchet: colours inside a chart", () => {
 
 // Process words in what a reader sees (guidelines/wording.md; copy.md 1, "Words that add something"): no decision id (D22), no Claude, no audit and no talk of the
 // researcher's reading in the reader's text of the copy, the guide and exposure prose, or a record's Hebrew fields. A decision id as a
-// key of a map, and English working notes (never shown), are not reader text. Today's leftovers are the rule records below.
+// key of a map, and English working notes (never shown), are not reader text. Nothing is left over: the last seven rule records were reworded on 2026-11-12.
 const PROCESS = /(?<![A-Za-z0-9-])D\d{1,3}(?![\d-])(?!["']?\s*:)|\bClaude\b|\baudit\b|קריאת החוקר|קריאה שלנו/g;
-const PROCESS_LEFT: Record<string, number> = {
-  "data/rules/etf-17.json": 1,
-  "data/rules/mf-18.json": 2,
-  "data/rules/mf-55.json": 1,
-  "data/rules/pf-01.json": 1,
-  "data/rules/txf-16.json": 1,
-  "data/rules/txf-20.json": 1,
-  "data/rules/txs-22.json": 1,
-};
+const PROCESS_LEFT: Record<string, number> = {};
 /** Source without comments: block and JSX comments, and `//` comments (a `//` after a colon or a quote, as in a URL, stays). */
 const uncommented = (src: string): string => src.replace(/\{\/\*[\s\S]*?\*\/\}/g, " ").replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:"'`\\\w])\/\/[^\n]*/g, "$1");
 /** Every string under a key ending in `_he`, the fields a record shows the reader. */

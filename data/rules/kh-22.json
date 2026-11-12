@@ -42,6 +42,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F9942%2Fheb#page=2",
+      "title": "ק\"ת 9942, 24.1.2022",
+      "title_he": "ק\"ת 9942, 24.1.2022",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file pp.2-3",
+      "locator_he": "עמודי הקובץ 2 עד 3",
+      "page": 2,
+      "checked": "2026-11-08"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
       "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
       "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
@@ -93,6 +106,19 @@
       "locator": "p.8, regs. 10, 12",
       "locator_he": "עמוד 8, תקנות 10, 12",
       "page": 8,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7358%2Fheb#page=3",
+      "title": "ק\"ת 7358, 24.3.2014",
+      "title_he": "ק\"ת 7358, 24.3.2014",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file pp.3-5, regs 1-8",
+      "page": 3,
+      "quote": "למעט לעניין תקנה 2(א)(2א)",
       "checked": "2026-10-25"
     },
     {

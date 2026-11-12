@@ -1590,7 +1590,7 @@
         "title": "סוגי חשבונות, בנק לאומי"
       },
       {
-        "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+        "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
         "title": "חשבון סטודנט, בנק לאומי"
       }
     ],
@@ -1992,7 +1992,7 @@
         "name_he": "לאומי סטודנט, בפתיחת חשבון",
         "who_he": "בפתיחת חשבון סטודנט",
         "who_source": {
-          "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+          "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
           "title": "חשבון סטודנט, בנק לאומי",
           "page": 1,
           "quote": "בפתיחת חשבון הינכם זכאים לקבל פטור מדמי ניהול ניירות ערך ישראליים וזרים"
@@ -2000,7 +2000,7 @@
         "ends_printed": true,
         "ends_he": "פטור מדמי ניהול למשך שנה. על העמלות לא כתוב עד מתי.",
         "ends_source": {
-          "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+          "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
           "title": "חשבון סטודנט, בנק לאומי",
           "page": 1,
           "quote": "למשך שנה שלמה"
@@ -2012,7 +2012,7 @@
             "holdings_he": "ניירות ערך ישראליים וזרים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "פטור מדמי ניהול ניירות ערך ישראליים וזרים"
@@ -2024,7 +2024,7 @@
             "holdings_he": "ניירות ערך ישראליים וזרים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "פטור מדמי ניהול ניירות ערך ישראליים וזרים"
@@ -2036,7 +2036,7 @@
             "holdings_he": "ניירות ערך ישראלים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "עמלה בסך ₪7 בלבד בניירות ערך ישראלים"
@@ -2048,7 +2048,7 @@
             "holdings_he": "ניירות ערך זרים",
             "names_fund": false,
             "source": {
-              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "url": "https://www.leumi.co.il/he/Articles/students_account_benefits",
               "title": "חשבון סטודנט, בנק לאומי",
               "page": 1,
               "quote": "עמלה בסך 7$ בלבד בניירות ערך זרים"

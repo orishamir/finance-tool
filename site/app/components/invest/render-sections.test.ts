@@ -561,8 +561,8 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       const seen = out.replace(/<div aria-hidden="true" class="invisible">[\s\S]*?<\/div>/g, "");
       const lane = seen.split(invest.stairs.lanes.account.title)[1]?.split(/<h5/)[0] ?? "";
       // the line's words are a button that opens why (D105): the tags inside the bold are left out
-      const lines = [...lane.matchAll(/<b class="font-medium">([\s\S]*?):<\/b>/g)].map((m) => m[1]!.replace(/<[^>]+>/g, "").replace(/[\u2066-\u2069]/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\""));
-      for (const m of lane.matchAll(/<b class="font-medium">([\s\S]*?):<\/b>/g)) expect(m[1], `${index.id}: a grey line's words open why`).toContain('class="term"');
+      const lines = [...lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)].map((m) => m[1]!.replace(/<[^>]+>/g, "").replace(/[\u2066-\u2069]/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\""));
+      for (const m of lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)) expect(m[1], `${index.id}: a grey line's words open why`).toContain('class="term"');
       const names = [...new Set(allFunds(v).map((f) => f.name))];
       for (const line of lines) {
         grey++;

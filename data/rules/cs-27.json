@@ -69,6 +69,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.5, s.5(א)-(ב) ; p.9, annex ג ; p.10",
+      "locator_he": "עמוד 5, סעיף 5(א)-(ב) ; עמוד 9, נספח ג ; עמוד 10",
       "page": 5,
       "quote": "הדוח השנתי יישלח לעמית לא יאוחר מה-1 במרץ בהתאם להוראות החוק",
       "checked": "2026-10-26"
@@ -82,6 +83,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.9, annex ג",
+      "locator_he": "עמוד 9, נספח ג",
       "page": 9,
       "quote": "דמי ניהול ששולמו עבור העמית בפועל",
       "checked": "2026-10-26"
@@ -108,6 +110,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "pp.3-4, ss.3(ד), 5; annex ב'ג' p.8",
+      "locator_he": "עמודים 3 עד 4, סעיפים 3(ד), 5; נספח ב'ג' עמוד 8",
       "page": 3,
       "checked": "2026-10-25"
     }

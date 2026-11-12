@@ -90,7 +90,8 @@
         "url": "https://api.cbs.gov.il/index/data/calculator/120010?value=70000&date=07-01-2016&toDate=01-01-2026&format=json&download=false",
         "title": "הלשכה המרכזית לסטטיסטיקה – מחשבון הצמדה, מדד המחירים לצרכן כללי (120010): 70,000 ₪ from 1.7.2016 to 1.1.2026, \"to_value\":83641.09",
         "publisher": "Central Bureau of Statistics",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "\"to_value\":83641.09"
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",

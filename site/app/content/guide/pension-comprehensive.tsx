@@ -15,10 +15,10 @@ export const content: GuideContent = {
         צו ההרחבה מחייב חיסכון לפנסיה לכל עובד מגיל <N v={figure("PEN-01", "minimum_age_men")} /> לגברים ומגיל <N v={figure("PEN-01", "minimum_age_women")} /> לנשים, חוץ ממי שיש לו הסדר טוב לפחות כמו זה. העובד בוחר קרן מקיפה או <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term> עם כיסוי ביטוחי. מי שלא בוחר, המעסיק מבטח אותו בקרן מקיפה.
       </p>
       <p className="max-w-measure">
-        ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, <N v={figure("PEN-03", "employer_pct")} /> מהמעסיק ו־<N v={figure("PEN-03", "severance_pct")} /> לפיצויים, מהשכר עד <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
+        ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, ומהמעסיק <N v={figure("PEN-03", "employer_pct")} /> ועוד <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, מהשכר עד <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
       </p>
       <p className="max-w-measure">
-        הכסף נחסך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן כוללת גם ביטוח נכות וביטוח <Term id="שאירים">שאירים</Term>, שעלותם יורדת מהחשבון. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">הבטחת תשואה</Term> של המדינה.
+        הכסף נחסך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן כוללת גם ביטוח נכות וביטוח <Term id="שאירים">שאירים</Term>, ודמי הביטוח יורדים מהחשבון. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה.
       </p>
       <RulesLine ids={["PEN-01", "PEN-03", "PEN-04", "PEN-05", "PEN-11", "PEN-15", "PEN-18", "PEN-26", "PEN-27"]} />
     </>
@@ -40,7 +40,7 @@ export const content: GuideContent = {
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        ההפקדה שלכם מורידה את המס ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
+        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
       </p>
       <p className="max-w-measure">
         הפקדות המעסיק לא ממוסות בהפקדה, עד <N v={figure("TXP-10", "employer_exempt_pct")} /> מהשכר ועד שכר של <N v={figure("TXP-10", "employer_ceiling")} /> בחודש.
@@ -65,7 +65,7 @@ export const content: GuideContent = {
     <>
       <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של <Term id="עמית">עמית</Term> אפשר לעקל רק לפי כללים שהשר קובע. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת.</p>
       <p className="max-w-measure">
-        היתרה שלכם משתנה גם בלי קשר להשקעות. כל רבעון הקרן מעדכנת את כל החשבונות לפי איזון אקטוארי: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם עלות הביטוח יורדת מהחיסכון כל חודש.
+        היתרה שלכם משתנה גם בלי קשר להשקעות. כל רבעון הקרן מעדכנת את כל החשבונות לפי איזון אקטוארי: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם דמי הביטוח יורדים מהחיסכון כל חודש.
       </p>
       <p className="max-w-measure">
         על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים המדינה משלימה <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>, והיעד נבדק כל חמש שנים <RuleRef id="PEN-18" end="." /> השאר עולה ויורד עם המסלול.
@@ -76,7 +76,7 @@ export const content: GuideContent = {
   use: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        הבסיס של החיסכון לפרישה של שכירים: <Term id="הפקדות המעסיק">הפקדות המעסיק</Term> לפנסיה מגיעות רק לכאן או לקופת גמל לקצבה, ההפקדה שלכם מורידה את המס, וחלק מהנכסים בהבטחת תשואה. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד אפשרית רק במקרים שבחוק <Term prefix="וב" id="תקנון">תקנון</Term>.
+        הבסיס של החיסכון לפרישה של שכירים: <Term id="הפקדות המעסיק">הפקדות המעסיק</Term> לפנסיה מגיעות רק לכאן או לקופת גמל לקצבה, ההפקדה שלכם מורידה את מס ההכנסה, וחלק מהנכסים בהשלמת תשואה. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד אפשרית רק במקרים שבחוק <Term prefix="וב" id="תקנון">תקנון</Term>.
       </p>
       <p className="max-w-measure">
         לעומת קופת גמל לקצבה יש כאן ביטוח <Term prefix="ו" id="איזון אקטוארי">איזון אקטוארי</Term>. תקרת דמי הניהול מהחיסכון נמוכה יותר, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.

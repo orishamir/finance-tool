@@ -14,19 +14,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
-      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.4, regs. 3, 5; p.5, reg. 8(א)",
-      "locator_he": "עמוד 4, תקנות 3, 5; עמוד 5, תקנה 8(א)",
-      "page": 4,
-      "checked": "2026-10-25"
-    },
-    {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=6",
       "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
       "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
@@ -36,6 +23,7 @@
       "strength": "primary",
       "locator": "file p.6 (gazette p.1006), reg. 7(14)",
       "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 1006), תקנה 7(14)",
+      "page": 6,
       "checked": "2026-11-07"
     },
     {
@@ -48,8 +36,22 @@
       "strength": "primary",
       "locator": "file p.19 (gazette p.1019), reg. 22",
       "locator_he": "עמוד הקובץ 19 (עמוד הרשומות 1019), תקנה 22",
+      "page": 19,
       "quote": "הסדרים עם עושה שוק",
       "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4 (gazette p.2396), regs. 3, 5; p.5 (gazette p.2397), reg. 8(א)",
+      "locator_he": "עמוד 4 (עמוד הרשומות 2396), תקנות 3, 5; עמוד 5 (עמוד הרשומות 2397), תקנה 8(א)",
+      "page": 4,
+      "checked": "2026-10-25"
     }
   ],
   "derived_from": [

@@ -306,9 +306,9 @@ export const guide = {
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
     unknown: { headline: "תלוי אם אתם שכירים או עצמאים", employee: "שכירים:", selfEmployed: "עצמאים:" },
-    employee: { headline: "ההפקדה שלכם לא מקטינה את המס", text: "היא יורדת מהשכר אחרי מס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר." },
-    employeeShort: "ההפקדה שלכם יורדת מהשכר אחרי מס, ולא מקטינה את המס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר.",
-    selfEmployed: { headline: "ההפקדה מקטינה את המס, עד תקרה", before: "אפשר להפחית מההכנסה מהעסק או מהמקצוע עד", middle: "ממנה, ורק על הכנסה של עד", after: "בשנה, ופחות למי שגם שכיר. זה גבול נפרד מהגבול של הפטור כשמושכים." },
+    employee: { headline: "ההפקדה שלכם לא מקטינה את מס ההכנסה", text: "היא יורדת מהשכר אחרי מס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר." },
+    employeeShort: "ההפקדה שלכם יורדת מהשכר אחרי מס, ולא מקטינה את מס ההכנסה. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר.",
+    selfEmployed: { headline: "ההפקדה מקטינה את מס ההכנסה, עד תקרה", before: "אפשר להפחית מההכנסה מהעסק או מהמקצוע עד", middle: "ממנה, ורק על הכנסה של עד", after: "בשנה, ופחות למי שגם שכיר. זה גבול נפרד מהגבול של הפטור כשמושכים." },
   },
   related: "כדאי להכיר גם:",
   checklist: { blocked: "חסום:", considered: "נלקח בחשבון", notRelevant: "לא רלוונטי", blockedMark: "חסום: שאלה פתוחה", expand: "מאיפה זה", blockedLast: "עד שהשאלה תיסגר, האתר לא מחשב את זה.", intro: "כך האתר בודק כל מוצר, מול אותן שאלות. כאן מה שעוד פתוח; את כל הבדיקות אפשר לפתוח למטה.", showAll: "הצגת כל הבדיקות", hideAll: "הסתרת הבדיקות" },
@@ -324,7 +324,7 @@ export const values = {
   required: "(חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
   units: { nis: "₪", pct: "%", years: "שנים" },
-  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שרוב הבנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם.", ageNeeded: "בלי גיל אין חישוב: הגיל קובע אם הכסף נפתח למשיכה בתוך השנים שבחרתם.", employmentNeeded: "בלי סוג ההעסקה אין חישוב: ההפקדות וההטבה במס שונות לשכירים ולעצמאים.", ageChanges: "יכול לשנות את החישוב: כללי המשיכה והמס תלויים בגיל.", employmentChanges: "משנה את החישוב: ההפקדות וההטבה במס שונות לשכירים ולעצמאים.", insurance: "התשלום על כיסוי למקרה מוות או נכות, שיורד מהחיסכון כל חודש. האתר עוד לא אסף את התעריפים ולא מנחש אותם, ולכן בלי המספר הזה אין חישוב.", insuranceOptional: "התשלום על כיסוי למקרה מוות או נכות, שיורד מהחיסכון כל חודש. האתר עוד לא אסף את התעריפים; בלי המספר הזה החישוב לא כולל דמי ביטוח." },
+  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם.", ageNeeded: "בלי גיל אין חישוב: הגיל קובע אם הכסף נפתח למשיכה בתוך השנים שבחרתם.", employmentNeeded: "בלי סוג ההעסקה אין חישוב: ההפקדות וההטבה במס שונות לשכירים ולעצמאים.", ageChanges: "יכול לשנות את החישוב: כללי המשיכה והמס תלויים בגיל.", employmentChanges: "משנה את החישוב: ההפקדות וההטבה במס שונות לשכירים ולעצמאים.", insurance: "התשלום על כיסוי למקרה מוות או נכות, שיורד מהחיסכון כל חודש. האתר עוד לא אסף את התעריפים ולא מנחש אותם, ולכן בלי המספר הזה אין חישוב.", insuranceOptional: "התשלום על כיסוי למקרה מוות או נכות, שיורד מהחיסכון כל חודש. האתר עוד לא אסף את התעריפים; בלי המספר הזה החישוב לא כולל דמי ביטוח." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
@@ -497,9 +497,9 @@ export const parametersPage = {
     "P-01.value": "הפרש יחסי שמתחתיו שתי אפשרויות שקולות",
     "P-02.bounds.lo": "{name}: הגבול התחתון",
     "P-02.bounds.hi": "{name}: הגבול העליון",
-    "P-03.negotiate_nis": "שווי הורדת העמלה לממוצע לאורך האופק שמעליו שווה להתמקח", // D90 revised, 2026-11-07: the worth of the cut, not the cost
-    "P-03.avoid_nis": "עלות העמלה שממנה מוצג מוצר במקום גבוה יותר",
-    "P-03.negotiate_share": "חלק מכלל העלות (סף ההתמקחות)",
+    "P-03.negotiate_nis": "שווי הורדת העמלה לממוצע לאורך התקופה שמעליו שווה להתמקח", // D90 revised, 2026-11-07: the worth of the cut, not the cost
+    "P-03.avoid_nis": "עלות העמלה שממנה הכרטיס מציג מוצר במקום גבוה יותר שלא גובה אותה או גובה פחות, אם יש כזה",
+    "P-03.negotiate_share": "החלק מכלל העלות של העמלות שממנו עמלה אחת מצוינת ליד המסקנה",
     "P-05.inputs.amount_now": "סכום התחלתי",
     "P-05.inputs.monthly_deposit": "הפקדה חודשית",
     "P-05.inputs.horizon_years": "אופק",
@@ -619,10 +619,10 @@ export const company = {
   /** D34: both fees on every row, the words after each figure; the legal cap and the direct expenses under the table. */
   fees: {
     savings: "מהחיסכון",
-    deposits: "מההפקדות",
+    deposits: "מהפקדה",
     cap: "התקרה בתקנות:",
     capSavings: "מהחיסכון,",
-    capDeposits: "מההפקדות",
+    capDeposits: "מהפקדה",
     direct: "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון.",
   },
   /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
@@ -729,9 +729,9 @@ export const notCovered = {
 /** Plain-Hebrew reasons a run can fail with, carried as `messageHe` on a failure result (copy.md 7.1, txh-limit). No engine message reaches the page. */
 export const runFailure = {
   employerAboveTotal: "הפקדת המעסיק שהוזנה גבוהה מסך ההפקדה החודשית. בדקו שסכום ההפקדה כולל את חלק העובד וחלק המעסיק.",
-  blocked: "החוקים והכללים לחישוב הזה עוד בבדיקה, ולכן האתר לא מחשב אותו.",
+  blocked: "החישוב הזה תלוי בשאלה פתוחה, ולכן האתר לא מחשב אותו.",
   figureNotUpdated: "אחד הנתונים בחישוב לא עודכן, ולכן האתר לא מחשב אותו.",
-  generic: "האתר לא הצליח להריץ את החישוב עם הערכים האלה. בדקו את ההנחות שהזנתם.",
+  generic: "האתר לא הצליח להריץ את החישוב עם הערכים שבהנחות.",
 } as const;
 
 export const system = {
@@ -812,7 +812,7 @@ export const formulaNames: Record<string, string> = {
   "F-82": "חישוב מחדש של השוואה שנשמרה",
   "F-83": "ספירת המסלולים שנכללו",
   "F-84": "שער חליפין מחושב משערי הבנק המרכזי האירופי",
-  "F-85": "הריבית שרוב הבנקים משלמים בעו״ש",
+  "F-85": "הריבית שהכי הרבה בנקים משלמים בעו״ש",
   "F-104": "ספירת תנאי השבירה בפיקדונות שנאספו",
   "F-108": "הריבית הגבוהה מבין ההצעות שהסכום פותח",
   "F-87": "החלק מנכסי המסלול שחשוף למניות",
@@ -1109,7 +1109,7 @@ export const guideBlocks = {
     "F-42": { headline: "מגיל הפרישה המוקדמת: מדרגות המס שלכם", text: "על רווחים מסוימים חלות מדרגות המס של האדם, אם הן נמוכות מהשיעור הקבוע." },
     "F-43": { headline: "מס נוסף על הכנסה גבוהה", text: "מי שההכנסה השנתית שלו עוברת סף שבחוק משלם מס נוסף, דרך הדוח השנתי." },
     "F-45": { headline: "העברה לקצבה מגיל הפרישה המוקדמת" },
-    "F-46": { before: "אחרי", after: "שנים אין מס", text: "גם על ההפקדות וגם על הרווח, חוץ מרווח על כסף שהופקד מעל הגבול." },
+    "F-46": { before: "כשעוברות", after: "שנים מההפקדה הראשונה, אין מס", text: "גם על ההפקדות וגם על הרווח, חוץ מרווח על כסף שהופקד מעל הגבול." },
     "F-47": { headline: "משיכה מוקדמת מקרן השתלמות" },
     "F-48": { headline: "משיכה מוקדמת מפנסיה" },
     "F-49": { headline: "קצבה בפרישה" },
@@ -1160,9 +1160,9 @@ export const guideBlocks = {
       accountCount: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את הדוגמה",
       /** Among a count's inputs, a house's document after the first it is priced on (a provident manager's bylaws). */
       moreDocument: (name: string, n: number | null) => (n === null ? `${name}, מסמך נוסף` : `${name}, מסמך נוסף ${n}`),
-      account: { before: "הבחירה של האתר: מבין", after: "הבנקים ובתי ההשקעות שנאספו, התעריפון הזה משאיר הכי הרבה בתוכנית לדוגמה. אצל האחרים העמלות שונות." },
+      account: { before: "הבחירה של האתר: מבין", after: "הבנקים ובתי ההשקעות שנאספו, התעריפון הזה משאיר לכם הכי הרבה כסף בתוכנית לדוגמה. אצל האחרים העמלות שונות." },
       // F-80, P-01: houses within the tie threshold of the top; the example runs on the first and crowns none
-      tied: { before: "מבין", middle: "הבנקים ובתי ההשקעות שנאספו, התעריפונים של", and: "ושל", tie: "שקולים בתוכנית לדוגמה: ההפרש ביניהם קטן מסף התיקו של האתר", after: "ולכן האתר לא בוחר ביניהם. הדוגמה מחושבת לפי התעריפון של", end: "אצל האחרים נשאר פחות." },
+      tied: { before: "מבין", middle: "הבנקים ובתי ההשקעות שנאספו, התעריפונים של", and: "ושל", tie: "שקולים בתוכנית לדוגמה: ההפרש ביניהם קטן מסף התיקו של האתר", after: "ולכן האתר לא בוחר ביניהם. הדוגמה מחושבת לפי התעריפון של", end: "אצל האחרים נשאר לכם פחות." },
       managerCount: "כמה חברות מנהלות שדמי הניהול שלהן נאספו מהמסמכים שלהן",
       // "cheapest" is by what the documents say; most companies write only the cap and set the price in each member's agreement
       // "אצלה נשאר הכי הרבה" read as the most staying with the company; the savers are named
@@ -1213,11 +1213,11 @@ export const guideBlocks = {
       custodyMax: "דמי ניהול פיקדון ניירות ערך, מקסימום",
       fxRate: "עמלת המרת מטבע",
       monthlyFee: "דמי חשבון קבועים",
-      iraManagerFee: "דמי ניהול של מנהל החשבון",
+      iraManagerFee: "דמי ניהול של החברה המנהלת",
       fundManagement: "דמי ניהול של הקרן",
       fundVariable: "דמי ניהול משתנים של הקרן",
       fundTrustee: "שכר הנאמן של הקרן",
-      fundTracking: "פער המעקב של הקרן",
+      fundTracking: "הפרש העקיבה של הקרן",
       fundWithholding: "מס זר שנגבה בתוך הקרן",
       fundHalfSpread: "חצי ממרווח הקנייה והמכירה",
       regBalance: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year} (לא תעריפון)",
@@ -1343,7 +1343,7 @@ export const trackBrowser = {
   sorts: {
     name: { label: "שם", what: "שם המסלול", whatKind: "שם החברה", up: "בסדר הא״ב", down: "בסדר הא״ב ההפוך" },
     fee: { label: "דמי ניהול מהחיסכון", what: "דמי הניהול מהחיסכון", up: "מהזול ליקר", down: "מהיקר לזול" },
-    dep: { label: "דמי ניהול מההפקדות", what: "דמי הניהול מההפקדות", up: "מהזול ליקר", down: "מהיקר לזול" },
+    dep: { label: "דמי ניהול מהפקדה", what: "דמי הניהול מהפקדה", up: "מהזול ליקר", down: "מהיקר לזול" },
     stock: { label: "חשיפה למניות", what: "החשיפה למניות", up: "מהנמוכה לגבוהה", down: "מהגבוהה לנמוכה" },
     assets: { label: "כסף מנוהל", what: "הכסף המנוהל", up: "מהמעט להרבה", down: "מההרבה למעט" },
   },
@@ -1362,17 +1362,17 @@ export const trackBrowser = {
     fee: "דמי ניהול, ממוצע {year}",
     feeNoYear: "דמי ניהול, ממוצע",
     feeSavings: "מהחיסכון",
-    feeDeposits: "מההפקדות",
+    feeDeposits: "מהפקדה",
     exposure: "חשיפה למניות ולמט״ח, סוף {period}",
     yield: "תשואה שנתית ממוצעת, לפני דמי ניהול",
     assets: "כסף מנוהל, סוף {period}",
     open: "פתיחה",
     /** A company page's shorter table, one figure a cell (designer's mock, 2026-11-10); its dates are said once over it. */
-    short: { fee: "דמי ניהול מהחיסכון", deposit: "מההפקדות", stocks: "מניות", currency: "מט״ח", y3: "תשואה, 3 שנים", y5: "תשואה, 5 שנים", assets: "כסף מנוהל" },
+    short: { fee: "דמי ניהול מהחיסכון", deposit: "מהפקדה", stocks: "מניות", currency: "מט״ח", y3: "תשואה, 3 שנים", y5: "תשואה, 5 שנים", assets: "כסף מנוהל" },
   },
   /** Over a company page's table: what its dates are, and a deposit fee every track shares. */
   dates: (year: string | null, period: string) => `${year ? `דמי הניהול הם הממוצע שנגבה ב־${year}; ` : ""}החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
-  depositOnce: "דמי ניהול מההפקדות, בכל המסלולים:",
+  depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
   inAll: (name: string) => `${name} בכל החברות`,
   yield: { phone: "תשואה שנתית ממוצעת", years3: "3 שנים", years5: "5 שנים", young: "אין", missing: "לא דווח", emptyNote: { before: "השדה ריק בנתוני הרשות: לא פורסמה למסלול תשואה שנתית ממוצעת ל־", after: " שנים." }, selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע", selfManagedShort: "כל חוסך מחליט במה להשקיע" },
@@ -1620,7 +1620,7 @@ export const r3fees = {
     suggestion: "הצעה: הממוצע",
     // the what-if does not change the ranking; the bounds are named
     noRanking: "זו הערכה בלבד: היא לא משנה את הדירוג בהשוואה.",
-    belowZero: "ההנחה צריכה להיות 0% או יותר.",
+    belowZero: "העמלה צריכה להיות 0% או יותר.",
     aboveHundred: "עמלה לא יכולה להיות יותר מ־100%.",
     /** D86: a lower rate a company agrees to holds for the discount period, then the line returns to what it charges after it */
     held: { before: "בחישוב, עמלה נמוכה יותר נשמרת ", years: " שנים, ואחר כך חוזרת ל־", months: " חודשים, ואחר כך חוזרת ל־", end: "." },
@@ -1694,7 +1694,7 @@ export const r3fees = {
     // at 0% during the discount moves only after it, so its row is named for the rate after the discount and shows that rate alone
     afterAxis: " אחרי תקופת ההנחה",
   },
-  noFees: "אין עמלות ברשומה הזו.",
+  noFees: "אין עמלות ברשומה שנאספה.",
   omitted: [" לא נכללה בחישוב: לא דווחה."],
   notFound: "המוצר או ההחזקה לא נמצאו.",
   notFoundLinks: { guide: "למדריך" },
@@ -1733,7 +1733,7 @@ export const r3fees = {
     // copy.md 7.1 (B3): no engine message reaches the page
     needGeneric: "אחד מהערכים בהנחות",
     needNames: { insurance: "דמי הביטוח בקרן הפנסיה", salary: "שכר חודשי", employment: "סוג ההעסקה", age: "גיל", return: "תשואה בשנה" },
-    genericFail: "האתר לא הצליח להריץ את החישוב עם הערכים האלה. בדקו את ההנחות שהזנתם.",
+    genericFail: "האתר לא הצליח להריץ את החישוב עם הערכים שבהנחות.",
     blockedRun: "החישוב למוצר הזה חסום: ",
     sensRunning: "בודק…",
     sensFooter: "הטווחים שנבדקו הם פרמטר של האתר.",
@@ -1813,9 +1813,9 @@ export const r3transfer = {
   },
   rejectedFields: {
     goal: "המטרה", id: "המזהה", name: "שם המטרה", profile: "הפרופיל", assumptions: "ההנחות", exposures: "נתוני החשיפות",
-    horizonYears: "שנות החיסכון", amountNow: "הסכום עכשיו", monthly: "ההפקדה החודשית", available: "הסכום הזמין",
+    horizonYears: "השנים עד המטרה", amountNow: "סכום היום", monthly: "ההפקדה החודשית", available: "הסכום הזמין",
     age: "הגיל", salary: "השכר", pension: "הפקדות לפנסיה", hishtalmut: "הפקדות להשתלמות", hishtalmutYearly: "ההפקדה השנתית להשתלמות",
-    return: "התשואה", inflation: "האינפלציה", insurance: "עלות הביטוח", acceptedFall: "הירידה שמסכימים לספוג",
+    return: "התשואה", inflation: "האינפלציה", insurance: "דמי הביטוח בקרן הפנסיה", acceptedFall: "הירידה שמסכימים לספוג",
     holding: "ההחזקה", wrapperId: "סוג החיסכון", company: "החברה", order: "הסדר", track: "המסלול", balance: "היתרה",
     feeBalance: "דמי הניהול מחיסכון", feeDeposit: "דמי הניהול מהפקדה", directExpenses: "הוצאות ישירות", monthlyOwn: "ההפקדה החודשית שלכם",
     monthlyEmployer: "ההפקדה החודשית של המעסיק", embeddedGain: "הרווח שבתוך היתרה", statementDate: "תאריך הדוח", firstDeposit: "ההפקדה הראשונה",
@@ -2080,7 +2080,7 @@ export const r4catalogue = {
   missingTariff: "התעריפון לא נאסף.",
   recordedReason: "הסיבה כפי שנרשמה בקובץ הנתונים",
   missingLinks: { tariffPageBefore: "לעמוד התעריפון של ", compare: "להשוואה מול שאר הבנקים ובתי ההשקעות (הבנק מופיע שם בלי מחיר)", /* copy.md 8.4: the broker's form of the parenthesis */ compareBroker: "להשוואה מול שאר הבנקים ובתי ההשקעות (בית ההשקעות מופיע שם בלי מחיר)" },
-  brokerClassLine: "בית השקעות, חבר בורסה שאינו בנק",
+  brokerClassLine: "בית השקעות, חבר בורסה שהוא לא בנק",
   searchGroupBank: "בנקים ומוצרי בנק",
 } as const;
 
@@ -2151,7 +2151,7 @@ export const r4workbench = {
     dataMissing: "התעריפון לא נאסף.",
     noLine: (cls: string) => `בתעריפון אין שורה ל${cls}.`,
     // a house whose trade lines abroad name one exchange only (One Zero: "ניירות ערך זרים הנסחרים בארה״ב"), and a fund on the other
-    otherVenue: (houseVenue: "us" | "europe") => (houseVenue === "us" ? "כאן קונים בחו״ל רק ניירות ערך שנסחרים בארה״ב, והקרן הזו נסחרת באירופה." : "כאן קונים בחו״ל רק ניירות ערך שנסחרים באירופה, והקרן הזו נסחרת בארה״ב."),
+    otherVenue: (houseVenue: "us" | "europe") => (houseVenue === "us" ? "בחשבון הזה קונים בחו״ל רק ניירות ערך שנסחרים בארה״ב, והקרן הזו נסחרת באירופה." : "בחשבון הזה קונים בחו״ל רק ניירות ערך שנסחרים באירופה, והקרן הזו נסחרת בארה״ב."),
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
     noAverage: (cls: string) => `לא נאסף ממוצע לשורות שחלות על ${cls}.`,
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
@@ -2215,7 +2215,7 @@ export const sourceBlock = {
 /** Hebrew for the `update_rule` words the rule records carry (shown beside a figure with its tax year). */
 export const updateRules = {
   "fixed in law": "קבוע בחוק",
-  "cpi-linked 1 jan": "מתעדכן ב־1 בינואר לפי המדד",
+  "cpi-linked 1 jan": "מתעדכן ב־1 בינואר לפי מדד המחירים לצרכן",
   "average-wage-linked": "מתעדכן לפי השכר הממוצע",
   "provider-set": "החברה קובעת",
   "fixed in regulation": "קבוע בתקנות",
@@ -2234,12 +2234,12 @@ export const scopeWords = {
   tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם", about: "על {names}" },
   line: {
     institution: "נמצא במסמכים של {names}; בחברות אחרות זה יכול להיות אחרת.",
-    notTheirs: "המקורות כאן אינם מסמכים של {names}.",
+    notTheirs: "המקורות כאן הם לא מסמכים של {names}.",
     unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; האתר לא מצא לזה מקור רשמי.",
     unsettled: "אולי כך בכל החברות; האתר לא מצא לזה מקור רשמי.",
   },
   /** The card's foot: where the company's terms are listed, one link per company. */
-  allAt: "לכל מה שמצאנו אצל {name}",
+  allAt: "לכל מה שהאתר מצא אצל {name}",
   allNoCompany: "לכל מה שלא נכלל ככלל",
   /** A record the rule base keeps that is not a rule (a list, a count, a site's terms, a company's tariff): its card's tag and, when it cites a company's document, its line. */
   notRule: {
@@ -2258,7 +2258,7 @@ export const scopeWords = {
   noPage: {
     title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
     // what no company's section lists: the records the rule base keeps that are not rules
-    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו.", fold: "כל הרשומות" },
+    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפונים של חברות, ומקומות שבהם האתר חיפש כלל ולא מצא.", fold: "הרשימה המלאה" },
   },
   /** The rules page: company terms are not listed there. */
   rulesLine: { before: "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה.", link: "לרשימת החברות" },
@@ -2300,7 +2300,7 @@ export const rulesFront = {
     examplesLead: "למשל:",
     examples: ["מותר לבנק לשנות עמלה בלי להודיע", "אפשר למשוך קרן השתלמות אחרי 3 שנים", "אם הברוקר פושט רגל, הכסף אובד"],
   },
-  facts: { title: "הידעת?", more: "עוד עובדות", toRule: "לפירוט המלא" },
+  facts: { title: "שווה לדעת", more: "עוד עובדות", toRule: "לפירוט המלא" },
   /** The product list: on a computer beside the rules, on a phone a button that opens it. */
   nav: {
     label: "מוצר",
@@ -2343,7 +2343,7 @@ export const rulesFront = {
   },
   shelves: {
     state: { name: "מה המדינה לוקחת", line: "מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח" },
-    costs: { name: "מה הבנק או בית ההשקעות לוקחים", line: "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום" },
+    costs: { name: "מה הבנק, בית ההשקעות או החברה המנהלת לוקחים", line: "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום" },
     access: { name: "מה אפשר לעשות עם הכסף", line: "מתי אפשר למשוך, איך עוברים, מי רשאי להצטרף, תקרות הפקדה" },
     protection: { name: "מי מפקח ומה מוגן", line: "מי מפקח, מה קורה אם החברה קורסת, מה מבוטח" },
     structure: { name: "איך המוצר בנוי", line: "מטבע, חלוקה, מדדים, מה כתוב בדוח ואיך קוראים לדברים" },
@@ -2372,7 +2372,7 @@ export const documents = {
   sections: { laws: "חוקים ותקנות", regulators: "רשויות ומפקחים", exchange: "הבורסה", institutions: "מסמכים של בנקים וחברות" },
   kinds: { law: "חוק", regulation: "תקנות", circular: "חוזר", regulator_page: "עמוד באתר הרשות", official_pdf: "מסמך רשמי", exchange_rules: "הנחיות הבורסה", institution_doc: "מסמך של החברה", article: "כתבה", dataset: "מאגר נתונים", form: "טופס", other: "מסמך" } as Record<string, string>,
   rulesLead: "מה שנשען על המסמך:",
-  more: { one: "עוד מסמך אחד", many: "עוד {n} מסמכים", line: "מסמכים עם הפניה אחת או שתיים בלבד: עמודים של חברות ומקורות נוספים." },
+  more: { one: "עוד מסמך אחד", many: "עוד {n} מסמכים", line: "מסמכים שרק חוק או כלל אחד או שניים נשענים עליהם: עמודים של חברות ומקורות נוספים." },
   rulesMore: "עוד {n}",
   checked: "נבדק לאחרונה",
   open: "למסמך",
@@ -2447,7 +2447,7 @@ export const guideSignature = {
     outOfRange: { before: "הסכום מחוץ לטווח שהריבית שפורסמה נקבעה לו:", middle: "עד", after: "." },
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
-      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו. בחוזה של בנק אחד נקראו תוכניות שנפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית. שאלה פתוחה BANK-OQ12",
+      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו. בחוזה של בנק אחד שהאתר קרא, התוכניות נפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית. שאלה פתוחה BANK-OQ12",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
       depositBanks: "הריביות שהבנקים מפרסמים על פיקדון לשנה עוד לא נאספו.",
     } as Record<string, string>,
@@ -2477,9 +2477,9 @@ export const guideSignature = {
       many: { mid: "מתוך", after: "הבנקים שנאספו משלמים ריבית על יתרה בעו״ש" },
       one: { mid: "מתוך", after: "הבנקים שנאספו משלם ריבית על יתרה בעו״ש" },
       oneWord: "בנק אחד",
-      conditionalCapped: { many: ", כולם בתנאים ועל עד", one: ", בתנאים ועל עד", only: "בלבד" },
+      conditionalCapped: { many: ", כולם בתנאים ועל יתרה של עד", one: ", בתנאים ועל יתרה של עד", only: "בלבד" },
       conditional: { many: ", כולם בתנאים", one: ", בתנאים" },
-      capped: { many: ", כולם על עד", one: ", על עד", only: "בלבד" },
+      capped: { many: ", כולם על יתרה של עד", one: ", על יתרה של עד", only: "בלבד" },
       best: "הכי הרבה:",
       at: "אצל",
       link: "לטבלה",
@@ -2518,7 +2518,7 @@ export const guideSignature = {
     onlyCollected: "לפי הפרסום של לאומי; תוכניות חיסכון של בנקים אחרים עוד לא נאספו.",
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה; אין אפשרות שבירה." },
     alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת." },
-    rangeLine: "הטווח בטבלה של הבנק נקרא כסכום להפקדה אחת; הטבלה לא אומרת זאת במילים.",
+    rangeLine: "האתר קורא את הטווח בטבלה של הבנק כסכום להפקדה אחת; הטבלה לא אומרת זאת במילים.",
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
   ladder: {
@@ -2527,20 +2527,20 @@ export const guideSignature = {
     columns: { product: "מוצר", when: "מתי הכסף אצלכם", rate: "ריבית שנתית" },
     caption: "ארבעה מוצרים לפי כמה מהר הכסף חוזר, וריבית כל אחד",
     rows: { "current-account": "עו״ש", "money-market-fund-daily": "קרן כספית יומית", "money-market-fund-renewable": "קרן כספית מתחדשת", "bank-deposit": "פיקדון לשנה" } as Record<string, string>,
-    when: { "any-time": "בכל רגע", "trading-day": "תוך יום מסחר", "fixed-dates": "במועדים קבועים", "at-maturity": "בסוף השנה" } as Record<string, string>,
+    when: { "any-time": "בכל רגע", "trading-day": "תוך יום מסחר", "fixed-dates": "במועדים קבועים", "at-maturity": "בסוף התקופה" } as Record<string, string>,
     tradingDay: "הוראה עד השעה היעודה, הכסף באותו יום",
     interval: { before: "עד", after: "חודשים בין מועדים" },
     thisOne: "המוצר בעמוד",
     // a row whose rate is one bank's own figure names the bank ("פיקדון לשנה של לאומי"), D30/D31
     ofBank: "של",
     kinds: { assumption: "לפי ריבית בנק ישראל", range: { before: "טווח ב־", after: "פיקדונות רגילים שנאספו" } },
-    take: { before: "הקרן היומית זמינה כמעט כמו", term: "עו״ש", after: ", ומשלמת לפחות כמו המוצרים שמחזירים את הכסף לאט יותר." },
+    take: { before: "הקרן היומית זמינה כמעט כמו", term: "עו״ש", after: ", ולפי הריבית שהאתר מניח משלמת לפחות כמו המוצרים שמחזירים את הכסף לאט יותר." },
     legend: { rate: "ריבית שנתית", range: "טווח בין הפיקדונות הרגילים שנאספו" },
     notes: {
       beforeTax: "ריבית שנתית לפני מס ועלויות.",
       assumption: "הריבית של שתי הקרנות היא הנחה של האתר לפי ריבית בנק ישראל, לא ריבית שפורסמה.",
       // F-86: the count of the collected one-year deposits that cannot be left early, naming none (D30)
-      exit: { before: "פיקדון לשנה: ב־", of: "מתוך", after: "הפיקדונות הרגילים שנאספו אי אפשר למשוך את הכסף לפני סוף השנה; באחרים אפשר, לפי תנאי הבנק.", all: "פיקדון לשנה: באף אחד מהפיקדונות הרגילים שנאספו אי אפשר למשוך את הכסף לפני סוף השנה." },
+      exit: { before: "פיקדון לשנה: ב־", of: "מתוך", after: "הפיקדונות הרגילים שנאספו אי אפשר למשוך את הכסף לפני סוף התקופה; באחרים אפשר, לפי תנאי הבנק.", all: "פיקדון לשנה: באף אחד מהפיקדונות הרגילים שנאספו אי אפשר למשוך את הכסף לפני סוף התקופה." },
     },
   },
   makam: {
@@ -2552,7 +2552,7 @@ export const guideSignature = {
     atRedemption: "בפדיון",
     atSale: "אם מוכרים אחרי",
     figures: { price: "מחיר ל־100", gain: "רווח עד עכשיו", fees: "עמלות", net: "נשאר לכם" },
-    feesWhose: { before: "לפי התעריפון של", middle: ", הבחירה של האתר: מבין", after: "הבנקים ובתי ההשקעות שנאספו, הוא משאיר הכי הרבה בתוכנית לדוגמה. אצל האחרים העמלה שונה.", tied: "מבין הבנקים ובתי ההשקעות שנאספו, הוא שקול לתעריפון של", tiedGap: "ההפרש קטן מסף התיקו של האתר," },
+    feesWhose: { before: "לפי התעריפון של", middle: ", כי מבין", after: "הבנקים ובתי ההשקעות שנאספו, התעריפון הזה משאיר הכי הרבה בתוכנית לדוגמה. אצל האחרים העמלה שונה.", tied: "מבין הבנקים ובתי ההשקעות שנאספו, התעריפון הזה שקול לתעריפון של", tiedGap: "ההפרש קטן מסף התיקו של האתר," },
     taxSale: { before: "מס על", term: "רווח הון" },
     taxRedeem: "מס על הניכיון",
     // the fees line: how much of it is custody, and why the banks' ban on custody for makam does not reach the house
@@ -2666,9 +2666,9 @@ export const guideSignature = {
       assume: { employee: "השכר וההפקדות עולים כל שנה ב־", self: "ההפקדות עולות כל שנה ב־", like: ", כמו ה", term: "אינפלציה", after: ": הנחה של האתר, לא תחזית. כל הסכומים בכסף של היום." },
       held: {
         account: "החשבון שבעמודה ״אותו כסף בחשבון״: קרן",
-        tariff: "בתעריף של",
+        tariff: "בתעריפון של",
         pick: "שמשאיר הכי הרבה מבין",
-        collected: "התעריפים שיש באתר.",
+        collected: "התעריפונים שיש באתר.",
       },
       about: {
         own: "מה שהפקדתם עד השנה שנבחרה, כל הפקדה בכסף של היום",
@@ -2709,10 +2709,10 @@ export const guideSignature = {
     fund: "קרן",
     employmentLabel: "סוג ההעסקה",
     income: { employee: "משכורת ברוטו בחודש", "self-employed": "הכנסה חייבת בחודש" } as Record<string, string>,
-    incomeAnnual: "ההכנסה השנתית של האתר",
+    incomeAnnual: "ההכנסה השנתית בתרחיש לדוגמה",
     incomeAbout: "ההכנסה החודשית שהחישוב מניח",
     gaps: {
-      blocked: "המס על המשיכה הזו נשען על כלל פתוח, ולכן אין כאן מספר.",
+      blocked: "המס על המשיכה הזו תלוי בשאלה פתוחה, ולכן אין כאן מספר.",
     } as Record<string, string>,
     assumption: { ret: "תשואה", before: "בשתי הדרכים היא", middle: "בשנה", inflation: "אינפלציה", after: "בשנה: הנחות של האתר, לא תחזית." },
     inputNames: { trackFee: "דמי הניהול של המסלול", lockYears: "שנות הנעילה", cap: "תקרת המשכורת הקובעת", selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה" },
@@ -2721,24 +2721,24 @@ export const guideSignature = {
     lead: "הפקדה לפנסיה של שכיר מורכבת משלושה חלקים: מה שמנוכה לכם מהמשכורת, מה שהמעסיק מוסיף, ופיצויים שהמעסיק שומר לכם בקרן. כך זה נראה במשכורת שבחרתם:",
     selfEmployed: "כאן מוצג שכיר שהמעסיק מפקיד לו. עצמאי מפקיד בעצמו, בלי מעסיק, וההטבה שלו היא ניכוי מההכנסה במקום זיכוי. החישוב לעצמאי עוד לא מוצג כאן.",
     salary: "משכורת ברוטו בחודש",
-    salaryAnnual: "ההכנסה השנתית של האתר",
+    salaryAnnual: "ההכנסה השנתית בתרחיש לדוגמה",
     salaryAbout: "המשכורת החודשית שהחישוב מניח",
-    insurance: "עלות הביטוח בקרן, באחוז מההפקדה",
-    insuranceHint: "אתם מזינים אותה: האתר עוד לא אסף את תעריפי הביטוח.",
-    insuranceAbout: "עלות הביטוח באחוז מההפקדה",
-    insuranceNeeded: "הזינו את העלות כדי לראות",
+    insurance: "דמי הביטוח בקרן הפנסיה, באחוז מההפקדה",
+    insuranceHint: "אתם מזינים אותם: האתר עוד לא אסף את תעריפי הביטוח.",
+    insuranceAbout: "דמי הביטוח בקרן הפנסיה, באחוז מההפקדה",
+    insuranceNeeded: "הזינו את דמי הביטוח כדי לראות",
     monthLead: "כל חודש מופקדים בסך הכול",
     parts: { you: "ממכם", employer: "מהמעסיק, תגמולים", severance: "מהמעסיק, פיצויים" },
     chart: { aria: "פס אחד שמחולק לשלושה חלקים: מה שהעובד מפקיד, מה שהמעסיק מפקיד לתגמולים, ומה שהמעסיק מפקיד לפיצויים" },
     returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי מס, שמחושב בדוח השנתי." },
-    figures: { net: "בפועל יוצא מהכיס שלכם, אחרי הזיכוי", insurance: "עלות הביטוח בקרן", depositFee: "דמי ניהול מההפקדה", balance: "מה שנצבר בקרן אחרי" },
+    figures: { net: "בפועל יוצא מהכיס שלכם, אחרי הזיכוי", insurance: "דמי הביטוח בקרן הפנסיה", depositFee: "דמי ניהול מההפקדה", balance: "מה שנצבר בקרן אחרי" },
     balanceGap: { "no-fees": "אין חישוב; הסיבה למטה", "no-run": "החישוב לא הצליח עם הערכים האלה" } as Record<string, string>,
-    ratesLine: { before: "ההפקדות הן המינימום לפי צו ההרחבה:", middle: "מכם,", severance: "מהמעסיק לתגמולים, ועוד", wage: "מהמעסיק לפיצויים, על שכר של עד", after: "בחודש (השכר הממוצע במשק). בהסכם העבודה אפשר שיהיה יותר." },
+    ratesLine: { before: "ההפקדות הן המינימום לפי צו ההרחבה:", middle: "מכם,", severance: "מהמעסיק לתגמולים, ועוד", wage: "מהמעסיק לפיצויים, על שכר של עד", after: "בחודש (השכר הממוצע במשק). בהסכם העבודה שיעורי ההפקדה יכולים להיות גבוהים יותר." },
     creditLine: { before: "על ההפקדה שלכם מגיע", term: "זיכוי ממס", middle: "של", after: "מהסכום המזכה, עד תקרה שנגזרת מההכנסה." },
-    beneficiary: { before: "אתם נחשבים", term: "עמית מוטב", middle: "ההפקדות שלכם ושל המעסיק יחד עוברות את הסף של", after: "בשנה, ולכן הזיכוי מחושב לפי הכללים שלו." },
-    insuranceNote: "בקרן פנסיה חלק מההפקדה משלם ביטוח למקרה מוות או נכות. עלותו תלויה בגיל ובכיסוי.",
+    beneficiary: { before: "אתם נחשבים", term: "עמית מוטב", middle: "ההפקדות שלכם ושל המעסיק יחד עוברות את הסף של", after: "בשנה, ולכן הזיכוי מחושב לפי הכללים לעמית מוטב." },
+    insuranceNote: "בקרן פנסיה חלק מההפקדה משלם ביטוח למקרה מוות או נכות. דמי הביטוח תלויים בגיל ובכיסוי.",
     noInsurance: "בתגמולים ואישית לפיצויים אין ביטוח משותף: ההפקדה, אחרי דמי הניהול, נכנסת כולה לחיסכון.",
-    feesLine: { before: "דמי הניהול הם הממוצע שנגבה בפועל במסלול", balance: "בשנה מהחיסכון", deposit: "ועוד", ofDeposit: "מההפקדות", after: "בפנסיה הנתון הוא של הקרן כולה ולא של המסלול." },
+    feesLine: { before: "דמי הניהול הם הממוצע שנגבה בפועל במסלול", balance: "בשנה מהחיסכון", deposit: "ועוד", ofDeposit: "מההפקדה", after: "בפנסיה הנתון הוא של הקרן כולה ולא של המסלול." },
     none: { pension: "קצבת זקנה", fund: "קרן פנסיה", after: "מתחילה לא לפני גיל" },
     todayMoney: "הסכומים בכסף של היום.",
     inputNames: { avgWage: "השכר הממוצע במשק", employee: "שיעור ההפקדה של העובד", employer: "שיעור ההפקדה של המעסיק לתגמולים", severance: "שיעור ההפקדה של המעסיק לפיצויים", credit: "שיעור הזיכוי", threshold: "סף ההפקדות לעמית מוטב", depositFee: "דמי הניהול מההפקדה" },
@@ -2750,7 +2750,7 @@ export const guideSignature = {
       relief: "הזיכוי ממס על ההפקדה של העובד, מחולק לחודשים",
       net: "ההפקדה של העובד פחות הזיכוי ממס",
       depositFee: "דמי הניהול מההפקדה, באחוז הממוצע שדווח, מסך ההפקדות החודשי",
-      insurance: "עלות הביטוח: האחוז שהזנתם מסך ההפקדות החודשי",
+      insurance: "דמי הביטוח בקרן הפנסיה: האחוז שהזנתם מסך ההפקדות החודשי",
       balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח, בכסף של היום ולפני שהקרן הופכת אותו לקצבה",
     },
   },
@@ -2759,7 +2759,7 @@ export const guideSignature = {
 /** The "worth knowing" block on each wrapper guide page (synthesis §3.7). */
 export const guideWorth = {
   title: "שווה לדעת",
-  line: "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם המקור שלה.",
+  line: "עובדות על המוצר הזה שלא כולם מכירים, כל אחת עם המקור שלה.",
   /** before a figure that is a legal cap (its name holds "cap"), so a cap never reads as the rate charged */
   upTo: "עד",
 } as const;
@@ -3040,16 +3040,16 @@ export const invest = {
     accountsCond: "מסודרים לפי מה שכל חשבון גובה, בסוג הקרן שהכי זול לקנות בו",
     accountsHint: "בחרו חשבון כדי לראות את התעריפון שלו",
     fundTitle: "עוד לא נבחרה קרן",
-    fundWhy: "בלי רשומת קרן האתר לא מנחש דמי ניהול.",
+    fundWhy: "בלי קרן שנבחרה, האתר לא מנחש דמי ניהול.",
     none: "אין עדיין קרנות ברשימה.",
     unpriced: "הקרנות שהוספתם, בלי מחיר:",
-    mayaLead: "את דמי הניהול של קרן אפשר למצוא במאיה.",
+    mayaLead: "את דמי הניהול של קרן אפשר למצוא במאיה, מערכת ההודעות של הבורסה.",
   },
 
   /** An account on your own terms, started from a house (F-101): what the sheets of its computed figures call them. The panel's own words come with the panel. */
   ownAccount: {
     placeAbout: (of: number) => `המקום בין ${of} חשבונות, לפי מה שנשאר בסוף`,
-    differenceAbout: "מה שנשאר בחשבון שלכם פחות מה שנשאר בחשבון לפי התעריפון של אותו בית, באותה קרן",
+    differenceAbout: "מה שנשאר בחשבון שלכם פחות מה שנשאר בחשבון לפי התעריפון של אותו בנק או בית השקעות, באותה קרן",
     decidingAbout: (line: string) => `ההפרש בין התעריפון לחשבון שלכם: ${line}`,
     /** The link on a house's page; in the comparison the chosen account's card opens it (`pair.ownPrice`). */
     open: (house: string) => `חשבון בתנאים שלכם, על בסיס ${house}`,
@@ -3063,7 +3063,7 @@ export const invest = {
       noWay: (house: string) => `ל${house} אין מחיר לקרן במדד הזה, ולכן אי אפשר לחשב חשבון על בסיסו כאן.`,
       computing: "מחשב…",
       tileLeft: (years: number) => `נשאר אחרי ${years === 1 ? "שנה אחת" : years === 2 ? "שנתיים" : `${years} שנים`}`,
-      tileLeftNote: "בכסף של היום, אחרי דמי ניהול ומס",
+      tileLeftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
       tilePlace: "המקום בהשוואה",
       tilePlaceValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
       tilePlaceNote: "לפי מה שנשאר בסוף",
@@ -3095,9 +3095,9 @@ export const invest = {
       field: {
         tradePct: "קנייה ומכירה, אחוז",
         tradeMin: "קנייה ומכירה, מינימום לפעולה",
-        custodyPct: "דמי משמרת, אחוז לשנה",
-        custodyMin: "דמי משמרת, מינימום לחודש",
-        monthlyFee: "דמי ניהול חשבון, ₪ לחודש",
+        custodyPct: "דמי ניהול פיקדון ניירות ערך, אחוז לשנה",
+        custodyMin: "דמי ניהול פיקדון ניירות ערך, מינימום לחודש",
+        monthlyFee: "דמי ניהול חשבון ניירות ערך, ₪ לחודש",
         fxPct: "המרת מטבע, אחוז",
         placeholder: "בלי שינוי",
       },
@@ -3280,7 +3280,7 @@ export const invest = {
         yTitle: "נשאר בסוף (₪)",
         choices: "השינוי שמוצג",
         cols: ["המספר", "בתוכנית שלכם", "אחרי השינוי", "נשאר לכם בסוף", "ההפרש"],
-        foot: "בכסף של היום, אחרי דמי ניהול ומס, בחשבון ובקרן שהעמוד מחשב למעלה.",
+        foot: "בכסף של היום, אחרי דמי ניהול, עמלות ומס, בחשבון ובקרן שהעמוד מחשב למעלה.",
         aboutTo: "המספר אחרי השינוי",
         aboutLeft: "מה יישאר בסוף אחרי השינוי",
         aboutDiff: "ההפרש ממה שיישאר לפי התוכנית שלכם",
@@ -3374,7 +3374,7 @@ export const invest = {
     /** Before any pick, the next pair is set against the cheapest one, never against "your choice". */
     vsCheapest: "לעומת הזוג הזול ביותר",
     /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule, and says why it is not ranked. */
-    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג כי כלל המס פתוח",
+    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג כי המס תלוי בשאלה פתוחה",
     /** Every pair within the site's tie threshold of the top (P-01, F-80): none is crowned, and the count is said; with the
      *  funds they hold where fewer, the count the fund list's "אחת מ־3 הקרנות השקולות" makes ("אחד מ־5 הזוגות" beside "מ־3"). */
     tieTop: (n: number, funds = n) =>
@@ -3396,7 +3396,7 @@ export const invest = {
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
-    pickCheapest: "בחרו את הזוג הזה",
+    pickCheapest: "לבחור בזוג הזה",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
     lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
     /** The legend's item for the account's own fee and a bank's current account (D64), which share its colour ("דמי ניהול חשבון" alone read as either). */
@@ -3452,7 +3452,7 @@ export const invest = {
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.",
     /** F-109 (D94): the same part where the house buys the fund in whole units: it also holds what the cash waiting for a unit did not earn */
     remainderUnits: "תוספת משילוב העמלות ומכסף שמחכה",
-    remainderUnitsAbout: "כאן קונים רק יחידות שלמות, ומה שלא מגיע ליחידה מחכה בחשבון בלי ריבית. מה שהכסף הזה לא הרוויח נמצא בחלק הזה, יחד עם מה שלא שייך לעמלה אחת.",
+    remainderUnitsAbout: "בחשבון הזה קונים רק יחידות שלמות, ומה שלא מגיע ליחידה מחכה בחשבון בלי ריבית. מה שהכסף הזה לא הרוויח נמצא בחלק הזה, יחד עם מה שלא שייך לעמלה אחת.",
     /** F-109 (D94): one line on a row whose house buys the fund in whole units, where a monthly deposit buys no unit in most months, or in some */
     unitsEvery: "יחידה עולה יותר מההפקדה החודשית: קונים פעם בכמה חודשים, ובינתיים הכסף מחכה בחשבון בלי ריבית.",
     unitsSome: "קונים רק יחידות שלמות: בחודש שההפקדה לא מגיעה ליחידה, הכסף מחכה בחשבון בלי ריבית.",
@@ -3589,7 +3589,7 @@ export const invest = {
     heading: (house: string) => `הקרנות על המדד, בחשבון ${/^[A-Za-z]/.test(house) ? "ב־" : "ב"}${house}`,
     pick: "הקרנות על המדד",
     house: "חשבון ניירות ערך",
-    manager: "מנהלת הקרן",
+    manager: "מנהל הקרן",
     rank: "מקום",
     name: "קרן",
     fees: "דמי הניהול שלה",
@@ -3619,10 +3619,10 @@ export const invest = {
               : null,
         unstated > 0
           ? kind
-            ? "״לא מושווה״: אין מסמך רשמי שאומר איך המדד של הקרן סופר את הדיבידנדים, ולכן הפער שלה לא מוצג."
+            ? "״לא מושווה״: האתר לא מצא מסמך רשמי שאומר איך המדד של הקרן סופר את הדיבידנדים, ולכן הפער שלה לא מוצג."
             : unstated === funds
-              ? "אין מסמך רשמי שאומר איך המדד של הקרנות סופר את הדיבידנדים."
-              : `אצל ${unstated} מהקרנות אין מסמך רשמי שאומר איך המדד שלהן סופר את הדיבידנדים.`
+              ? "האתר לא מצא מסמך רשמי שאומר איך המדד של הקרנות סופר את הדיבידנדים."
+              : `אצל ${unstated} מהקרנות האתר לא מצא מסמך רשמי שאומר איך המדד שלהן סופר את הדיבידנדים.`
           : null,
         grossApart && kind ? "״לא מושווה״ ליד קרן על מדד ברוטו: המדד סופר את הדיבידנדים לפני המס על דיבידנדים, ופער מולו לא דומה לפער של שאר הקרנות ברשימה." : null,
         // "אין שנה מלאה" stood in the list with no word about it
@@ -3639,7 +3639,7 @@ export const invest = {
       [
         "ההפרש במה שנשאר בסוף, אחרי דמי הניהול, עמלות החשבון והמס.",
         gap ? "זה לא הפער מהמדד: בחישוב הזה, פיגור מעבר לדמי הניהול נוסף לעלות, והקדמה על המדד לא נספרת כרווח." : null,
-        steadyRate ? "הסכומים הם אם השער לא משתנה." : null,
+        steadyRate ? "הסכומים הם אם שער המטבע לא משתנה מול השקל." : null,
       ]
         .filter(Boolean)
         .join(" "),
@@ -3654,10 +3654,10 @@ export const invest = {
     number: "מספר נייר",
     sameAsBest: "אותו חשבון ניירות ערך",
     emptyHeading: "עוד לא נאספו קרנות על המדד הזה",
-    emptyBody: "בלי רשומת קרן האתר לא מנחש דמי ניהול. אפשר לבחור קרן במאיה לפי דמי הניהול שלה, או לבקש שהאתר יאסוף.",
+    emptyBody: "בלי קרן שנאספה, האתר לא מנחש דמי ניהול. אפשר לבחור קרן במאיה, מערכת ההודעות של הבורסה, לפי דמי הניהול שלה, או לבקש שהאתר יאסוף.",
     maya: "לחיפוש במאיה",
     mayaPage: "בדף הקרן במאיה",
-    request: "בקשו שנאסוף",
+    request: "לבקש שהאתר יאסוף",
     requestText: (index: string) => `אבקש שהאתר יאסוף קרנות על המדד ״${index}״.`,
     copied: "הועתק",
     noOption: "אין קרנות שנאספו שנקנות בחשבון הזה.",
@@ -3744,7 +3744,7 @@ export const invest = {
       none: "אין בחירה שמשאירה יותר מנקודת ההתחלה",
       about: "מה שהצעדים מוסיפים למה שנשאר בסוף",
     },
-    axisNote: "הגובה הוא מה שנשאר בסוף, אחרי מס, בכסף של היום. לחיצה על מדרגה לוקחת אותה, או חוזרת אליה אם כבר נלקחה.",
+    axisNote: "הגובה הוא מה שנשאר בסוף, אחרי דמי הניהול, העמלות והמס, בכסף של היום. לחיצה על מדרגה לוקחת אותה, או חוזרת אליה אם כבר נלקחה.",
     reset: "לחזור להתחלה",
     chartLabel: "מדרגות",
     now: "עכשיו",
@@ -3756,7 +3756,7 @@ export const invest = {
     resultEnd: "בסוף",
     /** The table's head over the result column. */
     result: (steps: number) => (steps === 0 ? "בסוף" : steps === 1 ? "אחרי הצעד" : `אחרי ${["", "", "שני", "שלושת", "ארבעת", "חמשת"][steps] ?? steps} הצעדים`),
-    lockLabel: "כלל מס פתוח",
+    lockLabel: "שאלת מס פתוחה",
     startPoint: "נקודת ההתחלה",
     lanes: {
       account: { word: "חשבון אחר", title: "חשבון אחר, אותה קרן", head: "החשבון" },
@@ -3789,9 +3789,9 @@ export const invest = {
     statusNone: "מכאן אין שינוי אחד שמשפר. עד הכי הרבה חסרים עוד",
     statusTogether: ", וכדי להגיע אליו צריך לשנות כמה דברים יחד.",
     jump: "לעבור אל",
-    openNote: "עם כלל מס פתוח מופיע גם",
+    openNote: "עם שאלת מס פתוחה מופיע גם",
     legendNext: "הצעד הכי גדול שנשאר, עוד לא נלקח",
-    legendOpen: "נשען על כלל מס פתוח: מוצג ולא מדורג",
+    legendOpen: "נשען על שאלת מס פתוחה: מוצג, לא מדורג",
     about: { left: "מה שנשאר בסוף", versus: "ההפרש מההחזקה שבה עומדים", cost: "ההפרש בעלות", ceilingGap: "מה שחסר עד הכי הרבה" },
   },
 
@@ -3915,7 +3915,7 @@ export const invest = {
   labels: {
     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בעסקאות, ועל מדד ישראלי היא מחזיקה את המניות." },
     "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },
-    "held-abroad": { text: "נקנית בחו״ל", explain: "הקרן נקנית בבורסה בחו״ל, דרך בנק או בית השקעות שמוכרים ניירות ערך זרים. הרשות לניירות ערך לא מפקחת עליה." },
+    "held-abroad": { text: "נקנית בחו״ל", explain: "הקרן נקנית בבורסה בחו״ל, דרך בנק או בית השקעות שמוכרים ניירות ערך זרים. רשות ניירות ערך לא מפקחת עליה." },
     "trade-etf": { text: "קרן סל", explain: "קרן סל נסחרת בבורסה כל יום המסחר, במחיר שמשתנה במהלך היום." },
     "trade-tracking": { text: "קרן מחקה", explain: "קרן מחקה נקנית ונפדית במחיר היחידה אחת ביום, דרך הבנק או בית ההשקעות, לא בבורסה." },
     "follow-physical": { text: "מחזיקה את המניות", explain: "הקרן קונה את המניות שבמדד עצמן. כך עוקבות בדרך כלל קרנות על מדדים מקומיים." },
@@ -3927,8 +3927,8 @@ export const invest = {
     "hedged-many": { text: (ccy: string) => `מנוטרלת ${ccy}`, explain: (ccy: string) => `הקרן מנטרלת את שער ה${ccy} מול השקל, ורק אותו. המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות, ולכן המטבעות האחרים שבמדד עדיין משנים את ערכה, מול ה${ccy}. הנטרול עולה כסף: הוא נראה בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
     "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
-    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "בקרן ישראלית המס נמדד על הרווח הריאלי ביחידות השקליות, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
-    "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ואינו מזוכה בישראל." },
+    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "בקרן ישראלית מס רווחי הון נמדד על הרווח הריאלי ביחידות השקליות, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
+    "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ולא מזוכה בישראל." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
@@ -3936,8 +3936,8 @@ export const invest = {
     "tax-on-sale-ruling": { text: "אין מס בצבירה", explain: "הקרן מדווחת בנספח לתשקיף הישראלי שלה שקיבלה החלטת מיסוי מרשות המסים: יחיד משלם מס רק כשהוא מוכר יחידות או כשהקרן מחלקת רווחים, ולא על מה שהקרן צוברת. ההחלטה עצמה לא פורסמה, ולכן המקור הוא מסמך הקרן. לפי ההחלטה הזאת הקרן מדורגת." },
     "ask-self-report": { text: "דיווח עצמי למס", explain: "ברוקר זר לא מנכה מס בישראל במכירה, ולכן מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי. בבנק או אצל חבר בורסה בישראל המס מנוכה במכירה, וגם קרן זרה לא מחייבת דיווח." },
     "ask-tax-service": { text: "ניכוי מס בשירות נוסף", explain: "החברה מציעה שירות שמנכה מס ישראלי בחשבון, למי שמצטרף אליו. מי שלא מצטרף מדווח על הרווח בעצמו, משלם מקדמה פעמיים בשנה ומגיש דוח שנתי." },
-    "ask-estate": { text: "מס עיזבון אמריקאי", explain: "מי שאינו אמריקאי ומחזיק נכסים אמריקניים מעל סף הנקוב בדולרים עלול להיות חייב בדוח מס ירושה אמריקני. קרן שמאוגדת בארצות הברית היא נכס אמריקני." },
-    "risk-unsupervised": { text: "לא בפיקוח רשות ני״ע", explain: "בית ההשקעות פועל בישראל בהיתר, והרשות לניירות ערך לא מפקחת עליו. חשבונות הלקוחות נפתחים אצל גוף זר." },
+    "ask-estate": { text: "מס עיזבון אמריקאי", explain: "מי שלא אמריקאי ומחזיק נכסים אמריקניים מעל סף הנקוב בדולרים עלול להיות חייב בדוח מס עיזבון אמריקני. קרן שמאוגדת בארצות הברית היא נכס אמריקני." },
+    "risk-unsupervised": { text: "לא בפיקוח רשות ני״ע", explain: "בית ההשקעות פועל בישראל בהיתר, ורשות ניירות ערך לא מפקחת עליו. חשבונות הלקוחות נפתחים אצל גוף זר." },
     "ask-w8": { text: "צריך טופס W-8BEN", explain: "לקרן אמריקנית צריך למסור לבנק או לבית ההשקעות טופס W-8BEN. בלי הטופס הניכוי האמריקני עלול להיות גבוה יותר." },
     unavailable: { text: "לא זמין בחשבון הזה", explain: "לפי מה שבית ההשקעות מפרסם, הוא לא מוכר את הסוג הזה ללקוחות פרטיים." },
   },

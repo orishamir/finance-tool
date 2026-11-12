@@ -60,11 +60,12 @@
       "value": 1.13,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://www.msci.com/documents/10199/1e6851ab-03b8-4504-b9f3-b8cb91509ede",
+        "url": "https://www.msci.com/documents/10199/1e6851ab-03b8-4504-b9f3-b8cb91509ede#page=1",
         "title": "MSCI USA Index (USD), Fundamentals (Oct 30, 2026), Div Yld (%)",
         "publisher": "MSCI",
         "strength": "institution",
-        "page": 1
+        "page": 1,
+        "quote": "MSCI USA -1.03 1.12 10.33 10.53 21.90 10.04 13.55 9.28 1.13"
       },
       "checked": "2026-11-09",
       "effective_from": "2026-10-30",
@@ -77,11 +78,12 @@
       "value": 64.63,
       "unit": "pct",
       "source": {
-        "url": "https://www.msci.com/documents/10199/8d97d244-4685-4200-a24c-3e2942e3adeb",
+        "url": "https://www.msci.com/documents/10199/8d97d244-4685-4200-a24c-3e2942e3adeb#page=2",
         "title": "MSCI ACWI Index (USD), Country weights (Oct 30, 2026): United States",
         "publisher": "MSCI",
         "strength": "institution",
-        "page": 2
+        "page": 2,
+        "quote": "United States 64.63%"
       },
       "checked": "2026-11-09",
       "effective_from": "2026-10-30",

@@ -110,8 +110,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2246",
-      "locator_he": "עמוד 2246",
+      "locator": "file p.2 (gazette p.2246)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 2246)",
+      "page": 2,
       "quote": "בוצעו 0 עד 2 פעולות בחודש – עד חמישה שקלים חדשים",
       "checked": "2026-10-26"
     },
@@ -123,9 +124,10 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2247",
-      "locator_he": "עמוד 2247",
-      "quote": "ו״אדם עם מוגבלות",
+      "locator": "file p.3 (gazette p.2247)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 2247)",
+      "page": 3,
+      "quote": "ההגדרות ״מסלול״, ״מסלול בסיסי״, ״מסלול מורחב״, ״מסלול מורחב פלוס״ ו״אדם עם מוגבלות״ – בטלות",
       "checked": "2026-10-26"
     }
   ]

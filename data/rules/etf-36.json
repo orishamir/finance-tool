@@ -109,9 +109,9 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "pp.7, 15 to 17, 20 to 21, ss.8 to 9",
-      "locator_he": "עמודים 7, 15 עד 17, 20 עד 21, סעיפים 8 עד 9",
-      "page": 7,
+      "locator": "pp.7, 15 to 17, 20 to 21, ss.8 to 9; p.21",
+      "locator_he": "עמודים 7, 15 עד 17, 20 עד 21, סעיפים 8 עד 9; עמוד 21",
+      "page": 21,
       "quote": "קביעת מקדם הנזילות",
       "checked": "2026-10-26",
       "qualifier": "(exchange rules, ISA-approved)"

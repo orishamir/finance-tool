@@ -40,6 +40,7 @@
       "locator": "p.9, s.4.2.3",
       "locator_he": "עמוד 9, סעיף 4.2.3",
       "page": 9,
+      "quote": "any transaction in relation to, or in respect of, units which are held in a recognised clearing system does not require the deduction of exit tax",
       "checked": "2026-10-26",
       "qualifier": "(foreign tax authority)"
     },
@@ -54,6 +55,7 @@
       "locator": "p.11, s.4.2.8",
       "locator_he": "עמוד 11, סעיף 4.2.8",
       "page": 11,
+      "quote": "Exit tax is not required to be deducted in respect of the following non-resident unit holders provided that the fund is in possession of an appropriate non-resident declaration prior to the chargeable event",
       "checked": "2026-10-26",
       "qualifier": "(foreign tax authority)"
     }

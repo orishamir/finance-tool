@@ -96,6 +96,20 @@
       "checked": "2026-10-26"
     },
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.1",
+      "locator_he": "עמוד 5, סעיף 1",
+      "page": 5,
+      "quote": "גיל פרישה מוקדמת כמשמעותו בחוק גיל פרישה",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
       "title": "חוק גיל פרישה, התשס\"ד-2004",
       "title_he": "חוק גיל פרישה, התשס\"ד-2004",
@@ -135,20 +149,6 @@
       "page": 172,
       "quote": "לגבר וגיל 65 לאישה",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.5, s.1",
-      "locator_he": "עמוד 5, סעיף 1",
-      "page": 5,
-      "quote": "גיל פרישה מוקדמת כמשמעותו בחוק גיל פרישה",
-      "checked": "2026-10-26"
     }
   ]
 }

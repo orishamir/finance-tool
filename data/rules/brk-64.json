@@ -26,6 +26,7 @@
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "At this moment we do not offer trading on Tel Aviv Exchange (TASE) to retail clients who are a resident of Israel.",
       "checked": "2026-11-12"
     },
     {
@@ -35,6 +36,7 @@
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "Use our Mutual Fund Inventory Search Tool to identify funds by country of your residence, commission charged, fund type or fund family.",
       "checked": "2026-11-12"
     },
     {
@@ -44,6 +46,7 @@
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
+      "quote": "IBKR institutional clients globally and retail clients outside of Israel can use their account to trade stocks on the Tel Aviv Stock Exchange",
       "checked": "2026-11-12"
     }
   ]

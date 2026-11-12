@@ -42,20 +42,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
-      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
-      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.1070), s.1(1), s.74ב(א)(2א) (in force 1.1.2025)",
-      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(1), סעיף 74ב(א)(2א)",
-      "page": 2,
-      "quote": "בחירה כאמור תיעשה פעם אחת בלבד",
-      "checked": "2026-11-07"
-    },
-    {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
       "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
@@ -77,6 +63,20 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4690532.pdf",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 247), התשפ\"ד-2024, ספר החוקים 3246 (16.7.2024)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.1070), s.1(1), s.74ב(א)(2א)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 1070), סעיף 1(1), סעיף 74ב(א)(2א)",
+      "page": 2,
+      "quote": "בחירה כאמור תיעשה פעם אחת בלבד",
+      "checked": "2026-11-07"
     }
   ]
 }
