@@ -83,7 +83,8 @@ export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   // a whole amount never shows agorot: "10 ₪", not "10.00 ₪"
   nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
-  nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
+  /** `1,234 ₪`, whole shekels. `isolate`: wrapped in a left-to-right isolate, for an amount inside Hebrew text with no element of its own (none by default). */
+  nisWhole: (v: number, { isolate = false }: SignedOptions = {}) => isolated(withMinus(plainMarks(currencyWhole.format(v))), { isolate }),
   /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (until then a bare "2"). */
   usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
   /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
@@ -145,6 +146,11 @@ export const fmt = {
    * decimals (`signedPct(3, 1)` is `+3.0%`); without it, the decimals `pct` shows.
    */
   signedPct: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
+  /**
+   * A percent without its sign, for a sentence whose words already say up or down: `18.5%` for 18.5 and for −18.5. `digits`: exactly that
+   * many decimals; without it, the decimals `pct` shows. Isolated left to right as the signed figures are (`isolate`, the default).
+   */
+  unsignedPct: (v: number, digits?: number, options: SignedOptions = {}) => isolated(digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
   /** A plain number with its sign (`signed`): `+2`, `−18.5`. `digits`: exactly that many decimals; without it, up to two, as `number`. */
   signedNumber: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? plain.format(Math.abs(v)) : fixed(digits, "decimal").format(Math.abs(v)), options),
   /** Hebrew year forms (copy.md §1): שנה, שנתיים, {n} שנים; and the month forms. */
@@ -152,11 +158,14 @@ export const fmt = {
   months: (n: number) => countPhrase(n, numbers.monthWords),
 };
 
-/** How a signed figure is written: `isolate` (the default) wraps it in a left-to-right isolate, for a figure inside Hebrew text. */
+/** How a figure is written: `isolate` wraps it in a left-to-right isolate, for a figure inside Hebrew text (the default for a signed one). */
 export interface SignedOptions {
   /** False for a figure that is already its own left-to-right element: a chart tick, a `<bdi dir="ltr">`. */
   isolate?: boolean;
 }
+
+/** A figure's text in a left-to-right isolate (U+2066 … U+2069), unless `isolate` is false. */
+const isolated = (text: string, { isolate = true }: SignedOptions): string => (isolate ? `\u2066${text}\u2069` : text);
 
 /**
  * A figure with its sign, from its text without one (`abs`): "+" before a positive, the true minus sign U+2212 before a negative, and
@@ -164,9 +173,9 @@ export interface SignedOptions {
  * by default, so the sign stays on the left of the digits inside Hebrew: a sign is weak in the bidi algorithm and, left to the
  * sentence, lands on their right ("2%−").
  */
-function signed(v: number, abs: string, { isolate = true }: SignedOptions): string {
+function signed(v: number, abs: string, options: SignedOptions): string {
   const sign = !/[1-9]/.test(abs) ? "" : v > 0 ? "+" : "−";
-  return isolate ? `⁦${sign}${abs}⁩` : `${sign}${abs}`;
+  return isolated(`${sign}${abs}`, options);
 }
 
 /** A number or a percent with exactly `digits` decimals, one formatter per kind and count of decimals. */
