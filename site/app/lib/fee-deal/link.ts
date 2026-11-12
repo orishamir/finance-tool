@@ -8,10 +8,8 @@ import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
 
-export type SubjectSpec = { kind: "wrapper"; wrapperId: string } | { kind: "track"; trackId: number };
-
 /** The product or the track the address names (`?wrapper=`, `?track=`), or null. */
-export function parseSubject(search: string): SubjectSpec | null {
+export function parseSubject(search: string): { kind: "wrapper"; wrapperId: string } | { kind: "track"; trackId: number } | null {
   const q = new URLSearchParams(search);
   const wrapper = q.get("wrapper");
   const track = q.get("track");

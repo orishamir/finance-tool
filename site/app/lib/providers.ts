@@ -246,7 +246,6 @@ export interface WorkbenchInputs {
   income: number | null;
   /** The value objects the chips and the sheet show (the goal's, or the scenario's as site parameters). */
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue };
-  fromGoal: boolean;
   returnFromParameter: boolean;
   /**
    * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the

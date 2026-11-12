@@ -74,7 +74,7 @@ function resetShown({ value, isEntered, start, optional, disabled }: Pick<FieldP
  * hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing moves when it comes or goes; its tap
  * area reaches 44 px past its small text.
  */
-export function ResetToStart({ shown, start, unit, onReset, describedBy, className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; className?: string }) {
+function ResetToStart({ shown, start, unit, onReset, describedBy, className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; className?: string }) {
   return (
     <button
       type="button"

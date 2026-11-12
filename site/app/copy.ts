@@ -10,8 +10,6 @@ export const site = {
   close: "סגירה",
   /** The sign at a sheet's bottom edge while more of it lies below (a still shot's fade alone read as content cut off). */
   moreBelow: "יש עוד למטה",
-  /** the name of a page's row of links at its foot */
-  linksAria: "קישורים",
   back: "חזרה",
   currentPage: "העמוד הנוכחי",
   menuItems: [
@@ -1272,15 +1270,12 @@ export const r2 = {
   realLabel: "נשאר לכם במועד המטרה, בכסף של היום",
 
   form: {
-    age: "גיל",
     errYears: "הזינו לפחות שנה אחת.",
     errYearsWhole: "הזינו מספר שלם של שנים.",
   },
 
   result: {
     tieMid: "שקולות למטרה הזו: ההפרש ביניהן",
-    suggestion: "הצעה מהבדיקה",
-    adopt: "לאמץ",
     // A8: a deposit whose published rate was read for another amount
     ownRate: { about: "ריבית שהזנתם", chip: "ריבית שהזנתם" },
   },
@@ -4126,8 +4121,6 @@ export const invest = {
  *  beside an account in the indices page's list. */
 export const leftOut = {
   lead: "לא נכלל במחיר:",
-  /** Where the prices above are not one house's alone (LeftOutLine's `named`). */
-  leadOf: (house: string) => `לא נכלל במחירים ${inName(house)}:`,
   /** The line's tappable words: what can change what some customers pay, or, where the record marks nothing so, how many things it leaves out. */
   canChange: (n: number) => (n === 1 ? "דבר אחד שיכול לשנות אותו" : `${n} דברים שיכולים לשנות אותו`),
   some: (n: number) => (n === 1 ? "דבר אחד מהמסמכים" : `${n} דברים מהמסמכים`),

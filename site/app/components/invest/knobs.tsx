@@ -17,7 +17,7 @@ import { Num, ShortRow, shortRow } from "../provenance";
 import { ChangeChart, KnobStrip, NumberField, PanelHead, percentCheck, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number };
-export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
+type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
 type Id = "amount" | "monthly" | "years" | "ret";
 type Pair = { house: string; fund: string } | null;
 /** Each knob: its plan field, its range, and how its slider reads the plan (a return is a fraction in the plan, percent on the slider). */

@@ -68,7 +68,7 @@ describe("on the collected price lists", () => {
   const plan: WorkbenchInputs = {
     amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
     values: { amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-    fromGoal: true, returnFromParameter: false, currentAccounts: { own: null },
+    returnFromParameter: false, currentAccounts: { own: null },
   };
   const index = indexById(bundle, "index-sp500")!;
   const view = buildInvest({ bundle, index, plan });

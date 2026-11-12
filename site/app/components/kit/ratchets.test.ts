@@ -262,8 +262,8 @@ for (const { name, p, read } of runs) {
 }
 
 describe("no field painted in the edge colour", () => {
-  // --input is the edge token (borders); a field's background is --card (.field-box). The index page's account select and a
-  // textarea on the fees page rendered light grey with bg-input.
+  // --input is the edge token (borders); a field's background is --card (.field-box). A field painted with bg-input renders light
+  // grey, unlike every other field.
   it("bg-input is not used", () => {
     const hits = walk(root).filter((f) => f.endsWith(".tsx") && /\bbg-input\b/.test(code(readFileSync(f, "utf8")))).map(rel);
     expect(hits).toEqual([]);

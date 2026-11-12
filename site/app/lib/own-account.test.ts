@@ -618,7 +618,6 @@ describe("what the panel shows", () => {
     age: null,
     income: null,
     values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-    fromGoal: false,
     returnFromParameter: false,
   };
   const index = indexById(bundle, "index-ta125")!;

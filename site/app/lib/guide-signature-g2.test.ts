@@ -157,7 +157,7 @@ describe("the guides' securities-account range and the indices page", () => {
   const bundle = buildIndicesBundle();
   const t = bundle.today;
   const money = (n: number) => enteredValue(n, "nis", t);
-  const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) }, fromGoal: false, returnFromParameter: false };
+  const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) }, returnFromParameter: false };
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === "5139282" && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
   it("keren-hishtalmut: counts the same houses and names the same pick", () => {

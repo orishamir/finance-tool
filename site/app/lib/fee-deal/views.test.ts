@@ -42,6 +42,23 @@ const provident = (): FeeDeal => ({
 
 const v = (x: SiteValue | null | undefined) => x?.value as number;
 
+describe("the page's data", () => {
+  it("ships the record of every rule its figures and caps cite, and no other", () => {
+    const cited = new Set<string>();
+    const walk = (x: unknown): void => {
+      if (Array.isArray(x)) x.forEach(walk);
+      else if (x && typeof x === "object")
+        for (const [k, v] of Object.entries(x)) {
+          if ((k === "rule_ids" || k === "ruleIds") && Array.isArray(v)) v.forEach((id) => cited.add(id as string));
+          else walk(v);
+        }
+    };
+    walk([data.kinds, data.templates, data.houses, data.fx]);
+    expect(cited.size).toBeGreaterThan(0);
+    expect(data.rules.map((r) => r.id).sort()).toEqual([...cited].sort());
+  });
+});
+
 describe("the kinds a deal can be", () => {
   it("lists every product record with fee bases, its caps with whom they bind", () => {
     const ids = kinds.map((k) => k.id);

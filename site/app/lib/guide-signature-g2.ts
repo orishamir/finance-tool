@@ -99,7 +99,7 @@ export function hishtalmutTerms(bundle: Bundle, c: { employment: Employment; inc
 }
 
 /** The bundle's terms with the balance fee of another track (percent a year) for the whole run, its discount gone (A-19); the rest as it was. */
-export function withBalanceFee(terms: InstrumentTerms, feePct: number): InstrumentTerms {
+function withBalanceFee(terms: InstrumentTerms, feePct: number): InstrumentTerms {
   return terms.fees ? { ...terms, fees: withFee(terms.fees, "balance", feePct / 100) } : terms;
 }
 

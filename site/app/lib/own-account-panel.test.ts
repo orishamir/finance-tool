@@ -18,7 +18,7 @@ const OFFER = points.find((p) => p.nameHe === "לאומי סטודנט, בפתי
 const plan: WorkbenchInputs = {
   amountNow: 6000, monthly: 400, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  fromGoal: false, returnFromParameter: false,
+  returnFromParameter: false,
 };
 
 const layersFor = (adopt: boolean, untilYears: number | null) => {
