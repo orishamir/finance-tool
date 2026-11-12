@@ -1865,7 +1865,7 @@ export const feeDeal = {
     otherForm: "המחיר הוזן בצורה שהתקרה לא מודדת, ולכן הוא לא נבדק מולה.",
     notSourced: "לתקרה אין מקור שנבדק, ולכן המחיר לא נבדק מולה.",
     /** Whom a cap binds where it binds some providers only (its record's `binds`), and why the price is then not judged. */
-    binds: { banks: "התקרה חלה רק על בנקים.", banks_and_fund_distributors: "התקרה חלה על בנקים, ועל מי שמפיץ את הקרן, לא משווק השקעות ויש לו הסכם הפצה עם הקרן." } as Record<string, string>,
+    binds: { banks: "התקרה חלה רק על בנקים.", banks_and_fund_distributors: "התקרה חלה על בנקים, ועל מפיץ של הקרן שהוא לא משווק השקעות ויש לו הסכם הפצה עם הקרן." } as Record<string, string>,
     bindsUnjudged: " העסקה לא אומרת שהיא בבנק, ולכן המחיר לא נבדק מולה.",
     /**
      * A cap that holds only in a case the deal does not state (its record's `caveat`, F-113): what it says, after the cap's figure, or after
