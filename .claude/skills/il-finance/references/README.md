@@ -99,7 +99,10 @@ edit; a record edited by hand no longer matches its block.
 - **After editing blocks**, write only their records:
   `npm run extract:sources -w @finance-tool/pipeline -- --only=KGL-12,MF-25`.
   Every other record stays as it is. `-- --drift` lists the records that
-  differ from what their blocks give today.
+  differ from what their blocks give today. The check fails while any
+  record differs (`packages/pipeline/test/records-match-blocks.test.ts`),
+  so a change to the registry of publishers and documents, or to the
+  extraction itself, is followed by writing the records it touches.
 - **Dates.** A source with no `checked` date of its own takes the next date
   after it on the line: the trailer `· checked YYYY-MM-DD · strength` closes
   the run of links before it. Give a source its own date when it was read

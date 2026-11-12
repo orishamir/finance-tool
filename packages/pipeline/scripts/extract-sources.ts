@@ -631,12 +631,27 @@ const titleKey = (t: string): string =>
     .replace(/[\s,;:.]+$/, "")
     .trim() || t;
 
-function main() {
-  const root = fileURLToPath(new URL("../../../", import.meta.url));
-  const drift = process.argv.includes("--drift");
-  const dry = process.argv.includes("--dry") || drift;
-  const onlyArg = process.argv.find((a) => a.startsWith("--only="));
-  const only = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean)) : undefined;
+/** What one pass over the records gives: the ids whose record differs from what its block gives, and the report's figures. */
+export interface ExtractionRun {
+  /** The ids of the records whose text differs from what the extraction writes from their block today. */
+  drifted: string[];
+  /** How many records there are. */
+  records: number;
+  /** The ids named by `only` that have no record. */
+  unknownOnly: string[];
+  rep: Report;
+  tables: { publishers: boolean; documents: boolean };
+  scopeCounts: Record<string, number>;
+  scopeProblems: string[];
+}
+
+/**
+ * One pass over every rule record under `root`: what its block's Source and Scope lines give, set against the record. With `write`,
+ * a record that differs is written (only those of `only`, when given); without it nothing is written, which is how the data check
+ * asks whether any record has drifted from its block (`records-match-blocks.test.ts`).
+ */
+export function extractAll(root: string, opts: { write?: boolean; only?: Set<string> } = {}): ExtractionRun {
+  const { write = false, only } = opts;
   const drifted: string[] = [];
   const rulesDir = join(root, "data/rules");
   const base = readRuleBaseIds(join(root, ".claude/skills/il-finance/references"));
@@ -740,15 +755,25 @@ function main() {
     }
     const out = writeKeys(text, add);
     if (out !== text) drifted.push(rec.id);
-    if (!dry && out !== text && (!only || only.has(rec.id))) writeFileSync(path, out);
+    if (write && out !== text && (!only || only.has(rec.id))) writeFileSync(path, out);
   }
-  if (only) for (const id of only) if (!known.has(id)) console.error(`--only: no record for ${id}`);
+  return { drifted, records: files.length, unknownOnly: only ? [...only].filter((id) => !known.has(id)) : [], rep, tables: { publishers: !!publishers, documents: !!documents }, scopeCounts, scopeProblems };
+}
+
+function main() {
+  const root = fileURLToPath(new URL("../../../", import.meta.url));
+  const drift = process.argv.includes("--drift");
+  const dry = process.argv.includes("--dry") || drift;
+  const onlyArg = process.argv.find((a) => a.startsWith("--only="));
+  const only = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean)) : undefined;
+  const { drifted, records, unknownOnly, rep, tables, scopeCounts, scopeProblems } = extractAll(root, { write: !dry, only });
+  for (const id of unknownOnly) console.error(`--only: no record for ${id}`);
   if (drift) {
-    console.log(`${drifted.length} of ${files.length} records differ from what their blocks give today${drifted.length ? `:\n${drifted.join(", ")}` : ""}`);
+    console.log(`${drifted.length} of ${records} records differ from what their blocks give today${drifted.length ? `:\n${drifted.join(", ")}` : ""}`);
     return;
   }
 
-  const md = renderReport(rep, { publishers: !!publishers, documents: !!documents });
+  const md = renderReport(rep, tables);
   console.log(md);
   console.log(`Scope: ${Object.entries(scopeCounts).map(([k, v]) => `${k} ${v}`).join(", ")}; problems ${scopeProblems.length}`);
   for (const p of scopeProblems) console.error(`scope: ${p}`);
