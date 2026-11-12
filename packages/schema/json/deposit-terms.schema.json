@@ -1499,9 +1499,25 @@
           "type": "boolean"
         },
         "every_months": {
-          "type": [
-            "number",
-            "null"
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "first_after_months": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
           ]
         }
       },

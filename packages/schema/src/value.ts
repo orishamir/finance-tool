@@ -157,6 +157,8 @@ export const feeBase = z.enum([
   "insurance_premium",
 ]);
 
+export type FeeBase = z.infer<typeof feeBase>;
+
 /**
  * data-schema §2, wrapper IDs (`data/instruments/wrappers/`): the containers whose rules apply to whatever they hold (D6).
  * Makam, government bonds and the money-market funds are securities held in a wrapper, not wrappers (`securityId`).

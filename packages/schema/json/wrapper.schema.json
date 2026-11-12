@@ -465,6 +465,12 @@
           "rationale_he": {
             "type": "string",
             "minLength": 1
+          },
+          "binds": {
+            "type": "string",
+            "enum": [
+              "banks"
+            ]
           }
         },
         "required": [
