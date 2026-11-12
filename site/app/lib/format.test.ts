@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countPhrase, fmt, formatValue, nisShown, parseNumber, readerRound, withMinus } from "./format";
+import { countPhrase, fmt, formatValue, nisShown, parseNumber, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -97,17 +97,6 @@ describe("source label (audit A21)", () => {
   });
 });
 
-describe("nearThreshold (F-62, 2026-10-24)", () => {
-  it("is true within 0.50 ₪ of a P-03 threshold, so two decimals are kept there", async () => {
-    const { nearThreshold, nisShown } = await import("./format");
-    expect(nisShown(2499.6, "computed")).toBe(nisShown(2500, "computed"));
-    expect(nearThreshold(2499.6, [1000, 2500])).toBe(true);
-    expect(nearThreshold(2499.5, [2500])).toBe(true);
-    expect(nearThreshold(2499.49, [2500])).toBe(false);
-    expect(nearThreshold(1800, [1000, 2500])).toBe(false);
-  });
-});
-
 describe("negative figures (polish 2026-10-24)", () => {
   it("uses the true minus sign, after a left-to-right mark, never an ASCII hyphen", () => {
     expect(fmt.pct(-2)).toBe("\u200e\u22122%");
@@ -132,28 +121,6 @@ describe("a date a document prints as a month (2026-11-07)", () => {
     expect(fmt.date("2025-11")).toBe(fmt.period("2025-11"));
     expect(fmt.date("2025-11")).not.toMatch(/01\.11/);
     expect(fmt.date("2025-11-01")).toBe("01.11.2025");
-  });
-});
-
-// "8.17 שנים" read as oddly precise; a point where the conclusion changes is shown as a reader means it
-describe("readerRound: a flip point as a reader means it, rounded away from the value now", () => {
-  it("years whole, or halves under 3, toward the side the conclusion has changed on", () => {
-    expect(readerRound(8.17, "lo", "years")).toBe(8);
-    expect(readerRound(8.17, "hi", "years")).toBe(9);
-    expect(readerRound(2.3, "lo", "years")).toBe(2);
-    expect(readerRound(2.3, "hi", "years")).toBe(2.5);
-    expect(readerRound(0.2, "lo", "years")).toBe(0.2); // finer, never up across the point
-    expect(readerRound(12, "hi", "years")).toBe(12);
-  });
-  it("a return in percent whole from 3, halves from 1, tenths from 0.1; a fee in tenths", () => {
-    expect(readerRound(0.44, "lo", "pct")).toBe(0.4);
-    expect(readerRound(0.44, "hi", "pct")).toBe(0.5);
-    expect(readerRound(1.37, "hi", "pct")).toBe(1.5);
-    expect(readerRound(1.17, "hi", "fee")).toBe(1.2);
-    expect(readerRound(0.44, "lo", "fee")).toBe(0.4);
-    expect(readerRound(0.044, "lo", "fee")).toBe(0.04);
-    expect(readerRound(4.37, "lo", "pct")).toBe(4);
-    expect(readerRound(0.04, "lo", "pct")).toBe(0.04);
   });
 });
 
@@ -195,6 +162,24 @@ describe("a figure with its sign", () => {
   it("parses back to the figure", () => {
     expect(parseNumber(fmt.signedNisWhole(-1524))).toBe(-1524);
     expect(parseNumber(fmt.signedPct(2.38, 2))).toBe(2.38);
+  });
+});
+
+describe("a share of a whole", () => {
+  it("is a whole percent", () => {
+    expect(fmt.share((0.6 / 1.05) * 100)).toBe("57%");
+    expect(fmt.share(25)).toBe("25%");
+    expect(fmt.share(98.6)).toBe("99%");
+    expect(fmt.share(0)).toBe("0%");
+    expect(fmt.share(100)).toBe("100%");
+  });
+  it("keeps one decimal below 1% and between 99% and 100%, so it never reads 0% or 100% when it is neither", () => {
+    expect(fmt.share(0.42)).toBe("0.4%");
+    expect(fmt.share(0.02)).toBe("0.1%");
+    expect(fmt.share(99)).toBe("99%");
+    expect(fmt.share(99.04)).toBe("99.0%");
+    expect(fmt.share(99.62)).toBe("99.6%");
+    expect(fmt.share(99.97)).toBe("99.9%");
   });
 });
 

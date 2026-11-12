@@ -11,7 +11,7 @@ export interface InputsState {
   entered: Partial<Record<P05Input, number>>;
   age: number | null;
   employment: Employment | null;
-  /** A-17: the insurance cost inside a pension fund, % of each deposit, entered on its fee page (G-12). Absent or null: not entered. */
+  /** A-17: the insurance cost inside a pension fund, % of each deposit (G-12), as the saved state holds it; no page enters it. Absent or null: not entered. */
   insurance?: number | null;
 }
 
@@ -22,13 +22,12 @@ interface InputsApi {
   setEntered: (key: P05Input, value: number | null) => void;
   setAge: (age: number | null) => void;
   setEmployment: (e: Employment | null) => void;
-  setInsurance: (pct: number | null) => void;
   resetAll: () => void;
 }
 
 const empty: InputsState = { entered: {}, age: null, employment: null };
 
-const Ctx = createContext<InputsApi>({ state: empty, ready: false, setEntered: () => {}, setAge: () => {}, setEmployment: () => {}, setInsurance: () => {}, resetAll: () => {} });
+const Ctx = createContext<InputsApi>({ state: empty, ready: false, setEntered: () => {}, setAge: () => {}, setEmployment: () => {}, resetAll: () => {} });
 
 function load(): InputsState {
   const i = inputsFromRecord(ensureLoaded().state.inputs);
@@ -72,10 +71,9 @@ export function InputsProvider({ children }: { children: ReactNode }) {
   }, []);
   const setAge = useCallback((age: number | null) => setState((s) => ({ ...s, age })), []);
   const setEmployment = useCallback((employment: Employment | null) => setState((s) => ({ ...s, employment })), []);
-  const setInsurance = useCallback((insurance: number | null) => setState((s) => ({ ...s, insurance })), []);
   const resetAll = useCallback(() => setState(empty), []);
 
-  const api = useMemo(() => ({ state, ready, setEntered, setAge, setEmployment, setInsurance, resetAll }), [state, ready, setEntered, setAge, setEmployment, setInsurance, resetAll]);
+  const api = useMemo(() => ({ state, ready, setEntered, setAge, setEmployment, resetAll }), [state, ready, setEntered, setAge, setEmployment, resetAll]);
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }
 

@@ -35,7 +35,7 @@ export const rulesPath = ({ product, search, hash }: { product?: string; search?
 /** The documents page, `/documents`, at one card or group (`#<key>`). */
 export const documentsPath = ({ hash }: { hash?: string } = {}): string => `/documents${tail("", hash)}`;
 
-/** The fee page of one product (`?wrapper=`), of one track (`?track=`, its fund number), or of one whole deal (`?d=`, lib/fee-deal/link.ts). */
+/** The fee page opened on a new deal of one product (`?wrapper=`) or of one track (`?track=`, its fund number), or on one whole deal (`?d=`, lib/fee-deal/link.ts). */
 export const feesPath = (of: { wrapper: string } | { track: string | number } | { deal: string }): string =>
   "wrapper" in of ? `/fees?wrapper=${encodeURIComponent(of.wrapper)}` : "track" in of ? `/fees?track=${encodeURIComponent(String(of.track))}` : `/fees?d=${encodeURIComponent(of.deal)}`;
 

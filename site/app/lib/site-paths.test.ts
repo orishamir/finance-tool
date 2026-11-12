@@ -127,7 +127,7 @@ describe("the index page's addresses", () => {
 // written whole ("/guide", "/indices/sp500") is not built.
 const app = fileURLToPath(new URL("../", import.meta.url));
 // files another piece of work owns; their hand-built addresses are listed where that work is handed over
-const notHere = ["components/kit/", "components/transfer/", "components/fees/", "routes/fees.tsx", "lib/fees.ts", "lib/fees.server.ts", "copy.ts", "lib/site-paths.ts"];
+const notHere = ["components/kit/", "components/transfer/", "copy.ts", "lib/site-paths.ts"];
 const kinds = "guide|companies|tracks|rules|exposure|documents|fees|indices";
 const handBuilt = [
   new RegExp(`\`/(?:${kinds})(?:[/?#][^\`]*)?\\$\\{`),

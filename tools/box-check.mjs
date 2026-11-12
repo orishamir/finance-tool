@@ -8,8 +8,7 @@
 //   BASE=http://127.0.0.1:4173/finance-tool node tools/box-check.mjs /indices/sp500 phone,pc,wide
 //
 // Served with `node site/scripts/serve-build.mjs site/build/client --port 4173`. A page that reads its query takes the slash
-// before the "?" (`/fees/?wrapper=kupat-gemel-lehashkaa`): that server's redirect to the slashed path drops the query, and /fees alone
-// shows "not found" with no control on it.
+// before the "?" (`/fees/?wrapper=kupat-gemel-lehashkaa`): that server's redirect to the slashed path drops the query.
 // The second argument picks the widths: phone (390), pc (1280), desk (1440), wide (1920). `--sheet` first opens a guide's values sheet
 // (the last chip of its example line), so the sliders that live only in the phone's sheet are moved too (2026-11-07: at 390 the check
 // found 0 sliders and tested nothing). `--pick=<text>` first clicks the visible element with that
@@ -199,8 +198,8 @@ let drawn = 0; // figures cut, spilling past their cell or drawn over each other
 for (const path of paths.split(",")) {
   for (const w of widths.split(",")) {
     const ctx = await browser.newContext({ viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch, locale: "he-IL" });
-    // SEED_STORAGE=<file.json>, {key: value}: what the device holds before the page loads (entered fields a page needs before it has a
-    // result, such as a pension fund's age, employment and insurance share on the fee page)
+    // SEED_STORAGE=<file.json>, {key: value}: what the device holds before the page loads (entered numbers, or the fee page's saved
+    // deals)
     if (process.env.SEED_STORAGE) {
       const seed = JSON.parse(readFileSync(process.env.SEED_STORAGE, "utf8"));
       await ctx.addInitScript((s) => {

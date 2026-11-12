@@ -139,7 +139,3 @@ export function deleteDoc() {
   clearGoals();
 }
 
-// ---------------------------------------------------------------- the percent fields
-
-/** One bounds table for the percent fields: the return and inflation follow P-05's range, the insurance share cannot be negative. */
-export const pctBoundsFor = (kind: "return" | "inflation" | "insurance" | "share", pct: { min: number; max: number }) => (kind === "insurance" || kind === "share" ? { min: 0, max: pct.max } : pct);

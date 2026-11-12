@@ -41,7 +41,7 @@ describe("guide and exposure prose cites general rules only", () => {
       });
     }
   }
-  // every site source file, not only the prose: code quotes not-rules too (the fees page, MF-55; the rule shelves, SW-34 and SW-53)
+  // every site source file, not only the prose: code quotes not-rules too (the fee page's data, MF-55; the rule shelves, SW-34 and SW-53)
   const walk = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
   const code = (src: string) => src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
   const tracked = (id: string) => Object.hasOwn(notRules, id) && !!rules.get(id) && rules.get(id)!.scope !== "general";

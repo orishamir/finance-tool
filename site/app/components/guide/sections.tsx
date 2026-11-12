@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { companyPath, feesPath } from "../../lib/site-paths";
 import { Link, useParams } from "react-router";
-import { guide as copy, guideIndex, r3fees, trackBrowser } from "../../copy";
+import { feePageLink, guide as copy, guideIndex, trackBrowser } from "../../copy";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { IdRef, RulesLine, StrengthLabel } from "../provenance";
@@ -168,7 +168,7 @@ export interface FeeRow {
   range?: ReactNode;
 }
 
-/** `feePage`: the fee page has an answer for this guide's product; without one the guide does not send the reader there. */
+/** `feePage`: the fee page builds a deal of this guide's product (its record lists a fee base); without one the guide does not send the reader there. */
 export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactNode; feePage: boolean }) {
   const { id } = useParams();
   return (
@@ -220,7 +220,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
       <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
       {id && feePage && (
         <Link to={feesPath({ wrapper: id })} className="text-link hover:underline self-start min-h-target inline-flex items-center">
-          {r3fees.links.fromGuide}
+          {feePageLink}
         </Link>
       )}
     </div>

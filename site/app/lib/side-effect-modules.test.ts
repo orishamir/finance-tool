@@ -31,7 +31,7 @@ describe("modules that run code at load", () => {
   });
 
   it("are kept by the build; the rest of ours is not, and a package's module always is", () => {
-    expect(hasSideEffects("/x/finance-tool/site/app/lib/fees.ts")).toBe(true);
+    expect(hasSideEffects("/x/finance-tool/site/app/lib/compare.ts")).toBe(true);
     expect(hasSideEffects("/x/finance-tool/site/app/root.tsx?__react-router-build-client-route")).toBe(true);
     expect(hasSideEffects("/x/finance-tool/site/app/components/kit/index.ts")).toBe(false);
     expect(hasSideEffects("/x/finance-tool/packages/schema/src/index.ts")).toBe(false);

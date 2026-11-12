@@ -96,9 +96,6 @@ patterns["a name in a plain bdi"] = {
   allowed: {
     "components/decoder/company-terms.tsx": 1,
     "components/decoder/institutions/brokerage-card.tsx": 1,
-    "components/fees/FeeDragChart.tsx": 3,
-    "components/fees/parts.tsx": 1,
-    "components/fees/sensitivity.tsx": 2,
     "components/guide-signature/current-account.tsx": 3,
     "components/guide-signature/keren-hishtalmut.tsx": 2,
     "components/guide-signature/makam.tsx": 1,
@@ -153,7 +150,6 @@ const LINK_COLOUR = /^text-(link|primary)$/;
 const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && !rel(f).startsWith("components/kit/") && rel(f) !== "lib/hooks.ts");
 
 const HAND_TITLE: Record<string, number> = {
-    "components/fees/parts.tsx": 1,
     "components/home/body.tsx": 1,
     "components/transfer/panel.tsx": 1,
     "root.tsx": 1,
@@ -168,8 +164,6 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/tracks/company-browser.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
-    "components/fees/parts.tsx": 5,
-    "components/fees/sensitivity.tsx": 1,
     "components/guide/sections.tsx": 1,
     "components/provenance-sheets.tsx": 2,
     "content/exposure/shekel-cash.tsx": 2,
@@ -179,12 +173,10 @@ const HAND_SITE_LINK: Record<string, number> = {
     "routes/guide.tsx": 1,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/fees/parts.tsx": 1,
     "components/invest/pair.tsx": 1,
     "components/provenance-sheets.tsx": 5,
 };
 const BANG_OVERRIDE: Record<string, number> = {
-    "components/fees/parts.tsx": 2,
     "components/invest/plan-card.tsx": 1,
     "components/provenance-sheets.tsx": 1,
 };
@@ -287,7 +279,6 @@ import { cssVars, deltaE, resolveOklch } from "../../lib/palette-check";
 
 const CHART_ROLES: Record<string, string[]> = {
   "the timeline (3.4)": ["chart-value", "chart-fee", "chart-tax-1", "chart-tax-2", "chart-contributions"],
-  "the fee-drag chart (7.3)": ["chart-fee-1", "chart-fee-2", "chart-fee-3", "chart-fee-4", "chart-fee-total"],
   ChangeChart: ["chart-lever-1", "chart-lever-2", "chart-lever-3", "chart-lever-4"],
   "the receipt's lines and closing bar (indices page)": ["chart-by-account", "chart-by-fund", "chart-tax"],
   CostStack: ["chart-cost-trade", "chart-cost-custody", "chart-cost-fixed", "chart-cost-fx", "chart-cost-other", "chart-cost-fund", "chart-tax"],

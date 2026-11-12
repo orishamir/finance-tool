@@ -30,13 +30,11 @@ P-02, `data/parameters/sensitivity-bounds.json`.
 
 ## Fee verdict thresholds
 
-P-03, `data/parameters/fee-verdict-thresholds.json`.
+P-03, `data/parameters/fee-verdict-thresholds.json`. No page reads it.
 
-**Values:** "worth negotiating" (`negotiate_nis`) from 1,000 NIS, real over the horizon, of what bringing the fee to the cheaper reference is worth (F-61's value of that reduction, the figure under the fee page's "if they lower it" field), when such a reference exists; "worth avoiding" (`avoid_nis`) from 2,500 NIS of the fee's real cost over the horizon, when an option without the fee, or with a lower one, ranks above the product on the same comparison (D90 revised the same day); share threshold (`negotiate_share`) 10% of total fee drag, which method F-62 reports beside the verdict and compares with the share; it does not change the verdict.
+**Values:** "worth negotiating" (`negotiate_nis`) from 1,000 NIS, real over the horizon, of what bringing the fee to the cheaper reference is worth (F-61's value of that reduction), when such a reference exists; "worth avoiding" (`avoid_nis`) from 2,500 NIS of the fee's real cost over the horizon, when an option without the fee, or with a lower one, ranks above the product on the same comparison (D90 revised the same day); share threshold (`negotiate_share`) 10% of total fee drag, which method F-62 reports beside the verdict and compares with the share; it does not change the verdict.
 
 **Why:** below about 1,000 NIS over several years, a phone call is not worth the time. A call is worth what it can win, so the negotiate threshold is read on the worth of the cut a call asks for, not on the fee's cost (D90 revised, 2026-11-07; chosen by Claude at the lead's request, reusing the same 1,000 NIS since the reason above is about what the call wins): fresh readers read "worth negotiating" beside a 3,911 NIS cost as advice to call while the cut to the average was worth 187 NIS. Removing a fee is worth its whole cost, so the avoid threshold stays on the cost.
-
-**On the fee page:** "worth avoiding" needs something better to pick: an option without the fee, or with a lower one, that ranks above the product on the comparison the fee page runs on its own numbers (ties share a place, so a tied option is not above). A product ranked first therefore never reads "avoid", and the softened "יקר יחסית לחלופות בלי עמלה" it used to get is gone (D90 revised the same day: readers saw "avoid" on the option ranked first). Under "avoid" the card names the options above it. The fee page also shows a ranked sentence under its legend, and the "if they lower it" row says it does not change the ranking. The verdict, the thresholds and the reason line are the ones above.
 
 ## Classification fit
 
@@ -83,7 +81,7 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 - brokerage account: fund 5139282, tariff Leumi; makam: tariff Leumi; government bond: tariff Leumi, series rule GOV-11;
 - study fund (`keren-hishtalmut`): track 880, run as self-employed;
 - general pension fund: track 2158; provident fund for annuity: track 923;
-- provident fund for investing (`kupat-gemel-lehashkaa`): track 7978, Meitav's general track. It only names the class whose averages the fee page compares with (D88); the run prices the collected lists (F-80). **Chosen by Claude on 2026-11-07**: the entry says so (`chosen_by`), and the fee page says plainly that the site chose the track.
+- provident fund for investing (`kupat-gemel-lehashkaa`): track 7978, Meitav's general track; the run prices the collected lists (F-80). **Chosen by Claude on 2026-11-07**: the entry says so (`chosen_by`).
 
 **Why:** the representative instrument is the first collected record of each kind, chosen by Claude at the founder's request; revisable. It is not a recommendation: the page names the records it used, and every term shown carries that record's source. Where a page chooses among all collected records instead, the entry does not price the run:
 

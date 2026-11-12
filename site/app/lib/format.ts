@@ -106,6 +106,16 @@ export const fmt = {
   },
   number: (v: number) => withMinus(plain.format(v)),
   /**
+   * A share of a whole in percent (a price's share of its cap, `57.14` is 57.14%): a whole percent (`57%`), except below 1% and between
+   * 99% and 100%, where one decimal keeps it from reading `0%` or `100%` when it is neither (`0.4%`, `99.6%`; `0.1%` at least and `99.9%`
+   * at most there).
+   */
+  share: (v: number) => {
+    if (v > 0 && v < 1) return fixed(1, "percent").format(Math.max(0.1, Math.round(v * 10) / 10) / 100);
+    if (v > 99 && v < 100) return fixed(1, "percent").format(Math.min(99.9, Math.round(v * 10) / 10) / 100);
+    return withMinus(fixed(0, "percent").format(v / 100));
+  },
+  /**
    * `22.10.2026` from `2026-10-22`. A document that prints only a month is dated `2025-11` (fees schema); it is said as the
    * month, `נובמבר 2025`, never with an invented first day.
    */
@@ -211,14 +221,6 @@ export function nisShown(v: number, state?: "sourced" | "computed" | "entered", 
 }
 
 /**
- * Whether a computed shekel amount sits within `within` ₪ of a threshold (F-62's P-03 thresholds): there the whole-shekel
- * rounding could print the threshold's own figure for a value on the other side of it (2,499.60 as "2,500 ₪"), so two decimals are kept.
- */
-export function nearThreshold(v: number, thresholds: readonly number[], within = 0.5): boolean {
-  return thresholds.some((t) => Math.abs(v - t) <= within);
-}
-
-/**
  * A lead that ends in a maqaf ("ב־", "מ־", "תעריפון מ־") before what follows it: the maqaf joins a one-letter prefix to digits
  * ("ב־2025", "מ־1,000 ₪"), and before a Hebrew word the letter is simply written on the word ("מנובמבר 2025", "בשנה", "בשנתיים";
  * copy.md 10). Returns the lead as it is written before `next`.
@@ -273,27 +275,6 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     default:
       return fmt.number(value);
   }
-}
-
-/**
- * What a reader means by a point where the conclusion changes ("8.17 שנים" read as oddly precise): years whole,
- * or halves under 3; a return or inflation in percent whole from 3, halves from 1, tenths below; a fee's rate in tenths of a percent, hundredths
- * under 0.1% (fees run 0.1% to 4%, where halves would carry a 1.17% point to 1.5%). It rounds away from the value now, toward
- * the side the conclusion has already changed on, so the value shown still changes it; the sheet that opens on it keeps the exact point.
- */
-export function readerRound(x: number, side: "lo" | "hi", unit: "years" | "pct" | "fee"): number {
-  const a = Math.abs(x);
-  const step = unit === "years" ? (a >= 3 ? 1 : 0.5) : unit === "fee" ? (a >= 0.1 ? 0.1 : 0.01) : a >= 3 ? 1 : a >= 1 ? 0.5 : a >= 0.1 ? 0.1 : 0.01;
-  const r = side === "lo" ? Math.floor(x / step + 1e-9) * step : Math.ceil(x / step - 1e-9) * step;
-  // never rounded down to nothing, nor up across the point: a point under one step rounds down in a finer step
-  if (side === "lo" && r <= 0 && x > 0) {
-    for (let fine = step / 10; fine >= 1e-4; fine /= 10) {
-      const f = Math.floor(x / fine + 1e-9) * fine;
-      if (f > 0) return Number(f.toFixed(4));
-    }
-    return Number(x.toFixed(4));
-  }
-  return Number(r.toFixed(2));
 }
 
 /** Unit word beside an input field (values sheet). */

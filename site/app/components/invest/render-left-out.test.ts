@@ -8,11 +8,10 @@ import { describe, expect, it } from "vitest";
 import { leftOut as c } from "../../copy";
 import { buildInvest, indexById } from "../../lib/invest";
 import type { IndicesBundle } from "../../lib/providers";
-import { brokeragePart, latestSnapshots } from "../../lib/institutions.server";
-import { housesOf, leftOutData, leftOutOf } from "../../lib/left-out";
+import { brokeragePart } from "../../lib/institutions.server";
+import { leftOutOf } from "../../lib/left-out";
 import { ProvenanceProvider } from "../provenance";
 import { BrokerageGroupCard } from "../decoder/institutions/brokerage-card";
-import { LeftOutLine } from "../kit";
 import { pickOfHeadline } from "./pair";
 import { PairReceipt } from "./receipt";
 import { bundle, html, lists, plan, shown } from "./render-fixtures";
@@ -73,26 +72,5 @@ describe("a company's price card", () => {
     const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id: "interactive-brokers", tariff: part.tariff, kind: part.kind }) })));
     expect(shown(out)).toContain(c.lead);
     expect(out).toContain(`data-left-out="${part.tariff.leftOut!.warn}"`);
-  });
-});
-
-describe("the fees page", () => {
-  const data = leftOutData(latestSnapshots());
-  const leumi = bundle.snapshots.find((s) => s.id === "leumi")!;
-  it("finds the house whose price list a fee line cites, by an address only that house's record names", () => {
-    const line = (url: string) => ({ rate: { source: { url } } });
-    expect(housesOf([line(leumi.tariff.url), line(leumi.tariff.url), { rate: null }], data).map((h) => h.house)).toEqual([leumi.provider.name_he]);
-    // an address no record names, or several do, names no house
-    expect(housesOf([line("https://example.org/nobody")], data)).toEqual([]);
-    // Pepper prints Leumi's own price list: the address is Leumi's, the house it is part of
-    expect(bundle.snapshots.find((s) => s.id === "pepper")?.tariff.url).toBe(leumi.tariff.url);
-  });
-  it("ships to the browser only the houses the page's prices cite", () => {
-    expect(Object.keys(leftOutData(latestSnapshots(), new Set([leumi.tariff.url])).byHouse)).toEqual(["leumi"]);
-  });
-  it("under the fees, the line names the house it is about", () => {
-    const h = housesOf([{ rate: { source: { url: leumi.tariff.url } } }], data)[0]!;
-    const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms: {}, dimensions: {}, today: bundle.today }, children: createElement(LeftOutLine, { view: h.view, house: h.house, named: true }) })));
-    expect(shown(out)).toContain(c.leadOf(h.house));
   });
 });
