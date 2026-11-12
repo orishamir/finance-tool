@@ -13,6 +13,7 @@ import { readDealFor } from "../../lib/fee-deal/parts";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
 import { GlanceColumn } from "./glance";
+import { feeName } from "./words";
 import { PanelColumn } from "./panel";
 import { ReadingCards } from "./reading";
 
@@ -62,14 +63,14 @@ const saves = (deal: FeeDeal) => deal.kind !== "brokerage-account";
 const drawPanel = (deal: FeeDeal, feeId: string) => {
   const r = readDealFor(deal, data.kinds, TODAY);
   const reading = readingOf(r, data.fx);
-  const fee = deal.fees.find((f) => f.id === feeId) ?? null;
+  const fee = deal.fees.find((f) => f.id === feeId)!;
   const law = reading.law.find((x) => x.fee === feeId) ?? null;
-  return text(createElement(PanelColumn, { panel: panel(r, feeId), fee, law, first: reading.from, saved: saves(deal), onFee: () => {}, onRemove: () => {} }));
+  return text(createElement(PanelColumn, { panel: panel(r, feeId)!, fee, law, first: reading.from, saved: saves(deal), fill: null, onFee: () => {}, onRemove: () => {} }));
 };
 
 const drawGlance = (deal: FeeDeal) => {
   const r = readDealFor(deal, data.kinds, TODAY);
-  return text(createElement(GlanceColumn, { glance: glance(r), law: readingOf(r, data.fx).law, saved: saves(deal), empty: deal.fees.length === 0, names: (id: string) => id }));
+  return text(createElement(GlanceColumn, { glance: glance(r), law: readingOf(r, data.fx).law, saved: saves(deal), names: (id: string) => id }));
 };
 
 const drawReading = (deal: FeeDeal) => text(createElement(ReadingCards, { reading: readingOf(readDealFor(deal, data.kinds, TODAY), data.fx), saved: saves(deal), fx: data.fx }));
@@ -103,6 +104,38 @@ describe("the glance", () => {
   });
 });
 
+describe("the glance's changes", () => {
+  it("says a fee starts after its free time with a verb that agrees with its name", () => {
+    const shown = drawGlance(account());
+    expect(shown).toContain(`${feeDeal.glance.starts.mp}${feeName("fixed_period")}, `);
+    expect(shown).not.toContain(`${feeName("fixed_period")}: `);
+  });
+  it("keeps the form that agrees with nothing for a fee the person named", () => {
+    const d = account();
+    d.fees = [{ id: "fee-own", kind: "own", name: "עמלת בדיקה", stages: [{ price: { form: "free" }, until: "2027-03" }, { price: { form: "sum", amount: typed(10), every: 1 } }] }];
+    const shown = drawGlance(d);
+    expect(shown).toContain("עמלת בדיקה: ");
+    expect(shown).toContain(feeDeal.glance.instead);
+  });
+});
+
+describe("the panel", () => {
+  it("says a fee with no cap in one line, with no heading of its own, and no field twice", () => {
+    const shown = drawPanel(account(), "fee-trade");
+    expect(count(shown, feeDeal.standing.tag.none!)).toBe(1);
+    expect(shown).not.toContain(feeDeal.bar.optional);
+    expect(shown).toContain(feeDeal.panel.when);
+    expect(shown).toContain(feeDeal.panel.remove);
+  });
+  it("draws a price for a time as how long it holds, not as two stages", () => {
+    const d = provident();
+    d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) }, until: "2027-06" }, { price: { form: "free" } }] }];
+    const shown = drawPanel(d, "fee-deposit");
+    expect(shown).toContain(feeDeal.panel.limited);
+    expect(shown).not.toContain(feeDeal.panel.stage.first);
+  });
+});
+
 describe("the reading on screen", () => {
   it("reads the account: three periods, today's marked, the two curves, the points and that no fee has a cap", () => {
     const shown = drawReading(account());
@@ -117,6 +150,10 @@ describe("the reading on screen", () => {
     // the sums on the account meet custody from 03.2028
     expect(shown).toContain(feeDeal.marks.meet.before);
     expect(shown).toContain("לעמלות שבעסקה אין תקרה בחוק");
+    // the trade curve's fee is its whole group: past the minimum, the rate is the fee's own
+    expect(shown).toContain(`${feeDeal.read.curves.head.minRate.lead}${feeDeal.read.curves.head.minRate.above.trade}${feeDeal.read.curves.head.minRate.cost}`);
+    // one fee on the account is a sum per period: the headline names it
+    expect(shown).toContain(`${feeDeal.nameForms.fixed_period!.the}${feeDeal.read.curves.head.meetOne.mp}`);
   });
   it("reads the provident fund: two periods with the rise to the cap, no curve, the monthly charge, and the law rows", () => {
     const shown = drawReading(provident());

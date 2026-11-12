@@ -3,12 +3,14 @@
 // a track in `?track=`), else the deal last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read
 // after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end
 // opens another saved deal or a new one, copies the deal's link, and opens the template picker; a template opens a new deal beside this one.
-// The builder's track step opens the same picker, and the track it picks is set on the deal on screen (`pickTrack`).
+// The builder's track step opens the same picker, and the track it picks is set on the deal on screen (`pickTrack`). A deal with no fee
+// shows the bar and the builder alone, as wide as the page's prose; the glance, the panel and the reading come with its first fee. A fee
+// taken away leaves a line in its place that puts it back, until the deal changes again, another deal opens, or ten seconds pass.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
-import { addFee, removeFee, updateFee } from "../../lib/fee-deal/edit";
+import { addFee, removeKept, undoRemoval, updateFee, type Removal } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
@@ -16,7 +18,7 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedWith, without } from "../../lib/fee-deal/store";
-import { dealFromTemplate, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, feePriceLists, fillFee, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -29,6 +31,9 @@ import { PanelColumn } from "./panel";
 import { TemplatePicker } from "./picker";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
+
+/** How long the line that puts a removed fee back stays, in milliseconds. */
+const UNDO_MS = 10_000;
 
 /** The device's day, YYYY-MM-DD, on its own calendar. */
 function deviceToday(): string {
@@ -74,6 +79,14 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setPicker(anchor);
   };
   const link = useCopyLink();
+  // the fee last taken away, while it can be put back; the card to give the focus to once it is
+  const [removal, setRemoval] = useState<Removal | null>(null);
+  const [focusFee, setFocusFee] = useState<string | null>(null);
+  useEffect(() => {
+    if (!removal) return;
+    const t = window.setTimeout(() => setRemoval(null), UNDO_MS);
+    return () => window.clearTimeout(t);
+  }, [removal]);
 
   // a deal the address gave is saved at once, and the address is cleared, so a reload opens the deal as it is now, not the link again; the
   // empty deal a broken or unknown address opens is saved only at its first change, as a new deal is
@@ -84,9 +97,14 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const change = (next: FeeDeal) => {
+  const keep = (next: FeeDeal) => {
     setDeal(next);
     dealStore.update((ds) => savedWith(ds, next, today));
+  };
+  // any change to the deal ends the undo of a removal
+  const change = (next: FeeDeal) => {
+    keep(next);
+    setRemoval(null);
   };
   const onFee = (f: Fee) => change(updateFee(deal, f.id, () => f));
   const onAdd = (kind: FeeKindId) => {
@@ -95,10 +113,24 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setChosen(fee.id);
   };
   const onRemove = (feeId: string) => {
-    const at = deal.fees.findIndex((f) => f.id === feeId);
-    const next = removeFee(deal, feeId);
-    change(next);
-    setChosen(next.fees[Math.min(at, next.fees.length - 1)]?.id ?? null);
+    const r = removeKept(deal, feeId, chosen);
+    if (!r) return;
+    keep(r.deal);
+    setChosen(r.chosen);
+    setRemoval(r.removal);
+  };
+  const onUndo = () => {
+    if (!removal) return;
+    const back = undoRemoval(deal, removal, chosen);
+    setRemoval(null);
+    if (!back) return;
+    keep(back.deal);
+    setChosen(back.chosen);
+    setFocusFee(removal.fee.id);
+  };
+  const onFill = (feeId: string, house: string) => {
+    const next = fillFee(deal, feeId, house, data);
+    if (next) change(next);
   };
 
   // another deal on screen: a saved one, a new one or one a template filled; a new deal is saved at its first change
@@ -106,6 +138,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setDeal(next);
     setChosen(next.fees[0]?.id ?? null);
     setSaid(null);
+    setRemoval(null);
     link.closeBlocked();
   };
   const onOpen = (id: string) => {
@@ -166,6 +199,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     return f ? feeName(f.kind, f.name) : feeId;
   };
   const chosenFee = deal.fees.find((f) => f.id === chosen) ?? null;
+  const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
+  // the removal on screen: only on the deal it left, so another deal never shows it
+  const removed = removal && removal.after === deal ? removal : null;
+  // the columns are laid out while the deal has a fee, or while the last one taken away can be put back
+  const columns = deal.fees.length > 0 || !!removed;
 
   return (
     <>
@@ -191,7 +229,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
       />
       {/* what the bar's end just did, for a screen reader: a template opened a new deal, the link was copied */}
       <p role="status" className="sr-only">
-        {said ?? (link.copied ? copy.end.copied : "")}
+        {said ?? (removed ? `${copy.builder.removed}${feeName(removed.fee.kind, removed.fee.name)}.` : link.copied ? copy.end.copied : "")}
       </p>
       {(said || link.blocked) && (
         <div className="flex flex-col gap-1.5 text-sm">
@@ -204,24 +242,53 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
           )}
         </div>
       )}
-      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "bar"} onPick={onPick} />
-      {/* a phone stacks the builder, the panel and the glance; a computer sets the glance at the start (the right), the panel at the end */}
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]">
-        <Card className="flex flex-col gap-4 xl:col-start-2 xl:row-start-1">
-          <BuilderColumn deal={deal} view={views.builder} kinds={data.kinds} chosen={chosen} onPickTrack={hasTracks ? openPicker("track") : null} left={left} onDeal={change} onChoose={setChosen} onAdd={onAdd} />
+      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "bar"} product={kind?.name ?? null} onPick={onPick} />
+      {/* a phone stacks the builder, the panel and the glance; a computer sets the glance at the start (the right), the panel at the end. The
+          builder is the first child whatever the deal holds, so the first fee lays the columns out around it without drawing it again: the
+          focus and the scroll stay where they were. */}
+      <div className={columns ? "grid grid-cols-1 items-start gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]" : "grid max-w-measure grid-cols-1"}>
+        <Card className={columns ? "flex flex-col gap-4 xl:col-start-2 xl:row-start-1" : "flex flex-col gap-4"}>
+          <BuilderColumn
+            deal={deal}
+            view={views.builder}
+            kinds={data.kinds}
+            chosen={chosen}
+            onPickTrack={hasTracks ? openPicker("track") : null}
+            left={left}
+            removed={removed ? { at: removed.at, fee: removed.fee, onUndo } : null}
+            focusFee={focusFee}
+            onFocused={() => setFocusFee(null)}
+            onDeal={change}
+            onChoose={setChosen}
+            onAdd={onAdd}
+            onRemove={onRemove}
+          />
         </Card>
-        {deal.kind && (
-          <Card edge={chosenFee ? "accent" : undefined} className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">
-            <PanelColumn panel={panel} fee={chosenFee} law={reading.law.find((r) => r.fee === chosen) ?? null} first={reading.from} saved={saves} onFee={onFee} onRemove={onRemove} />
+        {panel && chosenFee && (
+          <Card edge="accent" className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">
+            <PanelColumn
+              panel={panel}
+              fee={chosenFee}
+              law={reading.law.find((r) => r.fee === chosen) ?? null}
+              first={reading.from}
+              saved={saves}
+              fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
+              onFee={onFee}
+              onRemove={onRemove}
+            />
           </Card>
         )}
-        <Card className="flex flex-col gap-4 lg:col-span-2 xl:col-span-1 xl:col-start-1 xl:row-start-1">
-          <GlanceColumn glance={views.glance} law={reading.law} saved={saves} empty={deal.fees.length === 0} names={nameOf} />
-        </Card>
+        {deal.fees.length > 0 && (
+          <Card className="flex flex-col gap-4 lg:col-span-2 xl:col-span-1 xl:col-start-1 xl:row-start-1">
+            <GlanceColumn glance={views.glance} law={reading.law} saved={saves} names={nameOf} />
+          </Card>
+        )}
       </div>
-      <Section id={READING_ID} title={copy.reading}>
-        {deal.fees.length === 0 ? <p className="text-muted-foreground">{copy.read.empty}</p> : <ReadingCards reading={reading} saved={saves} fx={data.fx} />}
-      </Section>
+      {deal.fees.length > 0 && (
+        <Section id={READING_ID} title={copy.reading}>
+          <ReadingCards reading={reading} saved={saves} fx={data.fx} />
+        </Section>
+      )}
     </>
   );
 }

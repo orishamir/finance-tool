@@ -20,9 +20,10 @@ function signOf(view: PriceView, figure: Figure): string {
 
 /**
  * The figure `figure` of stage `k` of a fee's prices on `side`, in its box. A bound (`min`, `max`) may be emptied, which takes it away; a
- * bound not given is an empty dashed box only where `optional` asks for one.
+ * bound not given is an empty dashed box with a dash in it only where `optional` asks for one. `unit` replaces the sign in the box (a
+ * bound's currency as a choice); `inside` draws `words` in the box.
  */
-export function PriceFigure({ fee, side, k, view, figure, label, words, optional, onFee }: {
+export function PriceFigure({ fee, side, k, view, figure, label, words, inside, unit, optional, onFee }: {
   fee: Fee;
   side: Side;
   k: number;
@@ -31,6 +32,8 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, optional
   /** The spoken name: the fee and the figure. */
   label: string;
   words?: ReactNode;
+  inside?: boolean;
+  unit?: ReactNode;
   optional?: boolean;
   onFee: (fee: Fee) => void;
 }) {
@@ -42,8 +45,10 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, optional
     <FigureField
       value={value}
       label={label}
-      unit={signOf(view, figure)}
+      unit={unit ?? signOf(view, figure)}
       words={words}
+      inside={inside}
+      {...(optional ? { placeholder: copy.panel.empty } : {})}
       onCommit={(n) => set(n)}
       {...(bound ? { onClear: () => set(null) } : {})}
       validate={figure === "rate" ? rateCheck : amountCheck}

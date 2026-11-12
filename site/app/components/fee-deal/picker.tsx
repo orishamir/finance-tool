@@ -1,5 +1,7 @@
 // The template picker (method §10.6): a sheet that lists the templates for the deal's kind, the houses' price lists for a securities account
-// or the tracks of a provident-family kind grouped by company, with a box that filters them by name. A price list says under its name how
+// or the tracks of a provident-family kind grouped by company, with a box that filters them by name. The tracks' head names the deal's
+// product, and each track is listed by its short name (D54: the company and the product cut from it, the group's head already says them);
+// the box finds a track by its full name or its short one, or by its company. A price list says under its name how
 // many of its lines it leaves out of the deal. A pick is the page's: opened from the bar it opens a new deal from the template and never
 // changes the one on screen; opened from the builder's track step it sets the track on the deal on screen (`pickTrack`).
 // The deal a template filled says so in the builder (`TemplateNote`), with what the template left out and why.
@@ -8,7 +10,7 @@ import { feeDeal as copy } from "../../copy";
 import { countPhrase } from "../../lib/format";
 import { templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, ListRow, RowList, SearchField } from "../kit";
+import { Disclosure, GroupHead, ListRow, RowList, SearchField, Tag } from "../kit";
 import { feeName } from "./words";
 
 const w = copy.picker;
@@ -21,7 +23,17 @@ export function leavesText(left: readonly LeftOut[] | undefined): string | undef
   return countPhrase(left.length, w.leaves);
 }
 
-export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, onPick }: {
+/** A row's title: a track's short name where it has one, else the template's name. */
+export const rowTitle = (o: TemplateOption): string => (o.source === "track" ? (o.short ?? o.name) : o.name);
+
+/** The templates whose name, a track's short name or its company holds the words typed. */
+export function matching(options: readonly TemplateOption[], query: string): readonly TemplateOption[] {
+  const q = query.trim();
+  if (!q) return options;
+  return options.filter((o) => o.name.includes(q) || (o.source === "track" && (o.short?.includes(q) || o.company.includes(q))));
+}
+
+export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, product, onPick }: {
   open: boolean;
   onClose: () => void;
   /** The button the sheet opened from; the focus goes back to it. */
@@ -31,6 +43,8 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   left: ReadonlyMap<string, readonly LeftOut[]>;
   /** Whether a pick opens a new deal (the bar's picker), which the lede then says. */
   newDeal: boolean;
+  /** The deal's product, as the site names it: the tracks' head says them. */
+  product: string | null;
   onPick: (id: string) => void;
 }) {
   const headId = useId();
@@ -38,8 +52,7 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   const tracks = options.some((o) => o.source === "track");
   const head = tracks ? w.track : w.house;
   const groups = useMemo(() => {
-    const q = query.trim();
-    const shown = q ? options.filter((o) => o.name.includes(q) || (o.source === "track" && o.company.includes(q))) : options;
+    const shown = matching(options, query);
     const by = new Map<string, TemplateOption[]>();
     for (const o of shown) {
       const g = o.source === "track" ? o.company : w.house.group;
@@ -52,9 +65,12 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
     <Sheet open={open} onClose={onClose} anchor={anchor} pc="center" height={80} labelledBy={headId}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <h2 id={headId} className="text-lg font-semibold">
-            {head.title}
-          </h2>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <h2 id={headId} className="text-lg font-semibold">
+              {head.title}
+            </h2>
+            {tracks && product && <Tag tone="outline" shape="pill">{product}</Tag>}
+          </div>
           <p className="text-sm text-muted-foreground">{newDeal ? `${head.lede} ${w.newDeal}` : head.lede}</p>
         </div>
         <SearchField label={w.search} labelHidden value={query} onChange={setQuery} clearLabel={w.clear} />
@@ -66,7 +82,7 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
               <GroupHead count={tracks ? items.length : undefined}>{group}</GroupHead>
               <RowList label={group}>
                 {items.map((o) => (
-                  <ListRow key={o.id} title={o.name} meta={leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
+                  <ListRow key={o.id} title={rowTitle(o)} meta={leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
                 ))}
               </RowList>
             </div>
