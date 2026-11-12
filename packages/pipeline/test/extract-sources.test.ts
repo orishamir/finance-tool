@@ -73,6 +73,19 @@ describe("extract-sources: fixture Source lines", () => {
     expect(cleanLocator('p.155, s.92(א)(3) ("רווח הון כאמור בסעיף 91(ד) יקוזז תחילה כנגד רווח הון מחוץ לישראל")')).toBe("p.155, s.92(א)(3)");
   });
 
+  it("a locator that names a definition, a footnote, a row, a table or an appendix has a Hebrew form (2026-11-12)", () => {
+    expect(toHebrewLocator("file p.3 (gazette p.375), reg. 1(א), definition מוסד כספי")).toBe("עמוד הקובץ 3 (עמוד הרשומות 375), תקנה 1(א), הגדרת מוסד כספי");
+    expect(toHebrewLocator("reg. 1(א), definitions הוצאות and ניירות ערך זהים")).toBe("תקנה 1(א), הגדרות הוצאות וניירות ערך זהים");
+    expect(toHebrewLocator("p.2 (gazette p.900), regs. 1-2 and footnote 2")).toBe("עמוד 2 (עמוד הרשומות 900), תקנות 1-2 והערת שוליים 2");
+    expect(toHebrewLocator("p.4 row 9, p.13 row 3")).toBe("עמוד 4 שורה 9, עמוד 13 שורה 3");
+    expect(toHebrewLocator("p.12, table ד-14")).toBe("עמוד 12, טבלה ד-14");
+    expect(toHebrewLocator("p.10, appendix")).toBe("עמוד 10, נספח");
+    expect(toHebrewLocator("pp.28-29, annex 1; p.15, footnote 1")).toBe("עמודים 28 עד 29, נספח 1; עמוד 15, הערת שוליים 1");
+    // words with no rule still leave the locator in English, whole
+    expect(toHebrewLocator("file p.18, Schedule E")).toBeUndefined();
+    expect(toHebrewLocator("p.5, s.3 and the table of contents")).toBeUndefined();
+  });
+
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
     const line =
       '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';
