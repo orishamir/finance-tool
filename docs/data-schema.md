@@ -127,7 +127,7 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
   - `kind`: `law`, `regulation`, `circular`, `regulator_page`, `official_pdf`, `exchange_rules`, `institution_doc`, `article`, `dataset`, `form`, `other`;
   - `strength`: `primary`, `institution`, `secondary`. A copy of an official text (on Wikisource, Nevo or any third-party host) is never a source: the extraction leaves it out as a lead, and the data check fails one;
   - `locator` (raw: "s. 3(ה4)(3)", "pp. 27–30") with `locator_he` (only when the locator translates fully);
-  - `page`: first page for `#page=`, only on a PDF URL and never a printed page. A PDF URL is a `.pdf` path, a gov.il blob folder file, or a gazette file from the Ministry of Justice's Reshumot service at `free-justice.openapi.gov.il/…/Documents/…`, whose links already carry their `#page=`;
+  - `page`: first page for `#page=`, only on a PDF URL and never a printed page: the page of the first passage of the locator that names one, plain (`p.5`) or the file's (`file p.9 (gazette p.300)`); within one passage a `file p.` wins over a plain `p.`, which is then the printed number (`p.909 (file p.21)`). A PDF URL is a `.pdf` path, a gov.il blob folder file, or a gazette file from the Ministry of Justice's Reshumot service at `free-justice.openapi.gov.il/…/Documents/…`, whose links already carry their `#page=`;
   - `anchor`: a section id on an HTML page, without `#`; only on an HTML URL;
   - `quote`: the document's own words, verbatim from a quoted Hebrew span in the markdown, 8 to 240 characters, never composed;
   - `checked`; `qualifier` (the markdown's parenthetical after the strength word); `note` (English, never shown).

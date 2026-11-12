@@ -268,15 +268,24 @@ export function pageInUrl(url: string): number | undefined {
 /**
  * First page for "#page=": only from a `p.`/`pp.` locator on a PDF, never a printed page. "file p.3 (gazette p.375)" gives 3; a gazette
  * booklet from the Reshumot resolver opens at a page only when the locator names the file's page (its "p.1001" is printed on the sheet).
+ * The first passage that names a page wins, whichever form it takes: "p.5, s.2; file p.9 (gazette p.300), s.7" opens at 5, where its
+ * first passage is, as the locator reads. Within one passage a "file p." wins over a plain "p.": a writer names the file's page beside
+ * a page only when that page is the printed one ("p.909 (file p.21)", "gazette ס״ח p.898, file p.10"). A "gazette p." is never a candidate.
  */
 export function firstPage(locator: string, url: string): number | undefined {
   if (!isPdf(url)) return undefined;
-  const file = /\bfile (?:pp?\.|pages?)\s*(\d+)/i.exec(locator);
-  if (file) return Number(file[1]) > 0 ? Number(file[1]) : undefined;
-  if (isGazetteBooklet(url) || /printed|bylaws/i.test(locator)) return undefined;
-  const m = /(?:^|[\s,(])pp?\.\s*(\d+)/i.exec(locator.replace(/\bgazette (?:pp?\.|pages?)\s*[\d\s–\-to]+/gi, " "));
-  const n = m ? Number(m[1]) : NaN;
-  return Number.isInteger(n) && n > 0 && n < 5000 ? n : undefined;
+  // where the plain "p." may be a printed number (a gazette booklet, a printed or bylaws page), only a "file p." is the file's page
+  const fileOnly = isGazetteBooklet(url) || /printed|bylaws/i.test(locator);
+  for (const passage of locator.split(";")) {
+    const file = /(?:^|[\s,(])file (?:pp?\.|pages?)\s*(\d+)/i.exec(passage);
+    if (file) return Number(file[1]) > 0 ? Number(file[1]) : undefined;
+    if (fileOnly) continue;
+    const m = /(?:^|[\s,(])pp?\.\s*(\d+)/i.exec(passage.replace(/\bgazette (?:pp?\.|pages?)\s*[\d\s–\-to]+/gi, " "));
+    if (!m) continue;
+    const n = Number(m[1]);
+    return Number.isInteger(n) && n > 0 && n < 5000 ? n : undefined;
+  }
+  return undefined;
 }
 
 /**

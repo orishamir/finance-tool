@@ -178,6 +178,18 @@ describe("extract-sources: parts", () => {
     expect(toHebrewLocator("regs. 1-3 as enacted")).toBe("תקנות 1-3 בנוסחן המקורי");
     expect(toHebrewLocator("p.10, annex ג")).toBe("עמוד 10, נספח ג");
   });
+  it("the first passage that names a page wins, with a plain p. or a file p.; a gazette p. never counts", () => {
+    const pdf = "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf";
+    expect(firstPage("p.5, s.2; file p.9 (gazette p.300), s.7", pdf)).toBe(5);
+    expect(firstPage("gazette p.244, s.28; file p.31 (gazette p.247), s.74ה(4)", pdf)).toBe(31);
+    expect(firstPage("file p.28 (gazette p.244), s.28(3); p.40, s.3", pdf)).toBe(28);
+    // within one passage the file's page named beside a page says that page is the printed one (INS-21, TXK-12)
+    expect(firstPage("p.909 (file p.21), s.56(א)", pdf)).toBe(21);
+    expect(firstPage("s.22, gazette ס״ח תשס״ה p.898, file p.10", pdf)).toBe(10);
+    // in a gazette booklet a plain p. is the printed number: the first file page wins over it
+    const booklet = "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb";
+    expect(firstPage("p.600, s.2; file p.2 (gazette p.600), s.6", booklet)).toBe(2);
+  });
   it("a link opens at the page of the passage its quote comes from (2026-11-12)", () => {
     const [s] = extractFromLine('[תקנון](https://content.tase.co.il/media/a/274690.pdf), p.4, s.1 definitions; p.8, s.2 "חבר בורסה הוא חברה שהתאגדה" · checked 2026-11-12 · primary', ctx()).sources;
     expect(s).toMatchObject({ page: 8, quote: "חבר בורסה הוא חברה שהתאגדה" });
