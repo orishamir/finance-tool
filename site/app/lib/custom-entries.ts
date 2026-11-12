@@ -12,6 +12,7 @@ import { groupInputs, layeredOf, type BrokerBase, type GroupCopy } from "./own-a
 import type { IndicesBundle } from "./providers";
 import { entered, numberOf, type SiteValue } from "./value";
 import { isShekel } from "./fx";
+import { newId } from "./ids";
 
 const c = copy.customEntries;
 
@@ -96,7 +97,6 @@ export const isCustomFund = (rec: Pick<FundRecord, "id">) => rec.id.startsWith("
 /** A foreign fund has one yearly charge; an Israeli one its fixed and variable fees and the trustee's. */
 export const isForeignKind = (k: OptionId) => k === "tase-foreign" || k === "abroad";
 
-const newId = (prefix: string) => `${prefix}${Date.now().toString(36)}-${Math.floor(Math.random() * 1296).toString(36)}`;
 export const newBrokerId = () => newId("custom-broker-");
 export const newFundId = () => newId("custom-fund-");
 

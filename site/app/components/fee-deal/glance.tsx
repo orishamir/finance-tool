@@ -156,13 +156,13 @@ export function GlanceColumn({ glance, law, saved, empty, names }: { glance: Gla
       ) : (
         <>
           {glance.throughout.length > 0 && (
-            <Section title={copy.glance.throughout} level="card" heading="h3" className="gap-3">
+            <Section title={copy.glance.throughout} level="card" heading="h3" gap="snug">
               {glance.throughout.map((g) => (
                 <Group key={groupKey(g.on)} group={g} rows={rows} saved={saved} />
               ))}
             </Section>
           )}
-          <Section title={copy.glance.changes} level="card" heading="h3" className="gap-3 border-t border-border pt-4">
+          <Section title={copy.glance.changes} level="card" heading="h3" gap="snug" className="border-t border-border pt-4">
             {glance.dates.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.still}</p>}
             {changing.map((g) => (
               <Group key={groupKey(g.on)} group={g} rows={rows} saved={saved} lead={copy.standing.now} />
