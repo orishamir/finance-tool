@@ -186,6 +186,21 @@ const CHECKED_RE = /checked (\d{4}-\d{2}-\d{2})/;
 
 // ---------------------------------------------------------------- locator, page, quote
 
+/** The words that name a place in a document: a part of a locator that opens on one of them is a passage, never a remark. */
+const PLACE_WORD =
+  /^(?:pp?|ss?|regs?|arts?|paras?|cl|sections?|regulations?|clauses?|annex(?:es)?|appendix|appendices|schedules?|tables?|printed|footnotes?|notes?|paragraphs?|items?|definitions?|parts?|chapters?|articles?|rows?|questions?|circulars?|pages?|file|gazette|first|second|third|and|or|also)$/i;
+/** A reference to a place: "s.4", "pp.5-7", "reg. 2(ב)", "Art. 23(1)", "footnote 1", "annex ג", "§7ב". */
+const PLACE_REF =
+  /\b(?:pp?|ss?|regs?|arts?|paras?|cl)\.\s*[\dא-ת(]|§\s*\d|\b(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|schedules?|tables?|footnotes?|notes?|paragraphs?|items?|parts?|chapters?|articles?|questions?|pages?)\s+[\dא-תA-Z]/i;
+/**
+ * A part of a locator after "; " that is a remark in English: it opens on a word that names no place and holds no reference. Its
+ * numbers do not make it a passage ("the Knesset's record of the regulations (2067442) lists no amendment").
+ */
+function isLocatorRemark(part: string): boolean {
+  const first = /^\s*([A-Za-z]+)/.exec(part)?.[1];
+  return first !== undefined && !PLACE_WORD.test(first) && !PLACE_REF.test(part);
+}
+
 /** Cleans the raw text after a link into a locator: sections, regulations, pages; quotes removed. */
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
@@ -198,6 +213,14 @@ export function cleanLocator(text: string): string {
   // ("(gazette p.375)" beside a file's page is kept: it is the page the gazette prints)
   t = t.replace(/\((?!\s*(?:gazette|file) (?:pp?\.|pages?)\s*\d+(?:\s*(?:–|-|to)\s*\d+)?\s*\))(?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
   t = t.replace(/\(\s*\)/g, " ");
+  // A remark after "; " ("; the ISA directives list shows no later version") is not part of the locator either: a part that opens on an
+  // English word that names no place in a document and holds no reference is dropped, as a parenthesised remark is. It goes before the
+  // prose cut below, which would keep its first words and drop every passage after it; "; p.9, s.4", "; s.3(ד)", "; Schedule E",
+  // "; appendix A and B on pp.5-7" and "; and footnote 1" stay.
+  t = t
+    .split(";")
+    .filter((part, i) => i === 0 || !isLocatorRemark(part))
+    .join(";");
   // Prose after the reference ("describe Amendment 15 as the law that") is cut off.
   const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?|file|gazette|enacted)\b)[a-z]{4,}\b/.exec(t);
   if (prose) t = t.slice(0, prose.index);

@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { extractFromLine, findLinks, findQuote, firstPage, pageInUrl, sourceLineOf, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
+import { cleanLocator, extractFromLine, findLinks, findQuote, firstPage, pageInUrl, sourceLineOf, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
 import { readRuleBaseIds, urlInBlock } from "../src/references.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -189,6 +189,17 @@ describe("extract-sources: parts", () => {
     // in a gazette booklet a plain p. is the printed number: the first file page wins over it
     const booklet = "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb";
     expect(firstPage("p.600, s.2; file p.2 (gazette p.600), s.6", booklet)).toBe(2);
+  });
+  it("a remark in English after \"; \" leaves the locator; a second passage, a section list or a named place stays (CS-01, ETF-75)", () => {
+    const gazette = "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n";
+    const [s] = extractFromLine(
+      `[gazette ק״ת 7727 (14.11.2016), p.135](${gazette}), file p.7 (gazette p.135); the Knesset's record of the regulations (2067442) lists no amendment, so the gazette text is the current one · checked 2026-11-08 · primary`,
+      ctx(),
+    ).sources;
+    expect(s).toMatchObject({ locator: "file p.7 (gazette p.135)", locator_he: "עמוד הקובץ 7 (עמוד הרשומות 135)", page: 7 });
+    expect(cleanLocator(", p.1 s.3, p.2 (the definition of `Mt`), p.5 Appendix A; the ISA directives list shows no later version")).toBe("p.1 s.3, p.2, p.5 Appendix A");
+    for (const loc of ["p.4, ss.3 to 4; s.3(ד)", "p.3, s.4(א)-(ד); appendix A and B on pp.5-7", "pp.6 to 7; Schedule E", "p.8 footnote 1; and footnote 2", "file p.3, s.3.2.1; p.4, ss.3.2.2.1-3.2.2.2"])
+      expect(cleanLocator(loc), loc).toBe(loc);
   });
   it("a link opens at the page of the passage its quote comes from (2026-11-12)", () => {
     const [s] = extractFromLine('[תקנון](https://content.tase.co.il/media/a/274690.pdf), p.4, s.1 definitions; p.8, s.2 "חבר בורסה הוא חברה שהתאגדה" · checked 2026-11-12 · primary', ctx()).sources;
