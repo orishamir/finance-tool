@@ -19,6 +19,7 @@ export const site = {
     { href: "/rules", label: "חוקים וכללים", current: "rules" },
     { href: "/parameters", label: "פרמטרים", current: "parameters" },
     { href: "/indices", label: "השקעה במדד" }, // D28, 2026-10-25
+    { href: "/fees", label: "עמלות" }, // the fee page (D112); founder, 2026-11-13: "it should have a link from the header". Its breadcrumb is this word
   ] as const,
   notCovered: { href: "/not-covered", label: "מה האתר עוד לא מכסה" },
   // the menu's second group, the home crumb, the footer lines, back to top
@@ -1494,7 +1495,8 @@ export const r3workbench = {
 export const feeDeal = {
   title: "העמלות בעסקה שלכם",
   lede: "מזינים עסקה אחת בדיוק כמו שהיא: כל עמלה, ממה היא נגבית, המינימום והתקרה שלה, ואיך היא משתנה עם השנים. האתר מראה מה העסקה גובה, על מה, ומתי.",
-  crumb: "עמלות",
+  /** The word the header and the menu call the page by. */
+  crumb: site.menuItems.find((m) => m.href === "/fees")!.label,
   loading: "טוען…",
   failed: "הנתונים של העמוד לא נטענו. אפשר לרענן את הדף ולנסות שוב.",
   /** The four fees the records' bases do not list (shapes.ts), and the name of a fee of the person's own before they name it. */
