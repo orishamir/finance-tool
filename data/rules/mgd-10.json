@@ -2,7 +2,7 @@
   "id": "MGD-10",
   "title": "What a managed portfolio costs: the fee layers",
   "title_he": "תיק מנוהל: ארבע שכבות של עלות",
-  "text_he": "בתיק מנוהל יכולות להיות ארבע שכבות של עלות: דמי ניהול ישירים שהלקוח משלם למנהל התיקים לפי ההסכם, כאחוז משווי התיק; עמלות קנייה ומכירה ודמי משמרת של הבנק או חבר הבורסה שמחזיק את החשבון, לפי התעריפון שלו; דמי הניהול בתוך קרנות הנאמנות שבתיק; והכנסות אחרות של המנהל, כמו ממוצרים מובנים, מהמרת מטבע ומהחזרי עמלות. כך מחלקת רשות ניירות ערך את ההכנסות של מנהלי התיקים בדוח השנתי שלה. תיק בלי דמי ניהול ישירים שבנוי מקרנות של אותה קבוצה משלם דרך השכבה השלישית, ואת דמי הניהול האלה מקבל מנהל הקרנות של הקבוצה.",
+  "text_he": "רשות ניירות ערך מחלקת בדוח השנתי שלה את ההכנסות של מנהלי התיקים משירות ניהול תיקים לשני סוגים: דמי ניהול ישירים, שמתקבלים ישירות מהלקוח לפי הסכם ניהול התיקים; והכנסות עקיפות, כמו הכנסות מרכישת מוצרים מובנים בשביל לקוחות ומעמלות המרת מטבע, והחזרי עמלות, כלומר סכומים שחבר הבורסה מעביר למנהל התיקים מתוך העמלות שהלקוחות שילמו לו על העסקאות בתיק. מעבר להכנסות של המנהל, הלקוח משלם גם את העמלות ודמי המשמרת של הבנק או חבר הבורסה שמחזיק את החשבון, לפי התעריפון שלו, ואת דמי הניהול בתוך קרנות הנאמנות שבתיק. לפי הרשות, פעילות ניהול התיקים מייצרת הכנסות גם לתאגידים שקשורים למנהל התיקים, ביניהם מנהלי קרנות נאמנות וחברי בורסה.",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -28,10 +28,10 @@
       "locator_he": "עמוד 16",
       "page": 16,
       "quote": "דמי הניהול המתקבלים ישירות מהלקוח בהתאם להסכם ניהול התיקים",
-      "checked": "2026-11-08"
+      "checked": "2026-11-12"
     },
     {
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf#page=16",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf#page=17",
       "title": "ISA 2025 licensees report",
       "title_he": "פעילות חברות בעלות רישיון השקעות 2025",
       "publisher": "Israel Securities Authority",
@@ -41,7 +41,22 @@
       "locator": "p.17",
       "locator_he": "עמוד 17",
       "page": 17,
-      "checked": "2026-11-08"
+      "quote": "הכנסות עקיפות הן סך התשלומים",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf#page=18",
+      "title": "ISA 2025 licensees report",
+      "title_he": "פעילות חברות בעלות רישיון השקעות 2025",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.18",
+      "locator_he": "עמוד 18",
+      "page": 18,
+      "quote": "הכנסות שנוצרו לתאגידים הקשורים למנהל התיק",
+      "checked": "2026-11-12"
     },
     {
       "url": "https://www.meitav.co.il/portfolio_management/private_clients/",
