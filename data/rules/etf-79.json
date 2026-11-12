@@ -15,14 +15,14 @@
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/tax-foreignfunds-etf-faq",
-      "title": "ISA, foreign traded funds approved to offer their units in Israel",
+      "title": "רשימת קרנות חוץ שאושרו להציע את יחידותיהן בישראל",
+      "title_he": "רשימת קרנות חוץ שאושרו להציע את יחידותיהן בישראל",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "pages 1 to 5",
-      "checked": "2026-11-01",
-      "title_he": "רשות ניירות ערך: קרנות זרות שהותר להציע בישראל"
+      "checked": "2026-11-01"
     },
     {
       "url": "https://market.tase.co.il/he/market_data/f-etfs",
