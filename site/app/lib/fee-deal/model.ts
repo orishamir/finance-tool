@@ -4,6 +4,7 @@
 // side stores read this file on every page.
 import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
 import type { CalendarMonth, Deal, DealFee, DealPrice, DealStage } from "@finance-tool/engine";
+import { newId } from "../ids";
 import { engineBase, FEE_SHAPES, holdsFunds, isFeeKindId, ONE_SIDE, type FeeKindId, type FormId, type Held } from "./shapes";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -127,10 +128,7 @@ export const monthsBetween = (a: CalendarMonth, b: CalendarMonth): number => b.y
 
 // ---------------------------------------------------------------- new things
 
-/** Ids made on this page so far: the count keeps ids made in one millisecond apart (a template's fees, a link's), as a deal must (readDeal refuses a repeated fee id). */
-let made = 0;
-/** A new id: the time, the count on this page, and a random part that keeps ids made on two pages at once apart. */
-const newId = (prefix: string) => `${prefix}${Date.now().toString(36)}-${(made++).toString(36)}-${Math.floor(Math.random() * 1296).toString(36)}`;
+// ids never repeat, however many are made in one moment (lib/ids.ts): a deal must have none repeated (readDeal refuses a repeated fee id)
 export const newDealId = () => newId("deal-");
 export const newFeeId = () => newId("fee-");
 

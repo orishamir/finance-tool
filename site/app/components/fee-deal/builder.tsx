@@ -96,7 +96,7 @@ function FeeRowCard({ chosen, label, onChoose, children }: { chosen: boolean; la
     );
   return (
     <li>
-      <PickCard label={label} onPick={onChoose} className="p-4 md:p-5">
+      <PickCard label={label} onPick={onChoose} pad="snug">
         {children}
       </PickCard>
     </li>

@@ -125,12 +125,12 @@ function Law({ cap, law, saved, first }: { cap: CapLine; law: LawRow | null; sav
   if (cap.state === "absent") return null;
   if (cap.state === "none")
     return (
-      <Section title={p.law} level="card" heading="h3" className="gap-2 border-t border-border pt-4">
+      <Section title={p.law} level="card" heading="h3" gap="tight" className="border-t border-border pt-4">
         <CapRules cap={cap} />
       </Section>
     );
   return (
-    <Section title={p.law} level="card" heading="h3" className="gap-3 border-t border-border pt-4">
+    <Section title={p.law} level="card" heading="h3" gap="snug" className="border-t border-border pt-4">
       {law ? <LawBlock row={law} saved={saved} first={first} /> : <CapRules cap={cap} />}
     </Section>
   );
