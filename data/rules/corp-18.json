@@ -22,6 +22,7 @@
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "פרק א' s. 1(ב) and s. 6(ב); פרק ב' s. 1(ב); פרק ג' s. 1(א)(2)",
+      "locator_he": "פרק א' סעיף 1(ב) וסעיף 6(ב); פרק ב' סעיף 1(ב); פרק ג' סעיף 1(א)(2)",
       "checked": "2026-10-22",
       "qualifier": "(TASE rule guidelines)"
     }

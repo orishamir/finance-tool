@@ -21,6 +21,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "table אג״ח צמוד לא סחיר, row מירון*",
+      "locator_he": "טבלה אג״ח צמוד לא סחיר, שורה מירון*",
       "quote": "איגרת החוב אינה מונפקת עוד",
       "checked": "2026-11-12"
     },

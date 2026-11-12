@@ -41,20 +41,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-      "title": "רשות המסים: דע זכויותיך וחובותיך 2025",
-      "title_he": "דע זכויותיך וחובותיך 2025",
-      "publisher": "gov.il",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.85",
-      "locator_he": "עמוד 85",
-      "page": 85,
-      "quote": "רשימת מדינות",
-      "checked": "2026-10-31"
-    },
-    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
@@ -62,18 +48,24 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
+      "locator": "file p.5 (gazette p.287), reg. 1, definition חייב",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 287), תקנה 1, הגדרת חייב",
+      "page": 5,
       "quote": "אדם המשלם דיבידנד או ריבית, בין על חשבונו הוא ובין מטעמו או על חשבונו של אדם אחר",
       "checked": "2026-11-07"
     },
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "quote": "מוסד כספי",
+      "locator": "file p.2 (gazette p.600), s.1(3)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיף 1(3)",
+      "page": 2,
+      "quote": "\"מוסד כספי\" - תאגיד בנקאי או חבר בורסה",
       "checked": "2026-11-07"
     },
     {
@@ -84,7 +76,38 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
+      "locator": "file p.7 (gazette p.289), reg. 2(ד)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 2(ד)",
+      "page": 7,
       "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.600), s.2(6)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיף 2(6)",
+      "page": 2,
+      "quote": "בפסקה (1), במקום \"20%\" יבוא \"25%\"",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "רשות המסים: דע זכויותיך וחובותיך 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.85",
+      "locator_he": "עמוד 85",
+      "page": 85,
+      "quote": "הכנסות מחו״ל משוק ההון המדווחות בהתאם לטופסי 867",
+      "checked": "2026-10-31"
     }
   ]
 }

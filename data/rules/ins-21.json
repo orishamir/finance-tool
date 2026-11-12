@@ -14,7 +14,8 @@
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf#page=12",
-      "title": "s.54, gazette ס״ח תשמ״א, 208 (ספר החוקים 1021)",
+      "title": "חוק הפיקוח על עסקי ביטוח, התשמ\"א-1981, ספר החוקים 1021",
+      "title_he": "חוק הפיקוח על עסקי ביטוח, התשמ\"א-1981, ספר החוקים 1021",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
@@ -26,13 +27,14 @@
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=21",
-      "title": "s.56, gazette ס״ח תשס״ה, 889",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ספר החוקים 2024",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.909 (file p.21), s.56(א)",
-      "locator_he": "עמוד 909 (עמוד הקובץ 21), סעיף 56(א)",
+      "locator": "file p.21 (gazette p.909), s.56(א)",
+      "locator_he": "עמוד הקובץ 21 (עמוד ספר החוקים 909), סעיף 56(א)",
       "page": 21,
       "quote": "30 עד 35",
       "checked": "2026-11-06",
@@ -40,6 +42,7 @@
     }
   ],
   "derived_from": [
+    "REG-22",
     "REG-21",
     "GOV-18"
   ]

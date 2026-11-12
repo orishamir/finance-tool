@@ -64,7 +64,7 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZsA~3yZgyGvixaLSmrNuT9FNV0Dr87ujJ8ymJhX0qnM=#page=2",
       "title": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11179)",
-      "title_he": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין), התשס״ה-2005 (קובץ התקנות 6416; תיקון אחרון: קובץ התקנות 11179)",
+      "title_he": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11179)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
@@ -105,7 +105,7 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/3VdQa5eCEWDjVPlzrIX41WNBZo+J3T+jS1mA+oGnYfY=#page=11",
       "title": "צו מס ערך מוסף (קביעת מוסד כספי) (תיקון), תש\"ם-1980 (קובץ התקנות 4132)",
-      "title_he": "צו מס ערך מוסף (קביעת מוסד כספי), התשל״ז-1977 (קובץ התקנות 3687; תיקון: קובץ התקנות 4132)",
+      "title_he": "צו מס ערך מוסף (קביעת מוסד כספי) (תיקון), תש\"ם-1980 (קובץ התקנות 4132)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
@@ -140,6 +140,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.1, s.1, definition `מוסד כספי`",
+      "locator_he": "עמוד 1, סעיף 1, הגדרת `מוסד כספי`",
       "page": 1,
       "quote": "חברה או אגודה שיתופית העוסקת בקבלת כספים בחשבון עובר ושב",
       "checked": "2026-10-25"

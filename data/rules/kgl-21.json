@@ -36,6 +36,7 @@
       "kind": "dataset",
       "strength": "primary",
       "locator": "row 5",
+      "locator_he": "שורה 5",
       "quote": "קופת גמל להשקעה חיסכון לכל ילד",
       "checked": "2026-11-12"
     },

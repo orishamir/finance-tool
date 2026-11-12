@@ -15,6 +15,34 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6218%2Fheb#page=4",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.376), reg. 9(ב) as enacted",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 376), תקנה 9(ב) בנוסחה המקורי",
+      "page": 4,
+      "quote": "פקיד השומה רשאי להתיר קיזוז בשל הפסדים מניירות ערך שנוצרו אצל מנהל תיק ניירות ערך אחר",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7029%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.1351), reg. 2",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1351), תקנה 2",
+      "page": 3,
+      "quote": "ההפסד נוצר ממכירת נייר ערך שהיה בניהולו של החייב",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
@@ -22,10 +50,37 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "locator": "pp.147-148, s.88; p.161, s.97(א)(5)",
-      "locator_he": "עמודים 147 עד 148, סעיף 88; עמוד 161, סעיף 97(א)(5)",
+      "locator": "pp.147-148, s.88",
+      "locator_he": "עמודים 147 עד 148, סעיף 88",
+      "page": 147,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.148, s.88",
+      "locator_he": "עמוד 148, סעיף 88",
       "page": 148,
       "quote": "חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.161, s.97(א)(5)",
+      "locator_he": "עמוד 161, סעיף 97(א)(5)",
+      "page": 161,
+      "quote": "מתנה לקרוב וכן מתנה ליחיד אחר אם שוכנע פקיד השומה כי המתנה ניתנה בתום לב",
       "checked": "2026-10-25"
     },
     {
@@ -41,34 +96,6 @@
       "page": 69,
       "quote": "מסלול ירוק - העברת ני״ע בין קרובים",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6218%2Fheb#page=4",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית), התשס\"ג-2002, קובץ התקנות 6218 (31.12.2002), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.4 (gazette p.376), reg. 9(ב) as enacted (the assessing officer may allow losses at another portfolio manager after a transfer)",
-      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 376), תקנה 9(ב) בנוסחה המקורי",
-      "page": 4,
-      "quote": "פקיד השומה רשאי להתיר קיזוז בשל הפסדים מניירות ערך שנוצרו אצל מנהל תיק ניירות ערך אחר",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7029%2Fheb#page=3",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.1351), reg. 2 (substituting reg. 9(א): only losses the payer managed, in the same tax year)",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1351), תקנה 2 (החלפת תקנה 9(א))",
-      "page": 3,
-      "quote": "ההפסד נוצר ממכירת נייר ערך שהיה בניהולו של החייב",
-      "checked": "2026-11-07"
     }
   ]
 }

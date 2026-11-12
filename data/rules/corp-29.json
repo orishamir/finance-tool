@@ -28,6 +28,7 @@
     }
   ],
   "derived_from": [
+    "CORP-05",
     "CORP-23",
     "BRK-16",
     "BRK-17"

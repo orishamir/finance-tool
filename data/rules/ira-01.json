@@ -14,25 +14,30 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1",
-      "title": "s.1, gazette ס״ח תשס״ה, 889",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf#page=2",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008, ספר החוקים 2130",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "checked": "2026-10-31"
+      "locator": "file p.2 (gazette p.160), s.1(3)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 160), סעיף 1(3)",
+      "page": 2,
+      "quote": "יבוא \"כקופת גמל לקצבה\"",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
-      "title": "s.13",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.13",
-      "locator_he": "סעיף 13",
+      "locator": "file p.8 (gazette p.896), s.13",
+      "locator_he": "עמוד הקובץ 8 (עמוד ספר החוקים 896), סעיף 13",
+      "page": 8,
       "checked": "2026-10-31"
     },
     {
@@ -62,20 +67,6 @@
       "page": 21,
       "quote": "על קופת גמל בניהול אישי שאושרה לפי",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf#page=2",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008, ספר החוקים 2135 (ס\"ח תשס\"ח, 160)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.2, s.1(3) (adds קופת גמל לקצבה to the definition of קופת גמל בניהול אישי)",
-      "locator_he": "עמוד 2, סעיף 1(3)",
-      "page": 2,
-      "quote": "יבוא \"כקופת גמל לקצבה\"",
-      "checked": "2026-11-07"
     }
   ]
 }

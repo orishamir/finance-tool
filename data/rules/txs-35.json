@@ -14,6 +14,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ2fYurUQ637QU6g8aQkbVy0=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.1351), s.2(1)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1351), סעיף 2(1)",
+      "page": 3,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=155",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
@@ -23,20 +36,8 @@
       "strength": "primary",
       "locator": "s.92(א)(1), (4), (ב)",
       "locator_he": "סעיף 92(א)(1), (4), (ב)",
+      "page": 155,
       "checked": "2026-11-01"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ2fYurUQ637QU6g8aQkbVy0=#page=3",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"א-2011, קובץ התקנות 7029 (31.8.2011)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע״א-2011, קובץ התקנות 7029 (31.8.2011)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.1351), s.2(1), replacing reg. 9(א)",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1351), סעיף 2(1), החלפת תקנה 9(א)",
-      "page": 3,
-      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf#page=12",

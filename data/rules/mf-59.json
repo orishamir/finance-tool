@@ -13,27 +13,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=67",
-      "title": "file p.67",
-      "publisher": "Israel Securities Authority",
-      "publisher_he": "רשות ניירות ערך",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "locator": "s.103(1)",
-      "locator_he": "סעיף 103(1)",
-      "checked": "2026-11-01"
-    },
-    {
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=6",
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
-      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Israel Securities Authority",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "checked": "2026-11-01"
-    },
-    {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=32",
       "title": "תקנות השקעות משותפות בנאמנות (פרטי תשקיף של קרן, מבנהו וצורתו) (תיקון), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
       "title_he": "תקנות השקעות משותפות בנאמנות (פרטי תשקיף של קרן, מבנהו וצורתו) (תיקון), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
@@ -43,8 +22,37 @@
       "strength": "primary",
       "locator": "file p.32 (gazette p.1032), item (12)",
       "locator_he": "עמוד הקובץ 32 (עמוד הרשומות 1032), פרט (12)",
+      "page": 32,
       "quote": "אם תקופת קיום הקרן מוגבלת",
       "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=6",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6, s.5(א)(10)",
+      "locator_he": "עמוד 6, סעיף 5(א)(10)",
+      "page": 6,
+      "quote": "תקופת קיומה של הקרן, אם הוגבלה התקופה",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=67",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.67, s.103(1)",
+      "locator_he": "עמוד 67, סעיף 103(1)",
+      "page": 67,
+      "quote": "נסתיימה תקופת קיומה של הקרן כפי שנקבע בהסכם הקרן",
+      "checked": "2026-11-01"
     }
   ]
 }

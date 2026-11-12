@@ -276,6 +276,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.4 and p.10",
+      "locator_he": "עמוד 4 ועמוד 10",
       "page": 4,
       "checked": "2026-10-25"
     },

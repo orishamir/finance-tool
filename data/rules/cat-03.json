@@ -23,6 +23,7 @@
       "kind": "dataset",
       "strength": "primary",
       "locator": "row 1",
+      "locator_he": "שורה 1",
       "quote": "כלל הסכומים הנקובים בשורה הינם במיליוני שקלים",
       "checked": "2026-11-12"
     },

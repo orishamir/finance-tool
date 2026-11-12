@@ -20,8 +20,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.3 (gazette p.1349), reg. 4 (adding reg. 19א)",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1349), תקנה 4 (הוספת תקנה 19א)",
+      "locator": "file p.3 (gazette p.1349), reg. 4",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1349), תקנה 4",
+      "page": 3,
       "quote": "אלא אם כן הוא יחיד שיש לו הכנסות מעסק או ממשלח יד",
       "checked": "2026-11-07"
     },
@@ -33,8 +34,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.3 (gazette p.367), reg. 6(2) (reg. 19א marked (א))",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 367), תקנה 6(2) (האמור בתקנה 19א מסומן (א))",
+      "locator": "file p.3 (gazette p.367), reg. 6(2)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 367), תקנה 6(2)",
+      "page": 3,
       "checked": "2026-11-07"
     },
     {
@@ -45,8 +47,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.4 (gazette p.858), reg. 1 (substituting reg. 1), definition 'עמית-עצמאי'",
-      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 858), תקנה 1 (החלפת תקנה 1), ההגדרה 'עמית-עצמאי'",
+      "locator": "file p.4 (gazette p.858), reg. 1, definition 'עמית-עצמאי'",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 858), תקנה 1, הגדרת 'עמית-עצמאי'",
+      "page": 4,
       "quote": "עמית יחיד, לרבות עובד בשל תשלום שהוא משלם לקופת גמל בלא תשלום מקביל של מעביד",
       "checked": "2026-11-07"
     },

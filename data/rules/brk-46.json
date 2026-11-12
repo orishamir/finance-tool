@@ -33,6 +33,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "p.4 row 9, p.13 row 3, p.14 row 19",
+      "locator_he": "עמוד 4 שורה 9, עמוד 13 שורה 3, עמוד 14 שורה 19",
       "page": 4,
       "checked": "2026-10-26"
     },

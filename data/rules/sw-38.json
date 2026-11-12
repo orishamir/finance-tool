@@ -15,6 +15,32 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5517%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ\"ג-1993, קובץ התקנות 5517 (22.4.1993)",
+      "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ״ג-1993",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.766), regs. 1-3 as enacted",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 766), תקנות 1-3 בנוסחן המקורי",
+      "page": 2,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5768%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד) (תיקון), התשנ\"ו-1996, קובץ התקנות 5768 (27.6.1996)",
+      "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד) (תיקון), התשנ\"ו-1996, קובץ התקנות 5768 (27.6.1996)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.1348), reg. 1",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 1348), תקנה 1",
+      "page": 2,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
       "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
       "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
@@ -52,30 +78,6 @@
       "locator_he": "עמוד 1",
       "page": 1,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5517%2Fheb#page=2",
-      "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ\"ג-1993, קובץ התקנות 5517 (22.4.1993), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ\"ג-1993, קובץ התקנות 5517 (22.4.1993), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.766), regs. 1-3 as enacted",
-      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 766), תקנות 1-3 בנוסחן המקורי",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F5768%2Fheb#page=2",
-      "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד) (תיקון), התשנ\"ו-1996, קובץ התקנות 5768 (27.6.1996), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד) (תיקון), התשנ\"ו-1996, קובץ התקנות 5768 (27.6.1996), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.2 (gazette p.1348), reg. 1 (adding reg. 1(ב), a salaried and a self-employed account seen as one)",
-      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 1348), תקנה 1 (הוספת תקנה 1(ב))",
-      "checked": "2026-11-07"
     },
     {
       "url": "https://boi.org.il/media/qempydw4/h2863.pdf",

@@ -14,20 +14,6 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.4, reg. 2(א)(1), 2(ב)",
-      "locator_he": "עמוד 4, תקנה 2(א)(1), 2(ב)",
-      "page": 4,
-      "quote": "לפי מרכיבי חשבון קופת הגמל בקופה המעבירה",
-      "checked": "2026-10-25"
-    },
-    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
@@ -49,11 +35,25 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, s.3 (adds reg. 3(א)(11א); reg. 3(ב) is not amended)",
-      "locator_he": "עמוד 2, סעיף 3 (מוסיף את תקנה 3(א)(11א); תקנה 3(ב) לא תוקנה)",
+      "locator": "p.2, s.3",
+      "locator_he": "עמוד 2, סעיף 3",
       "page": 2,
       "quote": "מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
       "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(1), 2(ב)",
+      "locator_he": "עמוד 4, תקנה 2(א)(1), 2(ב)",
+      "page": 4,
+      "quote": "לפי מרכיבי חשבון קופת הגמל בקופה המעבירה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
@@ -99,7 +99,7 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bMMl8kD79jjAGdMyfpq2CaEqca27WIXRVq1k8yn3eXI=#page=21",
       "title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופת גמל) (תיקון), התשנ\"ד-1994 (קובץ התקנות 5613)",
-      "title_he": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש״ן-1990 (קובץ התקנות 5287; תיקון: קובץ התקנות 5613)",
+      "title_he": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופת גמל) (תיקון), התשנ\"ד-1994 (קובץ התקנות 5613)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",

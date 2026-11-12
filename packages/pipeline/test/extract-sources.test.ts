@@ -39,6 +39,53 @@ describe("extract-sources: fixture Source lines", () => {
     expect(other.kind).toBe("regulation");
   });
 
+  it("an amendment keeps its own title: a documents row names the document it amends, not the amendment's booklet (2026-11-12)", () => {
+    const documents = [
+      { id: "regs-2005", match: ["ניכוי מריבית, מדיבידנד ומרווחים מסוימים"], title_he: "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005", publisher_he: "שר האוצר", kind: "regulation" as const, official_url: null },
+      { id: "funds-law-31", match: ["חוק השקעות משותפות בנאמנות (תיקון מס' 31)"], title_he: "חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024", publisher_he: "הכנסת", kind: "law" as const, official_url: null },
+    ];
+    const publishers = { "api.justice.gov.il": { publisher: "Reshumot", publisher_he: "רשומות", kind: "law" as const } };
+    const at = (title: string) => extractFromLine(`[${title}](https://api.justice.gov.il/reshumot/resolver?path=x) · checked 2026-11-12 · primary`, ctx({ documents, publishers })).sources[0]!;
+    // the regulations themselves take the row
+    expect(at("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005").title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005");
+    // their 2012 amendment came out under the 2005 regulations' title and "שר האוצר"; it is its own booklet
+    const amendment = at("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)");
+    expect(amendment.title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)");
+    expect(amendment.publisher_he).toBe("רשומות");
+    expect(amendment.kind).toBe("regulation");
+    expect(at("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון מס' 2), התשע\"ח-2017").publisher_he).toBe("רשומות");
+    // a row whose own token names the amendment still labels it
+    expect(at("חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024").title_he).toBe("חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024");
+    // a circular whose name ends "– תיקון" and a consolidated text are not amendments of the row's document
+    expect(at("חוזר (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) – תיקון").publisher_he).toBe("שר האוצר");
+    // an amendment titled in English has no Hebrew title of its own to show, so it keeps the row's until its block names it in Hebrew
+    expect(at("ניכוי מריבית, מדיבידנד ומרווחים מסוימים, the 2016 amendment (KT 7653)").title_he).toBe("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005");
+  });
+
+  it("a first passage whose quote stands in parentheses names only its own place; the later passages are their own sources (2026-11-12)", () => {
+    const res = extractFromLine('[חוזר מס הכנסה 1/2020](https://www.gov.il/x/hoz1-2020.pdf), p.5, s.3 ("הכנסה מריבית תחויב במס"); p.6, s.4.3.3 "ניכוי במקור" · checked 2026-11-12 · primary', ctx());
+    expect(res.sources.map((x) => x.locator)).toEqual(["p.5, s.3", "p.6, s.4.3.3"]);
+    expect(res.sources.map((x) => x.page)).toEqual([5, 6]);
+    expect(res.sources.map((x) => x.quote)).toEqual(["הכנסה מריבית תחויב במס", "ניכוי במקור"]);
+  });
+
+  it("a quote in parentheses that holds a parenthesis of its own leaves no words in the locator (2026-11-12)", () => {
+    expect(cleanLocator('p.155, s.92(א)(3) ("רווח הון כאמור בסעיף 91(ד) יקוזז תחילה כנגד רווח הון מחוץ לישראל")')).toBe("p.155, s.92(א)(3)");
+  });
+
+  it("a locator that names a definition, a footnote, a row, a table or an appendix has a Hebrew form (2026-11-12)", () => {
+    expect(toHebrewLocator("file p.3 (gazette p.375), reg. 1(א), definition מוסד כספי")).toBe("עמוד הקובץ 3 (עמוד הרשומות 375), תקנה 1(א), הגדרת מוסד כספי");
+    expect(toHebrewLocator("reg. 1(א), definitions הוצאות and ניירות ערך זהים")).toBe("תקנה 1(א), הגדרות הוצאות וניירות ערך זהים");
+    expect(toHebrewLocator("p.2 (gazette p.900), regs. 1-2 and footnote 2")).toBe("עמוד 2 (עמוד הרשומות 900), תקנות 1-2 והערת שוליים 2");
+    expect(toHebrewLocator("p.4 row 9, p.13 row 3")).toBe("עמוד 4 שורה 9, עמוד 13 שורה 3");
+    expect(toHebrewLocator("p.12, table ד-14")).toBe("עמוד 12, טבלה ד-14");
+    expect(toHebrewLocator("p.10, appendix")).toBe("עמוד 10, נספח");
+    expect(toHebrewLocator("pp.28-29, annex 1; p.15, footnote 1")).toBe("עמודים 28 עד 29, נספח 1; עמוד 15, הערת שוליים 1");
+    // words with no rule still leave the locator in English, whole
+    expect(toHebrewLocator("file p.18, Schedule E")).toBeUndefined();
+    expect(toHebrewLocator("p.5, s.3 and the table of contents")).toBeUndefined();
+  });
+
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
     const line =
       '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';

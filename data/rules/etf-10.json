@@ -13,6 +13,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=14",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.14 (gazette p.1014), reg. 18(ב)(10)",
+      "locator_he": "עמוד הקובץ 14 (עמוד הרשומות 1014), תקנה 18(ב)(10)",
+      "page": 14,
+      "quote": "אם נכס הייחוס של הקרן נקוב במטבע חוץ או צמוד לו",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
       "title": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
       "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
@@ -37,19 +51,6 @@
       "locator_he": "עמוד 20",
       "page": 20,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=14",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
-      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.14 (gazette p.1014), reg. 18(ב)(10)",
-      "locator_he": "עמוד הקובץ 14 (עמוד הרשומות 1014), תקנה 18(ב)(10)",
-      "quote": "אם נכס הייחוס של הקרן נקוב במטבע חוץ או צמוד לו",
-      "checked": "2026-11-07"
     }
   ]
 }

@@ -186,6 +186,12 @@ function strengthHits(text: string): StrengthHit[] {
 }
 
 const CHECKED_RE = /checked (\d{4}-\d{2}-\d{2})/;
+/**
+ * A title that names an amendment as the document itself, the way legislation does: "(תיקון)", "(תיקון מס' 10)", "(Amendment 9)", "the 2016
+ * amendment", "Amendment Regulations". A circular whose own name ends "– תיקון", a text "consolidated (amendments to 30.12.2014)" and a circular
+ * about "תיקון 190" are not amendments of the document a row names.
+ */
+const NAMES_AMENDMENT = /\((?:תיקון|amendment)(?:\)|\s+(?:מס|no\b|\d))|\bthe \d{4} amendment\b|\bamendment regulations\b/i;
 
 // ---------------------------------------------------------------- locator, page, quote
 
@@ -208,7 +214,9 @@ function isLocatorRemark(part: string): boolean {
 export function cleanLocator(text: string): string {
   // Hebrew abbreviations such as תשע"ה carry a quote mark that is not a quotation; mask it while cutting.
   let t = text.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "\uE000");
-  t = t.replace(/\(\s*["“״][^)]*\)/g, " ");
+  // a quote in parentheses goes whole, up to its closing mark: one that holds a parenthesis of its own ("…לפי סעיף 91(ד)…") used to
+  // end at that parenthesis and leave its last words in the locator
+  t = t.replace(/\(\s*["“״][^"”״]*["”״]\s*\)/g, " ").replace(/\(\s*["“״][^)]*\)/g, " ");
   const q = t.search(/["“]/);
   if (q >= 0) t = t.slice(0, q);
   t = t.replace(/\uE000/g, '"');
@@ -272,6 +280,18 @@ export function toHebrewLocator(locator: string, url = ""): string | undefined {
     .replace(/\bfirst schedule\b/gi, "התוספת הראשונה")
     .replace(/\bannex\s+(?=[\u05D0-\u05EA])/gi, "נספח ")
     .replace(/\bannex\s+([a-e])\b/gi, (_m, l: string) => `נספח ${LATIN_TO_HE[l.toLowerCase()]}`)
+    .replace(/\bannex\s+(?=\d)/gi, "נספח ")
+    .replace(/\bappendix\s+([a-e])\b/gi, (_m, l: string) => `נספח ${LATIN_TO_HE[l.toLowerCase()]}`)
+    .replace(/\bappendix\b(?!\s*[A-Za-z])/gi, "נספח")
+    // "reg. 1, definition 'עמית-עצמאי'", "p.2, footnote 1", "p.5 row 11", "table ד-12": until 2026-11-12 any of these words left the
+    // whole locator in English on the card
+    .replace(/\bdefinitions\b/gi, "הגדרות")
+    .replace(/\bdefinition(?: of)?\b/gi, "הגדרת")
+    .replace(/\bfootnotes\s+(?=\d)/gi, "הערות שוליים ")
+    .replace(/\bfootnote\s+(?=\d)/gi, "הערת שוליים ")
+    .replace(/\brows\s+(?=[\d\u05D0-\u05EA])/gi, "שורות ")
+    .replace(/\brow\s+(?=[\d\u05D0-\u05EA])/gi, "שורה ")
+    .replace(/\btable\b(?!\s*[A-Za-z])/gi, "טבלה")
     .replace(/\bparts\s+/gi, "חלקים ")
     .replace(/\bpart\s+/gi, "חלק ")
     .replace(/\bitems\s+/gi, "פרטים ")
@@ -279,7 +299,9 @@ export function toHebrewLocator(locator: string, url = ""): string | undefined {
     .replace(/(\d)\s+to\s+(?=[\d(])/gi, "$1 עד ")
     .replace(/\)\s+to\s+(?=[\d(])/gi, ") עד ")
     .replace(/\(([a-e])(\d*)\)/gi, (_m, l: string, d: string) => `(${LATIN_TO_HE[l.toLowerCase()]}${d})`)
-    .replace(/(\d)([a-e])(\d*)(?![A-Za-z])/gi, (_m, n: string, l: string, d: string) => `${n}${LATIN_TO_HE[l.toLowerCase()]}${d}`);
+    .replace(/(\d)([a-e])(\d*)(?![A-Za-z])/gi, (_m, n: string, l: string, d: string) => `${n}${LATIN_TO_HE[l.toLowerCase()]}${d}`)
+    // "s.1 and s.5" once both sides are in Hebrew
+    .replace(/\s+and\s+(?=[\u05D0-\u05EA])/gi, " ו");
   t = t.replace(/\s+/g, " ").trim();
   if (/[A-Za-z]/.test(t)) return undefined;
   return t || undefined;
@@ -453,11 +475,17 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
 
     const pub = ctx.publishers?.[host];
     const title = link.title.replace(/\s+/g, " ").trim() || host;
-    // the longest matching token wins across the table (tokens nest); a tie keeps the table's order
+    // the longest matching token wins across the table (tokens nest); a tie keeps the table's order. A link whose title names an
+    // amendment is not the document a row names, unless the row's own token names the amendment: an amendment's title holds the name
+    // of what it amends, and the row would give the card the amended regulations' title and date for the amendment's booklet
+    // ("…(ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012" came out as the 2005 regulations; 2026-11-12).
+    // Only where the link's own title is Hebrew, so that it can be the card's title: an amendment titled in English keeps the row's
+    // Hebrew title until its block names it in Hebrew.
+    const amends = NAMES_AMENDMENT.test(title) && /[א-ת]/.test(title) && !/[A-Za-z]/.test(title);
     const doc = (ctx.documents ?? [])
       .filter((d) => !d.hosts || d.hosts.includes(host))
       .flatMap((d) => d.match.filter(Boolean).map((tok) => ({ d, tok })))
-      .filter((c) => title.toLowerCase().includes(c.tok.toLowerCase()))
+      .filter((c) => title.toLowerCase().includes(c.tok.toLowerCase()) && (!amends || /תיקון|amend/i.test(c.tok)))
       .sort((a, b) => b.tok.length - a.tok.length)[0]?.d;
     const entry: ExtractedSource = {
       url,
@@ -497,7 +525,9 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
     const lead = quoteApart ? passages.slice(0, firstQuoted) : covered;
     // a lead before a quoted passage takes its locator from its own text alone; with no place of its own it is no source
-    const leadLocator = quoteApart ? cleanLocator(lead.join("; ")) : locator;
+    // (so does a first passage whose quote stands in parentheses: the locator of the whole text would name every later passage too,
+    // each of which is a source of its own below)
+    const leadLocator = quoteApart || lead.length < passages.length ? cleanLocator(lead.join("; ")) : locator;
     locate(entry, leadLocator, lead.join("; "));
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
@@ -601,12 +631,27 @@ const titleKey = (t: string): string =>
     .replace(/[\s,;:.]+$/, "")
     .trim() || t;
 
-function main() {
-  const root = fileURLToPath(new URL("../../../", import.meta.url));
-  const drift = process.argv.includes("--drift");
-  const dry = process.argv.includes("--dry") || drift;
-  const onlyArg = process.argv.find((a) => a.startsWith("--only="));
-  const only = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean)) : undefined;
+/** What one pass over the records gives: the ids whose record differs from what its block gives, and the report's figures. */
+export interface ExtractionRun {
+  /** The ids of the records whose text differs from what the extraction writes from their block today. */
+  drifted: string[];
+  /** How many records there are. */
+  records: number;
+  /** The ids named by `only` that have no record. */
+  unknownOnly: string[];
+  rep: Report;
+  tables: { publishers: boolean; documents: boolean };
+  scopeCounts: Record<string, number>;
+  scopeProblems: string[];
+}
+
+/**
+ * One pass over every rule record under `root`: what its block's Source and Scope lines give, set against the record. With `write`,
+ * a record that differs is written (only those of `only`, when given); without it nothing is written, which is how the data check
+ * asks whether any record has drifted from its block (`records-match-blocks.test.ts`).
+ */
+export function extractAll(root: string, opts: { write?: boolean; only?: Set<string> } = {}): ExtractionRun {
+  const { write = false, only } = opts;
   const drifted: string[] = [];
   const rulesDir = join(root, "data/rules");
   const base = readRuleBaseIds(join(root, ".claude/skills/il-finance/references"));
@@ -710,15 +755,25 @@ function main() {
     }
     const out = writeKeys(text, add);
     if (out !== text) drifted.push(rec.id);
-    if (!dry && out !== text && (!only || only.has(rec.id))) writeFileSync(path, out);
+    if (write && out !== text && (!only || only.has(rec.id))) writeFileSync(path, out);
   }
-  if (only) for (const id of only) if (!known.has(id)) console.error(`--only: no record for ${id}`);
+  return { drifted, records: files.length, unknownOnly: only ? [...only].filter((id) => !known.has(id)) : [], rep, tables: { publishers: !!publishers, documents: !!documents }, scopeCounts, scopeProblems };
+}
+
+function main() {
+  const root = fileURLToPath(new URL("../../../", import.meta.url));
+  const drift = process.argv.includes("--drift");
+  const dry = process.argv.includes("--dry") || drift;
+  const onlyArg = process.argv.find((a) => a.startsWith("--only="));
+  const only = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean)) : undefined;
+  const { drifted, records, unknownOnly, rep, tables, scopeCounts, scopeProblems } = extractAll(root, { write: !dry, only });
+  for (const id of unknownOnly) console.error(`--only: no record for ${id}`);
   if (drift) {
-    console.log(`${drifted.length} of ${files.length} records differ from what their blocks give today${drifted.length ? `:\n${drifted.join(", ")}` : ""}`);
+    console.log(`${drifted.length} of ${records} records differ from what their blocks give today${drifted.length ? `:\n${drifted.join(", ")}` : ""}`);
     return;
   }
 
-  const md = renderReport(rep, { publishers: !!publishers, documents: !!documents });
+  const md = renderReport(rep, tables);
   console.log(md);
   console.log(`Scope: ${Object.entries(scopeCounts).map(([k, v]) => `${k} ${v}`).join(", ")}; problems ${scopeProblems.length}`);
   for (const p of scopeProblems) console.error(`scope: ${p}`);

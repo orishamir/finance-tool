@@ -57,6 +57,32 @@
   ],
   "sources": [
     {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/One%20Zero%20General%20terms%20and%20conditions_output%20(3)%20(1).pdf#page=16",
+      "title": "וואן זירו: תנאים כלליים לניהול חשבון, מהדורה 07/25",
+      "title_he": "וואן זירו: תנאים כלליים לניהול חשבון, מהדורה 07/25",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.16; p.82, s.110.4",
+      "locator_he": "עמוד 16; עמוד 82, סעיף 110.4",
+      "page": 16,
+      "checked": "2026-11-09"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf#page=1",
+      "title": "ONE ZERO: חיסכון חודשי, תנאי הפיקדון v11",
+      "title_he": "וואן זירו: חיסכון חודשי, תנאי הפיקדון (גרסה 11)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1, s.1.2, s.3.1, s.3.2",
+      "locator_he": "עמוד 1, סעיף 1.2, סעיף 3.1, סעיף 3.2",
+      "page": 1,
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/General/chozim%20achidim/310-93%20-%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F%20%D7%94%D7%9C%D7%95%D7%95%D7%90%D7%95%D7%AA%20%D7%90%D7%95%D7%9F%20%D7%A7%D7%95%D7%9C%20(002)%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9-PDFUA.pdf#page=61",
       "title": "לאומי: תנאים כלליים 310-93 (06.26)",
       "title_he": "לאומי: תנאים כלליים 310-93 (06.26)",
@@ -179,8 +205,8 @@
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "pp.1-2",
-      "locator_he": "עמודים 1 עד 2",
+      "locator": "pp.1-2; p.7",
+      "locator_he": "עמודים 1 עד 2; עמוד 7",
       "page": 1,
       "checked": "2026-11-01"
     },
@@ -191,9 +217,31 @@
       "publisher_he": "בנק ירושלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.5, and its",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
       "page": 5,
       "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
+      "title": "ONE ZERO: פיקדונות, טבלת תנאי הפיקדונות",
+      "title_he": "וואן זירו: פיקדונות, טבלת תנאי הפיקדונות",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "סוג הריבית",
+      "checked": "2026-11-09"
+    },
+    {
+      "url": "https://www.onezerobank.com/special/5612",
+      "title": "ONE ZERO: פקדונות וחסכונות",
+      "title_he": "וואן זירו: פקדונות וחסכונות",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-07"
     },
     {
       "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
@@ -254,53 +302,6 @@
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-11-01"
-    },
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%97%D7%95%D7%93%D7%A9%D7%99_announcement.pdf#page=1",
-      "title": "ONE ZERO: חיסכון חודשי, תנאי הפיקדון v11",
-      "title_he": "וואן זירו: חיסכון חודשי, תנאי הפיקדון (גרסה 11)",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1, s.1.2, s.3.1, s.3.2",
-      "locator_he": "עמוד 1, סעיף 1.2, סעיף 3.1, סעיף 3.2",
-      "page": 1,
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/ONE%20ZERO%20-%20Savings%20_accessible.pdf",
-      "title": "ONE ZERO: פיקדונות, טבלת תנאי הפיקדונות",
-      "title_he": "וואן זירו: פיקדונות, טבלת תנאי הפיקדונות",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "סוג הריבית",
-      "checked": "2026-11-09"
-    },
-    {
-      "url": "https://www.onezerobank.com/special/5612",
-      "title": "ONE ZERO: פקדונות וחסכונות",
-      "title_he": "וואן זירו: פקדונות וחסכונות",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/One%20Zero%20General%20terms%20and%20conditions_output%20(3)%20(1).pdf#page=16",
-      "title": "ONE ZERO: General terms for managing an account, edition 07/25",
-      "title_he": "וואן זירו: תנאים כלליים לניהול חשבון, מהדורה 07/25",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.16, definition of prime; p.82, s.110.4",
-      "locator_he": "עמוד 16, הגדרת ריבית הפריים; עמוד 82, סעיף 110.4",
-      "page": 16,
-      "checked": "2026-11-09"
     }
   ],
   "derived_from": [

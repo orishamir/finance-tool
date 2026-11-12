@@ -17,13 +17,13 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=6",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.6 (gazette p.288), reg. 1, definition נכס שאינו צמוד למדד",
-      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 288), תקנה 1, ההגדרה נכס שאינו צמוד למדד",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 288), תקנה 1, הגדרת נכס שאינו צמוד למדד",
       "page": 6,
       "quote": "לרבות נכס שצמוד בחלקו לשיעור עליית המדד",
       "checked": "2026-11-07"
@@ -37,6 +37,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.146, s.88, definition מדד",
+      "locator_he": "עמוד 146, סעיף 88, הגדרת מדד",
       "page": 146,
       "quote": "על אף האמור, לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
       "checked": "2026-10-26"
@@ -64,6 +65,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.204, s.125ג(א), definition מדד",
+      "locator_he": "עמוד 204, סעיף 125ג(א), הגדרת מדד",
       "page": 204,
       "quote": "ובנכס שערכו צמוד למטבע חוץ או שהוא נקוב במטבע חוץ – שער המטבע",
       "checked": "2026-10-25"

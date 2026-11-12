@@ -22,6 +22,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.3, row 5",
+      "locator_he": "עמוד 3, שורה 5",
       "page": 3,
       "quote": "הפרשות המעסיק מעבר לתקרה-חייבות בזקיפת שווי",
       "checked": "2026-11-06",

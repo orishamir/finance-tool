@@ -35,6 +35,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.33, s.9(2)(ב), definition of קופת גמל",
+      "locator_he": "עמוד 33, סעיף 9(2)(ב), הגדרת קופת גמל",
       "page": 33,
       "quote": "למעט קופת ביטוח",
       "checked": "2026-10-25"
@@ -61,6 +62,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.2, ss.1-2 (definition of קופת גמל להשקעה; s.13(א))",
+      "locator_he": "עמוד 2, סעיפים 1-2 (הגדרת קופת גמל להשקעה; סעיף 13(א))",
       "page": 2,
       "checked": "2026-10-25"
     }

@@ -22,17 +22,23 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
+      "locator": "file p.7 (gazette p.289), reg. 2(ד)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 2(ד)",
+      "page": 7,
       "checked": "2026-11-07"
     },
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "שר האוצר",
+      "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "quote": "בפסקה (1), במקום",
+      "locator": "file p.2 (gazette p.600), s.2(6)",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 600), סעיף 2(6)",
+      "page": 2,
+      "quote": "בפסקה (1), במקום \"20%\" יבוא \"25%\"",
       "checked": "2026-11-07"
     },
     {
@@ -43,6 +49,9 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
+      "locator": "file p.238, s.164",
+      "locator_he": "עמוד הקובץ 238, סעיף 164",
+      "page": 238,
       "quote": "בשעת התשלום",
       "checked": "2026-10-31"
     }

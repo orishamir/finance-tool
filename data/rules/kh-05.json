@@ -21,8 +21,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.3 (gazette p.1349), reg. 3(2) (adding the one-third condition as reg. 19(ב1), now 19(ב2)(1))",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1349), תקנה 3(2) (הוספת תקנת משנה (ב1), כיום (ב2)(1))",
+      "locator": "file p.3 (gazette p.1349), reg. 3(2)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 1349), תקנה 3(2)",
+      "page": 3,
       "quote": "יחול רק אם העמית ישלם אף הוא מדי חודש בחודשו לקרן שליש לפחות מהסכום ששילם המעביד",
       "checked": "2026-11-07"
     },
@@ -34,8 +35,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.3 (gazette p.367), reg. 5(2) (reg. 19(ב1) renumbered (ב2))",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 367), תקנה 5(2) (תקנת משנה (ב1) מסומנת (ב2))",
+      "locator": "file p.3 (gazette p.367), reg. 5(2)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 367), תקנה 5(2)",
+      "page": 3,
       "checked": "2026-11-07"
     },
     {
@@ -46,8 +48,9 @@
       "publisher_he": "רשומות",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.2 (gazette p.1134), reg. 1 (reg. 19(ב2) numbered (1); (2) added, the exception for a physician paying under a collective agreement)",
-      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 1134), תקנה 1 (תקנה 19(ב2) מסומנת (1) ונוספה פסקה (2))",
+      "locator": "file p.2 (gazette p.1134), reg. 1",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 1134), תקנה 1",
+      "page": 2,
       "quote": "לא יחולו על עמית-רופא",
       "checked": "2026-11-07"
     }

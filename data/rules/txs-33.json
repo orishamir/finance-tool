@@ -15,6 +15,60 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.285), s.5",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 285), סעיף 5",
+      "page": 3,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"ב-2012, קובץ התקנות 7071 (1.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"ב-2012, קובץ התקנות 7071 (1.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.521), s.3",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 521), סעיף 3",
+      "page": 3,
+      "quote": "בתקנה 3א לתקנות העיקריות, במקום \"20%\" יבוא \"25%\"",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=67",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח באתר רשות ניירות ערך",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.67, s.103; file p.70, s.107(ב)(1)",
+      "locator_he": "עמוד הקובץ 67, סעיף 103; עמוד הקובץ 70, סעיף 107(ב)(1)",
+      "page": 67,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=71",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח באתר רשות ניירות ערך",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.71, s.108(ה)",
+      "locator_he": "עמוד הקובץ 71, סעיף 108(ה)",
+      "page": 71,
+      "quote": "מפרק קרן יפדה את יחידות הקרן במועד הפירוק",
+      "checked": "2026-11-01"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
@@ -24,6 +78,7 @@
       "strength": "primary",
       "locator": "s.88",
       "locator_he": "סעיף 88",
+      "page": 150,
       "quote": "כמשמעותם בחוק השקעות משותפות בנאמנות",
       "checked": "2026-11-01"
     },
@@ -36,6 +91,8 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.88, definition מכירה",
+      "locator_he": "סעיף 88, הגדרת מכירה",
+      "page": 148,
       "checked": "2026-11-01"
     },
     {
@@ -48,6 +105,7 @@
       "strength": "primary",
       "locator": "s.93(א)(3), (4)",
       "locator_he": "סעיף 93(א)(3), (4)",
+      "page": 156,
       "checked": "2026-11-01"
     },
     {
@@ -59,34 +117,9 @@
       "kind": "law",
       "strength": "primary",
       "locator": "s.1, definition חבר בני אדם",
+      "locator_he": "סעיף 1, הגדרת חבר בני אדם",
+      "page": 12,
       "checked": "2026-11-01"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=3",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.285), s.5, adding reg. 3א",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 285), סעיף 5, הוספת תקנה 3א",
-      "page": 3,
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=#page=3",
-      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע\"ב-2012, קובץ התקנות 7071 (1.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית) (תיקון), התשע״ב-2012, קובץ התקנות 7071 (1.1.2012)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.521), s.3, amending reg. 3א",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 521), סעיף 3, תיקון תקנה 3א",
-      "page": 3,
-      "quote": "בתקנה 3א לתקנות העיקריות, במקום \"20%\" יבוא \"25%\"",
-      "checked": "2026-11-07"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf#page=4",
@@ -100,17 +133,6 @@
       "locator_he": "עמוד 4",
       "page": 4,
       "quote": "מחייב את הקרן עד לפירוקה",
-      "checked": "2026-11-01"
-    },
-    {
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=71",
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח באתר רשות ניירות ערך",
-      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Israel Securities Authority",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "quote": "מפרק קרן יפדה את יחידות הקרן במועד הפירוק",
       "checked": "2026-11-01"
     }
   ]

@@ -99,12 +99,19 @@ edit; a record edited by hand no longer matches its block.
 - **After editing blocks**, write only their records:
   `npm run extract:sources -w @finance-tool/pipeline -- --only=KGL-12,MF-25`.
   Every other record stays as it is. `-- --drift` lists the records that
-  differ from what their blocks give today.
+  differ from what their blocks give today. The check fails while any
+  record differs (`packages/pipeline/test/records-match-blocks.test.ts`),
+  so a change to the registry of publishers and documents, or to the
+  extraction itself, is followed by writing the records it touches.
 - **Dates.** A source with no `checked` date of its own takes the next date
   after it on the line: the trailer `· checked YYYY-MM-DD · strength` closes
   the run of links before it. Give a source its own date when it was read
   on another day. The date is the day the document was read at its address;
   a quote read only in the library's stored copy keeps the copy's date.
+- **Titles.** A link's text is the document's own name. An amendment is named
+  as itself, in Hebrew: "… (תיקון), התשע״ב-2012, קובץ התקנות 7076". The card
+  then shows that name; an amendment titled in English is shown under the
+  name of the regulations it amends, which is the wrong booklet.
 - **Pages.** A page is the page of the file, the one a PDF viewer shows.
   Write `p.12`, or `file p.12 (gazette p.246)` when the sheet prints another
   number. A link that carries `#page=` carries the same page; the site opens
