@@ -6,7 +6,7 @@
 // amount goes through the provenance component, as the record's own figure; the interest as a computed one.
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
-import { depositBrowser as t, r4catalogue as rc } from "../../copy";
+import { depositBrowser as t } from "../../copy";
 import { HELP_TERMS, accessOf, ascending, interestOn, interestText, isLinked, rowSplit, variantWords, type DbBank, type DbOffer, type DbRow, type RowSplit, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
 import { exitTiming } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
@@ -14,43 +14,10 @@ import type { Label } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { Num, Term } from "../provenance";
 import { HelpMark, LabelChip, MeterBar, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
+import { AmountRange, AnchorSpread } from "./deposit-words";
 import { IconChevronDown } from "../icons";
 
 const muted = "text-sm text-muted-foreground";
-
-/** "פריים פחות 1.5 נקודות אחוז": a variable rate's anchor and spread, in words, since a minus sign misreads in Hebrew (BANK-47). */
-function AnchorLine({ o }: { o: DbOffer }) {
-  if (o.kind !== "variable" || !o.spread) return null;
-  const v = Number(o.spread.value);
-  return (
-    <span className={cx(muted, "block whitespace-normal")}>
-      {o.anchor === "prime" ? rc.rateType.prime : <MixedName>{o.anchor ?? ""}</MixedName>} {v < 0 ? rc.rateType.less : rc.rateType.more} <Num value={o.spread} display={`${fmt.number(Math.abs(v))} ${rc.rateType.points}`} />
-    </span>
-  );
-}
-
-/** "מ־1,000 ₪", or "1,000 עד 50,000 ₪" where the bank sets a top. */
-function Amounts({ o }: { o: DbOffer }) {
-  const { min, max } = o.amount_range;
-  if (!max)
-    return (
-      <span className="whitespace-nowrap">
-        {t.amountRange.from}
-        <Num value={min} />
-      </span>
-    );
-  return (
-    <span className="whitespace-nowrap">
-      <span>
-        <Num value={min} display={typeof min.value === "number" ? fmt.number(min.value) : undefined} />
-        {t.amountRange.to}
-      </span>{" "}
-      <span className="whitespace-nowrap">
-        <Num value={max} />
-      </span>
-    </span>
-  );
-}
 
 /** How the money can come out before the end: a teal chip for exit points, a neutral one for a break, muted words for neither. */
 function Access({ o, plain, only }: { o: DbOffer; /** The phone's words, without chips. */ plain?: boolean; /** On an offer's line under the first of its name: only what differs from it. */ only?: RowSplit }) {
@@ -64,7 +31,7 @@ function Access({ o, plain, only }: { o: DbOffer; /** The phone's words, without
             {a.words}
           </span>
         ) : (
-          <Tag key={a.kind} tone={a.kind === "exits" ? "primary" : "neutral"} className={cx("!text-sm !font-normal", a.kind === "break" && "!rounded-full !px-2.5 !py-0.5")}>
+          <Tag key={a.kind} tone={a.kind === "exits" ? "primary" : "neutral"} shape="pill" size="sm">
             {a.words}
           </Tag>
         ),
@@ -96,7 +63,7 @@ function Tags({ row }: { row: DbRow }) {
 function OfferName({ row }: { row: DbRow }) {
   const notes = row.labels.filter((l) => l.id !== "deposit-new-customers" && l.id !== "deposit-closed-system");
   return (
-    <span className={cx(muted, "!text-base whitespace-normal")}>
+    <span className="text-base text-muted-foreground whitespace-normal">
       <MixedName>{row.name}</MixedName>
       {notes.map((l) => (
         <Fragment key={l.id}>
@@ -159,18 +126,18 @@ function tableRow({ row, top, mine }: ListRow, ctx: ListContext): ProductRow {
     </span>,
     <span className="flex flex-col items-stretch gap-1.5 min-w-0">
       <Num value={first.rate_offered} className={cx("text-2xl font-semibold self-start", top && "text-primary")} />
-      <AnchorLine o={first} />
+      <AnchorSpread variable={first.kind === "variable"} anchor={first.anchor} spread={first.spread} />
       <MeterBar share={rateOf(first) / ctx.topRate} tone={top ? "accent" : isLinked(first) ? "muted" : "value"} hollow={hollow} />
     </span>,
     ...(ctx.amount ? [<Interest o={first} ctx={ctx} />] : []),
-    <Amounts o={first} />,
+    <AmountRange min={first.amount_range.min} max={first.amount_range.max} />,
     <Access o={first} />,
   ];
   const sub = (o: DbOffer): ReactNode[] => [
     <span className={cx(muted, "block border-s-2 border-border ps-3 ms-0.5 whitespace-normal")}>{variantWords(row, o)}</span>,
     <span className="flex flex-col items-start">
       <Num value={o.rate_offered} className="font-semibold" />
-      <AnchorLine o={o} />
+      <AnchorSpread variable={o.kind === "variable"} anchor={o.anchor} spread={o.spread} />
     </span>,
     ...(ctx.amount ? [<span className="text-sm"><Interest o={o} ctx={ctx} small /></span>] : []),
     <span />,
@@ -192,7 +159,7 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
   const bank = ctx.banks.find((b) => b.id === row.bank);
   const first = row.offers[0]!;
   return (
-    <ProductPhoneRow stacked rowOf={row.bank} lit={ctx.lit === row.bank} mine={mine} className="!gap-2 !py-4">
+    <ProductPhoneRow stacked rowOf={row.bank} lit={ctx.lit === row.bank} mine={mine} roomy>
       <span className="flex items-start justify-between gap-3">
         <span className="flex flex-col items-start gap-0.5 min-w-0">
           <BankName bank={bank} mine={mine} />
@@ -207,13 +174,13 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
           )}
         </span>
       </span>
-      <AnchorLine o={first} />
+      <AnchorSpread variable={first.kind === "variable"} anchor={first.anchor} spread={first.spread} />
       <MeterBar share={rateOf(first) / ctx.topRate} tone={top ? "accent" : isLinked(first) ? "muted" : "value"} hollow={first.limited || isLinked(first)} className="my-1" />
       <Tags row={row} />
       <span className="grid grid-cols-2 gap-3">
         <span className="flex flex-col">
           <span className={muted}>{t.columns.amount}</span>
-          <Amounts o={first} />
+          <AmountRange min={first.amount_range.min} max={first.amount_range.max} />
         </span>
         <span className="flex flex-col">
           <span className={muted}>{t.columns.access}</span>
@@ -255,7 +222,7 @@ export function DepositList({ ranked, linked, ctx, sort, onSort, foot }: { ranke
               <span className="whitespace-normal">
                 <span className="block">
                   {t.columns.interestOn}
-                  <bdi dir="ltr">{`${fmt.number(ctx.amount.n)} ₪`}</bdi> {t.termIn[ctx.term]}
+                  <bdi dir="ltr">{fmt.nisWhole(ctx.amount.n)}</bdi> {t.termIn[ctx.term]}
                 </span>
                 <span className="block font-normal">{t.columns.beforeTax}</span>
               </span>,

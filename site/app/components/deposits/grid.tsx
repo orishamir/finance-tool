@@ -104,7 +104,7 @@ export function DepositGrid({ data, kind, amount, onCell }: { data: DbData; kind
       title={
         <>
           {t.grid.title[kind]}
-          <bdi dir="ltr" className="tabular-nums">{`${fmt.number(amount)} ₪`}</bdi>
+          <bdi dir="ltr" className="tabular-nums">{fmt.nisWhole(amount)}</bdi>
         </>
       }
     >

@@ -4,14 +4,14 @@
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { useMemo, useState } from "react";
-import { guideSignature as copy, values as valuesCopy } from "../../copy";
+import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
 import type { SiteValue } from "../../lib/value";
 
-import { Callout, InputSlot, LongestCase, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
+import { Callout, InputSlot, LongestCase, Marker, MarkerMark, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { figure, inputSite, rulesOfBundle, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, SigAmountField, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 230;
 const TOP = 24;
@@ -109,17 +109,7 @@ export function MakamVisual({ data, today }: VisualProps) {
   return (
     <div className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <NumberField
-          label={copy.makam.amount}
-          unit="nis"
-          value={inputs.amount}
-          start={inputs.p05.amount}
-          isEntered={inputs.source.amount === "guide"}
-          validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
-          onCommit={inputs.setAmount}
-          onReset={() => inputs.setAmount(null)}
-          disabled={!inputs.ready}
-        />
+        <SigAmountField inputs={inputs} field="amount" label={copy.makam.amount} />
       </div>
 
       {model && v && (

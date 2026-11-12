@@ -5,21 +5,20 @@
 // person enters, A-17), and what the deposits grow to (the engine's pension ledger). The pension itself needs conversion factors the site
 // does not hold (PEN OQ7, G-03): "not computed yet", never a number. There is no nearest alternative: it is required for salaried people.
 import { useMemo, useState } from "react";
-import { guideSignature as copy, values as valuesCopy } from "../../copy";
+import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, type SiteValue } from "../../lib/value";
-import { Callout, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
+import { Callout, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { G2Gap } from "./g2-parts";
-import { figure, inputSite, rulesOfBundle, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
+import { aboveZeroCheck, figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];
-  if (!bundle) return <G2Gap id="bundle" />;
+  if (!bundle) return <Gap id="bundle" from="g2" />;
   return <Inner {...props} bundle={bundle} />;
 }
 
@@ -48,7 +47,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
       </div>
     );
   }
-  if (!model) return <G2Gap id="bundle" />;
+  if (!model) return <Gap id="bundle" from="g2" />;
 
   // ---- value objects
   // the salary field's default, like what the reader types in it, is a plain number
@@ -115,19 +114,18 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           value={salary}
           start={p05Salary}
           isEntered={salaryPick !== null}
-          validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)}
+          validate={aboveZeroCheck}
           onCommit={(n) => setSalaryPick(n)}
           onReset={() => setSalaryPick(null)}
           disabled={!inputs.ready}
           optional
         />
         {hasInsurance && (
-          <NumberField
+          <PercentField
             label={copy.pension.insurance}
             unit="pct"
             value={insurancePct}
             isEntered={insurancePick !== null}
-            validate={(n) => (n < 0 || n > 100 ? valuesCopy.errors.negative : null)}
             onCommit={(n) => setInsurancePick(n)}
             onReset={() => setInsurancePick(null)}
             disabled={!inputs.ready}
@@ -135,21 +133,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             hint={copy.pension.insuranceHint}
           />
         )}
-        <RangeField
-          label={copy.common.years}
-          unit="years"
-          value={years}
-          start={inputs.p05.years}
-          isEntered={inputs.source.years === "guide"}
-          validate={(n) => (n < yr.min || n > yr.max || !Number.isInteger(n) ? `${valuesCopy.errors.years[0]} ${fmt.number(yr.min)} ${valuesCopy.errors.years[1]}${fmt.number(yr.max)}.` : null)}
-          onCommit={inputs.setYears}
-          onReset={() => inputs.setYears(null)}
-          min={yr.min}
-          max={yr.max}
-          step={yr.step ?? 1}
-          inputMode="numeric"
-          disabled={!inputs.ready}
-        />
+        <SigYearsField inputs={inputs} bundle={bundle} value={years} />
       </div>
 
       {/* an HTML chart: the chart check (site/scripts/chart-check) finds it by data-chart, and reads the bar's start and parts */}
@@ -198,7 +182,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           {v.balance ? <Num value={v.balance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.balanceGap[model.balanceGap ?? "no-run"]}</span>}
         </Stat>
       </StatRow>
-      <G2Gap id="annuityFactors" />
+      <Gap id="annuityFactors" from="g2" />
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         {employeePct && employerPct && severancePct && avgWage && (
@@ -230,7 +214,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             .{hasInsurance ? ` ${copy.pension.feesLine.after}` : ""}
           </Sentence>
         ) : (
-          <G2Gap id="pensionTrack" />
+          <Gap id="pensionTrack" from="g2" />
         )}
         {hasInsurance && earlyAge && (
           <Sentence tone="muted">

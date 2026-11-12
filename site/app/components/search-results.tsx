@@ -7,7 +7,7 @@ import { formatValue } from "../lib/format";
 import { rememberUncatalogued } from "../lib/inputs";
 import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
 import { IconCopy, IconLock } from "./icons";
-import { Button, RowArrow, gershayim } from "./kit";
+import { Button, MixedName, RowArrow, TextLink, gershayim } from "./kit";
 
 export interface Found {
   q: string;
@@ -71,6 +71,35 @@ function Marked({ text, query }: { text: string; query: string }): ReactNode {
   return <>{out}</>;
 }
 
+/**
+ * One result, in every list of the search (the groups, and an empty answer's "maybe" and "near" rows): the whole row is the link, the name
+ * with the query's words marked and a lock on an open rule, the line the match gives, the other names it matched by, and the arrow.
+ */
+function HitRow({ hit, found, text }: { hit: SearchHit; found: Found; text: string }) {
+  const { entry: r, also } = hit;
+  return (
+    <li>
+      <Link to={r.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
+        <span className="flex flex-col min-w-0">
+          <span className="font-medium inline-flex items-center gap-1.5">
+            <MixedName show={<Marked text={gershayim(r.name)} query={text} />}>{r.name}</MixedName>
+            {isRuleKind(r.kind) && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            <RowLine hit={hit} found={found} text={text} />
+          </span>
+          {also.length > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {searchCopy.also} <bdi>{also.map(gershayim).join(" · ")}</bdi>
+            </span>
+          )}
+        </span>
+        <RowArrow />
+      </Link>
+    </li>
+  );
+}
+
 /** The hint, the grouped results or the "not on the site yet" answer. A name is kept on the device only when its copy button is pressed. */
 export function SearchBody({ text, setText, found }: { text: string; setText: (t: string) => void; found: Found }) {
   const { q, hits, nothing, analysis, maybe } = found;
@@ -100,35 +129,12 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
               <section key={g.kind} aria-label={groupLabel(g.kind, g.items)} className="flex flex-col gap-1">
                 <h3 className="text-xs text-muted-foreground">{groupLabel(g.kind, g.items)}</h3>
                 <ul className="flex flex-col">
-                  {show.map((hit) => {
-                    const { entry: r, also } = hit;
-                    return (
-                    <li key={r.href + r.name}>
-                      <Link to={r.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
-                        <span className="flex flex-col min-w-0">
-                          <span className="font-medium inline-flex items-center gap-1.5">
-                            <bdi>
-                              <Marked text={gershayim(r.name)} query={text} />
-                            </bdi>
-                            {isRuleKind(r.kind) && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            <RowLine hit={hit} found={found} text={text} />
-                          </span>
-                          {also.length > 0 && (
-                            <span className="text-xs text-muted-foreground">
-                              {searchCopy.also} <bdi>{also.map(gershayim).join(" · ")}</bdi>
-                            </span>
-                          )}
-                        </span>
-                        <RowArrow />
-                      </Link>
-                    </li>
-                    );
-                  })}
+                  {show.map((hit) => (
+                    <HitRow key={hit.entry.href + hit.entry.name} hit={hit} found={found} text={text} />
+                  ))}
                 </ul>
                 {g.items.length > show.length && (
-                  <Button variant="quiet" className="self-start -ms-2" onClick={() => setExpanded(new Set([...expanded, g.kind]))}>
+                  <Button variant="quiet" flush className="self-start" onClick={() => setExpanded(new Set([...expanded, g.kind]))}>
                     {searchCopy.more}
                   </Button>
                 )}
@@ -145,20 +151,20 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
             <bdi dir="auto">{text.trim()}</bdi>
             {searchCopy.empty.bodyAfter}
           </p>
-          <Link to={site.notCovered.href} className="text-link min-h-target inline-flex items-center hover:underline self-start">
+          <TextLink look="line" to={site.notCovered.href} className="self-start">
             {searchCopy.empty.notProduct}
-          </Link>
+          </TextLink>
           <Button variant="primary" onClick={copy} className="self-start">
             <IconCopy size={18} /> {copied === "done" ? buttons.copied : buttons.copy}
           </Button>
           <p className="text-sm text-muted-foreground">{copied === "failed" ? searchCopy.empty.copyFailed : searchCopy.empty.underButton}</p>
           <div className="flex flex-wrap gap-x-4">
-            <Link to="/companies" className="text-link min-h-target inline-flex items-center hover:underline">
+            <TextLink look="line" to="/companies">
               {searchCopy.empty.links.companies}
-            </Link>
-            <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(text.trim().split(/\s+/).slice(0, 2).join(" "))}>
+            </TextLink>
+            <Button variant="quiet" flush onClick={() => setText(text.trim().split(/\s+/).slice(0, 2).join(" "))}>
               {searchCopy.empty.links.shorter}
-            </button>
+            </Button>
           </div>
         </section>
       )}
@@ -174,16 +180,16 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
           <p className="text-sm">{searchMore.empty.questionBody}</p>
           {maybe.length > 0 && <MaybeRows rows={maybe} found={found} text={text} heading={searchMore.maybe} />}
           <div className="flex flex-wrap gap-x-4">
-            <Link to="/rules" className="text-link min-h-target inline-flex items-center hover:underline">
+            <TextLink look="line" to="/rules">
               {searchMore.empty.questionLink}
-            </Link>
+            </TextLink>
             {contentWords(q).length > 0 && contentWords(q).join(" ") !== q && (
-              <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(contentWords(q).join(" "))}>
+              <Button variant="quiet" flush onClick={() => setText(contentWords(q).join(" "))}>
                 {searchMore.empty.mainWords}
-              </button>
+              </Button>
             )}
           </div>
-          <Button variant="quiet" onClick={copy} className="self-start -ms-2">
+          <Button variant="quiet" flush onClick={copy} className="self-start">
             <IconCopy size={18} /> {copied === "done" ? buttons.copied : searchMore.empty.questionCopy}
           </Button>
           <p className="text-sm text-muted-foreground">{copied === "failed" ? searchCopy.empty.copyFailed : searchMore.empty.questionUnder}</p>
@@ -193,24 +199,14 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
   );
 }
 
-/** The rows of an empty answer's "maybe" and "near" lists: the rule's title and the line the match gives. */
+/** An empty answer's "maybe" and "near" lists, under their heading, in the rows every result list draws. */
 function MaybeRows({ rows, found, text, heading }: { rows: SearchHit[]; found: Found; text: string; heading: string }) {
   return (
     <div className="flex flex-col gap-1">
       <h4 className="text-sm text-muted-foreground">{heading}</h4>
       <ul className="flex flex-col">
         {rows.map((hit) => (
-          <li key={hit.entry.href}>
-            <Link to={hit.entry.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
-              <span className="flex flex-col min-w-0">
-                <bdi className="font-medium">{hit.entry.name}</bdi>
-                <span className="text-sm text-muted-foreground">
-                  <RowLine hit={hit} found={found} text={text} />
-                </span>
-              </span>
-              <RowArrow />
-            </Link>
-          </li>
+          <HitRow key={hit.entry.href} hit={hit} found={found} text={text} />
         ))}
       </ul>
     </div>

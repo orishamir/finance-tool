@@ -46,9 +46,7 @@ export default function ExposurePage() {
   return (
     <PageShell current="guide" data={provenance}>
       <GuideFrame sections={[...copy.sections]} current={current} foot={<NumberLegend term />}>
-        <GuideHeader title={gershayim(data.name)} glance={glance}>
-          {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{gershayim(data.lede)}</p>}
-        </GuideHeader>
+        <GuideHeader title={gershayim(data.name)} lede={data.lede && gershayim(data.lede)} glance={glance} />
 
         <GuideSection id="what" title={copy.sections[0].title}>
           {content ? content.what(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}

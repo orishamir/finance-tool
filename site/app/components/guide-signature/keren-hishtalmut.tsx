@@ -3,8 +3,7 @@
 // An employee's fund stands alone, since no other place receives the employer's money (B2); a self-employed person's stands beside the same outlay
 // in a securities account, which is a choice they really have. Every figure is an engine run on the person's own values (F-96).
 import { useMemo, useState } from "react";
-import { Link } from "react-router";
-import { guideSignature as copy, values as valuesCopy } from "../../copy";
+import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
@@ -12,24 +11,28 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment,
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
-import { gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, clamp, percentCheck, type PileBarPart } from "../kit";
+import { gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { G2Gap, text } from "./g2-parts";
-import { figure, inputSite, notFeeFlag, rulesOfBundle, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
+import { text } from "./g2-parts";
+import { aboveZeroCheck, figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
 const YEARS = 12;
 const story = copy.hishtalmut.story;
 
 export function KerenHishtalmutVisual(props: VisualProps) {
   const base = props.data.bundles["keren-hishtalmut"];
-  if (!base) return <G2Gap id="bundle" />;
+  if (!base) return <Gap id="bundle" from="g2" />;
   return <Inner {...props} base={base} />;
 }
 
-/** "+54,000 ₪" and "−13,970 ₪"; on a phone-wide chart the shekel sign has no room. */
-const signed = (plus: string, compact: boolean) => (v: number) => {
-  const n = Math.round(Math.abs(v));
-  return `${n === 0 ? "" : plus}${fmt.number(n)}${compact ? "" : " ₪"}`;
+/**
+ * A part's amount with the sign its part carries, whatever the sign of the number: what is added "+54,000 ₪", what is taken "−13,970 ₪",
+ * the person's own deposits none (`sign` 1, -1 or 0). On a phone-wide chart the shekel sign has no room.
+ */
+const partText = (sign: 1 | -1 | 0, compact: boolean) => (v: number) => {
+  const n = Math.abs(v);
+  if (sign === 0) return compact ? fmt.number(Math.round(n)) : fmt.nisWhole(n);
+  return compact ? fmt.signedNumber(sign * n, 0) : fmt.signedNisWhole(sign * n);
 };
 
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
@@ -130,10 +133,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     if (part === "salary") return ranValue(value, about, true, "F-96", salaryTaxIn);
     return ranValue(value, about, part === "tax");
   };
-  const SIGN: Record<PileBarPart, string> = { own: "", extra: "+", gain: "+", loss: "−", fees: "−", salary: "−", tax: "−" };
+  const SIGN: Record<PileBarPart, 1 | -1 | 0> = { own: 0, extra: 1, gain: 1, loss: -1, fees: -1, salary: -1, tax: -1 };
   const partNumber = (part: PileBarPart, compact: boolean) => {
     const v = partValue(part);
-    return v && <Num value={v} display={signed(SIGN[part], compact)} />;
+    return v && <Num value={v} display={partText(SIGN[part], compact)} />;
   };
   const leftValue = slice ? ranValue(slice.net, story.about.left, false) : null;
   const ownValue = slice ? paidValue(slice.own, story.about.own, ownIn) : null;
@@ -195,7 +198,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
   const feeHint = trackName && (
     <>
-      {story.hints.fee.before} <Term id="דמי ניהול">{story.hints.fee.fee}</Term> {story.hints.fee.middle} ״{trackCompany ? <Link to={`/companies/${trackCompany}/${trackNumber}`} className="text-link hover:underline"><MixedName>{trackName}</MixedName></Link> : <MixedName>{trackName}</MixedName>}״ ({story.hints.fee.number} <bdi dir="ltr">{trackNumber}</bdi>){story.hints.fee.after}
+      {story.hints.fee.before} <Term id="דמי ניהול">{story.hints.fee.fee}</Term> {story.hints.fee.middle} ״{trackCompany ? <TextLink to={`/companies/${trackCompany}/${trackNumber}`}><MixedName>{trackName}</MixedName></TextLink> : <MixedName>{trackName}</MixedName>}״ ({story.hints.fee.number} <bdi dir="ltr">{trackNumber}</bdi>){story.hints.fee.after}
     </>
   );
   // ---- the reader's own values, not the rule: that is in the guide's text above
@@ -386,7 +389,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       {/* the first field takes a phone's whole row, so five fields and four take the same rows */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
         <div className="col-span-2 lg:col-span-1">
-          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} start={p05Number(base.p05, "annual_income") / 12} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} start={p05Number(base.p05, "annual_income") / 12} isEntered={incomePick !== null} validate={aboveZeroCheck} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
         </div>
         {isEmployee ? (
           <>
@@ -394,7 +397,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
             <PercentField unit="pct" label={story.fields.employer} value={employerShare} start={Number(employerPct?.value ?? 0)} isEntered={employerPick !== null} onCommit={setEmployerPick} onReset={() => setEmployerPick(null)} disabled={!inputs.ready} />
           </>
         ) : (
-          <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} start={inputs.p05.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
+          <SigAmountField inputs={inputs} field="monthly" label={copy.g2.plan.monthly} />
         )}
         <PercentField label={story.fields.ret} value={returnPct} start={p05Number(base.p05, "A-01")} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
         <PercentField label={story.fields.fee} {...(feePick === null && feeHint ? { hint: feeHint } : {})} value={feeShown} start={Number(trackFee?.value ?? 0)} isEntered={feePick !== null} validate={percentCheck({ min: 0, max: Number(feeCap?.value ?? 100) })} onCommit={setFeePick} onReset={() => setFeePick(null)} disabled={!inputs.ready} />

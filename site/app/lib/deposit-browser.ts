@@ -3,7 +3,7 @@
 // the amount (F-21), the list's order and its words. No React, no I/O.
 import { amountOpens, bestOpenOffer, depositInterest } from "@finance-tool/engine";
 import { depositBrowser as t } from "../copy";
-import { exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
+import { breakText, exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
 import { countPhrase, fmt } from "./format";
 import type { Label } from "./labels";
 import type { ListSort } from "./list-sort";
@@ -141,7 +141,7 @@ function exitAccessWords(e: ExitPoints): string {
 export function accessOf(o: DbOffer): Access[] {
   const out: Access[] = [];
   if (o.exits.exists) out.push({ kind: "exits", words: exitAccessWords(o.exits) });
-  if (o.breakTerm !== "not_allowed") out.push({ kind: "break", words: t.access.break[o.breakTerm] });
+  if (o.breakTerm !== "not_allowed") out.push({ kind: "break", words: breakText(o.breakTerm, o.exits.exists) });
   return out.length ? out : [{ kind: "locked", words: t.access.locked }];
 }
 
@@ -150,7 +150,7 @@ export function variantWords(row: DbRow, o: DbOffer): string {
   const split = rowSplit(row);
   const first = row.offers[0]!;
   if (split.exits) return o.exits.exists ? t.variant.withExits : t.variant.noExits;
-  if (split.break) return `${t.variant.same}${o.breakTerm === "not_allowed" ? t.access.locked : t.access.break[o.breakTerm]}`;
+  if (split.break) return `${t.variant.same}${o.breakTerm === "not_allowed" ? t.access.locked : breakText(o.breakTerm, o.exits.exists)}`;
   const min = numberOf(o.amount_range.min);
   return min !== null && min !== numberOf(first.amount_range.min) ? `${t.variant.same}${t.variant.from}${fmt.nis(min)}` : t.variant.plain;
 }

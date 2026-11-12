@@ -5,15 +5,15 @@
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { guideSignature as copy, values as valuesCopy, kit as kitCopy } from "../../copy";
+import { guideSignature as copy, kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
+import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, termInputs, typed, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -47,7 +47,6 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const tax = fact(data, "taxRate");
   const years = Math.max(1, Math.round(inputs.years));
   const model = useMemo(() => currentAccountModel(data, { balance: inputs.amount, years, bankId: null }), [data, inputs.amount, years]);
-  const yr = yearsRange(account);
   const foldRef = useRef<HTMLDetailsElement>(null);
 
   // a link to the table from elsewhere (#current-account-banks) opens it, also when the page loads on that hash
@@ -109,32 +108,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <NumberField
-          label={copy.account.balance}
-          unit="nis"
-          value={inputs.amount}
-          start={inputs.p05.amount}
-          isEntered={inputs.source.amount === "guide"}
-          validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
-          onCommit={inputs.setAmount}
-          onReset={() => inputs.setAmount(null)}
-          disabled={!inputs.ready}
-        />
-        <RangeField
-          label={copy.common.years}
-          unit="years"
-          value={years}
-          start={inputs.p05.years}
-          isEntered={inputs.source.years === "guide"}
-          validate={(n) => (n < yr.min || n > yr.max || !Number.isInteger(n) ? `${valuesCopy.errors.years[0]} ${fmt.number(yr.min)} ${valuesCopy.errors.years[1]}${fmt.number(yr.max)}.` : null)}
-          onCommit={inputs.setYears}
-          onReset={() => inputs.setYears(null)}
-          min={yr.min}
-          max={yr.max}
-          step={yr.step ?? 1}
-          inputMode="numeric"
-          disabled={!inputs.ready}
-        />
+        <SigAmountField inputs={inputs} field="amount" label={copy.account.balance} />
+        <SigYearsField inputs={inputs} bundle={account} value={years} />
       </div>
 
       {model ? (
@@ -169,7 +144,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       </Sentence>
 
       {everyBank.length > 0 ? (
-        <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
+        <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border anchor-target" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
           <div className="flex flex-col gap-4 px-4 pb-4">
             {/* each column says what it holds in its head: the last one with the balance the person entered, the rate with a "?" for where the
                 rates come from; no sentence around the table explains a column (guidelines/design.md "Tables"). The tax

@@ -88,7 +88,7 @@ export interface DealChange {
   kind: ChangeKind;
 }
 
-/** A fee across the reading: it `holds` throughout where none of its ends falls after the reading's month, else it has `changes`. */
+/** A fee across the reading: it `holds` throughout where none of its change points falls after the reading's month, else it has `changes`. */
 export interface DealFeeReading {
   holds: boolean;
   changes: DealChange[];
@@ -148,21 +148,51 @@ function mainFigure(p: DealPrice): { of: string; value: number } | null {
 
 const near = (a: number, b: number): boolean => Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
 
-/** Whether two prices are the same price: the same form and every figure equal (a bound's currency the shekel where absent). */
+/**
+ * Whether a price charges nothing (F-110): a free price, a share of 0 with no minimum above nothing (a maximum on a share of 0 caps
+ * nothing), or a sum of 0.
+ */
+export function chargesNothing(p: DealPrice): boolean {
+  switch (p.kind) {
+    case "free":
+      return true;
+    case "action":
+    case "held":
+      return p.rate === 0 && !(p.min !== undefined && p.min > 0);
+    case "sum":
+    case "perAction":
+      return p.amount === 0;
+  }
+}
+
+/**
+ * Whether two prices are equal (F-110): they charge the same. Two prices that charge nothing are equal (a free price and a price of zero);
+ * otherwise the same form with every figure equal, the months between charges among them, and a bound's currency (the shekel where absent)
+ * only where a minimum or a maximum is typed.
+ */
 export function samePrice(a: DealPrice, b: DealPrice): boolean {
-  const norm = (p: DealPrice) => (p.kind === "action" ? { ...p, currency: p.currency ?? "ILS" } : p);
-  const x = norm(a) as Record<string, unknown>, y = norm(b) as Record<string, unknown>;
+  if (chargesNothing(a) || chargesNothing(b)) return chargesNothing(a) && chargesNothing(b);
+  const norm = (p: DealPrice): Record<string, unknown> => {
+    if (p.kind !== "action") return p;
+    const { currency, ...rest } = p;
+    return p.min !== undefined || p.max !== undefined ? { ...rest, currency: currency ?? "ILS" } : rest;
+  };
+  const x = norm(a), y = norm(b);
   const keys = new Set([...Object.keys(x), ...Object.keys(y)]);
   return [...keys].every((k) => (typeof x[k] === "number" && typeof y[k] === "number" ? near(x[k] as number, y[k] as number) : x[k] === y[k]));
 }
 
-/** F-110: how a fee's price changes from `from` to `to`; null where the two are the same price, which is no change. */
+/**
+ * F-110: how a fee's price changes from `from` to `to`; null where the two are equal, which is no change. A price of zero is equal to a
+ * free one, so a change from or to it starts or ends the fee. Equal main figures with a bound, the months between charges or the form
+ * differing are a change that just `changes`.
+ */
 export function changeKind(from: DealPrice, to: DealPrice): ChangeKind | null {
   if (samePrice(from, to)) return null;
-  if (from.kind === "free") return "starts";
-  if (to.kind === "free") return "ends";
-  const a = mainFigure(from)!, b = mainFigure(to)!;
-  if (a.of === b.of && !near(a.value, b.value)) return b.value > a.value ? "rises" : "falls";
+  if (chargesNothing(from)) return "starts";
+  if (chargesNothing(to)) return "ends";
+  const a = mainFigure(from), b = mainFigure(to);
+  if (a && b && a.of === b.of && !near(a.value, b.value)) return b.value > a.value ? "rises" : "falls";
   return "changes";
 }
 
@@ -235,9 +265,10 @@ const heldBases: readonly FeeBase[] = ["balance", "custody", "variable_managemen
 
 /**
  * F-111 What a fee is charged on: an action, what is held (a share of its value) or the account whatever it holds (a sum per period).
- * A share of what is held and a sum per period say it by their form; a share of an action, a sum per action and a free price take it
- * from the fee's base. `insurance_premium` is cover whatever its price's form. Null where nothing says (a free price of a fee the
- * person named).
+ * A free price takes it from the fee's base, and so does a price in a form its base usually takes. A fee the person named, and a price
+ * in a form its base does not usually take, is placed by the price's form: a share every few months is on what is held, a sum every few
+ * months on the account, and a price per action (a share of it or a sum) on an action that adds to nothing (`action: null`).
+ * `insurance_premium` is cover whatever its price's form. Null where nothing says (a free price of a fee the person named).
  */
 export function chargedOn(base: DealBase, price: DealPrice): ChargedOn | null {
   if (isCover(base)) return { on: "cover" };
@@ -248,6 +279,8 @@ export function chargedOn(base: DealBase, price: DealPrice): ChargedOn | null {
     const side = sideOf(base);
     return { on: "action", action: actionOfBase[base.key]!, ...(side ? { side } : {}) };
   }
+  // a base on what is held or on the account, priced per action: that action is none §10.6 names
+  if (price.kind !== "free") return { on: "action", action: null };
   if (heldBases.includes(base.key)) return { on: "held" };
   if (base.key === "fixed_period") return { on: "account" };
   return null;
@@ -348,20 +381,29 @@ export type DealMark =
 /**
  * F-112 The sums a deal's own prices mark, in one period of F-110. (1) A minimum binds below `min / pct` and (2) a maximum above
  * `max / pct`, for a share of an action (F-12, F-13) or of what is held per charging period (F-14), each where `pct > 0` and the bound
- * is typed, in the bound's own currency. (3) The yearly sums on the account, added (`A`), against the yearly rates of the deal's custody
- * fees, added (`ρ`, F-111): one mark at `A / ρ`, where both are above nothing. Cover (`insurance_premium`) marks nothing.
+ * is typed, in the bound's own currency; a mark that falls on the same sum for a purchase and for a sale is one mark, on both (`all`).
+ * (3) The yearly sums on the account, added (`A`), against the yearly rates of the deal's custody fees, added (`ρ`, F-111): one mark at
+ * `B = A / ρ`, where both are above nothing and no custody fee's minimum or maximum binds at `B` (where one does, the two costs do not
+ * meet there). Cover (`insurance_premium`) marks nothing.
  */
 export function dealMarks(deal: Deal, period: DealPeriod): DealMark[] {
   const marks: DealMark[] = [];
   deal.fees.forEach((f, i) => {
     if (isCover(f.base)) return;
+    const own: DealMark[] = [];
     for (const [side, price] of sidesOf(f, period.prices[i]!)) {
       if ((price.kind !== "action" && price.kind !== "held") || !(price.rate > 0)) continue;
       const on = price.kind === "action" ? "action" : "held";
       const currency = price.kind === "action" ? (price.currency ?? "ILS") : "ILS";
-      if (price.min !== undefined) marks.push({ kind: "min", on, fee: i, side, amount: price.min / price.rate, currency });
-      if (price.max !== undefined) marks.push({ kind: "max", on, fee: i, side, amount: price.max / price.rate, currency });
+      for (const [kind, bound] of [["min", price.min], ["max", price.max]] as const) {
+        if (bound === undefined) continue;
+        const amount = bound / price.rate;
+        const twin = own.find((m) => m.kind === kind && m.on === on && m.currency === currency && m.side !== side && near(m.amount, amount));
+        if (twin) twin.side = "all";
+        else own.push({ kind, on, fee: i, side, amount, currency });
+      }
     }
+    marks.push(...own);
   });
   const sums = deal.fees.flatMap((f, i) => {
     const p = period.prices[i]!.price;
@@ -369,11 +411,17 @@ export function dealMarks(deal: Deal, period: DealPeriod): DealMark[] {
   });
   const custody = deal.fees.flatMap((f, i) => {
     const p = period.prices[i]!.price;
-    return "key" in f.base && f.base.key === "custody" && p.kind === "held" && p.rate > 0 ? [{ i, year: perYear(p)! }] : [];
+    return "key" in f.base && f.base.key === "custody" && p.kind === "held" && p.rate > 0 ? [{ i, p, year: perYear(p)! }] : [];
   });
   if (sums.length && custody.length) {
     const sum = sums.reduce((a, x) => a + x.year, 0), rate = custody.reduce((a, x) => a + x.year, 0);
-    marks.push({ kind: "meet", on: "held", fees: sums.map((x) => x.i), against: custody.map((x) => x.i), sum, rate, side: "all", amount: sum / rate, currency: "ILS" });
+    const amount = sum / rate;
+    // a charge's share at B against its bounds: below the minimum the minimum binds, above the maximum the maximum does
+    const binds = custody.some(({ p }) => {
+      const charge = p.rate * amount;
+      return (p.min !== undefined && charge < p.min && !near(charge, p.min)) || (p.max !== undefined && charge > p.max && !near(charge, p.max));
+    });
+    if (!binds) marks.push({ kind: "meet", on: "held", fees: sums.map((x) => x.i), against: custody.map((x) => x.i), sum, rate, side: "all", amount, currency: "ILS" });
   }
   return marks;
 }
@@ -386,32 +434,39 @@ export interface DealCost {
 
 /**
  * F-112 The cost of one action of `amount` shekels on side `side`: the sum, at `amount`, of the deal's fees on that action in the period,
- * each as F-12 and F-13 price it (`tradeCommission`, `fxFee`). `rates` gives the shekels per unit of each currency a bound is typed in; a
- * bound in a currency it does not give is refused.
+ * each as F-12 and F-13 price it (`tradeCommission`, `fxFee`), the conversion priced on the same amount. The curve starts at its minimum:
+ * at `amount` 0 the cost is that of the smallest action, each fee's minimum or its sum per action, not nothing. `rates` gives the shekels
+ * per unit of each currency a bound is typed in; a bound in a currency it does not give is refused. A price that names a currency but has
+ * no bound typed needs no rate.
  */
 export function actionCost(deal: Deal, period: DealPeriod, action: DealAction, amount: number, side: "buy" | "sell" = "buy", rates: Readonly<Record<string, number>> = {}): DealCost {
+  // the smallest action: an amount above nothing so small that a share of it is nothing, on which only a minimum or a sum is charged
+  const a = amount > 0 ? amount : Number.MIN_VALUE;
   const parts = onAction(deal, period, action).fees.flatMap((i) => {
     const price = priceOn(deal.fees[i]!, period.prices[i]!, side);
     if (!price || groupAction(deal, deal.fees[i]!.base, price) !== action) return [];
-    if (price.kind === "perAction") return [{ fee: i, cost: tradeCommission({ rate: 0, min: price.amount }, amount, { fxRate: 1 }) }];
+    if (price.kind === "perAction") return [{ fee: i, cost: tradeCommission({ rate: 0, min: price.amount }, a, { fxRate: 1 }) }];
     if (price.kind !== "action") return [];
-    const currency = price.currency ?? "ILS";
+    const bounded = price.min !== undefined || price.max !== undefined;
+    const currency = bounded ? (price.currency ?? "ILS") : "ILS";
     const fxRate = currency === "ILS" ? 1 : rates[currency];
     if (fxRate === undefined) throw new RangeError(`a bound in ${currency} needs the rate of ${currency} (F-112)`);
     const line: Commission = { rate: price.rate, in: currency === "ILS" ? "nis" : "instrument" };
     if (price.min !== undefined) line.min = price.min;
     if (price.max !== undefined) line.max = price.max;
     const base = deal.fees[i]!.base;
-    const cost = "key" in base && base.key === "fx" ? fxFee(line, amount, { fxRate }) : tradeCommission(line, amount, { fxRate });
+    const cost = "key" in base && base.key === "fx" ? fxFee(line, a, { fxRate }) : tradeCommission(line, a, { fxRate });
     return [{ fee: i, cost }];
   });
-  return { total: parts.reduce((a, p) => a + p.cost, 0), parts };
+  return { total: parts.reduce((x, p) => x + p.cost, 0), parts };
 }
 
 /**
- * F-112 The yearly cost of holding a value of `value` shekels through the year: each share of what is held as F-14 prices it at that value
- * for each charging period of a year (`custodyFee`), and each sum per period as its yearly sum (F-111, F-17). Cover is not a fee and is
- * left out. The price list's rule at one value; it forecasts nothing.
+ * F-112 The yearly cost of holding a value of `value` shekels through the year: each share of what is held as F-14 prices custody at that
+ * value for each charging period of a year, with its own bounds, and each sum per period as its yearly sum (F-111, F-17). Neither is
+ * limited to what the account holds: that limit belongs to a run (F-17, and the same guard in `custodyFee`), so below a custody minimum,
+ * down to a value of 0, the cost is the minimum. Cover is not a fee and is left out. The price list's rule at one value; it forecasts
+ * nothing.
  */
 export function holdingCost(deal: Deal, period: DealPeriod, value: number): DealCost {
   const parts = deal.fees.flatMap((f, i) => {
@@ -419,7 +474,9 @@ export function holdingCost(deal: Deal, period: DealPeriod, value: number): Deal
     const p = period.prices[i]!.price;
     if (p.kind === "held") {
       const c = { rate: p.rate, everyMonths: p.everyMonths, ...(p.min !== undefined ? { min: p.min } : {}), ...(p.max !== undefined ? { max: p.max } : {}) };
-      return [{ fee: i, cost: (12 / p.everyMonths) * custodyFee(c, p.everyMonths, value) }];
+      // custodyFee holds a charge to the value held (and to nothing on nothing held), a run's guard: the minimum lifts it back
+      const charge = Math.max(custodyFee(c, p.everyMonths, value), p.min ?? 0);
+      return [{ fee: i, cost: (12 / p.everyMonths) * charge }];
     }
     if (p.kind === "sum") return [{ fee: i, cost: perYear(p)! }];
     return [];
@@ -441,30 +498,40 @@ export interface DealCap {
   value: number | string | boolean | null;
   state: string;
   binds?: FeeCap["binds"];
+  caveat?: FeeCap["caveat"];
 }
 
 /**
  * F-113's answer. Judged: `below`, `at` or `above` the cap, and the typed price's share of it (null where the cap is 0). Not judged:
- * `no-price` (nothing typed), `no-cap` (the record has no value), `not-sourced` (the record is not sourced), `binds` (the cap binds only
- * some providers and the deal does not name one of them).
+ * `no-price` (nothing typed), `caveat` (the cap holds only in a case the deal does not state), `no-cap` (the record has no value),
+ * `not-sourced` (the record is not sourced), `binds` (the cap binds only some providers and the deal does not name one of them).
  */
 export type CapStanding =
   | { judged: true; standing: "below" | "at" | "above"; share: number | null }
-  | { judged: false; why: "no-price" | "no-cap" | "not-sourced" | "binds" };
+  | { judged: false; why: "no-price" | "caveat" | "no-cap" | "not-sourced" | "binds" };
+
+/** How close a converted price is to the cap and still at it, as a share of the cap (F-113: a converted figure is rounded). */
+const CONVERTED_AT = 0.005;
 
 /**
  * F-113 A typed price against the legal cap. For a price `x` in the cap's unit and a cap `c`: below where `x < c`, at where `x = c`,
- * above where `x > c`, with the share `x / c`; where `c = 0` the law allows no such fee and any `x > 0` is above. A cap with no value, or
- * not sourced, judges nothing. A cap that binds only some providers (`binds`: banks, or banks and a fund's distributor that is not an
- * investment marketer) judges nothing unless the deal names a bank: which non-bank members are such distributors is not known (BRK-52).
- * Above the cap the typed price is kept as typed: this reads it and changes nothing.
+ * above where `x > c`, with the share `x / c`; where `c = 0` the law allows no such fee and any `x > 0` is above. `converted`: the price
+ * was typed for another period than the cap's and converted by F-111's plain multiple, which is not exact (a monthly figure is rounded,
+ * and a bylaw may set its monthly maximum as the compounded twelfth of the yearly cap, PEN-21), so within 0.5% of the cap, as a share of
+ * the cap, it is at it; a price in the cap's own period is compared as typed. A cap whose record carries a `caveat` holds only in a case
+ * a deal does not state (closing the account, a distribution agreement) and judges nothing at any provider. A cap with no value, or not
+ * sourced, judges nothing. A cap that binds only some providers (`binds`: banks, or banks and a fund's distributor that is not an
+ * investment marketer where it has a distribution agreement for the fund) judges nothing unless the deal names a bank: which non-bank
+ * members are such distributors is not known (BRK-52). Above the cap the typed price is kept as typed: this reads it and changes nothing.
  */
-export function capStanding(typed: number | undefined, cap: DealCap | undefined, provider?: Deal["provider"]): CapStanding {
+export function capStanding(typed: number | undefined, cap: DealCap | undefined, provider?: Deal["provider"], converted = false): CapStanding {
+  if (cap?.caveat !== undefined) return { judged: false, why: "caveat" };
   if (typed === undefined || !Number.isFinite(typed)) return { judged: false, why: "no-price" };
   if (!cap || typeof cap.value !== "number") return { judged: false, why: "no-cap" };
   if (cap.state !== "sourced") return { judged: false, why: "not-sourced" };
   if (cap.binds !== undefined && provider !== "bank") return { judged: false, why: "binds" };
   const c = cap.value;
   if (!(c > 0)) return { judged: true, standing: typed > 0 ? "above" : "at", share: null };
-  return { judged: true, standing: near(typed, c) ? "at" : typed < c ? "below" : "above", share: typed / c };
+  const at = converted ? Math.abs(typed - c) <= CONVERTED_AT * c * (1 + 1e-12) : near(typed, c);
+  return { judged: true, standing: at ? "at" : typed < c ? "below" : "above", share: typed / c };
 }

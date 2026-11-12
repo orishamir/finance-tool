@@ -7,7 +7,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { companyPage as w } from "../../copy";
-import { OpenRow, ProductPhoneRow, ProductTable, RowArrow, RowList, type ProductColumn, type ProductGroup } from "../kit";
+import { MeterBar, OpenRow, ProductPhoneRow, ProductTable, RowArrow, RowList, Section, type ProductColumn, type ProductGroup } from "../kit";
 
 export interface OverviewRow {
   id: string;
@@ -23,10 +23,7 @@ export interface OverviewRow {
 export function Overview({ heading, rows, table, quiet, children }: { heading: string; rows?: OverviewRow[]; /** In place of rows: the manager's table. */ table?: ReactNode; /** A line each for what the site has not collected. */ quiet?: ReactNode[]; children?: ReactNode }) {
   return (
     <div className="flex flex-col gap-section">
-      <section aria-labelledby="ov-h" className="flex flex-col gap-4">
-        <h2 id="ov-h" className="text-xl lg:text-2xl font-semibold">
-          {heading}
-        </h2>
+      <Section title={heading}>
         {rows && rows.length > 0 && (
           <RowList plain>
             {rows.map((r) => (
@@ -40,7 +37,7 @@ export function Overview({ heading, rows, table, quiet, children }: { heading: s
             {q}
           </p>
         ))}
-      </section>
+      </Section>
       {children}
     </div>
   );
@@ -60,21 +57,13 @@ export interface OverviewTableRow {
 
 const cols = w.overviewTable.cols;
 
-/** The bar under managed money: the site's own reckoning against the largest product, in the computed ink (founder, 2026-11-10). */
-function SizeBar({ frac }: { frac: number }) {
-  return (
-    <span aria-hidden="true" className="block h-1 mt-1.5 rounded-full bg-muted w-full max-w-48">
-      <span className="block h-full rounded-full bg-computed" style={{ width: `${Math.max(2, Math.min(1, frac) * 100)}%` }} />
-    </span>
-  );
-}
-
 function Assets({ a }: { a: OverviewTableRow["assets"] }) {
   if (!a) return <span className="text-muted-foreground">—</span>;
   return (
     <span className="inline-flex flex-col items-start w-full">
       <span className="whitespace-nowrap">{a.figure}</span>
-      {a.frac !== null && <SizeBar frac={a.frac} />}
+      {/* the site's own reckoning against the largest product, in the computed ink */}
+      {a.frac !== null && <MeterBar share={a.frac} tone="computed" className="mt-1.5 max-w-48" />}
     </span>
   );
 }
@@ -85,8 +74,8 @@ export function OverviewTable({ groups, note }: { groups: { key: string; label?:
     { id: "name", head: cols.product },
     { id: "count", head: cols.count, width: 7.5 },
     { id: "assets", head: cols.assets, width: 12 },
-    { id: "fees", head: cols.fees, width: 12, cellClassName: "!whitespace-normal" },
-    { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, cellClassName: "!px-1", headClassName: "!px-1" },
+    { id: "fees", head: cols.fees, width: 12, wrap: true },
+    { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, tight: true },
   ];
   const name = (r: OverviewTableRow) => (
     <Link to={r.to} preventScrollReset className="font-semibold hover:underline focus-visible:outline-2 focus-visible:outline-ring rounded-sm">

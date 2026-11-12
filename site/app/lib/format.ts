@@ -44,8 +44,8 @@ export const withMinus = (text: string) => text.replace(/\u200e?-/g, "\u200e\u22
 
 function compactNisParts(v: number): { num: string; word: string | null } {
   const a = Math.abs(v);
-  if (a >= 1e6) return { num: compactFormat(v / 1e6), word: "מיליון" };
-  if (a >= 1e3) return { num: compactFormat(v / 1e3), word: "אלף" };
+  if (a >= 1e6) return { num: compactFormat(v / 1e6), word: numbers.compact.million };
+  if (a >= 1e3) return { num: compactFormat(v / 1e3), word: numbers.compact.thousand };
   return { num: compactFormat(v), word: null };
 }
 
@@ -137,9 +137,9 @@ export const fmt = {
   signedPct: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
   /** A plain number with its sign (`signed`): `+2`, `−18.5`. `digits`: exactly that many decimals; without it, up to two, as `number`. */
   signedNumber: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? plain.format(Math.abs(v)) : fixed(digits, "decimal").format(Math.abs(v)), options),
-  /** Hebrew year forms (copy.md §1): שנה, שנתיים, {n} שנים. */
-  years: (n: number) => countPhrase(n, { one: "שנה", two: "שנתיים", many: "שנים" }),
-  months: (n: number) => countPhrase(n, { one: "חודש", two: "חודשיים", many: "חודשים" }),
+  /** Hebrew year forms (copy.md §1): שנה, שנתיים, {n} שנים; and the month forms. */
+  years: (n: number) => countPhrase(n, numbers.yearWords),
+  months: (n: number) => countPhrase(n, numbers.monthWords),
 };
 
 /** How a signed figure is written: `isolate` (the default) wraps it in a left-to-right isolate, for a figure inside Hebrew text. */

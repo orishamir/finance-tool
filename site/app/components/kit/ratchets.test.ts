@@ -25,11 +25,9 @@ const PILL: Record<string, number> = {
 const CARD: Record<string, number> = {
   };
 const INPUT: Record<string, number> = {
-    "components/decoder/tracks.tsx": 1,
     "components/invest/title.tsx": 1,
-    "components/search.tsx": 2,
+    "components/search.tsx": 1,
     "components/transfer/panel.tsx": 1,
-    "routes/companies.tsx": 1,
   };
 const SELECT: Record<string, number> = {
   };
@@ -120,9 +118,7 @@ patterns["a button styled by hand as a link"] = {
   kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
   allowed: {
     "components/invest/stairs.tsx": 1,
-    "components/search-results.tsx": 2,
     "root.tsx": 1,
-    "routes/not-found.tsx": 1,
   },
 };
 
@@ -157,94 +153,44 @@ const LINK_COLOUR = /^text-(link|primary)$/;
 const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && !rel(f).startsWith("components/kit/") && rel(f) !== "lib/hooks.ts");
 
 const HAND_TITLE: Record<string, number> = {
-    "components/company/template.tsx": 1,
     "components/fees/parts.tsx": 1,
-    "components/guide/sections.tsx": 1,
     "components/home/body.tsx": 1,
-    "components/invest/title.tsx": 1,
     "components/transfer/panel.tsx": 1,
     "root.tsx": 1,
-    "routes/companies.tsx": 1,
-    "routes/rules.tsx": 1,
 };
 const HAND_SECTION_HEADING: Record<string, number> = {
     "components/companies/focus.tsx": 1,
-    "components/company/overview.tsx": 1,
-    "components/company/template.tsx": 1,
-    "components/decoder/institutions/page.tsx": 1,
-    "components/deposits/browser.tsx": 1,
 };
 const HAND_SCROLL_MARGIN: Record<string, number> = {
-    "components/company/bank-views.tsx": 1,
-    "components/company/docs.tsx": 1,
-    "components/company/template.tsx": 1,
-    "components/decoder/company-terms.tsx": 1,
-    "components/decoder/institutions/page.tsx": 1,
-    "components/decoder/institutions/product-row.tsx": 1,
     "components/deposits/browser.tsx": 1,
-    "components/guide-signature/current-account.tsx": 1,
     "components/timeline/Timeline.tsx": 1,
     "components/tracks/browser.tsx": 1,
     "components/tracks/company-browser.tsx": 1,
-    "routes/invest.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
-    "components/companies/focus.tsx": 3,
-    "components/decoder/brand-funds.tsx": 1,
-    "components/decoder/institutions/brokerage-card.tsx": 1,
-    "components/decoder/institutions/product-row.tsx": 1,
     "components/fees/parts.tsx": 5,
     "components/fees/sensitivity.tsx": 1,
-    "components/guide/sections.tsx": 4,
-    "components/guide-signature/index.tsx": 1,
-    "components/guide-signature/keren-hishtalmut.tsx": 1,
-    "components/guide-signature/money-market-daily.tsx": 1,
-    "components/home/body.tsx": 2,
+    "components/guide/sections.tsx": 1,
     "components/provenance-sheets.tsx": 2,
-    "components/search-results.tsx": 3,
-    "components/shell.tsx": 1,
-    "components/tracks/browser.tsx": 1,
     "content/exposure/shekel-cash.tsx": 2,
     "content/guide/bank-deposit.tsx": 2,
     "content/guide/government-bond.tsx": 3,
     "content/guide/makam.tsx": 3,
-    "routes/companies.tsx": 1,
     "routes/guide.tsx": 1,
-    "routes/rules.tsx": 1,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/decoder/institutions/brokerage-card.tsx": 1,
-    "components/decoder/institutions/page.tsx": 1,
     "components/fees/parts.tsx": 1,
     "components/invest/pair.tsx": 1,
     "components/provenance-sheets.tsx": 5,
-    "routes/rules.tsx": 1,
 };
 const BANG_OVERRIDE: Record<string, number> = {
-    "components/Sheet.tsx": 8,
-    "components/company/bank-views.tsx": 2,
-    "components/company/overview.tsx": 3,
-    "components/decoder/institutions/brokerage-card.tsx": 1,
-    "components/decoder/tracks.tsx": 1,
-    "components/deposits/list.tsx": 8,
     "components/fees/parts.tsx": 2,
     "components/invest/plan-card.tsx": 1,
     "components/provenance-sheets.tsx": 1,
-    "components/search.tsx": 1,
-    "routes/companies.tsx": 1,
-    "routes/rules.tsx": 5,
 };
 const MATCH_MEDIA: Record<string, number> = {
-    "components/Sheet.tsx": 1,
-    "components/deposits/browser.tsx": 2,
-    "components/search.tsx": 1,
-    "routes/companies.tsx": 1,
-    "routes/rules.tsx": 1,
 };
 const FOLD_AS_LINK: Record<string, number> = {
-    "components/company/bank-views.tsx": 1,
-    "components/decoder/institutions/product-row.tsx": 2,
-    "components/guide/sections.tsx": 4,
 };
 
 patterns["a page title written by hand"] = {

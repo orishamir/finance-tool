@@ -6,7 +6,7 @@
 // open rule as #ID), so a link presets it. The page ships a light list of every rule (what a row shows); the full records and their uses
 // come per shelf from /rules-data/<shelf>.json, fetched for the rule that is open and the search's top match.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
+import { useLoaderData, useLocation, useNavigate } from "react-router";
 import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { NumberLegend, StrengthLabel, type RuleUses } from "../components/provenance";
@@ -15,9 +15,10 @@ import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
 import { Sheet } from "../components/Sheet";
 import { IconAll, IconArrowBack, IconChevronDown } from "../components/icons";
-import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, When, panelId, tabId, type FactItem } from "../components/kit";
+import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, DocLink, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PageHead, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, TextLink, When, panelId, tabId, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
+import { MQ, useMedia } from "../lib/hooks";
 import { emptyFilters, facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
@@ -168,9 +169,6 @@ const claimFirst = 9;
 const companyFirst = 6;
 /** The field's text reaches the search when the hand rests this long. */
 const claimRest = 150;
-/** At this width and wider the rule opens beside the list; narrower, on a screen of its own. */
-const WIDE = "(min-width: 1280px)";
-const isWide = () => typeof window !== "undefined" && window.matchMedia(WIDE).matches;
 const DETAIL = "rule-detail";
 const DETAIL_HEAD = "rule-detail-head";
 const rowId = (id: string) => `row-${id}`;
@@ -286,6 +284,8 @@ export default function Rules() {
   const data = useLoaderData<typeof loader>();
   const loc = useLocation();
   const navigate = useNavigate();
+  /** From xl the rule opens beside the list; narrower, on a screen of its own. */
+  const wide = useMedia(MQ.xl);
   const [filters, setFiltersState] = useState<Filters>(emptyFilters);
   const [text, setText] = useState("");
   const [focused, setFocused] = useState(false);
@@ -460,7 +460,7 @@ export default function Rules() {
   const url = (hash: string) => `${window.location.pathname}${window.location.search}${hash ? `#${encodeURIComponent(hash)}` : ""}`;
   const openRule = useCallback((id: string) => {
     landing.current = "";
-    if (isWide()) {
+    if (wide) {
       window.history.replaceState(window.history.state, "", url(id));
       back.current = null;
     } else {
@@ -473,15 +473,15 @@ export default function Rules() {
     setTarget(id);
     focusing.current = id;
     requestAnimationFrame(() => {
-      if (!isWide()) window.scrollTo(0, 0);
+      if (!wide) window.scrollTo(0, 0);
     });
-  }, []);
+  }, [wide]);
   // focus goes into the rule once its record is on the page (it may still be on its way when the row is pressed)
   useEffect(() => {
     if (!focusing.current || focusing.current !== target || !rules[target]) return;
     focusing.current = "";
-    requestAnimationFrame(() => document.getElementById(DETAIL_HEAD)?.focus({ preventScroll: isWide() }));
-  }, [target, rules]);
+    requestAnimationFrame(() => document.getElementById(DETAIL_HEAD)?.focus({ preventScroll: wide }));
+  }, [target, rules, wide]);
   const closeRule = useCallback(() => {
     if (back.current?.pushed) {
       window.history.back();
@@ -498,12 +498,12 @@ export default function Rules() {
     if (!was || target) return;
     const b = back.current;
     back.current = null;
-    if (isWide()) return;
+    if (wide) return;
     const row = document.getElementById(rowId(b?.id ?? was));
     if (b) window.scrollTo(0, b.y);
     else row?.scrollIntoView({ block: "center" });
     row?.focus({ preventScroll: true });
-  }, [target]);
+  }, [target, wide]);
 
   // a rule the address named: the list shows its product, question and row (the filters that hide it go), its row comes into view
   useEffect(() => {
@@ -522,14 +522,14 @@ export default function Rules() {
       }
     }
     landing.current = "";
-    if (isWide()) requestAnimationFrame(() => document.getElementById(rowId(id))?.scrollIntoView({ block: "center" }));
+    if (wide) requestAnimationFrame(() => document.getElementById(rowId(id))?.scrollIntoView({ block: "center" }));
     else window.scrollTo(0, 0);
-  }, [target, lightById, claim, filters.product, filters.changing, tab, setFilters]);
+  }, [target, lightById, claim, filters.product, filters.changing, tab, setFilters, wide]);
 
   // Escape inside the rule: on a narrow screen it closes; on a computer focus goes back to its row
   const onDetailKey = (e: KeyboardEvent) => {
     if (e.key !== "Escape" || !selected) return;
-    if (isWide()) document.getElementById(rowId(selected))?.focus();
+    if (wide) document.getElementById(rowId(selected))?.focus();
     else if (target) closeRule();
   };
 
@@ -546,7 +546,7 @@ export default function Rules() {
     body: <SlottedText text={f.text} rules={data.factRules as Record<string, RuleRecord>} today={data.today} />,
     source: f.source,
     action: (
-      <Button variant="quiet" className="!px-0 text-start" onClick={() => openRule(f.id)}>
+      <Button variant="quiet" flush className="text-start" onClick={() => openRule(f.id)}>
         <bdi dir="ltr" className="font-medium tabular-nums slashed-zero">{f.id}</bdi>
         <span>· {copy.facts.toRule}</span>
       </Button>
@@ -562,7 +562,7 @@ export default function Rules() {
     <p className="text-sm text-muted-foreground flex items-center gap-x-4 max-lg:overflow-x-auto max-lg:whitespace-nowrap scrollbar-none max-lg:-mx-gutter max-lg:px-gutter lg:flex-wrap">
       <span className="shrink-0">{copy.ask.examplesLead}</span>
       {copy.ask.examples.map((e) => (
-        <Button key={e} variant="quiet" className="!px-0 shrink-0 text-start lg:min-h-7 lg:tap-area" onClick={() => typed(e, true)}>
+        <Button key={e} variant="quiet" flush className="shrink-0 text-start lg:min-h-7 lg:tap-area" onClick={() => typed(e, true)}>
           {e}
         </Button>
       ))}
@@ -572,7 +572,7 @@ export default function Rules() {
   const detail = (
     <div onKeyDown={onDetailKey} className={cx("min-w-0 flex flex-col gap-2 xl:sticky xl:top-[80px]", !open && "max-xl:hidden")}>
       {open && (
-        <Button variant="quiet" className="xl:hidden !px-0 self-start gap-1.5" onClick={closeRule}>
+        <Button variant="quiet" flush className="xl:hidden self-start gap-1.5" onClick={closeRule}>
           <IconArrowBack size={18} />
           {copy.detail.back}
         </Button>
@@ -592,7 +592,7 @@ export default function Rules() {
                 type="button"
                 onClick={() => {
                   setClaimTab("companies");
-                  if (target && !isWide()) closeRule();
+                  if (target && !wide) closeRule();
                   requestAnimationFrame(() => document.getElementById(tabId("claim", "companies"))?.focus());
                 }}
                 className="min-h-target flex items-center justify-between gap-3 rounded-md border border-border px-3 text-start text-sm text-link hover:underline"
@@ -614,21 +614,21 @@ export default function Rules() {
 
   return (
     <PageShell current="rules" data={pd}>
-      <div className="pt-3 lg:pt-5 flex flex-col gap-5 xl:gap-6">
-        <header className={cx("flex flex-col gap-2 lg:gap-1.5 pb-4 xl:pb-5 border-b border-border", hideWhenOpen)}>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-            <div className="flex-1 min-w-[16rem] max-w-3xl">
-              <AskField value={text} onChange={(v) => typed(v)} onFocus={() => setFocused(true)} label={copy.ask.label} placeholder={copy.ask.placeholder} clearLabel={copy.ask.clear} compact />
-            </div>
-          </div>
+      <div className="flex flex-col gap-5 xl:gap-6">
+        <PageHead
+          title={copy.title}
+          aside={<AskField value={text} onChange={(v) => typed(v)} onFocus={() => setFocused(true)} label={copy.ask.label} placeholder={copy.ask.placeholder} clearLabel={copy.ask.clear} compact />}
+          rule
+          className={hideWhenOpen || undefined}
+        >
+          {/* the lede and the examples: one under the other, side by side from xl */}
           {!claim && (
             <div className="flex flex-col gap-1.5 xl:flex-row xl:flex-wrap xl:items-baseline xl:gap-x-6 xl:gap-y-0">
               <p className="text-sm lg:text-base xl:text-sm text-muted-foreground max-w-measure xl:max-w-none">{copy.lede}</p>
               {examples}
             </div>
           )}
-        </header>
+        </PageHead>
 
         {claim ? (
           <div className="xl:grid xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)] xl:gap-6 items-start">
@@ -649,7 +649,7 @@ export default function Rules() {
                         <InlineSelect label={copy.claim.product} all={copy.claim.all} value={filters.product} onChange={(v) => setFilters({ product: v })} options={data.productNames.filter((p) => (claimCounts.product.get(p.id) ?? 0) > 0 || p.id === filters.product).map((p) => ({ id: p.id, name: gershayim(p.name) }))} />
                         <InlineSelect label={copy.claim.question} all={copy.claim.all} value={filters.shelf} onChange={(v) => setFilters({ shelf: v as ShelfId | null })} options={shelfIds.filter((s) => (claimCounts.shelf.get(s) ?? 0) > 0 || s === filters.shelf).map((s) => ({ id: s, name: copy.shelves[s]!.name }))} />
                       </span>
-                      <Button variant="quiet" className="md:hidden !px-1" onClick={() => setFilterSheet(true)} aria-haspopup="dialog">
+                      <Button variant="quiet" flush className="md:hidden" onClick={() => setFilterSheet(true)} aria-haspopup="dialog">
                         {copy.claim.filter}
                         {(filters.product || filters.shelf) && <span aria-hidden="true">·</span>}
                       </Button>
@@ -684,7 +684,7 @@ export default function Rules() {
                           ))}
                         </RowList>
                         {results.length - 1 > claimFirst && !lawAll && (
-                          <Button variant="quiet" className="!px-0 self-start" onClick={() => setLawAll(true)}>
+                          <Button variant="quiet" flush className="self-start" onClick={() => setLawAll(true)}>
                             <WithNumber text={copy.claim.lawAll} n={results.length} />
                           </Button>
                         )}
@@ -747,9 +747,7 @@ export default function Rules() {
           <p>{sourceBlock.legendLine}</p>
           <p>
             {scopeWords.rulesLine.before}{" "}
-            <Link to="/companies" className="text-link hover:underline">
-              {scopeWords.rulesLine.link}
-            </Link>
+            <TextLink to="/companies">{scopeWords.rulesLine.link}</TextLink>
           </p>
         </footer>
       </div>
@@ -817,10 +815,9 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
               <td className="align-top">
                 <span className="flex flex-col lg:flex-row lg:flex-wrap lg:gap-x-2">
                   {d.pages.map((p) => (
-                    <a key={p} href={pageHref(d.url, p)} target="_blank" rel="noreferrer" className="text-link hover:underline whitespace-nowrap min-h-target lg:min-h-0 lg:tap-area inline-flex items-center gap-1">
+                    <DocLink key={p} href={pageHref(d.url, p)} className="whitespace-nowrap">
                       <WithNumber text={words.page} n={p} />
-                      <span className="text-[13px]" aria-hidden="true">↗</span>
-                    </a>
+                    </DocLink>
                   ))}
                 </span>
               </td>

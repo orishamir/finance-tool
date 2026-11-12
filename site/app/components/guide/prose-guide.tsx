@@ -25,9 +25,7 @@ export function ProseGuide<Id extends string>({ copy, data, body, children }: {
   return (
     <PageShell current="guide" data={pd}>
       <GuideFrame sections={copy.sections} current={current} foot={<NumberLegend term />}>
-        <GuideHeader title={copy.title}>
-          <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        </GuideHeader>
+        <GuideHeader title={copy.title} lede={copy.lede} />
         {copy.sections.map((s) => (
           <GuideSection key={s.id} id={s.id} title={s.title}>
             {blocks[s.id]}

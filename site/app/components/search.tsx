@@ -8,7 +8,8 @@ import { search as searchCopy, site } from "../copy";
 import type { SearchEntry, SearchTexts } from "../lib/search";
 import { IconClose, IconSearch } from "./icons";
 import { Sheet } from "./Sheet";
-import { cx } from "./kit";
+import { cx, SearchField } from "./kit";
+import { MQ, useMedia } from "../lib/hooks";
 
 let indexPromise: Promise<SearchEntry[]> | null = null;
 function loadIndex(): Promise<SearchEntry[]> {
@@ -93,19 +94,6 @@ export function useSearchIndex(active: boolean, text: string): { index: SearchEn
   return { index, texts };
 }
 
-/** Whether the viewport is PC width (the `lg` breakpoint); false until the first effect, so the pre-rendered page is the phone form. */
-export function useDesktop(): boolean {
-  const [desktop, setDesktop] = useState(false);
-  useEffect(() => {
-    const m = window.matchMedia("(min-width: 64rem)");
-    const on = () => setDesktop(m.matches);
-    on();
-    m.addEventListener("change", on);
-    return () => m.removeEventListener("change", on);
-  }, []);
-  return desktop;
-}
-
 /** The results code once `active`, and what the text finds with it. */
 function useFound(active: boolean, index: SearchEntry[] | null, texts: SearchTexts | null, text: string) {
   const r = useLazy(results, active);
@@ -148,27 +136,10 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
           if (hits[0]) navigate(hits[0].entry.href);
         }}
       >
-        <label htmlFor={`${id}-q`} className="text-lg font-semibold">
+        <h2 id={id} className="text-lg font-semibold">
           {searchCopy.label}
-        </label>
-        <div className="flex items-center gap-2 h-field px-3 rounded-md border border-input bg-card focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1">
-          <IconSearch size={18} className="text-muted-foreground" />
-          <input
-            id={`${id}-q`}
-            ref={inputRef}
-            dir="rtl"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder={site.searchPlaceholder}
-            className="flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground text-mixed"
-            autoComplete="off"
-          />
-          {text && (
-            <button type="button" aria-label={searchCopy.clear} onClick={() => setText("")} className="size-target -me-3 inline-flex items-center justify-center text-muted-foreground">
-              <IconClose size={18} />
-            </button>
-          )}
-        </div>
+        </h2>
+        <SearchField label={searchCopy.label} labelHidden inputRef={inputRef} value={text} onChange={(v) => setText(v)} placeholder={site.searchPlaceholder} clearLabel={searchCopy.clear} />
       </form>
       {r && found ? <r.SearchBody text={text} setText={setText} found={found} /> : <Waiting text={text} />}
     </Sheet>
@@ -182,7 +153,8 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
  * fades out meanwhile (the full field ran over the last menu item).
  */
 export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: string; variant: "header" | "home"; ready: boolean; onSheet: (el: HTMLElement | null, text: string, via: "focus" | "tap") => void }) {
-  const desktop = useDesktop();
+  // on a PC the field is the search itself; the pre-rendered page is the phone form
+  const desktop = useMedia(MQ.lg);
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -245,7 +217,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             aria-autocomplete="list"
             autoComplete="off"
             placeholder={site.searchPlaceholder}
-            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input !text-start", resting && "xl:w-0 xl:flex-none")}
+            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input", resting && "xl:w-0 xl:flex-none")}
             onFocus={(e) => {
               preloadSearch();
               setFocused(true);

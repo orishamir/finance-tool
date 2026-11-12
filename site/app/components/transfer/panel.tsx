@@ -2,7 +2,6 @@
 // another device, at /transfer. Nothing leaves the device unless the person sends the file; the import changes nothing until "לטעון".
 import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { r3transfer as copy } from "../../copy";
-import { Tpl } from "../exposure-mode/tpl";
 
 import { todayLocal } from "../../lib/today";
 import {
@@ -31,7 +30,7 @@ import type { Rejected } from "../../lib/import-check";
 import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, Card, cx, SegmentedControl, Sentence, When } from "../kit";
+import { Button, Callout, Card, cx, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
 
 type Site = { version: string; data: string };
 
@@ -181,52 +180,51 @@ function ExportHalf({ site }: { site: Site }) {
   };
   const c = copy.contents;
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="tx-export">
-      <h3 id="tx-export" className="text-lg font-semibold">
-        {copy.exportHeading}
-      </h3>
-      {empty ? (
-        <p className="text-muted-foreground">{copy.nothing}</p>
-      ) : (
-        <p className="text-sm flex flex-wrap items-center gap-x-1.5 gap-y-1">
-          <CountList items={countItems(counts)} />
-          {counts.inputs && (
-            <>
-              <span aria-hidden="true">·</span>
-              {c.inputs}
-            </>
-          )}
-          <span aria-hidden="true">·</span>
-          {c.versions}
-        </p>
-      )}
-      <Callout tone="caution">{copy.caution}</Callout>
-      <div className="flex flex-wrap items-center gap-2">
-        {canShare && (
-          <Button variant="primary" disabled={empty} onClick={share} className="disabled:opacity-40 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:brightness-100">
-            <IconShare size={18} /> {copy.buttons.share}
-          </Button>
+    <Section level="card" heading="h3" title={copy.exportHeading}>
+      <div className="flex flex-col gap-3">
+        {empty ? (
+          <p className="text-muted-foreground">{copy.nothing}</p>
+        ) : (
+          <p className="text-sm flex flex-wrap items-center gap-x-1.5 gap-y-1">
+            <CountList items={countItems(counts)} />
+            {counts.inputs && (
+              <>
+                <span aria-hidden="true">·</span>
+                {c.inputs}
+              </>
+            )}
+            <span aria-hidden="true">·</span>
+            {c.versions}
+          </p>
         )}
-        <Button variant={canShare ? "secondary" : "primary"} disabled={empty} onClick={download} className="disabled:opacity-40 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:brightness-100">
-          <IconDownload size={18} /> {copy.buttons.download}
-        </Button>
-        <Button variant="secondary" disabled={empty} onClick={copyText} className="disabled:opacity-40 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:brightness-100">
-          <IconCopy size={18} /> {copied ? copy.buttons.copied : copy.buttons.copy}
-        </Button>
-      </div>
-      {shareFailed && <p className="text-sm text-muted-foreground">{copy.errors.shareFailed}</p>}
-      {blockedText !== null && (
-        <div className="flex flex-col gap-1.5">
-          <p className="text-sm text-muted-foreground">{copy.copyBlocked}</p>
-          <textarea readOnly dir="ltr" rows={5} value={blockedText} onFocus={(e) => e.currentTarget.select()} className="w-full rounded-md border border-input bg-card p-3 font-mono text-base select-all" />
+        <Callout tone="caution">{copy.caution}</Callout>
+        <div className="flex flex-wrap items-center gap-2">
+          {canShare && (
+            <Button variant="primary" disabled={empty} onClick={share} className="disabled:opacity-40 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:brightness-100">
+              <IconShare size={18} /> {copy.buttons.share}
+            </Button>
+          )}
+          <Button variant={canShare ? "secondary" : "primary"} disabled={empty} onClick={download} className="disabled:opacity-40 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:brightness-100">
+            <IconDownload size={18} /> {copy.buttons.download}
+          </Button>
+          <Button variant="secondary" disabled={empty} onClick={copyText} className="disabled:opacity-40 disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:brightness-100">
+            <IconCopy size={18} /> {copied ? copy.buttons.copied : copy.buttons.copy}
+          </Button>
         </div>
-      )}
-      {!empty && (
-        <p className="text-sm text-muted-foreground">
-          {copy.fileName} <bdi dir="ltr" className="num-id">{name}</bdi>
-        </p>
-      )}
-    </section>
+        {shareFailed && <p className="text-sm text-muted-foreground">{copy.errors.shareFailed}</p>}
+        {blockedText !== null && (
+          <div className="flex flex-col gap-1.5">
+            <p className="text-sm text-muted-foreground">{copy.copyBlocked}</p>
+            <textarea readOnly dir="ltr" rows={5} value={blockedText} onFocus={(e) => e.currentTarget.select()} className="w-full rounded-md border border-input bg-card p-3 font-mono text-base select-all" />
+          </div>
+        )}
+        {!empty && (
+          <p className="text-sm text-muted-foreground">
+            {copy.fileName} <bdi dir="ltr" className="num-id">{name}</bdi>
+          </p>
+        )}
+      </div>
+    </Section>
   );
 }
 
@@ -299,118 +297,117 @@ function ImportHalf() {
   useEffect(() => setImportedSide(importedSideCount()), [snap.external, snap.state, done, deleted]);
   const importedAny = imported.total + importedSide;
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="tx-import">
-      <h3 id="tx-import" className="text-lg font-semibold">
-        {copy.importHeading}
-      </h3>
-      <div
-        className={cx("flex flex-col gap-3 rounded-lg lg:border lg:border-dashed lg:p-4", drag ? "lg:border-primary lg:bg-accent/40" : "lg:border-border")}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDrag(true);
-        }}
-        onDragLeave={() => setDrag(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDrag(false);
-          void takeFile(e.dataTransfer.files[0]);
-        }}
-      >
-        <div className="flex flex-wrap items-center gap-3">
-          <input ref={input} type="file" accept=".json,application/json,text/plain" className="sr-only" tabIndex={-1} onChange={(e) => void takeFile(e.target.files?.[0])} />
-          <Button variant="secondary" onClick={() => input.current?.click()}>
-            <IconFileUp size={18} /> {copy.chooseFile}
-          </Button>
-          <span className="hidden lg:inline text-sm text-muted-foreground">{copy.dropZone}</span>
-          {fileText && (
-            <span className="text-sm text-muted-foreground">
-              <bdi dir="ltr" className="num-id">{fileText.name}</bdi>
-            </span>
-          )}
-        </div>
-        <label className="flex flex-col gap-1.5">
-          <span className="field-label">{copy.paste}</span>
-          <textarea
-            dir="ltr"
-            rows={3}
-            value={pasted}
-            onChange={(e) => {
-              setPasted(e.target.value);
-              setFileText(null);
-              setDone(null);
-            }}
-            spellCheck={false}
-            className="w-full rounded-md border border-input bg-card p-3 font-mono text-base"
-          />
-        </label>
-      </div>
-
-      {unreadable && <ErrorNote>{copy.errors.unreadable}</ErrorNote>}
-      {read && !read.ok && (() => {
-        const t = refusalText(read.refusal);
-        return t.tone === "blocked" ? <ErrorNote>{t.text}</ErrorNote> : <Callout tone={t.tone}>{t.text}</Callout>;
-      })()}
-      {read && read.ok && <Preview p={read.preview} mode={mode} onMode={(m) => { setMode(m); setConfirm(false); }} confirm={confirm} onConfirm={setConfirm} onLoad={load} />}
-
-      {done && (
-        <Card className="flex flex-col gap-2" aria-live="polite">
-          {Object.values(done.added).every((n) => n === 0) ? (
-            <p>{copy.nothingNew}</p>
-          ) : (
-            <p className="flex flex-wrap items-center gap-x-1.5">
-              <span>{copy.afterImport.before}</span>
-              <CountList items={countItems(done.added)} sep="," />.
-              {done.mode === "add" && done.added.goals + done.added.holdings + done.added.names > 0 && (
-                <>
-                  {" "}
-                  <When iso={done.date} lead={copy.afterImport.tag} />
-                  ״.
-                </>
-              )}
-            </p>
-          )}
-          {done.skipped > 0 && (
-            <Sentence size="sm" tone="muted">
-              {done.skipped === 1 ? copy.duplicatesForms.one : done.skipped === 2 ? copy.duplicatesForms.two : (
-                <>
-                  <Num value={count(done.skipped, copy.duplicates)} /> {copy.duplicates}
-                </>
-              )}
-            </Sentence>
-          )}
-          {done.sideFailed && <p className="text-sm text-caution-foreground">{copy.sideFailed}</p>}
-        </Card>
-      )}
-
-      {importedAny > 0 && (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          {confirmDelete ? (
-            <>
-              <span className="text-sm">{copy.deleteImportedConfirm.text}</span>
-              <Button
-                variant="destructive"
-                onClick={() => {
-                  deleteImported();
-                  setConfirmDelete(false);
-                  setDone(null);
-                  setDeleted(true);
-                }}
-              >
-                {copy.deleteImportedConfirm.yes}
-              </Button>
-              <Button variant="quiet" onClick={() => setConfirmDelete(false)}>
-                {copy.deleteImportedConfirm.no}
-              </Button>
-            </>
-          ) : (
-            <Button variant="quiet" onClick={() => setConfirmDelete(true)}>
-              {copy.deleteImported}
+    <Section level="card" heading="h3" title={copy.importHeading}>
+      <div className="flex flex-col gap-3">
+        <div
+          className={cx("flex flex-col gap-3 rounded-lg lg:border lg:border-dashed lg:p-4", drag ? "lg:border-primary lg:bg-accent/40" : "lg:border-border")}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDrag(true);
+          }}
+          onDragLeave={() => setDrag(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDrag(false);
+            void takeFile(e.dataTransfer.files[0]);
+          }}
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <input ref={input} type="file" accept=".json,application/json,text/plain" className="sr-only" tabIndex={-1} onChange={(e) => void takeFile(e.target.files?.[0])} />
+            <Button variant="secondary" onClick={() => input.current?.click()}>
+              <IconFileUp size={18} /> {copy.chooseFile}
             </Button>
-          )}
+            <span className="hidden lg:inline text-sm text-muted-foreground">{copy.dropZone}</span>
+            {fileText && (
+              <span className="text-sm text-muted-foreground">
+                <bdi dir="ltr" className="num-id">{fileText.name}</bdi>
+              </span>
+            )}
+          </div>
+          <label className="flex flex-col gap-1.5">
+            <span className="field-label">{copy.paste}</span>
+            <textarea
+              dir="ltr"
+              rows={3}
+              value={pasted}
+              onChange={(e) => {
+                setPasted(e.target.value);
+                setFileText(null);
+                setDone(null);
+              }}
+              spellCheck={false}
+              className="w-full rounded-md border border-input bg-card p-3 font-mono text-base"
+            />
+          </label>
         </div>
-      )}
-      {deleted && importedAny === 0 && <p className="text-sm text-muted-foreground">{copy.deleted}</p>}
-    </section>
+
+        {unreadable && <ErrorNote>{copy.errors.unreadable}</ErrorNote>}
+        {read && !read.ok && (() => {
+          const t = refusalText(read.refusal);
+          return t.tone === "blocked" ? <ErrorNote>{t.text}</ErrorNote> : <Callout tone={t.tone}>{t.text}</Callout>;
+        })()}
+        {read && read.ok && <Preview p={read.preview} mode={mode} onMode={(m) => { setMode(m); setConfirm(false); }} confirm={confirm} onConfirm={setConfirm} onLoad={load} />}
+
+        {done && (
+          <Card className="flex flex-col gap-2" aria-live="polite">
+            {Object.values(done.added).every((n) => n === 0) ? (
+              <p>{copy.nothingNew}</p>
+            ) : (
+              <p className="flex flex-wrap items-center gap-x-1.5">
+                <span>{copy.afterImport.before}</span>
+                <CountList items={countItems(done.added)} sep="," />.
+                {done.mode === "add" && done.added.goals + done.added.holdings + done.added.names > 0 && (
+                  <>
+                    {" "}
+                    <When iso={done.date} lead={copy.afterImport.tag} />
+                    ״.
+                  </>
+                )}
+              </p>
+            )}
+            {done.skipped > 0 && (
+              <Sentence size="sm" tone="muted">
+                {done.skipped === 1 ? copy.duplicatesForms.one : done.skipped === 2 ? copy.duplicatesForms.two : (
+                  <>
+                    <Num value={count(done.skipped, copy.duplicates)} /> {copy.duplicates}
+                  </>
+                )}
+              </Sentence>
+            )}
+            {done.sideFailed && <p className="text-sm text-caution-foreground">{copy.sideFailed}</p>}
+          </Card>
+        )}
+
+        {importedAny > 0 && (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            {confirmDelete ? (
+              <>
+                <span className="text-sm">{copy.deleteImportedConfirm.text}</span>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    deleteImported();
+                    setConfirmDelete(false);
+                    setDone(null);
+                    setDeleted(true);
+                  }}
+                >
+                  {copy.deleteImportedConfirm.yes}
+                </Button>
+                <Button variant="quiet" onClick={() => setConfirmDelete(false)}>
+                  {copy.deleteImportedConfirm.no}
+                </Button>
+              </>
+            ) : (
+              <Button variant="quiet" onClick={() => setConfirmDelete(true)}>
+                {copy.deleteImported}
+              </Button>
+            )}
+          </div>
+        )}
+        {deleted && importedAny === 0 && <p className="text-sm text-muted-foreground">{copy.deleted}</p>}
+      </div>
+    </Section>
   );
 }
 

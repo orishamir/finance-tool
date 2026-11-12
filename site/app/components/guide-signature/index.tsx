@@ -5,10 +5,9 @@
 // already answers what the timeline would, with more of the person's money in it, has no fold (D50).
 // Builder G2 adds its visuals to `signatureRegistry` (and its data builders to `builders` in lib/guide-signature.server.ts).
 import type { ComponentType, ReactNode } from "react";
-import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
 import type { SignatureData } from "../../lib/guide-signature";
-import { Card, Disclosure } from "../kit";
+import { Card, Disclosure, TextLink } from "../kit";
 import { CurrentAccountVisual } from "./current-account";
 import { GovernmentBondVisual } from "./government-bond";
 import { KerenHishtalmutVisual } from "./keren-hishtalmut";
@@ -51,9 +50,9 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
       {page.altId ? (
         <p className="text-sm max-w-measure">
           {copy.altBefore} <span className="font-medium">{page.alt}</span>. {page.altLine}{" "}
-          <Link to={`/guide/${page.altId}`} className="text-link hover:underline">
+          <TextLink to={`/guide/${page.altId}`}>
             {copy.altLinkBefore} {page.alt}
-          </Link>
+          </TextLink>
         </p>
       ) : (
         // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line; none on the study fund

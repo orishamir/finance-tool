@@ -6,8 +6,8 @@
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
 import { trackBrowser as t } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
-import { pressSort, sortFromParams, sortParams } from "../../lib/list-sort";
-import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortInForce, sortTracks, sortableIn, tracksPhrase, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
+import { useAddressSort } from "../../lib/list-sort";
+import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortInForce, sortTracks, sortableIn, tracksPhrase, type SortId, type TbData, type TbGroup } from "../../lib/track-browser";
 import { GoLink, SelectField, useFlip } from "../kit";
 import { Num, Term } from "../provenance";
 import { fmt } from "../../lib/format";
@@ -18,9 +18,8 @@ const FIRST_ROWS = 12;
 
 export function CompanyTracks({ data, product, defaults, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The lines under the list. */ foot: ReactNode }) {
   const view = useMemo(() => buildProductView(data, product) ?? null, [data, product]);
-  const { params: sp, update, hydrated } = useAddressParams();
-  const sortSet = sortFromParams(sp, SORT_IDS) ?? defaultSort;
-  const setSort = (s: SortState) => update(sortParams(s, defaultSort));
+  const { hydrated } = useAddressParams();
+  const { chosen: sortSet, set: setSort, press } = useAddressSort(SORT_IDS, defaultSort);
   // a column sorts where it orders the product's tracks
   const sortable = useMemo(() => new Set<SortId>(view ? sortableIn(view, "company") : []), [view]);
   const sort = sortInForce(sortSet, sortable);
@@ -39,11 +38,7 @@ export function CompanyTracks({ data, product, defaults, foot }: { data: TbData;
   }, [grown, product]);
   // another order: the rows slide to their new places
   const list = useFlip<HTMLDivElement>(hydrated ? `${product}|${sort.id}|${sort.dir}` : null);
-  const pressHead = (id: SortId) => {
-    setSort(pressSort(sort, id));
-    const el = list.current;
-    if (el && el.getBoundingClientRect().top < parseFloat(getComputedStyle(el).scrollMarginTop)) el.scrollIntoView({ block: "start", behavior: "instant" });
-  };
+  const pressHead = (id: SortId) => press(id, sort, list.current);
   const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
   if (!view) return null;
 
@@ -52,7 +47,8 @@ export function CompanyTracks({ data, product, defaults, foot }: { data: TbData;
   const oneDeposit = deposits.size === 1 ? view.tracks[0]!.deposit : null;
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1 -mt-4">
+      {/* the product's size and dates, 8 px under the part's heading, whose section leaves 16 */}
+      <div className="flex flex-col gap-1 -mt-2">
         <p>
           <CompanySize count={tracksPhrase(view.tracks.length)} assets={view.companies[0]?.assets ?? null} />
         </p>

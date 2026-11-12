@@ -218,7 +218,7 @@ export default function TrackPage() {
           </Section>
         )}
         {data.checklist.length > 0 && (
-          <Section title="מה לבדוק">
+          <Section title={copy.checklist}>
             <DimensionChecklist rows={data.checklist} />
           </Section>
         )}

@@ -4,11 +4,10 @@
 // the claim typed). From 1024 px the name stands at the start with the search at the end, and the three groups stand side by side; under
 // it everything is one column, the groups' rows in one box each, not cards in cards.
 import type { ReactNode } from "react";
-import { Link } from "react-router";
 import { companies, depositBrowser, home as copy, invest, knowledgeEntry, rulesFront, site, trackBrowser } from "../../copy";
 import { PageSearchField } from "../shell";
 import { Num } from "../provenance";
-import { Card, ChipList, GoLink, GoRow, GroupHead, RowList } from "../kit";
+import { Card, ChipList, GoLink, GoRow, GroupHead, RowList, TextLink } from "../kit";
 import { emptyFilters, filtersToSearch } from "../../lib/rules-filter";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
@@ -35,7 +34,7 @@ export function DepositLine({ deposit }: { deposit: HomeDeposit | null }) {
   return (
     <>
       {w.lead}
-      <bdi dir="ltr">{fmt.number(deposit.amount)} ₪</bdi>
+      <bdi dir="ltr">{fmt.nisWhole(deposit.amount)}</bdi>
       {w.colon}
       <Num value={deposit.rate} />
       {w.atBank}
@@ -118,15 +117,13 @@ export function HomeBody({ guideTypes, deposit }: { guideTypes: { id: string; na
         </Group>
       </div>
 
-      <div className="flex flex-col gap-2 lg:flex-row lg:flex-wrap lg:items-center lg:justify-between lg:gap-x-8">
-        <Link to={site.notCovered.href} className="text-sm text-link min-h-target inline-flex items-center hover:underline self-start lg:self-auto">
+      <div className="flex flex-col gap-2 text-sm lg:flex-row lg:flex-wrap lg:items-center lg:justify-between lg:gap-x-8">
+        <TextLink look="line" to={site.notCovered.href} className="self-start lg:self-auto">
           {site.notCovered.label}
-        </Link>
-        <p className="text-sm text-muted-foreground">
+        </TextLink>
+        <p className="text-muted-foreground">
           {knowledgeEntry.homeLine}{" "}
-          <Link to="/rules" className="text-link min-h-target inline-flex items-center hover:underline">
-            {knowledgeEntry.homeLink}
-          </Link>
+          <TextLink look="line" to="/rules">{knowledgeEntry.homeLink}</TextLink>
         </p>
       </div>
     </div>

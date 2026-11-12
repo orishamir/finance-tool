@@ -4,7 +4,7 @@
 // specialist needs it. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import type { GlanceItem } from "../../components/guide/sections";
-import { GuideFold as Fold, KeyValueList as RuleRows } from "../../components/guide/sections";
+import { GuideFold as Fold, RuleRows } from "../../components/guide/sections";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { KeyValueList, Sentence } from "../../components/kit";
 

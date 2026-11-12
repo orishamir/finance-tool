@@ -14,7 +14,7 @@ import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineCh
 import { IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch } from "../kit";
+import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, percentCheck, yearsCheck } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -493,12 +493,13 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   const isEntered = (key: P05Input) => (key === "cash_rate" ? ownRate !== undefined : state.entered[key] !== undefined);
   const cashBase = p05Value(p05, "cash_rate");
   const commit = (key: P05Input) => (n: number) => setEntered(key, n === p05Number(p05, key) ? null : n);
-  const nonNegative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
-  const between = (r: { min: number; max: number } | null, msg: readonly [string, string], whole = false) => (n: number) => {
-    if (whole && !Number.isInteger(n)) return valuesCopy.errors.nan;
-    if (r && (n < r.min || n > r.max)) return `${msg[0]} ${fmt.number(r.min)} ${msg[1]}${fmt.number(r.max)}.`;
+  // the kit's checks have none for an age: a whole number, then the range in the years' sentence with the age's words
+  const ageCheck = (n: number) => {
+    if (!Number.isInteger(n)) return valuesCopy.errors.nan;
+    if (ageRange && (n < ageRange.min || n > ageRange.max)) return `${valuesCopy.errors.age[0]} ${fmt.number(ageRange.min)} ${valuesCopy.errors.age[1]}${fmt.number(ageRange.max)}.`;
     return null;
   };
+  const pctCheck = percentCheck(pctRange ?? undefined);
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
   const common = cash?.common;
   const hints = cash ? (
@@ -523,23 +524,23 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
       <div data-field="amount_now" className="contents">
-        <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} start={p05Number(p05, "amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
+        <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} start={p05Number(p05, "amount_now")} isEntered={isEntered("amount_now")} validate={nonNegativeCheck} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
       </div>
       {!lumpSum && (
       <div data-field="monthly_deposit" className="contents">
-        <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} start={p05Number(p05, "monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
+        <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} start={p05Number(p05, "monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegativeCheck} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
       </div>
       )}
       <div data-field="horizon_years" className="contents">
-        <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} start={p05Number(p05, "horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
+        <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} start={p05Number(p05, "horizon_years")} isEntered={isEntered("horizon_years")} validate={yearsCheck(years ?? { min: 1, max: 40 })} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
       </div>
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (
-          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
+          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={pctCheck} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
         ) : (
-          <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} start={p05Number(p05, "A-01")} isEntered={isEntered("A-01")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
+          <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} start={p05Number(p05, "A-01")} isEntered={isEntered("A-01")} validate={pctCheck} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
         )}
-        <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={current("A-02")} start={p05Number(p05, "A-02")} isEntered={isEntered("A-02")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-02")} onReset={() => setEntered("A-02", null)} disabled={!ready} autoFocus={focusField === "A-02"} />
+        <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={current("A-02")} start={p05Number(p05, "A-02")} isEntered={isEntered("A-02")} validate={pctCheck} onCommit={commit("A-02")} onReset={() => setEntered("A-02", null)} disabled={!ready} autoFocus={focusField === "A-02"} />
       </div>
       {hints}
       {employment && (
@@ -551,7 +552,7 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
         <span className="text-xs text-muted-foreground">{valuesCopy.hints.employment}</span>
       </div>
       )}
-      {showAge && <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={between(ageRange, valuesCopy.errors.age, true)} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
+      {showAge && <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={ageCheck} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
     </div>
   );
 }
