@@ -1451,8 +1451,6 @@ export const depositBrowser = {
   access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
-  /** "מ־1,000 ₪", "1,000 עד 50,000 ₪". */
-  amountRange: { from: "מ־", to: " עד " },
   interest: {
     inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים" },
     about: "הריבית על הסכום, לפני המס על הריבית, ",
@@ -1900,7 +1898,6 @@ export const companyPage = {
     beforeTax: "הריבית שנתית ונומינלית, לפני המס על הריבית.",
     amount: "כמה מפקידים",
     allAmounts: "כל הסכומים",
-    to: "עד",
     fixed: "קבועה",
     variable: "משתנה",
     cols: { deposit: "הפיקדון", plan: "התוכנית", amount: "סכום ההפקדה", rate: "ריבית בשנה", rateBand: "ריבית בשנה, לפי סכום ההפקדה" },
@@ -1969,9 +1966,10 @@ export const r4catalogue = {
     autoRenew: "חידוש אוטומטי",
   },
   term: { months: "חודשים", none: "ללא תקופה", day: "יום אחד", twoDays: "יומיים", days: "ימים", year: "שנה", twoYears: "שנתיים", years: "שנים" },
-  rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:", prime: "פריים", less: "פחות", more: "ועוד", points: "נקודות אחוז" },
+  rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:", prime: "פריים", less: "פחות", more: "ועוד" },
   linkage: { none: "לא צמוד", cpi: "צמוד למדד", fx: "צמוד למט״ח" },
   tax: { unlinked: "ריבית לא צמודה; השיעור בעמוד המדריך.", linked: "ריבית צמודה; השיעור בעמוד המדריך." },
+  /** A deposit's amounts on every page (lib/deposit-kind.ts `amountRangeForm`): "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪", "ללא מינימום". */
   amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום" },
   breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה ללא קנס" },
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits

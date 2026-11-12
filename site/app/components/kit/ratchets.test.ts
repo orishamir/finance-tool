@@ -164,14 +164,9 @@ const HAND_TITLE: Record<string, number> = {
 };
 const HAND_SECTION_HEADING: Record<string, number> = {
     "components/companies/focus.tsx": 1,
-    "components/decoder/institutions/page.tsx": 1,
-    "components/deposits/browser.tsx": 1,
     "routes/fees.tsx": 3,
 };
 const HAND_SCROLL_MARGIN: Record<string, number> = {
-    "components/company/bank-views.tsx": 1,
-    "components/decoder/institutions/page.tsx": 1,
-    "components/decoder/institutions/product-row.tsx": 1,
     "components/deposits/browser.tsx": 1,
     "components/timeline/Timeline.tsx": 1,
     "components/tracks/browser.tsx": 1,
@@ -179,11 +174,9 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "routes/invest.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
-    "components/decoder/institutions/product-row.tsx": 1,
     "components/fees/parts.tsx": 5,
     "components/fees/sensitivity.tsx": 1,
     "components/guide/sections.tsx": 1,
-    "components/home/body.tsx": 2,
     "components/provenance-sheets.tsx": 2,
     "content/exposure/shekel-cash.tsx": 2,
     "content/guide/bank-deposit.tsx": 2,
@@ -193,14 +186,11 @@ const HAND_SITE_LINK: Record<string, number> = {
     "routes/guide.tsx": 1,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/decoder/institutions/page.tsx": 1,
     "components/fees/parts.tsx": 1,
     "components/invest/pair.tsx": 1,
     "components/provenance-sheets.tsx": 5,
 };
 const BANG_OVERRIDE: Record<string, number> = {
-    "components/company/bank-views.tsx": 2,
-    "components/deposits/list.tsx": 8,
     "components/fees/parts.tsx": 2,
     "components/invest/plan-card.tsx": 1,
     "components/provenance-sheets.tsx": 1,
@@ -208,11 +198,8 @@ const BANG_OVERRIDE: Record<string, number> = {
     "routes/fees.tsx": 2,
 };
 const MATCH_MEDIA: Record<string, number> = {
-    "components/deposits/browser.tsx": 2,
 };
 const FOLD_AS_LINK: Record<string, number> = {
-    "components/company/bank-views.tsx": 1,
-    "components/decoder/institutions/product-row.tsx": 2,
 };
 
 patterns["a page title written by hand"] = {

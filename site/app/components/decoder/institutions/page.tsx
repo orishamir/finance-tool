@@ -4,10 +4,9 @@
 // names.
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { catalogue, companyPage as w, r4catalogue as copy } from "../../../copy";
-import { IconExternal } from "../../icons";
 import { Num, NumAfter } from "../../provenance";
 import { PageShell } from "../../shell";
-import { Callout, Card, TariffDate, When, gershayim } from "../../kit";
+import { Callout, Card, DocLink, Section, TariffDate, When, gershayim } from "../../kit";
 import { BrokerageGroupCard } from "./brokerage-card";
 import { BankProductRow } from "./product-row";
 import type { InstitutionPageData, ProductGroup } from "./types";
@@ -120,20 +119,14 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
     <span className="inline-flex flex-wrap items-center gap-x-3">
       {`${copy.depositsNotCollected.before}${data.name}${copy.depositsNotCollected.after}`}
       {data.rateTable && (
-        <a href={data.rateTable.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target">
-          {copy.rateTableLink}
-          <IconExternal size={16} />
-        </a>
+        <DocLink href={data.rateTable.href}>{copy.rateTableLink}</DocLink>
       )}
     </span>
   ) : null;
 
   const names =
     data.catalogue.length > 0 ? (
-      <section id="inst-also" aria-labelledby="inst-also-h" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
-        <h2 id="inst-also-h" className="text-xl lg:text-2xl font-semibold">
-          {catalogue.alsoCalled}
-        </h2>
+      <Section id="inst-also" title={catalogue.alsoCalled}>
         <Card as="div" pad="none">
           <ul className="flex flex-col divide-y divide-border">
             {data.catalogue.map((u) => (
@@ -150,7 +143,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
             ))}
           </ul>
         </Card>
-      </section>
+      </Section>
     ) : null;
   const after = (
     <>
