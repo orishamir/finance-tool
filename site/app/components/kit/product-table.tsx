@@ -23,6 +23,10 @@ export interface ProductColumn {
   head: ReactNode;
   /** As wide as its longest real content, in rem (a number, a link, figures), and not wrapping; the columns without it share the rest. */
   width?: number;
+  /** A column with a `width` whose cells may wrap onto a second line (words, such as a deposit's exit points or a range of fees). */
+  wrap?: boolean;
+  /** 4 px at the sides of its head and cells, for a narrow column that holds only an arrow or an icon. */
+  tight?: boolean;
   headClassName?: string;
   cellClassName?: string;
   /** The column's sort state, when its head sorts the table (a `SortHead` inside `head`): sets `aria-sort` on the head's cell. */
@@ -223,7 +227,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
             )}
             <tr>
               {columns.map((c) => (
-                <th key={c.id} scope="col" aria-sort={c.sort} className={cx(c.headClassName, DIM, c.dim && "opacity-45")}>
+                <th key={c.id} scope="col" aria-sort={c.sort} className={cx(c.tight && "px-1", c.headClassName, DIM, c.dim && "opacity-45")}>
                   {c.head}
                 </th>
               ))}
@@ -257,7 +261,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
                 : []),
               ...(shut ? [] : g.rows).flatMap((r) => {
                 const open = !!r.detail && opened.has(r.key);
-                const cellClass = (i: number) => cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width ? "whitespace-nowrap" : null, columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "!border-b-0");
+                const cellClass = (i: number) => cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width && !columns[i]?.wrap ? "whitespace-nowrap" : null, columns[i]?.tight && "px-1", columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "!border-b-0");
                 const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit", r.mine && "row-mine");
                 const lines = r.lines && r.lines.rows.length > 1 ? r.lines : null;
                 const detailId = `${bannerId}-d-${r.key}`;
@@ -350,9 +354,12 @@ export function RowArrow({ className }: { className?: string }) {
   return <IconDrillIn className={cx("text-link shrink-0", className)} />;
 }
 
-/** One product on a phone: a row of the list card. `stacked` when lines (fees, figures, labels) sit under the name. */
-export function ProductPhoneRow({ stacked, className, children, rowOf, lit, mine }: { stacked?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; /** As `ProductRow.mine`. */ mine?: boolean }) {
-  return <div data-row-of={rowOf} className={cx("track", stacked && "!flex-col !items-stretch !gap-1", lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
+/**
+ * One product on a phone: a row of the list card. `stacked` when lines (fees, figures, labels) sit under the name, 4 px apart; `roomy` sets
+ * them 8 px apart, for a row whose lines are a block of their own each (a deposit's name, then its rates at each amount).
+ */
+export function ProductPhoneRow({ stacked, roomy, className, children, rowOf, lit, mine }: { stacked?: boolean; roomy?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; /** As `ProductRow.mine`. */ mine?: boolean }) {
+  return <div data-row-of={rowOf} className={cx("track", stacked && "!flex-col !items-stretch", stacked && (roomy ? "!gap-2" : "!gap-1"), lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
 }
 
 /** The fold token in ms: 0 for a reader who asked for less motion, and on the server. */

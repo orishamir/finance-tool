@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Button, Disclosure, DocLink, PageHead, SearchField, Sentence, Stat, StatRow, Tag, TextLink, nonNegativeCheck, yearsCheck } from "./index";
+import { Button, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Sentence, Stat, StatRow, Tag, TextLink, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -20,7 +20,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable", "ShareRings", "SourcedTag", "PageHead", "TextLink", "SearchField"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "ShareRings", "SourcedTag", "PageHead", "TextLink", "SearchField"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -159,6 +159,54 @@ describe("the shared pieces' choices are props, never an overriding class", () =
   });
   it("a fold with the link look draws its label in the link colour", () => {
     expect(html(createElement(Disclosure, { look: "link", label: "more", children: "body" }))).toMatch(/<span class="text-link">more<\/span>/);
+  });
+  it("a small text action takes the line's height and a tap area; a small icon button is round and muted", () => {
+    const text = html(createElement(Button, { variant: "quiet", size: "sm", flush: true, children: "x" }));
+    expect(text).toContain("text-xs tap-area");
+    expect(text).not.toContain("min-h-target");
+    const icon = html(createElement(Button, { variant: "icon", size: "sm", "aria-label": "x", children: "x" }));
+    expect(icon).toContain("size-9 tap-area");
+    expect(icon).toContain("rounded-full text-muted-foreground");
+    expect(html(createElement(Button, { variant: "icon", "aria-label": "x", children: "x" }))).toContain("size-target");
+  });
+  it("a link out inside a line of text has no height of its own", () => {
+    expect(html(createElement(DocLink, { href: "https://example.com", children: "doc" }))).toContain("min-h-target");
+    expect(html(createElement(DocLink, { href: "https://example.com", look: "inline", children: "doc" }))).not.toContain("min-h-target");
+  });
+  it("plain label-and-value rows are a dl with the rows' label column, and no card", () => {
+    const items = [{ id: "a", label: "L", value: "V" }];
+    const plain = html(createElement(KeyValueList, { plain: true, items }));
+    expect(plain).toMatch(/^<dl/);
+    expect(plain).toContain("<dt");
+    expect(plain).not.toContain("bg-card");
+    const rows = html(createElement(KeyValueList, { rows: true, items }));
+    const column = "md:grid-cols-[10rem_minmax(0,1fr)]";
+    expect(plain).toContain(column);
+    expect(rows).toContain(column);
+  });
+  it("printed quotes stand each in Hebrew quotation marks, in one muted box", () => {
+    const out = html(createElement(PrintedQuotes, { quotes: ["אחת", "שתיים"] }));
+    expect(out).toContain("bg-muted");
+    expect(out.match(/״/g)).toHaveLength(4);
+  });
+  it("a meter in the computed tone takes the computed ink", () => {
+    expect(html(createElement(MeterBar, { share: 0.5, tone: "computed" }))).toContain("bg-computed");
+    expect(html(createElement(MeterBar, { share: 0.5, tone: "computed", hollow: true }))).toContain("border-computed");
+  });
+  it("a product table's column wraps with wrap, has tight sides with tight, and a phone row spaces its lines with roomy", () => {
+    const out = html(
+      createElement(ProductTable, {
+        columns: [{ id: "a", head: "A", width: 8, wrap: true }, { id: "b", head: "B", width: 3, tight: true }, { id: "c", head: "C", width: 4 }],
+        groups: [{ key: "g", rows: [{ key: "r", cells: ["one", "two", "three"], phone: null }] }],
+      }),
+    );
+    const cells = [...out.matchAll(/<td class="([^"]*)">/g)].map((m) => m[1]!);
+    expect(cells[0]).not.toContain("whitespace-nowrap");
+    expect(cells[1]).toContain("px-1");
+    expect(cells[2]).toContain("whitespace-nowrap");
+    expect(out).toMatch(/<th scope="col" class="px-1 /);
+    expect(html(createElement(ProductPhoneRow, { stacked: true, roomy: true, children: "x" }))).toContain("!gap-2");
+    expect(html(createElement(ProductPhoneRow, { stacked: true, children: "x" }))).toContain("!gap-1");
   });
   it("a link out builds the address of its cited place", () => {
     expect(html(createElement(DocLink, { source: { url: "https://example.com/a.pdf", page: 2 }, children: "doc" }))).toContain('href="https://example.com/a.pdf#page=2"');

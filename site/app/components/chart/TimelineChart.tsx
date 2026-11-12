@@ -1,15 +1,14 @@
 // The timeline graph (design-spec 1.4, design-system 3.4): our own SVG on D3 scales and shapes. Time runs
 // left to right; the value axis labels sit at the plot's left edge above their gridlines (one rule shared by
-// the three SVG charts, see AxisLabels); bands bottom-up are what is left, tax and fees, with a neutral
+// the three SVG charts: the kit's AxisLabels); bands bottom-up are what is left, tax and fees, with a neutral
 // contributions line over them.
-import { useId, type CSSProperties, type ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { guide as copy } from "../../copy";
-import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { IdRef } from "../provenance";
-import { YearLabels, ZoomBar, ZoomBrush, cx, pickDim, tickFade, useFadingTicks, useGlidingNumbers, useGlidingRows, useYearZoom, type GlideTick, useBox, ticksOn } from "../kit";
+import { AxisLabels, YearLabels, ZoomBar, ZoomBrush, cx, pickDim, tickFade, useFadingTicks, useGlidingNumbers, useGlidingRows, useYearZoom, useBox, ticksOn, yearTicksIn } from "../kit";
 
 export interface ChartPoint {
   year: number;
@@ -37,49 +36,13 @@ export interface TimelineChartProps {
   highlight?: string | null;
 }
 
-/** Right padding after the horizon; the value axis sits at the plot's start edge (see AxisLabels), not in a strip. */
+/** Right padding after the horizon; the value axis sits at the plot's start edge (AxisLabels), not in a strip. */
 const STRIP = 12;
 const TOP = 20; // room for the top axis label above its gridline
 const BOTTOM = 26;
 
-/**
- * Year ticks on a whole-year grid: steps of 1, 2, 5 or 10 years (d3's nice steps for about four intervals), always
- * including 0 ("today"). Any horizon from 1 to 40 gives 3 to 8 ticks, never a 2.5-year step.
- */
-export function niceYearTicks(horizon: number): number[] {
-  const h = Math.max(1, Math.round(horizon));
-  const t = scaleLinear().domain([0, h]).ticks(4).filter((v) => Number.isInteger(v));
-  return t.length ? t : [0, h];
-}
-
-/** Year ticks for a zoomed view: the same whole-year steps between its two ends. */
-export function yearTicksIn(from: number, to: number): number[] {
-  if (from <= 0) return niceYearTicks(to);
-  const t = scaleLinear().domain([from, to]).ticks(4).filter((v) => Number.isInteger(v));
-  return t.length >= 2 ? t : [Math.ceil(from), Math.floor(to)];
-}
-
-/** The shared value-axis rule: labels at the plot's start edge, just above their gridline, with a card-colour halo. */
-export function AxisLabels({ ticks, y }: { ticks: GlideTick[]; y: (v: number) => number }) {
-  return (
-    <>
-      {ticks.map(
-        (t) =>
-          t.value > 0 && (
-            <text key={t.value} x={2} y={y(t.value) - 4} textAnchor="start" direction="ltr" className={cx("text-xs fill-chart-text stroke-card [paint-order:stroke]", tickFade(t))} strokeWidth="3" data-scale>
-              {fmt.compactNisAxis(t.value)}
-            </text>
-          ),
-      )}
-    </>
-  );
-}
-
-/** A sideways-scrolling table wrapper's cue without script: a card-colour fade at each end that is still hidden content, and a soft edge shadow. */
-export const scrollCueStyle: CSSProperties = {
-  background:
-    "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
-};
+// the fee chart and the year-tick tests read the axis parts from here
+export { AxisLabels, niceYearTicks, yearTicksIn } from "../kit";
 
 const ROW_KEYS = ["net", "tax", "fees", "contributions"] as const;
 

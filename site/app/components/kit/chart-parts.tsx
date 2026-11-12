@@ -1,8 +1,13 @@
-// The three parts that sit around every chart: the legend, the readout of the hovered year, and the table view.
+// The three parts that sit around every chart: the legend, the readout of the hovered year, and the table view; and the two axis parts
+// the SVG charts share: the value axis's labels and the year ticks.
 import { CountingFigures } from "./counting";
 import type { CSSProperties, ReactNode } from "react";
+import { scaleLinear } from "d3-scale";
 import { buttons, kit as kitCopy } from "../../copy";
+import { fmt } from "../../lib/format";
 import type { ChartPick } from "./chart-interact";
+import { tickFade } from "./chart-glide";
+import type { GlideTick } from "./chart-glide-math";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
 import { PHONE_GONE, TableCols } from "./table-cols";
@@ -12,6 +17,43 @@ export const scrollCueStyle: CSSProperties = {
   background:
     "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
 };
+
+/**
+ * Year ticks on a whole-year grid: steps of 1, 2, 5 or 10 years (d3's nice steps for about four intervals), always
+ * including 0 ("today"). Any horizon from 1 to 40 gives 3 to 8 ticks, never a 2.5-year step.
+ */
+export function niceYearTicks(horizon: number): number[] {
+  const h = Math.max(1, Math.round(horizon));
+  const t = scaleLinear().domain([0, h]).ticks(4).filter((v) => Number.isInteger(v));
+  return t.length ? t : [0, h];
+}
+
+/** Year ticks for a zoomed view: the same whole-year steps between its two ends. */
+export function yearTicksIn(from: number, to: number): number[] {
+  if (from <= 0) return niceYearTicks(to);
+  const t = scaleLinear().domain([from, to]).ticks(4).filter((v) => Number.isInteger(v));
+  return t.length >= 2 ? t : [Math.ceil(from), Math.floor(to)];
+}
+
+/**
+ * The value axis of an SVG chart (design-system section 12, "Axes and labels"): each tick's amount in shekels, in the compact form, at the
+ * plot's start edge just above its gridline, with a card-colour halo. Drawn after the lines, so no line runs through a label; the zero
+ * line has no label.
+ */
+export function AxisLabels({ ticks, y }: { ticks: GlideTick[]; y: (v: number) => number }) {
+  return (
+    <>
+      {ticks.map(
+        (t) =>
+          t.value > 0 && (
+            <text key={t.value} x={2} y={y(t.value) - 4} textAnchor="start" direction="ltr" className={cx("text-xs fill-chart-text stroke-card [paint-order:stroke]", tickFade(t))} strokeWidth="3" data-scale>
+              {fmt.compactNisAxis(t.value)}
+            </text>
+          ),
+      )}
+    </>
+  );
+}
 
 export type SwatchShape = "line" | "box" | "entered-line" | "rule" | "dotted-line";
 

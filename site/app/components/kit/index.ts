@@ -22,10 +22,10 @@ export { DiffBar, DiffFigure, DiffHead, DiffRow, GreyLine, barShare, type DiffRo
 export { LeftOutLine, LeftOutMark } from "./left-out";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { FigureLines, KeyValue, KeyValueList, Stat, StatRow, StatTile, type KeyValueItem } from "./stat";
-export { DoubtNote, GapNote, NoteList, PrintedText, ProseList, SharedFacts, SourceLine } from "./notes";
+export { DoubtNote, GapNote, NoteList, PrintedQuotes, PrintedText, ProseList, SharedFacts, SourceLine } from "./notes";
 export { CheckField, FieldGroup, FieldState, AskField, InlineSelect, SearchField, TextField, NumberField, PercentField, RangeField, ResetToStart, SelectField, flushPendingFields, nonNegativeCheck, percentCheck, yearsCheck, startText, type FieldProps, type RangeFieldProps } from "./fields";
 export { GainBars, LaneLabel, Marker, MarkerMark, useBox, useWidth, type GainBar, type MarkerProps } from "./marker";
-export { ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
+export { AxisLabels, ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, niceYearTicks, scrollCueStyle, yearTicksIn, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
 export { FormulaBlock, Tex } from "./formula";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";

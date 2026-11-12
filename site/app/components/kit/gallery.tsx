@@ -6,7 +6,7 @@ import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, inves
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { IconAlert, IconExternal, IconLock } from "../icons";
+import { IconAlert, IconClose, IconExternal, IconLock } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -105,6 +105,21 @@ function Basics() {
             </Button>
             <Button variant="destructive" flush>
               {g.sample.hello}
+            </Button>
+          </div>
+        </State>
+        <State label={'quiet size="sm" flush: a text action inside a line of small text, at the line\'s height with a 44 px tap area'}>
+          <p className="text-xs text-muted-foreground">
+            {g.sample.lead} ·{" "}
+            <Button variant="quiet" size="sm" flush className="align-baseline">
+              {g.sample.hello}
+            </Button>
+          </p>
+        </State>
+        <State label={'icon size="sm": 36 px, round, muted ink, a 44 px tap area (a sheet\'s back and close, over its content)'}>
+          <div className="flex items-center gap-3">
+            <Button variant="icon" size="sm" aria-label={g.sample.hello} className="bg-popover/90">
+              <IconClose size={20} />
             </Button>
           </div>
         </State>
@@ -644,6 +659,12 @@ function Words({ today }: { today: string }) {
           <State label="KeyValueList rows">
             <KeyValueList rows items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} /> }))} />
           </State>
+          <State label="KeyValueList plain: the same rows between hairlines, inside a card that holds more">
+            <Card className="flex flex-col gap-3">
+              <p className="font-semibold">{g.sample.title}</p>
+              <KeyValueList plain items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} />, tag: c.id === g.sample.cards[0]!.id ? <Tag tone="positive">{g.states.sourced}</Tag> : undefined }))} />
+            </Card>
+          </State>
         </Grid>
       </Demo>
       <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
@@ -676,11 +697,14 @@ function Words({ today }: { today: string }) {
           <GapNote reason={g.sample.reason} />
         </State>
       </Demo>
-      <Demo name="PrintedText, DoubtNote" use={g.uses.PrintedText}>
+      <Demo name="PrintedText, PrintedQuotes, DoubtNote" use={g.uses.PrintedText}>
         <State label="PrintedText: a record's own Hebrew with its figures isolated" wide>
           <p className="text-sm max-w-measure">
             <PrintedText text={g.sample.printed} />
           </p>
+        </State>
+        <State label="PrintedQuotes: a document's terms quoted word for word in a muted box, one quote a line" wide>
+          <PrintedQuotes quotes={[g.sample.printed, g.sample.doubt]} />
         </State>
         <State label="DoubtNote: a record's doubt beside its figure" wide>
           <DoubtNote text={g.sample.doubt} className="text-sm" />
@@ -1057,7 +1081,7 @@ function MarkerDemo({ today }: { today: string }) {
 function ChartParts({ today }: { today: string }) {
   const s = samples(today);
   return (
-    <Demo name="ChartLegend, Swatch, ChartReadout, ChartTable" use={g.uses.ChartLegend}>
+    <Demo name="ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn" use={g.uses.ChartLegend}>
       <State label="ChartLegend, every Swatch shape" wide>
         <ChartLegend
           items={[
@@ -1083,6 +1107,12 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="AxisLabels: the value axis at the plot's start edge, above its gridlines, with a halo; yearTicksIn(0, 25): whole-year steps from today" wide>
+        <AxisDemo from={0} to={25} />
+      </State>
+      <State label="yearTicksIn(7, 23): a zoomed view keeps whole-year steps between its ends" wide>
+        <AxisDemo from={7} to={23} />
+      </State>
       <State label="ChartTable, scroll=cue" wide>
         <ChartTable
           rowHead={g.sample.yearWord}
@@ -1094,6 +1124,28 @@ function ChartParts({ today }: { today: string }) {
         />
       </State>
     </Demo>
+  );
+}
+
+/** An SVG chart's axis parts on a rising line: the value axis's labels and the year ticks between two years. */
+function AxisDemo({ from, to }: { from: number; to: number }) {
+  const [ref, w] = useWidth(320);
+  const still = (value: number) => ({ value, phase: "still" as const });
+  const ticks = [0, 50_000, 100_000, 150_000].map(still);
+  const years = yearTicksIn(from, to).map(still);
+  const x = (year: number) => 8 + ((year - from) / (to - from)) * (w - 16);
+  const y = (v: number) => 120 - (v / 150_000) * 100;
+  return (
+    <div ref={ref} className="w-full max-w-md">
+      <svg width={w} height={146} aria-hidden="true" className="block">
+        {ticks.map((t) => (
+          <line key={t.value} x1={0} x2={w} y1={y(t.value)} y2={y(t.value)} className={t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
+        ))}
+        <path d={`M${x(from)} ${y(10_000)}L${x(to)} ${y(140_000)}`} fill="none" className="stroke-chart-value" strokeWidth={2} />
+        <AxisLabels ticks={ticks} y={y} />
+        <YearLabels ticks={years} x={x} y={140} left={0} right={w} />
+      </svg>
+    </div>
   );
 }
 
@@ -1461,6 +1513,15 @@ function Lists({ today }: { today: string }) {
             {g.sample.claim.doc}
           </DocLink>
         </State>
+        <State label='look="inline": inside a line of text, with no height of its own, so the line keeps its height' wide>
+          <Sentence size="sm" tone="muted">
+            <DocLink look="inline" href={sourceHref({ url: "https://example.com/tariff.pdf", page: 2 })}>
+              {g.sample.claim.doc}
+            </DocLink>
+            {", "}
+            {g.sample.lead}
+          </Sentence>
+        </State>
         <State label="a web page opened at the quoted words, by text fragment (sourceHref)" wide>
           <DocLink href={sourceHref({ url: "https://example.com/tariff/", fragment: { start: "דמי משמרת", end: "גבייה רבעונית 0.03%" } })} className="text-sm">
             {g.sample.claim.doc}
@@ -1700,6 +1761,22 @@ function Lists({ today }: { today: string }) {
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
           />
         </State>
+        <State label="wrap: a fitted column whose words break onto a second line; tight: a narrow column of an arrow, 4 px at its sides" wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], width: 8, wrap: true }, { id: "go", head: <span className="sr-only">{g.sample.option[2]}</span>, width: 3, tight: true }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], g.sample.longTag, <RowArrow />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label="ProductPhoneRow stacked, then stacked roomy: its lines 4 px apart, then 8 px apart (a deposit's name over its rates at each amount)">
+          <Card pad="none" className="overflow-hidden flex flex-col max-w-sm">
+            {[false, true].map((roomy) => (
+              <ProductPhoneRow key={String(roomy)} stacked roomy={roomy}>
+                <span className="font-medium">{g.sample.option[roomy ? 1 : 0]}</span>
+                <FigureLines items={[0, 1].map((i) => ({ id: String(i), label: g.sample.option[i], figure: <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" /> }))} />
+              </ProductPhoneRow>
+            ))}
+          </Card>
+        </State>
         <State label="a row's details folded under it, its button marked by what they hold (a note, a doubt)" wide>
           <ProductTable
             columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], width: 8 }]}
@@ -1818,6 +1895,12 @@ function Lists({ today }: { today: string }) {
             <MeterBar share={0.7} />
             <MeterBar share={0.9} hollow />
             <MeterBar share={0.4} tone="muted" hollow />
+          </div>
+        </State>
+        <State label="tone computed: the site's own reckoning of the share (a company's products, each against its largest)" wide>
+          <div className="flex flex-col gap-3 max-w-48">
+            <MeterBar share={1} tone="computed" />
+            <MeterBar share={0.35} tone="computed" />
           </div>
         </State>
       </Demo>
