@@ -29,4 +29,11 @@ describe("flag slots", () => {
     }
     expect(missing).toEqual([]);
   }, 120000);
+
+  it("the deposit flag says which way the number is off and names the exit point (G-16, 2026-11-12)", () => {
+    // the run knows no exit points and prices no break: the sentence is true for a deposit that cannot be broken with or without exit points
+    expect(flags["G-16"]).toContain("יכול להיות גבוה");
+    expect(flags["G-16"]).toContain("תחנת יציאה");
+    expect(flags["G-16"]).toContain("שבירת פיקדון");
+  });
 });

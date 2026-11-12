@@ -58,6 +58,14 @@ describe("G-16: money still inside a deposit's term on the last day", () => {
   it("is not flagged when every deposit ends its term on the last day", () => {
     expect(codes(dep(24, 0))).not.toContain("G-16");
   });
+  it("is flagged on a savings plan as on a deposit", () => {
+    const plan: DepositInput = { ...dep(48, 500), deposit: { kind: "savings-plan", rate: 0.03, termMonths: 36, linkage: "unlinked" } };
+    expect(codes(plan)).toContain("G-16");
+    expect(codes({ ...plan, goal: { amountNow: 10_000, monthly: 0, months: 72 } })).not.toContain("G-16");
+  });
+  it("is not flagged on a deposit with a one-month term, whatever the plan", () => {
+    expect(codes({ ...dep(30, 500), deposit: { kind: "deposit", rate: 0.03, termMonths: 1, linkage: "unlinked" } })).not.toContain("G-16");
+  });
   it("is never flagged on a current account, which has no term", () => {
     expect(codes(base(10_000))).not.toContain("G-16");
   });
