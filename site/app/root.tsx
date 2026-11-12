@@ -6,6 +6,7 @@ import heeboHebrew from "../../node_modules/@fontsource-variable/heebo/files/hee
 import { InputsProvider } from "./lib/inputs";
 import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
+import { Button } from "./components/kit";
 import { site, system } from "./copy";
 import { pageMeta, type MetaPlace } from "./lib/page-meta";
 import { useIsoLayoutEffect } from "./lib/hooks";
@@ -170,9 +171,9 @@ export function ErrorBoundary() {
           <a href={import.meta.env.BASE_URL} className="text-link min-h-target inline-flex items-center hover:underline">
             {system.wentWrong.home}
           </a>
-          <button type="button" className="text-link min-h-target hover:underline" onClick={() => window.location.reload()}>
+          <Button variant="quiet" flush onClick={() => window.location.reload()}>
             {system.wentWrong.reload}
-          </button>
+          </Button>
         </div>
       </div>
     </PageShell>

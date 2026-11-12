@@ -108,14 +108,18 @@ patterns["a name in a plain bdi"] = {
 };
 
 // a text action is the kit's Button `quiet`, and a choice that changed something else, with the way back, is the
-// kit's AlsoChanged; never a <button> styled by hand as an underlined link. Today's leftovers: other pages', and the stairs' link
-// on the indices page.
+// kit's AlsoChanged; never a <button> styled by hand as a link: painted in the link colour and underlined, always or under the pointer.
+// Read element by element, so an arrow `onClick` before the class (whose `=>` a pattern on the raw text stopped at) hides nothing.
+// Today's leftover: the rule detail's way to what companies wrote, a bordered row with its count and an arrow that no kit piece draws.
+const isLinkColour = (t: string) => /^(?:[^\s:]+:)*text-(link|primary)$/.test(t);
+const isUnderline = (t: string) => /^(?:[^\s:]+:)*underline$/.test(t);
 patterns["a button styled by hand as a link"] = {
-  count: (s) => (s.match(/<button\b[^>]*className="[^"]*\btext-link\b[^"]*\bunderline\b/g) ?? []).length,
-  kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
+  count: (s) => findElements(s, ["button"]).filter((e) => { const t = classTokens(e.open); return t.some(isLinkColour) && t.some(isUnderline); }).length,
+  kit: "Button variant=quiet (a text action), variant=inline (one inside a sentence, around a name that wraps), or AlsoChanged for a change with its way back",
   allowed: {
+    "components/invest/before.tsx": 1,
     "components/invest/stairs.tsx": 1,
-    "root.tsx": 1,
+    "routes/rules.tsx": 1,
   },
 };
 
@@ -220,6 +224,31 @@ patterns["a fold label painted as a link"] = {
   count: (s) => findElements(s, ["Disclosure"]).filter((e) => /\btext-(link|primary)\b/.test(e.open)).length,
   allowed: FOLD_AS_LINK,
 };
+// The pieces of the second kit job: a label and its value in a row of a hand grid (KeyValueList plain draws the rows, its label column one
+// width for the site), a document's words in a hand muted box (PrintedQuotes), and a hand bar in the computed ink (MeterBar tone="computed").
+const HAND_KEY_VALUE_ROW: Record<string, number> = {
+    "routes/track.tsx": 1,
+};
+const HAND_QUOTES_BOX: Record<string, number> = {
+    "components/decoder/institutions/product-row.tsx": 1,
+};
+const HAND_COMPUTED_BAR: Record<string, number> = {
+};
+patterns["a label and value row drawn by hand"] = {
+  kit: "KeyValueList plain (rows between hairlines, the label column one width; `wide` for labels that run to a sentence)",
+  count: (s) => findElements(s, ["div", "dl"]).filter((e) => classTokens(e.open).some((t) => /^(?:[^\s:]+:)*grid-cols-/.test(t)) && /<dt\b/.test(e.inner)).length,
+  allowed: HAND_KEY_VALUE_ROW,
+};
+patterns["a muted quotes box drawn by hand"] = {
+  kit: "PrintedQuotes (a document's terms quoted word for word in a muted box)",
+  count: (s) => classStrings(s).filter((c) => { const t = c.split(/\s+/); return t.includes("bg-muted") && t.includes("rounded-md") && t.includes("p-3"); }).length,
+  allowed: HAND_QUOTES_BOX,
+};
+patterns["a bar drawn by hand in the computed ink"] = {
+  kit: "MeterBar tone=\"computed\" (a share the site reckons itself)",
+  count: (s) => classValueTokens(s).filter((t) => /^(?:[^\s:]+:)*bg-computed$/.test(t)).length,
+  allowed: HAND_COMPUTED_BAR,
+};
 const scriptPatterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
   "a media query asked by hand": {
     kit: "useMedia(query, serverValue) with MQ.md, MQ.lg or MQ.xl (lib/hooks.ts); a reduced-motion check is left to its caller",
@@ -238,6 +267,10 @@ describe("the duplicated text pieces' scans", () => {
     expect(n("a link out written by hand", '<a href={u} target="_blank" rel="noopener"> <DocLink source={s}>')).toBe(1);
     expect(n("a ! override of a class", '<Button className="!px-0 hover:!text-foreground" /> <Tag className={cx("px-0!", a && "b")} /> { cellClassName: "!whitespace-normal" } {!open && x}')).toBe(4);
     expect(n("a fold label painted as a link", '<Disclosure label={c.unpriced(list.map((f) => f.id))} labelClassName="text-sm text-link">a</Disclosure> <Disclosure look="link" label="x">b</Disclosure>')).toBe(1);
+    expect(n("a button styled by hand as a link", '<button type="button" onClick={() => go(x)} className="text-link underline">a</button> <button className="hover:text-link hover:underline">b</button> <Button variant="quiet">c</Button> <button className="text-primary border">d</button>')).toBe(2);
+    expect(n("a label and value row drawn by hand", '<div className="flex md:grid md:grid-cols-[14rem_1fr]"><dt>a</dt><dd>b</dd></div> <dl className="flex flex-col"><dt>c</dt></dl> <KeyValueList plain items={x} />')).toBe(1);
+    expect(n("a muted quotes box drawn by hand", '<p className="text-sm bg-muted rounded-md p-3">a</p> <span className="bg-muted/50 rounded-md p-3">b</span> <PrintedQuotes quotes={q} />')).toBe(1);
+    expect(n("a bar drawn by hand in the computed ink", '<span className={cx("h-1.5 rounded-full", "bg-computed")} /> <MeterBar share={0.4} tone="computed" />')).toBe(1);
     expect(n("a media query asked by hand", 'window.matchMedia("(min-width: 64rem)"); matchMedia("(prefers-reduced-motion: reduce)"); useMedia(MQ.lg)')).toBe(1);
   });
 });
