@@ -3,7 +3,7 @@
 // the amount (F-21), the list's order and its words. No React, no I/O.
 import { amountOpens, bestOpenOffer, depositInterest } from "@finance-tool/engine";
 import { depositBrowser as t } from "../copy";
-import { exitWords } from "./deposit-kind";
+import { exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
 import { fmt } from "./format";
 import type { Label } from "./labels";
 import type { ListSort } from "./list-sort";
@@ -55,7 +55,7 @@ export interface DbOffer {
   spread: SiteValue | null;
   amount_range: { min: SiteValue; max: SiteValue | null };
   breakTerm: BreakTerm;
-  exits: { exists: boolean; everyMonths: number | null };
+  exits: ExitPoints;
 }
 
 export interface DbBank {
@@ -129,10 +129,18 @@ export const interestText = (n: number): string => (n < 0.5 ? t.interest.underOn
 /** How the money can come out before the end: exit points (every so many months, or at points the table does not space evenly), a break, or neither. */
 export type Access = { kind: "exits"; words: string } | { kind: "break"; words: string } | { kind: "locked"; words: string };
 
+/** An offer's exit points in the access column: "יציאה כל 3 חודשים", "יציאה אחרי 6 חודשים, ואז כל 3 חודשים", "יציאה ראשונה אחרי 6 חודשים". */
+function exitAccessWords(e: ExitPoints): string {
+  const first = exitFirstOf(e);
+  if (first !== null && !e.everyMonths) return `${t.access.firstAfter}${fmt.months(first)}`;
+  const timing = exitTiming(e);
+  return timing ? `${t.access.exit}${timing}` : t.access.some;
+}
+
 /** The access column's answer for an offer: its exit points first, then a break, else locked to the end. Both when it has both. */
 export function accessOf(o: DbOffer): Access[] {
   const out: Access[] = [];
-  if (o.exits.exists) out.push({ kind: "exits", words: o.exits.everyMonths ? `${t.access.every}${fmt.months(o.exits.everyMonths)}` : t.access.some });
+  if (o.exits.exists) out.push({ kind: "exits", words: exitAccessWords(o.exits) });
   if (o.breakTerm !== "not_allowed") out.push({ kind: "break", words: t.access.break[o.breakTerm] });
   return out.length ? out : [{ kind: "locked", words: t.access.locked }];
 }
@@ -177,7 +185,7 @@ export function sheetNames(data: DbData): Map<string, string> {
     const parts = [bankName(o.bank), o.name];
     const min = numberOf(o.amount_range.min);
     if (differ((x) => numberOf(x.amount_range.min)) && min !== null) parts.push(`${t.grid.from}${fmt.number(min)} ₪`);
-    if (differ((x) => [x.exits.exists, x.exits.everyMonths])) parts.push(`${t.help.exits}: ${exitWords(o.exits.exists, o.exits.everyMonths)}`);
+    if (differ((x) => [x.exits.exists, x.exits.everyMonths, x.exits.firstMonths])) parts.push(`${t.help.exits}: ${exitWords(o.exits)}`);
     const base = parts.join(" · ");
     const n = (taken.get(base) ?? 0) + 1;
     taken.set(base, n);
@@ -278,7 +286,7 @@ export function rowSplit(row: DbRow): RowSplit {
   const differ = (f: (o: DbOffer) => unknown) => new Set(row.offers.map((o) => JSON.stringify(f(o)))).size > 1;
   return {
     amount: differ((o) => [numberOf(o.amount_range.min), o.amount_range.max ? numberOf(o.amount_range.max) : null]),
-    exits: differ((o) => [o.exits.exists, o.exits.everyMonths]),
+    exits: differ((o) => [o.exits.exists, o.exits.everyMonths, o.exits.firstMonths]),
     break: differ((o) => o.breakTerm),
   };
 }

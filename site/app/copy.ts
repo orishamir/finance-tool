@@ -1448,7 +1448,7 @@ export const depositBrowser = {
   columns: { bank: "הבנק והפיקדון", rate: "ריבית בשנה", amount: "סכום להפקדה", access: "גישה לכסף לפני הסוף", interestOn: "על ", beforeTax: "לפני המס על הריבית" },
   /** The phone's sort, where there are no column heads to press. */
   sortPhone: { rate: "ריבית גבוהה קודם", min: "סכום נמוך קודם" },
-  access: { every: "יציאה כל ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
+  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
   /** "מ־1,000 ₪", "1,000 עד 50,000 ₪". */
@@ -1977,7 +1977,16 @@ export const r4catalogue = {
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
   breakDisclosure: "הבנק כותב:",
-  exits: { every: "כל", none: "אין", some: "יש", someCard: "יש; המועדים בתנאי הבנק" },
+  exits: {
+    every: "כל",
+    none: "אין",
+    some: "יש",
+    someCard: "יש; המועדים בתנאי הבנק",
+    // a first exit point later than the interval after it (Leumi's prime plan: "בתום 6 חודשים, וכל 3 חודשים לאחר מכן")
+    afterThen: (first: string, every: string) => `אחרי ${first}, ואז כל ${every}`,
+    // a first exit point with no interval in the record
+    firstAfter: (first: string) => `הראשונה אחרי ${first}`,
+  },
   // a deposit's kind (`variant`) as a label chip on the bank page: what sets it apart from the bank's plain deposit
   kindLabels: {
     "deposit-campaign": { text: "מבצע", explain: "בטבלת הריביות של הבנק הפיקדון הזה מסומן כמבצע. מה צריך כדי לקבל את הריבית שלו כתוב בתנאי הבנק." },
