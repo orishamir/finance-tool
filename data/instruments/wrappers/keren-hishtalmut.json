@@ -59,18 +59,18 @@
         "PF-06"
       ],
       "state": "sourced",
-      "notes": "Maximum management fee of a study fund, per year, of each member's accumulated balance; applies to each track as a separate account (reg. 6). In force since 1.1.2013. Reg. 4 authorises only a fee on the balance and law s.32(א) forbids any charge not allowed, so no deposit fee (inference; Gemel-Net reports no deposit fee on any study-fund track, KH-23). Reported averages for 2026-09: 0.34% to 0.74% outside IRA tracks (KH-23)."
+      "notes": "Maximum management fee of a study fund, per year, of each member's accumulated balance; applies to each track as a separate account (reg. 6). In force since 1.1.2013. Reg. 4 authorises only a fee on the balance, so no deposit fee; the regulator's statement circular 2020-9-22 (p.37) states it (KH-22), and Gemel-Net reports no deposit fee on any study-fund track (KH-23). Reported averages for 2026-09: 0.34% to 0.74% outside IRA tracks (KH-23)."
     },
     "deposit": {
       "value": 0,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, ק\"ת 7131, p.1262 (file p.6), reg. 4: a keren hishtalmut or an IRA may charge from the balance \"בשיעור שלא יעלה על 2% לשנה\"",
-        "publisher": "Reshumot (Ministry of Justice)",
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.37, chapter 1 sign ב, direction ג.1: the deposit-fee row is 0% \"למעט במקרים בהם לא ניתן לגבות דמי ניהול מהפקדה כגון: קופה בניהול אישי, קרן השתלמות, קופה לפי הוצאות בפועל\"",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-11-07",
+      "checked": "2026-10-26",
       "effective_from": "2013-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -79,7 +79,7 @@
         "KH-22"
       ],
       "state": "sourced",
-      "notes": "Reg. 4 authorises only a fee on the balance and law s.32(א) forbids any charge not allowed, so a study fund charges no deposit fee (inference; KH-22)."
+      "notes": "Reg. 4 authorises only a fee on the balance and law s.32(א) forbids any charge not allowed, so a study fund charges no deposit fee. The regulator states it: its statement circular shows the deposit-fee row as 0% where no deposit fee may be charged, a study fund among them (circular 2020-9-22, p.37), and the Commissioner's 2025 report gives the deposit-fee average for provident funds other than study funds, \"שבהן אין דמי ניהול מהפקדה\" (chart ד-3) (KH-22)."
     }
   },
   "ceiling": null,

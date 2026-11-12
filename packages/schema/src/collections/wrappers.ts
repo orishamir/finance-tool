@@ -16,12 +16,20 @@ export type CompanyTermRef = z.infer<typeof companyTermRef>;
 export const companyTermRule = (ref: CompanyTermRef): string => (typeof ref === "string" ? ref : ref.rule);
 
 /**
- * A legal cap on one fee base (data-schema §3.3): a value object, and `binds` where the cap binds only some providers. `banks`: the
- * cap binds banks only (the price of moving securities out, BRK-18; the ban on custody of makam, BRK-17). `banks_and_fund_distributors`:
- * the cap binds banks and a fund's distributor that is not an investment marketer (the ban on custody of money-market units, BANK-18,
- * MF-26). The fee page judges such a cap only where the deal names a bank (F-113).
+ * A legal cap on one fee base (data-schema §3.3): a value object, `binds` where the cap binds only some providers, and `caveat` where it
+ * holds only in a case a deal does not state. `banks`: the cap binds banks only (the price of moving securities out, BRK-18; the ban on
+ * custody of makam, BRK-17). `banks_and_fund_distributors`: the cap binds banks, and a fund's distributor that is not an investment
+ * marketer where it has a distribution agreement for the fund (the ban on custody of money-market units, BANK-18, MF-26 reg. 2(ד)). The
+ * fee page judges a cap with `binds` only where the deal names a bank (F-113). With a `caveat` the fee page states the cap in the
+ * caveat's words and judges no price against it, at any provider (F-113): `closing_account`, a bank's price for moving securities out is
+ * at most the value only when the account is being closed, with what the bank paid a third party added, and the supervised price holds
+ * while it stays open (BRK-18, SW-33); `distribution_agreement`, no cap is set in general (the value is empty), but a bank or a fund's
+ * distributor with a distribution agreement for the fund may charge the holder nothing for buying or redeeming its units (MF-26 reg. 2(ד)).
  */
-export const feeCap = valueObject.safeExtend({ binds: z.enum(["banks", "banks_and_fund_distributors"]).optional() });
+export const feeCap = valueObject.safeExtend({
+  binds: z.enum(["banks", "banks_and_fund_distributors"]).optional(),
+  caveat: z.enum(["closing_account", "distribution_agreement"]).optional(),
+});
 
 export type FeeCap = z.infer<typeof feeCap>;
 

@@ -164,7 +164,8 @@
         "BANK-18"
       ],
       "state": "sourced",
-      "notes": "Under a distribution agreement a distributor may not charge the holder of money-market (type 4) units any fee for buying, holding or redeeming (reg. 2(ד)); without an agreement it may charge up to the distribution fee it could have charged the manager (reg. 2(ב)). A bank's part-4 buy/sell commission excludes mutual funds other than tracking and listed funds (BRK-16, MF-27 Leumi). A non-bank member's commission is per its tariff (MF-27: IBI up to 0.08%, minimum NIS 5, 1.7.2026)."
+      "notes": "Under a distribution agreement a distributor may not charge the holder of money-market (type 4) units any fee for buying, holding or redeeming (reg. 2(ד)); without an agreement it may charge up to the distribution fee it could have charged the manager (reg. 2(ב)). A bank's part-4 buy/sell commission excludes mutual funds other than tracking and listed funds (BRK-16, MF-27 Leumi). A non-bank member's commission is per its tariff (MF-27: IBI up to 0.08%, minimum NIS 5, 1.7.2026).",
+      "caveat": "distribution_agreement"
     },
     "custody": {
       "value": 0,

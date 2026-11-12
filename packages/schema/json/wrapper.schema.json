@@ -472,6 +472,13 @@
               "banks",
               "banks_and_fund_distributors"
             ]
+          },
+          "caveat": {
+            "type": "string",
+            "enum": [
+              "closing_account",
+              "distribution_agreement"
+            ]
           }
         },
         "required": [
