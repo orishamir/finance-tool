@@ -31,9 +31,29 @@ describe("flag slots", () => {
   }, 120000);
 
   it("the deposit flag says which way the number is off and names the exit point (G-16, 2026-11-12)", () => {
-    // the run knows no exit points and prices no break: the sentence is true for a deposit that cannot be broken with or without exit points
+    // the run prices no break: the sentence is true for a deposit that cannot be broken, with or without exit points
     expect(flags["G-16"]).toContain("יכול להיות גבוה");
     expect(flags["G-16"]).toContain("תחנת יציאה");
     expect(flags["G-16"]).toContain("שבירת פיקדון");
+  });
+
+  it("the exit-point flag opens by saying the sum received may differ, then why, in words that hold for every bank (G-34, 2026-11-12)", () => {
+    // conclusion first, with the day named (guidelines/wording.md). The run knows the day is an exit point, not what it pays nor the
+    // notice it needs: both are each product's terms (BANK-27, BANK OQ20). One bank's plan pays a lower rate there, another's adds
+    // to the rate at each exit point, so the sum may be lower or higher: the sentence says "different", and names no bank's term as
+    // the product's.
+    expect(flags["G-34"]).toMatch(/^הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, /);
+    // that the money leaves at the exit point is what the run counts, said as G-16 says its own assumption, not as a fact
+    expect(flags["G-34"]).toContain("החישוב מחשיב אותו כאילו נמשך אז בתחנת יציאה");
+    expect(flags["G-34"]).not.toMatch(/יוצא אז|משלמים בתחנת יציאה את/);
+    // the term opens its meaning where it first stands (wording.md), in the glossary's words
+    expect(flags["G-34"]).toContain("תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון");
+    expect(flags["G-34"]).toContain("בתחנת יציאה");
+    expect(flags["G-34"]).toContain("קובע כל בנק בתנאי הפיקדון");
+    expect(flags["G-34"]).not.toMatch(/גבוה|נמוך/);
+    expect(flags["G-34"]).not.toMatch(/יש בנקים|יש פיקדונות/);
+    expect(flags["G-34"]).not.toMatch(/באותו יום/); // no day is named before it
+    // a note, not a page: the conclusion with its reason, and the one caveat
+    expect(flags["G-34"]!.split(/\.(?:\s|$)/).filter(Boolean)).toHaveLength(2);
   });
 });

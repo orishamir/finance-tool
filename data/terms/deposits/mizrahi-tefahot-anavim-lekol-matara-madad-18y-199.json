@@ -56,7 +56,7 @@
       "BANK-28"
     ],
     "state": "sourced",
-    "notes": "The table prints 18 rates in the offered-rate column: '1.00% / 1.00% / 1.00% / 1.02% / 1.04% / 1.06% / 1.08% / 1.10% / 1.12% / 1.14% / 1.16% / 1.18% / 1.20% / 1.22% / 1.24% / 1.26% / 1.28% / 1.30%'; rate type 'קבועה', linkage 'מדד מחירים לצרכן', a rate above the linkage (whether a linked rate in these tables is real or nominal is BANK open question 17); amount column '200<'. The terms: 'ריבית קבועה בשיעור מדורג וידוע מראש. ריבית עולה מתום 3 שנים, כל שנה. אם ההפקדות בהוראת הקבע נפסקות, הריבית אינה עולה עוד, אלא נשארת בשיעור הריבית של ההפקדה האחרונה'. Recorded is the 18th and last rate, 1.30%, read as the rate of a plan whose deposits run to its end. Rows 200 and 201, same name, print the same rates and terms (199 and 201 add 'ריבית מבצע זהה לכל סכום הפקדה שעולה עם השנים'). Read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=additional, 'populationDateAdditional' 06/11/2026 08:30:52; library 1b5cbf3747b9920d) and from the plan's terms document linked from its name. Terms document library 906ec769bdaadd2a."
+    "notes": "The table prints 18 rates in the offered-rate column: '1.00% / 1.00% / 1.00% / 1.02% / 1.04% / 1.06% / 1.08% / 1.10% / 1.12% / 1.14% / 1.16% / 1.18% / 1.20% / 1.22% / 1.24% / 1.26% / 1.28% / 1.30%'; rate type 'קבועה', linkage 'מדד מחירים לצרכן', a rate above the linkage (whether a linked rate in these tables is real or nominal is BANK open question 17); amount column '200<'. The terms: 'ריבית קבועה בשיעור מדורג וידוע מראש. ריבית עולה מתום 3 שנים, כל שנה. אם ההפקדות בהוראת הקבע נפסקות, הריבית אינה עולה עוד, אלא נשארת בשיעור הריבית של ההפקדה האחרונה'. Recorded is the 18th and last rate, 1.30%, read as the rate of a plan whose deposits run to its end. Rows 200 and 201, same name, print the same rates and terms (199 and 201 add 'ריבית מבצע זהה לכל סכום הפקדה שעולה עם השנים'). Read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=additional, 'populationDateAdditional' 06/11/2026 08:30:52; library 1b5cbf3747b9920d) and from the plan's terms document linked from its name. Terms document library 906ec769bdaadd2a. Exit points 'תחנת יציאה ראשונה לאחר 36 חודשים ולאחר מכן תחנת יציאה מדי 6 חודשים' (the table, library 1b5cbf3747b9920d; the same in the table of 09/11/2026, library 47a02fb8a6ef208e); the terms: 'תחנות יציאה מתום 3 שנים כל חצי שנה' (library 906ec769bdaadd2a p.1)."
   },
   "linkage": "cpi",
   "tax_bucket": {
@@ -138,7 +138,8 @@
   },
   "exit_points": {
     "exists": true,
-    "every_months": 6
+    "every_months": 6,
+    "first_after_months": 36
   },
   "auto_renew": {
     "value": false,

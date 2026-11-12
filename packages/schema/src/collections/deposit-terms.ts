@@ -55,7 +55,25 @@ export const depositTerms = z.strictObject({
   }),
   amount_range: z.strictObject({ min: valueObject, max: valueObject.nullable() }),
   break: breakTerms,
-  exit_points: z.strictObject({ exists: z.boolean(), every_months: z.number().nullable() }),
+  exit_points: z
+    .strictObject({
+      exists: z.boolean(),
+      /** The interval between exit points in months, as the bank prints how often they come; not the date of the first one. Null where there are none or the bank prints no interval. */
+      every_months: z.number().positive().nullable(),
+      /**
+       * Months from the deposit's start to its first exit point, as the bank prints it ("בתום 6 חודשים, וכל 3 חודשים לאחר מכן" is 6, added
+       * 2026-11-12). A record with exit points always carries the key: a number, or null when the bank prints only how often the exit
+       * points come. The first one is then not known, and no reader may take it to fall one interval after the start (a plan with yearly
+       * exit points may open its first after ten years). A record without exit points leaves it out or null.
+       */
+      first_after_months: z.number().positive().nullable().optional(),
+    })
+    .refine((e) => e.exists || e.every_months === null, { message: "every_months is set only where exit points exist", path: ["every_months"] })
+    .refine((e) => e.exists || (e.first_after_months ?? null) === null, { message: "first_after_months is set only where exit points exist", path: ["first_after_months"] })
+    .refine((e) => !e.exists || e.first_after_months !== undefined, {
+      message: "a deposit with exit points says when the first one falls (first_after_months), or null where the bank prints only how often they come",
+      path: ["first_after_months"],
+    }),
   auto_renew: z.strictObject({ value: z.boolean(), max_renewals: z.number().int().nullable() }),
   /**
    * A short plain-Hebrew summary of the conditions the bank prints for the rate (guide page of the current account). Faithful to the
@@ -74,6 +92,18 @@ export const depositTerms = z.strictObject({
   doubt_he: z.string().min(1).optional(),
   snapshot: isoDate,
   source,
-});
+})
+  // an exit point is a day inside the term: a first one at the term's end or after it is the maturity, or a misread figure. A term
+  // in days is set against the first in months by the average month (365.25 / 12 days), a term in years by twelve months a year.
+  .refine(
+    (d) => {
+      const first = d.exit_points.first_after_months;
+      const term = d.term_months.value;
+      if (typeof first !== "number" || typeof term !== "number") return true;
+      const months = d.term_months.unit === "months" ? term : d.term_months.unit === "days" ? term / (365.25 / 12) : d.term_months.unit === "years" ? term * 12 : null;
+      return months === null || first < months;
+    },
+    { message: "the first exit point falls at or after the end of the term", path: ["exit_points", "first_after_months"] },
+  );
 
 export type DepositTerms = z.infer<typeof depositTerms>;

@@ -28,7 +28,7 @@ function rec(id: string, over: Omit<Partial<ProductRowData>, "rate"> & { min?: n
     amountMin: v(min),
     amountMax: max === null ? null : v(max),
     breakTerms: { penalty: "not_allowed", quotes: [], rules: [] },
-    exitPoints: { exists: false, everyMonths: null },
+    exitPoints: { exists: false, everyMonths: null, firstMonths: null },
     autoRenew: { value: false, maxRenewals: null },
     variant: [],
     conditions: null,
@@ -47,7 +47,7 @@ describe("tableRows", () => {
     expect(rows[0]!.lines.map((p) => p.id)).toEqual(["a", "b", "c"]);
   });
   it("keeps apart records that differ in anything else", () => {
-    expect(tableRows([rec("a"), rec("b", { min: 5000, exitPoints: { exists: true, everyMonths: 3 } })])).toHaveLength(2);
+    expect(tableRows([rec("a"), rec("b", { min: 5000, exitPoints: { exists: true, everyMonths: 3, firstMonths: null } })])).toHaveLength(2);
   });
   it("never puts two rates in one cell: two records at one amount stay rows of their own", () => {
     expect(tableRows([rec("a", { rate: 1 }), rec("b", { rate: 2 })])).toHaveLength(2);
@@ -76,7 +76,7 @@ describe("sharedFacts", () => {
     expect(s).toMatchObject({ rateType: false, autoRenew: false, breakTerms: true, exits: true, linkage: true, tax: true });
   });
   it("shares a break by whether one can break at all: the exits column says which wait for exit points", () => {
-    expect(sharedFacts([rec("a"), rec("b", { exitPoints: { exists: true, everyMonths: 1 } })]).breakTerms).toBe(true);
+    expect(sharedFacts([rec("a"), rec("b", { exitPoints: { exists: true, everyMonths: 1, firstMonths: null } })]).breakTerms).toBe(true);
     expect(sharedFacts([rec("a"), rec("b", { breakTerms: { penalty: "with_penalty", quotes: [], rules: [] } })]).breakTerms).toBe(false);
   });
   it("says the tax once for each linkage when each linkage has one", () => {

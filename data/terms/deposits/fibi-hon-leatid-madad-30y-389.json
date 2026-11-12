@@ -119,7 +119,8 @@
   },
   "exit_points": {
     "exists": true,
-    "every_months": 12
+    "every_months": 12,
+    "first_after_months": 60
   },
   "auto_renew": {
     "value": false,

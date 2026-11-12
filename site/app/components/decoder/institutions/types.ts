@@ -5,7 +5,7 @@ import type { LeftOutView } from "../../../lib/left-out";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
-import type { DepositVariant } from "../../../lib/deposit-kind";
+import type { DepositVariant, ExitPoints } from "../../../lib/deposit-kind";
 
 export type InstitutionKind = "bank" | "broker";
 
@@ -52,7 +52,7 @@ export interface ProductRowData {
   amountMax: SiteValue | null;
   /** The bank's own printed words about a break (its quoted passages), never the record's English note. */
   breakTerms: { penalty: "none" | "with_penalty" | "not_allowed"; quotes: string[]; rules: string[] };
-  exitPoints: { exists: boolean; everyMonths: number | null };
+  exitPoints: ExitPoints;
   autoRenew: { value: boolean; maxRenewals: number | null };
   /** The deposit's kinds (`variant`): each a label on its card. */
   variant: DepositVariant[];

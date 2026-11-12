@@ -12,7 +12,7 @@ const data: DbData = {
   today: "2026-11-09",
   read: "2026-11-09",
   banks: [{ id: "discount", name: "דיסקונט"}],
-  offers: [offer("a", 2.25, { exists: false, everyMonths: null }), offer("b", 1, { exists: true, everyMonths: 3 }), offer("c", 0.5, { exists: true, everyMonths: 1 }), offer("d", 0.4, { exists: true, everyMonths: 1 })],
+  offers: [offer("a", 2.25, { exists: false, everyMonths: null, firstMonths: null }), offer("b", 1, { exists: true, everyMonths: 3, firstMonths: null }), offer("c", 0.5, { exists: true, everyMonths: 1, firstMonths: null }), offer("d", 0.4, { exists: true, everyMonths: 1, firstMonths: null })],
   amounts: [],
   start: 10000,
 };

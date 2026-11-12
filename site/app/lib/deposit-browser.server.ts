@@ -1,7 +1,7 @@
 // The deposits page's data (D92): every bank-deposit record, the latest of each id, as offers the page lists and the grid picks from
 // (F-108); P-11's amounts and P-05's amount to start at. Server-only. Each rate and amount is the record's own value object.
 import type { DepositTerms, ValueObject } from "@finance-tool/schema";
-import { depositLabels, depositName, shownRate } from "./deposit-kind";
+import { depositLabels, depositName, exitPointsOf, shownRate } from "./deposit-kind";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
 import { asParameter } from "./compare";
@@ -37,7 +37,7 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
     spread: d.spread ? shown(d.spread, t, d.snapshot, owner) : null,
     amount_range: { min: shown(d.amount_range.min, t, d.snapshot, owner), max: d.amount_range.max ? shown(d.amount_range.max, t, d.snapshot, owner) : null },
     breakTerm: d.break.allowed ? d.break.penalty : "not_allowed",
-    exits: { exists: d.exit_points.exists, everyMonths: d.exit_points.every_months },
+    exits: exitPointsOf(d.exit_points),
   };
 }
 

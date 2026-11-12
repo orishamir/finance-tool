@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { buildInstitution } from "../../../lib/institutions.server";
 import { loadDepositTerms } from "../../../lib/instruments.server";
 import { numbers, r4catalogue, strength } from "../../../copy";
-import { depositKindRules, depositLabels, exitWords, printedQuotes } from "../../../lib/deposit-kind";
+import { depositKindRules, depositLabels, exitTiming, exitWords, printedQuotes } from "../../../lib/deposit-kind";
 import { loadRules } from "../../../lib/data.server";
 import { ProvenanceProvider, openQuestionOf } from "../../provenance";
 import { ValueSheet } from "../../provenance-sheets";
@@ -48,16 +48,16 @@ describe("bank product rows", () => {
   // Mizrahi-Tefahot 287 can be left any day after its first week, and its card said "אין"
   it("say a deposit's exit points as its record has them", () => {
     const daily = rows.find((r) => r.p.id === "mizrahi-tefahot-rimonim-yomi-prime-shana-287")!;
-    expect(daily.p.exitPoints).toEqual({ exists: true, everyMonths: null });
+    expect(daily.p.exitPoints).toMatchObject({ exists: true, everyMonths: null });
     const exits = (r: (typeof rows)[number]) => /תחנות יציאה\s*<\/dt>\s*<dd[^>]*>\s*<span[^>]*>([^<]*)</.exec(render(r))?.[1]?.trim();
     expect(exits(daily)).toBe(r4catalogue.exits.someCard);
-    const said = (r: (typeof rows)[number]) => (r.p.exitPoints.exists && !r.p.exitPoints.everyMonths && r.p.conditions ? r4catalogue.exits.someCard : exitWords(r.p.exitPoints.exists, r.p.exitPoints.everyMonths));
+    const said = (r: (typeof rows)[number]) => (r.p.exitPoints.exists && exitTiming(r.p.exitPoints) === null && r.p.conditions ? r4catalogue.exits.someCard : exitWords(r.p.exitPoints));
     for (const r of rows) expect(exits(r), r.p.id).toBe(said(r));
     // a deposit that cannot be broken but has exits says where the money comes out
     const breakWord = (r: (typeof rows)[number]) => /שבירה\s*<\/dt>\s*<dd[^>]*>\s*<span[^>]*>([^<]*)</.exec(render(r))?.[1]?.trim();
     expect(breakWord(daily)).toBe(r4catalogue.breakAtExits);
-    expect(exitWords(true, 1)).toBe("כל חודש");
-    expect(exitWords(true, 3)).toBe("כל 3 חודשים");
+    expect(exitWords({ exists: true, everyMonths: 1, firstMonths: null })).toBe("כל חודש");
+    expect(exitWords({ exists: true, everyMonths: 3, firstMonths: null })).toBe("כל 3 חודשים");
   });
 
   // the cards did not say what sets a deposit apart

@@ -80,7 +80,7 @@
       "BANK-34"
     ],
     "state": "sourced",
-    "notes": "Printed 'P -1.65% =3.1%' (offered and common rate alike). The table prints no prime figure; 3.1% is the bank's own sum. The form (08/16) s.7א-ד: each deposit bears prime minus the fixed spread, unlinked, changing with prime, compounded yearly. Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a)."
+    "notes": "Printed 'P -1.65% =3.1%' (offered and common rate alike). The table prints no prime figure; 3.1% is the bank's own sum. The form (08/16) s.7א-ד: each deposit bears prime minus the fixed spread, unlinked, changing with prime, compounded yearly. Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a). Exit points 'מתום שנה כל חודש' (rate table p.2, library 75134f72b85da5de); the form (08/16), 'תחנות יציאה': 'היום הקובע בתום שנה ממועד תחילת תקופת הפיקדון והיום הקובע בתום כל חודש לאחר מועד זה' (library 708a9e163b993106 p.2)."
   },
   "linkage": "none",
   "tax_bucket": {
@@ -161,7 +161,8 @@
   },
   "exit_points": {
     "exists": true,
-    "every_months": 1
+    "every_months": 1,
+    "first_after_months": 12
   },
   "auto_renew": {
     "value": false,

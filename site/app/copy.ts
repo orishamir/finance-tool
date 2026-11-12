@@ -930,7 +930,8 @@ export const flags: Record<string, string> = {
   // F-107 at TXF-16's rate, which a fund obtains only if it passes the treaty's limitation-on-benefits article (TXF OQ7, method G-33)
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
-  "G-16": "בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured, and knows no exit points (method G-16)
+  "G-16": "בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; a piece at an exit point takes G-34 instead (method G-16)
+  "G-34": "הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה חלק מהכסף נמצא בפיקדון שעוד לא הסתיים, והחישוב מחשיב אותו כאילו נמשך אז בתחנת יציאה עם כל הריבית שנצברה. תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון, אבל מה משלמים בה, ואם צריך להודיע מראש, קובע כל בנק בתנאי הפיקדון.", // F-41: an unlinked piece at an exit point on the last day is priced with interest to date; it can be withdrawn there without a break (BANK-27); what an exit point pays and the notice it needs are each product's terms, not in the records, and a product may pay less or more (BANK OQ20, method G-34)
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
   "PF-13": "בחישוב, ההנחה בדמי הניהול נמשכת {PF-13:min_discount_years}, התקופה הקצרה ביותר שחוזר רשות שוק ההון מתיר, גם אם החברה כתבה תקופה קצרה יותר.",
   // D87, now the cautious reading (guidelines/research.md step 6): one deposit and no more, the run ends the discount after six months (PF OQ18)
@@ -1447,7 +1448,7 @@ export const depositBrowser = {
   columns: { bank: "הבנק והפיקדון", rate: "ריבית בשנה", amount: "סכום להפקדה", access: "גישה לכסף לפני הסוף", interestOn: "על ", beforeTax: "לפני המס על הריבית" },
   /** The phone's sort, where there are no column heads to press. */
   sortPhone: { rate: "ריבית גבוהה קודם", min: "סכום נמוך קודם" },
-  access: { every: "יציאה כל ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
+  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
   /** "מ־1,000 ₪", "1,000 עד 50,000 ₪". */
@@ -1976,7 +1977,16 @@ export const r4catalogue = {
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
   breakDisclosure: "הבנק כותב:",
-  exits: { every: "כל", none: "אין", some: "יש", someCard: "יש; המועדים בתנאי הבנק" },
+  exits: {
+    every: "כל",
+    none: "אין",
+    some: "יש",
+    someCard: "יש; המועדים בתנאי הבנק",
+    // a first exit point later than the interval after it (Leumi's prime plan: "בתום 6 חודשים, וכל 3 חודשים לאחר מכן")
+    afterThen: (first: string, every: string) => `אחרי ${first}, ואז כל ${every}`,
+    // a first exit point with no interval in the record
+    firstAfter: (first: string) => `הראשונה אחרי ${first}`,
+  },
   // a deposit's kind (`variant`) as a label chip on the bank page: what sets it apart from the bank's plain deposit
   kindLabels: {
     "deposit-campaign": { text: "מבצע", explain: "בטבלת הריביות של הבנק הפיקדון הזה מסומן כמבצע. מה צריך כדי לקבל את הריבית שלו כתוב בתנאי הבנק." },
@@ -1990,7 +2000,18 @@ export const r4catalogue = {
   /** The record's own conditions (`conditions_he`), on its card. */
   conditionsLead: "בתנאי הבנק:",
   // a deposit's kind on a sheet line, where its name repeats at the bank and its table prints no code (F-104)
-  depositKind: { fixed: "ריבית קבועה", variable: "ריבית משתנה", cpi: "צמוד למדד", fx: "צמוד למטבע חוץ", exits: "תחנת יציאה" },
+  depositKind: {
+    fixed: "ריבית קבועה",
+    variable: "ריבית משתנה",
+    cpi: "צמוד למדד",
+    fx: "צמוד למטבע חוץ",
+    exits: "תחנת יציאה",
+    // a first exit point with no interval in the record, and exit points whose timing the record does not give
+    exitFirstAfter: (first: string) => `תחנת יציאה ראשונה אחרי ${first}`,
+    // no comma inside: the words stand in a list that is itself joined by commas
+    exitAfterThen: (first: string, every: string) => `תחנת יציאה אחרי ${first} ואז כל ${every}`,
+    exitsSome: "עם תחנות יציאה",
+  },
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
   notAnOffer: "הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
