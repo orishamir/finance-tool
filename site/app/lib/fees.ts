@@ -21,72 +21,28 @@ import {
   type FeeMateriality,
   type FeeThresholds,
   type FeeVerdict,
-  type RegulatorReference,
   type RunContext,
   type RunPlan,
   type UsedRule,
 } from "@finance-tool/engine";
-import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
+import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { computedInputs as ci, formulaNames, r3fees } from "../copy";
 import { asParameter, evaluate, fundCostOf, goalValueObjects, horizonFloorOf, nothingToCompare, parameterOf, placeGroups, runInputs, type CompareBundle, type FeeKind, type PlanValues, type RunGoal, type WrapperEntry } from "./compare";
 import { fmt } from "./format";
 import { blockedHe } from "./failure-he";
 import type { InputsState } from "./inputs";
 import type { FieldKey } from "./goal";
-import { asField, computed, depositFeeNoneByRule, entered as enteredValue, expandFee, ruleFigure, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
+import { asField, computed, depositFeeNoneByRule, entered as enteredValue, ruleFigure, staleCmaFee, weaker, type SiteValue, type Strength } from "./value";
+import { classKey, trackFees, type FeesData, type TrackLite } from "./fee-page-data";
 import type { RefLink } from "./sources";
+import type { SubjectSpec } from "./fee-deal/link";
 
 Object.assign(formulaNames, { "F-62": "פסק דין על עמלה", "F-68": "ממוצע הרשות למסלולי הסיווג", "F-61": "עלות דמי הניהול" });
 
-// ---------------------------------------------------------------- the data (fees.server.ts)
+// ---------------------------------------------------------------- the data (fees.server.ts) and the subject in the address
 
-
-export interface TrackLite {
-  id: number;
-  name: string;
-  company: string;
-  companyId: string;
-  classification: string;
-  specialization: string;
-  wrapperId: string | null;
-  dataset: string;
-  period: string;
-  b: CompactFee;
-  d: CompactFee;
-}
-
-export interface FeesData {
-  today: string;
-  p03: ParameterRecord;
-  rules: RuleRecord[];
-  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them. */
-  pointed?: RuleRecord[];
-  /** F-68 for every provident-family class, by `classKey`. */
-  references: Record<string, RegulatorReference>;
-  /** The value object shared by a dataset's tracks (source, dates, rule ids), per fee. */
-  templates: Record<string, { balance: ValueObject; deposit: ValueObject }>;
-  tracks: TrackLite[];
-  /** The track P-05 names for a wrapper (its representative instrument, D21). */
-  wrapperTrack: Record<string, number>;
-  /** The class of the provider whose tariff a securities wrapper uses (`bank`, ...). */
-  tariffClass: Record<string, string>;
-  links: { boi: RefLink | null; isa: RefLink | null; tase: RefLink | null };
-}
-
-export const classKey = (classification: string, specialization: string) => `${classification.trim()}|${specialization.trim()}`;
-
-// ---------------------------------------------------------------- the subject
-
-export type SubjectSpec = { kind: "wrapper"; wrapperId: string } | { kind: "track"; trackId: number };
-
-export function parseSubject(search: string): SubjectSpec | null {
-  const q = new URLSearchParams(search);
-  const wrapper = q.get("wrapper");
-  const track = q.get("track");
-  if (wrapper) return { kind: "wrapper", wrapperId: wrapper };
-  if (track && /^\d+$/.test(track)) return { kind: "track", trackId: Number(track) };
-  return null;
-}
+export { classKey, loadFeesData, type FeesData, type TrackLite } from "./fee-page-data";
+export { parseSubject, type SubjectSpec } from "./fee-deal/link";
 
 // ---------------------------------------------------------------- the inputs
 
@@ -292,12 +248,11 @@ export const feePageAnswers = (bundle: CompareBundle, wrapperId: string): boolea
 export function withTrackFees(bundle: CompareBundle, wrapperId: string, track: TrackLite, data: FeesData): { bundle: CompareBundle; missing: string[] } | PlanError {
   const w = bundle.wrappers.find((x) => x.id === wrapperId);
   if (!w || !w.terms) return { kind: "no-terms" };
-  const tpl = data.templates[track.dataset];
-  if (!tpl) return { kind: "no-fee", detail: "template" };
+  const fees = trackFees(track, data, bundle.runDate);
+  if (!fees) return { kind: "no-fee", detail: "template" };
   if (track.b.value === null || track.b.value < 0) return { kind: "no-fee", detail: "balance" };
   const num = (v: SiteValue) => (typeof v.value === "number" ? v.value : null);
-  const bal = expandFee(track.b, { ...tpl.balance, stale: staleCmaFee(tpl.balance.effective_to, bundle.runDate) });
-  const dep = expandFee(track.d, { ...tpl.deposit, stale: staleCmaFee(tpl.deposit.effective_to, bundle.runDate) });
+  const { balance: bal, deposit: dep } = fees;
   const missing: string[] = [];
   let depositFraction = 0;
   const depV = num(dep);
@@ -533,7 +488,8 @@ function referenceBase(c: RefContext, line: FeeLine, rate: SiteValue | null): Re
       view.bySite = { trackId: t.id, companyId: t.companyId, name: t.name, company: t.company };
       return view;
     }
-    const own = line === "balance" ? (tpl ? expandFee(t.b, { ...tpl.balance, stale }) : null) : tpl ? expandFee(t.d, { ...tpl.deposit, stale }) : null;
+    const fees = trackFees(t, c.data, c.today);
+    const own = fees ? (line === "balance" ? fees.balance : fees.deposit) : null;
     if (own && own.value !== null && (rate === null || rate.value !== own.value)) view.ownAverage = own;
     return view;
   }
@@ -1188,10 +1144,3 @@ function recordOf(w: WrapperEntry, wrapperId: string, track: TrackLite | null, d
 
 export const fmtPct = (n: number) => fmt.pct(n);
 
-let dataPromise: Promise<FeesData> | null = null;
-
-/** The fee page's data (fees.server.ts), fetched once per visit. */
-export function loadFeesData(): Promise<FeesData> {
-  if (!dataPromise) dataPromise = fetch(`${import.meta.env.BASE_URL}fees-data.json`).then((r) => r.json() as Promise<FeesData>);
-  return dataPromise;
-}
