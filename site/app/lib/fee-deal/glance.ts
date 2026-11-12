@@ -1,6 +1,7 @@
 // The deal at a glance (method §10.6): first the fees that hold throughout, grouped by what they are charged on, each group with its rate
 // (F-111) where every fee of the group holds throughout, and the marks that belong to it (F-112); then the fees that change, grouped the
-// same way at their price now; then what changes and when, by date, with the months from the device's month to the nearest date (F-110:
+// same way at their price now, each group with its rate in the first period, all its fees together; then what changes and when, by date,
+// each changed group with its rate from then, with the months from the device's month to the nearest date (F-110:
 // the page says it as a time from now, so for a deal that starts later it is longer than the first period). Every price carries its
 // standing against its cap (F-113).
 import { dealMarks, groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
@@ -36,7 +37,10 @@ export interface GlanceFee extends FeeRef {
   sale?: { price: PriceView; standing: StandingView };
 }
 
-/** Fees charged on one thing, with the rate their shares add to (per side of a trade where a side is priced apart) and their marks. */
+/**
+ * Fees charged on one thing, with the rate their shares add to (per side of a trade where a side is priced apart) and their marks. A group
+ * of fees that change has no marks, and its rate is the first period's, with the group's fees that hold throughout added in.
+ */
 export interface GlanceGroup {
   on: GroupOn;
   fees: GlanceFee[];
@@ -163,10 +167,24 @@ function datesOf(r: DealRead): GlanceDate[] {
     });
 }
 
+/**
+ * The rates of the first period (F-111: a group's rate is given per period) on the groups of the fees that change: each such group's rate
+ * is the sum of all its fees in that period, those that hold throughout among them, which the block of what holds throughout gives no
+ * rate for, and a fee of it that is free now adding nothing.
+ */
+function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
+  const first = r.reading.periods[0]!;
+  for (const g of groupRate(r.engine, first)) {
+    const target = groups.find((x) => groupKey(x.on) === engineGroupKey(g));
+    target?.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(r.fees, g, first.from, r.today), fees: g.fees.map((i) => refOf(r.fees[i]!)) });
+  }
+  return groups;
+}
+
 /** The deal at a glance, read on `today` (YYYY-MM-DD) with the kinds' records. */
 export function glance(deal: FeeDeal, kinds: readonly DealKind[], today: string): Glance {
   const r = readDealFor(deal, kinds, today);
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: groupsOf(r, changes, false), dates: datesOf(r), unread: r.unread };
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread };
 }

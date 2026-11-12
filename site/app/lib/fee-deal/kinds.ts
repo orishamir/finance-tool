@@ -1,9 +1,9 @@
 // The kinds a deal can be (method §10.6): every product record that lists fee bases, with its bases and its legal caps (`fee_caps`,
 // data-schema §3.3), as the fee page's data carries them. F-113 judges a typed price against its fee's cap here.
-import { capStanding, type CapStanding } from "@finance-tool/engine";
+import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/engine";
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
-import type { Price, ProviderKind } from "./model";
+import { enginePrice, type Price, type ProviderKind } from "./model";
 import { FEE_SHAPES, type FeeKindId } from "./shapes";
 import { recordValue } from "./values";
 
@@ -63,12 +63,14 @@ export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
  * is not a year), and against a cap per period its share of each charge (`rate × every / per`, converted where the two differ); a share of
  * an action against a share of a deposit or a trade is its rate; a sum on each action against a sum per transfer or trade is the sum; a
  * sum per period against a monthly sum is its month's part (converted where the period is not a month). Where the cap is 0 the unit does
- * not matter: any price above nothing is above it. Undefined where the price's form is not one the cap's unit states.
+ * not matter: a price that charges anything (F-110), a rate of zero with a minimum among them, is above it, so `x` is its main figure, or
+ * its minimum where the rate is zero, and 0 for a price that charges nothing. Undefined where the price's form is not one the cap's unit
+ * states.
  */
 export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: number; converted: boolean } | undefined {
   const as = (x: number, converted = false) => ({ x, converted });
   if (p.form === "free") return as(0);
-  if (cap === 0) return as(mainFigure(p));
+  if (cap === 0) return as(chargesNothing(enginePrice(p)) ? 0 : mainFigure(p) > 0 ? mainFigure(p) : (p.form === "action" || p.form === "held") && p.min ? p.min.v : 0);
   switch (unit) {
     case "pct_per_year":
       return p.form === "held" ? as((p.rate.v * 12) / p.per, p.per !== 12) : undefined;

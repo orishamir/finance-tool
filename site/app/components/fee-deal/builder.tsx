@@ -8,6 +8,7 @@ import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder"
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import type { Fee, FeeDeal } from "../../lib/fee-deal/model";
 import type { LeftOut } from "../../lib/fee-deal/templates";
+import { fmt } from "../../lib/format";
 import { FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
 import { AddLine, Button, Card, ChoiceChips, PickCard, Section, SegmentedControl, Step, Tag, When, monthText, type AddItem } from "../kit";
 import { Num } from "../provenance";
@@ -35,7 +36,7 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   else if (now.judged && now.standing === "below" && row.standingNow.share)
     notes.push(
       <span key="share">
-        <Num value={row.standingNow.share} />
+        <Num value={row.standingNow.share} display={fmt.share} />
         {copy.standing.shareShort}
       </span>,
     );

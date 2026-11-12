@@ -510,15 +510,19 @@ export type CapStanding =
   | { judged: true; standing: "below" | "at" | "above"; share: number | null }
   | { judged: false; why: "no-price" | "caveat" | "no-cap" | "not-sourced" | "binds" };
 
-/** How close a converted price is to the cap and still at it, as a share of the cap (F-113: a converted figure is rounded). */
-const CONVERTED_AT = 0.005;
+/**
+ * How far below and above the cap a converted price is still at it, as shares of the cap (F-113): compounding a yearly cap into a
+ * monthly one only lowers the converted figure, and rounding a monthly figure to four decimals of a percent raises it by at most 0.08%.
+ */
+const CONVERTED_BELOW = 0.005;
+const CONVERTED_ABOVE = 0.001;
 
 /**
  * F-113 A typed price against the legal cap. For a price `x` in the cap's unit and a cap `c`: below where `x < c`, at where `x = c`,
  * above where `x > c`, with the share `x / c`; where `c = 0` the law allows no such fee and any `x > 0` is above. `converted`: the price
  * was typed for another period than the cap's and converted by F-111's plain multiple, which is not exact (a monthly figure is rounded,
- * and a bylaw may set its monthly maximum as the compounded twelfth of the yearly cap, PEN-21), so within 0.5% of the cap, as a share of
- * the cap, it is at it; a price in the cap's own period is compared as typed. A cap whose record carries a `caveat` holds only in a case
+ * and a bylaw may set its monthly maximum as the compounded twelfth of the yearly cap, PEN-21), so from 0.5% below the cap to 0.1% above
+ * it, as shares of the cap, it is at it; a price in the cap's own period is compared as typed. A cap whose record carries a `caveat` holds only in a case
  * a deal does not state (closing the account, a distribution agreement) and judges nothing at any provider. A cap with no value, or not
  * sourced, judges nothing. A cap that binds only some providers (`binds`: banks, or banks and a fund's distributor that is not an
  * investment marketer where it has a distribution agreement for the fund) judges nothing unless the deal names a bank: which non-bank
@@ -532,6 +536,6 @@ export function capStanding(typed: number | undefined, cap: DealCap | undefined,
   if (cap.binds !== undefined && provider !== "bank") return { judged: false, why: "binds" };
   const c = cap.value;
   if (!(c > 0)) return { judged: true, standing: typed > 0 ? "above" : "at", share: null };
-  const at = converted ? Math.abs(typed - c) <= CONVERTED_AT * c * (1 + 1e-12) : near(typed, c);
+  const at = converted ? typed >= c * (1 - CONVERTED_BELOW) * (1 - 1e-12) && typed <= c * (1 + CONVERTED_ABOVE) * (1 + 1e-12) : near(typed, c);
   return { judged: true, standing: at ? "at" : typed < c ? "below" : "above", share: typed / c };
 }

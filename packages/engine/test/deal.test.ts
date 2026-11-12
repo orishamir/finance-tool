@@ -479,11 +479,19 @@ describe("F-113 a typed price against the legal cap", () => {
     expect(capStanding(25, banks, "bank")).toEqual({ judged: true, standing: "above", share: 2.5 });
   });
 
-  it("calls a converted price within half a percent of the cap at it, and compares a price in the cap's own period as typed", () => {
+  it("calls a converted price from half a percent below the cap to a tenth of a percent above it at it, and compares a price in the cap's own period as typed", () => {
     // 0.04157% a month is 0.49884% a year: 0.23% under the cap of 0.5%, a pension bylaw's compounded twelfth (PEN-21)
     expect(capStanding(0.04157 * 12, cap(0.5), undefined, true)).toMatchObject({ judged: true, standing: "at" });
-    // 0.1667% a month is 2.0004% a year
+    // 0.0417% a month is 0.5004% a year: 0.08% over, what rounding to four decimals can add
+    expect(capStanding(0.0417 * 12, cap(0.5), undefined, true)).toMatchObject({ judged: true, standing: "at" });
+    // 0.0418% a month is 0.5016% a year: 0.32% over
+    expect(capStanding(0.0418 * 12, cap(0.5), undefined, true)).toMatchObject({ judged: true, standing: "above" });
+    // 0.1667% a month is 2.0004% a year: 0.02% over
     expect(capStanding(0.1667 * 12, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "at" });
+    // 0.1675% a month is 2.01% a year: 0.5% over
+    expect(capStanding(0.1675 * 12, cap(2), undefined, true)).toMatchObject({ judged: true, standing: "above" });
+    // 0.0414% a month is 0.4968% a year: 0.64% under
+    expect(capStanding(0.0414 * 12, cap(0.5), undefined, true)).toMatchObject({ judged: true, standing: "below" });
     // 0.045% a month is 0.54% a year: 8% over
     expect(capStanding(0.045 * 12, cap(0.5), undefined, true)).toMatchObject({ judged: true, standing: "above" });
     // typed for the cap's own period, the same figures are compared as typed
