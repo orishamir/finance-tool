@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
+import { checkCitedPages } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -633,5 +634,21 @@ describe("scope", () => {
   it("fails two registry rows that both claim a name as their default", () => {
     const twin = { ...harelFunds, scope_names: [{ name: "Harel" }] };
     expect(run({ "sources/institutions.json": [harel, twin] }).map((p) => p.message).join("\n")).toMatch(/the name "Harel" is the default of harel and harel-funds/);
+  });
+});
+
+describe("a link opens the page it cites (2026-11-12)", () => {
+  const pdf = "https://www.gov.il/BlobFolder/x/he/doc.pdf";
+  it("fails an address whose #page= is not the cited page", () => {
+    expect(checkCitedPages({ sources: [{ url: `${pdf}#page=6`, page: 5 }] })).toEqual([expect.stringContaining("sources[0]: the link opens page 6 but the page cited is 5")]);
+    expect(checkCitedPages({ sources: [{ url: `${pdf}#page=5`, page: 5 }, { url: pdf, page: 9 }, { url: pdf }] })).toEqual([]);
+  });
+  it("fails a page past the file's last page, whether it comes from the address or from `page`", () => {
+    const filePages = new Map([[pdf, 12]]);
+    expect(checkCitedPages({ figures: [{ source: { url: pdf, page: 246 } }] }, filePages)).toEqual([expect.stringContaining("figures[0].source: the link opens page 246, past the file's last page (12)")]);
+    expect(checkCitedPages({ sources: [{ url: `${pdf}#page=13`, page: 13 }] }, filePages)).toHaveLength(1);
+    expect(checkCitedPages({ sources: [{ url: `${pdf}#page=12`, page: 12 }] }, filePages)).toEqual([]);
+    // a file the library does not hold is not judged on its length
+    expect(checkCitedPages({ sources: [{ url: "https://example.org/other.pdf", page: 900 }] }, filePages)).toEqual([]);
   });
 });
