@@ -1,5 +1,8 @@
 // Number, date and identifier formats: docs/design-system.md 2.7. Always Intl with he-IL; never hand-built.
 import { numbers, values as valuesCopy } from "../copy";
+import { countPhrase, plainNumber, withMinus } from "./count";
+
+export { countPhrase, withMinus, type CountWords } from "./count";
 
 const he = "he-IL";
 
@@ -15,14 +18,12 @@ const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", m
 const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
-const plain = new Intl.NumberFormat(he, { maximumFractionDigits: 2 });
 /** An ECB reference rate, to the four decimals the ECB publishes it with. */
 const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
 const compactFormat = (v: number) => withMinus(compactNumber.format(v));
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
 const period = new Intl.DateTimeFormat(he, { month: "long", year: "numeric" });
-const plural = new Intl.PluralRules("he");
 
 /**
  * Intl's he-IL currency text carries a right-to-left mark and a no-break space around the sign. Copied into a note or a
@@ -35,12 +36,6 @@ const plainMarks = (text: string) => text.replace(/\u200f/g, "").replace(/[\u00a
 export const GERSHAYIM = /(?<=[\u05d0-\u05ea])"(?=[\u05d0-\u05ea])/g;
 /** An abbreviation's straight quote written as the gershayim (docs/copy.md 10.4): the data spells ני"ע, the page shows ני״ע. */
 export const gershayim = (text: string) => text.replace(GERSHAYIM, "\u05f4");
-/**
- * Intl writes a negative with an ASCII hyphen after a left-to-right mark. A hyphen is weak in the bidi algorithm and can
- * land on the wrong side of the digits in Hebrew text ("2%-"); the true minus sign U+2212 keeps the left-to-right mark in
- * front of it and, with the `<bdi dir="ltr">` that `Num` and every call site put around a figure, reads "−2%".
- */
-export const withMinus = (text: string) => text.replace(/\u200e?-/g, "\u200e\u2212");
 
 function compactNisParts(v: number): { num: string; word: string | null } {
   const a = Math.abs(v);
@@ -83,7 +78,8 @@ export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   // a whole amount never shows agorot: "10 ₪", not "10.00 ₪"
   nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
-  nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
+  /** `1,234 ₪`, whole shekels. `isolate`: wrapped in a left-to-right isolate, for an amount inside Hebrew text with no element of its own (none by default). */
+  nisWhole: (v: number, { isolate = false }: SignedOptions = {}) => isolated(withMinus(plainMarks(currencyWhole.format(v))), { isolate }),
   /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (until then a bare "2"). */
   usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
   /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
@@ -104,7 +100,7 @@ export const fmt = {
     const thousandths = v * 1000;
     return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? Math.round(thousandths) / 1000 : Math.round(v * 100) / 100;
   },
-  number: (v: number) => withMinus(plain.format(v)),
+  number: plainNumber,
   /**
    * A share of a whole in percent (a price's share of its cap, `57.14` is 57.14%): a whole percent (`57%`), except below 1% and between
    * 99% and 100%, where one decimal keeps it from reading `0%` or `100%` when it is neither (`0.4%`, `99.6%`; `0.1%` at least and `99.9%`
@@ -145,18 +141,26 @@ export const fmt = {
    * decimals (`signedPct(3, 1)` is `+3.0%`); without it, the decimals `pct` shows.
    */
   signedPct: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
+  /**
+   * A percent without its sign, for a sentence whose words already say up or down: `18.5%` for 18.5 and for −18.5. `digits`: exactly that
+   * many decimals; without it, the decimals `pct` shows. Isolated left to right as the signed figures are (`isolate`, the default).
+   */
+  unsignedPct: (v: number, digits?: number, options: SignedOptions = {}) => isolated(digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
   /** A plain number with its sign (`signed`): `+2`, `−18.5`. `digits`: exactly that many decimals; without it, up to two, as `number`. */
-  signedNumber: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? plain.format(Math.abs(v)) : fixed(digits, "decimal").format(Math.abs(v)), options),
+  signedNumber: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? plainNumber(Math.abs(v)) : fixed(digits, "decimal").format(Math.abs(v)), options),
   /** Hebrew year forms (copy.md §1): שנה, שנתיים, {n} שנים; and the month forms. */
   years: (n: number) => countPhrase(n, numbers.yearWords),
   months: (n: number) => countPhrase(n, numbers.monthWords),
 };
 
-/** How a signed figure is written: `isolate` (the default) wraps it in a left-to-right isolate, for a figure inside Hebrew text. */
+/** How a figure is written: `isolate` wraps it in a left-to-right isolate, for a figure inside Hebrew text (the default for a signed one). */
 export interface SignedOptions {
   /** False for a figure that is already its own left-to-right element: a chart tick, a `<bdi dir="ltr">`. */
   isolate?: boolean;
 }
+
+/** A figure's text in a left-to-right isolate (U+2066 … U+2069), unless `isolate` is false. */
+const isolated = (text: string, { isolate = true }: SignedOptions): string => (isolate ? `\u2066${text}\u2069` : text);
 
 /**
  * A figure with its sign, from its text without one (`abs`): "+" before a positive, the true minus sign U+2212 before a negative, and
@@ -164,9 +168,9 @@ export interface SignedOptions {
  * by default, so the sign stays on the left of the digits inside Hebrew: a sign is weak in the bidi algorithm and, left to the
  * sentence, lands on their right ("2%−").
  */
-function signed(v: number, abs: string, { isolate = true }: SignedOptions): string {
+function signed(v: number, abs: string, options: SignedOptions): string {
   const sign = !/[1-9]/.test(abs) ? "" : v > 0 ? "+" : "−";
-  return isolate ? `⁦${sign}${abs}⁩` : `${sign}${abs}`;
+  return isolated(`${sign}${abs}`, options);
 }
 
 /** A number or a percent with exactly `digits` decimals, one formatter per kind and count of decimals. */
@@ -176,31 +180,6 @@ function fixed(digits: number, style: "decimal" | "percent"): Intl.NumberFormat 
   let f = fixedFormats.get(key);
   if (!f) fixedFormats.set(key, (f = new Intl.NumberFormat(he, { style, minimumFractionDigits: digits, maximumFractionDigits: digits })));
   return f;
-}
-
-/** The words of a count by its Hebrew plural form: one and two have their own; any other count is the number and `many`; zero has `zero` where given. */
-export interface CountWords {
-  /** "אין חברות"; without it, zero reads "0" and `many`. */
-  zero?: string;
-  /** "חברה אחת". */
-  one: string;
-  /** "שתי חברות". */
-  two: string;
-  /** "חברות", written after the number ("15 חברות"); or a text with `{n}` where the number goes ("עוד {n} מקורות"). */
-  many: string;
-}
-
-/**
- * A count in words (copy.md 7.3): "חברה אחת", "שתי חברות", "15 חברות", never "1 חברות". The form is Hebrew's plural category
- * (`Intl.PluralRules`) of a whole count above zero; a fraction takes the plural ("2.5 שנים"). The number has the thousands separator.
- */
-export function countPhrase(n: number, words: CountWords): string {
-  if (n === 0 && words.zero !== undefined) return words.zero;
-  const form = Number.isInteger(n) && n > 0 ? plural.select(n) : "other";
-  if (form === "one") return words.one;
-  if (form === "two") return words.two;
-  const num = fmt.number(n);
-  return words.many.includes("{n}") ? words.many.replace("{n}", num) : `${num} ${words.many}`;
 }
 
 /**

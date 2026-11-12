@@ -6,6 +6,7 @@ import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContex
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
+import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
@@ -22,12 +23,21 @@ Object.assign(flagCopy, {
 
 
 const PRICED_ON_PREMISE = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
+
+/** The kinds of provider a securities account is opened at: the snapshots the indices page and the brokerage pages price. */
+export const HOUSE_CLASSES: readonly string[] = ["bank", "broker", "foreign_broker"];
+
+/** A house of its own: a bank's, broker's or foreign broker's snapshot that is not part of another house (PEPPER of Leumi, D43), whose prices stand under that house. */
+const isHouseSnapshot = (s: FeesSnapshot): boolean => HOUSE_CLASSES.includes(s.provider.class) && !s.provider.part_of;
+
+/** The houses among `snapshots` (`isHouseSnapshot`), by name. */
+export const houseSnapshots = (snapshots: readonly FeesSnapshot[]): FeesSnapshot[] => snapshots.filter(isHouseSnapshot).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 /**
  * A bank's or broker's lines for ranking: a kind of holding keeps its price only where the record's
  * `availability` quotes the document saying a person can do it. Pages that show a tariff as printed read the record itself.
  */
 export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
-  if (!["bank", "broker", "foreign_broker"].includes(s.provider.class) || s.missing) return s;
+  if (!HOUSE_CLASSES.includes(s.provider.class) || s.missing) return s;
   const can = new Set<string>((s.availability ?? []).filter((a) => a.available === true).flatMap((a) => a.applies_to));
   const blocked = (c: string) => PRICED_ON_PREMISE.includes(c) && !can.has(c);
   const lines = s.lines.flatMap((l) => {
@@ -103,7 +113,7 @@ const SHORT_NAMES: Record<string, string> = {
 
 /** A label for a chart's right strip (display only): the provider's name without the company suffix. */
 export function shortName(id: string, name: string): string {
-  return SHORT_NAMES[id] ?? name.replace(/\s*\(.*\)\s*/g, " ").replace(/\s*בע["״]מ\s*/g, "").trim();
+  return SHORT_NAMES[id] ?? withoutLtd(name.replace(/\s*\(.*\)\s*/g, " "));
 }
 
 /** A site parameter as a value object (P-01, A-28): the file's value with the marker the provenance sheet reads. */
@@ -246,7 +256,6 @@ export interface WorkbenchInputs {
   income: number | null;
   /** The value objects the chips and the sheet show (the goal's, or the scenario's as site parameters). */
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue };
-  fromGoal: boolean;
   returnFromParameter: boolean;
   /**
    * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the
@@ -271,8 +280,7 @@ export type NotComparable =
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
   if (wrapperId !== BROKERAGE) return [];
-  // a house that is part of another (PEPPER of Leumi, PEPPER Invest moved into Leumi Trade) is not a house of its own
-  return bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+  return houseSnapshots(bundle.snapshots);
 }
 
 export function ruleContext(bundle: IndicesBundle): RunContext {

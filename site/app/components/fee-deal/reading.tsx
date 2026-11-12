@@ -385,7 +385,7 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
     case "below":
       return <>{l.below}</>;
     case "no-cap":
-      return <>{countPhrase(head.n, l.noCap)}</>;
+      return <>{head.n === 1 ? l.noCap.one : l.noCap.several}</>;
     case "not-judged":
       return <>{l.notJudged}</>;
   }

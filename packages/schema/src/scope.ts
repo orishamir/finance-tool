@@ -62,7 +62,7 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "ETF-17": { why: "the Securities Authority's own count", files: [] },
   "ETF-18": { why: "the Securities Authority's own count", files: [] },
   "ETF-26": { why: "the Securities Authority's own count", files: [] },
-  "MF-55": { why: "website terms (the Securities Authority's)", files: ["data/dimensions/fee-management-balance.json", "data/dimensions/regulator.json", "site/app/lib/fees.server.ts"] },
+  "MF-55": { why: "website terms (the Securities Authority's)", files: ["data/dimensions/fee-management-balance.json", "data/dimensions/regulator.json"] },
   "CAT-43": { why: "website terms (TASE's)", files: ["data/dimensions/regulator.json"] },
   "GOV-19": { why: "where official yields are published", files: [] },
   "PF-39": { why: "website terms paragraph", files: [] },

@@ -247,7 +247,7 @@ export function representativeFeeValue(w: Pick<WrapperEntry, "family" | "terms" 
  * period and then returns to that rate (`ownFeeHold`, D86): a lower fee a company agrees to is a discount, and no binding document
  * promises it for longer. The deposit fee keeps the record's terms, its discount included.
  */
-export function withOwnFee(w: WrapperEntry, terms: InstrumentTerms, g: Pick<RunGoal, "ownFees">): InstrumentTerms {
+function withOwnFee(w: WrapperEntry, terms: InstrumentTerms, g: Pick<RunGoal, "ownFees">): InstrumentTerms {
   const own = g.ownFees?.[w.id];
   const target = feeTargetOf({ family: w.family, terms });
   if (own === undefined || !Number.isFinite(own) || !target) return terms;
