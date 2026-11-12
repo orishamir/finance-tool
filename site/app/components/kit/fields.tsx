@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState, type CSSProperties, type InputHTMLA
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
-import { IconClose, IconReset, IconSearch } from "../icons";
+import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { Button } from "./button";
 import { cx } from "./cx";
 
@@ -436,9 +436,10 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
 /**
  * One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`.
  * `inline`: the label beside the box in muted small words and the words in the box bold, for a name typed in place in a line of other
- * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]").
+ * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]"). `icon`: a mark in the box after the words, in the muted ink, that says the
+ * words can be typed over (the pencil of the fee page's deal name).
  */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; className?: string }) {
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; icon?: ReactNode; className?: string }) {
   const id = useId();
   return (
     <div className={cx(inline ? "flex flex-wrap items-center gap-2" : "field", className)}>
@@ -448,6 +449,11 @@ export function TextField({ label, value, onChange, hint, error, placeholder, ma
       <div className="field-body">
         <div className={cx("field-box", inline && "field-box-compact w-56 max-w-full", error ? "field-box-error" : false)}>
           <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold")} />
+          {icon && (
+            <span aria-hidden="true" className="inline-flex shrink-0 text-muted-foreground">
+              {icon}
+            </span>
+          )}
         </div>
         {error ? (
           <span id={`${id}-err`} className="text-xs text-destructive">
@@ -488,10 +494,38 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
  * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
  * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
- * period beside its rate: "0.6% לשנה").
+ * period beside its rate: "0.6% לשנה"). `chip`: the select drawn as a bordered pill with a chevron and its label for a screen reader only,
+ * one of a row of facts each chosen in place (what a fee page's deal holds: "קרן שנקנית בחו״ל ▾", "צוברת ▾"); while nothing is chosen
+ * it shows `all` in the muted ink.
  */
-export function InlineSelect({ label, all, options, value, onChange, labelHidden }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean }) {
+export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean }) {
   const id = useId();
+  if (chip)
+    return (
+      <span className="relative inline-flex max-w-full items-center">
+        <label htmlFor={id} className="sr-only">
+          {label}
+        </label>
+        <select
+          id={id}
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value || null)}
+          className={cx("min-h-target max-w-full appearance-none truncate rounded-full border border-input bg-card ps-3.5 pe-8 text-sm cursor-pointer hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring", value === null ? "text-muted-foreground" : "font-medium text-foreground")}
+        >
+          {all !== undefined && (
+            <option value="" disabled>
+              {all}
+            </option>
+          )}
+          {options.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.name}
+            </option>
+          ))}
+        </select>
+        <IconChevronDown size={16} aria-hidden="true" className="pointer-events-none absolute end-3 text-muted-foreground" />
+      </span>
+    );
   return (
     <span className="inline-flex items-center gap-1 text-sm">
       <label htmlFor={id} className={labelHidden ? "sr-only" : "text-muted-foreground"}>

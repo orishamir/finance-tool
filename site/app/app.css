@@ -246,6 +246,13 @@
     padding-inline: 0.15em;
     text-decoration: none;
   }
+  /* figures the person typed, inside a block that sums up the boxes they typed them in (the kit's TypedPlain): plain words, each still
+     opening its sheet */
+  .nums-typed-plain .num-entered {
+    color: inherit;
+    background: none;
+    padding-inline: 0;
+  }
   .num-unknown {
     color: var(--muted-foreground);
   }

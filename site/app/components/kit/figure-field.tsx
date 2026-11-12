@@ -25,20 +25,24 @@ function boxLook(state: "entered" | "sourced" | "empty", error: boolean): string
 const widthOf = (text: string, placeholder: string | undefined) => `${Math.max(text.length, placeholder?.length ?? 0, 2) + 0.5}ch`;
 
 /**
- * A figure typed in place: the box holds the number and its unit ("%", "₪"), `words` follow it ("מכל פעולה"). `value` is the figure as the
+ * A figure typed in place: the box holds the number and its unit ("%", "₪"), `words` follow it ("מכל פעולה"), or stand in the box after the
+ * unit where `inside` says so (a row of a list, "[0.25% מכל פעולה]"). The unit may be a choice of its own (a bound's currency, "₪ ▾": an
+ * `InlineSelect` with its label hidden). `value` is the figure as the
  * page shows it, a value object whose state is the box's look: entered or sourced; null for an optional figure not given, a dashed box.
  * A sourced figure carries a document mark that opens its source; once the person types over it, the caller makes it entered. Each valid
  * number commits as it is typed; one that fails `validate` stays in the box with its message under it. With `onClear`, emptying the box
  * clears the figure. Decimals are allowed: a price list's fee keeps its agorot.
  */
-export function FigureField({ value, label, unit, words, onCommit, onClear, validate, placeholder, className }: {
+export function FigureField({ value, label, unit, words, inside, onCommit, onClear, validate, placeholder, className }: {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
-  /** The unit drawn in the box, after the number. */
-  unit?: string;
+  /** The unit drawn in the box, after the number: its sign, or a choice of it. */
+  unit?: ReactNode;
   /** Words after the box. */
   words?: ReactNode;
+  /** The words in the box, after the unit, in the muted ink. */
+  inside?: boolean;
   onCommit: (n: number) => void;
   /** An optional figure: an empty box clears it. */
   onClear?: () => void;
@@ -96,13 +100,14 @@ export function FigureField({ value, label, unit, words, onCommit, onClear, vali
             className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
           />
           {unit && <span className="text-sm opacity-80">{unit}</span>}
+          {inside && words && <span className="text-sm text-muted-foreground">{words}</span>}
         </span>
         {state === "sourced" && value && (
           <button type="button" aria-label={kitCopy.figure.source(label)} onClick={(e) => open(valueItem(value, undefined, true), e.currentTarget)} className="tap-area inline-flex items-center rounded-sm text-muted-foreground hover:text-foreground">
             <IconFile size={16} />
           </button>
         )}
-        {words && <span className="text-sm text-muted-foreground">{words}</span>}
+        {!inside && words && <span className="text-sm text-muted-foreground">{words}</span>}
       </span>
       {error && (
         <span id={`${id}-err`} className="text-xs text-destructive">
@@ -130,9 +135,10 @@ export const monthText = (key: string) => `${key.slice(5, 7)}.${key.slice(0, 4)}
  * A month typed in place, in the box `FigureField` draws: the person writes "03.2027" (or "3/2027"), and the box keeps it in that form.
  * Typed by the person, so entered; empty and dashed until given. A native month input is not used: two of the browsers the site meets
  * draw it as plain text with no form, and the site writes a month as `03.2027` everywhere it is a field's value (design-system 2.7).
- * It commits when the person leaves it or presses Enter; with `onClear`, an empty box clears the month.
+ * It commits when the person leaves it or presses Enter; with `onClear`, an empty box clears the month. `lead`: words in the box before the
+ * month, so a price that holds until a month is one box ("[חינם עד 03.2028]").
  */
-export function MonthField({ value, label, onCommit, onClear, className }: { value: string | null; label: string; onCommit: (month: string) => void; onClear?: () => void; className?: string }) {
+export function MonthField({ value, label, lead, onCommit, onClear, className }: { value: string | null; label: string; lead?: ReactNode; onCommit: (month: string) => void; onClear?: () => void; className?: string }) {
   const id = useId();
   const shown = value ? monthText(value) : "";
   const [text, setText] = useState(shown);
@@ -161,6 +167,7 @@ export function MonthField({ value, label, onCommit, onClear, className }: { val
   return (
     <span className={cx("inline-flex flex-col gap-0.5 align-middle", className)}>
       <span className={boxLook(value === null ? "empty" : "entered", error)}>
+        {lead && <span className="text-sm">{lead}</span>}
         <input
           id={id}
           type="text"
