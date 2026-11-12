@@ -55,7 +55,22 @@ export const depositTerms = z.strictObject({
   }),
   amount_range: z.strictObject({ min: valueObject, max: valueObject.nullable() }),
   break: breakTerms,
-  exit_points: z.strictObject({ exists: z.boolean(), every_months: z.number().nullable() }),
+  exit_points: z
+    .strictObject({
+      exists: z.boolean(),
+      /** The interval between exit points in months, as the bank prints how often they come; not the date of the first one. */
+      every_months: z.number().nullable(),
+      /**
+       * Months from the deposit's start to its first exit point, as the bank prints it ("בתום 6 חודשים, וכל 3 חודשים לאחר מכן" is 6, added
+       * 2026-11-12). Null or absent when the bank prints only how often the exit points come: the first one is then not known, and no
+       * reader may take it to fall one interval after the start (a plan with yearly exit points may open its first after ten years).
+       */
+      first_after_months: z.number().positive().nullable().optional(),
+    })
+    .refine((e) => e.exists || (e.first_after_months ?? null) === null, {
+      message: "first_after_months is set only where exit points exist",
+      path: ["first_after_months"],
+    }),
   auto_renew: z.strictObject({ value: z.boolean(), max_renewals: z.number().int().nullable() }),
   /**
    * A short plain-Hebrew summary of the conditions the bank prints for the rate (guide page of the current account). Faithful to the
