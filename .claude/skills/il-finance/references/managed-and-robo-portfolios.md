@@ -370,7 +370,7 @@ Out, and where it lives:
   - "מסלול ממוקד חו"ל";
   - "מסלול השקעה משולב זהב";
   - "מסלול משולב קריפטו";
-  - "מסלול משולב קרנות גידור בנאמנות": NIS 50,000 minimum; a 20% success fee in the funds above the Tel Gov–Makam hurdle; monthly dealing;
+  - "מסלול משולב קרנות גידור בנאמנות": NIS 50,000 minimum; a success fee in the funds, on top of their management fees, of 20% of the fund's return, worked out by a catch-up mechanism and charged only when the return exceeds the Tel Gov–Makam index (the hurdle); monthly dealing;
   - "מסלול כשר משולב ישראל": up to 100% equity;
   - "מסלול ממוקד נדל"ן ותשתיות".
 
