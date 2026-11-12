@@ -31,13 +31,12 @@
       "locator": "p.11",
       "locator_he": "עמוד 11",
       "page": 11,
-      "quote": "בבורסה בת \"א­ מניות ,מק \"מ ואגרות חוב",
+      "quote": "מניות, מק״מ ואגרות חוב",
       "checked": "2026-10-31"
     },
     {
       "url": "https://www.pepper.co.il/",
       "title": "דף הבית של PEPPER, שאלות ותשובות",
-      "title_he": "דף הבית של PEPPER, שאלות ותשובות",
       "publisher": "PEPPER (Bank Leumi)",
       "publisher_he": "פפר",
       "kind": "institution_doc",

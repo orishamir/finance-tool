@@ -21,9 +21,23 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.15 to 17, First Schedule part 4, item 4(a)(5) note 2, and item 4(a)(1)",
-      "locator_he": "עמודים 15 עד 17, התוספת הראשונה חלק 4, פרט 4(א)(5) הערה 2, ופרט 4(א)(1)",
+      "locator": "pp.15 to 17, First Schedule part 4, item 4(a)(1)",
+      "locator_he": "עמודים 15 עד 17, התוספת הראשונה חלק 4, פרט 4(א)(1)",
       "page": 15,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.17, First Schedule part 4, item 4(a)(5)",
+      "locator_he": "עמוד 17, התוספת הראשונה חלק 4, פרט 4(א)(5)",
+      "page": 17,
+      "quote": "לא ניתן לגבות דמי ניהול פיקדון ניירות ערך בעבור מלווה קצר מועד או בעבור קרן כספית",
       "checked": "2026-11-06"
     }
   ],
