@@ -1,5 +1,5 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
-import { Link, useLoaderData } from "react-router";
+import { useLoaderData } from "react-router";
 import type { Route } from "./+types/track";
 import { catalogue, companies as companiesCopy, company as companyCopy, pagePreview, r3workbench, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
@@ -8,7 +8,7 @@ import { DimensionChecklist, type ChecklistRowView } from "../components/guide/s
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter, OwnCompanyPage } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, FeeNum, GemelNetLink, Sentence, ShareNum, Tag, gershayim } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
@@ -129,16 +129,21 @@ export default function TrackPage() {
   return (
     <OwnCompanyPage>
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
-      <div className="flex flex-col gap-8 pt-2 lg:pt-8">
-        <header className="flex flex-col gap-3">
-          <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: gershayim(track.companyName) }} current={gershayim(track.name)} />
-          <h1 className="text-2xl lg:text-3xl font-semibold flex flex-wrap items-center gap-3">
-            <bdi>{gershayim(track.name)}</bdi>
-            {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
-            {trackLabels(track).map((l) => (
-              <Tag key={l}>{companyCopy.labels[l]}</Tag>
-            ))}
-          </h1>
+      <div className="flex flex-col gap-8">
+        <PageHead
+          crumb={<Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: gershayim(track.companyName) }} current={gershayim(track.name)} />}
+          title={<bdi>{gershayim(track.name)}</bdi>}
+          marks={
+            (data.isDefault || trackLabels(track).length > 0) && (
+              <>
+                {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
+                {trackLabels(track).map((l) => (
+                  <Tag key={l}>{companyCopy.labels[l]}</Tag>
+                ))}
+              </>
+            )
+          }
+        >
           <Sentence tone="muted">
             {copy.fundLine} <Num value={data.values.fundId} /> <GemelNetLink fundId={track.fundId} dataset={track.dataset} />
           </Sentence>
@@ -146,33 +151,33 @@ export default function TrackPage() {
             <Callout tone="caution">
               {copy.sameNameElsewhere} {companyCopy.sameName.distinct}.{" "}
               {data.others.map((o) => (
-                <Link key={o.href} to={o.href} className="text-link underline">
+                <TextLink key={o.href} to={o.href}>
                   {copy.toOther}
-                </Link>
+                </TextLink>
               ))}
             </Callout>
           )}
-        </header>
+        </PageHead>
         <Card>
           <dl className="flex flex-col">
-            {row(copy.labels.manager, <Link to={`/companies/${track.companyId}`} className="text-link hover:underline"><bdi>{gershayim(track.companyName)}</bdi></Link>)}
+            {row(copy.labels.manager, <TextLink to={`/companies/${track.companyId}`}><bdi>{gershayim(track.companyName)}</bdi></TextLink>)}
             {row(
               copy.labels.product,
-              <span className="flex flex-wrap items-center gap-3">
+              <span className="flex flex-wrap items-center gap-x-3">
                 <bdi>{gershayim(track.classification)}</bdi>
                 {data.wrapper && (
-                  <Link to={`/guide/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
-                    {copy.toGuide} {data.wrapper.name}
-                    <IconDrillIn size={16} />
-                  </Link>
-                )}
-                {data.wrapper && (
-                  <Link to={`/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
-                    {trackBrowser.guideLink.before}
-                    {data.wrapper.name}
-                    {trackBrowser.guideLink.after}
-                    <IconDrillIn size={16} />
-                  </Link>
+                  <span className="flex flex-wrap items-center gap-x-3 text-sm">
+                    <TextLink look="line" to={`/guide/${data.wrapper.id}`}>
+                      {copy.toGuide} {data.wrapper.name}
+                      <IconDrillIn size={16} />
+                    </TextLink>
+                    <TextLink look="line" to={`/tracks/${data.wrapper.id}`}>
+                      {trackBrowser.guideLink.before}
+                      {data.wrapper.name}
+                      {trackBrowser.guideLink.after}
+                      <IconDrillIn size={16} />
+                    </TextLink>
+                  </span>
                 )}
               </span>,
             )}
@@ -186,18 +191,15 @@ export default function TrackPage() {
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>
           {data.feePage && <div className="pt-1 border-t border-border">
-            <Link to={`/fees?track=${track.fundId}`} className="inline-flex items-center gap-0.5 text-link hover:underline min-h-target">
+            <TextLink look="line" to={`/fees?track=${track.fundId}`}>
               {r3workbench.links.fees}
               <IconDrillIn size={16} />
-            </Link>
+            </TextLink>
           </div>}
         </Card>
         {data.names.length > 0 && (
-          <section aria-labelledby="also-h" className="flex flex-col gap-3">
-            <h2 id="also-h" className="text-xl lg:text-2xl font-semibold">
-              {catalogue.alsoCalled}
-            </h2>
-            <Card className="p-0 md:p-0">
+          <Section title={catalogue.alsoCalled}>
+            <Card pad="none">
               <ul className="flex flex-col divide-y divide-border">
                 {data.names.map((n) => (
                   <li key={n.id} className="flex flex-col gap-1 p-4">
@@ -213,15 +215,12 @@ export default function TrackPage() {
                 ))}
               </ul>
             </Card>
-          </section>
+          </Section>
         )}
         {data.checklist.length > 0 && (
-          <section aria-labelledby="check-h" className="flex flex-col gap-4">
-            <h2 id="check-h" className="text-xl lg:text-2xl font-semibold">
-              מה לבדוק
-            </h2>
+          <Section title="מה לבדוק">
             <DimensionChecklist rows={data.checklist} />
-          </section>
+          </Section>
         )}
       </div>
     </PageShell>

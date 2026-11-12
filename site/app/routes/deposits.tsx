@@ -8,6 +8,7 @@ import { HELP_TERMS, KIND_TERMS } from "../lib/deposit-browser";
 import { CompanyTabs, DEPOSITS_PLACE } from "../components/decoder/company-tabs";
 import { RulesLine } from "../components/provenance";
 import { PageShell } from "../components/shell";
+import { PageHead } from "../components/kit";
 
 export async function loader() {
   const { buildDepositBrowser, depositBrowserRuleIds } = await import("../lib/deposit-browser.server");
@@ -31,12 +32,8 @@ export default function Deposits() {
   const { data, rules, pointed, ruleIds, terms } = useLoaderData<typeof loader>();
   return (
     <PageShell current={DEPOSITS_PLACE.menu} data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
-      <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
-        {DEPOSITS_PLACE.tab && <CompanyTabs current="deposits" />}
-        <header className="flex flex-col gap-3">
-          <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-          <p className="text-muted-foreground max-w-measure">{copy.lead}</p>
-        </header>
+      <div className="flex flex-col gap-5 lg:gap-6">
+        <PageHead tabs={DEPOSITS_PLACE.tab && <CompanyTabs current="deposits" />} title={copy.title} lede={copy.lead} />
         <DepositBrowser data={data} />
         <RulesLine ids={ruleIds} />
       </div>

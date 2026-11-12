@@ -165,17 +165,8 @@ const HAND_TITLE: Record<string, number> = {
     "components/transfer/panel.tsx": 1,
     "root.tsx": 1,
     "routes/companies.tsx": 1,
-    "routes/deposits.tsx": 1,
-    "routes/documents.tsx": 1,
     "routes/fees.tsx": 2,
-    "routes/guide-index.tsx": 1,
-    "routes/not-covered.tsx": 1,
-    "routes/not-found.tsx": 1,
-    "routes/parameters.tsx": 1,
-    "routes/rules-shelf.tsx": 1,
     "routes/rules.tsx": 1,
-    "routes/track.tsx": 1,
-    "routes/tracks.tsx": 1,
 };
 const HAND_SECTION_HEADING: Record<string, number> = {
     "components/companies/focus.tsx": 1,
@@ -183,11 +174,7 @@ const HAND_SECTION_HEADING: Record<string, number> = {
     "components/company/template.tsx": 1,
     "components/decoder/institutions/page.tsx": 1,
     "components/deposits/browser.tsx": 1,
-    "routes/documents.tsx": 1,
     "routes/fees.tsx": 3,
-    "routes/guide-index.tsx": 2,
-    "routes/not-covered.tsx": 1,
-    "routes/track.tsx": 2,
 };
 const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/company/bank-views.tsx": 1,
@@ -201,11 +188,7 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/timeline/Timeline.tsx": 1,
     "components/tracks/browser.tsx": 1,
     "components/tracks/company-browser.tsx": 1,
-    "routes/company.tsx": 1,
-    "routes/documents.tsx": 4,
     "routes/invest.tsx": 1,
-    "routes/not-covered.tsx": 2,
-    "routes/parameters.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
     "components/companies/focus.tsx": 3,
@@ -229,13 +212,9 @@ const HAND_SITE_LINK: Record<string, number> = {
     "content/guide/government-bond.tsx": 3,
     "content/guide/makam.tsx": 3,
     "routes/companies.tsx": 1,
-    "routes/documents.tsx": 2,
     "routes/fees.tsx": 3,
     "routes/guide.tsx": 1,
-    "routes/not-found.tsx": 1,
-    "routes/rules-shelf.tsx": 1,
     "routes/rules.tsx": 1,
-    "routes/track.tsx": 5,
 };
 const HAND_LINK_OUT: Record<string, number> = {
     "components/decoder/institutions/brokerage-card.tsx": 1,
@@ -245,7 +224,6 @@ const HAND_LINK_OUT: Record<string, number> = {
     "components/invest/no-fund.tsx": 1,
     "components/invest/pair.tsx": 2,
     "components/provenance-sheets.tsx": 5,
-    "routes/documents.tsx": 2,
     "routes/rules.tsx": 1,
 };
 const BANG_OVERRIDE: Record<string, number> = {
@@ -276,8 +254,6 @@ const FOLD_AS_LINK: Record<string, number> = {
     "components/guide/sections.tsx": 4,
     "components/invest/lists.tsx": 1,
     "components/invest/pair.tsx": 1,
-    "routes/company.tsx": 1,
-    "routes/documents.tsx": 2,
 };
 
 patterns["a page title written by hand"] = {
