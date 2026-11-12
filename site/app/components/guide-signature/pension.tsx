@@ -12,9 +12,9 @@ import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, type SiteValue } from "../../lib/value";
-import { Callout, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
+import { aboveZeroCheck, Callout, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { aboveZeroCheck, figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
+import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];

@@ -14,7 +14,7 @@ import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineCh
 import { IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, percentCheck, yearsCheck } from "../kit";
+import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -493,12 +493,8 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   const isEntered = (key: P05Input) => (key === "cash_rate" ? ownRate !== undefined : state.entered[key] !== undefined);
   const cashBase = p05Value(p05, "cash_rate");
   const commit = (key: P05Input) => (n: number) => setEntered(key, n === p05Number(p05, key) ? null : n);
-  // the kit's checks have none for an age: a whole number, then the range in the years' sentence with the age's words
-  const ageCheck = (n: number) => {
-    if (!Number.isInteger(n)) return valuesCopy.errors.nan;
-    if (ageRange && (n < ageRange.min || n > ageRange.max)) return `${valuesCopy.errors.age[0]} ${fmt.number(ageRange.min)} ${valuesCopy.errors.age[1]}${fmt.number(ageRange.max)}.`;
-    return null;
-  };
+  // the age's range is a site parameter (P-05 ranges.age); without it, only a whole number is asked
+  const checkAge = ageRange ? ageCheck(ageRange) : (n: number) => (Number.isInteger(n) ? null : valuesCopy.errors.nan);
   const pctCheck = percentCheck(pctRange ?? undefined);
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
   const common = cash?.common;
@@ -552,7 +548,7 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
         <span className="text-xs text-muted-foreground">{valuesCopy.hints.employment}</span>
       </div>
       )}
-      {showAge && <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={ageCheck} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
+      {showAge && <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={checkAge} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
     </div>
   );
 }

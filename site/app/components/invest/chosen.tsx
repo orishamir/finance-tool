@@ -20,7 +20,7 @@ import { Card, DocLink, FactTile, GroupPriceFold, HelpMark, KeyValue, LabelChip,
 import { brands } from "../../copy";
 import { OwnAccountButton } from "./own-account";
 import { OptionTag } from "./parts";
-import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, unitsLine, type OnPick, type Pick } from "./pair";
+import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, priced, unitsLine, type OnPick, type Pick } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 /** The label families the card gives a line each, in its order; a family the fund has no label in has no line. */
@@ -41,14 +41,14 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
   const snap = bundle.snapshots.find((s) => s.id === baseId);
   const pricedSnap = bundle.snapshots.find((s) => s.id === pick.house);
   const at = fund.byHouse[pick.house];
-  const priced = at && "valueN" in at ? at : null;
+  const price = priced(at) ? at : null;
   const r = receiptAmounts(pc);
   // the account's and the fund's figures as the receipt writes them, added (F-91, without the tax)
   const together = sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout, round: Math.round });
   // the star the account list gives: the house every pair of the tie set is at, on a pair of the set
   const crownHouse = crownedHouse(view, v.best, v.theta);
   const crowned = !group && crownHouse === pick.house && inTieSet(view, v.best, { house: crownHouse, fund: pick.fund }, v.theta);
-  const aside = priced ? asideWords(asideLines(pricedSnap, priced.aside), pc.priced.house) : null;
+  const aside = price ? asideWords(asideLines(pricedSnap, price.aside), pc.priced.house) : null;
   const phone = phoneOf(view, bundle, pick);
   // the fund's document: where its fees come from, the annual report for a fund listed here
   const doc = isCustomFund(fund.rec) ? null : (fund.rec.fees.fixed_management?.source ?? null);
@@ -57,13 +57,13 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
   const state = gapStateOf(fund.rec, list);
   const isin = fund.rec.identifiers?.isin;
   const twin = isin ? allFunds(view).find((x) => x !== fund && x.rec.identifiers?.isin === isin) : undefined;
-  const units = fund.noUnitPrice ? c.pair.unitPriceMissing : priced ? unitsLine(priced.units) : null;
+  const units = fund.noUnitPrice ? c.pair.unitPriceMissing : price ? unitsLine(price.units) : null;
   // the house's groups, which the fold lists with the choice of one (D43, lib/group-pick)
   const groups = snap?.groups?.state === "prices" ? snap.groups.entries : [];
   const can = pickableGroups(snap, fund.option);
   const choice: GroupChoice | undefined =
     onPick && can.size > 0 ? { can: (k) => can.has(k), selected: group?.house === baseId ? group.key : null, onChoose: (k) => pickHalf(view, pick, { house: baseId }, (p, m) => onPick({ ...p, group: k }, m)) } : undefined;
-  const cautions = [priced?.open ? c.pair.openRow : null, units, twin ? c.pair.sameFundAs(twin.number, twin.option === "abroad") : null].filter((x): x is string => !!x);
+  const cautions = [price?.open ? c.pair.openRow : null, units, twin ? c.pair.sameFundAs(twin.number, twin.option === "abroad") : null].filter((x): x is string => !!x);
   return (
     <Card as="section" pad="tight" className="flex flex-col gap-3" aria-label={c.shownPair(chosen).cardTitle}>
       <div className="flex items-baseline justify-between gap-3">
@@ -80,7 +80,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
           foot={
             <>
               {/* what the house's price is for this purchase: a standing order's, where the monthly deposit is bought on one */}
-              {priced?.standing && plan.monthly > 0 && <Tag>{c.pair.standingTag}</Tag>}
+              {price?.standing && plan.monthly > 0 && <Tag>{c.pair.standingTag}</Tag>}
               <LabelRow labels={brokerLabels(house, false)} />
               {/* the picked group's price holds for a time, then the price list's (F-101) */}
               {group && <p className="text-sm text-muted-foreground">{groupPrices.pickedLine(group.name)}</p>}

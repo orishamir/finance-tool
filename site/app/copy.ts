@@ -1010,11 +1010,8 @@ export const computedInputs = {
   grossBalance: "השווי לפני דמי ניהול ומס",
   realGain: "רווח ריאלי",
   taxRate: "שיעור המס",
-  taxDuring: "מס בזמן ההחזקה",
   taxAtExit: "מס במשיכה",
   fees: "דמי ניהול",
-  net: "נשאר לכם",
-  index: "עליית המחירים עד אז",
   about: {
     headline: "מה שנשאר אחרי דמי ניהול ומס, אם מושכים בסוף התקופה",
     net: "מה שנשאר אם מושכים בסוף שנה",
@@ -1267,29 +1264,20 @@ export const catalogue = {
  * Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
  */
 export const r2 = {
-  realLabel: "נשאר לכם במועד המטרה, בכסף של היום",
-
   form: {
     errYears: "הזינו לפחות שנה אחת.",
     errYearsWhole: "הזינו מספר שלם של שנים.",
   },
 
   result: {
-    tieMid: "שקולות למטרה הזו: ההפרש ביניהן",
     // A8: a deposit whose published rate was read for another amount
-    ownRate: { about: "ריבית שהזנתם", chip: "ריבית שהזנתם" },
+    ownRate: { about: "ריבית שהזנתם" },
   },
 } as const;
 
 // sc-represent, folded in by sc-compare: the entered fee level of the representative instrument (D4)
 export const ownTermsCopy = {
-  feeChip: "דמי ניהול שהזנתם",
   fundCostLabel: "העלות בתוך הקרן",
-};
-
-// sc-compare: what the comparison's headline says beyond the leader. docs/copy.md section 6.8 holds the rows.
-export const scnCompare = {
-  blockedFor: "חסום ל:", // under a covered checklist row, the options blocked on that dimension
 };
 
 // Release 3: the track workbench and the entry points (docs/copy.md 7.0, 7.3, 7.5; flows 12.3, 12.5). The strings the
@@ -4301,6 +4289,7 @@ export const kit = {
       FigureLines: "מספרים קטנים זה מתחת לזה, כל אחד בשורה אחת עם תווית בתחילתה (הריביות של פיקדון לפי סכום, בשורה בטלפון). שורה שבחירה במקום אחר מניחה בצד מתעמעמת במקומה.",
       ProductTableBand: "כותרת מעל כמה עמודות סמוכות (״ריבית בשנה, לפי סכום ההפקדה״), עמודה מעומעמת במקומה כשבחירה בעמוד מניחה אותה בצד, ופרטים של שורה שנפתחים מתחתיה בכפתור בסוף השורה, עם סימן למה שיש בהם (הערה של הבנק, ספק).",
       PageTabs: "לשוניות בראש עמוד שהוא אחת מכמה תצוגות של אותו נושא (לפי חברה, לפי מוצר): כל לשונית היא עמוד משלה, ולכן קישור; הנוכחית מסומנת בקו תחתון וב־aria-current.",
+      DepositWords: "המספרים של פיקדון במילים, אותו דבר בכל עמוד שמראה פיקדון: העוגן והמרווח של ריבית משתנה (\"פריים פחות 1.5\", AnchorSpread) והסכומים שהבנק מקבל (AmountRange). כל מספר עובר דרך רכיב המקור.",
       TrackCells: "מה שהתאים של מסלול מכילים, לכל רשימת מסלולים: שני ממוצעי דמי הניהול של הרשות (TrackFeeLines, FeeNum; תא ריק מסביר את עצמו כשלוחצים עליו), החשיפה למניות ולמט״ח עם הטבעות (ExposureCell) והתוויות שליד השם (TrackLabels). כל מספר עובר דרך רכיב המקור.",
       ProductTable: "רשימה של מוצרים מאותו סוג (מסלולים, קרנות): טבלה אחת במחשב ושורה לכל מוצר בטלפון, אף פעם לא ערימה של כרטיסים. הכותרת נושאת את המילים והתא את הערך; fit לעמודה ברוחב התוכן שלה (מספר, קישור, דמי ניהול), והשם מקבל את השאר. banner: שורת זהירות מעל שורות ששייכות יחד. ProductPhoneRow: שורה של מוצר בטלפון. ProductIdLink: המזהה הוא הקישור החוצה (מספר הקרן למאיה), עם אייקון קישור חיצוני. ProductFigures: מספרים, כל אחד עם המילה שלו, אחד מתחת לשני בתא ובשורה אחת בטלפון.",
       CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
@@ -4379,6 +4368,8 @@ export const kit = {
       text: { label: "שם לדוגמה", check: "סימון לדוגמה", group: "קבוצת שדות" },
       select: { label: "חשבון לדוגמה", none: "לא נבחר", options: [{ id: "a", name: "ראשון" }, { id: "b", name: "שני" }, { id: "c", name: "שלישי" }], help: "שורת עזר קצרה מתחת לשדה." },
       title: "כותרת לדוגמה",
+      /** Section `under`: a line that belongs to the heading. */
+      sectionUnder: "שורה ששייכת לכותרת, צמודה אליה",
       other: "אחר",
       otherField: "הערך שלכם",
       pickCard: "בחרו באפשרות הזאת",

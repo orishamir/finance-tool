@@ -4,35 +4,52 @@ import { Link } from "react-router";
 import { cx } from "./cx";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "quiet" | "destructive" | "icon";
+  variant?: "primary" | "secondary" | "quiet" | "destructive" | "icon" | "inline";
   /** `quiet` and `destructive` only: no side padding, so the words line up with the text above and below them (a text action at a line's start). */
   flush?: boolean;
   /**
-   * `quiet` and `destructive`: 13 px words with no height of their own and a 44 px tap area, for a text action inside a line of small text.
-   * `icon`: a 36 px round button in the muted ink, its tap area still 44 px, for one that floats over content (a sheet's back and close).
+   * `sm`: on `quiet` and `destructive`, 13 px words with no height of their own and a 44 px tap area, for a text action inside a line of
+   * small text; on `icon`, a 36 px round button in the muted ink, its tap area still 44 px, for one that floats over content (a sheet's
+   * back and close). `compact`: on `quiet`, a text action among chips (the rules page's examples): 44 px high on a phone, where the chips
+   * may stand in a strip that scrolls sideways and would cut a tap area off, and from `lg` 28 px high with a 44 px tap area.
    */
-  size?: "sm";
+  size?: "sm" | "compact";
+  /** The room between an icon and the words: `sm` 6 px (a back arrow before its word, a copy mark); 8 px otherwise. */
+  gap?: "sm";
   children: ReactNode;
 };
 
-/** An action. `primary` once per screen, `secondary` for the rest, `quiet` for a text-style action, `destructive` for a quiet one that deletes, `icon` for a 44 px icon-only button. */
-export function Button({ variant = "secondary", flush, size, className, children, type = "button", ...rest }: ButtonProps) {
+/**
+ * An action. `primary` once per screen, `secondary` for the rest, `quiet` for a text-style action, `destructive` for a quiet one that
+ * deletes, `icon` for a 44 px icon-only button. `inline`: an action inside a sentence, around words that may wrap with it (a name that
+ * picks a pair, the way back from a choice that changed something else): underlined in the link colour, on the sentence's lines, its
+ * 44 px target a layer reaching 12 px above and below the words, so it takes no more height than they do (a layer, not a margin pulled
+ * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). A disabled text action reads in the muted ink.
+ */
+export function Button({ variant = "secondary", flush, size, gap, className, children, type = "button", ...rest }: ButtonProps) {
+  if (variant === "inline")
+    return (
+      <button type={type} className={cx("relative rounded-md text-start text-link underline underline-offset-[3px] hover:no-underline transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:-inset-y-3", className)} {...rest}>
+        {children}
+      </button>
+    );
   const side = flush ? "px-0" : "px-2";
-  const small = size === "sm";
-  // a text action's height: the 44 px target, or in a line of small text the line's own height with the target as its tap area
-  const textHeight = small ? "text-xs tap-area" : "min-h-target";
+  // a text action's height: the 44 px target, in a line of small text the line's own height with the target as its tap area, or among chips the target on a phone and a low button with a tap area from lg
+  const textHeight = { sm: "text-xs tap-area", compact: "min-h-target lg:min-h-7 lg:tap-area", none: "min-h-target" }[size === "sm" || size === "compact" ? size : "none"];
+  // a disabled text action is muted and not underlined under the pointer
+  const textAction = "enabled:hover:underline disabled:text-muted-foreground";
   const styles = {
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 lg:tap-area px-5 rounded-md hover:bg-accent",
-    quiet: cx("text-link rounded-md hover:underline", textHeight, side),
+    quiet: cx("text-link rounded-md", textAction, textHeight, side),
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
-    destructive: cx("text-destructive rounded-md hover:underline", textHeight, side),
-    icon: small
+    destructive: cx("text-destructive rounded-md", textAction, textHeight, side),
+    icon: size === "sm"
       ? "size-9 tap-area inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
       : "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (
-    <button type={type} className={cx("inline-flex items-center justify-center gap-2 transition-colors duration-[var(--duration-fast)]", styles, className)} {...rest}>
+    <button type={type} className={cx("inline-flex items-center justify-center transition-colors duration-[var(--duration-fast)]", gap === "sm" ? "gap-1.5" : "gap-2", styles, className)} {...rest}>
       {children}
     </button>
   );

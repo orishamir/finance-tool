@@ -62,8 +62,12 @@ export interface KeyValueItem {
   footer?: ReactNode;
 }
 
-/** The label column of a list of divided rows from `md`: one width for every such list, so their labels line up across the site. */
-const LABEL_COLUMN = "md:grid md:grid-cols-[10rem_minmax(0,1fr)] md:gap-x-6";
+/**
+ * The label column of a list of divided rows from `md`: one width for every such list, so their labels line up across the site; `wide`
+ * for labels that run to a phrase with a date in it (a track's "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת 2025"), which would take three
+ * lines in the narrow one.
+ */
+const LABEL_COLUMN = { narrow: "md:grid md:grid-cols-[10rem_minmax(0,1fr)] md:gap-x-6", wide: "md:grid md:grid-cols-[14rem_minmax(0,1fr)] md:gap-x-6" } as const;
 
 /** What a row of `rows` or `plain` holds beside its label: the value with its tag, then the line, the lead and the footer under it. */
 function RowBody({ it }: { it: KeyValueItem }) {
@@ -84,14 +88,16 @@ function RowBody({ it }: { it: KeyValueItem }) {
  * Facts as cards: one card with dividers on a phone, a two-by-two grid with the value at 20 px from `lg` (design-spec 2).
  * `rows`: one card of divided rows at every size, the label in a column of its own from `md` and the value at body size, for facts
  * whose values run to sentences (a guide page's list). `plain`: the same rows between hairlines with no card of their own, as a `<dl>`,
- * for a list inside a card that holds more (a bank product's terms, a track's facts).
+ * for a list inside a card that holds more (a bank product's terms, a track's facts). `wide`: with `rows` or `plain`, a 14 rem label
+ * column for labels that run to a phrase.
  */
-export function KeyValueList({ items, rows, plain }: { items: KeyValueItem[]; rows?: boolean; plain?: boolean }) {
+export function KeyValueList({ items, rows, plain, wide }: { items: KeyValueItem[]; rows?: boolean; plain?: boolean; wide?: boolean }) {
+  const labelColumn = LABEL_COLUMN[wide ? "wide" : "narrow"];
   if (plain)
     return (
       <dl className="flex flex-col">
         {items.map((it) => (
-          <div key={it.id} className={cx("flex flex-col gap-1 py-3 border-b border-border last:border-b-0", LABEL_COLUMN)}>
+          <div key={it.id} className={cx("flex flex-col gap-1 py-3 border-b border-border last:border-b-0", labelColumn)}>
             <dt className="text-sm text-muted-foreground md:pt-0.5">{it.label}</dt>
             <dd className="flex min-w-0 flex-col gap-1">
               <RowBody it={it} />
@@ -104,7 +110,7 @@ export function KeyValueList({ items, rows, plain }: { items: KeyValueItem[]; ro
     return (
       <Card pad="none" className="flex flex-col divide-y divide-border">
         {items.map((it) => (
-          <div key={it.id} className={cx("flex flex-col gap-1 p-4 md:px-5", LABEL_COLUMN)}>
+          <div key={it.id} className={cx("flex flex-col gap-1 p-4 md:px-5", labelColumn)}>
             <span className="text-sm text-muted-foreground md:pt-0.5">{it.label}</span>
             <span className="flex min-w-0 flex-col gap-1">
               <RowBody it={it} />

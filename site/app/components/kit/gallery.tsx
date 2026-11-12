@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -123,6 +123,37 @@ function Basics() {
             </Button>
           </div>
         </State>
+        <State label={'inline: an action inside a sentence, around a name that wraps with it; a 44 px tap layer that takes no height'}>
+          <p className="max-w-64 text-sm">
+            {g.sample.lead}{" "}
+            <Button variant="inline" onClick={() => undefined}>
+              {g.sample.longTag}
+            </Button>
+            .
+          </p>
+        </State>
+        <State label={'quiet flush size="compact": a text action among chips, 44 px on a phone, 28 px with a 44 px tap area from lg'}>
+          <p className="flex flex-wrap items-center gap-x-4 text-sm text-muted-foreground">
+            <span>{g.sample.lead}</span>
+            <Button variant="quiet" flush size="compact" className="text-start">
+              {g.sample.option[0]}
+            </Button>
+            <Button variant="quiet" flush size="compact" className="text-start">
+              {g.sample.option[1]}
+            </Button>
+          </p>
+        </State>
+        <State label={'quiet flush gap="sm": 6 px between an icon and the words; a disabled text action reads muted'}>
+          <div className="flex flex-col items-start">
+            <Button variant="quiet" flush gap="sm">
+              <IconClose size={18} />
+              {g.sample.hello}
+            </Button>
+            <Button variant="quiet" flush disabled>
+              {g.states.disabled}
+            </Button>
+          </div>
+        </State>
         <State label="LinkButton, long words in a narrow place: the button grows">
           <div className="max-w-64">
             <LinkButton to="/kit">{g.sample.longTag}</LinkButton>
@@ -209,6 +240,19 @@ function Basics() {
                 <p>{g.sample.body}</p>
               </Section>
               <Section level="form" as="div" title={g.sample.title}>
+                <p>{g.sample.body}</p>
+              </Section>
+            </div>
+          </State>
+          <State label='headingId, under: lines that belong to the heading, 4 px under it; gap="snug" / "tight" between the parts'>
+            <div className="flex flex-col gap-4">
+              <Section as="div" headingId="kit-section-heading" title={g.sample.title} under={<p className="text-sm text-muted-foreground">{g.sample.sectionUnder}</p>} action={<Button variant="quiet">{g.sample.hello}</Button>}>
+                <p>{g.sample.body}</p>
+              </Section>
+              <Section level="card" as="div" gap="snug" title={g.sample.title}>
+                <p>{g.sample.body}</p>
+              </Section>
+              <Section level="card" as="div" gap="tight" title={g.sample.title}>
                 <p>{g.sample.body}</p>
               </Section>
             </div>
@@ -360,6 +404,12 @@ function Choices() {
               <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
             </PickCard>
           </div>
+        </State>
+        <State label={'pad="snug": Card\'s padding (p-4 md:p-5), for an option in a list of options'}>
+          <PickCard label={g.sample.pickCard} onPick={() => {}} pad="snug" className="flex flex-col gap-1">
+            <span className="text-sm text-muted-foreground">{g.sample.option[2]}</span>
+            <span className="text-2xl font-bold">{fmt.nisWhole(1080)}</span>
+          </PickCard>
         </State>
       </Demo>
       <Demo name="TileChoice" use={g.uses.TileChoice}>
@@ -669,6 +719,11 @@ function Words({ today }: { today: string }) {
           <State label="KeyValueList rows">
             <KeyValueList rows items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} /> }))} />
           </State>
+          <State label="KeyValueList plain wide: a 14 rem label column, for labels that run to a phrase">
+            <Card className="flex flex-col gap-3">
+              <KeyValueList plain wide items={[{ id: "long", label: g.sample.longTag, value: <Num value={s.sourced} /> }, ...g.sample.cards.slice(0, 1).map((c) => ({ ...c, value: <Num value={s.sourced} /> }))]} />
+            </Card>
+          </State>
           <State label="KeyValueList plain: the same rows between hairlines, inside a card that holds more">
             <Card className="flex flex-col gap-3">
               <p className="font-semibold">{g.sample.title}</p>
@@ -770,10 +825,12 @@ function Fields() {
           <State label={`validate={nonNegativeCheck}, ${g.states.interactive}`}>
             <NumberField label={g.sample.field} unit="nis" value={c} start={1000} isEntered={c !== 1000} validate={nonNegativeCheck} onCommit={(n) => setC(n)} onReset={() => setC(1000)} />
           </State>
-          <State label="the checks' one message each: nonNegativeCheck(-1), yearsCheck({ min: 1, max: 40 })(41), percentCheck()(101)">
+          <State label="the checks' one message each: nonNegativeCheck(-1), aboveZeroCheck(0), yearsCheck({ min: 1, max: 40 })(41), ageCheck({ min: 0, max: 120 })(30.5), percentCheck()(101)">
             <p className="flex flex-col gap-1 text-xs text-destructive">
               <span>{nonNegativeCheck(-1)}</span>
+              <span>{aboveZeroCheck(0)}</span>
               <span>{yearsCheck({ min: 1, max: 40 })(41)}</span>
+              <span>{ageCheck({ min: 0, max: 120 })(30.5)}</span>
               <span>{percentCheck()(101)}</span>
             </p>
           </State>
@@ -1526,6 +1583,15 @@ function Lists({ today }: { today: string }) {
             {g.sample.claim.doc}
           </DocLink>
         </State>
+        <State label='look="compact": links side by side in a table cell, 44 px each on a phone, 28 px with a 44 px tap area from lg' wide>
+          <span className="flex flex-col lg:flex-row lg:flex-wrap lg:gap-x-2 text-sm">
+            {[3, 7, 12].map((p) => (
+              <DocLink key={p} look="compact" href={sourceHref({ url: "https://example.com/tariff.pdf", page: p })} className="whitespace-nowrap">
+                {g.sample.option[0]} {p}
+              </DocLink>
+            ))}
+          </span>
+        </State>
         <State label='look="inline": inside a line of text, with no height of its own, so the line keeps its height' wide>
           <Sentence size="sm" tone="muted">
             <DocLink look="inline" href={sourceHref({ url: "https://example.com/tariff.pdf", page: 2 })}>
@@ -1761,6 +1827,20 @@ function Lists({ today }: { today: string }) {
             {g.sample.option[0]}
           </TextLink>
         </State>
+        <State label='tone="muted": in the muted ink of its line (a breadcrumb); tone="plain": a name in the text colour that opens its page'>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm text-muted-foreground">
+              <TextLink tone="muted" to="/kit">
+                {g.sample.option[0]}
+              </TextLink>
+              {" › "}
+              {g.sample.option[1]}
+            </p>
+            <TextLink tone="plain" to="/kit" className="font-medium">
+              {g.sample.title}
+            </TextLink>
+          </div>
+        </State>
       </Demo>
       <Demo name="SharedFacts, FigureLines" use={g.uses.SharedFacts}>
         <State label="what every row shares, said once over a table" wide>
@@ -1808,6 +1888,25 @@ function Lists({ today }: { today: string }) {
             <ExposureCell size="cell" value={{ stock: { ...s.comp, value: 49, unit: "pct" }, currency: { ...s.comp, value: 21, unit: "pct" } }} />
             <ShareNum value={{ ...s.comp, value: 49, unit: "pct" }} />
             <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="AnchorSpread, AmountRange" use={g.uses.DepositWords}>
+        <State label={'a variable rate\'s anchor and spread: look="under" a rate, "after" it on its line, "words" in a sentence; the amounts a deposit takes, each form'} wide>
+          <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
+            <span className="flex flex-col">
+              <Num value={s.rate} size="cell" />
+              <AnchorSpread variable anchor="prime" spread={{ ...s.sourced, value: -1.5, unit: "pct_per_year" }} />
+            </span>
+            <span>
+              <Num value={s.rate} size="cell" /> <AnchorSpread variable anchor="prime" spread={{ ...s.sourced, value: 0.25, unit: "pct_per_year" }} look="after" />
+            </span>
+            <span className="flex flex-col gap-1 text-sm">
+              <AmountRange min={s.sourced} max={{ ...s.sourced, value: 50000 }} />
+              <AmountRange min={s.sourced} max={null} />
+              <AmountRange min={{ ...s.sourced, value: 0 }} max={{ ...s.sourced, value: 50000 }} />
+              <AmountRange min={{ ...s.sourced, value: 0 }} max={null} />
+            </span>
           </div>
         </State>
       </Demo>

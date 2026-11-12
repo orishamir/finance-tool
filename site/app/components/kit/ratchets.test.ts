@@ -117,8 +117,6 @@ patterns["a button styled by hand as a link"] = {
   count: (s) => findElements(s, ["button"]).filter((e) => { const t = classTokens(e.open); return t.some(isLinkColour) && t.some(isUnderline); }).length,
   kit: "Button variant=quiet (a text action), variant=inline (one inside a sentence, around a name that wraps), or AlsoChanged for a change with its way back",
   allowed: {
-    "components/invest/before.tsx": 1,
-    "components/invest/stairs.tsx": 1,
     "routes/rules.tsx": 1,
   },
 };
@@ -155,11 +153,9 @@ const scriptFiles = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?
 
 const HAND_TITLE: Record<string, number> = {
     "components/home/body.tsx": 1,
-    "components/transfer/panel.tsx": 1,
     "root.tsx": 1,
 };
 const HAND_SECTION_HEADING: Record<string, number> = {
-    "components/companies/focus.tsx": 1,
 };
 const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/deposits/browser.tsx": 1,
@@ -168,21 +164,16 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
     "components/tracks/company-browser.tsx": 1,
 };
 const HAND_SITE_LINK: Record<string, number> = {
-    "components/guide/sections.tsx": 1,
     "components/provenance-sheets.tsx": 2,
     "content/exposure/shekel-cash.tsx": 2,
     "content/guide/bank-deposit.tsx": 2,
     "content/guide/government-bond.tsx": 3,
     "content/guide/makam.tsx": 3,
-    "routes/guide.tsx": 1,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/invest/pair.tsx": 1,
     "components/provenance-sheets.tsx": 5,
 };
 const BANG_OVERRIDE: Record<string, number> = {
-    "components/invest/plan-card.tsx": 1,
-    "components/provenance-sheets.tsx": 1,
 };
 const MATCH_MEDIA: Record<string, number> = {
 };
@@ -227,7 +218,6 @@ patterns["a fold label painted as a link"] = {
 // The pieces of the second kit job: a label and its value in a row of a hand grid (KeyValueList plain draws the rows, its label column one
 // width for the site), a document's words in a hand muted box (PrintedQuotes), and a hand bar in the computed ink (MeterBar tone="computed").
 const HAND_KEY_VALUE_ROW: Record<string, number> = {
-    "routes/track.tsx": 1,
 };
 const HAND_QUOTES_BOX: Record<string, number> = {
     "components/decoder/institutions/product-row.tsx": 1,

@@ -3,7 +3,7 @@
 // parts any page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
 import type { ReactNode } from "react";
 import type { P05Input } from "@finance-tool/engine";
-import { computedInputs as ci, guideBlocks, guideSignature as copy, values as valuesCopy } from "../../copy";
+import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../../copy";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
@@ -60,9 +60,6 @@ export function SigYearsField({ inputs, bundle, value }: { inputs: SigInputs; bu
   const yr = yearsRange(bundle);
   return <RangeField label={copy.common.years} unit="years" value={value} start={inputs.p05.years} isEntered={inputs.source.years === "guide"} validate={yearsCheck(yr)} onCommit={inputs.setYears} onReset={() => inputs.setYears(null)} min={yr.min} max={yr.max} step={yr.step ?? 1} inputMode="numeric" disabled={!inputs.ready} />;
 }
-
-/** The check for an amount that must be above zero (a salary, an income): the kit's checks have none. */
-export const aboveZeroCheck = (n: number): string | null => (n <= 0 ? valuesCopy.errors.positive : null);
 
 /** The tables of reasons a part is not computed yet: the first-wave visuals' and the second wave's (the study fund, the pensions). */
 const GAPS = { common: copy.common.gaps, g2: copy.g2.gaps };
