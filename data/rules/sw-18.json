@@ -15,6 +15,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7157%2Fheb#page=7",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע\"ב-2012, קובץ התקנות 7157",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע\"ב-2012, קובץ התקנות 7157",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.1629), regs. 17(ג), 18(א), 18(ג)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 1629), תקנות 17(ג), 18(א), 18(ג)",
+      "page": 7,
+      "quote": "תעודה אלקטרונית לאימות",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-730/he/regulation_h_2018-9-23.pdf",
       "title": "חוזר גופים מוסדיים 2018-9-23 – אימות זהות לקוח על ידי מערכת סליקה פנסיונית מרכזית",
       "title_he": "חוזר גופים מוסדיים 2018-9-23 – אימות זהות לקוח על ידי מערכת סליקה פנסיונית מרכזית",
@@ -78,18 +92,6 @@
       "locator_he": "עמוד 12, סעיף 32(ח)(1)",
       "page": 12,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7157%2Fheb#page=7",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע\"ב-2012, קובץ התקנות 7157",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.7 (connecting to the system: an electronic certificate or another personal means the Commissioner sets)",
-      "locator_he": "עמוד 7",
-      "quote": "תעודה אלקטרונית לאימות",
-      "checked": "2026-11-07"
     }
   ],
   "derived_from": [
