@@ -50,8 +50,8 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.12, התוספת, items 1 to 13",
-      "locator_he": "עמוד 12, התוספת, פרטים 1 עד 13",
+      "locator": "file p.12 (gazette p.294), התוספת, items 1 to 13",
+      "locator_he": "עמוד הקובץ 12 (עמוד הרשומות 294), התוספת, פרטים 1 עד 13",
       "page": 12,
       "quote": "כל אדם אחר שאושר לענין זה בידי פקיד השומה לאותה שנת מס",
       "checked": "2026-11-12"
@@ -64,7 +64,7 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2, s.2(1)(ד), definition מוכר",
+      "locator": "file p.2 (gazette p.284), s.2(1)(ד), definition מוכר",
       "page": 2,
       "quote": "למעט אדם מן המפורטים בתוספת לתקנות מס הכנסה",
       "checked": "2026-11-12"
@@ -77,8 +77,8 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.3, s.7, reg. 5",
-      "locator_he": "עמוד 3, סעיף 7, תקנה 5",
+      "locator": "file p.3 (gazette p.285), s.7, reg. 5",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 285), סעיף 7, תקנה 5",
       "page": 3,
       "quote": "הגיש מוכר שהוא תושב חוץ",
       "checked": "2026-11-12"
@@ -91,8 +91,8 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.5, reg. 11",
-      "locator_he": "עמוד 5, תקנה 11",
+      "locator": "file p.5 (gazette p.377), reg. 11",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 377), תקנה 11",
       "page": 5,
       "quote": "פקיד השומה רשאי להתיר בכתב",
       "checked": "2026-11-12"
@@ -105,8 +105,8 @@
       "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.4, reg. 5",
-      "locator_he": "עמוד 4, תקנה 5",
+      "locator": "file p.4 (gazette p.376), reg. 5",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 376), תקנה 5",
       "page": 4,
       "quote": "על היותו תושב חוץ ועל זכאותו לפטור",
       "checked": "2026-11-12"

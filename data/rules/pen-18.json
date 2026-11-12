@@ -105,7 +105,20 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.1, footnote 1; p.2",
+      "locator": "p.1, footnote 1",
+      "page": 1,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/pension-funds-guaranteed-return-completion-2022/he/pension-funds-guaranteed-return-completion_pension-funds-guaranteed-return-completion-2022-file2.pdf",
+      "title": "משרד האוצר: דיווח לממשלה על יישום הוראות סעיף 34 לחוק הפיקוח על שירותים פיננסים (קופות גמל) ליום 31.12.2022 (28.5.2023)",
+      "title_he": "משרד האוצר: דיווח לממשלה על יישום הוראות סעיף 34 לחוק הפיקוח על שירותים פיננסים (קופות גמל) ליום 31.12.2022 (28.5.2023)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
       "page": 2,
       "quote": "ביום 1 באוקטובר 2022 נכנס לתוקף החוק המסדיר את מנגנון הבטחת השלמת תשואה",
       "checked": "2026-10-26"

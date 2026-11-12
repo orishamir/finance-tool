@@ -42,13 +42,27 @@
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation301/he/Institutional-Bodies-Customer-Service-Circular-Amendment-pdf.pdf",
       "title": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
       "title_he": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
-      "publisher": "Capital Market, Insurance and Savings Authority",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.1 s.1; p.2 s.5; p.7 annex s.7ד",
-      "locator_he": "עמוד 1 סעיף 1; עמוד 2 סעיף 5; עמוד 7 נספח סעיף 7ד",
+      "locator": "p.1, s.1; p.2, s.5",
+      "locator_he": "עמוד 1, סעיף 1; עמוד 2, סעיף 5",
+      "page": 1,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation301/he/Institutional-Bodies-Customer-Service-Circular-Amendment-pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
+      "title_he": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.7, annex s.7ד(א)-(ד), s.8",
+      "locator_he": "עמוד 7, נספח סעיף 7ד(א)-(ד), סעיף 8",
       "page": 7,
+      "quote": "יבצע הגוף המוסדי שיחת שירות עם לקוח על ידי נציג הגוף המוסדי, טרם ביצוע המשיכה ובסמוך לקבלת הבקשה",
       "checked": "2026-10-31"
     }
   ]

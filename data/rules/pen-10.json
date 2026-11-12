@@ -18,15 +18,29 @@
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=5",
       "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
       "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
+      "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "file p.5 (gazette p.859), reg. 1 (substituting reg. 1), definition 'קרן חדשה כללית'",
-      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 859), תקנה 1 (החלפת תקנה 1), ההגדרה 'קרן חדשה כללית'",
+      "locator": "file p.5 (gazette p.859), reg. 1, definition 'קרן חדשה כללית'",
+      "page": 5,
       "quote": "שנקבע לגביה כי אינה זכאית לרכוש איגרת חוב מיועדת",
       "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.18, s.18(א)-(ד)",
+      "locator_he": "עמוד 18, סעיף 18(א)-(ד)",
+      "page": 18,
+      "quote": "יועברו לחשבון על שם העמית בקרן הכללית עד ליום החמישי בחודש העוקב לחודש שבו בוצעה ההפקדה",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
@@ -41,20 +55,6 @@
       "page": 1,
       "quote": "חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.18, s.18(א)-(ד)",
-      "locator_he": "עמוד 18, סעיף 18(א)-(ד)",
-      "page": 18,
-      "quote": "יועברו לחשבון על שם העמית בקרן הכללית עד ליום החמישי בחודש העוקב לחודש שבו בוצעה ההפקדה",
-      "checked": "2026-10-26"
     }
   ]
 }

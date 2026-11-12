@@ -20,8 +20,21 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.6, s.20.1; p.7, ss.20.2-20.4",
-      "locator_he": "עמוד 6, סעיף 20.1; עמוד 7, סעיפים 20.2-20.4",
+      "locator": "p.6, s.20.1",
+      "locator_he": "עמוד 6, סעיף 20.1",
+      "page": 6,
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7, ss.20.2-20.4",
+      "locator_he": "עמוד 7, סעיפים 20.2-20.4",
       "page": 7,
       "quote": "העברת כספים בין מסלולי השקעה תתבצע בתוך שלושה ימי עסקים ממועד קבלת בקשת העברה מלאה וחתומה",
       "checked": "2026-11-12"

@@ -129,6 +129,33 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.13-14, s.8(א)",
+      "locator_he": "עמודים 13 עד 14, סעיף 8(א)",
+      "page": 13,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.14, s.8(ב)",
+      "locator_he": "עמוד 14, סעיף 8(ב)",
+      "page": 14,
+      "quote": "שיעור דמי הניהול שייגבה מתוך היתרה הצבורה הרשומה לזכות עמית נכה בקרן לא יעלה על שיעור דמי הניהול שנגבה מהעמית בטרם הפך לנכה",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
@@ -179,20 +206,6 @@
       "page": 2,
       "quote": "לכלל מקבלי קצבת הזקנה שהחלו לקבל קצבת זקנה",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "pp.13-14, s.8(א)-(ב)",
-      "locator_he": "עמודים 13 עד 14, סעיף 8(א)-(ב)",
-      "page": 14,
-      "quote": "שיעור דמי הניהול שייגבה מתוך היתרה הצבורה הרשומה לזכות עמית נכה בקרן לא יעלה על שיעור דמי הניהול שנגבה מהעמית בטרם הפך לנכה",
-      "checked": "2026-10-26"
     }
   ]
 }

@@ -39,6 +39,34 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.8 (gazette p.290), reg. 10(ב)",
+      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 290), תקנה 10(ב)",
+      "page": 8,
+      "quote": "מנהל קרן נאמנות פטורה המשלם רווחים לבעל יחידה שהוא יחיד, ינכה מהם מס בשיעור של 20%",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.601), s.7",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 601), סעיף 7",
+      "page": 3,
+      "quote": "בתקנה 10(ב) לתקנות העיקריות, במקום \"20%\" יבוא \"25%\"",
+      "checked": "2026-11-07"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf",
       "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
       "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
@@ -64,33 +92,6 @@
       "locator_he": "עמוד 203, סעיף 125ב1(ב)",
       "page": 203,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=8",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.8 (gazette p.290), reg. 10(ב)",
-      "locator_he": "עמוד הקובץ 8 (עמוד הרשומות 290), תקנה 10(ב)",
-      "page": 8,
-      "quote": "מנהל קרן נאמנות פטורה המשלם רווחים לבעל יחידה שהוא יחיד, ינכה מהם מס בשיעור של 20%",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=3",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.601), s.7, amending reg. 10(ב)",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 601), סעיף 7, תיקון תקנה 10(ב)",
-      "quote": "בתקנה 10(ב) לתקנות העיקריות, במקום \"20%\" יבוא \"25%\"",
-      "checked": "2026-11-07"
     },
     {
       "url": "https://fs.knesset.gov.il/18/law/18_lsr_301335.pdf",
