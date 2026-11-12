@@ -6,7 +6,7 @@ import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn } from "../../icons";
 import { Num, RuleRef, RulesLine } from "../../provenance";
 import { Card, Disclosure, DoubtNote, LabelRow, MixedName, PrintedText, Tag, When } from "../../kit";
-import { depositLabels, exitWords, termWords } from "../../../lib/deposit-kind";
+import { depositLabels, exitsText, termWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 
 function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<string> }) {
@@ -155,7 +155,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
           </Item>
           <Item id="exits" label={l.exits} known={known}>
             {/* exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing) */}
-            {p.exitPoints.exists && !p.exitPoints.everyMonths && p.conditions ? copy.exits.someCard : exitWords(p.exitPoints.exists, p.exitPoints.everyMonths)}
+            {exitsText(p.exitPoints, p.conditions)}
           </Item>
           <Item id="renew" label={l.autoRenew} known={known}>
             {p.autoRenew.value ? (

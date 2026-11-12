@@ -59,7 +59,7 @@
       "BANK-28"
     ],
     "state": "sourced",
-    "notes": "Printed '1.50%' in both the offered and the common rate columns; rate type 'קבועה', linkage 'צמוד', a rate above the linkage (whether a linked rate in the 447 tables is real or nominal is BANK open question 17). No plan-specific terms were found to say whether the rate is set per deposit or at joining. Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a)."
+    "notes": "Printed '1.50%' in both the offered and the common rate columns; rate type 'קבועה', linkage 'צמוד', a rate above the linkage (whether a linked rate in the 447 tables is real or nominal is BANK open question 17). No plan-specific terms were found to say whether the rate is set per deposit or at joining. Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a). Exit points 'בכל שנה מתום שנתיים' (rate table p.2, library 75134f72b85da5de)."
   },
   "linkage": "cpi",
   "tax_bucket": {
@@ -141,7 +141,8 @@
   },
   "exit_points": {
     "exists": true,
-    "every_months": 12
+    "every_months": 12,
+    "first_after_months": 24
   },
   "auto_renew": {
     "value": false,

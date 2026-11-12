@@ -2,7 +2,7 @@
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { datedDay, tariffDated } from "./tariff-date";
-import { depositKindRules, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
+import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { companyTermRule, feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
@@ -191,7 +191,7 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     amountMin: mark(d.amount_range.min),
     amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
     breakTerms: { penalty: d.break.penalty, quotes: printedQuotes(d.break.mechanism_text), rules: d.break.rule_ids },
-    exitPoints: { exists: d.exit_points.exists, everyMonths: d.exit_points.every_months },
+    exitPoints: exitPointsOf(d.exit_points),
     autoRenew: { value: d.auto_renew.value, maxRenewals: d.auto_renew.max_renewals },
     // what sets the deposit apart: its kind as labels, the conditions the bank prints in plain Hebrew, and an open doubt; the
     // record's English working notes stay in the data (the current account's card showed them as the bank's words)

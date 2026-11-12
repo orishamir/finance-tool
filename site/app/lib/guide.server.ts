@@ -13,7 +13,7 @@ import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
 import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
-import { depositName, exitWords } from "./deposit-kind";
+import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
@@ -110,7 +110,7 @@ function managersFeeRange(record: ProductRecord, t: string): GuidePageData["list
 
 /** A deposit's exit-point column as an input of F-104's count: the bank's own term about its own product (D31), in words. */
 function exitInput(r: DepositTerms, name: string): SiteValue {
-  const value = exitWords(r.exit_points.exists, r.exit_points.every_months);
+  const value = exitWords(exitPointsOf(r.exit_points));
   // the record's source and date, but not the break column's rules, and its conditions only on a deposit with exits, where they say how the
   // money comes out at them (Hapoalim Sprint, Mizrahi-Tefahot 287); on one with none they are about something else, such as where it is
   // opened (Discount 0122's "אין" carried "פותחים רק בסניף או בטלבנק")
@@ -134,8 +134,8 @@ export function depositSheetNames(records: DepositTerms[]): Map<string, string> 
     let key = base(r);
     if ((count.get(key) ?? 0) > 1) {
       const code = /-(\d{3,4})$/.exec(r.id)?.[1];
-      const exits = r.exit_points.exists ? exitWords(true, r.exit_points.every_months) : null;
-      const kind = [words[r.rate_type], r.linkage === "none" ? null : words[r.linkage], exits ? `${words.exits} ${exits}` : null].filter(Boolean).join(", ");
+      const exits = r.exit_points.exists ? exitNameWords(exitPointsOf(r.exit_points)) : null;
+      const kind = [words[r.rate_type], r.linkage === "none" ? null : words[r.linkage], exits].filter(Boolean).join(", ");
       key = `${key} · ${code ?? kind}`;
     }
     // a name still taken gets a number, replacing the last one tried ("x (3)", never "x (2) (3)")

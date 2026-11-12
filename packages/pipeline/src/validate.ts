@@ -133,6 +133,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       if (/^F-\d{2,3}$/.test(id) && !ctx.formulas.has(id)) report(file, `formula: ${id} is not defined in docs/method.md (data-schema §4 item 6)`);
     }
     for (const message of checkCitedPages(parsed.value, ctx.filePages)) report(file, message);
+    if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
       for (const message of checkRuleSources(rec, ctx, ruleRecords, warn)) report(file, message);
@@ -935,6 +936,32 @@ function hostOf(url: string): string {
   } catch {
     return "";
   }
+}
+
+/**
+ * The words by which a bank's table or terms date an exit point: "בתום 3 שנים", "מתום שנתיים", "לאחר 36 חודשים", "מ 25 חודש", "בתום שנה
+ * וחצי", beside the word for an exit point in Hebrew or in the collector's English ("exit points 'לאחר 120 חודשים וכל 12 חודשים
+ * בהמשך'"). A number counts only with its unit, so an amount ("החל מ-1000 ₪") is no date.
+ */
+const EXIT_UNIT = "(?:חודש(?:ים|יים)?|שנה|שנים|שנתיים|שבוע(?:ות|יים)?|יום|ימים)";
+const EXIT_WHEN = `(?:בתום|מתום|לאחר|אחרי|כעבור|החל מ|מ)[\\s־-]*(?:ה[\\s־-]*)?(?:\\d+\\s*${EXIT_UNIT}|חצי שנה|שנה|שנתיים|חודש|חודשיים|שבוע|(?:שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)\\s+שנים)`;
+const PRINTS_FIRST_EXIT = new RegExp(`(?:תחנ\\S*|יציאה|exit (?:points?|stations?))[^.]{0,60}?${EXIT_WHEN}|${EXIT_WHEN}[^.]{0,40}?תחנ`, "i");
+
+/**
+ * A deposit with exit points whose record gives no first one (`exit_points.first_after_months` null: the bank prints only how often
+ * they come) must not itself quote the bank dating the first: "תחנות יציאה בתום 5 שנים, ואחר כך כל שנה" beside a null first leaves
+ * the site saying "כל 12 חודשים" of a plan that lets nothing out for five years. On 2026-11-12, 48 records carry a first and the
+ * text of each is caught by this pattern when its first is taken away; no record with a null first is. The pattern is a net for the
+ * usual wording, no proof. It errs toward a false alarm, which is loud: a lone "מ" before a unit counts ("מחודש"), and so does "בתום
+ * שנה" said of the term's end near the word for exit points. It does not see an abbreviated unit ("12 ח׳"), a date with no
+ * preposition, or a first written only in English. Returns one line when the record's own text dates an exit point and the first is
+ * null.
+ */
+export function checkFirstExitPoint(record: unknown): string[] {
+  const e = (record as { exit_points?: { exists?: boolean; first_after_months?: number | null } }).exit_points;
+  if (!e?.exists || typeof e.first_after_months === "number") return [];
+  const found = PRINTS_FIRST_EXIT.exec(JSON.stringify(record));
+  return found ? [`exit_points.first_after_months: null, but the record's own text dates an exit point ("${found[0].slice(0, 80)}"); give the months to the first one`] : [];
 }
 
 /**

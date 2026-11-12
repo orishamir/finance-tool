@@ -24,15 +24,15 @@ const offer = (id: string, over: Partial<DbOffer> & { rate: number; min?: number
     spread: null,
     amount_range: { min: v(min), max: max === null ? null : v(max) },
     breakTerm: "not_allowed",
-    exits: { exists: false, everyMonths: null },
+    exits: { exists: false, everyMonths: null, firstMonths: null },
     ...rest,
   };
 };
 
 describe("rows of one name", () => {
   const plain = offer("a", { rate: 2.25 });
-  const monthly = offer("b", { rate: 0.5, exits: { exists: true, everyMonths: 1 } });
-  const quarterly = offer("c", { rate: 1, exits: { exists: true, everyMonths: 3 } });
+  const monthly = offer("b", { rate: 0.5, exits: { exists: true, everyMonths: 1, firstMonths: null } });
+  const quarterly = offer("c", { rate: 1, exits: { exists: true, everyMonths: 3, firstMonths: null } });
 
   it("merges a bank's offers of one term, kind and name, best rate first, and says what sets them apart", () => {
     const rows = rowsOf([monthly, quarterly, plain]);
@@ -109,8 +109,8 @@ describe("an offer's words and interest", () => {
   it("says how the money comes out: exit points, a break, or locked to the end", () => {
     expect(accessOf(offer("a", { rate: 1 })).map((x) => x.kind)).toEqual(["locked"]);
     expect(accessOf(offer("b", { rate: 1, breakTerm: "with_penalty" })).map((x) => x.words)).toEqual(["שבירה בקנס"]);
-    expect(accessOf(offer("c", { rate: 1, exits: { exists: true, everyMonths: 3 } }))[0]!.words).toBe("יציאה כל 3 חודשים");
-    expect(accessOf(offer("d", { rate: 1, exits: { exists: true, everyMonths: null } }))[0]!.words).toBe("יש תחנות יציאה");
+    expect(accessOf(offer("c", { rate: 1, exits: { exists: true, everyMonths: 3, firstMonths: null } }))[0]!.words).toBe("יציאה כל 3 חודשים");
+    expect(accessOf(offer("d", { rate: 1, exits: { exists: true, everyMonths: null, firstMonths: null } }))[0]!.words).toBe("יש תחנות יציאה");
   });
 
   it("computes the interest over the term by F-21, a year's at the rate and less over a shorter term", () => {
