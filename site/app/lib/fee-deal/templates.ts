@@ -2,7 +2,7 @@
 // the person edits): a house's price list for a securities account, the lines that apply to what the account holds, read by the engine's
 // own line choice (`tariffLine`, F-63); and a regulated track's two fees for the provident family. A filled figure keeps its record's
 // source and date (sourced) until the person changes it (entered, `retyped`).
-import { memberKindOf, tariffLine, type LineChoice } from "@finance-tool/engine";
+import { lineClasses, memberKindOf, tariffLine, type LineChoice } from "@finance-tool/engine";
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
@@ -32,7 +32,17 @@ export type LeftWhy =
   /** Two lines apply and the price list does not say which (the snapshot is ambiguous). */
   | "ambiguous"
   /** A line with no value. */
-  | "no-value";
+  | "no-value"
+  /** A share of what is held with a rate above nothing and no charging period: the deal cannot say how often it is charged (F-14). */
+  | "no-period"
+  /** A plan's own line (its `band`: a standing order, a recurring plan, a band of securities): a run reads it only for that plan (F-63). */
+  | "plan"
+  /** A line the price list prints that the house's documents do not show an ordinary customer can use (`not_ranked`, D41). */
+  | "set-aside"
+  /** Another line of the same base is the one a run reads for the holding (F-13's own currency, the narrower class; F-63). */
+  | "another-line"
+  /** A base a house's template does not fill. */
+  | "other-base";
 
 /**
  * Where a fund is bought, as a template keys its fees: `israel` on the Tel Aviv exchange, where no conversion is priced; `abroad` in a
@@ -102,7 +112,8 @@ export function lineFees(l: Line, own: string): Mapped {
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
-      // a zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is
+      // a zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is; a rate above it needs one
+      if (!l.period && l.rate.value > 0) return { fees: [], left: ["no-period"] };
       const every = l.period ? PERIOD_MONTHS[l.period]! : 1;
       const bounds = [l.min, l.max].filter(has);
       if (bounds.some((b) => !NIS_UNITS.has(b.unit))) return { fees: [], left: ["bound-currency"] };
@@ -120,9 +131,31 @@ export function lineFees(l: Line, own: string): Mapped {
     case "corporate_event":
       return { fees: [], left: ["per-event-in-dollars"] };
     default:
-      return { fees: [], left: [] };
+      return { fees: [], left: ["other-base"] };
   }
 }
+
+/**
+ * A line of the distribution fee a fund's manager pays the bank that distributes it, a yearly share of the fund's assets (MF-24): the
+ * fund pays it, not the account, so it is no fee of the deal and is neither filled nor listed as left out.
+ */
+const managersDistributionFee = (l: Line): boolean => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period";
+
+/**
+ * Whether a price list line applies to a holding as the run's line choice reads it (`tariffLine`, F-63): a list line in the holding's
+ * channel (or none) that names its class, the account or `all` and does not exclude the class; a conversion line only for a holding bought
+ * abroad in another currency, and one printed for a currency only for a holding in that currency (F-13).
+ */
+function appliesTo(l: Line, place: Held["place"], currency: string | null, channel: string): boolean {
+  const classes = lineClasses(classOf(place));
+  if (l.level !== "list" || (l.channel !== null && l.channel !== channel)) return false;
+  if (!l.applies_to.some((a) => a === "all" || a === "brokerage-account" || classes.includes(a)) || (l.excludes ?? []).some((x) => classes.includes(x))) return false;
+  if (l.base === "fx") return place === "abroad" && currency !== null && (!l.conversion_currency || l.conversion_currency === currency);
+  return true;
+}
+
+/** Why a line that applies to the holding is not the one a run reads for its base: set aside, a plan's own, or another line's base. */
+const whyNotRead = (l: Line): LeftWhy => (l.not_ranked !== undefined ? "set-aside" : l.band !== null ? "plan" : "another-line");
 
 /** The bases a house's price list fills a securities account's deal with, in the order the deal lists them. */
 const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "corporate_event"] as const;
@@ -147,17 +180,26 @@ function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string 
   if (!channel) return undefined;
   const fees: TemplateFee[] = [];
   const left: { lineId: string; why: LeftWhy }[] = [];
+  const read = new Set<string>();
+  const ambiguous = new Set<string>();
   for (const base of HOUSE_BASES) {
     if (base === "fx" && (place === "israel" || currency === null)) continue;
     const l = tryLine(channel, base);
     if (l === undefined) continue;
     if (l === "ambiguous") {
+      ambiguous.add(base);
       left.push({ lineId: base, why: "ambiguous" });
       continue;
     }
+    read.add(l.id);
     const m = lineFees(l, snap.provider.name_he);
     fees.push(...m.fees);
     left.push(...m.left.map((why) => ({ lineId: l.id, why })));
+  }
+  // every other line that applies to the holding is listed with why it fills nothing, so no line is left out unsaid
+  for (const l of snap.lines) {
+    if (read.has(l.id) || ambiguous.has(l.base) || managersDistributionFee(l) || !appliesTo(l, place, currency, channel)) continue;
+    left.push({ lineId: l.id, why: (HOUSE_BASES as readonly string[]).includes(l.base) ? whyNotRead(l) : "other-base" });
   }
   const usesChannel = snap.lines.some((l) => l.channel !== null);
   return { channel: usesChannel ? channel : null, fees, left };

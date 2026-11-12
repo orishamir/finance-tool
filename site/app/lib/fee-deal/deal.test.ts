@@ -65,6 +65,12 @@ describe("the deal as the engine reads it", () => {
     expect(quarterly.fees[0]!.stages[0]!.price).toMatchObject({ kind: "held", everyMonths: 3 });
     expect((quarterly.fees[0]!.stages[0]!.price as { rate: number }).rate).toBeCloseTo(0.001, 12);
   });
+  it("carries a bound's currency only with a bound typed", () => {
+    const fx = (price: Parameters<typeof engineDeal>[0]["fees"][number]["stages"][number]["price"]) =>
+      engineDeal({ ...newDeal("brokerage-account"), fees: [{ id: "f", kind: "fx", stages: [{ price }] }] }).fees[0]!.stages[0]!.price;
+    expect(fx({ form: "action", rate: typed(0.2), currency: "USD" })).toEqual({ kind: "action", rate: 0.002 });
+    expect(fx({ form: "action", rate: typed(0.2), min: typed(3), currency: "USD" })).toEqual({ kind: "action", rate: 0.002, min: 3, currency: "USD" });
+  });
   it("starts a new fee in its usual form", () => {
     expect(newFee("custody").stages).toEqual([{ price: blankPrice("held") }]);
     expect(newFee("own", "x".repeat(80)).name).toHaveLength(60);

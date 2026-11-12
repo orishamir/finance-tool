@@ -1865,8 +1865,16 @@ export const feeDeal = {
     otherForm: "המחיר הוזן בצורה שהתקרה לא מודדת, ולכן הוא לא נבדק מולה.",
     notSourced: "לתקרה אין מקור שנבדק, ולכן המחיר לא נבדק מולה.",
     /** Whom a cap binds where it binds some providers only (its record's `binds`), and why the price is then not judged. */
-    binds: { banks: "התקרה חלה רק על בנקים.", banks_and_fund_distributors: "התקרה חלה על בנקים ועל מי שמפיץ את הקרן ואינו משווק השקעות." } as Record<string, string>,
+    binds: { banks: "התקרה חלה רק על בנקים.", banks_and_fund_distributors: "התקרה חלה על בנקים, ועל מי שמפיץ את הקרן, לא משווק השקעות ויש לו הסכם הפצה עם הקרן." } as Record<string, string>,
     bindsUnjudged: " העסקה לא אומרת שהיא בבנק, ולכן המחיר לא נבדק מולה.",
+    /**
+     * A cap that holds only in a case the deal does not state (its record's `caveat`, F-113): what it says, after the cap's figure, or after
+     * "אין תקרה בחוק" where the record sets none. No price is judged against it.
+     */
+    caveat: {
+      closing_account: "התקרה חלה בבנק כשסוגרים את החשבון, ונוסף עליה מה שהבנק שילם לצד שלישי. כשהחשבון נשאר פתוח חל מחיר אחר, בפיקוח. לכן המחיר לא נבדק מולה.",
+      distribution_agreement: "בנק, או מפיץ אחר של הקרן, שיש לו הסכם הפצה עם הקרן, לא רשאי לגבות מכם על קנייה או פדיון של יחידות הקרן.",
+    } as Record<string, string>,
     /** The cap's line: its figure, with its unit's words after it. */
     capLine: "התקרה: ",
     /** The cap's label at the end of its bar. */
@@ -1966,19 +1974,18 @@ export const feeDeal = {
 } as const;
 
 /** The input names of the fee page's readings (values.ts `inputKey`, `deal:` and the fee's kind): each fee's figure, its bounds and its
- *  yearly figure, by the fee's name; a second fee of one kind is numbered. Added to the sheet's names here, where the fee names above and
- *  the guide's are both defined. */
+ *  yearly figure, by the fee's name. A second fee of one kind, and any after it, is numbered in its key (`deal:custody 2.min`); the sheet
+ *  names it from these, the number after the fee's name (provenance-sheets.tsx, `inputName`). Added to the sheet's names here, where the
+ *  fee names above and the guide's are both defined. */
 function dealInputNames(): Record<string, string> {
   const out: Record<string, string> = { cap: "התקרה", account_sums: "הסכומים הקבועים בשנה", custody_rate: "האחוז ממה שמוחזק בשנה" };
   const kinds = [...Object.keys(guideBlocks.fees).filter((k) => typeof guideBlocks.fees[k] === "object" && guideBlocks.fees[k].name), ...Object.keys(feeDeal.names)];
   for (const k of kinds) {
     const name: string = guideBlocks.fees[k]?.name ?? feeDeal.names[k]!;
-    for (const n of ["", " 2", " 3", " 4"]) {
-      out[`deal:${k}${n}`] = `${name}${n}`;
-      out[`deal:${k}${n}.min`] = `${name}${n}: המינימום`;
-      out[`deal:${k}${n}.max`] = `${name}${n}: המקסימום`;
-      out[`deal:${k}${n}.yearly`] = `${name}${n}, בשנה`;
-    }
+    out[`deal:${k}`] = name;
+    out[`deal:${k}.min`] = `${name}: המינימום`;
+    out[`deal:${k}.max`] = `${name}: המקסימום`;
+    out[`deal:${k}.yearly`] = `${name}, בשנה`;
   }
   return out;
 }

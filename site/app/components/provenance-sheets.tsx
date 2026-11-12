@@ -267,9 +267,18 @@ export function weakInputNames(value: SiteValue): string[] {
   return out;
 }
 
-/** The Hebrew name of a computed input: the copy's name for an English key, else the key as written (already Hebrew). */
+/**
+ * The Hebrew name of a computed input: the copy's name for an English key, else the key as written (already Hebrew). A deal's key numbered
+ * after its fee's kind (`deal:custody 5.min`, the fifth custody fee of a deal) takes the unnumbered key's name with the number after the
+ * fee's name, so any count of one kind is named.
+ */
 export function inputName(key: string): string {
-  return computedInputs.names[key] ?? key;
+  const named = computedInputs.names[key];
+  if (named !== undefined) return named;
+  const m = /^(deal:[a-z_]+) (\d+)(\.[a-z]+)?$/.exec(key);
+  const first = m ? computedInputs.names[m[1]!] : undefined;
+  const whole = m ? computedInputs.names[m[1]! + (m[3] ?? "")] : undefined;
+  return first !== undefined && whole?.startsWith(first) ? `${first} ${m![2]}${whole.slice(first.length)}` : key;
 }
 
 /** An input that is a word the engine wrote in English ("mean"): its Hebrew word; a numeric or already-Hebrew input is shown as it is. */
