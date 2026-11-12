@@ -4,6 +4,7 @@
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy, sourceBlock } from "../copy";
 import { fmt } from "./format";
+import { monthsBefore } from "./dates";
 import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
 import { ruleTitle } from "./rule-title";
 
@@ -210,13 +211,6 @@ export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "tex
   if (n.locator) parts.push(n.locator);
   const claim = ruleTitle(rule).text;
   return `${claim} — ${parts.join(", ")}. ${sourceHref(source)} (${sourceBlock.citation.checked} ${fmt.date(date)})`;
-}
-
-/** The date `months` before an ISO date, as an ISO date. */
-function monthsBefore(iso: string, months: number): string {
-  const d = new Date(iso + "T00:00:00Z");
-  d.setUTCMonth(d.getUTCMonth() - months);
-  return d.toISOString().slice(0, 10);
 }
 
 /** The "it may have changed since" line shows when the rule's recheck date has passed, or the source was read more than six months ago

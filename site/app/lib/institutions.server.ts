@@ -31,15 +31,12 @@ import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type TextFragment } from "./sources";
 import { heCollator } from "./format";
+import { daysBetween } from "./dates";
 import { leftOutOf } from "./left-out";
 import { latestSnapshots } from "./providers.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
-
-function daysBetween(from: string, to: string): number {
-  return Math.round((Date.parse(to + "T00:00:00Z") - Date.parse(from + "T00:00:00Z")) / 86_400_000);
-}
 
 const isStale = (snapshot: string, t: string) => daysBetween(snapshot, t) > staleDays;
 
