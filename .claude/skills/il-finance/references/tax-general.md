@@ -208,7 +208,7 @@ Out of scope, see: interest rates, s.125D/125E deductions and real vs nominal in
 - Rule: Residents (including employees) with income taxed at special capped rates, produced in Israel or abroad, must pay advances on it. The 2026 list: deposit interest 15%/25%; interest on securities and savings plans 15%/25%; dividends 25%/30%; foreign-company dividends 25%/30%; foreign rent 15%; capital gains on securities 15%/20%/25%/30%. Except for Israeli residential rent, payment is due by 30 April of the following year.
 - Conditions / exceptions: Where an Israeli payer withheld in full, no advance arises (TXG-15). Re-read 2026-11-12 in the text layer of the library's copy of the guide (pp.118-119): the rates above and "עד 30 באפריל בשנת המס הבאה" are as printed; the list also has a notional dividend from a controlled foreign company at 30% and lotteries and gambling at 35%, left out here as outside savings.
 - Figures: rates as listed for tax year 2026; 30 April.
-- Source: [Guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.118 s.2 ("תשלום מקדמות מס בגין הכנסות בשיעורים מיוחדים ובחו"ל"; "שיעורי המס מההכנסות בשנת המס 2026"), p.119 s.d ("יתר ההכנסות המיוחדות שנמנו לעיל, עד 30 באפריל בשנת המס הבאה") · checked 2026-10-22 · primary
+- Source: [Guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.118 s.2 ("תשלום מקדמות מס בגין הכנסות בשיעורי מס מיוחדים בישראל ובחו"ל"; "שיעורי המס מההכנסות בשנת המס 2026"), p.119 s.d ("יתר ההכנסות המיוחדות שנמנו לעיל, עד 30 באפריל בשנת המס הבאה") · checked 2026-10-22 · primary
 - Scope: general
 - Dimensions: `reporting-obligation`, `foreign-withholding-domicile`
 - Likely to change: no
