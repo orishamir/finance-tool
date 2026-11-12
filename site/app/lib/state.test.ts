@@ -147,7 +147,7 @@ describe("import", () => {
 
   it("reads a file it wrote, with the counts, and changes nothing on the device", () => {
     const r = readImport(file(base()));
-    expect(r.ok && r.preview.counts).toEqual({ goals: 1, holdings: 1, names: 1, comparisons: 0, offers: 0, variants: 0, ticks: 0, ownRates: 0 });
+    expect(r.ok && r.preview.counts).toEqual({ goals: 1, holdings: 1, names: 1, comparisons: 0, offers: 0, variants: 0, ticks: 0, ownRates: 0, deals: 0 });
     expect(r.ok && r.preview.migrated).toBe(false);
     expect(storage.data.size).toBe(0);
   });
@@ -381,7 +381,7 @@ describe("import twice in add mode (A33, A69)", () => {
 
 describe("side stores in the export file (A32)", () => {
   const offer = { providerId: "p1", lines: { trade: { rate: entered(0.1, "pct", day) } }, savedAt: day };
-  const device = (): SideStores => ({ offers: [offer], variantAssumptions: { "index-sp500": { fxChange: 2, w8ben: true } }, playbookTicks: { "keren-hishtalmut": ["s1", "s2"] }, ownRates: { g1: { "bank-deposit": 3.5 } } });
+  const device = (): SideStores => ({ offers: [offer], variantAssumptions: { "index-sp500": { fxChange: 2, w8ben: true } }, playbookTicks: { "keren-hishtalmut": ["s1", "s2"] }, ownRates: { g1: { "bank-deposit": 3.5 } }, deals: [] });
   const seed = (s: FakeStorage, side: SideStores) => {
     s.setItem("mekor.v2.offers", JSON.stringify({ version: 1, offers: side.offers }));
     s.setItem("mekor.v2.variants", JSON.stringify({ version: 1, byExposure: side.variantAssumptions }));
@@ -397,7 +397,7 @@ describe("side stores in the export file (A32)", () => {
   it("reads the three keys, writes them into the file, and a second device takes them back; the same file again adds nothing", () => {
     seed(storage, device());
     const side = readSideStores(storage);
-    expect(sideCounts(side)).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1 });
+    expect(sideCounts(side)).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1, deals: 0 });
     ensureLoaded();
     saveHolding(holding("a"));
     const text = stateFileText(buildStateFile(getSnapshot().state, site, new Date(), side));
@@ -410,17 +410,17 @@ describe("side stores in the export file (A32)", () => {
     expect(r.ok && r.preview.counts).toMatchObject({ offers: 1, variants: 1, ticks: 2, ownRates: 1 });
     if (!r.ok) return;
     const first = applySideImport(r.preview.side, "add");
-    expect(first.added).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1 });
+    expect(first.added).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1, deals: 0 });
     expect(readSideStores(other)).toEqual(side);
     const again = applySideImport(r.preview.side, "add");
-    expect(again.added).toEqual({ offers: 0, variants: 0, ticks: 0, ownRates: 0 });
+    expect(again.added).toEqual({ offers: 0, variants: 0, ticks: 0, ownRates: 0, deals: 0 });
     expect(again.skipped).toBe(5);
     expect(readSideStores(other)).toEqual(side);
   });
 
   it("add keeps the device's own offer and unions the ticks; replace takes the file's", () => {
     seed(storage, { ...device(), playbookTicks: { k: ["s1"] } });
-    const file: SideStores = { offers: [{ ...offer, savedAt: "2026-01-01" }], variantAssumptions: {}, playbookTicks: { k: ["s1", "s9"] }, ownRates: {} };
+    const file: SideStores = { offers: [{ ...offer, savedAt: "2026-01-01" }], variantAssumptions: {}, playbookTicks: { k: ["s1", "s9"] }, ownRates: {}, deals: [] };
     const added = applySideImport(file, "add");
     expect(added.merged.offers[0]!.savedAt).toBe(day);
     expect(added.merged.playbookTicks.k).toEqual(["s1", "s9"]);
@@ -443,8 +443,8 @@ describe("side stores in the export file (A32)", () => {
     ]);
     expect(r.ok && r.preview.counts).toMatchObject({ offers: 1, variants: 1, ticks: 2, ownRates: 1 });
     const none = applySideImport(null, "replace");
-    expect(none.added).toEqual({ offers: 0, variants: 0, ticks: 0, ownRates: 0 });
-    expect(sideCounts(readSideStores(storage))).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1 });
+    expect(none.added).toEqual({ offers: 0, variants: 0, ticks: 0, ownRates: 0, deals: 0 });
+    expect(sideCounts(readSideStores(storage))).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1, deals: 0 });
   });
 
   it("a state with only side stores is not an empty export", async () => {
@@ -471,14 +471,14 @@ describe("side stores in the export file (A32)", () => {
 
   it("delete-imported takes out the side items an add import brought, and only those", async () => {
     const { deleteImported, importedSideCount } = await import("./state");
-    seed(storage, { offers: [], variantAssumptions: {}, playbookTicks: { keren: ["own"] }, ownRates: {} });
+    seed(storage, { offers: [], variantAssumptions: {}, playbookTicks: { keren: ["own"] }, ownRates: {}, deals: [] });
     const file: SideStores = { ...device(), playbookTicks: { keren: ["own", "s1"] } };
     const r = applySideImport(file, "add");
-    expect(r.added).toEqual({ offers: 1, variants: 1, ticks: 1, ownRates: 1 });
+    expect(r.added).toEqual({ offers: 1, variants: 1, ticks: 1, ownRates: 1, deals: 0 });
     expect(importedSideCount()).toBe(4);
     deleteImported();
     expect(importedSideCount()).toBe(0);
-    expect(readSideStores(storage)).toEqual({ offers: [], variantAssumptions: {}, playbookTicks: { keren: ["own"] }, ownRates: {} });
+    expect(readSideStores(storage)).toEqual({ offers: [], variantAssumptions: {}, playbookTicks: { keren: ["own"] }, ownRates: {}, deals: [] });
   });
 
   it("replace leaves nothing tagged as imported", async () => {
