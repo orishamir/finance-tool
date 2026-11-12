@@ -5,7 +5,7 @@ import { parametersPage as copy, provenance as provCopy } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, GoLink, gershayim } from "../components/kit";
+import { Card, GoLink, gershayim, PageHead } from "../components/kit";
 
 import { mostlyHebrew } from "../lib/source-label";
 import { fieldLabel, unitText } from "../lib/parameter-labels";
@@ -58,14 +58,11 @@ export default function Parameters() {
   const data = useLoaderData<typeof loader>();
   return (
     <PageShell current="parameters" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
-      <div className="flex flex-col gap-section pt-6 lg:pt-10">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-          <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        </header>
+      <div className="flex flex-col gap-section">
+        <PageHead title={copy.title} lede={copy.lede} />
         <ul className="grid gap-4 lg:grid-cols-2">
           {data.parameters.map((p) => (
-            <Card as="li" key={p.methodId} id={p.methodId} className="flex flex-col gap-3 scroll-mt-24">
+            <Card as="li" key={p.methodId} id={p.methodId} className="anchor-target flex flex-col gap-3">
               <h2 className="text-lg font-semibold">{p.name}</h2>
               {p.values.length > 0 && (
                 <dl className="readout">

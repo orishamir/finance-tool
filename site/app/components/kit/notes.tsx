@@ -68,6 +68,22 @@ export function PrintedText({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
+/**
+ * A document's own terms quoted word for word in a muted box (a bank's printed terms for breaking a deposit): each quote on a line of its
+ * own between Hebrew quotation marks, its figures isolated as `PrintedText` does. The fold that opens it is the caller's.
+ */
+export function PrintedQuotes({ quotes }: { quotes: readonly string[] }) {
+  return (
+    <span className="flex flex-col gap-1.5 text-sm bg-muted rounded-md p-3 max-w-measure">
+      {quotes.map((q) => (
+        <span key={q}>
+          ״<PrintedText text={q} />״
+        </span>
+      ))}
+    </span>
+  );
+}
+
 /** An open doubt about a record, with the caution mark: the sentence the record carries (`doubt_he`), beside the figure it is about. */
 export function DoubtNote({ text, className }: { text: string; className?: string }) {
   return (

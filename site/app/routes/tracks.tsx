@@ -9,7 +9,7 @@ import { TrackBrowser } from "../components/tracks/browser";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { NumAfter, NumberLegend, RulesLine, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout, When } from "../components/kit";
+import { Callout, PageHead, When } from "../components/kit";
 
 /** The data covers the six products, so moving between them keeps it (the address is read from the params). */
 export function shouldRevalidate() {
@@ -42,28 +42,31 @@ export default function Tracks() {
   const { data, rules, pointed, ruleIds, terms } = useLoaderData<typeof loader>();
   return (
     <PageShell current="decoder" data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
-      <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
-        <CompanyTabs current="product" />
-        <header className="flex flex-col gap-3">
-          <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-          <p className="text-muted-foreground max-w-measure">
-            {data.feeYear ? (
-              <>
-                <NumAfter lead={copy.lead.intro} value={data.feeYear} />
-                <NumAfter lead={copy.lead.figures} value={data.period} />
-              </>
-            ) : (
-              <NumAfter lead={copy.lead.noYear} value={data.period} />
-            )}
-            {copy.lead.source}
-          </p>
+      <div className="flex flex-col gap-5 lg:gap-6">
+        <PageHead
+          tabs={<CompanyTabs current="product" />}
+          title={copy.title}
+          lede={
+            <>
+              {data.feeYear ? (
+                <>
+                  <NumAfter lead={copy.lead.intro} value={data.feeYear} />
+                  <NumAfter lead={copy.lead.figures} value={data.period} />
+                </>
+              ) : (
+                <NumAfter lead={copy.lead.noYear} value={data.period} />
+              )}
+              {copy.lead.source}
+            </>
+          }
+        >
           <NumberLegend />
           {data.period.stale && (
             <Callout tone="caution">
               <When iso={String(data.period.value)} lead={`${copy.oldData} `} />.
             </Callout>
           )}
-        </header>
+        </PageHead>
         {/* the notice above says the regulator's figures are old: the list's figures do not each repeat it */}
         <StaleSaid on={!!data.period.stale}>
           <TrackBrowser data={data} />

@@ -1,7 +1,6 @@
 // A house on the index page: its name as a link to its page, and its record by id.
-import { Link } from "react-router";
 import { brokeragePagePath, type InvestView, type ProviderInfo } from "../../lib/invest";
-import { cx } from "../kit";
+import { TextLink } from "../kit";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);
 
@@ -10,9 +9,9 @@ export function ProviderLink({ p, className, short }: { p: ProviderInfo; classNa
   const name = short ? p.short : p.name;
   return p.hasPage ? (
     // on this page a house is a securities account: its name opens its company page at that account
-    <Link to={brokeragePagePath(p.id)} className={cx("text-link hover:underline", className)}>
+    <TextLink to={brokeragePagePath(p.id)} className={className}>
       {name}
-    </Link>
+    </TextLink>
   ) : (
     <span className={className}>{name}</span>
   );

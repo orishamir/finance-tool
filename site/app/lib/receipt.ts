@@ -47,4 +47,4 @@ export function sharesOf(values: readonly number[]): number[] {
  * (the remainder of the account's fees together, or a part the whole-shekel rounding took under zero) with a plus, as the money it gave
  * back ("+3 ₪"), so it never reads as one more cost.
  */
-export const takenWords = (n: number): string => `\u2066${n > 0 ? "−" : n < 0 ? "+" : ""}${fmt.nisWhole(Math.abs(n))}\u2069`;
+export const takenWords = (n: number): string => fmt.signedNisWhole(-n);

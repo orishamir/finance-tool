@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fmt, formatValue, nisShown, parseNumber, readerRound, withMinus } from "./format";
+import { countPhrase, fmt, formatValue, nisShown, parseNumber, readerRound, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -154,5 +154,79 @@ describe("readerRound: a flip point as a reader means it, rounded away from the 
     expect(readerRound(0.044, "lo", "fee")).toBe(0.04);
     expect(readerRound(4.37, "lo", "pct")).toBe(4);
     expect(readerRound(0.04, "lo", "pct")).toBe(0.04);
+  });
+});
+
+describe("a figure with its sign", () => {
+  const LRI = "\u2066";
+  const PDI = "\u2069";
+  it("writes a plus before a positive and the true minus sign before a negative, never a hyphen", () => {
+    expect(fmt.signedNisWhole(4875)).toBe(`${LRI}+4,875 ₪${PDI}`);
+    expect(fmt.signedNisWhole(-1524)).toBe(`${LRI}\u22121,524 ₪${PDI}`);
+    expect(fmt.signedPct(-2.38, 2)).toBe(`${LRI}\u22122.38%${PDI}`);
+    expect(fmt.signedNumber(-2)).toBe(`${LRI}\u22122${PDI}`);
+    for (const t of [fmt.signedNisWhole(-5), fmt.signedPct(-1), fmt.signedNumber(-3, 1)]) expect(t).not.toMatch(/[-\u200e\u200f]/);
+  });
+  it("keeps the figure left to right inside Hebrew by default, and bare where the caller isolates it", () => {
+    for (const t of [fmt.signedNisWhole(12), fmt.signedPct(3), fmt.signedNumber(7), fmt.signedNisWhole(0)]) {
+      expect(t.startsWith(LRI)).toBe(true);
+      expect(t.endsWith(PDI)).toBe(true);
+    }
+    expect(fmt.signedPct(3, 0, { isolate: false })).toBe("+3%");
+    expect(fmt.signedNumber(-18.5, 1, { isolate: false })).toBe("\u221218.5");
+  });
+  it("keeps the thousands separator, the percent's included", () => {
+    expect(fmt.signedNisWhole(-1234567.4, { isolate: false })).toBe("\u22121,234,567 ₪");
+    expect(fmt.signedPct(1234.5, 1, { isolate: false })).toBe("+1,234.5%");
+    expect(fmt.signedNumber(12000, undefined, { isolate: false })).toBe("+12,000");
+  });
+  it("writes exactly the decimals asked for, else the decimals pct and number show", () => {
+    expect(fmt.signedPct(3, 1, { isolate: false })).toBe("+3.0%");
+    expect(fmt.signedPct(-0.015, undefined, { isolate: false })).toBe("\u22120.015%");
+    expect(fmt.signedPct(1.05, undefined, { isolate: false })).toBe("+1.05%");
+    expect(fmt.signedNumber(2.5, undefined, { isolate: false })).toBe("+2.5");
+  });
+  it("gives no sign to a figure that shows as zero", () => {
+    expect(fmt.signedNisWhole(0, { isolate: false })).toBe("0 ₪");
+    expect(fmt.signedNisWhole(-0.3, { isolate: false })).toBe("0 ₪");
+    expect(fmt.signedPct(0.004, 2, { isolate: false })).toBe("0.00%");
+    expect(fmt.signedNumber(-0, undefined, { isolate: false })).toBe("0");
+  });
+  it("parses back to the figure", () => {
+    expect(parseNumber(fmt.signedNisWhole(-1524))).toBe(-1524);
+    expect(parseNumber(fmt.signedPct(2.38, 2))).toBe(2.38);
+  });
+});
+
+describe("a count in words", () => {
+  const companies = { one: "חברה אחת", two: "שתי חברות", many: "חברות" };
+  it("says one and two in words and any other count as the number and the plural", () => {
+    expect(countPhrase(1, companies)).toBe("חברה אחת");
+    expect(countPhrase(2, companies)).toBe("שתי חברות");
+    expect(countPhrase(3, companies)).toBe("3 חברות");
+    expect(countPhrase(15, companies)).toBe("15 חברות");
+    expect(countPhrase(1500, companies)).toBe("1,500 חברות");
+  });
+  it("says zero in its own words where given, else as a number", () => {
+    expect(countPhrase(0, { ...companies, zero: "אין חברות" })).toBe("אין חברות");
+    expect(countPhrase(0, companies)).toBe("0 חברות");
+  });
+  it("puts the number where the words hold {n}", () => {
+    const more = { one: "עוד מקור אחד", two: "עוד שני מקורות", many: "עוד {n} מקורות" };
+    expect(countPhrase(1, more)).toBe("עוד מקור אחד");
+    expect(countPhrase(7, more)).toBe("עוד 7 מקורות");
+  });
+  it("takes the plural for a fraction, years and months included", () => {
+    expect(countPhrase(0.5, companies)).toBe("0.5 חברות");
+    expect([fmt.years(1), fmt.years(2), fmt.years(2.5), fmt.years(10)]).toEqual(["שנה", "שנתיים", "2.5 שנים", "10 שנים"]);
+    expect([fmt.months(1), fmt.months(2), fmt.months(18)]).toEqual(["חודש", "חודשיים", "18 חודשים"]);
+  });
+});
+
+describe("billions", () => {
+  it("always with two decimals", () => {
+    expect(fmt.nisBillions(19_137_400_000)).toBe("19.14 מיליארד ₪");
+    expect(fmt.nisBillions(19_000_000_000)).toBe("19.00 מיליארד ₪");
+    expect(fmt.nisBillions(-2_300_000_000)).toBe("\u200e\u22122.30 מיליארד ₪");
   });
 });

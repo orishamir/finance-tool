@@ -2,7 +2,7 @@
 // pure logic of the page's filters: which companies a type, a product and a search match, the counts the chips, the group heads and the
 // status line say, and the page's address. Nothing here reads files; lib/company-focus.server.ts builds the data at build.
 import { companyFocus as w } from "../copy";
-import { fmt } from "./format";
+import { countPhrase, fmt } from "./format";
 import { normalize } from "./search";
 import type { SiteValue } from "./value";
 
@@ -147,14 +147,13 @@ export function searchFocus(kinds: readonly FocusProductKind[], companies: reado
 
 /** "חברה אחת", "שתי חברות", "15 חברות". */
 export function companiesWord(n: number): string {
-  return n === 1 ? w.companies.one : n === 2 ? w.companies.two : `${fmt.number(n)} ${w.companies.many}`;
+  return countPhrase(n, w.companies);
 }
 
 /** A product's count with its unit: "16 מסלולים", "קרן אחת", "שני פיקדונות", "יש". */
 export function countWords(unit: CountUnit, n: number | null): string {
   if (unit === "has" || n === null) return w.has;
-  const u = w.units[unit];
-  return n === 1 ? u.one : n === 2 ? u.two : `${fmt.number(n)} ${u.many}`;
+  return countPhrase(n, w.units[unit]);
 }
 
 /** The short count beside a name in the list while a product is chosen: the number, or ✓ for a product said with "יש". */
@@ -181,7 +180,7 @@ export function statusLine(kinds: readonly FocusProductKind[], companies: readon
 
 /** "10 מוצרים באתר". */
 export function productsOnSite(n: number): string {
-  return n === 1 ? w.productsOnSite.one : n === 2 ? w.productsOnSite.two : `${fmt.number(n)} ${w.productsOnSite.many}`;
+  return countPhrase(n, w.productsOnSite);
 }
 
 // ---------------------------------------------------------------- the address

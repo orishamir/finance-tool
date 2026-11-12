@@ -4,7 +4,7 @@
 // fund's tracking asset are behind folds: only a specialist needs them. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import type { GlanceItem } from "../../components/guide/sections";
-import { GuideFold as Fold, KeyValueList as RuleRows } from "../../components/guide/sections";
+import { GuideFold as Fold, RuleRows } from "../../components/guide/sections";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { KeyValueList, ProseList, Section, Sentence, Tag } from "../../components/kit";
 import { fmt } from "../../lib/format";

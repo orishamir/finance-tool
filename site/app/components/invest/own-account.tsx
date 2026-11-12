@@ -2,7 +2,6 @@
 // the panel that starts from a house's price list, or from one of its groups' prices, and lets the person change only what they got; the
 // buttons that open it; and the line a person's row carries in the comparison. Typing stays in the panel: the page changes when the person adds
 // the account (guidelines/design.md). The prices are the library's (own-account.ts, own-account-view.ts); nothing here prices anything.
-import type { FeeLine } from "@finance-tool/engine";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root, r4catalogue } from "../../copy";
 import { brokerErrors, brokerFromDraft, brokerTerms, NAME_MAX, newBrokerId, type BrokerDraft, type CustomBroker, type EntryError } from "../../lib/custom-entries";
@@ -19,25 +18,15 @@ import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
 import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, useChartPick, cx, type CostPart } from "../kit";
 import { Actions, EditButton, isInvalid, nisCheck, useDraft, useEditors, type PanelWorld } from "./editors";
-import { sourceHref, type CitedPlace } from "../../lib/sources";
+import { hasCurrent, legendName, lineClass, lineOf, lineRank } from "./cost-lines";
 
 const c = root.customEntries;
 const p = root.ownAccount.panel;
 const pairWords = root.pair;
 const pctCheck = percentCheck();
 
-/** The cost bars' colours by fee type: the index page's own (pair.tsx). */
-const LINE_CLASS: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
-const lineClass = (l: string) => LINE_CLASS[l] ?? "bg-chart-cost-other";
-/** A fee type's place in the bars and the legend: the index page's (pair.tsx `byLegend`), any other type after them. */
-const lineRank = (l: string) => { const i = Object.keys(LINE_CLASS).indexOf(l); return i < 0 ? Infinity : i; };
-/** A bank's current account (F-102, D64) is shown as the account's fee, as on the index page's lists (pair.tsx `lineOf`). */
-const lineOf = (l: FeeLine): string => (l === "account" ? "fixed" : l);
-/** The account fee's name, which covers the current account too where the account has one (pair.tsx `legendName`). */
-const fixedName = (line: string, current: boolean): string | undefined => (line === "fixed" && current ? pairWords.legendAccount : pairWords.lines[line]);
 const FEE_OF_LINE: Record<string, FeeType> = { trade: "trade", custody: "custody", fixed: "fixed", fx: "conversion" };
 
-const plus = (n: number) => (n > 0 ? `⁦+${fmt.nisWhole(n)}⁩` : undefined);
 const dash = <span aria-hidden="true">—</span>;
 
 // ---------------------------------------------------------------- one price, in words
@@ -59,11 +48,6 @@ function Figures({ figs, asEntered, today, about }: { figs: LayerFigure[]; /** T
       })}
     </span>
   );
-}
-
-/** The link to the document a figure is from: its own page of a PDF where the record names one. */
-function SourceLink({ source, children }: { source: CitedPlace & { title?: string }; children: ReactNode }) {
-  return <DocLink href={sourceHref(source)}>{children}</DocLink>;
 }
 
 // ---------------------------------------------------------------- the person's column
@@ -94,7 +78,7 @@ function GroupNote({ layer, groupName, onAdopt, today }: { layer: FeeLayers; gro
   if (!g) return null;
   // the price's own words; what it is charged on is the researcher's reading of the document, kept in the record (it read as a note in brackets)
   const words = g.words;
-  const doc = <SourceLink source={g.source}>{p.groupDoc}</SourceLink>;
+  const doc = <DocLink source={g.source}>{p.groupDoc}</DocLink>;
   const ends = g.forMonths !== null && <span className="text-muted-foreground">{p.groupFor(p.groupEnds(g.forMonths))}</span>;
   const side = g.side && <span className="text-muted-foreground">{p.groupSide[g.side]}</span>;
   if (g.applied && !g.adopted) {
@@ -168,7 +152,7 @@ function ListCell({ layer }: { layer: FeeLayers }) {
       <Figures figs={layer.list} />
       {src.url && src.url !== "local" && (
         <span className="text-xs">
-          <SourceLink source={src}>{p.listWord}</SourceLink>
+          <DocLink source={src}>{p.listWord}</DocLink>
         </span>
       )}
     </span>
@@ -180,7 +164,7 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 /** The bars' parts for one account: its fee types in their colours, each with where its price comes from. */
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: fixedName(line, pc.account.some((l) => l.line === "account")) ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
+  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: legendName(line, hasCurrent(pc.account)), value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
   // the account's fees on each other first, as on every bar of the page
   // F-109: where the account buys the fund in whole units, the part also holds what the cash waiting for a unit did not earn
   return [{ id: "remainder", legendId: "remainder", name: pc.units ? pairWords.remainderUnits : pairWords.remainder, about: pc.units ? pairWords.remainderUnitsAbout : pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }, ...parts];
@@ -263,9 +247,9 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   };
 
   // the bars: the house's price list against the account, one scale, every fee type in both so a part that falls to zero shrinks in its place
-  const withCurrentAccount = !!result && [...result.yours.account, ...(result.list?.account ?? [])].some((l) => l.line === "account");
-  // in the index page's order (pair.tsx `byLegend`), whatever the price list's own, so the bars and the legend agree
-  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))].sort((a, b) => lineRank(a) - lineRank(b) || (a < b ? -1 : a > b ? 1 : 0)) : [];
+  const withCurrentAccount = !!result && hasCurrent([...result.yours.account, ...(result.list?.account ?? [])]);
+  // in the order of every bar on the page (cost-lines.ts), whatever the price list's own, so the bars and the legend agree
+  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))].sort((a, b) => lineRank(a) - lineRank(b)) : [];
   const layerOf = (line: string) => layers?.find((l) => l.fee === FEE_OF_LINE[line]);
   const sourceYours = (line: string): ReactNode => {
     const l = layerOf(line);
@@ -314,7 +298,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
           {result ? <Num value={result.place} display={p.tilePlaceValue(result.rank, result.of)} /> : dash}
         </StatTile>
         <StatTile label={p.tileDiff(short)} note={p.tileDiffNote}>
-          {result?.difference ? <Num animate value={result.difference} display={plus} /> : dash}
+          {result?.difference ? <Num animate value={result.difference} display={fmt.signedNisWhole} /> : dash}
         </StatTile>
       </StatRow>
 
@@ -380,7 +364,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
           <>
             <Bar who={p.costs.list} pc={result.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
             <Bar who={p.costs.yours} pc={result.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
-            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: l === "remainder" ? pairWords.remainder : (fixedName(l, withCurrentAccount) ?? pairWords.lines.other ?? l) }))} />
+            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: l === "remainder" ? pairWords.remainder : legendName(l, withCurrentAccount) }))} />
           </>
         ) : (
           <p className="text-sm text-muted-foreground min-h-[7rem]">{p.computing}</p>

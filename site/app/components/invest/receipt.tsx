@@ -18,7 +18,8 @@ import { HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPape
 import { isGroupProvider } from "../../lib/group-pick";
 import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
-import { allFunds, barTotalValue, pairVerdict, partName, plus, steadyOf, LONGEST_YEARS, type Pick } from "./pair";
+import { allFunds, barTotalValue, pairVerdict, steadyOf, whole, LONGEST_YEARS, type Pick } from "./pair";
+import { partName } from "./cost-lines";
 import { providerName } from "./sections";
 import { fundFeeItems } from "./funds";
 
@@ -27,9 +28,6 @@ export const ANCHOR = { accounts: "accounts", funds: "funds" } as const;
 
 /** A cost line's amount: what was taken with a minus, a line under zero with a plus (lib/receipt). */
 const minus = takenWords;
-/** A whole-shekel amount isolated, with its sign where it has one. */
-const signed = (n: number) => (n > 0 ? plus(n)! : n < 0 ? `⁦−${fmt.nisWhole(-n)}⁩` : fmt.nisWhole(0));
-const whole = (v: SiteValue): SiteValue => ({ ...v, value: Math.round(v.value as number) });
 /** A part that took money but whose whole share is zero says so, not "0%". */
 const under = (amount: number, share: number) => (amount > 0 && share === 0 ? { words: c.receipt.underOne } : {});
 
@@ -76,7 +74,7 @@ export function verdictOf(v: ReturnType<typeof pairVerdict>, chosen: boolean): {
       <>{c.pair.yours} · {tie || tied ? c.pair.tiedWith : c.pair.cheapestTag}</>
     ) : (
       <>
-        {c.pair.yours} · {moreIfOther && <Num value={moreIfOther} display={plus} />} {c.pair.moreIfCheapest}
+        {c.pair.yours} · {moreIfOther && <Num value={moreIfOther} display={fmt.signedNisWhole} />} {c.pair.moreIfCheapest}
       </>
     )
   ) : onBest ? (
@@ -155,7 +153,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     </>
   );
   const paidIn = <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidIn} display={fmt.nisWhole(r.paidIn)} />} />;
-  const addedLine = <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={added} display={signed(r.added)} />} />;
+  const addedLine = <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={added} display={fmt.signedNisWhole(r.added)} />} />;
   const taxLine = <ReceiptLine size="sm" swatch="bg-chart-tax" label={v.taxName} value={<Num value={pc.tax} display={minus(r.tax)} />} />;
   const accountParts = (
     <>
@@ -178,7 +176,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     </LongestCase>
   );
   const total = <Num value={pc.left} display={fmt.nisWhole(r.left)} />;
-  const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={signed(r.gain)} />} sub={c.receipt.gainNote} />;
+  const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={fmt.signedNisWhole(r.gain)} />} sub={c.receipt.gainNote} />;
   const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={barTotalValue(pc, short, today)} display={fmt.nisWhole(r.lost)} />} />;
   const bar = (
     <ShareBar

@@ -315,8 +315,8 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
     if (location.hash === "#unassigned") setOpen(true);
   }, [location.hash]);
   return (
-    <section id="unassigned" aria-label={catalogue.unassigned.title} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
-      <Disclosure open={open} onOpenChange={setOpen} label={<span className="text-link font-medium">{catalogue.unassigned.title}</span>} className="flex flex-col gap-3">
+    <section id="unassigned" aria-label={catalogue.unassigned.title} className="anchor-target flex flex-col gap-3">
+      <Disclosure look="link" open={open} onOpenChange={setOpen} label={catalogue.unassigned.title} className="flex flex-col gap-3">
         <p className="text-sm text-muted-foreground max-w-measure">{catalogue.unassigned.line}</p>
         <Card as="div" pad="none">
           <ul className="flex flex-col divide-y divide-border">

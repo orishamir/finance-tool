@@ -12,7 +12,6 @@ import { pickableGroups } from "../../lib/group-pick";
 import { brokerLabels } from "../../lib/labels";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { receiptAmounts } from "../../lib/receipt";
-import { sourceHref } from "../../lib/sources";
 import { ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, StateTag } from "../provenance";
 import { useState } from "react";
@@ -76,7 +75,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
         <FactTile
           edge="border-chart-by-account"
           head={c.pair.accountSlot}
-          link={house.custom ? <StateTag state="entered" /> : snap && <DocLink href={sourceHref(snap.tariff)} className="text-xs">{gershayim(c.pair.tariff)}</DocLink>}
+          link={house.custom ? <StateTag state="entered" /> : snap && <DocLink source={snap.tariff} className="text-xs">{gershayim(c.pair.tariff)}</DocLink>}
           foot={
             <>
               {/* what the house's price is for this purchase: a standing order's, where the monthly deposit is bought on one */}
@@ -120,7 +119,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
         <FactTile
           edge="border-chart-by-fund"
           head={c.pair.fundSlot}
-          link={doc && <DocLink href={sourceHref(doc)} className="text-xs">{c.chosen.isReport(doc.title) ? c.chosen.fundDoc : c.chosen.fundDocOther}</DocLink>}
+          link={doc && <DocLink source={doc} className="text-xs">{c.chosen.isReport(doc.title) ? c.chosen.fundDoc : c.chosen.fundDocOther}</DocLink>}
           foot={
             <>
               {fund.rec.manager && (

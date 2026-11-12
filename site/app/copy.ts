@@ -61,8 +61,17 @@ export const numbers = {
   unknown: "לא ידוע",
   /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
   nisMillions: "מיליון ₪",
-  /** A shekel figure of a billion or more, in its short form on a phone: `2.3 מיליארד ₪`. */
+  /**
+   * The word of a shekel figure's short form, always with two decimals (`2.30 מיליארד ₪`, lib/format.ts `nisBillions`): a figure of a
+   * billion or more on a phone, of a thousand billion or more on a computer, from a hundred million in a row that writes one of its
+   * figures short, and the track pages' managed money from a thousand million.
+   */
   billion: "מיליארד",
+  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`. */
+  compact: { thousand: "אלף", million: "מיליון" },
+  /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
+  yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
+  monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
@@ -328,7 +337,7 @@ export const values = {
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
-  errors: { nan: "הזינו מספר.", whole: "הזינו סכום בשקלים שלמים.", negative: "הסכום לא יכול להיות שלילי.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
+  errors: { nan: "הזינו מספר.", whole: "הזינו סכום בשקלים שלמים.", negative: "הסכום לא יכול להיות שלילי.", positive: "הזינו סכום גדול מאפס.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
   loading: "טוען…",
 } as const;
 
@@ -630,7 +639,6 @@ export const company = {
   /** The track page's note when another track has its name (the company page's same-name banners went with its old list). */
   sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות" },
   oldData: "נתוני הרשות לא עודכנו מאז",
-  paste: { title: "לא מצאתם שם?", label: "הקלידו או הדביקו את השם כמו שהוא מופיע באפליקציה, בפרסומת או בדוח.", placeholder: "למשל: גמל להשקעה כללי" },
   default: "ברירת המחדל",
   /** D34: the exposure rings in the last column of the track table, and two rows of the track page (F-87, F-88). */
   stock: {
@@ -666,6 +674,8 @@ export const track = {
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
   toOther: "למסלול השני",
   toGuide: "לעמוד המדריך על",
+  /** The heading over what the site took into account for this track's product. */
+  checklist: "מה לבדוק",
 } as const;
 
 export const notCovered = {
@@ -748,7 +758,7 @@ export const system = {
 export const pagePreview = {
   companies: "בתי השקעות, חברות מנהלות ובנקים, ומה כל אחד מציע: גמל, השתלמות ופנסיה, קרנות, מסחר בניירות ערך ופיקדונות.",
   tracks: "כל המסלולים בכל החברות, מוצר אחר מוצר: דמי הניהול שנגבו בפועל, החשיפה, התשואה והכסף המנוהל, מנתוני רשות שוק ההון.",
-  fees: "כמה העמלות של מוצר או של מסלול יעלו לכם לאורך השנים, בכסף של היום.",
+  fees: "מזינים את העמלות של עסקה אחת, כמו שהיא, והאתר מראה מה היא גובה, על מה ומתי.",
   notFound: "בכתובת הזו אין עמוד באתר.",
   /** A company's or a bank's page, after its "מה יש ב…" (companyPage.whatsIn). */
   company: (whatsIn: string) => `${whatsIn}: המוצרים, התנאים והעמלות, עם מקור לכל מספר.`,
@@ -768,6 +778,10 @@ export const formulaNames: Record<string, string> = {
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
   "F-107": "מס אמריקני על דיבידנדים בתוך קרן אירית",
+  "F-110": "התקופות של העסקה: מתי כל עמלה משתנה",
+  "F-111": "על מה כל עמלה נגבית, ומה מצטבר יחד",
+  "F-112": "הסכומים שהמחירים בעסקה מסמנים",
+  "F-113": "מחיר שהוזן מול התקרה",
   "F-08": "חשבון הכסף חודש אחרי חודש",
   "F-09": "השווי במשיכה",
   "F-10": "העלות בתוך הקרן",
@@ -1334,9 +1348,6 @@ export const trackBrowser = {
     tracksTwo: "שני מסלולים",
     tracksMany: "מסלולים",
     companiesNone: "אין חברות",
-    companiesOne: "חברה אחת",
-    companiesTwo: "שתי חברות",
-    companiesMany: "חברות",
     of: "של",
     outOf: "מתוך",
     whatIs: "מה זה",
@@ -1378,7 +1389,7 @@ export const trackBrowser = {
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
   inAll: (name: string) => `${name} בכל החברות`,
   yield: { phone: "תשואה שנתית ממוצעת", years3: "3 שנים", years5: "5 שנים", young: "אין", missing: "לא דווח", emptyNote: { before: "השדה ריק בנתוני הרשות: לא פורסמה למסלול תשואה שנתית ממוצעת ל־", after: " שנים." }, selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע", selfManagedShort: "כל חוסך מחליט במה להשקיע" },
-  assets: { million: "מיליון ₪", billion: "מיליארד ₪", missing: "לא דווח", emptyNote: "השדה ריק בנתוני הרשות: לא פורסם כמה כסף מנוהל במסלול.", phone: "כסף מנוהל" },
+  assets: { million: "מיליון ₪", missing: "לא דווח", emptyNote: "השדה ריק בנתוני הרשות: לא פורסם כמה כסף מנוהל במסלול.", phone: "כסף מנוהל" },
   /** The sheets' headers of the two group figures (F-99, F-100), and of the whole list's fee range on the count line. */
   about: { assets: "הכסף שהחברה מנהלת במוצר, בכל המסלולים יחד", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה" },
   noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
@@ -1433,6 +1444,9 @@ export const depositBrowser = {
     /** A column's spoken name: "שנה: 3.25% בבנק ירושלים". */
     atBank: " בבנק ",
     chosen: "נבחרה",
+    /** After a bound in a row's box. */
+    minWord: "מינימום",
+    maxWord: "מקסימום",
   },
   /** The list's heading: "23 הצעות לשנה. הגבוהה: 3.25% בבנק ירושלים, כ־325 ₪ על 10,000 ₪". */
   heading: { best: "הגבוהה: ", atBank: " בבנק ", on: " על " },
@@ -1448,16 +1462,14 @@ export const depositBrowser = {
   columns: { bank: "הבנק והפיקדון", rate: "ריבית בשנה", amount: "סכום להפקדה", access: "גישה לכסף לפני הסוף", interestOn: "על ", beforeTax: "לפני המס על הריבית" },
   /** The phone's sort, where there are no column heads to press. */
   sortPhone: { rate: "ריבית גבוהה קודם", min: "סכום נמוך קודם" },
-  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", break: { with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" }, locked: "נעול עד סוף התקופה" },
+  access: { exit: "יציאה ", firstAfter: "יציאה ראשונה אחרי ", some: "יש תחנות יציאה", locked: "נעול עד סוף התקופה" },
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
-  /** "מ־1,000 ₪", "1,000 עד 50,000 ₪". */
-  amountRange: { from: "מ־", to: " עד " },
   interest: {
     inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים" },
     about: "הריבית על הסכום, לפני המס על הריבית, ",
     about2: "כ־",
-    underOne: "פחות מ־⁦1%⁩",
+    underOne: "פחות מ־⁦1 ₪⁩",
     variableNote: "ריבית משתנה: החישוב לפי הריבית של היום, והיא יכולה להשתנות במהלך התקופה.",
   },
   mine: "הבנק שלי",
@@ -1746,6 +1758,232 @@ export const r3fees = {
   },
 } as const;
 
+/**
+ * The fee page (method §10.6, components/fee-deal): one deal, its fees as the person typed them, read with no plan and no total. A fee base
+ * the records list is named by the guide's words (`guideBlocks.fees`); the four fees they do not list are named in `names`. The figures are
+ * `Num`s and fields; these are the words around them.
+ */
+export const feeDeal = {
+  title: "העמלות בעסקה שלכם",
+  lede: "מזינים עסקה אחת בדיוק כמו שהיא: כל עמלה, ממה היא נגבית, המינימום והתקרה שלה, ואיך היא משתנה עם השנים. האתר מראה מה העסקה גובה, על מה, ומתי.",
+  crumb: "עמלות",
+  loading: "טוען…",
+  failed: "הנתונים של העמוד לא נטענו. אפשר לרענן את הדף ולנסות שוב.",
+  /** The four fees the records' bases do not list (shapes.ts), and the name of a fee of the person's own before they name it. */
+  names: { fund_management: "דמי הניהול של הקרן", fx_spread: "הפרש שער בהמרה", current_account: "חשבון עובר ושב בבנק", own: "עמלה משלכם" } as Record<string, string>,
+  /** The bar under the page's head: the deal's name, its kind, its start and where it is kept. */
+  bar: {
+    label: "העסקה",
+    /** The name a deal shows before the person gives one: its kind's, or a new deal's before a kind is chosen. */
+    namePlaceholder: (kind: string | null) => (kind ? `${kind} שלי` : "עסקה חדשה"),
+    start: "תאריך התחלה",
+    optional: "לא חובה",
+    saved: "נשמרת במכשיר הזה",
+    unsaved: "המכשיר הזה לא שומר אותה",
+  },
+  /** What each group of fees is charged on (F-111), as a group's heading. */
+  on: {
+    "action:trade": "על כל קנייה או מכירה",
+    "action:conversion": "על כל המרה",
+    "action:deposit": "על כל הפקדה",
+    "action:distribution": "על כל תשלום של ריבית או דיבידנד",
+    "action:transfer_out": "על כל העברה החוצה",
+    "action:none": "על פעולות אחרות",
+    held: "על מה שמוחזק, בכל שנה",
+    /** The same for a product that saves (one whose fees are charged from the savings): what has built up. */
+    heldSaved: "על מה שנצבר, בכל שנה",
+    account: "על החשבון, בלי קשר לסכום",
+    cover: "על הכיסוי הביטוחי",
+    unsaid: "בלי לומר על מה",
+  } as Record<string, string>,
+  /** A side of a trade, where a sale is priced apart from a purchase or a fee is charged on one of them alone. */
+  sides: { buy: "בקנייה", sell: "במכירה" } as Record<string, string>,
+  /** A price in words around its figures. */
+  price: {
+    free: "חינם",
+    /** After an action's rate: what it is a share of, by the fee; `default` for the rest. */
+    of: { default: "מהפעולה", fx: "מההמרה", fx_spread: "מההמרה", deposit: "מההפקדה", distribution_handling: "מכל תשלום", transfer_out: "מההעברה", exit: "מהמשיכה", insurance_premium: "מההפקדה" } as Record<string, string>,
+    /** Before a bound, after a comma. */
+    min: "לא פחות מ־",
+    max: "לא יותר מ־",
+    /** After a share of what is held, beside its period. */
+    held: "ממה שמוחזק",
+    heldSaved: "ממה שנצבר",
+    /** The months a rate is for, or a sum's period. */
+    per: { 1: "בחודש", 3: "ברבעון", 6: "בחצי שנה", 12: "בשנה" } as Record<number, string>,
+    /** How often a share of what is held is charged, where it is charged more often than its rate's period. */
+    charged: { 1: "נגבה כל חודש", 3: "נגבה כל רבעון", 6: "נגבה כל חצי שנה", 12: "נגבה פעם בשנה" } as Record<number, string>,
+    /** After a sum on each action, or a builder row's rate, by the fee. */
+    perAction: { default: "לכל פעולה", fx: "לכל המרה", fx_spread: "לכל המרה", deposit: "לכל הפקדה", insurance_premium: "לכל הפקדה", exit: "לכל משיכה", transfer_out: "לכל העברה", corporate_event: "לכל אירוע", distribution_handling: "לכל תשלום" } as Record<string, string>,
+    insideFund: "בתוך הקרן",
+    /** Between a fee's name and its price. */
+    sep: ": ",
+  },
+  /** The deal at a glance (F-110 to F-113). */
+  glance: {
+    title: "העסקה במבט אחד",
+    throughout: "לאורך כל העסקה",
+    changes: "מה משתנה ומתי",
+    empty: "עוד אין בעסקה עמלות. כל עמלה שמוסיפים מופיעה כאן.",
+    still: "אף עמלה בעסקה לא משתנה עם הזמן.",
+    /** Before the months to the nearest change (a computed figure). */
+    inMonths: "בעוד ",
+    /** Before the rate a group's fees add to (F-111). */
+    together: "יחד: ",
+    /** After that rate: what it is a share of, by the group. */
+    of: { "action:trade": "מהפעולה", "action:conversion": "מההמרה", "action:deposit": "מההפקדה", "action:distribution": "מכל תשלום", "action:transfer_out": "מההעברה", "action:none": "מהפעולה", held: "בשנה ממה שמוחזק", heldSaved: "בשנה ממה שנצבר" } as Record<string, string>,
+    /** A change of a fee's price at a date: the new price, then the one it replaces. */
+    instead: ", במקום ",
+    toReading: "לקריאה המלאה של העסקה",
+    /** Fees left out of every reading until their prices' months are in order, by name. */
+    unread: "לא נקראות עד שהתאריכים שלהן מסודרים: ",
+  },
+  /** The sums a deal's own prices mark (F-112), as a group's line. `noun` is the action the bound is on. */
+  marks: {
+    noun: { trade: "פעולה", conversion: "המרה", deposit: "הפקדה", distribution: "תשלום", transfer_out: "העברה", none: "פעולה" } as Record<string, string>,
+    minAction: { before: "עד {noun} של ", after: " המינימום קובע." },
+    maxAction: { before: "מעל {noun} של ", after: " המקסימום קובע." },
+    minHeld: { before: "על פחות מ־", after: " המינימום קובע." },
+    maxHeld: { before: "על יותר מ־", after: " המקסימום קובע." },
+    /** Whose bound it is, where the group has several fees. */
+    whose: "{name}: ",
+    /** The yearly sums on the account against custody's yearly rate (F-112 (3)). */
+    meet: { before: "הסכומים הקבועים, ", sum: " בשנה, שווים ל־", rate: " על ", after: ". על פחות מזה הם העלות הגדולה בהחזקה." },
+  },
+  /** A price against its legal cap (F-113). */
+  standing: {
+    tag: { below: "מתחת לתקרה", at: "בתקרה", above: "מעל התקרה", none: "אין תקרה בחוק" } as Record<string, string>,
+    /** The tag of a later price whose standing differs, before its month ("בתקרה ממרץ 2028"). */
+    tagFrom: { below: "מתחת לתקרה מ־", at: "בתקרה מ־", above: "מעל התקרה מ־" } as Record<string, string>,
+    /** "{price}, שהם {share} מהתקרה." */
+    share: { before: ", שהם ", after: " מהתקרה." },
+    /** In a builder row's line: "{share} מהתקרה". */
+    shareShort: " מהתקרה",
+    at: "זה המקסימום שמותר לגבות.",
+    above: "יותר ממה שמותר לגבות. הערך נשאר כמו שהוזן, והאתר לא מתקן אותו.",
+    banned: "אסור לגבות עמלה כזו. הערך נשאר כמו שהוזן, והאתר לא מתקן אותו.",
+    otherForm: "המחיר הוזן בצורה שהתקרה לא מודדת, ולכן הוא לא נבדק מולה.",
+    notSourced: "לתקרה אין מקור שנבדק, ולכן המחיר לא נבדק מולה.",
+    /** Whom a cap binds where it binds some providers only (its record's `binds`), and why the price is then not judged. */
+    binds: { banks: "התקרה חלה רק על בנקים.", banks_and_fund_distributors: "התקרה חלה על בנקים ועל מי שמפיץ את הקרן ואינו משווק השקעות." } as Record<string, string>,
+    bindsUnjudged: " העסקה לא אומרת שהיא בבנק, ולכן המחיר לא נבדק מולה.",
+    /** The cap's line: its figure, with its unit's words after it. */
+    capLine: "התקרה: ",
+    /** The cap's label at the end of its bar. */
+    capMark: "התקרה ",
+    /** Before a price's standing: the month its price ends, or the month it starts. */
+    until: "עד ",
+    from: "מ־",
+    now: "היום ",
+  },
+  /** The middle column: three steps that build the deal. */
+  builder: {
+    title: "בונים את העסקה",
+    kind: "סוג המוצר",
+    kindChange: "להחליף",
+    kindPick: "בחרו את סוג המוצר",
+    kindsAria: "סוגי המוצרים",
+    held: "מה מחזיקים בה",
+    heldChange: "לשנות",
+    close: "סגירה",
+    place: { label: "איפה הקרן נקנית", israel: "בבורסה בתל אביב", abroad: "בחו״ל" } as Record<string, string>,
+    currency: { label: "המטבע של הקרן", ILS: "שקלים", USD: "דולרים", EUR: "אירו", GBP: "לירות שטרלינג" } as Record<string, string>,
+    payout: { label: "מה הקרן עושה עם הריבית והדיבידנדים", accumulating: "צוברת", distributing: "מחלקת" } as Record<string, string>,
+    /** What is held, in short, once chosen. */
+    heldSaid: { israel: "קרן שנקנית בארץ", abroad: "קרן שנקנית בחו״ל", accumulating: "צוברת", distributing: "מחלקת", ILS: "בשקלים", USD: "בדולרים", EUR: "באירו", GBP: "בלירות שטרלינג" } as Record<string, string>,
+    track: "החברה והמסלול",
+    trackNone: "לא נבחרו · לא חובה",
+    fees: "העמלות בעסקה",
+    feesLead: "כל ערך אפשר לשנות כאן. לחיצה על עמלה פותחת את כל השדות שלה.",
+    chosen: "נבחרה",
+    /** After a bound in a row's box. */
+    minWord: "מינימום",
+    maxWord: "מקסימום",
+    /** The spoken name of the button that opens a fee in its panel. */
+    open: (name: string) => `לפתוח את ${name}`,
+    add: "אפשר להוסיף:",
+    unread: "התאריכים של המחירים לא מסודרים, ולכן העמלה לא נקראת.",
+    then: "אחר כך",
+    /** A field's spoken name: the fee, then the figure. */
+    fieldName: (fee: string, field: string) => `${fee}, ${field}`,
+    /** The facts a row says beside its prices. */
+    facts: {
+      saleSame: "מכירה כמו קנייה",
+      saleApart: "מכירה במחיר אחר",
+      noBounds: "בלי מינימום ובלי מקסימום",
+      insideFund: "נגבים בתוך הקרן",
+      /** The fee's next change (F-110), before its month in words. */
+      next: { starts: "מתחיל ב־", ends: "נגמר ב־", rises: "עולה ב־", falls: "יורד ב־", changes: "משתנה ב־" } as Record<string, string>,
+    },
+  },
+  /** The left column: every field of the chosen fee. */
+  panel: {
+    title: "העמלה שבחרתם",
+    none: "לחיצה על עמלה בעסקה פותחת כאן את כל השדות שלה.",
+    ownName: "שם העמלה",
+    /** What the fee is charged on, from the guide's words for its base. */
+    base: "ממה",
+    fields: "כל השדות של העמלה",
+    stages: "המחיר, שלב אחרי שלב",
+    stage: { first: "בהתחלה", next: "אחר כך" },
+    form: "איך נגבה",
+    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה" } as Record<string, string>,
+    howMuch: "כמה",
+    min: "לא פחות מ",
+    max: "לא יותר מ",
+    currency: "המטבע של המינימום והמקסימום",
+    currencies: { ILS: "שקלים", USD: "דולרים", EUR: "אירו", GBP: "לירות שטרלינג" } as Record<string, string>,
+    signs: { ILS: "₪", USD: "$", EUR: "€", GBP: "£" } as Record<string, string>,
+    per: "לכל",
+    perOptions: { 1: "לחודש", 3: "לרבעון", 6: "לחצי שנה", 12: "לשנה" } as Record<number, string>,
+    every: "נגבה כל",
+    everyOptions: { 1: "חודש", 3: "רבעון", 6: "חצי שנה", 12: "שנה" } as Record<number, string>,
+    sumEvery: "כל כמה זמן",
+    sumEveryOptions: { 1: "בחודש", 3: "ברבעון", 6: "בחצי שנה", 12: "בשנה" } as Record<number, string>,
+    /** After an optional bound. */
+    optional: "לא חובה",
+    /** A sum past what a deal keeps (model.ts, `SUM_MAX`). */
+    tooLarge: "הזינו סכום עד מיליארד ₪.",
+    perCharge: "לכל חיוב",
+    until: "עד",
+    /** The last price, which holds on with no end. */
+    noEnd: "מכאן והלאה",
+    addLater: "מחיר אחר אחר כך",
+    addStage: "עוד שלב",
+    removeStage: "להסיר את השלב",
+    untilMissing: "חסר עד מתי המחיר הזה, ולכן העמלה עוד לא נקראת.",
+    outOfOrder: "החודשים צריכים לעלות משלב לשלב. עד שהם מסודרים, העמלה לא נקראת.",
+    sale: "מכירה",
+    saleSame: "כמו קנייה",
+    saleApart: "מחיר אחר",
+    salePrices: "המחיר במכירה",
+    oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
+    law: "מול החוק",
+    remove: "להסיר את העמלה",
+  },
+  /** The reading's place under the columns: the next part of the page fills it. */
+  reading: "קוראים את העסקה",
+} as const;
+
+/** The input names of the fee page's readings (values.ts `inputKey`, `deal:` and the fee's kind): each fee's figure, its bounds and its
+ *  yearly figure, by the fee's name; a second fee of one kind is numbered. Added to the sheet's names here, where the fee names above and
+ *  the guide's are both defined. */
+function dealInputNames(): Record<string, string> {
+  const out: Record<string, string> = { cap: "התקרה", account_sums: "הסכומים הקבועים בשנה", custody_rate: "האחוז ממה שמוחזק בשנה" };
+  const kinds = [...Object.keys(guideBlocks.fees).filter((k) => typeof guideBlocks.fees[k] === "object" && guideBlocks.fees[k].name), ...Object.keys(feeDeal.names)];
+  for (const k of kinds) {
+    const name: string = guideBlocks.fees[k]?.name ?? feeDeal.names[k]!;
+    for (const n of ["", " 2", " 3", " 4"]) {
+      out[`deal:${k}${n}`] = `${name}${n}`;
+      out[`deal:${k}${n}.min`] = `${name}${n}: המינימום`;
+      out[`deal:${k}${n}.max`] = `${name}${n}: המקסימום`;
+      out[`deal:${k}${n}.yearly`] = `${name}${n}, בשנה`;
+    }
+  }
+  return out;
+}
+for (const [key, name] of Object.entries(dealInputNames())) computedInputs.names[key] ??= name;
+
 export const r3transfer = {
   title: "העברה למכשיר אחר",
   lede: "קובץ אחד עם כל מה שהזנתם. בלי חשבון, בלי שרת: הקובץ עובר רק לאן שאתם שולחים אותו.",
@@ -1791,6 +2029,7 @@ export const r3transfer = {
     variants: { one: "חשיפה עם הנחות שהזנתם", two: "שתי חשיפות עם הנחות שהזנתם", many: "חשיפות עם הנחות שהזנתם" },
     ticks: { one: "סימון אחד ב״איך עוברים״", two: "שני סימונים ב״איך עוברים״", many: "סימונים ב״איך עוברים״" },
     ownRates: { one: "ריבית שהזנתם להשוואה", two: "שתי ריביות שהזנתם להשוואה", many: "ריביות שהזנתם להשוואה" },
+    deals: { one: "עסקה שמורה אחת בעמוד העמלות", two: "שתי עסקאות שמורות בעמוד העמלות", many: "עסקאות שמורות בעמוד העמלות" },
   },
   // one person per device; a private window or cleared site data erases the work
   onePerDevice: "האתר שומר מכשיר אחד לאדם אחד: אין בו פרופילים נפרדים.",
@@ -1801,7 +2040,7 @@ export const r3transfer = {
   sideFailed: "ההצעות, ההנחות והסימונים לא נשמרו במכשיר הזה.",
   rejectedHeading: "לא ייטענו, כי שדה בהם לא תקין:",
   rejectedItem: "{kind} {at}, {field}: {problem}.",
-  rejectedKinds: { goal: "מטרה", holding: "החזקה", comparison: "השוואה שמורה", input: "ערך במדריך", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה" }, // ownRates:
+  rejectedKinds: { goal: "מטרה", holding: "החזקה", comparison: "השוואה שמורה", input: "ערך במדריך", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
   rejectedProblems: {
     structure: "המבנה לא תקין",
     "not-number": "לא מספר",
@@ -1900,7 +2139,6 @@ export const companyPage = {
     beforeTax: "הריבית שנתית ונומינלית, לפני המס על הריבית.",
     amount: "כמה מפקידים",
     allAmounts: "כל הסכומים",
-    to: "עד",
     fixed: "קבועה",
     variable: "משתנה",
     cols: { deposit: "הפיקדון", plan: "התוכנית", amount: "סכום ההפקדה", rate: "ריבית בשנה", rateBand: "ריבית בשנה, לפי סכום ההפקדה" },
@@ -1969,11 +2207,12 @@ export const r4catalogue = {
     autoRenew: "חידוש אוטומטי",
   },
   term: { months: "חודשים", none: "ללא תקופה", day: "יום אחד", twoDays: "יומיים", days: "ימים", year: "שנה", twoYears: "שנתיים", years: "שנים" },
-  rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:", prime: "פריים", less: "פחות", more: "ועוד", points: "נקודות אחוז" },
+  rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:", prime: "פריים", less: "פחות", more: "ועוד" },
   linkage: { none: "לא צמוד", cpi: "צמוד למדד", fx: "צמוד למט״ח" },
   tax: { unlinked: "ריבית לא צמודה; השיעור בעמוד המדריך.", linked: "ריבית צמודה; השיעור בעמוד המדריך." },
+  /** A deposit's amounts on every page (lib/deposit-kind.ts `amountRangeForm`): "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪", "ללא מינימום". */
   amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום" },
-  breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה ללא קנס" },
+  breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" },
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
   breakDisclosure: "הבנק כותב:",
@@ -3993,6 +4232,15 @@ export const leftOut = {
 
 export const kit = {
   legend: "מקרא",
+  /** A figure or a month typed in place (kit FigureField, MonthField). */
+  figure: {
+    /** The document mark beside a figure a price list or a track filled: it opens the figure's source. */
+    source: (label: string) => `המקור של ${label}`,
+    monthPlaceholder: "חודש.שנה",
+    monthError: "כתבו חודש ושנה, כמו 03.2027.",
+  },
+  /** Said with a step's check (kit Step), so a done step is not told by its colour alone. */
+  stepDone: "הושלם",
   /**
    * A price list's date line (kit TariffDate): what the document prints, never only that something is missing (copy.md 3,
    * "Say what the source gives"). `checked` follows a line whose document prints no usable date, where the page shows no other day: the day the site collected the
@@ -4057,6 +4305,7 @@ export const kit = {
     uses: {
       FilterChip: "מסנן שדולק או כבוי בלי קשר למסננים האחרים, עם מספר השורות שיוצגו כשהוא דולק. למספר יש מקום קבוע, ומסנן שלא יציג כלום מתעמעם ונשאר במקומו. בחירה של ערך אחד מכמה, שמבטלים זה את זה, היא ChoiceChips עם counts.",
       AskField: "השדה הגדול שהעמוד נפתח בו: נכנס בו משפט שלם, ו־× מרוקן אותו.",
+      SearchField: "תיבה לחיפוש או לסינון במילים, עם סמל החיפוש: מסנן של רשימה, או שדה שפותח את החיפוש של האתר. התווית מעליה, או רק לקורא מסך כשהמילים שסביבה כבר אומרות מה מחפשים. בפנים היא כמו AskField.",
       DidYouKnow: "״הידעת?״: עובדות קצרות מהחוקים והכללים, כל אחת עם המקור שלה והדרך לפירוט המלא. כל הכרטיסים באותו גובה.",
       RuleTitleRow: "שורה ברשימה של חוקים וכללים, כשהשורה היא החוק עצמו: הכותרת היא הקישור, והיא פותחת את הכרטיס. בלי מזהה: הוא נשאר בכרטיס. כל השורה כפתור אחד, 44 פיקסלים לפחות. גר ב־provenance.tsx, לא ב־kit.",
       RulesLine: "החוקים והכללים שמאחורי עובדה: שבב אחד עם המספר שלהם, השורה האחרונה בבלוק, ולעולם לא עמודה בטבלה. שבב שפותח רשימה של השמות המלאים, וכלל אחד נפתח ישר בכרטיס. בלי חוקים וכללים אין שבב. גר ב־provenance.tsx, לא ב־kit.",
@@ -4069,7 +4318,8 @@ export const kit = {
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
       Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info, ו־upcoming (כללים שעומדים להשתנות: הצבעים של info עם לוח שנה, והתאריך בתגית ליד הכותרת; מספר בתוכה בלי סימן \"נכנס לתוקף\"). לכולן אותה צורה: מסגרת דקה וקצה של 4 פיקסלים בצד שבו הטקסט מתחיל, בצבע של הסוג; הרקע המלא מבדיל אזהרה מהערה.",
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
-      Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form.",
+      PageHead: "ראש העמוד: הכותרת, שורת הפתיחה מתחתיה, ומה שעומד מעליהן או לידן: לשוניות, הדרך חזרה, שדה. בכל עמוד אותו ריווח מלמעלה ואותם גדלים לכותרת ולשורת הפתיחה.",
+      Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form, ו־kick לשם קטן בצבע ההדגשה מעל עמודה של כלי, שלחלקים שלה כותרות משלהם.",
       Disclosure: "כל מה שהקורא יכול לפתוח: טבלה, הערה ארוכה, קבוצה ברשימה. התווית והחץ עוקבים אחרי מצב הקופסה עצמה, גם בתוך קופסה פתוחה אחרת.",
       FoldGroup: "כותרת קבוצה עם הספירה שלה. list (ברירת המחדל): קבוצה בתוך רשימת כיסוי, כותרת ברמה 3 או 4. section: נושא של כרטיסים בעמוד (קבוצות החוקים והכללים, מה כתוב במסמכים של חברה), כותרת גדולה ושורה של 48 פיקסלים; open ו־onOpenChange כשהעמוד פותח קבוצה לפי הכתובת.",
       PhoneFold: "הבחירות של עמוד לפני רשימה, מקופלות בטלפון: שורה אחת אומרת מה נבחר ופותחת אותן, כדי שהרשימה תתחיל במסך הראשון. במחשב הן פתוחות תמיד, בלי השורה.",
@@ -4101,7 +4351,7 @@ export const kit = {
       NumberField: "תיבה למספר אחד שמקלידים: יחידה, רמז, שגיאה. ערך שהוקלד נראה כמו ערך ההתחלה; אחרי שינוי, בקצה שורת השם מופיע ״חזרה ל־״ עם ערך ההתחלה, בלי להזיז דבר. נשמר אחרי הפסקה של 150 מילישניות או ביציאה מהתיבה.",
       FieldState: "איפוס לקבוצה של תיבות קטנות בלי שורת שם, בשורה משלו מתחתן, ו״טוען…״ בזמן שהשדות מחכים. שדה עם שורת שם מחזיק את האיפוס שלו שם.",
       RangeField: "מספר ומחוון שלו יחד: לכמות עם טווח טבעי. האיפוס בקצה שורת השם, ליד התיבה.",
-      TextField: "שורת טקסט אחת שהאדם מקליד, כמו שם: תווית מעל, ושורת עזר או שגיאה מתחת. למספר, NumberField.",
+      TextField: "שורת טקסט אחת שהאדם מקליד, כמו שם: תווית מעל, ושורת עזר או שגיאה מתחת. inline: התווית לצד התיבה, לשם שמקלידים במקום בתוך שורה של עובדות אחרות. למספר, NumberField.",
       CheckField: "סימון של כן או לא, ליד סימונים אחרים שלא שוללים זה את זה; כל השורה היא אזור ההקשה.",
       FieldGroup: "שדות ששייכים יחד תחת כותרת אחת, עם קו בין קבוצה לקבוצה.",
       SelectField: "בחירה של פריט אחד מרשימה של שמות, ב־select רגיל: תווית מעל, אפשרות \"לא נבחר\" ראשונה אם צריך, ושורת עזר מתחת. חשבון, ספק. עם wide הרשימה ממלאת את הרוחב, כמו שדה טקסט שלצידה.",
@@ -4127,11 +4377,12 @@ export const kit = {
       TabCards: "שאלות בכרטיסים בשורה, ולוח אחד פתוח מתחתיהן: בכל כרטיס השאלה, התשובה בכמה מילים ושורה מתחתיה, והכרטיס כולו הוא הלשונית. התשובה מילים פשוטות, והמספר שבה נפתח מתוך הלוח. הכרטיס הפתוח במסגרת בצבע הפעולה, עם חץ קטן אל הלוח, ובמסך צר עם מילה שאומרת שהוא פתוח. החצים במקלדת עוברים בין הכרטיסים. כל לוח נפתח בשורה קטנה בצבע הפעולה ובמסקנה שלו (PanelHead).",
       OptionBars: "עמודות שמשוות בין אפשרויות: שורה לכל אפשרות, השם ושורה מתחתיו, עמודה מקו אפס אחד והסכום בקצה שלה. הסכומים על העמודות במקום ציר.",
       TabStrip: "לשוניות בתוך עמוד שמחליפות חלק אחד שלו לתצוגה משלה, עם תוכן מסוג אחר, בלי לעזוב אותו (בחיפוש בעמוד החוקים והכללים: מה כתוב בחוק, ומה כתבו החברות): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן. בחירה שרק מצמצמת רשימה אחת היא ChoiceChips עם counts.",
-      InlineSelect: "בחירה שיושבת בשורה של פקדים אחרים (הסינון בסוף שורת הלשוניות בחיפוש): התווית והבחירה בתוך רשימה נפתחת אחת, בלי מסגרת של שדה.",
+      InlineSelect: "בחירה שיושבת בשורה של פקדים אחרים (הסינון בסוף שורת הלשוניות בחיפוש): התווית והבחירה בתוך רשימה נפתחת אחת, בלי מסגרת של שדה. labelHidden: התווית רק לקורא מסך, כשהמילים שסביבה כבר אומרות מה בוחרים.",
       ListRow: "שורה קומפקטית ברשימה שכל פריט בה נפתח במלואו לידה או במסך משלו: כותרת, שורה עמומה שנשמטת בטלפון, תגיות, מקור ומזהה בסוף. כל השורה היא כפתור, והנבחרת מסומנת ברקע ובפס בתחילתה.",
       ChooseRow: "שורה שבוחרת משהו בעמוד (מסנן) ונגמרת בחץ שמוביל למקום אחר. כל השורה היא כפתור שנלחץ ושוב משחרר, והמספרים בשורה העמומה והחץ שומרים על הלחיצה שלהם. הנבחרת ברקע ובפס בתחילתה, ושורה מעומעמת נשארת במקומה.",
       SideNav: "רשימה בצד של עמוד שמראה חלק אחד בכל פעם (עמוד חברה: סקירה, ואז כל מוצר). כל פריט הוא קישור עם הכתובת שלו, כך שקישור וכפתור חזרה עובדים. הנבחר ברקע ובפס בתחילתו, כמו ListRow, והחלקים שלו נפתחים מתחתיו כקישורים בתוך העמוד. מ־1024 פיקסלים הרשימה ליד התוכן ונשארת במקום כשגוללים; מתחת לזה היא שורה אחת שאומרת מה מוצג ופותחת אותה.",
       GoLink: "קישור בתוך האתר שממשיך הלאה, בסוף חלק: המילים בצבע הקישור וחץ אחריהן, צמוד למילה האחרונה.",
+      TextLink: "קישור לעמוד באתר, במראה אחד בכל האתר: בצבע הקישור, עם קו תחתון כשהעכבר עליו. inline בתוך טקסט רץ, בגודל הטקסט ובלי שטח מגע משלו. line בשורה משלו או בין פקדים, עם שטח מגע של 44 פיקסלים.",
       GoRow: "שורה שפותחת עמוד אחר, בעמודה צרה (הדרכים פנימה בעמוד הראשי): שם, שורה עמומה שאומרת על מה העמוד עונה, וחץ. כל השורה היא קישור, ומספר בשורה שומר על הלחיצה שלו.",
       OpenRow: "שורה שפותחת חלק אחר של העמוד או עמוד אחר (הסקירה של בנק): שם, כמה, עובדה אחת מתחת לתווית קטנה, תאריך וחץ, בעמודות. כל השורה היא קישור, והמספרים בה שומרים על הלחיצה שלהם.",
       SharedFacts: "מה שנכון לכל השורות בטבלה, פעם אחת מעליה במקום בכל שורה. עובדה שנכונה רק לחלק מהשורות נשארת בשורות שלה.",
@@ -4143,6 +4394,11 @@ export const kit = {
       CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
       PeriodBars: "בחירה של תקופה אחת, מצוירת כתרשים עמודות: כל עמודה כולה כפתור אחד, ובה המספר, העמודה, שם התקופה ומי משלם. כל העמודות על סולם אחד מאפס, בלי קווי רשת ובלי ציר, כי כל עמודה נושאת את המספר שלה. הנבחרת במסגרת וברקע, השם שלה במילוי. עמודה בלי מספר כותבת ״אין״ ואפשר לבחור גם אותה. בטלפון השמות מתקצרים ושם הבנק יורד.",
       MeterBar: "פס דק מתחת למספר בשורת טבלה: האורך שלו הוא החלק של המספר מהגבוה ברשימה. השורה הראשונה בצבע ההדגשה, השאר בצבע הערך, ושורה שעומדת בנפרד (הצעה עם תנאי) חלולה. גדל מתחילת השורה.",
+      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא ממחירון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
+      MonthField: "חודש ושנה שמקלידים במקום, כמו 03.2027, באותה תיבה של FigureField. נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק.",
+      CapBar: "מחיר מול התקרה שלו: פס דק עד התקרה, סימן במקום התקרה והמספר שלה בסוף. מחיר מאוחר יותר בקו מתאר, ומה שמעל התקרה בפסים אדומים. המשפט שליד הפס אומר את המצב במילים.",
+      Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
+      AddLine: "שורה שקטה מתחת לרשימה שהאדם בונה: מסגרת מקווקוות, פלוס ושבב קטן לכל דבר שאפשר להוסיף. הרגילים קודם בדיו מלאה, הנדירים אחריהם בדיו מעומעמת. המקום היחיד בעמוד שמדבר על מה שחסר.",
       PeriodStrip: "שנות התוכנית ברצועה אחת, לכל תקופה גוון משלה ומה שמחזיק בה כתוב עליה: שנים במחיר של קבוצה, ואז שנים בתעריפון. הזמן רץ משמאל לימין והקצוות כתובים מתחת. רצועה לקריאה בלבד, לא כפתור.",
       Stretch: "שתי רשימות משני צדי סרגל של כסף: חשבון הוא קטע בסרגל, מהקרן היקרה בו עד הזולה, וקרן היא נקודה בקטע של החשבון שנבחר. השורה של החשבון שנבחר נפתחת אל הקטע שלו, פס על הסרגל, והפס נפתח אל רשימת הקרנות, עם קו ישר מהנקודה של כל קרן לשורה שלה. הזוג שנבחר הוא נקודה אחת בקטע, וקו ישר עולה ממנה אל מה שמעליה. הכול נמדד מהמקום של השורות, מחדש בכל שינוי. StretchBar: עותק קטן של הסרגל ליד שורה, באותו סולם לכל השורות, עם הקטע של השורה, ונקודה כשהשורה היא קרן. שורות הרשימות בסגנון line: שורה אחת, בלי עיגול בחירה, 32 פיקסלים זו מזו עם עכבר ולפחות 44 במגע ומתחת ל־1280 פיקסלים.",
       PickList: "רשימה שבוחרים בה שורה אחת: כל שורה היא כפתור בחירה, והשורה הנבחרת צבועה עם פס בתחילתה, או, בשורות של שורה אחת ליד סרגל, צבועה וממוסגרת בצבע של מה שבוחרים בה. שורה שאי אפשר לחשב נשארת ברשימה, מעומעמת; לא מסננים אותה החוצה. כותרת קבוצה יכולה לעמוד מעל שורה, ואותה לא בוחרים.",

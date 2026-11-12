@@ -8,10 +8,11 @@ import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
-import { IconCopy, IconExternal } from "../icons";
+import { IconCopy } from "../icons";
 import { Num, Term } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { AsideLine, barScale, byLegend, GroupLine, HouseLine, hasCurrent, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, partName, legendName, AbroadNotes, OwnBankField, whyNoKindAt, type WhyNone } from "./pair";
+import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, OwnBankField, whyNoKindAt, type WhyNone } from "./pair";
+import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -93,7 +94,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
     // the account's fees on each other first, as on every bar of the page
     const parts: CostPart[] = [
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
-      ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
+      ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass(lineOf(l.line)), source: from })),
     ];
     return {
       key: h.provider.id,
@@ -215,7 +216,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           pick={legendPick}
           items={[
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines ?? []))) })),
+            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass(l)} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines ?? []))) })),
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />
@@ -264,9 +265,7 @@ export function NoFundColumn({ view, mayaHref }: { view: InvestView; mayaHref: s
         <p className="text-sm text-muted-foreground">{n.mayaLead}</p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           {mayaHref && (
-            <a href={mayaHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1 min-h-target">
-              {c.funds.maya} <IconExternal size={14} />
-            </a>
+            <DocLink href={mayaHref}>{c.funds.maya}</DocLink>
           )}
           <Button variant="secondary" onClick={copy}>
             <IconCopy size={16} />

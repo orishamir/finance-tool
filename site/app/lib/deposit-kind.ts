@@ -1,6 +1,7 @@
-// What sets a bank's deposit apart, from its record: its exit points in words,
-// one function for every reader (the bank page's card printed "אין" for a deposit with daily exits, Mizrahi-Tefahot 287), and its kind
-// (`variant`) as a label chip that opens its meaning. Pure: no React, no I/O.
+// What sets a bank's deposit apart, from its record, in the words every page uses for it (the deposits page, the bank page's table and
+// its single-product card): its exit points (the bank page's card printed "אין" for a deposit with daily exits, Mizrahi-Tefahot 287),
+// its break, its renewal, the tax on its interest and its amount range, each from plain fields since the pages hold different records;
+// and its kind (`variant`) as a label chip that opens its meaning. Pure: no React, no I/O.
 import type { DepositTerms } from "@finance-tool/schema";
 import { r4catalogue as copy } from "../copy";
 import { fmt } from "./format";
@@ -61,6 +62,49 @@ export function exitNameWords(e: ExitPoints): string {
 
 /** A bank page's exit points: as `exitWords`, and where they exist with no timing in the record but the bank prints conditions, a pointer to them. */
 export const exitsText = (e: ExitPoints, conditions: string | null): string => (e.exists && exitTiming(e) === null && conditions ? copy.exits.someCard : exitWords(e));
+
+/** How a deposit may be broken before its end, as its record holds it (`break_terms.penalty`). */
+export type BreakPenalty = keyof typeof copy.breakWord;
+
+/** A deposit that cannot be broken but has exit points: its money comes out only at them, which every page says apart from a locked one. */
+export const onlyAtExits = (penalty: BreakPenalty, hasExits: boolean): boolean => penalty === "not_allowed" && hasExits;
+
+/**
+ * A deposit's break in words, on the deposits page and the bank pages alike: a deposit that cannot be broken but has exit points says
+ * where the money comes out ("אין אפשרות שבירה" alone read as locked beside its exits).
+ */
+export const breakText = (penalty: BreakPenalty, hasExits: boolean): string => (onlyAtExits(penalty, hasExits) ? copy.breakAtExits : copy.breakWord[penalty]);
+
+/** Whether a deposit renews by itself, in words: "כן", "לא", or "עד 3 פעמים" where the bank sets a number of renewals. */
+export const renewText = (renews: boolean, maxRenewals: number | null): string =>
+  !renews ? copy.autoRenewWord.no : maxRenewals !== null ? `${copy.autoRenewWord.upTo} ${fmt.number(maxRenewals)} ${copy.autoRenewWord.times}` : copy.autoRenewWord.yes;
+
+/**
+ * The tax on a deposit's interest, in words, from its record's tax bucket; undefined for an empty bucket, whose figure then says what it
+ * is (an open rule, or unknown), never the record's "null".
+ */
+export const taxWord = (bucket: unknown): string | undefined => (bucket === "unlinked_15" ? copy.tax.unlinked : bucket === "linked_25" ? copy.tax.linked : undefined);
+
+/**
+ * Which words an amount range takes: `from` "מ־1,000 ₪" (no top, or `fromOnly`), `between` "1,000 עד 50,000 ₪" (the shekel sign once,
+ * at the end; wording.md: a range with "עד"), `upTo` "עד 50,000 ₪" (no bottom), `none` "ללא מינימום". A bottom of zero is no bottom.
+ * `fromOnly`: ranges that follow one another with no gap, each said by where it starts.
+ */
+export type AmountRangeForm = "from" | "between" | "upTo" | "none";
+export function amountRangeForm(min: number | null, max: number | null, fromOnly = false): AmountRangeForm {
+  const from = min !== null && min > 0;
+  if (from) return fromOnly || max === null ? "from" : "between";
+  return max !== null ? "upTo" : "none";
+}
+
+/** An amount range in plain words, for a control that holds no sourced figure (a chip); each figure as the bank's table prints it. */
+export function amountRangeText(min: number | null, max: number | null, fromOnly = false): string {
+  const form = amountRangeForm(min, max, fromOnly);
+  if (form === "from") return `${copy.amount.from}${fmt.nis(min!)}`;
+  if (form === "between") return `${fmt.number(min!)} ${copy.amount.to} ${fmt.nis(max!)}`;
+  if (form === "upTo") return `${copy.amount.to} ${fmt.nis(max!)}`;
+  return copy.amount.noMin;
+}
 
 /**
  * A deposit's or plan's period in words, by the unit its record holds: a weekly deposit is 7 days, never "7 חודשים". Null when the record

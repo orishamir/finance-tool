@@ -4,17 +4,16 @@
 // cards are not in the page's first HTML: they come from /documents-data.json when a kind of document is opened, or when the address
 // names a document (a rule's card, the search), which opens its group, and the fold of the short rows if it is one of them, and scrolls to it.
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Link, useLoaderData, useLocation } from "react-router";
+import { useLoaderData, useLocation } from "react-router";
 import { documents as copy } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
-import { Card, cx, Disclosure, FoldGroup, gershayim, MixedName, Sentence, TariffDate, When } from "../components/kit";
+import { Card, cx, Disclosure, DocLink, FoldGroup, gershayim, MixedName, PageHead, Section, Sentence, TariffDate, TextLink, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, DocumentSection } from "../lib/documents.server";
-import { isPdfUrl, sourceHref } from "../lib/sources";
+import { isPdfUrl } from "../lib/sources";
 
 export async function loader() {
   const { today, loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
@@ -72,9 +71,9 @@ function Latin({ text, english }: { text: string; english: boolean }) {
 /** A rule that rests on a document: its title is the link to the rule; the code stays in the rule's card. */
 function RuleLink({ rule }: { rule: DocumentCard["rules"][number] }) {
   return (
-    <Link to={rule.href} className="flex items-center min-h-target text-sm text-link hover:underline">
+    <TextLink look="line" to={rule.href}>
       <bdi>{gershayim(rule.title)}</bdi>
-    </Link>
+    </TextLink>
   );
 }
 
@@ -87,7 +86,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
     </li>
   );
   return (
-    <Card as="li" id={doc.key} className="scroll-mt-[112px] lg:scroll-mt-[88px] min-w-0 [overflow-wrap:anywhere] flex flex-col gap-2">
+    <Card as="li" id={doc.key} className="anchor-target min-w-0 [overflow-wrap:anywhere] flex flex-col gap-2">
       <h3 className="text-lg font-semibold">
         <Latin text={doc.title} english={doc.titleEnglish} />
       </h3>
@@ -95,11 +94,10 @@ function DocCard({ doc }: { doc: DocumentCard }) {
         <bdi>{doc.publisher}</bdi> · {copy.kinds[doc.kind] ?? copy.kinds.other}
       </p>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href={sourceHref(doc)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary underline underline-offset-4 min-h-target">
+        <DocLink source={doc}>
           {copy.open}
-          {isPdfUrl(doc.url) && <span className="text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
-          <IconExternal size={16} className="shrink-0" />
-        </a>
+          {isPdfUrl(doc.url) && <span className="ms-1.5 text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
+        </DocLink>
         {doc.strength !== "primary" && <StrengthLabel strength={doc.strength} />}
       </p>
       {doc.checked && (
@@ -110,10 +108,10 @@ function DocCard({ doc }: { doc: DocumentCard }) {
       {doc.rules.length > 0 && (
         <div className="flex flex-col gap-1">
           <p className="text-sm text-muted-foreground">{copy.rulesLead}</p>
-          <ul className="flex flex-col">{shown.map(chip)}</ul>
+          <ul className="flex flex-col text-sm">{shown.map(chip)}</ul>
           {rest.length > 0 && (
-            <Disclosure label={copy.rulesMore.replace("{n}", fmt.number(rest.length))} openLabel={copy.rulesMore.replace("{n}", fmt.number(rest.length))} summaryClassName="text-sm text-primary">
-              <ul className="flex flex-col">{rest.map(chip)}</ul>
+            <Disclosure look="link" label={copy.rulesMore.replace("{n}", fmt.number(rest.length))} summaryClassName="text-sm">
+              <ul className="flex flex-col text-sm">{rest.map(chip)}</ul>
             </Disclosure>
           )}
         </div>
@@ -125,7 +123,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
 /** A kind of document or of data, folded until opened, its head with its count; a folded group draws nothing. */
 function Group({ id, title, count, level, open, onOpen, children }: { id: string; title: string; count?: number; level: 2 | 3; open: boolean; onOpen: (open: boolean) => void; children: () => ReactNode }) {
   return (
-    <FoldGroup id={id} variant="section" level={level} title={title} count={count} open={open} onOpenChange={onOpen} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
+    <FoldGroup id={id} variant="section" level={level} title={title} count={count} open={open} onOpenChange={onOpen} className="anchor-target">
       {open && children()}
     </FoldGroup>
   );
@@ -134,9 +132,9 @@ function Group({ id, title, count, level, open, onOpen, children }: { id: string
 function DataLink({ href }: { href: string | null }) {
   if (!href) return null;
   return (
-    <Link to={href} className="text-primary underline underline-offset-4 min-h-target inline-flex items-center">
+    <TextLink look="line" to={href}>
       {copy.data.toPage}
-    </Link>
+    </TextLink>
   );
 }
 
@@ -146,11 +144,10 @@ function DocRows({ rows }: { rows: DocumentCard[] }) {
   return (
     <ul className="flex flex-col">
       {rows.map((doc) => (
-        <li key={doc.key} id={doc.key} className="scroll-mt-[112px] flex flex-wrap items-center gap-x-2 gap-y-0.5 py-2 border-b border-border text-sm min-w-0 [overflow-wrap:anywhere]">
-          <a href={sourceHref(doc)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary underline underline-offset-4 min-h-target">
+        <li key={doc.key} id={doc.key} className="anchor-target flex flex-wrap items-center gap-x-2 gap-y-0.5 py-2 border-b border-border text-sm min-w-0 [overflow-wrap:anywhere]">
+          <DocLink source={doc}>
             <Latin text={doc.title} english={doc.titleEnglish} />
-            <IconExternal size={14} className="shrink-0" />
-          </a>
+          </DocLink>
           <span className="text-muted-foreground">
             <bdi>{doc.publisher}</bdi>
           </span>
@@ -183,7 +180,7 @@ function DocSection({ docs, section, moreOpen, onMore }: { docs: DocumentCard[] 
         ))}
       </ul>
       {rows.length > 0 && (
-        <Disclosure open={moreOpen} onOpenChange={onMore} label={rows.length === 1 ? copy.more.one : copy.more.many.replace("{n}", fmt.number(rows.length))} className="pt-3" summaryClassName="text-sm text-primary">
+        <Disclosure open={moreOpen} onOpenChange={onMore} label={rows.length === 1 ? copy.more.one : copy.more.many.replace("{n}", fmt.number(rows.length))} className="pt-3" look="link" summaryClassName="text-sm">
           <p className="text-sm text-muted-foreground max-w-measure pb-2">{copy.more.line}</p>
           {moreOpen && <DocRows rows={rows} />}
         </Disclosure>
@@ -248,12 +245,10 @@ export default function Documents() {
   );
   return (
     <PageShell current="other" data={pd}>
-      <div className="flex flex-col gap-6 lg:gap-8 pt-2 lg:pt-8">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-          <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
+      <div className="flex flex-col gap-6 lg:gap-8">
+        <PageHead title={copy.title} lede={copy.lede}>
           <NumberLegend />
-        </header>
+        </PageHead>
         <div className="flex flex-col gap-3">
           {sections.map((sec) => (
             <Group key={sec.id} id={sec.id} title={copy.sections[sec.id]} count={sec.count} level={2} open={open.has(sec.id)} onOpen={toggle(setOpen, sec.id)}>
@@ -266,74 +261,72 @@ export default function Documents() {
           <NoPageCompanyTerms companies={noPage.companies} none={noPage.none} />
         </div>
 
-        <header className="flex flex-col gap-2 pt-4">
-          <h2 className="text-xl lg:text-2xl font-semibold">{d.title}</h2>
-          <p className="text-base text-muted-foreground max-w-measure">{d.lede}</p>
-        </header>
-        <div className="flex flex-col gap-3">
-          {dataGroup("data-tariffs", d.tariffs, data.tariffs.length, () => (
-            <ul className="grid gap-4 lg:grid-cols-2 pt-2">
-              {data.tariffs.map((t) => (
-                <Card as="li" key={t.key} id={`tariff-${t.key}`} className="scroll-mt-[112px] flex flex-col gap-1 min-w-0">
-                  <h4 className="text-lg font-semibold">{d.tariffLine.replace("{provider}", t.title)}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {t.missing ? d.missing : <TariffDate dated={t.dated} titled />}
-                    {!t.missing && !!t.lines && <> · <bdi dir="ltr" className="tabular-nums">{fmt.number(t.lines ?? 0)}</bdi>{d.linesAfter}</>}
-                  </p>
-                  <DataLink href={t.href} />
-                </Card>
-              ))}
-            </ul>
-          ))}
-          {dataGroup("data-funds", d.funds, data.funds.length, () => (
-            <>
-              <p className="text-sm text-muted-foreground max-w-measure pt-1">{d.fundsLine}</p>
+        <Section title={d.title} lead={d.lede} className="pt-4">
+          <div className="flex flex-col gap-3">
+            {dataGroup("data-tariffs", d.tariffs, data.tariffs.length, () => (
               <ul className="grid gap-4 lg:grid-cols-2 pt-2">
-                {data.funds.map((f) => (
-                  <Card as="li" key={f.key} className="flex flex-col gap-1 min-w-0">
-                    <h4 className="text-lg font-semibold"><bdi>{f.title}</bdi></h4>
-                    <p className="text-sm text-muted-foreground"><bdi>{f.line}</bdi></p>
-                    <DataLink href={f.href} />
+                {data.tariffs.map((t) => (
+                  <Card as="li" key={t.key} id={`tariff-${t.key}`} className="anchor-target flex flex-col gap-1 min-w-0">
+                    <h4 className="text-lg font-semibold">{d.tariffLine.replace("{provider}", t.title)}</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {t.missing ? d.missing : <TariffDate dated={t.dated} titled />}
+                      {!t.missing && !!t.lines && <> · <bdi dir="ltr" className="tabular-nums">{fmt.number(t.lines ?? 0)}</bdi>{d.linesAfter}</>}
+                    </p>
+                    <DataLink href={t.href} />
                   </Card>
                 ))}
               </ul>
-            </>
-          ))}
-          {dataGroup("data-deposits", d.deposits, data.deposits.length, () => (
-            <ul className="grid gap-4 lg:grid-cols-2 pt-2">
-              {data.deposits.map((x) => (
-                <Card as="li" key={x.key} className="flex flex-col gap-1 min-w-0">
-                  <h4 className="text-lg font-semibold"><MixedName>{x.title}</MixedName></h4>
-                  <p className="text-sm text-muted-foreground"><MixedName>{x.line ?? ""}</MixedName></p>
-                  <DataLink href={x.href} />
-                </Card>
-              ))}
-            </ul>
-          ))}
-          {dataGroup("data-series", d.series, data.series.length, () => (
-            <ul className="grid gap-4 lg:grid-cols-2 pt-2">
-              {data.series.map((s) => (
-                <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0 [overflow-wrap:anywhere]">
-                  <h4 className="text-lg font-semibold"><bdi>{s.title}</bdi></h4>
-                  {s.valueDate && (
-                    <Sentence size="sm" tone="muted">
-                      {s.value ? <>{d.latest}: <Num value={s.value} /> </> : <>{copy.checked} </>}
-                      {s.value ? <>(<When iso={s.valueDate} />)</> : <When iso={s.valueDate} />}
-                    </Sentence>
-                  )}
-                  {s.attribution && <p className={cx("text-xs text-muted-foreground")}><bdi>{s.attribution}</bdi></p>}
-                </Card>
-              ))}
-            </ul>
-          ))}
-          {/* one card that points at the regulator's lists, not a list of its own: no count */}
-          {dataGroup("data-datasets", d.datasets, undefined, () => (
-            <Card className="mt-2 flex flex-col gap-1">
-              <p className="text-sm text-muted-foreground max-w-measure">{d.datasetsLine}</p>
-              <DataLink href={data.datasetsHref} />
-            </Card>
-          ))}
-        </div>
+            ))}
+            {dataGroup("data-funds", d.funds, data.funds.length, () => (
+              <>
+                <p className="text-sm text-muted-foreground max-w-measure pt-1">{d.fundsLine}</p>
+                <ul className="grid gap-4 lg:grid-cols-2 pt-2">
+                  {data.funds.map((f) => (
+                    <Card as="li" key={f.key} className="flex flex-col gap-1 min-w-0">
+                      <h4 className="text-lg font-semibold"><bdi>{f.title}</bdi></h4>
+                      <p className="text-sm text-muted-foreground"><bdi>{f.line}</bdi></p>
+                      <DataLink href={f.href} />
+                    </Card>
+                  ))}
+                </ul>
+              </>
+            ))}
+            {dataGroup("data-deposits", d.deposits, data.deposits.length, () => (
+              <ul className="grid gap-4 lg:grid-cols-2 pt-2">
+                {data.deposits.map((x) => (
+                  <Card as="li" key={x.key} className="flex flex-col gap-1 min-w-0">
+                    <h4 className="text-lg font-semibold"><MixedName>{x.title}</MixedName></h4>
+                    <p className="text-sm text-muted-foreground"><MixedName>{x.line ?? ""}</MixedName></p>
+                    <DataLink href={x.href} />
+                  </Card>
+                ))}
+              </ul>
+            ))}
+            {dataGroup("data-series", d.series, data.series.length, () => (
+              <ul className="grid gap-4 lg:grid-cols-2 pt-2">
+                {data.series.map((s) => (
+                  <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0 [overflow-wrap:anywhere]">
+                    <h4 className="text-lg font-semibold"><bdi>{s.title}</bdi></h4>
+                    {s.valueDate && (
+                      <Sentence size="sm" tone="muted">
+                        {s.value ? <>{d.latest}: <Num value={s.value} /> </> : <>{copy.checked} </>}
+                        {s.value ? <>(<When iso={s.valueDate} />)</> : <When iso={s.valueDate} />}
+                      </Sentence>
+                    )}
+                    {s.attribution && <p className={cx("text-xs text-muted-foreground")}><bdi>{s.attribution}</bdi></p>}
+                  </Card>
+                ))}
+              </ul>
+            ))}
+            {/* one card that points at the regulator's lists, not a list of its own: no count */}
+            {dataGroup("data-datasets", d.datasets, undefined, () => (
+              <Card className="mt-2 flex flex-col gap-1">
+                <p className="text-sm text-muted-foreground max-w-measure">{d.datasetsLine}</p>
+                <DataLink href={data.datasetsHref} />
+              </Card>
+            ))}
+          </div>
+        </Section>
       </div>
     </PageShell>
   );

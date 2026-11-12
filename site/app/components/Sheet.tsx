@@ -5,7 +5,7 @@ import { site } from "../copy";
 import { IconArrowBack, IconChevronDown, IconClose } from "./icons";
 import { Button, cx } from "./ui";
 import { cssMs } from "./kit/chart-glide-math";
-import { useIsoLayoutEffect } from "../lib/hooks";
+import { MQ, useIsoLayoutEffect, useMedia } from "../lib/hooks";
 
 export interface SheetProps {
   open: boolean;
@@ -84,6 +84,8 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
   const body = useRef<HTMLDivElement>(null);
   const wasOpen = useRef(false);
   const lastView = useRef(view);
+  // a card beside its anchor or a centred dialog from `lg`, a bottom sheet below it
+  const wide = useMedia(MQ.lg);
 
   useIsoLayoutEffect(() => {
     const dialog = ref.current;
@@ -97,7 +99,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         dialog.removeAttribute("data-closing");
       }
       if (!dialog.open) dialog.showModal();
-      place(dialog, anchor ?? null, pc);
+      place(dialog, anchor ?? null, pc, wide);
     } else if (dialog.open && !closing.current) {
       dialog.setAttribute("data-closing", "");
       const ms = cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-base"));
@@ -110,14 +112,14 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     }
     wasOpen.current = open;
     lastView.current = view;
-  }, [open, anchor, pc, view]);
+  }, [open, anchor, pc, view, wide]);
 
   useEffect(() => {
     if (!open) return;
-    const onResize = () => ref.current && place(ref.current, anchor ?? null, pc);
+    const onResize = () => ref.current && place(ref.current, anchor ?? null, pc, wide);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [open, anchor, pc]);
+  }, [open, anchor, pc, wide]);
 
   // The page behind an open sheet does not scroll; a count, since sheets can stack.
   useEffect(() => {
@@ -171,13 +173,13 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
             of its own above the content) */}
         <div className="sheet-head" data-back={onBack ? "" : undefined}>
           {onBack ? (
-            <Button variant="icon" onClick={onBack} aria-label={site.back} className="!size-9 tap-area !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
+            <Button variant="icon" size="sm" onClick={onBack} aria-label={site.back} className="bg-popover/90">
               <IconArrowBack size={20} />
             </Button>
           ) : (
             <span />
           )}
-          <Button variant="icon" onClick={onClose} aria-label={site.close} className="!size-9 tap-area !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
+          <Button variant="icon" size="sm" onClick={onClose} aria-label={site.close} className="bg-popover/90">
             <IconClose size={20} />
           </Button>
         </div>
@@ -195,10 +197,9 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
   );
 }
 
-/** On PC, puts a popover card beside its anchor (right edges aligned), on the side with more room: below it, unless
+/** On PC (`isPc`, the `lg` width), puts a popover card beside its anchor (right edges aligned), on the side with more room: below it, unless
  * it does not fit there and the room above is larger. The card's max-height is capped to that room. */
-function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center") {
-  const isPc = window.matchMedia("(min-width: 64rem)").matches;
+function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center", isPc: boolean) {
   dialog.style.top = "";
   dialog.style.left = "";
   dialog.style.maxHeight = "";

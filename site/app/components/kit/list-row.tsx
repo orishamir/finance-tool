@@ -8,7 +8,7 @@ import { cx } from "./cx";
 import { RowArrow } from "./product-table";
 
 /** A group's heading in a list: its name, a muted count, and a hairline from there to the end of the line, so groups read apart. */
-export function GroupHead({ children, count, as: Tag = "h3", id, className, plain, nowrap }: { children: ReactNode; count?: ReactNode; as?: "h2" | "h3"; id?: string; className?: string; /** A small muted label alone, with no count and no hairline: over rows that stand between rules (`RowList plain`). */ plain?: boolean; /** A short name in a narrow column (the companies page's groups): the name never breaks; the hairline gives way first, then the count moves under it. */ nowrap?: boolean }) {
+export function GroupHead({ children, count, as: Tag = "h3", id, className, plain, nowrap }: { children: ReactNode; count?: ReactNode; as?: "h2" | "h3" | "h4"; id?: string; className?: string; /** A small muted label alone, with no count and no hairline: over rows that stand between rules (`RowList plain`). */ plain?: boolean; /** A short name in a narrow column (the companies page's groups): the name never breaks; the hairline gives way first, then the count moves under it. */ nowrap?: boolean }) {
   if (plain)
     return (
       <Tag id={id} className={cx("text-sm font-normal text-muted-foreground", className)}>

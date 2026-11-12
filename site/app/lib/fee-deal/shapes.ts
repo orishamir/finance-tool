@@ -131,12 +131,14 @@ export const RARER_FOR_FUNDS: readonly FeeKindId[] = ["fx_spread", "corporate_ev
 
 /**
  * The fees to suggest for a deal: `usual`, the kind's record bases the deal lacks that fit what is held (and, for a kind that holds funds,
- * the fund's own fee); `rarer`, the bases that do not fit, the rarer fees, and `own`, the person's own, last.
+ * the fund's own fee); `rarer`, the bases that do not fit, the rarer fees, and `own`, the person's own, last. A fee on a distribution is
+ * offered only where the deal says its fund distributes: an accumulating fund, or one the deal says nothing of, pays nothing out to charge.
  */
 export function suggestions(kind: ProductId, bases: readonly FeeBase[], present: readonly FeeKindId[], held: Held | undefined): { usual: FeeKindId[]; rarer: FeeKindId[] } {
   const lacking = (k: FeeKindId) => !present.includes(k);
   const funds = holdsFunds(kind);
-  const own: FeeKindId[] = [...bases, ...(funds ? (["fund_management"] as const) : [])];
+  const paysOut = (k: FeeKindId) => k !== "distribution_handling" || !funds || held?.payout === "distributing";
+  const own: FeeKindId[] = [...bases, ...(funds ? (["fund_management"] as const) : [])].filter(paysOut);
   const usual = own.filter((k) => lacking(k) && fitsHeld(k, funds ? held : undefined));
   const rarer = [...own.filter((k) => lacking(k) && !usual.includes(k)), ...(funds ? RARER_FOR_FUNDS.filter((k) => lacking(k) && !own.includes(k)) : [])];
   return { usual, rarer: [...rarer, "own"] };

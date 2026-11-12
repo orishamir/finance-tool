@@ -2,7 +2,7 @@
 // block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import type { GlanceItem } from "../../components/guide/sections";
-import { KeyValueList as RuleRows } from "../../components/guide/sections";
+import { RuleRows } from "../../components/guide/sections";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
 

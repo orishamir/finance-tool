@@ -33,9 +33,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, plus, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, type Moved, type OnPick, type Pick } from "./pair";
-
-const priced = (x: WayPrice | { reason: unknown } | undefined): x is WayPrice => !!x && "valueN" in x;
+import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the chosen pair's card has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -386,8 +384,8 @@ export function PairLists(props: ListsProps) {
     ) : x && range ? (
       // the difference over the dollar's range, in place of one amount; what the range is, in its "?"
       <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
-        {c.kinds.between} <Num animate value={x.lo} display={plus} /> {c.kinds.and}
-        <Num animate value={x.hi} display={plus} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
+        {c.kinds.between} <Num animate value={x.lo} display={fmt.signedNisWhole} /> {c.kinds.and}
+        <Num animate value={x.hi} display={fmt.signedNisWhole} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
       </span>
     ) : (
       figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={diff(n, f, at)} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
@@ -570,7 +568,7 @@ export function PairLists(props: ListsProps) {
   const fundsFoot = (
     <div className="flex flex-col gap-3">
       {greyRows.length > 0 && (
-        <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} labelClassName="text-sm text-link">
+        <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">
           <div className="nums-plain pt-1">
             <PickList look="line" tone="fund" label={c.lists.funds.unpricedLabel(short)} columns="minmax(0,1fr) auto" rows={greyRows} />
           </div>

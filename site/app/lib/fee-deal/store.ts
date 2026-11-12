@@ -1,5 +1,6 @@
 // The deals saved on this device: a side store (`side-stores.ts`) under its own key, each deal checked on read (`readDeal`), carried by
-// the export file and merged by import as the other side stores are. Saving a deal replaces the one with its id and stamps the day.
+// the export file and merged by import as the other side stores are. Saving a deal puts it first, in place of the one with its id, and
+// stamps the day: the first deal is the one last worked on, which the fee page opens when its address names none.
 import { deviceStore } from "../device-store";
 import { readDeal, type FeeDeal } from "./model";
 
@@ -24,10 +25,9 @@ export const dealsDoc = (deals: readonly FeeDeal[]) => ({ version: 1, deals });
 /** The saved deals, read after hydration and followed across tabs (browser only). */
 export const dealStore = deviceStore<FeeDeal[]>(DEALS_KEY, [], parseDeals, dealsDoc);
 
-/** The deals with `deal` saved: it replaces the one with its id, or comes first, stamped with `today`. */
+/** The deals with `deal` saved: first, stamped with `today`, in place of the one with its id. */
 export function savedWith(deals: readonly FeeDeal[], deal: FeeDeal, today: string): FeeDeal[] {
-  const stamped = { ...deal, saved: today };
-  return deals.some((d) => d.id === deal.id) ? deals.map((d) => (d.id === deal.id ? stamped : d)) : [stamped, ...deals];
+  return [{ ...deal, saved: today }, ...deals.filter((d) => d.id !== deal.id)];
 }
 
 /** The deals without the one with `id`. */

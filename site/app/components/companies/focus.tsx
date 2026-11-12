@@ -1,6 +1,5 @@
 // The companies page's two panes (routes/companies.tsx): the list of every company in its three groups, and the company in focus. Both
 // only draw what the page's state says; lib/company-focus.ts holds the logic. Filtering and searching dim rows in place, never move them.
-import { Link } from "react-router";
 import { companyFocus as w } from "../../copy";
 import { countMark, countWords, matches, productsOnSite, companyGroups, productTypes, type FocusCompany, type FocusData, type FocusFigures, type FocusProduct, type FocusProductKind, type FocusState } from "../../lib/company-focus";
 import { assetsText } from "../../lib/track-browser";
@@ -8,7 +7,7 @@ import { fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { IconDrillIn } from "../icons";
-import { ChooseRow, GroupHead, ListRow, MixedName, RowList, cx, gershayim } from "../kit";
+import { ChooseRow, GroupHead, ListRow, MixedName, RowList, TextLink, cx, gershayim } from "../kit";
 
 // ---------------------------------------------------------------- the list
 
@@ -126,10 +125,10 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
           <h2 id={headId} className="text-xl lg:text-2xl font-semibold min-w-0">
             <MixedName>{c.name}</MixedName>
           </h2>
-          <Link to={page} className="shrink-0 inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline">
+          <TextLink look="line" to={page} className="shrink-0 text-sm">
             {w.fullPage}
             <IconDrillIn size={16} />
-          </Link>
+          </TextLink>
         </div>
         <p className="text-sm">{productsOnSite(c.products.length)}</p>
         {c.line && (
@@ -186,19 +185,19 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
           <ul className="flex flex-wrap gap-x-4">
             {c.sections.map((s) => (
               <li key={s.id}>
-                <Link to={`${page}#${s.id}`} className="inline-flex items-center min-h-target text-sm text-link hover:underline">
+                <TextLink look="line" to={`${page}#${s.id}`} className="text-sm">
                   {s.title}
-                </Link>
+                </TextLink>
               </li>
             ))}
             {c.terms > 0 && (
               <li>
-                <Link to={`${page}#company-terms`} className="inline-flex items-center gap-1.5 min-h-target text-sm text-link hover:underline">
+                <TextLink look="line" to={`${page}#company-terms`} className="text-sm">
                   {w.terms}
                   <bdi dir="ltr" className="text-muted-foreground tabular-nums">
                     {fmt.number(c.terms)}
                   </bdi>
-                </Link>
+                </TextLink>
               </li>
             )}
           </ul>

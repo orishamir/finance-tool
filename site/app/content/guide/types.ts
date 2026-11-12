@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { GlanceItem, KeyValueItem } from "../../components/guide/sections";
+import type { GlanceItem, RuleRowItem } from "../../components/guide/sections";
 import type { SiteValue } from "../../lib/value";
 import type { BreakTerms } from "../../lib/guide-signature";
 
@@ -18,7 +18,7 @@ export interface GuideContent {
   switchLine?: ReactNode | ((p: ContentProps) => ReactNode);
   switchRules?: string[];
   /** More rows of that list, after the shared ones. A rule named here ships with the page, as any rule its prose names. */
-  inoutRows?: (p: ContentProps) => KeyValueItem[];
+  inoutRows?: (p: ContentProps) => RuleRowItem[];
   /** A company-terms row left off this page, where general rules also apply and the company names would mislead. */
   omitCompanyTerms?: readonly string[];
   /** The prose already says when the money is free, so the list does not say it again. */

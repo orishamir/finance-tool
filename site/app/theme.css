@@ -301,6 +301,25 @@
      (orange and gold), defined once here. Checked as a set with the tax's rose in kit/ratchets.test.ts. */
   --chart-by-account: var(--palette-orange-400);
   --chart-by-fund: var(--palette-gold-200);
+  /* The fee page: one colour per fee on the whole page (its swatches, the bar of a fee against its cap). Blue and violet stay out (the
+     entered and computed inks), red, amber and green too (status). The fees a kind of deal holds together pass the palette check pair by
+     pair on the card (kit/ratchets.test.ts): a securities account's (buying and selling, custody, conversion, the fixed account fee, the
+     fund's own fee, the spread, a current account), a pension or provident product's (from savings, from deposits, direct expenses), and a
+     money-market fund's (with the trustee's and the manager's). A fee the records name rarely, or one of the person's own, takes the dark
+     grey, below 3:1 on the card, so its name always stands beside it. The current account's cyan was picked by the same check against the
+     fixed account fee it is drawn with. */
+  --fee-balance: var(--palette-orange-500);
+  --fee-deposit: var(--palette-gold-200);
+  --fee-trade: var(--palette-magenta-400);
+  --fee-custody: var(--palette-teal-300);
+  --fee-fx: oklch(0.7 0.1 115);
+  --fee-fixed: oklch(0.55 0.06 5);
+  --fee-direct: oklch(0.78 0.11 15);
+  --fee-spread: oklch(0.45 0.17 345);
+  --fee-account: oklch(0.6 0.13 190);
+  --fee-manager: oklch(0.6 0.1 205);
+  --fee-fund: var(--chart-stairs-fund);
+  --fee-other: var(--palette-neutral-700);
   /* a fund label's family (founder, 2026-10-27: "i want all labels to have a nice icon with nice distinct color"): the icon and the
      words take the colour, the chip a faint fill of it. A caution label keeps the caution role and an open-rule label the blocked role */
   --label-held: var(--palette-neutral-200);
@@ -509,6 +528,18 @@
   --color-chart-cost-fund: var(--chart-cost-fund);
   --color-chart-by-account: var(--chart-by-account);
   --color-chart-by-fund: var(--chart-by-fund);
+  --color-fee-balance: var(--fee-balance);
+  --color-fee-deposit: var(--fee-deposit);
+  --color-fee-trade: var(--fee-trade);
+  --color-fee-custody: var(--fee-custody);
+  --color-fee-fx: var(--fee-fx);
+  --color-fee-fixed: var(--fee-fixed);
+  --color-fee-direct: var(--fee-direct);
+  --color-fee-spread: var(--fee-spread);
+  --color-fee-account: var(--fee-account);
+  --color-fee-manager: var(--fee-manager);
+  --color-fee-fund: var(--fee-fund);
+  --color-fee-other: var(--fee-other);
   --color-label-held: var(--label-held);
   --color-label-trade: var(--label-trade);
   --color-label-follow: var(--label-follow);

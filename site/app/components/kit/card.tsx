@@ -25,9 +25,12 @@ export function Card({ children, className, as = "div", pad = "default", edge, .
   );
 }
 
-/** Heading sizes: `page` for a section of a page, `card` for the title of a card, `form` for a card of a form. */
-export type SectionLevel = "page" | "card" | "form";
-const HEADING: Record<SectionLevel, string> = { page: "text-xl lg:text-2xl font-semibold", card: "text-lg font-semibold", form: "text-xl font-semibold" };
+/**
+ * Heading sizes: `page` for a section of a page, `card` for the title of a card, `form` for a card of a form, `kick` for the small name in
+ * the action colour over a column of a tool, whose parts carry their own headings under it (the fee page's three columns).
+ */
+export type SectionLevel = "page" | "card" | "form" | "kick";
+const HEADING: Record<SectionLevel, string> = { page: "text-xl lg:text-2xl font-semibold", card: "text-lg font-semibold", form: "text-xl font-semibold", kick: "text-sm font-medium text-primary" };
 
 /**
  * A heading with an optional lead and an optional action at the end of its row, then the body. Give `id` to make it a target of the
@@ -38,7 +41,7 @@ export function Section({ id, title, lead, level = "page", action, children, cla
   const headId = id ? `${id}-h` : `${uid}-h`;
   const Wrapper = as as ElementType;
   return (
-    <Wrapper id={id} aria-labelledby={headId} className={cx("flex flex-col gap-4", id && "scroll-mt-[112px] lg:scroll-mt-[88px]", className)}>
+    <Wrapper id={id} aria-labelledby={headId} className={cx("flex flex-col gap-4", id && "anchor-target", className)}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-4">
         <H id={headId} className={HEADING[level]}>
           {title}

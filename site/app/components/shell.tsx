@@ -6,7 +6,7 @@ import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, TermFromAddress, type ProvenanceData } from "./provenance";
 import { preloadSearch, SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, CountingFigures, clearOfReceiptStub, cx, gershayim, When } from "./kit";
+import { Button, CountingFigures, clearOfReceiptStub, cx, gershayim, TextLink, When } from "./kit";
 import { useHydrated } from "../lib/hooks";
 
 export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "other";
@@ -190,9 +190,9 @@ function Footer({ width }: { width: string }) {
       <div className={cx("mx-auto px-gutter py-3 pb-7 flex flex-wrap items-center gap-x-6 gap-y-0 text-sm", width)}>
         <span className="w-full lg:w-auto font-medium text-foreground pt-2 lg:pt-0">{site.name}</span>
         {footerLinks.map((f) => (
-          <Link key={f.href} to={f.href} className="min-h-target inline-flex items-center text-link hover:underline">
+          <TextLink key={f.href} look="line" to={f.href}>
             {f.label}
-          </Link>
+          </TextLink>
         ))}
         <p className="w-full text-muted-foreground pt-2 flex flex-wrap gap-x-4">
           <span>{site.footerNote}</span>

@@ -10,15 +10,13 @@ import { scopeWords } from "../../copy";
 import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/scope";
 import { useProvenanceData } from "../provenance";
 import { RuleCard } from "../provenance-sheets";
-import { Card, FoldGroup, Section, cx, gershayim } from "../kit";
+import { Card, FoldGroup, Section, gershayim } from "../kit";
 
 export interface TermGroup {
   key: string;
   title: string;
   ids: string[];
 }
-
-const scrollMargin = "scroll-mt-[112px] lg:scroll-mt-[88px]";
 
 /** The id the address names (`#KH-09`, `#terms-msci`), read after the first paint: the pre-rendered page has none. */
 function useHash(): string {
@@ -51,7 +49,7 @@ function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
       {ids
         .filter((id) => data.rules[id])
         .map((id) => (
-          <Card as="li" key={id} id={id} className={cx("min-w-0 [overflow-wrap:anywhere] flex flex-col", scrollMargin)}>
+          <Card as="li" key={id} id={id} className="min-w-0 [overflow-wrap:anywhere] flex flex-col anchor-target">
             <RuleCard id={id} data={data} inline />
           </Card>
         ))}
@@ -81,7 +79,7 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
         <Section id={companyTermsAnchor} title={scopeWords.noPage.title}>
           <div className="flex flex-col gap-3">
             {companies.map((c) => (
-              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{gershayim(c.name)}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
+              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className="anchor-target" title={<bdi>{gershayim(c.name)}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
                 <Cards ids={c.ids} company={c.id} />
               </FoldGroup>
             ))}

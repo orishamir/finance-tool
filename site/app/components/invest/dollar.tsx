@@ -10,17 +10,15 @@ import { gapListFor, kindMoney, kindOf, planInputs, reportFigure, reportsInSheke
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
-import { MixedName, Callout, ChartLegend, PanelHead, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
+import { MixedName, Callout, ChartLegend, DocLink, PanelHead, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
 import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
-import { sourceHref } from "../../lib/sources";
 
 const one = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-/** Isolated for a Hebrew sentence: "−18.5%" with its sign, or "18.5%" for a word that already says up or down. */
-const signed = (x: number) => `⁦${x > 0 ? "+" : x < 0 ? "−" : ""}${one.format(Math.abs(x))}%⁩`;
+/** A percent isolated for a Hebrew sentence whose words already say up or down: "18.5%", without its sign. */
 const bare = (x: number) => `⁦${one.format(Math.abs(x))}%⁩`;
-const points = (x: number) => `⁦${x > 0 ? "+" : x < 0 ? "−" : ""}${one.format(Math.abs(x))}⁩`;
-const barLabel = (v: number) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`;
+/** A bar's figure and the axis's ticks: a chart's text, already its own left-to-right element. */
+const barLabel = (v: number) => fmt.signedNumber(v, Number.isInteger(v) ? 0 : 1, { isolate: false });
 
 /** What the hedged-or-not panel rests on, read whether or not its panel is open (its tab's answer is the plan's sentence): null where the
  * page has nothing to show, a fund of one kind missing, no exchange rates, or no compared year of a kind (no gap to say). */
@@ -63,7 +61,7 @@ export type DollarCase = NonNullable<ReturnType<typeof useDollarCase>>;
  *  in one year, at its lowest and highest over the years of the rates, and those years (the panel's first tile, which opens its sheets). */
 export function dollarSwing(d: DollarCase) {
   const pcts = d.years.map((y) => y.pct);
-  return { lo: signed(Math.min(...pcts)), hi: signed(Math.max(...pcts)), from: d.years[0]?.year ?? 0, to: d.years[d.years.length - 1]?.year ?? 0 };
+  return { lo: fmt.signedPct(Math.min(...pcts), 1), hi: fmt.signedPct(Math.max(...pcts), 1), from: d.years[0]?.year ?? 0, to: d.years[d.years.length - 1]?.year ?? 0 };
 }
 
 export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; d: DollarCase }) {
@@ -105,7 +103,7 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
     return f && t && y ? { [c.kinds.gapInputBenchmark(t.benchmark.name, year)]: reportFigure(f.rec, y.tracking_pct, t.page) } : {};
   };
   const fig = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => computed(Math.round(x * 100) / 100, "pct", formula, inputs, { today, about });
-  const num = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => <Num value={fig(x, about, formula, inputs)} display={signed(x)} />;
+  const num = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => <Num value={fig(x, about, formula, inputs)} display={fmt.signedPct(x, 1)} />;
   // a change of the dollar (F-93) is computed from shekels per dollar at two month ends, each from the ECB's two end-of-month rates (F-84)
   const rateInput = (p: FxHistory["points"][number]): [string, SiteValue] => {
     const label = c.dollar.inputRate(fmt.period(p.date.slice(0, 7)));
@@ -140,8 +138,8 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
       head,
       strong,
       cells: [
-        <Num key="d" value={d} display={signed(dn)} />,
-        <Num key="i" value={index} display={signed(xn)} />,
+        <Num key="d" value={d} display={fmt.signedPct(dn, 1)} />,
+        <Num key="i" value={index} display={fmt.signedPct(xn, 1)} />,
         range(u, c.dollar.colUnhedged, inputsOf("unhedged", ys, every), uNote),
         range(he, c.dollar.colHedged, inputsOf("hedged", ys, every), he.count > 1 ? c.kinds.groupCount(he.count) : undefined),
         range({ low: lowGap, high: highGap, count: 0 }, c.dollar.colGap, { ...inputsOf("hedged", ys, every), ...inputsOf("unhedged", ys, every) }),
@@ -264,7 +262,7 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
             </span>
           }
         >
-          <Num value={dollarOf(loYear, lo)} display={signed(lo)} /> <span className="text-base font-medium">{c.dollar.to}</span> <Num value={dollarOf(hiYear, hi)} display={signed(hi)} />
+          <Num value={dollarOf(loYear, lo)} display={fmt.signedPct(lo, 1)} /> <span className="text-base font-medium">{c.dollar.to}</span> <Num value={dollarOf(hiYear, hi)} display={fmt.signedPct(hi, 1)} />
         </StatTile>
         <StatTile
           label={c.dollar.costsLabel}
@@ -274,8 +272,8 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
               <Tpl
                 t={c.dollar.costsUnhedged}
                 vars={{
-                  lo: <Num value={fig(gaps.unhedged.low, c.dollar.unhedgedGapAbout, "F-95", gapInputs("unhedged"))} display={points(gaps.unhedged.low)} />,
-                  hi: <Num value={fig(gaps.unhedged.high, c.dollar.unhedgedGapAbout, "F-95", gapInputs("unhedged"))} display={points(gaps.unhedged.high)} />,
+                  lo: <Num value={fig(gaps.unhedged.low, c.dollar.unhedgedGapAbout, "F-95", gapInputs("unhedged"))} display={fmt.signedNumber(gaps.unhedged.low, 1)} />,
+                  hi: <Num value={fig(gaps.unhedged.high, c.dollar.unhedgedGapAbout, "F-95", gapInputs("unhedged"))} display={fmt.signedNumber(gaps.unhedged.high, 1)} />,
                 }}
               />
             </span>
@@ -363,9 +361,7 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
         lead={
           <>
             {c.dollar.sources}{" "}
-            <a href={sourceHref({ url: history.sourceUrl })} target="_blank" rel="noopener noreferrer" className="text-link hover:underline">
-              {history.attribution} ↗
-            </a>
+            <DocLink source={{ url: history.sourceUrl }}>{history.attribution}</DocLink>
           </>
         }
         items={[]}

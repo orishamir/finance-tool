@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePreview, scopeWords } from "../copy";
 import { pageMeta } from "../lib/page-meta";
-import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type KeyValueItem, type TaxStep } from "../components/guide/sections";
+import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, RelatedProducts, RuleRows, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type RuleRowItem, type TaxStep } from "../components/guide/sections";
 import { IdRef, Num, NumberLegend, ReadingTag, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
@@ -99,7 +99,7 @@ export default function GuidePage() {
   };
   // the rules the record's sentence cites join the fact's own, so its detail is read in their cards
   const exitTextRules = exit.kind === "any_time" ? [] : data.exitTextRules.filter((id) => isGeneral(rules[id]));
-  const exitItem = (): KeyValueItem => {
+  const exitItem = (): RuleRowItem => {
     const v = exitValue();
     return {
       id: "withdraw",
@@ -108,7 +108,7 @@ export default function GuidePage() {
       rules: [...new Set([...v.rules, ...exitTextRules])],
     };
   };
-  const inout: KeyValueItem[] = [];
+  const inout: RuleRowItem[] = [];
   if (lockUp && !content?.omitFreeRow) inout.push(exitItem());
   if (record.ceiling) {
     const amount = record.ceiling.amount as SiteValue;
@@ -167,7 +167,7 @@ export default function GuidePage() {
   };
 
   // ---- what each company sets for itself (D30): the fee table says it for its own fees; the rest, with the general rules on the same property, sit under "who offers it" (D49)
-  const companyTerms = (): KeyValueItem[] =>
+  const companyTerms = (): RuleRowItem[] =>
     Object.entries(record.company_terms ?? {})
       .filter(([dim, ids]) => ids.length > 0 && !content?.omitCompanyTerms?.includes(dim) && !(!omitted("cost") && fees.some((f) => feeDimension[f.id] === dim)))
       .map(([dim, ids]) => ({ id: dim, label: copy.companyTermTitles[record.id]?.[dim] ?? data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} lead={scopeWords.variesExamples} size="xs" />, rules: Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(dim)).map((r) => r.id) }));
@@ -408,8 +408,7 @@ export default function GuidePage() {
       <GuideFrame
         foot={<NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} doubt={anyDoubt((signature?.banks ?? []).map((b) => b.rate))} />}
         sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
-        <GuideHeader title={gershayim(data.name)} glance={glance}>
-          {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{gershayim(data.lede)}</p>}
+        <GuideHeader title={gershayim(data.name)} lede={data.lede && gershayim(data.lede)} glance={glance}>
           {data.heldIn && (
             <div className="flex flex-col gap-1 max-w-measure">
               <Sentence
@@ -458,14 +457,14 @@ export default function GuidePage() {
                 {regulatorName}. {copy.whoLine}
               </p>
             )}
-            {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
+            {companyTerms().length > 0 && <RuleRows items={companyTerms()} />}
             <InstitutionChips companies={data.companies} open={content?.companiesOpen} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
           </GuideSection>
         )}
 
         {!omitted("inout") && (
           <GuideSection id="inout" title={title("inout")}>
-            <KeyValueList items={inout} />
+            <RuleRows items={inout} />
           </GuideSection>
         )}
 

@@ -3,20 +3,25 @@
 // the same move on a makam, the short instrument it is set against. The series' terms are the rule P-05 names (GOV-11); the coupon is
 // the site's assumption (P-05 `cash_rate`, D20) and the shift is the person's own.
 import { useId, useMemo, useState } from "react";
-import { guideSignature as copy, values as valuesCopy } from "../../copy";
+import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
 
-import { GainBars, NumberField, Sentence, Stat, StatRow } from "../kit";
+import { GainBars, RangeField, Sentence, Stat, StatRow, yearsCheck } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { figure, inputSite, termOf, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, inputSite, SigAmountField, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 import { differenceOf } from "../../lib/value";
 
 const SHIFT_MIN = -3;
 const SHIFT_MAX = 3;
 const YEARS_MIN = 1;
 const YEARS_MAX = 30;
+const YEARS = { min: YEARS_MIN, max: YEARS_MAX };
 
+/**
+ * The rate shift's slider, with the shift written beside its label ("+1 נקודת אחוז", the unit opening its term): the kit's `RangeField`
+ * writes no sign in its box, has no unit word for percentage points, and its checks have none for a range of percentage points.
+ */
 function Range({ id, label, valueText, min, max, step, value, onChange }: { id: string; label: string; valueText: React.ReactNode; min: number; max: number; step: number; value: number; onChange: (v: number) => void }) {
   const fill = ((value - min) / (max - min)) * 100;
   return (
@@ -41,7 +46,9 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
   const linkage = fact(data, "linkage");
   const [shift, setShift] = useState(1);
   const [yearsOverride, setYears] = useState<number | null>(null);
-  const years = Math.min(YEARS_MAX, Math.max(YEARS_MIN, yearsOverride ?? Math.round(inputs.years)));
+  // the bond's own years to redemption, starting from the guide's years held to the series' range
+  const yearsStart = Math.min(YEARS_MAX, Math.max(YEARS_MIN, Math.round(inputs.years)));
+  const years = Math.min(YEARS_MAX, Math.max(YEARS_MIN, yearsOverride ?? yearsStart));
   const model = useMemo(() => bondModel(data, { amount: inputs.amount, years, shiftPct: shift }), [data, inputs.amount, years, shift]);
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
   const shiftIn = typed(shift, "pct", today, copy.bond.shift);
@@ -63,30 +70,19 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
     : null;
   // what a sale today brings against holding to redemption: the gap between the two figures above
   const diff = v ? differenceOf([copy.bond.bars.sell, v.sale], [copy.bond.bars.hold, v.redeem], "F-25", { today, about: copy.bond.about.diff, round: Math.abs }) : null;
-  const signed = (n: number) => `${n > 0 ? "+" : ""}${fmt.number(n)}`;
 
   return (
     <div className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <NumberField
-          label={copy.bond.amount}
-          unit="nis"
-          value={inputs.amount}
-          start={inputs.p05.amount}
-          isEntered={inputs.source.amount === "guide"}
-          validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)}
-          onCommit={inputs.setAmount}
-          onReset={() => inputs.setAmount(null)}
-          disabled={!inputs.ready}
-        />
-        <Range id={`${id}-y`} label={copy.bond.years} valueText={<Num value={yearsIn} display={fmt.years(years)} />} min={YEARS_MIN} max={YEARS_MAX} step={1} value={years} onChange={setYears} />
+        <SigAmountField inputs={inputs} field="amount" label={copy.bond.amount} />
+        <RangeField label={copy.bond.years} unit="years" value={years} start={yearsStart} isEntered={yearsOverride !== null} validate={yearsCheck(YEARS)} onCommit={setYears} onReset={() => setYears(null)} min={YEARS_MIN} max={YEARS_MAX} step={1} inputMode="numeric" disabled={!inputs.ready} />
       </div>
       <Range
         id={`${id}-s`}
         label={copy.bond.shift}
         valueText={
           <>
-            <Num value={shiftIn} display={signed(shift)} /> <Term id="נקודת אחוז">{Math.abs(shift) === 1 ? copy.bond.shiftUnitOne : copy.bond.shiftUnit}</Term>
+            <Num value={shiftIn} display={fmt.signedNumber(shift)} /> <Term id="נקודת אחוז">{Math.abs(shift) === 1 ? copy.bond.shiftUnitOne : copy.bond.shiftUnit}</Term>
           </>
         }
         min={SHIFT_MIN}
@@ -103,10 +99,10 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
               <Num value={v.price} />
             </Stat>
             <Stat label={copy.bond.figures.change}>
-              <Num value={v.change} display={(n) => signed(Math.round(n * 10) / 10) + "%"} />
+              <Num value={v.change} display={(n) => fmt.signedPct(Math.round(n * 10) / 10)} />
             </Stat>
             <Stat label={copy.bond.figures.makam} tone="alt">
-              <Num value={v.makam} display={(n) => signed(Math.round(n * 10) / 10) + "%"} />
+              <Num value={v.makam} display={(n) => fmt.signedPct(Math.round(n * 10) / 10)} />
             </Stat>
           </StatRow>
           <GainBars

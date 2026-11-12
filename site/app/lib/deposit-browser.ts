@@ -3,8 +3,8 @@
 // the amount (F-21), the list's order and its words. No React, no I/O.
 import { amountOpens, bestOpenOffer, depositInterest } from "@finance-tool/engine";
 import { depositBrowser as t } from "../copy";
-import { exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
-import { fmt } from "./format";
+import { breakText, exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
+import { countPhrase, fmt } from "./format";
 import type { Label } from "./labels";
 import type { ListSort } from "./list-sort";
 import { computed, numberOf, type SiteValue } from "./value";
@@ -124,7 +124,7 @@ export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, t
 }
 
 /** "כ־325 ₪", and under one shekel "פחות מ־1 ₪": the interest in whole shekels, as the list says it. */
-export const interestText = (n: number): string => (n < 0.5 ? t.interest.underOne : `${t.interest.about2}${fmt.number(Math.round(n))} ₪`);
+export const interestText = (n: number): string => (n < 0.5 ? t.interest.underOne : `${t.interest.about2}${fmt.nisWhole(n)}`);
 
 /** How the money can come out before the end: exit points (every so many months, or at points the table does not space evenly), a break, or neither. */
 export type Access = { kind: "exits"; words: string } | { kind: "break"; words: string } | { kind: "locked"; words: string };
@@ -141,7 +141,7 @@ function exitAccessWords(e: ExitPoints): string {
 export function accessOf(o: DbOffer): Access[] {
   const out: Access[] = [];
   if (o.exits.exists) out.push({ kind: "exits", words: exitAccessWords(o.exits) });
-  if (o.breakTerm !== "not_allowed") out.push({ kind: "break", words: t.access.break[o.breakTerm] });
+  if (o.breakTerm !== "not_allowed") out.push({ kind: "break", words: breakText(o.breakTerm, o.exits.exists) });
   return out.length ? out : [{ kind: "locked", words: t.access.locked }];
 }
 
@@ -150,9 +150,9 @@ export function variantWords(row: DbRow, o: DbOffer): string {
   const split = rowSplit(row);
   const first = row.offers[0]!;
   if (split.exits) return o.exits.exists ? t.variant.withExits : t.variant.noExits;
-  if (split.break) return `${t.variant.same}${o.breakTerm === "not_allowed" ? t.access.locked : t.access.break[o.breakTerm]}`;
+  if (split.break) return `${t.variant.same}${o.breakTerm === "not_allowed" ? t.access.locked : breakText(o.breakTerm, o.exits.exists)}`;
   const min = numberOf(o.amount_range.min);
-  return min !== null && min !== numberOf(first.amount_range.min) ? `${t.variant.same}${t.variant.from}${fmt.number(min)} ₪` : t.variant.plain;
+  return min !== null && min !== numberOf(first.amount_range.min) ? `${t.variant.same}${t.variant.from}${fmt.nis(min)}` : t.variant.plain;
 }
 
 
@@ -184,7 +184,7 @@ export function sheetNames(data: DbData): Map<string, string> {
     const differ = (f: (x: DbOffer) => unknown) => new Set(twins.map((x) => JSON.stringify(f(x)))).size > 1;
     const parts = [bankName(o.bank), o.name];
     const min = numberOf(o.amount_range.min);
-    if (differ((x) => numberOf(x.amount_range.min)) && min !== null) parts.push(`${t.grid.from}${fmt.number(min)} ₪`);
+    if (differ((x) => numberOf(x.amount_range.min)) && min !== null) parts.push(`${t.grid.from}${fmt.nis(min)}`);
     if (differ((x) => [x.exits.exists, x.exits.everyMonths, x.exits.firstMonths])) parts.push(`${t.help.exits}: ${exitWords(o.exits)}`);
     const base = parts.join(" · ");
     const n = (taken.get(base) ?? 0) + 1;
@@ -327,8 +327,5 @@ export function sortRows(rows: readonly DbRow[], s: SortState): DbRow[] {
 
 /** "54 הצעות", "הצעה אחת", "שתי הצעות". */
 export function offersPhrase(n: number): string {
-  return n === 1 ? t.count.offerOne : n === 2 ? t.count.offerTwo : `${fmt.number(n)} ${t.count.offers}`;
+  return countPhrase(n, { one: t.count.offerOne, two: t.count.offerTwo, many: t.count.offers });
 }
-
-/** "10,000 ₪". */
-export const amountText = (n: number): string => `${fmt.number(n)} ₪`;
