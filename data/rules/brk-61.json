@@ -64,8 +64,8 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.7",
-      "locator_he": "עמוד 7",
+      "locator": "p.7, note 3",
+      "locator_he": "עמוד 7, הערה 3",
       "page": 7,
       "quote": "עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד",
       "checked": "2026-11-12"

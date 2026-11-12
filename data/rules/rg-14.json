@@ -22,10 +22,37 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.5",
-      "locator_he": "עמוד 5",
+      "locator": "p.5, row סחורות",
+      "locator_he": "עמוד 5, שורה סחורות",
       "page": 5,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.14, table 2, rows סחורות",
+      "locator_he": "עמוד 14, טבלה 2, שורות סחורות",
+      "page": 14,
       "quote": "דמי ניהול ממוצעים - ממוצע משוקלל ופשוט",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.16, table 3, row סחורות",
+      "locator_he": "עמוד 16, טבלה 3, שורה סחורות",
+      "page": 16,
+      "quote": "תשואה מצטברת ממוצעת - חודשי",
       "checked": "2026-11-07"
     }
   ]

@@ -36,8 +36,8 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
+      "locator": "p.3, question 5",
+      "locator_he": "עמוד 3, שאלה 5",
       "page": 3,
       "checked": "2026-10-26"
     },
@@ -75,8 +75,8 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
+      "locator": "p.4, question 7; p.6, question 12",
+      "locator_he": "עמוד 4, שאלה 7; עמוד 6, שאלה 12",
       "page": 4,
       "checked": "2026-10-25"
     },

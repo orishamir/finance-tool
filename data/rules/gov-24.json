@@ -126,12 +126,13 @@
     {
       "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=66",
       "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
-      "title_he": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "p.66, ch. ט s.4(א), (ה)",
+      "locator_he": "עמוד 66, פרק ט סעיף 4(א), (ה)",
       "page": 66,
       "quote": "מועד תשלום ריבית על איגרות חוב ממשלתיות יהיה ביום החמישה עשר",
       "checked": "2026-11-02"
@@ -139,12 +140,13 @@
     {
       "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=18",
       "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
-      "title_he": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "p.18, ch. ה s.9(א)",
+      "locator_he": "עמוד 18, פרק ה סעיף 9(א)",
       "page": 18,
       "quote": "סבב הסליקה הראשון - ביום העסקים הבא",
       "checked": "2026-10-31"

@@ -109,7 +109,7 @@
   "shibolet.com": { "publisher": "Shibolet law firm", "publisher_he": "שבלת עורכי דין", "kind": "article" },
   "behar-law.co.il": { "publisher": "behar-law.co.il", "publisher_he": "behar-law.co.il", "kind": "other" },
   "free-justice.openapi.gov.il": { "publisher": "Reshumot (Ministry of Justice) – official gazette file service", "publisher_he": "רשומות (משרד המשפטים)", "kind": "law" },
-  "api.justice.gov.il": { "publisher": "Reshumot (Ministry of Justice)", "publisher_he": "רשומות", "kind": "law" },
+  "api.justice.gov.il": { "publisher": "Reshumot (Ministry of Justice)", "publisher_he": "רשומות (משרד המשפטים)", "kind": "law" },
   "tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law" },
   "www.tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law" },
   "revenue.ie": { "publisher": "Irish Revenue", "publisher_he": "רשות המסים של אירלנד", "kind": "official_pdf" },

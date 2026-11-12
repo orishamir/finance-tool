@@ -61,6 +61,7 @@
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "pp.20-22 (ch.ג ss.1-4), p.24 (ch.ג'1 s.2.2), p.15 (ch.ב s.2ב), pp.31-37 (ch.ג'2)",
+      "locator_he": "עמודים 20 עד 22 (פרק ג סעיפים 1-4), עמוד 24 (פרק ג'1 סעיף 2.2), עמוד 15 (פרק ב סעיף 2ב), עמודים 31 עד 37 (פרק ג'2)",
       "page": 20,
       "checked": "2026-11-06",
       "qualifier": "(clearing-house rules made under Securities Law s.50ב, ISA-supervised)"
@@ -68,12 +69,13 @@
     {
       "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=44",
       "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
-      "title_he": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
       "locator": "pp.44-45 (ch.ז ss.1, 4-5)",
+      "locator_he": "עמודים 44 עד 45 (פרק ז סעיפים 1, 4-5)",
       "page": 44,
       "checked": "2026-11-06"
     }
