@@ -71,8 +71,21 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.13, s.2.2.2; p.14",
-      "locator_he": "עמוד 13, סעיף 2.2.2; עמוד 14",
+      "locator": "p.13, s.2.2.2",
+      "locator_he": "עמוד 13, סעיף 2.2.2",
+      "page": 13,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-22-2002/he/Policy_IncomeTaxInst_hoz22-2002.pdf",
+      "title": "חוזר מס הכנסה 22/2002: הרפורמה במס הכנסה, מיסוי רווחי הון והכנסות מניירות ערך הנסחרים בבורסה",
+      "title_he": "חוזר מס הכנסה 22/2002: הרפורמה במס הכנסה, מיסוי רווחי הון והכנסות מניירות ערך הנסחרים בבורסה",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.14",
+      "locator_he": "עמוד 14",
       "page": 14,
       "quote": "תחשב כאיגרת חוב שאינה צמודה",
       "checked": "2026-10-31"

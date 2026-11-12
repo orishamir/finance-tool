@@ -49,8 +49,21 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.33, s.45; pp.65-66, s.111(א)",
-      "locator_he": "עמוד 33, סעיף 45; עמודים 65 עד 66, סעיף 111(א)",
+      "locator": "p.33, s.45",
+      "locator_he": "עמוד 33, סעיף 45",
+      "page": 33,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.65-66, s.111(א)",
+      "locator_he": "עמודים 65 עד 66, סעיף 111(א)",
       "page": 65,
       "quote": "יחושבו ע״י אקטואר הקרן על בסיס ההנחות שנקבעו בהוראות הממונה",
       "checked": "2026-10-26"

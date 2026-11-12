@@ -327,8 +327,21 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.10 s.9b; p.48 s.2",
-      "locator_he": "עמוד 10 סעיף 9ב; עמוד 48 סעיף 2",
+      "locator": "p.10 s.9b",
+      "locator_he": "עמוד 10 סעיף 9ב",
+      "page": 10,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.48 s.2",
+      "locator_he": "עמוד 48 סעיף 2",
       "page": 48,
       "quote": "אם הינך בן 60 ומעלה, שיעורי המס ההתחלתיים שיחולו לגבי רווח ההון הריאלי",
       "checked": "2026-10-25"

@@ -21,8 +21,21 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.2, s.5(ב); p.3, Annex A",
-      "locator_he": "עמוד 2, סעיף 5(ב); עמוד 3, נספח א",
+      "locator": "p.2, s.5(ב)",
+      "locator_he": "עמוד 2, סעיף 5(ב)",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.3, Annex A",
+      "locator_he": "עמוד 3, נספח א",
       "page": 3,
       "quote": "סוג ריבית",
       "checked": "2026-10-25"

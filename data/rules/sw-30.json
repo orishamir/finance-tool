@@ -131,8 +131,21 @@
       "publisher_he": "בנק ישראל",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.1-2; p.2",
-      "locator_he": "עמודים 1 עד 2; עמוד 2",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
+      "title": "חוזר ח-06-2863 – הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
+      "title_he": "חוזר ח-06-2863 – הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
       "page": 2,
       "quote": "מוארכת הוראת המעבר עד ליום",
       "checked": "2026-10-25"

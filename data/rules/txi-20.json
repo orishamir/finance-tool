@@ -81,8 +81,21 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp.42-43, sections 21-23; p.43",
-      "locator_he": "עמודים 42 עד 43, סעיפים 21-23; עמוד 43",
+      "locator": "pp.42-43, sections 21-23",
+      "locator_he": "עמודים 42 עד 43, סעיפים 21-23",
+      "page": 42,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.43",
+      "locator_he": "עמוד 43",
       "page": 43,
       "quote": "מחושבות אוטומטית על-ידי המחשב",
       "checked": "2026-10-26"

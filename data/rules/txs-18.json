@@ -21,8 +21,21 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.2, s.2.1; p.6, ss.4.1 to 4.3",
-      "locator_he": "עמוד 2, סעיף 2.1; עמוד 6, סעיפים 4.1 עד 4.3",
+      "locator": "p.2, s.2.1",
+      "locator_he": "עמוד 2, סעיף 2.1",
+      "page": 2,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.6, ss.4.1 to 4.3",
+      "locator_he": "עמוד 6, סעיפים 4.1 עד 4.3",
       "page": 6,
       "quote": "מיצה את כל אפשרויות הקיזוז שהיו לו",
       "checked": "2026-10-31"
