@@ -3,17 +3,17 @@
 // focus and the filter are the address (`?company=&type=&product=&q=`, written with `history.replaceState`, never a navigation), and the last
 // company focused is kept on the device for the next visit. Below lg the list is the page and the company opens as a sheet over it.
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { Link, useLoaderData } from "react-router";
-import { companies as copy, companyFocus as w, pagePreview } from "../copy";
+import { useLoaderData } from "react-router";
+import { companies as copy, companyFocus as w, pagePreview, search as searchWords } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { IconSearch } from "../components/icons";
 import { PageShell } from "../components/shell";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { CompanyList, FocusPane } from "../components/companies/focus";
 import { Sheet } from "../components/Sheet";
-import { Card, ChoicePair, HoldTallest, PhoneFold } from "../components/kit";
+import { Card, ChoicePair, HoldTallest, PageHead, PhoneFold, SearchField, TextLink } from "../components/kit";
 import { chooseProduct, chooseType, companyGroups, productTypes, searchFocus, searchToState, stateToSearch, statusLine, toggleFromPane, typeCounts, type FocusFigures, type FocusState, type TypeChoice } from "../lib/company-focus";
 import { deviceStore } from "../lib/device-store";
+import { MQ, useMedia } from "../lib/hooks";
 
 export async function loader() {
   const { buildCompanyFocus } = await import("../lib/company-focus.server");
@@ -51,9 +51,6 @@ export function meta({ location }: MetaPlace) {
 /** The last company the person focused, kept on this device. */
 const lastFocus = deviceStore<string | null>("mekor.companies.focus", null, (raw) => (typeof raw === "string" ? raw : null), (v) => v);
 
-/** From lg the company stands beside the list; below it, it opens as a sheet over the list. */
-const isWide = () => typeof window !== "undefined" && window.matchMedia("(min-width: 64rem)").matches;
-
 /** The figures' sourced values, fetched once per visit. */
 let figuresPromise: Promise<FocusFigures> | null = null;
 function fetchFigures(): Promise<FocusFigures> {
@@ -78,6 +75,8 @@ export default function Companies() {
   const saved = lastFocus.use();
   const ready = useRef(false);
   const sheetHead = useId();
+  /** From lg the company stands beside the list; below it, it opens as a sheet over the list. */
+  const wide = useMedia(MQ.lg);
 
   // the address first, then the device's last company; once, after hydration
   useEffect(() => {
@@ -104,11 +103,11 @@ export default function Companies() {
   const focusOn = useCallback((id: string, el: HTMLElement | null) => {
     setS((x) => ({ ...x, focus: id }));
     lastFocus.set(id);
-    if (!isWide()) {
+    if (!wide) {
       anchor.current = el;
       setSheetOpen(true);
     }
-  }, []);
+  }, [wide]);
 
   const setQ = (q: string) =>
     setS((x) => {
@@ -130,23 +129,12 @@ export default function Companies() {
 
   return (
     <PageShell current="decoder" data={{ rules, pointed, terms: {}, dimensions, today }}>
-      <div className="flex flex-col gap-6 pt-2 lg:pt-8">
-        <CompanyTabs current="company" />
-        <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
+      <div className="flex flex-col gap-6">
+        <PageHead tabs={<CompanyTabs current="company" />} title={copy.title} />
         <div className="flex flex-col gap-3">
           <PhoneFold summary={summary} more={w.fold.more} less={w.fold.less}>
             <ChoicePair
-              start={
-                <div className="flex flex-col gap-2 md:w-72 shrink-0">
-                  <label htmlFor="company-filter" className="text-sm font-medium">
-                    {w.search}
-                  </label>
-                  <div className="field-box text-muted-foreground">
-                    <IconSearch size={18} />
-                    <input id="company-filter" type="search" dir="rtl" value={s.q} onChange={(e) => setQ(e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
-                  </div>
-                </div>
-              }
+              start={<SearchField label={w.search} value={s.q} onChange={setQ} clearLabel={searchWords.clear} className="md:w-72 shrink-0" />}
               parent={{ label: w.typeLabel, ids: typeIds, labels: w.types, value: s.type, counts, onChange: (t) => setS((x) => ({ ...x, ...chooseType(data.kinds, t) })) }}
               child={{
                 label: w.productLabel,
@@ -175,9 +163,9 @@ export default function Companies() {
             </HoldTallest>
           </Card>
         </div>
-        <Link to="/documents#company-terms" className="self-start inline-flex items-center min-h-target text-link hover:underline">
+        <TextLink look="line" to="/documents#company-terms" className="self-start">
           {w.documents}
-        </Link>
+        </TextLink>
       </div>
       <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} anchor={anchor.current} height={80} labelledBy={sheetHead}>
         {pane(sheetHead)}
