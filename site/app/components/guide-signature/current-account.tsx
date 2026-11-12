@@ -10,9 +10,8 @@ import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
 import { differenceOf, type SiteValue } from "../../lib/value";
-import { AxisLabels, yearTicksIn } from "../chart/TimelineChart";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When } from "../kit";
+import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, termInputs, typed, useSigInputs, yearsRange, type VisualProps } from "./kit";
 

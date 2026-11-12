@@ -1,12 +1,12 @@
 // The gallery at /kit: every component of the kit in its states, with its name beside it. A page for builders and for reviewing the look
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
-import { Link, useSearchParams } from "react-router";
-import { brands, companyFocus, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { useSearchParams } from "react-router";
+import { brands, companyFocus, feeDeal as dealWords, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { IconAlert, IconExternal, IconLock } from "../icons";
+import { IconAlert, IconClose, IconExternal, IconLock } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -97,6 +97,32 @@ function Basics() {
             <LinkButton to="/kit">{g.sample.sentenceLink}</LinkButton>
           </div>
         </State>
+        <State label="quiet flush / destructive flush: no side padding, the words line up with the line above">
+          <div className="flex flex-col items-start">
+            <p className="text-sm text-muted-foreground">{g.sample.lead}</p>
+            <Button variant="quiet" flush>
+              {g.sample.hello}
+            </Button>
+            <Button variant="destructive" flush>
+              {g.sample.hello}
+            </Button>
+          </div>
+        </State>
+        <State label={'quiet size="sm" flush: a text action inside a line of small text, at the line\'s height with a 44 px tap area'}>
+          <p className="text-xs text-muted-foreground">
+            {g.sample.lead} ·{" "}
+            <Button variant="quiet" size="sm" flush className="align-baseline">
+              {g.sample.hello}
+            </Button>
+          </p>
+        </State>
+        <State label={'icon size="sm": 36 px, round, muted ink, a 44 px tap area (a sheet\'s back and close, over its content)'}>
+          <div className="flex items-center gap-3">
+            <Button variant="icon" size="sm" aria-label={g.sample.hello} className="bg-popover/90">
+              <IconClose size={20} />
+            </Button>
+          </div>
+        </State>
         <State label="LinkButton, long words in a narrow place: the button grows">
           <div className="max-w-64">
             <LinkButton to="/kit">{g.sample.longTag}</LinkButton>
@@ -117,6 +143,19 @@ function Basics() {
         <State label={`wrap, ${g.states.long}`}>
           <div className="max-w-60 flex flex-wrap items-center gap-2">
             <Tag wrap>{g.sample.longTag}</Tag>
+          </div>
+        </State>
+        <State label='shape="pill" (primary and outline are pills by default) / size="sm"'>
+          <div className="flex flex-wrap items-center gap-2">
+            <Tag shape="pill">neutral</Tag>
+            <Tag tone="primary">primary</Tag>
+            <Tag tone="outline">outline</Tag>
+            <Tag tone="primary" size="sm">
+              {g.sample.chip[0]}
+            </Tag>
+            <Tag shape="pill" size="sm">
+              {g.sample.chip[1]}
+            </Tag>
           </div>
         </State>
       </Demo>
@@ -141,6 +180,22 @@ function Basics() {
           ))}
         </Grid>
       </Demo>
+      <Demo name="PageHead" use={g.uses.PageHead}>
+        <State label="tabs, crumb, title with marks, lede, and what follows the lede" wide>
+          <PageHead
+            tabs={<PageTabs ariaLabel={trackBrowser.tabs.aria} current="a" tabs={[{ key: "a", label: trackBrowser.tabs.byCompany, href: "#kit" }, { key: "b", label: trackBrowser.tabs.byProduct, href: "#kit" }]} />}
+            crumb={<TextLink look="line" to="/kit">{g.sample.option[0]}</TextLink>}
+            title={g.sample.title}
+            marks={<Tag tone="parameter">{g.sample.chip[0]}</Tag>}
+            lede={g.sample.lead}
+          >
+            <p className="text-sm">{g.sample.body}</p>
+          </PageHead>
+        </State>
+        <State label="aside: a field beside the title, under it where the line has no room; rule: a hairline under the head" wide>
+          <PageHead title={g.sample.title} aside={<AskDemo />} lede={g.sample.lead} rule />
+        </State>
+      </Demo>
       <Demo name="Section" use={g.uses.Section}>
         <Grid>
           <State label='level="page", id, lead, action'>
@@ -157,6 +212,13 @@ function Basics() {
                 <p>{g.sample.body}</p>
               </Section>
             </div>
+          </State>
+          <State label='level="kick": the small name over a column of a tool, its parts with their own headings under it'>
+            <Section level="kick" as="div" title={dealWords.builder.title}>
+              <Section level="card" as="div" heading="h3" title={g.sample.title}>
+                <p>{g.sample.body}</p>
+              </Section>
+            </Section>
           </State>
         </Grid>
       </Demo>
@@ -184,6 +246,9 @@ function Folds() {
       </Demo>
       <Demo name="AskField" use={g.uses.AskField}>
         <AskDemo />
+      </Demo>
+      <Demo name="SearchField" use={g.uses.SearchField}>
+        <SearchDemo />
       </Demo>
       <Demo name="DidYouKnow" use={g.uses.DidYouKnow}>
         <div className="max-w-xs">
@@ -219,6 +284,12 @@ function Folds() {
           <State label="spread, as heading (as=h3), size=field, controlled">
             <Disclosure spread as="h3" size="field" labelClassName="text-lg font-semibold" label={g.sample.title} open={open} onOpenChange={setOpen}>
               <p className="pt-1">{g.sample.body}</p>
+            </Disclosure>
+          </State>
+          <State label='look="link": the label in the link colour, the chevron close after it'>
+            <p className="text-sm">{g.sample.body}</p>
+            <Disclosure look="link" label={g.sample.foldLabel} openLabel={g.sample.foldHide} summaryClassName="text-sm">
+              <p className="pt-1 text-sm">{g.sample.inner}</p>
             </Disclosure>
           </State>
           <State label="plain (a footnote fold)">
@@ -476,7 +547,7 @@ function Words({ today }: { today: string }) {
         <Grid>
           <State label={`${g.states.sourced} / ${g.states.computed} / ${g.states.entered}`}>
             <Sentence size="sm" measure>
-              {g.sample.sentenceBefore} <Num value={s.sourced} display="8" /> {g.sample.sentenceMid} <Num value={s.comp} /> {g.sample.sentenceAfter} <Link to="/kit" className="text-link hover:underline">{g.sample.sentenceLink}</Link>, <Num value={s.ent} />.
+              {g.sample.sentenceBefore} <Num value={s.sourced} display="8" /> {g.sample.sentenceMid} <Num value={s.comp} /> {g.sample.sentenceAfter} <TextLink to="/kit">{g.sample.sentenceLink}</TextLink>, <Num value={s.ent} />.
             </Sentence>
           </State>
           <State label={`${g.states.stale}, tone=muted`}>
@@ -595,6 +666,12 @@ function Words({ today }: { today: string }) {
           <State label="KeyValueList rows">
             <KeyValueList rows items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} /> }))} />
           </State>
+          <State label="KeyValueList plain: the same rows between hairlines, inside a card that holds more">
+            <Card className="flex flex-col gap-3">
+              <p className="font-semibold">{g.sample.title}</p>
+              <KeyValueList plain items={g.sample.cards.map((c) => ({ ...c, value: <Num value={s.sourced} />, tag: c.id === g.sample.cards[0]!.id ? <Tag tone="positive">{g.states.sourced}</Tag> : undefined }))} />
+            </Card>
+          </State>
         </Grid>
       </Demo>
       <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
@@ -627,11 +704,14 @@ function Words({ today }: { today: string }) {
           <GapNote reason={g.sample.reason} />
         </State>
       </Demo>
-      <Demo name="PrintedText, DoubtNote" use={g.uses.PrintedText}>
+      <Demo name="PrintedText, PrintedQuotes, DoubtNote" use={g.uses.PrintedText}>
         <State label="PrintedText: a record's own Hebrew with its figures isolated" wide>
           <p className="text-sm max-w-measure">
             <PrintedText text={g.sample.printed} />
           </p>
+        </State>
+        <State label="PrintedQuotes: a document's terms quoted word for word in a muted box, one quote a line" wide>
+          <PrintedQuotes quotes={[g.sample.printed, g.sample.doubt]} />
         </State>
         <State label="DoubtNote: a record's doubt beside its figure" wide>
           <DoubtNote text={g.sample.doubt} className="text-sm" />
@@ -657,6 +737,7 @@ function ClampedDemo() {
 function Fields() {
   const [a, setA] = useState<number | null>(1000);
   const [b, setB] = useState<number | null>(3000);
+  const [c, setC] = useState<number | null>(1000);
   const [years, setYears] = useState<number | null>(10);
   const [years2, setYears2] = useState<number | null>(25);
   const [pct, setPct] = useState<number | null>(5);
@@ -683,6 +764,16 @@ function Fields() {
           <State label={g.states.disabled}>
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
+          <State label={`validate={nonNegativeCheck}, ${g.states.interactive}`}>
+            <NumberField label={g.sample.field} unit="nis" value={c} start={1000} isEntered={c !== 1000} validate={nonNegativeCheck} onCommit={(n) => setC(n)} onReset={() => setC(1000)} />
+          </State>
+          <State label="the checks' one message each: nonNegativeCheck(-1), yearsCheck({ min: 1, max: 40 })(41), percentCheck()(101)">
+            <p className="flex flex-col gap-1 text-xs text-destructive">
+              <span>{nonNegativeCheck(-1)}</span>
+              <span>{yearsCheck({ min: 1, max: 40 })(41)}</span>
+              <span>{percentCheck()(101)}</span>
+            </p>
+          </State>
         </div>
       </Demo>
       <Demo name="FieldState" use={g.uses.FieldState}>
@@ -698,10 +789,10 @@ function Fields() {
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>
           <State label={`${g.states.filled}, ${g.states.interactive}, ${g.states.draggable}`}>
-            <RangeField label={g.sample.range} unit="years" value={years} start={10} min={1} max={40} step={1} isEntered={years !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
+            <RangeField label={g.sample.range} unit="years" value={years} start={10} min={1} max={40} step={1} isEntered={years !== 10} validate={yearsCheck({ min: 1, max: 40 })} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
           </State>
           <State label={`${g.states.changed}, ${g.states.interactive}`}>
-            <RangeField label={g.sample.range} unit="years" value={years2} start={10} min={1} max={40} step={1} isEntered={years2 !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears2(n)} onReset={() => setYears2(10)} inputMode="numeric" />
+            <RangeField label={g.sample.range} unit="years" value={years2} start={10} min={1} max={40} step={1} isEntered={years2 !== 10} validate={yearsCheck({ min: 1, max: 40 })} onCommit={(n) => setYears2(n)} onReset={() => setYears2(10)} inputMode="numeric" />
           </State>
           <State label={g.states.disabled}>
             <RangeField label={g.sample.range} unit="years" value={null} min={1} max={40} step={1} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
@@ -838,6 +929,9 @@ function Fields() {
           <State label={g.states.error}>
             <TextField label={g.sample.text.label} value="" onChange={() => undefined} error={g.sample.error} />
           </State>
+          <State label={`inline: a name typed in place in a line of other facts, ${g.states.interactive}`}>
+            <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="CheckField" use={g.uses.CheckField}>
@@ -870,6 +964,20 @@ function Fields() {
         </Grid>
       </Demo>
     </>
+  );
+}
+
+function SearchDemo() {
+  const [value, setValue] = useState("");
+  return (
+    <Grid>
+      <State label={`${g.states.interactive}: label above, × while it holds words`}>
+        <SearchField label={g.sample.text.label} value={value} onChange={setValue} clearLabel={g.sample.foldHide} className="md:w-72" />
+      </State>
+      <State label="labelHidden, its own words (no value)">
+        <SearchField label={g.sample.text.label} labelHidden placeholder={g.sample.text.label} onChange={() => undefined} />
+      </State>
+    </Grid>
   );
 }
 
@@ -983,7 +1091,7 @@ function MarkerDemo({ today }: { today: string }) {
 function ChartParts({ today }: { today: string }) {
   const s = samples(today);
   return (
-    <Demo name="ChartLegend, Swatch, ChartReadout, ChartTable" use={g.uses.ChartLegend}>
+    <Demo name="ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn" use={g.uses.ChartLegend}>
       <State label="ChartLegend, every Swatch shape" wide>
         <ChartLegend
           items={[
@@ -1009,6 +1117,12 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="AxisLabels: the value axis at the plot's start edge, above its gridlines, with a halo; yearTicksIn(0, 25): whole-year steps from today" wide>
+        <AxisDemo from={0} to={25} />
+      </State>
+      <State label="yearTicksIn(7, 23): a zoomed view keeps whole-year steps between its ends" wide>
+        <AxisDemo from={7} to={23} />
+      </State>
       <State label="ChartTable, scroll=cue" wide>
         <ChartTable
           rowHead={g.sample.yearWord}
@@ -1020,6 +1134,28 @@ function ChartParts({ today }: { today: string }) {
         />
       </State>
     </Demo>
+  );
+}
+
+/** An SVG chart's axis parts on a rising line: the value axis's labels and the year ticks between two years. */
+function AxisDemo({ from, to }: { from: number; to: number }) {
+  const [ref, w] = useWidth(320);
+  const still = (value: number) => ({ value, phase: "still" as const });
+  const ticks = [0, 50_000, 100_000, 150_000].map(still);
+  const years = yearTicksIn(from, to).map(still);
+  const x = (year: number) => 8 + ((year - from) / (to - from)) * (w - 16);
+  const y = (v: number) => 120 - (v / 150_000) * 100;
+  return (
+    <div ref={ref} className="w-full max-w-md">
+      <svg width={w} height={146} aria-hidden="true" className="block">
+        {ticks.map((t) => (
+          <line key={t.value} x1={0} x2={w} y1={y(t.value)} y2={y(t.value)} className={t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
+        ))}
+        <path d={`M${x(from)} ${y(10_000)}L${x(to)} ${y(140_000)}`} fill="none" className="stroke-chart-value" strokeWidth={2} />
+        <AxisLabels ticks={ticks} y={y} />
+        <YearLabels ticks={years} x={x} y={140} left={0} right={w} />
+      </svg>
+    </div>
   );
 }
 
@@ -1382,6 +1518,20 @@ function Lists({ today }: { today: string }) {
             {g.sample.claim.doc}
           </DocLink>
         </State>
+        <State label="source: the cited place, its address built by sourceHref inside the link" wide>
+          <DocLink source={{ url: "https://example.com/tariff.pdf", page: 3 }} className="text-sm">
+            {g.sample.claim.doc}
+          </DocLink>
+        </State>
+        <State label='look="inline": inside a line of text, with no height of its own, so the line keeps its height' wide>
+          <Sentence size="sm" tone="muted">
+            <DocLink look="inline" href={sourceHref({ url: "https://example.com/tariff.pdf", page: 2 })}>
+              {g.sample.claim.doc}
+            </DocLink>
+            {", "}
+            {g.sample.lead}
+          </Sentence>
+        </State>
         <State label="a web page opened at the quoted words, by text fragment (sourceHref)" wide>
           <DocLink href={sourceHref({ url: "https://example.com/tariff/", fragment: { start: "דמי משמרת", end: "גבייה רבעונית 0.03%" } })} className="text-sm">
             {g.sample.claim.doc}
@@ -1548,6 +1698,9 @@ function Lists({ today }: { today: string }) {
         <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
           <InlineSelectDemo />
         </State>
+        <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
+          <InlineSelectHiddenDemo />
+        </State>
       </Demo>
       <Demo name="GroupHead, ListRow, RowList" use={g.uses.ListRow}>
         <State label="rows in one box: a plain row, the chosen one, one with chips and a muted line" wide>
@@ -1594,6 +1747,18 @@ function Lists({ today }: { today: string }) {
           <GoLink to="/kit">{g.sample.option[0]}</GoLink>
         </State>
       </Demo>
+      <Demo name="TextLink" use={g.uses.TextLink}>
+        <State label='look="inline": inside running text'>
+          <p className="max-w-measure">
+            {g.sample.lead} <TextLink to="/kit">{g.sample.sentenceLink}</TextLink>.
+          </p>
+        </State>
+        <State label='look="line": a link on a line of its own, a 44 px target as wide as its words'>
+          <TextLink look="line" to="/kit" className="text-sm">
+            {g.sample.option[0]}
+          </TextLink>
+        </State>
+      </Demo>
       <Demo name="SharedFacts, FigureLines" use={g.uses.SharedFacts}>
         <State label="what every row shares, said once over a table" wide>
           <SharedFacts title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i] }))} className="max-w-xl" />
@@ -1608,6 +1773,22 @@ function Lists({ today }: { today: string }) {
             columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8, dim: true }]}
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
           />
+        </State>
+        <State label="wrap: a fitted column whose words break onto a second line; tight: a narrow column of an arrow, 4 px at its sides" wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], width: 8, wrap: true }, { id: "go", head: <span className="sr-only">{g.sample.option[2]}</span>, width: 3, tight: true }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], g.sample.longTag, <RowArrow />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label="ProductPhoneRow stacked, then stacked roomy: its lines 4 px apart, then 8 px apart (a deposit's name over its rates at each amount)">
+          <Card pad="none" className="overflow-hidden flex flex-col max-w-sm">
+            {[false, true].map((roomy) => (
+              <ProductPhoneRow key={String(roomy)} stacked roomy={roomy}>
+                <span className="font-medium">{g.sample.option[roomy ? 1 : 0]}</span>
+                <FigureLines items={[0, 1].map((i) => ({ id: String(i), label: g.sample.option[i], figure: <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" /> }))} />
+              </ProductPhoneRow>
+            ))}
+          </Card>
         </State>
         <State label="a row's details folded under it, its button marked by what they hold (a note, a doubt)" wide>
           <ProductTable
@@ -1729,7 +1910,14 @@ function Lists({ today }: { today: string }) {
             <MeterBar share={0.4} tone="muted" hollow />
           </div>
         </State>
+        <State label="tone computed: the site's own reckoning of the share (a company's products, each against its largest)" wide>
+          <div className="flex flex-col gap-3 max-w-48">
+            <MeterBar share={1} tone="computed" />
+            <MeterBar share={0.35} tone="computed" />
+          </div>
+        </State>
       </Demo>
+      <DealDemos today={today} />
       <Demo name="PeriodStrip" use={g.uses.PeriodStrip}>
         <State label="three stretches: all of a group's prices, one of them, then the price list" wide>
           <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 1, label: g.sample.strip.first, tone: "first" }, { from: 1, to: 4, label: g.sample.strip.middle, tone: "middle" }, { from: 4, to: 10, label: g.sample.strip.after, tone: "after" }]} />
@@ -1870,12 +2058,10 @@ function Lists({ today }: { today: string }) {
 
 export function KitGallery({ today }: { today: string }) {
   return (
-    <div className="flex flex-col gap-section pt-6 lg:pt-10">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl lg:text-3xl font-semibold">{g.title}</h1>
-        <p className="text-lg text-muted-foreground max-w-measure">{g.lede}</p>
+    <div className="flex flex-col gap-section">
+      <PageHead title={g.title} lede={g.lede}>
         <Callout tone="caution">{g.banner}</Callout>
-      </header>
+      </PageHead>
       <div className="flex flex-col gap-6">
         <Basics />
         <Folds />
@@ -2104,6 +2290,91 @@ function SideNavDemo() {
 function InlineSelectDemo() {
   const [on, setOn] = useState<string | null>(null);
   return <InlineSelect label={rulesFront.claim.question} all={rulesFront.claim.all} value={on} onChange={setOn} options={Object.entries(rulesFront.shelves).map(([id, sh]) => ({ id, name: sh.name }))} />;
+}
+
+function InlineSelectHiddenDemo() {
+  const [per, setPer] = useState<string | null>("12");
+  return <InlineSelect label={dealWords.panel.per} labelHidden value={per} onChange={setPer} options={Object.entries(dealWords.panel.perOptions).map(([id, name]) => ({ id, name }))} />;
+}
+
+/** The pieces the fee page built for a deal and lent the kit: a figure and a month typed in place, a price against its cap, a step, and
+ *  the line that adds. */
+function DealDemos({ today }: { today: string }) {
+  const { rate, ent } = samples(today);
+  const typedRate = entered(0.25, "pct_of_trade", today, g.sampleAbout);
+  const [mine, setMine] = useState<SiteValue>(typedRate);
+  const [bound, setBound] = useState<SiteValue | null>(null);
+  const [month, setMonth] = useState<string | null>("2027-03");
+  const [added, setAdded] = useState<string[]>([]);
+  const items = [
+    { id: "a", label: g.sample.phoneFold.chips[0]!, usual: true },
+    { id: "b", label: g.sample.phoneFold.chips[1]!, usual: true },
+    { id: "c", label: g.sample.phoneFold.chips[2]! },
+  ].filter((i) => !added.includes(i.id));
+  return (
+    <>
+      <Demo name="FigureField" use={g.uses.FigureField}>
+        <Grid>
+          <State label={`entered: typed by the person, ${g.states.interactive}`}>
+            <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
+          </State>
+          <State label="sourced: filled from a price list and left as it was; the mark opens its source">
+            <FigureField value={rate} label={g.sample.percent} unit="%" words={dealWords.price.per[12]} onCommit={() => undefined} />
+          </State>
+          <State label={`optional and not given: a dashed box; emptying a given one clears it, ${g.states.interactive}`}>
+            <FigureField value={bound} label={g.sample.field} unit="₪" words={dealWords.builder.minWord} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />
+          </State>
+          <State label={g.states.error}>
+            <FigureField value={ent} label={g.sample.field} unit="₪" onCommit={() => undefined} validate={() => g.sample.error} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="MonthField" use={g.uses.MonthField}>
+        <Grid>
+          <State label={`a month given, ${g.states.interactive}: type 3.2028 and leave the box`}>
+            <MonthField value={month} label={g.sample.field} onCommit={setMonth} onClear={() => setMonth(null)} />
+          </State>
+          <State label={g.states.empty}>
+            <MonthField value={null} label={g.sample.field} onCommit={() => undefined} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="CapBar" use={g.uses.CapBar}>
+        <div className="flex max-w-sm flex-col gap-4">
+          <State label="below the cap, a later price at it (outline)" wide>
+            <CapBar share={0.57} later={1} fill="bg-fee-balance" edge="border-fee-balance" cap="1.05%" />
+          </State>
+          <State label="a quarter of the cap" wide>
+            <CapBar share={0.25} fill="bg-fee-deposit" edge="border-fee-deposit" cap="4%" />
+          </State>
+          <State label="above the cap: the part above in the blocked red's stripes" wide>
+            <CapBar share={1.3} fill="bg-fee-trade" edge="border-fee-trade" cap="0.1%" />
+          </State>
+        </div>
+      </Demo>
+      <Demo name="Step" use={g.uses.Step}>
+        <div className="flex max-w-md flex-col gap-4">
+          <Step n={1} done title={dealWords.builder.kind} value={g.sample.title} action={<Button variant="quiet" size="sm">{dealWords.builder.kindChange}</Button>} />
+          <Step n={2} title={dealWords.builder.track} value={dealWords.builder.trackNone} />
+          <Step n={3} title={dealWords.builder.fees}>
+            <p className="text-sm text-muted-foreground">{g.sample.body}</p>
+          </Step>
+        </div>
+      </Demo>
+      <Demo name="AddLine" use={g.uses.AddLine}>
+        <State label={`two usual things and a rarer one; a chip adds its thing, ${g.states.interactive}`} wide>
+          <div className="flex max-w-md flex-col gap-2">
+            <AddLine lead={dealWords.builder.add} items={items} onAdd={(id) => setAdded((a) => [...a, id])} />
+            {added.length > 0 && (
+              <Button variant="quiet" flush size="sm" className="self-start" onClick={() => setAdded([])}>
+                {g.sample.hello}
+              </Button>
+            )}
+          </div>
+        </State>
+      </Demo>
+    </>
+  );
 }
 
 function PeriodBarsDemo() {

@@ -54,7 +54,7 @@ function compactNisParts(v: number): { num: string; word: string | null } {
  * one with two read as different precisions.
  */
 const billions = new Intl.NumberFormat(he, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const nisBillions = (v: number) => `${billions.format(Math.abs(v) / 1e9)} ${numbers.billion} ₪`;
+const nisBillions = (v: number) => `${withMinus(billions.format(v / 1e9))} ${numbers.billion} ₪`;
 
 /**
  * A row with a figure in the short form writes its other large figures in it too, from a hundred million up (`0.76 מיליארד ₪`): a smaller
@@ -126,15 +126,72 @@ export const fmt = {
     const p = compactNisParts(v);
     return `\u2066₪ ${p.word ? `${p.word} ` : ""}${p.num}\u2069`;
   },
+  /** A shekel amount in billions, always with two decimals: `19.14 מיליארד ₪`. */
+  nisBillions,
+  /** A whole-shekel amount with its sign (`signed`): `+4,875 ₪`, `−1,524 ₪`, `0 ₪`. */
+  signedNisWhole: (v: number, options: SignedOptions = {}) => signed(v, fmt.nisWhole(Math.abs(v)), options),
+  /**
+   * A percent (data's percent numbers, `1.05` is 1.05%) with its sign (`signed`): `+18.5%`, `−2.38%`. `digits`: exactly that many
+   * decimals (`signedPct(3, 1)` is `+3.0%`); without it, the decimals `pct` shows.
+   */
+  signedPct: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
+  /** A plain number with its sign (`signed`): `+2`, `−18.5`. `digits`: exactly that many decimals; without it, up to two, as `number`. */
+  signedNumber: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? plain.format(Math.abs(v)) : fixed(digits, "decimal").format(Math.abs(v)), options),
   /** Hebrew year forms (copy.md §1): שנה, שנתיים, {n} שנים. */
-  years: (n: number) => {
-    const form = plural.select(n);
-    if (n === 1) return "שנה";
-    if (n === 2 || form === "two") return "שנתיים";
-    return `${plain.format(n)} שנים`;
-  },
-  months: (n: number) => (n === 1 ? "חודש" : n === 2 ? "חודשיים" : `${plain.format(n)} חודשים`),
+  years: (n: number) => countPhrase(n, { one: "שנה", two: "שנתיים", many: "שנים" }),
+  months: (n: number) => countPhrase(n, { one: "חודש", two: "חודשיים", many: "חודשים" }),
 };
+
+/** How a signed figure is written: `isolate` (the default) wraps it in a left-to-right isolate, for a figure inside Hebrew text. */
+export interface SignedOptions {
+  /** False for a figure that is already its own left-to-right element: a chart tick, a `<bdi dir="ltr">`. */
+  isolate?: boolean;
+}
+
+/**
+ * A figure with its sign, from its text without one (`abs`): "+" before a positive, the true minus sign U+2212 before a negative, and
+ * none before a figure that shows as zero (−0.3 ₪ in whole shekels reads "0 ₪", not "−0 ₪"). Isolated left to right (U+2066 … U+2069)
+ * by default, so the sign stays on the left of the digits inside Hebrew: a sign is weak in the bidi algorithm and, left to the
+ * sentence, lands on their right ("2%−").
+ */
+function signed(v: number, abs: string, { isolate = true }: SignedOptions): string {
+  const sign = !/[1-9]/.test(abs) ? "" : v > 0 ? "+" : "−";
+  return isolate ? `⁦${sign}${abs}⁩` : `${sign}${abs}`;
+}
+
+/** A number or a percent with exactly `digits` decimals, one formatter per kind and count of decimals. */
+const fixedFormats = new Map<string, Intl.NumberFormat>();
+function fixed(digits: number, style: "decimal" | "percent"): Intl.NumberFormat {
+  const key = `${style}:${digits}`;
+  let f = fixedFormats.get(key);
+  if (!f) fixedFormats.set(key, (f = new Intl.NumberFormat(he, { style, minimumFractionDigits: digits, maximumFractionDigits: digits })));
+  return f;
+}
+
+/** The words of a count by its Hebrew plural form: one and two have their own; any other count is the number and `many`; zero has `zero` where given. */
+export interface CountWords {
+  /** "אין חברות"; without it, zero reads "0" and `many`. */
+  zero?: string;
+  /** "חברה אחת". */
+  one: string;
+  /** "שתי חברות". */
+  two: string;
+  /** "חברות", written after the number ("15 חברות"); or a text with `{n}` where the number goes ("עוד {n} מקורות"). */
+  many: string;
+}
+
+/**
+ * A count in words (copy.md 7.3): "חברה אחת", "שתי חברות", "15 חברות", never "1 חברות". The form is Hebrew's plural category
+ * (`Intl.PluralRules`) of a whole count above zero; a fraction takes the plural ("2.5 שנים"). The number has the thousands separator.
+ */
+export function countPhrase(n: number, words: CountWords): string {
+  if (n === 0 && words.zero !== undefined) return words.zero;
+  const form = Number.isInteger(n) && n > 0 ? plural.select(n) : "other";
+  if (form === "one") return words.one;
+  if (form === "two") return words.two;
+  const num = fmt.number(n);
+  return words.many.includes("{n}") ? words.many.replace("{n}", num) : `${num} ${words.many}`;
+}
 
 /**
  * Display rounding (method §13 unchanged, this is display only). A computed, entered or

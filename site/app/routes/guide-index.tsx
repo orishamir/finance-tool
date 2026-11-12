@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
-import { Card, ChipList, cx, gershayim, GroupHead, RowArrow, RowList } from "../components/kit";
+import { Card, ChipList, cx, gershayim, GroupHead, PageHead, RowArrow, RowList, Section } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -89,38 +89,25 @@ export default function GuideIndex() {
   const data = useLoaderData<typeof loader>();
   return (
     <PageShell current="guide" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
-      <div className="flex flex-col gap-section pt-6 lg:pt-10">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
-          <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        </header>
-        <section aria-labelledby="g1" className="flex flex-col gap-6">
-          <div>
-            <h2 id="g1" className="text-xl lg:text-2xl font-semibold">
-              {copy.group1.title}
-            </h2>
-            <p className="text-sm text-muted-foreground">{copy.group1.line}</p>
+      <div className="flex flex-col gap-section">
+        <PageHead title={copy.title} lede={copy.lede} />
+        <Section title={copy.group1.title} lead={copy.group1.line}>
+          <div className="flex flex-col gap-6">
+            {groupGuides(data.wrappers.map((w) => w.id)).map((g) => (
+              <div key={g.id} className="flex flex-col gap-3">
+                <GroupHead>{copy.purposeGroups[g.id] ?? g.id}</GroupHead>
+                <GuideList>
+                  {g.ids.map((id) => {
+                    const w = data.wrappers.find((x) => x.id === id)!;
+                    return <InstrumentCard key={w.id} href={`/guide/${w.id}`} name={w.name} line={w.line} plain={w.plain} />;
+                  })}
+                </GuideList>
+              </div>
+            ))}
           </div>
-          {groupGuides(data.wrappers.map((w) => w.id)).map((g) => (
-            <div key={g.id} className="flex flex-col gap-3">
-              <GroupHead>{copy.purposeGroups[g.id] ?? g.id}</GroupHead>
-              <GuideList>
-                {g.ids.map((id) => {
-                  const w = data.wrappers.find((x) => x.id === id)!;
-                  return <InstrumentCard key={w.id} href={`/guide/${w.id}`} name={w.name} line={w.line} plain={w.plain} />;
-                })}
-              </GuideList>
-            </div>
-          ))}
-        </section>
+        </Section>
         {data.exposures.length > 0 && (
-          <section aria-labelledby="g2" className="flex flex-col gap-4">
-            <div>
-              <h2 id="g2" className="text-xl lg:text-2xl font-semibold">
-                {copy.group2.title}
-              </h2>
-              <p className="text-sm text-muted-foreground">{copy.group2.line}</p>
-            </div>
+          <Section title={copy.group2.title} lead={copy.group2.line}>
             <GuideList>
               {data.exposures.map((e) =>
                 e.kinds.length > 0 ? (
@@ -139,7 +126,7 @@ export default function GuideIndex() {
                 ),
               )}
             </GuideList>
-          </section>
+          </Section>
         )}
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <InstrumentCard href={site.notCovered.href} name={copy.last.title} line={copy.last.line} quiet />

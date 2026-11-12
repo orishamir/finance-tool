@@ -52,7 +52,7 @@ export function PlanCard({ knobs, onOpen, fx, today, example, dollar, inflation,
           </>
         ))}
       {" · "}
-      <Button variant="quiet" className="!min-h-0 tap-area !text-xs !px-0 align-baseline" onClick={onOpen}>
+      <Button variant="quiet" flush className="!min-h-0 tap-area text-xs align-baseline" onClick={onOpen}>
         {c.plan.panelTitle}
       </Button>
     </p>

@@ -18,7 +18,7 @@ import { latestSnapshots } from "./providers.server";
 import { compactFee } from "./value";
 import { readParsedCached } from "./read-cache.server";
 
-/** The rules the page quotes (negotiation, caps, references, link-outs) and the cap and run rules read. */
+/** The rules the page quotes (negotiation, caps, references, link-outs) and the cap and run rules read; the kinds' cap rules join them. */
 const quoted = ["PF-02", "PF-04", "PF-05", "PF-06", "PF-11", "PF-13", "PF-16", "PF-39", "PEN-21", "PEN-22", "KH-22", "KH-23", "MF-55", "MF-18", "MF-19", "ETF-17", "BRK-26", "BRK-33", "BRK-37", "CAT-35", "CAT-36", "CAT-37", "CAT-40", "BANK-32"];
 
 function cmaFiles() {
@@ -86,6 +86,9 @@ export function buildFeesData(): FeesData {
     isa: refLink("mutual-funds-and-money-market-funds.md", "MF-55", /Funds_Report2025/),
   };
   const kinds = dealKindsOf(loadProducts());
+  // the rules behind every kind's caps, which the fee page's cap lines cite
+  const capRules = [...new Set(kinds.flatMap((k) => Object.values(k.caps).flatMap((c) => c?.rule_ids ?? [])))].filter((id) => !quoted.includes(id) && allRules[id]).map((id) => allRules[id]!);
+  rules.push(...capRules);
   // the houses a securities account's deal can start from: the ones the comparison ranks, each read as it can be done (providers.ts)
   const houses = providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)
     .filter((s) => !s.missing)

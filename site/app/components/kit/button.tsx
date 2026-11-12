@@ -3,17 +3,33 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { Link } from "react-router";
 import { cx } from "./cx";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "quiet" | "destructive" | "icon"; children: ReactNode };
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "primary" | "secondary" | "quiet" | "destructive" | "icon";
+  /** `quiet` and `destructive` only: no side padding, so the words line up with the text above and below them (a text action at a line's start). */
+  flush?: boolean;
+  /**
+   * `quiet` and `destructive`: 13 px words with no height of their own and a 44 px tap area, for a text action inside a line of small text.
+   * `icon`: a 36 px round button in the muted ink, its tap area still 44 px, for one that floats over content (a sheet's back and close).
+   */
+  size?: "sm";
+  children: ReactNode;
+};
 
 /** An action. `primary` once per screen, `secondary` for the rest, `quiet` for a text-style action, `destructive` for a quiet one that deletes, `icon` for a 44 px icon-only button. */
-export function Button({ variant = "secondary", className, children, type = "button", ...rest }: ButtonProps) {
+export function Button({ variant = "secondary", flush, size, className, children, type = "button", ...rest }: ButtonProps) {
+  const side = flush ? "px-0" : "px-2";
+  const small = size === "sm";
+  // a text action's height: the 44 px target, or in a line of small text the line's own height with the target as its tap area
+  const textHeight = small ? "text-xs tap-area" : "min-h-target";
   const styles = {
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 lg:tap-area px-5 rounded-md hover:bg-accent",
-    quiet: "text-link min-h-target px-2 rounded-md hover:underline",
+    quiet: cx("text-link rounded-md hover:underline", textHeight, side),
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
-    destructive: "text-destructive min-h-target px-2 rounded-md hover:underline",
-    icon: "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
+    destructive: cx("text-destructive rounded-md hover:underline", textHeight, side),
+    icon: small
+      ? "size-9 tap-area inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
+      : "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (
     <button type={type} className={cx("inline-flex items-center justify-center gap-2 transition-colors duration-[var(--duration-fast)]", styles, className)} {...rest}>

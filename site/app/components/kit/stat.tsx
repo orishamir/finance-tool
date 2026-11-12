@@ -62,26 +62,52 @@ export interface KeyValueItem {
   footer?: ReactNode;
 }
 
+/** The label column of a list of divided rows from `md`: one width for every such list, so their labels line up across the site. */
+const LABEL_COLUMN = "md:grid md:grid-cols-[10rem_minmax(0,1fr)] md:gap-x-6";
+
+/** What a row of `rows` or `plain` holds beside its label: the value with its tag, then the line, the lead and the footer under it. */
+function RowBody({ it }: { it: KeyValueItem }) {
+  return (
+    <>
+      <span className="flex flex-wrap items-center gap-2">
+        <span>{it.value}</span>
+        {it.tag}
+      </span>
+      {it.line && <span className="text-sm">{it.line}</span>}
+      {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
+      {it.footer}
+    </>
+  );
+}
+
 /**
  * Facts as cards: one card with dividers on a phone, a two-by-two grid with the value at 20 px from `lg` (design-spec 2).
  * `rows`: one card of divided rows at every size, the label in a column of its own from `md` and the value at body size, for facts
- * whose values run to sentences (a guide page's list).
+ * whose values run to sentences (a guide page's list). `plain`: the same rows between hairlines with no card of their own, as a `<dl>`,
+ * for a list inside a card that holds more (a bank product's terms, a track's facts).
  */
-export function KeyValueList({ items, rows }: { items: KeyValueItem[]; rows?: boolean }) {
+export function KeyValueList({ items, rows, plain }: { items: KeyValueItem[]; rows?: boolean; plain?: boolean }) {
+  if (plain)
+    return (
+      <dl className="flex flex-col">
+        {items.map((it) => (
+          <div key={it.id} className={cx("flex flex-col gap-1 py-3 border-b border-border last:border-b-0", LABEL_COLUMN)}>
+            <dt className="text-sm text-muted-foreground md:pt-0.5">{it.label}</dt>
+            <dd className="flex min-w-0 flex-col gap-1">
+              <RowBody it={it} />
+            </dd>
+          </div>
+        ))}
+      </dl>
+    );
   if (rows)
     return (
       <Card pad="none" className="flex flex-col divide-y divide-border">
         {items.map((it) => (
-          <div key={it.id} className="flex flex-col gap-1 p-4 md:grid md:grid-cols-[10rem_minmax(0,1fr)] md:gap-x-6 md:px-5">
+          <div key={it.id} className={cx("flex flex-col gap-1 p-4 md:px-5", LABEL_COLUMN)}>
             <span className="text-sm text-muted-foreground md:pt-0.5">{it.label}</span>
             <span className="flex min-w-0 flex-col gap-1">
-              <span className="flex flex-wrap items-center gap-2">
-                <span>{it.value}</span>
-                {it.tag}
-              </span>
-              {it.line && <span className="text-sm">{it.line}</span>}
-              {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
-              {it.footer}
+              <RowBody it={it} />
             </span>
           </div>
         ))}

@@ -86,12 +86,13 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
 
 /**
  * A thin bar under a figure in a table row, its length the figure's share of the list's highest: the chosen or top row's in the accent,
- * the others in the value colour, and a hollow one for a row that stands apart (an offer with a condition). Grows from the row's start.
+ * the others in the value colour, and a hollow one for a row that stands apart (an offer with a condition). `computed` is the site's own
+ * reckoning of the share, in the computed ink (a company's products, each against its largest). Grows from the row's start.
  */
-export function MeterBar({ share, tone = "value", hollow, className }: { share: number; tone?: "accent" | "value" | "muted"; hollow?: boolean; className?: string }) {
+export function MeterBar({ share, tone = "value", hollow, className }: { share: number; tone?: "accent" | "value" | "muted" | "computed"; hollow?: boolean; className?: string }) {
   const w = `${Math.max(0.02, Math.min(1, share)) * 100}%`;
-  const fill = { accent: "bg-primary", value: "bg-chart-value", muted: "bg-muted-foreground" }[tone];
-  const edge = { accent: "border-primary", value: "border-chart-value", muted: "border-muted-foreground" }[tone];
+  const fill = { accent: "bg-primary", value: "bg-chart-value", muted: "bg-muted-foreground", computed: "bg-computed" }[tone];
+  const edge = { accent: "border-primary", value: "border-chart-value", muted: "border-muted-foreground", computed: "border-computed" }[tone];
   return (
     <span aria-hidden="true" className={cx("relative block h-1.5 w-full rounded-full bg-muted", className)}>
       <span className={cx("absolute inset-y-0 start-0 rounded-full transition-[width] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", hollow ? cx("border bg-card", edge) : fill)} style={{ width: w }} />

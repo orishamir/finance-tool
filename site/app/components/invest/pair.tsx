@@ -4,7 +4,7 @@
 // standing-order and phone-only prices, the notes on prices abroad, the own-bank field, and a fund's gap from its index.
 import { mayaFundHref } from "../../lib/sources";
 import { Fragment, type ReactNode } from "react";
-import { isTie, type FeeLine, type GapList } from "@finance-tool/engine";
+import { isTie, type GapList } from "@finance-tool/engine";
 import { groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { brokeragePagePath, chargesCurrentAccount, doubtAt, doubtOf, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
@@ -13,7 +13,7 @@ import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/la
 import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
-import { HelpMark, ClampedText, gershayim, Disclosure, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, type GroupChoice } from "../kit";
+import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, type GroupChoice } from "../kit";
 import { isGroupPrice } from "../../lib/group-pick";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
@@ -28,28 +28,12 @@ export interface Pick {
   group?: string;
 }
 
-export const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
-/** A bank's current account (F-102, D64) is a fee for keeping an account too: it takes the account fee's colour and legend item, and its own name in its part. */
-export const lineOf = (line: FeeLine) => (line === "account" ? "fixed" : line in lineClass ? line : "other");
-/** A legend item's name: the account fee's item stands for a bank's current account too, which shares its colour, where a bar shown has
- *  one (`current`); else it names the securities account's fee alone (a legend item names only what is drawn). */
-export const legendName = (l: string, current = true) => (l === "fixed" ? (current ? c.pair.legendAccount : c.pair.legendSecurities) : (c.pair.lines[l] ?? c.pair.lines.other));
-/** Whether any of these account lines is a bank's current account (F-102). */
-export const hasCurrent = (lines: readonly { line: FeeLine }[]) => lines.some((l) => l.line === "account");
-/** A part's name: the line's own where it has one (the current account), else its legend item's. */
-export const partName = (line: FeeLine) => c.pair.lines[line] ?? c.pair.lines[lineOf(line)] ?? c.pair.lines.other;
-/** The order of the account's lines in every bar, the legend's (`legendLines`): one order whatever the price list's own (charts.md:
- *  the parts in one order in every bar, and the legend's the same); a bank's current account just after the account fee, whose item it shares. */
-const LINE_ORDER = [...Object.keys(lineClass), "other"];
-export const byLegend = <L extends { line: FeeLine }>(ls: readonly L[]): L[] => [...ls].sort((a, b) => LINE_ORDER.indexOf(lineOf(a.line)) - LINE_ORDER.indexOf(lineOf(b.line)) || Number(a.line === "account") - Number(b.line === "account") || (a.line < b.line ? -1 : a.line > b.line ? 1 : 0));
-/** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
- * An index in shekels has no conversion line to name. */
-export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
 /** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
 export const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
-/** A gain shown with its plus sign, isolated so it reads "+2,621 ₪" inside Hebrew. */
-export const plus = (n: number) => (n > 0 ? `\u2066+${fmt.nisWhole(n)}\u2069` : undefined);
-const priced = (x: WayPrice | { reason: Reason } | undefined): x is WayPrice => !!x && "valueN" in x;
+/** A figure rounded to whole shekels, as the receipt's lines show it: the input of a difference taken between shown figures (F-91). */
+export const whole = (v: SiteValue): SiteValue => ({ ...v, value: Math.round(v.value as number) });
+/** A fund's entry at a house is a price, not a reason it has none. */
+export const priced = (x: FundWay["byHouse"][string] | undefined): x is WayPrice => !!x && "valueN" in x;
 
 /** A pair's "by phone only": the house's words for the exchange its price rests on, as the value its tag opens; null for any other pair. */
 export function phoneOf(view: InvestView, bundle: IndicesBundle, p: { house: string; fund: string }): SiteValue | null {
@@ -105,7 +89,7 @@ export function whyNoPrice(bundle: { snapshots: IndicesBundle["snapshots"] }, ho
 /** A fund's entry at a house as a `KindAt`: a price stands for no reason. */
 const kindAt = (fund: FundWay, houseId: string): KindAt => {
   const at = fund.byHouse[houseId];
-  return { option: fund.option, at: at && !("valueN" in at) ? at : undefined };
+  return { option: fund.option, at: at && !priced(at) ? at : undefined };
 };
 
 /**
@@ -235,20 +219,14 @@ export function kindPairs(view: InvestView, pick: Pick): Record<Kind, Pick> | nu
   return best ? ({ [mine]: pick, [other]: best } as Record<Kind, Pick>) : null;
 }
 
-/** "3%", "−2.38%": a signed percent for chart ticks; `isoPct` isolates it for a Hebrew sentence (it reads "−2.38%" there too). */
-export const signedPct = (x: number, digits = 0) => `${x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(x).toFixed(digits)}%`;
-export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\u2069`;
-
 // ---------------------------------------------------------------- the result
 
 /** F-109 (D94): a way's line on whole units, where some monthly deposit bought no unit; null where none did. */
 export const unitsLine = (units: WayPrice["units"]): string | null => (!units || units.skipped === 0 ? null : units.skipped * 2 > units.monthly ? c.pair.unitsEvery : c.pair.unitsSome);
 /** What went on the way as a figure (F-91: `X − V`), the rounded base less the rounded value left, the two whole-shekel figures it is taken
  * between as its inputs. */
-export const barTotalValue = (pc: PairCosts, who: string, today: string): SiteValue => {
-  const whole = (v: SiteValue): SiteValue => ({ ...v, value: Math.round(v.value as number) });
-  return differenceOf([c.pair.baseInput, whole(pc.baseValue)], [c.pair.input(who, c.pair.colLeft), whole(pc.left)], "F-91", { today, about: who });
-};
+export const barTotalValue = (pc: PairCosts, who: string, today: string): SiteValue =>
+  differenceOf([c.pair.baseInput, whole(pc.baseValue)], [c.pair.input(who, c.pair.colLeft), whole(pc.left)], "F-91", { today, about: who });
 
 /** Every ranked pair of the same kind (hedged or not) as `best`, at every house, what it leaves, most first. */
 function pairsOfKind(view: InvestView, best: Pick): { house: string; fund: string; v: number }[] {
@@ -436,9 +414,10 @@ export function HouseLine({ house, snapshot, charge }: { house: NonNullable<Retu
         snapshot && (
           <>
             <span className="whitespace-nowrap">
-              <a href={sourceHref(snapshot.tariff)} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
-                {gershayim(c.pair.tariff)} ↗
-              </a>
+              {/* its 44 px target takes no more height than the words beside it, as the own-price button's */}
+              <DocLink source={snapshot.tariff} className="-my-2.5">
+                {gershayim(c.pair.tariff)}
+              </DocLink>
               <span className="text-muted-foreground"> · {c.pair.collectedOn(`\u2066${fmt.date(snapshot.snapshot)}\u2069`)}</span>
             </span>
             <OwnAccountButton houseId={house.id} house={house.short} className="-mx-2 -my-2.5">
@@ -501,7 +480,7 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
   const custodyAbroad = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "custody" && l.applies_to.includes("foreign_securities") && l.rate.value === 0)?.rate;
   const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); const custody = p.custom ? undefined : custodyAbroad(p.id); return rate && custody ? [{ name: p.short, rate, custody }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
   return (
-    <Disclosure label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} labelClassName="text-sm text-link">
+    <Disclosure look="link" label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} summaryClassName="text-sm">
       <NoteList
         className="text-xs pb-1"
         items={[
@@ -621,7 +600,7 @@ export function GapCell({ rec, today, list }: { rec: FundWay["rec"]; today: stri
   return (
     <span className="flex flex-col leading-tight">
       <span className="font-semibold">
-        <Num value={val} display={`\u2066${signedPct(g.pct, 2)}\u2069`} />
+        <Num value={val} display={fmt.signedPct(g.pct, 2)} />
       </span>
       <span className="text-xs text-muted-foreground whitespace-nowrap">{c.kinds.gapYears(g.years, rec.tracking_record?.years[0]?.year)}</span>
     </span>

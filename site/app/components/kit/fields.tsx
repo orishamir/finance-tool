@@ -1,6 +1,6 @@
 // The inputs behind the graph (design-spec 4, design-system 3.3): number field, range field (slider and number), percent field, and the
 // reset each field carries on its label line.
-import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type InputHTMLAttributes, type ReactNode, type Ref } from "react";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
@@ -332,6 +332,14 @@ export function RangeField(props: RangeFieldProps) {
   );
 }
 
+/** The check for an amount that cannot be below zero: the standard sentence "הסכום לא יכול להיות שלילי.". */
+export const nonNegativeCheck = (n: number): string | null => (n < 0 ? copy.errors.negative : null);
+
+/** The check for a number of years: a whole number in the range, else the standard sentence "הזינו מספר שנים בין … ל־…". */
+export function yearsCheck(range: { min: number; max: number }): (n: number) => string | null {
+  return (n) => (n < range.min || n > range.max || !Number.isInteger(n) ? `${copy.errors.years[0]} ${fmt.number(range.min)} ${copy.errors.years[1]}${fmt.number(range.max)}.` : null);
+}
+
 /** The check for a percent field: the number must lie in the range, else the standard sentence "הזינו אחוז בין … ל־…". */
 export function percentCheck(range: { min: number; max: number } = { min: 0, max: 100 }): (n: number) => string | null {
   return (n) => (n < range.min || n > range.max ? `${copy.errors.pct[0]} ${fmt.number(range.min)} ${copy.errors.pct[1]}${fmt.number(range.max)}.` : null);
@@ -342,25 +350,30 @@ export function PercentField({ unit = "pct_per_year", range, validate, ...rest }
   return <NumberField unit={unit} validate={validate ?? percentCheck(range)} {...rest} />;
 }
 
-/** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
-/** The one large field a page leads with (the rules page's claim): a whole sentence fits, and × empties it. Its words are the caller's. */
-export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel, compact }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string; /** Keeps the phone's height on a computer too (a page whose list must start high). */ compact?: boolean }) {
-  const id = useId();
-  const input = useRef<HTMLInputElement>(null);
+type SearchInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange" | "className" | "id" | "dir" | "type" | "children">;
+
+/**
+ * The inside of a search box, shared by `AskField` and `SearchField`: the search icon, the input (right to left, a Latin name inside it
+ * keeping its own order) and, while it holds words and has `clearLabel`, × that empties it and gives the focus back.
+ */
+function SearchBox({ id, value, onChange, clearLabel, inputRef, big, compact, ...input }: SearchInputProps & { id: string; value?: string; onChange: (value: string, input: HTMLInputElement) => void; clearLabel?: string; inputRef?: Ref<HTMLInputElement>; /** The page's lead field: taller, larger words, the action colour's edge. */ big?: boolean; compact?: boolean }) {
+  const own = useRef<HTMLInputElement | null>(null);
+  const setRef = (el: HTMLInputElement | null) => {
+    own.current = el;
+    if (typeof inputRef === "function") inputRef(el);
+    else if (inputRef) inputRef.current = el;
+  };
   return (
-    <div className={cx("field-box !h-14 border-primary bg-card text-muted-foreground text-base lg:text-lg", !compact && "lg:!h-16")}>
-      <IconSearch size={20} />
-      <label htmlFor={id} className="sr-only">
-        {label}
-      </label>
-      <input ref={input} id={id} dir="rtl" value={value} onChange={(e) => onChange(e.target.value)} onFocus={onFocus} placeholder={placeholder} autoComplete="off" className="field-input !text-start text-mixed text-foreground" />
-      {value && (
+    <div className={cx("field-box text-muted-foreground", big && "!h-14 border-primary bg-card text-base lg:text-lg", big && !compact && "lg:!h-16")}>
+      <IconSearch size={big ? 20 : 18} aria-hidden="true" />
+      <input ref={setRef} id={id} type="text" dir="rtl" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value, e.currentTarget)} className="field-input !text-start text-mixed text-foreground" {...input} />
+      {clearLabel && value && (
         <button
           type="button"
           aria-label={clearLabel}
           onClick={() => {
-            onChange("");
-            input.current?.focus();
+            if (own.current) onChange("", own.current);
+            own.current?.focus();
           }}
           className="min-w-target min-h-target inline-flex items-center justify-center"
         >
@@ -371,16 +384,62 @@ export function AskField({ value, onChange, onFocus, label, placeholder, clearLa
   );
 }
 
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; className?: string }) {
+/** The one large field a page leads with (the rules page's claim): a whole sentence fits, and × empties it. Its words are the caller's. */
+export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel, compact }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string; /** Keeps the phone's height on a computer too (a page whose list must start high). */ compact?: boolean }) {
   const id = useId();
   return (
-    <div className={cx("field", className)}>
-      <label htmlFor={id} className="field-label">
+    <div>
+      <label htmlFor={id} className="sr-only">
+        {label}
+      </label>
+      <SearchBox id={id} big compact={compact} value={value} onChange={(v) => onChange(v)} onFocus={onFocus} placeholder={placeholder} clearLabel={clearLabel} />
+    </div>
+  );
+}
+
+/**
+ * A box to search or filter by words: a list's filter (the companies page), a field that opens the site's search (a company's paste card).
+ * Its label stands above it, or is for a screen reader only (`labelHidden`) where the words around it already say what it searches. With
+ * `value` the caller holds the words and `clearLabel` adds × that empties them; without it the field keeps its own. Any other attribute of
+ * the input (`onFocus`, `role`, `aria-*`) passes through.
+ */
+export function SearchField({ label, labelHidden, value, onChange, clearLabel, inputRef, className, ...input }: SearchInputProps & {
+  label: ReactNode;
+  labelHidden?: boolean;
+  value?: string;
+  /** The words as typed, and the input (a caller that opens a sheet anchors it there). */
+  onChange: (value: string, input: HTMLInputElement) => void;
+  clearLabel?: string;
+  inputRef?: Ref<HTMLInputElement>;
+  /** Places the field (`md:w-72`, `shrink-0`), never restyles it. */
+  className?: string;
+}) {
+  const id = useId();
+  return (
+    <div className={cx("flex flex-col gap-2 min-w-0", className)}>
+      <label htmlFor={id} className={labelHidden ? "sr-only" : "text-sm font-medium"}>
+        {label}
+      </label>
+      <SearchBox id={id} value={value} onChange={onChange} clearLabel={clearLabel} inputRef={inputRef} {...input} />
+    </div>
+  );
+}
+
+/**
+ * One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`.
+ * `inline`: the label beside the box in muted small words and the words in the box bold, for a name typed in place in a line of other
+ * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]").
+ */
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; className?: string }) {
+  const id = useId();
+  return (
+    <div className={cx(inline ? "flex flex-wrap items-center gap-2" : "field", className)}>
+      <label htmlFor={id} className={inline ? "text-sm text-muted-foreground" : "field-label"}>
         {label}
       </label>
       <div className="field-body">
-        <div className={cx("field-box", error ? "field-box-error" : false)}>
-          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-start text-mixed" />
+        <div className={cx("field-box", inline && "field-box-compact w-56 max-w-full", error ? "field-box-error" : false)}>
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold")} />
         </div>
         {error ? (
           <span id={`${id}-err`} className="text-xs text-destructive">
@@ -419,17 +478,20 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
 
 /**
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
- * select, no field box. `all` is the first option, chosen when `value` is null.
+ * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
+ * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
+ * period beside its rate: "0.6% לשנה").
  */
-export function InlineSelect({ label, all, options, value, onChange }: { label: string; all: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void }) {
+export function InlineSelect({ label, all, options, value, onChange, labelHidden }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean }) {
   const id = useId();
   return (
     <span className="inline-flex items-center gap-1 text-sm">
-      <label htmlFor={id} className="text-muted-foreground">
-        {label}:
+      <label htmlFor={id} className={labelHidden ? "sr-only" : "text-muted-foreground"}>
+        {label}
+        {labelHidden ? "" : ":"}
       </label>
       <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="min-h-target max-w-48 truncate bg-transparent font-medium text-foreground rounded-md px-1 hover:bg-accent/50 cursor-pointer">
-        <option value="">{all}</option>
+        {all !== undefined && <option value="">{all}</option>}
         {options.map((o) => (
           <option key={o.id} value={o.id}>
             {o.name}

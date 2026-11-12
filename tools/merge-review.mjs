@@ -2,7 +2,8 @@
 // It lists the pieces the branch adds so the lead can judge each against the kit: kept (a one-off, with the reason), sent back
 // (the kit has it) or promoted (it becomes a kit piece). It finds candidates; it decides nothing.
 // Usage: node tools/merge-review.mjs <base-ref> [<head-ref>]   (head defaults to HEAD; run from the repo root)
-//        node tools/merge-review.mjs --self-check   (proves a copied kit name outside kit/ is flagged and a gallery-shown shared piece is not)
+//        node tools/merge-review.mjs --self-check   (proves a copied kit name outside kit/ is flagged and a gallery-shown shared piece is
+//        not, and that each check of the kit's text pieces sees its planted copy and not the shared piece)
 import { execFileSync } from "node:child_process";
 
 const [base, head = "HEAD"] = process.argv.slice(2);
@@ -74,6 +75,29 @@ const componentKind = (file, code, kit, imported) => {
   if (from) return file.replace(/\.tsx?$/, "") === from ? null : { name, kind: "copy" };
   return { name, kind: "one-off" };
 };
+const checks = [
+  { group: "Hand-styled pill (kit: ChoiceChips, or the pill list)", test: (t) => /\b(sec-chip|a-chip)\b/.test(t) || (/rounded-full/.test(t) && /\bborder\b/.test(t) && /\bpx-[34]/.test(t)) },
+  { group: "Hand-styled card (kit: Card)", test: (t) => /\bbg-card\b/.test(t) && /\bborder\b/.test(t) && /\brounded-(lg|xl)\b/.test(t) },
+  { group: "Raw number or text input (kit: NumberField, RangeField, PercentField)", test: (t) => /<input\b/.test(t) && !/type="(checkbox|radio|range|hidden)"/.test(t) },
+  { group: "Raw select (no kit piece yet: a second one means promote)", test: (t) => /<select\b/.test(t) },
+  { group: "Stat grid (kit: StatRow, KeyValueList)", test: (t) => /<dl\b[^>]*className="[^"]*\bgrid\b/.test(t) },
+  { group: "Literal colour (use a role token)", test: (t) => /(fill|stroke|color|background|bg-\[|text-\[|border-\[)[^"'`]*#[0-9a-fA-F]{3,8}\b/.test(t) || /\b(oklch|rgba?|hsla?)\(/.test(t) },
+  { group: "Import of the old ui.tsx (import from components/kit)", test: (t) => /from\s+["'](\.\.?\/)+(components\/)?ui["']/.test(t) },
+  // From the criticism look-back (2026-11-06): rules a script cannot judge alone, so the lead looks at each new instance.
+  { group: "Chart legend added (design-system 12, rule 3: said once; a legend only for marks that carry no label of their own, one above a list and never one per row)", test: (t) => /<ChartLegend\b/.test(t) },
+  { group: "Caution mark added (design-system 3.2: only where there is a doubt, once per list, never on an explanation)", test: (t) => /<IconAlert\b|tone=["']caution["']|<StaleSaid\b/.test(t) },
+  // The text pieces the kit shares (kit ratchets in kit/ratchets.test.ts count what is left on the site; these catch a new copy).
+  { group: "Page title written by hand (kit: PageHead)", test: (t) => /<h1\b/.test(t) },
+  { group: "Section heading written by hand (kit: Section)", test: (t) => /<h[23]\b[^>]*\btext-xl lg:text-2xl\b/.test(t) },
+  { group: "Scroll margin written by hand (kit: the anchor-target utility, or Section's id)", test: (t) => /(?<![\w:-])scroll-mt-|\bscrollMarginTop\s*:/.test(t) },
+  { group: "Link within the site styled by hand (kit: TextLink, GoLink, LinkButton)", test: (t) => /<(Nav)?Link\b[^>]*\btext-(link|primary)\b/.test(t) },
+  { group: "Link out written by hand (kit: DocLink, with source or href)", test: (t) => /\btarget=(?:"_blank"|\{\s*"_blank"\s*\})/.test(t) },
+  { group: "A ! override of a class (kit: the piece's own prop; a choice it lacks is added to the kit)", test: (t) => /[cC]lassName\b/.test(t) && [...t.matchAll(/"([^"]*)"|`([^`]*)`|'([^']*)'/g)].some((m) => (m[1] ?? m[2] ?? m[3] ?? "").split(/\s+/).some((w) => /^(?:[^\s:]+:)*![a-z]/.test(w) || /[\w\]]!$/.test(w))) },
+  { group: "Media query asked by hand (kit: useMedia with MQ.md, MQ.lg, MQ.xl in lib/hooks.ts)", test: (t, file) => file !== "site/app/lib/hooks.ts" && /\bmatchMedia\((?!\s*["'`]\(prefers-reduced-motion)/.test(t) },
+  { group: "Fold label painted as a link (kit: Disclosure look=\"link\")", test: (t) => /<Disclosure\b.*\btext-(link|primary)\b/.test(t) },
+  { group: "A bare \"מס\" in new words (copy.md 1, the exact word: income tax or capital gains tax)", test: (t) => /(?<![\u0590-\u05FF])מס(?![\u0590-\u05FF])(?!\s+(ה?הכנסה|רווחי ה?הון|ה?שבח|בולי|ירושה|על רווחי ה?הון))/.test(t) },
+];
+
 if (SELF_CHECK) {
   const kit = new Set(["Button", "Tag", "Card", "Callout"]);
   const imported = galleryImports('import { IdRef, ReadingTag, type Foo } from "../provenance";\nimport { fmt } from "../../lib/format";\nimport { Button } from "./index";');
@@ -98,8 +122,26 @@ if (SELF_CHECK) {
   ];
   const bad = cases.filter(([f, c, want]) => (componentKind(f, c, kit, imported)?.kind ?? null) !== want);
   for (const [f, c, want] of bad) console.error(`self-check: ${f}: ${c} gave ${componentKind(f, c, kit, imported)?.kind ?? null}, want ${want}`);
-  console.log(bad.length ? `self-check failed (${bad.length})` : `self-check passed (${cases.length} cases)`);
-  process.exit(bad.length ? 1 : 0);
+  // each text-piece check sees its planted copy on an added line, and not the shared piece
+  const lineCases = [
+    ["Page title", '<h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>', '<PageHead title={copy.title} />'],
+    ["Section heading", '<h2 id="x-h" className="text-xl lg:text-2xl font-semibold">', '<h2 className="text-lg font-semibold">'],
+    ["Scroll margin", '<li id={id} className="scroll-mt-24">', '<li id={id} className="anchor-target">'],
+    ["Link within the site", '<Link to="/a" className="text-link hover:underline">', '<TextLink to="/a">'],
+    ["Link out", '<a href={href} target="_blank" rel="noopener noreferrer">', '<DocLink source={doc}>'],
+    ["A ! override", '<Button variant="quiet" className="!px-0" onClick={go}>', '<Button variant="quiet" flush className={cx(!open && "hidden")}>'],
+    ["Media query", 'const m = window.matchMedia("(min-width: 64rem)");', 'const still = matchMedia("(prefers-reduced-motion: reduce)").matches;'],
+    ["Fold label", '<Disclosure label={<span className="text-link">{x}</span>}>', '<Disclosure look="link" label={x}>'],
+  ];
+  const lineBad = lineCases.flatMap(([prefix, copy, shared]) => {
+    const c = checks.find((x) => x.group.startsWith(prefix));
+    const file = "site/app/routes/a.tsx";
+    return !c ? [`${prefix}: no such check`] : [...(c.test(copy, file) ? [] : [`${prefix}: missed ${copy}`]), ...(c.test(shared, file) ? [`${prefix}: flagged ${shared}`] : [])];
+  });
+  for (const b of lineBad) console.error(`self-check: ${b}`);
+  const failed = bad.length + lineBad.length;
+  console.log(failed ? `self-check failed (${failed})` : `self-check passed (${cases.length + lineCases.length * 2} cases)`);
+  process.exit(failed ? 1 : 0);
 }
 const shownInGallery = galleryImports(gallery);
 
@@ -127,19 +169,6 @@ const note = (group, where, what) => {
   findings.get(group).push(`${where} — ${what}`);
 };
 
-const checks = [
-  { group: "Hand-styled pill (kit: ChoiceChips, or the pill list)", test: (t) => /\b(sec-chip|a-chip)\b/.test(t) || (/rounded-full/.test(t) && /\bborder\b/.test(t) && /\bpx-[34]/.test(t)) },
-  { group: "Hand-styled card (kit: Card)", test: (t) => /\bbg-card\b/.test(t) && /\bborder\b/.test(t) && /\brounded-(lg|xl)\b/.test(t) },
-  { group: "Raw number or text input (kit: NumberField, RangeField, PercentField)", test: (t) => /<input\b/.test(t) && !/type="(checkbox|radio|range|hidden)"/.test(t) },
-  { group: "Raw select (no kit piece yet: a second one means promote)", test: (t) => /<select\b/.test(t) },
-  { group: "Stat grid (kit: StatRow, KeyValueList)", test: (t) => /<dl\b[^>]*className="[^"]*\bgrid\b/.test(t) },
-  { group: "Literal colour (use a role token)", test: (t) => /(fill|stroke|color|background|bg-\[|text-\[|border-\[)[^"'`]*#[0-9a-fA-F]{3,8}\b/.test(t) || /\b(oklch|rgba?|hsla?)\(/.test(t) },
-  { group: "Import of the old ui.tsx (import from components/kit)", test: (t) => /from\s+["'](\.\.?\/)+(components\/)?ui["']/.test(t) },
-  // From the criticism look-back (2026-11-06): rules a script cannot judge alone, so the lead looks at each new instance.
-  { group: "Chart legend added (design-system 12, rule 3: said once; a legend only for marks that carry no label of their own, one above a list and never one per row)", test: (t) => /<ChartLegend\b/.test(t) },
-  { group: "Caution mark added (design-system 3.2: only where there is a doubt, once per list, never on an explanation)", test: (t) => /<IconAlert\b|tone=["']caution["']|<StaleSaid\b/.test(t) },
-  { group: "A bare \"מס\" in new words (copy.md 1, the exact word: income tax or capital gains tax)", test: (t) => /(?<![\u0590-\u05FF])מס(?![\u0590-\u05FF])(?!\s+(ה?הכנסה|רווחי ה?הון|ה?שבח|בולי|ירושה|על רווחי ה?הון))/.test(t) },
-];
 
 const lines = addedLines();
 for (const { file, line, text } of lines) {
@@ -151,7 +180,7 @@ for (const { file, line, text } of lines) {
   const comp = componentKind(file, code, kitNames, shownInGallery);
   if (comp) note(comp.kind === "copy" ? "New component with a kit piece's name (likely a copy)" : "New component outside the kit (one-off, or promote?)", where, comp.name);
   if (inKit) continue;
-  for (const c of checks) if (c.test(code)) note(c.group, where, code.trim().slice(0, 110));
+  for (const c of checks) if (c.test(code, file)) note(c.group, where, code.trim().slice(0, 110));
   if (/[֐-׿]/.test(code) && !/^site\/app\/(copy\.ts|content\/)/.test(file)) note("Hebrew outside copy.ts and content/ (move the string)", where, code.trim().slice(0, 110));
 }
 
