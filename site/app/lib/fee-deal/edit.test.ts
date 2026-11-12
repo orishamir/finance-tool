@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { feeInOrder, newDeal, newFee, type Fee, type Num } from "./model";
+import { feeInOrder, newDeal, newFee, untouched, type Fee, type Num, type Price } from "./model";
 import { addFee, addStage, editPrice, removeStage, setHeld, setKind, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
@@ -20,6 +20,26 @@ describe("the fee page's edits", () => {
     expect(withForm({ form: "held", rate: { v: 0.4 }, per: 12, every: 3 }, "free")).toEqual({ form: "free" });
     expect(withMonths({ form: "held", rate: { v: 0.4 }, per: 12, every: 12 }, "every", 3)).toEqual({ form: "held", rate: { v: 0.4 }, per: 12, every: 3 });
     expect(withCurrency({ form: "action", rate: { v: 0.1 }, currency: "USD" }, "ILS")).toEqual({ form: "action", rate: { v: 0.1 } });
+  });
+
+  it("a price whose months, currency or form the person changes loses its sources; the same months or currency change nothing", () => {
+    const held: Price = { form: "held", rate: { v: 0.6, src }, per: 12, every: 1, min: { v: 5, src } };
+    expect(withMonths(held, "per", 12)).toBe(held);
+    expect(withMonths(held, "every", 1)).toBe(held);
+    expect(withMonths(held, "per", 1)).toEqual({ form: "held", rate: { v: 0.6 }, per: 1, every: 1, min: { v: 5 } });
+    expect(withMonths(held, "every", 3)).toEqual({ form: "held", rate: { v: 0.6 }, per: 12, every: 3, min: { v: 5 } });
+    const sum: Price = { form: "sum", amount: { v: 10, src }, every: 1 };
+    expect(withMonths(sum, "every", 1)).toBe(sum);
+    expect(withMonths(sum, "every", 3)).toEqual({ form: "sum", amount: { v: 10 }, every: 3 });
+    const action: Price = { form: "action", rate: { v: 0.1, src }, min: { v: 15, src }, max: { v: 100, src } };
+    expect(withCurrency(action, "ILS")).toBe(action);
+    expect(withCurrency(action, "USD")).toEqual({ form: "action", rate: { v: 0.1 }, min: { v: 15 }, max: { v: 100 }, currency: "USD" });
+    expect(withForm(action, "held")).toEqual({ form: "held", rate: { v: 0.1 }, per: 12, every: 12 });
+    expect(withForm(sum, "perAction")).toEqual({ form: "perAction", amount: { v: 10 } });
+    // and so a fee a template filled, changed only this way, is no longer as the template left it
+    const fee: Fee = { ...newFee("balance"), stages: [{ price: held }] };
+    expect(untouched(fee)).toBe(true);
+    expect(untouched(editPrice(fee, "buy", 0, (x) => withMonths(x, "every", 3)))).toBe(false);
   });
 
   it("a stage added waits for the month the one before it ends; given it, the fee is read again", () => {
