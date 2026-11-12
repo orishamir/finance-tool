@@ -13,16 +13,16 @@
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.gov.il/he/pages/govermental-bonds",
-      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
-      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "url": "https://www.gov.il/he/pages/govermental-bonds?chapterIndex=2",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020), לשונית מאפייני אג\"ח לא סחיר",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020), לשונית מאפייני אג\"ח לא סחיר",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "tab מאפייני אג״ח לא סחיר, table אג״ח צמוד לא סחיר",
-      "quote": "מירון* 30.11.1983 קבועה 5.5% אחת ל-6 חודשים 20 שנה",
-      "checked": "2026-10-26"
+      "locator": "table אג״ח צמוד לא סחיר, row מירון*",
+      "quote": "איגרת החוב אינה מונפקת עוד",
+      "checked": "2026-11-12"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/regulation-02/en/files_regulations_nohalagach_notrad.pdf",

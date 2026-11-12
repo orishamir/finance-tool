@@ -83,7 +83,7 @@
         "PEN-23"
       ],
       "state": "sourced",
-      "notes": "The selected fund's fee holds for at least 10 years from joining for a member who joined while the fund was selected. The four-year selection period runs from 1.11.2024; its end date (31.10.2028) is derived, not seen in an official text."
+      "notes": "The selected fund's fee holds for at least 10 years from joining for a member who joined while the fund was selected. The four-year selection period runs from 1.11.2024 to 31.10.2028."
     },
     "period_from": {
       "value": "2024-11-01",
