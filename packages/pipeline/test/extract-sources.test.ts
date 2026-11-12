@@ -47,10 +47,9 @@ describe("extract-sources: fixture Source lines", () => {
     expect(r.every((s) => s.url === "https://www.revenue.ie/x/27-01a-02.pdf" && s.checked === "2026-10-26" && s.strength === "primary" && s.qualifier === "(foreign tax authority)")).toBe(true);
     const he = extractFromLine('[חוק](https://fs.knesset.gov.il/a.pdf), p.3, s.9 "הנכסים של העמית יוחזקו בנפרד"; p.10, s.13 "הממונה רשאי להורות על העברה" · checked 2026-10-26 · primary', ctx()).sources;
     expect(he.map((s) => s.quote)).toEqual(["הנכסים של העמית יוחזקו בנפרד", "הממונה רשאי להורות על העברה"]);
-    // passages before the first quote stay in the one locator they always had; nothing already extracted changes
+    // the passages before the first quoted one are one source of their own, opening at their first page; the quoted passage is another
     const before = extractFromLine('[כללים](https://www.boi.org.il/a.pdf), p.2, s.5(ב); p.3, Annex A "סוג ריבית קבועה או משתנה" · checked 2026-10-26 · primary', ctx()).sources;
-    expect(before).toHaveLength(1);
-    expect(before[0]).toMatchObject({ locator: "p.2, s.5(ב); p.3, Annex A", quote: "סוג ריבית קבועה או משתנה" });
+    expect(before.map((s) => [s.locator, s.page, s.quote])).toEqual([["p.2, s.5(ב)", 2, undefined], ["p.3, Annex A", 3, "סוג ריבית קבועה או משתנה"]]);
   });
 
   it("reference-style links resolve through the file's definitions, with angle brackets and parentheses in URLs", () => {
@@ -201,9 +200,21 @@ describe("extract-sources: parts", () => {
     for (const loc of ["p.4, ss.3 to 4; s.3(ד)", "p.3, s.4(א)-(ד); appendix A and B on pp.5-7", "pp.6 to 7; Schedule E", "p.8 footnote 1; and footnote 2", "file p.3, s.3.2.1; p.4, ss.3.2.2.1-3.2.2.2"])
       expect(cleanLocator(loc), loc).toBe(loc);
   });
-  it("a link opens at the page of the passage its quote comes from (2026-11-12)", () => {
-    const [s] = extractFromLine('[תקנון](https://content.tase.co.il/media/a/274690.pdf), p.4, s.1 definitions; p.8, s.2 "חבר בורסה הוא חברה שהתאגדה" · checked 2026-11-12 · primary', ctx()).sources;
-    expect(s).toMatchObject({ page: 8, quote: "חבר בורסה הוא חברה שהתאגדה" });
+  it("the source of a quote opens at the page of its passage, and its locator names that page (BRK-01, BANK-07)", () => {
+    const [, s] = extractFromLine('[תקנון](https://content.tase.co.il/media/a/274690.pdf), p.4, s.1 definitions; p.8, s.2 "חבר בורסה הוא חברה שהתאגדה" · checked 2026-11-12 · primary', ctx()).sources;
+    expect(s).toMatchObject({ locator: "p.8, s.2", locator_he: "עמוד 8, סעיף 2", page: 8, quote: "חבר בורסה הוא חברה שהתאגדה" });
+    const line =
+      '[same rules, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/rvzi1ngd/151.pdf), file p.1, amendment list (the last is ק"ת 7469, התשע"ה, p.554); file pp.5 to 7, section tags of ss.7-12 (the latest is of התשס"ג, on s.7); file p.18, Schedule E, row "הודעה מוקדמת על פרעון פקדון לשנה ומעלה" 1,000, under the tag [תיקון התשנ"ג (מס\' 2)] · checked 2026-11-07 · primary';
+    const r = extractFromLine(line, ctx()).sources;
+    expect(r.map((x) => [x.locator, x.locator_he, x.page, x.quote])).toEqual([
+      ["file p.1", "עמוד הקובץ 1", 1, undefined],
+      ["file p.18, Schedule E", undefined, 18, "הודעה מוקדמת על פרעון פקדון לשנה ומעלה"],
+    ]);
+    // every source's page is the first its own locator names
+    for (const x of r) expect(firstPage(x.locator!, x.url)).toBe(x.page);
+    // quote marks around a heading hold no quote: the passage stays with the ones before it (BRK-06)
+    const heading = extractFromLine('[Conditions](https://www.isa.gov.il/a/Conditions_of_a_general.pdf), p.8, s.(1)(a)-(d); p.11, "Disclosure regarding the nature of the permit" · checked 2026-10-25 · primary', ctx()).sources;
+    expect(heading.map((x) => [x.locator, x.page])).toEqual([["p.8, s.(1)(a)-(d); p.11", 8]]);
   });
   it("writeKeys appends the new keys last and replaces its own on a re-run", () => {
     const text = '{\n  "id": "A-1",\n  "n": 83.0\n}\n';

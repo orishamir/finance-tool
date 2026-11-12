@@ -468,34 +468,40 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (titleHe) entry.title_he = titleHe;
     const publisherHe = doc?.publisher_he ?? pub?.publisher_he;
     if (publisherHe) entry.publisher_he = publisherHe;
-    // `quotedPassage`: the passage the quoted words come from, when it is not the first; the link opens at its page, where the words
-    // are, not at the locator's first page ("p.4, s.1 definitions; p.8, s.2 "…"" opens at p.8; 2026-11-12)
-    const locate = (e: ExtractedSource, loc: string, quoteText: string, quotedPassage?: string) => {
+    // a source opens at the first page its own locator names, so the locator the card shows and the page the link opens agree
+    const locate = (e: ExtractedSource, loc: string, quoteText: string) => {
       const quote = findQuote(quoteText);
       if (loc) {
         e.locator = loc;
         const he = toHebrewLocator(loc, url);
         if (he) e.locator_he = he;
       }
-      const page = (quote && quotedPassage ? firstPage(cleanLocator(quotedPassage), url) : undefined) ?? (loc ? firstPage(loc, url) : undefined) ?? pageInUrl(url);
+      const page = (loc ? firstPage(loc, url) : undefined) ?? pageInUrl(url);
       if (page) e.page = page;
       if (quote) e.quote = quote;
     };
     const body = rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length);
     // One link may cite several passages of its document, each from its own page ("p.8, s.4.1 "…"; p.9, s.4.2.3 "…"; p.11,
-    // s.4.2.8 "…""). The locator above runs up to the first quote mark, so it covers the passages up to the first quoted one;
-    // each passage after that becomes a source of its own, with its locator, page and quote, so the rule card shows every
-    // passage the rule rests on (TXF-28's two exempting passages were dropped; review, 2026-10-26).
+    // s.4.2.8 "…""), so the rule card shows every passage the rule rests on. The passages before the first quoted one stay one
+    // source, as a link with no quote does, opening at their first page; the quoted passage and each after it is a source of its
+    // own, with its locator, page and quote. Were the quoted passage merged into the ones before it, the source would open where its
+    // words are while its locator, cut at the first prose word or quote mark, named only the first passage's page: BANK-07's
+    // "file p.1, amendment list …; file p.18, Schedule E, row "…"" said "file p.1" and opened at 18.
     const passages = body.split(/;\s*(?=(?:file\s+)?pp?\.\s*\d)/);
-    const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
+    const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[א-ת])"(?=[א-ת])/g, "")));
+    // a passage whose quote marks hold no quote (a title, a term, an English heading) stays with the passages before it, as before
+    const quoteApart = firstQuoted > 0 && findQuote(passages[firstQuoted]!) !== undefined;
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
-    locate(entry, locator, covered.join("; "), firstQuoted > 0 ? covered[firstQuoted] : undefined);
+    const lead = quoteApart ? passages.slice(0, firstQuoted) : covered;
+    // a lead before a quoted passage takes its locator from its own text alone; with no place of its own it is no source
+    const leadLocator = quoteApart ? cleanLocator(lead.join("; ")) : locator;
+    locate(entry, leadLocator, lead.join("; "));
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
     }
-    sources.push(orderKeys(entry));
-    for (const passage of passages.slice(covered.length)) {
+    if (leadLocator || !quoteApart) sources.push(orderKeys(entry));
+    for (const passage of passages.slice(lead.length)) {
       const loc = cleanLocator(passage);
       if (!loc) continue;
       const more: ExtractedSource = { ...entry };

@@ -132,6 +132,8 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
   - `quote`: the document's own words, verbatim from a quoted Hebrew span in the markdown, 8 to 240 characters, never composed;
   - `checked`; `qualifier` (the markdown's parenthetical after the strength word); `note` (English, never shown).
 
+  One link may cite several passages, each opening with its page (`p.8, s.4.1 "…"; p.9, s.4.2.3 "…"`). The passages before the first one whose quoted words become a `quote` are one entry, opening at their first page; that passage and each after it is an entry of its own, with its own `locator`, `page` and `quote`. So every entry's `page` is the first page its own `locator` names.
+
   A figure's own `source` object stays as it is.
 - `sources_missing_reason` replaces `sources` when the Source line names no link (the raw text). `derived_from` lists the rule ids a Source line points to ("as in FXD-07", "pointers to X, Y"), for the chips on the card. A general rule's pointer to a record that is not general (a company's term named beside the general source) goes to `examples` instead: a named example, shown under "לדוגמה", never a derivation; a general rule's `derived_from` holds general rules only, and only a general rule carries `examples`.
 - **`scope`** (required; D30, build spec `8dd1f013:research/specs/2026-10-25-rules-scope/spec.md`): who the rule applies to, extracted from the `- Scope:` line of the rule's block.
