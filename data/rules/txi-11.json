@@ -40,15 +40,41 @@
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
       "kind": "regulation",
       "strength": "primary",
       "locator": "file p.5 (gazette p.287), reg. 1, definition מילווה מדינה",
-      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 287), תקנה 1, ההגדרה מילווה מדינה",
       "page": 5,
       "quote": "וכן מילווה שהוצא לפי חוק מילווה קצר מועד",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.289), reg. 5",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 5",
+      "page": 7,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.601), s.4(1)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 601), סעיף 4(1)",
+      "page": 3,
+      "quote": "בתקנת משנה (א), במקום \"20%\" יבוא \"25%\"",
       "checked": "2026-11-07"
     },
     {
@@ -91,32 +117,6 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005, קובץ התקנות 6449 (29.12.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.7 (gazette p.289), reg. 5",
-      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 5",
-      "page": 7,
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=3",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע״ב-2012, קובץ התקנות 7076 (11.1.2012)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.601), s.4(1), amending reg. 5(א)",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 601), סעיף 4(1), תיקון תקנה 5(א)",
-      "quote": "בתקנת משנה (א), במקום \"20%\" יבוא \"25%\"",
-      "checked": "2026-11-07"
-    },
-    {
       "url": "https://fs.knesset.gov.il/15/law/15_lsr_300606.pdf#page=22",
       "title": "חוק לתיקון פקודת מס הכנסה (מס' 132) (תיקון), התשס\"ג-2002 (ספר החוקים 1881)",
       "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 132) (תיקון), התשס\"ג-2002 (ספר החוקים 1881)",
@@ -124,9 +124,9 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.22, s.43(8)(ג), s.90(יב)(5) of Amendment 132",
+      "locator": "p.22, s.43(8)(ג), s.90(יב)(5)-(6) of Amendment 132",
       "page": 22,
-      "quote": "לענין ריבית על מילווה המדינה - על מילווה כאמור שהונפק ביום ג' באייר התש״ס (8 במאי 2000) ואילך; לענין סעיף קטן זה",
+      "quote": "לענין ריבית על מילווה המדינה - על מילווה כאמור שהונפק ביום ג' באייר התש״ס (8 במאי 2000) ואילך; (6) לענין סעיף קטן זה, \"ריבית\" - לרבות דמי ניכיון",
       "checked": "2026-11-06"
     },
     {
