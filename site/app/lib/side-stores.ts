@@ -1,19 +1,22 @@
-// The four side stores the export file carries beside the state document: the entered offers
+// The side stores the export file carries beside the state document: the entered offers
 // (`mekor.v2.offers`; the house-ranking page that wrote them is gone, and they stay on the device), the variant
-// assumptions (`mekor.v2.variants`; the funds page that wrote them is gone, and they stay on the device) and the
-// switching checklist's ticks (`mekor.v2.playbook-ticks`; the switching page is gone, D38, and the ticks stay on the device).
-// This file only reads and writes their storage keys, checks every item, and merges. The merge of the three INTO the state
+// assumptions (`mekor.v2.variants`; the funds page that wrote them is gone, and they stay on the device), the
+// switching checklist's ticks (`mekor.v2.playbook-ticks`; the switching page is gone, D38, and the ticks stay on the device), the
+// entered rates (`mekor.v2.own-rates`) and the fee page's saved deals (`mekor.v2.fee-deals`, fee-deal/store.ts).
+// This file only reads and writes their storage keys, checks every item, and merges. The merge of the stores INTO the state
 // document is pending the founder's approval, so the document's version stays 3.
 //
 // File shape (`StateFile.sideStores`, optional: a file from before this carries none):
 //   { offers: EnteredOffer[], variantAssumptions: { [exposureId]: FundAssumptions }, playbookTicks: { [key]: string[] },
-//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } } } (an object form holds an entered fee, and the provider id chosen for the brokerage wrapper; an unknown provider id is read and ignored) (ownRates (sweep); a file without it reads as none;
+//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } }, deals: FeeDeal[] } (an object form holds an entered fee, and the provider id chosen for the brokerage wrapper; an unknown provider id is read and ignored) (ownRates (sweep), deals; a file without one reads as none;
 //   a tick key of the old `wrapper|from|to` shape is folded into the wrapper's key on import)
 // Keys of the stores are kept verbatim (a tick key is a product id, or an old `wrapper|from|to` key, folded on import).
 import { valueObject } from "@finance-tool/schema";
+import { readDeal, type FeeDeal } from "./fee-deal/model";
+import { DEALS_KEY, dealsDoc, parseDeals } from "./fee-deal/store";
 import { parseOwnRates, type OwnRates } from "./own-rate";
 
-export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: "mekor.v2.own-rates" } as const;
+export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: "mekor.v2.own-rates", deals: DEALS_KEY } as const;
 /** What the last "add" imports put into the side stores (a `SideStores` holding only those items), so "מחיקת מה שיובא" can take exactly them out. */
 export const IMPORTED_SIDE_KEY = "mekor.v2.imported-side";
 
@@ -26,39 +29,46 @@ export interface SideStores {
   playbookTicks: Record<string, string[]>;
   /** goal id -> wrapper id -> % a year (lib/own-rate.ts); absent in a file from before the own-rate store. */
   ownRates: OwnRates;
+  /** The fee page's saved deals (fee-deal/store.ts); absent in a file from before the deal store. */
+  deals: FeeDeal[];
 }
 
-export const emptySide = (): SideStores => ({ offers: [], variantAssumptions: {}, playbookTicks: {}, ownRates: {} });
+export const emptySide = (): SideStores => ({ offers: [], variantAssumptions: {}, playbookTicks: {}, ownRates: {}, deals: [] });
 
 export interface SideCounts {
   offers: number;
   variants: number;
   ticks: number;
   ownRates: number;
+  deals: number;
 }
 
-export const noSideCounts = (): SideCounts => ({ offers: 0, variants: 0, ticks: 0, ownRates: 0 });
+export const noSideCounts = (): SideCounts => ({ offers: 0, variants: 0, ticks: 0, ownRates: 0, deals: 0 });
 const countRates = (r: OwnRates) => Object.values(r).reduce((n, w) => n + Object.keys(w).length, 0);
 
 export function sideCounts(s: SideStores): SideCounts {
-  return { offers: s.offers.length, variants: Object.keys(s.variantAssumptions).length, ticks: Object.values(s.playbookTicks).reduce((n, ids) => n + ids.length, 0), ownRates: countRates(s.ownRates) };
+  return { offers: s.offers.length, variants: Object.keys(s.variantAssumptions).length, ticks: Object.values(s.playbookTicks).reduce((n, ids) => n + ids.length, 0), ownRates: countRates(s.ownRates), deals: s.deals.length };
 }
 
 export const sideTotal = (s: SideStores) => {
   const c = sideCounts(s);
-  return c.offers + c.variants + c.ticks + c.ownRates;
+  return c.offers + c.variants + c.ticks + c.ownRates + c.deals;
 };
 
-export const sideIsEmpty = (s: SideStores) => {
-  const c = sideCounts(s);
-  return c.offers + c.variants + c.ticks + c.ownRates === 0;
-};
+export const sideIsEmpty = (s: SideStores) => sideTotal(s) === 0;
 
 export interface SideProblem {
   /** Which side store and which item, for the message. */
   store: "offers" | "variants" | "ticks" | "ownRates";
   item: string;
   reason: "structure" | "not-number";
+}
+
+/** A saved deal in an import file that is not a deal (`readDeal`): its id where it has one. Kept apart from `SideProblem`, whose stores are the ones the transfer panel names. */
+export interface DealProblem {
+  store: "deals";
+  item: string;
+  reason: "structure";
 }
 
 const num = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
@@ -106,12 +116,13 @@ function assumptionsProblem(v: unknown): "structure" | "not-number" | null {
   return null;
 }
 
-/** Reads the `sideStores` of an import file: what is sound, and one problem per item that is not. */
-export function readSideFile(raw: unknown): { side: SideStores | null; problems: SideProblem[] } {
-  if (raw === undefined) return { side: null, problems: [] };
+/** Reads the `sideStores` of an import file: what is sound, and one problem per item that is not (a deal's in `dealProblems`). */
+export function readSideFile(raw: unknown): { side: SideStores | null; problems: SideProblem[]; dealProblems: DealProblem[] } {
+  if (raw === undefined) return { side: null, problems: [], dealProblems: [] };
   const problems: SideProblem[] = [];
+  const dealProblems: DealProblem[] = [];
   const side = emptySide();
-  if (!isRec(raw)) return { side: null, problems: [{ store: "offers", item: "", reason: "structure" }] };
+  if (!isRec(raw)) return { side: null, problems: [{ store: "offers", item: "", reason: "structure" }], dealProblems };
   if (raw.offers !== undefined) {
     if (!Array.isArray(raw.offers)) problems.push({ store: "offers", item: "", reason: "structure" });
     else
@@ -149,9 +160,18 @@ export function readSideFile(raw: unknown): { side: SideStores | null; problems:
       }
     }
   }
+  if (raw.deals !== undefined) {
+    if (!Array.isArray(raw.deals)) dealProblems.push({ store: "deals", item: "", reason: "structure" });
+    else
+      for (const d of raw.deals) {
+        const deal = readDeal(d);
+        if (!deal) dealProblems.push({ store: "deals", item: isRec(d) && typeof d.id === "string" ? d.id.slice(0, 40) : "", reason: "structure" });
+        else if (!side.deals.some((x) => x.id === deal.id)) side.deals.push(deal);
+      }
+  }
   // a tick key written by the old keying folds into its wrapper's key (migrateTickKeys, below)
   side.playbookTicks = migrateTickKeys(side.playbookTicks);
-  return { side, problems };
+  return { side, problems, dealProblems };
 }
 
 // ---------------------------------------------------------------- the device
@@ -168,7 +188,7 @@ function readDoc(s: Storage, key: string): Rec | null {
   }
 }
 
-/** What the device holds in the three keys (items that do not check out are left out, as the stores themselves drop them). */
+/** What the device holds in the side keys (items that do not check out are left out, as the stores themselves drop them). */
 export function readSideStores(s: Storage | null): SideStores {
   const out = emptySide();
   if (!s) return out;
@@ -184,6 +204,7 @@ export function readSideStores(s: Storage | null): SideStores {
   } catch {
     out.ownRates = {};
   }
+  out.deals = parseDeals(readDoc(s, SIDE_KEYS.deals));
   return out;
 }
 
@@ -199,6 +220,7 @@ export function readImportedSide(s: Storage | null): SideStores {
     if (isRec(j) && isRec(j.variantAssumptions)) out.variantAssumptions = j.variantAssumptions as Record<string, Rec>;
     if (isRec(j) && isRec(j.playbookTicks)) for (const [k, ids] of Object.entries(j.playbookTicks)) if (Array.isArray(ids)) out.playbookTicks[k] = ids.filter((x) => typeof x === "string");
     if (isRec(j)) out.ownRates = parseOwnRates(j.ownRates);
+    if (isRec(j) && Array.isArray(j.deals)) out.deals = j.deals.map(readDeal).filter((d): d is FeeDeal => d !== null);
     return out;
   } catch {
     return emptySide();
@@ -222,7 +244,8 @@ export function removeImportedSide(s: Storage | null): boolean {
     const left = Object.fromEntries(Object.entries(rates).filter(([w, v]) => JSON.stringify(imp.ownRates[g]?.[w]) !== JSON.stringify(v)));
     if (Object.keys(left).length > 0) ownRates[g] = left;
   }
-  const ok = writeSideStores(s, { offers, variantAssumptions, playbookTicks, ownRates });
+  const deals = dev.deals.filter((d) => !imp.deals.some((x) => x.id === d.id && JSON.stringify(x) === JSON.stringify(d)));
+  const ok = writeSideStores(s, { offers, variantAssumptions, playbookTicks, ownRates, deals });
   try {
     s.removeItem(IMPORTED_SIDE_KEY);
   } catch {
@@ -235,7 +258,7 @@ export function removeImportedSide(s: Storage | null): boolean {
 export interface SideMerge {
   merged: SideStores;
   added: SideCounts;
-  /** Items the file had that the device already held (same provider, same exposure, same tick). */
+  /** Items the file had that the device already held (same provider, same exposure, same tick, same deal id). */
   skipped: number;
   /** Only the items this merge put in (for the "delete what was imported" record). */
   addedItems: SideStores;
@@ -243,8 +266,8 @@ export interface SideMerge {
 
 /**
  * "Add": an offer of a provider the device already has stays as it is (the device's own wins), a variant assumption of an
- * exposure likewise, and ticks are a union. "Replace": each store takes the file's (a file with no `sideStores`
- * leaves them as they are).
+ * exposure likewise, a deal with an id the device has likewise, and ticks are a union. "Replace": each store takes the file's (a file
+ * with no `sideStores` leaves them as they are).
  */
 export function mergeSide(device: SideStores, file: SideStores | null, mode: "add" | "replace"): SideMerge {
   if (!file) return { merged: device, added: noSideCounts(), skipped: 0, addedItems: emptySide() };
@@ -293,10 +316,19 @@ export function mergeSide(device: SideStores, file: SideStores | null, mode: "ad
       }
     }
   }
-  return { merged: { offers, variantAssumptions, playbookTicks, ownRates }, added, skipped, addedItems };
+  const deals = [...device.deals];
+  for (const d of file.deals) {
+    if (deals.some((x) => x.id === d.id)) skipped += 1;
+    else {
+      deals.push(d);
+      addedItems.deals.push(d);
+      added.deals += 1;
+    }
+  }
+  return { merged: { offers, variantAssumptions, playbookTicks, ownRates, deals }, added, skipped, addedItems };
 }
 
-/** Writes the three keys and tells the stores of this page (a `storage` event reaches only other tabs on its own). Returns whether the device kept them. */
+/** Writes the side keys and tells the stores of this page (a `storage` event reaches only other tabs on its own). Returns whether the device kept them. */
 export function writeSideStores(s: Storage | null, side: SideStores): boolean {
   if (!s) return false;
   const docs: [string, unknown][] = [
@@ -304,6 +336,7 @@ export function writeSideStores(s: Storage | null, side: SideStores): boolean {
     [SIDE_KEYS.variants, { version: 1, byExposure: side.variantAssumptions }],
     [SIDE_KEYS.ticks, { version: 1, byKey: side.playbookTicks }],
     [SIDE_KEYS.ownRates, side.ownRates],
+    [SIDE_KEYS.deals, dealsDoc(side.deals)],
   ];
   let ok = true;
   for (const [key, doc] of docs) {

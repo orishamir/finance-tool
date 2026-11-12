@@ -1,16 +1,21 @@
 // The data the fee page needs besides the comparison bundle (flows 20, 21, 27), built at build time and served
 // as /fees-data.json: P-03, the rule records the page quotes and the caps read, the F-68 regulator reference of
 // every provident-family class, the regulator's tracks in compact form (for ?track=), where P-05 sends each
-// wrapper, whose tariff a securities wrapper uses, and the link-outs (D20). Server-only.
+// wrapper, whose tariff a securities wrapper uses, the link-outs (D20), the kinds a deal can be with their caps, every house's latest
+// price list as a template, and the ECB's reference rates (method §10.6). Server-only.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { cmaPeriodFile, type ParameterRecord, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
 import { referenceOfClass } from "./class-reference";
-import { classificationToWrapper, loadFees, loadParameters, loadRules, pointedRecords, refLink, root, today } from "./data.server";
+import { classificationToWrapper, loadFees, loadParameters, loadProducts, loadRules, pointedRecords, refLink, root, today } from "./data.server";
+import { dealKindsOf } from "./fee-deal/kinds";
+import { houseTemplate } from "./fee-deal/templates";
+import { classKey, type FeesData, type TrackLite } from "./fee-page-data";
+import { loadFx } from "./fx.server";
+import { BROKERAGE, onlyWhatCanBeDone, providersOf } from "./providers";
+import { latestSnapshots } from "./providers.server";
 import { compactFee } from "./value";
-import type { FeesData, TrackLite } from "./fees";
-import { classKey } from "./fees";
 import { readParsedCached } from "./read-cache.server";
 
 /** The rules the page quotes (negotiation, caps, references, link-outs) and the cap and run rules read. */
@@ -80,7 +85,12 @@ export function buildFeesData(): FeesData {
     tase: refLink("brokerage-account.md", "BRK-37", /market\.tase\.co\.il|trading_fees/),
     isa: refLink("mutual-funds-and-money-market-funds.md", "MF-55", /Funds_Report2025/),
   };
-  return { today: t, p03, rules, pointed: Object.values(pointedRecords(rules, allRules)), references, templates, tracks: lite, wrapperTrack, tariffClass, links };
+  const kinds = dealKindsOf(loadProducts());
+  // the houses a securities account's deal can start from: the ones the comparison ranks, each read as it can be done (providers.ts)
+  const houses = providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)
+    .filter((s) => !s.missing)
+    .map(houseTemplate);
+  return { today: t, p03, rules, pointed: Object.values(pointedRecords(rules, allRules)), references, templates, tracks: lite, wrapperTrack, tariffClass, links, kinds, houses, fx: loadFx() };
 }
 
 let cached: FeesData | null = null;
