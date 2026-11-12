@@ -8,6 +8,9 @@
 // write nothing). After editing blocks, write only their records: `-- --only=KGL-12,MF-25`; every other record stays as it is, so a
 // run never re-dates or reorders a card nobody touched. `-- --drift` writes nothing and lists the records that differ from what
 // their blocks give today (a block edited without its record, or a record edited by hand).
+// A link that cites several passages ("p.4, s.1; p.8, s.2 "…"") may become several sources, each opening at the first page its own
+// locator names; where the link carries `#page=`, each one's address names its own page, the one difference from the block's address
+// the data check accepts (`urlInBlock`).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -488,7 +491,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     // words are while its locator, cut at the first prose word or quote mark, named only the first passage's page: BANK-07's
     // "file p.1, amendment list …; file p.18, Schedule E, row "…"" said "file p.1" and opened at 18.
     const passages = body.split(/;\s*(?=(?:file\s+)?pp?\.\s*\d)/);
-    const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[א-ת])"(?=[א-ת])/g, "")));
+    const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
     // a passage whose quote marks hold no quote (a title, a term, an English heading) stays with the passages before it, as before
     const quoteApart = firstQuoted > 0 && findQuote(passages[firstQuoted]!) !== undefined;
     const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
@@ -500,14 +503,23 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
     }
-    if (leadLocator || !quoteApart) sources.push(orderKeys(entry));
+    const own: ExtractedSource[] = leadLocator || !quoteApart ? [entry] : [];
     for (const passage of passages.slice(lead.length)) {
       const loc = cleanLocator(passage);
       if (!loc) continue;
       const more: ExtractedSource = { ...entry };
       for (const k of ["locator", "locator_he", "page", "quote"] as const) delete more[k];
       locate(more, loc, passage);
-      sources.push(orderKeys(more));
+      own.push(more);
+    }
+    // The site opens a PDF at its address's own `#page=` before the record's page, so a passage split off a link that carries one
+    // would open at the link's page, not its own: its address names its own page instead, and the block need not drop `#page=` to
+    // cite passages on several pages. The data check takes such an address as the block's (`urlInBlock`). A link that yields one
+    // source keeps its address as written: a `#page=` that differs from its locator's page is the block's to correct.
+    const linkPage = pageInUrl(url);
+    for (const e of own) {
+      if (own.length > 1 && linkPage !== undefined && e.page !== undefined && e.page !== linkPage) e.url = url.replace(/#page=\d+/, `#page=${e.page}`);
+      sources.push(orderKeys(e));
     }
   });
 

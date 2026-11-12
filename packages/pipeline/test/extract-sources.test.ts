@@ -52,6 +52,29 @@ describe("extract-sources: fixture Source lines", () => {
     expect(before.map((s) => [s.locator, s.page, s.quote])).toEqual([["p.2, s.5(ב)", 2, undefined], ["p.3, Annex A", 3, "סוג ריבית קבועה או משתנה"]]);
   });
 
+  it("a passage split off a link that carries #page= opens at its own page; the block holds its address but for that number (CORP-27, TXF-28)", () => {
+    const gazette = "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=";
+    const line = `[תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018](${gazette}#page=4), reg. 2, file pp.3-4; file p.4 "פדיון התעודות יהיה רק במועדי תחלופת הנכסים" · checked 2026-11-07 · primary`;
+    const r = extractFromLine(line, ctx()).sources;
+    expect(r.map((s) => [s.url, s.locator, s.page])).toEqual([
+      [`${gazette}#page=3`, "reg. 2, file pp.3-4", 3],
+      [`${gazette}#page=4`, "file p.4", 4],
+    ]);
+    const revenue = "https://www.revenue.ie/x/27-01a-02.pdf";
+    const passages = extractFromLine(`[Manual](${revenue}#page=8), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system" · checked 2026-10-26 · primary`, ctx()).sources;
+    expect(passages.map((s) => [s.url, s.page])).toEqual([[`${revenue}#page=8`, 8], [`${revenue}#page=9`, 9]]);
+    // the data check holds the address to the block but for its #page= number, and only that
+    const block = { file: "x.md", body: `- Source: ${line}`, defs: {} };
+    for (const s of r) expect(urlInBlock(s.url, block)).toBe(true);
+    expect(urlInBlock(`${gazette}#page=12`, block)).toBe(true);
+    expect(urlInBlock(`${gazette}`, block)).toBe(true);
+    expect(urlInBlock(`${gazette.replace("MOnw", "XXnw")}#page=4`, block)).toBe(false);
+    expect(urlInBlock(`${revenue}#page=9`, block)).toBe(false);
+    // a link that yields one source keeps its address as written, even where its locator names another page (the data check says so)
+    const [one] = extractFromLine(`[Directive](https://www.isa.gov.il/a/fees.pdf#page=5), p.1 s.3, p.5 Appendix A · checked 2026-11-08 · primary`, ctx()).sources;
+    expect(one).toMatchObject({ url: "https://www.isa.gov.il/a/fees.pdf#page=5", page: 1 });
+  });
+
   it("reference-style links resolve through the file's definitions, with angle brackets and parentheses in URLs", () => {
     const defs = { tr: "https://www.gov.il/BlobFolder/x/תקנות_(קופות_גמל)_(העברת).pdf", c17: "https://www.analyst.co.il/media/x/c17.pdf" };
     const line =
@@ -233,7 +256,7 @@ describe("extract-sources: the real records", () => {
   const records = readdirSync(rulesDir).map((f) => JSON.parse(readFileSync(`${rulesDir}/${f}`, "utf8")) as { id: string; strength: string; checked: string });
   const known = new Set(records.map((r) => r.id));
 
-  it("every URL the extraction yields appears in the rule's markdown block, verbatim", () => {
+  it("every URL the extraction yields appears in the rule's markdown block, verbatim but for its #page= number", () => {
     for (const r of records) {
       const block = base.blocks!.get(r.id)!;
       const line = sourceLineOf(block.body) ?? "";
