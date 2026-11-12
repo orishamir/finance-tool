@@ -1903,6 +1903,7 @@ export const feeDeal = {
     heldSaid: { israel: "קרן שנקנית בארץ", abroad: "קרן שנקנית בחו״ל", accumulating: "צוברת", distributing: "מחלקת", ILS: "בשקלים", USD: "בדולרים", EUR: "באירו", GBP: "בלירות שטרלינג" } as Record<string, string>,
     track: "החברה והמסלול",
     trackNone: "לא נבחרו · לא חובה",
+    trackPick: "לבחור מסלול",
     fees: "העמלות בעסקה",
     feesLead: "כל ערך אפשר לשנות כאן. לחיצה על עמלה פותחת את כל השדות שלה.",
     chosen: "נבחרה",
@@ -2085,8 +2086,10 @@ export const feeDeal = {
     copyBlocked: "ההעתקה לא הצליחה. אפשר להעתיק את הקישור מכאן:",
     linkField: "הקישור לעסקה",
     template: "לבחור תבנית",
-    /** Said once a template opened a new deal. */
-    opened: (name: string) => `נפתחה עסקה חדשה מ־${name}. העסקה הקודמת נשמרה ב״העסקאות שלי״.`,
+    /** Said once a template opened a new deal: from a house's price list, or from a track. */
+    opened: { house: (name: string) => `נפתחה עסקה חדשה מהמחירון של ${name}.`, track: (name: string) => `נפתחה עסקה חדשה מהמסלול ${name}.` },
+    /** After it, where the device keeps deals. */
+    kept: " העסקה הקודמת שמורה ב״העסקאות שלי״.",
   },
   /** The template picker (a sheet). */
   picker: {
@@ -2095,12 +2098,14 @@ export const feeDeal = {
     search: "חיפוש לפי שם",
     clear: "ניקוי החיפוש",
     none: "אין תבנית בשם הזה.",
-    /** Under an option: what it leaves out, by count. */
+    /** Under a price list: how many of its lines it leaves out of the deal, or that it has none for what the deal holds. */
     leaves: { one: "שורה אחת לא נכנסת", two: "שתי שורות לא נכנסות", many: "{n} שורות לא נכנסות" },
+    noHolding: "אין בו שורות למה שהעסקה מחזיקה",
   },
   /** What a template filled and left out, in the builder. */
   filled: {
-    from: "מולאה מ־",
+    /** Before the template's name. */
+    from: { house: "העסקה מולאה מהמחירון של ", track: "העסקה מולאה מהמסלול " },
     left: "מה לא נכנס מהתבנית",
     /** Why a price list's line fills nothing (templates.ts, `LeftWhy`). */
     why: {
@@ -2118,8 +2123,8 @@ export const feeDeal = {
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
       "no-holding": "במחירון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
-      "none-by-rule": "במוצר הזה התקנות קובעות תקרה רק לדמי הניהול מהחיסכון, והנתונים לא מראים דמי ניהול מההפקדה במסלול.",
-      "track-no-value": "בנתונים של רשות שוק ההון אין לה מספר למסלול הזה.",
+      "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
+      "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
     } as Record<string, string>,
     /** A left line counted by its reason, where the reason does not name the fee: "{n} שורות: …". */
     lines: { one: "שורה אחת", two: "שתי שורות", many: "{n} שורות" },
