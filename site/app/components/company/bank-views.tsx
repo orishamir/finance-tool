@@ -6,8 +6,8 @@
 import { Fragment, useId, useMemo, useState, type ReactNode } from "react";
 import { guidePath } from "../../lib/site-paths";
 import { companyPage as w, r4catalogue as copy } from "../../copy";
-import { breakKey, kindGroups, lineAt, rangeKey, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
-import { amountRangeText, breakText, depositLabels, exitsText, renewText, taxWord, termWords } from "../../lib/deposit-kind";
+import { kindGroups, lineAt, rangeKey, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
+import { amountRangeText, breakText, depositLabels, exitsText, onlyAtExits, renewText, taxWord, termWords } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
@@ -157,7 +157,7 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   if (!p) return null;
   const say = w.deposits.say;
   const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? say.renew.upTo(fmt.number(p.autoRenew.maxRenewals)) : say.renew.yes) : say.renew.no;
-  const brk = breakText(p.breakTerms.penalty, products.every((x) => breakKey(x) === "atExits"));
+  const brk = breakText(p.breakTerms.penalty, products.every((x) => onlyAtExits(x.breakTerms.penalty, x.exitPoints.exists)));
   const first = [say.rate, shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? say.and(brk, renew) : shared.breakTerms ? `${brk}.` : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter(Boolean).join(" ");
   const rules = [...(shared.tax ? (p.taxBucket.rule_ids ?? []) : []), ...(shared.taxByLinkage ? (taxPerLinkage(products) ?? []).flatMap((x) => x.taxBucket.rule_ids ?? []) : []), ...(shared.breakTerms ? p.breakTerms.rules : []), "BANK-13"];
   const shown = [...new Set(rules)].filter((r) => known.has(r));

@@ -4,7 +4,7 @@
 import type { ProductRowData } from "../components/decoder/institutions/types";
 import { numberOf, type SiteValue } from "./value";
 import { r4catalogue as copy } from "../copy";
-import { onlyAtExits, termWords } from "./deposit-kind";
+import { termWords } from "./deposit-kind";
 
 export interface TableRow {
   key: string;
@@ -78,9 +78,6 @@ export function sharedBands(rows: readonly TableRow[]): AmountBand[] | null {
 
 /** The record of a row at an amount range, if the row has it. */
 export const lineAt = (row: TableRow, band: string): ProductRowData | null => row.lines.find((p) => rangeKey(p) === band) ?? null;
-
-/** What a deposit's break comes to, as one key: a deposit that cannot be broken but has exit points says so apart. */
-export const breakKey = (p: ProductRowData): string => (onlyAtExits(p.breakTerms.penalty, p.exitPoints.exists) ? "atExits" : p.breakTerms.penalty);
 
 /** Which facts every record of the table shares, so they are said once over it; each `false` stays in the rows. */
 export interface Shared {
