@@ -19,31 +19,32 @@ export const refName = (r: FeeRef) => feeName(r.kind, r.name);
 
 /**
  * Each fee's one colour on the whole page (theme.css, the `--fee-*` roles): a `bg-*` for its swatch and its bar against the cap, a
- * `border-*` for a later price's outline. Written out whole, so the stylesheet keeps every class.
+ * `border-*` for a later price's outline, a `fill-*` and a `stroke-*` for its band on a curve. Written out whole, so the stylesheet keeps
+ * every class.
  */
-const COLOUR: Record<FeeKindId, { bg: string; border: string }> = {
-  trade: { bg: "bg-fee-trade", border: "border-fee-trade" },
-  spread: { bg: "bg-fee-spread", border: "border-fee-spread" },
-  creation_redemption: { bg: "bg-fee-other", border: "border-fee-other" },
-  load: { bg: "bg-fee-other", border: "border-fee-other" },
-  redemption_deduction: { bg: "bg-fee-other", border: "border-fee-other" },
-  fx: { bg: "bg-fee-fx", border: "border-fee-fx" },
-  fx_spread: { bg: "bg-fee-spread", border: "border-fee-spread" },
-  deposit: { bg: "bg-fee-deposit", border: "border-fee-deposit" },
-  distribution_handling: { bg: "bg-fee-other", border: "border-fee-other" },
-  corporate_event: { bg: "bg-fee-other", border: "border-fee-other" },
-  transfer_out: { bg: "bg-fee-other", border: "border-fee-other" },
-  exit: { bg: "bg-fee-other", border: "border-fee-other" },
-  balance: { bg: "bg-fee-balance", border: "border-fee-balance" },
-  custody: { bg: "bg-fee-custody", border: "border-fee-custody" },
-  variable_management: { bg: "bg-fee-manager", border: "border-fee-manager" },
-  trustee: { bg: "bg-fee-manager", border: "border-fee-manager" },
-  direct_expenses: { bg: "bg-fee-direct", border: "border-fee-direct" },
-  fund_management: { bg: "bg-fee-fund", border: "border-fee-fund" },
-  fixed_period: { bg: "bg-fee-fixed", border: "border-fee-fixed" },
-  current_account: { bg: "bg-fee-account", border: "border-fee-account" },
-  insurance_premium: { bg: "bg-fee-other", border: "border-fee-other" },
-  own: { bg: "bg-fee-other", border: "border-fee-other" },
+const COLOUR: Record<FeeKindId, { bg: string; border: string; fill: string; stroke: string }> = {
+  trade: { bg: "bg-fee-trade", border: "border-fee-trade", fill: "fill-fee-trade", stroke: "stroke-fee-trade" },
+  spread: { bg: "bg-fee-spread", border: "border-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
+  creation_redemption: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  load: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  redemption_deduction: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  fx: { bg: "bg-fee-fx", border: "border-fee-fx", fill: "fill-fee-fx", stroke: "stroke-fee-fx" },
+  fx_spread: { bg: "bg-fee-spread", border: "border-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
+  deposit: { bg: "bg-fee-deposit", border: "border-fee-deposit", fill: "fill-fee-deposit", stroke: "stroke-fee-deposit" },
+  distribution_handling: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  corporate_event: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  transfer_out: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  exit: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  balance: { bg: "bg-fee-balance", border: "border-fee-balance", fill: "fill-fee-balance", stroke: "stroke-fee-balance" },
+  custody: { bg: "bg-fee-custody", border: "border-fee-custody", fill: "fill-fee-custody", stroke: "stroke-fee-custody" },
+  variable_management: { bg: "bg-fee-manager", border: "border-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
+  trustee: { bg: "bg-fee-manager", border: "border-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
+  direct_expenses: { bg: "bg-fee-direct", border: "border-fee-direct", fill: "fill-fee-direct", stroke: "stroke-fee-direct" },
+  fund_management: { bg: "bg-fee-fund", border: "border-fee-fund", fill: "fill-fee-fund", stroke: "stroke-fee-fund" },
+  fixed_period: { bg: "bg-fee-fixed", border: "border-fee-fixed", fill: "fill-fee-fixed", stroke: "stroke-fee-fixed" },
+  current_account: { bg: "bg-fee-account", border: "border-fee-account", fill: "fill-fee-account", stroke: "stroke-fee-account" },
+  insurance_premium: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  own: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
 };
 
 export const feeColour = (kind: FeeKindId) => COLOUR[kind];
