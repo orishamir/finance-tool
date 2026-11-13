@@ -8,6 +8,12 @@ import { FEE_SHAPES } from "./shapes";
 
 export type Unit = ValueObject["unit"];
 
+/** The page a value's source gives, where it gives one. */
+const pageOf = (v: ValueObject): number | undefined => {
+  const page = (v.source as { page?: unknown }).page;
+  return typeof page === "number" && Number.isInteger(page) && page > 0 ? page : undefined;
+};
+
 /** A value object's source as a template keeps it on a deal's figure (`Num.src`). */
 export function sourcedOf(v: ValueObject, own?: string): Sourced {
   return {
@@ -16,6 +22,8 @@ export function sourcedOf(v: ValueObject, own?: string): Sourced {
     publisher: v.source.publisher,
     strength: v.source.strength,
     checked: v.checked,
+    // a price list's figure carries the page it stands on (data-schema §3.6, `page` beside the source)
+    ...(pageOf(v) ? { page: pageOf(v)! } : {}),
     ...(v.effective_from ? { effectiveFrom: v.effective_from } : {}),
     ...(v.effective_to ? { effectiveTo: v.effective_to } : {}),
     ...(v.rule_ids?.length ? { ruleIds: v.rule_ids } : {}),
@@ -31,7 +39,7 @@ export function figure(n: Num, unit: Unit, today: string, about?: string): SiteV
   return {
     value: n.v,
     unit,
-    source: { url: s.url, title: s.title, publisher: s.publisher, strength: s.strength },
+    source: { url: s.url, title: s.title, publisher: s.publisher, strength: s.strength, ...(s.page ? { page: s.page } : {}) },
     checked: s.checked,
     effective_from: s.effectiveFrom ?? null,
     effective_to: s.effectiveTo ?? null,

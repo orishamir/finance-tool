@@ -17,6 +17,8 @@ export interface Sourced {
   strength: Strength;
   /** When the record was read, YYYY-MM-DD. */
   checked: string;
+  /** The page of the document the figure stands on, where the record gives it (a PDF's own page count). */
+  page?: number;
   effectiveFrom?: string;
   effectiveTo?: string;
   ruleIds?: string[];
@@ -321,6 +323,10 @@ function readSourced(raw: unknown): Sourced | null {
   // a source opens as a link on the page: only an address on the web or one of the repository's documents, never a script or another scheme
   if (!str(url) || !SOURCE_URL.test(url) || url.includes("..") || !str(title) || !str(publisher) || !STRENGTHS.includes(strength as Strength) || !str(checked) || !DATE.test(checked)) return null;
   const out: Sourced = { url, title, publisher, strength: strength as Strength, checked };
+  if (raw.page !== undefined) {
+    if (!(typeof raw.page === "number" && Number.isInteger(raw.page) && raw.page > 0 && raw.page < 100_000)) return null;
+    out.page = raw.page;
+  }
   if (raw.effectiveFrom !== undefined) {
     if (!str(raw.effectiveFrom) || !DATE.test(raw.effectiveFrom)) return null;
     out.effectiveFrom = raw.effectiveFrom;

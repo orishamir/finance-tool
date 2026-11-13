@@ -186,3 +186,16 @@ describe("the reading", () => {
     expect(v(g.throughout[0]!.rates[0]!.rate)).toBeCloseTo(0.433, 10);
   });
 });
+
+describe("a filled figure's source", () => {
+  it("carries the page of the price list it stands on, through the device and a link", () => {
+    const fx = data.houses.find((h) => h.id === "mizrahi-tefahot")!.holdings.abroad!.fees.find((f) => f.kind === "fx")!.stages[0]!.price;
+    const page = fx.form === "action" ? fx.rate.src?.page : undefined;
+    expect(page).toBeGreaterThan(0);
+    const d = account([{ id: "fee-fx", kind: "fx", stages: [{ price: fx }] }]);
+    expect(readDeal(JSON.parse(JSON.stringify(d)))!.fees[0]!.stages[0]!.price).toEqual(fx);
+    expect(decodeDeal(encodeDeal(d))!.fees[0]!.stages[0]!.price).toEqual(fx);
+    const shown = readingOf(read(d), data.fx).periods[0]!.rows[0]!.price.figures.rate!;
+    expect((shown.source as { page?: number }).page).toBe(page);
+  });
+});
