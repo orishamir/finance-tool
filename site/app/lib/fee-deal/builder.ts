@@ -28,12 +28,15 @@ export interface NextChange {
 }
 
 /**
- * A fee's row in the builder: its prices in short and the facts beside them; for a fee with cases, those of the case it is read in (or its
- * first case, where the picks give it none), so a card that shows one price shows that one.
+ * A fee's row in the builder: its prices in short and the facts beside them; for a fee with cases, those of its first case, the one the
+ * edits edit where they name no case, so a card that shows one price shows and edits that one; and the fee as a block, every case in it.
  */
 export interface BuilderRow extends FeeRef {
   stages: StageView[];
-  /** Whether every price of the fee is given (`feePriced`); a fee with a price not given yet shows its boxes and no standing or change. */
+  /**
+   * Whether every price the row shows is given (`feePriced`) and the fee is read: a fee with a price not given yet, or one the picks give no
+   * case, shows its boxes and no standing or change.
+   */
   priced: boolean;
   /** Whether the picks give the fee no case (F-114): it is not read, and its card says so rather than that a price is missing. */
   unmatched: boolean;
@@ -280,17 +283,19 @@ function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null
 
 // ---------------------------------------------------------------- the rows
 
-/** The case a fee's row shows: the case the reading reads it in, else its first. */
-function shownCase(r: DealRead, fee: Fee): string | undefined {
-  if (!hasCases(fee)) return undefined;
-  return r.fees.find((x) => feeOf(x) === fee.id)?.read?.case ?? fee.cases[0]!.id;
-}
+/** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edit.ts). */
+const firstCase = (fee: Fee): string | undefined => (hasCases(fee) ? fee.cases[0]!.id : undefined);
 
-/** A fee's row: its prices from the reading (the first stretch of a size read across sizes), or on their own where it is not read. */
+/**
+ * A fee's row: the prices of its first case (or its own), from the reading where the reading reads that case, or on their own where it does
+ * not (the picks give the fee another case, or none, or a price is not given yet).
+ */
 function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null } | null): BuilderRow {
-  const i = r.fees.findIndex((x) => feeOf(x) === fee.id);
-  const caseId = shownCase(r, fee);
+  const caseId = firstCase(fee);
+  const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
   const priced = pricedOf(fee, caseId);
+  // a fee the picks give no case is not read, whatever its first case states: its card says so (`unmatched`)
+  const given = i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from)));
   const fees = i >= 0 ? r.fees : [fee];
   const at = Math.max(i, 0);
   const stages = readStages(r, stageViews(r, fees, at, priced.stages));
@@ -302,7 +307,7 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     ...refOf(i >= 0 ? r.fees[i]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today),
     fee: fee.id,
     stages: stages.length ? stages : [now],
-    priced: i >= 0,
+    priced: given,
     unmatched: r.unmatched.includes(fee.id),
     ...(sale ? { sale } : {}),
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
@@ -454,12 +459,12 @@ function openCase(r: DealRead, fee: Fee, caseId: string | undefined): OpenCase {
 
 /**
  * One fee's panel, from the deal read once (`readDealFor`); null where the deal has no fee with that id. For a fee with cases, the panel's
- * prices are the open case's (`caseId`, else the case the reading reads it in, else the first).
+ * prices are the open case's (`caseId`, else its first, which the edits edit where they name no case).
  */
 export function panel(r: DealRead, feeId: string, caseId?: string): Panel | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
-  const shown = caseId ?? shownCase(r, fee);
+  const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
   // a fee not read (prices out of order, not given, no case for the picks) has its prices shown on their own, so its fields still show
   const at = r.fees.findIndex((x) => feeOf(x) === fee.id && (!hasCases(fee) || x.read?.case === (priced as Case).id));
@@ -517,7 +522,7 @@ export interface Toolbox {
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
-  const shown = caseId ?? shownCase(r, fee);
+  const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
   const p = priced.stages[0]!.price;
   const shape = FEE_SHAPES[fee.kind];

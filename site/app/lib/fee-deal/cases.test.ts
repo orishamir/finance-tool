@@ -259,6 +259,14 @@ describe("the builder's blocks", () => {
     expect(b.rows[2]!.block).toMatchObject({ kind: "slim", open: false });
     expect(b.rows[3]!.block.kind === "slim" && b.rows[3]!.block.parts.map((p) => p.id)).toEqual(["sum", "offset"]);
   });
+  it("shows a card's one price, and edits it, in the first case where none is named", () => {
+    expect(b.rows[0]!.stages[0]!.price).toMatchObject({ form: "action", figures: { rate: { value: 0.4 } } });
+    expect(b.rows[0]!.priced).toBe(true);
+    expect(panel(r, "fee-trade")!.open!.case).toBe("c1");
+    expect(toolbox(r, "fee-trade")!.addTo.when![0]!.text).toBe(copy.cases.values.what.tase);
+    const edited = editPrice(trade(), "buy", 0, (p) => withFigure(p, "rate", 0.5));
+    expect(edited.cases[0]!.stages[0]!.price).toMatchObject({ rate: { v: 0.5 } });
+  });
   it("opens the chosen case in the panel, its slots and its parts with the figures each edits", () => {
     const p = panel(r, "fee-trade", "c3")!;
     expect(p.open!.case).toBe("c3");
