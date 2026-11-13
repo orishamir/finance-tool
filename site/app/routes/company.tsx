@@ -152,7 +152,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     body: (
       <>
         <StaleSaid on={!!data.period.stale}>
-          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} caps={data.caps[v.id] ?? null} foot={<FeeFoot caps={data.caps[v.id] ?? null} />} />
+          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} caps={data.caps[v.id] ?? null} foot={(depositCapAbove) => <FeeFoot caps={data.caps[v.id] ?? null} depositCapAbove={depositCapAbove} />} />
         </StaleSaid>
         <ProductDocs product={v.name} groups={docs.byProduct[v.id] ?? []} />
       </>
@@ -344,8 +344,10 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
 }
 
 /** Under each track table on a phone, whose rows have no heads (D36): the product's legal caps, then that the direct expenses come on top
- *  (PF-10). From md the caps are the captions over the fee heads and the direct expenses the savings fee's "?". */
-function FeeFoot({ caps }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null }) {
+ *  (PF-10). From md the caps are the captions over the fee heads and the direct expenses the savings fee's "?"; a deposit fee's cap with
+ *  no column under it is the line over the list's, at every width, and not repeated here. */
+function FeeFoot({ caps: all, depositCapAbove }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The line over the list says the deposit fee's cap: the foot leaves it out. */ depositCapAbove: boolean }) {
+  const caps = all && depositCapAbove ? { ...all, deposit: null } : all;
   return (
     <div className="flex flex-col gap-1 text-xs text-muted-foreground">
       {caps && (caps.balance || caps.deposit) && (

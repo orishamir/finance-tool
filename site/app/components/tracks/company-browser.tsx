@@ -1,6 +1,6 @@
 // A company's product on its page (components/company/template.tsx): its size (on a phone the dates of its figures too), then the track
 // browser's list over one company and one product in its shorter form (the designer's mock), whose heads carry the dates, the caps and the
-// notes from md (a phone has them under the list), and links to the product in every company and to its guide. No kind filter (a company has one or two tracks of a kind) and no
+// notes from md (a phone has them under the list; a deposit fee's cap with no column to stand over is the line over the list's), and links to the product in every company and to its guide. No kind filter (a company has one or two tracks of a kind) and no
 // search (at most about twenty tracks of a product). The order is in the address (`?sort=`), read once the page is in the browser, as on
 // the tracks page.
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
@@ -18,7 +18,8 @@ import { CompanySize, TrackList } from "./list";
 /** As on the tracks page: the first rows at once, the rest the moment after. */
 const FIRST_ROWS = 12;
 
-export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The lines under the list on a phone, whose rows have no heads (the caps, the direct expenses). */ foot: ReactNode }) {
+export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The lines under the list on a phone, whose rows have no heads (the caps, the direct expenses); told whether the line above the list
+   *  already says the deposit fee's cap, so the foot leaves it out. */ foot: (depositCapAbove: boolean) => ReactNode }) {
   const view = useMemo(() => buildProductView(data, product) ?? null, [data, product]);
   const { hydrated } = useAddressParams();
   const { chosen: sortSet, set: setSort, press } = useAddressSort(SORT_IDS, defaultSort);
@@ -47,6 +48,9 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
   // the tracks' deposit fee: a column only where they differ in it, else said once over the table (the designer's mock)
   const deposits = new Set(view.tracks.map((x) => `${x.deposit.value}`));
   const oneDeposit = deposits.size === 1 ? view.tracks[0]!.deposit : null;
+  const depositFigure = oneDeposit && typeof oneDeposit.value === "number" ? oneDeposit : null;
+  // with no deposit column there is no caption to hold the deposit fee's cap: the line over the list says it, at every width
+  const capAbove = oneDeposit && caps?.deposit ? caps.deposit : null;
   return (
     <div className="flex flex-col gap-4">
       {/* the product's size and dates, 8 px under the part's heading, whose section leaves 16 */}
@@ -55,23 +59,28 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
           <CompanySize count={tracksPhrase(view.tracks.length)} assets={view.companies[0]?.assets ?? null} />
         </p>
         {/* the year and the date stand on a phone only: from md the fee heads and the caption over the columns say them */}
-        <p className={cx("text-sm text-muted-foreground", !(oneDeposit && typeof oneDeposit.value === "number") && "md:hidden")}>
+        <p className={cx("text-sm text-muted-foreground", !depositFigure && !capAbove && "md:hidden")}>
           <span className="md:hidden">
             {feeYear && t.feeAverage(feeYear)}
             {t.dates(fmt.period(data.reportPeriod))}{" "}
           </span>
-          {oneDeposit && typeof oneDeposit.value === "number" && (
+          {depositFigure ? (
             <>
-              {t.depositOnce} <Num value={oneDeposit} />
-              {/* with no deposit column, its cap is said here from md (a phone has it under the list) */}
-              {caps?.deposit && (
-                <span className="hidden md:inline">
+              {t.depositOnce} <Num value={depositFigure} />
+              {capAbove && (
+                <>
                   {"; "}
-                  {companyCopy.fees.cap} <Num value={caps.deposit} />
-                </span>
+                  {companyCopy.fees.cap} <Num value={capAbove} />
+                </>
               )}
               .
             </>
+          ) : (
+            capAbove && (
+              <>
+                {companyCopy.fees.cap} <Num value={capAbove} /> {companyCopy.fees.capDeposits}.
+              </>
+            )
           )}
         </p>
       </div>
@@ -92,7 +101,7 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
         {/* on a phone, whose rows have no heads, under the list: the fee's caps and the direct expenses, then what the yield is; from md the
             caps are the captions over the fee heads, the direct expenses and the yield's caution the heads' "?" */}
         <div className="md:hidden flex flex-col gap-3">
-          {foot}
+          {foot(!!capAbove)}
           <p className="text-xs text-muted-foreground">{t.pastNote}</p>
         </div>
       </div>
