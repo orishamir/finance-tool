@@ -135,7 +135,8 @@ function usePlace(): "phone" | "table" | null {
 
 /** Whether the table fits the width of its card: then nothing scrolls sideways, a sticky head can stick to the page (a scrolling card would
  *  hold it), and the card clips nothing above or below it (a "?" in the head keeps its 44 px over the card's edge). Otherwise the card marks
- *  itself `data-scrolled` while it is scrolled from its start, when the first column lies over the others (`tbl-pin`). */
+ *  itself `data-scrolled` while it is scrolled from its start, when the first column lies over the others (`tbl-pin`), and keeps that
+ *  column's width as its scroll padding, so a link or button that takes focus further along a row scrolls out from under it. */
 function useFitsWidth(place: "phone" | "table" | null) {
   const card = useRef<HTMLDivElement>(null);
   const [fits, setFits] = useState(false);
@@ -144,7 +145,10 @@ function useFitsWidth(place: "phone" | "table" | null) {
     if (!el) return;
     const measure = () => {
       const table = el.querySelector("table");
-      setFits(!!table && table.offsetWidth <= el.clientWidth + 1);
+      const fit = !!table && table.offsetWidth <= el.clientWidth + 1;
+      setFits(fit);
+      const head = table?.rows[0]?.cells[0];
+      el.style.scrollPaddingInlineStart = !fit && head?.colSpan === 1 ? `${head.offsetWidth}px` : "";
     };
     const scrolled = () => el.toggleAttribute("data-scrolled", Math.abs(el.scrollLeft) > 0);
     measure();
