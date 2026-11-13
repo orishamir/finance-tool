@@ -2,8 +2,9 @@
 // deals' side store and the export file that carries them.
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
-import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
-import { blankPrice, engineDeal, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
+import { decodeDeal, dealOfAddress, encodeDeal, packDeal, parseSubject, unpackDeal } from "./link";
+import { blankPrice, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Price, type Sourced } from "./model";
+import { engineDeal } from "./to-engine";
 import { stageFault, untilRange } from "./model";
 import { DEALS_KEY, parseDeals, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
@@ -16,7 +17,7 @@ function account(): FeeDeal {
     id: "deal-a",
     name: "",
     kind: "brokerage-account",
-    held: { place: "abroad", currency: "USD", payout: "accumulating" },
+    readFor: [{ by: "what", is: "us" }],
     fees: [
       { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: { v: 0.25, src }, min: typed(15) } }] },
       { id: "fee-custody", kind: "custody", stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }] },
@@ -51,8 +52,9 @@ describe("fee shapes", () => {
     expect(s.rarer).toContain("fx");
     expect(s.rarer.at(-1)).toBe("own");
     expect(s.rarer).not.toContain("distribution_handling");
+    // a deal says nothing of what it holds (its fees change by what is bought, F-114): a fee on a distribution is offered with the rest
     const unsaid = suggestions("brokerage-account", ["trade", "distribution_handling"], [], undefined);
-    expect([...unsaid.usual, ...unsaid.rarer]).not.toContain("distribution_handling");
+    expect(unsaid.usual).toContain("distribution_handling");
   });
 });
 
@@ -60,15 +62,15 @@ describe("the deal as the engine reads it", () => {
   it("turns typed percents into fractions in one place, a held rate per charge", () => {
     const e = engineDeal(account());
     expect(e.foreign).toBe(true);
-    expect(e.fees[0]!.stages[0]!.price).toEqual({ kind: "action", rate: 0.0025, min: 15 });
-    expect(e.fees[1]!.stages).toEqual([{ price: { kind: "free" }, until: { y: 2028, m: 3 } }, { price: { kind: "held", rate: 0.004, everyMonths: 12 } }]);
+    expect(e.fees[0]!.stages![0]!.price).toEqual({ kind: "action", rate: 0.0025, min: 15 });
+    expect(e.fees[1]!.stages!).toEqual([{ price: { kind: "free" }, until: { y: 2028, m: 3 } }, { price: { kind: "held", rate: 0.004, everyMonths: 12 } }]);
     const quarterly = engineDeal({ ...newDeal("brokerage-account"), fees: [{ id: "f", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.4), per: 12, every: 3 } }] }] });
-    expect(quarterly.fees[0]!.stages[0]!.price).toMatchObject({ kind: "held", everyMonths: 3 });
-    expect((quarterly.fees[0]!.stages[0]!.price as { rate: number }).rate).toBeCloseTo(0.001, 12);
+    expect(quarterly.fees[0]!.stages![0]!.price).toMatchObject({ kind: "held", everyMonths: 3 });
+    expect((quarterly.fees[0]!.stages![0]!.price as { rate: number }).rate).toBeCloseTo(0.001, 12);
   });
   it("carries a bound's currency only with a bound typed", () => {
-    const fx = (price: Parameters<typeof engineDeal>[0]["fees"][number]["stages"][number]["price"]) =>
-      engineDeal({ ...newDeal("brokerage-account"), fees: [{ id: "f", kind: "fx", stages: [{ price }] }] }).fees[0]!.stages[0]!.price;
+    const fx = (price: Price) =>
+      engineDeal({ ...newDeal("brokerage-account"), fees: [{ id: "f", kind: "fx", stages: [{ price }] }] }).fees[0]!.stages![0]!.price;
     expect(fx({ form: "action", rate: typed(0.2), currency: "USD" })).toEqual({ kind: "action", rate: 0.002 });
     expect(fx({ form: "action", rate: typed(0.2), min: typed(3), currency: "USD" })).toEqual({ kind: "action", rate: 0.002, min: 3, currency: "USD" });
   });
@@ -86,7 +88,7 @@ describe("readDeal", () => {
     const d = account();
     d.fees[1]!.stages = [{ price: { form: "free" } }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }];
     const back = readDeal(JSON.parse(JSON.stringify(d)))!;
-    expect(back.fees[1]!.stages).toHaveLength(2);
+    expect(back.fees[1]!.stages!).toHaveLength(2);
     expect(feeInOrder(back.fees[1]!)).toBe(false);
   });
   it.each([
@@ -100,7 +102,7 @@ describe("readDeal", () => {
     ["a source over plain http", (d: any) => (d.fees[0].stages[0].price.rate.src.url = "http://example.org")],
     ["a sale's price on a fee priced on one side alone", (d: any) => d.fees.push({ id: "fee-load", kind: "load", stages: [{ price: { form: "action", rate: { v: 1 } } }], sale: [{ price: { form: "free" } }] })],
     ["a name on a fee that is not the person's own", (d: any) => (d.fees[0].name = "x")],
-    ["what is held on a kind that holds no funds", (d: any) => (d.kind = "kupat-gemel-lehashkaa")],
+    ["what is held, from a deal saved before cases, on a kind that holds no funds", (d: any) => ((d.kind = "kupat-gemel-lehashkaa"), (d.held = { place: "abroad", currency: "USD", payout: "accumulating" }))],
     ["two fees with one id", (d: any) => (d.fees[1].id = "fee-trade")],
     ["a currency of a bound no price list prints", (d: any) => (d.fees[0].stages[0].price.currency = "JPY")],
   ])("refuses %s", (_, spoil) => {
@@ -119,7 +121,7 @@ describe("a price not given yet", () => {
 
   it("starts a new fee blank, which is not a price of zero", () => {
     const fee = newFee("trade");
-    expect(fee.stages[0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
+    expect(fee.stages![0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
     expect(feePriced(fee, "2026-11")).toBe(false);
     expect(feePriced({ ...fee, stages: [{ price: { form: "action", rate: typed(0) } }] }, "2026-11")).toBe(true);
     expect(feePriced({ ...fee, stages: [{ price: { form: "free" } }] }, "2026-11")).toBe(true);
@@ -128,7 +130,7 @@ describe("a price not given yet", () => {
     const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
     expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
     const old = readDeal(JSON.parse(JSON.stringify(older)))!;
-    expect(old.fees[0]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0 } });
+    expect(old.fees[0]!.stages![0]!.price).toEqual({ form: "action", rate: { v: 0 } });
     expect(feePriced(old.fees[0]!, "2026-11")).toBe(true);
     expect(parseDeals({ version: 1, deals: [older] })).toEqual([old]);
   });
@@ -150,12 +152,12 @@ describe("a price not given yet", () => {
     const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
     const back = decodeDeal(encodeDeal(d))!;
     expect(back.fees.map((f) => f.kind)).toEqual(d.fees.map((f) => f.kind));
-    expect(back.fees.at(-1)!.stages[0]!.price).toEqual(newFee("transfer_out").stages[0]!.price);
+    expect(back.fees.at(-1)!.stages![0]!.price).toEqual(newFee("transfer_out").stages[0]!.price);
     const old = decodeDeal(encodeDeal(older as FeeDeal))!;
-    expect(old.fees[0]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0 } });
+    expect(old.fees[0]!.stages![0]!.price).toEqual({ form: "action", rate: { v: 0 } });
     // a link written while a blank fee was left out of links: the deal without it, as it opened then
     const before = Buffer.from(JSON.stringify([1, { n: "", k: "brokerage-account", f: [{ k: "trade", s: [{ P: { F: "action", r: 0.25 } }] }] }, []])).toString("base64url");
-    expect(decodeDeal(before)!.fees.map((f) => f.stages[0]!.price)).toEqual([{ form: "action", rate: { v: 0.25 } }]);
+    expect(decodeDeal(before)!.fees.map((f) => f.stages![0]!.price)).toEqual([{ form: "action", rate: { v: 0.25 } }]);
   });
 });
 
@@ -177,11 +179,11 @@ describe("the link", () => {
     expect(back.saved).toBeUndefined();
     const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });
     expect(strip(back)).toEqual(strip(d));
-    expect(back.fees[0]!.stages[0]!.price).toMatchObject({ rate: { v: 0.25, src } });
+    expect(back.fees[0]!.stages![0]!.price).toMatchObject({ rate: { v: 0.25, src } });
   });
   it("writes a source once however many figures carry it", () => {
     const d = account();
-    d.fees[3]!.stages[0]!.price = { form: "action", rate: { v: 0.2, src } };
+    d.fees[3]!.stages![0]!.price = { form: "action", rate: { v: 0.2, src } };
     const raw = JSON.parse(Buffer.from(encodeDeal(d), "base64url").toString("utf8"));
     expect(raw[2]).toHaveLength(1);
   });
@@ -189,13 +191,32 @@ describe("the link", () => {
     ["empty", ""],
     ["not base64url", "a+b/c="],
     ["not JSON", Buffer.from("{nope", "utf8").toString("base64url")],
-    ["another version", Buffer.from(JSON.stringify([2, {}, []])).toString("base64url")],
+    ["another version", Buffer.from(JSON.stringify([3, {}, []])).toString("base64url")],
     ["a source index out of the table", Buffer.from(JSON.stringify([1, { n: "", k: null, f: [{ k: "trade", s: [{ P: { F: "action", r: [1, 5] } }] }] }, []])).toString("base64url")],
     ["too long", "a".repeat(13_000)],
-  ])("opens nothing from a link that is %s", (_, d) => {
+  ])("opens nothing from a link that is %s", async (_, d) => {
     expect(decodeDeal(d)).toBeNull();
     // an empty deal opens, and the address gave none: the page keeps nothing of it
-    expect(dealOfAddress(`?d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
+    expect(await dealOfAddress(`?d=${d}`, "", { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
+  });
+  it.each([
+    ["empty", ""],
+    ["not base64url", "a+b/c="],
+    ["not compressed", encodeDeal({ id: "deal-a", name: "", kind: null, fees: [] })],
+    ["too long", "a".repeat(13_000)],
+  ])("opens nothing from a fragment that is %s", async (_, d) => {
+    expect(await unpackDeal(d)).toBeNull();
+    expect(await dealOfAddress("", `#d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
+  });
+  it("carries a deal compressed in the fragment, and opens it before a query's", async () => {
+    const d = { ...account(), name: "חשבון", template: { id: "house:leumi", name: "לאומי" } };
+    const packed = await packDeal(d);
+    expect(packed).toMatch(/^[A-Za-z0-9_-]+$/);
+    expect(packed.length).toBeLessThan(encodeDeal(d).length);
+    const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });
+    expect(strip((await unpackDeal(packed))!)).toEqual(strip(d));
+    const data = { kinds: [], houses: [], tracks: [], templates: {} };
+    expect(await dealOfAddress(`?d=${encodeDeal(newDeal(null))}`, `#d=${packed}`, data, "2026-11-12")).toMatchObject({ deal: { name: "חשבון" }, given: true });
   });
   it("sets no stray key from a hostile link", () => {
     const hostile = Buffer.from('[1,{"n":"","k":null,"f":[],"__proto__":{"polluted":1},"constructor":{"x":1}},[]]').toString("base64url");
@@ -204,13 +225,13 @@ describe("the link", () => {
     expect(({} as { polluted?: number }).polluted).toBeUndefined();
     expect(Object.keys(d).sort()).toEqual(["fees", "id", "kind", "name"]);
   });
-  it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", () => {
+  it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", async () => {
     const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
-    expect(dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
-    expect(dealOfAddress("?wrapper=nothing", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
-    expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
-    expect(dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
-    expect(dealOfAddress("", data, "2026-11-12")).toBeNull();
+    expect(await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
+    expect(await dealOfAddress("?wrapper=nothing", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(await dealOfAddress("?track=999", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(await dealOfAddress(`?d=${encodeDeal(account())}`, "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
+    expect(await dealOfAddress("", "", data, "2026-11-12")).toBeNull();
     expect(parseSubject("?track=12")).toEqual({ kind: "track", trackId: 12 });
   });
 });
@@ -239,12 +260,12 @@ describe("the saved deals", () => {
     expect(worthSaving({ ...fresh, fees: [newFee("trade")] }, [])).toBe(true);
     expect(worthSaving(fresh, [fresh])).toBe(true);
   });
-  it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", () => {
+  it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", async () => {
     const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
-    const kindAlone = dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")!;
+    const kindAlone = (await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12"))!;
     expect(kindAlone.given).toBe(true);
     expect(savedIfWorth([], kindAlone.deal, "2026-11-12")).toBeNull();
-    const linked = dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")!;
+    const linked = (await dealOfAddress(`?d=${encodeDeal(account())}`, "", data, "2026-11-12"))!;
     expect(savedIfWorth([], linked.deal, "2026-11-12")).toHaveLength(1);
   });
   it("finds the saved deal a link's deal is the same as, whatever its ids and saved day", () => {

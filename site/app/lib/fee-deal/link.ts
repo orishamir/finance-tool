@@ -1,4 +1,6 @@
-// The fee page's address: `/deal?d=…` carries a whole deal, encoded compactly; `/deal?wrapper=<id>` opens a new deal of that kind and
+// The fee page's address: `/deal#d=…` carries a whole deal, compressed, in the address's fragment, which the browser never sends to the
+// server (GitHub Pages refuses a query of more than about 8,000 characters, and a house's whole price list is longer); `/deal?d=…`, the
+// deal uncompressed in the query as the site wrote it before, still opens. `/deal?wrapper=<id>` opens a new deal of that kind and
 // `/deal?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
 // broken or hostile value opens an empty deal and never throws.
 import type { FeesData } from "../fee-page-data";
@@ -20,23 +22,38 @@ export function parseSubject(search: string): { kind: "wrapper"; wrapperId: stri
 
 // ---------------------------------------------------------------- a deal in the address
 
-/** The version the link's payload starts with: a link of another version opens an empty deal. */
-const LINK_VERSION = 1;
-/** No link is longer than this: a longer `d` is not one the site wrote. */
-const LINK_MAX = 12_000;
+/**
+ * The version the link's payload starts with. Version 2 carries cases, a price's parts and the reading's picks; a link of version 1 (a deal
+ * before cases, which said what it held) is read the same way and opens as it was (`readDeal`). A link of another version opens an empty
+ * deal.
+ */
+const LINK_VERSION = 2;
+const READ_VERSIONS: readonly number[] = [1, 2];
+/** No `?d=` is longer than this: the site wrote no longer one there, and a server refuses a query much longer. */
+const QUERY_MAX = 12_000;
+/**
+ * No `#d=` is longer than this, compressed, nor its deal longer than `TEXT_MAX` once opened: a longer one is not one the site wrote. A
+ * house's whole price list with its cases and each figure's source comes to about 21,000 characters, and about 2,200 compressed (FIBI's,
+ * the longest).
+ */
+const PACKED_MAX = 12_000;
+const TEXT_MAX = 200_000;
 
 /** Each field's short name in a link, both ways; a key not named here is not carried, and is dropped on the way in. */
 const SHORT: Record<string, string> = {
   name: "n", kind: "k", start: "t", provider: "p", held: "h", fees: "f", template: "T", stages: "s", sale: "S", price: "P", until: "u", form: "F",
   rate: "r", min: "m", max: "x", currency: "c", per: "q", every: "e", amount: "a", place: "l", payout: "o", id: "i", cap: "Cp", flat: "Fl", upTo: "Ut",
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
+  by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
+  discount: "Di", pct: "Pc", alsoMin: "Am", third: "Th", who: "Wh", offset: "Of", refund: "Rf", notes: "No",
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
 /**
- * The fields of a price that hold a figure (`Num`), a flat price's two among them (`amount`, `upTo`): a link writes a figure as its number,
- * `[number, source]` where it is sourced, or `null` where it is not given yet (`Num.blank`).
+ * The fields of a price that hold a figure (`Num`), a flat price's two among them (`amount`, `upTo`), a discount's share (`pct`), a refund,
+ * and a range's tops (`tops`, a list of figures): a link writes a figure as its number, `[number, source]` where it is sourced, or `null`
+ * where it is not given yet (`Num.blank`).
  */
-const FIGURES = new Set(["rate", "min", "max", "amount", "cap", "upTo"]);
+const FIGURES = new Set(["rate", "min", "max", "amount", "cap", "upTo", "pct", "refund", "tops"]);
 
 type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -50,29 +67,27 @@ function renamed(v: unknown, names: Record<string, string>, figure: (key: string
     const to = Object.hasOwn(names, k) ? names[k]! : undefined;
     if (to === undefined) continue;
     const long = names === SHORT ? k : to;
-    out[to] = FIGURES.has(long) ? figure(long, x) : renamed(x, names, figure);
+    out[to] = !FIGURES.has(long) ? renamed(x, names, figure) : long === "tops" && Array.isArray(x) ? x.map((n) => figure(long, n)) : figure(long, x);
   }
   return out;
 }
 
-const toBase64Url = (text: string): string => {
-  const bytes = new TextEncoder().encode(text);
+const bytesToBase64Url = (bytes: Uint8Array): string => {
   let bin = "";
   for (const b of bytes) bin += String.fromCharCode(b);
   return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 };
 
-const fromBase64Url = (s: string): string => {
-  const bin = atob(s.replace(/-/g, "+").replace(/_/g, "/"));
-  return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
-};
+const base64UrlToBytes = (s: string): Uint8Array => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+
+const utf8 = (bytes: Uint8Array): string => new TextDecoder("utf-8", { fatal: true }).decode(bytes);
 
 /**
- * A deal as the `d` of its link: its fields under short names, each figure as its number (or its number and the index of its source in a
- * table, where a template filled it), base64url. The deal's id, its fees' ids and when it was saved are left out: a link opens a new deal.
- * A price not given yet is carried as it is (its figure `null`), so a link copied while a price is being entered keeps every other price.
+ * A deal as the text its link carries: its fields under short names, each figure as its number (or its number and the index of its source
+ * in a table, where a template filled it). The deal's id, its fees' ids and when it was saved are left out: a link opens a new deal. A
+ * price not given yet is carried as it is (its figure `null`), so a link copied while a price is being entered keeps every other price.
  */
-export function encodeDeal(deal: FeeDeal): string {
+function dealText(deal: FeeDeal): string {
   const sources: Sourced[] = [];
   const keyOf = (s: Sourced) => JSON.stringify(s);
   const { id: _id, saved: _saved, ...rest } = deal;
@@ -87,19 +102,18 @@ export function encodeDeal(deal: FeeDeal): string {
   };
   const short = renamed(body, SHORT, figure);
   const table = sources.map((s) => renamed(s, SHORT, (_k, x) => x));
-  return toBase64Url(JSON.stringify([LINK_VERSION, short, table]));
+  return JSON.stringify([LINK_VERSION, short, table]);
 }
 
-/** A deal from the `d` of a link, every field checked, with new ids; null where `d` is not a deal the site wrote. */
-export function decodeDeal(d: string): FeeDeal | null {
-  if (d.length === 0 || d.length > LINK_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return null;
+/** A deal from the text of a link, every field checked, with new ids; null where it is not a deal the site wrote. */
+function dealOfText(text: string): FeeDeal | null {
   let raw: unknown;
   try {
-    raw = JSON.parse(fromBase64Url(d));
+    raw = JSON.parse(text);
   } catch {
     return null;
   }
-  if (!Array.isArray(raw) || raw.length !== 3 || raw[0] !== LINK_VERSION || !isObj(raw[1]) || !Array.isArray(raw[2])) return null;
+  if (!Array.isArray(raw) || raw.length !== 3 || !READ_VERSIONS.includes(raw[0] as number) || !isObj(raw[1]) || !Array.isArray(raw[2])) return null;
   const table = raw[2].map((s) => renamed(s, LONG, (_k, x) => x));
   const figure = (_k: string, x: unknown): unknown => {
     if (typeof x === "number") return { v: x };
@@ -112,19 +126,85 @@ export function decodeDeal(d: string): FeeDeal | null {
   return readDeal({ ...long, id: newDealId(), fees });
 }
 
-/** The address of a deal: the fee page with the deal in `d` (site-paths.ts). */
-export const encodedDealPath = (deal: FeeDeal): string => dealPagePath({ deal: encodeDeal(deal) });
+/** A deal as the `d` of a link in the query, as the site wrote links before they moved to the fragment: its text, base64url. */
+export const encodeDeal = (deal: FeeDeal): string => bytesToBase64Url(new TextEncoder().encode(dealText(deal)));
+
+/** A deal from the `d` of a link in the query (`encodeDeal`); null where `d` is not a deal the site wrote. */
+export function decodeDeal(d: string): FeeDeal | null {
+  if (d.length === 0 || d.length > QUERY_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return null;
+  try {
+    return dealOfText(utf8(base64UrlToBytes(d)));
+  } catch {
+    return null;
+  }
+}
+
+/** Bytes through a compression stream ("deflate-raw" either way); null where the stream fails, or its output passes `max` bytes. */
+async function through(bytes: Uint8Array, stream: CompressionStream | DecompressionStream, max = Infinity): Promise<Uint8Array | null> {
+  try {
+    const reader = new Blob([bytes as BlobPart]).stream().pipeThrough(stream).getReader();
+    const chunks: Uint8Array[] = [];
+    let total = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.length;
+      if (total > max) {
+        await reader.cancel();
+        return null;
+      }
+      chunks.push(value);
+    }
+    const out = new Uint8Array(total);
+    let at = 0;
+    for (const c of chunks) {
+      out.set(c, at);
+      at += c.length;
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+/** A deal as the `d` of its link in the fragment: its text, compressed (deflate-raw), base64url. */
+export async function packDeal(deal: FeeDeal): Promise<string> {
+  const packed = await through(new TextEncoder().encode(dealText(deal)), new CompressionStream("deflate-raw"));
+  return bytesToBase64Url(packed!);
+}
+
+/** A deal from the `d` of a link in the fragment (`packDeal`); null where `d` is not a deal the site wrote. */
+export async function unpackDeal(d: string): Promise<FeeDeal | null> {
+  if (d.length === 0 || d.length > PACKED_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return null;
+  let bytes: Uint8Array;
+  try {
+    bytes = base64UrlToBytes(d);
+  } catch {
+    return null;
+  }
+  const text = await through(bytes, new DecompressionStream("deflate-raw"), TEXT_MAX);
+  if (!text) return null;
+  try {
+    return dealOfText(utf8(text));
+  } catch {
+    return null;
+  }
+}
+
+/** The address of a deal: the fee page with the deal in the fragment's `d` (site-paths.ts). */
+export const encodedDealPath = async (deal: FeeDeal): Promise<string> => dealPagePath({ deal: await packDeal(deal) });
 
 /**
- * The deal the address opens: a deal in `d`; a new deal of the kind `wrapper` names, where it names a kind of the data; a new deal filled
- * from the track `track` names. `given` says the address gave that deal; where `d` is broken or the kind or the track is unknown, an empty
- * deal opens and `given` is false, so the page keeps nothing of it. Null where the address names none of them, and the page opens what
- * the device holds.
+ * The deal the address opens (`search` its query, `hash` its fragment): a deal in the fragment's `d`, or in the query's `d` as the site wrote
+ * links before; a new deal of the kind `wrapper` names, where it names a kind of the data; a new deal filled from the track `track` names.
+ * `given` says the address gave that deal; where `d` is broken or the kind or the track is unknown, an empty deal opens and `given` is
+ * false, so the page keeps nothing of it. Null where the address names none of them, and the page opens what the device holds.
  */
-export function dealOfAddress(search: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): { deal: FeeDeal; given: boolean } | null {
-  const q = new URLSearchParams(search);
-  const d = q.get("d");
+export async function dealOfAddress(search: string, hash: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): Promise<{ deal: FeeDeal; given: boolean } | null> {
   const opened = (deal: FeeDeal | null) => (deal ? { deal, given: true } : { deal: newDeal(null), given: false });
+  const packed = new URLSearchParams(hash.replace(/^#/, "")).get("d");
+  if (packed !== null) return opened(await unpackDeal(packed));
+  const d = new URLSearchParams(search).get("d");
   if (d !== null) return opened(decodeDeal(d));
   const subject = parseSubject(search);
   if (!subject) return null;

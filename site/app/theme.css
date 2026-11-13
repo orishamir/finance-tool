@@ -314,6 +314,27 @@
   --fee-manager: oklch(0.6 0.1 205);
   --fee-fund: var(--chart-stairs-fund);
   --fee-other: var(--palette-neutral-700);
+  /* A fee's cases and the kinds of its parts (design-system 2.2, "Cases and parts"). A fee whose price changes by something (what is bought,
+     the channel, the track, a range) holds one band in this calm blue; each kind of part takes its own hue: a bound green, a link to
+     another fee yellow. A price is neutral and a note only dashed. Every fill and edge is its colour mixed over the card, so a kind reads
+     the same wherever it sits; the inks are mixed toward white, so words of the kind stay light on its fill. No fee's dot takes these. */
+  --when: oklch(0.74 0.075 255);
+  --when-fill: color-mix(in oklab, var(--when) 16%, var(--card)); /* the band */
+  --when-edge: color-mix(in oklab, var(--when) 34%, var(--card));
+  --when-ink: color-mix(in oklab, var(--when) 55%, var(--palette-neutral-0)); /* the band's head: its icon and words */
+  --when-words: color-mix(in oklab, var(--when) 22%, var(--palette-neutral-0)); /* a case's condition in words */
+  --when-any: color-mix(in oklab, var(--when) 50%, var(--muted-foreground)); /* a value that is any ("בכל מסלול"), fainter */
+  --when-pill: color-mix(in oklab, var(--when) 40%, var(--card)); /* the edge of a pill on the band */
+  --when-part: color-mix(in oklab, var(--when) 10%, var(--card)); /* a part of the kind outside the band (the toolbox's card) */
+  --when-part-edge: color-mix(in oklab, var(--when) 45%, var(--card));
+  --part-bound: oklch(0.74 0.11 152); /* a minimum or a maximum */
+  --part-bound-fill: color-mix(in oklab, var(--part-bound) 10%, var(--card));
+  --part-bound-edge: color-mix(in oklab, var(--part-bound) 45%, var(--card));
+  --part-bound-ink: color-mix(in oklab, var(--part-bound) 80%, var(--palette-neutral-0)); /* its icon and first word */
+  --part-link: oklch(0.84 0.12 98); /* a link to another fee: an offset, a refund */
+  --part-link-fill: color-mix(in oklab, var(--part-link) 10%, var(--card));
+  --part-link-edge: color-mix(in oklab, var(--part-link) 45%, var(--card));
+  --part-link-ink: color-mix(in oklab, var(--part-link) 80%, var(--palette-neutral-0));
   /* a fund label's family (founder, 2026-10-27: "i want all labels to have a nice icon with nice distinct color"): the icon and the
      words take the colour, the chip a faint fill of it. A caution label keeps the caution role and an open-rule label the blocked role */
   --label-held: var(--palette-neutral-200);
@@ -530,6 +551,23 @@
   --color-fee-manager: var(--fee-manager);
   --color-fee-fund: var(--fee-fund);
   --color-fee-other: var(--fee-other);
+  --color-when: var(--when);
+  --color-when-fill: var(--when-fill);
+  --color-when-edge: var(--when-edge);
+  --color-when-ink: var(--when-ink);
+  --color-when-words: var(--when-words);
+  --color-when-any: var(--when-any);
+  --color-when-pill: var(--when-pill);
+  --color-when-part: var(--when-part);
+  --color-when-part-edge: var(--when-part-edge);
+  --color-part-bound: var(--part-bound);
+  --color-part-bound-fill: var(--part-bound-fill);
+  --color-part-bound-edge: var(--part-bound-edge);
+  --color-part-bound-ink: var(--part-bound-ink);
+  --color-part-link: var(--part-link);
+  --color-part-link-fill: var(--part-link-fill);
+  --color-part-link-edge: var(--part-link-edge);
+  --color-part-link-ink: var(--part-link-ink);
   --color-label-held: var(--label-held);
   --color-label-trade: var(--label-trade);
   --color-label-follow: var(--label-follow);

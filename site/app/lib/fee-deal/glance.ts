@@ -57,6 +57,8 @@ export interface Glance {
   unread: string[];
   /** Fees left out because a price of theirs from the reading's month on is not given yet: the glance names them, so none vanishes. */
   unpriced: FeeRef[];
+  /** Fees left out because the picks give them no case (F-114): the price list prints no price for what is picked. */
+  unmatched: FeeRef[];
 }
 
 /** The order the groups are listed in: the actions as F-111 names them, then what is held, the account, cover, and what is not said. */
@@ -89,7 +91,7 @@ function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: Se
     const sp = fee.sale ? priceAt(fee, at, true) : null;
     const sv = sp ? priceView(r.fees, i, sp, r.today) : null;
     const g = byKey.get(key) ?? { on, fees: [], rates: [] };
-    g.fees.push({ ...refOf(fee), price: view, standing: standingView(r, r.fees, i, p, view), ...(sp && sv ? { sale: { price: sv, standing: standingView(r, r.fees, i, sp, sv) } } : {}) });
+    g.fees.push({ ...refOf(fee, r.today), price: view, standing: standingView(r, r.fees, i, p, view), ...(sp && sv ? { sale: { price: sv, standing: standingView(r, r.fees, i, sp, sv) } } : {}) });
     byKey.set(key, g);
   }
   if (adds && idx.length > 0) {
@@ -97,7 +99,7 @@ function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: Se
     for (const g of groupRate(sub.engine, sub.period)) {
       const key = engineGroupKey(g);
       const target = byKey.get(key);
-      if (target && !others.has(key)) target.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(sub.fees, g, at, r.today), fees: g.fees.map((k) => refOf(sub.fees[k]!)) });
+      if (target && !others.has(key)) target.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(sub.fees, g, at, r.today), fees: g.fees.map((k) => refOf(sub.fees[k]!, r.today)) });
     }
   }
   return [...byKey.entries()].sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)).map(([, g]) => g);
@@ -114,7 +116,7 @@ function datesOf(r: DealRead): GlanceDate[] {
       const to = priceView(r.fees, i, after, r.today);
       const at = monthKey(c.at);
       const entry = byAt.get(at) ?? { changes: [], idx: new Set<number>() };
-      entry.changes.push({ ...refOf(fee), side: c.side, change: c.kind, from: priceView(r.fees, i, before, r.today), to, standing: standingView(r, r.fees, i, after, to) });
+      entry.changes.push({ ...refOf(fee, r.today), side: c.side, change: c.kind, from: priceView(r.fees, i, before, r.today), to, standing: standingView(r, r.fees, i, after, to) });
       entry.idx.add(i);
       byAt.set(at, entry);
     }
@@ -126,7 +128,7 @@ function datesOf(r: DealRead): GlanceDate[] {
       const period = r.reading.periods.find((p) => monthKey(p.from) === at)!;
       const groups = groupRate(r.engine, period)
         .filter((g) => g.fees.some((i) => e.idx.has(i)))
-        .map((g) => ({ on: (g.on === "held" ? { on: "held" } : { on: "action", action: g.action }) as GroupOn, side: (g.on === "action" ? g.side : "all") as DealSide, rate: groupRateValue(r.fees, g, month, r.today), fees: g.fees.map((i) => refOf(r.fees[i]!)) }));
+        .map((g) => ({ on: (g.on === "held" ? { on: "held" } : { on: "action", action: g.action }) as GroupOn, side: (g.on === "action" ? g.side : "all") as DealSide, rate: groupRateValue(r.fees, g, month, r.today), fees: g.fees.map((i) => refOf(r.fees[i]!, r.today)) }));
       return { at, months: k === 0 ? monthsValue(r.month, month, r.today) : null, changes: e.changes, groups };
     });
 }
@@ -140,7 +142,7 @@ function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
   const first = r.reading.periods[0]!;
   for (const g of groupRate(r.engine, first)) {
     const target = groups.find((x) => groupKey(x.on) === engineGroupKey(g));
-    target?.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(r.fees, g, first.from, r.today), fees: g.fees.map((i) => refOf(r.fees[i]!)) });
+    target?.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(r.fees, g, first.from, r.today), fees: g.fees.map((i) => refOf(r.fees[i]!, r.today)) });
   }
   return groups;
 }
@@ -149,5 +151,6 @@ function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
 export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: r.deal.fees.filter((f) => r.unpriced.includes(f.id)).map(refOf) };
+  const refs = (ids: readonly string[]) => r.deal.fees.filter((f) => ids.includes(f.id)).map((f): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) }));
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched) };
 }

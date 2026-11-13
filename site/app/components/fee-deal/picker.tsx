@@ -13,10 +13,9 @@ import { feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, ListRow, RowGroup, RowList, SearchField, Tag } from "../kit";
+import { Disclosure, GroupHead, ListRow, RowList, SearchField, Tag } from "../kit";
 import type { SiteValue } from "../../lib/value";
-import type { PriceView } from "../../lib/fee-deal/parts";
-import { feeName, PriceWords } from "./words";
+import { feeName } from "./words";
 
 const w = copy.picker;
 const f = copy.filled;
@@ -24,12 +23,9 @@ const f = copy.filled;
 /** What a price list's row says it leaves out: a count of its lines, or that it has none for what the deal holds. */
 export function leavesText(left: readonly LeftOut[] | undefined): string | undefined {
   if (!left || left.length === 0) return undefined;
-  if (left.some((l) => l.why === "no-holding")) return w.noHolding;
   return countPhrase(left.length, w.leaves);
 }
 
-/** A plan's price as plain words inside its row, which is one button: its figures open no source there (the deal it fills shows them). */
-const plainPrice = (price: PriceView): PriceView => ({ ...price, figures: Object.fromEntries(Object.entries(price.figures).map(([k, v]) => [k, { ...v, field: true }])) });
 
 /** What a track's row says at its end: the yearly fee on the savings its pick fills ("0.52% בשנה מהחיסכון"), as its source prints it. */
 const savingText = (v: SiteValue | undefined): string | undefined => (v && typeof v.value === "number" ? `${formatValue(v.value, v.unit)} ${w.saving}` : undefined);
@@ -101,18 +97,9 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
               <div key={group} className="flex flex-col gap-2">
                 <GroupHead count={tracks ? items.length : undefined}>{group}</GroupHead>
                 <RowList label={group}>
-                  {items.map((o) =>
-                    o.source === "house" && o.plans ? (
-                      // a house with several ways to buy what the deal holds: its name, and each plan a row of its own with its trade price
-                      <RowGroup key={o.id} title={o.name} label={o.name}>
-                        {o.plans.map((plan) => (
-                          <ListRow key={plan.id} sub title={plan.name} line={<PriceWords price={plainPrice(plan.price)} kind="trade" />} onSelect={() => onPick(plan.id)} />
-                        ))}
-                      </RowGroup>
-                    ) : (
-                      <ListRow key={o.id} title={rowTitle(o)} meta={o.source === "track" ? savingText(o.saving) : leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
-                    ),
-                  )}
+                  {items.map((o) => (
+                    <ListRow key={o.id} title={rowTitle(o)} meta={o.source === "track" ? savingText(o.saving) : leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
+                  ))}
                 </RowList>
               </div>
             ))}
@@ -132,8 +119,7 @@ export function TemplateNote({ template, left }: { template: { id: string; name:
   const rest: { key: string; fee?: string; why: string }[] = [];
   for (const l of left) {
     if ("line" in l) lines.set(l.why, (lines.get(l.why) ?? 0) + 1);
-    else if ("fee" in l) rest.push({ key: l.fee, ...(l.why === "no-value" ? { fee: feeName(l.fee) } : {}), why: f.why[l.why === "no-value" ? "track-no-value" : l.why]! });
-    else rest.push({ key: l.why, why: f.why[l.why]! });
+    else rest.push({ key: l.fee, ...(l.why === "no-value" ? { fee: feeName(l.fee) } : {}), why: f.why[l.why === "no-value" ? "track-no-value" : l.why]! });
   }
   return (
     <div className="flex flex-col gap-1 text-sm">

@@ -23,7 +23,7 @@ describe("a deal's input names", () => {
     const data = feesData();
     const deal: FeeDeal = {
       ...newDeal("brokerage-account"),
-      held: { place: "abroad", currency: "USD", payout: "accumulating" },
+      readFor: [{ by: "what", is: "us" }],
       fees: [
         { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(7), currency: "USD" } }] },
         { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), max: typed(20), currency: "EUR" } }] },
