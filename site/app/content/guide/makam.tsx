@@ -3,6 +3,7 @@
 // on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import { Link } from "react-router";
 import type { GuideContent } from "./types";
+import { YearOf } from "./year";
 import { fmt } from "../../lib/format";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
@@ -56,7 +57,7 @@ export const content: GuideContent = {
           מי שמוכר לפני הפדיון משלם {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי ניכוי של <Term prefix="ה" id="אינפלציה">אינפלציה</Term>: הרווח כולו נחשב <Term id="רווח הון ריאלי">רווח הון ריאלי</Term>. בחוק השיעור הזה הוא תקרה, וזה גם השיעור שהבנק מנכה מהרווח. איך מחיר המכירה מתחלק בין ניכיון <Term prefix="ל" id="רווח הון">רווח הון</Term>, עוד לא נמצא.
         </Sentence>
         <Sentence measure>
-          בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, לא חייב <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}.
+          בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, לא חייב <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}<YearOf v={interestCeiling ?? ceiling} plural />.
         </Sentence>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מקור אחד סותר.</span> שורה במדריכי <Term id="רשות המסים">רשות המסים</Term>, בתוך סעיף על <Term id="איגרת חוב">איגרות חוב</Term> ישנות, נוקבת בשיעור אחר על דמי ניכיון של מק״מ. בפקודת מס הכנסה השיעור על ריבית מנכס <Term id="לא צמוד">לא צמוד</Term> הוא {rate ? <Num value={rate} /> : null}, והמדריך עצמו אומר שהחוק גובר, ולכן האתר מחשב לפי החוק. שאלה פתוחה <IdRef id="TXI OQ3" end="." />

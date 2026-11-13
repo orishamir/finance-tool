@@ -9,7 +9,8 @@
 import type { ReactNode } from "react";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideWorth as copy, provenance as provCopy } from "../../copy";
-import { ruleFigure, type SiteValue } from "../../lib/value";
+import { figureYear, ruleFigure, type SiteValue } from "../../lib/value";
+import { wordUnits } from "../../lib/rule-row";
 import { Num, RuleRef, StrengthLabel } from "../provenance";
 import { Card } from "../kit";
 import { GuideSection } from "./sections";
@@ -21,6 +22,10 @@ export interface WorthRow {
   figure: SiteValue | null;
   /** The figure is a legal cap (its name holds `cap`, as `balance_cap`): shown with "עד" so it never reads as the rate charged. */
   upTo?: boolean;
+  /** What the figure is, from its record's `figure_names_he`: a number under the rule's title alone ("83%") says nothing of what it counts. */
+  name?: string | null;
+  /** The calendar year a yearly figure is for (its `effective_from` to `effective_to`, or its tax year), so last year's count never reads as today's. */
+  year?: string | null;
   weak: "institution" | "secondary" | null;
 }
 
@@ -47,7 +52,17 @@ export function worthRows(ids: readonly string[] | undefined, rules: Record<stri
     const r = rules[id];
     if (!r?.title_he) continue;
     const first = Object.keys(r.figures ?? {}).find((n) => !isBaseName(n) && ruleFigure(r, n, today));
-    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, upTo: first !== undefined && isCapName(first), weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
+    const figure = first ? ruleFigure(r, first, today) : null;
+    rows.push({
+      kind: "rule",
+      id,
+      title: r.title_he,
+      figure,
+      upTo: first !== undefined && isCapName(first),
+      name: first ? (r.figure_names_he?.[first] ?? null) : null,
+      year: figure ? figureYear(figure) : null,
+      weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null,
+    });
     if (rows.length === 3) break;
   }
   return rows;
@@ -66,7 +81,18 @@ export function WorthKnowing({ rows, facts = [], abroad }: { rows: WorthRow[]; f
                 <span className="text-2xl font-semibold whitespace-nowrap">
                   {r.upTo && <span className="text-base font-normal text-muted-foreground">{copy.upTo} </span>}
                   <Num value={r.figure} />
-                  {["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && (provCopy.unit as Record<string, string>)[r.figure.unit] && <span className="text-base font-normal text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
+                  {wordUnits.has(r.figure.unit) && (provCopy.unit as Record<string, string>)[r.figure.unit] && <span className="text-base font-normal text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
+                </span>
+              )}
+              {r.figure && r.name && (
+                <span className="text-sm text-muted-foreground">
+                  {r.name}
+                  {r.year && (
+                    <>
+                      {" "}
+                      {copy.inYear} <bdi dir="ltr">{r.year}</bdi>
+                    </>
+                  )}
                 </span>
               )}
               <span>{r.title}</span>

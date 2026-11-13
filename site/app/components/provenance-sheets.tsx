@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { ownFigures } from "../lib/rule-row";
+import { ownFigures, wordUnits } from "../lib/rule-row";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
@@ -300,7 +300,7 @@ function calendarYearOf(v: SiteValue): string | null {
 }
 
 /** Units whose number has no sign of its own: the rule card prints the word after it. */
-const suffixUnits = new Set(["months", "years", "days", "business_days", "usd", "eur"]);
+const suffixUnits = wordUnits;
 
 function unitWordOf(unit: string): string | null {
   return (copy.unit as Record<string, string>)[unit] ?? null;
@@ -360,7 +360,7 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
   );
 }
 
-const slotUnitWords = ["months", "years", "days", "business_days", "usd", "eur"];
+const slotUnitWords = [...wordUnits];
 
 /** The month a rule's figure takes effect, as a figure of its own with the figure's source ("{ID:figure.from}"), or null when it has no date. */
 export function ruleFigureFrom(rule: RuleRecord, name: string, today: string): SiteValue | null {

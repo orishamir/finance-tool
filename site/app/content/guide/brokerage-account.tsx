@@ -3,6 +3,7 @@
 // the rules it rests on. Same shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to
 // review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
+import { YearOf } from "./year";
 import { fmt } from "../../lib/format";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
@@ -106,7 +107,7 @@ export const content: GuideContent = {
           הפסד ממכירה מתקזז מרווחים של אותה שנה באותו בנק או בית השקעות. <Term id="קיזוז הפסדים">קיזוז</Term> בין מוסדות, או <Term id="הפסד מועבר">העברת הפסד</Term> לשנים הבאות, דורשים <Term id="דוח שנתי">דוח שנתי</Term>.
         </p>
         <Sentence measure>
-          מי שכל המס נוכה לו במקור, ותמורת המכירות שלו נמוכה מ־{ceiling ? <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> : null} בשנה, לא חייב בדוח שנתי רק בגלל החשבון.
+          מי שכל המס נוכה לו במקור, ותמורת המכירות שלו נמוכה מ־{ceiling ? <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> : null} בשנה<YearOf v={ceiling} />, לא חייב בדוח שנתי רק בגלל החשבון.
         </Sentence>
         <p className="max-w-measure">אצל ברוקר זר לא מנכים מס בישראל. מדווחים ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי.</p>
         <Sentence measure>
