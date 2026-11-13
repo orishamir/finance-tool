@@ -194,14 +194,15 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   );
 }
 
-/** A rate column's head, or the caption over the rate columns, with a "?" that opens what the figure is over the card of the published
- *  rate (the card of the deposits page's "?" beside its rate). */
-function RateHead({ label }: { label: string }) {
+/** A rate column's head, or the caption over the rate columns, with a "?" that opens what the figure is: over a deposits table, above the
+ *  card of the published rate (the card of the deposits page's "?" beside its rate); over a savings-plans table, that sentence alone, since
+ *  the card speaks of a deposit. */
+function RateHead({ label, deposits }: { label: string; deposits: boolean }) {
   const say = w.deposits.say;
   return (
     <span className="inline-flex items-center gap-1">
       {label}
-      <HelpMark term={[DEPOSIT_TERMS.rate]} about={w.deposits.cols.rate} lead={say.rate} />
+      {deposits ? <HelpMark term={[DEPOSIT_TERMS.rate]} about={w.deposits.cols.rate} lead={say.rate} /> : <HelpMark about={w.deposits.cols.rate} text={say.rate} />}
     </span>
   );
 }
@@ -271,8 +272,8 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
     ...(!shared.rateType ? [{ id: "rateType", head: copy.labels.rateType, width: 6.5 }] : []),
     ...(amountColumn ? [{ id: "amount", head: w.deposits.cols.amount, width: 10 }] : []),
     ...(bands
-      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} />, width: 9, dim: amount !== ALL && amount !== b.key }))
-      : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} />, width: 9 }]),
+      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: 9, dim: amount !== ALL && amount !== b.key }))
+      : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} deposits={deposits} />, width: 9 }]),
     ...(!shared.exits ? [{ id: "exits", head: copy.labels.exits, width: 9, wrap: true }] : []),
   ];
   const cellsOf = (row: TableRow, p: ProductRowData): ReactNode[] => [
