@@ -15,7 +15,8 @@ import { readDealFor, type PartMark } from "./parts";
 import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { FEE_SHAPES } from "./shapes";
-import { fillDeal, templateOf, templateOptions } from "./templates";
+import { fillDeal, houseName, templateOf, templateOptions } from "./templates";
+import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -72,6 +73,17 @@ describe("the price parts as the device keeps them", () => {
     expect(inCapUnit({ form: "perAction", amount: typed(5), currency: "USD" }, "nis_per_transfer", 20)).toBeUndefined();
     expect(inCapUnit(ibFixed, "pct_of_trade", 1)).toBeUndefined();
   });
+  it("judges the price charged, after its discount, and without a third party's fee (F-113, F-116, F-117)", () => {
+    const half = { pct: typed(50) };
+    // a rate of 0.4% with half off is 0.2%, below a cap of 0.3%
+    expect(inCapUnit({ form: "action", rate: typed(0.4), discount: half }, "pct_of_trade", 0.3)).toEqual({ x: 0.2, converted: false });
+    expect(inCapUnit({ form: "perAction", amount: typed(10), discount: { pct: typed(100) } }, "nis_per_trade", 0)).toEqual({ x: 0, converted: false });
+    // against a cap of 0: the rate and the minimum the discount leaves, and a third party's fee charges nothing of the provider's
+    expect(inCapUnit({ form: "action", rate: typed(0.2), discount: half }, "pct_of_deposit", 0)).toEqual({ x: 0.1, converted: false });
+    expect(inCapUnit({ form: "action", rate: typed(0), min: typed(10), discount: { pct: typed(50), alsoMin: true } }, "pct_of_deposit", 0)).toEqual({ x: 5, converted: false });
+    expect(inCapUnit({ form: "action", rate: typed(0), third: { price: { form: "action", rate: typed(0.1), min: typed(3) } } }, "pct_of_deposit", 0)).toEqual({ x: 0, converted: false });
+    expect(inCapUnit({ form: "perAction", amount: typed(0), third: { price: { form: "perAction", amount: typed(3) } } }, "nis_per_trade", 0)).toEqual({ x: 0, converted: false });
+  });
 });
 
 describe("the price parts as the screen edits them", () => {
@@ -122,8 +134,50 @@ describe("the templates", () => {
     // what stays out is a plan's own line (a redemption) and the fees a template does not fill
     expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["plan", "other-base"]));
   });
-  it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars", () => {
-    expect(house("one-zero").fees.find((f) => f.kind === "corporate_event")!.stages![0]!.price).toMatchObject({ form: "perAction", amount: { v: 50 }, currency: "USD" });
+  it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars, on what is bought abroad alone", () => {
+    const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
+    expect(event.by).toEqual([{ kind: "what" }]);
+    expect(event.cases!.map((c) => c.when)).toEqual([[["us", "europe", "world"]]]);
+    expect(event.cases![0]!.stages[0]!.price).toMatchObject({ form: "perAction", amount: { v: 50 }, currency: "USD" });
+    expect(filledFor("one-zero", [{ by: "what", is: "us" }])("corporate_event")).toMatchObject({ amount: { v: 50 } });
+    // a reading on the Tel Aviv exchange reads no price for it: the line prices foreign securities alone
+    const tase = read({ ...fillDeal(newDeal("brokerage-account"), "house:one-zero", data, TODAY)!, readFor: [{ by: "what", is: "tase" }] });
+    expect(tase.fees.some((f) => f.kind === "corporate_event")).toBe(false);
+    expect(tase.unmatched).toEqual([tase.deal.fees.find((f) => f.kind === "corporate_event")!.id]);
+  });
+  it("fill a base read from one line as a fee whose price changes by nothing only where the line prices every value", () => {
+    // Excellence's custody line names the account: every value
+    expect(house("excellence").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
+    // Interactive Israel's custody line names foreign securities alone: the fee keeps what is held, with one case for them
+    const custody = house("interactive-israel").fees.find((f) => f.kind === "custody")!;
+    expect(custody.by).toEqual([{ kind: "held" }]);
+    expect(custody.cases!.map((c) => c.when)).toEqual([[["us", "europe", "world"]]]);
+  });
+  it("read a mutual fund in F-63's line, the standard one over a banded one, and the band for traditional funds as a value of its own", () => {
+    // Excellence: a mutual fund reads its exchange line, 0.4% with at least 10 ₪; the 16 ₪ line is "קרנות נאמנות מסורתיות"
+    expect(filledFor("excellence", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.4 }, min: { v: 10 } });
+    const trade = house("excellence").fees.find((f) => f.kind === "trade")!;
+    expect(trade.by![0]).toEqual({ kind: "what", own: [{ name: "קרנות נאמנות מסורתיות", place: "israel", currency: "ILS" }] });
+    expect(filledFor("excellence", [{ by: "what", is: "קרנות נאמנות מסורתיות" }])("trade")).toMatchObject({ form: "perAction", amount: { v: 16 } });
+    // IBI: a mutual fund, tracking or not, reads the mutual-fund line's 5 ₪ minimum, not the exchange's 2.35 ₪
+    expect(filledFor("ibi", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ rate: { v: 0.08 }, min: { v: 5 } });
+    expect(copy.cases.values.what.mutualFunds).toBe("קרנות נאמנות");
+  });
+  it("read IBI's line outside the United States, Canada and Israel for Europe and a value of its own, never for the rest of the world", () => {
+    const band = "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל";
+    const trade = house("ibi").fees.find((f) => f.kind === "trade")!;
+    expect(trade.by![0]).toEqual({ kind: "what", own: [{ name: band, place: "abroad", currency: null }] });
+    expect(filledFor("ibi", [{ by: "what", is: "europe" }])("trade")).toMatchObject({ rate: { v: 0.3 }, min: { v: 30 } });
+    expect(filledFor("ibi", [{ by: "what", is: band }])("trade")).toMatchObject({ rate: { v: 0.3 }, min: { v: 30 } });
+    // the rest of the world holds Canada, which the line leaves out
+    expect(filledFor("ibi", [{ by: "what", is: "world" }])("trade")).toBeUndefined();
+    // a value of its own abroad, in a currency it does not name, puts a conversion on a purchase (F-111)
+    expect(read({ ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "what", is: band }] }).engine.foreign).toBe(true);
+  });
+  it("name a house by the id of one of its ways to buy, which a deal saved before cases may hold", () => {
+    expect(houseName("house:interactive-brokers/interactive-brokers-buy-sell-us-fixed", data)).toBe("Interactive Brokers");
+    expect(houseName("house:interactive-brokers", data)).toBe("Interactive Brokers");
+    expect(houseName("house:nobody/line", data)).toBeNull();
   });
   it("list the house alone in the picker, its plans tracks inside its trade fee, and convert as F-63 does", () => {
     const ib = templateOptions("brokerage-account", data, TODAY).find((o) => o.id === "house:interactive-brokers")!;

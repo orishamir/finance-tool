@@ -6,7 +6,7 @@ import { depositFeeNoneByRule, type SiteValue } from "../value";
 import { builder, panel } from "./builder";
 import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
-import { decodeDeal, encodeDeal } from "./link";
+import { decodeDeal, encodeDeal, packDeal, unpackDeal } from "./link";
 import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./parts";
@@ -151,12 +151,15 @@ describe("templates", () => {
       if (snap) expect(h.left.every((l) => snap.lines.some((x) => x.id === l.lineId)), h.id).toBe(true);
     }
   });
-  it("fills deals that check out, from every house for every pick and from every track (a link and the device keep them)", () => {
+  it("fills deals that check out, from every house for every pick and from every track (a link and the device keep them)", async () => {
     for (const h of data.houses)
       for (const is of ["tase", "us", "world"]) {
         const d = fillDeal({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is }] }, `house:${h.id}`, data, TODAY)!;
         expect(readDeal(JSON.parse(JSON.stringify(d))), `${h.id} ${is}`).toEqual(d);
-        const back = decodeDeal(encodeDeal(d))!;
+        // a whole list's link is short enough for any address: under 8,000 characters, the query GitHub Pages still answers
+        const packed = await packDeal(d);
+        expect(packed.length, `${h.id} ${is}`).toBeLessThan(8_000);
+        const back = (await unpackDeal(packed))!;
         expect(back.fees.map(({ id: _i, ...f }) => f), `${h.id} ${is}`).toEqual(d.fees.map(({ id: _i, ...f }) => f));
         // the reading never throws on a filled deal, whatever it picks
         readingOf(read(d), data.fx);
@@ -421,13 +424,11 @@ describe("the provident fund of the picture, on 11.2026", () => {
     expect(law.prices.at(-1)!.standing.standing).toMatchObject({ standing: "at" });
     expect(row.insideFund).toBe(false);
   });
-  it("in its panel: two prices, the cap's line, the fields of a share of what is held", () => {
+  it("open in place: two prices, the first ending with its month, each a share of what is held; nothing of a sale", () => {
     const p = panel(read(provident()), "fee-balance")!;
-    expect(p.stages).toHaveLength(2);
-    expect(p.cap).toMatchObject({ state: "value" });
-    if (p.cap.state === "value") expect(p.cap.value.value).toBe(1.05);
-    expect(p.stages[0]!.fields).toEqual(["rate", "per", "every"]);
-    expect(p.sale.allowed).toBe(false);
+    expect(p.open.buy.map((s) => s.parts.map((x) => x.id))).toEqual([["held", "until"], ["held"]]);
+    expect(p.open.buy[0]!.parts[0]!.fields.map((f) => f.figure)).toEqual(["rate"]);
+    expect(p.open.sell).toBeUndefined();
     expect(panel(read(provident()), "nothing")).toBeNull();
   });
   it("in the reading: the law rows read each price against its cap", () => {
@@ -448,8 +449,8 @@ describe("a deal the views cannot read whole", () => {
     d.fees[1]!.stages = [{ price: { form: "free" } }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }];
     expect(glance(read(d)).unread).toEqual(["fee-custody"]);
     expect(builder(read(d)).rows.map((r) => r.fee)).not.toContain("fee-custody");
-    // its panel still shows its prices to edit, and the reading has no law row for it
-    expect(panel(read(d), "fee-custody")!.stages!).toHaveLength(2);
+    // it still opens with its prices to edit, and the reading has no law row for it
+    expect(panel(read(d), "fee-custody")!.open.buy).toHaveLength(2);
     expect(readingOf(read(d), data.fx).law.map((r) => r.fee)).not.toContain("fee-custody");
   });
   it("draws no curve whose bound is in a currency it has no rate for, and says so", () => {
@@ -605,7 +606,7 @@ describe("one fee filled from a price list", () => {
     // the list's fee whole: each of its prices one, holding on, none priced apart for a sale
     for (const x of fee.cases ?? [fee as { stages: Stage[]; sale?: Stage[] }]) expect([x.stages.length, x.stages[0]!.until, x.sale]).toEqual([1, undefined, undefined]);
     expect(untouched(fee)).toBe(true);
-    expect(panel(read(next), "fee-trade")!.sale.stages).toBeUndefined();
+    expect(panel(read(next), "fee-trade")!.open.sell).toBeUndefined();
   });
 });
 
@@ -640,11 +641,11 @@ describe("a fee with a price not given yet", () => {
     const alone = provident();
     expect(reading).toEqual(readingOf(read({ ...alone, fees: [alone.fees[0]!] }), data.fx));
   });
-  it("keeps its card in the builder, with its box empty and no standing, and its panel", () => {
+  it("keeps its line in the builder, with its box empty and no standing, open with its box empty", () => {
     const row = builder(read(withBlank())).rows.find((x) => x.fee === "fee-deposit")!;
     expect(row.priced).toBe(false);
     expect(row.stages[0]!.price).toMatchObject({ form: "action", blank: true, figures: {} });
-    expect(panel(read(withBlank()), "fee-deposit")!.stages![0]!.price.blank).toBe(true);
+    expect(panel(read(withBlank()), "fee-deposit")!.open.buy[0]!.parts[0]!.fields[0]!.value).toBeNull();
   });
   it("is read once a figure is typed, a zero among them", () => {
     const typedZero = updateFee(withBlank(), "fee-deposit", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0)));

@@ -742,6 +742,11 @@ describe("F-116 a discount", () => {
     const held: DealPrice = { kind: "held", rate: 0.001, everyMonths: 3 };
     expect(discounted(held, 0.5, true)).toBe(held);
   });
+  it("leaves the maximum, the percent maximum, the flat price and a third party's fee as typed (the site's reading of BRK-68)", () => {
+    const third = { kind: "action" as const, rate: 0.001, min: 2 };
+    const p: DealPrice = { kind: "action", rate: 0.0019, min: 6.8, max: 1075, cap: 0.25, flat: { amount: 3, upTo: 50 }, currency: "USD", third };
+    expect(discounted(p, 0.5, true)).toEqual({ kind: "action", rate: 0.00095, min: 3.4, max: 1075, cap: 0.25, flat: { amount: 3, upTo: 50 }, currency: "USD", third });
+  });
 });
 
 describe("F-117 a third party's fee printed with a price", () => {

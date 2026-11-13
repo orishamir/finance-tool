@@ -3,7 +3,7 @@
 import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/engine";
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
-import type { Price, ProviderKind } from "./model";
+import { fraction, onAction, type Price, type ProviderKind } from "./model";
 import { enginePrice } from "./to-engine";
 import { FEE_SHAPES, type FeeKindId } from "./shapes";
 import { recordValue } from "./values";
@@ -59,38 +59,54 @@ export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
 }
 
 /**
- * A typed price in its cap's unit (F-113's `x`), and whether it was `converted` from another period than the cap's by F-111's plain
- * multiple: a free price is 0; a share of what is held against a yearly cap is its yearly rate (`rate × 12 / per`, converted where `per`
- * is not a year), and against a cap per period its share of each charge (`rate × every / per`, converted where the two differ); a share of
- * an action against a share of a deposit or a trade is its rate; a sum in shekels on each action against a sum per transfer or trade is the
- * sum; a sum per period against a monthly sum is its month's part (converted where the period is not a month). A sum per unit, and a sum
- * per action in another currency, state no figure in a cap's unit. Where the cap is 0 the unit does
- * not matter: a price that charges anything (F-110), a rate of zero with a minimum among them, is above it, so `x` is its main figure, or
- * its minimum where the rate is zero, and 0 for a price that charges nothing. Undefined where the price's form is not one the cap's unit
- * states.
+ * A price in its cap's unit (F-113's `x`), and whether it was `converted` from another period than the cap's by F-111's plain multiple. It is
+ * the price charged: a discount is taken off as F-116 takes it off (its rate, its sum per action, and its minimum where the list says so),
+ * and a third party's fee is not the provider's and is left out (F-117). A free price is 0; a share of what is held against a yearly cap is
+ * its yearly rate (`rate × 12 / per`, converted where `per` is not a year), and against a cap per period its share of each charge (`rate ×
+ * every / per`, converted where the two differ); a share of an action against a share of a deposit or a trade is its rate; a sum in shekels
+ * on each action against a sum per transfer or trade is the sum; a sum per period against a monthly sum is its month's part (converted
+ * where the period is not a month). A sum per unit, and a sum per action in another currency, state no figure in a cap's unit. Where the
+ * cap is 0 the unit does not matter: a price that charges anything (F-110), a rate of zero with a minimum among them, is above it, so `x`
+ * is its main figure, or its minimum where the rate is zero, and 0 for a price that charges nothing. Undefined where the price's form is
+ * not one the cap's unit states.
  */
 export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: number; converted: boolean } | undefined {
   const as = (x: number, converted = false) => ({ x, converted });
   if (p.form === "free") return as(0);
-  if (cap === 0) return as(chargesNothing(enginePrice(p)) ? 0 : mainValue(p) > 0 ? mainValue(p) : (p.form === "action" || p.form === "perUnit" || p.form === "held") && p.min ? p.min.v : (p.form === "action" || p.form === "perUnit") && p.flat ? p.flat.amount.v : 0);
+  const own = withoutThird(p);
+  // F-116: the share left after the discount, on the rate or the sum, and on the minimum where the list says the discount is on it too
+  const left = onAction(own) && own.discount ? 1 - fraction(own.discount.pct.v) : 1;
+  const minLeft = onAction(own) && own.discount?.alsoMin ? left : 1;
+  if (cap === 0) {
+    if (chargesNothing(enginePrice(own))) return as(0);
+    const main = mainValue(own) * (own.form === "held" ? 1 : left);
+    return as(main > 0 ? main : (own.form === "action" || own.form === "perUnit" || own.form === "held") && own.min ? own.min.v * (own.form === "held" ? 1 : minLeft) : (own.form === "action" || own.form === "perUnit") && own.flat ? own.flat.amount.v : 0);
+  }
   switch (unit) {
     case "pct_per_year":
-      return p.form === "held" ? as((p.rate.v * 12) / p.per, p.per !== 12) : undefined;
+      return own.form === "held" ? as((own.rate.v * 12) / own.per, own.per !== 12) : undefined;
     case "pct_of_balance_per_period":
-      return p.form === "held" ? as((p.rate.v * p.every) / p.per, p.every !== p.per) : undefined;
+      return own.form === "held" ? as((own.rate.v * own.every) / own.per, own.every !== own.per) : undefined;
     case "pct_of_deposit":
     case "pct_of_trade":
     case "pct":
-      return p.form === "action" ? as(p.rate.v) : undefined;
+      return own.form === "action" ? as(own.rate.v * left) : undefined;
     case "nis_per_transfer":
     case "nis_per_trade":
-      return p.form === "perAction" && (p.currency ?? "ILS") === "ILS" ? as(p.amount.v) : undefined;
+      return own.form === "perAction" && (own.currency ?? "ILS") === "ILS" ? as(own.amount.v * left) : undefined;
     case "nis_per_month":
-      return p.form === "sum" ? as(p.amount.v / p.every, p.every !== 1) : undefined;
+      return own.form === "sum" ? as(own.amount.v / own.every, own.every !== 1) : undefined;
     default:
       return undefined;
   }
 }
+
+/** A price without its third party's fee: F-113 judges the provider's own price (F-117). */
+const withoutThird = (p: Exclude<Price, { form: "free" }>): Exclude<Price, { form: "free" }> => {
+  if (!onAction(p) || !p.third) return p;
+  const { third: _t, ...rest } = p;
+  return rest as Exclude<Price, { form: "free" }>;
+};
 
 /** A price's one figure: its rate, or its sum. */
 const mainValue = (p: Exclude<Price, { form: "free" }>): number => (p.form === "action" || p.form === "held" ? p.rate.v : p.amount.v);

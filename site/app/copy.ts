@@ -1779,7 +1779,7 @@ export const feeDeal = {
   },
   /**
    * A fee whose price changes by things (F-114), its cases, the parts of a price and the toolbox that adds them (builder.ts), the
-   * reading's picks (reading.ts) and what the reading states without computing (F-118).
+   * reading's picks (reading.ts) and what the reading states without computing (method §10.6, "What the page states and does not compute").
    */
   cases: {
     /** The head of a fee's cases, before the things it changes by. */
@@ -1788,7 +1788,7 @@ export const feeDeal = {
     things: { what: "מה קונים", held: "מה מחזיקים", channel: "הערוץ", track: "המסלול שבחרתם", currency: "המטבע", actionSize: "גודל הפעולה", portfolioSize: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" } as Record<string, string>,
     /** The values the site names, by thing (shapes.ts, `LIST_IDS`). */
     values: {
-      what: { tase: "ניירות ערך בתל אביב", mutualFunds: "קרנות נאמנות מסורתיות", moneyMarket: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם" } as Record<string, string>,
+      what: { tase: "ניירות ערך בתל אביב", mutualFunds: "קרנות נאמנות", moneyMarket: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם" } as Record<string, string>,
       channel: { branch: "בסניף", phone: "בטלפון", direct: "באינטרנט ובאפליקציה" } as Record<string, string>,
       currency: { USD: "מדולר או לדולר", EUR: "מאירו או לאירו", GBP: "מלירה שטרלינג או ללירה שטרלינג", other: "ממטבע אחר או למטבע אחר" } as Record<string, string>,
     },
@@ -1884,7 +1884,7 @@ export const feeDeal = {
     readForLine: "כל עמלה נקראת במקרה שבחרתם כאן. עמלה שמשתנה לפי גודל הפעולה נקראת בכל הגדלים, בגרף שלמטה.",
     /** A fee the picks give no case (F-114), as its line in the glance and its slim line say it. */
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
-    /** What the reading states without computing (F-118), after the fee's name and ": ". */
+    /** What the reading states without computing (§10.6), after the fee's name and ": ". */
     stated: {
       third: "נוספת עמלה של צד שלישי בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג.",
       thirdOf: { lead: "נוספת עמלת ", tail: " בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג." },

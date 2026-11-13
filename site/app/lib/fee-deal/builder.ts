@@ -1,17 +1,16 @@
-// The builder column and one fee's panel (method §10.6): a block per fee, either a slim price or the band of its cases (F-114) with each
-// case's value per thing and its parts in short; the case open in place, its parts with the figures it edits; the toolbox's groups of parts
-// for that case; the fees to suggest; and each fee's facts beside its prices and its standing against the cap now and where it next changes
-// (the panel's prices against the cap are the reading's law row, reading.ts). Every word a block shows is here, from the copy; a component
-// only lays them out.
+// The builder column (method §10.6): a block per fee, either a slim price or the band of its cases (F-114) with each case's value per thing
+// and its parts in short; the case open in place, its slots and its parts with the figures it edits (`panel`); the toolbox's groups of
+// parts for that case, the question a thing asks when it is added and a slot opened; the fees to suggest; and each fee's facts beside its
+// prices and its standing against the cap now and where it next changes (the prices against the cap are the reading's law row,
+// reading.ts). Every word a block shows is here, from the copy; a component only lays them out.
 import type { ChangeKind } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
-import { capLine, type CapLine } from "./kinds";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, type Figure, type PartId } from "./edit";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, type ByKind, type FeeKindId, type FeeShape, type FieldId, type ListKind, type RangeUnit } from "./shapes";
+import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -336,24 +335,9 @@ export function builder(r: DealRead, barred: readonly FeeKindId[] = [], open: { 
 
 // ---------------------------------------------------------------- one fee's panel, and the case open in place
 
-/** A price in the panel: its view, the month it ends, and the fields its form has for this fee. */
-export interface PanelStage {
-  price: PriceView;
-  until?: MonthKey;
-  fields: readonly FieldId[];
-}
-
+/** One fee open in place: the fee, and its case open (a slim fee's price, which opens the same way) with its slots and its parts' fields. */
 export interface Panel extends FeeRef {
-  shape: FeeShape;
-  /** The side of a trade it is charged on alone, where it is. */
-  oneSide?: "buy" | "sell";
-  /** Every price as typed, the passed ones too (the panel edits them all), of the case open (`case`) where the fee has cases. */
-  stages: PanelStage[];
-  /** A sale's own prices: `allowed` where the fee may price a sale apart, `stages` where it does. */
-  sale: { allowed: boolean; stages?: PanelStage[] };
-  cap: CapLine;
-  /** The case open in place, where the fee has cases: its slots and its parts with their fields. */
-  open?: OpenCase;
+  open: OpenCase;
 }
 
 /**
@@ -395,8 +379,6 @@ export interface OpenCase {
   canCopy: boolean;
   canRemove: boolean;
 }
-
-const fieldsOf = (fee: Fee, p: Price): readonly FieldId[] => (p.form === "free" ? [] : (FEE_SHAPES[fee.kind].fields[p.form] ?? []));
 
 /** The sign after a sum's box: its currency's. */
 const signOf = (currency: string | undefined): string => copy.panel.signs[currency ?? "ILS"] ?? "₪";
@@ -446,7 +428,14 @@ function openParts(fee: Fee, p: Price, view: PriceView, saleApart: boolean): Ope
 function openCase(r: DealRead, fee: Fee, caseId: string | undefined): OpenCase {
   const priced = pricedOf(fee, caseId);
   const c = hasCases(fee) ? (priced as Case) : null;
-  const stagesOf = (stages: readonly Stage[], apart: boolean) => stages.map((s, k) => ({ k, ...(s.until ? { until: s.until } : {}), parts: openParts(fee, s.price, priceView([fee], 0, s.price, r.today), apart && k === 0) }));
+  // a price that ends has its month as a part, after its price's own parts ("לזמן מוגבל, עד")
+  const withUntil = (parts: OpenPart[], until: MonthKey | undefined): OpenPart[] => {
+    if (!until) return parts;
+    const at = parts.findIndex((x) => x.kind !== "price");
+    const part: OpenPart = { id: "until", kind: "price", words: { lead: copy.cases.parts.until, month: until }, fields: [], removable: true };
+    return at < 0 ? [...parts, part] : [...parts.slice(0, at), part, ...parts.slice(at)];
+  };
+  const stagesOf = (stages: readonly Stage[], apart: boolean) => stages.map((s, k) => ({ k, ...(s.until ? { until: s.until } : {}), parts: withUntil(openParts(fee, s.price, priceView([fee], 0, s.price, r.today), apart && k === 0), s.until) }));
   return {
     case: c?.id ?? null,
     slots: c && hasCases(fee) ? fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: whenWords(fee, c.when[t]!, t, r.today), ...(b.kind === "track" ? { mine: !!c.mine } : {}) })) : [],
@@ -458,31 +447,18 @@ function openCase(r: DealRead, fee: Fee, caseId: string | undefined): OpenCase {
 }
 
 /**
- * One fee's panel, from the deal read once (`readDealFor`); null where the deal has no fee with that id. For a fee with cases, the panel's
- * prices are the open case's (`caseId`, else its first, which the edits edit where they name no case).
+ * One fee open in place, from the deal read once (`readDealFor`); null where the deal has no fee with that id. For a fee with cases, the
+ * case open is `caseId`, else its first, which the edits edit where they name no case. Every price is there as typed, the passed ones too:
+ * the open case edits them all.
  */
 export function panel(r: DealRead, feeId: string, caseId?: string): Panel | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
-  // a fee not read (prices out of order, not given, no case for the picks) has its prices shown on their own, so its fields still show
+  // a fee not read (prices out of order, not given, no case for the picks) is named on its own
   const at = r.fees.findIndex((x) => feeOf(x) === fee.id && (!hasCases(fee) || x.read?.case === (priced as Case).id));
-  const fees = at >= 0 ? r.fees : [fee];
-  const i = Math.max(at, 0);
-  const stagesOf = (stages: readonly Stage[]): PanelStage[] => stages.map((s) => ({ price: priceView(fees, i, s.price, r.today), ...(s.until ? { until: s.until } : {}), fields: fieldsOf(fee, s.price) }));
-  const shape = FEE_SHAPES[fee.kind];
-  const side = ONE_SIDE[fee.kind];
-  return {
-    ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today),
-    fee: fee.id,
-    shape,
-    ...(side ? { oneSide: side } : {}),
-    stages: stagesOf(priced.stages),
-    sale: { allowed: shape.saleApart && !side, ...(priced.sale ? { stages: stagesOf(priced.sale) } : {}) },
-    cap: capLine(r.kind, fee.kind),
-    ...(hasCases(fee) ? { open: openCase(r, fee, shown) } : {}),
-  };
+  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown) };
 }
 
 // ---------------------------------------------------------------- the toolbox
@@ -508,14 +484,13 @@ export interface ToolGroup {
 }
 
 /**
- * The toolbox for the case open in place (spec §2): the line naming what it adds to (the case's values, joined; a slim fee's own name), the
- * hint, and its groups in order: the price, minimum and maximum, what the price changes by, a link to another fee, and more on the price;
+ * The toolbox for the case open in place: the line naming what it adds to (the case's values, joined; a slim fee's own name), and its
+ * groups in order: the price, minimum and maximum, what the price changes by, a link to another fee, and more on the price;
  * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`.
  */
 export interface Toolbox {
   /** "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`). */
   addTo: { lead: string; when?: WhenWords[]; name?: string };
-  hint: string;
   groups: ToolGroup[];
 }
 
@@ -539,6 +514,8 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
     ...(can("sum") ? [{ id: "sum" as const, kind: "price" as const, words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") }, used: p.form === "sum" }] : []),
     ...(onAct || can("action") || can("perAction") ? [{ id: "discount" as const, kind: "price" as const, words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" as const, used: onAct && !!p.discount }] : []),
     ...(onAct || can("action") || can("perAction") ? [{ id: "third" as const, kind: "price" as const, words: { lead: pp.third }, used: onAct && !!p.third }] : []),
+    // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)
+    ...((shape.fields.action ?? []).includes("flat") || (shape.fields.perUnit ?? []).includes("flat") ? [{ id: "flat" as const, kind: "price" as const, words: { lead: pp.flatSmall }, box: { sign: signOf(cur) }, used: (p.form === "action" || p.form === "perUnit") && !!p.flat }] : []),
     { id: "until", kind: "price", words: { lead: pp.until }, box: "month", used: priced.stages.length > 1 },
   ];
   const bound: ToolPart[] = [
@@ -571,7 +548,7 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
     { group: "link", head: copy.cases.groups.link!, parts: link },
     { group: "more", head: copy.cases.groups.more!, parts: more },
   ];
-  return { addTo, hint: copy.cases.hint, groups: groups.filter((g) => g.parts.length > 0) };
+  return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
 }
 
 /** Whether a fee is a conversion or charged on what is held, which words of what it changes by follow (the toolbox's first thing). */
@@ -592,7 +569,7 @@ export const topsOf = (fee: CasesFee, t: number): number[] => {
 const unitWords = (u: RangeUnit): string => (u === "units" || u === "actions" ? copy.cases.units[u]! : (copy.panel.signs[u] ?? u));
 
 /**
- * The question a thing asks once when it is added to a fee (spec §2): its words; for a list, the values the site names to tick, and the
+ * The question a thing asks once when it is added to a fee: its words; for a list, the values the site names to tick, and the
  * line for a value in the person's own words; for a range, its units (the first its usual one); and why it cannot be added, where it
  * cannot (`off`: a fourth thing, or one the fee changes by already).
  */
@@ -630,7 +607,7 @@ export function copiesWords(fee: Fee, kind: ByKind, ticked: number): { line: str
 }
 
 /**
- * A case's slot, opened (round 3's pictures): for a list, its values to tick (several may be), any value, and the line for one in the
+ * A case's slot, opened: for a list, its values to tick (several may be), any value, and the line for one in the
  * person's words; for a track, its name as the list writes it and whether it is the person's; for a condition, its value; for a range,
  * whether the case is up to a top or above the last, the top, its unit, and the case before it in the range's order.
  */

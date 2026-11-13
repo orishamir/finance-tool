@@ -9,7 +9,7 @@ import type { SiteValue } from "../../lib/value";
 import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
-import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type Statement } from "../../lib/fee-deal/reading";
+import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type StatedPart, type Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
@@ -518,6 +518,26 @@ function StatementLine({ statement, reading }: { statement: Statement; reading: 
   );
 }
 
+/**
+ * A part of a price the reading states without computing (F-118), on the fee it is printed with: "{fee}: נוספת עמלה של צד שלישי בלי סכום
+ * בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג."
+ */
+function StatedLine({ part }: { part: StatedPart }) {
+  const x = part.words;
+  return (
+    <li className="grid grid-cols-[0.75rem_minmax(0,1fr)] items-baseline gap-3 text-sm leading-relaxed">
+      <Swatch shape="box" className={cx("translate-y-px", feeColour(part.fee.kind).bg)} />
+      <p>
+        <FeeOpen fee={part.fee} after={copy.price.sep} />
+        {x.lead}
+        {x.figure && <Fig value={x.figure} />}
+        {x.tail}
+      </p>
+    </li>
+  );
+}
+
+/** Where the deal changes behaviour (F-112), then what the reading states of a price without computing it (F-118). */
 function PointsCard({ reading }: { reading: Reading }) {
   return (
     <Card className="flex flex-col gap-4">
@@ -525,6 +545,9 @@ function PointsCard({ reading }: { reading: Reading }) {
       <ul className="flex flex-col gap-2.5">
         {reading.statements.map((s, k) => (
           <StatementLine key={k} statement={s} reading={reading} />
+        ))}
+        {reading.stated.map((s) => (
+          <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
         ))}
       </ul>
     </Card>
@@ -602,7 +625,7 @@ export function ReadingCards({ reading, saved, fx, glance, read = true, unitPric
   onUnitPrice?: (n: number | null) => void;
 }) {
   const groups = read ? curveGroups(reading) : [];
-  const points = read && reading.statements.length > 0 ? <PointsCard reading={reading} /> : null;
+  const points = read && reading.statements.length + reading.stated.length > 0 ? <PointsCard reading={reading} /> : null;
   const law = read && reading.law.length > 0 ? <LawCard reading={reading} saved={saved} /> : null;
   const first = [glance, points].filter(Boolean);
   // the law card fills the first row where it holds one card, else the curves' row where it holds one curve, else it stands alone

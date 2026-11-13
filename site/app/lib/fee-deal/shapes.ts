@@ -222,7 +222,10 @@ export const CURRENCY_IDS: readonly string[] = ["USD", "EUR", "GBP", "other"];
 /** The values the site names for a list thing, in the order a list shows them. */
 export const LIST_IDS: Readonly<Record<ListKind, readonly string[]>> = { what: WHAT_IDS, held: WHAT_IDS, channel: CHANNEL_IDS, currency: CURRENCY_IDS };
 
-/** Whether a fee is charged on what is held or on the account (its usual form is a share of what is held or a sum per period). */
+/**
+ * Whether a fee of a kind is usually charged on what is held or on the account (its usual form is a share of what is held or a sum per
+ * period): the things the toolbox offers it go by this. What a fee's own prices are charged on goes by their form (`chargedOnHolding`).
+ */
 export const onHolding = (kind: FeeKindId): boolean => FEE_SHAPES[kind].usual === "held" || FEE_SHAPES[kind].usual === "sum";
 
 /** Whether a fee is a conversion, whose price changes by the currency rather than by what is bought. */
@@ -239,10 +242,11 @@ export function byKindsFor(kind: FeeKindId): ByKind[] {
 }
 
 /**
- * Whether a range is read across sizes rather than picked (F-115): the size of the action always, and the size of the portfolio for a fee on
- * what is held or on the account. Every other range is picked.
+ * Whether a range is read across sizes rather than picked (F-115): the size of the action always, and the size of the portfolio for a fee
+ * charged on what is held or on the account (`onHoldingFee`: by its prices' form, a share of what is held or a sum per period). Every other
+ * range is picked.
  */
-export const readAcross = (fee: FeeKindId, by: ByKind): boolean => by === "actionSize" || (by === "portfolioSize" && onHolding(fee));
+export const readAcross = (onHoldingFee: boolean, by: ByKind): boolean => by === "actionSize" || (by === "portfolioSize" && onHoldingFee);
 
 /** The most things one fee's price changes by. */
 export const BY_MAX = 3;

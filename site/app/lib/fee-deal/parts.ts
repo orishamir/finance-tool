@@ -71,15 +71,15 @@ export interface PriceView {
   every?: Months;
   currency?: string;
   yearly?: SiteValue;
-  /** The parts of the price beside its figures (F-116 to F-118), where it has any. */
+  /** The parts of the price beside its figures (F-116, F-117, and the parts §10.6 states without computing), where it has any. */
   parts?: PartsView;
 }
 
 /**
  * The parts of a price beside its figures, as the page says them: a discount and whether it is off the minimum too (its share is
  * `figures.discount`, F-116); a third party's fee, whose it is where the list names it, its form where it has a figure (its figures are
- * `figures.third`, `thirdMin`, `thirdMax`, F-117) and none where the list gives none (F-118); the fee a price is offset against, and a
- * refund (`figures.refund`); and the notes on an order (F-118).
+ * `figures.third`, `thirdMin`, `thirdMax`, F-117) and none where the list gives none; the fee a price is offset against, and a refund
+ * (`figures.refund`); and the notes on an order (the last four §10.6 states without computing).
  */
 export interface PartsView {
   discount?: { alsoMin: boolean };
@@ -128,7 +128,10 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
 /** The figure a price is judged by against a yearly cap or added in a group: its yearly figure, its rate, or its sum. */
 export const mainOf = (v: PriceView): SiteValue | undefined => v.yearly ?? v.figures.rate ?? v.figures.amount;
 
-/** F-113 for one price, and the price's share of the cap as a computed figure where it is judged and the cap is above nothing. */
+/**
+ * F-113 for one price, and the price's share of the cap as a computed figure where it is judged and the cap is above nothing: the price
+ * charged, after its discount (F-116), whose share is an input beside the typed figure.
+ */
 export interface StandingView {
   standing: Standing;
   share: SiteValue | null;
@@ -140,7 +143,7 @@ export function standingView(r: Pick<DealRead, "kind" | "deal" | "today">, fees:
   const cap = capOf(r.kind, fee.kind);
   if (!standing.judged || standing.share === null || !cap) return { standing, share: null };
   const x = p.form === "free" ? null : mainOf(view);
-  const inputs: Record<string, SiteValue> = { ...(x ? { [inputKey(fees, i)]: x } : {}), cap: { ...cap } as SiteValue };
+  const inputs: Record<string, SiteValue> = { ...(x ? { [inputKey(fees, i)]: x } : {}), ...(view.figures.discount ? { [inputKey(fees, i, "discount")]: view.figures.discount } : {}), cap: { ...cap } as SiteValue };
   return { standing, share: reading(standing.share * 100, "pct", "F-113", inputs, r.today) };
 }
 
@@ -230,10 +233,11 @@ export type PartMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
  * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says
  * only that they are larger than custody there, and the other shares of what is held (a fund's own fee, a manager's) may cost more. Each
  * such share's yearly cost rises with the value or stays (a rate with its bounds), and the sums stay, so it holds below `B` exactly where
- * each other share, priced at `B` as the holding curve prices it (its bounds included), costs no more than the sums.
+ * each other share, priced at `B` as the holding curve prices it (its bounds included, and a step of the value held in another currency at
+ * the curve's rates, `rates`, F-115), costs no more than the sums.
  */
-export function sumsLargest(engine: Deal, period: DealPeriod, m: Extract<DealMark, { kind: "meet" }>): boolean {
-  const cost = holdingCost(engine, period, m.amount);
+export function sumsLargest(engine: Deal, period: DealPeriod, m: Extract<DealMark, { kind: "meet" }>, rates: Readonly<Record<string, number>> = {}): boolean {
+  const cost = holdingCost(engine, period, m.amount, rates);
   const sums = cost.parts.filter((x) => m.fees.includes(x.fee)).reduce((a, x) => a + x.cost, 0);
   return cost.parts.every((x) => m.fees.includes(x.fee) || m.against.includes(x.fee) || x.cost <= sums);
 }
@@ -266,9 +270,13 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
   // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
   const from = m.from === undefined ? {} : { from: price.form !== "free" && "flat" in price && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
   if (m.kind === "cap") {
-    // the cap meets the minimum where it gives way to it, or the maximum where it gives way to that
-    const meets = figures.min && near(m.amount * fraction(figures.cap!.value as number), figures.min.value as number) ? { field: "min" as const, v: figures.min } : { field: "max" as const, v: figures.max ?? figures.min! };
-    return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap! }, today), ...from };
+    // the cap meets the minimum where it gives way to it, or the maximum where it gives way to that: the minimum the engine charges, after a
+    // discount off it (F-116)
+    const charged = m.side === "sell" ? (period.prices[m.fee]!.sale ?? period.prices[m.fee]!.price) : period.prices[m.fee]!.price;
+    const min = "min" in charged ? charged.min : undefined;
+    const meets = figures.min && min !== undefined && near(m.amount * fraction(figures.cap!.value as number), min) ? { field: "min" as const, v: figures.min } : { field: "max" as const, v: figures.max ?? figures.min! };
+    const discount = meets.field === "min" && figures.discount && price.form !== "free" && "discount" in price && price.discount?.alsoMin ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {};
+    return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap!, ...discount }, today), ...from };
   }
   const bound = (m.kind === "min" ? figures.min : figures.max)!;
   // a held share's bound is per charge, so its mark is where one charge's share meets it: the rate of a charge, `rate × every / per`

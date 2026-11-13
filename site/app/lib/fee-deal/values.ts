@@ -154,7 +154,7 @@ export interface PriceFigures {
   third?: SiteValue;
   thirdMin?: SiteValue;
   thirdMax?: SiteValue;
-  /** A refund, in the price's currency (F-118). */
+  /** A refund, in the price's currency (§10.6's stated parts). */
   refund?: SiteValue;
 }
 
