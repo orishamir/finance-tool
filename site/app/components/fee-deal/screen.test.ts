@@ -261,7 +261,7 @@ describe("the reading on screen", () => {
 });
 
 describe("a sum on the page", () => {
-  const at = (value: number, unit: string, state: "computed" | "entered") => ({ value, unit, state, as_of: TODAY }) as unknown as Parameters<typeof markLabel>[0];
+  const at = (value: number, unit: string, state: "computed" | "entered", kind = "min", units?: true) => ({ kind, on: "action", amount: { value, unit, state, as_of: TODAY }, ...(units ? { units } : {}) }) as unknown as Parameters<typeof markLabel>[0];
   it("the site works out shows in whole units of its currency, under ten with its cents; one typed shows as typed", () => {
     expect(markLabel(at(3529.41, "usd", "computed"))).toBe("3,529 $");
     expect(markLabel(at(1250.5, "eur", "computed"))).toBe("1,251 €");
@@ -269,5 +269,10 @@ describe("a sum on the page", () => {
     expect(markLabel(at(7, "usd", "entered"))).toBe("7 $");
     expect(markLabel(at(7.5, "usd", "entered"))).toBe("7.50 $");
     expect(markLabel(at(2400.4, "nis", "computed"))).toBe("2,400 ₪");
+  });
+  it("a price per unit's bound shows its count of units, and a flat price's sum shows whole", () => {
+    expect(markLabel(at(200, "count", "computed", "min", true))).toBe("200 יחידות");
+    expect(markLabel(at(1, "count", "computed", "max", true))).toBe("יחידה אחת");
+    expect(markLabel(at(50, "usd", "entered", "flat"))).toBe("50 $");
   });
 });

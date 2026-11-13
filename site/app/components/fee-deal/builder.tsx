@@ -28,15 +28,23 @@ import { PriceFigure, mainFieldId } from "./figures";
 import { LawTag, useFeeMark } from "./links";
 import { TemplateNote } from "./picker";
 import { UndoLine } from "./undo-line";
-import { FeeName, feeName, perActionWord, refName } from "./words";
+import { FeeName, feeName, perActionWord, refName, upToText } from "./words";
 
 const b = copy.builder;
 
-/** The words in a price's box in a row: what it is per ("לכל פעולה", "בשנה"), then the month it ends, or "אחר כך" for a later price. */
+/** The words in a price's box in a row: what it is per ("לכל פעולה", "לכל יחידה", "בשנה"), then the month it ends, or "אחר כך" for a later price. */
 function rowWords(kind: FeeKindId, s: StageView, later: boolean): string {
   const p = s.price;
   const unit =
-    p.form === "action" || p.form === "perAction" ? perActionWord(kind) : p.form === "held" ? copy.price.per[p.per!]! : p.form === "sum" ? copy.price.per[p.every!]! : "";
+    p.form === "action" || p.form === "perAction"
+      ? perActionWord(kind)
+      : p.form === "perUnit"
+        ? copy.price.perUnit
+        : p.form === "held"
+          ? copy.price.per[p.per!]!
+          : p.form === "sum"
+            ? copy.price.per[p.every!]!
+            : "";
   const when = s.until ? `${copy.standing.until}${monthText(s.until)}` : later ? b.then : "";
   // "0.4% בשנה, עד 03.2028" but "0.4% בשנה אחר כך"
   return [unit, when].filter(Boolean).join(s.until ? ", " : " ");
@@ -120,9 +128,35 @@ function SideFigures({ row, stages, fee, side, onFee }: { row: BuilderRow; stage
   );
 }
 
-/** A row's figures: each price from now on in its box, a single price's bounds beside it, and a sale priced apart after "במכירה". */
-function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f: Fee) => void }) {
+/**
+ * A single price's parts beyond its main figure, each in its box: its minimum and maximum, its percent maximum ("25 % מקסימום באחוזים"),
+ * and its flat price with the sum it holds up to in the box's words ("2.85 $ לכל המרה עד 50 $").
+ */
+function PartFigures({ row, fee, k, onFee }: { row: BuilderRow; fee: Fee; k: number; onFee: (f: Fee) => void }) {
   const name = refName(row);
+  const view = row.stages[0]!.price;
+  const f = view.figures;
+  const box = (figure: "min" | "max" | "cap" | "flat", words: ReactNode, spoken: string) =>
+    f[figure] ? <PriceFigure key={figure} fee={fee} side="buy" k={k} view={view} figure={figure} label={b.fieldName(name, spoken)} words={words} inside tight onFee={onFee} /> : null;
+  const upTo = f.flat && f.upTo ? (
+    <>
+      {perActionWord(fee.kind)}
+      {copy.price.flat.upTo}
+      <bdi dir="ltr">{upToText(f.upTo)}</bdi>
+    </>
+  ) : null;
+  return (
+    <>
+      {box("min", b.minWord, copy.panel.min)}
+      {box("max", b.maxWord, copy.panel.max)}
+      {box("cap", copy.panel.cap, copy.panel.cap)}
+      {upTo && box("flat", upTo, copy.panel.parts.flat)}
+    </>
+  );
+}
+
+/** A row's figures: each price from now on in its box, a single price's parts beside it, and a sale priced apart after "במכירה". */
+function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f: Fee) => void }) {
   const offset = fee.stages.length - row.stages.length;
   const sale = row.sale;
   return (
@@ -130,10 +164,7 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
       <div className="flex flex-wrap items-center gap-1.5">
         {sale && <span className="text-sm text-muted-foreground">{copy.sides.buy}</span>}
         <SideFigures row={row} stages={row.stages} fee={fee} side="buy" onFee={onFee} />
-        {row.stages.length === 1 &&
-          (["min", "max"] as const).map((m) =>
-            row.stages[0]!.price.figures[m] ? <PriceFigure key={m} fee={fee} side="buy" k={offset} view={row.stages[0]!.price} figure={m} label={b.fieldName(name, copy.panel[m])} words={m === "min" ? b.minWord : b.maxWord} inside tight onFee={onFee} /> : null,
-          )}
+        {row.stages.length === 1 && <PartFigures row={row} fee={fee} k={offset} onFee={onFee} />}
       </div>
       {/* a sale priced apart on a line of its own, so a line breaks between the purchase and the sale, never inside one */}
       {sale && (

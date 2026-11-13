@@ -7,7 +7,7 @@
 import { Fragment, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { Panel, PanelStage } from "../../lib/fee-deal/builder";
-import { editPrice, setFeeName, setLimited, setSaleApart, withCurrency, withForm, withMonths, type Side } from "../../lib/fee-deal/edit";
+import { editPrice, setFeeName, setLimited, setSaleApart, withCurrency, withFlat, withForm, withMonths, type Figure, type Side } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, MONTHS, NAME_MAX, pricesOn, stageFault, untilRange, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
@@ -42,35 +42,46 @@ function monthNote(stages: readonly PanelStage[], k: number): ReactNode {
   );
 }
 
-/** One price's lines (`name`, the price's name in its fields' labels), by its form: how it is charged where the fee has several forms, then its figures, each in its box. */
+/**
+ * One price's lines (`name`, the price's name in its fields' labels), by its form: how it is charged where the fee has several forms, then
+ * its figures, each in its box: its rate or sum, the months, the minimum and the maximum, the percent maximum ("מקסימום באחוזים", a share
+ * of the action), and the small action's price ("פעולה קטנה": the same price, or a flat price up to a sum, whose two boxes come on a line
+ * under it in two phrases that each keep together: "[2.85 $] לכל המרה," and "עד המרה של [50 $]"). The price's currency, where the fee
+ * may take another, is chosen once, in its first sum's box (a sum per unit's or a sum per action's, else the minimum's); every other sum's
+ * box shows it as its unit.
+ */
 function PriceRows({ fee, side, k, s, forms, name, onFee }: { fee: Fee; side: Side; k: number; s: PanelStage; forms: readonly FormId[]; name: string; onFee: (f: Fee) => void }) {
   const label = (field: string) => copy.builder.fieldName(name, field);
   const price = pricesOn(fee, side)[k]!.price;
   const edit = (fn: Parameters<typeof editPrice>[3]) => onFee(editPrice(fee, side, k, fn));
   const has = (f: FieldId) => s.fields.includes(f);
-  const figure = (f: "rate" | "min" | "max" | "amount", unit?: ReactNode) => (
+  const spoken: Record<Figure, string> = { rate: p.howMuch, amount: p.howMuch, min: p.min, max: p.max, cap: p.cap, flat: p.parts.flat, upTo: p.parts.upTo };
+  const figure = (f: Figure, unit?: ReactNode, opts: { blank?: boolean } = {}) => (
     <PriceFigure
       fee={fee}
       side={side}
       k={k}
       view={s.price}
       figure={f}
-      label={label(f === "min" ? p.min : f === "max" ? p.max : p.howMuch)}
-      optional={f === "min" || f === "max"}
+      label={label(spoken[f])}
+      optional={f === "min" || f === "max" || f === "cap"}
       unit={unit}
+      {...opts}
       {...(f === "rate" || f === "amount" ? { id: mainFieldId(fee.id, side, k, "panel") } : {})}
       onFee={onFee}
     />
   );
-  // a bound's currency, where the fee may take another one, is the unit in the first bound's box, chosen there once; the other bound's box
-  // says it as its unit
-  const cur = price.form === "action" ? (price.currency ?? "ILS") : "ILS";
-  const currency =
-    has("currency") && price.form === "action" ? (
+  const priced = price.form === "action" || price.form === "perUnit" || price.form === "perAction";
+  const cur = priced ? (price.currency ?? "ILS") : "ILS";
+  const chooser =
+    has("currency") && priced ? (
       <InlineSelect label={label(p.currency)} labelHidden options={BOUND_CURRENCIES.map((c) => ({ id: c, name: p.signs[c]! }))} value={cur} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
     ) : undefined;
-  const sign = currency ? p.signs[cur] : undefined;
+  // a sum per unit or a sum per action takes the choice in its own box; a share of an action, in its first bound's
+  const inAmount = price.form === "perUnit" || price.form === "perAction" ? chooser : undefined;
+  const inBound = price.form === "action" ? chooser : undefined;
   const per = price.form === "held" ? p.perCharge : perActionWord(fee.kind);
+  const flat = (price.form === "action" || price.form === "perUnit") && price.flat ? price.flat : null;
   return (
     <>
       {forms.length > 1 && (
@@ -90,8 +101,9 @@ function PriceRows({ fee, side, k, s, forms, name, onFee }: { fee: Fee; side: Si
       )}
       {has("amount") && (
         <Row label={p.howMuch}>
-          {figure("amount")}
+          {figure("amount", inAmount)}
           {price.form === "perAction" && <Caption>{perActionWord(fee.kind)}</Caption>}
+          {price.form === "perUnit" && <Caption>{copy.price.perUnit}</Caption>}
         </Row>
       )}
       {has("every") && price.form === "held" && (
@@ -108,16 +120,53 @@ function PriceRows({ fee, side, k, s, forms, name, onFee }: { fee: Fee; side: Si
           the minimum, and the label stays by the first line */}
       {(has("min") || has("max")) && (
         <Row label={has("min") ? p.min : p.max} top>
-          {has("min") && figure("min", currency)}
+          {has("min") && figure("min", inBound)}
           {has("min") && has("max") && (
             <span className="inline-flex items-center gap-x-2">
               <Caption>{p.max}</Caption>
-              {figure("max", sign)}
+              {figure("max")}
             </span>
           )}
-          {!has("min") && has("max") && figure("max", currency)}
+          {!has("min") && has("max") && figure("max", inBound)}
           <Caption>{per}</Caption>
         </Row>
+      )}
+      {has("cap") && (
+        <Row label={p.cap}>
+          {figure("cap")}
+          <Caption>{copy.price.of[fee.kind] ?? copy.price.of.default}</Caption>
+        </Row>
+      )}
+      {has("flat") && (
+        <>
+          <Row label={p.small}>
+            <SegmentedControl
+              label={label(p.small)}
+              fit
+              options={[
+                { value: "same", label: p.smallSame },
+                { value: "flat", label: p.smallFlat },
+              ]}
+              value={flat ? "flat" : "same"}
+              onChange={(v) => edit((x) => withFlat(x, v === "flat"))}
+            />
+          </Row>
+          {flat && (
+            <Row label={null}>
+              <span className="inline-flex items-center gap-x-2 whitespace-nowrap">
+                {figure("flat", undefined, { blank: true })}
+                <Caption>
+                  {perActionWord(fee.kind)}
+                  {copy.price.flatSep}
+                </Caption>
+              </span>
+              <span className="inline-flex items-center gap-x-2 whitespace-nowrap">
+                <Caption>{p.upTo[fee.kind] ?? p.upTo.default}</Caption>
+                {figure("upTo", undefined, { blank: true })}
+              </span>
+            </Row>
+          )}
+        </>
       )}
     </>
   );

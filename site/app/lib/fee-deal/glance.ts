@@ -18,14 +18,13 @@ export interface GlanceFee extends FeeRef {
 
 /**
  * Fees charged on one thing, with the rate their shares add to (per side of a trade where a side is priced apart). A group of fees that
- * change has its rate in the first period, with the group's fees that hold throughout added in. `marks` is always empty: the summary gives
- * only the rates' sum, and the reading's points say where a bound, a percent maximum or a flat price decides (`Reading.statements`).
+ * change has its rate in the first period, with the group's fees that hold throughout added in. Where a bound, a percent maximum or a flat
+ * price decides is the reading's points' to say (`Reading.statements`).
  */
 export interface GlanceGroup {
   on: GroupOn;
   fees: GlanceFee[];
   rates: { side: DealSide; rate: SiteValue; fees: FeeRef[] }[];
-  marks: [];
 }
 
 /** A fee's change at a date: the two prices around it, how it changes, and the later price's standing. */
@@ -89,7 +88,7 @@ function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: Se
     const view = priceView(r.fees, i, p, r.today);
     const sp = fee.sale ? priceAt(fee, at, true) : null;
     const sv = sp ? priceView(r.fees, i, sp, r.today) : null;
-    const g = byKey.get(key) ?? { on, fees: [], rates: [], marks: [] };
+    const g = byKey.get(key) ?? { on, fees: [], rates: [] };
     g.fees.push({ ...refOf(fee), price: view, standing: standingView(r, r.fees, i, p, view), ...(sp && sv ? { sale: { price: sv, standing: standingView(r, r.fees, i, sp, sv) } } : {}) });
     byKey.set(key, g);
   }

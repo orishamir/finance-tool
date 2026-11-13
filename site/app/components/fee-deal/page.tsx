@@ -282,7 +282,8 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (r.undo.shown) open(r.deals[0] ?? newDeal(null));
     made(r.undo);
   };
-  const options = useMemo(() => templateOptions(deal.kind, data, today), [deal.kind, data, today]);
+  // each house's plans are its ways to buy what the deal holds
+  const options = useMemo(() => templateOptions(deal.kind, data, today, deal.held), [deal.kind, deal.held, data, today]);
   const onPick = (id: string) => {
     setPicker(null);
     if (pickFrom === "track") {
@@ -317,7 +318,16 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   // a fee the product may not charge by rule is never offered
   const barred = useMemo(() => barredFees(deal.kind, data, today), [deal.kind, data, today]);
   const builderView = useMemo(() => builder(read, barred), [read, barred]);
-  const views = useMemo(() => (read.deal.fees.length > 0 ? { glance: glance(read), reading: readingOf(read, data.fx) } : null), [read, data.fx]);
+  // the unit's price typed beside the curve of a price per unit, one for each deal, kept while the page is open
+  const [unitPrices, setUnitPrices] = useState<Readonly<Record<string, number>>>({});
+  const unitPrice = unitPrices[deal.id] ?? null;
+  const onUnitPrice = (n: number | null) =>
+    setUnitPrices((all) => {
+      const { [deal.id]: _was, ...rest } = all;
+      return n === null ? rest : { ...rest, [deal.id]: n };
+    });
+  const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
+  const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);
   const hasTracks = options.some((o) => o.source === "track");
   const hasHouses = options.some((o) => o.source === "house");
@@ -479,6 +489,8 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
             saved={saves}
             fx={data.fx}
             read={readSome}
+            unitPrice={unitPrice}
+            onUnitPrice={onUnitPrice}
             glance={<GlanceCard glance={views.glance} law={views.reading.law} saved={saves} names={nameOf} empty={!readSome} />}
           />
         </Section>

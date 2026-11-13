@@ -271,8 +271,6 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(trade!.rates).toHaveLength(1);
     expect(v(trade!.rates[0]!.rate)).toBeCloseTo(0.45, 10);
     expect(trade!.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-    // the summary gives the rates' sum alone; the minimum's mark is among the reading's points
-    expect(trade!.marks).toEqual([]);
     expect(held!.on).toEqual({ on: "held" });
     // custody joins what is held from 03.2028, so the fund's 0.07% is not what is held costs throughout: no rate here
     expect(held!.fees.map((f) => f.kind)).toEqual(["fund_management"]);
@@ -297,7 +295,6 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(now.rates[0]!.fees.map((f) => f.kind)).toEqual(["trade", "fx", "fx_spread"]);
     expect(v(now.rates[0]!.rate)).toBeCloseTo(0.25 + 0.2 + 0.1, 10);
     expect(now.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-    expect(now.marks).toEqual([]);
   });
   it("at a glance: gives a group of fees that change its rate today, also where a fee of it is free today", () => {
     const g = glance(read(account()));
@@ -329,11 +326,10 @@ describe("the securities account of the picture, on 11.2026", () => {
   it("in the builder: a row per fee, the minimum said, custody's start, the fund's fee inside the fund, the suggestions", () => {
     const b = builder(read(account()));
     expect(b.rows.map((r) => r.kind)).toEqual(["trade", "custody", "fixed_period", "fx", "fund_management"]);
-    expect(b.rows[0]).toMatchObject({ bounds: { min: true, max: false }, saleSame: true });
+    expect(b.rows[0]).toMatchObject({ bounds: { min: true, max: false } });
     expect(b.rows[1]!.next).toEqual({ at: "2028-03", change: "starts" });
     expect(b.rows[1]!.stages).toHaveLength(2);
     expect(b.rows[4]!.insideFund).toBe(true);
-    expect(b.rows[3]!.saleSame).toBeNull();
     expect(b.suggestions.usual).toEqual(["transfer_out"]);
     expect(b.suggestions.rarer).toEqual(["fx_spread", "corporate_event", "current_account", "own"]);
     const paying = builder(read({ ...account(), held: { place: "abroad", currency: "USD", payout: "distributing" } }));

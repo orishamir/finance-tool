@@ -180,9 +180,8 @@ describe("the reading", () => {
     expect(curve.total[curve.amounts.indexOf(curve.at[1]!)]).toBeCloseTo(usd, 6);
     expect(curveHead(curve)).toEqual({ kind: "marks", n: 2 });
   });
-  it("leaves the marks out of the summary, which keeps the rates' sum", () => {
+  it("gives the summary the rates' sum", () => {
     const g = glance(read(account([trade(mizrahi), fx(mizrahiFx)])));
-    expect(g.throughout.flatMap((x) => x.marks)).toEqual([]);
     expect(v(g.throughout[0]!.rates[0]!.rate)).toBeCloseTo(0.433, 10);
   });
 });

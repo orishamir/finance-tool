@@ -8,7 +8,7 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
-import { computedSum, fmt, typedSum } from "../../lib/format";
+import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
 import { Num } from "../provenance";
@@ -80,6 +80,12 @@ export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | 
 /** A figure on the page: a sum as `sumDisplay` shows it. */
 export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;
 
+/** How the page shows the sum a flat price holds up to: whole, as the price list prints it ("50 $"), else as any sum (`sumDisplay`). */
+export const upToDisplay = (v: SiteValue) => (n: number): string | undefined => wholeSum(v.unit)(n) ?? sumDisplay(v)?.(n);
+
+/** The sum a flat price holds up to as plain text, for words inside a box ("לכל המרה עד 50 $"). */
+export const upToText = (v: SiteValue): string => upToDisplay(v)(v.value as number) ?? formatValue(v.value as number, v.unit);
+
 /** A figure with a lead held to it on one line (", מינימום 15 ₪"). */
 const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
   <>
@@ -88,27 +94,62 @@ const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
 );
 
 /**
- * A price in words around its figures: "0.25% מהפעולה, מינימום 15 ₪", "0.4% בשנה ממה שמוחזק", "10 ₪ בחודש", "חינם". `saved`: the
- * product saves (its fees are charged from what has built up), so a share of what is held reads "ממה שנצבר". A fee charged inside a fund
- * says so in place of what it is a share of.
+ * A price in words around its figures: "0.25% מהפעולה, מינימום 15 ₪, מקסימום 25% מהפעולה", "0.005 $ לכל יחידה", "0.4% בשנה ממה
+ * שמוחזק", "10 ₪ בחודש", "חינם". A flat price for a small action comes first: "2.85 $ לכל המרה עד 50 $. מעל זה 0.133% מההמרה, …". A
+ * share of nothing whose minimum and maximum are one sum is that sum on each action ("11 $ לכל פעולה"), as the price lists print it.
+ * `saved`: the product saves (its fees are charged from what has built up), so a share of what is held reads "ממה שנצבר". A fee charged
+ * inside a fund says so in place of what it is a share of.
  */
 export function PriceWords({ price, kind, saved, insideFund }: { price: PriceView; kind: FeeKindId; saved?: boolean; insideFund?: boolean }) {
   const p = copy.price;
   const f = price.figures;
+  const of = p.of[kind] ?? p.of.default;
   let body: ReactNode;
   switch (price.form) {
     case "free":
       body = p.free;
       break;
     case "action":
+    case "perUnit": {
+      const fixed = price.form === "action" && f.rate?.value === 0 && f.min && f.max && f.min.value === f.max.value;
       body = (
         <>
-          <Num value={f.rate!} /> {p.of[kind] ?? p.of.default}
-          {f.min && <Bound lead={p.min} value={f.min} />}
-          {f.max && <Bound lead={p.max} value={f.max} />}
+          {f.flat && f.upTo && (
+            <>
+              <Fig value={f.flat} /> {perActionWord(kind)}
+              {p.flat.upTo}
+              <Num value={f.upTo} display={upToDisplay(f.upTo)} />
+              {p.flat.above}
+            </>
+          )}
+          {fixed ? (
+            <>
+              <Fig value={f.min!} /> {perActionWord(kind)}
+            </>
+          ) : (
+            <>
+              {price.form === "action" ? (
+                <>
+                  <Num value={f.rate!} /> {of}
+                </>
+              ) : (
+                <>
+                  <Num value={f.amount!} /> {p.perUnit}
+                </>
+              )}
+              {f.min && <Bound lead={p.min} value={f.min} />}
+              {f.max && <Bound lead={p.max} value={f.max} />}
+            </>
+          )}
+          {f.cap && (
+            <>
+              <Bound lead={p.max} value={f.cap} /> {of}
+            </>
+          )}
         </>
       );
       break;
+    }
     case "held":
       body = (
         <>

@@ -526,11 +526,11 @@ export function fillFee(deal: FeeDeal, feeId: string, houseIdOf: string, data: P
 /** A row's title in the track picker: a track's short name where it has one (D54), else the template's name. */
 export const rowTitle = (o: TemplateOption): string => (o.source === "track" ? (o.short ?? o.name) : o.name);
 
-/** The templates whose name, a track's short name or its company holds the words typed. */
+/** The templates whose name, a plan's name, a track's short name or its company holds the words typed. */
 export function matching(options: readonly TemplateOption[], query: string): readonly TemplateOption[] {
   const q = query.trim();
   if (!q) return options;
-  return options.filter((o) => o.name.includes(q) || (o.source === "track" && (o.short?.includes(q) || o.company.includes(q))));
+  return options.filter((o) => o.name.includes(q) || (o.source === "house" ? !!o.plans?.some((p) => p.name.includes(q)) : o.short?.includes(q) || o.company.includes(q)));
 }
 
 /**
