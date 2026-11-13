@@ -1,5 +1,5 @@
 // The deposits page's list (D92): one table on a computer, one row per offer on a phone, on the kit's ProductTable. Five columns: the bank
-// and the deposit, the rate with a bar of its share of the list's highest, the interest on the reader's amount over the term (F-21), the
+// and the deposit, the rate, the interest on the reader's amount over the term (F-21), the
 // amounts the bank takes, and how the money can come out before the end (exit points, a break, or neither). Offers a bank prints under one
 // name stand as one row, the others of the name as short lines under it ("אותו פיקדון, עם תחנות יציאה"). An offer only some customers may
 // open ranks among the rest with an amber tag; linked offers follow the rest under one line. The reader's bank is tinted. Every rate and
@@ -14,7 +14,7 @@ import { fmt } from "../../lib/format";
 import type { Label } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { Num, Term } from "../provenance";
-import { AmountRange, AnchorSpread, HelpMark, LabelChip, MeterBar, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
+import { AmountRange, AnchorSpread, HelpMark, LabelChip, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
 import { IconChevronDown } from "../icons";
 
 const muted = "text-sm text-muted-foreground";
@@ -89,7 +89,7 @@ function BankName({ bank, mine }: { bank: DbBank | undefined; mine: boolean }) {
 
 export interface ListRow {
   row: DbRow;
-  /** The list's top offer: its rate and bar in the accent. */
+  /** The list's top offer: its rate in the accent. */
   top: boolean;
   mine: boolean;
 }
@@ -100,12 +100,8 @@ export interface ListContext {
   amount: { n: number; value: SiteValue } | null;
   today: string;
   banks: DbBank[];
-  /** The highest rate in the list: each bar's share. */
-  topRate: number;
   lit: string | null;
 }
-
-const rateOf = (o: DbOffer) => (typeof o.rate_offered.value === "number" ? o.rate_offered.value : 0);
 
 function Interest({ o, ctx, small }: { o: DbOffer; ctx: ListContext; small?: boolean }) {
   if (!ctx.amount) return null;
@@ -117,17 +113,15 @@ function Interest({ o, ctx, small }: { o: DbOffer; ctx: ListContext; small?: boo
 function tableRow({ row, top, mine }: ListRow, ctx: ListContext): ProductRow {
   const bank = ctx.banks.find((b) => b.id === row.bank);
   const first = row.offers[0]!;
-  const hollow = first.limited || isLinked(first);
   const main: ReactNode[] = [
     <span className="flex flex-col items-start gap-0.5">
       <BankName bank={bank} mine={mine} />
       <OfferName row={row} />
       <Tags row={row} />
     </span>,
-    <span className="flex flex-col items-stretch gap-1.5 min-w-0">
-      <Num value={first.rate_offered} className={cx("text-2xl font-semibold self-start", top && "text-primary")} />
+    <span className="flex flex-col items-start gap-1.5 min-w-0">
+      <Num value={first.rate_offered} className={cx("text-2xl font-semibold", top && "text-primary")} />
       <AnchorSpread variable={first.kind === "variable"} anchor={first.anchor} spread={first.spread} />
-      <MeterBar share={rateOf(first) / ctx.topRate} tone={top ? "accent" : isLinked(first) ? "muted" : "value"} hollow={hollow} />
     </span>,
     ...(ctx.amount ? [<Interest o={first} ctx={ctx} />] : []),
     <AmountRange min={first.amount_range.min} max={first.amount_range.max} />,
@@ -175,7 +169,6 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
         </span>
       </span>
       <AnchorSpread variable={first.kind === "variable"} anchor={first.anchor} spread={first.spread} />
-      <MeterBar share={rateOf(first) / ctx.topRate} tone={top ? "accent" : isLinked(first) ? "muted" : "value"} hollow={first.limited || isLinked(first)} className="my-1" />
       <Tags row={row} />
       <span className="grid grid-cols-2 gap-3">
         <span className="flex flex-col">
@@ -211,7 +204,8 @@ export function DepositList({ ranked, linked, ctx, sort, onSort, foot }: { ranke
           <HelpMark term={HELP_TERMS.rate} about={t.help.rate} />
         </span>
       ),
-      width: 11,
+      // the figure ("1.52%") with a variable rate's anchor and spread under it, and the head with its arrow and "?"
+      width: 7.75,
       sort: onSort ? state("rate") : undefined,
     },
     ...(ctx.amount

@@ -40,8 +40,21 @@ export function SortHead({ label, state, onPress, className, alsoHolds, note, ra
 const SortNoteLine = ({ note }: { note: string }) => <span className="text-xs leading-4 font-normal whitespace-nowrap text-muted-foreground">{note}</span>;
 
 /** A plain head that does not sort, with the muted second line `SortHead` takes as `note`, in the same 44 px. `mark` is a "?" beside the
- *  label on its first line, the note under both: for a note wider than its label, where a mark after the whole head would stand past it. */
-export function SortNote({ label, note, mark }: { label: string; note: string; /** A `HelpMark` beside the label. */ mark?: ReactNode }) {
+ *  label on its first line, the note under both: for a note wider than its label, where a mark after the whole head would stand past it.
+ *  `beside` sets the note after the label on its one line, the mark after both: for a head over several columns, whose second line is
+ *  their own heads (`ProductColumn.over`, the past yield over its years). */
+export function SortNote({ label, note, mark, beside }: { label: string; note: string; /** A `HelpMark` beside the label. */ mark?: ReactNode; /** The note on the label's line, after it. */ beside?: boolean }) {
+  if (beside) {
+    return (
+      <span className="inline-flex items-center gap-1 whitespace-nowrap">
+        {label}
+        <span className="ms-1">
+          <SortNoteLine note={note} />
+        </span>
+        {mark && <span className="relative inline-flex">{mark}</span>}
+      </span>
+    );
+  }
   return (
     <span className="inline-flex flex-col min-h-11 -my-1 pt-1">
       {mark ? (

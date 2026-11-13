@@ -924,8 +924,8 @@
       top: 4rem;
     }
   }
-  /* With a caption row over the heads (ProductTable `band`), the head sticks as one block: two rows of sticky cells at one top would lie
-     over each other. Its cells keep their background and line. */
+  /* With a caption row over the heads (ProductTable `band`) or a head over several columns (`over`), the head sticks as one block: two rows
+     of sticky cells at one top would lie over each other. Its cells keep their background and line. */
   .tbl-sticky.tbl-banded thead {
     position: sticky;
     top: 3.5rem;
@@ -941,6 +941,65 @@
     .tbl-sticky.tbl-banded thead {
       top: 4rem;
     }
+  }
+  /* A head over several columns (ProductTable `over`) and their own heads under it read as one head of two lines: no line and no room
+     between them. */
+  .tbl thead th.tbl-over {
+    padding-bottom: 0;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+  .tbl thead th.tbl-under {
+    padding-top: 0;
+  }
+  /* A dense table (ProductTable `dense`, a company page's tracks beside its side list): 8 px at each side of a cell between columns. The
+     cells at the table's outer edges keep 12 px on their outer side, so nothing touches the card's border and a "?" or a figure there keeps
+     its 44 px inside the card. */
+  .tbl-dense th,
+  .tbl-dense td {
+    padding-inline: 8px;
+  }
+  .tbl-dense :is(.tbl-first, .tbl-start) {
+    padding-inline-start: 12px;
+  }
+  .tbl-dense .tbl-end {
+    padding-inline-end: 12px;
+  }
+  /* A table wider than its card scrolls sideways inside it (ProductTable `tbl-pin`): its first column stays at the card's start edge, on the
+     card's surface, so a row's figures keep their name in sight. While the card is scrolled from its start (`data-scrolled`) the column lies
+     over the others, with a line at its end; at the start it lies over nothing, so a press area that reaches into it stays the neighbour's. */
+  .tbl-pin .tbl-first {
+    position: sticky;
+    inset-inline-start: 0;
+    background-color: var(--card);
+  }
+  .tbl-pin tr.dup-row > .tbl-first {
+    background: linear-gradient(color-mix(in oklch, var(--caution-subtle) 55%, transparent) 0 0), var(--card);
+  }
+  .tbl-pin tr.row-mine > .tbl-first {
+    background: linear-gradient(color-mix(in oklch, var(--primary-subtle) 70%, transparent) 0 0), var(--card);
+  }
+  .tbl-pin tr.row-lit > .tbl-first {
+    animation-name: row-lit-pin;
+  }
+  @keyframes row-lit-pin {
+    from {
+      background-color: color-mix(in oklch, var(--primary) 28%, var(--card));
+    }
+    to {
+      background-color: var(--card);
+    }
+  }
+  [data-scrolled] > .tbl-pin .tbl-first {
+    z-index: 3;
+  }
+  [data-scrolled] > .tbl-pin .tbl-first::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: 1px;
+    background: var(--border);
   }
   /* A row of a list of products lights under the pointer, so the eye keeps it across the columns (ProductTable). Nothing depends on it. */
   @media (hover: hover) {

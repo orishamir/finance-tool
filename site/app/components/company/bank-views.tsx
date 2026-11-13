@@ -18,6 +18,9 @@ import type { ProductRowData } from "../decoder/institutions/types";
 
 const muted = "text-sm text-muted-foreground";
 const ALL = "all";
+/** A rate column, as wide as its longest real content over every bank: a deposit's rate with its anchor and spread under it ("0.02%" over
+ *  "פריים פחות 4.73") and its amount's head ("מ־100,000 ₪"); a savings plan's, whose rates and heads run wider ("100 עד 10,000 ₪"). */
+const RATE_REM = { deposits: 8.5, savings: 9 } as const;
 
 /** An amount band's range in plain words, for a chip (a control holds no figure that opens its own sheet; the column's head holds the sourced one). */
 const rangeText = (b: AmountBand, fromOnly?: boolean): string => amountRangeText(numberOf(b.min), numberOf(b.max), fromOnly);
@@ -272,8 +275,8 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
     ...(!shared.rateType ? [{ id: "rateType", head: copy.labels.rateType, width: 6.5 }] : []),
     ...(amountColumn ? [{ id: "amount", head: w.deposits.cols.amount, width: 10 }] : []),
     ...(bands
-      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: 9, dim: amount !== ALL && amount !== b.key }))
-      : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} deposits={deposits} />, width: 9 }]),
+      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: RATE_REM[kind], dim: amount !== ALL && amount !== b.key }))
+      : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} deposits={deposits} />, width: RATE_REM[kind] }]),
     ...(!shared.exits ? [{ id: "exits", head: copy.labels.exits, width: 9, wrap: true }] : []),
   ];
   const cellsOf = (row: TableRow, p: ProductRowData): ReactNode[] => [
