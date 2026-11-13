@@ -87,14 +87,14 @@ export function setPick(deal: FeeDeal, by: string, is: string | null): FeeDeal {
 /**
  * A figure of a price the screen edits: its rate, its bounds, its sum (a sum per unit's among them), its percent maximum (`cap`), its
  * flat price's two figures (`flat`, the price; `upTo`, the sum it holds up to), a discount's share (`discount`, F-116), a third party's
- * rate or sum and bounds (`third`, `thirdMin`, `thirdMax`, F-117), and a refund (`refund`, F-118).
+ * rate or sum and bounds (`third`, `thirdMin`, `thirdMax`, F-117), and a refund (`refund`, §10.6's stated parts).
  */
 export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax" | "refund";
 
 /** A price that may have bounds, a cap and a flat price: a share of an action or a sum per unit. */
 type Bounded = Extract<Price, { form: "action" | "perUnit" }>;
 const isBounded = (p: Price): p is Bounded => p.form === "action" || p.form === "perUnit";
-/** A price on an action, which may carry a discount, a third party's fee and notes (F-116 to F-118). */
+/** A price on an action, which may carry a discount, a third party's fee and notes (F-116, F-117 and §10.6's stated parts). */
 type OnAction = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
 const isOnAction = (p: Price): p is OnAction => p.form === "action" || p.form === "perUnit" || p.form === "perAction";
 
@@ -257,7 +257,7 @@ export function withFlat(p: Price, on: boolean): Price {
   return rest;
 }
 
-// ---------------------------------------------------------------- a price's parts (F-116 to F-118)
+// ---------------------------------------------------------------- a price's parts (F-116, F-117 and §10.6's stated parts)
 
 /** A price on an action with a discount (its share blank until typed), or without one. Any other price is left as it is. */
 export function withDiscount(p: Price, on: boolean): Price {
@@ -274,7 +274,7 @@ export function withDiscountOnMin(p: Price, on: boolean): Price {
   return { ...p, discount: on ? { ...rest, alsoMin: true } : rest };
 }
 
-/** A price on an action with a third party's fee (none of its figures given: "בלי סכום בתעריפון", F-118), or without one. */
+/** A price on an action with a third party's fee (none of its figures given: "בלי סכום בתעריפון", §10.6's stated parts), or without one. */
 export function withThird(p: Price, on: boolean): Price {
   if (!isOnAction(p) || on === !!p.third) return p;
   if (on) return { ...p, third: {} };
@@ -292,7 +292,7 @@ export function withThirdWho(p: Price, who: string): Price {
 
 /**
  * A third party's fee with a figure of a form (its figure blank until typed, F-117), its currency carried from the form before; or with none
- * (`null`: the list gives no figure, F-118). The same form leaves it as it is.
+ * (`null`: the list gives no figure, §10.6's stated parts). The same form leaves it as it is.
  */
 export function withThirdForm(p: Price, form: ThirdPrice["form"] | null): Price {
   if (!isOnAction(p) || !p.third) return p;
@@ -312,14 +312,14 @@ export function withThirdCurrency(p: Price, currency: BoundCurrency): Price {
   return { ...p, third: { ...p.third, price: (currency === "ILS" ? rest : { ...rest, currency }) as ThirdPrice } };
 }
 
-/** A price offset against the deal's fee of `kind` (F-118), or not (`null`). A free price has nothing to offset. */
+/** A price offset against the deal's fee of `kind` (§10.6's stated parts), or not (`null`). A free price has nothing to offset. */
 export function withOffset(p: Price, kind: FeeKindId | null): Price {
   if (p.form === "free") return p;
   const { offset: _o, ...rest } = p;
   return (kind === null ? rest : { ...rest, offset: { kind } }) as Price;
 }
 
-/** A price with a refund (its sum blank until typed, F-118), or without one. */
+/** A price with a refund (its sum blank until typed, §10.6's stated parts), or without one. */
 export function withRefund(p: Price, on: boolean): Price {
   if (p.form === "free" || on === !!p.refund) return p;
   if (on) return { ...p, refund: blankFigure() } as Price;
@@ -327,7 +327,7 @@ export function withRefund(p: Price, on: boolean): Price {
   return rest as Price;
 }
 
-/** A price on an action with a note on an order (F-118), or without it; the notes keep their order. */
+/** A price on an action with a note on an order (§10.6's stated parts), or without it; the notes keep their order. */
 export function withNote(p: Price, note: Note, on: boolean): Price {
   if (!isOnAction(p) || on === !!p.notes?.includes(note)) return p;
   const notes = on ? [...(p.notes ?? []), note] : (p.notes ?? []).filter((x) => x !== note);

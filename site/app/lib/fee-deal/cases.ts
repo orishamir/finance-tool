@@ -2,8 +2,8 @@
 // give it, and a price that changes by a size read across sizes as one fee per step, charged on that step's sizes alone. A fee whose price
 // changes by nothing is read as it is. What the views read (parts.ts) is the result: plain fees with their prices over time.
 import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
-import { pickKey, placeOf, hasCases, isRange, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
-import { holdsFunds, onHolding, readAcross } from "./shapes";
+import { pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
+import { CURRENCY_IDS, holdsFunds, onHolding, readAcross } from "./shapes";
 
 /**
  * Where a read fee comes from (F-114, F-115): the deal's fee (`of`), the case it is read in where the fee has cases, and, where its price
@@ -35,8 +35,17 @@ export function stepForPick(tops: readonly number[], is: string): number | null 
   return k < 0 ? tops.length : k;
 }
 
+/**
+ * Whether a fee is charged on what is held or on the account, by its prices' form (F-115, F-111): every price of it that is not free is a
+ * share of what is held or a sum per period. A fee whose every price is free is placed by its kind's usual form.
+ */
+export function chargedOnHolding(fee: Fee): boolean {
+  const forms = (hasCases(fee) ? fee.cases : [fee]).flatMap((x) => [...x.stages, ...(x.sale ?? [])]).map((s) => s.price.form).filter((f) => f !== "free");
+  return forms.length ? forms.every((f) => f === "held" || f === "sum") : onHolding(fee.kind);
+}
+
 /** A thing whose values the reading picks: every one but a size read across sizes (F-115). */
-export const picked = (fee: Fee, b: By): boolean => !(isRange(b) && readAcross(fee.kind, b.kind));
+export const picked = (fee: Fee, b: By): boolean => !(isRange(b) && readAcross(chargedOnHolding(fee), b.kind));
 
 /** The first value a case names for thing `t`, where it names one (a range's step as its pick). */
 function valueOf(fee: CasesFee, c: Case, t: number): string | null {
@@ -48,33 +57,41 @@ function valueOf(fee: CasesFee, c: Case, t: number): string | null {
 }
 
 /**
+ * The currency a conversion is read for (F-114): not a pick of its own but that of what is bought, where it is foreign: its currency where
+ * the site names it (dollars, euros, pounds), else "other". Null where what is bought is in shekels or not said: then no currency is
+ * picked, and a conversion priced by currency is read only in a case for any currency.
+ */
+function conversionCurrency(fees: readonly Fee[], picks: readonly ReadPick[]): string | null {
+  const what = picks.find((p) => p.by === "what");
+  const place = what ? pickedPlace(fees, what) : null;
+  if (!place || place.currency === "ILS") return null;
+  return place.currency !== null && CURRENCY_IDS.includes(place.currency) ? place.currency : "other";
+}
+
+/**
  * The reading's picks as F-114 reads them: the deal's own (`readFor`), and for every other thing its fees change by and the reading picks,
- * its start: the person's own track (the track of a case marked as theirs), the currency of what is bought where a conversion has a case
- * for it, and otherwise the first case that names a value. In the order the fees name the things.
+ * its start: the person's own track (the track of a case marked as theirs), and otherwise the first case that names a value, in the order
+ * the fees name the things. The currency is never the deal's own pick nor a case's: it is what is bought's (`conversionCurrency`), last.
  */
 export function picksOf(deal: Pick<FeeDeal, "fees" | "readFor">): ReadPick[] {
-  const out: ReadPick[] = [...(deal.readFor ?? [])];
+  const out: ReadPick[] = (deal.readFor ?? []).filter((p) => p.by !== "currency");
   const has = (key: string) => out.some((p) => p.by === key);
   for (const fee of deal.fees) {
     if (!hasCases(fee)) continue;
     fee.by.forEach((b, t) => {
       const key = pickKey(b);
-      if (has(key) || !picked(fee, b)) return;
+      if (b.kind === "currency" || has(key) || !picked(fee, b)) return;
       let is: string | null = null;
       if (b.kind === "track") {
         const mine = fee.cases.find((c) => c.mine);
         is = mine ? valueOf(fee, mine, t) : null;
       }
-      if (b.kind === "currency") {
-        const what = out.find((p) => p.by === "what");
-        const currency = what ? placeOf(deal.fees, what.is)?.currency : undefined;
-        const named = currency === undefined ? undefined : currency === null || currency === "ILS" ? "other" : currency;
-        if (named && fee.cases.some((c) => Array.isArray(c.when[t]) && (c.when[t] as string[]).includes(named))) is = named;
-      }
       is ??= fee.cases.map((c) => valueOf(fee, c, t)).find((v) => v !== null) ?? null;
       if (is !== null) out.push({ by: key, is });
     });
   }
+  const currency = deal.fees.some((f) => hasCases(f) && f.by.some((b) => b.kind === "currency")) ? conversionCurrency(deal.fees, out) : null;
+  if (currency !== null) out.push({ by: "currency", is: currency });
   return out;
 }
 
@@ -120,7 +137,8 @@ export function readFee(fee: Fee, picks: readonly ReadPick[]): ReadFee[] | null 
     else stretches.push({ k, from: s, to: s });
   });
   if (stretches.length === 1) return [fromCase(fee, fee.cases[stretches[0]!.k]!, fee.id)];
-  const on = onHolding(fee.kind) ? "held" : "action";
+  // the size of the action is read across on an action, the size of the portfolio on what is held (F-115)
+  const on = range.kind === "actionSize" ? "action" : "held";
   const currency = range.unit as BoundCurrency;
   return stretches.map((x, j) =>
     fromCase(fee, fee.cases[x.k]!, `${fee.id}-s${j}`, { on, from: x.from === 0 ? null : range.tops[x.from - 1]!, to: x.to < range.tops.length ? range.tops[x.to]! : null, currency }),
@@ -147,6 +165,6 @@ export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[];
 export function isForeign(deal: Pick<FeeDeal, "kind" | "fees">, picks: readonly ReadPick[]): boolean {
   if (!holdsFunds(deal.kind)) return false;
   const what = picks.find((p) => p.by === "what");
-  const place = what ? placeOf(deal.fees, what.is) : null;
+  const place = what ? pickedPlace(deal.fees, what) : null;
   return !!place && place.currency !== "ILS";
 }

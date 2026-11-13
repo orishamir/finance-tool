@@ -1,7 +1,10 @@
 // Templates that fill a deal from the site's data (method §10.6: the site's price lists and tracks only fill a deal's fields, as a start
 // the person edits): a house's whole price list for a securities account, each base's fee with its cases where the list prints several
-// prices for it (F-114), each line read as the engine's line choice reads it (F-63); and a regulated track's two fees for the provident
-// family. A filled figure keeps its record's source and date (sourced) until the person changes it (entered, `retyped`).
+// prices for it (F-114); and a regulated track's two fees for the provident family. For each value of what is bought, a line is chosen as
+// F-63's line choice chooses it: the standard line (no band) wins over a banded one, and the banded lines are tracks only where no standard
+// line prices the value. Where two standard lines price a value, the one that names fewer classes wins, where F-63 finds the snapshot
+// ambiguous unless one names a sub-class. A filled figure keeps its record's source and date (sourced) until the person changes it
+// (entered, `retyped`).
 import { memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND } from "@finance-tool/engine";
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS } from "../providers";
@@ -9,7 +12,7 @@ import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
 import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Flat, type Months, type Num, type OwnPlace, type Price, type ProviderKind, type SlimFee, type When } from "./model";
-import { CURRENCY_IDS, WHAT_IDS, type FeeKindId } from "./shapes";
+import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
@@ -151,14 +154,17 @@ const convertsFree = (l: Line): boolean =>
 /**
  * Where a foreign line is bought, from its band's words (the same words the indices page reads, invest.ts), as values of what is bought:
  * the United States; Europe (London among it); outside the United States ("מחוץ לארה״ב", "שווקים נוספים"), Europe and the rest of the
- * world; or not said (null: every venue abroad).
+ * world, unless the words leave Canada out too (`elsewhere-but`: the rest of the world holds Canada, so the line prices Europe and a value
+ * of its own); or not said (null: every venue abroad).
  */
 const US_RE = /ארה["״]ב|ארצות הברית|United States/;
 const EU_RE = /אירופה|לונדון|London|LSE/;
 const ELSEWHERE_RE = /מחוץ לארה|שווקים נוספים|שאינם/;
-const venueOf = (words: string | null): string[] | null => (!words ? null : ELSEWHERE_RE.test(words) ? ["europe", "world"] : US_RE.test(words) ? ["us"] : EU_RE.test(words) ? ["europe"] : null);
+const CANADA_RE = /קנדה|Canada/;
+const venueOf = (words: string | null): string[] | "elsewhere-but" | null =>
+  !words ? null : ELSEWHERE_RE.test(words) ? (CANADA_RE.test(words) ? "elsewhere-but" : ["europe", "world"]) : US_RE.test(words) ? ["us"] : EU_RE.test(words) ? ["europe"] : null;
 /** Whether words name where a line is bought: a venue abroad, or the Tel Aviv exchange. */
-const namesPlace = (words: string): boolean => !!venueOf(words) || /תל אביב|Tel Aviv/.test(words);
+const namesPlace = (words: string): boolean => venueOf(words) !== null || /תל אביב|Tel Aviv/.test(words);
 
 /**
  * A banded line's track, in the band's words without where it is bought: the side of a band cut at ":" (or at its first ", ") that does not
@@ -184,21 +190,38 @@ const CLASS_VALUE: Record<string, string> = { mutual_fund_units: "mutualFunds", 
 const SUB_CLASSES = new Set(["tase_bonds", "tase_foreign_fund_units"]);
 
 /**
- * What a line prices, as the values of what is bought (F-114): the account or every class, every value; a class of the Tel Aviv exchange,
- * `tase`; a traditional mutual fund, a money-market fund, makam, each its own; a foreign security, where its band says it is bought (every
- * venue abroad where it does not). A line that names only a sub-class of the exchange (Psagot's bonds) is a value of its own, named by its
- * band, where another line prices the class above it (`own`).
+ * The values of its own a line may price (`OwnPlace`, named by its band): a sub-class of the exchange where another line prices the class
+ * above it (`sub`), a kind of mutual fund a banded line prices apart where a standard line prices every mutual fund (`funds`), and a place
+ * abroad its band names that no value of the site's is (`abroad`). Null where the line prices the site's value instead.
  */
-function valuesOf(l: Line, own: (l: Line) => OwnPlace | null): string[] {
+interface OwnValues {
+  sub: (l: Line) => OwnPlace | null;
+  funds: (l: Line) => OwnPlace | null;
+  abroad: (l: Line) => OwnPlace;
+}
+
+/**
+ * What a line prices, as the values of what is bought (F-114): the account or every class, every value; a class of the Tel Aviv exchange,
+ * `tase`; a mutual fund, a money-market fund, makam, each its own; a foreign security, where its band says it is bought (every venue abroad
+ * where it does not). A line that names only a sub-class of the exchange (Psagot's bonds) is a value of its own, named by its band, where
+ * another line prices the class above it; so is a banded line for mutual funds alone where a standard line prices them (Excellence's
+ * "קרנות נאמנות מסורתיות", F-63 reading the standard line for a mutual fund), and a line abroad whose band leaves Canada out (IBI's "מחוץ
+ * לארה״ב, לקנדה ולישראל" prices Europe and that value, not the rest of the world).
+ */
+function valuesOf(l: Line, own: OwnValues): string[] {
   const out = new Set<string>();
   for (const a of l.applies_to) {
     if (a === "all" || a === "brokerage-account") WHAT_IDS.forEach((v) => out.add(v));
     else if (TASE_CLASSES.has(a)) {
-      const o = SUB_CLASSES.has(a) && l.applies_to.every((x) => SUB_CLASSES.has(x)) ? own(l) : null;
+      const o = SUB_CLASSES.has(a) && l.applies_to.every((x) => SUB_CLASSES.has(x)) ? own.sub(l) : null;
       out.add(o ? o.name : "tase");
+    } else if (a === "mutual_fund_units") {
+      const o = l.band !== null && l.applies_to.every((x) => x === a) ? own.funds(l) : null;
+      out.add(o ? o.name : CLASS_VALUE[a]!);
     } else if (CLASS_VALUE[a]) out.add(CLASS_VALUE[a]!);
     else if (a === "foreign_securities") {
-      (venueOf(l.band) ?? ["us", "europe", "world"]).forEach((x) => out.add(x));
+      const venue = venueOf(l.band);
+      (venue === "elsewhere-but" ? ["europe", own.abroad(l).name] : (venue ?? ["us", "europe", "world"])).forEach((x) => out.add(x));
     }
   }
   for (const x of l.excludes ?? []) if (CLASS_VALUE[x]) out.delete(CLASS_VALUE[x]!);
@@ -221,10 +244,12 @@ interface Raw {
 
 /**
  * A fee of one kind from the raw prices of its base (F-114): one case per line and track, naming every value and channel the line prices
- * (any value where it prices every one); the fee changes by what is bought (what is held, for custody; the currency, for a conversion), by
- * the track and by the channel only where the list prints different prices by them. A base read from one line is a fee whose price changes
- * by nothing, unless a value it prices fills nothing (a conversion priced per dollar), which keeps the thing so that value has no case. The
- * fee of `kind` that `lineFees` fills from each line is the case's price.
+ * (any value where it prices every one); the fee changes by what is bought (what is held, for custody; the currency, for a conversion) where
+ * the list prints different prices by it or leaves a value unpriced, and by the track and by the channel only where the list prints
+ * different prices by them. A base read from one line is a fee whose price changes by nothing only where that line prices every value of
+ * the thing and every value of its own the house names (`own`); otherwise the fee keeps the thing, its one case naming the values the line
+ * prices (One Zero's 50 dollars for each corporate event abroad), so the others have no case. A value a line prices that fills nothing
+ * (a conversion priced per dollar) has no case either. The fee of `kind` that `lineFees` fills from each line is the case's price.
  */
 function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: readonly Raw[], priceOf: (l: Line) => SlimTemplateFee | undefined, own: readonly OwnPlace[]): TemplateFee | null {
   const priced = raws.filter((x) => priceOf(x.line));
@@ -232,15 +257,18 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
   const lines = [...new Set(priced.map((x) => x.line))];
   // a value a line prices that fills nothing here (a conversion priced per dollar) keeps the fee changing by it, so it is read nowhere
   const unpricedValue = raws.some((x) => !priceOf(x.line) && !priced.some((y) => y.value === x.value));
+  const allValues = first === "currency" ? CURRENCY_IDS : WHAT_IDS;
+  const pricedValues = new Set(priced.map((x) => x.value));
+  const covers = allValues.every((v) => pricedValues.has(v)) && own.every((o) => pricedValues.has(o.name));
   const byTrack = priced.some((x) => x.track !== null);
-  if (lines.length === 1 && !byTrack && !unpricedValue) return { kind, stages: priceOf(lines[0]!)!.stages };
+  if (lines.length === 1 && !byTrack && !unpricedValue && covers) return { kind, stages: priceOf(lines[0]!)!.stages };
   const channels = [...new Set(priced.map((x) => x.channel))].filter((c): c is string => c !== null);
   const differ = (key: (x: Raw) => string) => {
     const groups = new Map<string, Set<Line>>();
     for (const x of priced) groups.set(key(x), (groups.get(key(x)) ?? new Set()).add(x.line));
     return [...groups.values()].some((g) => g.size > 1);
   };
-  const byValue = unpricedValue || differ((x) => `${x.channel}|${x.track}`);
+  const byValue = unpricedValue || !covers || differ((x) => `${x.channel}|${x.track}`);
   const byChannel = channels.length > 1 && differ((x) => `${x.value}|${x.track}`);
   // one case per line and track, naming the values and channels it prices
   type Cell = { line: Line; track: string | null; channels: Set<string>; values: Set<string> };
@@ -257,7 +285,6 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
     ...(byChannel ? [{ kind: "channel" as const }] : []),
   ];
   if (by.length === 0) return { kind, stages: priceOf(lines[0]!)!.stages };
-  const allValues = first === "currency" ? CURRENCY_IDS : WHAT_IDS;
   const cases: Case[] = cells.map((c, k) => {
     const when: When[] = [
       ...(byValue ? [allValues.every((v) => c.values.has(v)) && !own.some((o) => !c.values.has(o.name)) ? ("any" as const) : [...c.values]] : []),
@@ -270,9 +297,10 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
 }
 
 /**
- * One base's raw prices (F-63, F-114): for each value of what is bought and each channel, the lines that price it, the narrowest only;
- * where two or more are left they are tracks (a line with a band is a plan of the list, F-63, and the regular line is one track among
- * them), and where two regular lines are left the list does not say which prices it (`ambiguous`).
+ * One base's raw prices (F-63, F-114): for each value of what is bought and each channel, the lines that price it, chosen as F-63 chooses:
+ * the standard line (no band) wins over every banded one, and of several standard lines the narrowest (where two are left the list does not
+ * say which prices it, `ambiguous`). Where no standard line prices the value, the narrowest banded lines are its tracks (a line with a band
+ * is a plan of the list, F-63), or its one price where only one is left.
  */
 function rawsOf(lines: readonly Line[], valueOf: (l: Line) => string[]): { raws: Raw[]; ambiguous: Line[]; unread: Line[] } {
   // the channels in the order a house template reads them, the direct one first, so a deal starts on it (F-114: the first case's value)
@@ -285,11 +313,12 @@ function rawsOf(lines: readonly Line[], valueOf: (l: Line) => string[]): { raws:
     for (const channel of channels.length ? channels : [null]) {
       const here = lines.filter((l) => valueOf(l).includes(value) && (l.channel === null || l.channel === channel));
       if (here.length === 0) continue;
-      const narrow = Math.min(...here.map(breadth));
-      const ways = here.filter((l) => breadth(l) === narrow);
-      const standard = ways.filter((l) => l.band === null);
-      if (standard.length > 1) {
-        standard.forEach((l) => ambiguous.add(l));
+      const standard = here.filter((l) => l.band === null);
+      const pool = standard.length ? standard : here;
+      const narrow = Math.min(...pool.map(breadth));
+      const ways = pool.filter((l) => breadth(l) === narrow);
+      if (standard.length && ways.length > 1) {
+        ways.forEach((l) => ambiguous.add(l));
         continue;
       }
       const tracks = ways.length > 1;
@@ -317,14 +346,19 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   const fees: TemplateFee[] = [];
   const read = new Set<string>();
   const ownPlaces: OwnPlace[] = [];
-  const ownOf = (l: Line): OwnPlace | null => {
+  const ownPlace = (l: Line, place: Place, currency: string | null): OwnPlace => {
     const name = (l.band ?? l.names.tariff[0] ?? l.id).slice(0, NAME_MAX);
+    const o: OwnPlace = { name, place, currency };
+    if (!ownPlaces.some((x) => x.name === name)) ownPlaces.push(o);
+    return o;
+  };
+  const another = (l: Line, test: (x: Line) => boolean) => snap.lines.some((x) => x !== l && x.base === l.base && regular(x) && test(x));
+  const ownOf: OwnValues = {
     // only where another line prices the exchange above the sub-class: else the sub-class is just what the exchange's value prices
-    const above = snap.lines.some((x) => x !== l && x.base === l.base && regular(x) && x.applies_to.some((a) => a === "tase_shares_bonds" || a === "etf_units"));
-    if (!above) return null;
-    const place: OwnPlace = { name, place: "israel", currency: "ILS" };
-    if (!ownPlaces.some((o) => o.name === name)) ownPlaces.push(place);
-    return place;
+    sub: (l) => (another(l, (x) => x.applies_to.some((a) => a === "tase_shares_bonds" || a === "etf_units")) ? ownPlace(l, "israel", "ILS") : null),
+    // only where a standard line prices every mutual fund, which F-63 reads for a mutual fund: else the banded line is the funds' own price
+    funds: (l) => (another(l, (x) => x.band === null && x.applies_to.includes("mutual_fund_units") && (x.channel === null || l.channel === null || x.channel === l.channel)) ? ownPlace(l, "israel", "ILS") : null),
+    abroad: (l) => ownPlace(l, "abroad", null),
   };
   for (const base of HOUSE_BASES) {
     let lines = snap.lines.filter((l) => l.base === base && regular(l) && (base !== "fixed_period" || l.band === null));
@@ -537,8 +571,11 @@ export function feePriceLists(deal: FeeDeal, kind: FeeKindId, data: Pick<FeesDat
   return data.houses.filter((h) => h.fees.some((f) => f.kind === kind)).map((h) => ({ id: houseId(h), name: h.name }));
 }
 
-/** A house's name by its template id (`house:<id>`); null where no house has it. */
-export const houseName = (id: string, data: Pick<FeesData, "houses">): string | null => houseOf(id, data)?.name ?? null;
+/**
+ * A house's name by its template id (`house:<id>`, or `house:<id>/<line>`, the id of one way to buy at the house that a deal saved before
+ * cases may name); null where no house has it.
+ */
+export const houseName = (id: string, data: Pick<FeesData, "houses">): string | null => houseOf(id.split("/", 1)[0]!, data)?.name ?? null;
 
 /**
  * The deal with one fee filled from a house's price list (`feePriceLists`): the fee keeps its id and place, and takes the list's fee whole,

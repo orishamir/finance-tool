@@ -1,6 +1,6 @@
 // The reading of a deal (method §10.6): the picks it is read for (F-114), its periods as cards (F-110), the sums its prices mark as
 // statements (F-112, F-115), the two curves' series with their axis end (F-112), the law rows for the deal's own fees that have a cap on the
-// kind's record (F-113), and what it states without computing (F-118).
+// kind's record (F-113), and the parts of a price it states without computing (§10.6, "What the page states and does not compute").
 import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, holdingCost, type ChangeKind, type DealAction, type DealMark, type DealPeriod, type DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
@@ -8,7 +8,7 @@ import { entered, type SiteValue } from "../value";
 import { feeNameOf, whenWords, type PartWords, type WhenWords } from "./builder";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
-import { hasCases, isRange, monthKey, pickKey, placeOf, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
+import { hasCases, isRange, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
 import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { holdsFunds, ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
@@ -87,7 +87,7 @@ export type Statement =
 const markKey = (r: DealRead, m: DealMark): string =>
   m.kind === "meet" ? `meet:${m.fees.map((i) => r.fees[i]!.id)}:${m.against.map((i) => r.fees[i]!.id)}:${m.amount}` : `${m.kind}:${r.fees[m.fee]!.id}:${m.side}:${m.currency}:${m.units ? "units" : ""}:${m.from ?? 0}:${m.amount}`;
 
-function statementsOf(r: DealRead): Statement[] {
+function statementsOf(r: DealRead, rates: Readonly<Record<string, number>> | null): Statement[] {
   const out = new Map<string, Statement>();
   const add = (key: string, at: MonthKey, make: () => Statement) => {
     const s = out.get(key);
@@ -96,7 +96,7 @@ function statementsOf(r: DealRead): Statement[] {
   };
   for (const p of r.reading.periods) {
     const at = monthKey(p.from);
-    for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)), periods: [at] }));
+    for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today, m.kind === "meet" && rates !== null && sumsLargest(r.engine, p, m, rates)), periods: [at] }));
     r.fees.forEach((fee, i) => {
       const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
@@ -186,16 +186,22 @@ export interface UnitPrice {
 /** The key of the unit's price among a curve's inputs; the copy names it. */
 export const UNIT_PRICE_KEY = "deal:unit-price";
 
+/** A price's sum per unit, its own or its third party's (F-117), where it has one. */
+function perUnitOf(x: DealPeriod["prices"][number]["price"]): { currency?: string } | null {
+  if (x.kind === "perUnit") return x;
+  return (x.kind === "action" || x.kind === "perAction") && x.third?.kind === "perUnit" ? x.third : null;
+}
+
 /**
  * The currency a deal's unit price is asked in (`UnitPrice`): that of what is bought, by the pick (F-114), where the deal holds funds and the
- * pick names one; else that of its first sum per unit. Null where no price the reading reads is a sum per unit.
+ * pick names one; else that of its first sum per unit, a third party's among them. Null where no price the reading reads has a sum per unit.
  */
 export function unitCurrency(r: DealRead): string | null {
-  const per = r.reading.periods.flatMap((p) => p.prices.flatMap((x) => [x.price, ...(x.sale ? [x.sale] : [])])).find((x) => x.kind === "perUnit");
+  const per = r.reading.periods.flatMap((p) => p.prices.flatMap((x) => [x.price, ...(x.sale ? [x.sale] : [])])).map(perUnitOf).find((x) => x !== null);
   if (!per) return null;
   const what = r.picks.find((p) => p.by === "what");
-  const bought = what && holdsFunds(r.deal.kind) ? placeOf(r.deal.fees, what.is)?.currency : null;
-  return bought ?? (per.kind === "perUnit" ? (per.currency ?? "ILS") : "ILS");
+  const bought = what && holdsFunds(r.deal.kind) ? pickedPlace(r.deal.fees, what)?.currency : null;
+  return bought ?? per.currency ?? "ILS";
 }
 
 /** The sides an action is read on in a period: a purchase and a sale apart where one of its fees prices them apart or is on one alone. */
@@ -232,16 +238,22 @@ function curveInputs(r: DealRead, p: DealPeriod, fees: readonly number[], side: 
 
 type Drawn = { curve: Curve } | { undrawn: Undrawn };
 
-/** The currency a price's sums are in where the cost of an action converts them (F-112): a share's only where a bound or a flat price is typed. */
+/**
+ * The currencies a price's sums are in where the cost of an action converts them (F-112): a share's only where a bound or a flat price is
+ * typed; and its third party's fee's the same way (F-117), a share's only where a bound is typed.
+ */
 function sumCurrency(x: DealPeriod["prices"][number]["price"] | undefined): string[] {
   if (!x) return [];
   const priced = x.kind === "perUnit" || x.kind === "perAction" || (x.kind === "action" && (x.min !== undefined || x.max !== undefined || x.flat !== undefined));
-  return priced && "currency" in x && x.currency && x.currency !== "ILS" ? [x.currency] : [];
+  const own = priced && "currency" in x && x.currency && x.currency !== "ILS" ? [x.currency] : [];
+  const t = x.kind === "action" || x.kind === "perUnit" || x.kind === "perAction" ? x.third : undefined;
+  const thirdPriced = !!t && (t.kind !== "action" || t.min !== undefined || t.max !== undefined);
+  return [...own, ...(t && thirdPriced && t.currency && t.currency !== "ILS" ? [t.currency] : [])];
 }
 
 /**
- * The curve of one action on one side in a period, where a mark falls on it. A sum per unit on it needs the unit's price (`unit`, in the
- * currency `unitCurrency` names): its minimum's and maximum's marks, in units, fall at that many units' price.
+ * The curve of one action on one side in a period, where a mark falls on it. A sum per unit on it, its own or a third party's (F-117), needs
+ * the unit's price (`unit`, in the currency `unitCurrency` names): its minimum's and maximum's marks, in units, fall at that many units' price.
  */
 function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], action: DealAction, side: DealSide, fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }): Drawn | null {
   const on = marks.filter((m) => onActionCurve(r, p, m, action, side));
@@ -252,7 +264,7 @@ function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], act
     const own = side === "sell" ? (x.sale ?? x.price) : x.price;
     return groupAction(r.engine, r.engine.fees[i]!.base, own) === action ? [own] : [];
   });
-  const perUnit = prices.some((x) => x.kind === "perUnit");
+  const perUnit = prices.some((x) => perUnitOf(x) !== null);
   if (perUnit && (unit.price === null || unit.currency === null)) return { undrawn: { on: "action", action, side, periods: [at], why: "unit-price", currency: unit.currency ?? "ILS" } };
   // a currency needs its rate only where a sum is typed in it (F-112), the unit's price's and a step's range's among them (F-115)
   const steps = r.engine.fees.flatMap((f) => (f.within?.on === "action" && f.within.currency !== "ILS" ? [f.within.currency] : []));
@@ -274,6 +286,20 @@ function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], act
 }
 
 /**
+ * The rates of F-84 (shekels per unit) of the currencies a step of the value held is in (F-115), which the cost of holding reads it at; null
+ * where the site has no rate for one of them.
+ */
+function heldRates(r: DealRead, fx: FxSnapshot | null): Record<string, number> | null {
+  const rates: Record<string, number> = {};
+  for (const c of new Set(r.engine.fees.flatMap((f) => (f.within?.on === "held" && f.within.currency !== "ILS" ? [f.within.currency] : [])))) {
+    const n = fx ? nisPerNumber(fx, c) : null;
+    if (n === null) return null;
+    rates[c] = n;
+  }
+  return rates;
+}
+
+/**
  * The curve of holding a value in a period, where a mark falls on it. A step of the value held in another currency (F-115) is read at F-84's
  * rate, and its top falls at that many shekels; without the rate the curve is not drawn.
  */
@@ -290,7 +316,7 @@ function heldCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], fx: F
     rateValues.push({ currency: c, rate: v });
   }
   const shekels = (m: DealMark) => m.amount * (m.currency === "ILS" ? 1 : rates[m.currency]!);
-  return { curve: drawn(r, p, "held", "all", on, shekels, (v) => holdingCost(r.engine, p, v, rates), rateValues) };
+  return { curve: drawn(r, p, "held", "all", on, shekels, (v) => holdingCost(r.engine, p, v, rates), rateValues, undefined, {}, rates) };
 }
 
 function drawn(
@@ -304,10 +330,11 @@ function drawn(
   rates: CurveRate[],
   action?: DealAction,
   extra: Record<string, SiteValue> = {},
+  heldRates: Readonly<Record<string, number>> = {},
 ): Curve {
   const at = marks.map(shekels);
   const largest = Math.max(...at);
-  const views = marks.map((m) => markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)));
+  const views = marks.map((m) => markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m, heldRates)));
   const largestView = views[at.indexOf(largest)]!.amount;
   const end = curveEnd(largest);
   // at a step's top the cost jumps to the next step's price (F-115): the curve is read at the top and just above it, so the jump is drawn
@@ -446,7 +473,8 @@ export function pickLine(r: DealRead): PickLine | null {
   for (const fee of r.deal.fees) {
     if (!hasCases(fee)) continue;
     fee.by.forEach((b, t) => {
-      if (!picked(fee, b)) return;
+      // the currency is what is bought's, never a pick of its own (F-114)
+      if (!picked(fee, b) || b.kind === "currency") return;
       const key = pickKey(b);
       const thing = things.get(key) ?? { by: key, words: b.kind === "own" ? b.label : copy.cases.things[b.kind === "held" ? "what" : b.kind]!, options: [], chosen: r.picks.find((p) => p.by === key)?.is ?? "" };
       things.set(key, thing);
@@ -474,11 +502,12 @@ export function pickLine(r: DealRead): PickLine | null {
   return { title: copy.cases.readFor, things: [...things.values()], line: copy.cases.readForLine };
 }
 
-// ---------------------------------------------------------------- what is stated, not computed (F-118)
+// ---------------------------------------------------------------- what is stated, not computed
 
 /**
- * A part of a price the reading states without computing (F-118), on the fee it is printed with: a third party's fee with no figure, an
- * offset against another fee, a refund, a fee on an order not carried out, each partial fill charged apart; with its sentence's words.
+ * A part of a price the reading states without computing (§10.6, "What the page states and does not compute"), on the fee it is printed
+ * with: a third party's fee with no figure, an offset against another fee, a refund, a fee on an order not carried out, each partial fill
+ * charged apart; with its sentence's words.
  */
 export interface StatedPart {
   fee: FeeRef;
@@ -517,7 +546,7 @@ function statedOf(r: DealRead): StatedPart[] {
 export interface Reading {
   /** The picks the deal is read for, as its first line; null where it picks nothing. */
   picks: PickLine | null;
-  /** What the reading states without computing (F-118). */
+  /** What the reading states without computing (§10.6). */
   stated: StatedPart[];
   /** The deal's fees the picks give no case (F-114), by the deal fee's id. */
   unmatched: FeeRef[];
@@ -549,7 +578,7 @@ export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number
     }),
     from: monthKey(r.reading.from),
     periods: r.reading.periods.map((_, k) => cardOf(r, k)),
-    statements: statementsOf(r),
+    statements: statementsOf(r, heldRates(r, fx)),
     curves,
     undrawn,
     law: lawOf(r),
