@@ -161,7 +161,8 @@ export function TrackBrowser({ data }: { data: TbData }) {
           <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={product.period} limit={limit} fold={fold} foldRows={browsing} />
         )}
       </div>
-      <p className="text-sm text-muted-foreground max-w-measure">{t.pastNote}</p>
+      {/* a phone's rows have no heads: the yield's caution stands under the list; from md it is the "?" beside the yield's head */}
+      <p className="md:hidden text-sm text-muted-foreground max-w-measure">{t.pastNote}</p>
     </div>
   );
 }

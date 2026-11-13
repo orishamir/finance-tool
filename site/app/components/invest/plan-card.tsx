@@ -6,7 +6,7 @@ import { invest as c } from "../../copy";
 import { nisPer, type FxSnapshot } from "../../lib/fx";
 import type { SiteValue } from "../../lib/value";
 import { LeadTail, Num } from "../provenance";
-import { Button, Card, HelpMark, LongestCase, Tag } from "../kit";
+import { Button, Card, DotLine, HelpMark, LongestCase, Tag } from "../kit";
 
 /**
  * `example`: no number entered yet, so every one is the site's example. `dollar`: an index priced in shekels reads no exchange rate, so the
@@ -27,35 +27,33 @@ export function PlanCard({ knobs, onOpen, fx, today, example, dollar, inflation,
 }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   const line = (ex: boolean, withDollar = dollar) => (
-    <p className="text-xs text-muted-foreground">
-      {ex && <>{c.plan.siteExample} · </>}
-      {/* the "?" held to the last word before it, so it never stands on a line of its own */}
-      {returnHelp ? (
-        <LeadTail lead={c.plan.knobs.retBefore}>
-          <HelpMark about={c.foot.returnAbout} text={returnHelp} />
-        </LeadTail>
-      ) : (
-        c.plan.knobs.retBefore
-      )}
-      {" · "}
-      {c.plan.knobs.others} <Num value={inflation} /> {c.plan.knobs.perYear}
-      {withDollar &&
-        (usd ? (
-          <>
-            {" · "}
-            {c.plan.dollar} <Num value={usd} exact />
-          </>
+    <DotLine
+      items={[
+        ex && c.plan.siteExample,
+        // the "?" held to the last word before it, so it never stands on a line of its own
+        returnHelp ? (
+          <LeadTail lead={c.plan.knobs.retBefore}>
+            <HelpMark about={c.foot.returnAbout} text={returnHelp} />
+          </LeadTail>
         ) : (
-          <>
-            {" · "}
+          c.plan.knobs.retBefore
+        ),
+        <>
+          {c.plan.knobs.others} <Num value={inflation} /> {c.plan.knobs.perYear}
+        </>,
+        withDollar &&
+          (usd ? (
+            <>
+              {c.plan.dollar} <Num value={usd} exact />
+            </>
+          ) : (
             <Tag tone="caution">{c.plan.dollarMissing}</Tag>
-          </>
-        ))}
-      {" · "}
-      <Button variant="quiet" flush size="sm" className="align-baseline" onClick={onOpen}>
-        {c.plan.panelTitle}
-      </Button>
-    </p>
+          )),
+        <Button variant="quiet" flush size="sm" className="align-baseline" onClick={onOpen}>
+          {c.plan.panelTitle}
+        </Button>,
+      ]}
+    />
   );
   return (
     <Card as="section" pad="tight" className="flex flex-col gap-3" aria-label={c.plan.heading}>

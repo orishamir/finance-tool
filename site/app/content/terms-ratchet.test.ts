@@ -45,13 +45,16 @@ const spelled = new Set(rows.flatMap((r) => [r.he, ...r.variants]).map(norm));
 
 const sources = walk(app).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f));
 
-/** Term ids in one file: literal ids are returned, an id given as an expression is returned as `{expression}`. */
+/** Term ids in one file: literal ids are returned, an id given as an expression is returned as `{expression}`; in a list, each item
+ *  the same way (`[HELP_TERMS.rate, "ריבית"]` gives `{HELP_TERMS.rate}` and its literal). */
 const termIdsIn = (src: string): string[] => {
   const out: string[] = [];
   for (const m of src.matchAll(/<(?:Term|HelpMark)\b[^>]*?\b(?:id|term)=(?:"([^"]*)"|\{([^}]*)\})/g)) {
     if (m[1] !== undefined) out.push(entities(m[1]));
-    else if (/^\s*(\[[\s\S]*\]|"[^"]*"|'[^']*')\s*$/.test(m[2]!)) out.push(...literals(m[2]!));
-    else out.push(`{${m[2]!.trim()}}`);
+    else if (/^\s*("[^"]*"|'[^']*')\s*$/.test(m[2]!)) out.push(...literals(m[2]!));
+    else if (/^\s*\[[\s\S]*\]\s*$/.test(m[2]!)) {
+      for (const item of m[2]!.trim().slice(1, -1).matchAll(/("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|([^,"'\s][^,"']*)/g)) out.push(item[1] !== undefined ? literals(item[1])[0]! : `{${item[2]!.trim()}}`);
+    } else out.push(`{${m[2]!.trim()}}`);
   }
   for (const m of src.matchAll(/termIds\s*[:=]\s*\[([^\]]*)\]/g)) out.push(...literals(m[1]!));
   return out;
@@ -62,10 +65,13 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   "{HELP_TERMS.fee}": [HELP_TERMS.fee],
   // a fee head's "?" (components/tracks/list.tsx, feeMarkTerms): the averages, and each fee's card where it names the product
   "{fullFeeTerms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard],
-  "{terms.length === 1 ? terms[0] : terms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard],
+  // a company page's fee head (feeHead): the same, and on the savings fee's the direct expenses the column leaves out
+  "{terms.length === 1 ? terms[0] : terms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard, HELP_TERMS.direct],
   "{HELP_TERMS.exposure}": [HELP_TERMS.exposure],
   "{HELP_TERMS.assets}": [HELP_TERMS.assets],
   "{HELP_TERMS.rate}": [DEPOSIT_TERMS.rate],
+  // a bank's deposits table's rate head (components/company/bank-views.tsx, RateHead)
+  "{DEPOSIT_TERMS.rate}": [DEPOSIT_TERMS.rate],
   "{HELP_TERMS.exits}": [DEPOSIT_TERMS.exits],
   "{HELP_TERMS.break}": [DEPOSIT_TERMS.break],
   "{HELP_TERMS.linked}": [DEPOSIT_TERMS.linked],
@@ -93,6 +99,15 @@ describe("every term id the site opens has a row", () => {
   it("the scanner sees every form", () => {
     expect(termIdsIn(`<Term id="חש&quot;ב">x</Term> <Term prefix="ה" id={["א", 'ב']}>y</Term> <HelpMark term={x.y} />`)).toEqual(['חש"ב', "א", "ב", "{x.y}"]);
     expect(termIdsIn(`termIds: ['מק"מ', "אג\\"ח"],`)).toEqual(['מק"מ', 'אג"ח']);
+    // an expression inside a list is one to resolve, never skipped
+    expect(termIdsIn(`<HelpMark term={[DEPOSIT_TERMS.rate]} /> <HelpMark term={[X.y, "א, ב"]} />`)).toEqual(["{DEPOSIT_TERMS.rate}", "{X.y}", "א, ב"]);
+  });
+  it("an expression that names no row fails", () => {
+    const resolve = (e: string) => BY_EXPRESSION[e] ?? [`no mapping for ${e}`];
+    const missing = (ids: readonly string[]) => ids.filter((i) => !names.has(i));
+    expect(missing(resolve("{DEPOSIT_TERMS.rate}"))).toEqual([]);
+    expect(missing(resolve("{terms.length === 1 ? terms[0] : terms}"))).toEqual([]);
+    expect(missing(["מונח שאין לו שורה"])).toEqual(["מונח שאין לו שורה"]);
   });
 });
 

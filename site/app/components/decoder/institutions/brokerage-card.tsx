@@ -11,8 +11,8 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
-import { Num, NumAfter, RuleRef, RulesChip, RulesLine, Term } from "../../provenance";
-import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
+import { Num, NumAfter, RuleRef, RulesLine, Term } from "../../provenance";
+import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, withoutCodes, type CitedPlace } from "../../../lib/sources";
@@ -186,7 +186,7 @@ export const pricedByChannel = (lines: readonly TariffLineRow[]): boolean => cha
  * grouped by kind under a strip with the fee's name, so a row says only what sets it apart: what it is charged on, the channel, the plan.
  * Where each line stands is its own short column ("עמוד 30 ↗"). On a phone the strips stay, each line is one row, and the link ends the price's line.
  */
-function FeeTable({ lines, channel }: { lines: TariffLineRow[]; /** Where the order is given: a fee the price list prices by channel shows that channel's line. */ channel: Channel }) {
+function FeeTable({ lines, channel, kind }: { lines: TariffLineRow[]; /** Where the order is given: a fee the price list prices by channel shows that channel's line. */ channel: Channel; kind: InstitutionKind }) {
   const columns: ProductColumn[] = [
     { id: "covers", head: copy.card.cols.covers },
     { id: "price", head: copy.card.cols.price, width: 8.5 },
@@ -201,7 +201,7 @@ function FeeTable({ lines, channel }: { lines: TariffLineRow[]; /** Where the or
       groups={kinds.map((k) => ({
         key: k,
         heading:
-          k === "distribution" ? { title: copy.card.distribution.name } : { title: feeKindName(k) },
+          k === "distribution" ? { title: <DistributionName kind={kind} />, ...(kind === "bank" ? { line: copy.card.distribution.chargeable } : {}) } : { title: feeKindName(k) },
         rows: channelRows(lines.filter((l) => feeKindOf(l) === k)).map((r) => {
           // a fee priced by channel shows the chosen channel's line, laid over the other's room: switching changes its numbers, never a height
           const held = (f: (l: TariffLineRow) => ReactNode) => (r.pair && !r.same ? <LongestCase cases={[f(r.pair.direct), f(r.pair.branch)]}>{f(r.pair[channel])}</LongestCase> : f(r.pair ? r.pair[channel] : r.line));
@@ -325,7 +325,7 @@ function Groups({ groups, houseId, linked }: { groups: FeesSnapshot["groups"] | 
   return (
     <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
       <Card pad="snug">
-        <GroupPriceRows entries={groups.entries} sources own={{ can: (key) => linked.includes(key), link: (key) => <TextLink look="line" to={groupPath(houseId, key)} className="text-sm">{groupWords.ownAccount}</TextLink> }} />
+        <GroupPriceRows entries={groups.entries} sources headHelp own={{ can: (key) => linked.includes(key), link: (key) => <TextLink look="line" to={groupPath(houseId, key)} className="text-sm">{groupWords.ownAccount}</TextLink> }} />
       </Card>
     </Section>
   );
@@ -370,26 +370,20 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
 }
 
 /**
- * Under the fee table, quiet lines: that a row priced by channel says its channel and changes in place, and, where the price list lists a
- * distribution fee, who pays it, from the regulations (MF-24; MF-26 says what a bank may charge without an agreement): not a charge the
- * account's price list adds. Its strip in the table holds only its name (the designer's mock).
+ * The distribution fee's strip: its name, and beside it a "?" that says who pays it, from the regulations (MF-24; MF-26 says what a bank may
+ * charge without an agreement), with the chip of those rules: not a charge the account's price list adds. At a bank, that it may charge the
+ * reader without an agreement is also the strip's weak line, in sight (a caution).
  */
-function FeeNotes({ lines, kind, byChannel }: { lines: readonly TariffLineRow[]; kind: InstitutionKind; byChannel: boolean }) {
-  const distribution = feeKinds(lines).includes("distribution");
-  if (!byChannel && !distribution) return null;
+function DistributionName({ kind }: { kind: InstitutionKind }) {
+  const d = copy.card.distribution;
   return (
-    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
-      {byChannel && <p>{copy.card.channelNote}</p>}
-      {distribution && (
-        <p className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>
-            {copy.card.distribution.name}: {copy.card.distribution.who(kind === "bank" ? copy.card.distribution.toBank : copy.card.distribution.toBroker)}
-            {kind === "bank" && ` ${copy.card.distribution.withoutAgreement}`}
-          </span>
-          <RulesChip ids={distributionRuleIds(kind)} name={copy.card.distribution.name} />
-        </p>
-      )}
-    </div>
+    <span className="inline-flex items-center gap-1">
+      {d.name}
+      {/* positioned, so where the strip's weak line wraps under the name (a phone) the mark lies over it and keeps its 44 px */}
+      <span className="relative inline-flex">
+        <HelpMark about={d.name} text={`${d.who(kind === "bank" ? d.toBank : d.toBroker)}${kind === "bank" ? ` ${d.withoutAgreement}` : ""}`} rules={distributionRuleIds(kind)} />
+      </span>
+    </span>
   );
 }
 
@@ -404,9 +398,14 @@ function FeeBar({ priceFor, byChannel, channel, onChannel }: { priceFor: string 
         </p>
       )}
       {byChannel && (
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:shrink-0">
-          <span id="channel-pick" className="text-sm font-medium">
-            {copy.card.channelPick}
+        // 20 px between the label and the switch on a phone: the "?" beside the label keeps its 44 px clear of the switch's own press area
+        <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-3 md:shrink-0">
+          {/* what the switch does to the rows, in the "?" beside its label */}
+          <span className="inline-flex items-center gap-1">
+            <span id="channel-pick" className="text-sm font-medium">
+              {copy.card.channelPick}
+            </span>
+            <HelpMark about={copy.card.channelPick} text={copy.card.channelNote} />
           </span>
           <SegmentedControl<Channel> labelledBy="channel-pick" check={false} className="sm:w-auto sm:min-w-64 whitespace-nowrap" options={[{ value: "direct", label: copy.card.channel.direct }, { value: "branch", label: copy.card.channel.branch }]} value={channel} onChange={onChannel} />
         </div>
@@ -480,10 +479,9 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       {tariff.lines.length > 0 && (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} byChannel={byChannel} channel={channel} onChannel={setChannel} />
-          <FeeTable lines={tariff.lines} channel={channel} />
+          <FeeTable lines={tariff.lines} channel={channel} kind={kind} />
           {/* what the house's documents hold and these prices leave out (D106) */}
           <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
-          <FeeNotes lines={tariff.lines} kind={kind} byChannel={byChannel} />
         </Section>
       )}
       <CanBuy rows={tariff.availability} />

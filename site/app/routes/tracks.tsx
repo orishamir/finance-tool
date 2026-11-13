@@ -48,14 +48,18 @@ export default function Tracks() {
           title={copy.title}
           lede={
             <>
-              {data.feeYear ? (
-                <>
-                  <NumAfter lead={copy.lead.intro} value={data.feeYear} />
-                  <NumAfter lead={copy.lead.figures} value={data.period} />
-                </>
-              ) : (
-                <NumAfter lead={copy.lead.noYear} value={data.period} />
-              )}
+              {/* the year and the date on a phone, whose rows have no heads; from md the heads say them */}
+              <span className="md:hidden">
+                {data.feeYear ? (
+                  <>
+                    <NumAfter lead={copy.lead.intro} value={data.feeYear} />
+                    <NumAfter lead={copy.lead.figures} value={data.period} />
+                  </>
+                ) : (
+                  <NumAfter lead={copy.lead.noYear} value={data.period} />
+                )}
+                {copy.lead.end}
+              </span>
               {copy.lead.source}
             </>
           }

@@ -6,6 +6,7 @@
 // second line under the label, inside the head's 44 px (the year of a column's average, "ממוצע 2025"); `SortNote` draws the same line
 // under a head that does not sort. `raised` is for a head with a "?" beside it: the mark's 44 px press area reaches over the head's end, and
 // the raised button keeps every press on its label and arrow.
+import type { ReactNode } from "react";
 import { cx } from "./cx";
 
 export type SortState = "none" | "ascending" | "descending";
@@ -38,11 +39,20 @@ export function SortHead({ label, state, onPress, className, alsoHolds, note, ra
 
 const SortNoteLine = ({ note }: { note: string }) => <span className="text-xs leading-4 font-normal whitespace-nowrap text-muted-foreground">{note}</span>;
 
-/** A plain head that does not sort, with the muted second line `SortHead` takes as `note`, in the same 44 px. */
-export function SortNote({ label, note }: { label: string; note: string }) {
+/** A plain head that does not sort, with the muted second line `SortHead` takes as `note`, in the same 44 px. `mark` is a "?" beside the
+ *  label on its first line, the note under both: for a note wider than its label, where a mark after the whole head would stand past it. */
+export function SortNote({ label, note, mark }: { label: string; note: string; /** A `HelpMark` beside the label. */ mark?: ReactNode }) {
   return (
     <span className="inline-flex flex-col min-h-11 -my-1 pt-1">
-      <span>{label}</span>
+      {mark ? (
+        <span className="inline-flex items-center gap-1">
+          {label}
+          {/* positioned, so the mark lies over the note drawn after it and keeps its 44 px */}
+          <span className="relative inline-flex">{mark}</span>
+        </span>
+      ) : (
+        <span>{label}</span>
+      )}
       <SortNoteLine note={note} />
     </span>
   );

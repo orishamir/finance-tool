@@ -35,6 +35,9 @@ export interface ProductColumn {
   dim?: boolean;
   /** A caption over this column and the ones after it that carry the same `band` string ("ריבית בשנה, לפי סכום ההפקדה"): a row above the heads. */
   band?: string;
+  /** What the caption shows in place of its `band` words, where it holds a figure that opens its source or a "?" beside its words; read
+   *  from the run's first column. The `band` string still tells the runs apart. */
+  bandHead?: ReactNode;
 }
 
 export interface ProductRow {
@@ -89,13 +92,13 @@ const DETAIL = "__detail";
 const DIM = "transition-opacity duration-[var(--duration-base)]";
 
 /** The head's caption row: each run of neighbouring columns with one `band` under one cell, the others under empty cells. */
-function bandRuns(columns: readonly ProductColumn[]): { key: string; band: string | null; span: number }[] {
-  const out: { key: string; band: string | null; span: number }[] = [];
+function bandRuns(columns: readonly ProductColumn[]): { key: string; band: string | null; head: ReactNode; span: number }[] {
+  const out: { key: string; band: string | null; head: ReactNode; span: number }[] = [];
   for (const c of columns) {
     const band = c.band ?? null;
     const last = out.at(-1);
     if (last && last.band === band) last.span += 1;
-    else out.push({ key: c.id, band, span: 1 });
+    else out.push({ key: c.id, band, head: c.bandHead ?? band, span: 1 });
   }
   return out;
 }
@@ -110,13 +113,14 @@ function usePlace(): "phone" | "table" | null {
   return wide === null ? null : wide ? "table" : "phone";
 }
 
-/** Whether the table fits the width of its card: then nothing scrolls sideways, and a sticky head can stick to the page (a scrolling card would hold it). */
-function useFitsWidth(on: boolean, place: "phone" | "table" | null) {
+/** Whether the table fits the width of its card: then nothing scrolls sideways, a sticky head can stick to the page (a scrolling card would
+ *  hold it), and the card clips nothing above or below it (a "?" in the head keeps its 44 px over the card's edge). */
+function useFitsWidth(place: "phone" | "table" | null) {
   const card = useRef<HTMLDivElement>(null);
   const [fits, setFits] = useState(false);
   useLayoutEffect(() => {
     const el = card.current;
-    if (!on || !el) return;
+    if (!el) return;
     const measure = () => {
       const table = el.querySelector("table");
       setFits(!!table && table.offsetWidth <= el.clientWidth + 1);
@@ -125,8 +129,8 @@ function useFitsWidth(on: boolean, place: "phone" | "table" | null) {
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [on, place]);
-  return { card, fits: on && fits };
+  }, [place]);
+  return { card, fits };
 }
 
 /** A heading's strip, folding its group when `fold` is given: a press anywhere on it but a link toggles; the chevron is its button. */
@@ -163,7 +167,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
   const place = usePlace();
   const [closed, setClosed] = useState<ReadonlySet<string>>(() => new Set());
   const foldOf = (g: ProductGroup) => (!foldable ? undefined : g.fold ? { open: g.fold.open, toggle: g.fold.onToggle } : { open: !closed.has(g.key), toggle: () => setClosed((c) => { const n = new Set(c); if (!n.delete(g.key)) n.add(g.key); return n; }) });
-  const { card, fits } = useFitsWidth(!!stickyHead, place);
+  const { card, fits } = useFitsWidth(place);
   const [opened, setOpened] = useState<ReadonlySet<string>>(() => new Set());
   const flip = (key: string) => setOpened((o) => { const n = new Set(o); if (!n.delete(key)) n.add(key); return n; });
   // the rows' fold buttons: a column at the end, as wide as the most marks a button holds
@@ -212,15 +216,17 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
       )}
       {place !== "phone" && (
       <Card ref={card} pad="none" className={cx("relative hidden md:block", fits ? "overflow-x-clip" : "overflow-x-auto overflow-y-hidden")}>
-        <table className={cx("tbl tbl-rows", fits && "tbl-sticky")} style={{ minWidth: `${minRem}rem` }}>
+        {/* with a caption row the whole head sticks, so the captions and the heads stay one block (tbl-banded) */}
+        <table className={cx("tbl tbl-rows", fits && stickyHead && "tbl-sticky", columns.some((c) => c.band) && "tbl-banded")} style={{ minWidth: `${minRem}rem` }}>
           <TableCols widths={columns.map((c) => (c.width ? `${c.width}rem` : "auto"))} />
           <thead>
             {columns.some((c) => c.band) && (
               <tr className="tbl-band">
                 {bandRuns(columns).map((run) => (
-                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pb-0 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0")}>
-                    {/* a rule under the caption over its columns, so it reads as theirs */}
-                    {run.band && <span className="block pb-1.5 border-b border-border">{run.band}</span>}
+                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pt-3.5 !pb-2.5 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0")}>
+                    {/* a rule under the caption over its columns, so it reads as theirs; room over the caption and under the rule, so a
+                        figure or a "?" in the caption keeps its 44 px inside the card's rounded edge and clear of one in a head under it */}
+                    {run.band && <span className="block pb-1.5 border-b border-border">{run.head}</span>}
                   </th>
                 ))}
               </tr>

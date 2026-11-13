@@ -4,7 +4,7 @@
 import { Fragment, type ReactNode } from "react";
 import { Num, RulesLine, Term } from "../../components/provenance";
 import { ownBy } from "../../lib/value";
-import { Callout, FixedTable, Sentence } from "../../components/kit";
+import { Callout, FixedTable, Sentence, SortNote } from "../../components/kit";
 import type { ContentProps } from "./types";
 
 const NoBreak = ({ v }: { v: ReactNode }) => <bdi className="whitespace-nowrap">{v}</bdi>;
@@ -104,8 +104,9 @@ export function Who({ figure }: ContentProps) {
         columns={[
           { id: "funds", head: "קרנות" },
           { id: "years", head: "שנות סיום" },
-          { id: "fee", head: "דמי ניהול בשנה" },
-          { id: "trustee", head: "שכר נאמן בשנה", hideOnPhone: true },
+          // the fees are the prospectus's, which a fund may not charge in the end: the caution under the table gives a case
+          { id: "fee", head: <SortNote label="דמי ניהול בשנה" note="לפי התשקיף" /> },
+          { id: "trustee", head: <SortNote label="שכר נאמן בשנה" note="לפי התשקיף" />, hideOnPhone: true },
         ]}
         rows={[
           { key: "kesem", head: "קסם", cells: [kesem("MF-62", "funds"), range(kesem, "MF-62", "end_first", "end_last"), range(kesem, "MF-62", "fee_low", "fee_high"), range(kesem, "MF-62", "trustee_low", "trustee_high")] },
@@ -116,7 +117,7 @@ export function Who({ figure }: ContentProps) {
       />
       <RulesLine ids={["MF-62", "MF-63", "MF-64"]} />
       <Sentence measure>
-        דמי הניהול בטבלה הם מה שכתוב בתשקיף, וקרן יכולה לגבות אחרת: בקרן 5137492 של ילין לפידות כתוב בתשקיף {yalin("MF-63", "fee")}, ובדוח השנתי ל־{yalin("MF-63", "fee_report_date")} היו {yalin("MF-63", "fee_report")}.
+        קרן יכולה לגבות אחרת ממה שכתוב בתשקיף: בקרן 5137492 של ילין לפידות כתוב בתשקיף {yalin("MF-63", "fee")}, ובדוח השנתי ל־{yalin("MF-63", "fee_report_date")} היו {yalin("MF-63", "fee_report")}.
       </Sentence>
       <RulesLine ids={["MF-63"]} />
       <Sentence measure>מעבר לדמי הניהול, הבנק או בית ההשקעות שדרכו קונים יכולים לגבות <Term id="עמלה">עמלה</Term> על קנייה ומכירה של יחידות, כך כותבת ילין לפידות. לא נמצא אם נגבית עמלה גם על התשלום בפירוק.</Sentence>
