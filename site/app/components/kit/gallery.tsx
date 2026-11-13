@@ -16,6 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
+import { MonthPicker } from "./month-picker";
 import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
@@ -2536,13 +2537,19 @@ function DealDemos({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
-      <Demo name="MonthField" use={g.uses.MonthField}>
+      <Demo name="MonthField, MonthPicker" use={g.uses.MonthField}>
         <Grid>
-          <State label={`a month given, ${g.states.interactive}: type 3.2028 and leave the box`}>
+          <State label={`a month given, the picker closed, ${g.states.interactive}: press the box, or type 3.2028 and leave it`}>
             <MonthField value={month} label={g.sample.field} onCommit={setMonth} onClear={() => setMonth(null)} />
           </State>
           <State label={g.states.empty}>
             <MonthField value={null} label={g.sample.field} onCommit={() => undefined} />
+          </State>
+          <State label={`the picker open, the box's month chosen and today's month edged, ${g.states.interactive}`}>
+            <MonthPicker label={g.sample.field} chosen={month} onPick={setMonth} />
+          </State>
+          <State label={`the picker open with an earliest and a latest month: the months outside them struck through, ${g.states.interactive}`}>
+            <MonthPicker label={g.sample.field} chosen={month} bounds={{ earliest: "2027-02", latest: "2027-09" }} onPick={setMonth} />
           </State>
           <State label={`lead: words in the box before the month, a price that holds until it, ${g.states.interactive}`}>
             <MonthField value={month} lead={`${dealWords.price.free} ${dealWords.standing.until.trim()}`} label={g.sample.field} onCommit={setMonth} />

@@ -363,6 +363,25 @@ export function stageFault(stages: readonly { until?: MonthKey }[], k: number): 
   return before !== undefined && s.until <= before ? { kind: "after", month: before } : null;
 }
 
+/**
+ * The months price `k` of a list can end in and leave `stageFault` nothing to say of it or of the price after it: after the month the price
+ * before it ends, and before the month the price after it ends where that price is not the last (the last has no end). A month picker
+ * offers only these.
+ */
+export function untilRange(stages: readonly { until?: MonthKey }[], k: number): { earliest?: MonthKey; latest?: MonthKey } {
+  const before = k > 0 ? stages[k - 1]!.until : undefined;
+  const after = k + 1 < stages.length - 1 ? stages[k + 1]!.until : undefined;
+  const shift = (key: MonthKey, by: number) => {
+    const c = monthOf(key);
+    const t = c.y * 12 + c.m - 1 + by;
+    return monthKey({ y: Math.floor(t / 12), m: (t % 12) + 1 });
+  };
+  return {
+    ...(before !== undefined && MONTH.test(before) ? { earliest: shift(before, 1) } : {}),
+    ...(after !== undefined && MONTH.test(after) ? { latest: shift(after, -1) } : {}),
+  };
+}
+
 /** Whether a fee's prices are what F-110 reads: at least one, each but the last ending, the ends in order, the last with none. */
 export function stagesInOrder(stages: readonly Stage[]): boolean {
   return stages.length > 0 && stages.every((_, k) => stageFault(stages, k) === null);
