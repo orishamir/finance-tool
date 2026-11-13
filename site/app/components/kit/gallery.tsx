@@ -1200,6 +1200,9 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="ChartLegend, an item with after: a few weak words and a help mark after the item, outside its pick, for what the series rests on" wide>
+        <ChartLegend items={[{ id: "a", swatch: <Swatch shape="line" className="bg-chart-value" />, label: <bdi>{g.sample.seriesA}</bdi> }, { id: "b", swatch: <Swatch shape="line" className="bg-chart-alt" />, label: g.sample.helpText.head, after: <span>· {g.sample.legendAfter} <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span> }]} />
+      </State>
       <State label="ChartLegend with pick: a mouse previews a series, a click or a tap keeps it" wide>
         <LegendPickDemo />
       </State>

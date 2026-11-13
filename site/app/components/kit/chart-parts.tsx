@@ -81,11 +81,15 @@ export interface LegendItem {
   /** The mark; an item without one is a plain line of text (a remainder note). */
   swatch?: ReactNode;
   label: ReactNode;
+  /** What stands after the item, outside its pick: what the series rests on that its name leaves out, in a few weak words with a "?"
+   *  (`HelpMark`) for the rest (the return the site assumes for a fund's line). */
+  after?: ReactNode;
 }
 
 /**
  * What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its
- * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps.
+ * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps. An item's `after`
+ * stands after it, never inside its button.
  */
 export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
   // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend, left at a line's end apart from its items, it would
@@ -115,6 +119,7 @@ export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: Chart
               {it.label}
             </>
           )}
+          {it.after}
         </li>
       ))}
     </ul>
