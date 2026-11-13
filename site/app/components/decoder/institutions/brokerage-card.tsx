@@ -201,7 +201,7 @@ function FeeTable({ lines, channel, kind }: { lines: TariffLineRow[]; /** Where 
       groups={kinds.map((k) => ({
         key: k,
         heading:
-          k === "distribution" ? { title: <DistributionName kind={kind} /> } : { title: feeKindName(k) },
+          k === "distribution" ? { title: <DistributionName kind={kind} />, ...(kind === "bank" ? { line: copy.card.distribution.chargeable } : {}) } : { title: feeKindName(k) },
         rows: channelRows(lines.filter((l) => feeKindOf(l) === k)).map((r) => {
           // a fee priced by channel shows the chosen channel's line, laid over the other's room: switching changes its numbers, never a height
           const held = (f: (l: TariffLineRow) => ReactNode) => (r.pair && !r.same ? <LongestCase cases={[f(r.pair.direct), f(r.pair.branch)]}>{f(r.pair[channel])}</LongestCase> : f(r.pair ? r.pair[channel] : r.line));
@@ -371,7 +371,8 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
 
 /**
  * The distribution fee's strip: its name, and beside it a "?" that says who pays it, from the regulations (MF-24; MF-26 says what a bank may
- * charge without an agreement), with the chip of those rules: not a charge the account's price list adds.
+ * charge without an agreement), with the chip of those rules: not a charge the account's price list adds. At a bank, that it may charge the
+ * reader without an agreement is also the strip's weak line, in sight (a caution).
  */
 function DistributionName({ kind }: { kind: InstitutionKind }) {
   const d = copy.card.distribution;

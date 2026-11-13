@@ -2289,6 +2289,8 @@ export const r4catalogue = {
       name: "עמלת הפצה",
       who: (to: string) => `מנהל הקרן משלם אותה ${to} על יחידות הקרן שמחזיקים דרכו, כשיש ביניהם הסכם הפצה.`,
       withoutAgreement: "בלי הסכם כזה הבנק רשאי לגבות אותה מכם.",
+      /** At a bank, the weak line with the fee's strip: what may fall on the reader stays in sight, its rules in the strip's "?". */
+      chargeable: "בלי הסכם הפצה הבנק רשאי לגבות אותה מכם.",
       toBank: "לבנק",
       toBroker: "לבית ההשקעות",
     },
