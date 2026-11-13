@@ -40,7 +40,7 @@
         "TXA-30"
       ],
       "state": "sourced",
-      "notes": "Up to age 60, the ceiling is the sum needed for an annuity of 4 times the average wage (s.3(ה3)) from age 60; up to 67, for an annuity of 4 times the average wage from the deposit date. The average wage moves each year (TXP-03)."
+      "notes": "Up to age 60, the ceiling is the sum needed for an annuity of 4 times the average wage (s.3(ה3)) from age 60; up to 67, for an annuity of 4 times the average wage from the deposit date. The average wage moves each year (TXP-03). Fixed by ruling 6849/15, a Tax Authority ruling made in agreement with one managing company, not by a regulation; update_rule \"fixed in regulation\" is the nearest value the schema has."
     },
     "multiplier_after_67": {
       "value": 5,
@@ -60,7 +60,7 @@
         "TXA-30"
       ],
       "state": "sourced",
-      "notes": "After age 67, 5 times the average wage, \"והכל על פי טבלת מקדמים שנקבעה לעניין זה בלבד\"."
+      "notes": "After age 67, 5 times the average wage, \"והכל על פי טבלת מקדמים שנקבעה לעניין זה בלבד\". Fixed by ruling 6849/15, a Tax Authority ruling made in agreement with one managing company, not by a regulation; update_rule \"fixed in regulation\" is the nearest value the schema has."
     },
     "factor_age_60_or_under": {
       "value": 217,
@@ -80,7 +80,7 @@
         "TXA-30"
       ],
       "state": "sourced",
-      "notes": "Factor for a deposit at age 60 or under; the table runs to age 99 (33) and is the same for men and women (s.3.1)."
+      "notes": "Factor for a deposit at age 60 or under; the table runs to age 99 (33) and is the same for men and women (s.3.1). Fixed by ruling 6849/15, a Tax Authority ruling made in agreement with one managing company, not by a regulation; update_rule \"fixed in regulation\" is the nearest value the schema has."
     },
     "factor_age_67": {
       "value": 180,
@@ -100,7 +100,7 @@
         "TXA-30"
       ],
       "state": "sourced",
-      "notes": "Factor for a deposit at age 67."
+      "notes": "Factor for a deposit at age 67. Fixed by ruling 6849/15, a Tax Authority ruling made in agreement with one managing company, not by a regulation; update_rule \"fixed in regulation\" is the nearest value the schema has."
     },
     "minimum_age": {
       "value": 60,
@@ -120,7 +120,7 @@
         "TXA-30"
       ],
       "state": "sourced",
-      "notes": "The member is 60 or older: one of the facts on which the ruling lets the managing company withhold on commuting a recognized annuity without the assessing officer's approval. Read in the library copy of the ruling (78973fb4e5795fd5, p.1), from the page image."
+      "notes": "The member is 60 or older: one of the facts on which the ruling lets the managing company withhold on commuting a recognized annuity without the assessing officer's approval. Read in the library copy of the ruling (78973fb4e5795fd5, p.1), from the page image. Fixed by ruling 6849/15, a Tax Authority ruling made in agreement with one managing company, not by a regulation; update_rule \"fixed in regulation\" is the nearest value the schema has."
     },
     "payslips_shown": {
       "value": 3,
@@ -140,7 +140,7 @@
         "TXA-30"
       ],
       "state": "sourced",
-      "notes": "The member receives the minimum annuity and has shown three payslips (fact 1.5). Read in the library copy of the ruling (78973fb4e5795fd5, p.1), from the page image."
+      "notes": "The member receives the minimum annuity and has shown three payslips (fact 1.5). Read in the library copy of the ruling (78973fb4e5795fd5, p.1), from the page image. Fixed by ruling 6849/15, a Tax Authority ruling made in agreement with one managing company, not by a regulation; update_rule \"fixed in regulation\" is the nearest value the schema has."
     }
   },
   "il_finance_file": "tax-insurance-and-amendment-190.md",
