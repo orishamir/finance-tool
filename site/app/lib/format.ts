@@ -265,14 +265,14 @@ export function unitWord(unit: string): string {
 }
 
 /**
- * The one parser for every number a person types. Strips spaces (also no-break and thin), ₪, % and bidi
+ * The one parser for every number a person types. Strips spaces (also no-break and thin), a currency sign (₪, $, €, £), % and bidi
  * marks; a minus sign in any dash form. Decimal point or comma: a single "," followed by one or two digits and no other
  * separator is a decimal point ("2,5" is 2.5, "4,25" is 4.25); a comma followed by exactly three digits is a thousands
  * separator ("12,000" is 12000, "1,234,567" is 1234567); "1.234,5" and "1,234.5" read the last separator as the
  * decimal point. Anything else, letters included, is NaN. Returns a number or NaN, never a guess.
  */
 export function parseNumber(text: string): number {
-  let t = text.replace(/[\s\u00a0\u202f\u200e\u200f\u202a-\u202e\u2066-\u2069₪%]/g, "").replace(/[−–—‐-]/g, "-");
+  let t = text.replace(/[\s\u00a0\u202f\u200e\u200f\u202a-\u202e\u2066-\u2069₪$€£%]/g, "").replace(/[−–—‐-]/g, "-");
   if (t === "" || /[^\d.,+-]/.test(t)) return Number.NaN;
   const neg = t.startsWith("-");
   t = t.replace(/^[+-]/, "");

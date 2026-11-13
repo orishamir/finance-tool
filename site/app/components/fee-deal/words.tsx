@@ -251,12 +251,12 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
  * line where the place says it). It reads the fee's law row of the reading, so the three never disagree. Its container lays the pieces out
  * as a column. Nothing where the cap has no figure.
  */
-export function CapBlock({ row, children }: { row: LawRow; children?: ReactNode }) {
+export function CapBlock({ row, name, children }: { row: LawRow; /** The fee's name as the place draws it (one that chooses the fee); its plain name otherwise. */ name?: ReactNode; children?: ReactNode }) {
   if (row.cap.state !== "value") return null;
   return (
     <>
       <span className="flex flex-wrap items-center gap-2">
-        <FeeName fee={row} className="font-medium" />
+        {name ?? <FeeName fee={row} className="font-medium" />}
         {row.later ? <StandingTag standing={row.later.standing} from={row.later.at} /> : row.now && <StandingTag standing={row.now} />}
       </span>
       {row.now && <FeeCapBar kind={row.kind} now={row.now} {...(row.later ? { later: row.later.standing } : {})} cap={row.cap.value} />}
@@ -266,9 +266,9 @@ export function CapBlock({ row, children }: { row: LawRow; children?: ReactNode 
 }
 
 /** A fee's law row whole, as the panel and the law card show it: the block against its cap, each price from the reading's month on, and the cap's line. */
-export function LawBlock({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
+export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: boolean; first: MonthKey; name?: ReactNode }) {
   return (
-    <CapBlock row={row}>
+    <CapBlock row={row} name={name}>
       <LawPrices row={row} saved={saved} first={first} />
       <CapRules cap={row.cap} />
     </CapBlock>

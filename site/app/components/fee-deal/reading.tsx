@@ -12,7 +12,8 @@ import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from ".
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
-import { CapRules, FeeName, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName } from "./words";
+import { FeeOpen } from "./links";
+import { CapRules, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName } from "./words";
 
 const w = copy.read;
 
@@ -82,7 +83,7 @@ function PeriodView({ period, first, saved }: { period: PeriodCard; first: boole
           return (
             <li key={r.fee} className={cx("-mx-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 rounded-md px-2 py-1 text-sm", changed && "bg-muted font-medium", quiet && "text-muted-foreground")}>
               <span className="flex min-w-0 flex-wrap items-center gap-2">
-                <FeeName fee={r} />
+                <FeeOpen fee={r} />
                 <CapTag standing={r.standing} />
                 {r.sale && <CapTag standing={r.sale.standing} />}
               </span>
@@ -397,13 +398,13 @@ function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first:
   if (row.cap.state === "none")
     return (
       <li className="flex flex-wrap items-center gap-x-3">
-        <FeeName fee={row} className="font-medium" />
+        <FeeOpen fee={row} className="font-medium" />
         <CapRules cap={row.cap} dense />
       </li>
     );
   return (
     <li className="flex flex-col gap-2 py-2 first:pt-0 last:pb-0">
-      <LawBlock row={row} saved={saved} first={first} />
+      <LawBlock row={row} saved={saved} first={first} name={<FeeOpen fee={row} className="font-medium" />} />
     </li>
   );
 }

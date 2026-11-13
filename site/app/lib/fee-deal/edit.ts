@@ -2,8 +2,8 @@
 // return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number. A price whose
 // terms the person changes (its months, its bounds' currency, its form) becomes theirs whole (`owned`): the source states another price.
 import type { ProductId } from "@finance-tool/schema";
-import { blankPrice, newFee, retyped, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Stage } from "./model";
-import { holdsFunds, type FeeKindId, type FormId, type Held } from "./shapes";
+import { blankFigure, blankPrice, newFee, retyped, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Stage } from "./model";
+import { FEE_SHAPES, holdsFunds, type FeeKindId, type FormId, type Held } from "./shapes";
 
 /** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
 export type Side = "buy" | "sell";
@@ -49,13 +49,13 @@ export function setStart(deal: FeeDeal, start: MonthKey | null): FeeDeal {
   return start === null ? rest : { ...rest, start };
 }
 
-/** A price with one figure typed, or a bound cleared (`null`). */
+/** A price with one figure typed, or emptied (`null`): an emptied bound is taken away, an emptied rate or sum is blank again (`blankFigure`). */
 export function withFigure(p: Price, figure: Figure, n: number | null): Price {
   const keep = (old: Num | undefined): Num | undefined => (n === null ? undefined : old ? retyped(old, n) : typed(n));
   switch (p.form) {
     case "action":
     case "held": {
-      if (figure === "rate") return n === null ? p : { ...p, rate: keep(p.rate)! };
+      if (figure === "rate") return { ...p, rate: n === null ? blankFigure() : keep(p.rate)! };
       if (figure !== "min" && figure !== "max") return p;
       const next = { ...p, [figure]: keep(p[figure]) };
       if (next[figure] === undefined) delete next[figure];
@@ -63,7 +63,7 @@ export function withFigure(p: Price, figure: Figure, n: number | null): Price {
     }
     case "sum":
     case "perAction":
-      return figure === "amount" && n !== null ? { ...p, amount: keep(p.amount)! } : p;
+      return figure === "amount" ? { ...p, amount: n === null ? blankFigure() : keep(p.amount)! } : p;
     default:
       return p;
   }
@@ -71,16 +71,17 @@ export function withFigure(p: Price, figure: Figure, n: number | null): Price {
 
 /**
  * A price the person changed the terms of is theirs: every figure in it loses a template's source, which states the price as it was (the
- * same percent for another period, or the same sum in another currency, is a price the source does not give).
+ * same percent for another period, or the same sum in another currency, is a price the source does not give). A blank figure stays blank.
  */
 function owned(p: Price): Price {
+  const own = (n: Num): Num => (n.blank ? n : typed(n.v));
   switch (p.form) {
     case "action":
     case "held":
-      return { ...p, rate: typed(p.rate.v), ...(p.min ? { min: typed(p.min.v) } : {}), ...(p.max ? { max: typed(p.max.v) } : {}) };
+      return { ...p, rate: own(p.rate), ...(p.min ? { min: typed(p.min.v) } : {}), ...(p.max ? { max: typed(p.max.v) } : {}) };
     case "sum":
     case "perAction":
-      return { ...p, amount: typed(p.amount.v) };
+      return { ...p, amount: own(p.amount) };
     default:
       return p;
   }
@@ -134,13 +135,15 @@ export function setUntil(fee: Fee, side: Side, k: number, month: MonthKey | null
 }
 
 /**
- * A fee with another price after its last: the new last starts as a copy of the one before it, and the one before it waits for the
- * month it ends, which only the person can say (until then the fee's prices are not in order, and it is left out of the reading).
+ * A fee whose last price on a side ends at the start of `until`, with one more price after it: of the form the last had (the fee's usual
+ * form after a free price), its rate or sum blank, so the fee is not read until the person gives it (`feePriced`). The person says the
+ * month first, so the prices are in order from the start.
  */
-export function addStage(fee: Fee, side: Side): Fee {
+export function addLater(fee: Fee, side: Side, until: MonthKey): Fee {
   const stages = stagesOf(fee, side);
   const last = stages.at(-1)!;
-  return withStages(fee, side, [...stages, { price: structuredClone(last.price) }]);
+  const form = last.price.form === "free" ? FEE_SHAPES[fee.kind].usual : last.price.form;
+  return withStages(fee, side, [...stages.slice(0, -1), { ...last, until }, { price: blankPrice(form) }]);
 }
 
 /** A fee without stage `k`; the price left last has no end. The only price is never removed. */

@@ -1,10 +1,10 @@
 // The fee page's one undo, on the site's own price lists: a fee taken away, a fee filled from a price list, a stage taken away.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import { setName, setStart } from "./edit";
+import { editPrice, setName, setSaleApart, setStart, updateFee, withFigure } from "./edit";
 import { typed, type FeeDeal } from "./model";
 import { feePriceLists } from "./templates";
-import { fillFeeKept, removeFeeKept, removeStageKept, standing, undo } from "./undo";
+import { deleteDealKept, fillFeeKept, removeFeeKept, removeStageKept, standing, undo, undoDelete } from "./undo";
 
 const data = feesData();
 
@@ -58,14 +58,43 @@ describe("one undo for a change that loses something", () => {
     expect(undo(r.deal, r.undo, null)!.deal).toEqual(d);
     expect(removeStageKept(d, "fee-fx", "buy", 0, null)).toBeNull();
   });
-  it("ends with any other change to the deal", () => {
+  it("lives through other edits, and puts back only what its change took into the deal as it is now", () => {
     const d = account();
-    const r = removeFeeKept(d, "fee-fx", null)!;
-    expect(standing(r.undo, r.deal)).toBe(true);
-    for (const changed of [setStart(r.deal, "2027-01"), setName(r.deal, "x"), { ...r.deal }]) {
-      expect(standing(r.undo, changed)).toBe(false);
-      expect(undo(changed, r.undo, null)).toBeNull();
-    }
+    const r = removeFeeKept(d, "fee-custody", null)!;
+    const edited = setName(setStart(r.deal, "2027-01"), "x");
+    expect(standing(r.undo, edited)).toBe(true);
+    const back = undo(edited, r.undo, null)!.deal;
+    expect(back.fees.map((f) => f.id)).toEqual(["fee-trade", "fee-custody", "fee-fx"]);
+    expect(back.name).toBe("x");
+    expect(back.start).toBe("2027-01");
+  });
+  it("puts a fee's prices back over a fill, keeping the other fees' later edits", () => {
+    const d = account();
+    const house = feePriceLists(d, "trade", data)[0]!.id;
+    const r = fillFeeKept(d, "fee-trade", house, data, null)!;
+    const edited = updateFee(r.deal, "fee-fx", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.5)));
+    const back = undo(edited, r.undo, null)!.deal;
+    expect(back.fees[0]).toEqual(d.fees[0]);
+    expect(back.fees[2]!.stages[0]!.price).toMatchObject({ rate: { v: 0.5 } });
+  });
+  it("puts a last stage back with the end of the price before it, into the fee as it is now", () => {
+    const d = account();
+    const r = removeStageKept(d, "fee-custody", "buy", 1, null)!;
+    expect(r.deal.fees[1]!.stages).toEqual([{ price: { form: "free" } }]);
+    const edited = updateFee(r.deal, "fee-trade", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.1)));
+    const back = undo(edited, r.undo, null)!.deal;
+    expect(back.fees[1]).toEqual(d.fees[1]);
+    expect(back.fees[0]!.stages[0]!.price).toMatchObject({ rate: { v: 0.1 } });
+  });
+  it("stands only while what it would put back has a place to go", () => {
+    const d = account();
+    const removed = removeFeeKept(d, "fee-fx", null)!;
+    expect(standing(removed.undo, { ...removed.deal, id: "deal-b" })).toBe(false);
+    expect(standing(removed.undo, d)).toBe(false);
+    const stage = removeStageKept(d, "fee-custody", "buy", 0, null)!;
+    expect(standing(stage.undo, removeFeeKept(stage.deal, "fee-custody", null)!.deal)).toBe(false);
+    const sale = removeStageKept({ ...d, fees: [{ ...d.fees[0]!, sale: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "action", rate: typed(0.3) } }] }] }, "fee-trade", "sell", 0, null)!;
+    expect(standing(sale.undo, updateFee(sale.deal, "fee-trade", (f) => setSaleApart(f, false)))).toBe(false);
   });
 });
 
@@ -84,5 +113,18 @@ describe("a fee filled from a house of another kind of provider", () => {
   it("keeps it where the house is of the deal's own kind", () => {
     const d: FeeDeal = { ...here(), provider: "bank" };
     expect(fillFeeKept(d, "fee-trade", id(bank), data, null)!.deal.provider).toBe("bank");
+  });
+});
+
+describe("a saved deal deleted", () => {
+  it("is put back at its place among the saved deals, once", () => {
+    const a = account(), b = { ...account(), id: "deal-b" }, c = { ...account(), id: "deal-c" };
+    const r = deleteDealKept([a, b, c], "deal-b", "deal-a")!;
+    expect(r.deals.map((d) => d.id)).toEqual(["deal-a", "deal-c"]);
+    expect(r.undo.shown).toBe(false);
+    const back = undoDelete(r.deals, r.undo)!;
+    expect(back.map((d) => d.id)).toEqual(["deal-a", "deal-b", "deal-c"]);
+    expect(undoDelete(back, r.undo)).toBeNull();
+    expect(deleteDealKept([a], "deal-x", "deal-a")).toBeNull();
   });
 });

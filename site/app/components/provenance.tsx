@@ -221,6 +221,12 @@ export function OwnCompanyPage({ children }: { children: ReactNode }) {
 /** A notice above already says the figures are old. */
 const StaleSaidCtx = createContext(false);
 
+/**
+ * Inside a block that sums up figures the person typed in boxes elsewhere on the screen (the kit's `TypedPlain`): an entered figure is
+ * plain words, not a control. Its sheet would only say the person typed it, and the box it was typed in is beside the block.
+ */
+export const TypedPlainCtx = createContext(false);
+
 /** How many figures the person entered the page shows now: the legend's "you entered" sample stands only beside one.
  * A store, not state, so a figure that comes or goes redraws the legend alone. */
 /** How many figures of each state the page shows (a `Num` counts itself while it is on the page), so the legend names only the states the
@@ -335,6 +341,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const unseen = useUnseen();
   // a copy that only holds a block's size (LongestCase) is not on the page; a field's value shows no state, so the legend leaves it out
   const plain = !!value.field;
+  const typedPlain = useContext(TypedPlainCtx);
   useEffect(() => (!unseen && !plain && states ? states.add(value.state) : undefined), [value.state, unseen, plain, states]);
   // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (a list's cases counted on every key)
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
@@ -375,8 +382,8 @@ export function Num({ value: given, size = "inline", display, animate, className
   // one unit with its icon, which stood alone on the line above its digits in a phone's table
   const oneLine = !(typeof value.value === "string" && text.length > 24);
   // a field's value (its default, or what the reader typed) is a plain number: no mark, no sheet; the field beside it is where it changes
-  // (charts.md)
-  if (plain) {
+  // (charts.md); so is a typed figure in a block that sums up typed boxes (`TypedPlainCtx`)
+  if (plain || (typedPlain && value.state === "entered")) {
     const bare = <bdi dir={textDir(text)} className={cx("whitespace-nowrap", className)}>{text}</bdi>;
     return prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{bare}</span> : bare;
   }

@@ -24,10 +24,15 @@ export interface Sourced {
   own?: string;
 }
 
-/** A figure of a deal: entered by the person where it has no `src`, sourced where a template filled it and the person left it. */
+/**
+ * A figure of a deal: entered by the person where it has no `src`, sourced where a template filled it and the person left it. `blank`: a
+ * rate or a sum nobody typed and no template filled (a new fee's, a later price just added); its box is empty and its `v` (0) means
+ * nothing. A price with a blank figure states no price, so its fee is not read until the figure is typed or the price is made free.
+ */
 export interface Num {
   v: number;
   src?: Sourced;
+  blank?: true;
 }
 
 /** Months a rate is for or between charges: a month, a quarter, half a year, a year. */
@@ -143,6 +148,9 @@ export function newDeal(kind: ProductId | null, name = ""): FeeDeal {
 /** A typed figure, entered by the person. */
 export const typed = (v: number): Num => ({ v });
 
+/** A figure nobody has typed yet. */
+export const blankFigure = (): Num => ({ v: 0, blank: true });
+
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
 
@@ -159,21 +167,30 @@ export function untouched(fee: Fee): boolean {
   return figures.length > 0 && figures.every((n) => n.src !== undefined);
 }
 
-/** A new price of a fee's usual form, with nothing typed in it yet (zero), or free. */
+/** A new price of a form, with nothing typed in it yet (its rate or sum blank), or free. */
 export function blankPrice(form: FormId): Price {
   switch (form) {
     case "free":
       return { form: "free" };
     case "action":
-      return { form: "action", rate: typed(0) };
+      return { form: "action", rate: blankFigure() };
     case "held":
-      return { form: "held", rate: typed(0), per: 12, every: 12 };
+      return { form: "held", rate: blankFigure(), per: 12, every: 12 };
     case "sum":
-      return { form: "sum", amount: typed(0), every: 1 };
+      return { form: "sum", amount: blankFigure(), every: 1 };
     case "perAction":
-      return { form: "perAction", amount: typed(0) };
+      return { form: "perAction", amount: blankFigure() };
   }
 }
+
+/** The figure that states a price: its rate, or its sum; none for a free price. */
+export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.form === "held" ? p.rate : p.form === "free" ? null : p.amount);
+
+/** Whether a price states a price: free, or its rate or sum typed or filled (not blank). */
+export const pricePriced = (p: Price): boolean => !mainFigure(p)?.blank;
+
+/** Whether every price of a fee states one (`pricePriced`): a fee with a price not yet given is left out of the reading and of a link. */
+export const feePriced = (f: Fee): boolean => f.stages.every((s) => pricePriced(s.price)) && (!f.sale || f.sale.every((s) => pricePriced(s.price)));
 
 /** A new fee of a kind: one price of its usual form that holds throughout. */
 export function newFee(kind: FeeKindId, name?: string): Fee {
@@ -263,6 +280,8 @@ function readSourced(raw: unknown): Sourced | null {
 
 function readNum(raw: unknown, max: number): Num | null {
   if (!isRec(raw) || typeof raw.v !== "number" || !Number.isFinite(raw.v) || raw.v < 0 || raw.v > max) return null;
+  // a blank figure is a zero with no source; a deal saved before figures could be blank has none, and its zeros stay prices of zero
+  if (raw.blank !== undefined) return raw.blank === true && raw.v === 0 && raw.src === undefined ? blankFigure() : null;
   if (raw.src === undefined) return { v: raw.v };
   const src = readSourced(raw.src);
   return src ? { v: raw.v, src } : null;
@@ -272,7 +291,8 @@ function readNum(raw: unknown, max: number): Num | null {
 function optNum(raw: unknown, max: number): { ok: true; n?: Num } | { ok: false } {
   if (raw === undefined) return { ok: true };
   const n = readNum(raw, max);
-  return n ? { ok: true, n } : { ok: false };
+  // a bound not given is absent, never blank
+  return n && !n.blank ? { ok: true, n } : { ok: false };
 }
 
 const isMonths = (v: unknown): v is Months => MONTHS.includes(v as Months);

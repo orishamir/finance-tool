@@ -3,20 +3,21 @@
 // or several prices one after another); a sale priced apart where the shape allows it; the fee against the law (one quiet line where no cap
 // holds, else the fee's row of the reading's law card: the bar, each price's standing and the cap's line with its rules); and at the foot,
 // filling the price from a price list and taking the fee away. A stage just taken away leaves the page's undo line where it was.
-import type { ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { Panel, PanelStage } from "../../lib/fee-deal/builder";
 import type { CapLine } from "../../lib/fee-deal/kinds";
-import { addStage, editPrice, removeStage, setFeeName, setSaleApart, setUntil, withCurrency, withForm, withMonths, type Side } from "../../lib/fee-deal/edit";
+import { addLater, editPrice, setFeeName, setSaleApart, setUntil, withCurrency, withForm, withMonths, type Side } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, MONTHS, NAME_MAX, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
-import { IconBin } from "../icons";
-import { AlignedAcross as Across, AlignedCaption as Caption, AlignedList, AlignedRow as Row, Button, HelpMark, InlineSelect, MenuPicker, MonthField, Section, SegmentedControl, Tag, TextField, TypedPlain } from "../kit";
+import { IconBin, IconClose } from "../icons";
+import { useIsoLayoutEffect } from "../../lib/hooks";
+import { AlignedAcross as Across, AlignedCaption as Caption, AlignedList, AlignedRow as Row, Button, HelpMark, InlineSelect, MenuPicker, MonthField, Section, SegmentedControl, Tag, TextField, TypedPlain, monthText } from "../kit";
 import { useProvenanceData } from "../provenance";
-import { PriceFigure } from "./figures";
+import { PriceFigure, mainFieldId } from "./figures";
 import { UndoLine } from "./undo-line";
 import { CapRules, FeeName, LawBlock, feeName, perActionWord, refName } from "./words";
 
@@ -24,11 +25,20 @@ const p = copy.panel;
 
 const monthOptions = (words: Record<number, string>) => MONTHS.map((m) => ({ id: String(m), name: words[m]! }));
 
-/** Whether a fee's prices on a side wait for a month: one but the last has no end, or the ends do not rise. */
-function orderNote(stages: readonly PanelStage[]): string | null {
-  if (stages.slice(0, -1).some((s) => !s.until)) return p.untilMissing;
-  for (let k = 1; k < stages.length - 1; k++) if (stages[k]!.until! <= stages[k - 1]!.until!) return p.outOfOrder;
-  return null;
+/** What a price among several lacks in its month, under its own month: none given though a later price follows, or not after the one before. */
+function monthNote(stages: readonly PanelStage[], k: number): ReactNode {
+  if (k === stages.length - 1) return null;
+  const until = stages[k]!.until;
+  if (!until) return p.untilMissing;
+  const before = k > 0 ? stages[k - 1]!.until : undefined;
+  if (!before || until > before) return null;
+  return (
+    <>
+      {p.outOfOrder.before}
+      <bdi dir="ltr">{monthText(before)}</bdi>
+      {p.outOfOrder.after}
+    </>
+  );
 }
 
 /** One price's lines, by its form: how it is charged where the fee has several forms, then its figures, each in its box. */
@@ -39,7 +49,18 @@ function PriceRows({ fee, side, k, s, forms, onFee }: { fee: Fee; side: Side; k:
   const edit = (fn: Parameters<typeof editPrice>[3]) => onFee(editPrice(fee, side, k, fn));
   const has = (f: FieldId) => s.fields.includes(f);
   const figure = (f: "rate" | "min" | "max" | "amount", unit?: ReactNode) => (
-    <PriceFigure fee={fee} side={side} k={k} view={s.price} figure={f} label={label(f === "min" ? p.min : f === "max" ? p.max : p.howMuch)} optional={f === "min" || f === "max"} unit={unit} onFee={onFee} />
+    <PriceFigure
+      fee={fee}
+      side={side}
+      k={k}
+      view={s.price}
+      figure={f}
+      label={label(f === "min" ? p.min : f === "max" ? p.max : p.howMuch)}
+      optional={f === "min" || f === "max"}
+      unit={unit}
+      {...(f === "rate" || f === "amount" ? { id: mainFieldId(fee.id, side, k, "panel") } : {})}
+      onFee={onFee}
+    />
   );
   // a bound's currency, where the fee may take another one, is the unit in the first bound's box, chosen there once; the other bound's box
   // says it as its unit
@@ -103,25 +124,41 @@ function PriceRows({ fee, side, k, s, forms, onFee }: { fee: Fee; side: Side; k:
 }
 
 /**
- * A fee's prices on one side. One price: its lines, then `between` (the sale's line), then "עד מתי": always, or for a time after which the
- * fee is free (`limited`: a second, free price that starts at the month typed), with the way to add a later price beside it. Several
- * prices otherwise: each under its head ("בהתחלה", "אחר כך") with the month it ends, then `between`, and a later one added or taken away.
+ * A fee's prices on one side. One price: its lines, then `between` (the sale's line), then "עד מתי": always, or for a limited time, which
+ * asks in place for the month it ends and changes nothing the page reads until it is given. Several prices: each under its head
+ * ("בהתחלה", "אחר כך") with the month it ends and what that month lacks, then `between`, then "+ מחיר אחר אחר כך", which asks for the
+ * month the last price ends the same way. A month given adds one later price, its figure blank (`addLater`), and its box takes the focus.
  * A stage taken away (`onRemoveStage`) leaves `line` where it was, which hands the focus to the side's way to add a price when it goes.
  */
-function Stages({ fee, side, stages, limited, forms, between, line, onFee, onRemoveStage }: {
+function Stages({ fee, side, stages, forms, between, line, onFee, onRemoveStage }: {
   fee: Fee;
   side: Side;
   stages: readonly PanelStage[];
-  limited: boolean;
   forms: readonly FormId[];
   between?: ReactNode;
-  line: PanelUndoLine | null;
+  line: StageLine | null;
   onFee: (f: Fee) => void;
   onRemoveStage: (side: Side, k: number) => void;
 }) {
   const name = refName(refOf(fee));
-  const note = orderNote(stages);
-  const typed = side === "sell" && fee.sale ? fee.sale : fee.stages;
+  // asking for the month the last price ends, on this fee and side only: another fee's panel starts without it
+  const [askingFor, setAskingFor] = useState<string | null>(null);
+  const asking = askingFor === `${fee.id}:${side}`;
+  const ask = (on: boolean) => setAskingFor(on ? `${fee.id}:${side}` : null);
+  // the later price just added takes the focus once it is drawn
+  const added = useRef<number | null>(null);
+  useIsoLayoutEffect(() => {
+    if (added.current === null) return;
+    const field = document.getElementById(mainFieldId(fee.id, side, added.current, "panel")) as HTMLInputElement | null;
+    added.current = null;
+    field?.focus();
+    field?.select();
+  }, [stages.length]);
+  const later = (month: MonthKey) => {
+    added.current = stages.length;
+    ask(false);
+    onFee(addLater(fee, side, month));
+  };
   const undo =
     line?.side === side ? (
       <UndoLine key={`undo:stage:${side}:${line.k}`} as="div" className="col-span-2" onUndo={line.onUndo} onHold={line.onHold} refocusOnUndo refocus={() => document.querySelector<HTMLElement>(`[data-add-stage="${side}"]`)}>
@@ -129,74 +166,58 @@ function Stages({ fee, side, stages, limited, forms, between, line, onFee, onRem
       </UndoLine>
     ) : null;
   const undoAt = (k: number) => (undo && line!.k === k ? undo : null);
+  const askField = () => <MonthField value={null} label={copy.builder.fieldName(name, p.until)} waits autoFocus onCommit={later} />;
   const untilField = (k: number) => (
     <MonthField value={stages[k]!.until ?? null} label={copy.builder.fieldName(name, p.until)} onCommit={(m) => onFee(setUntil(fee, side, k, m))} onClear={() => onFee(setUntil(fee, side, k, null))} />
   );
-  const addButton = (
-    <Button variant="quiet" flush data-add-stage={side} onClick={() => onFee(addStage(fee, side))}>
-      + {stages.length === 1 ? p.addLater : p.addStage}
-    </Button>
-  );
-  const addLater = <Across>{addButton}</Across>;
-  // one price that holds always, or one that holds up to a month and then the fee is free; a stage taken away from two stood before the
-  // price left, or after it
-  if (stages.length === 1 || limited)
+  if (stages.length === 1)
     return (
       <>
         {undoAt(0)}
         <PriceRows fee={fee} side={side} k={0} s={stages[0]!} forms={forms} onFee={onFee} />
         {between}
-        {typed[0]!.price.form !== "free" ? (
-          <Row label={p.when}>
-            <SegmentedControl
-              label={copy.builder.fieldName(name, p.when)}
-              fit
-              options={[
-                { value: "always", label: p.always },
-                { value: "limited", label: p.limited },
-              ]}
-              value={limited ? "limited" : "always"}
-              onChange={(v) => {
-                if (v === "limited" && !limited) onFee(editPrice(addStage(fee, side), side, 1, (x) => withForm(x, "free")));
-                if (v === "always" && limited) onFee(removeStage(fee, side, 1));
-              }}
-            />
-            {limited && untilField(0)}
-            {addButton}
-          </Row>
-        ) : (
-          addLater
-        )}
-        {limited && note && (
-          <Across>
-            <Caption>{note}</Caption>
-          </Across>
-        )}
+        <Row label={p.when}>
+          <SegmentedControl
+            label={copy.builder.fieldName(name, p.when)}
+            fit
+            options={[
+              { value: "always", label: p.always },
+              { value: "limited", label: p.limited },
+            ]}
+            value={asking ? "limited" : "always"}
+            onChange={(v) => ask(v === "limited")}
+          />
+          {asking && askField()}
+        </Row>
         {undo && line!.k > 0 ? undo : null}
       </>
     );
   return (
     <>
-      {stages.map((s, k) => (
-        <PriceStage key={k} head={k === 0 ? p.stage.first : p.stage.next} before={undoAt(k)} onRemove={() => onRemoveStage(side, k)}>
-          <PriceRows fee={fee} side={side} k={k} s={s} forms={forms} onFee={onFee} />
-          {k < stages.length - 1 ? (
-            <Row label={p.until}>{untilField(k)}</Row>
-          ) : (
-            <Row label={p.until}>
-              <Caption>{p.noEnd}</Caption>
-            </Row>
-          )}
-        </PriceStage>
-      ))}
+      {stages.map((s, k) => {
+        const note = monthNote(stages, k);
+        const last = k === stages.length - 1;
+        return (
+          <PriceStage key={k} head={k === 0 ? p.stage.first : p.stage.next} before={undoAt(k)} onRemove={() => onRemoveStage(side, k)}>
+            <PriceRows fee={fee} side={side} k={k} s={s} forms={forms} onFee={onFee} />
+            <Row label={p.until}>{!last ? untilField(k) : asking ? askField() : <Caption>{p.noEnd}</Caption>}</Row>
+            {note && (
+              <Across>
+                <Caption>{note}</Caption>
+              </Across>
+            )}
+          </PriceStage>
+        );
+      })}
       {undo && line!.k >= stages.length ? undo : null}
-      {note && (
+      {between}
+      {!asking && (
         <Across>
-          <Caption>{note}</Caption>
+          <Button variant="quiet" flush data-add-stage={side} onClick={() => ask(true)}>
+            + {p.addLater}
+          </Button>
         </Across>
       )}
-      {between}
-      {addLater}
     </>
   );
 }
@@ -233,14 +254,17 @@ function Law({ cap, law, saved, first }: { cap: CapLine; law: LawRow | null; sav
   );
 }
 
-/** The page's undo line of a stage just taken away from the chosen fee: its side and place, its words and what puts it back. */
-export interface PanelUndoLine {
-  side: Side;
-  k: number;
+/**
+ * The page's undo line in the panel: of a stage just taken away from the chosen fee (its side and place), where the stage was; or of the
+ * fee just filled from a price list, in the panel's foot where the fill was chosen. Each stands where it moves nothing above it.
+ */
+export type PanelUndoLine = ({ kind: "stage"; side: Side; k: number } | { kind: "fill" }) & {
   words: string;
   onUndo: () => void;
   onHold: (held: boolean) => void;
-}
+};
+
+type StageLine = Extract<PanelUndoLine, { kind: "stage" }>;
 
 /** The houses whose price list has a line for the fee, and what filling the fee from one does. */
 export interface PanelFill {
@@ -251,10 +275,10 @@ export interface PanelFill {
 /**
  * The column, for the chosen fee. `product`: the deal's product, whose sense of the fee's name "מה זה" opens; `law`: its row of the
  * reading's law card, where it has one; `first`: the reading's first month; `saved`: the deal's product saves, so a share of what is held
- * reads "what has built up"; `fill`: the price lists that can fill it, null where its kind has none; `stageLine`: the undo line of a stage
- * just taken away from it.
+ * reads "what has built up"; `fill`: the price lists that can fill it, null where its kind has none; `line`: the undo line of a stage just
+ * taken away from it or of a fill. `onClose` un-chooses the fee (the head's close button; the page closes it on Escape too).
  */
-export function PanelColumn({ panel, fee, product, law, first, saved, fill, stageLine, onFee, onRemove, onRemoveStage }: {
+export function PanelColumn({ panel, fee, product, law, first, saved, fill, line, onFee, onRemove, onRemoveStage, onClose }: {
   panel: Panel;
   fee: Fee;
   product: string | null;
@@ -262,11 +286,13 @@ export function PanelColumn({ panel, fee, product, law, first, saved, fill, stag
   first: MonthKey;
   saved: boolean;
   fill: PanelFill | null;
-  stageLine: PanelUndoLine | null;
+  line: PanelUndoLine | null;
   onFee: (f: Fee) => void;
   onRemove: (feeId: string) => void;
   onRemoveStage: (side: Side, k: number) => void;
+  onClose: () => void;
 }) {
+  const stageLine = line?.kind === "stage" ? line : null;
   const terms = useProvenanceData()?.terms;
   const base = panel.shape.base ? (guideBlocks.fees[panel.shape.base] as { base?: string } | undefined)?.base : undefined;
   const forms: FormId[] = ["free", ...panel.shape.forms];
@@ -292,7 +318,7 @@ export function PanelColumn({ panel, fee, product, law, first, saved, fill, stag
     </Row>
   ) : null;
   return (
-    <Section title={p.title} level="kick" heading="h2" gap="tight">
+    <Section title={p.title} level="kick" heading="h2" gap="tight" action={<Button variant="icon" size="sm" aria-label={p.close} title={p.close} onClick={onClose} className="-my-2"><IconClose size={18} /></Button>}>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <h3 className="text-lg font-semibold">
           <FeeName fee={panel} />
@@ -309,13 +335,13 @@ export function PanelColumn({ panel, fee, product, law, first, saved, fill, stag
         </p>
       )}
       <AlignedList>
-        <Stages fee={fee} side="buy" stages={panel.stages} limited={panel.limited} forms={forms} between={sale} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} />
+        <Stages fee={fee} side="buy" stages={panel.stages} forms={forms} between={sale} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} />
         {panel.sale.stages && (
           <>
             <Across>
               <span className="text-sm font-medium">{p.salePrices}</span>
             </Across>
-            <Stages fee={fee} side="sell" stages={panel.sale.stages} limited={!!panel.sale.limited} forms={forms} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} />
+            <Stages fee={fee} side="sell" stages={panel.sale.stages} forms={forms} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} />
           </>
         )}
         {noCap && (
@@ -325,8 +351,19 @@ export function PanelColumn({ panel, fee, product, law, first, saved, fill, stag
         )}
       </AlignedList>
       <Law cap={panel.cap} law={law} saved={saved} first={first} />
+      {/* the foot: a fill's undo line stands where the fill was chosen, in the picker's place, so nothing above it moves */}
       <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
-        {fill && fill.houses.length > 0 && <MenuPicker name={p.fill} items={fill.houses.map((h) => ({ id: h.id, label: h.name }))} value={null} placeholder={p.fill} onSelect={fill.onFill} />}
+        {line?.kind === "fill" ? (
+          <UndoLine key="undo:fill" as="div" onUndo={line.onUndo} onHold={line.onHold} refocusOnUndo refocus={() => document.querySelector<HTMLElement>("[data-fill-picker] button")}>
+            {line.words}
+          </UndoLine>
+        ) : (
+          fill && fill.houses.length > 0 && (
+            <span data-fill-picker="" className="contents">
+              <MenuPicker name={p.fill} items={fill.houses.map((h) => ({ id: h.id, label: h.name }))} value={null} placeholder={p.fill} onSelect={fill.onFill} />
+            </span>
+          )
+        )}
         <Button variant="ghost" onClick={() => onRemove(fee.id)}>
           <IconBin size={18} />
           {p.remove}

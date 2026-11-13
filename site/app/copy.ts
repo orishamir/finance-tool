@@ -1600,6 +1600,8 @@ export const feeDeal = {
     toReading: "לקריאה המלאה של העסקה",
     /** Fees left out of every reading until their prices' months are in order, by name. */
     unread: "לא נקראות עד שהתאריכים שלהן מסודרים: ",
+    /** The deal has fees, and none has its price yet. */
+    noneRead: "עוד אין בעסקה עמלה עם מחיר.",
   },
   /** The sums a deal's own prices mark (F-112), as a group's line. `noun` is the action the bound is on. */
   marks: {
@@ -1688,8 +1690,8 @@ export const feeDeal = {
     then: "אחר כך",
     /** The line a fee just taken away leaves in its place, before its name. */
     removed: "הוסרה מהעסקה: ",
-    /** The line under a fee just filled from a house's price list, before the fee's name. */
-    filled: (house: string) => `מולאה מהתעריפון של ${house}: `,
+    /** The line in the panel of a fee just filled from a house's price list. */
+    filled: (house: string) => `העמלה מולאה מהתעריפון של ${house}`,
     /** The action on the undo line that puts the deal back as it was. */
     undo: "ביטול",
     /** A field's spoken name: the fee, then the figure. */
@@ -1699,6 +1701,8 @@ export const feeDeal = {
       saleSame: "מכירה כמו קנייה",
       saleApart: "מכירה במחיר אחר",
       noBounds: "בלי מינימום ובלי מקסימום",
+      /** A fee whose rate or sum nobody typed yet: it is not read until it is. */
+      noPrice: "עוד לא הוזן מחיר",
       insideFund: "נגבים בתוך הקרן",
       /** The fee's next change (F-110), before its month in words. */
       next: { starts: "מתחיל ב־", ends: "נגמר ב־", rises: "עולה ב־", falls: "יורד ב־", changes: "משתנה ב־" } as Record<string, string>,
@@ -1738,13 +1742,14 @@ export const feeDeal = {
     when: "עד מתי",
     always: "כל הזמן",
     limited: "לזמן מוגבל",
+    /** Adds one later price, after asking the month the last one ends. */
     addLater: "מחיר אחר אחר כך",
-    addStage: "עוד שלב",
     removeStage: "להסיר את השלב",
     /** The line a stage just taken away leaves in its place. */
     stageRemoved: "השלב הוסר.",
-    untilMissing: "חסר עד מתי המחיר הזה, ולכן העמלה עוד לא נקראת.",
-    outOfOrder: "החודשים צריכים לעלות משלב לשלב. עד שהם מסודרים, העמלה לא נקראת.",
+    /** Under a price's month, where a later price follows and the month is not given, or is not after the month of the price before it. */
+    untilMissing: "הזינו עד איזה חודש המחיר הזה.",
+    outOfOrder: { before: "הזינו חודש אחרי ", after: "." },
     sale: "מכירה",
     saleSame: "כמו קנייה",
     saleApart: "מחיר אחר",
@@ -1756,6 +1761,8 @@ export const feeDeal = {
     whatIs: "מה זה",
     /** Fills this fee's price from a house's price list. */
     fill: "למלא מתעריפון",
+    /** Closes the panel; no fee is chosen then. */
+    close: "סגירה",
   },
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
@@ -1873,6 +1880,12 @@ export const feeDeal = {
     words: { confirm: "למחוק את העסקה מהמכשיר הזה?", confirmYes: "מחיקה", confirmNo: "ביטול", rename: "שינוי השם", remove: "מחיקת העסקה", renameField: "שם העסקה" },
     link: "קישור לעסקה",
     copied: "הקישור הועתק",
+    /** The line a saved deal just deleted leaves under the bar, before its name. */
+    deleted: "נמחקה מהמכשיר: ",
+    /** Under a saved deal's name in the list: its product, and the day it was last saved (`savedOn` before the date). */
+    savedOn: "נשמרה ב־",
+    /** Closes the line that says a template opened a new deal. */
+    dismiss: "סגירה",
     /** The clipboard refused: the address to copy by hand. */
     copyBlocked: "ההעתקה לא הצליחה. אפשר להעתיק את הקישור מכאן:",
     linkField: "הקישור לעסקה",
@@ -4364,7 +4377,7 @@ export const kit = {
       MonthField: "חודש ושנה שמקלידים במקום, כמו 03.2027, באותה תיבה של FigureField. נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק.",
       CapBar: "מחיר מול התקרה שלו: פס דק עד התקרה, סימן במקום התקרה והמספר שלה בסוף. מחיר מאוחר יותר בקו מתאר, ומה שמעל התקרה בפסים אדומים. המשפט שליד הפס אומר את המצב במילים.",
       AlignedList: "רשימה של השדות של דבר אחד, שורה לכל שדה: התוויות בעמודה צרה אחת, והתיבות מתחילות כולן באותו קו אחריה, כך שהעין יורדת לאורך התוויות ולאורך התיבות. שורה לרוחב שתי העמודות נושאת מה שלא שייך לתווית אחת: כותרת של מחיר מאוחר, הערה, פעולה.",
-      TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
+      TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
       AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. כשאין מקום לשמות בסוף, הם עוברים למקרא מעל הגרף.",
       AddLine: "שורה שקטה מתחת לרשימה שהאדם בונה: מסגרת מקווקוות, פלוס ושבב קטן לכל דבר שאפשר להוסיף. הרגילים קודם בדיו מלאה, הנדירים אחריהם בדיו מעומעמת. המקום היחיד בעמוד שמדבר על מה שחסר.",

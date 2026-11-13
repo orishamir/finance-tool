@@ -66,7 +66,7 @@ const panelOf = (deal: FeeDeal, feeId: string) => {
   const reading = readingOf(r, data.fx);
   const fee = deal.fees.find((f) => f.id === feeId)!;
   const law = reading.law.find((x) => x.fee === feeId) ?? null;
-  return createElement(PanelColumn, { panel: panel(r, feeId)!, fee, product: deal.kind, law, first: reading.from, saved: saves(deal), fill: null, stageLine: null, onFee: () => {}, onRemove: () => {}, onRemoveStage: () => {} });
+  return createElement(PanelColumn, { panel: panel(r, feeId)!, fee, product: deal.kind, law, first: reading.from, saved: saves(deal), fill: null, line: null, onFee: () => {}, onRemove: () => {}, onRemoveStage: () => {}, onClose: () => {} });
 };
 const drawPanel = (deal: FeeDeal, feeId: string) => text(panelOf(deal, feeId));
 
@@ -80,7 +80,7 @@ const drawBuilder = (deal: FeeDeal, chosen: string | null) =>
       onPickTrack: null,
       left: null,
       line: null,
-      focusFee: null,
+      focus: null,
       onFocused: () => {},
       onDeal: () => {},
       onChoose: () => {},
@@ -153,12 +153,23 @@ describe("the panel", () => {
     for (const field of [feeDeal.panel.howMuch, feeDeal.panel.min, feeDeal.panel.max]) expect(count(html, `aria-label="${feeDeal.builder.fieldName(name, field)}"`)).toBe(1);
     expect(count(html, `>${feeDeal.builder.fieldName(name, feeDeal.panel.currency)}</label>`)).toBe(1);
   });
-  it("draws a price for a time as how long it holds, not as two stages", () => {
+  it("asks how long one price holds whatever its form, a free one too, and draws several prices as stages with the way to add one more", () => {
     const d = provident();
+    d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "free" } }] }];
+    const free = drawPanel(d, "fee-deposit");
+    expect(free).toContain(feeDeal.panel.limited);
+    expect(free).not.toContain(feeDeal.panel.addLater);
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) }, until: "2027-06" }, { price: { form: "free" } }] }];
-    const shown = drawPanel(d, "fee-deposit");
-    expect(shown).toContain(feeDeal.panel.limited);
-    expect(shown).not.toContain(feeDeal.panel.stage.first);
+    const two = drawPanel(d, "fee-deposit");
+    expect(two).toContain(feeDeal.panel.stage.first);
+    expect(two).toContain(feeDeal.panel.addLater);
+    expect(two).not.toContain(feeDeal.panel.limited);
+  });
+  it("draws a price not given yet as an empty box", () => {
+    const d = provident();
+    d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }];
+    const html = markup(panelOf(d, "fee-deposit"));
+    expect(html).toMatch(/aria-label="[^"]*, כמה"[^>]*value=""|value=""[^>]*aria-label="[^"]*, כמה"/);
   });
 });
 

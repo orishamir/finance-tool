@@ -25,7 +25,7 @@ export function DealBar({ deal, kind, writable, onDeal, end }: { deal: FeeDeal; 
       </span>
       <span className="flex flex-wrap items-center gap-2 text-sm sm:flex-nowrap">
         <span className="text-muted-foreground">{w.start}</span>
-        <MonthField value={deal.start ?? null} label={w.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
+        <MonthField value={deal.start ?? null} label={w.start} hang onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
         <span className="text-muted-foreground">{w.optional}</span>
       </span>
       <span className="text-sm text-muted-foreground">{writable ? w.saved : w.unsaved}</span>

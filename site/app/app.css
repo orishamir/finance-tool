@@ -617,6 +617,11 @@
       transform: translateY(100%);
     }
   }
+  /* A piece that comes onto the page where it was not (the fee page's card, panel and undo line): the short pop of a popover, at the base
+     duration, which a device that asks for less motion sets to nothing (theme.css) */
+  .come-in {
+    animation: pop-in var(--duration-base) var(--ease-standard);
+  }
   @keyframes pop-in {
     from {
       opacity: 0;

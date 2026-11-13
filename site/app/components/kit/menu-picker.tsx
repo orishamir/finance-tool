@@ -1,6 +1,8 @@
 // One item of a list chosen from a drop-down that sits in a line of text (the indices page's title: "… להשקיע במדד [S&P 500 ⌄] לאורך
 // זמן"): a 44 px button that shows the chosen item and a chevron, and under it the list. The items are links (a page each) or buttons;
-// an item the person added can be renamed in place or deleted after a question, as `ChipList` does for pills; the last row adds one.
+// an item the person added can be renamed in place or deleted after a question, as `ChipList` does for pills (or at once, where the page
+// can undo it); the last row adds one. A row may carry a muted line under its name that tells two rows apart. The list opens upward where
+// the window has no room for it below the button.
 // A native select cannot hold the rename, the delete or the add, so this is a disclosure: the button says whether the list is open, the
 // arrow keys move between the rows, Escape and a tap outside close it and give the focus back to the button, and the focus leaving the
 // list (a Tab past its last row) closes it. In a heading, the button stays in the heading's words and the list is drawn in `listHost`, an
@@ -22,11 +24,13 @@ export interface MenuItem {
   href?: string;
   /** The row carries a pencil (rename in place) and a bin (delete, after a question); needs `onRename` / `onDelete` and `words`. */
   editable?: boolean;
+  /** A muted line under the name (what the item is, when it was saved), so two rows of one name can be told apart. */
+  meta?: string;
 }
 
 const ic = { strokeWidth: 1.75, "aria-hidden": true } as const;
 
-export function MenuPicker({ name, items, value, placeholder, buttonLabel, words, onSelect, onFollow, onRename, onDelete, add, listHost }: {
+export function MenuPicker({ name, items, value, placeholder, buttonLabel, words, onSelect, onFollow, onRename, onDelete, deleteAsks = true, add, listHost }: {
   /** The list's spoken name ("המדד"). */
   name: string;
   items: MenuItem[];
@@ -43,6 +47,8 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
   onFollow?: (href: string) => void;
   onRename?: (id: string, name: string) => void;
   onDelete?: (id: string) => void;
+  /** Whether the bin asks first; a page that can undo a delete deletes at once and offers the undo. */
+  deleteAsks?: boolean;
   /** The last row, with a plus: starts adding an item. */
   add?: { label: string; onClick: () => void };
   /** Where the list is drawn when the button stands inside a heading: a positioned element right after the heading (the list is placed
@@ -57,6 +63,14 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
   const button = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLUListElement>(null);
   const chosen = items.find((i) => i.id === value) ?? null;
+  // the list opens upward where the window has less room under the button than over it and too little for the list
+  const [up, setUp] = useState(false);
+  useLayoutEffect(() => {
+    if (!open || listHost) return;
+    const b = button.current?.getBoundingClientRect();
+    const h = list.current?.getBoundingClientRect().height ?? 0;
+    if (b) setUp(window.innerHeight - b.bottom < h + 8 && b.top > window.innerHeight - b.bottom);
+  }, [open, listHost, items.length]);
   // in a host: the list's place under the button, measured against the host, again when the window changes size
   const [at, setAt] = useState<CSSProperties | null>(null);
   useLayoutEffect(() => {
@@ -112,7 +126,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
     if (e.key !== "ArrowDown") return;
     e.preventDefault();
     setOpen(true);
-    requestAnimationFrame(() => move(0));
+    requestAnimationFrame(() => move("first"));
   };
   const finishRename = (item: MenuItem, next: string | null) => {
     if (next !== null) onRename?.(item.id, next);
@@ -140,7 +154,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       style={listHost ? (at ?? undefined) : undefined}
       className={cx(
         "absolute z-[var(--z-popover)] flex w-max max-w-[min(22rem,calc(100vw-2rem))] flex-col gap-0.5 rounded-lg border border-border bg-popover p-1 text-base font-normal leading-normal shadow-md",
-        !listHost && "top-full start-0 mt-1 min-w-full",
+        !listHost && cx("start-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1"),
       )}
     >
       {items.map((item) => {
@@ -148,7 +162,14 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
         const inner = (
           <>
             <IconCheck size={16} className={cx("shrink-0", !on && "invisible")} />
-            <bdi className={cx("min-w-0 truncate", on && "font-semibold")}>{item.label}</bdi>
+            {item.meta ? (
+              <span className="flex min-w-0 flex-col py-1">
+                <bdi className={cx("min-w-0 truncate", on && "font-semibold")}>{item.label}</bdi>
+                <span className="text-sm text-muted-foreground">{item.meta}</span>
+              </span>
+            ) : (
+              <bdi className={cx("min-w-0 truncate", on && "font-semibold")}>{item.label}</bdi>
+            )}
           </>
         );
         return (
@@ -195,7 +216,18 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
                     </Button>
                   )}
                   {onDelete && (
-                    <Button variant="icon" className="size-9 tap-area rounded-full shrink-0" aria-label={`${words?.remove ?? ""}: ${item.label}`} title={words?.remove} aria-expanded={confirm === item.id} onClick={() => setConfirm((c) => (c === item.id ? null : item.id))}>
+                    <Button
+                      variant="icon"
+                      className="size-9 tap-area rounded-full shrink-0"
+                      aria-label={`${words?.remove ?? ""}: ${item.label}`}
+                      title={words?.remove}
+                      aria-expanded={deleteAsks ? confirm === item.id : undefined}
+                      onClick={() => {
+                        if (deleteAsks) return setConfirm((c) => (c === item.id ? null : item.id));
+                        close();
+                        onDelete(item.id);
+                      }}
+                    >
                       <Trash2 size={16} {...ic} />
                     </Button>
                   )}

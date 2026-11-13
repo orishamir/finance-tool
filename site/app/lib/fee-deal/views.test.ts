@@ -389,8 +389,7 @@ describe("the provident fund of the picture, on 11.2026", () => {
   });
   it("in its panel: two prices, the cap's line, the fields of a share of what is held", () => {
     const p = panel(read(provident()), "fee-balance")!;
-    // two prices one after the other, the second not free: not one price for a time
-    expect(p.limited).toBe(false);
+    expect(p.stages).toHaveLength(2);
     expect(p.cap).toMatchObject({ state: "value" });
     if (p.cap.state === "value") expect(p.cap.value.value).toBe(1.05);
     expect(p.stages[0]!.fields).toEqual(["rate", "per", "every"]);
@@ -561,21 +560,6 @@ describe("one fee filled from a price list", () => {
   });
 });
 
-describe("a price for a time in the panel", () => {
-  it("is one price followed by a free one, on either side", () => {
-    const deal = updateFee(account(), "fee-trade", (f) => ({
-      ...f,
-      stages: [{ price: { form: "action", rate: typed(0.25) }, until: "2027-06" }, { price: { form: "free" } }],
-      sale: [{ price: { form: "action", rate: typed(0.3) } }],
-    }));
-    const p = panel(read(deal), "fee-trade")!;
-    expect(p.limited).toBe(true);
-    expect(p.sale.limited).toBe(false);
-    // free first and priced after is not a price for a time
-    expect(panel(read(deal), "fee-custody")!.limited).toBe(false);
-  });
-});
-
 describe("a fee's glossary card", () => {
   it("is, for each product, the sense of the fee's name that names the product, where one does", () => {
     const all = loadTerms();
@@ -586,5 +570,36 @@ describe("a fee's glossary card", () => {
         const shown = data.terms[termKey(name, k.id)] ?? data.terms[name]!;
         if (all.some((t) => t.he === name && t.wrapperIds.includes(k.id))) expect(shown.wrapperIds).toContain(k.id);
       }
+  });
+});
+
+describe("a fee with a price not given yet", () => {
+  const withBlank = (): FeeDeal => {
+    const d = provident();
+    return { ...d, fees: [d.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
+  };
+  it("is read nowhere: not at a glance, not in the reading's periods, curves or law rows, and never judged against its cap", () => {
+    const r = read(withBlank());
+    expect(r.fees.map((f) => f.id)).not.toContain("fee-deposit");
+    expect(r.unpriced).toEqual(["fee-deposit"]);
+    const g = glance(r);
+    const inGlance = [...g.throughout, ...g.changing].flatMap((x) => x.fees.map((f) => f.fee));
+    expect(inGlance).not.toContain("fee-deposit");
+    const reading = readingOf(r, data.fx);
+    expect(reading.law.map((x) => x.fee)).not.toContain("fee-deposit");
+    expect(reading.periods.flatMap((p) => p.rows.map((x) => x.fee))).not.toContain("fee-deposit");
+    const alone = provident();
+    expect(reading).toEqual(readingOf(read({ ...alone, fees: [alone.fees[0]!] }), data.fx));
+  });
+  it("keeps its card in the builder, with its box empty and no standing, and its panel", () => {
+    const row = builder(read(withBlank())).rows.find((x) => x.fee === "fee-deposit")!;
+    expect(row.priced).toBe(false);
+    expect(row.stages[0]!.price).toMatchObject({ form: "action", blank: true, figures: {} });
+    expect(row.standingLater).toBeUndefined();
+    expect(panel(read(withBlank()), "fee-deposit")!.stages[0]!.price.blank).toBe(true);
+  });
+  it("is read once a figure is typed, a zero among them", () => {
+    const typedZero = updateFee(withBlank(), "fee-deposit", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0)));
+    expect(read(typedZero).fees.map((f) => f.id)).toContain("fee-deposit");
   });
 });

@@ -2,7 +2,7 @@
 // same way. Unlike a chart's field (NumberField), whose default and typed value look alike, a figure here is the person's record of a
 // price: typed by them it is entered (blue ink on a blue highlight); filled from a price list or a track and left as it was, it is sourced
 // (the solid grey line under the digits) and its source opens from the mark beside it (design.md, the number states).
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { kit as kitCopy, values as valuesCopy } from "../../copy";
 import { formatTyped, parseNumber } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
@@ -10,16 +10,58 @@ import { IconFile } from "../icons";
 import { useOpen, valueItem } from "../provenance";
 import { cx } from "./cx";
 
-/** The box of a typed figure or month: its edge, fill and ink say whose the value is. */
+/**
+ * The box of a typed figure or month: its edge, fill and ink say whose the value is. A box whose text is not a value takes the error look
+ * alone (the danger edge on the card's fill), never the entered blue: what it holds is not what the page reads. The whole box takes the
+ * pointer as its field (`focusInBox`).
+ */
 function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?: boolean): string {
   return cx(
-    "inline-flex items-center min-h-target rounded-md border tabular-nums focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
+    "inline-flex items-center min-h-target rounded-md border tabular-nums cursor-text focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
     tight ? "gap-0.5 px-1.5 text-[15px]" : "gap-1 px-2.5",
-    state === "entered" && "bg-entered-subtle text-entered border-entered/50",
-    state === "sourced" && "bg-card text-foreground border-input",
-    state === "empty" && "bg-card text-foreground border-input border-dashed",
-    error && "border-destructive",
+    error && "bg-card text-foreground border-destructive",
+    !error && state === "entered" && "bg-entered-subtle text-entered border-entered/50",
+    !error && state === "sourced" && "bg-card text-foreground border-input",
+    !error && state === "empty" && "bg-card text-foreground border-input border-dashed",
   );
+}
+
+/**
+ * A press anywhere in a box (its padding, its unit, the words in it) goes to its field, and a press that brings the focus into the field
+ * selects what it holds, as Tab does, so typing replaces it; a press in a field that already has the focus places the caret. A choice in
+ * the box (a bound's currency) keeps its own press.
+ */
+function focusInBox(e: MouseEvent<HTMLElement>) {
+  if (e.button !== 0) return;
+  const target = e.target as HTMLElement;
+  if (target.closest("select, button, a")) return;
+  const input = e.currentTarget.querySelector<HTMLInputElement>("input[data-figure]");
+  if (!input || document.activeElement === input) return;
+  e.preventDefault();
+  input.focus();
+  input.select();
+}
+
+/**
+ * Enter in a figure's or a month's field moves to the next field of its group (the nearest `[data-figures]` around it: a fee's card, a
+ * price in the panel), and from the last to the group's `[data-figures-back]` (the card itself), else nowhere.
+ */
+function enterToNext(input: HTMLInputElement) {
+  const group = input.closest<HTMLElement>("[data-figures]");
+  if (!group) return;
+  const all = [...group.querySelectorAll<HTMLInputElement>("input[data-figure]")];
+  const next = all[all.indexOf(input) + 1];
+  if (next) {
+    next.focus();
+    next.select();
+  } else group.querySelector<HTMLElement>("[data-figures-back]")?.focus();
+}
+
+/** A step of the arrow keys from `n`: up or down by `step`, never below zero, rounded to the step's decimals. */
+export function stepped(n: number, step: number, up: boolean): number {
+  const decimals = Math.max(0, -Math.floor(Math.log10(step)));
+  const next = Math.max(0, n + (up ? step : -step));
+  return Number(next.toFixed(decimals));
 }
 
 /**
@@ -36,10 +78,12 @@ const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] 
  * `InlineSelect` with its label hidden). `value` is the figure as the
  * page shows it, a value object whose state is the box's look: entered or sourced; null for an optional figure not given, a dashed box.
  * A sourced figure carries a document mark that opens its source; once the person types over it, the caller makes it entered. Each valid
- * number commits as it is typed; one that fails `validate` stays in the box with its message under it. With `onClear`, emptying the box
- * clears the figure. Decimals are allowed: a price list's fee keeps its agorot.
+ * number commits as it is typed; one that fails `validate` (or is not a number) stays in the box with its message under it, takes the error
+ * look and changes nothing, until it is fixed or Escape puts back the last value. With `onClear`, emptying the box clears the figure.
+ * Decimals are allowed: a price list's fee keeps its agorot. The up and down arrows step the figure by `step`, never below zero; Enter
+ * moves to the next field of its group (`enterToNext`). The figure is written in the site's form once the person leaves the box.
  */
-export function FigureField({ value, label, unit, words, inside, tight, onCommit, onClear, validate, placeholder, className }: {
+export function FigureField({ value, label, unit, words, inside, tight, onCommit, onClear, validate, placeholder, step, id: givenId, className }: {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
@@ -56,9 +100,14 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
   onClear?: () => void;
   validate?: (n: number) => ReactNode | null;
   placeholder?: string;
+  /** What the up and down arrows add or take away (0.01 for a percent, 1 for a sum); without it they do nothing. */
+  step?: number;
+  /** The field's own id, for a page that gives it the focus. */
+  id?: string;
   className?: string;
 }) {
-  const id = useId();
+  const ownId = useId();
+  const id = givenId ?? ownId;
   const open = useOpen();
   const shown = typeof value?.value === "number" ? formatTyped(value.value) : "";
   const [text, setText] = useState(shown);
@@ -83,13 +132,31 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
     setError(err);
     if (!err) onCommit(n);
   };
+  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape" && (error || text !== shown)) {
+      // the last value the page reads comes back; the Escape stops here, so a panel around the box stays open
+      e.preventDefault();
+      e.stopPropagation();
+      setText(shown);
+      setError(null);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      enterToNext(e.currentTarget);
+    } else if ((e.key === "ArrowUp" || e.key === "ArrowDown") && step) {
+      e.preventDefault();
+      const now = text.trim() === "" ? 0 : parseNumber(text);
+      if (Number.isNaN(now)) return;
+      change(formatTyped(stepped(now, step, e.key === "ArrowUp")));
+    }
+  };
   const state = value === null ? "empty" : value.state === "sourced" ? "sourced" : "entered";
   return (
     <span className={cx("inline-flex flex-col gap-0.5 align-middle", className)}>
       <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
-        <span className={boxLook(state, !!error, tight)}>
+        <span className={boxLook(state, !!error, tight)} data-lift="" onMouseDown={focusInBox}>
           <input
             id={id}
+            data-figure=""
             type="text"
             inputMode="decimal"
             dir="ltr"
@@ -99,6 +166,7 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? `${id}-err` : undefined}
             onChange={(e) => change(e.target.value)}
+            onKeyDown={onKey}
             onFocus={() => (focused.current = true)}
             onBlur={() => {
               focused.current = false;
@@ -126,11 +194,11 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
   );
 }
 
-/** A month as the person types it: "3.2027", "03/2027" or "2027-03"; null where it is not one. */
+/** A month as the person types it: "3.2027", "03/2027", "3.27" (a year of two digits is in this century) or "2027-03"; null where it is not one. */
 export function parseMonth(text: string): string | null {
   const t = text.trim();
-  let m = /^(\d{1,2})\s*[./-]\s*(\d{4})$/.exec(t);
-  if (m) return Number(m[1]) >= 1 && Number(m[1]) <= 12 ? `${m[2]}-${m[1]!.padStart(2, "0")}` : null;
+  let m = /^(\d{1,2})\s*[./-]\s*(\d{4}|\d{2})$/.exec(t);
+  if (m) return Number(m[1]) >= 1 && Number(m[1]) <= 12 ? `${m[2]!.length === 2 ? `20${m[2]}` : m[2]}-${m[1]!.padStart(2, "0")}` : null;
   m = /^(\d{4})-(\d{1,2})$/.exec(t);
   if (m) return Number(m[2]) >= 1 && Number(m[2]) <= 12 ? `${m[1]}-${m[2]!.padStart(2, "0")}` : null;
   return null;
@@ -143,16 +211,34 @@ export const monthText = (key: string) => `${key.slice(5, 7)}.${key.slice(0, 4)}
  * A month typed in place, in the box `FigureField` draws: the person writes "03.2027" (or "3/2027"), and the box keeps it in that form.
  * Typed by the person, so entered; empty and dashed until given. A native month input is not used: two of the browsers the site meets
  * draw it as plain text with no form, and the site writes a month as `03.2027` everywhere it is a field's value (design-system 2.7).
- * It commits when the person leaves it or presses Enter; with `onClear`, an empty box clears the month. `lead`: words in the box before the
- * month, so a price that holds until a month is one box ("[חינם עד 03.2028]").
+ * It commits when the person leaves it or presses Enter, and Enter then moves on as in `FigureField`; with `onClear`, an empty box clears
+ * the month, and without it an empty box asks for nothing (`waits`) or says what to write. A box that holds no month takes the error look,
+ * and Escape puts back the last month. `lead`: words in the box before the month, so a price that holds until a month is one box ("[חינם
+ * עד 03.2028]"). `hang`: the message hangs under the box over what is below, taking no room, for a box in a bar whose line must not grow.
  */
-export function MonthField({ value, label, lead, tight, onCommit, onClear, className }: { value: string | null; label: string; lead?: ReactNode; /** As `FigureField`'s. */ tight?: boolean; onCommit: (month: string) => void; onClear?: () => void; className?: string }) {
+export function MonthField({ value, label, lead, tight, onCommit, onClear, waits, hang, autoFocus, className }: {
+  value: string | null;
+  label: string;
+  lead?: ReactNode;
+  /** As `FigureField`'s. */
+  tight?: boolean;
+  onCommit: (month: string) => void;
+  onClear?: () => void;
+  /** An empty box is no error: the month is still to come (a later price waits for it). */
+  waits?: boolean;
+  hang?: boolean;
+  /** The field takes the focus when it appears (a choice just asked for the month). */
+  autoFocus?: boolean;
+  className?: string;
+}) {
   const id = useId();
   const shown = value ? monthText(value) : "";
   const [text, setText] = useState(shown);
   const [error, setError] = useState(false);
   const focused = useRef(false);
+  const committed = useRef<string | null>(null);
   useEffect(() => {
+    committed.current = null;
     if (!focused.current) {
       setText(shown);
       setError(false);
@@ -160,7 +246,7 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, class
   }, [shown]);
   const commit = () => {
     if (text.trim() === "") {
-      setError(!onClear);
+      setError(!onClear && !waits);
       if (onClear && value !== null) onClear();
       return;
     }
@@ -168,16 +254,21 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, class
     setError(m === null);
     if (m !== null) {
       setText(monthText(m));
-      if (m !== value) onCommit(m);
+      // Enter commits and moves the focus, whose blur commits again before the page has drawn the month: one commit per month typed
+      if (m !== value && m !== committed.current) onCommit(m);
+      committed.current = m;
     }
   };
   const placeholder = kitCopy.figure.monthPlaceholder;
   return (
-    <span className={cx("inline-flex flex-col gap-0.5 align-middle", className)}>
-      <span className={boxLook(value === null ? "empty" : "entered", error, tight)}>
+    <span className={cx("inline-flex flex-col gap-0.5 align-middle", hang && "relative", className)}>
+      <span className={boxLook(value === null ? "empty" : "entered", error, tight)} data-lift="" onMouseDown={focusInBox}>
         {lead && <span className="text-sm">{lead}</span>}
         <input
           id={id}
+          data-figure=""
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus={autoFocus}
           type="text"
           inputMode="numeric"
           dir="ltr"
@@ -193,14 +284,23 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, class
             commit();
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") commit();
+            if (e.key === "Enter") {
+              e.preventDefault();
+              commit();
+              if (parseMonth(text) !== null || (text.trim() === "" && (onClear || waits))) enterToNext(e.currentTarget);
+            } else if (e.key === "Escape" && (error || text !== shown)) {
+              e.preventDefault();
+              e.stopPropagation();
+              setText(shown);
+              setError(false);
+            }
           }}
           style={{ width: widthOf(text, placeholder, tight) }}
           className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT)}
         />
       </span>
       {error && (
-        <span id={`${id}-err`} className="text-xs text-destructive">
+        <span id={`${id}-err`} className={cx("text-xs text-destructive", hang && "absolute start-0 top-full z-10 mt-0.5 whitespace-nowrap")}>
           {kitCopy.figure.monthError}
         </span>
       )}

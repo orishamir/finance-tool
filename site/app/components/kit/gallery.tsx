@@ -404,6 +404,7 @@ function Choices() {
   const [chip, setChip] = useState<string | null>("0");
   const [own, setOwn] = useState<string | null>(null);
   const [tile, setTile] = useState<"a" | "b" | "c">("a");
+  const [pick, setPick] = useState(0);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
@@ -423,15 +424,13 @@ function Choices() {
       <Demo name="PickCard" use={g.uses.PickCard}>
         <State label={g.states.interactive}>
           <div className="flex flex-col gap-3 md:flex-row">
-            <div className="md:flex-1 rounded-lg border border-primary p-3 flex flex-col gap-1">
-              <span className="text-sm text-primary">{g.sample.option[0]}</span>
-              <span className="text-2xl font-bold">{fmt.nisWhole(1000)}</span>
-            </div>
-            <PickCard label={g.sample.pickCard} onPick={() => {}} className="md:flex-1 p-3 flex flex-col gap-1">
-              <span className="text-sm text-muted-foreground">{g.sample.option[1]}</span>
-              <span className="text-2xl font-bold">{fmt.nisWhole(1040)}</span>
-              <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
-            </PickCard>
+            {[0, 1].map((k) => (
+              <PickCard key={k} label={g.sample.pickCard} chosen={pick === k} onPick={() => setPick(k)} className="md:flex-1 p-3 flex flex-col gap-1">
+                <span className={pick === k ? "text-sm text-primary" : "text-sm text-muted-foreground"}>{g.sample.option[k]}</span>
+                <span className="text-2xl font-bold">{fmt.nisWhole(1000 + 40 * k)}</span>
+                <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
+              </PickCard>
+            ))}
           </div>
         </State>
         <State label={'pad="snug": Card\'s padding (p-4 md:p-5), for an option in a list of options'}>

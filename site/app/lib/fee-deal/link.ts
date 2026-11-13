@@ -3,7 +3,7 @@
 // broken or hostile value opens an empty deal and never throws.
 import type { FeesData } from "../fee-page-data";
 import { dealPagePath } from "../site-paths";
-import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
+import { feePriced, isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
 import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
@@ -67,12 +67,13 @@ const fromBase64Url = (s: string): string => {
 /**
  * A deal as the `d` of its link: its fields under short names, each figure as its number (or its number and the index of its source in a
  * table, where a template filled it), base64url. The deal's id, its fees' ids and when it was saved are left out: a link opens a new deal.
+ * A fee with a price not given yet is left out too (`feePriced`): it is not part of the deal until it is given, so a link never carries it.
  */
 export function encodeDeal(deal: FeeDeal): string {
   const sources: Sourced[] = [];
   const keyOf = (s: Sourced) => JSON.stringify(s);
   const { id: _id, saved: _saved, ...rest } = deal;
-  const body = { ...rest, fees: deal.fees.map(({ id: _f, ...f }) => f) };
+  const body = { ...rest, fees: deal.fees.filter(feePriced).map(({ id: _f, ...f }) => f) };
   const figure = (_k: string, x: unknown): Json => {
     const n = x as { v: number; src?: Sourced };
     if (!n.src) return n.v;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { feeInOrder, newDeal, newFee, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addStage, editPrice, pickHeld, removeStage, setHeld, setKind, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { blankPrice, feeInOrder, feePriced, newDeal, newFee, untouched, type Fee, type Num, type Price } from "./model";
+import { addFee, addLater, editPrice, pickHeld, removeStage, setHeld, setKind, setSaleApart, setStart, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
@@ -42,16 +42,29 @@ describe("the fee page's edits", () => {
     expect(untouched(editPrice(fee, "buy", 0, (x) => withMonths(x, "every", 3)))).toBe(false);
   });
 
-  it("a stage added waits for the month the one before it ends; given it, the fee is read again", () => {
+  it("a later price comes after the month the one before it ends, its figure blank until typed; a free price is followed by the fee's usual form", () => {
     const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
-    const two = addStage(fee, "buy");
-    expect(two.stages).toHaveLength(2);
-    expect(feeInOrder(two)).toBe(false);
-    const dated = setUntil(two, "buy", 0, "2028-03");
-    expect(feeInOrder(dated)).toBe(true);
-    const back = removeStage(dated, "buy", 1);
+    const two = addLater(fee, "buy", "2028-03");
+    expect(two.stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("held") }]);
+    expect(feeInOrder(two)).toBe(true);
+    expect(feePriced(two)).toBe(false);
+    const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
+    expect(feePriced(priced)).toBe(true);
+    // a priced price is followed by one of its own form
+    const three = addLater(priced, "buy", "2030-01");
+    expect(three.stages[2]!.price).toEqual(blankPrice("held"));
+    const back = removeStage(priced, "buy", 1);
     expect(back.stages).toEqual([{ price: { form: "free" } }]);
     expect(removeStage(back, "buy", 0)).toBe(back);
+  });
+  it("a rate emptied is blank again, and a blank rate stays blank through a change of terms", () => {
+    const fee = editPrice(newFee("trade"), "buy", 0, (p) => withFigure(p, "rate", 0.1));
+    expect(feePriced(fee)).toBe(true);
+    const emptied = editPrice(fee, "buy", 0, (p) => withFigure(p, "rate", null));
+    expect(feePriced(emptied)).toBe(false);
+    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withCurrency(p, "USD")))).toBe(false);
+    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withForm(p, "free")))).toBe(true);
+    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withFigure(p, "rate", 0)))).toBe(true);
   });
 
   it("a sale priced apart starts as a copy of the purchase, and edits only itself", () => {
