@@ -4,13 +4,15 @@
 // after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end
 // opens another saved deal or a new one, copies the deal's link, and opens the template picker; a template opens a new deal beside this one.
 // The builder's track step opens the same picker, and the track it picks is set on the deal on screen (`pickTrack`). A deal with no fee
-// shows the bar and the builder alone, as wide as the page's prose; the glance, the panel and the reading come with its first fee. A fee
-// taken away leaves a line in its place that puts it back, until the deal changes again, another deal opens, or ten seconds pass.
+// shows the bar and the builder alone, the builder in the column it keeps once the deal has fees, so the first fee moves nothing; the
+// glance, the panel and the reading come with it. A change that loses something (a fee taken away, a fee filled from a price list, a
+// stage taken away) leaves one undo line where it happened (lib/fee-deal/undo.ts), until the deal changes again, another deal opens, or
+// ten seconds pass while neither the focus nor the pointer is on the line.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
-import { addFee, removeKept, undoRemoval, updateFee, type Removal } from "../../lib/fee-deal/edit";
+import { addFee, updateFee, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
@@ -18,21 +20,22 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedWith, without } from "../../lib/fee-deal/store";
-import { dealFromTemplate, feePriceLists, fillFee, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, feePriceLists, HELD_UNSAID, houseName, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { fillFeeKept, removeFeeKept, removeStageKept, standing, undo, type Undo, type Undoable } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { Callout, Card, PageHead, Section } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
-import { BuilderColumn } from "./builder";
+import { BuilderColumn, type FeeUndoLine } from "./builder";
 import { GlanceColumn, READING_ID } from "./glance";
-import { PanelColumn } from "./panel";
+import { PanelColumn, type PanelUndoLine } from "./panel";
 import { TemplatePicker } from "./picker";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
-/** How long the line that puts a removed fee back stays, in milliseconds. */
+/** How long the undo line stays while neither the focus nor the pointer is on it, in milliseconds. */
 const UNDO_MS = 10_000;
 
 /** The device's day, YYYY-MM-DD, on its own calendar. */
@@ -79,14 +82,23 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setPicker(anchor);
   };
   const link = useCopyLink();
-  // the fee last taken away, while it can be put back; the card to give the focus to once it is
-  const [removal, setRemoval] = useState<Removal | null>(null);
+  // the last change that lost something, while it can be undone; whether the focus or the pointer is on its line; the card to give the
+  // focus to once it is undone
+  const [undoing, setUndoing] = useState<Undo | null>(null);
+  const [holding, setHolding] = useState(false);
   const [focusFee, setFocusFee] = useState<string | null>(null);
+  // the line's time left: it runs while the line is not held, and stops, keeping what is left, while it is
+  const clock = useRef<{ u: Undo | null; left: number }>({ u: null, left: UNDO_MS });
   useEffect(() => {
-    if (!removal) return;
-    const t = window.setTimeout(() => setRemoval(null), UNDO_MS);
-    return () => window.clearTimeout(t);
-  }, [removal]);
+    if (!undoing || holding) return;
+    if (clock.current.u !== undoing) clock.current = { u: undoing, left: UNDO_MS };
+    const start = Date.now();
+    const t = window.setTimeout(() => setUndoing(null), clock.current.left);
+    return () => {
+      window.clearTimeout(t);
+      clock.current.left -= Date.now() - start;
+    };
+  }, [undoing, holding]);
 
   // a deal the address gave is saved at once, and the address is cleared, so a reload opens the deal as it is now, not the link again; the
   // empty deal a broken or unknown address opens is saved only at its first change, as a new deal is
@@ -101,10 +113,19 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setDeal(next);
     dealStore.update((ds) => savedWith(ds, next, today));
   };
-  // any change to the deal ends the undo of a removal
+  // any change to the deal ends the undo, and what the page last said of the bar's end
   const change = (next: FeeDeal) => {
     keep(next);
-    setRemoval(null);
+    setUndoing(null);
+    setSaid(null);
+  };
+  // a change that keeps the deal before it for the undo
+  const kept = (r: Undoable | null) => {
+    if (!r) return;
+    keep(r.deal);
+    setChosen(r.chosen);
+    setUndoing(r.undo);
+    setSaid(null);
   };
   const onFee = (f: Fee) => change(updateFee(deal, f.id, () => f));
   const onAdd = (kind: FeeKindId) => {
@@ -112,25 +133,18 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     change(next);
     setChosen(fee.id);
   };
-  const onRemove = (feeId: string) => {
-    const r = removeKept(deal, feeId, chosen);
-    if (!r) return;
-    keep(r.deal);
-    setChosen(r.chosen);
-    setRemoval(r.removal);
-  };
+  const onRemove = (feeId: string) => kept(removeFeeKept(deal, feeId, chosen));
+  const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
+  const onRemoveStage = (feeId: string, side: Side, k: number) => kept(removeStageKept(deal, feeId, side, k, chosen));
+  // the fee put back or filled as it was takes the focus; a stage's line hands it to its side's add button itself
   const onUndo = () => {
-    if (!removal) return;
-    const back = undoRemoval(deal, removal, chosen);
-    setRemoval(null);
+    if (!undoing) return;
+    const back = undo(deal, undoing, chosen);
+    setUndoing(null);
     if (!back) return;
     keep(back.deal);
     setChosen(back.chosen);
-    setFocusFee(removal.fee.id);
-  };
-  const onFill = (feeId: string, house: string) => {
-    const next = fillFee(deal, feeId, house, data);
-    if (next) change(next);
+    if (undoing.what.kind !== "stage") setFocusFee(undoing.what.feeId);
   };
 
   // another deal on screen: a saved one, a new one or one a template filled; a new deal is saved at its first change
@@ -138,7 +152,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setDeal(next);
     setChosen(next.fees[0]?.id ?? null);
     setSaid(null);
-    setRemoval(null);
+    setUndoing(null);
     link.closeBlocked();
   };
   const onOpen = (id: string) => {
@@ -188,9 +202,10 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const kind = kindById(data.kinds, deal.kind);
   // the deal is read once for every view; choosing another fee builds only its panel again
   const read = useMemo(() => readDealFor(deal, data.kinds, today), [deal, data.kinds, today]);
-  const views = useMemo(() => ({ glance: glance(read), builder: builder(read), reading: readingOf(read, data.fx) }), [read, data.fx]);
+  // the glance and the reading only for a deal with a fee: one with none shows neither
+  const builderView = useMemo(() => builder(read), [read]);
+  const views = useMemo(() => (read.deal.fees.length > 0 ? { glance: glance(read), reading: readingOf(read, data.fx) } : null), [read, data.fx]);
   const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);
-  const reading = views.reading;
   const hasTracks = options.some((o) => o.source === "track");
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
@@ -200,10 +215,19 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   };
   const chosenFee = deal.fees.find((f) => f.id === chosen) ?? null;
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
-  // the removal on screen: only on the deal it left, so another deal never shows it
-  const removed = removal && removal.after === deal ? removal : null;
-  // the columns are laid out while the deal has a fee, or while the last one taken away can be put back
-  const columns = deal.fees.length > 0 || !!removed;
+  // the undo on screen: only on the deal it left, so another deal never shows it; its words, which the live region says too
+  const shown = standing(undoing, deal) ? undoing : null;
+  const undoWords = (u: Undo): string => {
+    if (u.what.kind === "stage") return copy.panel.stageRemoved;
+    const id = u.what.feeId;
+    const f = u.before.fees.find((x) => x.id === id);
+    const name = f ? feeName(f.kind, f.name) : "";
+    return u.what.kind === "remove" ? `${copy.builder.removed}${name}.` : `${copy.builder.filled(houseName(u.what.house, data) ?? "")}${name}.`;
+  };
+  const words = shown ? undoWords(shown) : null;
+  const feeLine: FeeUndoLine | null = shown && words && shown.what.kind !== "stage" ? { what: shown.what, words, onUndo, onHold: setHolding } : null;
+  // a stage's line stands in the panel, while the panel shows the stage's fee
+  const stageLine: PanelUndoLine | null = shown && words && shown.what.kind === "stage" && shown.what.feeId === chosen ? { side: shown.what.side, k: shown.what.k, words, onUndo, onHold: setHolding } : null;
 
   return (
     <>
@@ -227,9 +251,9 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
           />
         }
       />
-      {/* what the bar's end just did, for a screen reader: a template opened a new deal, the link was copied */}
+      {/* for a screen reader: what the undo line says, else what the bar's end just did (a template opened a new deal, the link was copied) */}
       <p role="status" className="sr-only">
-        {said ?? (removed ? `${copy.builder.removed}${feeName(removed.fee.kind, removed.fee.name)}.` : link.copied ? copy.end.copied : "")}
+        {words ?? said ?? (link.copied ? copy.end.copied : "")}
       </p>
       {(said || link.blocked) && (
         <div className="flex flex-col gap-1.5 text-sm">
@@ -244,18 +268,18 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
       )}
       <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "bar"} product={kind?.name ?? null} onPick={onPick} />
       {/* a phone stacks the builder, the panel and the glance; a computer sets the glance at the start (the right), the panel at the end. The
-          builder is the first child whatever the deal holds, so the first fee lays the columns out around it without drawing it again: the
-          focus and the scroll stay where they were. */}
-      <div className={columns ? "grid grid-cols-1 items-start gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]" : "grid max-w-measure grid-cols-1"}>
-        <Card className={columns ? "flex flex-col gap-4 xl:col-start-2 xl:row-start-1" : "flex flex-col gap-4"}>
+          builder is the first child in its own column whatever the deal holds, so the first fee sets the other columns around it and moves
+          nothing: the builder, the focus and the scroll stay where they were. */}
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]">
+        <Card className="flex flex-col gap-4 xl:col-start-2 xl:row-start-1">
           <BuilderColumn
             deal={deal}
-            view={views.builder}
+            view={builderView}
             kinds={data.kinds}
             chosen={chosen}
             onPickTrack={hasTracks ? openPicker("track") : null}
             left={left}
-            removed={removed ? { at: removed.at, fee: removed.fee, onUndo } : null}
+            line={feeLine}
             focusFee={focusFee}
             onFocused={() => setFocusFee(null)}
             onDeal={change}
@@ -264,29 +288,33 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
             onRemove={onRemove}
           />
         </Card>
-        {panel && chosenFee && (
+        {views && panel && chosenFee && (
           <Card edge="accent" className="flex flex-col gap-4 xl:col-start-3 xl:row-start-1">
             <PanelColumn
               panel={panel}
               fee={chosenFee}
-              law={reading.law.find((r) => r.fee === chosen) ?? null}
-              first={reading.from}
+              product={deal.kind}
+              law={views.reading.law.find((r) => r.fee === chosen) ?? null}
+              first={views.reading.from}
               saved={saves}
               fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
+              stageLine={stageLine}
               onFee={onFee}
               onRemove={onRemove}
+              onRemoveStage={(side, k) => onRemoveStage(chosenFee.id, side, k)}
             />
           </Card>
         )}
-        {deal.fees.length > 0 && (
+        {views && (
           <Card className="flex flex-col gap-4 lg:col-span-2 xl:col-span-1 xl:col-start-1 xl:row-start-1">
-            <GlanceColumn glance={views.glance} law={reading.law} saved={saves} names={nameOf} />
+            <GlanceColumn glance={views.glance} law={views.reading.law} saved={saves} names={nameOf} />
           </Card>
         )}
       </div>
-      {deal.fees.length > 0 && (
+      {views && (
         <Section id={READING_ID} title={copy.reading}>
-          <ReadingCards reading={reading} saved={saves} fx={data.fx} />
+          {/* the chart's chosen period belongs to the deal it was chosen on: another deal starts from its own */}
+          <ReadingCards key={deal.id} reading={views.reading} saved={saves} fx={data.fx} />
         </Section>
       )}
     </>

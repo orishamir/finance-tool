@@ -37,9 +37,15 @@ export interface FeesData {
   houses: HouseTemplate[];
   /** The ECB's reference rates (F-84): a bound typed in another currency enters a cost curve in shekels at them (F-112). */
   fx: FxSnapshot | null;
-  /** The glossary cards of the fees a deal can hold, by the fee's name: a fee's "מה זה" opens its card. */
+  /**
+   * The glossary cards of the fees a deal can hold, by the fee's name: a fee's "מה זה" opens its card. Where a product has a sense of the
+   * name of its own, that card is kept under `termKey(name, product)` too.
+   */
   terms: Record<string, TermRow>;
 }
+
+/** The key of a fee name's glossary card in one product's sense, among `FeesData.terms`. */
+export const termKey = (name: string, product: string): string => `${name}@${product}`;
 
 /**
  * A track's two fees as value objects, the CMA averages of its dataset's value object with its own figure (D3: stale once the next year's

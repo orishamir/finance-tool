@@ -1,17 +1,18 @@
 // The column "בונים את העסקה" (method §10.6, `builder`): the deal's kind, what it holds (three facts each chosen in place) or, in the
 // provident family, the place for its company and track, and its fees, one card each with its figures typed in place, its standing
-// against the cap after its name, the chosen card marked, and a way to take it away. A fee just taken away leaves a line in its place,
-// as tall as its card was, that puts it back. Under the cards, one quiet line offers the fees the deal could add: the kind's usual ones
-// it lacks first, then the rarer ones and a fee of the person's own.
-import { useEffect, useRef, useState, type ReactNode } from "react";
+// against the cap after its name, the chosen card marked, and a way to take it away. A fee just taken away leaves the page's undo line
+// (`UndoLine`) in its place, as tall as its card was; a fee just filled from a price list has it under its card. Under the cards, one quiet
+// line offers the fees the deal could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own.
+import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
-import { setHeld, setKind, setUntil, updateFee } from "../../lib/fee-deal/edit";
+import { pickHeld, setHeld, setKind, setUntil, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { BOUND_CURRENCIES, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
 import { FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
 import { IconBin } from "../icons";
@@ -20,6 +21,7 @@ import { AddLine, Button, Card, ChoiceChips, InlineSelect, MonthField, PickCard,
 import { Num } from "../provenance";
 import { PriceFigure } from "./figures";
 import { TemplateNote } from "./picker";
+import { UndoLine } from "./undo-line";
 import { FeeName, StandingTag, feeName, perActionWord, refName } from "./words";
 
 const b = copy.builder;
@@ -111,12 +113,13 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
 /**
  * One fee's card: the chosen one framed in the action colour with the word, the others whole cards that choose it. Its end holds the way
  * to take the fee away, a bin: always on the chosen card and on a touch screen, on the others while the pointer is over the card or the
- * focus is in it. The bin lies above the card's own button, so pressing it never chooses the card.
+ * focus is in it. The bin lies above the card's own button, so pressing it never chooses the card. The page may give a card the focus
+ * (`cardFocus`): an unchosen card's own button, else the chosen card, which shows the kit's focus ring for it.
  */
 function FeeRowCard({ id, chosen, label, onChoose, children }: { id: string; chosen: boolean; label: string; onChoose: () => void; children: ReactNode }) {
   if (chosen)
     return (
-      <Card pad="tight" edge="accent" as="li" data-fee={id} tabIndex={-1} className="group outline-none">
+      <Card pad="tight" edge="accent" as="li" data-fee={id} tabIndex={-1} className="group focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2">
         {children}
       </Card>
     );
@@ -129,35 +132,21 @@ function FeeRowCard({ id, chosen, label, onChoose, children }: { id: string; cho
   );
 }
 
-/** A card's bin, by its fee's note at the card's end. */
-function RemoveFee({ chosen, onRemove }: { chosen: boolean; onRemove: () => void }) {
+/** What takes the focus for a fee's card: its own button where it is not chosen, else the card. */
+const cardFocus = (li: HTMLElement | null | undefined): HTMLElement | null => (li ? (li.querySelector<HTMLElement>("[data-pick-card]") ?? li) : null);
+
+/** A card's bin, by its fee's note at the card's end; its spoken name names the fee. */
+function RemoveFee({ name, chosen, onRemove }: { name: string; chosen: boolean; onRemove: () => void }) {
   return (
     <Button
       variant="ghost"
       size="sm"
-      aria-label={copy.panel.remove}
+      aria-label={b.fieldName(name, copy.panel.remove)}
       onClick={onRemove}
       className={chosen ? undefined : "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100"}
     >
       <IconBin size={18} />
     </Button>
-  );
-}
-
-/** Where a fee just taken away stood: a line as tall as its card was, saying so, with the action that puts it back (which takes the focus). */
-function RemovedLine({ fee, height, onUndo }: { fee: Fee; height: number | undefined; onUndo: () => void }) {
-  const line = useRef<HTMLElement>(null);
-  useEffect(() => line.current?.querySelector("button")?.focus({ preventScroll: true }), []);
-  return (
-    <Card ref={line} pad="tight" as="li" className="flex flex-wrap items-center gap-x-3 gap-y-1 border-dashed" style={height ? { minHeight: height } : undefined}>
-      <span className="text-sm text-muted-foreground">
-        {b.removed}
-        <FeeName fee={refOf(fee)} after="." />
-      </span>
-      <Button variant="quiet" flush onClick={onUndo}>
-        {b.undo}
-      </Button>
-    </Card>
   );
 }
 
@@ -169,9 +158,9 @@ function HeldChips({ held, onHeld }: { held: Held | undefined; onHeld: (h: Held)
   const [draft, setDraft] = useState<Partial<Held>>(held ?? {});
   const now: Partial<Held> = held ?? draft;
   const pick = (part: Partial<Held>) => {
-    const next = { ...now, ...part };
-    setDraft(next);
-    if (next.place && next.currency && next.payout) onHeld(next as Held);
+    const next = pickHeld(now, part);
+    setDraft(next.draft);
+    if (next.held) onHeld(next.held);
   };
   const opts = (ids: readonly string[]) => ids.map((id) => ({ id, name: b.heldSaid[id] ?? id }));
   // a currency the deal holds that the list does not offer (from an older deal) stays a choice, so the chip shows it
@@ -186,7 +175,16 @@ function HeldChips({ held, onHeld }: { held: Held | undefined; onHeld: (h: Held)
   );
 }
 
-export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, removed, focusFee, onFocused, onDeal, onChoose, onAdd, onRemove }: {
+/** The page's undo line, where it stands in the builder: in the place of a fee taken away, or under a fee filled from a price list. */
+export interface FeeUndoLine {
+  what: Extract<UndoWhat, { kind: "remove" | "fill" }>;
+  /** What happened, in words: the live region says the same. */
+  words: string;
+  onUndo: () => void;
+  onHold: (held: boolean) => void;
+}
+
+export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, line, focusFee, onFocused, onDeal, onChoose, onAdd, onRemove }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
@@ -195,9 +193,9 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, re
   onPickTrack: ((from: HTMLElement) => void) | null;
   /** What the template the deal was filled from left out; null where no template filled it. */
   left: readonly LeftOut[] | null;
-  /** The fee just taken away, its place among the fees and what puts it back; null where none can be. */
-  removed: { at: number; fee: Fee; onUndo: () => void } | null;
-  /** A fee whose card takes the focus once drawn (one put back), and what to call once it has. */
+  /** The undo line of a fee just taken away or filled; null where none stands. */
+  line: FeeUndoLine | null;
+  /** A fee whose card takes the focus once drawn (one put back or filled again as it was), and what to call once it has. */
   focusFee: string | null;
   onFocused: () => void;
   onDeal: (deal: FeeDeal) => void;
@@ -211,16 +209,26 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, re
   const [pickingIn, setPickingIn] = useState<string | null>(null);
   const picking = pickingIn === deal.id;
   const setPicking = (open: boolean) => setPickingIn(open ? deal.id : null);
-  // each card's height as last drawn, so the line a removed fee leaves is as tall as its card was
+  // each card's height as last drawn (a card's height changes with the fees and with the choice), so the line a removed fee leaves is as
+  // tall as its card was
   const list = useRef<HTMLUListElement>(null);
+  const adding = useRef<HTMLDivElement>(null);
   const heights = useRef(new Map<string, number>());
   useIsoLayoutEffect(() => {
     for (const li of list.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
     if (!focusFee) return;
-    const li = list.current?.querySelector<HTMLElement>(`li[data-fee="${focusFee}"]`);
-    (li?.querySelector<HTMLElement>("[data-pick-card]") ?? li)?.focus({ preventScroll: true });
+    cardFocus(list.current?.querySelector<HTMLElement>(`li[data-fee="${focusFee}"]`))?.focus({ preventScroll: true });
     onFocused();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deal.fees, chosen, focusFee]);
+  const cardAt = (i: number) => list.current?.querySelectorAll<HTMLElement>("li[data-fee]")[i];
+  // the line of a fee taken away hands the focus, when it goes, to the card now in its place, else the one before it, else the add line
+  const afterRemoved = (at: number) => () => cardFocus(cardAt(at) ?? cardAt(at - 1)) ?? adding.current?.querySelector("button");
+  const undoLine = (l: FeeUndoLine, refocus: () => HTMLElement | null | undefined, height?: number) => (
+    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} refocus={refocus} height={height}>
+      {l.words}
+    </UndoLine>
+  );
   const onFee = (f: Fee) => onDeal(updateFee(deal, f.id, () => f));
   const rows = new Map(view.rows.map((r) => [r.fee, r]));
   const adds: AddItem[] = [...view.suggestions.usual.map((k) => ({ id: k, label: feeName(k), usual: true })), ...view.suggestions.rarer.map((k) => ({ id: k, label: feeName(k) }))];
@@ -298,16 +306,20 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, re
                       </div>
                       <div className="ms-auto flex shrink-0 items-center gap-1">
                         {row && <RowNotes row={row} fee={fee} />}
-                        <RemoveFee chosen={on} onRemove={() => onRemove(fee.id)} />
+                        <RemoveFee name={name} chosen={on} onRemove={() => onRemove(fee.id)} />
                       </div>
                     </div>
                   </FeeRowCard>
                 );
-                return removed && removed.at === i ? [<RemovedLine key={`removed:${removed.fee.id}`} fee={removed.fee} height={heights.current.get(removed.fee.id)} onUndo={removed.onUndo} />, card] : [card];
+                if (line?.what.kind === "remove" && line.what.at === i) return [undoLine(line, afterRemoved(i), heights.current.get(line.what.feeId)), card];
+                if (line?.what.kind === "fill" && line.what.feeId === fee.id) return [card, undoLine(line, () => cardFocus(list.current?.querySelector<HTMLElement>(`li[data-fee="${fee.id}"]`)))];
+                return [card];
               })}
-              {removed && removed.at >= deal.fees.length && <RemovedLine key={`removed:${removed.fee.id}`} fee={removed.fee} height={heights.current.get(removed.fee.id)} onUndo={removed.onUndo} />}
+              {line?.what.kind === "remove" && line.what.at >= deal.fees.length && undoLine(line, afterRemoved(line.what.at), heights.current.get(line.what.feeId))}
             </ul>
-            <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />
+            <div ref={adding} className="contents">
+              <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />
+            </div>
           </Step>
         )}
       </div>

@@ -5,7 +5,7 @@ import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import type { SiteValue } from "../value";
 import { capLine, type CapLine } from "./kinds";
 import { monthKey, type MonthKey, type Months, type Stage } from "./model";
-import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
+import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue } from "./values";
 
@@ -91,7 +91,7 @@ function statementsOf(r: DealRead): Statement[] {
   };
   for (const p of r.reading.periods) {
     const at = monthKey(p.from);
-    for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today), periods: [at] }));
+    for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)), periods: [at] }));
     r.fees.forEach((fee, i) => {
       const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
@@ -238,7 +238,7 @@ function drawn(
 ): Curve {
   const at = marks.map(shekels);
   const largest = Math.max(...at);
-  const views = marks.map((m) => markView(m, r.fees, p, r.today));
+  const views = marks.map((m) => markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)));
   const largestView = views[at.indexOf(largest)]!.amount;
   const end = curveEnd(largest);
   const amounts = [...new Set([0, ...at.filter((a) => a < end), end])].sort((a, b) => a - b);

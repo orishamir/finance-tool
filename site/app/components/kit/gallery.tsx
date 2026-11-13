@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { brands, companyFocus, feeDeal as dealWords, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { brands, companyFocus, feeDeal as dealWords, guideBlocks, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -16,9 +16,11 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
+/** A fee's name that is a glossary term, for the HelpMark with words. */
+const custodyName = (guideBlocks.fees.custody as { name: string }).name;
 const g = copy.gallery;
 /** LeftOutLine's demo: one thing that can change a price, with its reason and document (no real address: the kit's own page), and two listed. */
 const leftOutSample = {
@@ -1727,6 +1729,12 @@ function Lists({ today }: { today: string }) {
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
           </span>
         </State>
+        <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">
+          <span className="flex items-center gap-3">
+            <span className="text-lg font-semibold">{custodyName}</span>
+            <HelpMark term={custodyName} about={custodyName} words={dealWords.panel.whatIs} className="ms-auto" />
+          </span>
+        </State>
         <State label="a column of several figures (a fund's three fees): one mark opens one sheet with each term's card, under the column's name and a line; the phone, with no heads, has one line over the list">
           <span className="text-sm font-medium">
             <FundFeesHead />
@@ -2500,6 +2508,29 @@ function DealDemos({ today }: { today: string }) {
           </State>
           <State label={`lead: words in the box before the month, a price that holds until it, ${g.states.interactive}`}>
             <MonthField value={month} lead={`${dealWords.price.free} ${dealWords.standing.until.trim()}`} label={g.sample.field} onCommit={setMonth} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="AlignedList, AlignedRow, AlignedAcross, AlignedCaption" use={g.uses.AlignedList}>
+        <Grid>
+          <State label={`a thing's fields: the labels in one narrow column, the boxes from one edge; the bounds' line keeps its label by its first line where the maximum goes under the minimum, ${g.states.interactive}`}>
+            <AlignedList>
+              <AlignedRow label={dealWords.panel.howMuch}>
+                <FigureField value={mine} label={g.sample.percent} unit="%" onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
+                <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
+              </AlignedRow>
+              <AlignedRow label={dealWords.panel.min} top>
+                <FigureField value={bound} label={g.sample.field} unit="₪" placeholder={dealWords.panel.empty} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />
+                <span className="inline-flex items-center gap-x-2">
+                  <AlignedCaption>{dealWords.panel.max}</AlignedCaption>
+                  <FigureField value={null} label={g.sample.field} unit="₪" placeholder={dealWords.panel.empty} onCommit={() => undefined} onClear={() => undefined} />
+                </span>
+                <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
+              </AlignedRow>
+              <AlignedAcross>
+                <AlignedCaption>{dealWords.panel.untilMissing}</AlignedCaption>
+              </AlignedAcross>
+            </AlignedList>
           </State>
         </Grid>
       </Demo>

@@ -21,6 +21,8 @@ import { describe, expect, it } from "vitest";
 import { brands, guideSignature } from "../copy";
 import { HELP_TERMS } from "../lib/track-browser";
 import { HELP_TERMS as DEPOSIT_TERMS, KIND_TERMS } from "../lib/deposit-browser";
+import { FEE_KIND_IDS } from "../lib/fee-deal/shapes";
+import { feeName } from "../components/fee-deal/words";
 
 const app = fileURLToPath(new URL("../", import.meta.url));
 const repo = fileURLToPath(new URL("../../../", import.meta.url));
@@ -65,6 +67,9 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   "{HELP_TERMS.break}": [DEPOSIT_TERMS.break],
   "{HELP_TERMS.linked}": [DEPOSIT_TERMS.linked],
   "{KIND_TERMS}": KIND_TERMS,
+  // the fee panel's "מה זה" opens a fee's name only where the page's data holds its card (fees.server.ts), and the gallery shows custody's
+  "{explained}": FEE_KIND_IDS.map((k) => feeName(k)).filter((n) => names.has(n)),
+  "{custodyName}": [feeName("custody")],
 };
 // Today's leftovers: ids that open no row. None.
 const UNRESOLVED: Record<string, readonly string[]> = {};

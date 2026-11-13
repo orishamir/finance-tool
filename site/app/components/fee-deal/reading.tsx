@@ -12,7 +12,7 @@ import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from ".
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
-import { CapRules, FeeName, LawBlock, MeetSentence, PriceWords, StandingTag, feeColour, refName } from "./words";
+import { CapRules, FeeName, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName } from "./words";
 
 const w = copy.read;
 
@@ -158,13 +158,13 @@ function PeriodsCard({ reading, saved }: { reading: Reading; saved: boolean }) {
 
 // ---------------------------------------------------------------- the curves
 
-/** The stretches a statement or a curve holds in, after `lead` ("ממרץ 2028", "עד מרץ 2027", "ממרץ 2027 עד מרץ 2028"). */
-function Spans({ spans, lead = "" }: { spans: Span[]; lead?: string }) {
+/** The stretches a statement or a curve holds in ("ממרץ 2028", "עד מרץ 2027", "ממרץ 2027 עד מרץ 2028"). */
+function Spans({ spans }: { spans: Span[] }) {
   const s = w.points;
   return (
     <>
       {spans.map((x, k) => {
-        const before = `${k === 0 ? lead : s.spanSep}`;
+        const before = k === 0 ? "" : s.spanSep;
         return (
           <span key={k}>
             {x.from && <When iso={x.from} lead={`${before}${s.from}`} />}
@@ -217,12 +217,16 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       );
     case "meet": {
       // one fee that is a sum per period is named, the words agreeing with its name; several, or one of the person's own, are "the sums"
-      const one = head.mark.kind === "meet" && head.mark.fees.length === 1 ? copy.nameForms[head.mark.fees[0]!.kind] : undefined;
+      // where another share of what is held may cost more below that value, the sums are said to be larger than custody, no more (F-112)
+      const mark = head.mark;
+      const one = mark.fees.length === 1 ? copy.nameForms[mark.fees[0]!.kind] : undefined;
+      const named = one?.the ? one : undefined;
       return (
         <>
           {h.meet.before}
-          <Num value={head.mark.amount} />
-          {one?.the ? ` ${one.the}${h.meetOne[one.g]}` : h.meet.after}
+          <Num value={mark.amount} />
+          {named ? ` ${named.the}` : h.meet.sums}
+          {mark.largest ? (named ? h.meetOne[named.g] : h.meet.largest) : `${copy.larger[named?.g ?? "mp"]}${custodyName(mark.against)}`}
         </>
       );
     }

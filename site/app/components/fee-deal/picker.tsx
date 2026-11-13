@@ -8,7 +8,7 @@
 import { useId, useMemo, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { countPhrase } from "../../lib/format";
-import { templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
+import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
 import { Disclosure, GroupHead, ListRow, RowList, SearchField, Tag } from "../kit";
 import { feeName } from "./words";
@@ -21,16 +21,6 @@ export function leavesText(left: readonly LeftOut[] | undefined): string | undef
   if (!left || left.length === 0) return undefined;
   if (left.some((l) => l.why === "no-holding")) return w.noHolding;
   return countPhrase(left.length, w.leaves);
-}
-
-/** A row's title: a track's short name where it has one, else the template's name. */
-export const rowTitle = (o: TemplateOption): string => (o.source === "track" ? (o.short ?? o.name) : o.name);
-
-/** The templates whose name, a track's short name or its company holds the words typed. */
-export function matching(options: readonly TemplateOption[], query: string): readonly TemplateOption[] {
-  const q = query.trim();
-  if (!q) return options;
-  return options.filter((o) => o.name.includes(q) || (o.source === "track" && (o.short?.includes(q) || o.company.includes(q))));
 }
 
 export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, product, onPick }: {

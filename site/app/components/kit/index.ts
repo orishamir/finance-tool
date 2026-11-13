@@ -75,5 +75,6 @@ export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
 export { CapBar } from "./cap-bar";
 export { Step } from "./steps";
 export { TypedPlain } from "./typed-plain";
-export { AddLine, type AddItem } from "./add-line";
+export { AlignedAcross, AlignedCaption, AlignedList, AlignedRow } from "./aligned-list";
+export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";

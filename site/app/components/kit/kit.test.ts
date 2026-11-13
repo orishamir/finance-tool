@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Button, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { Button, chipAfterAdd, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -288,5 +288,15 @@ describe("the third kit job's options", () => {
   });
   it("a pick card takes Card's padding", () => {
     expect(html(createElement(PickCard, { label: "x", onPick: () => undefined, pad: "snug", children: "c" }))).toContain("p-4 md:p-5");
+  });
+});
+
+describe("AddLine", () => {
+  it("hands the focus, once a chip added its thing and left, to the chip now in its place, else the last, and never takes it from where the page put it", () => {
+    expect(chipAfterAdd(1, 3, false)).toBe(1);
+    expect(chipAfterAdd(3, 3, false)).toBe(2);
+    expect(chipAfterAdd(0, 0, false)).toBeNull();
+    expect(chipAfterAdd(null, 3, false)).toBeNull();
+    expect(chipAfterAdd(1, 3, true)).toBeNull();
   });
 });

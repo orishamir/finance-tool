@@ -286,9 +286,16 @@ export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" 
       <Num value={mark.rate} />
       {m.rate}
       <Num value={mark.amount} />
-      {m.after}
+      {mark.largest ? m.after : `${m.smaller}${custodyName(mark.against)}.`}
     </>
   );
+}
+
+/** The custody fees a meet mark weighs the sums against, by name with the article where the deal has one ("דמי ניהול פיקדון ניירות הערך"). */
+export function custodyName(against: readonly FeeRef[]): string {
+  if (against.length !== 1) return copy.marks.meet.custody;
+  const one = against[0]!;
+  return (one.kind !== "own" && copy.nameForms[one.kind]?.the) || refName(one);
 }
 
 /** A cap's figure with its unit's words ("1.05% בשנה"), as the guide writes a cap. */

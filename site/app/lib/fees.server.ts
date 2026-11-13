@@ -11,7 +11,7 @@ import { classificationToWrapper, loadProducts, loadRules, pointedRecords, root,
 import { dealKindsOf } from "./fee-deal/kinds";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
 import { houseTemplate } from "./fee-deal/templates";
-import type { FeesData, TrackLite } from "./fee-page-data";
+import { termKey, type FeesData, type TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
 import { BROKERAGE, onlyWhatCanBeDone, providersOf } from "./providers";
 import { latestSnapshots } from "./providers.server";
@@ -84,7 +84,10 @@ export function buildFeesData(): FeesData {
     .filter((s) => !s.missing)
     .map(houseTemplate);
   const fx = loadFx();
-  const terms = termsFor(FEE_KIND_IDS.flatMap((k) => feeNameOf(k) ?? []), "");
+  // each fee name's card, and where a product has a sense of the name that differs from it, that sense under the product's key
+  const names = FEE_KIND_IDS.flatMap((k) => feeNameOf(k) ?? []);
+  const terms = termsFor(names, "");
+  for (const k of kinds) for (const [name, t] of Object.entries(termsFor(names, k.id))) if (t.explanation !== terms[name]?.explanation) terms[termKey(name, k.id)] = t;
   const allRules = loadRules();
   const rules: RuleRecord[] = [...ruleIdsIn({ kinds, templates, houses, fx, terms }, new Set())].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
   return { rules, pointed: Object.values(pointedRecords(rules, allRules)), templates, tracks, kinds, houses, fx, terms };

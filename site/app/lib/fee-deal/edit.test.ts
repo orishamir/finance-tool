@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { feeInOrder, newDeal, newFee, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addStage, editPrice, removeKept, removeStage, undoRemoval, setHeld, setKind, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { addFee, addStage, editPrice, pickHeld, removeStage, setHeld, setKind, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
@@ -72,39 +72,16 @@ describe("the fee page's edits", () => {
     expect(pension.fees).toEqual(deal.fees);
     expect(setStart(setStart(deal, "2026-03"), null).start).toBeUndefined();
   });
+});
 
-  describe("a fee taken away can be put back", () => {
-    const three = () => {
-      let d = newDeal("brokerage-account");
-      for (const k of ["trade", "custody", "fx"] as const) d = addFee(d, k).deal;
-      return d;
-    };
-
-    it("removing then undoing gives back the same deal: the same fee, the same id, in its place", () => {
-      const d = three();
-      const mid = d.fees[1]!.id;
-      const r = removeKept(d, mid, d.fees[0]!.id)!;
-      expect(r.deal.fees.map((f) => f.id)).toEqual([d.fees[0]!.id, d.fees[2]!.id]);
-      expect(r.chosen).toBe(d.fees[0]!.id);
-      const back = undoRemoval(r.deal, r.removal, r.chosen)!;
-      expect(back.deal).toEqual(d);
-      expect(back.chosen).toBe(d.fees[0]!.id);
-    });
-
-    it("removing the chosen fee chooses nothing until it is put back, chosen again", () => {
-      const d = three();
-      const id = d.fees[0]!.id;
-      const r = removeKept(d, id, id)!;
-      expect(r.chosen).toBeNull();
-      expect(undoRemoval(r.deal, r.removal, r.chosen)!.chosen).toBe(id);
-    });
-
-    it("another change to the deal ends the undo", () => {
-      const d = three();
-      const r = removeKept(d, d.fees[2]!.id, null)!;
-      const changed = setStart(r.deal, "2027-01");
-      expect(undoRemoval(changed, r.removal, null)).toBeNull();
-      expect(undoRemoval({ ...r.deal }, r.removal, null)).toBeNull();
-    });
+describe("what a fund-holding deal holds, chosen one fact at a time", () => {
+  it("holds nothing until all three facts are chosen, then holds them, and each later choice changes it at once", () => {
+    let r = pickHeld({}, { place: "abroad" });
+    expect(r).toEqual({ draft: { place: "abroad" }, held: null });
+    r = pickHeld(r.draft, { currency: "USD" });
+    expect(r.held).toBeNull();
+    r = pickHeld(r.draft, { payout: "accumulating" });
+    expect(r.held).toEqual({ place: "abroad", currency: "USD", payout: "accumulating" });
+    expect(pickHeld(r.held!, { place: "israel" }).held).toEqual({ place: "israel", currency: "USD", payout: "accumulating" });
   });
 });
