@@ -8,6 +8,7 @@ import { Link } from "react-router";
 import { groupPrices as copy } from "../../copy";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
+import { HelpMark } from "./help-mark";
 import { isPdfUrl, sourceHref, type CitedPlace } from "../../lib/sources";
 import { DocLink } from "./doc-link";
 import { TableCols } from "./table-cols";
@@ -142,9 +143,10 @@ function SourceLinks({ entries }: { entries: readonly GroupEntry[] }) {
 /**
  * The sub-rows as a table with three heads. A sub-row of several groups gives each group its own line of who and until when, beside
  * one "what is cheaper" (one "until when" too when they all end alike). `sources`: a line under each sub-row with where its words stand
- * (a house's own page). A note under the rows says what "names no fund" means, when a sub-row carries it.
+ * (a house's own page). What "names no fund" means, when a sub-row carries it, is a note under the rows, or with `headHelp` a "?" beside
+ * "מה זול יותר", whose cells it explains (a house's own page; the indices page's fold keeps the note).
  */
-export function GroupPriceRows({ entries, sources, className, own, choice }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** The caller's link under a sub-row: it gets the key of the sub-row's first group it can link (`group:<n>`, its place in the house's record); a house's page sends it to the index page with that group picked. */ own?: GroupLink; /** A radio before each group the person can pick (`group:<n>`), the picked one checked (opening the fold shows more choices). */ choice?: GroupChoice }) {
+export function GroupPriceRows({ entries, sources, className, own, choice, headHelp }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** What "names no fund" means as a "?" beside the head of the cells that say it, instead of a note under the rows. */ headHelp?: boolean; /** The caller's link under a sub-row: it gets the key of the sub-row's first group it can link (`group:<n>`, its place in the house's record); a house's page sends it to the index page with that group picked. */ own?: GroupLink; /** A radio before each group the person can pick (`group:<n>`), the picked one checked (opening the fold shows more choices). */ choice?: GroupChoice }) {
   const blocks = groupBlocks(entries);
   // the sub-row's first entry that states a price in numbers: the one the account panel starts from
   const startOf = (b: GroupBlock) => {
@@ -160,7 +162,16 @@ export function GroupPriceRows({ entries, sources, className, own, choice }: { e
         <thead>
           <tr>
             <th scope="col">{copy.colWho}</th>
-            <th scope="col">{copy.colCheaper}</th>
+            <th scope="col">
+              {marked && headHelp ? (
+                <span className="inline-flex items-center gap-1">
+                  {copy.colCheaper}
+                  <HelpMark about={copy.colCheaper} text={copy.noFundNote} />
+                </span>
+              ) : (
+                copy.colCheaper
+              )}
+            </th>
             <th scope="col">{copy.colEnds}</th>
           </tr>
         </thead>
@@ -212,7 +223,7 @@ export function GroupPriceRows({ entries, sources, className, own, choice }: { e
           ))}
         </tbody>
       </table>
-      {marked && <p className="text-xs text-muted-foreground max-w-measure">{copy.noFundNote}</p>}
+      {marked && !headHelp && <p className="text-xs text-muted-foreground max-w-measure">{copy.noFundNote}</p>}
       {choice && entries.some((_, i) => choice.can(`group:${i}`)) && <p className="text-xs text-muted-foreground max-w-measure">{copy.pickNote}</p>}
     </div>
   );

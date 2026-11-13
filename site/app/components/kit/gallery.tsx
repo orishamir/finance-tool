@@ -1596,8 +1596,8 @@ function Lists({ today }: { today: string }) {
         <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
           <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
         </State>
-        <State label="on the house's own page: the same rows, each group's name under its short words, a line of where the words stand, and a link under a group the index page offers as a radio (to that page with it picked)" wide>
-          <GroupPriceRows entries={sampleGroups()} sources own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
+        <State label={'on the house\'s own page: the same rows, each group\'s name under its short words, a line of where the words stand, a link under a group the index page offers as a radio (to that page with it picked), and with headHelp what "names no fund" means as the "?" beside "מה זול יותר" instead of a note under the rows'} wide>
+          <GroupPriceRows entries={sampleGroups()} sources headHelp own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
         </State>
         <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
           <GroupChoiceDemo />
@@ -1738,6 +1738,12 @@ function Lists({ today }: { today: string }) {
           <span className="inline-flex items-center gap-1 text-sm font-medium">
             {g.sample.helpText.head}
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
+          </span>
+        </State>
+        <State label="rules: the text ends with the chip of the rules behind it (a sentence moved from beside a table keeps its rules)">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {g.sample.helpText.head}
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} rules={["TXS-05", "TXS-06"]} />
           </span>
         </State>
         <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">
