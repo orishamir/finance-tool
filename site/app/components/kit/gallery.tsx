@@ -2545,7 +2545,7 @@ function DealDemos({ today }: { today: string }) {
           <State label={g.states.empty}>
             <MonthField value={null} label={g.sample.field} onCommit={() => undefined} />
           </State>
-          <State label={`the picker open, the box's month chosen and today's month edged, ${g.states.interactive}`}>
+          <State label={`the picker open with the box's month chosen; today's month, in its own year, has a quiet edge, ${g.states.interactive}`}>
             <MonthPicker label={g.sample.field} chosen={month} onPick={setMonth} />
           </State>
           <State label={`the picker open with an earliest and a latest month: the months outside them struck through, ${g.states.interactive}`}>
