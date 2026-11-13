@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { actionCost, dealMarks } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
-import { builder, byQuestion, copiesWords, panel, slotEdit, toolbox } from "./builder";
+import { builder, byQuestion, copiesWords, panel, slotEdit, thingMenu, toolbox } from "./builder";
 import { picksOf, readFee, readFees } from "./cases";
 import { addBy, addCase, canAddBy, copyCase, editPrice, removeBy, removeCase, removeTop, setMine, setPart, setStep, setTop, setWhen, withFigure } from "./edit";
 import { glance } from "./glance";
@@ -15,7 +15,7 @@ import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal
 import { readDealFor, sumsLargest } from "./parts";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
-import { removeByKept, removeCaseKept, undo } from "./undo";
+import { removeByKept, removeCaseKept, undo, undoWords } from "./undo";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -578,3 +578,86 @@ describe("the formulas the fee page's code cites", () => {
     expect([...cited].filter((id) => !method.includes(`**${id} `))).toEqual([]);
   });
 });
+
+describe("a case's standing against the cap, beside it in the builder (F-113)", () => {
+  // a provident fund's deposit fee by channel: the branch's case read, the internet's not, each judged at its own price
+  const byChannel = (): FeeDeal => ({
+    id: "deal-p",
+    name: "",
+    kind: "kupat-gemel-lehashkaa",
+    readFor: [{ by: "channel", is: "branch" }],
+    fees: [
+      {
+        id: "fee-deposit",
+        kind: "deposit",
+        by: [{ kind: "channel" }],
+        cases: [
+          { id: "d1", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(1) } }] },
+          { id: "d2", when: [["direct"]], stages: [{ price: { form: "action", rate: typed(2), discount: { pct: typed(50) } } }] },
+          { id: "d3", when: ["any"], stages: [{ price: { form: "action", rate: typed(9) } }] },
+        ],
+      },
+    ],
+  });
+  const rows = () => {
+    const block = builder(read(byChannel())).rows[0]!.block;
+    if (block.kind !== "band") throw new Error("a band");
+    return block.rows;
+  };
+  it("judges each case at its own price, the one the reading reads and the ones it does not", () => {
+    const [d1, , d3] = rows();
+    expect(d1!.standing.standing).toMatchObject({ judged: true, standing: "below" });
+    expect(d1!.standing.share?.value).toBeCloseTo(25, 10);
+    expect(d3!.standing.standing).toMatchObject({ judged: true, standing: "above" });
+  });
+  it("judges the price charged, after its discount", () => {
+    const d2 = rows()[1]!;
+    expect(d2.standing.standing).toMatchObject({ judged: true, standing: "below" });
+    expect(d2.standing.share?.value).toBeCloseTo(25, 10);
+  });
+  it("judges a price without a third party's fee", () => {
+    const d = byChannel();
+    const f = d.fees[0] as CasesFee;
+    f.cases[0]!.stages[0]!.price = { form: "action", rate: typed(1), third: { who: "הברוקר", price: { form: "action", rate: typed(5) } } } as Price;
+    const block = builder(read(d)).rows[0]!.block;
+    if (block.kind !== "band") throw new Error("a band");
+    expect(block.rows[0]!.standing.share?.value).toBeCloseTo(25, 10);
+  });
+});
+
+describe("a thing of the band's head, opened", () => {
+  it("lists the thing's values in the cases, each once, and says the cases that merge", () => {
+    const r = read(deal([{ by: "what", is: "us" }]));
+    const track = thingMenu(r, "fee-trade", 1)!;
+    expect(track.stop).toBe(copy.cases.thingMenu.stop.replace("{thing}", copy.cases.things.track!));
+    expect(track.values.map((w) => (w.any ? "any" : w.text))).toEqual(["any", "מסלול 1", "מסלול 2"]);
+    // five cases, two of them on what is bought in the US: they merge into one
+    expect(track.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "4"));
+    const what = thingMenu(r, "fee-trade", 0)!;
+    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, `${copy.cases.values.what.europe}, ${copy.cases.values.what.world}`]);
+    expect(what.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "3"));
+    const size = thingMenu(r, "fee-fx", 0)!;
+    expect(size.values.map((w) => [w.lead, w.figure?.value])).toEqual([
+      [copy.cases.upTo, 10],
+      [copy.cases.upTo, 100],
+      [copy.cases.over, 100],
+    ]);
+    expect(thingMenu(r, "fee-custody", 0)).toBeNull();
+  });
+  it("says a fee left with one price where it was the only thing, and cases kept where none merge", () => {
+    const one: FeeDeal = { ...deal(), fees: [removeBy(trade(), 1)] };
+    expect(thingMenu(read(one), "fee-trade", 0)!.after).toBe(copy.cases.thingMenu.slim);
+    const apart: CasesFee = { ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") };
+    expect(thingMenu(read({ ...deal(), fees: [apart] }), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.kept);
+  });
+  it("leaves an undo line that says what the change did", () => {
+    const words = (d: FeeDeal, t: number) => {
+      const r = removeByKept(d, "fee-trade", t, null)!;
+      return undoWords(r.undo, () => "", data);
+    };
+    expect(words(deal(), 1)).toBe(copy.cases.byRemoved.merged);
+    expect(words({ ...deal(), fees: [{ ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") }] }, 1)).toBe(copy.cases.byRemoved.kept);
+    expect(words({ ...deal(), fees: [removeBy(trade(), 1)] }, 0)).toBe(copy.cases.byRemoved.slim);
+  });
+});
+

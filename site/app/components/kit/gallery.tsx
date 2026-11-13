@@ -18,7 +18,7 @@ import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
-import { AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -2595,29 +2595,6 @@ function DealDemos({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
-      <Demo name="AlignedList, AlignedRow, AlignedAcross, AlignedCaption" use={g.uses.AlignedList}>
-        <Grid>
-          <State label={`a thing's fields: the labels in one narrow column, the boxes from one edge; the bounds' line keeps its label by its first line where the maximum goes under the minimum, ${g.states.interactive}`}>
-            <AlignedList>
-              <AlignedRow label={dealWords.panel.howMuch}>
-                <FigureField value={mine} label={g.sample.percent} unit="%" onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
-                <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
-              </AlignedRow>
-              <AlignedRow label={dealWords.panel.min} top>
-                <FigureField value={bound} label={g.sample.field} unit="₪" placeholder={dealWords.panel.empty} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />
-                <span className="inline-flex items-center gap-x-2">
-                  <AlignedCaption>{dealWords.panel.max}</AlignedCaption>
-                  <FigureField value={null} label={g.sample.field} unit="₪" placeholder={dealWords.panel.empty} onCommit={() => undefined} onClear={() => undefined} />
-                </span>
-                <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
-              </AlignedRow>
-              <AlignedAcross>
-                <AlignedCaption>{dealWords.builder.facts.noBounds}</AlignedCaption>
-              </AlignedAcross>
-            </AlignedList>
-          </State>
-        </Grid>
-      </Demo>
       <Demo name="TypedPlain" use={g.uses.TypedPlain}>
         <Grid>
           <State label="the same entered figure: in its box, and as plain words in a summary beside the boxes">
@@ -2794,10 +2771,10 @@ function Edit({ part, today, onRemove }: { part: Part; today: string; onRemove: 
   );
 }
 
-type Menu = { kind: "what" | "track" | "range"; at: HTMLElement } | null;
+type Menu = { kind: "what" | "track" | "range" | "thing"; at: HTMLElement } | null;
 
-/** The value menus as they open from a slot, with the sample's values. */
-function MenuBody({ kind }: { kind: "what" | "track" | "range" }) {
+/** The value menus as they open from a slot, with the sample's values; `thing`, what a thing of the band's head opens. */
+function MenuBody({ kind }: { kind: "what" | "track" | "range" | "thing" }) {
   const [ticked, setTicked] = useState<string[]>(["us"]);
   const [name, setName] = useState<string>(sc.tracks[0]!);
   const [mine, setMine] = useState(true);
@@ -2816,6 +2793,7 @@ function MenuBody({ kind }: { kind: "what" | "track" | "range" }) {
       />
     );
   if (kind === "track") return <TrackMenu name={name} onName={setName} mine={mine} onMine={setMine} />;
+  if (kind === "thing") return <ThingMenu title={sc.thingTitle} values={[...sc.tracks.map((text) => ({ text })), { text: sc.anyTrack, any: true }]} stop={sc.thingStop} onStop={() => undefined} after={sc.thingAfter} />;
   return (
     <RangeMenu
       title={sc.rangeTitle}
@@ -2868,7 +2846,15 @@ function TradeFee({ today }: { today: string }) {
   return (
     <>
       <FeeBlock dot="bg-fee-trade" name={sc.trade}>
-        <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "track", name: sc.things.track }]} addCase={{ onAdd: () => undefined }}>
+        <ConditionBand
+          things={[
+            { id: "what", name: sc.things.what },
+            { id: "track", name: sc.things.track },
+          ]}
+          onThing={(_id, at) => setMenu({ kind: "thing", at })}
+          openThing={menu?.kind === "thing" ? "track" : null}
+          addCase={{ onAdd: () => undefined }}
+        >
           {TRADE.map(row)}
           <CaseFold label={sc.more} open={!folded} onToggle={() => setFolded((f) => !f)}>
             {OTHER_TRACKS.map(row)}
@@ -2876,7 +2862,7 @@ function TradeFee({ today }: { today: string }) {
           {row(LAST)}
         </ConditionBand>
       </FeeBlock>
-      <ValueMenuSheet open={menu !== null} onClose={() => setMenu(null)} anchor={menu?.at ?? null} label={sc.menuOpen}>
+      <ValueMenuSheet open={menu !== null} onClose={() => setMenu(null)} anchor={menu?.at ?? null} label={menu?.kind === "thing" ? sc.thingOpen : sc.menuOpen}>
         {menu && <MenuBody kind={menu.kind} />}
       </ValueMenuSheet>
     </>
@@ -3079,10 +3065,10 @@ function CaseDemos({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
-      <Demo name="TickMenu, TrackMenu, RangeMenu, Switch, ValueMenuSheet" use={g.uses.ValueMenus}>
-        <State label={`drawn in place; on the page each opens in ValueMenuSheet from its slot (the band above opens them), ${g.states.interactive}`} wide>
-          <div className="grid gap-4 md:grid-cols-3">
-            {(["what", "track", "range"] as const).map((k) => (
+      <Demo name="TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet" use={g.uses.ValueMenus}>
+        <State label={`drawn in place; on the page each opens in ValueMenuSheet from its slot, ThingMenu from a thing of the band's head while its fee is open (the band above opens them), ${g.states.interactive}`} wide>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {(["what", "track", "range", "thing"] as const).map((k) => (
               <Card key={k} pad="tight" className="min-w-0 bg-popover">
                 <MenuBody kind={k} />
               </Card>

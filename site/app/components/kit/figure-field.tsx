@@ -108,8 +108,8 @@ const widthOf = (text: string, placeholder: string | undefined, tight?: boolean)
 const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:!w-auto";
 
 /**
- * The box the note of a sourced figure stays inside, the row's cell the figure stands in: the nearest one marked `data-note-cell` (an
- * `AlignedRow`'s boxes, a card's body), else the nearest block around the figure.
+ * The box the note of a sourced figure stays inside, the row's cell the figure stands in: the nearest one marked `data-note-cell`, else the
+ * nearest block around the figure.
  */
 function cellOf(el: HTMLElement): HTMLElement | null {
   const marked = el.parentElement?.closest<HTMLElement>("[data-note-cell]");

@@ -18,7 +18,7 @@ const bare = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, el
 describe("the gallery's cases and parts", () => {
   const out = html(h(KitGallery, { today }));
   it("names every piece", () => {
-    for (const name of ["PartChip, PartEdit", "ConditionBand, CaseRow, CaseFold, CaseSlot, OpenCase", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
+    for (const name of ["PartChip, PartEdit", "ConditionBand, CaseRow, CaseFold, CaseSlot, OpenCase", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -38,6 +38,12 @@ describe("a fee's band", () => {
   it("marks the open case by its word, not only its outline", () => {
     const out = band(h(OpenCase, { slots: null, children: null }));
     expect(out).toContain(words.chosen);
+  });
+  it("its things are words at rest, and slots that say their menu is open with `onThing`", () => {
+    expect(band(null)).not.toContain("aria-haspopup");
+    const out = html(h(ConditionBand, { things: [{ id: "a", name: "א" }, { id: "b", name: "ב" }], onThing: () => undefined, openThing: "b", children: null }));
+    expect(out).toMatch(/aria-haspopup="dialog" aria-expanded="false"[^>]*>א/);
+    expect(out).toMatch(/aria-haspopup="dialog" aria-expanded="true"[^>]*>ב/);
   });
   it("a row that opens is one button, named for the case", () => {
     const out = band(h(CaseRow, { when: [{ text: "ערך" }], label: "לפתוח את המקרה", onOpen: () => undefined, children: null }));
@@ -66,6 +72,13 @@ describe("the toolbox", () => {
     const out = html(h(Toolbox, { target: "מקרה", groups: two, onAdd: () => undefined, sheet: true }));
     expect(out).toContain(`aria-label="${words.toolbox.groups}"`);
     expect(out).not.toContain("הערה");
+  });
+  it("on a phone, held folded by the page, shows its row of groups and hides its parts and the case it adds to", () => {
+    const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, folded: true, onFold: () => undefined }));
+    expect(out).toContain(`aria-label="${words.toolbox.unfold}"`);
+    expect(out).toContain('aria-expanded="false"');
+    expect(out).not.toContain(words.toolbox.target);
+    expect(out).toMatch(/<div[^>]*hidden=""/);
   });
 });
 

@@ -8,9 +8,10 @@
 // deal beside this one; its track step opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
 // kind shows the first column alone, a deal with a kind its fees' column beside it, each in the place it keeps, so the first fee moves
 // nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
-// a slim fee or a case's row opens it in place, a tap on its slot opens that slot's menu, which the page holds. The toolbox stands in a
+// a slim fee or a case's row opens it in place, a tap on its slot, or on a thing of its band's head, opens that one's menu, which the page holds. The toolbox stands in a
 // column of its own where the window has the room, under its fee in a middling window, and on a phone in a short sheet pinned to the
-// foot of the screen, the page keeping room under its end for it. The columns and the reading are one thing: a fee under the pointer or
+// foot of the screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
+// when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer or
 // the focus in one is marked in the others, and a fee's name in the summary or the reading opens it (`FeeLinks`). A change that loses
 // something (a fee taken away, a fee filled from a price list, a price, a case or a thing taken away, a saved deal deleted) leaves one
 // undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and lives through edits elsewhere until it is
@@ -20,7 +21,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
-import { builder, panel as panelOf, slotEdit, toolbox as toolboxOf } from "../../lib/fee-deal/builder";
+import { builder, panel as panelOf, slotEdit, thingMenu, toolbox as toolboxOf } from "../../lib/fee-deal/builder";
 import { addFee, setPick, updateFee, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf, unitCurrency } from "../../lib/fee-deal/reading";
@@ -30,12 +31,12 @@ import { hasCases, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/mo
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { barredFees, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { ByKind, FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
-import { Button, Callout, Card, PageHead, ReadForBand, Section, ValueMenuSheet, cx } from "../kit";
+import { Button, Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet, cx } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
 import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type CaseUndoLine, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
@@ -122,8 +123,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // to the fee and case it was opened on
   const [caseOpen, setCaseOpen] = useState<{ fee: string; case: string } | null>(null);
   const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
+  const [thingOpen, setThingOpen] = useState<{ fee: string; t: number; at: HTMLElement } | null>(null);
   const [pending, setPending] = useState<{ fee: string; case: string | null; part: PendingPart } | null>(null);
   const [asking, setAsking] = useState<{ fee: string; kind: ByKind } | null>(null);
+  // whether a phone's toolbox sheet is folded to its groups' names: folded as the page loads, so nothing covers it, and unfolded when a
+  // fee or a case is opened, or at its handle
+  const [sheetFolded, setSheetFolded] = useState(true);
   // what the bar's end just did (a template opened a new deal), said for as long as an undo line stays, or until it is closed
   const [said, setSaid] = useState<string | null>(null);
   useEffect(() => {
@@ -224,6 +229,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const { deal: next, fee } = addFee(deal, kind);
     change(next);
     setChosen(fee.id);
+    setSheetFolded(false);
     setFocus({ fee: fee.id, on: "box" });
   };
   const onRemove = (feeId: string) => kept(removeFeeKept(deal, feeId, chosen));
@@ -241,6 +247,17 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const onRemoveCase = (feeId: string, caseId: string) => {
     setMenu(null);
     kept(removeCaseKept(deal, feeId, caseId, chosen));
+  };
+  // the price stops changing by a thing: the cases that then differ in nothing merge, kept for the undo, whose line says what merged. The
+  // menu it is chosen in closes first: while it is open the page behind it takes no focus, and on closing it gives the focus back to its
+  // pill, so the change is made once it has closed, and the undo line then takes the focus from the pill it takes away
+  const onRemoveBy = (feeId: string, t: number) => {
+    const r = removeByKept(deal, feeId, t, chosen);
+    const menuOpen = document.querySelector("dialog[open]");
+    setThingOpen(null);
+    setMenu(null);
+    if (menuOpen) menuOpen.addEventListener("close", () => kept(r), { once: true });
+    else kept(r);
   };
   // the fee put back takes the focus on its card; a fill's and a stage's lines hand it on themselves
   const onUndo = () => {
@@ -265,7 +282,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (by === "keyboard") after.current = { fee: feeId, how: "panel" };
     setChosen(feeId);
     setCaseOpen(caseId ? { fee: feeId, case: caseId } : null);
+    setSheetFolded(false);
     setMenu(null);
+    if (thingOpen && thingOpen.fee !== feeId) setThingOpen(null);
     if (pending && (pending.fee !== feeId || pending.case !== caseId)) setPending(null);
     if (asking && asking.fee !== feeId) setAsking(null);
   };
@@ -274,6 +293,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const was = chosen;
     setChosen(null);
     setMenu(null);
+    setThingOpen(null);
     setPending(null);
     setAsking(null);
     if (was) requestAnimationFrame(() => document.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(was)}"] :is([data-pick-card], input)`)?.focus());
@@ -307,6 +327,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const open = (next: FeeDeal) => {
     setDeal(next);
     setChosen(next.fees[0]?.id ?? null);
+    setSheetFolded(true);
+    setThingOpen(null);
     setSaid(null);
     setUndoing(null);
     link.closeBlocked();
@@ -391,6 +413,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
   const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
   const slot = menu && menu.fee === chosen && menu.case === caseId ? slotEdit(read, menu.fee, menu.case, menu.t) : null;
+  const thingView = thingOpen && thingOpen.fee === chosen ? thingMenu(read, thingOpen.fee, thingOpen.t) : null;
   const hasTracks = options.some((o) => o.source === "track");
   const hasHouses = options.some((o) => o.source === "house");
   // a product that saves charges its fees from what has built up: a share of what is held reads so
@@ -436,6 +459,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         product={deal.kind}
         fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
         line={fillLine}
+        folded={sheetFolded}
+        onFold={setSheetFolded}
         onAsk={(k) => setAsking(k ? { fee: chosenFee.id, kind: k } : null)}
         onFee={onFee}
         onPending={(part) => setPending({ fee: chosenFee.id, case: caseId, part })}
@@ -538,7 +563,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               deal={deal}
               view={builderView}
               groupOf={groupOf}
-              open={{ fee: chosen, case: caseId, view: panel?.open ?? null, pending: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null, menu: slot && menu ? menu.t : null }}
+              open={{ fee: chosen, case: caseId, view: panel?.open ?? null, pending: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
               toolbox={panelColumn || phone ? null : panelView}
               line={feeLine}
               caseLine={caseLine}
@@ -547,6 +572,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               onDeal={change}
               onOpen={onOpenCase}
               onSlot={(t, at) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null))}
+              onThing={(t, at) => setThingOpen((m) => (m && m.t === t && m.fee === chosen ? null : chosen ? { fee: chosen, t, at } : null))}
               onAdd={onAdd}
               onRemoveCase={onRemoveCase}
               onHoldOn={onHoldOn}
@@ -559,6 +585,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       {/* the open slot's menu: beside its pill on a computer, a sheet on a phone */}
       <ValueMenuSheet open={!!slot} onClose={() => setMenu(null)} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
         {slot && menu && chosenFeeNow && <SlotMenu key={`${menu.fee}:${menu.case}:${menu.t}`} edit={slot} fee={chosenFeeNow} caseId={menu.case} t={menu.t} top={panel?.open.slots[menu.t]?.words.figure ?? null} onFee={onFee} />}
+      </ValueMenuSheet>
+      {/* a thing of the open fee's band head: its values in the cases, and the action that stops the price changing by it */}
+      <ValueMenuSheet open={!!thingView} onClose={() => setThingOpen(null)} anchor={thingView ? thingOpen!.at : null} label={thingView?.name ?? ""}>
+        {thingView && thingOpen && <ThingMenu title={thingView.title} values={thingView.values.map((w) => ({ text: <WhenText words={w} />, any: w.any }))} stop={thingView.stop} onStop={() => onRemoveBy(thingOpen.fee, thingOpen.t)} after={thingView.after} />}
       </ValueMenuSheet>
       {views && (
         <Section id={READING_ID} title={copy.reading}>

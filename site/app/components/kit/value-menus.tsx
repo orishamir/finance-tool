@@ -1,6 +1,7 @@
 // What opens when a value of the open case is tapped (design-system 11, "Cases and parts"): a list to tick (what is bought, the channel, what
 // is held, the currency; several may be ticked for one case, and "בכל …" is one of the values), a track's name with the switch that makes
-// it the person's own, or a range's side and top. They stand in `ValueMenuSheet`: a card beside the value on a computer, a sheet from the
+// it the person's own, or a range's side and top; and what a thing of the band's head opens, its values and the action that drops it.
+// They stand in `ValueMenuSheet`: a card beside the value on a computer, a sheet from the
 // foot of the screen on a phone.
 import { useId, type ReactNode } from "react";
 import { Plus } from "lucide-react";
@@ -104,6 +105,35 @@ export function RangeMenu({ title, side, onSide, figure, before }: { title: Reac
           {copy.menus.before} {before}
         </p>
       )}
+    </div>
+  );
+}
+
+/**
+ * What a thing of a band's head opens while its fee is open: the values the cases name for it (`values`, each once, in the muted ink where
+ * it is any value), the action that stops the price changing by it (`stop`, its words naming the thing), and one line under it on what that
+ * does to the cases (`after`).
+ */
+export function ThingMenu({ title, values, stop, onStop, after }: { title: ReactNode; values: { text: ReactNode; any?: boolean }[]; stop: string; onStop: () => void; after: ReactNode }) {
+  const id = useId();
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1">
+        <MenuTitle id={id}>{title}</MenuTitle>
+        <ul aria-labelledby={id} className="flex flex-col gap-1">
+          {values.map((v, k) => (
+            <li key={k} className={cx("text-sm", v.any ? "text-muted-foreground" : "font-medium")}>
+              {v.text}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="flex flex-col items-start gap-1 border-t border-border pt-3">
+        <Button variant="outline" onClick={onStop}>
+          {stop}
+        </Button>
+        <p className="text-sm text-muted-foreground">{after}</p>
+      </div>
     </div>
   );
 }

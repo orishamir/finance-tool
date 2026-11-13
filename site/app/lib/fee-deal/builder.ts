@@ -8,7 +8,7 @@ import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
-import { canAddBy, type Figure, type PartId } from "./edit";
+import { canAddBy, removeBy, type Figure, type PartId } from "./edit";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
@@ -105,6 +105,11 @@ export interface CaseRow {
   /** Whether its prices are given and in order: a case still asking for a figure is read nowhere until it is. */
   priced: boolean;
   parts: SlimPart[];
+  /**
+   * Its price now against the cap (F-113), as a slim fee's row says it: the price charged, after its discount and without a third party's
+   * fee, whichever case the reading reads.
+   */
+  standing: StandingView;
 }
 
 /** A thing a fee changes by, as the band's head names it (a pill): its place among the fee's things, its kind, and its words. */
@@ -251,7 +256,7 @@ const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t
 /** A case as its band row (`open`: the case open in place). */
 function caseRow(r: DealRead, fee: CasesFee, c: Case, open: string | null): CaseRow {
   const from = monthKey(r.reading.from);
-  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: slimParts(fee, c, r) };
+  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: slimParts(fee, c, r), standing: standingNow(r, fee, c, c.id) };
 }
 
 /** The count of a number of tracks in words. */
@@ -289,6 +294,17 @@ const firstCase = (fee: Fee): string | undefined => (hasCases(fee) ? fee.cases[0
  * A fee's row: the prices of its first case (or its own), from the reading where the reading reads that case, or on their own where it does
  * not (the picks give the fee another case, or none, or a price is not given yet).
  */
+/**
+ * The price now of a fee's case (or its own, `caseId` none) against the cap: from the reading where the reading reads that case, so its
+ * share opens the reading's own calculation, else on its own.
+ */
+function standingNow(r: DealRead, fee: Fee, priced: Priced, caseId: string | undefined): StandingView {
+  const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
+  const fees = i >= 0 ? r.fees : [fee];
+  const views = stageViews(r, fees, Math.max(i, 0), priced.stages);
+  return (readStages(r, views)[0] ?? views.at(-1)!).standing;
+}
+
 function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null } | null): BuilderRow {
   const caseId = firstCase(fee);
   const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
@@ -638,4 +654,41 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
   // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
   for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
   return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+}
+
+// ---------------------------------------------------------------- a thing of the band's head, opened
+
+/**
+ * A thing of a fee's band head, opened while the fee is open: its spoken name, its values as the cases name them, each once in the cases' order; the action
+ * that stops the price changing by it (`removeBy`); and what that does to the cases (`after`): how many there are before and after where
+ * cases merge, that they stay as they are where none merge, or that the fee keeps its first case's price where it was its only thing.
+ */
+export interface ThingMenu {
+  /** The menu's spoken name: "המחיר משתנה לפי {thing}". */
+  name: string;
+  title: string;
+  values: WhenWords[];
+  stop: string;
+  after: string;
+}
+
+export function thingMenu(r: DealRead, feeId: string, t: number): ThingMenu | null {
+  const fee = r.deal.fees.find((f) => f.id === feeId);
+  if (!fee || !hasCases(fee) || !fee.by[t]) return null;
+  const m = copy.cases.thingMenu;
+  const b = fee.by[t];
+  const thing = b.kind === "own" ? b.label : copy.cases.things[b.kind]!;
+  const seen = new Set<string>();
+  const values: WhenWords[] = [];
+  for (const c of fee.cases) {
+    const key = JSON.stringify(c.when[t]);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    values.push(whenWords(fee, c.when[t]!, t, r.today));
+  }
+  const left = removeBy(fee, t);
+  const from = fee.cases.length;
+  const to = hasCases(left) ? left.cases.length : 1;
+  const after = !hasCases(left) ? m.slim : to < from ? m.merge.replace("{from}", String(from)).replace("{to}", String(to)) : m.kept;
+  return { name: `${copy.cases.changesBy} ${thing}`, title: m.title, values, stop: m.stop.replace("{thing}", thing), after };
 }

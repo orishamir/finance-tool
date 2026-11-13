@@ -3,8 +3,9 @@
 // plain line at its end the month it started. "העמלות בעסקה" (`FeesColumn`): its fees, grouped by what each is charged on under the
 // summary's group headings, a group shown only while the deal has a fee in it. A fee whose price changes by nothing is one slim line, its
 // parts after its name; a fee whose price changes holds one band, a row per case, the tracks that are not the person's folded into one
-// line. A tap on a slim line or a case's row opens it in place, the only place it shows: its slots, which open their menus, its parts with
-// their boxes, and the actions on the case. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as its
+// line, each case's standing against the cap after its parts. A tap on a slim line or a case's row opens it in place, the only place it
+// shows: its slots, which open their menus, its parts with their boxes, and the actions on the case; while a fee is open, the things of its
+// band's head are slots too, each opening its values and the action that stops the price changing by it. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as its
 // block was; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the fees the deal could
 // add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own; a fee added lands in its group, open, and
 // takes the focus in its first box. Where the page has no column for the toolbox and no sheet for it, the toolbox stands under its fee.
@@ -16,7 +17,7 @@ import type { Builder, BuilderRow, CaseRow as CaseRowView, SlimPart, WhenWords }
 import { addCase, copyCase, setStart, type Side } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { groupKey, groupOn, type DealRead } from "../../lib/fee-deal/parts";
+import { groupKey, groupOn, type DealRead, type StandingView } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
@@ -34,21 +35,21 @@ import { Fig, feeColour, feeName } from "./words";
 const b = copy.builder;
 
 /**
- * A row's standing against the cap now, after the fee's name: the share of the cap or the standing's tag; a later price's standing is
- * said with that price, and the row's next change is in its notes. A tag leads to the fee's row of the law card; a share opens its
- * calculation.
+ * A price's standing against the cap now, after its parts (a slim fee's, or a case's in the band): the share of the cap or the standing's
+ * tag; a later price's standing is said with that price, and the row's next change is in its notes. A tag leads to the fee's row of the
+ * law card; a share opens its calculation. Nothing for a price not given yet.
  */
-function RowStanding({ row }: { row: BuilderRow }) {
-  if (!row.priced) return null;
-  const now = row.standingNow.standing;
-  if (now.judged && now.standing === "below" && row.standingNow.share)
+function RowStanding({ fee, priced, standing }: { fee: string; priced: boolean; standing: StandingView }) {
+  if (!priced) return null;
+  const now = standing.standing;
+  if (now.judged && now.standing === "below" && standing.share)
     return (
       <span className="text-sm text-muted-foreground">
-        <Num value={row.standingNow.share} display={fmt.share} />
+        <Num value={standing.share} display={fmt.share} />
         {copy.standing.shareShort}
       </span>
     );
-  if (now.judged) return <LawTag fee={row.fee} standing={row.standingNow} />;
+  if (now.judged) return <LawTag fee={fee} standing={standing} />;
   return null;
 }
 
@@ -249,6 +250,8 @@ export interface OpenHere {
   pending: PendingPart | null;
   /** The slot whose menu is open: its thing's place among the fee's things. */
   menu: number | null;
+  /** The thing of the band's head whose menu is open: its place among the fee's things. */
+  thing: number | null;
 }
 
 /** The facts a slim line says at its end: that its price is not given yet or not read, its next change, where it is charged, its bounds. */
@@ -284,6 +287,7 @@ export function FeesColumn({
   onDeal,
   onOpen,
   onSlot,
+  onThing,
   onAdd,
   onRemoveCase,
   onHoldOn,
@@ -308,6 +312,8 @@ export function FeesColumn({
   onOpen: (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => void;
   /** A slot of the open case tapped, at the pill it opens from; again, its menu closes. */
   onSlot: (t: number, at: HTMLElement) => void;
+  /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
+  onThing: (t: number, at: HTMLElement) => void;
   onAdd: (kind: FeeKindId) => void;
   onRemoveCase: (feeId: string, caseId: string) => void;
   onHoldOn: (feeId: string, side: Side, k: number, caseId?: string) => void;
@@ -391,7 +397,7 @@ export function FeesColumn({
         <div className="flex flex-col gap-1.5">
           <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} onOpen={() => onOpen(fee.id, null, "pointer")}>
             {isOpen ? openParts(fee, name) : row.block.parts.map((p) => <RestPart key={p.id} part={p} />)}
-            {!isOpen && <RowStanding row={row} />}
+            {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
           </SlimFee>
           {!isOpen && <RowNotes row={row} fee={fee} />}
         </div>
@@ -425,6 +431,7 @@ export function FeesColumn({
           {r.parts.map((p) => (
             <RestPart key={p.id} part={p} />
           ))}
+          <RowStanding fee={fee.id} priced={r.priced} standing={r.standing} />
         </CaseRow>
       );
     };
@@ -448,7 +455,7 @@ export function FeesColumn({
     }
     return (
       <FeeBlock dot={dot} name={name}>
-        <ConditionBand things={things} addCase={{ onAdd: () => addOne(fee) }}>
+        <ConditionBand things={things} {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {})} addCase={{ onAdd: () => addOne(fee) }}>
           {items}
         </ConditionBand>
       </FeeBlock>

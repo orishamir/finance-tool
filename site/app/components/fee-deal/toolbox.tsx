@@ -186,8 +186,9 @@ export interface FillUndoLine {
 /**
  * The toolbox for the open case of `fee`: the column on a computer (`sheet` false), the pinned short sheet on a phone. `view` is the
  * toolbox's view (`toolbox`); `asking` the thing whose values are asked, where one is; `product` the deal's product, whose sense of the fee's
- * name "מה זה" opens; `fill` the price lists that can fill it; `line` the undo line of a fill just made. `onPending` hands a part that needs
- * its figure, month or fee to the open case; `onClose` un-chooses the fee.
+ * name "מה זה" opens; `fill` the price lists that can fill it; `line` the undo line of a fill just made; `folded`, whether the phone's sheet
+ * is folded to its groups' names, which the page holds (`onFold`). `onPending` hands a part that needs its figure, month or fee to the open
+ * case; `onClose` un-chooses the fee.
  */
 export function ToolboxColumn({
   view,
@@ -198,6 +199,8 @@ export function ToolboxColumn({
   product,
   fill,
   line,
+  folded,
+  onFold,
   onAsk,
   onFee,
   onPending,
@@ -212,6 +215,8 @@ export function ToolboxColumn({
   product: string | null;
   fill: PanelFill | null;
   line: FillUndoLine | null;
+  folded: boolean;
+  onFold: (folded: boolean) => void;
   onAsk: (kind: ByKind | null) => void;
   onFee: (f: Fee) => void;
   onPending: (part: PendingPart) => void;
@@ -246,7 +251,7 @@ export function ToolboxColumn({
       </Button>
     </div>
   );
-  const box = <Toolbox key={fee.id} target={target} groups={kitGroups(view)} onAdd={onAdd} ask={ask} foot={foot} sheet={sheet} docked={sheet} />;
+  const box = <Toolbox key={fee.id} target={target} groups={kitGroups(view)} onAdd={onAdd} ask={ask} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold } : {})} />;
   if (sheet) return box;
   // the site's own explanation of the fee: its glossary card by the fee's name, in the deal's product's sense where the glossary gives
   // that product one of its own

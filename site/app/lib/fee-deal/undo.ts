@@ -10,7 +10,7 @@ import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
 import type { DealKind } from "./kinds";
-import { newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import { hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { FeeKindId } from "./shapes";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
@@ -225,8 +225,13 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
       return copy.panel.laterRemoved;
     case "case":
       return copy.cases.caseRemoved;
-    case "by":
-      return copy.cases.byRemoved;
+    case "by": {
+      // what the line says follows what the change did: the cases merged, none merged, or the fee left with its first case's price
+      const after = u.after;
+      const words = copy.cases.byRemoved;
+      if (!after || !hasCases(after)) return words.slim;
+      return hasCases(u.before) && after.cases.length < u.before.cases.length ? words.merged : words.kept;
+    }
     case "fill":
       return `${copy.builder.filled(houseName(u.what.house, data) ?? "")}.`;
     case "remove":

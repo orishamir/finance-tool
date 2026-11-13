@@ -74,6 +74,8 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     product: deal.kind,
     fill: null,
     line: null,
+    folded: false,
+    onFold: () => {},
     onAsk: () => {},
     onFee: () => {},
     onPending: () => {},
@@ -92,7 +94,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null) => {
     deal,
     view: builder(r, [], chosen ? { fee: chosen, case: caseId } : null),
     groupOf: (f) => feeGroup(r, f, saves(deal)),
-    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, pending: null, menu: null },
+    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, pending: null, menu: null, thing: null },
     toolbox: null,
     line: null,
     caseLine: null,
@@ -101,6 +103,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null) => {
     onDeal: () => {},
     onOpen: () => {},
     onSlot: () => {},
+    onThing: () => {},
     onAdd: () => {},
     onRemoveCase: () => {},
     onHoldOn: () => {},
@@ -254,6 +257,30 @@ describe("the fees' column", () => {
     // the person's track is the open case here, its rows' words said once in its slots
     expect(count(shown, "מסלול 1")).toBe(1);
     expect(shown).not.toContain("מסלול 2");
+    // the fee open, each thing of its band's head is a slot that opens its menu; closed, the things are words
+    const pills = (html: string) => count(html, 'aria-haspopup="dialog" aria-expanded="false"');
+    const open = drawBuilder(d, "fee-trade");
+    const closed = drawBuilder(d, null);
+    expect(pills(open) - pills(closed)).toBe(2 + 2);
+    expect(count(closed, `>${feeDeal.cases.things.what}</span>`)).toBe(1);
+  });
+  it("says each case's standing against the cap beside it, as a slim line's", () => {
+    const d = provident();
+    d.readFor = [{ by: "channel", is: "branch" }];
+    d.fees = [
+      {
+        id: "fee-deposit",
+        kind: "deposit",
+        by: [{ kind: "channel" }],
+        cases: [
+          { id: "d1", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(1) } }] },
+          { id: "d2", when: [["direct"]], stages: [{ price: { form: "action", rate: typed(9) } }] },
+        ],
+      },
+    ];
+    const shown = text(builderOf(d, null));
+    expect(count(shown, feeDeal.standing.shareShort.trim())).toBe(1);
+    expect(shown).toContain(feeDeal.standing.tag.above);
   });
 });
 

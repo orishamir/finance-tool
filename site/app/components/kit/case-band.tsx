@@ -26,12 +26,14 @@ const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shr
 
 /**
  * The band: its head (the cases' icon, `label`, then one pill per thing) and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`),
- * 4 px apart, then the action that adds a case (`addCase`, "+ עוד מקרה"). With `onThing` the pills are buttons with a chevron, which the
- * page opens (to change or drop the thing); without it they are words at rest.
+ * 4 px apart, then the action that adds a case (`addCase`, "+ עוד מקרה"). With `onThing` the pills are slots, buttons with a chevron
+ * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open;
+ * without it they are words at rest.
  */
-export function ConditionBand({ things, onThing, label = copy.changesBy, addCase, children }: {
+export function ConditionBand({ things, onThing, openThing, label = copy.changesBy, addCase, children }: {
   things: { id: string; name: string }[];
   onThing?: (id: string, at: HTMLElement) => void;
+  openThing?: string | null;
   label?: ReactNode;
   addCase?: { onAdd: () => void; label?: string };
   children: ReactNode;
@@ -43,7 +45,7 @@ export function ConditionBand({ things, onThing, label = copy.changesBy, addCase
         <span className="font-medium">{label}</span>
         {things.map((t) =>
           onThing ? (
-            <button key={t.id} type="button" onClick={(e) => onThing(t.id, e.currentTarget)} className="tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent">
+            <button key={t.id} type="button" aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className="tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent">
               {t.name}
               <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
             </button>

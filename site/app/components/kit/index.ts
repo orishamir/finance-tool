@@ -76,7 +76,6 @@ export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
 export { MonthPicker, type MonthBounds } from "./month-picker";
 export { Step } from "./steps";
 export { TypedPlain } from "./typed-plain";
-export { AlignedAcross, AlignedCaption, AlignedList, AlignedRow } from "./aligned-list";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";
 export { PartChip, PartEdit, type PartKind, type PartMark } from "./part-chip";
@@ -84,5 +83,5 @@ export { CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord } f
 export { FeeBlock, SlimFee } from "./fee-block";
 export { ToolBlank, Toolbox, type ToolGroup, type ToolKind, type ToolPart } from "./toolbox";
 export { AskValues } from "./ask-values";
-export { RangeMenu, Switch, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
+export { RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
 export { ReadForBand, type ReadPick } from "./read-for-band";

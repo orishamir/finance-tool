@@ -81,12 +81,26 @@ function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part
  * groups, in place of the parts on a phone; `foot`: the actions on the whole fee, after the groups. `sheet`: a phone's short sheet, the
  * groups one at a time under a row of their names; `docked` pins it to the foot of the screen and keeps as much room at the end of the
  * document, so nothing on the page stays under it (without it the sheet is drawn where it stands, as the gallery shows it). The
- * sheet's handle folds it to its row of names and opens it again, so the page can be read under it.
+ * sheet's handle folds it to its row of names and opens it again, so the page can be read under it; a tap on a name opens it on that
+ * group. `folded` and `onFold` let the page hold whether it is folded (a phone's sheet starts folded, so nothing covers the page as it
+ * loads, and unfolds when a case is opened); without them the sheet holds it, open at first.
  */
-export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked }: { target: ReactNode; groups: ToolGroup[]; onAdd: (group: string, part: string) => void; ask?: ReactNode; foot?: ReactNode; sheet?: boolean; docked?: boolean }) {
+export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folded: heldFolded, onFold }: {
+  target: ReactNode;
+  groups: ToolGroup[];
+  onAdd: (group: string, part: string) => void;
+  ask?: ReactNode;
+  foot?: ReactNode;
+  sheet?: boolean;
+  docked?: boolean;
+  folded?: boolean;
+  onFold?: (folded: boolean) => void;
+}) {
   const id = useId();
   const [shown, setShown] = useState(groups[0]?.id ?? "");
-  const [folded, setFolded] = useState(false);
+  const [ownFolded, setOwnFolded] = useState(false);
+  const folded = heldFolded ?? ownFolded;
+  const setFolded = (f: boolean) => (onFold ? onFold(f) : setOwnFolded(f));
   // the pinned sheet's height, kept as room at the end of the document (under the site's footer too), so nothing stays under it
   const pinned = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -113,7 +127,7 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked }: { t
           aria-expanded={!folded}
           aria-controls={`${id}-parts`}
           aria-label={folded ? copy.toolbox.unfold : copy.toolbox.fold}
-          onClick={() => setFolded((f) => !f)}
+          onClick={() => setFolded(!folded)}
           className="tap-wide mx-auto flex h-5 w-16 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
         >
           <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />

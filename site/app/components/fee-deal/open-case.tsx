@@ -223,7 +223,7 @@ function PriceParts({
   );
 }
 
-/** The fee an offset is against: the deal's other fees, else every fee the site names (the reading states it, F-118; it reads no figure of it). */
+/** The fee an offset is against: the deal's other fees, else every fee the site names (the reading states it, as method §10.6 says under "What the page states and does not compute"; it reads no figure of it). */
 function OffsetChoice({ deal, fee, value, label, onChange }: { deal: FeeDeal; fee: Fee; value: FeeKindId | null; label: string; onChange: (kind: FeeKindId) => void }) {
   const others = [...new Set(deal.fees.filter((f) => f.id !== fee.id).map((f) => f.kind))];
   const kinds = others.length ? others : FEE_KIND_IDS.filter((k) => k !== "own");

@@ -519,7 +519,7 @@ function StatementLine({ statement, reading }: { statement: Statement; reading: 
 }
 
 /**
- * A part of a price the reading states without computing (F-118), on the fee it is printed with: "{fee}: נוספת עמלה של צד שלישי בלי סכום
+ * A part of a price the reading states without computing (method §10.6, "What the page states and does not compute"), on the fee it is printed with: "{fee}: נוספת עמלה של צד שלישי בלי סכום
  * בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג."
  */
 function StatedLine({ part }: { part: StatedPart }) {
@@ -537,7 +537,7 @@ function StatedLine({ part }: { part: StatedPart }) {
   );
 }
 
-/** Where the deal changes behaviour (F-112), then what the reading states of a price without computing it (F-118). */
+/** Where the deal changes behaviour (F-112), then what the reading states of a price without computing it (method §10.6, "What the page states and does not compute"). */
 function PointsCard({ reading }: { reading: Reading }) {
   return (
     <Card className="flex flex-col gap-4">
