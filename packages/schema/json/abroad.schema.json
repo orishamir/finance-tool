@@ -186,11 +186,44 @@
                           "by": {
                             "type": "string",
                             "minLength": 1
+                          },
+                          "basis": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "url": {
+                                  "type": "string",
+                                  "pattern": "^https:\\/\\/"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "locator": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "quote": {
+                                  "type": "string",
+                                  "minLength": 8
+                                }
+                              },
+                              "required": [
+                                "url",
+                                "title",
+                                "locator",
+                                "quote"
+                              ],
+                              "additionalProperties": false
+                            }
                           }
                         },
                         "required": [
                           "from",
-                          "by"
+                          "by",
+                          "basis"
                         ],
                         "additionalProperties": false
                       }
@@ -322,11 +355,44 @@
                             "by": {
                               "type": "string",
                               "minLength": 1
+                            },
+                            "basis": {
+                              "minItems": 1,
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "url": {
+                                    "type": "string",
+                                    "pattern": "^https:\\/\\/"
+                                  },
+                                  "title": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "locator": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "quote": {
+                                    "type": "string",
+                                    "minLength": 8
+                                  }
+                                },
+                                "required": [
+                                  "url",
+                                  "title",
+                                  "locator",
+                                  "quote"
+                                ],
+                                "additionalProperties": false
+                              }
                             }
                           },
                           "required": [
                             "from",
-                            "by"
+                            "by",
+                            "basis"
                           ],
                           "additionalProperties": false
                         }
@@ -391,7 +457,8 @@
                             "average-wage-linked",
                             "provider-set",
                             "market",
-                            "founder"
+                            "founder",
+                            "set yearly"
                           ]
                         },
                         {

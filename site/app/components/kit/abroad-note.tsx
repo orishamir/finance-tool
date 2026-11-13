@@ -24,6 +24,8 @@ export interface AbroadPlace {
   title?: ReactNode;
   /** Two or three sentences, or the one that says what was looked for. */
   body: ReactNode;
+  /** Under the sentences: the rules their comparison with the page's own product rests on (a `RulesLine`). */
+  rules?: ReactNode;
   /** Where a found product's facts were read: the publishers' names (the first one's page is the link) and that page's address. */
   source?: { publishers: string[]; href: string };
   /** A found product's three facts, in the order of `heads`. */
@@ -38,6 +40,7 @@ function PlaceNote({ place, heads }: { place: AbroadPlace; heads: readonly strin
       <div className="flex min-w-0 flex-col gap-2">
         <h3 className="text-lg font-semibold">{place.title ?? copy.noneTitle(place.name)}</h3>
         <p className="max-w-measure">{place.body}</p>
+        {place.rules}
         <p className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground">
           <span>
             {place.source && `${copy.source(place.source.publishers)} `}

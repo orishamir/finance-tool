@@ -15,7 +15,7 @@
       ],
       "who": {
         "statement": "18 or over, and resident in the UK (or a member of the armed forces or a Crown servant, or their spouse or civil partner)",
-        "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Who can open an ISA", "quote": "You must be 18 or over to open an ISA." },
+        "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Who can open an ISA", "quote": "You must be 18 or over to open an ISA … You must also be either: resident in the UK" },
         "checked": "2026-11-13"
       },
       "facts": {
@@ -24,11 +24,11 @@
           "unit": "gbp",
           "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Overview", "quote": "In the 2026 to 2027 tax year, the maximum you can save in ISAs is £20,000" },
           "checked": "2026-11-13",
-          "effective_from": null,
-          "effective_to": null,
-          "update_rule": "fixed in law",
+          "effective_from": "2026-04-06",
+          "effective_to": "2027-04-05",
+          "update_rule": "set yearly",
           "state": "sourced",
-          "notes": "Across all of a person's ISAs in the British tax year 2026 to 2027, which runs from 6 April to 5 April (How ISAs work: 'The tax year runs from 6 April to 5 April.')."
+          "notes": "Across all of a person's ISAs in the British tax year 2026 to 2027, which runs from 6 April 2026 to 5 April 2027 (How ISAs work: 'The tax year runs from 6 April to 5 April.')."
         },
         "tax_on_gain": {
           "value": "no tax on interest, income or capital gains in an ISA",
@@ -54,7 +54,7 @@
         "min_age": {
           "value": 18,
           "unit": "years",
-          "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Who can open an ISA", "quote": "You must be 18 or over to open an ISA." },
+          "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Who can open an ISA", "quote": "You must be 18 or over to open an ISA" },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -69,26 +69,31 @@
       "product": "Roth IRA",
       "pages": [
         { "url": "https://www.irs.gov/retirement-plans/roth-iras", "title": "Roth IRAs (page last reviewed or updated 9 August 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" },
-        { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" },
+        { "url": "https://www.irs.gov/publications/p590b", "title": "Publication 590-B (2025), Distributions from Individual Retirement Arrangements (IRAs) (page last reviewed or updated 30 April 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" },
         { "url": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits", "title": "Retirement topics - IRA contribution limits (page last reviewed or updated 23 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" }
       ],
+      "who": {
+        "statement": "contributions for a year can't be more than the person's taxable compensation for that year (a spouse's, on a joint return), and a Roth IRA contribution may be limited by filing status and income",
+        "source": { "url": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits", "title": "Retirement topics - IRA contribution limits (page last reviewed or updated 23 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "For 2026, the total contributions you make each year to all of your traditional IRAs and Roth IRAs can't be more than:", "quote": "If less, your taxable compensation for the year … your Roth IRA contribution may be limited based on your filing status and income" },
+        "checked": "2026-11-13"
+      },
       "facts": {
         "deposit_limit": {
           "value": 7500,
           "unit": "usd",
           "source": { "url": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits", "title": "Retirement topics - IRA contribution limits (page last reviewed or updated 23 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "For 2026, the total contributions you make each year to all of your traditional IRAs and Roth IRAs can't be more than:", "quote": "$7,500 ($8,600 if you’re age 50 or older), or" },
           "checked": "2026-11-13",
-          "effective_from": null,
-          "effective_to": null,
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-12-31",
           "tax_year": 2026,
-          "update_rule": "fixed in law",
+          "update_rule": "set yearly",
           "state": "sourced",
           "notes": "For 2026, all of a person's traditional and Roth IRAs together; $8,600 from age 50; the page's next line caps it at the person's taxable compensation where that is less. The Roth IRA page adds that the contribution may be limited by filing status and income."
         },
         "tax_on_gain": {
-          "value": "withdrawals of contributions and earnings are not taxed if they are a qualified distribution",
+          "value": "qualified distributions from a Roth IRA are not included in gross income",
           "unit": "text",
-          "source": { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Taxation of withdrawals", "quote": "Withdrawals of contributions and earnings are not taxed provided it’s a qualified distribution" },
+          "source": { "url": "https://www.irs.gov/publications/p590b", "title": "Publication 590-B (2025), Distributions from Individual Retirement Arrangements (IRAs) (page last reviewed or updated 30 April 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Chapter 2, Roth IRAs: Are Distributions Taxable?", "quote": "You don't include in your gross income qualified distributions or distributions that are a return of your regular contributions from your Roth IRA(s)." },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -98,18 +103,18 @@
         "withdraw": {
           "value": 59.5,
           "unit": "years",
-          "source": { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Taxation of withdrawals", "quote": "On or after attainment of age 59½." },
+          "source": { "url": "https://www.irs.gov/publications/p590b", "title": "Publication 590-B (2025), Distributions from Individual Retirement Arrangements (IRAs) (page last reviewed or updated 30 April 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Chapter 2, Roth IRAs: What Are Qualified Distributions?", "quote": "Made on or after the date you reach age 59½," },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
           "update_rule": "fixed in law",
           "state": "sourced",
-          "notes": "The age from which a withdrawal is a qualified distribution, the account held at least 5 years; the chart also names disability and death."
+          "notes": "A qualified distribution is made after the 5-year period and on or after age 59½, or because of disability, to a beneficiary after death, or for a first home up to a 10,000 dollar lifetime limit (Publication 590-B, What Are Qualified Distributions?)."
         },
         "account_years": {
           "value": 5,
           "unit": "years",
-          "source": { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Taxation of withdrawals", "quote": "the account is held for at least 5 years" },
+          "source": { "url": "https://www.irs.gov/publications/p590b", "title": "Publication 590-B (2025), Distributions from Individual Retirement Arrangements (IRAs) (page last reviewed or updated 30 April 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Chapter 2, Roth IRAs: What Are Qualified Distributions?", "quote": "It is made after the 5-year period beginning with the first tax year for which a contribution was made to a Roth IRA set up for your benefit." },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -138,14 +143,14 @@
       ],
       "who": {
         "statement": "of age and tax-domiciled in France",
-        "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelles sont les conditions d'ouverture du PEA bancaire ?", "quote": "Il faut être fiscalement domiciliée en France pour pouvoir ouvrir et détenir un PEA." },
+        "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelles sont les conditions d'ouverture du PEA bancaire ?", "quote": "Il faut être fiscalement domiciliée en France pour pouvoir ouvrir et détenir un PEA. Il n'y a pas de condition de nationalité pour ouvrir un PEA. Condition d'âge Il faut être majeur pour pouvoir ouvrir un PEA." },
         "checked": "2026-11-13"
       },
       "facts": {
         "deposit_limit": {
           "value": 150000,
           "unit": "eur",
-          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire", "quote": "Le plafond de versement est de 150 000 €." },
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire", "quote": "Le plafond de versement est de 150 000 €" },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -166,7 +171,7 @@
         "exempt_after_years": {
           "value": 5,
           "unit": "years",
-          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelle est la fiscalité applicable au PEA bancaire ?", "quote": "Si les retraits sont effectués après la 5e année du PEA, les gains réalisés sont exonérés d’impôt sur le revenu." },
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelle est la fiscalité applicable au PEA bancaire ?", "quote": "Si les retraits sont effectués après la 5 e année du PEA, les gains réalisés sont exonérés d’impôt sur le revenu." },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -174,14 +179,15 @@
           "state": "sourced"
         },
         "withdraw": {
-          "value": 5,
-          "unit": "years",
-          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Comment se font les retraits sur le PEA bancaire ?", "quote": "Un retrait partiel après 5 ans n'entraîne pas la clôture du plan." },
+          "value": "a withdrawal, total or partial, can be made; before the end of the 5th year it closes the plan in principle, after 5 years a partial one does not",
+          "unit": "text",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Comment se font les retraits sur le PEA bancaire ?", "quote": "Le retrait peut être total ou partiel. … En principe, si vous effectuez un retrait dans les 5 premières années du plan, votre PEA sera clôturé." },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
           "update_rule": "fixed in law",
-          "state": "sourced"
+          "state": "sourced",
+          "notes": "Same section: 'Un retrait partiel après 5 ans n'entraîne pas la clôture du plan.'"
         },
         "closes_before": {
           "value": 5,
@@ -202,69 +208,79 @@
       "product": "PIR",
       "product_name": "piano individuale di risparmio a lungo termine",
       "pages": [
-        { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "checked": "2026-11-13" },
+        { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com100!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 1-100 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "checked": "2026-11-13" },
+        { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 101-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "checked": "2026-11-13" },
         { "url": "https://www.agenziaentrate.gov.it/portale/web/guest/-/comunicato-stampa-del-4-maggio-2022", "title": "Comunicato stampa del 4 maggio 2022 (circolare n. 10/E)", "publisher": "Agenzia delle Entrate", "publisher_he": "רשות המסים של איטליה", "checked": "2026-11-13" }
       ],
       "who": {
         "statement": "individuals resident in Italy",
-        "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "da persone fisiche residenti nel territorio dello Stato", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
+        "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com100!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 1-100 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "da persone fisiche residenti nel territorio dello Stato", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 1", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
         "checked": "2026-11-13"
       },
       "facts": {
         "deposit_limit": {
           "value": 40000,
           "unit": "eur",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 101-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 2", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
           "checked": "2026-11-13",
           "effective_from": "2022-01-01",
           "effective_to": null,
           "update_rule": "fixed in law",
           "state": "sourced",
-          "notes": "A calendar year's deposits into an ordinary PIR. From 1 January 2022 (Agenzia delle Entrate, press release of 4 May 2022). Normattiva's text from 1 January 2027 shows commi 100 to 114 repealed by D.Lgs. 19 June 2026, n. 117, whose Testo unico imposte sui redditi, art. 209, c. 2, carries the same 40,000 and 200,000 euro (read 13.11.2026, library e7d473a7b041c0b6)."
+          "notes": "A calendar year's deposits into an ordinary PIR. From 1 January 2022 (Agenzia delle Entrate, press release of 4 May 2022)."
         },
         "deposit_total": {
           "value": 200000,
           "unit": "eur",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 101-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 2", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
           "checked": "2026-11-13",
           "effective_from": "2022-01-01",
           "effective_to": null,
           "update_rule": "fixed in law",
           "state": "sourced",
-          "notes": "The deposits into an ordinary PIR in total. The same repeal and carry-over from 1 January 2027 as the yearly limit."
+          "notes": "The deposits into an ordinary PIR in total."
         },
         "tax_on_gain": {
           "value": "the plan's income from capital and financial gains is not taxed",
           "unit": "text",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "Non sono soggetti a imposizione i redditi di capitale", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com100!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 1-100 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "Non sono soggetti a imposizione i redditi di capitale", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 1", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
           "update_rule": "fixed in law",
           "state": "sourced",
-          "notes": "Income from capital other than from qualifying holdings, and the financial gains of art. 67(1)(c-bis) to (c-quinquies) TUIR, of the plan's investments held at least five years (comma 106). The same text is in the Testo unico imposte sui redditi, art. 209, c. 1, from 1 January 2027."
+          "notes": "Comma 100: income from capital other than from qualifying holdings, and the financial gains of art. 67(1)(c-bis) to (c-quinquies) of the 1986 income tax code, from the plan's investments, earned by resident individuals outside a business (library daa018641cdd1041)."
         },
         "holding_years": {
           "value": 5,
           "unit": "years",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "Gli strumenti finanziari in cui è investito il piano devono essere detenuti per almeno cinque anni.", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 101-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "Gli strumenti finanziari in cui è investito il piano devono essere detenuti per almeno cinque anni.", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 7", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
           "update_rule": "fixed in law",
-          "state": "sourced",
-          "notes": "The same words are in the Testo unico imposte sui redditi, art. 209, c. 7, from 1 January 2027."
+          "state": "sourced"
         },
         "withdraw": {
           "value": "a sale before five years: the income is taxed by the ordinary rules, with interest and without penalties",
           "unit": "text",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "sono soggetti a imposizione secondo le regole ordinarie, unitamente agli interessi, senza applicazione di sanzioni", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 101-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "sono soggetti a imposizione secondo le regole ordinarie, unitamente agli interessi, senza applicazione di sanzioni", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 7", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
           "update_rule": "fixed in law",
           "state": "sourced",
-          "notes": "Comma 106: on a sale of the plan's instruments before five years, the income realised by the sale and that received during the minimum holding period is taxed by the ordinary rules, together with interest, without penalties; a redemption before five years must be reinvested within ninety days. Testo unico imposte sui redditi, art. 209, c. 7, from 1 January 2027."
+          "notes": "Comma 106: on a sale of the plan's instruments before five years, the income realised by the sale and that received during the minimum holding period is taxed by the ordinary rules, together with interest, without penalties; a redemption before five years must be reinvested within ninety days."
+        },
+        "investment_rules": {
+          "value": "the tax benefit is lost on the income of instruments not invested under the conditions of commi 102 to 104 (at least 70 per cent in companies resident in Italy, or in the EU or EEA with a permanent establishment in Italy; at most 10 per cent in one issuer)",
+          "unit": "text",
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 101-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 107", "locator_he": "סעיף 1, פסקה 107", "quote": "Il venire meno delle condizioni di cui ai commi 102, 103 e 104 comporta la decadenza dal beneficio fiscale", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, commi 3, 4, 5 e 8", "basis": [{ "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 376 (Abrogazioni)", "locator": "art. 376, comma 1, lettera eeeee)", "quote": "articolo 1, commi 18, 19, da 88 a 95-quater, da 100 a 114, 162, 241, 249, 285 e 540 della legge 11 dicembre 2016, n. 232" }, { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2026-06-19;117!vig=2026-11-13", "title": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 377 (Decorrenza)", "locator": "art. 377, comma 1", "quote": "Le disposizioni del presente testo unico si applicano a decorrere dal 1° gennaio 2027." } ]}},
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
         },
         "purpose": {
           "value": "to channel household savings to Italian and European industrial and commercial companies rooted in Italy",

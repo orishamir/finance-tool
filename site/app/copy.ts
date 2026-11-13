@@ -2531,6 +2531,7 @@ export const updateRules = {
   market: "לפי השוק",
   founder: "פרמטר של האתר",
   frozen: "מוקפא בשנים {years}",
+  "set yearly": "נקבע מחדש בכל שנה",
 } as const;
 
 /**

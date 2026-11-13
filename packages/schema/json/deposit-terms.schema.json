@@ -197,7 +197,8 @@
                 "average-wage-linked",
                 "provider-set",
                 "market",
-                "founder"
+                "founder",
+                "set yearly"
               ]
             },
             {
@@ -410,7 +411,8 @@
                     "average-wage-linked",
                     "provider-set",
                     "market",
-                    "founder"
+                    "founder",
+                    "set yearly"
                   ]
                 },
                 {
@@ -608,7 +610,8 @@
                 "average-wage-linked",
                 "provider-set",
                 "market",
-                "founder"
+                "founder",
+                "set yearly"
               ]
             },
             {
@@ -801,7 +804,8 @@
                 "average-wage-linked",
                 "provider-set",
                 "market",
-                "founder"
+                "founder",
+                "set yearly"
               ]
             },
             {
@@ -1020,7 +1024,8 @@
                 "average-wage-linked",
                 "provider-set",
                 "market",
-                "founder"
+                "founder",
+                "set yearly"
               ]
             },
             {
@@ -1216,7 +1221,8 @@
                     "average-wage-linked",
                     "provider-set",
                     "market",
-                    "founder"
+                    "founder",
+                    "set yearly"
                   ]
                 },
                 {
@@ -1411,7 +1417,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {

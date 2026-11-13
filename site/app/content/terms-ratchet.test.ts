@@ -377,7 +377,7 @@ const OTHER_SENSE: Record<string, readonly string[]> = {
   "guide/money-market-fund-daily": ["מהר הכסף" /* "how fast the money" (comes back), in the visual's caption, not the service הר הכסף */],
   "exposure/index-sp500": ["תשואה כוללת נטו" /* the name of one version of the index, beside its gross twin */],
   // the note on other countries (D114) speaks of other states' products and taxes, not the Israeli ones the rows explain
-  "guide/kupat-gemel-lehashkaa": ["תוכנית חיסכון לתושבי איטליה" /* Italy's PIR, not a bank's savings plan */, "המס הרגיל, עם ריבית" /* interest charged with a tax paid late, not interest earned */],
+  "guide/kupat-gemel-lehashkaa": ["תוכנית חיסכון <AbroadSaid" /* Italy's PIR, "תוכנית חיסכון לתושבי איטליה", not a bank's savings plan */, "המס הרגיל, עם ריבית" /* interest charged with a tax paid late, not interest earned */],
   "guide/keren-hishtalmut": ["מס הכנסה וביטוח לאומי" /* Britain's National Insurance, not Israel's */],
   "guide/makam": ["גודל היחידה" /* a trading unit */, "מחיר הקנייה" /* the price paid for a makam (the page and its visual's chart) */, "מדמי ניהול הפיקדון" /* part of a custody fee's name */],
 };

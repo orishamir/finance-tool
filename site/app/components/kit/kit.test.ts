@@ -319,7 +319,7 @@ describe("ChoiceChips", () => {
 
 describe("AbroadNote", () => {
   const places = [
-    { id: "gb", name: "בריטניה", product: "ISA", title: "TITLE-GB", body: "BODY-GB", source: { publishers: ["PUB-A", "PUB-B"], href: "https://www.gov.uk/x" }, facts: ["F1", "F2", "F3"], checked: "2026-11-13" },
+    { id: "gb", name: "בריטניה", product: "ISA", title: "TITLE-GB", body: "BODY-GB", rules: "RULES-GB", source: { publishers: ["PUB-A", "PUB-B"], href: "https://www.gov.uk/x" }, facts: ["F1", "F2", "F3"], checked: "2026-11-13" },
     { id: "us", name: "ארצות הברית", body: "BODY-US", checked: "2026-11-12" },
   ];
   const out = html(createElement(AbroadNote, { places, start: "gb", heads: ["H1", "H2", "H3"] }));
@@ -327,7 +327,7 @@ describe("AbroadNote", () => {
   const shown = out.slice(out.lastIndexOf('aria-hidden="true" class="invisible"'));
   it("opens on the country it is given, with its heading, its facts under the three headings and its source line", () => {
     expect(out).toContain('role="radio" aria-checked="true"');
-    for (const w of ["TITLE-GB", "H1", "F3", "PUB-A וPUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
+    for (const w of ["TITLE-GB", "RULES-GB", "H1", "F3", "PUB-A וPUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
   });
   it("keeps a chip for a country with nothing like the product, dashed and saying so in words", () => {
     expect(out).toMatch(/border-dashed text-muted-foreground[^>]*>.*?ארצות הברית.*?לא נמצא/);

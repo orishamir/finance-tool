@@ -11,9 +11,13 @@ import { guideContent } from "../content/guide";
 import { ValueSheet } from "../components/provenance-sheets";
 import { provenance as provenanceCopy } from "../copy";
 import { abroadView } from "./abroad";
-import { loadAbroad } from "./data.server";
+import { loadAbroad, loadRules } from "./data.server";
+import { ruleFigure } from "./value";
+import type { ContentProps } from "../content/guide/types";
 
 const ids = ["kupat-gemel-lehashkaa", "keren-hishtalmut"];
+const rules = loadRules();
+const cp: ContentProps = { figure: (id, name) => (rules[id] ? ruleFigure(rules[id]!, name, "2026-11-13") : null) };
 const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms: {}, dimensions: {}, today: "2026-11-13" }, children: el })));
 
 describe("the note on other countries", () => {
@@ -23,7 +27,7 @@ describe("the note on other countries", () => {
     const words = guideContent[id]!.abroad!;
 
     it(`${id}: the guide has words for every country the record found, and they name only facts the record holds`, () => {
-      const places = abroadPlaces(view, words);
+      const places = abroadPlaces(view, words, cp);
       expect(places).not.toBeNull();
       expect(places!.map((p) => p.id)).toEqual(["gb", "us", "fr", "it"]);
       expect(() => html(createElement(AbroadNote, { places: places!, start: view.opensOn, heads: words.heads }))).not.toThrow();
@@ -37,11 +41,27 @@ describe("the note on other countries", () => {
           expect(v.notes).toBeUndefined();
           expect(v.foreign).toBe(true);
           expect("superseded" in v.source).toBe(false);
+          expect("locator" in v.source).toBe(false);
           if (["gbp", "usd", "eur"].includes(v.unit)) expect(v.unitText).toBeTruthy();
         }
       }
     });
   }
+
+  it("opens who may open a product on the page's own words, like a fact", () => {
+    for (const id of ids) {
+      for (const c of abroadView(loadAbroad(id)!).countries) {
+        if (!c.found) continue;
+        const who = c.facts.who;
+        expect(who, `${id} ${c.country}`).toBeDefined();
+        expect(who!.state).toBe("sourced");
+        expect(who!.foreign).toBe(true);
+        expect(who!.quote?.length).toBeGreaterThan(7);
+      }
+    }
+    const kupat = abroadPlaces(abroadView(loadAbroad("kupat-gemel-lehashkaa")!), guideContent["kupat-gemel-lehashkaa"]!.abroad!, cp)!;
+    expect(kupat.filter((p) => p.rules).map((p) => p.id)).toEqual(["gb", "us"]);
+  });
 
   it("ends a foreign fact's sheet at its own page, with no link to the Israeli rules, and keeps that link on any other figure's sheet", () => {
     const view = abroadView(loadAbroad("kupat-gemel-lehashkaa")!);
@@ -56,11 +76,11 @@ describe("the note on other countries", () => {
   });
 
   it("writes a figure the law prints with decimals as it prints them, and an amount in its own currency", () => {
-    const keren = abroadPlaces(abroadView(loadAbroad("keren-hishtalmut")!), guideContent["keren-hishtalmut"]!.abroad!)!;
+    const keren = abroadPlaces(abroadView(loadAbroad("keren-hishtalmut")!), guideContent["keren-hishtalmut"]!.abroad!, cp)!;
     const out = html(createElement(AbroadNote, { places: keren, start: "fr", heads: guideContent["keren-hishtalmut"]!.abroad!.heads }));
     expect(out).toContain("3,844.80");
     expect(out).toContain("אירו");
-    const kupat = abroadPlaces(abroadView(loadAbroad("kupat-gemel-lehashkaa")!), guideContent["kupat-gemel-lehashkaa"]!.abroad!)!;
+    const kupat = abroadPlaces(abroadView(loadAbroad("kupat-gemel-lehashkaa")!), guideContent["kupat-gemel-lehashkaa"]!.abroad!, cp)!;
     const out2 = html(createElement(AbroadNote, { places: kupat, start: "gb", heads: guideContent["kupat-gemel-lehashkaa"]!.abroad!.heads }));
     for (const w of ["20,000", "ליש״ט", "7,500", "150,000", "40,000", "200,000", "59½"]) expect(out2, w).toContain(w);
     expect(out2).not.toMatch(/₪/);

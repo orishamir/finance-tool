@@ -102,12 +102,12 @@ export const content: GuideContent = {
     countries: {
       gb: {
         title: (p) => <>בבריטניה: תוכנית מניות לעובדים (<bdi dir="ltr">{p}</bdi>)</>,
-        body: (f) => <>המעסיק נותן לעובדים מניות של החברה, או מוסיף מניות על מה שהעובד קונה מהמשכורת. מי שמשאיר אותן בתוכנית <AbroadFigure v={f("keep_years")} /> שנים לא משלם עליהן מס הכנסה וביטוח לאומי.</>,
+        body: (f) => <>המעסיק נותן <AbroadSaid v={f("who")}>לעובדים</AbroadSaid> מניות של החברה, או מוסיף מניות על מה שהעובד קונה מהמשכורת. מי שמשאיר אותן בתוכנית <AbroadFigure v={f("keep_years")} /> שנים לא משלם עליהן מס הכנסה וביטוח לאומי.</>,
         tiles: (f) => [<>עד <AbroadCount v={f("employer_match")} words={{ one: "מניה אחת", two: "שתי מניות", many: "מניות" }} /> על כל מניה שקונים</>, <><AbroadSaid v={f("income_tax")}>אין</AbroadSaid>, אחרי <AbroadYears v={f("keep_years")} /></>, <AbroadYears v={f("keep_years")} />],
       },
       fr: {
         title: (p) => <>בצרפת: תוכנית <bdi dir="ltr">{p}</bdi></>,
-        body: (f) => <>חיסכון דרך מקום העבודה. הכסף נעול לפחות <AbroadYears v={f("keep_years")} />, ויש מקרים שבהם אפשר למשוך מוקדם, למשל כשקונים דירה למגורים. המעסיק יכול להוסיף על מה שהעובד מפקיד.</>,
+        body: (f) => <>חיסכון <AbroadSaid v={f("who")}>דרך מקום העבודה</AbroadSaid>. הכסף נעול לפחות <AbroadYears v={f("keep_years")} />, ויש מקרים שבהם אפשר למשוך מוקדם, למשל כשקונים דירה למגורים. המעסיק יכול להוסיף על מה שהעובד מפקיד.</>,
         tiles: (f) => [<>עד פי <AbroadFigure v={f("employer_multiple")} />, ועד <AbroadAmount v={f("employer_match")} /></>, <AbroadSaid v={f("income_tax")}>אין על תוספת המעסיק</AbroadSaid>, <>לפחות <AbroadYears v={f("keep_years")} /></>],
       },
     },

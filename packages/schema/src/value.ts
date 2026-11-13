@@ -79,6 +79,8 @@ export const updateRule = z.union([
     "provider-set",
     "market",
     "founder",
+    // set anew for each year by the authority that publishes it, with no rule the site follows (a yearly ceiling abroad: the US IRA limit)
+    "set yearly",
   ]),
   z.string().regex(/^frozen \d{4}-\d{4}$/, 'update_rule "frozen" must name its years, e.g. "frozen 2025-2027"'),
 ]);

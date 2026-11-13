@@ -12,8 +12,9 @@ export const ABROAD_ORDER: readonly AbroadCountry[] = abroadCountry.options;
 
 /**
  * The page a fact was read on: a government's or regulator's own page (D114), so `primary` only. `quote` is the page's own words the fact
- * rests on, verbatim; `locator` says where on the page they stand (a heading, a paragraph of a law), `locator_he` the same in Hebrew where
- * the sheet should show it.
+ * rests on, verbatim; where it rests on two places of the page, the two are joined by " … ", each verbatim (an age line and a residence
+ * line). `locator` says where on the page they stand (a heading, a paragraph of a law), `locator_he` the same in Hebrew where the sheet
+ * should show it.
  */
 export const abroadSource = z.strictObject({
   url: z.string().regex(/^https:\/\//),
@@ -26,11 +27,18 @@ export const abroadSource = z.strictObject({
   locator_he: z.string().min(1).optional(),
   quote: z.string().min(8),
   /**
-   * The day this text stops being the one in force, and the text that carries the same rule from then (Italy's PIR: Law 232/2016 art. 1
-   * cc.100-114, repealed from 1.1.2027 by D.Lgs. 117/2026, whose art. 209 carries it). From `from` on, the data check warns that the source
-   * must move to `by`.
+   * The day this text stops being the one in force, the text that carries the same rule from then, and the provisions that say so, each
+   * read and quoted like the fact (Italy's PIR: Law 232/2016 art. 1 cc.100-114, repealed by D.Lgs. 117/2026, Testo unico art. 376 c.1
+   * lett. eeeee), from the day its art. 377 sets, 1.1.2027; its art. 209 carries the rule). From `from` on, the data check warns that the
+   * source must move to `by`.
    */
-  superseded: z.strictObject({ from: isoDate, by: z.string().min(1) }).optional(),
+  superseded: z
+    .strictObject({
+      from: isoDate,
+      by: z.string().min(1),
+      basis: z.array(z.strictObject({ url: z.string().regex(/^https:\/\//), title: z.string().min(1), locator: z.string().min(1), quote: z.string().min(8) })).min(1),
+    })
+    .optional(),
 });
 
 /**
@@ -65,7 +73,8 @@ export const abroadFound = z.strictObject({
   pages: z.array(abroadPage).min(1),
   /** Who may open it, as the page says it; absent where the page says nothing of it. */
   who: z.strictObject({ statement: z.string().min(1), source: abroadSource, checked: isoDate }).optional(),
-  facts: z.record(z.string().regex(/^[a-z_]+$/), abroadFact),
+  /** By key; not `who`, the key the page gives who may open the product. */
+  facts: z.record(z.string().regex(/^[a-z_]+$/).refine((k) => k !== "who", { message: "`who` is the product's own field, not a fact" }), abroadFact),
 });
 
 /** A country where no product like the guide's was found: when it was looked for, and what was looked for. */

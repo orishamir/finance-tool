@@ -10,15 +10,17 @@ export interface ContentProps {
   breakTerms?: BreakTerms | null;
 }
 
-/** A fact of a country's product (data/abroad, D114), by its key in the record. */
+/** A fact of a country's product (data/abroad, D114), by its key in the record; `who`, who may open it. */
 export type AbroadFacts = (key: string) => SiteValue;
 
 /** The guide's words for one country's product in the note on other countries. */
 export interface AbroadCountryWords {
   /** The heading, "ב{מדינה}: …", with the product's name as its pages write it. */
   title: (product: string) => ReactNode;
-  /** Two or three sentences: what it is, and how it differs from this guide's product. */
-  body: (f: AbroadFacts) => ReactNode;
+  /** Two or three sentences: what it is, who may open it, and how it differs from this guide's product, whose figures `p` gives. */
+  body: (f: AbroadFacts, p: ContentProps) => ReactNode;
+  /** The rules of this guide's product the comparison rests on, shown under the sentences. */
+  rules?: readonly string[];
   /** The three facts, under `AbroadWords.heads`. */
   tiles: (f: AbroadFacts) => readonly [ReactNode, ReactNode, ReactNode];
 }

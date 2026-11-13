@@ -388,7 +388,7 @@ export default function GuidePage() {
   const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), common } : null;
   // a fact the site computes from the collected records, listed with the pinned rules
   const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
-  const abroad = data.abroad && content?.abroad ? <GuideAbroad view={data.abroad} words={content.abroad} /> : null;
+  const abroad = data.abroad && content?.abroad ? <GuideAbroad view={data.abroad} words={content.abroad} cp={cp} /> : null;
   const timelineNode =
     data.bundle && data.initial ? (
       <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} />
