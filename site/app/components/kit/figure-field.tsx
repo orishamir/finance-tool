@@ -6,6 +6,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent
 import { flushSync } from "react-dom";
 import { kit as kitCopy, values as valuesCopy } from "../../copy";
 import { formatTyped, parseNumber } from "../../lib/format";
+import { useMedia } from "../../lib/hooks";
 import type { SiteValue } from "../../lib/value";
 import { IconCalendar, IconFile } from "../icons";
 import { useOpen, valueItem } from "../provenance";
@@ -299,6 +300,9 @@ export function MonthField({ value, label, lead, tight, earliest, latest, onComm
   const [text, setText] = useState(shown);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
+  // on a touch screen the month is chosen in the picker, which every press on the box opens: the on-screen keyboard stays down, so it
+  // never covers the picker (a keyboard that is plugged in still types)
+  const touch = useMedia("(pointer: coarse)");
   const root = useRef<HTMLSpanElement>(null);
   const box = useRef<HTMLSpanElement>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -392,7 +396,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, onComm
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           type="text"
-          inputMode="numeric"
+          inputMode={touch ? "none" : "numeric"}
           dir="ltr"
           role="combobox"
           aria-haspopup="grid"

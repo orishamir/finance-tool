@@ -4251,8 +4251,8 @@ export const kit = {
     monthPlaceholder: "בחרו חודש",
     monthError: "כתבו חודש ושנה, כמו 03.2027.",
     /** The month picker's year control, for a screen reader and a pointer's hover (the arrows say it to the eye). */
-    yearBack: "שנה קודמת",
-    yearOn: "שנה הבאה",
+    yearBack: "לשנה הקודמת",
+    yearOn: "לשנה הבאה",
   },
   /** Said with a step's check (kit Step), so a done step is not told by its colour alone. */
   stepDone: "הושלם",
