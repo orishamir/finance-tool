@@ -1,11 +1,8 @@
-// One figure of a fee's price, typed where it stands: the same box in a builder row and in the panel, so a figure reads and edits alike in
-// both. Its state is the figure's (entered, or sourced from a template, where a press on it says where it is from); what it commits becomes
-// the person's.
+// One figure of a fee's price, typed where it stands in the case open in place.
 import { useRef, type ReactNode } from "react";
 import { feeDeal as copy, values as valuesCopy } from "../../copy";
 import { editPrice, figureBack, figureOf, withFigure, type Figure, type Side } from "../../lib/fee-deal/edit";
 import { pricesOn, SUM_MAX, type Fee, type Num } from "../../lib/fee-deal/model";
-import type { PriceView } from "../../lib/fee-deal/parts";
 import type { CitedPlace } from "../../lib/sources";
 import type { SiteValue } from "../../lib/value";
 import { FigureField, percentCheck } from "../kit";
@@ -13,15 +10,6 @@ import { FigureField, percentCheck } from "../kit";
 /** A sum above the largest a deal keeps is refused as it is typed: reading the deal back would drop it (model.ts). */
 const amountCheck = (n: number): string | null => (n < 0 ? valuesCopy.errors.negative : n > SUM_MAX ? copy.panel.tooLarge : null);
 const rateCheck = percentCheck();
-
-/**
- * The sign of a figure's unit in its box: a rate's and a percent maximum's percent; any sum in the price's currency (a share of an
- * action's bounds and flat price, a sum per unit with its bounds, a sum per action), else the shekel.
- */
-function signOf(view: PriceView, figure: Figure): string {
-  if (figure === "rate" || figure === "cap") return "%";
-  return copy.panel.signs[view.currency ?? "ILS"] ?? "";
-}
 
 /** The regulator's data a track's figures are from (data/cma): its datasets on the government's data site. */
 const CMA_DATA = /^https:\/\/data\.gov\.il\/(he\/)?datasets?\/cma\//;
@@ -53,60 +41,73 @@ export function figureFrom(value: SiteValue | null): ReactNode {
   return CMA_DATA.test(value.source.url) ? f.cma : undefined;
 }
 
-/** The id of the field of a price's rate or sum, which the page gives the focus to (a fee just added, a later price just added). */
-export const mainFieldId = (feeId: string, side: Side, k: number, where: "row" | "panel") => `${where}-${feeId}-${side}-${k}`;
+/** The id of the box of a part's first figure, which the page gives the focus to (a fee just added, a part just added). */
+export const partFieldId = (feeId: string, part: string) => `part-${feeId}-${part}`;
+
+/** A field's sign as its box draws it: a percent, or a currency's sign. */
+export const signText = (sign: "pct" | string): string => (sign === "pct" ? "%" : sign);
 
 /**
- * The figure `figure` of stage `k` of a fee's prices on `side`, in its box. A bound (`min`, `max`) or a percent maximum (`cap`) may be
- * emptied, which takes it away; one not given is an empty dashed box with a dash in it only where `optional` asks for one. A rate or a sum
- * not given yet (`view.blank`), and a flat price's figure not given yet (`blank`), is an empty dashed box with its unit; emptying a given
- * one makes it so again. `unit` replaces the sign in the box (a
- * bound's currency as a choice); `inside` draws `words` in the box. The arrows step a rate by a hundredth of a percent, a sum per unit by a
- * thousandth and any other sum by one.
- * The box accepts its unit's sign typed with the number, and Escape puts the figure back as it stood when the box took the focus, its
- * source with it.
+ * The figure `figure` of price `k` on `side` of a fee's case (`caseId`; a slim fee's own price where none), in its box (`value`, null while
+ * not given). A bound or a percent maximum (`optional`) may be emptied, which takes it away; not given, it is an empty box with a dash.
+ * Any other figure not given is an empty dashed box with its unit; emptying a given one makes it so again. `unit` replaces the sign in the
+ * box (a choice of currency). The arrows step a percent by a hundredth, a sum per unit by a thousandth and any other sum by one. The box
+ * accepts its unit's sign typed with the number, and Escape puts the figure back as it stood when the box took the focus, its source with
+ * it. Its state is the figure's (entered, or sourced from a template, where a press on it says where it is from); what it commits becomes
+ * the person's.
  */
-export function PriceFigure({ fee, side, k, view, figure, label, words, inside, tight, unit, optional, blank, id, onFee }: {
+export function PriceFigure({
+  fee,
+  side,
+  k,
+  caseId,
+  figure,
+  value,
+  sign,
+  unit,
+  label,
+  words,
+  optional,
+  id,
+  onFee,
+}: {
   fee: Fee;
   side: Side;
   k: number;
-  view: PriceView;
+  caseId?: string;
   figure: Figure;
+  value: SiteValue | null;
+  sign: "pct" | string;
+  unit?: ReactNode;
   /** The spoken name: the fee and the figure. */
   label: string;
   words?: ReactNode;
-  inside?: boolean;
-  tight?: boolean;
-  unit?: ReactNode;
   optional?: boolean;
-  /** A figure the price must have that is not given yet (a flat price's two): its empty box is drawn, with no dash. */
-  blank?: boolean;
   id?: string;
   onFee: (fee: Fee) => void;
 }) {
-  const value = view.figures[figure] ?? null;
   // the figure as it stood when the box took the focus
   const atFocus = useRef<Num | undefined>(undefined);
-  if (!value && !optional && !blank && !(view.blank && (figure === "rate" || figure === "amount"))) return null;
-  const set = (n: number | null) => onFee(editPrice(fee, side, k, (p) => withFigure(p, figure, n)));
+  const price = () => pricesOn(fee, side, caseId)[k]!.price;
+  const set = (n: number | null) => onFee(editPrice(fee, side, k, (p) => withFigure(p, figure, n), caseId));
+  const pct = sign === "pct";
   return (
     <FigureField
       value={value}
       label={label}
       from={figureFrom(value)}
-      unit={unit ?? signOf(view, figure)}
-      sign={signOf(view, figure)}
-      onFocus={() => (atFocus.current = figureOf(pricesOn(fee, side)[k]!.price, figure))}
-      onRevert={() => onFee(editPrice(fee, side, k, (p) => figureBack(p, figure, atFocus.current)))}
+      unit={unit ?? signText(sign)}
+      sign={signText(sign)}
+      onFocus={() => (atFocus.current = figureOf(price(), figure))}
+      onRevert={() => onFee(editPrice(fee, side, k, (p) => figureBack(p, figure, atFocus.current), caseId))}
       words={words}
-      inside={inside}
-      tight={tight}
+      tight
       {...(optional ? { placeholder: copy.panel.empty } : {})}
       onCommit={(n) => set(n)}
       onClear={() => set(null)}
-      step={figure === "rate" || figure === "cap" ? 0.01 : figure === "amount" && view.form === "perUnit" ? 0.001 : 1}
+      step={pct ? 0.01 : figure === "amount" && price().form === "perUnit" ? 0.001 : 1}
       {...(id ? { id } : {})}
-      validate={figure === "rate" || figure === "cap" ? rateCheck : amountCheck}
+      validate={pct ? rateCheck : amountCheck}
     />
   );
 }

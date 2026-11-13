@@ -281,7 +281,6 @@ describe("the builder's blocks", () => {
       ["unfilled", [], true],
     ]);
     expect(p.open).toMatchObject({ canCopy: true, canRemove: true });
-    expect(p.stages[0]!.price.form).toBe("perUnit");
   });
   it("gives the toolbox's groups in order for the open case, with the parts it has marked", () => {
     const t = toolbox(r, "fee-trade", "c3")!;

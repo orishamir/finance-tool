@@ -1,53 +1,59 @@
-// The fee page (method §10.6): the head, the bar of the deal, three columns for entering it (what the deal is, its fees, the chosen fee's
-// panel), and under them the reading, which opens with the deal at a glance. The deal is kept on this device, saved as it changes from its
-// first fee or a typed name. It opens from the address (a deal in `?d=`, the saved one where the link's deal is one already; a kind in
-// `?wrapper=`, a track in `?track=`), else the deal last worked on, else an empty deal with the kinds to choose from. "Today" is the
-// device's day, read after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another
-// day. The bar's end opens another saved deal or a new one, and copies the deal's link. The first column's price list step opens the
-// template picker, where a price list opens a new deal beside this one; its track step opens the tracks, and the track picked is set on
-// the deal on screen (`pickTrack`). A deal with no kind shows the first column alone, a deal with a kind its fees' column beside it, each
-// in the place it keeps, so the first fee moves nothing; the panel comes with a chosen fee, and the reading with the first fee. The
-// columns and the reading are one thing: a fee under the pointer or the focus in one is marked in the others, and a fee's name in the
-// summary or the reading chooses it (`FeeLinks`). A change that loses something (a fee taken away, a fee filled from a
-// price list, a stage taken away, a saved deal deleted) leaves one undo line where it happened (lib/fee-deal/undo.ts), which takes the
-// focus as it appears and lives through edits elsewhere until it is undone, a newer such change replaces it, another deal opens, the part
-// it would put back into changes, or ten seconds pass while neither the focus nor the pointer is on it.
+// The fee page (method §10.6): the head, the bar of the deal, three columns for entering it (what the deal is, its fees, the toolbox for
+// the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
+// on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal in `#d=`, or in `?d=` as links
+// were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
+// last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
+// pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end opens another saved deal
+// or a new one, and copies the deal's link. The first column's price list step opens the template picker, where a price list opens a new
+// deal beside this one; its track step opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
+// kind shows the first column alone, a deal with a kind its fees' column beside it, each in the place it keeps, so the first fee moves
+// nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
+// a slim fee or a case's row opens it in place, a tap on its slot opens that slot's menu, which the page holds. The toolbox stands in a
+// column of its own where the window has the room, under its fee in a middling window, and on a phone in a short sheet pinned to the
+// foot of the screen, the page keeping room under its end for it. The columns and the reading are one thing: a fee under the pointer or
+// the focus in one is marked in the others, and a fee's name in the summary or the reading opens it (`FeeLinks`). A change that loses
+// something (a fee taken away, a fee filled from a price list, a price, a case or a thing taken away, a saved deal deleted) leaves one
+// undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and lives through edits elsewhere until it is
+// undone, a newer such change replaces it, another deal opens, the part it would put back into changes, or ten seconds pass while neither
+// the focus nor the pointer is on it.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
-import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
-import { addFee, updateFee, type Side } from "../../lib/fee-deal/edit";
+import { builder, panel as panelOf, slotEdit, toolbox as toolboxOf } from "../../lib/fee-deal/builder";
+import { addFee, setPick, updateFee, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf, unitCurrency } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
-import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { hasCases, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { barredFees, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
-import type { FeeKindId } from "../../lib/fee-deal/shapes";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import type { ByKind, FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
-import { Button, Callout, Card, PageHead, Section, cx } from "../kit";
+import { Button, Callout, Card, PageHead, ReadForBand, Section, ValueMenuSheet, cx } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
-import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
+import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type CaseUndoLine, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
 import { FeeLinksProvider, type FeeLinks } from "./links";
 import { UndoLine } from "./undo-line";
 import { GlanceCard, READING_ID } from "./glance";
-import { PanelColumn, type PanelUndoLine } from "./panel";
+import { SlotMenu, WhenText, numText, type PendingPart } from "./open-case";
 import { TemplatePicker } from "./picker";
+import { ToolboxColumn, type FillUndoLine } from "./toolbox";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
 /**
- * Where the window is wide enough for the chosen fee's panel to have a column of its own, beside the fees' column (each of the two then at
- * least about 26rem); narrower, the panel opens right under its fee's card.
+ * Where the window is wide enough for the toolbox to have a column of its own, beside the fees' column (each of the two then at least
+ * about 26rem); narrower, it stands under its fee, and on a phone it is a short sheet at the foot of the screen.
  */
 const PANEL_COLUMN = "(min-width: 80rem)";
+const PHONE = "(max-width: 47.99rem)";
 
 /** How long the undo line stays while neither the focus nor the pointer is on it, in milliseconds. */
 const UNDO_MS = 10_000;
@@ -73,27 +79,51 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
   const store = dealStore.use();
   const [today, setToday] = useState<string | null>(null);
   useEffect(() => setToday(deviceToday()), []);
+  // the deal the address names, read once the page has what it needs (a deal in the fragment is opened by the browser's own decompression,
+  // which takes a moment): `undefined` while it is read
+  const { search, hash } = useLocation();
+  const [address, setAddress] = useState<{ deal: FeeDeal; given: boolean } | null | undefined>(undefined);
+  useEffect(() => {
+    if (!data || !today || address !== undefined) return;
+    let on = true;
+    void dealOfAddress(search, hash, data, today).then((a) => on && setAddress(a));
+    return () => {
+      on = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, today]);
   return (
     <div className="flex flex-col gap-6">
       <Head />
-      {failed ? <Callout tone="caution">{copy.failed}</Callout> : data && today && store.ready ? <Deal data={data} today={today} saved={store.value} writable={store.writable} /> : <p className="text-muted-foreground">{copy.loading}</p>}
+      {failed ? (
+        <Callout tone="caution">{copy.failed}</Callout>
+      ) : data && today && store.ready && address !== undefined ? (
+        <Deal data={data} today={today} saved={store.value} writable={store.writable} address={address} />
+      ) : (
+        <p className="text-muted-foreground">{copy.loading}</p>
+      )}
     </div>
   );
 }
 
-function Deal({ data, today, saved, writable }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean }) {
-  const { search } = useLocation();
+function Deal({ data, today, saved, writable, address }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; address: { deal: FeeDeal; given: boolean } | null }) {
   const navigate = useNavigate();
   // the deal is opened once, when the page has what it needs: later changes to the address (the page clears it) do not reopen it. A link
   // whose deal is a saved one already opens the saved one.
   const opened = useRef<{ deal: FeeDeal; fromAddress: boolean; given: boolean } | null>(null);
   if (!opened.current) {
-    const fromAddress = dealOfAddress(search, data, today);
-    const twin = fromAddress?.given ? savedTwin(fromAddress.deal, saved) : undefined;
-    opened.current = { deal: twin ?? fromAddress?.deal ?? saved[0] ?? newDeal(null), fromAddress: fromAddress !== null, given: !!fromAddress?.given && !twin };
+    const twin = address?.given ? savedTwin(address.deal, saved) : undefined;
+    opened.current = { deal: twin ?? address?.deal ?? saved[0] ?? newDeal(null), fromAddress: address !== null, given: !!address?.given && !twin };
   }
   const [deal, setDeal] = useState<FeeDeal>(opened.current.deal);
   const [chosen, setChosen] = useState<string | null>(deal.fees[0]?.id ?? null);
+  // the case open in place in the open fee (its first where none is named, or where the one named is gone), the slot whose menu is open,
+  // a part the toolbox added that asks for its figure, month or fee in the case, and the thing whose values the toolbox asks; each belongs
+  // to the fee and case it was opened on
+  const [caseOpen, setCaseOpen] = useState<{ fee: string; case: string } | null>(null);
+  const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
+  const [pending, setPending] = useState<{ fee: string; case: string | null; part: PendingPart } | null>(null);
+  const [asking, setAsking] = useState<{ fee: string; kind: ByKind } | null>(null);
   // what the bar's end just did (a template opened a new deal), said for as long as an undo line stays, or until it is closed
   const [said, setSaid] = useState<string | null>(null);
   useEffect(() => {
@@ -109,7 +139,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setPickFrom(from);
     setPicker(anchor);
   };
-  const link = useCopyLink();
+  const link = useCopyLink(deal);
   // the last change that lost something, while it can be undone; whether the focus or the pointer is on its line; what takes the focus
   // once drawn (a card put back, a fee just added)
   const [undoing, setUndoing] = useState<Undo | KindUndo | DealUndo | null>(null);
@@ -168,7 +198,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (!opened.current?.fromAddress) return;
     const given = opened.current.given ? opened.current.deal : null;
     if (given) dealStore.update((ds) => savedIfWorth(ds, given, today) ?? ds);
-    navigate({ search: "" }, { replace: true, preventScrollReset: true });
+    navigate({ search: "", hash: "" }, { replace: true, preventScrollReset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -207,8 +237,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (to) kept(setKindKept(deal, to, barredFees(id, data, today), chosen));
   };
   const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
-  const onRemoveStage = (feeId: string, side: Side, k: number) => kept(removeStageKept(deal, feeId, side, k, chosen));
-  const onHoldOn = (fee: Fee, side: Side, k: number) => kept(holdOnKept(deal, fee.id, side, k, chosen));
+  const onHoldOn = (feeId: string, side: Side, k: number, caseId?: string) => kept(holdOnKept(deal, feeId, side, k, chosen, caseId));
+  const onRemoveCase = (feeId: string, caseId: string) => {
+    setMenu(null);
+    kept(removeCaseKept(deal, feeId, caseId, chosen));
+  };
   // the fee put back takes the focus on its card; a fill's and a stage's lines hand it on themselves
   const onUndo = () => {
     if (!undoing) return;
@@ -227,20 +260,33 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setChosen(back.chosen);
     if (u.what.kind === "remove") setFocus({ fee: u.what.feeId, on: "card" });
   };
-  const onChoose = (feeId: string, by: "pointer" | "keyboard" | "field") => {
+  // a fee or one of its cases opened in place; from the keyboard, its first box takes the focus once drawn
+  const onOpenCase = (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => {
     if (by === "keyboard") after.current = { fee: feeId, how: "panel" };
     setChosen(feeId);
+    setCaseOpen(caseId ? { fee: feeId, case: caseId } : null);
+    setMenu(null);
+    if (pending && (pending.fee !== feeId || pending.case !== caseId)) setPending(null);
+    if (asking && asking.fee !== feeId) setAsking(null);
   };
-  // the panel closed: no fee chosen, and the focus back on the card it was for
+  // the toolbox closed: no fee open, and the focus back on the fee it was for
   const onClosePanel = () => {
     const was = chosen;
     setChosen(null);
-    if (was) requestAnimationFrame(() => document.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(was)}"] [data-pick-card]`)?.focus());
+    setMenu(null);
+    setPending(null);
+    setAsking(null);
+    if (was) requestAnimationFrame(() => document.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(was)}"] :is([data-pick-card], input)`)?.focus());
   };
+  // a fee the reading names by the id it reads it under (a step of a fee read across sizes, `fee-x-s1`) is the deal's fee it is of
+  const dealFeeOf = (id: string): string => (deal.fees.some((f) => f.id === id) ? id : (read.fees.find((x) => x.id === id)?.read?.of ?? id));
   const links: FeeLinks = {
     marked,
-    mark: setMarked,
-    open: (feeId) => {
+    mark: (id) => setMarked(id === null ? null : dealFeeOf(id)),
+    open: (given) => {
+      const feeId = dealFeeOf(given);
+      setCaseOpen(null);
+      setMenu(null);
       after.current = { fee: feeId, how: "view" };
       setChosen(feeId);
       if (feeId === chosen) {
@@ -317,7 +363,6 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
   // a fee the product may not charge by rule is never offered
   const barred = useMemo(() => barredFees(deal.kind, data, today), [deal.kind, data, today]);
-  const builderView = useMemo(() => builder(read, barred), [read, barred]);
   // the unit's price typed beside the curve of a price per unit, one for each deal, kept while the page is open with the currency it was
   // asked in: once the deal asks it in another (what is held, or the sum per unit's currency, changed) it is cleared, never read as a
   // price in the new currency
@@ -339,7 +384,13 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   };
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
-  const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);
+  const chosenFeeNow = deal.fees.find((f) => f.id === chosen) ?? null;
+  // the case open: the one named while its fee has it, else the fee's first
+  const caseId = chosenFeeNow && hasCases(chosenFeeNow) ? (caseOpen?.fee === chosenFeeNow.id && chosenFeeNow.cases.some((c) => c.id === caseOpen.case) ? caseOpen.case : chosenFeeNow.cases[0]!.id) : null;
+  const builderView = useMemo(() => builder(read, barred, chosen ? { fee: chosen, case: caseId } : null), [read, barred, chosen, caseId]);
+  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
+  const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
+  const slot = menu && menu.fee === chosen && menu.case === caseId ? slotEdit(read, menu.fee, menu.case, menu.t) : null;
   const hasTracks = options.some((o) => o.source === "track");
   const hasHouses = options.some((o) => o.source === "house");
   // a product that saves charges its fees from what has built up: a share of what is held reads so
@@ -360,21 +411,40 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, fee: (shown as Undo).before, words, onUndo, onHold: setHolding, take: take(shown) } : null;
   // a change of kind's line stands under the kind, in the builder
   const kindLine: KindUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "product" ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
-  // a stage's and a fill's lines stand in the panel, while the panel shows their fee
-  const panelLine: PanelUndoLine | null =
-    shown && words && "dealId" in shown && shown.what.kind !== "remove" && shown.what.kind !== "product" && shown.what.feeId === chosen
-      ? shown.what.kind === "stage" || shown.what.kind === "chain"
-        ? { kind: "stage", side: shown.what.side, k: shown.what.kind === "chain" ? shown.what.k + 1 : shown.what.k, words, onUndo, onHold: setHolding, take: take(shown) }
-        : { kind: "fill", words, onUndo, onHold: setHolding, take: take(shown) }
+  // a fill's line stands in the toolbox's foot, while the toolbox shows its fee; a price's, a case's or a thing's under its fee's block
+  const fillLine: FillUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "fill" && shown.what.feeId === chosen ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
+  const caseLine: CaseUndoLine | null =
+    shown && words && "dealId" in shown && (shown.what.kind === "stage" || shown.what.kind === "chain" || shown.what.kind === "case" || shown.what.kind === "by")
+      ? { feeId: shown.what.feeId, words, onUndo, onHold: setHolding, take: take(shown) }
       : null;
   const dealLine = shown && words && !("dealId" in shown) ? words : null;
   const readSome = read.fees.length > 0;
   const groupOf = (fee: Fee) => feeGroup(read, fee, saves);
-  // the chosen fee's panel: in a column of its own where the window has the room, sticking under the header as the fees scroll by; else
-  // right under its fee's card
+  // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
+  // on a phone a short sheet pinned to the foot of the screen; else right under its fee
   const panelColumn = useMedia(PANEL_COLUMN);
+  const phone = useMedia(PHONE);
+  const toolboxView =
+    views && panel && tools && chosenFee ? (
+      <ToolboxColumn
+        key={chosenFee.id}
+        view={tools}
+        fee={chosenFee}
+        caseId={caseId}
+        sheet={phone}
+        asking={asking?.fee === chosenFee.id ? asking.kind : null}
+        product={deal.kind}
+        fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
+        line={fillLine}
+        onAsk={(k) => setAsking(k ? { fee: chosenFee.id, kind: k } : null)}
+        onFee={onFee}
+        onPending={(part) => setPending({ fee: chosenFee.id, case: caseId, part })}
+        onRemove={onRemoveInPanel}
+        onClose={onClosePanel}
+      />
+    ) : null;
   const panelView =
-    views && panel && chosenFee ? (
+    toolboxView && !phone ? (
       <div
         ref={panelCard}
         className={cx("come-in", panelColumn && "col-start-3 row-start-1 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-lg")}
@@ -387,22 +457,13 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
         }}
       >
         <Card edge="accent" className="flex flex-col gap-4">
-          <PanelColumn
-            key={chosenFee.id}
-            panel={panel}
-            fee={chosenFee}
-            product={deal.kind}
-            fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
-            line={panelLine}
-            onFee={onFee}
-            onRemove={onRemoveInPanel}
-            onRemoveStage={(side, k) => onRemoveStage(chosenFee.id, side, k)}
-            onHoldOn={(side, k) => onHoldOn(chosenFee, side, k)}
-            onClose={onClosePanel}
-          />
+          {toolboxView}
         </Card>
       </div>
     ) : null;
+  // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
+  const picks = views?.reading.picks;
+  const pickWords = (w: Parameters<typeof WhenText>[0]["words"]) => (w.figure ? `${w.lead ?? ""}${numText(w.figure)}` : (w.text ?? ""));
 
   return (
     <FeeLinksProvider value={links}>
@@ -417,7 +478,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
             saved={saved}
             kindName={(d) => kindById(data.kinds, d.kind)?.name ?? null}
             copied={link.copied}
-            onCopy={() => void link.copyLink(deal)}
+            onCopy={() => void link.copyLink()}
             onOpen={onOpen}
             onNew={() => open(newDeal(null))}
             onRename={onRename}
@@ -477,22 +538,39 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
               deal={deal}
               view={builderView}
               groupOf={groupOf}
-              chosen={chosen}
-              panel={panelColumn ? null : panelView}
+              open={{ fee: chosen, case: caseId, view: panel?.open ?? null, pending: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null, menu: slot && menu ? menu.t : null }}
+              toolbox={panelColumn || phone ? null : panelView}
               line={feeLine}
+              caseLine={caseLine}
               focus={focus}
               onFocused={() => setFocus(null)}
               onDeal={change}
-              onChoose={onChoose}
+              onOpen={onOpenCase}
+              onSlot={(t, at) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null))}
               onAdd={onAdd}
-              onRemove={onRemove}
+              onRemoveCase={onRemoveCase}
+              onHoldOn={onHoldOn}
+              onPendingDone={() => setPending(null)}
             />
           </Card>
         )}
         {panelColumn && panelView}
       </div>
+      {/* the open slot's menu: beside its pill on a computer, a sheet on a phone */}
+      <ValueMenuSheet open={!!slot} onClose={() => setMenu(null)} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
+        {slot && menu && chosenFeeNow && <SlotMenu key={`${menu.fee}:${menu.case}:${menu.t}`} edit={slot} fee={chosenFeeNow} caseId={menu.case} t={menu.t} top={panel?.open.slots[menu.t]?.words.figure ?? null} onFee={onFee} />}
+      </ValueMenuSheet>
       {views && (
         <Section id={READING_ID} title={copy.reading}>
+          {picks && (
+            <div className="mb-4">
+              <ReadForBand
+                lead={picks.title}
+                note={picks.line}
+                picks={picks.things.map((t) => ({ name: t.words, items: t.options.map((o) => ({ id: o.is, label: pickWords(o.words) })), value: t.chosen, onSelect: (is: string) => change(setPick(deal, t.by, is)) }))}
+              />
+            </div>
+          )}
           {/* the chart's chosen period belongs to the deal it was chosen on: another deal starts from its own */}
           <ReadingCards
             key={deal.id}
@@ -506,6 +584,8 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
           />
         </Section>
       )}
+      {/* a phone's toolbox, pinned to the foot of the screen, keeps its room at the page's end */}
+      {phone && toolboxView}
     </FeeLinksProvider>
   );
 }

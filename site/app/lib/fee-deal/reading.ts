@@ -432,7 +432,7 @@ export interface PickThing {
 }
 
 /**
- * The reading's first line (spec §3): its head, one pill per thing the deal's fees change by that the reading picks, and the line under them.
+ * The reading's first line: its head, one pill per thing the deal's fees change by that the reading picks, and the line under them.
  * Null for a deal with no fee that changes by a thing picked.
  */
 export interface PickLine {
