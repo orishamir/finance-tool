@@ -1,7 +1,8 @@
 // A compact row in a list where each item opens its whole record beside the list or on its own screen (the rules page's rules): the
 // title and a short identifier at its end; under it small chips, a muted line cut to the row's width (a phone drops it) and a muted
 // note of where it comes from, on one line from 768 px. The whole row is one button, at least 44 px, and the chosen row is marked by a filled background and a bar at its start edge.
-// Rows of a group sit in one bordered box with hairlines between them (`RowList`), not as cards with gaps, under a `GroupHead`.
+// Rows of a group sit in one bordered box with hairlines between them (`RowList`), not as cards with gaps, under a `GroupHead`; rows under
+// a name of their own inside the box (`RowGroup`) are set in under it.
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { cx } from "./cx";
@@ -44,7 +45,7 @@ export function RowList({ children, className, label, plain }: { children: React
   );
 }
 
-export function ListRow({ title, lead, chips, meta, end, selected, dim, onSelect, rowId, controls }: { title: ReactNode; /** One muted line, cut to the row's width; left out on a phone. */ lead?: ReactNode; chips?: ReactNode; meta?: ReactNode; /** The identifier, small and muted at the end of the title's line. */ end?: ReactNode; selected?: boolean; /** Dimmed in place: it does not match what is chosen, and stays where it is. */ dim?: boolean; onSelect: () => void; /** The row's element id (a link lands on it, and focus comes back to it). */ rowId?: string; /** The id of what the row opens. */ controls?: string }) {
+export function ListRow({ title, lead, line, chips, meta, end, selected, dim, sub, onSelect, rowId, controls }: { title: ReactNode; /** One muted line, cut to the row's width; left out on a phone. */ lead?: ReactNode; /** One muted line that wraps and stays on a phone (a plan's price). */ line?: ReactNode; chips?: ReactNode; meta?: ReactNode; /** The identifier, small and muted at the end of the title's line. */ end?: ReactNode; selected?: boolean; /** Dimmed in place: it does not match what is chosen, and stays where it is. */ dim?: boolean; /** A row under its group's name (`RowGroup`): set in from the start edge, its title at the body's weight. */ sub?: boolean; onSelect: () => void; /** The row's element id (a link lands on it, and focus comes back to it). */ rowId?: string; /** The id of what the row opens. */ controls?: string }) {
   return (
     <li className={cx("transition-opacity duration-[var(--duration-base)]", dim && "opacity-45")}>
       <button
@@ -53,11 +54,11 @@ export function ListRow({ title, lead, chips, meta, end, selected, dim, onSelect
         onClick={onSelect}
         aria-current={selected ? "true" : undefined}
         aria-controls={controls}
-        className={cx("relative w-full min-h-target text-start px-3 py-2 lg:px-4 flex flex-col gap-1 md:gap-0.5", rowLook(selected))}
+        className={cx("relative w-full min-h-target text-start py-2 flex flex-col gap-1 md:gap-0.5", sub ? "ps-8 pe-3 lg:ps-10 lg:pe-4" : "px-3 lg:px-4", rowLook(selected))}
       >
         {selected && <RowMark />}
         <span className="flex items-baseline gap-3 min-w-0">
-          <span className="flex-1 min-w-0 font-semibold leading-snug md:leading-tight [overflow-wrap:anywhere]">{title}</span>
+          <span className={cx("flex-1 min-w-0 leading-snug md:leading-tight [overflow-wrap:anywhere]", sub ? "font-medium" : "font-semibold")}>{title}</span>
           {end && <span className="shrink-0 text-xs text-muted-foreground">{end}</span>}
         </span>
         {(chips || lead || meta) && (
@@ -67,7 +68,23 @@ export function ListRow({ title, lead, chips, meta, end, selected, dim, onSelect
             {meta && <span className={cx("text-xs text-muted-foreground md:shrink-0 md:whitespace-nowrap", !lead && "md:ms-auto")}>{meta}</span>}
           </span>
         )}
+        {line && <span className="text-[13px] leading-snug text-muted-foreground">{line}</span>}
       </button>
+    </li>
+  );
+}
+
+/**
+ * A group of rows inside a `RowList` under a name of its own that is not chosen itself (a house in the template picker, over its plans):
+ * the name, then its rows (`ListRow sub`), set in under it. `label` is the rows' spoken name.
+ */
+export function RowGroup({ title, label, children }: { title: ReactNode; label?: string; children: ReactNode }) {
+  return (
+    <li className="flex flex-col">
+      <span className="px-3 pt-3 pb-1 lg:px-4 font-semibold leading-snug [overflow-wrap:anywhere]">{title}</span>
+      <ul aria-label={label} className="flex flex-col">
+        {children}
+      </ul>
     </li>
   );
 }

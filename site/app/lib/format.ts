@@ -16,6 +16,9 @@ const euros = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", mi
 const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
 const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const shekelsFine = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const eurosFine = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const poundsFine = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 /** An ECB reference rate, to the four decimals the ECB publishes it with. */
@@ -90,6 +93,10 @@ export const fmt = {
   gbp: (v: number) => withMinus(plainMarks(pounds.format(v))),
   /** `0.0035 $`: a price per share. */
   usdFine: (v: number) => withMinus(plainMarks(dollarsFine.format(v))),
+  /** `0.005 ₪`, `0.004 €`, `0.003 £`: a price per unit typed in shekels, euros or pounds. */
+  nisFine: (v: number) => withMinus(plainMarks(shekelsFine.format(v))),
+  eurFine: (v: number) => withMinus(plainMarks(eurosFine.format(v))),
+  gbpFine: (v: number) => withMinus(plainMarks(poundsFine.format(v))),
   /** Data stores percent numbers (`1.05` is 1.05%). */
   pct: (v: number) => {
     // a figure that really has a third decimal (a 0.015% trustee fee, a 1.115% sum) keeps it; everything else rounds to two
@@ -210,7 +217,9 @@ export function nisShown(v: number, state?: "sourced" | "computed" | "entered", 
 export const joinLead = (lead: string, next: string): string => (lead.endsWith("\u05be") && /^[\u05d0-\u05ea]/.test(next.trimStart()) ? lead.slice(0, -1) : lead);
 
 const typedForms = new Map<string, { whole: Intl.NumberFormat; cents: Intl.NumberFormat }>();
-const currencyOfUnit = (unit: string): string | null => (/^nis/.test(unit) ? "ILS" : /^usd/.test(unit) && unit !== "usd_per_share" ? "USD" : /^eur/.test(unit) ? "EUR" : /^gbp/.test(unit) ? "GBP" : null);
+/** The currency of a unit that is a sum of money; none for a price per unit, a fraction of a cent that keeps its own decimals (`formatValue`). */
+const currencyOfUnit = (unit: string): string | null =>
+  unit.endsWith("_per_share") ? null : /^nis/.test(unit) ? "ILS" : /^usd/.test(unit) ? "USD" : /^eur/.test(unit) ? "EUR" : /^gbp/.test(unit) ? "GBP" : null;
 
 /**
  * A sum the person typed, as they typed it, in any currency: a whole sum with no decimals ("15 $", "1,000 ₪"), any other with its two
@@ -261,6 +270,12 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     return value;
   }
   switch (unit) {
+    case "nis_per_share":
+      return fmt.nisFine(value);
+    case "eur_per_share":
+      return fmt.eurFine(value);
+    case "gbp_per_share":
+      return fmt.gbpFine(value);
     case "nis":
     case "nis_per_month":
     case "nis_per_trade":
@@ -268,6 +283,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return state ? nisShown(value, state, parameter) : fmt.nis(value);
     case "usd":
     case "usd_per_trade":
+    case "usd_per_event":
       return fmt.usd(value);
     case "usd_per_share":
       return fmt.usdFine(value);
@@ -296,6 +312,9 @@ export function formatValue(value: number | string | boolean | null, unit: strin
 export function unitWord(unit: string): string {
   if (unit.startsWith("nis")) return valuesCopy.units.nis;
   if (unit.startsWith("pct")) return valuesCopy.units.pct;
+  if (unit.startsWith("usd")) return valuesCopy.units.usd;
+  if (unit.startsWith("eur")) return valuesCopy.units.eur;
+  if (unit.startsWith("gbp")) return valuesCopy.units.gbp;
   if (unit === "years") return valuesCopy.units.years;
   return "";
 }

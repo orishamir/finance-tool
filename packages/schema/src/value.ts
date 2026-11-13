@@ -28,6 +28,10 @@ export const unit = z.enum([
   "nis_per_trade",
   "nis_per_transfer",
   "usd_per_share",
+  /** A sum for each unit traded in shekels, euros or pounds: a price per unit the person types on the fee page (F-12); no price list prints one. */
+  "nis_per_share",
+  "eur_per_share",
+  "gbp_per_share",
   "usd_per_trade",
   "gbp_per_trade",
   /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
