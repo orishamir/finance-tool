@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { addFee, editPrice, setLimited, setName, setSaleApart, setStart, setUntil, updateFee, withFigure } from "./edit";
-import { newDeal, typed, type FeeDeal } from "./model";
+import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
 import { barredFees, feePriceLists, pickTrack } from "./templates";
 import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
 import { kindById } from "./kinds";
@@ -14,7 +14,7 @@ const account = (): FeeDeal => ({
   id: "deal-a",
   name: "",
   kind: "brokerage-account",
-  held: { place: "abroad", currency: "USD", payout: "accumulating" },
+  readFor: [{ by: "what", is: "us" }],
   fees: [
     { id: "fee-trade", kind: "trade", sale: [{ price: { form: "action", rate: typed(0.3) } }], stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) } }] },
     { id: "fee-custody", kind: "custody", stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }] },
@@ -56,7 +56,7 @@ describe("one undo for a change that loses something", () => {
   it("puts back a stage taken away", () => {
     const d = account();
     const r = removeStageKept(d, "fee-custody", "buy", 0, null)!;
-    expect(r.deal.fees[1]!.stages).toHaveLength(1);
+    expect(r.deal.fees[1]!.stages!).toHaveLength(1);
     expect(undo(r.deal, r.undo, null)!.deal).toEqual(d);
     expect(removeStageKept(d, "fee-fx", "buy", 0, null)).toBeNull();
   });
@@ -77,28 +77,28 @@ describe("one undo for a change that loses something", () => {
     const edited = updateFee(r.deal, "fee-fx", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.5)));
     const back = undo(edited, r.undo, null)!.deal;
     expect(back.fees[0]).toEqual(d.fees[0]);
-    expect(back.fees[2]!.stages[0]!.price).toMatchObject({ rate: { v: 0.5 } });
+    expect(back.fees[2]!.stages![0]!.price).toMatchObject({ rate: { v: 0.5 } });
   });
   it("puts a last stage back with the end of the price before it, into the fee as it is now", () => {
     const d = account();
     const r = removeStageKept(d, "fee-custody", "buy", 1, null)!;
-    expect(r.deal.fees[1]!.stages).toEqual([{ price: { form: "free" } }]);
+    expect(r.deal.fees[1]!.stages!).toEqual([{ price: { form: "free" } }]);
     const edited = updateFee(r.deal, "fee-trade", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.1)));
     const back = undo(edited, r.undo, null)!.deal;
     expect(back.fees[1]).toEqual(d.fees[1]);
-    expect(back.fees[0]!.stages[0]!.price).toMatchObject({ rate: { v: 0.1 } });
+    expect(back.fees[0]!.stages![0]!.price).toMatchObject({ rate: { v: 0.1 } });
   });
   it("puts a middle price back with the end the price before it had", () => {
     const d = account();
     const three = updateFee(d, "fee-custody", (f) => setLimited(f, "buy", 1, "2030-01"));
     const r = removeStageKept(three, "fee-custody", "buy", 1, null)!;
-    expect(r.deal.fees[1]!.stages.map((s) => s.until)).toEqual(["2030-01", undefined]);
+    expect(r.deal.fees[1]!.stages!.map((s) => s.until)).toEqual(["2030-01", undefined]);
     expect(undo(r.deal, r.undo, null)!.deal).toEqual(three);
   });
   it("puts back the prices \"כל הזמן\" took away after a price, with its end, while it is still the last", () => {
     const d = account();
     const r = holdOnKept(d, "fee-custody", "buy", 0, null)!;
-    expect(r.deal.fees[1]!.stages).toEqual([{ price: { form: "free" } }]);
+    expect(r.deal.fees[1]!.stages!).toEqual([{ price: { form: "free" } }]);
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
     // a chain built again since has the prices' place: the undo no longer stands
     const again = updateFee(r.deal, "fee-custody", (f) => setLimited(f, "buy", 0, "2029-01"));
@@ -117,7 +117,7 @@ describe("one undo for a change that loses something", () => {
     expect(standing(removed.undo, d)).toBe(false);
     const stage = removeStageKept(d, "fee-custody", "buy", 0, null)!;
     expect(standing(stage.undo, removeFeeKept(stage.deal, "fee-custody", null)!.deal)).toBe(false);
-    const sale = removeStageKept({ ...d, fees: [{ ...d.fees[0]!, sale: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "action", rate: typed(0.3) } }] }] }, "fee-trade", "sell", 0, null)!;
+    const sale = removeStageKept({ ...d, fees: [{ ...(d.fees[0] as SlimFee), sale: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "action", rate: typed(0.3) } }] }] }, "fee-trade", "sell", 0, null)!;
     expect(standing(sale.undo, updateFee(sale.deal, "fee-trade", (f) => setSaleApart(f, false)))).toBe(false);
   });
 });
@@ -158,7 +158,7 @@ describe("an undo stands while the part it puts back into is as its change left 
     const d = account();
     const house = feePriceLists(d, "trade", data)[0]!.id;
     const r = fillFeeKept(d, "fee-trade", house, data, null)!;
-    const edited = updateFee(r.deal, "fee-trade", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.11)));
+    const edited = updateFee(r.deal, "fee-trade", (f) => editPrice(f, "buy", 0, () => ({ form: "free" })));
     expect(standing(r.undo, edited)).toBe(false);
     expect(undo(edited, r.undo, null)).toBeNull();
   });
@@ -183,7 +183,7 @@ describe("an undo stands while the part it puts back into is as its change left 
 });
 
 describe("a fee filled from a house of another kind of provider", () => {
-  const here = (): FeeDeal => ({ ...account(), held: { place: "israel", currency: "ILS", payout: "accumulating" } });
+  const here = (): FeeDeal => ({ ...account(), readFor: [{ by: "what", is: "tase" }] });
   const bank = data.houses.find((h) => h.provider === "bank" && feePriceLists(here(), "trade", { houses: [h] }).length > 0)!;
   const other = data.houses.find((h) => h.provider === "non-bank" && feePriceLists(here(), "trade", { houses: [h] }).length > 0)!;
   const id = (h: { id: string }) => `house:${h.id}`;
@@ -275,7 +275,6 @@ describe("another kind of product for the deal", () => {
     const d: FeeDeal = { ...account(), template: { id: "house:x", name: "בית" }, provider: "bank" };
     const r = setKindKept(d, kind("pension-general"), [], null);
     expect(r.deal.provider).toBeUndefined();
-    expect(r.deal.held).toBeUndefined();
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
   });
   it("leaves a deal of the same kind as it is", () => {

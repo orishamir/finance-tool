@@ -1,11 +1,30 @@
 // The deal as the device keeps it (method §10.6): one product's fees as the person typed them or a template filled them, each fee
-// with its prices over time. Rates are typed in percent; `engineDeal` is the one place they become the engine's fractions. `readDeal`
-// checks every field of a deal from the device, a file or a link, and drops whatever is not a deal. No engine at run time: the
-// side stores read this file on every page.
+// with its prices over time, or, for a fee whose price changes by things (F-114), its cases, each with its own prices over time; and the
+// reading's picks. Rates are typed in percent; `engineDeal` (to-engine.ts) is the one place they become the engine's fractions. `readDeal`
+// checks every field of a deal from the device, a file or a link, and drops whatever is not a deal. No engine at run time: the side
+// stores read this file on every page.
 import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
-import type { CalendarMonth, Deal, DealFee, DealPrice, DealStage } from "@finance-tool/engine";
+import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
-import { engineBase, FEE_SHAPES, holdsFunds, isFeeKindId, ONE_SIDE, type FeeKindId, type FieldId, type FormId, type Held } from "./shapes";
+import {
+  BY_MAX,
+  byKindsFor,
+  FEE_SHAPES,
+  holdsFunds,
+  isFeeKindId,
+  isRangeKind,
+  LIST_IDS,
+  ONE_SIDE,
+  RANGE_UNITS,
+  WHAT_VALUES,
+  type ByKind,
+  type FeeKindId,
+  type FieldId,
+  type FormId,
+  type Place,
+  type RangeKind,
+  type RangeUnit,
+} from "./shapes";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -50,6 +69,52 @@ export interface Flat {
   upTo: Num;
 }
 
+/** A share off a price (F-116): `pct` percent off its rate or sum, and off its minimum too where the list says so (`alsoMin`). */
+export interface Discount {
+  pct: Num;
+  alsoMin?: true;
+}
+
+/**
+ * A third party's fee with its figure (F-117): a share of the action (`rate` percent), a sum for each unit, or a sum on each action, with
+ * its own bounds, each sum in `currency` (the shekel where absent).
+ */
+export type ThirdPrice =
+  | { form: "action"; rate: Num; min?: Num; max?: Num; currency?: BoundCurrency }
+  | { form: "perUnit"; amount: Num; min?: Num; max?: Num; currency?: BoundCurrency }
+  | { form: "perAction"; amount: Num; currency?: BoundCurrency };
+
+/**
+ * A third party's fee printed with a price: whose it is, in the list's words where it names one (`who`: "הברוקר", "הבורסה והסליקה"), and
+ * its figure (`price`, F-117), or none where the list gives none ("בלי סכום בתעריפון", F-118).
+ */
+export interface Third {
+  who?: string;
+  price?: ThirdPrice;
+}
+
+/** A fee a price is offset against: that month's charges of the deal's fee of this kind, up to the price's own sum (F-118). */
+export interface Offset {
+  kind: FeeKindId;
+}
+
+/** What a price list says of an order, beside its price (F-118): charged on an order not carried out too, each partial fill charged apart. */
+export type Note = "unfilled" | "partial";
+export const NOTES: readonly Note[] = ["unfilled", "partial"];
+
+/** The parts of a price beside its figures that tie it to another fee (F-118): an offset, and a refund in the price's currency. */
+interface Linked {
+  offset?: Offset;
+  refund?: Num;
+}
+
+/** The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), and notes on an order (F-118). */
+interface OnAction extends Linked {
+  discount?: Discount;
+  third?: Third;
+  notes?: Note[];
+}
+
 /**
  * A price as typed (F-110). Rates and caps are percent; bounds, flat prices and sums are shekels unless the price's `currency` names
  * their currency.
@@ -60,15 +125,18 @@ export type Price =
    * A share of each action, `rate` percent, with a minimum and a maximum per action, a cap as a percent of the action (`cap`, the percent
    * maximum) and a flat price for a small action, each sum in `currency` (the shekel where absent).
    */
-  | { form: "action"; rate: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency }
+  | ({ form: "action"; rate: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
   /** A sum for each unit traded, `amount` in `currency`, with the same minimum, maximum, cap and flat price as a share of an action. */
-  | { form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency }
+  | ({ form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
   /** A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge. */
-  | { form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num }
+  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num } & Linked)
   /** A sum in shekels every `every` months, whatever the account holds. */
-  | { form: "sum"; amount: Num; every: Months }
+  | ({ form: "sum"; amount: Num; every: Months } & Linked)
   /** A sum on each action, in `currency` (the shekel where absent). */
-  | { form: "perAction"; amount: Num; currency?: BoundCurrency };
+  | ({ form: "perAction"; amount: Num; currency?: BoundCurrency } & OnAction);
+
+/** Whether a price is on an action, and so may carry a discount, a third party's fee and notes on an order. */
+export const onAction = (p: Price): p is PricedIn => p.form === "action" || p.form === "perUnit" || p.form === "perAction";
 
 /** A price whose sums may be in a currency other than the shekel: a share of an action, a sum per unit, a sum per action. */
 export type PricedIn = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
@@ -86,15 +154,89 @@ export interface Stage {
   until?: MonthKey;
 }
 
-/** One fee: what it is, its prices in order, and a sale's own prices where a sale is priced apart. */
-export interface Fee {
+/** Prices over time: a fee's whose price changes by nothing, or one case's; a sale's own where a sale is priced apart. */
+export interface Priced {
+  stages: Stage[];
+  sale?: Stage[];
+}
+
+/** A value of what is bought or held that the person named, with where it is bought and its currency (null: a foreign one not named). */
+export interface OwnPlace {
+  name: string;
+  place: Place;
+  currency: string | null;
+}
+
+/**
+ * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency) names its values in the
+ * cases, as the site's ids or in the person's words; what is bought or held keeps where each value of the person's own is bought and its
+ * currency (`own`). A track's and a condition's values are the person's words; a condition has a name (`label`). A range has its tops
+ * (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps.
+ */
+export type By =
+  | { kind: "what" | "held"; own?: OwnPlace[] }
+  | { kind: "channel" | "currency" | "track" }
+  | { kind: "own"; label: string }
+  | { kind: RangeKind; unit: RangeUnit; tops: Num[] };
+
+/** A range thing of a fee. */
+export type RangeBy = Extract<By, { tops: Num[] }>;
+export const isRange = (b: By): b is RangeBy => isRangeKind(b.kind);
+
+/**
+ * What a case says of one thing (F-114): any value (`"any"`), named values (several may be named: the site's ids, or the person's words), or
+ * a step of a range (its index: 0 is "עד" the first top, the last "מעל" the last top).
+ */
+export type When = "any" | string[] | number;
+
+/** One case of a fee whose price changes: its value for each thing (in the fee's order), whether its track is the person's, and its prices. */
+export interface Case extends Priced {
+  id: string;
+  when: When[];
+  /** The case's track is the person's own (one track of a fee is; F-114 reads it). */
+  mine?: true;
+}
+
+interface FeeHead {
   /** The fee's id within the deal, for the screen's keys and the panel's choice. */
   id: string;
   kind: FeeKindId;
   /** The person's own name for a fee of their own (`own`). */
   name?: string;
-  stages: Stage[];
-  sale?: Stage[];
+}
+
+/** A fee whose price changes by nothing: its prices in order, and a sale's own prices where a sale is priced apart. */
+export interface SlimFee extends FeeHead, Priced {
+  by?: undefined;
+  cases?: undefined;
+}
+
+/** A fee whose price changes by one to three things (F-114): the things, and one flat case for each set of their values. */
+export interface CasesFee extends FeeHead {
+  by: By[];
+  cases: Case[];
+  stages?: undefined;
+  sale?: undefined;
+}
+
+/** One fee: what it is, and its prices, whole or by case. */
+export type Fee = SlimFee | CasesFee;
+
+export const hasCases = (f: Fee): f is CasesFee => f.cases !== undefined;
+
+/**
+ * The key a thing is picked by in the reading: its kind (what is bought and what is held share one, `what`), or a condition's name after
+ * `own:`.
+ */
+export const pickKey = (b: By): string => (b.kind === "own" ? `own:${b.label}` : b.kind === "held" ? "what" : b.kind);
+
+/**
+ * The reading's pick for one thing (F-114), by its key (`pickKey`): a named value (the site's id, or the person's words), or a step of a
+ * range as its top (`<=N`) or above the last (`>N`).
+ */
+export interface ReadPick {
+  by: string;
+  is: string;
 }
 
 /** The provider kind a deal names: a cap that binds only some providers is judged by it (F-113). */
@@ -109,9 +251,9 @@ export interface FeeDeal {
   /** The month the deal started or starts, where the person gave one. */
   start?: MonthKey;
   provider?: ProviderKind;
-  /** What a kind that holds funds holds. */
-  held?: Held;
   fees: Fee[];
+  /** The reading's picks (F-114): what the deal is read for, one value per thing its fees change by; a thing not picked starts as F-114 says. */
+  readFor?: ReadPick[];
   /**
    * The template the deal names: the one its fees were filled from, or, where `feesKept` is set, the track picked for it while it held a
    * fee the person typed or changed, which filled none of its fees.
@@ -176,34 +318,49 @@ export const blankFigure = (): Num => ({ v: 0, blank: true });
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
 
-/** The figures of a price (`Num`s): its rate or sum, its bounds, its cap and its flat price. */
+/** A third party's figures: its rate or sum and its bounds. */
+const thirdFigures = (t: ThirdPrice | undefined): (Num | undefined)[] => (!t ? [] : t.form === "perAction" ? [t.amount] : [t.form === "action" ? t.rate : t.amount, t.min, t.max]);
+
+/** The figures of a price (`Num`s): its rate or sum, its bounds, its cap, its flat price, and its parts' figures (a discount, a third party's, a refund). */
 const figuresOf = (p: Price): (Num | undefined)[] => {
+  const parts = (x: Partial<OnAction>) => [x.discount?.pct, ...thirdFigures(x.third?.price), x.refund];
   switch (p.form) {
     case "free":
       return [];
     case "action":
     case "perUnit":
-      return [mainFigure(p)!, p.min, p.max, p.cap, p.flat?.amount, p.flat?.upTo];
+      return [mainFigure(p)!, p.min, p.max, p.cap, p.flat?.amount, p.flat?.upTo, ...parts(p)];
     case "held":
-      return [p.rate, p.min, p.max];
+      return [p.rate, p.min, p.max, p.refund];
     case "sum":
+      return [p.amount, p.refund];
     case "perAction":
-      return [p.amount];
+      return [p.amount, ...parts(p)];
   }
 };
 
 /**
  * Whether a fee holds nothing the person gave: one price with no end, no sale priced apart and no name of its own, and either every figure
  * still carrying a template's source (`retyped` drops the source of a figure the person changes), or its price still asking for its figure
- * with no bound (a fee just added).
+ * with no bound (a fee just added). A fee with cases holds nothing the person gave where every case is so and nothing in its things is
+ * typed (a range's tops are figures too).
  */
 export function untouched(fee: Fee): boolean {
-  if (fee.stages.length !== 1 || fee.stages[0]!.until !== undefined || fee.sale || fee.name !== undefined) return false;
-  const price = fee.stages[0]!.price;
+  if (fee.name !== undefined) return false;
+  if (hasCases(fee)) {
+    const tops = fee.by.flatMap((b) => (isRange(b) ? b.tops : []));
+    return tops.every((n) => n.src !== undefined) && fee.cases.every((c) => !c.mine && pricesUntouched(c));
+  }
+  return pricesUntouched(fee);
+}
+
+const pricesUntouched = (x: Priced): boolean => {
+  if (x.stages.length !== 1 || x.stages[0]!.until !== undefined || x.sale) return false;
+  const price = x.stages[0]!.price;
   const figures = figuresOf(price).filter((n): n is Num => n !== undefined);
   if (mainFigure(price)?.blank) return figures.length === 1;
   return figures.length > 0 && figures.every((n) => n.src !== undefined);
-}
+};
 
 /** A new price of a form, with nothing typed in it yet (its rate or sum blank), or free. */
 export function blankPrice(form: FormId): Price {
@@ -226,23 +383,40 @@ export function blankPrice(form: FormId): Price {
 /** The figure that states a price: its rate, or its sum (a sum per unit's among them); none for a free price. */
 export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.form === "held" ? p.rate : p.form === "free" ? null : p.amount);
 
-/** Whether a price states a price: free, or its rate or sum typed or filled (not blank), and its flat price's two figures where it has one. */
-export const pricePriced = (p: Price): boolean => !mainFigure(p)?.blank && !((p.form === "action" || p.form === "perUnit") && p.flat && (p.flat.amount.blank || p.flat.upTo.blank));
+/**
+ * Whether a price states a price: free, or its rate or sum typed or filled (not blank), and its flat price's two figures where it has one,
+ * its discount's share, its third party's figure and its refund where it has them.
+ */
+export const pricePriced = (p: Price): boolean => figuresOf(p).every((n) => !n?.blank);
 
 /** The prices of a stage list that hold at `from` or later: a price that ended by then is past, and F-110 does not read it. */
 export const pricesFrom = (stages: readonly Stage[], from: MonthKey): Stage[] => stages.filter((s) => s.until === undefined || s.until > from);
 
 /**
- * Whether every price of a fee from `from` on states one (`pricePriced`): a fee with a price not yet given there is left out of the
- * reading. A price that has passed by `from` does not count, given or not.
+ * Whether every price of a fee (or a case) from `from` on states one (`pricePriced`): a fee with a price not yet given there is left out
+ * of the reading. A price that has passed by `from` does not count, given or not. A fee with cases states its prices where every case does.
  */
-export const feePriced = (f: Fee, from: MonthKey): boolean => [f.stages, ...(f.sale ? [f.sale] : [])].every((st) => pricesFrom(st, from).every((s) => pricePriced(s.price)));
+export const feePriced = (f: Fee | Priced, from: MonthKey): boolean => ("cases" in f && f.cases ? f.cases.every((c) => feePriced(c, from)) : stagesPriced(f as Priced, from));
+
+const stagesPriced = (x: Priced, from: MonthKey): boolean => [x.stages, ...(x.sale ? [x.sale] : [])].every((st) => pricesFrom(st, from).every((s) => pricePriced(s.price)));
 
 /** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
 export type Side = "buy" | "sell";
 
-/** A fee's prices on a side: the sale's where it is priced apart, else the fee's own. */
-export const pricesOn = (fee: Fee, side: Side): Stage[] => (side === "sell" && fee.sale ? fee.sale : fee.stages);
+/**
+ * The prices a fee's card edits: a fee's whose price changes by nothing, or one case's (`caseId`; the first case where it names none or
+ * one the fee does not have).
+ */
+export function pricedOf(fee: Fee, caseId?: string): Priced {
+  if (!hasCases(fee)) return fee;
+  return fee.cases.find((c) => c.id === caseId) ?? fee.cases[0]!;
+}
+
+/** A fee's prices on a side (of a case, where `caseId` names one): the sale's where it is priced apart, else the fee's own. */
+export const pricesOn = (fee: Fee, side: Side, caseId?: string): Stage[] => {
+  const x = pricedOf(fee, caseId);
+  return side === "sell" && x.sale ? x.sale : x.stages;
+};
 
 /** Two values with the same content, whatever order their fields were set in (a deal, a fee, a price). */
 export function sameContent(a: unknown, b: unknown): boolean {
@@ -251,64 +425,21 @@ export function sameContent(a: unknown, b: unknown): boolean {
 const canonical = (v: unknown): string =>
   Array.isArray(v) ? `[${v.map(canonical).join(",")}]` : v && typeof v === "object" ? `{${Object.keys(v).sort().filter((k) => (v as Record<string, unknown>)[k] !== undefined).map((k) => `${JSON.stringify(k)}:${canonical((v as Record<string, unknown>)[k])}`).join(",")}}` : JSON.stringify(v);
 
+export const newCaseId = () => newId("case-");
+
 /** A new fee of a kind: one price of its usual form that holds throughout. */
-export function newFee(kind: FeeKindId, name?: string): Fee {
+export function newFee(kind: FeeKindId, name?: string): SlimFee {
   return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(FEE_SHAPES[kind].usual) }] };
 }
 
-// ---------------------------------------------------------------- to the engine
-
-/** A typed percent as the engine's fraction: the one place the two meet. */
+/** A typed percent as the engine's fraction: the one place the two meet (to-engine.ts uses it). */
 export const fraction = (pct: number): number => pct / 100;
 
-/** The parts a share of an action and a sum per unit share: bounds, the cap as a fraction, and the flat price where both its figures are given. */
-const actionParts = (p: Extract<Price, { form: "action" | "perUnit" }>) => ({
-  ...(p.min ? { min: p.min.v } : {}),
-  ...(p.max ? { max: p.max.v } : {}),
-  ...(p.cap ? { cap: fraction(p.cap.v) } : {}),
-  ...(p.flat && !p.flat.amount.blank && !p.flat.upTo.blank ? { flat: { amount: p.flat.amount.v, upTo: p.flat.upTo.v } } : {}),
-});
-
-/**
- * A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`, and a cap a fraction; a
- * share's currency goes only with a bound or a flat price typed, since it prices nothing else (F-110, F-112); a sum's always.
- */
-export function enginePrice(p: Price): DealPrice {
-  const currency = (c: BoundCurrency | undefined) => (c && c !== "ILS" ? { currency: c } : {});
-  switch (p.form) {
-    case "free":
-      return { kind: "free" };
-    case "action":
-      return { kind: "action", rate: fraction(p.rate.v), ...actionParts(p), ...(p.min || p.max || p.flat ? currency(p.currency) : {}) };
-    case "perUnit":
-      return { kind: "perUnit", amount: p.amount.v, ...actionParts(p), ...currency(p.currency) };
-    case "held":
-      return { kind: "held", rate: (fraction(p.rate.v) * p.every) / p.per, everyMonths: p.every, ...(p.min ? { min: p.min.v } : {}), ...(p.max ? { max: p.max.v } : {}) };
-    case "sum":
-      return { kind: "sum", amount: p.amount.v, everyMonths: p.every };
-    case "perAction":
-      return { kind: "perAction", amount: p.amount.v, ...currency(p.currency) };
-  }
-}
-
-const engineStages = (stages: readonly Stage[]): DealStage[] => stages.map((s) => ({ price: enginePrice(s.price), ...(s.until ? { until: monthOf(s.until) } : {}) }));
-
-/** A fee as the engine reads it. */
-export function engineFee(f: Fee): DealFee {
-  return { base: engineBase(f.kind), stages: engineStages(f.stages), ...(f.sale ? { sale: engineStages(f.sale) } : {}) };
-}
-
-/** Whether what a deal holds is in a currency other than the shekel (F-111): a purchase and a sale then carry a conversion. */
-export const isForeign = (deal: Pick<FeeDeal, "kind" | "held">): boolean => holdsFunds(deal.kind) && !!deal.held && deal.held.currency !== "ILS";
-
-/** The deal as the engine reads it (F-110 to F-113), its fees in the deal's order. */
-export function engineDeal(deal: FeeDeal): Deal {
-  return {
-    fees: deal.fees.map(engineFee),
-    foreign: isForeign(deal),
-    ...(deal.start ? { start: monthOf(deal.start) } : {}),
-    ...(deal.provider ? { provider: deal.provider } : {}),
-  };
+/** What is bought or held for a value of the reading's pick of `what` (F-114): the site's values, or one the person named on a fee's thing. */
+export function placeOf(fees: readonly Fee[], value: string): { place: Place; currency: string | null } | null {
+  if (Object.hasOwn(WHAT_VALUES, value)) return WHAT_VALUES[value]!;
+  for (const f of fees) for (const b of f.by ?? []) if ((b.kind === "what" || b.kind === "held") && b.own) for (const o of b.own) if (o.name === value) return { place: o.place, currency: o.currency };
+  return null;
 }
 
 // ---------------------------------------------------------------- checking a deal
@@ -391,6 +522,67 @@ function readActionParts(raw: Rec, fields: readonly FieldId[]): { min?: Num; max
   return { ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(cap.n ? { cap: cap.n } : {}), ...(flat.flat ? { flat: flat.flat } : {}), ...currency };
 }
 
+/** A third party's fee: who it is, where named, and its figure, where the list gives one (F-117, F-118); null where it is anything else. */
+function readThird(raw: unknown): Third | null {
+  if (!isRec(raw)) return null;
+  const out: Third = {};
+  if (raw.who !== undefined) {
+    if (!str(raw.who, NAME_MAX) || raw.who.trim() === "") return null;
+    out.who = raw.who;
+  }
+  if (raw.price === undefined) return out;
+  const p = raw.price;
+  if (!isRec(p)) return null;
+  const currency = readCurrency(p.currency);
+  if (!currency) return null;
+  if (p.form === "perAction") {
+    const amount = readNum(p.amount, SUM_MAX);
+    return amount ? { ...out, price: { form: "perAction", amount, ...currency } } : null;
+  }
+  const min = optNum(p.min, SUM_MAX), max = optNum(p.max, SUM_MAX);
+  if (!min.ok || !max.ok) return null;
+  const bounds = { ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...currency };
+  if (p.form === "action") {
+    const rate = readNum(p.rate, PCT_MAX);
+    return rate ? { ...out, price: { form: "action", rate, ...bounds } } : null;
+  }
+  if (p.form === "perUnit") {
+    const amount = readNum(p.amount, SUM_MAX);
+    return amount ? { ...out, price: { form: "perUnit", amount, ...bounds } } : null;
+  }
+  return null;
+}
+
+/** An optional part: absent, or what `read` makes of it; `false` where it is there and is not one. */
+function optPart<T>(raw: unknown, read: (raw: unknown) => T | null): { part?: T } | false {
+  if (raw === undefined) return {};
+  const part = read(raw);
+  return part === null ? false : { part };
+}
+
+/** The parts that tie a price to another fee (F-118): an offset against a fee of the deal's kinds, a refund. */
+function readLinked(raw: Rec): Linked | null {
+  const offset = optPart(raw.offset, (o) => (isRec(o) && isFeeKindId(o.kind) && Object.keys(o).length === 1 ? { kind: o.kind } : null));
+  const refund = optPart(raw.refund, (n) => readNum(n, SUM_MAX));
+  if (!offset || !refund) return null;
+  return { ...(offset.part ? { offset: offset.part } : {}), ...(refund.part ? { refund: refund.part } : {}) };
+}
+
+/** The parts of a price on an action beside its figures (F-116 to F-118): a discount, a third party's fee, notes, and the linked parts. */
+function readOnAction(raw: Rec): OnAction | null {
+  const linked = readLinked(raw);
+  const discount = optPart(raw.discount, (d) => {
+    if (!isRec(d)) return null;
+    const pct = readNum(d.pct, PCT_MAX);
+    if (!pct || (d.alsoMin !== undefined && d.alsoMin !== true)) return null;
+    return { pct, ...(d.alsoMin ? { alsoMin: true as const } : {}) };
+  });
+  const third = optPart(raw.third, readThird);
+  const notes = optPart(raw.notes, (n) => (Array.isArray(n) && n.length > 0 && n.every((x) => NOTES.includes(x as Note)) && new Set(n).size === n.length ? (n as Note[]) : null));
+  if (!linked || !discount || !third || !notes) return null;
+  return { ...linked, ...(discount.part ? { discount: discount.part } : {}), ...(third.part ? { third: third.part } : {}), ...(notes.part ? { notes: notes.part } : {}) };
+}
+
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
   const shape = FEE_SHAPES[kind];
@@ -399,26 +591,26 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   const fields = shape.fields[raw.form as Exclude<FormId, "free">] ?? [];
   switch (raw.form) {
     case "action": {
-      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields);
-      return rate && parts ? { form: "action", rate, ...parts } : null;
+      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
+      return rate && parts && more ? { form: "action", rate, ...parts, ...more } : null;
     }
     case "perUnit": {
-      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields);
-      return amount && parts ? { form: "perUnit", amount, ...parts } : null;
+      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
+      return amount && parts && more ? { form: "perUnit", amount, ...parts, ...more } : null;
     }
     case "held": {
-      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX);
-      if (!rate || !min.ok || !max.ok || !isMonths(raw.per) || !isMonths(raw.every)) return null;
-      return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}) };
+      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), more = readLinked(raw);
+      if (!rate || !min.ok || !max.ok || !more || !isMonths(raw.per) || !isMonths(raw.every)) return null;
+      return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...more };
     }
     case "sum": {
-      const amount = readNum(raw.amount, SUM_MAX);
-      return amount && isMonths(raw.every) ? { form: "sum", amount, every: raw.every } : null;
+      const amount = readNum(raw.amount, SUM_MAX), more = readLinked(raw);
+      return amount && more && isMonths(raw.every) ? { form: "sum", amount, every: raw.every, ...more } : null;
     }
     case "perAction": {
-      const amount = readNum(raw.amount, SUM_MAX), currency = readCurrency(raw.currency);
-      if (!amount || !currency || (currency.currency && !fields.includes("currency"))) return null;
-      return { form: "perAction", amount, ...currency };
+      const amount = readNum(raw.amount, SUM_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw);
+      if (!amount || !currency || !more || (currency.currency && !fields.includes("currency"))) return null;
+      return { form: "perAction", amount, ...currency, ...more };
     }
     default:
       return null;
@@ -463,8 +655,11 @@ export function stagesInOrder(stages: readonly Stage[]): boolean {
   return stages.length > 0 && stages.every((_, k) => stageFault(stages, k) === null);
 }
 
-/** Whether every fee of a deal can be read (F-110): the screen leaves a fee whose prices are not in order out of the reading until they are. */
-export const feeInOrder = (f: Fee): boolean => stagesInOrder(f.stages) && (!f.sale || stagesInOrder(f.sale));
+/**
+ * Whether every price of a fee (or a case) can be read (F-110): the screen leaves a fee whose prices are not in order out of the reading
+ * until they are. A fee with cases is in order where every case is.
+ */
+export const feeInOrder = (f: Fee | Priced): boolean => ("cases" in f && f.cases ? f.cases.every(feeInOrder) : stagesInOrder(f.stages!) && (!f.sale || stagesInOrder(f.sale)));
 
 function readStages(raw: unknown, kind: FeeKindId): Stage[] | null {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > STAGES_MAX) return null;
@@ -479,33 +674,151 @@ function readStages(raw: unknown, kind: FeeKindId): Stage[] | null {
   return out;
 }
 
+/** A fee's or a case's prices, and its sale's where it prices a sale apart; null where anything in them is not prices. */
+function readPriced(raw: Rec, kind: FeeKindId): Priced | null {
+  const stages = readStages(raw.stages, kind);
+  if (!stages) return null;
+  if (raw.sale === undefined) return { stages };
+  // a fee charged on one side alone has no separate sale price, and a fee whose shape prices no sale apart has none either
+  if (ONE_SIDE[kind] || !FEE_SHAPES[kind].saleApart) return null;
+  const sale = readStages(raw.sale, kind);
+  return sale ? { stages, sale } : null;
+}
+
+const CASES_MAX = 40;
+const TOPS_MAX = 12;
+const VALUES_MAX = 20;
+const PICKS_MAX = 12;
+
+/** A value the person named for what is bought or held: its name, where it is bought, and its currency (a code, or null). */
+function readOwnPlace(raw: unknown): OwnPlace | null {
+  if (!isRec(raw) || !str(raw.name, NAME_MAX) || raw.name.trim() === "" || Object.hasOwn(WHAT_VALUES, raw.name)) return null;
+  if ((raw.place !== "israel" && raw.place !== "abroad") || !(raw.currency === null || (typeof raw.currency === "string" && CURRENCY.test(raw.currency)))) return null;
+  return { name: raw.name, place: raw.place, currency: raw.currency };
+}
+
+/** A thing a fee of `kind` may change by (`byKindsFor`), with its own fields; null where it is anything else. */
+function readBy(raw: unknown, kind: FeeKindId): By | null {
+  if (!isRec(raw) || typeof raw.kind !== "string" || !byKindsFor(kind).includes(raw.kind as ByKind)) return null;
+  const k = raw.kind as ByKind;
+  if (isRangeKind(k)) {
+    if (!RANGE_UNITS[k].includes(raw.unit as RangeUnit) || !Array.isArray(raw.tops) || raw.tops.length === 0 || raw.tops.length > TOPS_MAX) return null;
+    const tops: Num[] = [];
+    for (const t of raw.tops) {
+      const n = readNum(t, SUM_MAX);
+      // the tops are in order, each above the one before and above nothing: the steps leave no gap and none is empty
+      if (!n || n.blank || n.v <= 0 || (tops.length > 0 && n.v <= tops.at(-1)!.v)) return null;
+      tops.push(n);
+    }
+    return { kind: k, unit: raw.unit as RangeUnit, tops };
+  }
+  if (k === "own") return str(raw.label, NAME_MAX) && raw.label.trim() !== "" ? { kind: "own", label: raw.label } : null;
+  if (k === "what" || k === "held") {
+    if (raw.own === undefined) return { kind: k };
+    if (!Array.isArray(raw.own) || raw.own.length === 0 || raw.own.length > VALUES_MAX) return null;
+    const own: OwnPlace[] = [];
+    for (const o of raw.own) {
+      const x = readOwnPlace(o);
+      if (!x || own.some((y) => y.name === x.name)) return null;
+      own.push(x);
+    }
+    return { kind: k, own };
+  }
+  return { kind: k };
+}
+
+/**
+ * What a case says of a thing: any value; named values, each the site's id or the person's words (for what is bought or held, a value
+ * the thing names with its place); or a step of a range. Null where it is not one of them, or names a value twice.
+ */
+function readWhen(raw: unknown, by: By): When | null {
+  if (raw === "any") return "any";
+  if (isRange(by)) return typeof raw === "number" && Number.isInteger(raw) && raw >= 0 && raw <= by.tops.length ? raw : null;
+  if (!Array.isArray(raw) || raw.length === 0 || raw.length > VALUES_MAX || new Set(raw).size !== raw.length) return null;
+  const ok = (v: unknown): v is string => {
+    if (!str(v, NAME_MAX) || v.trim() === "") return false;
+    if (by.kind === "what" || by.kind === "held") return LIST_IDS[by.kind].includes(v) || !!by.own?.some((o) => o.name === v);
+    return true;
+  };
+  return raw.every(ok) ? (raw as string[]) : null;
+}
+
+/** A case of a fee with things `by`: its id, a value per thing, the person's track mark where the fee changes by track, and its prices. */
+function readCase(raw: unknown, kind: FeeKindId, by: readonly By[]): Case | null {
+  if (!isRec(raw) || typeof raw.id !== "string" || !ID.test(raw.id) || !Array.isArray(raw.when) || raw.when.length !== by.length) return null;
+  const when: When[] = [];
+  for (let t = 0; t < by.length; t++) {
+    const w = readWhen(raw.when[t], by[t]!);
+    if (w === null) return null;
+    when.push(w);
+  }
+  if (raw.mine !== undefined && !(raw.mine === true && by.some((b) => b.kind === "track"))) return null;
+  const priced = readPriced(raw, kind);
+  if (!priced) return null;
+  return { id: raw.id, when, ...(raw.mine ? { mine: true as const } : {}), ...priced };
+}
+
 function readFee(raw: unknown): Fee | null {
   if (!isRec(raw) || typeof raw.id !== "string" || !ID.test(raw.id) || !isFeeKindId(raw.kind)) return null;
   const kind = raw.kind;
-  const stages = readStages(raw.stages, kind);
-  if (!stages) return null;
-  const fee: Fee = { id: raw.id, kind, stages };
+  let name: { name?: string } = {};
   if (raw.name !== undefined) {
     if (kind !== "own" || !str(raw.name, NAME_MAX)) return null;
-    fee.name = raw.name;
+    name = { name: raw.name };
   }
-  if (raw.sale !== undefined) {
-    // a fee charged on one side alone has no separate sale price, and a fee whose shape prices no sale apart has none either
-    if (ONE_SIDE[kind] || !FEE_SHAPES[kind].saleApart) return null;
-    const sale = readStages(raw.sale, kind);
-    if (!sale) return null;
-    fee.sale = sale;
+  if (raw.by === undefined) {
+    if (raw.cases !== undefined) return null;
+    const priced = readPriced(raw, kind);
+    return priced ? { id: raw.id, kind, ...name, ...priced } : null;
   }
-  return fee;
+  // a fee with cases keeps its prices in them alone
+  if (raw.stages !== undefined || raw.sale !== undefined) return null;
+  if (!Array.isArray(raw.by) || raw.by.length === 0 || raw.by.length > BY_MAX || !Array.isArray(raw.cases) || raw.cases.length === 0 || raw.cases.length > CASES_MAX) return null;
+  const by: By[] = [];
+  for (const b of raw.by) {
+    const x = readBy(b, kind);
+    // what is bought and what is held are one pick: a fee changes by one of them, and by each other thing once
+    if (!x || by.some((y) => pickKey(y) === pickKey(x))) return null;
+    by.push(x);
+  }
+  const cases: Case[] = [];
+  for (const c of raw.cases) {
+    const x = readCase(c, kind, by);
+    if (!x || cases.some((y) => y.id === x.id)) return null;
+    cases.push(x);
+  }
+  return { id: raw.id, kind, ...name, by, cases };
 }
 
-function readHeld(raw: unknown): Held | null {
+/** The reading's picks: each a thing's key and a value, no key twice. */
+function readPicks(raw: unknown): ReadPick[] | null {
+  if (!Array.isArray(raw) || raw.length > PICKS_MAX) return null;
+  const out: ReadPick[] = [];
+  for (const p of raw) {
+    if (!isRec(p) || !str(p.by, NAME_MAX + 4) || !str(p.is, NAME_MAX + 4) || p.is.trim() === "" || out.some((x) => x.by === p.by)) return null;
+    if (!PICK_KEYS.includes(p.by) && !(p.by.startsWith("own:") && p.by.length > 4)) return null;
+    out.push({ by: p.by, is: p.is });
+  }
+  return out;
+}
+
+const PICK_KEYS: readonly string[] = ["what", "channel", "track", "currency", "portfolioSize", "volume", "count"];
+
+/**
+ * What a deal saved before cases said it held, as the reading's pick of what is bought (F-114): a fund on the Tel Aviv exchange is a
+ * security there; one abroad in dollars or euros is one in the United States or in Europe, and in any other currency one elsewhere.
+ */
+function heldPick(raw: unknown): ReadPick | null {
   if (!isRec(raw)) return null;
   if ((raw.place !== "israel" && raw.place !== "abroad") || typeof raw.currency !== "string" || !CURRENCY.test(raw.currency) || (raw.payout !== "accumulating" && raw.payout !== "distributing")) return null;
-  return { place: raw.place, currency: raw.currency, payout: raw.payout };
+  const is = raw.place === "israel" ? "tase" : raw.currency === "USD" ? "us" : raw.currency === "EUR" ? "europe" : "world";
+  return { by: "what", is };
 }
 
-/** A deal from the device, a file or a link, every field checked; null where anything in it is not what a deal holds. */
+/**
+ * A deal from the device, a file or a link, every field checked; null where anything in it is not what a deal holds. A deal saved before
+ * cases opens with every fee and price as it was, what it held becoming the reading's pick of what is bought.
+ */
 export function readDeal(raw: unknown): FeeDeal | null {
   if (!isRec(raw) || typeof raw.id !== "string" || !ID.test(raw.id) || !str(raw.name, NAME_MAX)) return null;
   if (raw.kind !== null && !isProductId(raw.kind)) return null;
@@ -518,6 +831,11 @@ export function readDeal(raw: unknown): FeeDeal | null {
     fees.push(fee);
   }
   const deal: FeeDeal = { id: raw.id, name: raw.name, kind, fees };
+  if (raw.readFor !== undefined) {
+    const picks = readPicks(raw.readFor);
+    if (!picks) return null;
+    if (picks.length) deal.readFor = picks;
+  }
   if (raw.start !== undefined) {
     if (typeof raw.start !== "string" || !MONTH.test(raw.start)) return null;
     deal.start = raw.start;
@@ -526,10 +844,11 @@ export function readDeal(raw: unknown): FeeDeal | null {
     if (raw.provider !== "bank" && raw.provider !== "non-bank") return null;
     deal.provider = raw.provider;
   }
+  // a deal saved before cases said what it held: it opens with that as the pick of what is bought, where it picks none yet
   if (raw.held !== undefined) {
-    const held = readHeld(raw.held);
-    if (!held || !holdsFunds(kind)) return null;
-    deal.held = held;
+    const pick = heldPick(raw.held);
+    if (!pick || !holdsFunds(kind)) return null;
+    if (!deal.readFor?.some((p) => p.by === "what")) deal.readFor = [...(deal.readFor ?? []), pick];
   }
   if (raw.template !== undefined) {
     if (!isRec(raw.template) || !str(raw.template.id, 120) || !str(raw.template.name, 200)) return null;

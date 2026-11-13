@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { feeDeal } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { newDeal } from "../../lib/fee-deal/model";
-import { dealFromTemplate, HELD_UNSAID, templateOf, templateSource } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, templateOf, templateSource } from "../../lib/fee-deal/templates";
 import { dealLabel, dealMeta } from "./bar-end";
 import { leavesText, TemplateNote } from "./picker";
 
@@ -30,12 +30,11 @@ describe("a saved deal in the list", () => {
 });
 
 describe("what a template leaves out", () => {
-  const probe = { ...newDeal("brokerage-account"), held: HELD_UNSAID };
-  it("counts a price list's lines in the picker, and says where it has none for what the deal holds", () => {
-    // the percent maximum fills the deal now: only the standing order's line, set aside, stays out
-    expect(leavesText(templateOf(probe, "house:leumi", data, TODAY)!.left)).toBe("שורה אחת לא נכנסת");
-    expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBeUndefined();
-    expect(leavesText([{ why: "no-holding" }])).toBe(feeDeal.picker.noHolding);
+  const probe = newDeal("brokerage-account");
+  it("counts a price list's lines in the picker", () => {
+    // Psagot's whole list fills the deal but its conversion priced per dollar and its redemption's plan
+    expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBe("שתי שורות לא נכנסות");
+    expect(leavesText([])).toBeUndefined();
   });
   it("names the template a new deal was filled from and lists what it left out, by why", () => {
     const deal = dealFromTemplate(probe, "house:leumi", data, TODAY)!;

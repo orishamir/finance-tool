@@ -399,8 +399,8 @@ function onAction(deal: Deal, period: DealPeriod, action: DealAction): { fees: n
 const actions: readonly DealAction[] = ["trade", "conversion", "deposit", "distribution", "transfer_out"];
 
 /**
- * The share of the action a price adds (F-111): a share of the action's rate, with its third party's fee where that is a share too
- * (F-117); nothing for any other price.
+ * F-117 The share of the action a price adds to F-111's rate: a share of the action's rate, with the third party's fee printed with it
+ * where that is a share too; nothing for any other price.
  */
 export function actionShare(p: DealPrice): number {
   if (p.kind !== "action") return 0;
@@ -602,7 +602,7 @@ function stepMarks(f: DealFee, i: number, own: readonly DealMark[]): DealMark[] 
   return out;
 }
 
-/** Whether an amount is in a step of sizes (F-115): above its bottom (the first step holds nothing too) and at most its top. */
+/** F-115 Whether an amount is in a step of sizes: above its bottom (the first step holds nothing too) and at most its top. */
 export function inStep(w: Pick<DealWithin, "from" | "to">, amount: number): boolean {
   return (w.from === 0 ? amount >= 0 : amount > w.from) && (w.to === null || amount <= w.to);
 }

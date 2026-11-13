@@ -12,17 +12,17 @@ import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
-import { pickHeld, setHeld, setStart, setUntil, updateFee } from "../../lib/fee-deal/edit";
+import { setStart, setUntil, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
-import { BOUND_CURRENCIES, pricesOn, untilRange, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { pricesOn, untilRange, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { groupKey, groupOn, refOf, type DealRead } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
-import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
+import { FEE_KIND_IDS, FEE_SHAPES, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { IconBin } from "../icons";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, GroupHead, InlineSelect, MonthField, PickCard, Section, Step, Tag, When, cx, monthText, type AddItem } from "../kit";
+import { AddLine, Button, ChoiceChips, GroupHead, MonthField, PickCard, Section, Step, Tag, When, cx, monthText, type AddItem } from "../kit";
 import { Num } from "../provenance";
 import { PriceFigure, mainFieldId } from "./figures";
 import { LawTag, useFeeMark } from "./links";
@@ -75,7 +75,7 @@ function RowStanding({ row }: { row: BuilderRow }) {
  */
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
-  if (!row.priced) notes.push(b.facts.noPrice);
+  if (!row.priced) notes.push(row.unmatched ? copy.cases.unmatched : b.facts.noPrice);
   if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
   if (row.priced && row.stages[0]!.price.form === "action" && FEE_SHAPES[fee.kind].fields.action?.includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
@@ -158,7 +158,7 @@ function PartFigures({ row, fee, k, onFee }: { row: BuilderRow; fee: Fee; k: num
 
 /** A row's figures: each price from now on in its box, a single price's parts beside it, and a sale priced apart after "במכירה". */
 function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f: Fee) => void }) {
-  const offset = fee.stages.length - row.stages.length;
+  const offset = pricesOn(fee, "buy").length - row.stages.length;
   const sale = row.sale;
   return (
     <div className="flex flex-col items-start gap-1.5">
@@ -228,31 +228,6 @@ function RemoveFee({ name, chosen, onRemove }: { name: string; chosen: boolean; 
     >
       <IconBin size={18} />
     </Button>
-  );
-}
-
-/**
- * What a fund-holding deal holds: three facts, each a chip chosen in place (where the fund is bought, its currency, what it does with
- * interest and dividends). Until all three are chosen the deal says nothing of what it holds; after that each choice changes it at once.
- */
-function HeldChips({ held, onHeld }: { held: Held | undefined; onHeld: (h: Held) => void }) {
-  const [draft, setDraft] = useState<Partial<Held>>(held ?? {});
-  const now: Partial<Held> = held ?? draft;
-  const pick = (part: Partial<Held>) => {
-    const next = pickHeld(now, part);
-    setDraft(next.draft);
-    if (next.held) onHeld(next.held);
-  };
-  const opts = (ids: readonly string[]) => ids.map((id) => ({ id, name: b.heldSaid[id] ?? id }));
-  // a currency the deal holds that the list does not offer (from an older deal) stays a choice, so the chip shows it
-  const currencies: string[] = [...BOUND_CURRENCIES];
-  if (now.currency && !currencies.includes(now.currency)) currencies.push(now.currency);
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <InlineSelect chip label={b.place.label!} all={b.place.label!} options={opts(["israel", "abroad"])} value={now.place ?? null} onChange={(v) => v && pick({ place: v as Held["place"] })} />
-      <InlineSelect chip label={b.currency.label!} all={b.currency.label!} options={opts(currencies)} value={now.currency ?? null} onChange={(v) => v && pick({ currency: v })} />
-      <InlineSelect chip label={b.payout.label!} all={b.payout.label!} options={opts(["accumulating", "distributing"])} value={now.payout ?? null} onChange={(v) => v && pick({ payout: v as Held["payout"] })} />
-    </div>
   );
 }
 
@@ -365,12 +340,7 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
             </UndoLine>
           )}
         </Step>
-        {kind && view.holdsFunds && (
-          <Step n={n++} done={!!view.held} title={b.held}>
-            <HeldChips key={deal.id} held={view.held} onHeld={(h) => onDeal(setHeld(deal, h))} />
-          </Step>
-        )}
-        {kind && !view.holdsFunds && onPickTrack && (
+        {kind && !holdsFunds(kind.id) && onPickTrack && (
           <Step
             n={n++}
             done={!!track}
@@ -421,8 +391,9 @@ const groupRank = (key: string) => {
  * fee free for a while stands where it will be charged; what is held reads "what has built up" in a product that saves.
  */
 export function feeGroup(read: Pick<DealRead, "engine">, fee: Fee, saved: boolean): string {
-  const stage = fee.stages.find((s) => s.price.form !== "free") ?? fee.stages[0]!;
-  const on = groupOn(read, fee, stage.price);
+  const stages = pricesOn(fee, "buy");
+  const stage = stages.find((s) => s.price.form !== "free") ?? stages[0]!;
+  const on = groupOn(read, { id: fee.id, kind: fee.kind, stages }, stage.price);
   return on.on === "held" && saved ? "heldSaved" : groupKey(on);
 }
 
@@ -516,7 +487,7 @@ export function FeesColumn({ deal, view, groupOf, chosen, panel, line, focus, on
         {/* the card's body is the cell a figure's note stays inside */}
         <div data-note-cell="" className="flex flex-col gap-2">
           <span className="flex flex-wrap items-center gap-2">
-            <FeeName fee={refOf(fee)} className="font-semibold" />
+            <FeeName fee={refOf({ fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) })} className="font-semibold" />
             {on && <Tag tone="primary">{b.chosen}</Tag>}
             {row && <RowStanding row={row} />}
             <RemoveFee name={name} chosen={on} onRemove={() => onRemove(fee.id)} />

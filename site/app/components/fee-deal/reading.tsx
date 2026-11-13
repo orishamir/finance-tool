@@ -384,6 +384,15 @@ function MarkAmount({ mark, value }: { mark: MarkView; value: SiteValue }) {
 function MarkSentence({ mark }: { mark: MarkView }) {
   const p = w.points;
   if (mark.kind === "meet") return <MeetSentence mark={mark} />;
+  // a step's top (F-115): up to it this case's price, above it the next one's
+  if (mark.kind === "edge")
+    return (
+      <>
+        {copy.cases.step.edge.before}
+        <Fig value={mark.amount} />
+        {fill(copy.cases.step.edge.mid, { name: refName(mark.fee) })}
+      </>
+    );
   if (mark.on === "held") {
     const words = mark.kind === "min" ? p.minHeld : p.maxHeld;
     return (

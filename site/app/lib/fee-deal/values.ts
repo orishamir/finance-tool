@@ -3,7 +3,7 @@
 // of a reading are keyed in English (`inputKey`); the sheet names them through the copy's computed-input names.
 import type { ValueObject } from "@finance-tool/schema";
 import { computed, entered, type SiteValue } from "../value";
-import type { Fee, Num, Price, Sourced } from "./model";
+import type { Fee, Num, Price, Sourced, ThirdPrice } from "./model";
 import { FEE_SHAPES } from "./shapes";
 
 export type Unit = ValueObject["unit"];
@@ -60,7 +60,7 @@ export function reading(value: number, unit: Unit, formula: string, inputs: Reco
 export const recordValue = (v: ValueObject): SiteValue => ({ ...v });
 
 /** The unit of an action's rate: a share of each deposit for a deposit fee, of each trade or conversion otherwise. */
-export const actionRateUnit = (fee: Fee): Unit => (fee.kind === "deposit" ? "pct_of_deposit" : fee.kind === "exit" ? "pct" : "pct_of_trade");
+export const actionRateUnit = (fee: Pick<Fee, "kind">): Unit => (fee.kind === "deposit" ? "pct_of_deposit" : fee.kind === "exit" ? "pct" : "pct_of_trade");
 
 /** The unit of a bound in a currency, per action. */
 export function boundUnit(currency: string | undefined): Unit {
@@ -111,7 +111,7 @@ export const periodSumUnit = (every: number): Unit => (every === 1 ? "nis_per_mo
  * The unit of a sum on each action: in shekels, on each transfer for a transfer out and on each action otherwise; in another currency, on
  * each event for a corporate event (F-103) and the bound's unit otherwise.
  */
-export function perActionUnit(fee: Fee, currency?: string): Unit {
+export function perActionUnit(fee: Pick<Fee, "kind">, currency?: string): Unit {
   if (currency && currency !== "ILS") return fee.kind === "corporate_event" && currency === "USD" ? "usd_per_event" : boundUnit(currency);
   return fee.kind === "transfer_out" ? "nis_per_transfer" : "nis_per_trade";
 }
@@ -123,9 +123,12 @@ export const heldRateUnit = (per: number): Unit => (per === 12 ? "pct_per_year" 
  * The key a fee's figure takes among a reading's inputs: `deal:` and the fee's kind, with a number after the kind where the deal has two
  * fees of it, and the field after a dot where it is not the rate or the sum (`deal:trade.min`, `deal:custody 2.yearly`; `cap` the percent
  * maximum, `flat` a flat price and `upTo` the sum it holds up to). The prefix keeps the keys apart from other readings' (`balance` is a
- * run's balance there); the copy names every such key.
+ * run's balance there); the copy names every such key. A discount's share is `discount`, a third party's figure and bounds `third`,
+ * `thirdMin` and `thirdMax` (F-116, F-117).
  */
-export function inputKey(fees: readonly Fee[], i: number, field?: "min" | "max" | "yearly" | "cap" | "flat" | "upTo"): string {
+export type InputField = "min" | "max" | "yearly" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax";
+
+export function inputKey(fees: readonly Pick<Fee, "kind">[], i: number, field?: InputField): string {
   const fee = fees[i]!;
   const same = fees.filter((f) => f.kind === fee.kind);
   const n = same.length > 1 ? ` ${same.indexOf(fee) + 1}` : "";
@@ -145,12 +148,37 @@ export interface PriceFigures {
   cap?: SiteValue;
   flat?: SiteValue;
   upTo?: SiteValue;
+  /** The discount's share off the price (F-116), in percent. */
+  discount?: SiteValue;
+  /** A third party's rate or sum and its bounds (F-117), each in its unit. */
+  third?: SiteValue;
+  thirdMin?: SiteValue;
+  thirdMax?: SiteValue;
+  /** A refund, in the price's currency (F-118). */
+  refund?: SiteValue;
 }
 
-/** A price's figures; a blank rate or sum (`Num.blank`), or a blank figure of a flat price, is left out, since it states nothing. */
-export function priceFigures(fee: Fee, p: Price, today: string): PriceFigures {
-  const of = (key: "rate" | "amount", n: Num, unit: Unit) => (n.blank ? {} : { [key]: figure(n, unit, today) });
+/** A third party's figures as value objects (F-117): its rate or sum, and its bounds, in its currency. */
+function thirdFigures(fee: Pick<Fee, "kind">, t: ThirdPrice, today: string): PriceFigures {
+  const main = t.form === "action" ? figure(t.rate, actionRateUnit(fee), today) : t.form === "perUnit" ? figure(t.amount, perUnitUnit(t.currency), today) : figure(t.amount, perActionUnit(fee, t.currency), today);
+  const bound = (n: Num | undefined) => (n ? figure(n, boundUnit(t.currency), today) : undefined);
+  const min = t.form === "perAction" ? undefined : bound(t.min);
+  const max = t.form === "perAction" ? undefined : bound(t.max);
+  return { ...(main && !(t.form === "action" ? t.rate : t.amount).blank ? { third: main } : {}), ...(min ? { thirdMin: min } : {}), ...(max ? { thirdMax: max } : {}) };
+}
+
+/**
+ * A price's figures; a blank rate or sum (`Num.blank`), or a blank figure of a flat price, a discount, a third party's fee or a refund, is
+ * left out, since it states nothing.
+ */
+export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): PriceFigures {
+  const of = (key: "rate" | "amount" | "discount" | "refund", n: Num | undefined, unit: Unit) => (!n || n.blank ? {} : { [key]: figure(n, unit, today) });
   const opt = (key: "min" | "max" | "cap", n: Num | undefined, unit: Unit) => (n ? { [key]: figure(n, unit, today) } : {});
+  const parts = (x: Extract<Price, { form: "action" | "perUnit" | "perAction" }>) => ({
+    ...of("discount", x.discount?.pct, "pct"),
+    ...(x.third?.price ? thirdFigures(fee, x.third.price, today) : {}),
+    ...of("refund", x.refund, sumUnit(x.currency)),
+  });
   switch (p.form) {
     case "free":
       return {};
@@ -158,16 +186,16 @@ export function priceFigures(fee: Fee, p: Price, today: string): PriceFigures {
     case "perUnit": {
       const main = p.form === "action" ? of("rate", p.rate, actionRateUnit(fee)) : of("amount", p.amount, perUnitUnit(p.currency));
       const flat = p.flat ? { ...(p.flat.amount.blank ? {} : { flat: figure(p.flat.amount, boundUnit(p.currency), today) }), ...(p.flat.upTo.blank ? {} : { upTo: figure(p.flat.upTo, sumUnit(p.currency), today) }) } : {};
-      return { ...main, ...opt("min", p.min, boundUnit(p.currency)), ...opt("max", p.max, boundUnit(p.currency)), ...opt("cap", p.cap, "pct_of_trade"), ...flat };
+      return { ...main, ...opt("min", p.min, boundUnit(p.currency)), ...opt("max", p.max, boundUnit(p.currency)), ...opt("cap", p.cap, "pct_of_trade"), ...flat, ...parts(p) };
     }
     case "held":
-      return { ...of("rate", p.rate, heldRateUnit(p.per)), ...opt("min", p.min, "nis"), ...opt("max", p.max, "nis") };
+      return { ...of("rate", p.rate, heldRateUnit(p.per)), ...opt("min", p.min, "nis"), ...opt("max", p.max, "nis"), ...of("refund", p.refund, "nis") };
     case "sum":
-      return of("amount", p.amount, periodSumUnit(p.every));
+      return { ...of("amount", p.amount, periodSumUnit(p.every)), ...of("refund", p.refund, "nis") };
     case "perAction":
-      return of("amount", p.amount, perActionUnit(fee, p.currency));
+      return { ...of("amount", p.amount, perActionUnit(fee, p.currency)), ...parts(p) };
   }
 }
 
 /** Whether a fee is charged inside a fund (its management fee), which the page says beside it. */
-export const insideFund = (fee: Fee): boolean => fee.kind === "fund_management" || FEE_SHAPES[fee.kind].base === "trustee" || FEE_SHAPES[fee.kind].base === "variable_management";
+export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || FEE_SHAPES[fee.kind].base === "trustee" || FEE_SHAPES[fee.kind].base === "variable_management";

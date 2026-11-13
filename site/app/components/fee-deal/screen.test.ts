@@ -25,7 +25,7 @@ const account = (): FeeDeal => ({
   id: "deal-a",
   name: "",
   kind: "brokerage-account",
-  held: { place: "abroad", currency: "USD", payout: "accumulating" },
+  readFor: [{ by: "what", is: "us" }],
   fees: [
     { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) } }] },
     { id: "fee-custody", kind: "custody", stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }] },

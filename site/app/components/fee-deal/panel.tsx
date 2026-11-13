@@ -9,7 +9,6 @@ import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { Panel, PanelStage } from "../../lib/fee-deal/builder";
 import { editPrice, setFeeName, setLimited, setSaleApart, withCurrency, withFlat, withForm, withMonths, type Figure, type Side } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, MONTHS, NAME_MAX, pricesOn, stageFault, untilRange, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
-import { refOf } from "../../lib/fee-deal/parts";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
 import { IconBin, IconClose, IconPencil } from "../icons";
@@ -55,7 +54,7 @@ function PriceRows({ fee, side, k, s, forms, name, onFee }: { fee: Fee; side: Si
   const price = pricesOn(fee, side)[k]!.price;
   const edit = (fn: Parameters<typeof editPrice>[3]) => onFee(editPrice(fee, side, k, fn));
   const has = (f: FieldId) => s.fields.includes(f);
-  const spoken: Record<Figure, string> = { rate: p.howMuch, amount: p.howMuch, min: p.min, max: p.max, cap: p.cap, flat: p.parts.flat, upTo: p.parts.upTo };
+  const spoken: Record<Figure, string> = { rate: p.howMuch, amount: p.howMuch, min: p.min, max: p.max, cap: p.cap, flat: p.parts.flat, upTo: p.parts.upTo, discount: p.parts.discount, third: p.parts.third, thirdMin: p.parts.thirdMin, thirdMax: p.parts.thirdMax, refund: p.parts.refund };
   const figure = (f: Figure, unit?: ReactNode, opts: { blank?: boolean } = {}) => (
     <PriceFigure
       fee={fee}
@@ -191,7 +190,7 @@ function Stages({ fee, side, stages, forms, between, line, onFee, onRemoveStage,
   onRemoveStage: (side: Side, k: number) => void;
   onHoldOn: (side: Side, k: number) => void;
 }) {
-  const name = refName(refOf(fee));
+  const name = refName({ fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) });
   // the last price asking for its month, on this fee and side only: another fee's panel starts without it
   const [askingFor, setAskingFor] = useState<string | null>(null);
   const asking = askingFor === `${fee.id}:${side}`;
