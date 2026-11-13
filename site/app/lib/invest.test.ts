@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { accountSum, buildInvest, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, buildInvest, listReading, optionOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
@@ -170,16 +170,37 @@ describe("invest page computation", () => {
     expect(v.atYours!.less!.value as number).toBeGreaterThan(0);
   });
 
-  it("a custom non-Israeli index shows broker costs per option and no funds", () => {
+  it("a custom non-Israeli index shows broker costs per option and no funds; a foreign fund in Tel Aviv has none, its tax being open (F-04)", () => {
     const c: CustomIndex = { id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t };
     const v = buildInvest({ bundle, index: refOfCustom(c), plan: plan() });
     expect(v.options.filter((o) => o.exists).map((o) => o.id)).toEqual(["il-tracking", "il-etf", "tase-foreign", "abroad"]);
     for (const o of v.options) {
       expect(o.funds).toHaveLength(0);
-      expect(o.cells.some((x) => x.kind === "cost")).toBe(true);
+      if (o.id !== "tase-foreign") expect(o.cells.some((x) => x.kind === "cost")).toBe(true);
     }
+    const tase = v.options.find((o) => o.id === "tase-foreign")!;
+    expect(tase.bestCell).toBeNull();
+    for (const x of tase.cells.filter((x) => x.kind !== "unavailable")) expect(x.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
     expect(v.headline).toBeNull();
     expect(v.genericHeadline).not.toBeNull();
+  });
+
+  it("lists a foreign fund in Tel Aviv with the open rule its tax rests on, with no price at any house, never ranked (F-04, TXF-04, D84)", () => {
+    expect(optionOpenRule(bundle, "tase-foreign")).toBe("TXF-04");
+    for (const o of ["il-tracking", "il-etf", "abroad"] as const) expect(optionOpenRule(bundle, o)).toBeNull();
+    for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
+      const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
+      const tase = v.options.find((o) => o.id === "tase-foreign")!;
+      expect(tase.funds.length, id).toBeGreaterThan(0);
+      for (const f of tase.funds) {
+        expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+        expect(f.best).toBeUndefined();
+        expect(Object.keys(f.byHouse)).toHaveLength(0);
+      }
+      expect(tase.bestWay).toBeNull();
+      expect(v.headline?.option).not.toBe("tase-foreign");
+      expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: tase.funds[0]!.rec.id, providerId: "psagot" })).toBeNull();
+    }
   });
 
   it("an Israeli index has two options only", () => {
@@ -467,8 +488,11 @@ describe("what each figure's sheet lists", () => {
     // the S&P 500 is made of US companies: no weight to list
     expect(of[words.pair.fundInputs.usWeight]).toBeUndefined();
     expect(tax.value).toBeCloseTo(0.15 * (of[words.pair.fundInputs.usYield]!.value as number), 3);
-    const swap = view.options.flatMap((o) => o.funds).find((f) => f.best && f.rec.domicile === "IE" && f.rec.replication?.method === "swap");
-    expect(swap).toBeDefined();
+    // the swap funds collected trade in Tel Aviv, whose tax is open (F-04): the same Irish fund abroad, held as a swap, is the case
+    const asSwap = { ...irish.rec, id: "ie-swap-case", replication: { ...irish.rec.replication!, method: "swap" as const } };
+    const swapView = buildInvest({ bundle: { ...bundle, funds: [...bundle.funds, asSwap] }, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+    const swap = swapView.options.flatMap((o) => o.funds).find((f) => f.rec.id === "ie-swap-case");
+    expect(swap?.best).toBeDefined();
     expect(inputs(swap!.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
     expect(inputs(israeli.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
   });

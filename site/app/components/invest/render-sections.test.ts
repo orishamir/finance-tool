@@ -390,13 +390,21 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
+  it("a foreign fund in Tel Aviv stands among the funds with no price, under the plain words of why: its tax rests on an open rule (F-04, D84)", () => {
+    const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+    const raw = lists(sp, bundle, plan, pickOfHeadline(sp)!);
+    expect(shown(raw)).toContain(invest.reasons.ruleOpen["TXF-04"]);
+    // each row is there, with no figure of its own
+    for (const id of ["1159250", "1183441"]) expect(fundRow(raw, id)).toContain("—");
+  });
   it("a fund in Tel Aviv and abroad: the chosen fund's tile names its other listing", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
     const tile = (fund: string) => shown(html(createElement(ChosenPair, { view: sp, bundle, plan, pick: { house: allFunds(sp).find((f) => f.rec.id === fund)!.best!.providerId, fund }, chosen: true })));
-    expect(tile("1159250")).toContain(invest.pair.sameFundAs("IE00B5BMR087", true));
+    // the Tel Aviv line has no price while its tax is open (F-04, TXF-04), so it is never chosen; the line abroad names it
+    expect(allFunds(sp).find((f) => f.rec.id === "1159250")!.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
     expect(tile("ie00b5bmr087")).toContain(invest.pair.sameFundAs("1159250", false));
     // the list counts funds, so the head names no count of rows that would differ from it
     expect(shown(lists(sp, bundle, plan, pickOfHeadline(sp)!))).not.toContain("בשתי שורות");

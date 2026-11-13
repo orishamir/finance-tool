@@ -5,7 +5,7 @@ import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyF
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
-import { RecordInputError, ruleBook } from "../resolver.ts";
+import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, totalUnits, type Lot } from "./lots.ts";
@@ -50,7 +50,7 @@ export interface Fund {
   /** The instrument's currency per one unit of `sharePriceCurrency` at the start (the run's rate), where the two differ: the price is taken
    *  to the instrument's currency with it. Absent where it is needed, the run has no share price (a per-share fee then cannot be priced). */
   sharePriceRate?: number;
-  /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04). */
+  /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04); while TXF-04 is open the run stops whatever its value (F-04). */
   ninetyPercentTest?: boolean;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
@@ -199,6 +199,38 @@ export class NotEvaluatedError extends Error {
 export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput["memberKind"]> => (providerClass === "bank" ? "bank" : "non-bank");
 
 /**
+ * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03),
+ * the CPI for the rest. A TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is known for it, with or
+ * without its 90% test: the book stops on it (BlockedError) and the run computes nothing (D10). Were TXF-04 settled as the letter's
+ * copy states it (the golden harness), a fund on the 90% test would take the exchange rate and any other the CPI.
+ */
+export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest">, book: RuleBook): "fx" | "cpi" {
+  if (fund.kind === "foreign-fund") {
+    book.cite("TXF-03");
+    return "fx";
+  }
+  if (fund.kind !== "tase-foreign-fund") return "cpi";
+  book.cite("TXF-04");
+  if (fund.ninetyPercentTest !== true) return "cpi";
+  book.rate("TXF-04", "threshold_pct");
+  return "fx";
+}
+
+/**
+ * The open rule a securities run of this fund stops on (F-04), or null: what a page reads to list the fund with its reason before
+ * running it, so nothing is ranked on a guessed index.
+ */
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest">, ctx: RunContext): string | null {
+  try {
+    taxIndexOf(fund, ruleBook(ctx));
+    return null;
+  } catch (e) {
+    if (e instanceof BlockedError) return e.ruleId;
+    throw e;
+  }
+}
+
+/**
  * F-08 Month step for fund units. Each contribution is one order: FX fee, then trade value plus commission;
  * bought at the ask, so the lot's cost is the price paid. Distributions are taxed and the net reinvested as
  * a new lot; custody and account fees are paid by removing units oldest first.
@@ -212,6 +244,8 @@ export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx);
   const { goal, market, fund, tariff, profile } = input;
+  // F-04 first: a fund whose tax index rests on an open rule computes nothing
+  const taxIndex = taxIndexOf(fund, book);
   const tally = new Tally();
   const formulas = ["F-08", "F-09", "F-10", "F-12", "F-13", "F-14", "F-40"];
   if (tariff.until) {
@@ -254,14 +288,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
-  // The tax index: the exchange rate for a foreign-currency security held directly (TXF-03), the CPI otherwise. A TASE foreign fund
-  // takes TXF-04's index, open (its only source, a copy of the Tax Authority's 2019 letter, is no longer cited): with
-  // the 90% test the run stops on it (BlockedError); without it the run still takes the CPI, which no rule now supports (method F-04:
-  // blocking it waits on how the indices page shows a fund whose tax is open).
-  const fxIndexed = fund.kind === "foreign-fund" || (fund.kind === "tase-foreign-fund" && fund.ninetyPercentTest === true);
+  const fxIndexed = taxIndex === "fx";
   const J = fxIndexed ? X : I;
-  if (fund.kind === "foreign-fund") book.cite("TXF-03");
-  if (fxIndexed && fund.kind === "tase-foreign-fund") book.rate("TXF-04", "threshold_pct");
 
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
