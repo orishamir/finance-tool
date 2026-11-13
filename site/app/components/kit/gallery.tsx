@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -782,6 +782,11 @@ function Words({ today }: { today: string }) {
           <ProseList items={[...g.sample.notes]} />
         </State>
       </Demo>
+      <Demo name="DotLine" use={g.uses.DotLine}>
+        <State label="what a calculation runs on: whose numbers they are, the figures and an action at the end, joined by dots; an empty part leaves no dot" wide>
+          <DotLine items={[g.sample.dotLine.site, g.sample.dotLine.ret, false, g.sample.dotLine.today]} />
+        </State>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -1195,6 +1200,9 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="ChartLegend, an item with after: a few weak words and a help mark after the item, outside its pick, for what the series rests on" wide>
+        <ChartLegend items={[{ id: "a", swatch: <Swatch shape="line" className="bg-chart-value" />, label: <bdi>{g.sample.seriesA}</bdi> }, { id: "b", swatch: <Swatch shape="line" className="bg-chart-alt" />, label: g.sample.helpText.head, after: <span>· {g.sample.legendAfter} <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span> }]} />
+      </State>
       <State label="ChartLegend with pick: a mouse previews a series, a click or a tap keeps it" wide>
         <LegendPickDemo />
       </State>
@@ -1411,6 +1419,7 @@ function StretchDemo() {
         startHead={<p className="text-sm font-semibold">{w.accounts}</p>}
         startList={<PickList look="line" tone="account" anchor="demo-accounts" label={w.accounts} columns="minmax(0,1fr) auto auto" rows={accountRows} />}
         endHead={<p className="text-sm font-semibold">{w.funds}</p>}
+        rulerHead={w.ruler}
         endList={<PickList look="line" tone="fund" anchor="demo-funds" label={w.funds} columns="auto minmax(0,1fr) auto" rows={fundRows} />}
         startAnchor="demo-accounts"
         endAnchor="demo-funds"
@@ -1596,8 +1605,8 @@ function Lists({ today }: { today: string }) {
         <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
           <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
         </State>
-        <State label="on the house's own page: the same rows, each group's name under its short words, a line of where the words stand, and a link under a group the index page offers as a radio (to that page with it picked)" wide>
-          <GroupPriceRows entries={sampleGroups()} sources own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
+        <State label={'on the house\'s own page: the same rows, each group\'s name under its short words, a line of where the words stand, a link under a group the index page offers as a radio (to that page with it picked), and with headHelp what "names no fund" means as the "?" beside "מה זול יותר" instead of a note under the rows'} wide>
+          <GroupPriceRows entries={sampleGroups()} sources headHelp own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
         </State>
         <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
           <GroupChoiceDemo />
@@ -1694,6 +1703,21 @@ function Lists({ today }: { today: string }) {
             <SortHead label={p.name} state="none" onPress={() => {}} />
           </div>
         </State>
+        <State label="with a short muted second line under the label (a column's year), sorting and not: the same 44 px">
+          <div className="flex flex-wrap gap-6">
+            <SortHead label={p.figure} note={p.note} state="none" onPress={() => {}} />
+            <SortNote label={p.figure} note={p.note} />
+          </div>
+        </State>
+        <State label={'SortNote with mark: a "?" beside the label on its first line and the note under both, so a note wider than its label never pushes the mark past the column'}>
+          <SortNote label={p.figure} note={p.note} mark={<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />} />
+        </State>
+        <State label={'with a "?" beside it: the head is raised, so a press on its arrow sorts and never opens the mark, whose 44 px area reaches over the head\'s end'}>
+          <span className="inline-flex items-start gap-1">
+            <SortHead label={p.figure} note={p.note} state="ascending" onPress={() => {}} raised />
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
+          </span>
+        </State>
       </Demo>
       <Demo name="SourcedTag" use={g.uses.SourcedTag}>
         <Grid>
@@ -1726,6 +1750,12 @@ function Lists({ today }: { today: string }) {
           <span className="inline-flex items-center gap-1 text-sm font-medium">
             {g.sample.helpText.head}
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
+          </span>
+        </State>
+        <State label="rules: the text ends with the chip of the rules behind it (a sentence moved from beside a table keeps its rules)">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {g.sample.helpText.head}
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} rules={["TXS-05", "TXS-06"]} />
           </span>
         </State>
         <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">
@@ -1886,6 +1916,9 @@ function Lists({ today }: { today: string }) {
         <State label="what every row shares, said once over a table" wide>
           <SharedFacts title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i] }))} className="max-w-xl" />
         </State>
+        <State label={'plain, its last line on a phone only (an item\'s className "md:hidden": what a head\'s "?" says from md, on a phone with no heads)'} wide>
+          <SharedFacts plain title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i], ...(i === 2 ? { className: "md:hidden" } : {}) }))} className="max-w-xl" />
+        </State>
         <State label="small figures one under the other, one set aside by a choice and dimmed in place">
           <FigureLines items={[0, 1, 2].map((i) => ({ id: String(i), label: g.sample.option[i], figure: <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, dim: i === 2 }))} />
         </State>
@@ -1894,6 +1927,12 @@ function Lists({ today }: { today: string }) {
         <State label="a caption over two columns, one column dimmed by a choice" wide>
           <ProductTable
             columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8, dim: true }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label={'bandHead: a caption that holds a "?" beside its words (or a figure that opens its source), over the columns of its band'} wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, bandHead: <span className="inline-flex items-center gap-1">{g.sampleSource}<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span>, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8 }]}
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
           />
         </State>
@@ -2088,7 +2127,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="StretchChart, StretchBar, PickList (line)" use={g.uses.Stretch}>
-        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
+        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above, its line broken around the ruler's title (`rulerHead`) over the ruler. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
           <div className="max-xl:hidden">
             <StretchDemo />
           </div>

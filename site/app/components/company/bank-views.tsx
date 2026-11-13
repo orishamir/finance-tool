@@ -9,10 +9,11 @@ import { companyPage as w, r4catalogue as copy } from "../../copy";
 import { kindGroups, lineAt, rangeKey, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
 import { amountRangeText, breakText, depositLabels, exitsText, onlyAtExits, renewText, taxWord, termWords } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
+import { HELP_TERMS as DEPOSIT_TERMS } from "../../lib/deposit-browser";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
 import { Num, NumAfter, RulesLine } from "../provenance";
-import { AmountRange, AnchorSpread, ChoiceChips, Disclosure, GoLink, SegmentedControl, DoubtNote, FigureLines, LabelRow, LabelSheetHost, MixedName, PrintedQuotes, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SharedFacts, Tag, When, cx, gershayim, type FoldMark, type ProductColumn, type ProductRow } from "../kit";
+import { AmountRange, AnchorSpread, ChoiceChips, Disclosure, GoLink, HelpMark, SegmentedControl, DoubtNote, FigureLines, LabelRow, LabelSheetHost, MixedName, PrintedQuotes, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SharedFacts, Tag, When, cx, gershayim, type FoldMark, type ProductColumn, type ProductRow } from "../kit";
 import type { ProductRowData } from "../decoder/institutions/types";
 
 const muted = "text-sm text-muted-foreground";
@@ -149,8 +150,9 @@ function BankWords({ quotes }: { quotes: readonly string[] }) {
 }
 
 /**
- * What every row of the table shares, said once (kit SharedFacts), in plain sentences (the designer's mocks): the rate before tax, the
- * facts no row tells apart, the tax, and that the rate is no offer; the rules behind them as one quiet line of chips at the end.
+ * What every row of the table shares, said once (kit SharedFacts), in plain sentences (the designer's mocks): the facts no row tells apart
+ * and the tax, and that the rate is no offer (a caution, in sight at every width); the rules behind them as one quiet line of chips at the
+ * end. What the rate figure is (nominal, yearly, before tax) is the "?" of the rate's head from md, and stays here on a phone.
  */
 function SharedBox({ products, shared, known, title, deposits }: { products: readonly ProductRowData[]; shared: Shared; known: ReadonlySet<string>; title: string; deposits: boolean }) {
   const p = products[0];
@@ -158,11 +160,13 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   const say = w.deposits.say;
   const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? say.renew.upTo(fmt.number(p.autoRenew.maxRenewals)) : say.renew.yes) : say.renew.no;
   const brk = breakText(p.breakTerms.penalty, products.every((x) => onlyAtExits(x.breakTerms.penalty, x.exitPoints.exists)));
-  const first = [say.rate, shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? say.and(brk, renew) : shared.breakTerms ? `${brk}.` : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter(Boolean).join(" ");
+  // what the rate figure is stands in the "?" of the rate's head from md (RateHead); a phone, with no heads, keeps it here
+  const first = [shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? say.and(brk, renew) : shared.breakTerms ? `${brk}.` : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter(Boolean).join(" ");
   const rules = [...(shared.tax ? (p.taxBucket.rule_ids ?? []) : []), ...(shared.taxByLinkage ? (taxPerLinkage(products) ?? []).flatMap((x) => x.taxBucket.rule_ids ?? []) : []), ...(shared.breakTerms ? p.breakTerms.rules : []), "BANK-13"];
   const shown = [...new Set(rules)].filter((r) => known.has(r));
-  const items: { key: string; text: ReactNode }[] = [
-    { key: "first", text: first },
+  const items: { key: string; text: ReactNode; className?: string }[] = [
+    { key: "rate", text: say.rate, className: "md:hidden" },
+    ...(first ? [{ key: "first", text: first }] : []),
     ...(shared.tax && taxWord(p.taxBucket.value) ? [{ key: "tax", text: <>{copy.labels.tax}: <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} /></> }] : []),
     ...(shared.taxByLinkage ? [{ key: "tax", text: <TaxByLinkage products={products} /> }] : []),
     ...(shared.conditions && p.conditions ? [{ key: "conditions", text: <><span>{copy.conditionsLead}</span> <PrintedText text={p.conditions} /></> }] : []),
@@ -187,6 +191,19 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
         )
       }
     />
+  );
+}
+
+/** A rate column's head, or the caption over the rate columns, with a "?" that opens what the figure is: over a deposits table, above the
+ *  card of the published rate (the card of the deposits page's "?" beside its rate); over a savings-plans table, that sentence alone, since
+ *  the card speaks of a deposit. */
+function RateHead({ label, deposits }: { label: string; deposits: boolean }) {
+  const say = w.deposits.say;
+  return (
+    <span className="inline-flex items-center gap-1">
+      {label}
+      {deposits ? <HelpMark term={[DEPOSIT_TERMS.rate]} about={w.deposits.cols.rate} lead={say.rate} /> : <HelpMark about={w.deposits.cols.rate} text={say.rate} />}
+    </span>
   );
 }
 
@@ -255,8 +272,8 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
     ...(!shared.rateType ? [{ id: "rateType", head: copy.labels.rateType, width: 6.5 }] : []),
     ...(amountColumn ? [{ id: "amount", head: w.deposits.cols.amount, width: 10 }] : []),
     ...(bands
-      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, width: 9, dim: amount !== ALL && amount !== b.key }))
-      : [{ id: "rate", head: w.deposits.cols.rate, width: 9 }]),
+      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: 9, dim: amount !== ALL && amount !== b.key }))
+      : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} deposits={deposits} />, width: 9 }]),
     ...(!shared.exits ? [{ id: "exits", head: copy.labels.exits, width: 9, wrap: true }] : []),
   ];
   const cellsOf = (row: TableRow, p: ProductRowData): ReactNode[] => [

@@ -924,6 +924,24 @@
       top: 4rem;
     }
   }
+  /* With a caption row over the heads (ProductTable `band`), the head sticks as one block: two rows of sticky cells at one top would lie
+     over each other. Its cells keep their background and line. */
+  .tbl-sticky.tbl-banded thead {
+    position: sticky;
+    top: 3.5rem;
+    z-index: 2;
+  }
+  .tbl-sticky.tbl-banded thead th {
+    position: static;
+  }
+  .tbl-sticky.tbl-banded thead .tbl-band th {
+    box-shadow: none;
+  }
+  @media (min-width: 64rem) {
+    .tbl-sticky.tbl-banded thead {
+      top: 4rem;
+    }
+  }
   /* A row of a list of products lights under the pointer, so the eye keeps it across the columns (ProductTable). Nothing depends on it. */
   @media (hover: hover) {
     .tbl-rows tbody tr:not(.grp-row, .dup-row, .row-detail) > td {

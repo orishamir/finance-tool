@@ -12,7 +12,7 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment,
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
-import { aboveZeroCheck, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
+import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
@@ -335,13 +335,18 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         </div>
       )}
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
-        <p>
-          {n.employee ? story.assume.employee : story.assume.self}
-          {inflationPct && <Num value={inflationPct} />}
-          {story.assume.like}
-          <Term id="אינפלציה">{story.assume.term}</Term>
-          {story.assume.after}
-        </p>
+        <DotLine
+          items={[
+            story.assume.site,
+            <>
+              {n.employee ? story.assume.employee : story.assume.self}
+              {inflationPct && <Num value={inflationPct} />}
+              {story.assume.like}
+              <Term id="אינפלציה">{story.assume.term}</Term>
+            </>,
+            story.assume.today,
+          ]}
+        />
         {!n.employee && fundName && brokerCount && (
           <p>
             {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{gershayim(brokerName)}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}

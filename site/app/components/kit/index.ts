@@ -22,7 +22,7 @@ export { DiffBar, DiffFigure, DiffHead, DiffRow, GreyLine, barShare, type DiffRo
 export { LeftOutLine, LeftOutMark } from "./left-out";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { FigureLines, KeyValue, KeyValueList, Stat, StatRow, StatTile, type KeyValueItem } from "./stat";
-export { DoubtNote, GapNote, NoteList, PrintedQuotes, PrintedText, ProseList, SharedFacts, SourceLine } from "./notes";
+export { DotLine, DoubtNote, GapNote, NoteList, PrintedQuotes, PrintedText, ProseList, SharedFacts, SourceLine } from "./notes";
 export { CheckField, FieldGroup, FieldState, AskField, InlineSelect, SearchField, TextField, NumberField, PercentField, RangeField, SelectField, flushPendingFields, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, startText, type FieldProps, type RangeFieldProps } from "./fields";
 export { GainBars, LaneLabel, Marker, MarkerMark, useBox, useWidth, type GainBar, type MarkerProps } from "./marker";
 export { AxisLabels, ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, niceYearTicks, scrollCueStyle, yearTicksIn, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
@@ -51,7 +51,7 @@ export { DidYouKnow, type FactItem } from "./did-you-know";
 export { useSoftSwap, useSwapGlide } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, ProductFigures, ProductIdLink, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, RowFoldButton, type ProductColumn, type ProductGroup, type ProductRow, type FoldMark } from "./product-table";
 export { PageTabs, type PageTab } from "./page-tabs";
-export { SortHead, type SortState } from "./sort-head";
+export { SortHead, SortNote, type SortState } from "./sort-head";
 export { AmountRange, AnchorSpread } from "./deposit-words";
 export { ExposureCell, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
 export { HelpMark } from "./help-mark";

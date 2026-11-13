@@ -6,6 +6,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
 import type { DepositVariant, ExitPoints } from "../../../lib/deposit-kind";
+import type { TermRow } from "../../../lib/data.server";
 
 export type InstitutionKind = "bank" | "broker";
 
@@ -155,6 +156,8 @@ export interface InstitutionPageData {
   rules: Record<string, RuleRecord>;
   /** The records those rules' cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
+  /** The glossary cards behind the "?" of its tables' heads (a deposit's rate), by their Hebrew names. */
+  helpTerms: Record<string, TermRow>;
   /** What the site found in the company's own documents (D30): the records that name it, by topic; `company` is its registry id. */
   terms: { groups: { key: string; title: string; ids: string[] }[]; company: string | null; pageCompanies: string[]; name: string; dimensions: Record<string, string> };
 }

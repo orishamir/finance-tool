@@ -198,7 +198,6 @@ export default function GuidePage() {
     const oneKind = lows.every((l) => l.r.lowKind === lows[0]?.r.lowKind) ? n.kind[lows[0]?.r.lowKind ?? "plain"] : null;
     return (
       <>
-        {copy.feeNoteParts.caps}{" "}
         {sameCount && both && (
           <>
             {n.atCapBoth.before} <Num value={both.atCap} /> {n.atCapBoth.of} <Num value={both.managers} /> {n.atCapBoth.after}{" "}
@@ -226,7 +225,7 @@ export default function GuidePage() {
             )}
           </>
         )}{" "}
-        {copy.feeNoteParts.companyPage}
+        {copy.feeNote}
       </>
     );
   };
@@ -260,6 +259,8 @@ export default function GuidePage() {
       rules: gen([...(cap?.rule_ids ?? []), ...(data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
       varies: feeVaries(base),
       range: listRangeLine(base),
+      // a provident product's figure is a cap of the management-fee regulations (PF-02 to PF-06); "no cap" and the provider's own tariff are not caps
+      regsCap: provident && !!cap && cap.value !== null,
     });
   }
   if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });

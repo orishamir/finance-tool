@@ -12,7 +12,7 @@ import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, pay
 import { differenceOf, type SiteValue } from "../../lib/value";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
-import { Num, RuleRef, RulesLine, Term } from "../provenance";
+import { LeadTail, Num, RuleRef, RulesLine, Term } from "../provenance";
 import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
@@ -120,6 +120,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             amount={inputs.amount}
             years={years}
             cost={cost}
+            assumed={cash}
             accountFigure={(v, year) => figure(v, "nis", "F-67", accountIn(yearIn(year)), today, copy.account.about.account)}
             fundFigure={(v, year) => figure(v, "nis", "F-67", fundIn(yearIn(year)), today, copy.account.about.fund)}
           />
@@ -138,10 +139,6 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           </Sentence>
         </>
       ) : null}
-
-      <Sentence size="sm" tone="muted" measure>
-        {copy.common.fundAssumption.lead} <Term id="תשואה">{copy.common.fundAssumption.term}</Term> {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
-      </Sentence>
 
       {everyBank.length > 0 ? (
         <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border anchor-target" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
@@ -274,7 +271,7 @@ export function accountWorthRow(data: SignatureData): WorthFactRow | null {
  * The account and the fund over the years, on their own, so a frame of the chart's glide draws the chart and not the whole visual. The value
  * axis's two ends and the amount's dashed line glide with the lines; the words at the lines' ends follow them.
  */
-function AccountChart({ points, start, amount, years, cost, accountFigure, fundFigure }: { points: AccountPoint[]; start: number; amount: number; years: number; cost: SiteValue | null; accountFigure: (v: number, year: number) => SiteValue; fundFigure: (v: number, year: number) => SiteValue }) {
+function AccountChart({ points, start, amount, years, cost, assumed, accountFigure, fundFigure }: { points: AccountPoint[]; start: number; amount: number; years: number; cost: SiteValue | null; /** The return the site assumes for the fund (P-05 `cash_rate`), said after its line's name. */ assumed: SiteValue; accountFigure: (v: number, year: number) => SiteValue; fundFigure: (v: number, year: number) => SiteValue }) {
   const [box, width] = useWidth();
   const plotW = width - 8;
   const [hover, setHover] = useState<number | null>(null);
@@ -302,7 +299,21 @@ function AccountChart({ points, start, amount, years, cost, accountFigure, fundF
         pick={legendPick}
         items={[
           { id: "account", swatch: <Swatch className="bg-chart-net" />, label: copy.account.chart.account },
-          { id: "fund", swatch: <Swatch className="bg-chart-alt" />, label: copy.account.chart.fund },
+          // the fund's line rests on a return the site assumes: said in a few words after its name, with its rate and a "?" for why
+          {
+            id: "fund",
+            swatch: <Swatch className="bg-chart-alt" />,
+            label: copy.account.chart.fund,
+            after: (
+              // short enough to stand on the item's line on a phone; the "?" held to the last word, never on a line of its own
+              <span>
+                · <Num value={assumed} />{" "}
+                <LeadTail lead={copy.common.fundAssumption.note}>
+                  <HelpMark about={copy.common.fundAssumption.about} text={copy.common.fundAssumption.help} className="ms-1" />
+                </LeadTail>
+              </span>
+            ),
+          },
           { id: "baseline", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: copy.account.chart.baseline },
           { id: "cost", swatch: <Swatch shape="box" className="bg-chart-alt/25" />, label: copy.account.chart.cost },
         ]}

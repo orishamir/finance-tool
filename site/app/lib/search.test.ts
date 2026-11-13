@@ -204,9 +204,10 @@ describe("the nineteen queries (top href)", () => {
 
 describe("rules in groups and the negatives", () => {
   it("18: ניוד finds the glossary term of the guides that carry it, and the SW rules in the rules group", () => {
-    // two guides (pension-comprehensive, child-savings-bank) hold "ניוד" as an exact term, so the design's single top href is a tie
+    // two rows hold "ניוד" as an exact term, each on the guide's first of its products (keren-hishtalmut, pension-comprehensive), so the
+    // design's single top href is a tie
     const hits = top("ניוד");
-    expect(hits.slice(0, 2).map((h) => h.entry.href).sort()).toEqual(["child-savings-bank", "pension-comprehensive"].map((g) => `/guide/${g}#term=${encodeURIComponent("העברת כספים בין קופות גמל")}`)); // "ניוד" is a variant of that row
+    expect(hits.slice(0, 2).map((h) => h.entry.href).sort()).toEqual(["keren-hishtalmut", "pension-comprehensive"].map((g) => `/guide/${g}#term=${encodeURIComponent("העברת כספים בין קופות גמל")}`)); // "ניוד" is a variant of that row
     expect(hits.some((h) => h.entry.key?.startsWith("SW-"))).toBe(true);
   });
   it("lists the other rules a name query finds in the rules group", () => {

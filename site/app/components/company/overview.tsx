@@ -1,13 +1,14 @@
 // A company page's overview (components/company/template.tsx), its "סקירה": "מה יש ב…", then the products, the designer's way (mocks of
 // 2026-11-10). A bank's few products are rows between hairlines (kit OpenRow): the name, how many, one headline fact under its label, its
 // date and an arrow. A manager's are one table in a card (`OverviewTable`): the product, how many, its managed money with a thin bar under
-// it against the company's largest product, its fee range and an arrow, under the list's groups, with a note under the table. What the site
-// has not collected follows as quiet lines, then whatever the page adds after it (the documents about none of its products, the names not
-// yet matched).
+// it against the company's largest product, its fee range and an arrow, under the list's groups; what the fee range and the bar are and the
+// date of the money stand in the heads (a muted line under each, and a "?" beside the money's), and in a note under the table on a phone,
+// which has no heads. What the site has not collected follows as quiet lines, then whatever the page adds after it (the documents about
+// none of its products, the names not yet matched).
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { companyPage as w } from "../../copy";
-import { MeterBar, OpenRow, ProductPhoneRow, ProductTable, RowArrow, RowList, Section, TextLink, type ProductColumn, type ProductGroup } from "../kit";
+import { HelpMark, MeterBar, OpenRow, ProductPhoneRow, ProductTable, RowArrow, RowList, Section, SortNote, TextLink, type ProductColumn, type ProductGroup } from "../kit";
 
 export interface OverviewRow {
   id: string;
@@ -68,14 +69,29 @@ function Assets({ a }: { a: OverviewTableRow["assets"] }) {
   );
 }
 
+/** What the tracks' figures in the table are, said in its heads: the fee range's words under the fee head, the money's date under its head,
+ *  and what its bar is measured against in the "?" beside it (where a bar is drawn). */
+export interface OverviewHeads {
+  fees: string;
+  assets: string;
+  bar?: string;
+}
+
 /** A manager's products as one table: under the list's groups when it has them, each row's name and arrow opening the product. */
-export function OverviewTable({ groups, note }: { groups: { key: string; label?: string; rows: OverviewTableRow[] }[]; /** Under the table: what the fees and the bar are. */ note?: ReactNode }) {
+export function OverviewTable({ groups, heads, note }: { groups: { key: string; label?: string; rows: OverviewTableRow[] }[]; /** Where the table holds tracks: what their figures are, in the heads. */ heads?: OverviewHeads; /** Under the table on a phone, whose rows have no heads: what the heads say. */ note?: ReactNode }) {
+  // with a "?" in the heads, the head row starts 4 px lower, so the mark's 44 px stay inside the card's rounded top edge
+  const top = heads?.bar ? "!pt-3.5" : undefined;
   const columns: ProductColumn[] = [
-    { id: "name", head: cols.product },
-    { id: "count", head: cols.count, width: 7.5 },
-    { id: "assets", head: cols.assets, width: 12 },
-    { id: "fees", head: cols.fees, width: 12, wrap: true },
-    { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, tight: true },
+    { id: "name", head: cols.product, headClassName: top },
+    { id: "count", head: cols.count, width: 7.5, headClassName: top },
+    {
+      id: "assets",
+      head: heads ? <SortNote label={cols.assets} note={heads.assets} mark={heads.bar ? <HelpMark about={cols.assets} text={heads.bar} /> : undefined} /> : cols.assets,
+      width: 12,
+      headClassName: top,
+    },
+    { id: "fees", head: heads ? <SortNote label={cols.fees} note={heads.fees} /> : cols.fees, width: 12, wrap: true, headClassName: top },
+    { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, tight: true, headClassName: top },
   ];
   const name = (r: OverviewTableRow) => (
     <TextLink tone="plain" to={r.to} preventScrollReset className="font-semibold">
@@ -113,7 +129,7 @@ export function OverviewTable({ groups, note }: { groups: { key: string; label?:
   return (
     <div className="flex flex-col gap-2">
       <ProductTable columns={columns} groups={tableGroups} />
-      {note && <p className="text-xs text-muted-foreground">{note}</p>}
+      {note && <p className="md:hidden text-xs text-muted-foreground">{note}</p>}
     </div>
   );
 }
