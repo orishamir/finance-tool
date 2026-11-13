@@ -1,8 +1,8 @@
 // A figure the person types where it stands (a fee's rate in a row, a bound in a panel), drawn in its number state, and a month in the
 // same box, chosen from its picker or typed. Unlike a chart's field (NumberField), whose default and typed value look alike, a figure here is the person's record of a
 // price: typed by them it is entered (blue ink on a blue highlight); filled from a price list or a track and left as it was, it is sourced
-// (the solid grey line under the digits), and a press on its box opens a note under it of where it is from, with its source a tap away
-// (design.md, the number states).
+// (the solid grey line under the digits), and the focus in its box (a press or the keyboard) opens a note under it of where it is from,
+// with its source a tap away (design.md, the number states).
 import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { flushSync } from "react-dom";
 import { kit as kitCopy, values as valuesCopy } from "../../copy";
@@ -122,8 +122,9 @@ function cellOf(el: HTMLElement): HTMLElement | null {
 }
 
 /**
- * Places a figure's note under its box: no wider than the row's cell, its inline start on the box's, and moved along the line where it
- * would pass the cell's far edge. Measured before the note is painted, so it never shows out of place.
+ * Places a figure's note under its box: no wider than the row's cell, its inline start on the box's; where it would pass the cell's far
+ * edge from there, its inline start on the cell's, where the row's boxes start (a box late in its line, a flat price's "עד" sum). Measured
+ * before the note is painted, so it never shows out of place.
  */
 function placeNote(note: HTMLElement, field: HTMLElement) {
   const cell = cellOf(field);
@@ -133,8 +134,8 @@ function placeNote(note: HTMLElement, field: HTMLElement) {
   note.style.maxWidth = `${c.width}px`;
   const w = note.getBoundingClientRect().width;
   const rtl = getComputedStyle(field).direction === "rtl";
-  const start = rtl ? f.right - w : f.left;
-  const left = Math.min(Math.max(start, c.left), c.right - w);
+  const fits = rtl ? f.right - w >= c.left : f.left + w <= c.right;
+  const left = fits ? (rtl ? f.right - w : f.left) : rtl ? c.right - w : c.left;
   note.style.left = `${left - f.left}px`;
   note.style.right = "auto";
 }
@@ -144,11 +145,11 @@ function placeNote(note: HTMLElement, field: HTMLElement) {
  * unit where `inside` says so (a row of a list, "[0.25% מכל פעולה]"). The unit may be a choice of its own (a bound's currency, "₪ ▾": an
  * `InlineSelect` with its label hidden). `value` is the figure as the
  * page shows it, a value object whose state is the box's look: entered or sourced; null for an optional figure not given, a dashed box.
- * A press on a sourced figure's box (the focus in it, the caret placed, as on any box) opens a small note under the box, no wider than its
- * row's cell, floating over what is below so nothing moves: `from` says where the figure is from ("מהתעריפון של …"), and "למקור" opens the
- * same source sheet the figure opens elsewhere on the page. Typing, Escape or the focus leaving the box and its note closes it; the Tab key
- * alone never opens it (the page's other figures lead to the same source). Once the person types over the figure, the caller makes it
- * entered. Each valid
+ The focus in a sourced figure's box, from a press (the caret placed, as on any box) or from the keyboard, opens a small note under the
+ * box, no wider than its row's cell, floating over what is below so nothing moves: `from` says where the figure is from ("מהתעריפון של
+ * …"), and "למקור" after it, underlined as a link, opens the same source sheet the figure opens elsewhere on the page, so a figure no other
+ * part of the page shows (a later price, a sale's, a flat price's "עד" sum) has its source within reach of the keyboard. Typing, Escape or
+ * the focus leaving the box and its note closes it. Once the person types over the figure, the caller makes it entered. Each valid
  * number commits as it is typed (`readTyped`); one that fails `validate` (or is not a number) stays in the box with its message under it,
  * takes the error look and changes nothing, until it is fixed. A number ending in its separator ("0,") is no error while the person is in
  * the box. `sign` is the unit's sign the box accepts typed with the number; any other sign is no number. With `onClear`, a box left empty
@@ -198,7 +199,7 @@ export function FigureField({ value, label, from, unit, sign, words, inside, tig
   const focused = useRef(false);
   // what the box held when it took the focus, which Escape puts back
   const atFocus = useRef(shown);
-  // the note of where a sourced figure is from, open from a press on its box until typing or the focus leaves
+  // the note of where a sourced figure is from, open from the focus in its box until typing or the focus leaves
   const [noting, setNoting] = useState(false);
   const root = useRef<HTMLSpanElement>(null);
   const note = useRef<HTMLSpanElement>(null);
@@ -284,6 +285,7 @@ export function FigureField({ value, label, from, unit, sign, words, inside, tig
             onFocus={() => {
               focused.current = true;
               atFocus.current = text.trim();
+              if (sourced) setNoting(true);
               onFocus?.();
             }}
             onBlur={() => {
@@ -305,11 +307,11 @@ export function FigureField({ value, label, from, unit, sign, words, inside, tig
       {noteOpen && (
         <span
           ref={note}
-          className="absolute top-full z-20 mt-1 flex w-max flex-col items-start gap-1 rounded-md border border-border bg-popover px-3 py-2 text-sm text-foreground shadow-lg"
+          className="absolute top-full z-20 mt-1 w-max text-pretty rounded-md border border-border bg-popover px-3 py-2 text-sm leading-relaxed text-foreground shadow-lg"
           onMouseDown={(e) => e.preventDefault()}
         >
-          {from && <span className="text-pretty">{from}</span>}
-          <Button variant="quiet" size="sm" flush onClick={(e) => open(valueItem(sourced, undefined, true), e.currentTarget)}>
+          {from && <>{from} </>}
+          <Button variant="inline" className="whitespace-nowrap" onClick={(e) => open(valueItem(sourced, undefined, true), e.currentTarget)}>
             {kitCopy.figure.toSource}
           </Button>
         </span>
