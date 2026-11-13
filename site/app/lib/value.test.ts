@@ -1,6 +1,6 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { compactFee, computed, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
+import { compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -123,5 +123,18 @@ describe("recheckStale", () => {
     expect(recheckStale({ recheck_date: "2026-11-13" }, "2026-11-13")).toBe(false);
     expect(recheckStale({ recheck_date: null }, "2026-11-13")).toBe(false);
     expect(recheckStale({}, "2026-11-13")).toBe(false);
+  });
+});
+
+describe("the year a yearly amount is for (figureYear)", () => {
+  const base = { effective_from: null, effective_to: null, tax_year: null, update_rule: "market" } as const;
+  it("a figure for one calendar year, a tax year, or an amount indexed each 1 January", () => {
+    expect(figureYear({ ...base, effective_from: "2025-01-01", effective_to: "2025-12-31" })).toBe("2025");
+    expect(figureYear({ ...base, tax_year: 2026 })).toBe("2026");
+    expect(figureYear({ ...base, effective_from: "2026-01-01", update_rule: "cpi-linked 1 jan" })).toBe("2026");
+  });
+  it("none for an amount not tied to a year", () => {
+    expect(figureYear({ ...base, effective_from: "2026-10-22" })).toBeNull();
+    expect(figureYear({ ...base, effective_from: "2026-01-01", update_rule: "fixed in law" })).toBeNull();
   });
 });

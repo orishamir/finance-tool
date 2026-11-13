@@ -76,7 +76,9 @@
     "formula": "F-41",
     "rule_ids": [
       "TXI-07",
-      "TXI-08"
+      "TXI-08",
+      "TXI-02",
+      "TXI-19"
     ],
     "blocked_by": [],
     "labels": []

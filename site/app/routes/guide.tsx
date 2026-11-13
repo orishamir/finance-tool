@@ -242,13 +242,32 @@ export default function GuidePage() {
   for (const base of feeOrder) {
     const cap = record.fee_caps[base as keyof typeof record.fee_caps] as SiteValue | undefined;
     if (!(record.fee_bases_allowed as string[]).includes(base)) continue;
-    const c = feeCopy[base];
+    // a fund's own fee is the manager's percentage inside the unit price (MF-16), not a provident fund's fee on savings (glossary)
+    const c = base === "balance" && (record as { held_as?: string }).held_as === "fund_units" ? feeCopy.balanceFund : feeCopy[base];
     if (!c) continue;
-    fees.push({
-      id: base,
-      name: c.name,
-      base: c.base,
-      cap: cap && cap.value === null ? (
+    // whom the cap binds and the case it holds in (the record's `binds` and `caveat`, data-schema 3.3): the cell names the bank it binds,
+    // and the line under it says what holds elsewhere
+    const { binds, caveat } = (cap ?? {}) as { binds?: string; caveat?: string };
+    const openTransfer = caveat === "closing_account" ? figure("SW-33", "same_client_transfer_cap") : null;
+    const capNote = [
+      caveat === "closing_account" ? (
+        <span key="c">
+          {feeCopy.caveat.closing_account}
+          {openTransfer && (
+            <>
+              {" "}
+              {feeCopy.openTransfer.before} <Num value={openTransfer} /> {feeCopy.openTransfer.after}
+            </>
+          )}
+        </span>
+      ) : caveat ? (
+        <span key="c">{feeCopy.caveat[caveat]}</span>
+      ) : null,
+      binds ? <span key="b">{feeCopy.bindsOthers[binds]}</span> : null,
+      feeCopy.capNote[record.id]?.[base] ? <span key="n">{feeCopy.capNote[record.id][base]}</span> : null,
+    ].filter(Boolean);
+    const capCore =
+      cap && cap.value === null ? (
         <Num value={cap} display={feeCopy.noCap} />
       ) : cap && cap.value === 0 ? (
         <Num value={cap} display={feeCopy.zeroCap} />
@@ -258,7 +277,19 @@ export default function GuidePage() {
         </>
       ) : (
         feeCopy.tariffSet
+      );
+    fees.push({
+      id: base,
+      name: c.name,
+      base: c.base,
+      cap: binds ? (
+        <span>
+          {feeCopy.bindsLead[binds]} {capCore}
+        </span>
+      ) : (
+        capCore
       ),
+      ...(capNote.length > 0 ? { capNote: <>{capNote.flatMap((n, i) => (i ? [" ", n] : [n]))}</> } : {}),
       // the note under the table says how long a discount lasts and when it can end earlier (D83): its rules sit on the fee's row
       rules: gen([...(cap?.rule_ids ?? []), ...(data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
       varies: feeVaries(base),

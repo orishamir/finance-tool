@@ -68,7 +68,7 @@ export function Compare() {
             ),
             cells: [
               <Fragment key="bond">
-                על <Term prefix="ה" id="ריבית">ריבית</Term> כשהיא משולמת
+                על <Term prefix="ה" id="ריבית">ריבית</Term> כשהיא משולמת, ועל <Term id="רווח הון">רווח הון</Term> במכירה או בפדיון
               </Fragment>,
               <Fragment key="limited">
                 על <Term id="הרווח הריאלי">הרווח הריאלי</Term> בפדיון
@@ -80,7 +80,7 @@ export function Compare() {
           },
         ]}
       />
-      <RulesLine ids={["CORP-01", "CORP-23", "TX2-06", "MF-05", "MF-10", "MF-11", "MF-16", "MF-20", "MF-60", "TXS-09", "TXS-33"]} />
+      <RulesLine ids={["CORP-01", "CORP-23", "TX2-06", "TXI-12", "TXS-03", "MF-05", "MF-10", "MF-11", "MF-16", "MF-20", "MF-60", "TXS-09", "TXS-33"]} />
     </>
   );
 }
@@ -203,6 +203,7 @@ export const termIds = [
   "תשואה לפדיון",
   "שנת המס",
   "הפסד הון",
+  "רווח הון",
   "ניכוי מס במקור",
   "הרווח הריאלי",
   "חשבון ניירות ערך",

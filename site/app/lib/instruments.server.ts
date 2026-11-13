@@ -361,7 +361,12 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
-        if (!feeAbsent(rec, field)) notCollected.push(field);
+        // a fee the record could not collect runs as 0; the terms block shows the manager's and the trustee's, which every fund charges,
+        // as not collected, with the record's reason in its sheet (a variable fee, a tracking gap or a foreign withholding may not apply)
+        if (!feeAbsent(rec, field)) {
+          notCollected.push(field);
+          if (v && (field === "fixed_management" || field === "trustee")) feeValues[label] = { ...v };
+        }
         return;
       }
       if (!isNum(v) || (v.unit !== "pct_per_year" && v.unit !== "pct")) return void missing.push(`${wrapperId}: fund "${rec.id}" fees.${field} is not a percent a year`);

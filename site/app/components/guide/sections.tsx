@@ -160,6 +160,8 @@ export interface FeeRow {
   name: string;
   base: string;
   cap: ReactNode;
+  /** Under the cap: the case it holds in and what holds where it does not bind (a cap that binds banks only), from its record. */
+  capNote?: ReactNode;
   rules: readonly string[];
   tag?: ReactNode;
   /** "תלוי בחברה" and the companies whose own rate the site holds for this fee (D30), under the cap. */
@@ -191,6 +193,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
               {f.cap}
               {f.tag}
             </span>
+            {f.capNote && <span className="block text-sm text-muted-foreground">{f.capNote}</span>}
             {f.range && <span className="block text-sm text-muted-foreground">{f.range}</span>}
             {f.varies && <span className="block">{f.varies}</span>}
             <RulesLine ids={f.rules} name={f.name} className="pt-1" />
@@ -217,6 +220,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
                     {f.cap}
                     {f.tag}
                   </span>
+                  {f.capNote && <span className="block pt-1 text-sm text-muted-foreground">{f.capNote}</span>}
                   {f.range && <span className="block pt-1 text-sm text-muted-foreground">{f.range}</span>}
                   {f.varies && <span className="block pt-1">{f.varies}</span>}
                   <RulesLine ids={f.rules} name={f.name} className="pt-1" />

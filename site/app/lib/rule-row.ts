@@ -10,7 +10,7 @@ type Figure = NonNullable<RuleRecord["figures"]>[string];
 type FigureValue = Exclude<Figure, unknown[] | { by_tax_year: unknown }>;
 
 /** Units whose number carries no sign of its own: the unit's word follows it, as on the rule card. */
-export const wordUnits = new Set(["months", "years", "days", "business_days", "usd", "eur"]);
+export const wordUnits = new Set(["months", "years", "days", "business_days"]);
 /** Units whose number says nothing without its label (a count): left out of a row's pills, kept in the rule's detail. */
 const bareUnits = new Set(["count"]);
 

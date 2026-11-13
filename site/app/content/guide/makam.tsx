@@ -3,6 +3,7 @@
 // on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import { Link } from "react-router";
 import type { GuideContent } from "./types";
+import { YearOf } from "./year";
 import { fmt } from "../../lib/format";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
@@ -56,7 +57,7 @@ export const content: GuideContent = {
           מי שמוכר לפני הפדיון משלם {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי ניכוי של <Term prefix="ה" id="אינפלציה">אינפלציה</Term>: הרווח כולו נחשב <Term id="רווח הון ריאלי">רווח הון ריאלי</Term>. בחוק השיעור הזה הוא תקרה, וזה גם השיעור שהבנק מנכה מהרווח. איך מחיר המכירה מתחלק בין ניכיון <Term prefix="ל" id="רווח הון">רווח הון</Term>, עוד לא נמצא.
         </Sentence>
         <Sentence measure>
-          בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, לא חייב <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}.
+          בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, לא חייב <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}<YearOf v={interestCeiling ?? ceiling} plural />.
         </Sentence>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מקור אחד סותר.</span> שורה במדריכי <Term id="רשות המסים">רשות המסים</Term>, בתוך סעיף על <Term id="איגרת חוב">איגרות חוב</Term> ישנות, נוקבת בשיעור אחר על דמי ניכיון של מק״מ. בפקודת מס הכנסה השיעור על ריבית מנכס <Term id="לא צמוד">לא צמוד</Term> הוא {rate ? <Num value={rate} /> : null}, והמדריך עצמו אומר שהחוק גובר, ולכן האתר מחשב לפי החוק. שאלה פתוחה <IdRef id="TXI OQ3" end="." />
@@ -91,7 +92,7 @@ export const content: GuideContent = {
         כסף שצריך לשבת כמה חודשים עד שנה, כשרוצים <Term id="תשואה">תשואה</Term> ידועה מראש ואפשרות למכור בכל יום מסחר.
       </p>
       <p className="max-w-measure">
-        מול <Term id="פיקדון">פיקדון</Term> בבנק: בשניהם המס הוא שיעור קבוע מהריבית הנומינלית. במק״מ אין נעילה ואין <Term id="קנס שבירה">קנס שבירה</Term>, ובנק לא יכול לגבות עליו <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term>; הכלל הזה חל על בנקים בלבד. מצד שני יש עמלת קנייה, ועמלת מכירה למי שלא מחכה לפדיון. <Term prefix="ה" id="תשואה ברוטו">תשואה ברוטו</Term> שמוצגת בבנק היא לפני <Term prefix="ה" id="עמלה">עמלות</Term> והמס.
+        מול <Term id="פיקדון">פיקדון</Term> <Term id="לא צמוד">לא צמוד</Term> בבנק: כשמחזיקים עד הסוף, בשניהם המס הוא שיעור קבוע מהריבית הנומינלית. מק״מ שנמכר לפני הפדיון ממוסה על <Term prefix="ה" id="רווח הון">רווח הון</Term>, בשיעור שהוא תקרה, ובפיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> המס הוא רק על הריבית שמעל עליית המדד. במק״מ אין נעילה ואין <Term id="קנס שבירה">קנס שבירה</Term>, ובנק לא יכול לגבות עליו <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term>; הכלל הזה חל על בנקים בלבד. מצד שני יש עמלת קנייה, ועמלת מכירה למי שלא מחכה לפדיון. <Term prefix="ה" id="תשואה ברוטו">תשואה ברוטו</Term> שמוצגת בבנק היא לפני <Term prefix="ה" id="עמלה">עמלות</Term> והמס.
       </p>
       <p className="max-w-measure">
         מול <Term id="קרן כספית">קרן כספית</Term>: כשיש לבנק הסכם הפצה עם <Term id="מנהל קרן">מנהל הקרן</Term>, הבנק לא גובה עמלת קנייה על הקרן. <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> פטורה נזילה בכל יום מסחר, והמס בה נגבה רק בפדיון ורק על <Term id="הרווח הריאלי">הרווח הריאלי</Term>. המק״מ עדיף כשמתכוונים להחזיק עד הפדיון וכשהעמלה קטנה ביחס לסכום ולתקופה. בסכומים קטנים או בתקופות קצרות מאוד, עמלת המינימום יכולה לאכול את ההפרש.
@@ -102,7 +103,7 @@ export const content: GuideContent = {
       <p className="max-w-measure">
         <Term id="עמלת קנייה ומכירה">עמלות הקנייה והמכירה</Term>, <Term prefix="ו" id="דמי חשבון קבועים">דמי חשבון קבועים</Term> אם החברה גובה אותם, נקבעים בתעריפון של כל חברה. ראו במדריך: <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
-      <RulesLine ids={["TXI-03", "TXI-11", "BANK-18", "BRK-16", "BRK-17", "BANK-15", "MF-26", "MF-35", "TXS-12", "GOV-15", "GOV-17"]} />
+      <RulesLine ids={["TXI-03", "TXI-11", "TXI-12", "TXI-05", "TXI-02", "BANK-18", "BRK-16", "BRK-17", "BANK-15", "MF-26", "MF-35", "TXS-12", "GOV-15", "GOV-17"]} />
       {/* D6: makam's exposure page folded into this one; what it said about holding makam without buying it */}
       <Sentence measure>
         אפשר להחזיק מק״מ גם בעקיפין: <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> יכולה להחזיק מק״מ שנותרו לו עד {makamMonths ? <Num value={makamMonths} /> : null} חודשים לפדיון, לצד איגרות חוב קצרות, פיקדונות ומזומן. בחשבון <Term prefix="ב" id="קופת גמל בניהול אישי">ניהול אישי</Term> קונים אותו ישירות, כמו בחשבון ניירות ערך.
