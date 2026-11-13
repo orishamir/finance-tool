@@ -8,6 +8,7 @@ import { compactHoldings, holdingsTemplate } from "./track-exposure";
 import { defaultProduct, trackProductIds, type TbData, type TbProduct, type TbRow } from "./track-browser";
 import { cmaFeeValue, compactFee, feeYear, staleCma, type SiteValue } from "./value";
 import { withoutLtd } from "./company-name";
+import { SELF_DIRECTED_PRODUCTS } from "./self-directed";
 
 // the six products and the default are in lib/track-browser.ts (the guides read them too)
 export { defaultProduct, trackProductIds };
@@ -34,8 +35,11 @@ export function buildTrackBrowser(companyId?: string): TbData {
 
   const companyIds: string[] = [];
   const own = (x: (typeof cma.tracks)[number]) => !companyId || x.companyId === companyId;
+  // on a company's page a self-directed (IRA) fund is a product of its own, with its own guide and cap (lib/self-directed.ts); the
+  // tracks page lists it under its regulator type, where its yields say why they are not shown
   const kinds = [
-    ...trackProductIds.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => x.wrapperId === id })),
+    ...trackProductIds.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => x.wrapperId === id && !(companyId && x.selfDirected) })),
+    ...(companyId ? SELF_DIRECTED_PRODUCTS.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => x.selfDirected === id })) : []),
     ...(companyId ? [...new Set(cma.tracks.filter((x) => own(x) && !x.wrapperId).map((x) => x.classification))].map((c) => ({ id: c, page: false, of: (x: (typeof cma.tracks)[number]) => !x.wrapperId && x.classification === c })) : []),
   ];
   const products: TbProduct[] = kinds.flatMap(({ id, page, of }) => {
@@ -58,7 +62,7 @@ export function buildTrackBrowser(companyId?: string): TbData {
     const rows: TbRow[] = list.map((x, i) => {
       if (!companyIds.includes(x.companyId)) companyIds.push(x.companyId);
       // a self-managed (IRA) fund: each member directs its money (IRA-01), and the file reports 0 in its yields
-      const ira = /בניהול אישי|\bIRA\b/i.test(x.name);
+      const ira = !!x.selfDirected;
       const y = ira ? undefined : yieldsOf.get(x.fundId);
       return {
         f: x.fundId,

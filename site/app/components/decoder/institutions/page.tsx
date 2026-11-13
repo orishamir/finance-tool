@@ -13,7 +13,7 @@ import { BankProductRow } from "./product-row";
 import type { InstitutionPageData, ProductGroup } from "./types";
 import { withoutLtd } from "../../../lib/company-name";
 import { entryIds, splitDocGroups } from "../../../lib/company-page";
-import { depositCount, rateRange, termRange } from "../../../lib/bank-table";
+import { depositCount, rangeLinkage, rateRange, termRange } from "../../../lib/bank-table";
 import { accountSections } from "./sections";
 import { CompanyTemplate, type CompanyPart } from "../../company/template";
 import { Overview, type OverviewRow } from "../../company/overview";
@@ -51,7 +51,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
             <BankProductRow p={g.products[0]!} known={known} wrapperName={g.wrapperName} />
           ) : (
             <>
-              <BankTable kind={g.wrapperId === "bank-deposit" ? "deposits" : "savings"} products={g.products} known={known} asOf={data.depositsAsOf} />
+              <BankTable kind={g.wrapperId === "bank-deposit" ? "deposits" : "savings"} products={g.products} known={known} asOf={g.asOf} />
               <BankLinks wrapperId={g.wrapperId} wrapperName={g.wrapperName} {...(g.wrapperId === "bank-deposit" ? { compare: { to: "/deposits", label: w.deposits.compare } } : {})} />
             </>
           )}
@@ -85,7 +85,10 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
     const g = groups.find((x) => x.wrapperId === p.id);
     const base = { id: p.id, title: p.label, to: companyPath(data.id, { product: p.id }), label: p.label };
     if (g) {
-      const range = rateRange(g.products);
+      // one linkage's records (BANK OQ17: whether a linked rate is real or nominal is open), named where the product holds others or is linked
+      const ranged = rangeLinkage(g.products);
+      const range = ranged ? rateRange(ranged.products) : null;
+      const linkageWord = ranged && (ranged.mixed || ranged.linkage !== "none") ? (w.overviewFact.linkage[ranged.linkage] ?? null) : null;
       const many = g.products.length > 1;
       const current = g.products.every((x) => x.currentAccount);
       return {
@@ -94,7 +97,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
         ...(range
           ? {
               fact: {
-                label: current ? w.overviewFact.current : w.overviewFact.rate(termRange(g.products)),
+                label: current ? w.overviewFact.current(g.products.some((x) => !!x.conditions)) : w.overviewFact.rate(termRange(ranged?.products ?? g.products), linkageWord),
                 value:
                   many && range.low.value !== range.high.value ? (
                     <>
@@ -106,7 +109,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
               },
             }
           : {}),
-        date: data.depositsAsOf ? <NumAfter lead={w.overviewFact.asOf} value={data.depositsAsOf} /> : undefined,
+        date: g.asOf ? <NumAfter lead={w.overviewFact.asOf} value={g.asOf} /> : undefined,
       };
     }
     return {
@@ -137,7 +140,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
                   ))}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen} />
+                  {catalogue.seenAt} {u.where} <NumAfter lead={catalogue.seenOn} value={u.seen} />
                 </span>
               </li>
             ))}

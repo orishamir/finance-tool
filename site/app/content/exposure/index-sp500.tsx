@@ -6,7 +6,7 @@ import type { ExposureContent } from "../guide/types";
 import type { GlanceItem } from "../../components/guide/sections";
 import { GuideFold as Fold, RuleRows } from "../../components/guide/sections";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { KeyValueList, ProseList, Section, Sentence, Tag } from "../../components/kit";
+import { KeyValueList, ProseList, Section, Sentence, Tag, When } from "../../components/kit";
 import { fmt } from "../../lib/format";
 
 export const content: ExposureContent = {
@@ -76,6 +76,8 @@ export const content: ExposureContent = {
             items={[
               <Sentence as="span" key="cap">
                 שווי שוק של לפחות {minCap ? <Num value={minCap} display={`${fmt.number(Number(minCap.value) / 1e9)} מיליארד דולר`} /> : null}
+                {/* the threshold moves at the start of every quarter (ETF-38): it says when it was read */}
+                {minCap ? <>, <When iso={minCap.checked} lead="הסף נכון ל־" /> ומתעדכן כל רבעון</> : null}
               </Sentence>,
               "סחירות מספקת",
               "רווח חשבונאי חיובי ברבעון האחרון ובארבעת הרבעונים האחרונים יחד",
