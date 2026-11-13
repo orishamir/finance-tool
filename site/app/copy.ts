@@ -1158,7 +1158,8 @@ export const guideBlocks = {
     realLinkedBond: { before: "אג״ח צמודה למדד:", after: "מהרווח הריאלי" },
     nominalBasis: { before: "", after: "מהרווח הנומינלי" },
     unlinkedInterest: { before: "ריבית לא צמודה:", after: "מהריבית, מנוכה בבנק" },
-    linkedInterestCeiling: { before: "ריבית צמודה למדד: עד", after: "מהריבית הריאלית, מנוכה בבנק" },
+    // TXI-02: the tax is "not exceeding" the rate, and the bank withholds all of it (TXI-08); lower brackets can apply (TXI-19)
+    linkedInterestCeiling: { before: "ריבית צמודה למדד: עד", after: "מהריבית הריאלית. הבנק מנכה את מלוא השיעור, ולמי שזכאי למדרגות מס נמוכות יותר המס יכול להיות נמוך יותר" },
     linkedInterest: { before: "ריבית צמודה למדד:", after: "מהריבית הריאלית, מנוכה בבנק" },
     hishtalmutExcess: { before: "על הרווח הזה: עד", after: "מהחלק שמעל האינפלציה" },
     childProvident: { before: "במסלול קופת גמל: עד", after: "מהרווח הריאלי" },
@@ -2778,7 +2779,8 @@ export const guideSignature = {
     notComputed: "עוד לא חושב",
     rangeTo: "עד", // a range is "1.55% עד 2.25%", not a dash (wording.md)
     // one sentence for the rate most banks pay on a current account, on the current-account page and under the money-market ladder
-    commonRate: { before: "רוב הבנקים משלמים בעו״ש", of: "מתוך", after: "הבנקים שנאספו." },
+    // "רוב" only where the rate is more than half the banks' (F-85 is the most common rate, which may be a half or less)
+    commonRate: { before: "רוב הבנקים משלמים בעו״ש", beforeMode: "הריבית הנפוצה ביותר בעו״ש היא", of: "מתוך", after: "הבנקים שנאספו." },
     // after the fund's line in the legend: its return, the site's assumption (a caution: its short form stays in sight), and a "?" with why
     fundAssumption: { note: "בשנה, הנחה של האתר", about: "התשואה שהאתר מניח לקרן", help: "אין תשואה שפורסמה לקרן כספית שהאתר רשאי להציג, ולכן הקרן רצה כאן על תשואה שהאתר מניח. זו הנחה של האתר, לא הבטחה ולא תחזית." },
     years: "כמה שנים",
@@ -2813,6 +2815,7 @@ export const guideSignature = {
     // G3: the page leads with 0%; most banks pay nothing on a current account, and the interest of the few that do is a fold
     headline: { lead: "אחרי", inAccount: "בעו״ש שווים", today: "בכסף של היום:", less: "פחות", more: "יותר", same: "בלי שינוי" },
     mostPayNothing: "רוב הבנקים לא משלמים ריבית על עו״ש, ולכן הכסף מאבד מערכו בקצב עליית המחירים.",
+    modePaysNothing: "הריבית הנפוצה ביותר על עו״ש היא אפס, ובבנק כזה הכסף מאבד מערכו בקצב עליית המחירים.",
     todayMoney: { before: "בכסף של היום: מה שהסכום יקנה במחירים של היום. המחירים עולים", after: "בשנה (הנחה של האתר), ולכן סכום שלא גדל קונה פחות עם השנים. הסכומים אחרי מס ועלויות." },
     axisNote: "הציר האנכי לא מתחיל באפס, כדי שההפרש ייראה.",
     fold: {
@@ -2848,7 +2851,7 @@ export const guideSignature = {
       change: "ההפרש בין מה ששווה היתרה בסוף התקופה לבין הסכום שהתחלתם בו, בכסף של היום",
       maxYear: "הכי הרבה שהבנק משלם בשנה על היתרה, אחרי המס שהוא מנכה, ללקוח שעומד בתנאים",
     },
-    inputs: { rate: "הריבית שהבנק מפרסם", common: "הריבית שרוב הבנקים משלמים", ceiling: "התקרה: היתרה שנושאת ריבית", tax: "המס שהבנק מנכה על הריבית" },
+    inputs: { rate: "הריבית שהבנק מפרסם", common: "הריבית הנפוצה ביותר בעו״ש", ceiling: "התקרה: היתרה שנושאת ריבית", tax: "המס שהבנק מנכה על הריבית" },
     today: "היום",
     after: "אחרי",
   },
