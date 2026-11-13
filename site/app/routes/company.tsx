@@ -203,10 +203,9 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   const groupRank = (p: CompanyPart) => ["savings", "funds", "trade"].indexOf(p.group ?? "savings");
   const parts = [...views.map(tracksPart), ...extraParts].map((p, i) => ({ p, i })).sort((a, c) => groupRank(a.p) - groupRank(c.p) || a.i - c.i).map((x) => x.p);
 
-  // the overview's table: a provident product's tracks, managed money (a thin bar against the company's largest product) and its fee range;
-  // a group of funds' count; the securities account's price list; under the list's groups when it has them
+  // the overview's table: a provident product's tracks, managed money and its fee range; a group of funds' count; the securities account's
+  // price list; under the list's groups when it has them
   const assetsOf = (v: ProductView) => v.companies[0]?.assets ?? null;
-  const top = Math.max(0, ...views.map((v) => (typeof assetsOf(v)?.value === "number" ? (assetsOf(v)!.value as number) : 0)));
   const to = (id: string) => companyPath(data.pageId, { product: id });
   const tableRow = (p: CompanyPart): OverviewTableRow => {
     const v = views.find((x) => addressId(x.id) === p.id);
@@ -217,7 +216,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
       return {
         ...base,
         count: tracksPhrase(v.tracks.length),
-        assets: assets ? { figure: typeof assets.value === "number" ? <Num value={assets} display={assetsText(assets.value)} /> : <Num value={assets} />, frac: typeof assets.value === "number" && top > 0 ? assets.value / top : null } : null,
+        assets: assets && (typeof assets.value === "number" ? <Num value={assets} display={assetsText(assets.value)} /> : <Num value={assets} />),
         fees: fees ? (
           <span className="whitespace-nowrap">
             <Num value={fees.low} />
@@ -256,14 +255,13 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     { key: "trade", label: w.groups.trade },
   ];
   const tableGroups = many ? listGroups.map((g) => ({ key: g.key, label: g.label, rows: parts.filter((p) => p.group === g.key).map(tableRow) })).filter((g) => g.rows.length > 0) : [{ key: "all", rows: parts.map(tableRow) }];
-  // what the tracks' fee range, money and bar are: in the heads from md, in the note under the table on a phone
-  const tableHeads: OverviewHeads | undefined =
-    views.length > 0 ? { fees: w.overviewTable.heads.fees, assets: w.overviewTable.heads.assets(fmt.period(browser.reportPeriod)), ...(top > 0 ? { bar: w.overviewTable.heads.bar(data.name) } : {}) } : undefined;
+  // what the tracks' fee range is and the date of their money: in the heads from md, in the note under the table on a phone
+  const tableHeads: OverviewHeads | undefined = views.length > 0 ? { fees: w.overviewTable.heads.fees, assets: w.overviewTable.heads.assets(fmt.period(browser.reportPeriod)) } : undefined;
   const tableNote =
     views.length > 0 ? (
       <>
         {w.overviewTable.note.fees} <NumAfter lead={w.overviewTable.note.assets} value={data.period} />
-        {top > 0 && w.overviewTable.note.bar(data.name)}
+        {w.overviewTable.note.end}
       </>
     ) : null;
 

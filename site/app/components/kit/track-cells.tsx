@@ -1,16 +1,15 @@
 // What a track's cells hold, for every list of tracks (with the track browser: the company page's table and the browser's
-// both draw them, so they live here): the regulator's two fee averages, the stock and currency exposure with its rings, and the labels
+// both draw them, so they live here): the regulator's two fee averages, the stock and currency exposure with a bar for each, and the labels
 // beside a track's name. Each number goes through the provenance component; an empty one says why in its words and sheet.
 import { r3workbench, company as copy, track as trackCopy } from "../../copy";
-import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
+import { shareFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
 import { trackLabels } from "../../lib/track-labels";
 import { depositFeeNoneByRule, type SiteValue } from "../../lib/value";
 import { IconAlert, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { mostlyHebrew } from "../../lib/source-label";
 import { ProductFigures, ProductIdLink } from "./product-table";
-import { ShareRings } from "./rings";
-import { Swatch } from "./chart-parts";
+import { MeterBar } from "./meter-bar";
 import { Tag } from "./tag";
 
 /** The track's page on the regulator's Gemel-Net (idGuf is the fund number, OCHLUSIYA=1 the general
@@ -66,30 +65,29 @@ export function TrackFeeLines({ fee, deposit, size = "inline", inline }: { fee?:
 }
 
 /** F-87 or F-88 (D34) through the provenance component; a share that could not be computed says why in its words and sheet. */
-export function ShareNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
-  return <Num value={value} size={size} display={shareText(value)} />;
+export function ShareNum({ value, size = "inline", wrap }: { value: SiteValue; size?: "inline" | "cell"; /** Where the share has no figure, its words ("אין נכסים", "לא דווח") may take two lines: a narrow column sized by its head and figures. */ wrap?: boolean }) {
+  return <Num value={value} size={size} display={shareText(value)} wrap={wrap && typeof value.value !== "number"} />;
 }
 
-/** A track's exposure (D34): two rings, stocks outside and foreign currency inside, and beside them each share with its own dot and name. */
+/**
+ * A track's exposure (D34): a line for stocks and one for foreign currency, each its word, a bar of its share from 0 to 100% in the
+ * measure's colour (full above 100%; the eye's alone, the figure carries the meaning) and its figure. The words' column and the bars have
+ * one width, so in a list every bar starts at the same edge and has the same length, and the eye runs down the column.
+ */
 export function ExposureCell({ value, size = "inline" }: { value: ExposureShares; size?: "inline" | "cell" }) {
   const lines = [
-    { id: "stocks", v: value.stock, word: copy.stock.stocks, swatch: "bg-chart-stocks", ring: "stroke-chart-stocks" },
-    { id: "currency", v: value.currency, word: copy.stock.currency, swatch: "bg-chart-currency", ring: "stroke-chart-currency" },
+    { id: "stocks", v: value.stock, word: copy.stock.stocks, tone: "stocks" as const },
+    { id: "currency", v: value.currency, word: copy.stock.currency, tone: "currency" as const },
   ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
   return (
-    <span className="inline-flex items-center gap-2.5">
-      <ShareRings rings={lines.map((l) => ({ id: l.id, fraction: ringFraction(l.v), className: l.ring }))} />
-      <span className="grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-0.5 text-sm text-muted-foreground">
-        {lines.map((l) => (
-          <span key={l.id} className="contents">
-            <span className="inline-flex items-center gap-1.5">
-              <Swatch shape="box" className={l.swatch} />
-              {l.word}
-            </span>
-            <ShareNum value={l.v} size={size} />
-          </span>
-        ))}
-      </span>
+    <span className="grid grid-cols-[2.5rem_4rem_auto] items-center gap-x-2 gap-y-0.5 text-sm text-muted-foreground">
+      {lines.map((l) => (
+        <span key={l.id} className="contents">
+          <span>{l.word}</span>
+          <MeterBar share={shareFraction(l.v)} tone={l.tone} />
+          <ShareNum value={l.v} size={size} />
+        </span>
+      ))}
     </span>
   );
 }

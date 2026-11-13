@@ -1,4 +1,4 @@
-// What a track holds in shares and in foreign currency (F-87, F-88, D34): the company page's exposure rings and two rows of the track
+// What a track holds in shares and in foreign currency (F-87, F-88, D34): the track table's exposure bars and two rows of the track
 // page. The loader sends each track's CMA amounts compacted against one template per group (as the fees are); this rebuilds them and
 // computes the shares. Pure: no React, no storage.
 import { currencyExposureShare, stockExposureShare } from "@finance-tool/engine";
@@ -85,5 +85,5 @@ export function shareText(v: SiteValue): string {
   return fmt.pct(pct > 0 && pct < 1 ? Math.round(pct * 10) / 10 : Math.round(pct));
 }
 
-/** The share a ring draws, 0 to 100 (a figure above 100% fills the ring; its number says how much). Null draws an empty ring. */
-export const ringFraction = (v: SiteValue | null): number => (v && typeof v.value === "number" ? Math.max(0, Math.min(100, v.value)) / 100 : 0);
+/** The share a bar draws, 0 to 1 (a figure above 100% fills the bar; its number says how much). Null draws an empty bar. */
+export const shareFraction = (v: SiteValue | null): number => (v && typeof v.value === "number" ? Math.max(0, Math.min(100, v.value)) / 100 : 0);

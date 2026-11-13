@@ -62,8 +62,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
 
   const best = periodBest(data, term, kind, amount).pick;
   const amountValue = amount !== null ? entered(amount, "nis", data.today, t.interest.inputs.amount) : null;
-  const topRate = Math.max(0.0001, ...[...ranked, ...linked].map((r) => Number(r.offers[0]!.rate_offered.value) || 0));
-  const ctx: ListContext = { term, amount: amount !== null && amountValue ? { n: amount, value: amountValue } : null, today: data.today, banks: data.banks, topRate, lit };
+  const ctx: ListContext = { term, amount: amount !== null && amountValue ? { n: amount, value: amountValue } : null, today: data.today, banks: data.banks, lit };
 
   // the fold: the first rows, then the reader's bank's rows wherever they stand, then "עוד N הצעות"
   const all: { row: DbRow; linked: boolean }[] = [...ranked.map((row) => ({ row, linked: false })), ...linked.map((row) => ({ row, linked: true }))];
@@ -193,7 +192,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
         {shut.length > 0 && (
           <Disclosure label={`${offersPhrase(rowsOf(shut).length)} ${t.closed.before}${amount !== null ? fmt.nisWhole(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
             <div className="pt-2">
-              <DepositList ranked={sortRows(rowsOf(shut), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null, topRate: Math.max(0.0001, ...shut.map((o) => Number(o.rate_offered.value) || 0)) }} sort={null} />
+              <DepositList ranked={sortRows(rowsOf(shut), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null }} sort={null} />
             </div>
           </Disclosure>
         )}

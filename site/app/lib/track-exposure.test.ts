@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ValueObject } from "@finance-tool/schema";
 import { company as copy } from "../copy";
-import { compactHoldings, exposureShares, holdingsTemplate, ringFraction, shareText, type Holdings } from "./track-exposure";
+import { compactHoldings, exposureShares, holdingsTemplate, shareFraction, shareText, type Holdings } from "./track-exposure";
 
 const amount = (value: number | null): ValueObject => ({
   value,
@@ -65,10 +65,10 @@ describe("F-87 and F-88 on the site", () => {
     expect(shareText(shares(h(1000, 3))!.stock!)).not.toBe(shareText(shares(h(1000, 0))!.stock!));
   });
 
-  it("a ring is full above 100% and empty without a figure", () => {
-    expect(ringFraction(shares(h(100, 108.7))!.stock)).toBe(1);
-    expect(ringFraction(shares(h(100, null))!.stock)).toBe(0);
-    expect(ringFraction(null)).toBe(0);
+  it("a share's bar is full above 100% and empty without a figure", () => {
+    expect(shareFraction(shares(h(100, 108.7))!.stock)).toBe(1);
+    expect(shareFraction(shares(h(100, null))!.stock)).toBe(0);
+    expect(shareFraction(null)).toBe(0);
   });
 
   it("no amounts at all: no value", () => {

@@ -29,7 +29,6 @@ export { AxisLabels, ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, 
 export { FormulaBlock, Tex } from "./formula";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
-export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, wholeParts, writtenAmounts, type CostPart } from "./cost-stack";
 export { ShareBar, type SharePart } from "./share-bar";
@@ -70,7 +69,8 @@ export { OptionBars, type OptionBar } from "./option-bars";
 export { ChooseRow, GoRow, GroupHead, ListRow, OpenRow, RowList } from "./list-row";
 export { SideNav, SidePage, type SideNavGroup, type SideNavItem } from "./side-nav";
 export { GoLink, TextLink } from "./go-link";
-export { MeterBar, PeriodBars, type PeriodBar } from "./period-bars";
+export { MeterBar } from "./meter-bar";
+export { PeriodBars, type PeriodBar } from "./period-bars";
 export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
 export { MonthPicker, type MonthBounds } from "./month-picker";
 export { Step } from "./steps";

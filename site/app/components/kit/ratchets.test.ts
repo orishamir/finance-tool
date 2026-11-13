@@ -216,7 +216,7 @@ patterns["a fold label painted as a link"] = {
   allowed: FOLD_AS_LINK,
 };
 // The pieces of the second kit job: a label and its value in a row of a hand grid (KeyValueList plain draws the rows, its label column one
-// width for the site), a document's words in a hand muted box (PrintedQuotes), and a hand bar in the computed ink (MeterBar tone="computed").
+// width for the site), a document's words in a hand muted box (PrintedQuotes), and a hand bar in the computed ink (a single computed figure takes no bar; MeterBar draws a track's exposure).
 const HAND_KEY_VALUE_ROW: Record<string, number> = {
 };
 const HAND_QUOTES_BOX: Record<string, number> = {
@@ -235,7 +235,7 @@ patterns["a muted quotes box drawn by hand"] = {
   allowed: HAND_QUOTES_BOX,
 };
 patterns["a bar drawn by hand in the computed ink"] = {
-  kit: "MeterBar tone=\"computed\" (a share the site reckons itself)",
+  kit: "no bar beside a single computed figure: the figure says it (MeterBar draws only a track's exposure shares)",
   count: (s) => classValueTokens(s).filter((t) => /^(?:[^\s:]+:)*bg-computed$/.test(t)).length,
   allowed: HAND_COMPUTED_BAR,
 };
@@ -260,7 +260,7 @@ describe("the duplicated text pieces' scans", () => {
     expect(n("a button styled by hand as a link", '<button type="button" onClick={() => go(x)} className="text-link underline">a</button> <button className="hover:text-link hover:underline">b</button> <Button variant="quiet">c</Button> <button className="text-primary border">d</button>')).toBe(2);
     expect(n("a label and value row drawn by hand", '<div className="flex md:grid md:grid-cols-[14rem_1fr]"><dt>a</dt><dd>b</dd></div> <dl className="flex flex-col"><dt>c</dt></dl> <KeyValueList plain items={x} />')).toBe(1);
     expect(n("a muted quotes box drawn by hand", '<p className="text-sm bg-muted rounded-md p-3">a</p> <span className="bg-muted/50 rounded-md p-3">b</span> <PrintedQuotes quotes={q} />')).toBe(1);
-    expect(n("a bar drawn by hand in the computed ink", '<span className={cx("h-1.5 rounded-full", "bg-computed")} /> <MeterBar share={0.4} tone="computed" />')).toBe(1);
+    expect(n("a bar drawn by hand in the computed ink", '<span className={cx("h-1.5 rounded-full", "bg-computed")} /> <MeterBar share={0.4} tone="stocks" />')).toBe(1);
     expect(n("a media query asked by hand", 'window.matchMedia("(min-width: 64rem)"); matchMedia("(prefers-reduced-motion: reduce)"); useMedia(MQ.lg)')).toBe(1);
   });
 });
@@ -308,7 +308,7 @@ const CHART_ROLES: Record<string, string[]> = {
   PileBar: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-fee", "chart-pile-salary-tax", "chart-pile-tax", "chart-pile-loss", "chart-pile-left"],
   StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],
   "the comparison and exposure charts (6.5, 9.3)": ["chart-option-1", "chart-option-2", "chart-option-3", "chart-baseline"],
-  ShareRings: ["chart-stocks", "chart-currency"],
+  "a track's exposure bars (ExposureCell)": ["chart-stocks", "chart-currency"],
   "the indices page's two kinds of fund": ["chart-kind-unhedged", "chart-kind-hedged"],
   "a guide page's visual (10)": ["chart-value", "chart-alt"],
   "the pension deposit bar (10)": ["chart-value", "chart-alt", "chart-fee-4"],
