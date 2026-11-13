@@ -1029,6 +1029,9 @@ function Fields() {
           <State label={`inline with an icon in its box: a pencil says the name is typed in place, ${g.states.interactive}`}>
             <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} icon={<IconPencil size={16} />} />
           </State>
+          <State label={`labelHidden: the box stands where the name it holds is the heading (a fee of the person's own), its label spoken only, ${g.states.interactive}`}>
+            <TextField inline grow labelHidden label={dealWords.panel.ownName} value={typed} onChange={setTyped} placeholder={dealWords.names.own} icon={<IconPencil size={16} />} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="CheckField" use={g.uses.CheckField}>

@@ -187,6 +187,14 @@ describe("the panel", () => {
     // the later price's fields say which price they are
     expect(html).toContain(`>${feeDeal.builder.fieldName(`${feeName("deposit")}, מיוני 2027`, feeDeal.panel.form)}</label>`);
   });
+  it("names a fee of the person's own once, in the heading typed in place, with its spoken name", () => {
+    const d = account();
+    d.fees = [{ id: "fee-own", kind: "own", name: "עמלת בדיקה", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] }];
+    const html = markup(panelOf(d, "fee-own"));
+    expect(count(html, `value="עמלת בדיקה"`)).toBe(1);
+    // the label is spoken, not shown: the heading is the name
+    expect(count(html, `class="sr-only">${feeDeal.panel.ownName}</label>`)).toBe(1);
+  });
   it("draws a price not given yet as an empty box", () => {
     const d = provident();
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }];
