@@ -168,8 +168,11 @@ export interface FeeRow {
   range?: ReactNode;
 }
 
-/** `feePage`: the fee page builds a deal of this guide's product (its record lists a fee base); without one the guide does not send the reader there. */
-export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactNode; feePage: boolean }) {
+/**
+ * `feePage`: the fee page builds a deal of this guide's product (its record lists a fee base); without one the guide does not send the reader there.
+ * `cap`: whose caps the cap column holds, said in its head; a phone, whose rows have no heads, says it in the first sentence under them.
+ */
+export function FeeTable({ fees, note, feePage, cap }: { fees: FeeRow[]; note: ReactNode; feePage: boolean; cap: "regs" | "law" }) {
   const { id } = useParams();
   return (
     <div className="flex flex-col gap-3">
@@ -195,7 +198,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
             <tr>
               <th scope="col">{copy.feeTable.type}</th>
               <th scope="col">{copy.feeTable.base}</th>
-              <th scope="col">{copy.feeTable.cap}</th>
+              <th scope="col">{copy.feeTable.cap[cap]}</th>
             </tr>
           </thead>
           <tbody>
@@ -217,7 +220,10 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
           </tbody>
         </table>
       </Card>
-      <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
+      <p className="text-sm text-muted-foreground max-w-measure">
+        <span className="md:hidden">{copy.feeCapsPhone[cap]} </span>
+        {note}
+      </p>
       {id && feePage && (
         <TextLink look="line" to={dealPagePath({ wrapper: id })} className="self-start">
           {feePageLink}

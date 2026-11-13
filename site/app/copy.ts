@@ -278,11 +278,13 @@ export const guide = {
   selfEmployedOnly: "לעצמאים בלבד",
   whoLine: "לכל חברה יש עמוד עם כל המסלולים שלה.",
   allCompanies: "לכל החברות",
-  feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה" },
-  feeNote: "אלה התקרות שבתקנות. כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
-  /** feeNote in its two sentences, for a guide that says the managers' range between them (F-105). */
-  feeNoteParts: { caps: "אלה התקרות שבתקנות.", companyPage: "כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה." },
-  feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק.",
+  // the cap column's head says whose cap it is: the fee regulations' on a provident guide, the law's elsewhere
+  feeTable: { type: "סוג", base: "על מה נגבה", cap: { regs: "התקרה שבתקנות", law: "תקרה בחוק" } },
+  /** What the cap column's head says, for a phone, where the fees stand as rows with no heads: the first sentence under the table. */
+  feeCapsPhone: { regs: "אלה התקרות שבתקנות.", law: "כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק." },
+  /** Under the table: where the prices actually charged are. */
+  feeNote: "כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
+  feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע.",
   /** Under a fee's cap on a provident guide with several managers' lists collected (F-105): the range over every collected manager. */
   // F-105: the rates the documents print, not a price for the whole period (a rate under the cap is a discount, A-19); no sentence ends on a number, whose full stop RTL draws before it
   // a count opening a sentence read as a decimal after the full stop (".9"), "print only the cap" read as "charge it" or "hide
@@ -310,7 +312,7 @@ export const guide = {
       discountEnd: "בתום ההנחה מותר לחברה להעלות את דמי הניהול עד התקרה.",
     },
   },
-  feeRange: { caps: "אלה התקרות שבתקנות. בפועל גובים הרבה פחות: ב־", tracks: "המסלולים, העמיתים שילמו בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
+  feeRange: { caps: "בפועל גובים הרבה פחות מהתקרה: ב־", tracks: "המסלולים, העמיתים שילמו בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {

@@ -198,7 +198,6 @@ export default function GuidePage() {
     const oneKind = lows.every((l) => l.r.lowKind === lows[0]?.r.lowKind) ? n.kind[lows[0]?.r.lowKind ?? "plain"] : null;
     return (
       <>
-        {copy.feeNoteParts.caps}{" "}
         {sameCount && both && (
           <>
             {n.atCapBoth.before} <Num value={both.atCap} /> {n.atCapBoth.of} <Num value={both.managers} /> {n.atCapBoth.after}{" "}
@@ -226,7 +225,7 @@ export default function GuidePage() {
             )}
           </>
         )}{" "}
-        {copy.feeNoteParts.companyPage}
+        {copy.feeNote}
       </>
     );
   };
@@ -473,6 +472,7 @@ export default function GuidePage() {
             <FeeTable
               fees={fees}
               feePage={data.feePage}
+              cap={provident ? "regs" : "law"}
               note={
                 data.feeRange ? (
                   <>
