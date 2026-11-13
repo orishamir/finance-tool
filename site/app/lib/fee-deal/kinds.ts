@@ -70,7 +70,7 @@ export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
 export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: number; converted: boolean } | undefined {
   const as = (x: number, converted = false) => ({ x, converted });
   if (p.form === "free") return as(0);
-  if (cap === 0) return as(chargesNothing(enginePrice(p)) ? 0 : mainFigure(p) > 0 ? mainFigure(p) : (p.form === "action" || p.form === "held") && p.min ? p.min.v : 0);
+  if (cap === 0) return as(chargesNothing(enginePrice(p)) ? 0 : mainValue(p) > 0 ? mainValue(p) : (p.form === "action" || p.form === "held") && p.min ? p.min.v : 0);
   switch (unit) {
     case "pct_per_year":
       return p.form === "held" ? as((p.rate.v * 12) / p.per, p.per !== 12) : undefined;
@@ -91,7 +91,7 @@ export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: num
 }
 
 /** A price's one figure: its rate, or its sum. */
-const mainFigure = (p: Exclude<Price, { form: "free" }>): number => (p.form === "action" || p.form === "held" ? p.rate.v : p.amount.v);
+const mainValue = (p: Exclude<Price, { form: "free" }>): number => (p.form === "action" || p.form === "held" ? p.rate.v : p.amount.v);
 
 /** F-113's answer for one price, or `other-form` where the price is typed in a form the cap's unit does not state. */
 export type Standing = CapStanding | { judged: false; why: "other-form" };

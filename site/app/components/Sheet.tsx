@@ -198,25 +198,33 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
 }
 
 /** On PC (`isPc`, the `lg` width), puts a popover card beside its anchor (right edges aligned), on the side with more room: below it, unless
- * it does not fit there and the room above is larger. The card's max-height is capped to that room. */
+ * it does not fit there and the room above is larger. The card's max-height is capped to that room, which starts under the site's header:
+ * the card never covers the header nor its anchor. Where neither side has room for a few lines (a window only a few hundred pixels tall),
+ * the page first scrolls the anchor up to just under the header, so the card opens below it. */
 function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center", isPc: boolean) {
   dialog.style.top = "";
   dialog.style.left = "";
   dialog.style.maxHeight = "";
   if (!isPc || pc !== "popover" || !anchor) return;
-  const r = anchor.getBoundingClientRect();
   const w = dialog.offsetWidth;
   const natural = dialog.offsetHeight;
   const gap = 8;
+  const fewLines = 120;
+  const ceiling = Math.max(0, document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0);
+  let r = anchor.getBoundingClientRect();
+  if (Math.max(window.innerHeight - r.bottom, r.top - ceiling) - gap * 2 < fewLines) {
+    window.scrollBy({ top: r.top - ceiling - gap, behavior: "instant" });
+    r = anchor.getBoundingClientRect();
+  }
   const roomBelow = window.innerHeight - r.bottom - gap * 2;
-  const roomAbove = r.top - gap * 2;
+  const roomAbove = r.top - ceiling - gap * 2;
   const below = natural <= roomBelow || roomBelow >= roomAbove;
-  const room = Math.max(120, below ? roomBelow : roomAbove);
+  const room = Math.max(0, below ? roomBelow : roomAbove);
   const h = Math.min(natural, room);
   dialog.style.maxHeight = `${Math.min(room, window.innerHeight * 0.6)}px`;
   let left = r.right - w;
   left = Math.max(gap, Math.min(left, window.innerWidth - w - gap));
   const top = below ? r.bottom + gap : r.top - gap - Math.min(h, window.innerHeight * 0.6);
-  dialog.style.top = `${Math.max(gap, top)}px`;
+  dialog.style.top = `${Math.max(ceiling + gap, top)}px`;
   dialog.style.left = `${left}px`;
 }

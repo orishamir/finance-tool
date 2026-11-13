@@ -5,14 +5,16 @@ import { useState, type ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { FxSnapshot } from "../../lib/fx";
-import { countPhrase, fmt, joinLead } from "../../lib/format";
+import type { SiteValue } from "../../lib/value";
+import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
-import { CapRules, FeeName, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName } from "./words";
+import { FeeOpen } from "./links";
+import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName, sumDisplay } from "./words";
 
 const w = copy.read;
 
@@ -82,7 +84,7 @@ function PeriodView({ period, first, saved }: { period: PeriodCard; first: boole
           return (
             <li key={r.fee} className={cx("-mx-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 rounded-md px-2 py-1 text-sm", changed && "bg-muted font-medium", quiet && "text-muted-foreground")}>
               <span className="flex min-w-0 flex-wrap items-center gap-2">
-                <FeeName fee={r} />
+                <FeeOpen fee={r} />
                 <CapTag standing={r.standing} />
                 {r.sale && <CapTag standing={r.sale.standing} />}
               </span>
@@ -186,7 +188,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
     return (
       <>
         {fill((head.mark.on === "held" ? h.minHeld : h.min).before, { noun })}
-        <Num value={head.mark.amount} />
+        <Fig value={head.mark.amount} />
         {h.minRate.lead}
         {above}
         {h.minRate.cost}
@@ -200,7 +202,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return (
         <>
           {fill(words.before, { noun })}
-          <Num value={head.mark.amount} />
+          <Fig value={head.mark.amount} />
           {words.after}
         </>
       );
@@ -209,9 +211,9 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return (
         <>
           {h.minMax.before}
-          <Num value={head.min.amount} />
+          <Fig value={head.min.amount} />
           {h.minMax.middle}
-          <Num value={head.max.amount} />
+          <Fig value={head.max.amount} />
           {h.minMax.after}
         </>
       );
@@ -224,7 +226,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return (
         <>
           {h.meet.before}
-          <Num value={mark.amount} />
+          <Fig value={mark.amount} />
           {named ? ` ${named.the}` : h.meet.sums}
           {mark.largest ? (named ? h.meetOne[named.g] : h.meet.largest) : `${copy.larger[named?.g ?? "mp"]}${custodyName(mark.against)}`}
         </>
@@ -234,6 +236,9 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return <>{countPhrase(head.n, h.marks)}</>;
   }
 }
+
+/** A mark's label on the curve: its sum as the headline says it, in the bound's currency (the curve's place is that sum in shekels, F-84). */
+export const markLabel = (v: SiteValue): string => sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
 
 /** The line beside a curve with a bound in another currency: the rate of F-84 it enters the curve at, and its day. */
 function RateLine({ currency, rate, fx }: { currency: string; rate: Curve["rates"][number]["rate"]; fx: FxSnapshot | null }) {
@@ -262,13 +267,15 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
   const xKey = group.on === "held" ? (saved ? "heldSaved" : "held") : (group.action ?? "trade");
   const optionLabel = (from: MonthKey) => (reading.periods.find((p) => p.from === from)?.current ? w.periods.today : fromText(from));
   // a choice of period where the curve is not one for every period of the deal: several curves, or one that holds only in some periods.
-  // F-112 draws a curve only where a mark falls on it, so a period with none is a choice that cannot be made; past four periods the
-  // chips list only those with a curve.
+  // F-112 draws a curve only where a mark falls on it, so only the periods with a curve are choices; one such period is no choice, and the
+  // card's small line names it instead.
   const whole = curve !== null && distinct === 1 && spansOf(curve.periods, reading.periods).length === 0;
   const choice =
     !whole && chosen ? (
-      reading.periods.length <= 4 ? (
-        <SegmentedControl fit label={c.choose} options={reading.periods.map((p) => ({ value: p.from, label: optionLabel(p.from), disabled: !choices.some((x) => x.from === p.from) }))} value={chosen} onChange={setPicked} />
+      choices.length === 1 ? (
+        <span className="text-sm text-muted-foreground">{optionLabel(chosen)}</span>
+      ) : choices.length <= 4 ? (
+        <SegmentedControl fit label={c.choose} options={choices.map((x) => ({ value: x.from, label: optionLabel(x.from) }))} value={chosen} onChange={setPicked} />
       ) : (
         <ChoiceChips line bleed="" ids={choices.map((x) => x.from)} labels={Object.fromEntries(choices.map((x) => [x.from, optionLabel(x.from)]))} value={chosen} ariaLabel={c.choose} onChange={setPicked} />
       )
@@ -282,7 +289,7 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
         <AmountChart
           amounts={curve.amounts}
           bands={curve.series.map((s) => ({ id: s.fee.fee, label: refName(s.fee), fill: feeColour(s.fee.kind).fill, stroke: feeColour(s.fee.kind).stroke, swatch: feeColour(s.fee.kind).bg, values: s.costs }))}
-          marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: fmt.nisWhole(at) }))}
+          marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: markLabel(curve.marks[curve.at.indexOf(at)]!.amount) }))}
           xTitle={c.x[xKey] ?? ""}
           tip={(a) => (group.on === "held" ? c.tipHeld(fmt.nisWhole(a)) : c.tipAction(noun, fmt.nisWhole(a)))}
           total={c.total}
@@ -317,9 +324,9 @@ function MarkSentence({ mark }: { mark: MarkView }) {
   return (
     <>
       {fill(words.before, { name: refName(mark.fee), side: sideWord(mark.side) })}
-      <Num value={mark.bound} />
+      <Fig value={mark.bound} />
       {fill(words.middle, { noun })}
-      <Num value={mark.amount} />
+      <Fig value={mark.amount} />
       {words.after}
     </>
   );
@@ -393,17 +400,17 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
 
 function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
   if (row.cap.state === "absent") return null;
-  // a fee the law sets no cap for is one line: its name, the words and the rules
+  // a fee the law sets no cap for is one line: its name, and the words, which open the rules
   if (row.cap.state === "none")
     return (
-      <li className="flex flex-wrap items-center gap-x-3">
-        <FeeName fee={row} className="font-medium" />
-        <CapRules cap={row.cap} dense />
+      <li data-law-row={row.fee} tabIndex={-1} className="anchor-target flex flex-wrap items-center gap-x-3 rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
+        <FeeOpen fee={row} className="font-medium" />
+        <CapRules cap={row.cap} fee={refName(row)} />
       </li>
     );
   return (
-    <li className="flex flex-col gap-2 py-2 first:pt-0 last:pb-0">
-      <LawBlock row={row} saved={saved} first={first} />
+    <li data-law-row={row.fee} tabIndex={-1} className="anchor-target flex flex-col gap-2 py-2 first:pt-0 last:pb-0 rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
+      <LawBlock row={row} saved={saved} first={first} name={<FeeOpen fee={row} className="font-medium" />} />
     </li>
   );
 }
@@ -414,7 +421,7 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
       <PanelHead kicker={w.law.kicker}>
         <LawHeadline rows={reading.law} />
       </PanelHead>
-      {/* one-line rows a short list, about 35 px apart; a fee with a cap keeps room around its bar */}
+      {/* one-line rows a short list, about 35 px apart; a fee with a cap is a block with room around it */}
       <ul className="flex flex-col gap-2">
         {reading.law.map((r) => (
           <LawRowView key={r.fee} row={r} saved={saved} first={reading.from} />
@@ -434,14 +441,23 @@ export function ReadingCards({ reading, saved, fx }: { reading: Reading; saved: 
   return (
     <TypedPlain className="flex flex-col gap-4">
       {reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
-      {groups.length > 0 && (
+      {/* one chart leaves no half row empty: the points card (else the law card) stands beside it, and what is left takes the next row */}
+      {groups.length === 1 ? (
+        <>
+          <div className="grid items-start gap-4 lg:grid-cols-2">
+            <CurveCard group={groups[0]!} reading={reading} saved={saved} fx={fx} />
+            {points ? <PointsCard reading={reading} /> : law && <LawCard reading={reading} saved={saved} />}
+          </div>
+          {points && law && <LawCard reading={reading} saved={saved} />}
+        </>
+      ) : groups.length > 1 ? (
         <div className="grid items-start gap-4 lg:grid-cols-2">
           {groups.map((g) => (
             <CurveCard key={g.key} group={g} reading={reading} saved={saved} fx={fx} />
           ))}
         </div>
-      )}
-      {(points || law) && (
+      ) : null}
+      {groups.length !== 1 && (points || law) && (
         <div className={cx("grid items-start gap-4", points && law && "lg:grid-cols-2")}>
           {points && <PointsCard reading={reading} />}
           {law && <LawCard reading={reading} saved={saved} />}

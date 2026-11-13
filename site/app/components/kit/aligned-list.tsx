@@ -11,13 +11,15 @@ export function AlignedList({ children, className }: { children: ReactNode; clas
 
 /**
  * One line: its label in the narrow column, its boxes and their caption from the shared edge after it, wrapping onto more lines where the
- * column is narrow. `top`: the label stands by the first line of boxes, not the middle of them (boxes that wrap on a phone).
+ * column is narrow. `top`: the label stands by the first line of boxes, not the middle of them (boxes that wrap on a phone). A line is at
+ * least as tall as a touch target, so the 44 px tap area of a shorter control in it (a switch's 30 px strip) stays inside the line and
+ * never meets the next line's.
  */
 export function AlignedRow({ label, top, children }: { label: ReactNode; top?: boolean; children: ReactNode }) {
   return (
     <>
       <span className={cx("text-sm text-muted-foreground", top && "flex min-h-target items-center self-start")}>{label}</span>
-      <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">{children}</span>
+      <span className="flex min-h-target min-w-0 flex-wrap items-center gap-x-2 gap-y-1">{children}</span>
     </>
   );
 }

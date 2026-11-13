@@ -8,10 +8,10 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
-import { fmt } from "../../lib/format";
+import { computedSum, fmt, typedSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { CapBar, Swatch, Tag, When, cx } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { Swatch, Tag, When, cx } from "../kit";
+import { Num } from "../provenance";
 
 /** A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's. */
 export function feeName(kind: FeeKindId, own?: string): string {
@@ -26,33 +26,32 @@ export const refName = (r: FeeRef) => feeName(r.kind, r.name);
 export const perActionWord = (kind: FeeKindId): string => copy.price.perAction[kind] ?? copy.price.perAction.default!;
 
 /**
- * Each fee's one colour on the whole page (theme.css, the `--fee-*` roles): a `bg-*` for its swatch and its bar against the cap, a
- * `border-*` for a later price's outline, a `fill-*` and a `stroke-*` for its band on a curve. Written out whole, so the stylesheet keeps
- * every class.
+ * Each fee's one colour on the whole page (theme.css, the `--fee-*` roles): a `bg-*` for its swatch, a `fill-*` and a `stroke-*` for its
+ * band on a curve. Written out whole, so the stylesheet keeps every class.
  */
-const COLOUR: Record<FeeKindId, { bg: string; border: string; fill: string; stroke: string }> = {
-  trade: { bg: "bg-fee-trade", border: "border-fee-trade", fill: "fill-fee-trade", stroke: "stroke-fee-trade" },
-  spread: { bg: "bg-fee-spread", border: "border-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
-  creation_redemption: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  load: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  redemption_deduction: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  fx: { bg: "bg-fee-fx", border: "border-fee-fx", fill: "fill-fee-fx", stroke: "stroke-fee-fx" },
-  fx_spread: { bg: "bg-fee-spread", border: "border-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
-  deposit: { bg: "bg-fee-deposit", border: "border-fee-deposit", fill: "fill-fee-deposit", stroke: "stroke-fee-deposit" },
-  distribution_handling: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  corporate_event: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  transfer_out: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  exit: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  balance: { bg: "bg-fee-balance", border: "border-fee-balance", fill: "fill-fee-balance", stroke: "stroke-fee-balance" },
-  custody: { bg: "bg-fee-custody", border: "border-fee-custody", fill: "fill-fee-custody", stroke: "stroke-fee-custody" },
-  variable_management: { bg: "bg-fee-manager", border: "border-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
-  trustee: { bg: "bg-fee-manager", border: "border-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
-  direct_expenses: { bg: "bg-fee-direct", border: "border-fee-direct", fill: "fill-fee-direct", stroke: "stroke-fee-direct" },
-  fund_management: { bg: "bg-fee-fund", border: "border-fee-fund", fill: "fill-fee-fund", stroke: "stroke-fee-fund" },
-  fixed_period: { bg: "bg-fee-fixed", border: "border-fee-fixed", fill: "fill-fee-fixed", stroke: "stroke-fee-fixed" },
-  current_account: { bg: "bg-fee-account", border: "border-fee-account", fill: "fill-fee-account", stroke: "stroke-fee-account" },
-  insurance_premium: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  own: { bg: "bg-fee-other", border: "border-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+const COLOUR: Record<FeeKindId, { bg: string; fill: string; stroke: string }> = {
+  trade: { bg: "bg-fee-trade", fill: "fill-fee-trade", stroke: "stroke-fee-trade" },
+  spread: { bg: "bg-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
+  creation_redemption: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  load: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  redemption_deduction: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  fx: { bg: "bg-fee-fx", fill: "fill-fee-fx", stroke: "stroke-fee-fx" },
+  fx_spread: { bg: "bg-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
+  deposit: { bg: "bg-fee-deposit", fill: "fill-fee-deposit", stroke: "stroke-fee-deposit" },
+  distribution_handling: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  corporate_event: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  transfer_out: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  exit: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  balance: { bg: "bg-fee-balance", fill: "fill-fee-balance", stroke: "stroke-fee-balance" },
+  custody: { bg: "bg-fee-custody", fill: "fill-fee-custody", stroke: "stroke-fee-custody" },
+  variable_management: { bg: "bg-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
+  trustee: { bg: "bg-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
+  direct_expenses: { bg: "bg-fee-direct", fill: "fill-fee-direct", stroke: "stroke-fee-direct" },
+  fund_management: { bg: "bg-fee-fund", fill: "fill-fee-fund", stroke: "stroke-fee-fund" },
+  fixed_period: { bg: "bg-fee-fixed", fill: "fill-fee-fixed", stroke: "stroke-fee-fixed" },
+  current_account: { bg: "bg-fee-account", fill: "fill-fee-account", stroke: "stroke-fee-account" },
+  insurance_premium: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+  own: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
 };
 
 export const feeColour = (kind: FeeKindId) => COLOUR[kind];
@@ -71,10 +70,20 @@ export function FeeName({ fee, className, before, after }: { fee: FeeRef; classN
   );
 }
 
+/**
+ * How the page shows a sum: one the person typed as they typed it (`typedSum`), one the site works out in whole units of its currency
+ * (`computedSum`); any other figure as its unit's rules say.
+ */
+export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | undefined =>
+  v.state === "entered" ? (n) => typedSum(n, v.unit) : v.state === "computed" ? (n) => computedSum(n, v.unit) : undefined;
+
+/** A figure on the page: a sum as `sumDisplay` shows it. */
+export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;
+
 /** A figure with a lead held to it on one line (", לא פחות מ־15 ₪"). */
 const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
   <>
-    , <Num value={value} prefix={lead} />
+    , <Fig value={value} prefix={lead} />
   </>
 );
 
@@ -113,14 +122,14 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
     case "sum":
       body = (
         <>
-          <Num value={f.amount!} /> {p.per[price.every!]}
+          <Fig value={f.amount!} /> {p.per[price.every!]}
         </>
       );
       break;
     case "perAction":
       body = (
         <>
-          <Num value={f.amount!} /> {perActionWord(kind)}
+          <Fig value={f.amount!} /> {perActionWord(kind)}
         </>
       );
       break;
@@ -128,15 +137,14 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
   return <span>{body}</span>;
 }
 
-/** The tag of a price's standing against its cap, or of the first later price whose standing differs ("בתקרה ממרץ 2028"); none where
- *  nothing is judged. Never colour alone: the tag is its words. */
-export function StandingTag({ standing, from }: { standing: StandingView; from?: string }) {
+/** The tag of a price's standing against its cap; none where nothing is judged. Never colour alone: the tag is its words. */
+export function StandingTag({ standing }: { standing: StandingView }) {
   const s = standing.standing;
   if (!s.judged) return null;
   const tone = s.standing === "above" ? "blocked" : s.standing === "at" ? "neutral" : "outline";
   return (
     <Tag tone={tone} shape="pill">
-      {from ? <When iso={from} lead={copy.standing.tagFrom[s.standing]!} /> : copy.standing.tag[s.standing]}
+      {copy.standing.tag[s.standing]}
     </Tag>
   );
 }
@@ -168,55 +176,31 @@ export function StandingWords({ standing, binds }: { standing: StandingView; bin
   return <>.</>;
 }
 
-const shareOf = (s: StandingView): number | null => (s.standing.judged ? s.standing.share : null);
-
-/**
- * A fee's price against its cap as a bar in the fee's colour: the price now filled, a later price's outline behind it where `later` is
- * judged, and the cap's figure at the end. None where the price now has no share of the cap (not judged, or a cap of zero).
- */
-export function FeeCapBar({ kind, now, later, cap, className }: { kind: FeeKindId; now: StandingView; later?: StandingView; cap: SiteValue; className?: string }) {
-  const share = shareOf(now);
-  if (share === null) return null;
-  const next = later ? shareOf(later) : null;
-  return (
-    <CapBar
-      share={share}
-      {...(next !== null ? { later: next } : {})}
-      fill={COLOUR[kind].bg}
-      edge={COLOUR[kind].border}
-      cap={<Num value={cap} prefix={copy.standing.capMark} />}
-      className={className}
-    />
-  );
-}
-
 /** What a cap that holds only in a case the deal does not state says, after the cap's figure or "אין תקרה בחוק" (F-113); none without one. */
 export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
   const words = caveat ? copy.standing.caveat[caveat] : undefined;
   return words ? <>. {words}</> : null;
 }
 
-/** The cap's line with its rules: its figure and its caveat, or that the law sets none (F-113); nothing where the kind has no line for the fee. */
-export function CapRules({ cap, dense }: { cap: CapLine; /** One of a list of one-line rows (RulesLine's `dense`). */ dense?: boolean }) {
+/**
+ * The cap's line: its figure with its caveat, or that the law sets none (F-113); nothing where the kind has no line for the fee. The figure,
+ * or the words "אין תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so the line carries no rules
+ * chip of its own. `fee`: the fee's name, which the control's spoken name says with what it opens.
+ */
+export function CapRules({ cap, fee }: { cap: CapLine; fee: string }) {
   if (cap.state === "absent") return null;
   return (
-    <RulesLine
-      dense={dense}
-      ids={cap.ruleIds}
-      lead={
-        <span>
-          {cap.state === "none" ? (
-            copy.standing.tag.none
-          ) : (
-            <>
-              {copy.standing.capLine}
-              <CapFigure value={cap.value} />
-            </>
-          )}
-          <CapCaveat caveat={cap.caveat} />
-        </span>
-      }
-    />
+    <p className="text-xs text-muted-foreground">
+      {cap.state === "none" ? (
+        <Num value={cap.value} display={copy.standing.tag.none} name={copy.standing.noCapRules(fee)} />
+      ) : (
+        <>
+          {copy.standing.capLine}
+          <CapFigure value={cap.value} name={copy.standing.capRules(fee)} />
+        </>
+      )}
+      <CapCaveat caveat={cap.caveat} />
+    </p>
   );
 }
 
@@ -246,31 +230,30 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
 }
 
 /**
- * A fee against its cap (F-113), the one block the glance, the chosen fee's panel and the law card draw: its name and the tag of its
- * standing (or of the first later one that differs, with its month), the bar, then `children` (its price or prices in words, and the cap's
- * line where the place says it). It reads the fee's law row of the reading, so the three never disagree. Its container lays the pieces out
- * as a column. Nothing where the cap has no figure.
+ * A fee against its cap (F-113), the one block the glance and the law card draw: its name and the tag of its standing now (a later price's
+ * standing is said with that price), then `children` (its price or prices in words, and the cap's line where the place says it). It
+ * reads the fee's law row of the reading, so the two never disagree. The standing is said in words only: no bar. Its container lays the
+ * pieces out as a column. Nothing where the cap has no figure.
  */
-export function CapBlock({ row, children }: { row: LawRow; children?: ReactNode }) {
+export function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's name as the place draws it (one that chooses the fee); its plain name otherwise. */ name?: ReactNode; /** The standing's tag as the place draws it (one that leads to the law card); the plain tag otherwise. */ tag?: ReactNode; children?: ReactNode }) {
   if (row.cap.state !== "value") return null;
   return (
     <>
       <span className="flex flex-wrap items-center gap-2">
-        <FeeName fee={row} className="font-medium" />
-        {row.later ? <StandingTag standing={row.later.standing} from={row.later.at} /> : row.now && <StandingTag standing={row.now} />}
+        {name ?? <FeeName fee={row} className="font-medium" />}
+        {tag !== undefined ? tag : row.now && <StandingTag standing={row.now} />}
       </span>
-      {row.now && <FeeCapBar kind={row.kind} now={row.now} {...(row.later ? { later: row.later.standing } : {})} cap={row.cap.value} />}
       {children}
     </>
   );
 }
 
-/** A fee's law row whole, as the panel and the law card show it: the block against its cap, each price from the reading's month on, and the cap's line. */
-export function LawBlock({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
+/** A fee's law row whole, as the law card shows it: the block against its cap, each price from the reading's month on, and the cap's line. */
+export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: boolean; first: MonthKey; name?: ReactNode }) {
   return (
-    <CapBlock row={row}>
+    <CapBlock row={row} name={name}>
       <LawPrices row={row} saved={saved} first={first} />
-      <CapRules cap={row.cap} />
+      <CapRules cap={row.cap} fee={refName(row)} />
     </CapBlock>
   );
 }
@@ -281,11 +264,11 @@ export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" 
   return (
     <>
       {m.before}
-      <Num value={mark.sum} />
+      <Fig value={mark.sum} />
       {m.sum}
       <Num value={mark.rate} />
       {m.rate}
-      <Num value={mark.amount} />
+      <Fig value={mark.amount} />
       {mark.largest ? m.after : `${m.smaller}${custodyName(mark.against)}.`}
     </>
   );
@@ -299,11 +282,11 @@ export function custodyName(against: readonly FeeRef[]): string {
 }
 
 /** A cap's figure with its unit's words ("1.05% בשנה"), as the guide writes a cap. */
-export function CapFigure({ value }: { value: SiteValue }) {
+export function CapFigure({ value, name }: { value: SiteValue; /** As `Num`'s. */ name?: string }) {
   const after = (guideBlocks.fees.unitAfter as Record<string, string>)[value.unit] ?? "";
   return (
     <>
-      <Num value={value} />
+      <Num value={value} name={name} />
       {after && ` ${after}`}
     </>
   );

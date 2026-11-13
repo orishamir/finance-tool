@@ -150,6 +150,22 @@
   }
 }
 
+/* A named control narrower than a touch target (a short word, "ביטול") that has room on both sides: its tap area reaches 44 px wide as
+   well as tall, centred on it. Only where nothing else a finger hits stands within 22 px of its middle on either side; a control beside a
+   field or another control keeps `tap-area`, so no two areas overlap. */
+@utility tap-wide {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset-inline: min(0px, calc((100% - var(--target)) / 2));
+    top: 50%;
+    height: max(100%, var(--target));
+    translate: 0 -50%;
+  }
+}
+
 /* An in-page anchor (a section, a card or a row an address or a link scrolls to): it stops clear of the sticky header, which is 56 px
    tall on a phone and 64 px from lg, with room above it. Every anchor uses this one margin (kit ratchet). */
 @utility anchor-target {
@@ -299,11 +315,6 @@
     font-variant-numeric: tabular-nums slashed-zero;
     cursor: pointer;
     white-space: nowrap;
-  }
-  /* a rules line in a list of one-line rows (RulesLine `dense`): the rows stand at least 34 px apart, so the 44 px areas of two chips one
-     above the other meet only outside both chips, and the chip needs no band in its own line */
-  .rules-line-dense .rule-chip {
-    margin-block: 0;
   }
   .rule-chip::after {
     content: "";
@@ -584,10 +595,16 @@
       width: min(46rem, calc(100vw - 2rem));
       max-height: min(92vh, 62rem);
     }
+    /* a card beside what opened it: wider where the window allows, so a list of rules reads in fewer lines */
     .sheet[data-pc="popover"] {
       transform: none;
       inset: auto;
-      width: min(22rem, calc(100vw - 2rem));
+      width: min(26rem, calc(100vw - 2rem));
+    }
+    @media (min-width: 80rem) {
+      .sheet[data-pc="popover"] {
+        width: 30rem;
+      }
     }
     .sheet[data-pc="popover"][open] {
       animation: pop-in var(--duration-base) var(--ease-standard);
@@ -616,6 +633,11 @@
     to {
       transform: translateY(100%);
     }
+  }
+  /* A piece that comes onto the page where it was not (the fee page's card, panel and undo line): the short pop of a popover, at the base
+     duration, which a device that asks for less motion sets to nothing (theme.css) */
+  .come-in {
+    animation: pop-in var(--duration-base) var(--ease-standard);
   }
   @keyframes pop-in {
     from {

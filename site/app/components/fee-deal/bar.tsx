@@ -14,9 +14,10 @@ const w = copy.bar;
 
 export function DealBar({ deal, kind, writable, onDeal, end }: { deal: FeeDeal; kind: DealKind | null; writable: boolean; onDeal: (d: FeeDeal) => void; end?: ReactNode }) {
   return (
-    <Card pad="tight" className="flex flex-wrap items-center gap-x-6 gap-y-3">
-      <span className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 sm:flex-nowrap">
-        <TextField inline label={w.label} value={deal.name} maxLength={NAME_MAX} placeholder={w.namePlaceholder(kind?.name ?? null)} icon={<IconPencil size={16} />} onChange={(v) => onDeal(setName(deal, v))} />
+    <Card pad="tight" data-deal-bar="" className="flex flex-wrap items-center gap-x-6 gap-y-3">
+      {/* the name takes the bar's free space, so a long one shows whole where there is room */}
+      <span className="flex min-w-0 flex-[1_1_22rem] flex-wrap items-center gap-x-3 gap-y-2 sm:flex-nowrap">
+        <TextField inline grow label={w.label} value={deal.name} maxLength={NAME_MAX} placeholder={w.namePlaceholder(kind?.name ?? null)} icon={<IconPencil size={16} />} onChange={(v) => onDeal(setName(deal, v))} />
         {kind && (
           <Tag tone="outline" shape="pill" className="shrink-0">
             {kind.name}
@@ -25,7 +26,7 @@ export function DealBar({ deal, kind, writable, onDeal, end }: { deal: FeeDeal; 
       </span>
       <span className="flex flex-wrap items-center gap-2 text-sm sm:flex-nowrap">
         <span className="text-muted-foreground">{w.start}</span>
-        <MonthField value={deal.start ?? null} label={w.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
+        <MonthField value={deal.start ?? null} label={w.start} hang onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
         <span className="text-muted-foreground">{w.optional}</span>
       </span>
       <span className="text-sm text-muted-foreground">{writable ? w.saved : w.unsaved}</span>

@@ -14,8 +14,8 @@ export interface SegmentOption<T extends string> {
 }
 
 /**
- * Two to four short options of equal weight, one always chosen (real or nominal, a count). role="group" with aria-pressed buttons; arrow
- * keys move between options. A compact strip, 30 px tall with a 44 px tap area, its options never wrapping their words: the chosen one in
+ * Two to four short options of equal weight, one always chosen (real or nominal, a count). role="group" with aria-pressed buttons, one stop
+ * of the Tab key (the chosen option); the arrow keys move between the options and choose. A compact strip, 30 px tall with a 44 px tap area, its options never wrapping their words: the chosen one in
  * the dark action fill with light bold words and a small check; the others in the muted ink. Each option holds room for its words at the
  * chosen weight, so choosing moves nothing. A disabled option is faint and cannot be chosen. Options too long to stand side by side in
  * the room given go onto a second row, each still on one line, rather than out of the box.
@@ -23,11 +23,13 @@ export interface SegmentOption<T extends string> {
 export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy, check = true, fit }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string; /** As wide as its options from 640 px, not the full width. */ fit?: boolean; /** The check on the pressed option; a company page's controls go without it, the fill alone (the designer's mocks). */ check?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
     const enabled = options.filter((o) => !o.disabled);
     const i = Math.max(0, enabled.findIndex((o) => o.value === value));
-    const next = e.key === "Home" ? 0 : e.key === "End" ? enabled.length - 1 : e.key === "ArrowLeft" ? (i + 1) % enabled.length : (i - 1 + enabled.length) % enabled.length;
+    // right to left: the left arrow (and down) goes on
+    const on = e.key === "ArrowLeft" || e.key === "ArrowDown";
+    const next = e.key === "Home" ? 0 : e.key === "End" ? enabled.length - 1 : on ? (i + 1) % enabled.length : (i - 1 + enabled.length) % enabled.length;
     onChange(enabled[next]!.value);
     ref.current?.querySelectorAll("button")[options.indexOf(enabled[next]!)]?.focus();
   };
@@ -36,11 +38,15 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
       {options.map((o) => {
         const on = value === o.value;
         const words = typeof o.label === "string" ? gershayim(o.label) : o.label;
+        // one stop of the Tab key: the chosen option, or the first that can be chosen where none is
+        const stop = value === null || !options.some((x) => x.value === value) ? o === options.find((x) => !x.disabled) : on;
         return (
           <button
             key={o.value}
             type="button"
             aria-pressed={on}
+            aria-label={typeof words === "string" ? words : undefined}
+            tabIndex={stop ? 0 : -1}
             disabled={o.disabled}
             onClick={() => onChange(o.value)}
             className={cx(
@@ -69,13 +75,36 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
  * (or wraps always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
  * A chip keeps one width whether it is chosen or not (its label holds room for the chosen chip's weight), so choosing moves nothing.
  * `counts` puts a number in a fixed slot after each label (how many rows a choice would show); a chip that would show none dims in place.
+ * The row is one radio group and one stop of the Tab key (the chosen chip, else the first): the arrow keys move between the chips, and
+ * Space or Enter chooses the one with the focus.
  */
+/**
+ * A chip's spoken name: its words with their gershayim, and the count after them where the row shows one, as the eye reads the chip. None
+ * for a label that is a node: its content names it.
+ */
+export function chipName(label: ReactNode, count: number | undefined): string | undefined {
+  if (typeof label !== "string") return undefined;
+  return count === undefined ? gershayim(label) : `${gershayim(label)} ${fmt.number(count)}`;
+}
+
 export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
   const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
+  const stop = value !== null && ids.includes(value) ? value : ids[0];
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
+    const chips = [...e.currentTarget.querySelectorAll<HTMLElement>("[role=radio]")];
+    const i = chips.indexOf(document.activeElement as HTMLElement);
+    if (i < 0) return;
+    e.preventDefault();
+    // right to left: the left arrow (and down) goes on
+    const on = e.key === "ArrowLeft" || e.key === "ArrowDown";
+    const next = e.key === "Home" ? 0 : e.key === "End" ? chips.length - 1 : on ? (i + 1) % chips.length : (i - 1 + chips.length) % chips.length;
+    chips[next]!.focus();
+  };
   return (
-    <div role="radiogroup" aria-label={ariaLabel} className={layout}>
+    <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45")}>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45")}>
           {/* the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not */}
           <span className="inline-grid *:[grid-area:1/1]">
             <span aria-hidden="true" className="invisible font-medium">
@@ -211,21 +240,51 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
   );
 }
 
-// Links, buttons and source taps inside a PickCard lie above the card's own button, so they keep working.
-const LIFT_INNER = "[&_:is(a,button,[role=button]):not([data-pick-card])]:relative [&_:is(a,button,[role=button]):not([data-pick-card])]:z-10";
+// Links, buttons, fields and source taps inside a PickCard lie above the card's own button, so they keep working; a field's whole box
+// (`data-lift`, FigureField's) lies above it too, so a press anywhere in the box goes to the field and not to the card.
+const LIFT_INNER = "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:relative [&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:z-10";
 
 /**
  * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by
  * tapping the option itself"), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
- * figure that opens its source, a fund number that opens its page): they lie above the card's button. The chosen option is not a PickCard;
- * it is marked by an outline and a word. The button is stretched over the card, last inside it; `label` names it for a screen reader.
- * `pad` takes Card's paddings (`snug` for an option in a list of options); `none`, the default, leaves it to what is inside.
+ * figure that opens its source, a fund number that opens its page, a figure typed in place): they lie above the card's button. The button
+ * is stretched over the card and comes first inside it, so the keyboard meets the card before what is in it; `label` names it for a
+ * screen reader. `chosen`: the option chosen, marked by the action colour's edge (a word inside says so too, never colour alone); it keeps
+ * its button, so choosing moves no focus and the card's shape stays. A chosen card's button says it is pressed and does not light up.
+ * `pad` takes Card's paddings (`snug` for an option in a list of options); `none`, the default, leaves it to what is inside. `marked`:
+ * another part of the page points at this option (the fee page's glance under the pointer), drawn as the hover is.
  */
-export function PickCard({ label, onPick, pad = "none", className, children }: { label: string; onPick: () => void; pad?: CardPad; className?: string; children: ReactNode }) {
+export function PickCard({ label, onPick, pad = "none", chosen, marked, className, buttonProps, children }: {
+  label: string;
+  onPick: (by: "pointer" | "keyboard") => void;
+  pad?: CardPad;
+  chosen?: boolean;
+  marked?: boolean;
+  className?: string;
+  /** Data attributes for the card's button (a page that gives it the focus finds it by them). */
+  buttonProps?: Record<`data-${string}`, string>;
+  children: ReactNode;
+}) {
   return (
-    <div className={cx("relative rounded-lg border border-border cursor-pointer transition-colors duration-[var(--duration-fast)] hover:bg-accent/60", CARD_PAD[pad], LIFT_INNER, className)}>
+    <div
+      className={cx(
+        "relative rounded-lg border transition-colors duration-[var(--duration-fast)]",
+        chosen ? "border-primary outline-1 outline-primary" : cx("border-border cursor-pointer hover:bg-accent/60", marked && "bg-accent/60"),
+        CARD_PAD[pad],
+        LIFT_INNER,
+        className,
+      )}
+    >
+      <button
+        type="button"
+        data-pick-card
+        aria-label={label}
+        aria-pressed={chosen ?? undefined}
+        onClick={(e) => onPick(e.detail === 0 ? "keyboard" : "pointer")}
+        className={cx("absolute inset-0 w-full rounded-lg focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2", chosen && "cursor-default")}
+        {...buttonProps}
+      />
       {children}
-      <button type="button" data-pick-card aria-label={label} onClick={onPick} className="absolute inset-0 w-full rounded-lg focus-visible:outline-2 focus-visible:outline-ring" />
     </div>
   );
 }
