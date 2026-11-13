@@ -86,29 +86,29 @@ export type ThirdPrice =
 
 /**
  * A third party's fee printed with a price: whose it is, in the list's words where it names one (`who`: "הברוקר", "הבורסה והסליקה"), and
- * its figure (`price`, F-117), or none where the list gives none ("בלי סכום בתעריפון", F-118).
+ * its figure (`price`, F-117), or none where the list gives none ("בלי סכום בתעריפון", §10.6's stated parts).
  */
 export interface Third {
   who?: string;
   price?: ThirdPrice;
 }
 
-/** A fee a price is offset against: that month's charges of the deal's fee of this kind, up to the price's own sum (F-118). */
+/** A fee a price is offset against: that month's charges of the deal's fee of this kind, up to the price's own sum (§10.6's stated parts). */
 export interface Offset {
   kind: FeeKindId;
 }
 
-/** What a price list says of an order, beside its price (F-118): charged on an order not carried out too, each partial fill charged apart. */
+/** What a price list says of an order, beside its price (§10.6's stated parts): charged on an order not carried out too, each partial fill charged apart. */
 export type Note = "unfilled" | "partial";
 export const NOTES: readonly Note[] = ["unfilled", "partial"];
 
-/** The parts of a price beside its figures that tie it to another fee (F-118): an offset, and a refund in the price's currency. */
+/** The parts of a price beside its figures that tie it to another fee (§10.6's stated parts): an offset, and a refund in the price's currency. */
 interface Linked {
   offset?: Offset;
   refund?: Num;
 }
 
-/** The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), and notes on an order (F-118). */
+/** The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), and notes on an order (§10.6's stated parts). */
 interface OnAction extends Linked {
   discount?: Discount;
   third?: Third;
@@ -232,11 +232,14 @@ export const pickKey = (b: By): string => (b.kind === "own" ? `own:${b.label}` :
 
 /**
  * The reading's pick for one thing (F-114), by its key (`pickKey`): a named value (the site's id, or the person's words), or a step of a
- * range as its top (`<=N`) or above the last (`>N`).
+ * range as its top (`<=N`) or above the last (`>N`). A pick of what is bought may say itself where it is bought and its currency (`place`,
+ * `currency`), and then those are what is bought, whatever its value names: a deal saved before cases said both of what it held.
  */
 export interface ReadPick {
   by: string;
   is: string;
+  place?: Place;
+  currency?: string;
 }
 
 /** The provider kind a deal names: a cap that binds only some providers is judged by it (F-113). */
@@ -435,6 +438,13 @@ export function newFee(kind: FeeKindId, name?: string): SlimFee {
 /** A typed percent as the engine's fraction: the one place the two meet (to-engine.ts uses it). */
 export const fraction = (pct: number): number => pct / 100;
 
+/**
+ * What is bought for the reading's pick of `what` (F-114): where it is bought and its currency as the pick says them where it does (a deal
+ * saved before cases), else as its value names them (`placeOf`).
+ */
+export const pickedPlace = (fees: readonly Fee[], pick: ReadPick): { place: Place; currency: string | null } | null =>
+  pick.place !== undefined && pick.currency !== undefined ? { place: pick.place, currency: pick.currency } : placeOf(fees, pick.is);
+
 /** What is bought or held for a value of the reading's pick of `what` (F-114): the site's values, or one the person named on a fee's thing. */
 export function placeOf(fees: readonly Fee[], value: string): { place: Place; currency: string | null } | null {
   if (Object.hasOwn(WHAT_VALUES, value)) return WHAT_VALUES[value]!;
@@ -522,7 +532,7 @@ function readActionParts(raw: Rec, fields: readonly FieldId[]): { min?: Num; max
   return { ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(cap.n ? { cap: cap.n } : {}), ...(flat.flat ? { flat: flat.flat } : {}), ...currency };
 }
 
-/** A third party's fee: who it is, where named, and its figure, where the list gives one (F-117, F-118); null where it is anything else. */
+/** A third party's fee: who it is, where named, and its figure, where the list gives one (F-117; §10.6's stated parts); null where it is anything else. */
 function readThird(raw: unknown): Third | null {
   if (!isRec(raw)) return null;
   const out: Third = {};
@@ -560,7 +570,7 @@ function optPart<T>(raw: unknown, read: (raw: unknown) => T | null): { part?: T 
   return part === null ? false : { part };
 }
 
-/** The parts that tie a price to another fee (F-118): an offset against a fee of the deal's kinds, a refund. */
+/** The parts that tie a price to another fee (§10.6's stated parts): an offset against a fee of the deal's kinds, a refund. */
 function readLinked(raw: Rec): Linked | null {
   const offset = optPart(raw.offset, (o) => (isRec(o) && isFeeKindId(o.kind) && Object.keys(o).length === 1 ? { kind: o.kind } : null));
   const refund = optPart(raw.refund, (n) => readNum(n, SUM_MAX));
@@ -568,7 +578,7 @@ function readLinked(raw: Rec): Linked | null {
   return { ...(offset.part ? { offset: offset.part } : {}), ...(refund.part ? { refund: refund.part } : {}) };
 }
 
-/** The parts of a price on an action beside its figures (F-116 to F-118): a discount, a third party's fee, notes, and the linked parts. */
+/** The parts of a price on an action beside its figures (F-116, F-117 and §10.6's stated parts): a discount, a third party's fee, notes, and the linked parts. */
 function readOnAction(raw: Rec): OnAction | null {
   const linked = readLinked(raw);
   const discount = optPart(raw.discount, (d) => {
@@ -790,14 +800,19 @@ function readFee(raw: unknown): Fee | null {
   return { id: raw.id, kind, ...name, by, cases };
 }
 
-/** The reading's picks: each a thing's key and a value, no key twice. */
+/** The reading's picks: each a thing's key and a value, no key twice; a pick of what is bought with its place and currency, both or neither. */
 function readPicks(raw: unknown): ReadPick[] | null {
   if (!Array.isArray(raw) || raw.length > PICKS_MAX) return null;
   const out: ReadPick[] = [];
   for (const p of raw) {
     if (!isRec(p) || !str(p.by, NAME_MAX + 4) || !str(p.is, NAME_MAX + 4) || p.is.trim() === "" || out.some((x) => x.by === p.by)) return null;
     if (!PICK_KEYS.includes(p.by) && !(p.by.startsWith("own:") && p.by.length > 4)) return null;
-    out.push({ by: p.by, is: p.is });
+    if (p.place === undefined && p.currency === undefined) {
+      out.push({ by: p.by, is: p.is });
+      continue;
+    }
+    if (p.by !== "what" || (p.place !== "israel" && p.place !== "abroad") || typeof p.currency !== "string" || !CURRENCY.test(p.currency)) return null;
+    out.push({ by: p.by, is: p.is, place: p.place, currency: p.currency });
   }
   return out;
 }
@@ -806,13 +821,15 @@ const PICK_KEYS: readonly string[] = ["what", "channel", "track", "currency", "p
 
 /**
  * What a deal saved before cases said it held, as the reading's pick of what is bought (F-114): a fund on the Tel Aviv exchange is a
- * security there; one abroad in dollars or euros is one in the United States or in Europe, and in any other currency one elsewhere.
+ * security there; one abroad in dollars or euros is one in the United States or in Europe, and in any other currency one elsewhere. The
+ * pick carries the place and the currency the deal said, so a fund on the exchange in dollars still puts a conversion on a purchase and
+ * one abroad in shekels does not, as they did before cases (F-111's `foreign`).
  */
 function heldPick(raw: unknown): ReadPick | null {
   if (!isRec(raw)) return null;
   if ((raw.place !== "israel" && raw.place !== "abroad") || typeof raw.currency !== "string" || !CURRENCY.test(raw.currency) || (raw.payout !== "accumulating" && raw.payout !== "distributing")) return null;
   const is = raw.place === "israel" ? "tase" : raw.currency === "USD" ? "us" : raw.currency === "EUR" ? "europe" : "world";
-  return { by: "what", is };
+  return { by: "what", is, place: raw.place, currency: raw.currency };
 }
 
 /**

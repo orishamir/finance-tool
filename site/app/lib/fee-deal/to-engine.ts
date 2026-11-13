@@ -1,6 +1,6 @@
 // A deal as the engine reads it (method §10.6): typed percents become the engine's fractions here and nowhere else, a discount lowers the
 // price it is off (F-116), a third party's fee with a figure goes with its price (F-117), and a fee read on one step of sizes carries its
-// stretch (F-115). The parts the page states without computing (F-118) do not go to the engine.
+// stretch (F-115). The parts the page states without computing (§10.6's stated parts) do not go to the engine.
 import { discounted, type Deal, type DealFee, type DealPrice, type DealStage, type DealThird } from "@finance-tool/engine";
 import { isForeign, readFees, type ReadFee } from "./cases";
 import { fraction, monthOf, type FeeDeal, type Price, type ReadPick, type Stage, type ThirdPrice } from "./model";

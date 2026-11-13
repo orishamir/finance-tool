@@ -1,16 +1,20 @@
 // A fee whose price changes by things (method §10.6, F-114 to F-117): its cases as the device and a link keep them, the case the reading's
 // picks give each fee, a size read across sizes, a price's new parts, the views the page renders, and the edits that make cases.
+import { readdirSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { actionCost, dealMarks } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
+import { nisPerNumber } from "../fx";
 import { builder, byQuestion, copiesWords, panel, slotEdit, toolbox } from "./builder";
 import { picksOf, readFee, readFees } from "./cases";
 import { addBy, addCase, canAddBy, copyCase, editPrice, removeBy, removeCase, removeTop, setMine, setPart, setStep, setTop, setWhen, withFigure } from "./edit";
 import { glance } from "./glance";
 import { decodeDeal, encodeDeal } from "./link";
-import { newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
-import { readDealFor } from "./parts";
+import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
+import { readDealFor, sumsLargest } from "./parts";
 import { readingOf } from "./reading";
+import { fillDeal } from "./templates";
 import { removeByKept, removeCaseKept, undo } from "./undo";
 import { feeDeal as copy } from "../../copy";
 
@@ -100,12 +104,12 @@ describe("cases as the device and a link keep them", () => {
   it("opens a deal saved before cases with every price as it was and what it held as the pick of what is bought", () => {
     const old = { id: "deal-o", name: "", kind: "brokerage-account", held: { place: "abroad", currency: "EUR", payout: "distributing" }, fees: [{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: { v: 0.1 } } }] }] };
     const d = readDeal(old)!;
-    expect(d).toEqual({ id: "deal-o", name: "", kind: "brokerage-account", readFor: [{ by: "what", is: "europe" }], fees: old.fees });
+    expect(d).toEqual({ id: "deal-o", name: "", kind: "brokerage-account", readFor: [{ by: "what", is: "europe", place: "abroad", currency: "EUR" }], fees: old.fees });
     expect(read(d).engine.foreign).toBe(true);
     // a link of the first version, which carried what was held, opens the same way
     const v1 = Buffer.from(JSON.stringify([1, { n: "", k: "brokerage-account", h: { l: "israel", c: "ILS", o: "accumulating" }, f: [{ k: "trade", s: [{ P: { F: "action", r: 0.25 } }] }] }, []])).toString("base64url");
     const opened = decodeDeal(v1)!;
-    expect(opened.readFor).toEqual([{ by: "what", is: "tase" }]);
+    expect(opened.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "ILS" }]);
     expect(read(opened).engine.foreign).toBe(false);
   });
 });
@@ -184,7 +188,7 @@ describe("a price's parts", () => {
     expect(share({ form: "action", rate: typed(0.2), discount: { pct: typed(25) } })).toMatchObject({ computed_from: { formula: "F-116" } });
     expect(share({ form: "action", rate: typed(0.2), discount: { pct: typed(25) } }).value).toBeCloseTo(0.15, 12);
   });
-  it("states what it does not compute (F-118): a third party's fee with no figure, an offset, a note on an order", () => {
+  it("states what it does not compute (§10.6's stated parts): a third party's fee with no figure, an offset, a note on an order", () => {
     const stated = (picks: FeeDeal["readFor"]) => readingOf(read(deal(picks)), data.fx).stated.map((s) => [s.fee.fee, s.part]);
     expect(stated([{ by: "what", is: "us" }])).toEqual([
       ["fee-trade", "unfilled"],
@@ -424,5 +428,153 @@ describe("every house's whole price list", () => {
         expect(r.fees.length + r.unmatched.length, `${h.id} ${is}`).toBeGreaterThanOrEqual(h.fees.length);
       }
     }
+  });
+});
+
+describe("the conversion's currency is what is bought's (F-114)", () => {
+  const psagot = (picks: FeeDeal["readFor"]) => read({ ...fillDeal(newDeal("brokerage-account"), "house:psagot", data, TODAY)!, readFor: picks });
+  const fxOf = (r: ReturnType<typeof read>) => r.fees.find((f) => f.kind === "fx");
+  const fxId = (r: ReturnType<typeof read>) => r.deal.fees.find((f) => f.kind === "fx")!.id;
+  it("reads a holding in euros in the euro's case, and one in dollars in none where the list prices dollars per dollar", () => {
+    const eur = psagot([{ by: "what", is: "europe" }]);
+    expect(eur.picks).toContainEqual({ by: "currency", is: "EUR" });
+    expect(fxOf(eur)!.stages[0]!.price).toMatchObject({ form: "action", rate: { v: 0.5 } });
+    // never the price of another currency: the dollar's line is per dollar, which fills nothing
+    const usd = psagot([{ by: "what", is: "us" }]);
+    expect(usd.picks).toContainEqual({ by: "currency", is: "USD" });
+    expect(fxOf(usd)).toBeUndefined();
+    expect(usd.unmatched).toContain(fxId(usd));
+  });
+  it("picks no currency for a holding in shekels, nor the deal's own pick of one", () => {
+    const tase = psagot([{ by: "what", is: "tase" }, { by: "currency", is: "other" }]);
+    expect(tase.picks.some((p) => p.by === "currency")).toBe(false);
+    expect(tase.unmatched).toContain(fxId(tase));
+    expect(psagot([{ by: "what", is: "us" }, { by: "currency", is: "other" }]).picks.filter((p) => p.by === "currency")).toEqual([{ by: "currency", is: "USD" }]);
+    expect(readingOf(tase, data.fx).picks!.things.map((t) => t.by)).not.toContain("currency");
+  });
+  it("reads a value of the person's own in a currency the site does not name as another currency", () => {
+    const conversion: CasesFee = {
+      id: "fee-fx",
+      kind: "fx",
+      by: [{ kind: "currency" }],
+      cases: [
+        { id: "u", when: [["USD"]], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+        { id: "o", when: [["other"]], stages: [{ price: { form: "action", rate: typed(0.3) } }] },
+      ],
+    };
+    const tokyo: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what", own: [{ name: "טוקיו", place: "abroad", currency: "JPY" }] }], cases: [{ id: "t", when: [["טוקיו"]], stages: [{ price: { form: "action", rate: typed(0.2) } }] }] };
+    const r = read({ ...deal(), fees: [tokyo, conversion] });
+    expect(r.picks).toEqual([{ by: "what", is: "טוקיו" }, { by: "currency", is: "other" }]);
+    expect(r.fees.find((f) => f.kind === "fx")!.read?.case).toBe("o");
+  });
+});
+
+describe("a deal saved before cases", () => {
+  const old = (place: string, currency: string) => readDeal({ id: "deal-o", name: "", kind: "brokerage-account", held: { place, currency, payout: "accumulating" }, fees: [{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: { v: 0.1 } } }] }] })!;
+  it("keeps the place and the currency it held, so a conversion goes on a purchase as before (F-111)", () => {
+    expect(read(old("israel", "USD")).engine.foreign).toBe(true);
+    expect(read(old("abroad", "ILS")).engine.foreign).toBe(false);
+    expect(read(old("abroad", "USD")).engine.foreign).toBe(true);
+    expect(read(old("israel", "ILS")).engine.foreign).toBe(false);
+  });
+  it("carries them in a link, and refuses them on a pick of anything but what is bought", () => {
+    const d = old("israel", "USD");
+    expect(decodeDeal(encodeDeal(d))!.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "USD" }]);
+    expect(readDeal({ ...JSON.parse(JSON.stringify(d)), readFor: [{ by: "channel", is: "direct", place: "israel", currency: "USD" }] })).toBeNull();
+    expect(readDeal({ ...JSON.parse(JSON.stringify(d)), readFor: [{ by: "what", is: "tase", place: "israel" }] })).toBeNull();
+  });
+});
+
+describe("a third party's fee on the curve (F-117)", () => {
+  const withThird = (third: Extract<Price, { form: "action" }>["third"]) => read({ ...deal([{ by: "what", is: "tase" }]), fees: [{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(10), third } }] }] });
+  it("asks for the unit's price for a sum per unit, and draws the curve with it at the rate of its currency", () => {
+    const r = withThird({ price: { form: "perUnit", amount: typed(0.01), currency: "USD" } });
+    const without = readingOf(r, data.fx);
+    expect(without.unitPrice).toMatchObject({ currency: "ILS", value: null });
+    expect(without.undrawn).toContainEqual(expect.objectContaining({ action: "trade", why: "unit-price" }));
+    const drawn = readingOf(r, data.fx, 100).curves.find((c) => c.action === "trade")!;
+    expect(drawn.rates.map((x) => x.currency)).toEqual(["USD"]);
+    // 1,000 ₪ of units at 100 ₪ is 10 units: 1 ₪ of the fee's own minimum and 10 × 0.01 $
+    const usd = nisPerNumber(data.fx!, "USD")!;
+    expect(actionCost(r.engine, r.reading.periods[0]!, "trade", 1000, "buy", { USD: usd }, 100).total).toBeCloseTo(10 + 0.1 * usd, 9);
+  });
+  it("converts a bound in another currency at its rate", () => {
+    const drawn = readingOf(withThird({ price: { form: "action", rate: typed(0.05), min: typed(2), currency: "EUR" } }), data.fx).curves.find((c) => c.action === "trade")!;
+    expect(drawn.rates.map((x) => x.currency)).toEqual(["EUR"]);
+  });
+});
+
+describe("the largest cost of holding with a step of the value held in another currency (F-112, F-115)", () => {
+  it("prices the step at the curve's rate", () => {
+    const manager: CasesFee = {
+      id: "fee-m",
+      kind: "fund_management",
+      by: [{ kind: "portfolioSize", unit: "USD", tops: [typed(10_000)] }],
+      cases: [
+        { id: "a", when: [0], stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] },
+        { id: "b", when: [1], stages: [{ price: { form: "held", rate: typed(0.01), per: 12, every: 12 } }] },
+      ],
+    };
+    const r = read({
+      ...deal(),
+      fees: [
+        { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(15), every: 1 } }] },
+        { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] },
+        manager,
+      ],
+    });
+    const p = r.reading.periods[0]!;
+    const meet = dealMarks(r.engine, p).find((m) => m.kind === "meet")!;
+    expect(meet.amount).toBeCloseTo(180_000, 6);
+    expect(() => sumsLargest(r.engine, p, meet)).toThrow(RangeError);
+    // at 180,000 ₪ the manager's fee is on the upper step, 0.01%: 18 ₪, under the 180 ₪ of sums
+    expect(sumsLargest(r.engine, p, meet, { USD: 3.5 })).toBe(true);
+    const stated = readingOf(r, data.fx).statements.find((s) => s.kind === "mark" && s.mark.kind === "meet");
+    expect(stated?.kind === "mark" && stated.mark.kind === "meet" && stated.mark.largest).toBe(true);
+  });
+});
+
+describe("the cap's mark beside a discount off the minimum (F-112, F-116)", () => {
+  it("meets the minimum the discount leaves", () => {
+    // 0.3%, at least 25 $ and at most 6,750 $, at most 25% of the action, half off with the minimum: the cap meets 12.5 $ at 50 $
+    const price: Price = { form: "action", rate: typed(0.3), min: typed(25), max: typed(6750), cap: typed(25), currency: "USD", discount: { pct: typed(50), alsoMin: true } };
+    const r = read({ ...deal([{ by: "what", is: "us" }]), fees: [{ id: "fee-t", kind: "trade", stages: [{ price }] }] });
+    const cap = readingOf(r, data.fx).statements.flatMap((s) => (s.kind === "mark" && s.mark.kind === "cap" ? [s.mark] : []))[0]!;
+    expect(cap.amount.value).toBeCloseTo(50, 9);
+    expect(cap.meets.value).toBe(25);
+    expect(Object.values(cap.amount.computed_from!.inputs).map((x) => (x as { value: unknown }).value)).toEqual(expect.arrayContaining([25, 25, 50]));
+  });
+});
+
+describe("what a size is read across by, by the price's form (F-115)", () => {
+  const byPortfolio = (kind: "own" | "trade", price: Price): CasesFee => ({
+    id: "fee-p",
+    kind,
+    ...(kind === "own" ? { name: "דמי ניהול תיק" } : {}),
+    by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
+    cases: [
+      { id: "a", when: [0], stages: [{ price }] },
+      { id: "b", when: [1], stages: [{ price: { form: "free" } }] },
+    ],
+  });
+  it("reads a fee of the person's own priced as a share of what is held across the portfolio's sizes, on what is held", () => {
+    const held = byPortfolio("own", { form: "held", rate: typed(0.5), per: 12, every: 12 });
+    expect(picksOf({ fees: [held] })).toEqual([]);
+    expect(readFee(held, [])!.map((f) => f.read?.step?.on)).toEqual(["held", "held"]);
+  });
+  it("picks the portfolio's size for a fee priced on an action", () => {
+    const onAction = byPortfolio("own", { form: "action", rate: typed(0.1) });
+    expect(picksOf({ fees: [onAction] })).toEqual([{ by: "portfolioSize", is: "<=100000" }]);
+    expect(picksOf({ fees: [byPortfolio("trade", { form: "action", rate: typed(0.1) })] })).toEqual([{ by: "portfolioSize", is: "<=100000" }]);
+  });
+});
+
+describe("the formulas the fee page's code cites", () => {
+  it("are each numbered in the method", () => {
+    const method = readFileSync(resolve(__dirname, "../../../../docs/method.md"), "utf8");
+    const dir = resolve(__dirname);
+    const sources = [...readdirSync(dir).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts")).map((f) => resolve(dir, f)), resolve(__dirname, "../../copy.ts")];
+    const cited = new Set(sources.flatMap((f) => readFileSync(f, "utf8").match(/F-\d{2,3}/g) ?? []));
+    expect([...cited].filter((id) => !method.includes(`**${id} `))).toEqual([]);
   });
 });
