@@ -32,7 +32,7 @@ export const content: GuideContent = {
   switchRules: ["TXK-04", "PF-23", "KGL-10"],
   omitSwitchInTax: true,
   companiesOpen: true,
-  termIds: ["מסלול השקעה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך"],
+  termIds: ["מסלול השקעה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך", "דמי ניהול מהפקדה"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
@@ -59,6 +59,11 @@ export const content: GuideContent = {
         <Sentence measure>
           החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "מס"} מהרווח, בכל גיל, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. זו מקדמה: המס הסופי נקבע בדוח השנתי, ושם מקבלים בחזרה את מה שנוכה יותר מדי.
         </Sentence>
+        {/* whether a deposit fee is part of the principal the gain is measured from is open (TXK-05 does not settle it); the ledger
+            records each deposit after its fee (F-08), so the fee is taxed as gain */}
+        <p className="max-w-measure">
+          אם <Term id="דמי ניהול מהפקדה">דמי הניהול מההפקדה</Term> נחשבים חלק מהסכום שהופקד, לא ידוע. בחישוב בעמוד הם לא נחשבים חלק ממנו, ולכן מס ההכנסה מחושב גם עליהם, כמו על רווח.
+        </p>
         <RulesLine ids={["TXK-06", "TXG-04", "TXG-07", "TXK-26"]} />
         <OpenLossOffset />
       </>
