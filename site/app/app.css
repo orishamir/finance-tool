@@ -166,6 +166,15 @@
   }
 }
 
+/* A field's reset stands at the foot of its label line, the field's 6 px gap over the box: its tap area reaches its 44 px upward from the
+   box's top edge instead of centred on it, so it never covers the box nor loses its foot to it. Outside the layers, so it wins over the
+   `tap-area` utility's own placing. */
+.field-label > .tap-area::after {
+  top: auto;
+  bottom: -6px;
+  translate: none;
+}
+
 /* An in-page anchor (a section, a card or a row an address or a link scrolls to): it stops clear of the sticky header, which is 56 px
    tall on a phone and 64 px from lg, with room above it. Every anchor uses this one margin (kit ratchet). */
 @utility anchor-target {
@@ -764,6 +773,10 @@
     font-variant-numeric: tabular-nums;
     /* the input fills the box's height, so a tap anywhere in the box lands on it (a 44 px target, not the text line's 27 px) */
     align-self: stretch;
+    /* a control that stands alone, on the tap areas' layer 1 (the provenance number's note): the area of a term or a figure in the hint
+       under the box, at layer 0, reaches 11 px up into the box and would take a press on its lower edge from the field */
+    position: relative;
+    z-index: 1;
   }
   .field-unit {
     color: var(--muted-foreground);

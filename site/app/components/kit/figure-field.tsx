@@ -29,7 +29,8 @@ function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?:
 /**
  * A press anywhere in a box (its padding, its unit, the words in it) goes to its field, and a press that brings the focus into the field
  * selects what it holds, as Tab does, so typing replaces it; a press in a field that already has the focus places the caret. A choice in
- * the box (a bound's currency) keeps its own press.
+ * the box (a bound's currency) keeps its own press. So the field's tap area is the box's 44 px, and the hit check (tools/hit-check.mjs)
+ * measures it by the box.
  */
 function focusInBox(e: MouseEvent<HTMLElement>) {
   if (e.button !== 0) return;

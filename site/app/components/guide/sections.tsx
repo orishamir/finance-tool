@@ -378,13 +378,13 @@ export function ExposureLinks({ items }: { items: { id: string; name: string; hr
   );
 }
 
-/** The companies that offer a product, each a link to its page, in two columns from `md`. */
+/** The companies that offer a product, each a link to its page on a line of its own (a 44 px target), in two columns from `md`. */
 function CompanyColumns({ companies }: { companies: { id: string; name: string }[] }) {
   return (
-    <ul className="text-sm leading-8 md:columns-2 md:gap-x-10">
+    <ul className="text-sm md:columns-2 md:gap-x-10">
       {companies.map((c) => (
-        <li key={c.id} className="break-inside-avoid">
-          <TextLink to={companyPath(c.id)}>
+        <li key={c.id} className="flex break-inside-avoid">
+          <TextLink to={companyPath(c.id)} look="line">
             <bdi>{gershayim(c.name)}</bdi>
           </TextLink>
         </li>
