@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
-import { cmaPeriodFile, type CmaPeriodFile } from "@finance-tool/schema";
+import { cmaPeriodFile, isReligiousLaw, type CmaPeriodFile } from "@finance-tool/schema";
 
 export type CmaDataset = CmaPeriodFile["dataset"];
 export type CmaFund = CmaPeriodFile["funds"][number];
@@ -496,6 +496,8 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const funds: CmaFund[] = [];
   for (const r of rows) {
     if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"))) continue;
+    // a Halacha or Sharia track: the regulator classes it "הלכתי" in gemelnet; pensia-net has no classification, so its name says it
+    if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();
     if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
     const id = Number(get(r, "FUND_ID").trim());

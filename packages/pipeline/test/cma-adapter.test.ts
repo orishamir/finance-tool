@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
-import { cmaPeriodFile, type CmaPeriodFile } from "@finance-tool/schema";
+import { cmaPeriodFile, isReligiousLaw, type CmaPeriodFile } from "@finance-tool/schema";
 import { describe, expect, it } from "vitest";
 import {
   DATASETS,
@@ -173,6 +173,27 @@ describe("normalise", () => {
     for (const dataset of ["gemelnet", "pensia-net"] as const) {
       for (const period of listPeriods(cmaDir, dataset)) {
         const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!));
+        expect(left.map((f) => f.fund_id)).toEqual([]);
+      }
+    }
+  });
+
+  it("leaves out a Halacha or Sharia track, by its classification or its name, in a refresh and in the stored files", () => {
+    const table = parseCsv(decodeWindows1255(fixture));
+    const [head] = table;
+    const [nameCol, specCol, subCol] = ["FUND_NAME", "SPECIALIZATION", "SUB_SPECIALIZATION"].map((c) => head!.indexOf(c));
+    const [byClass, byName] = good().funds.map((f) => f.fund_id);
+    for (const r of table) {
+      if (r[0] === String(byClass)) [r[specCol!], r[subCol!]] = ["הלכתי", "הלכה יהודית"];
+      if (r[0] === String(byName)) r[nameCol!] = "הפניקס פנסיה משלימה- שריעה";
+    }
+    const csv = table.map((r) => r.map((c) => `"${c.replaceAll('"', '""')}"`).join(",")).join("\n");
+    expect(normalise(csv, ctx).file!.funds.map((f) => f.fund_id)).toEqual(good().funds.map((f) => f.fund_id).filter((id) => id !== byClass && id !== byName));
+
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    for (const dataset of ["gemelnet", "pensia-net"] as const) {
+      for (const period of listPeriods(cmaDir, dataset)) {
+        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => isReligiousLaw(...f.names.cma, f.specialization, f.sub_specialization));
         expect(left.map((f) => f.fund_id)).toEqual([]);
       }
     }

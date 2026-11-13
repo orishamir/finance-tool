@@ -387,19 +387,19 @@ describe("F-70 classification fit, each outcome", () => {
     ...(value === null ? { notes: "no upper bound" } : {}),
   });
   const row = (classification: string, min: number, max: number | null) => ({ classification, horizon_min_years: vo(min), horizon_max_years: vo(max), max_fall_pct: { ...vo(20), unit: "pct" as const } });
-  const table: FitTable = { table: [row("כללי", 5, null), row("הלכה", 3, 8), row("50-60", 1, 4)] };
+  const table: FitTable = { table: [row("כללי", 5, null), row("קיימות", 3, 8), row("50-60", 1, 4)] };
   const track = (specialization: string, sub = "") => ({ specialization, sub_specialization: sub });
 
   it("fits inside the band, including its edges", () => {
     expect(classificationFit(track("כללי"), 5, table).mark).toBe("fits");
     expect(classificationFit(track("כללי"), 40, table).mark).toBe("fits");
-    expect(classificationFit(track("הלכה"), 8, table).mark).toBe("fits");
+    expect(classificationFit(track("קיימות"), 8, table).mark).toBe("fits");
   });
   it("does not fit below the minimum or above the maximum, and still names the row it matched", () => {
     const short = classificationFit(track("כללי"), 4.9, table);
     expect(short).toMatchObject({ mark: "does-not-fit", matchedOn: "specialization", classification: "כללי" });
     expect(short.row?.horizon_min_years.value).toBe(5);
-    expect(classificationFit(track("הלכה"), 9, table).mark).toBe("does-not-fit");
+    expect(classificationFit(track("קיימות"), 9, table).mark).toBe("does-not-fit");
   });
   it("has no rule when the classification is not in the table, and says which words it looked up", () => {
     const r = classificationFit(track("עוקבי מדדים"), 10, table);
@@ -558,9 +558,9 @@ describe("F-64 track workbench", () => {
     "מרכזית לפיצויים": null,
   };
   const funds: Fixture[] = [
-    { id: 1, name: "הלכה", company: "c1", specialization: "כללי", mgmt: 0.5 },
-    { id: 2, name: "הלכה", company: "c1", specialization: "כללי", mgmt: 0.6 },
-    { id: 3, name: "הלכה", company: "c2", specialization: "כללי", mgmt: null, dep: null },
+    { id: 1, name: "כללי", company: "c1", specialization: "כללי", mgmt: 0.5 },
+    { id: 2, name: "כללי", company: "c1", specialization: "כללי", mgmt: 0.6 },
+    { id: 3, name: "כללי", company: "c2", specialization: "כללי", mgmt: null, dep: null },
     { id: 4, name: "מניות", company: "c1", specialization: "מניות", mgmt: 0.8 },
     { id: 5, name: "מדד", company: "c2", specialization: "עוקבי מדדים", mgmt: 0.3 },
     { id: 6, name: "גמל", company: "c1", classification: "קופת גמל להשקעה", specialization: "כללי", mgmt: 0.4 },
@@ -596,8 +596,8 @@ describe("F-64 track workbench", () => {
   });
 
   it("groups tracks with an identical name within one company, flags them and keeps them all", () => {
-    expect(wb.groups).toEqual([{ id: "c1:הלכה", companyId: "c1", name: "הלכה", fundIds: [1, 2] }]);
-    expect(wb.rows.map((r) => r.groupId)).toEqual(["c1:הלכה", "c1:הלכה", null, null, null]);
+    expect(wb.groups).toEqual([{ id: "c1:כללי", companyId: "c1", name: "כללי", fundIds: [1, 2] }]);
+    expect(wb.rows.map((r) => r.groupId)).toEqual(["c1:כללי", "c1:כללי", null, null, null]);
   });
 
   it("coverage line: considered, shown, grouped, fee not reported", () => {

@@ -32,7 +32,7 @@ function keepFor(search: URLSearchParams): string {
   return s ? `?${s}` : "";
 }
 
-/** "143 מסלולים של 12 חברות (מתוך 143)." No fee range: the table's cells show the fees. */
+/** "133 מסלולים של 12 חברות (מתוך 133)." No fee range: the table's cells show the fees. */
 function CountLine({ view, shown, companies }: { view: ProductView; shown: number; companies: number }) {
   const total = view.tracks.length;
   return (
