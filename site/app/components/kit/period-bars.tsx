@@ -83,21 +83,3 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
     </div>
   );
 }
-
-/**
- * A thin bar under a figure in a table row, its length the figure's share of the list's highest: the chosen or top row's in the accent,
- * the others in the value colour, and a hollow one for a row that stands apart (an offer with a condition). `computed` is the site's own
- * reckoning of the share, in the computed ink. `stocks` and `currency` draw a track's exposure, a share from 0 to 100% in the measure's
- * chart colour, empty at 0 (kit ExposureCell). Grows from the row's start.
- */
-export function MeterBar({ share, tone = "value", hollow, className }: { share: number; tone?: "accent" | "value" | "muted" | "computed" | "stocks" | "currency"; hollow?: boolean; className?: string }) {
-  const exposure = tone === "stocks" || tone === "currency";
-  const w = `${Math.max(exposure ? 0 : 0.02, Math.min(1, share)) * 100}%`;
-  const fill = { accent: "bg-primary", value: "bg-chart-value", muted: "bg-muted-foreground", computed: "bg-computed", stocks: "bg-chart-stocks", currency: "bg-chart-currency" }[tone];
-  const edge = { accent: "border-primary", value: "border-chart-value", muted: "border-muted-foreground", computed: "border-computed", stocks: "border-chart-stocks", currency: "border-chart-currency" }[tone];
-  return (
-    <span aria-hidden="true" className={cx("relative block h-1.5 w-full rounded-full bg-muted", className)}>
-      <span className={cx("absolute inset-y-0 start-0 rounded-full transition-[width] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", hollow ? cx("border bg-card", edge) : fill)} style={{ width: w }} />
-    </span>
-  );
-}

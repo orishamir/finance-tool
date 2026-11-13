@@ -9,7 +9,7 @@ import { IconAlert, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { mostlyHebrew } from "../../lib/source-label";
 import { ProductFigures, ProductIdLink } from "./product-table";
-import { MeterBar } from "./period-bars";
+import { MeterBar } from "./meter-bar";
 import { Tag } from "./tag";
 
 /** The track's page on the regulator's Gemel-Net (idGuf is the fund number, OCHLUSIYA=1 the general

@@ -2065,21 +2065,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="MeterBar" use={g.uses.MeterBar}>
-        <State label="the top row in the accent, a row at 70%, an offer with a condition (hollow), a linked one (muted, hollow)" wide>
-          <div className="flex flex-col gap-3 max-w-48">
-            <MeterBar share={1} tone="accent" />
-            <MeterBar share={0.7} />
-            <MeterBar share={0.9} hollow />
-            <MeterBar share={0.4} tone="muted" hollow />
-          </div>
-        </State>
-        <State label="tone computed: the site's own reckoning of the share" wide>
-          <div className="flex flex-col gap-3 max-w-48">
-            <MeterBar share={1} tone="computed" />
-            <MeterBar share={0.35} tone="computed" />
-          </div>
-        </State>
-        <State label="tones stocks and currency: a track's exposure, a share from 0 to 100% in the measure's colour (49%, 21%, above 100% drawn full, 0 empty)" wide>
+        <State label="a track's exposure: a share from 0 to 100% in its measure's colour, stocks 49%, currency 21%, above 100% drawn full, 0 empty; one length in every row" wide>
           <div className="flex flex-col gap-3 max-w-16">
             <MeterBar share={0.49} tone="stocks" />
             <MeterBar share={0.21} tone="currency" />
