@@ -41,7 +41,8 @@ function Follows({ f, phone }: { f: BrandFundRow; phone?: boolean }) {
 export function BrandFundList({ funds, kind }: { funds: BrandFundRow[]; kind: FundKind }) {
   const followsHead = kind === "money-market" ? c.columns.kind : c.columns.index;
   const columns: ProductColumn[] = [
-    { id: "name", head: c.columns.name },
+    // at least as wide as the widest label chip, which does not wrap: "חשיפה לדולר ולמטבעות נוספים" with its icon and the cell's padding, 13.92 rem
+    { id: "name", head: c.columns.name, least: 14 },
     { id: "number", head: c.columns.number, width: 7.5 },
     ...(funds.some((f) => f.follows) ? [{ id: "follows", head: followsHead, width: 12 }] : []),
     { id: "fees", head: <FundFeesHead />, width: 12 },
