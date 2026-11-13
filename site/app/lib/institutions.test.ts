@@ -22,7 +22,7 @@ describe("a bank's products and their dates", () => {
     }
     const current = page.groups.find((g) => g.wrapperId === "current-account")!;
     const deposits = page.groups.find((g) => g.wrapperId === "bank-deposit")!;
-    expect(current.asOf?.value).toBe("2026-10-25");
+    expect(current.asOf?.value).toBe("2026-11-15");
     expect(current.asOf?.value).not.toBe(deposits.asOf?.value);
   });
 });
