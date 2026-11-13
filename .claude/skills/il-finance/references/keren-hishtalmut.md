@@ -243,17 +243,16 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 - Likely to change: no
 
 ### KH-20 Track categories as the CMA classifies them
-- Rule: Gemel-Net classifies every study-fund track by `SPECIALIZATION` and `SUB_SPECIALIZATION`. For general-public study funds in period 202609 the values are:
+- Rule: Gemel-Net classifies every study-fund track by `SPECIALIZATION` and `SUB_SPECIALIZATION`. For general-public study funds in period 202609 the values, besides the religious-law ones the site leaves out (D113), are:
   - `כללי` (sub `כללי`). This also holds the IRA funds (`בניהול אישי`, `IRA`).
   - `מתמחים בניהול אקטיבי`, with subs `מניות`, `אשראי ואג"ח`, `כספי (שקלי)`, `אג"ח ממשלות`.
   - `עוקבי מדדים`, with subs `עוקב מדד s&p 500`, `עוקב מדדי מניות`, `עוקב מדדים - גמיש`, `עוקב מדדי אג"ח`.
   - `מתמחים באפיקי השקעה סחירים`, with subs `משולב סחיר`, `מניות סחיר`, `אג"ח סחיר`.
-  - `הלכתי`, with subs `הלכה יהודית`, `הלכה איסלאמית`.
   - `קיימות`.
 
   Bylaws define each track by exposure bands, for example equity tracks "not less than 75% and not more than 120%" of track assets, and "אשראי ואג"ח עם מניות (עד 25% מניות)".
 - Conditions / exceptions: Some tracks are closed to new members. Altshuler "כללי ב'" "will be closed to new members from 1.1.2016". It appears in Gemel-Net next to "אלטשולר שחם השתלמות כללי", which is a case of two similar names for the catalogue (3.10). Track naming and the catalogue belong to `tracks-catalogue-and-decoder.md`. No dimension in the README vocabulary describes the asset class a track holds; the exposure itself is an exposure record (D6), not a dimension.
-- Figures: 154 general-public study-fund track records in 202609.
+- Figures: 154 general-public study-fund track records in 202609, 11 of them religious-law tracks, which the site leaves out (D113).
 - Source: [Gemel-Net datastore, resource a30dcbea-a1d2-482c-ae29-8f781f5025fb, filters REPORT_PERIOD=202609, FUND_CLASSIFICATION=קרנות השתלמות, TARGET_POPULATION=כלל האוכלוסיה](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={"REPORT_PERIOD":202609,"FUND_CLASSIFICATION":"קרנות%20השתלמות","TARGET_POPULATION":"כלל%20האוכלוסיה"}&fields=FUND_ID,FUND_NAME,MANAGING_CORPORATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,TOTAL_ASSETS&limit=500) · checked 2026-10-22 · primary. Altshuler bylaws 1.12.2024, s.8.4 · checked 2026-10-22 · institution. Harel bylaws 07/2024, s.9 · checked 2026-10-22 · institution.
 - Scope: general
 - Dimensions: `fee-management-balance`, `transfer-switch-process`
@@ -386,7 +385,7 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 | בניהול אישי / IRA | self-directed | IRA study funds; see `ira-self-directed.md` | app, data | Gemel-Net fund names |
 | כלל האוכלוסיה | general population | Gemel-Net `TARGET_POPULATION` for public funds | CMA data | Gemel-Net (KH-24) |
 | עובדי סקטור מסויים / עובדי מפעל/גוף מסויים | specific sector / specific employer | Gemel-Net `TARGET_POPULATION` for closed funds | CMA data | Gemel-Net (KH-24) |
-| מתמחים בניהול אקטיבי, עוקבי מדדים, מתמחים באפיקי השקעה סחירים, הלכתי, קיימות | CMA specialization values | Track categories | CMA data | Gemel-Net (KH-20) |
+| מתמחים בניהול אקטיבי, עוקבי מדדים, מתמחים באפיקי השקעה סחירים, קיימות | CMA specialization values | Track categories | CMA data | Gemel-Net (KH-20) |
 
 Payslip line names for study-fund deposits (for example the employee deduction line and the employer line) were not sourced (open question 5).
 
@@ -404,7 +403,7 @@ General population (`כלל האוכלוסיה`), 15 managers:
 | אנליסט קופות גמל בע"מ | includes "אנליסט מסלולית" tracks |
 | אקטיון בע"מ | IRA fund only ("אקטיון השתלמות IRA") |
 | גלובלנט ניהול קופות גמל בע"מ | IRA and self-directed funds only |
-| הפניקס פנסיה וגמל בע"מ | includes "בניהול אישי" and a Sharia track |
+| הפניקס פנסיה וגמל בע"מ | includes "בניהול אישי" |
 | הראל פנסיה וגמל בע"מ | |
 | ילין לפידות ניהול קופות גמל בע"מ | |
 | כלל פנסיה וגמל בע"מ | |
@@ -431,6 +430,7 @@ Regulator: Capital Market, Insurance and Savings Authority (law s.1, s.13 approv
 
 ## Left out and why
 
+- **Products defined by religious law** (`guidelines/project.md`, D113): religious-law study-fund tracks are not recorded or researched.
 - All tax rules, ceilings, exemptions and withholding: `tax-hishtalmut.md` (TXH-01 to TXH-23). This file only points to them.
 - IRA (self-directed) study funds: `ira-self-directed.md`. They are listed in the Gemel-Net extract only so the manager list is complete.
 - General transfer regulations, the clearing house, the CMA statement format and fee caps of other products: `provident-family-common.md`.
