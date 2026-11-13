@@ -9,9 +9,9 @@ import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { capLine, type CapLine } from "./kinds";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
-import type { Figure } from "./edit";
+import { canAddBy, type Figure, type PartId } from "./edit";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, onHolding, ONE_SIDE, suggestions, type ByKind, type FeeKindId, type FeeShape, type FieldId } from "./shapes";
+import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, type ByKind, type FeeKindId, type FeeShape, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -73,31 +73,7 @@ export interface PartWords {
  */
 export type PartKind = "price" | "bound" | "link" | "note";
 
-/**
- * Every part a price may have, by id: its main figure as a share of each action (`share`), a sum for each unit (`perUnit`), a sum on each
- * action (`perAction`), a share of what is held (`held`), a sum per period (`sum`), free (`free`), a discount, a third party's fee, a later
- * price (`until`); a minimum, a maximum, a percent maximum (`cap`), a flat price for a small action (`flat`); an offset, a refund; notes on
- * an order (`unfilled`, `partial`) and a sale priced apart (`sale`).
- */
-export type PartId =
-  | "share"
-  | "perUnit"
-  | "perAction"
-  | "held"
-  | "sum"
-  | "free"
-  | "discount"
-  | "third"
-  | "until"
-  | "min"
-  | "max"
-  | "cap"
-  | "flat"
-  | "offset"
-  | "refund"
-  | "unfilled"
-  | "partial"
-  | "sale";
+export type { PartId } from "./edit";
 
 /** A part as a slim line shows it: its id, its kind and its words. */
 export interface SlimPart {
@@ -604,3 +580,80 @@ export const topsOf = (fee: CasesFee, t: number): number[] => {
   const b = fee.by[t]!;
   return isRange(b) ? b.tops.map((n: Num) => n.v) : [];
 };
+
+// ---------------------------------------------------------------- adding a thing, and a case's slot opened
+
+/** A range's unit as a choice says it: a currency's sign, or the words for units or actions. */
+const unitWords = (u: RangeUnit): string => (u === "units" || u === "actions" ? copy.cases.units[u]! : (copy.panel.signs[u] ?? u));
+
+/**
+ * The question a thing asks once when it is added to a fee (spec §2): its words; for a list, the values the site names to tick, and the
+ * line for a value in the person's own words; for a range, its units (the first its usual one); and why it cannot be added, where it
+ * cannot (`off`: a fourth thing, or one the fee changes by already).
+ */
+export interface ByQuestion {
+  kind: ByKind;
+  ask: string;
+  values?: { id: string; words: string }[];
+  other?: string;
+  units?: { unit: RangeUnit; words: string }[];
+  add: string;
+  cancel: string;
+  off?: string;
+}
+
+export function byQuestion(fee: Fee, kind: ByKind): ByQuestion {
+  const c = copy.cases;
+  const base = { kind, add: c.add, cancel: c.cancel, ...(canAddBy(fee, kind) || kind === "own" ? {} : { off: (fee.by?.length ?? 0) >= BY_MAX ? c.full : "" }) };
+  if (isRangeKind(kind)) return { ...base, ask: c.ask.range!.replace("{thing}", c.things[kind]!), units: RANGE_UNITS[kind].map((u) => ({ unit: u, words: unitWords(u) })) };
+  if (kind === "track" || kind === "own") return { ...base, ask: c.ask[kind]! };
+  const ids = LIST_IDS[kind as ListKind];
+  return { ...base, ask: c.ask[kind]!, values: ids.map((id) => ({ id, words: valueWords(kind, id) })), other: kind === "channel" ? c.otherChannel : c.otherValue };
+}
+
+/**
+ * What adding a thing does to a fee's cases, as the question says it under its values: each case copied to each value ticked (a range's to
+ * "עד" and "מעל"), and how many cases there are before and after (`count`, with `{from}` and `{to}` for the two numbers; none for a fee
+ * with one case, where the copies say it all).
+ */
+export function copiesWords(fee: Fee, kind: ByKind, ticked: number): { line: string; from: number; to: number; count: string | null } {
+  const c = copy.cases.copies;
+  const from = hasCases(fee) ? fee.cases.length : 1;
+  const to = from * (isRangeKind(kind) ? 2 : Math.max(ticked, 1));
+  const line = isRangeKind(kind) ? c.range : `${c.lead}${copy.cases.copyNoun[kind] ?? ""}${c.tail}`;
+  return { line, from, to, count: from > 1 ? c.count : null };
+}
+
+/**
+ * A case's slot, opened (round 3's pictures): for a list, its values to tick (several may be), any value, and the line for one in the
+ * person's words; for a track, its name as the list writes it and whether it is the person's; for a condition, its value; for a range,
+ * whether the case is up to a top or above the last, the top, its unit, and the case before it in the range's order.
+ */
+export type SlotEdit =
+  | { kind: "list"; title: string; options: { id: string; words: string; ticked: boolean }[]; any: { words: string; ticked: boolean }; other: string }
+  | { kind: "track"; title: string; name: string | null; any: { words: string; ticked: boolean }; mine: boolean; myTrack: string }
+  | { kind: "own"; title: string; name: string | null; any: { words: string; ticked: boolean } }
+  | { kind: "range"; title: string; upTo: number | null; any: { words: string; ticked: boolean }; unit: RangeUnit; units: { unit: RangeUnit; words: string }[]; before: WhenWords | null };
+
+export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number): SlotEdit | null {
+  const fee = r.deal.fees.find((f) => f.id === feeId);
+  if (!fee || !hasCases(fee)) return null;
+  const c = fee.cases.find((x) => x.id === caseId);
+  const b = fee.by[t];
+  if (!c || !b) return null;
+  const w = c.when[t]!;
+  const any = { words: copy.cases.any[b.kind]!, ticked: w === "any" };
+  const thing = b.kind === "own" ? b.label : copy.cases.things[b.kind]!;
+  if (isRange(b)) {
+    const step = typeof w === "number" ? w : null;
+    const before = step !== null && step > 0 ? whenWords(fee, step - 1, t, r.today) : null;
+    return { kind: "range", title: copy.cases.slot.range.replace("{thing}", thing), upTo: step !== null && step < b.tops.length ? b.tops[step]!.v : null, any, unit: b.unit, units: RANGE_UNITS[b.kind].map((u) => ({ unit: u, words: unitWords(u) })), before };
+  }
+  const named = Array.isArray(w) ? w : [];
+  if (b.kind === "track") return { kind: "track", title: copy.cases.slot.trackName, name: named[0] ?? null, any, mine: !!c.mine, myTrack: copy.cases.slot.myTrack };
+  if (b.kind === "own") return { kind: "own", title: thing, name: named[0] ?? null, any };
+  const ids = [...LIST_IDS[b.kind as ListKind], ...((b.kind === "what" || b.kind === "held") && b.own ? b.own.map((o) => o.name) : [])];
+  // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
+  for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
+  return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+}

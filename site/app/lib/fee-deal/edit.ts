@@ -666,3 +666,89 @@ export function removeTop(fee: Fee, t: number, k: number): Fee {
   }
   return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, tops: b.tops.filter((_, i) => i !== k) } : x)), cases: kept };
 }
+
+// ---------------------------------------------------------------- a part added or taken away, as the toolbox does
+
+/**
+ * Every part a price may have, by id (the toolbox's cards and the open case's lines): its main figure as a share of each action (`share`),
+ * a sum for each unit (`perUnit`), a sum on each action (`perAction`), a share of what is held (`held`), a sum per period (`sum`), free
+ * (`free`), a discount, a third party's fee, a later price (`until`); a minimum, a maximum, a percent maximum (`cap`), a flat price for a
+ * small action (`flat`); an offset, a refund; notes on an order (`unfilled`, `partial`) and a sale priced apart (`sale`).
+ */
+export type PartId =
+  | "share"
+  | "perUnit"
+  | "perAction"
+  | "held"
+  | "sum"
+  | "free"
+  | "discount"
+  | "third"
+  | "until"
+  | "min"
+  | "max"
+  | "cap"
+  | "flat"
+  | "offset"
+  | "refund"
+  | "unfilled"
+  | "partial"
+  | "sale";
+
+/** The form a price part sets: the main figure's parts are forms of the price. */
+const FORM_OF: Partial<Record<PartId, FormId>> = { share: "action", perUnit: "perUnit", perAction: "perAction", held: "held", sum: "sum", free: "free" };
+
+/**
+ * Where a part goes, and what it needs: the case (`caseId`; a fee with cases is edited in its first where none is named), the side and the
+ * price (`side`, `k`: the purchase's first where none is said), a bound's or a percent maximum's figure (`value`: a bound is never blank),
+ * a later price's month (`month`), and the fee an offset is against (`against`).
+ */
+export interface PartAt {
+  caseId?: string;
+  side?: Side;
+  k?: number;
+  value?: number;
+  month?: MonthKey;
+  against?: FeeKindId;
+}
+
+/**
+ * A fee with a part added (`on`) or taken away, as the toolbox and the open case's ✕ do: a form of the price (its figure carried where it
+ * can, `withForm`; taking one away makes the price free), a discount, a third party's fee, a later price (from `month`; taken away, the
+ * prices after the one named go, `holdOn`), a bound or a percent maximum (with its figure), a flat price, an offset (against `against`), a
+ * refund, a note, or a sale priced apart. A part that needs what `at` does not give, or a price that cannot take it, leaves the fee as it
+ * is.
+ */
+export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: PartAt = {}): F {
+  const { caseId, side = "buy", k = 0 } = at;
+  const edit = (fn: (p: Price) => Price) => editPrice(fee, side, k, fn, caseId);
+  const form = FORM_OF[part];
+  if (form) return edit((p) => (on ? withForm(p, form) : p.form === form ? { form: "free" } : p));
+  switch (part) {
+    case "discount":
+      return edit((p) => withDiscount(p, on));
+    case "third":
+      return edit((p) => withThird(p, on));
+    case "until":
+      if (on) return at.month ? setLimited(fee, side, k, at.month, caseId) : fee;
+      return holdOn(fee, side, k, caseId);
+    case "min":
+    case "max":
+    case "cap":
+      if (on && at.value === undefined) return fee;
+      return edit((p) => withFigure(p, part, on ? at.value! : null));
+    case "flat":
+      return edit((p) => withFlat(p, on));
+    case "offset":
+      return on && !at.against ? fee : edit((p) => withOffset(p, on ? at.against! : null));
+    case "refund":
+      return edit((p) => withRefund(p, on));
+    case "unfilled":
+    case "partial":
+      return edit((p) => withNote(p, part, on));
+    case "sale":
+      return setSaleApart(fee, on, caseId);
+    default:
+      return fee;
+  }
+}

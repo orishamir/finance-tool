@@ -1879,7 +1879,7 @@ export const feeDeal = {
       range: "{thing}: עד כמה המחיר הראשון?",
     } as Record<string, string>,
     /** Each copied case, by the thing: "כל מקרה יועתק לכל ערוץ שסימנתם, עם המחיר שלו." */
-    copies: { lead: "כל מקרה יועתק לכל ", tail: " שסימנתם, עם המחיר שלו.", range: "כל מקרה יועתק ל״עד״ ול״מעל״, עם המחיר שלו.", count: "{from} מקרים יהיו {to}.", one: "מקרה אחד יהיה {to}." },
+    copies: { lead: "כל מקרה יועתק לכל ", tail: " שסימנתם, עם המחיר שלו.", range: "כל מקרה יועתק ל״עד״ ול״מעל״, עם המחיר שלו.", count: "{from} מקרים יהיו {to}." },
     /** The noun a copy is made for, by the thing. */
     copyNoun: { what: "סוג", held: "סוג", channel: "ערוץ", currency: "מטבע", track: "מסלול", own: "ערך" } as Record<string, string>,
     otherValue: "משהו אחר, בשם משלכם",
