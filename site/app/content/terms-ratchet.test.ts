@@ -377,7 +377,7 @@ const OTHER_SENSE: Record<string, readonly string[]> = {
   "guide/money-market-fund-daily": ["מהר הכסף" /* "how fast the money" (comes back), in the visual's caption, not the service הר הכסף */],
   "exposure/index-sp500": ["תשואה כוללת נטו" /* the name of one version of the index, beside its gross twin */],
   // the note on other countries (D114) speaks of other states' products and taxes, not the Israeli ones the rows explain
-  "guide/kupat-gemel-lehashkaa": ["תוכנית חיסכון <AbroadSaid" /* Italy's PIR, "תוכנית חיסכון לתושבי איטליה", not a bank's savings plan */, "המס הרגיל, עם ריבית" /* interest charged with a tax paid late, not interest earned */],
+  "guide/kupat-gemel-lehashkaa": ["תוכנית חיסכון <AbroadSaid" /* Italy's PIR, "תוכנית חיסכון לתושבי איטליה", not a bank's savings plan */, "המס הרגיל, עם ריבית" /* interest charged with a tax paid late, not interest earned */, "בשנת המס <AbroadPeriod" /* Britain's tax year, April to April, not Israel's */],
   "guide/keren-hishtalmut": ["מס הכנסה וביטוח לאומי" /* Britain's National Insurance, not Israel's */],
   "guide/makam": ["גודל היחידה" /* a trading unit */, "מחיר הקנייה" /* the price paid for a makam (the page and its visual's chart) */, "מדמי ניהול הפיקדון" /* part of a custody fee's name */],
 };
@@ -387,7 +387,7 @@ const OTHER_SENSE: Record<string, readonly string[]> = {
  */
 const PLURAL_HEADS: readonly (readonly [string, string])[] = [["קרן ", "קרנות "], ["קופת ", "קופות "], ["איגרת ", "איגרות "], ["חשבון ", "חשבונות "], ["פיקדון ", "פיקדונות "], ["עמלת ", "עמלות "], ["תעודת ", "תעודות "], ["מסלול ", "מסלולי "], ["נייר ", "ניירות "]];
 /** A content file that is a piece of other pages, not a page. */
-const FRAGMENTS = ["guide/open-tax"];
+const FRAGMENTS = ["guide/open-tax", "guide/pension-parts"];
 // Today's leftovers: page -> rows whose first use there is unmarked. The content files had none after the sweep; these
 // are the visuals' (components/guide-signature), found when the scan began to read them the same day: each is a row the visual names
 // before the page's mark (or with no mark on the page), to be marked in the visual (copy split into before/term/after, as in

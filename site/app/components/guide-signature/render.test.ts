@@ -92,3 +92,32 @@ describe("the worth-knowing row of the current account", () => {
     expect(accountWorthRow({ ...p.signature!, banks: [] })).toBeNull();
   });
 });
+
+describe("the pension visuals", () => {
+  const textOf = (id: string) => {
+    const p = buildGuidePage(id)!;
+    const html = renderToString(inProviders(p, createElement(SignatureFrame, { id, data: p.signature!, today: p.today, timeline: null })));
+    return html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
+  };
+  it("says on the general fund's page that none of the minimum deposit reaches it, with the comprehensive fund's ceiling, and shows no balance", () => {
+    const text = textOf("pension-general");
+    expect(text).toContain("לקרן הכללית לא מגיע מההפקדה הזו כלום");
+    expect(text).toContain("5,645.29");
+    expect(text).not.toContain("מה שנצבר בקרן אחרי");
+    expect(text).not.toContain("דמי הביטוח בקרן הפנסיה");
+  });
+  it("says what the balance assumes: deposits flat in shekels, and no insurance until it is entered", () => {
+    const text = textOf("provident-for-annuity");
+    expect(text).toContain("ההפקדות באותו סכום בשקלים בכל השנים");
+    expect(text).not.toContain("בשתי הדרכים");
+    // a provident fund for annuity has no insurance, so the line does not say it is left out
+    expect(text).not.toContain("בלי דמי ביטוח");
+  });
+  it("does not say when the credit arrives: payroll or the annual return is an open question (TXP OQ6)", () => {
+    for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
+      const text = textOf(id);
+      expect(text, id).toContain("עוד לא ידוע");
+      expect(text, id).not.toContain("שמחושב בדוח השנתי");
+    }
+  });
+});
