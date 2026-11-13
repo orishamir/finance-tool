@@ -26,6 +26,7 @@ import {
   type SeriesRecord,
   sourcesFile,
   israelToday,
+  isReligiousLaw,
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
@@ -75,6 +76,17 @@ export interface Problem {
   message: string;
 }
 
+/** The first string anywhere in a parsed JSON value that names a product defined by religious law, if any. */
+function religiousLawText(v: unknown): string | undefined {
+  if (typeof v === "string") return isReligiousLaw(v) ? v : undefined;
+  const items = Array.isArray(v) ? v : v && typeof v === "object" ? Object.values(v) : [];
+  for (const x of items) {
+    const hit = religiousLawText(x);
+    if (hit !== undefined) return hit;
+  }
+  return undefined;
+}
+
 /** Every object key anywhere in a parsed JSON value. */
 function collectKeys(v: unknown, out = new Set<string>()): Set<string> {
   if (Array.isArray(v)) for (const x of v) collectKeys(x, out);
@@ -120,6 +132,9 @@ export function validateData(ctx: ValidationContext): Problem[] {
     // the words a cited page opens at live in data/sources/fragments.json only; the site attaches them to the record when it reads it
     if (rel !== join("sources", "fragments.json") && collectKeys(parsed.value).has("fragment"))
       report(file, "fragment: written only in data/sources/fragments.json (by tools/quote-fragments.mjs), never in a record");
+    // products defined by religious law are not kept (guidelines/project.md): a refresh drops them, and a hand collection may not add one
+    const religious = religiousLawText(parsed.value);
+    if (religious !== undefined) report(file, `names a product defined by religious law ("${religious.slice(0, 80)}"); such products are not kept in data/`);
 
     for (const id of collectStrings(parsed.value, "rule_ids")) {
       if (!ctx.ruleBase.rules.has(id)) report(file, `rule_ids: ${id} is not a rule in il-finance (data-schema §4 item 2)`);

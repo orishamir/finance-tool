@@ -77,6 +77,11 @@ describe("validateData", () => {
     expect(run({ "misc/x.json": {} })[0]?.message).toMatch(/no schema/);
   });
 
+  it("rejects a record that names a product defined by religious law, anywhere in it", () => {
+    const problems = run({ "rules/txs-fixture.json": { ...rule, text_he: "יש גם מסלול הלכה ומסלול שריעה" } });
+    expect(problems.some((p) => /religious law/.test(p.message))).toBe(true);
+    expect(run({ "rules/txs-fixture.json": { ...rule, text_he: "העלאה רק בתחילת השנה, אחרי הודעה במהלכה" } })).toEqual([]);
+  });
 });
 
 const src = { url: "https://example.org", title: "t", publisher: "p", strength: "institution" };
