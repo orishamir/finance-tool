@@ -331,7 +331,9 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           <HelpMark term={HELP_TERMS.assets} about={t.help.assets} />
         </span>
       ),
-      width: 10,
+      // the date under the head is wider than the label, so the "?" stands far along the head: 10.75 rem keeps its 44 px inside the column,
+      // clear of the arrow column's sticky head
+      width: 10.75,
       sort: state("assets"),
     },
     { id: "open", head: <span className="sr-only">{t.columns.open}</span>, width: 4.5 },
