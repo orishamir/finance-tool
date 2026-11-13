@@ -29,7 +29,6 @@ export { AxisLabels, ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, 
 export { FormulaBlock, Tex } from "./formula";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
-export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, wholeParts, writtenAmounts, type CostPart } from "./cost-stack";
 export { ShareBar, type SharePart } from "./share-bar";

@@ -319,7 +319,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           <HelpMark term={HELP_TERMS.exposure} about={t.help.exposure} />
         </span>
       ),
-      width: 13.5,
+      // a line for each share: its word, a 4 rem bar and its figure, at most "מניות ▬ 101%"
+      width: 12.75,
       sort: state("stock"),
     },
     { id: "yield", head: pastHead(t.columns.yield, `${t.columns.beforeFees} · ${periodNote}`), width: 15.25 },

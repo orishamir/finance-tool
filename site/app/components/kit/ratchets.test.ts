@@ -308,7 +308,7 @@ const CHART_ROLES: Record<string, string[]> = {
   PileBar: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-fee", "chart-pile-salary-tax", "chart-pile-tax", "chart-pile-loss", "chart-pile-left"],
   StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],
   "the comparison and exposure charts (6.5, 9.3)": ["chart-option-1", "chart-option-2", "chart-option-3", "chart-baseline"],
-  ShareRings: ["chart-stocks", "chart-currency"],
+  "a track's exposure bars (ExposureCell)": ["chart-stocks", "chart-currency"],
   "the indices page's two kinds of fund": ["chart-kind-unhedged", "chart-kind-hedged"],
   "a guide page's visual (10)": ["chart-value", "chart-alt"],
   "the pension deposit bar (10)": ["chart-value", "chart-alt", "chart-fee-4"],
