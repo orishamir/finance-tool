@@ -523,3 +523,96 @@ describe("F-113 a typed price against the legal cap", () => {
     expect(capStanding(0.2, distributors, "bank")).toEqual({ judged: true, standing: "above", share: null });
   });
 });
+
+describe("F-112 a percent maximum, a flat price for a small action, a sum per unit", () => {
+  const one = (price: DealPrice, base: "trade" | "fx" = "trade"): Deal => ({ foreign: false, fees: [{ base: { key: base }, stages: [{ price }] }] });
+  const first = (d: Deal) => dealPeriods(d, today).periods[0]!;
+
+  it("lets the percent maximum decide up to where it meets the minimum, and the minimum from there (Mizrahi-Tefahot direct, abroad)", () => {
+    // 0.3%, at least 25 $, at most 6,750 $, at most 25% of the action
+    const d = one({ kind: "action", rate: 0.003, min: 25, max: 6750, cap: 0.25, currency: "USD" });
+    const marks = dealMarks(d, first(d));
+    expect(marks.map((m) => m.kind)).toEqual(["cap", "min", "max"]);
+    // the cap up to 25 / 25% = 100 $; the minimum from 100 $ to 25 / 0.3% = 8,333.33 $; the maximum above 6,750 / 0.3% = 2,250,000 $
+    expect(marks[0]).toMatchObject({ kind: "cap", amount: 100, currency: "USD" });
+    expect(marks[0]).not.toHaveProperty("from");
+    expect(marks[1]!.kind !== "meet" && marks[1]!.from).toBeCloseTo(100, 10);
+    expect(marks[1]!.amount).toBeCloseTo(25 / 0.003, 8);
+    expect(marks[2]!.amount).toBeCloseTo(2_250_000, 6);
+    // an action of 50 $ at 3.70: 25% of 185 ₪ is 46.25 ₪, under the minimum's 92.50 ₪
+    expect(actionCost(d, first(d), "trade", 185, "buy", { USD: 3.7 }).total).toBeCloseTo(46.25, 10);
+    expect(actionCost(d, first(d), "trade", 3700, "buy", { USD: 3.7 }).total).toBeCloseTo(92.5, 10);
+  });
+
+  it("lets a percent maximum below the rate decide until the maximum takes over", () => {
+    // 2% with a cap of 1% and a maximum of 10 ₪: the cap up to 1,000 ₪, the maximum above
+    const d = one({ kind: "action", rate: 0.02, max: 10, cap: 0.01 });
+    expect(dealMarks(d, first(d)).map((m) => [m.kind, m.amount])).toEqual([["cap", 1000], ["max", 1000]]);
+  });
+
+  it("gives a flat price its stretch, and the minimum starts where it stops (Mizrahi-Tefahot's conversion in the internet service)", () => {
+    // 0.133%, at least 5.4 $, at most 2,250 $; 2.85 $ for a conversion up to 50 $
+    const d = one({ kind: "action", rate: 0.00133, min: 5.4, max: 2250, flat: { amount: 2.85, upTo: 50 }, currency: "USD" }, "fx");
+    const marks = dealMarks(d, first(d));
+    expect(marks.map((m) => m.kind)).toEqual(["flat", "min", "max"]);
+    expect(marks[0]).toMatchObject({ kind: "flat", amount: 50 });
+    expect(marks[1]).toMatchObject({ kind: "min", from: 50 });
+    expect(marks[1]!.amount).toBeCloseTo(5.4 / 0.00133, 8);
+    // 100 ₪ is 27.03 $: the flat 2.85 $ = 10.545 ₪; 200 ₪ is 54.05 $: the minimum 5.4 $ = 19.98 ₪
+    expect(actionCost(d, first(d), "conversion", 100, "buy", { USD: 3.7 }).total).toBeCloseTo(10.545, 10);
+    expect(actionCost(d, first(d), "conversion", 200, "buy", { USD: 3.7 }).total).toBeCloseTo(19.98, 10);
+  });
+
+  it("leaves no stretch to a minimum and a cap that a flat price covers (PEPPER: 4 ₪ up to 30,000 ₪)", () => {
+    const d = one({ kind: "action", rate: 0.004, min: 26, max: 6300, cap: 0.27, flat: { amount: 4, upTo: 30000 } });
+    expect(dealMarks(d, first(d)).map((m) => [m.kind, m.kind === "meet" ? null : (m.from ?? null), m.amount])).toEqual([["flat", null, 30000], ["max", null, 1_575_000]]);
+    expect(actionCost(d, first(d), "trade", 30000).total).toBe(4);
+    expect(actionCost(d, first(d), "trade", 30001).total).toBeCloseTo(120.004, 10);
+  });
+
+  it("marks a price per unit's minimum in units, after the cap's stretch in dollars (Interactive Brokers, IBKR Pro Fixed, US)", () => {
+    // 0.005 $ a unit, at least 1 $, at most 1% of the action
+    const d = one({ kind: "perUnit", amount: 0.005, min: 1, cap: 0.01, currency: "USD" });
+    const marks = dealMarks(d, first(d));
+    expect(marks).toEqual([
+      { kind: "cap", on: "action", fee: 0, side: "all", amount: 100, currency: "USD" },
+      { kind: "min", on: "action", fee: 0, side: "all", amount: 200, from: 100, units: true, currency: "USD" },
+    ]);
+    // a unit at 50 $ and the dollar at 3.70: a unit is 185 ₪
+    const cost = (a: number) => actionCost(d, first(d), "trade", a, "buy", { USD: 3.7 }, 185).total;
+    // 1 unit (185 ₪): the minimum 3.70 ₪, the cap 1.85 ₪
+    expect(cost(185)).toBeCloseTo(1.85, 10);
+    // 20 units (3,700 ₪): 0.10 $ a trade, the minimum 3.70 ₪
+    expect(cost(3700)).toBeCloseTo(3.7, 10);
+    // 400 units (74,000 ₪): 2 $ = 7.40 ₪
+    expect(cost(74000)).toBeCloseTo(7.4, 10);
+    expect(() => actionCost(d, first(d), "trade", 3700, "buy", { USD: 3.7 })).toThrow(RangeError);
+  });
+
+  it("prices a sum per action in dollars at the dollar's rate (One Zero's 50 $ for each corporate event)", () => {
+    const d: Deal = { foreign: true, fees: [{ base: { key: "corporate_event" }, stages: [{ price: { kind: "perAction", amount: 50, currency: "USD" } }] }] };
+    expect(actionCost(d, first(d), "distribution", 1000, "buy", { USD: 3.7 }).total).toBeCloseTo(185, 10);
+    expect(() => actionCost(d, first(d), "distribution", 1000)).toThrow(RangeError);
+    expect(dealMarks(d, first(d))).toEqual([]);
+  });
+
+  it("counts a flat price as charging something, and a price per unit or a cap as a change", () => {
+    const flat: DealPrice = { kind: "action", rate: 0, flat: { amount: 4, upTo: 30000 } };
+    expect(changeKind(free, flat)).toBe("starts");
+    expect(changeKind(flat, { kind: "action", rate: 0, flat: { amount: 4, upTo: 20000 } })).toBe("changes");
+    expect(changeKind(commission, { ...commission, cap: 0.25 })).toBe("changes");
+    expect(changeKind({ kind: "perUnit", amount: 0.005, currency: "USD" }, { kind: "perUnit", amount: 0.0035, currency: "USD" })).toBe("falls");
+    expect(changeKind({ kind: "perAction", amount: 50, currency: "USD" }, { kind: "perAction", amount: 50 })).toBe("changes");
+    // a price per unit adds to no rate: it is not a share of the action
+    const d = one({ kind: "perUnit", amount: 0.005, currency: "USD" });
+    expect(groupRate(d, first(d))).toEqual([]);
+  });
+
+  it("gives a mark with the same stretch for a purchase and a sale once, and one that starts elsewhere twice", () => {
+    const capped: DealPrice = { kind: "action", rate: 0.003, min: 25, cap: 0.25 };
+    const same: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: capped }], sale: [{ price: { ...capped, max: 100 } }] }] };
+    expect(dealMarks(same, first(same)).map((m) => [m.kind, m.side])).toEqual([["cap", "all"], ["min", "all"], ["max", "sell"]]);
+    const apart: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: capped }], sale: [{ price: { ...capped, cap: 0.5 } }] }] };
+    expect(dealMarks(apart, first(apart)).map((m) => [m.kind, m.side])).toEqual([["cap", "buy"], ["min", "buy"], ["cap", "sell"], ["min", "sell"]]);
+  });
+});
