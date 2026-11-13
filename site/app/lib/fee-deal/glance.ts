@@ -75,6 +75,8 @@ export interface Glance {
   dates: GlanceDate[];
   /** Fees left out because their prices are not in order yet. */
   unread: string[];
+  /** Fees left out because a price of theirs from the reading's month on is not given yet: the glance names them, so none vanishes. */
+  unpriced: FeeRef[];
 }
 
 /** The order the groups are listed in: the actions as F-111 names them, then what is held, the account, cover, and what is not said. */
@@ -187,5 +189,5 @@ function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
 export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread };
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: r.deal.fees.filter((f) => r.unpriced.includes(f.id)).map(refOf) };
 }

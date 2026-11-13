@@ -7,7 +7,7 @@ import type { BreakTerms } from "../../lib/guide-signature";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Link } from "react-router";
 import { depositBrowser } from "../../copy";
-import { Callout, MixedName, Sentence } from "../../components/kit";
+import { Callout, MixedName, Sentence, TextLink } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -39,11 +39,9 @@ export const content: GuideContent = {
           כל הבנקים שברשימת <Term id="בנק ישראל">בנק ישראל</Term>, בפיקוח <Term id="המפקח על הבנקים">המפקח על הבנקים</Term>. בנק לא יכול לסרב לקבל פיקדון בלי סיבה סבירה.
         </p>
         {/* D92: the comparison of the banks' deposits is a page of its own; the guide links to it where it names the banks */}
-        <p className="max-w-measure">
-          <Link to="/deposits" className="text-link hover:underline">
-            {depositBrowser.guideLink}
-          </Link>
-        </p>
+        <TextLink to="/deposits" look="line">
+          {depositBrowser.guideLink}
+        </TextLink>
         <Sentence measure>
           {since ? <>מאז <Num value={since} /> </> : null}אפשר לפתוח פיקדון שקלי גם בבנק אחר, בלי לפתוח בו עו״ש, דרך <Term id="חשבון במערכת סגורה">חשבון במערכת סגורה</Term>: הכסף מגיע רק מהחשבון שלכם בבנק אחר וחוזר רק אליו. החובה לאפשר זאת לא חלה על בנקים קטנים וזעירים.
         </Sentence>

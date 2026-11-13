@@ -221,6 +221,12 @@ export function OwnCompanyPage({ children }: { children: ReactNode }) {
 /** A notice above already says the figures are old. */
 const StaleSaidCtx = createContext(false);
 
+/**
+ * Inside a block that sums up figures the person typed in boxes elsewhere on the screen (the kit's `TypedPlain`): an entered figure is
+ * plain words, not a control. Its sheet would only say the person typed it, and the box it was typed in is beside the block.
+ */
+export const TypedPlainCtx = createContext(false);
+
 /** How many figures the person entered the page shows now: the legend's "you entered" sample stands only beside one.
  * A store, not state, so a figure that comes or goes redraws the legend alone. */
 /** How many figures of each state the page shows (a `Num` counts itself while it is on the page), so the legend names only the states the
@@ -274,6 +280,8 @@ export interface NumProps {
   prefix?: ReactNode;
   /** The full word behind a short mark in a crowded cell ("—" for "עוד לא דווח"): what the sheet heads with and a screen reader says. */
   fullWord?: string;
+  /** What the figure is of, said first by a screen reader where the words around it do not say it (a cap's figure: whose cap, and that its sheet holds the rules). */
+  name?: string;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
@@ -322,7 +330,7 @@ export function valueItem(value: SiteValue, written: string | undefined, exact: 
 }
 
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
-export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord }: NumProps) {
+export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
   const value = ownPage && !given.own && strengthOf(given) === "institution" ? { ...given, own: "page" } : given;
   const open = useOpen();
@@ -335,6 +343,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const unseen = useUnseen();
   // a copy that only holds a block's size (LongestCase) is not on the page; a field's value shows no state, so the legend leaves it out
   const plain = !!value.field;
+  const typedPlain = useContext(TypedPlainCtx);
   useEffect(() => (!unseen && !plain && states ? states.add(value.state) : undefined), [value.state, unseen, plain, states]);
   // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (a list's cases counted on every key)
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
@@ -364,7 +373,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
   // an open value is no sourced figure: its label says the open question and the lock, not "ממקור"
   const doubt = value.doubt ? numbers.doubt : null;
-  const label = [fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
+  const label = [name, fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
   // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence. At figure size a date ahead
@@ -375,8 +384,8 @@ export function Num({ value: given, size = "inline", display, animate, className
   // one unit with its icon, which stood alone on the line above its digits in a phone's table
   const oneLine = !(typeof value.value === "string" && text.length > 24);
   // a field's value (its default, or what the reader typed) is a plain number: no mark, no sheet; the field beside it is where it changes
-  // (charts.md)
-  if (plain) {
+  // (charts.md); so is a typed figure in a block that sums up typed boxes (`TypedPlainCtx`)
+  if (plain || (typedPlain && value.state === "entered")) {
     const bare = <bdi dir={textDir(text)} className={cx("whitespace-nowrap", className)}>{text}</bdi>;
     return prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{bare}</span> : bare;
   }
@@ -686,10 +695,10 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
 }
 
 /** `RulesChip` as the last line of its block, never inside a sentence. */
-export function RulesLine({ ids, lead, name, dense, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; /** One of a list of one-line rows at least 34 px apart (the fee page's law card): the chip holds no band of its own in the line, the rows' spacing keeps each chip's 44 px area clear of the chip above and below. */ dense?: boolean; className?: string }) {
+export function RulesLine({ ids, lead, name, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; className?: string }) {
   if (ids.length === 0 && !lead) return null;
   return (
-    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", dense && "rules-line-dense", className)}>
+    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
       {lead}
       <RulesChip ids={ids} name={name} />
     </p>

@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -404,6 +404,7 @@ function Choices() {
   const [chip, setChip] = useState<string | null>("0");
   const [own, setOwn] = useState<string | null>(null);
   const [tile, setTile] = useState<"a" | "b" | "c">("a");
+  const [pick, setPick] = useState(0);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
@@ -423,15 +424,13 @@ function Choices() {
       <Demo name="PickCard" use={g.uses.PickCard}>
         <State label={g.states.interactive}>
           <div className="flex flex-col gap-3 md:flex-row">
-            <div className="md:flex-1 rounded-lg border border-primary p-3 flex flex-col gap-1">
-              <span className="text-sm text-primary">{g.sample.option[0]}</span>
-              <span className="text-2xl font-bold">{fmt.nisWhole(1000)}</span>
-            </div>
-            <PickCard label={g.sample.pickCard} onPick={() => {}} className="md:flex-1 p-3 flex flex-col gap-1">
-              <span className="text-sm text-muted-foreground">{g.sample.option[1]}</span>
-              <span className="text-2xl font-bold">{fmt.nisWhole(1040)}</span>
-              <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
-            </PickCard>
+            {[0, 1].map((k) => (
+              <PickCard key={k} label={g.sample.pickCard} chosen={pick === k} onPick={() => setPick(k)} className="md:flex-1 p-3 flex flex-col gap-1">
+                <span className={pick === k ? "text-sm text-primary" : "text-sm text-muted-foreground"}>{g.sample.option[k]}</span>
+                <span className="text-2xl font-bold">{fmt.nisWhole(1000 + 40 * k)}</span>
+                <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
+              </PickCard>
+            ))}
           </div>
         </State>
         <State label={'pad="snug": Card\'s padding (p-4 md:p-5), for an option in a list of options'}>
@@ -2548,19 +2547,6 @@ function DealDemos({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
-      <Demo name="CapBar" use={g.uses.CapBar}>
-        <div className="flex max-w-sm flex-col gap-4">
-          <State label="below the cap, a later price at it (outline)" wide>
-            <CapBar share={0.57} later={1} fill="bg-fee-balance" edge="border-fee-balance" cap="1.05%" />
-          </State>
-          <State label="a quarter of the cap" wide>
-            <CapBar share={0.25} fill="bg-fee-deposit" edge="border-fee-deposit" cap="4%" />
-          </State>
-          <State label="above the cap: the part above in the blocked red's stripes" wide>
-            <CapBar share={1.3} fill="bg-fee-trade" edge="border-fee-trade" cap="0.1%" />
-          </State>
-        </div>
-      </Demo>
       <Demo name="Step" use={g.uses.Step}>
         <div className="flex max-w-md flex-col gap-4">
           <Step n={1} done title={dealWords.builder.kind} value={g.sample.title} action={<Button variant="quiet" size="sm">{dealWords.builder.kindChange}</Button>} />
@@ -2580,6 +2566,18 @@ function DealDemos({ today }: { today: string }) {
                 { id: "b", label: g.sample.amount.b, fill: "fill-fee-fx", stroke: "stroke-fee-fx", swatch: "bg-fee-fx", values: [0, 12, 40] },
               ]}
               marks={[{ id: "m", at: 6000, label: fmt.nisWhole(6000) }]}
+              xTitle={g.sample.amount.x}
+              tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
+              total={g.sample.amount.total}
+            />
+          </Card>
+        </State>
+        <State label="a mark near the start at the height of a value on the axis: its label moves past the axis's words" wide>
+          <Card className="max-w-2xl">
+            <AmountChart
+              amounts={[0, 1500, 50000]}
+              bands={[{ id: "a", label: g.sample.amount.a, fill: "fill-fee-trade", stroke: "stroke-fee-trade", swatch: "bg-fee-trade", values: [200, 200, 600] }]}
+              marks={[{ id: "m", at: 1500, label: fmt.nisWhole(1500) }]}
               xTitle={g.sample.amount.x}
               tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
               total={g.sample.amount.total}

@@ -17,6 +17,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "sm" | "compact";
   /** The room between an icon and the words: `sm` 6 px (a back arrow before its word, a copy mark); 8 px otherwise. */
   gap?: "sm";
+  /**
+   * `quiet` and `destructive` only: a short word with room on both sides ("ביטול"), whose tap area reaches 44 px wide as well as tall
+   * (`tap-wide`). Never beside a field or another control, where the two areas would overlap.
+   */
+  wide?: boolean;
   children: ReactNode;
 };
 
@@ -30,7 +35,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
  * 44 px target a layer reaching 12 px above and below the words, so it takes no more height than they do (a layer, not a margin pulled
  * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). A disabled text action reads in the muted ink.
  */
-export function Button({ variant = "secondary", flush, size, gap, className, children, type = "button", ...rest }: ButtonProps) {
+export function Button({ variant = "secondary", flush, size, gap, wide, className, children, type = "button", ...rest }: ButtonProps) {
   if (variant === "inline")
     return (
       <button type={type} className={cx("relative rounded-md text-start text-link underline underline-offset-[3px] hover:no-underline transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:-inset-y-3", className)} {...rest}>
@@ -39,7 +44,9 @@ export function Button({ variant = "secondary", flush, size, gap, className, chi
     );
   const side = flush ? "px-0" : "px-2";
   // a text action's height: the 44 px target, in a line of small text the line's own height with the target as its tap area, or among chips the target on a phone and a low button with a tap area from lg
-  const textHeight = { sm: "text-xs tap-area", compact: "min-h-target lg:min-h-7 lg:tap-area", none: "min-h-target" }[size === "sm" || size === "compact" ? size : "none"];
+  const textHeight = wide
+    ? { sm: "text-xs tap-wide", compact: "min-h-target lg:min-h-7 tap-wide", none: "min-h-target tap-wide" }[size === "sm" || size === "compact" ? size : "none"]
+    : { sm: "text-xs tap-area", compact: "min-h-target lg:min-h-7 lg:tap-area", none: "min-h-target" }[size === "sm" || size === "compact" ? size : "none"];
   // a disabled text action is muted and not underlined under the pointer
   const textAction = "enabled:hover:underline disabled:text-muted-foreground";
   const styles = {

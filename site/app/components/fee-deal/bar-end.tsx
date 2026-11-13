@@ -1,12 +1,15 @@
-// The end of the fee page's bar: the deals this device keeps (open one, start a new one, rename or delete one after a question, as the
-// site's other lists of the person's own items do), a link to the deal on screen, and the template picker's button where the deal's kind has
-// templates. Copying the link says it was copied; where the browser refuses the clipboard, the page shows the address to copy by hand.
+// The end of the fee page's bar: the deals this device keeps (open one, start a new one, rename one, or delete one at once, which the page
+// can undo), each row with its product and the day it was saved under its name; a link to the deal on screen once it has a kind; and the
+// template picker's button where the deal's kind has templates, worded as the picker it opens is titled. A control that could do nothing
+// is not drawn: no list before a deal is saved. Copying the link says so on its button for a moment; where the browser refuses the
+// clipboard, the page shows the address to copy by hand.
 import { useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { encodedDealPath } from "../../lib/fee-deal/link";
 import type { FeeDeal } from "../../lib/fee-deal/model";
 import { siteAddress } from "../../lib/site-paths";
 import { IconCopy } from "../icons";
+import { fmt } from "../../lib/format";
 import { Button, MenuPicker } from "../kit";
 
 const w = copy.end;
@@ -38,7 +41,10 @@ export function useCopyLink() {
   return { copied, blocked, copyLink, closeBlocked: () => setBlocked(null) };
 }
 
-export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, onRename, onDelete, onTemplates }: {
+/** A saved deal's line under its name in the list: its product, and the day it was last saved. */
+export const dealMeta = (d: FeeDeal, kindName: string | null): string => [kindName ?? copy.bar.namePlaceholder(null), d.saved ? `${w.savedOn}${fmt.date(d.saved)}` : null].filter(Boolean).join(" · ");
+
+export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, onRename, onDelete, onTemplates, templateWords }: {
   deal: FeeDeal;
   saved: readonly FeeDeal[];
   kindName: (d: FeeDeal) => string | null;
@@ -50,27 +56,43 @@ export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, o
   onDelete: (id: string) => void;
   /** Opens the template picker from the button tapped (its anchor), where the deal's kind has templates. */
   onTemplates: ((from: HTMLElement) => void) | null;
+  /** The template button's words: the picker's title. */
+  templateWords: string;
 }) {
   return (
     <>
-      <MenuPicker
-        name={w.dealsName}
-        items={saved.map((d) => ({ id: d.id, label: dealLabel(d, kindName(d)), editable: true }))}
-        value={deal.id}
-        placeholder={w.deals}
-        buttonLabel={`${w.deals} · ${saved.length}`}
-        words={w.words}
-        onSelect={onOpen}
-        onRename={onRename}
-        onDelete={onDelete}
-        add={{ label: w.newDeal, onClick: onNew }}
-      />
-      <Button variant="outline" onClick={onCopy}>
-        <IconCopy size={18} /> {copied ? w.copied : w.link}
-      </Button>
+      {saved.length > 0 && (
+        <span data-deals-menu="" className="contents">
+          <MenuPicker
+            name={w.dealsName}
+            items={saved.map((d) => ({ id: d.id, label: dealLabel(d, kindName(d)), meta: dealMeta(d, kindName(d)), editable: true }))}
+            value={deal.id}
+            placeholder={w.deals}
+            buttonLabel={`${w.deals} · ${saved.length}`}
+            words={w.words}
+            onSelect={onOpen}
+            onRename={onRename}
+            onDelete={onDelete}
+            deleteAsks={false}
+            add={{ label: w.newDeal, onClick: onNew }}
+          />
+        </span>
+      )}
+      {deal.kind && (
+        <Button variant="outline" onClick={onCopy}>
+          <IconCopy size={18} />
+          {/* both words laid out in one cell, so the button keeps its width while it says the link was copied */}
+          <span className="inline-grid *:[grid-area:1/1]">
+            <span aria-hidden="true" className="invisible">
+              {w.copied.length > w.link.length ? w.copied : w.link}
+            </span>
+            <span>{copied ? w.copied : w.link}</span>
+          </span>
+        </Button>
+      )}
       {onTemplates && (
         <Button variant="outline" onClick={(e) => onTemplates(e.currentTarget)}>
-          {w.template}
+          {templateWords}
         </Button>
       )}
     </>

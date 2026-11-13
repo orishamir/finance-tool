@@ -97,18 +97,20 @@ export interface PriceFigures {
   amount?: SiteValue;
 }
 
+/** A price's figures; a blank rate or sum (`Num.blank`) is left out, since it states nothing. */
 export function priceFigures(fee: Fee, p: Price, today: string): PriceFigures {
+  const given = (n: Num, unit: Unit) => (n.blank ? {} : { [p.form === "sum" || p.form === "perAction" ? "amount" : "rate"]: figure(n, unit, today) });
   switch (p.form) {
     case "free":
       return {};
     case "action":
-      return { rate: figure(p.rate, actionRateUnit(fee), today), ...(p.min ? { min: figure(p.min, boundUnit(p.currency), today) } : {}), ...(p.max ? { max: figure(p.max, boundUnit(p.currency), today) } : {}) };
+      return { ...given(p.rate, actionRateUnit(fee)), ...(p.min ? { min: figure(p.min, boundUnit(p.currency), today) } : {}), ...(p.max ? { max: figure(p.max, boundUnit(p.currency), today) } : {}) };
     case "held":
-      return { rate: figure(p.rate, heldRateUnit(p.per), today), ...(p.min ? { min: figure(p.min, "nis", today) } : {}), ...(p.max ? { max: figure(p.max, "nis", today) } : {}) };
+      return { ...given(p.rate, heldRateUnit(p.per)), ...(p.min ? { min: figure(p.min, "nis", today) } : {}), ...(p.max ? { max: figure(p.max, "nis", today) } : {}) };
     case "sum":
-      return { amount: figure(p.amount, sumUnit(p.every), today) };
+      return given(p.amount, sumUnit(p.every));
     case "perAction":
-      return { amount: figure(p.amount, perActionUnit(fee), today) };
+      return given(p.amount, perActionUnit(fee));
   }
 }
 

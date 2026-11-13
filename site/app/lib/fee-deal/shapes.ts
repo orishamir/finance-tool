@@ -130,6 +130,14 @@ export function fitsHeld(kind: FeeKindId, held: Held | undefined): boolean {
 export const RARER_FOR_FUNDS: readonly FeeKindId[] = ["fx_spread", "corporate_event", "current_account"];
 
 /**
+ * Whether a kind has a fee at all: one of its record's bases, for a kind that holds funds the fund's own fee and the rarer fees, and a fee
+ * of the person's own, which every kind has. The fees `suggestions` offers, whatever the deal holds.
+ */
+export function kindHas(kind: ProductId, bases: readonly FeeBase[], fee: FeeKindId): boolean {
+  return fee === "own" || (bases as readonly FeeKindId[]).includes(fee) || (holdsFunds(kind) && (fee === "fund_management" || RARER_FOR_FUNDS.includes(fee)));
+}
+
+/**
  * The fees to suggest for a deal: `usual`, the kind's record bases the deal lacks that fit what is held (and, for a kind that holds funds,
  * the fund's own fee); `rarer`, the bases that do not fit, the rarer fees, and `own`, the person's own, last. A fee on a distribution is
  * offered only where the deal says its fund distributes: an accumulating fund, or one the deal says nothing of, pays nothing out to charge.

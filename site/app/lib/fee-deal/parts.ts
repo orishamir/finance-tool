@@ -4,7 +4,7 @@
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
-import { engineDeal, engineFee, feeInOrder, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
+import { engineDeal, engineFee, feeInOrder, feePriced, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
 import { type FeeKindId, type FormId } from "./shapes";
 import { inputKey, priceFigures, reading, type PriceFigures, type Unit } from "./values";
 
@@ -16,6 +16,8 @@ export interface DealRead {
   fees: Fee[];
   /** The ids of the fees left out of the reading because their prices are not in order yet (F-110). */
   unread: string[];
+  /** The ids of the fees in order left out of the reading because a price of theirs is not given yet (`feePriced`). */
+  unpriced: string[];
   engine: Deal;
   reading: DealReading;
   /** The device's day, YYYY-MM-DD, and its month. */
@@ -23,12 +25,19 @@ export interface DealRead {
   month: CalendarMonth;
 }
 
-/** Reads a deal for the views. Never throws: a fee whose prices are not in order is listed in `unread` and left out. */
+/**
+ * Reads a deal for the views. Never throws: a fee whose prices are not in order is listed in `unread`, one with a price not given yet in
+ * `unpriced`, and both are left out.
+ */
 export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string): DealRead {
-  const fees = deal.fees.filter(feeInOrder);
-  const engine = engineDeal({ ...deal, fees });
   const month = monthOfDate(today);
-  return { deal, kind: kindById(kinds, deal.kind), fees, unread: deal.fees.filter((f) => !feeInOrder(f)).map((f) => f.id), engine, reading: dealPeriods(engine, month), today, month };
+  // the reading's first month (F-110: the device's, or the deal's start where it is later): a price given or not before it is past
+  const from = deal.start && deal.start > monthKey(month) ? deal.start : monthKey(month);
+  const fees = deal.fees.filter((f) => feeInOrder(f) && feePriced(f, from));
+  const engine = engineDeal({ ...deal, fees });
+  const unread = deal.fees.filter((f) => !feeInOrder(f)).map((f) => f.id);
+  const unpriced = deal.fees.filter((f) => feeInOrder(f) && !feePriced(f, from)).map((f) => f.id);
+  return { deal, kind: kindById(kinds, deal.kind), fees, unread, unpriced, engine, reading: dealPeriods(engine, month), today, month };
 }
 
 /** The read deal restricted to some of its fees (by index), for a reading of those alone (what holds throughout, F-111 on them). */
@@ -47,6 +56,8 @@ export function subRead(r: DealRead, idx: readonly number[]): { engine: Deal; pe
  */
 export interface PriceView {
   form: FormId;
+  /** Its rate or sum is not given yet (`Num.blank`): `figures` leaves it out, and the price's box stands empty. */
+  blank?: true;
   figures: PriceFigures;
   per?: Months;
   every?: Months;
@@ -57,6 +68,7 @@ export interface PriceView {
 export function priceView(fees: readonly Fee[], i: number, p: Price, today: string): PriceView {
   const fee = fees[i]!;
   const figures = priceFigures(fee, p, today);
+  if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : p.form === "action" ? { currency: p.currency ?? "ILS" } : {}) };
   switch (p.form) {
     case "held": {
       const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today);
@@ -90,14 +102,6 @@ export function standingView(r: Pick<DealRead, "kind" | "deal" | "today">, fees:
   const x = p.form === "free" ? null : mainOf(view);
   const inputs: Record<string, SiteValue> = { ...(x ? { [inputKey(fees, i)]: x } : {}), cap: { ...cap } as SiteValue };
   return { standing, share: reading(standing.share * 100, "pct", "F-113", inputs, r.today) };
-}
-
-/** Whether two prices stand alike against the cap: judged alike with the same share, or not judged for the same reason. */
-export function sameStanding(a: StandingView, b: StandingView): boolean {
-  const x = a.standing;
-  const y = b.standing;
-  if (x.judged && y.judged) return x.standing === y.standing && x.share === y.share;
-  return !x.judged && !y.judged && x.why === y.why;
 }
 
 /** A fee as a line of a view: its id, kind and the person's name for a fee of their own. */

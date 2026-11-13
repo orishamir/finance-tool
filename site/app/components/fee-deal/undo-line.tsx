@@ -1,5 +1,6 @@
 // The line a change that lost something leaves where it happened (a fee taken away, a fee filled from a price list, a stage taken away):
-// what happened, and "ביטול", which puts the deal back as it was (lib/fee-deal/undo.ts). It takes the focus when it appears. Its time to
+// what happened, and "ביטול", which puts the deal back as it was (lib/fee-deal/undo.ts). It takes the focus when it appears for the change
+// just made (`take`), not when it is drawn again for one made before (a panel opened again on its fee). Its time to
 // go stops while the focus is in it or the pointer is over it (`onHold`); when it goes while it holds the focus, the focus moves to what
 // took its place (`refocus`), never to the page's body.
 import { useRef, type ReactNode } from "react";
@@ -7,12 +8,14 @@ import { feeDeal as copy } from "../../copy";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Button, Card, cx } from "../kit";
 
-export function UndoLine({ children, onUndo, onHold, refocus, refocusOnUndo, height, as = "li", className }: {
+export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUndo, height, as = "li", className }: {
   /** What happened, in words. */
   children: ReactNode;
   onUndo: () => void;
   /** Whether the focus is in the line or the pointer over it. */
   onHold: (held: boolean) => void;
+  /** Asked once when the line appears: whether its change was just made, so the line takes the focus. */
+  take: () => boolean;
   /** Where the focus goes when the line goes while it holds it. */
   refocus: () => HTMLElement | null | undefined;
   /** The focus goes to `refocus` after "ביטול" too (the page gives it nowhere else). */
@@ -32,7 +35,7 @@ export function UndoLine({ children, onUndo, onHold, refocus, refocusOnUndo, hei
   // a layout effect: its cleanup runs before the line leaves the page, while the focus is still in it
   useIsoLayoutEffect(() => {
     const el = line.current;
-    el?.querySelector("button")?.focus({ preventScroll: true });
+    if (take()) el?.querySelector("button")?.focus({ preventScroll: true });
     return () => {
       const l = latest.current;
       const held = !!el && el.contains(document.activeElement);
@@ -69,6 +72,7 @@ export function UndoLine({ children, onUndo, onHold, refocus, refocusOnUndo, hei
       <Button
         variant="quiet"
         flush
+        wide
         onClick={() => {
           undone.current = true;
           onUndo();

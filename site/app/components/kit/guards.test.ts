@@ -861,7 +861,7 @@ function shortControls(src: string): string[] {
     if (el.tag === "input" && /type=["'](?:checkbox|radio)["']/.test(el.open)) continue;
     const all = classTokens(el.open);
     const tokens = all.filter((t) => !t.includes(":"));
-    const reaches = tokens.some((t) => t === "tap-area" || t === "min-h-target" || ((t.startsWith("min-h-") || t.startsWith("!min-h-")) && (px(t) ?? 0) >= 44));
+    const reaches = tokens.some((t) => t === "tap-area" || t === "tap-wide" || t === "min-h-target" || ((t.startsWith("min-h-") || t.startsWith("!min-h-")) && (px(t) ?? 0) >= 44));
     if (!reaches) {
       for (const t of tokens) {
         const v = px(t);
@@ -870,7 +870,7 @@ function shortControls(src: string): string[] {
     }
     // a wider screen's own height may draw a control shorter (`lg:min-h-0`), and then its tap area is the kit's at that width too
     // (the breadcrumb's link was 24 px at 1280): any `tap-area` on the element covers it
-    if (!all.some((t) => t === "tap-area" || t.endsWith(":tap-area"))) {
+    if (!all.some((t) => t === "tap-area" || t === "tap-wide" || t.endsWith(":tap-area"))) {
       for (const t of all.filter((x) => x.includes(":") && !x.startsWith("max-") && !/^(?:after|before|hover|focus|group|peer|aria|data)/.test(x))) {
         const bare = t.slice(t.lastIndexOf(":") + 1);
         const v = bare.replace(/^!/, "") === "min-h-0" ? 0 : px(bare);
@@ -914,6 +914,7 @@ describe("a control is at least 44 px tall", () => {
     expect(shortControls('<summary className="min-h-[40px]">x</summary>')).toHaveLength(1);
     expect(shortControls('<input className="h-10" />')).toHaveLength(1);
     expect(shortControls('<button className="h-8 tap-area">x</button>')).toHaveLength(0);
+    expect(shortControls('<button className="h-8 tap-wide">x</button>')).toHaveLength(0);
     expect(shortControls('<button className="h-8 min-h-target">x</button>')).toHaveLength(0);
     expect(shortControls('<a className="min-h-target lg:min-h-0">x</a>')).toHaveLength(1);
     expect(shortControls('<a className="min-h-target lg:min-h-0 lg:tap-area">x</a>')).toHaveLength(0);

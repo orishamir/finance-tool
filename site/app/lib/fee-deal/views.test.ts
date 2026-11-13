@@ -2,19 +2,20 @@
 // read on 11.2026: a securities account and a provident fund, at a glance, in the builder, in one fee's panel and in the reading.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import type { SiteValue } from "../value";
+import { depositFeeNoneByRule, type SiteValue } from "../value";
 import { builder, panel } from "./builder";
 import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
-import { NAME_MAX, newDeal, readDeal, typed, untouched, type FeeDeal } from "./model";
+import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num } from "./model";
+import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
+import { barredFees, dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { updateFee, withFigure, editPrice } from "./edit";
 import { latestSnapshots } from "../providers.server";
 import { loadTerms } from "../data.server";
-import { termKey } from "../fee-page-data";
+import { termKey, trackFees } from "../fee-page-data";
 
 const data = feesData();
 const kinds = data.kinds;
@@ -175,11 +176,26 @@ describe("templates", () => {
     expect(filled.fees.find((f) => f.kind === "fund_management")!.stages[0]!.price).toMatchObject({ rate: { v: 0.07 } });
   });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
-    expect(templateOptions("brokerage-account", data).every((o) => o.source === "house")).toBe(true);
-    const tracks = templateOptions("kupat-gemel-lehashkaa", data);
+    expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);
+    const tracks = templateOptions("kupat-gemel-lehashkaa", data, TODAY);
     expect(tracks.length).toBeGreaterThan(0);
     expect(tracks.every((o) => o.source === "track")).toBe(true);
-    expect(templateOptions("bank-deposit", data)).toEqual([]);
+    expect(templateOptions("bank-deposit", data, TODAY)).toEqual([]);
+  });
+  it("gives each track the yearly fee on the savings its pick fills, the same figure the deal gets", () => {
+    const o = templateOptions("kupat-gemel-lehashkaa", data, TODAY).find((x) => x.source === "track" && x.saving)!;
+    expect(o.source === "track" && o.saving!.value).toBeGreaterThan(0);
+    const d = dealFromTemplate({ ...account(), kind: "kupat-gemel-lehashkaa", fees: [] }, o.id, data, TODAY)!;
+    expect(d.fees.find((f) => f.kind === "balance")!.stages[0]!.price).toMatchObject({ rate: { v: o.source === "track" ? o.saving!.value : -1 } });
+  });
+  it("bars a fee from deposits where every track of the kind has none by rule (PF-06), and no fee for a kind with no tracks", () => {
+    const kinds = [...new Set(data.tracks.map((t) => t.wrapperId).filter((k): k is string => !!k))];
+    for (const k of kinds) {
+      const all = data.tracks.filter((t) => t.wrapperId === k).every((t) => { const v = trackFees(t, data, TODAY); return !!v && depositFeeNoneByRule(v.deposit); });
+      expect(barredFees(k as FeeDeal["kind"], data, TODAY)).toEqual(all ? ["deposit"] : []);
+    }
+    expect(barredFees("brokerage-account", data, TODAY)).toEqual([]);
+    expect(kinds.some((k) => barredFees(k as FeeDeal["kind"], data, TODAY).length > 0)).toBe(true);
   });
   it("makes a new deal from a template beside the one on screen, of its kind and holding, named by the template", () => {
     const h = data.houses.find((x) => x.holdings.abroad?.fees.some((f) => f.kind === "fx"))!;
@@ -239,6 +255,9 @@ describe("templates", () => {
     expect(balance).toMatchObject({ form: "held", per: 12, every: 1 });
     if (balance.form === "held") expect(balance.rate.src).toBeDefined();
     expect(d.template?.id).toBe(`track:${t.id}`);
+    // named as a deal that picked the same track in the builder
+    expect(d.name).toBe(pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${t.id}`, data, TODAY)!.name);
+    expect(d.name).not.toBe("");
   });
 });
 
@@ -381,16 +400,19 @@ describe("the provident fund of the picture, on 11.2026", () => {
     expect(v(date!.months)).toBe(16);
     expect(date!.changes[0]).toMatchObject({ kind: "balance", change: "rises", standing: { standing: { judged: true, standing: "at" } } });
   });
-  it("in the builder: the fee on the savings below the cap now and at it from 03.2028", () => {
+  it("in the builder: the fee on the savings tagged below the cap, as it stands now, its rise in 03.2028 in its notes", () => {
     const row = builder(read(provident())).rows[0]!;
     expect(row.standingNow.standing).toMatchObject({ standing: "below" });
-    expect(row.standingLater).toMatchObject({ at: "2028-03", standing: { standing: { standing: "at" } } });
+    expect(row.next).toEqual({ at: "2028-03", change: "rises" });
+    // the law card's row too: its tag is of now, its later price stands at the cap in its own line
+    const law = readingOf(read(provident()), data.fx).law.find((x) => x.fee === "fee-balance")!;
+    expect(law.now?.standing).toMatchObject({ standing: "below" });
+    expect(law.prices.at(-1)!.standing.standing).toMatchObject({ standing: "at" });
     expect(row.insideFund).toBe(false);
   });
   it("in its panel: two prices, the cap's line, the fields of a share of what is held", () => {
     const p = panel(read(provident()), "fee-balance")!;
-    // two prices one after the other, the second not free: not one price for a time
-    expect(p.limited).toBe(false);
+    expect(p.stages).toHaveLength(2);
     expect(p.cap).toMatchObject({ state: "value" });
     if (p.cap.state === "value") expect(p.cap.value.value).toBe(1.05);
     expect(p.stages[0]!.fields).toEqual(["rate", "per", "every"]);
@@ -471,6 +493,21 @@ describe("a track picked in the builder, on the deal on screen", () => {
     // a name the person typed over the first track's stays
     expect(pickTrack({ ...first, name: "שלי" }, `track:${b.id}`, data, TODAY)!.name).toBe("שלי");
   });
+  it("counts a fee still asking for its price as untouched: one of a kind the track fills is filled, keeping its id; another stays", () => {
+    const t = templateOf(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const kind = t.fees[0]!.kind as Exclude<FeeKindId, "own">;
+    const blank = { ...newFee(kind), id: "fee-blank" };
+    const other = FEE_KIND_IDS.find((k) => k !== "own" && !t.fees.some((f) => f.kind === k))!;
+    const mine = { ...newFee(other), id: "fee-mine" };
+    const deal: FeeDeal = { ...newDeal("kupat-gemel-lehashkaa"), fees: [blank, mine] };
+    expect(untouched(blank)).toBe(true);
+    const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
+    expect(next.template?.feesKept).toBeUndefined();
+    const filled = next.fees.find((f) => f.kind === kind)!;
+    expect(filled.id).toBe("fee-blank");
+    expect(filled.stages).toEqual(t.fees[0]!.stages);
+    expect(next.fees.at(-1)).toEqual(mine);
+  });
   it("keeps every fee where one among the filled ones is typed or changed", () => {
     const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
     const deposit = first.fees.find((f) => f.kind === "deposit")!;
@@ -500,12 +537,12 @@ describe("the track picker's rows", () => {
 
   it("lists for a kind only tracks of that kind", () => {
     for (const k of kindsWithTracks) {
-      const ids = new Set(templateOptions(k as FeeDeal["kind"], data).map((o) => o.id));
+      const ids = new Set(templateOptions(k as FeeDeal["kind"], data, TODAY).map((o) => o.id));
       for (const t of data.tracks) if (ids.has(`track:${t.id}`)) expect(t.wrapperId).toBe(k);
     }
   });
   it("names a track in its company's group by its short name, and finds it by its company's name", () => {
-    const options = templateOptions("kupat-gemel-lehashkaa", data);
+    const options = templateOptions("kupat-gemel-lehashkaa", data, TODAY);
     const cut = options.filter((o) => o.source === "track" && o.short);
     expect(cut.length).toBeGreaterThan(0);
     for (const o of cut) {
@@ -522,7 +559,7 @@ describe("the track picker's rows", () => {
     expect(matching(options, one.short!).some((o) => o.id === one.id)).toBe(true);
   });
   it("names the deal by the track's full name once picked", () => {
-    const o = templateOptions("kupat-gemel-lehashkaa", data).find((x) => x.source === "track" && x.short)!;
+    const o = templateOptions("kupat-gemel-lehashkaa", data, TODAY).find((x) => x.source === "track" && x.short)!;
     const next = pickTrack(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!;
     // the full name, with its company after it, as the template names it; never the short name the picker's row shows
     const full = templateOf(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!.name;
@@ -561,21 +598,6 @@ describe("one fee filled from a price list", () => {
   });
 });
 
-describe("a price for a time in the panel", () => {
-  it("is one price followed by a free one, on either side", () => {
-    const deal = updateFee(account(), "fee-trade", (f) => ({
-      ...f,
-      stages: [{ price: { form: "action", rate: typed(0.25) }, until: "2027-06" }, { price: { form: "free" } }],
-      sale: [{ price: { form: "action", rate: typed(0.3) } }],
-    }));
-    const p = panel(read(deal), "fee-trade")!;
-    expect(p.limited).toBe(true);
-    expect(p.sale.limited).toBe(false);
-    // free first and priced after is not a price for a time
-    expect(panel(read(deal), "fee-custody")!.limited).toBe(false);
-  });
-});
-
 describe("a fee's glossary card", () => {
   it("is, for each product, the sense of the fee's name that names the product, where one does", () => {
     const all = loadTerms();
@@ -586,5 +608,56 @@ describe("a fee's glossary card", () => {
         const shown = data.terms[termKey(name, k.id)] ?? data.terms[name]!;
         if (all.some((t) => t.he === name && t.wrapperIds.includes(k.id))) expect(shown.wrapperIds).toContain(k.id);
       }
+  });
+});
+
+describe("a fee with a price not given yet", () => {
+  const withBlank = (): FeeDeal => {
+    const d = provident();
+    return { ...d, fees: [d.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
+  };
+  it("is read nowhere: not at a glance, not in the reading's periods, curves or law rows, and never judged against its cap", () => {
+    const r = read(withBlank());
+    expect(r.fees.map((f) => f.id)).not.toContain("fee-deposit");
+    expect(r.unpriced).toEqual(["fee-deposit"]);
+    const g = glance(r);
+    const inGlance = [...g.throughout, ...g.changing].flatMap((x) => x.fees.map((f) => f.fee));
+    expect(inGlance).not.toContain("fee-deposit");
+    const reading = readingOf(r, data.fx);
+    expect(reading.law.map((x) => x.fee)).not.toContain("fee-deposit");
+    expect(reading.periods.flatMap((p) => p.rows.map((x) => x.fee))).not.toContain("fee-deposit");
+    const alone = provident();
+    expect(reading).toEqual(readingOf(read({ ...alone, fees: [alone.fees[0]!] }), data.fx));
+  });
+  it("keeps its card in the builder, with its box empty and no standing, and its panel", () => {
+    const row = builder(read(withBlank())).rows.find((x) => x.fee === "fee-deposit")!;
+    expect(row.priced).toBe(false);
+    expect(row.stages[0]!.price).toMatchObject({ form: "action", blank: true, figures: {} });
+    expect(panel(read(withBlank()), "fee-deposit")!.stages[0]!.price.blank).toBe(true);
+  });
+  it("is read once a figure is typed, a zero among them", () => {
+    const typedZero = updateFee(withBlank(), "fee-deposit", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0)));
+    expect(read(typedZero).fees.map((f) => f.id)).toContain("fee-deposit");
+  });
+  it("is listed at a glance by its name, apart from the fees read", () => {
+    const g = glance(read(withBlank()));
+    expect(g.unpriced.map((f) => f.fee)).toEqual(["fee-deposit"]);
+    expect(glance(read(provident())).unpriced).toEqual([]);
+  });
+  it("counts only from the month the reading starts: a blank price that has ended does not hold the fee back, a later blank one does", () => {
+    const blank: Num = { v: 0, blank: true };
+    const withPrices = (first: Num, until: MonthKey, then: Num): FeeDeal => ({
+      ...provident(),
+      fees: [{ id: "fee-m", kind: "balance", stages: [{ price: { form: "held", rate: first, per: 12, every: 12 }, until }, { price: { form: "held", rate: then, per: 12, every: 12 } }] }],
+    });
+    const ended = withPrices(blank, "2026-06", typed(0.5));
+    expect(read(ended).fees.map((f) => f.id)).toEqual(["fee-m"]);
+    expect(read(ended).unpriced).toEqual([]);
+    const later = withPrices(typed(0.5), "2027-06", blank);
+    expect(read(later).fees).toEqual([]);
+    expect(read(later).unpriced).toEqual(["fee-m"]);
+    // a deal that starts after today is read from its start, so a blank price before it holds nothing back either
+    expect(read({ ...withPrices(blank, "2027-02", typed(0.5)), start: "2027-03" }).unpriced).toEqual([]);
+    expect(read(withPrices(blank, "2027-02", typed(0.5))).unpriced).toEqual(["fee-m"]);
   });
 });

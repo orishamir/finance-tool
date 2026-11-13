@@ -48,14 +48,15 @@ export function CompareTable({ columns, rows, caption }: { columns: ReactNode[];
 /**
  * A figure with a bar under it, for a `CompareTable` cell. `frac` is the bar's length as a share of the column's scale (the same scale in
  * every row; the figure itself says the value), `lo` the solid part when the figure is a range (the rest, up to `frac`, is striped).
- * A zero is a thin mark at the start, so it reads as zero, not as a missing bar.
+ * A zero is a thin mark at the start, so it reads as zero, not as a missing bar. The bar takes no press: a press on it goes to the tap area
+ * of the figure above it, whose positioned area it would otherwise cover.
  */
 export function ValueBar({ value, frac, lo, note }: { value: ReactNode; frac: number; lo?: number; note?: ReactNode }) {
   const w = (f: number) => `${Math.max(0, Math.min(1, f)) * 100}%`;
   return (
     <div className="flex flex-col gap-1">
       <span className="text-lg font-bold whitespace-nowrap">{value}</span>
-      <div className="relative h-3" aria-hidden="true">
+      <div className="pointer-events-none relative h-3" aria-hidden="true">
         {frac <= 0 ? (
           <div className="absolute inset-y-0 start-0 w-0.5 rounded-sm bg-chart-value" />
         ) : (

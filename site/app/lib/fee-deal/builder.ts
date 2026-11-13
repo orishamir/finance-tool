@@ -4,7 +4,7 @@
 import type { ChangeKind } from "@finance-tool/engine";
 import { capLine, type CapLine } from "./kinds";
 import { monthKey, type Fee, type MonthKey, type Price, type Stage } from "./model";
-import { priceView, refOf, sameStanding, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
+import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { FEE_SHAPES, holdsFunds, ONE_SIDE, suggestions, type FeeKindId, type FeeShape, type FieldId, type Held } from "./shapes";
 import { insideFund } from "./values";
 
@@ -24,6 +24,10 @@ export interface NextChange {
 /** A fee's row in the builder: its prices in short and the facts beside them. */
 export interface BuilderRow extends FeeRef {
   stages: StageView[];
+  /** Whether every price of the fee is given (`feePriced`); a fee with a price not given yet shows its boxes and no standing or change. */
+  priced: boolean;
+  /** A sale's own prices from the reading's month on, where a sale is priced apart. */
+  sale?: StageView[];
   /** Whether a sale is priced as a purchase is: null where the fee is not one a sale may price apart. */
   saleSame: boolean | null;
   /** The fee's next change, and whether it is a start from free. */
@@ -32,9 +36,8 @@ export interface BuilderRow extends FeeRef {
   bounds: { min: boolean; max: boolean };
   /** Whether the fee is charged inside a fund. */
   insideFund: boolean;
-  /** The standing now, and the first later price whose standing differs (with the month it starts). */
+  /** The standing now; a later price's is said with that price. */
   standingNow: StandingView;
-  standingLater?: { at: MonthKey; standing: StandingView };
 }
 
 export interface Builder {
@@ -46,47 +49,52 @@ export interface Builder {
   held?: Held;
 }
 
-/** A fee's prices as stage views. */
-function stageViews(r: DealRead, i: number, stages: readonly Stage[]): StageView[] {
+/** A fee's prices as stage views, the fee being `fees[i]`. */
+function stageViews(r: DealRead, fees: readonly Fee[], i: number, stages: readonly Stage[]): StageView[] {
   return stages.map((s) => {
-    const price = priceView(r.fees, i, s.price, r.today);
-    return { price, ...(s.until ? { until: s.until } : {}), standing: standingView(r, r.fees, i, s.price, price) };
+    const price = priceView(fees, i, s.price, r.today);
+    return { price, ...(s.until ? { until: s.until } : {}), standing: standingView(r, fees, i, s.price, price) };
   });
 }
 
 /** The stages read from the reading's month on: those whose end is after it, and the last. */
 const readStages = (r: DealRead, views: StageView[]): StageView[] => views.filter((s) => s.until === undefined || s.until > monthKey(r.reading.from));
 
-function rowOf(r: DealRead, i: number): BuilderRow {
-  const fee = r.fees[i]!;
-  const stages = readStages(r, stageViews(r, i, fee.stages));
-  const sale = fee.sale ? readStages(r, stageViews(r, i, fee.sale)) : undefined;
-  const c = r.reading.fees[i]!.changes[0];
+/** A fee's row: one the reading reads (`i`, its index among the read fees), or one with a price not given yet, on its own (`i` null). */
+function rowOf(r: DealRead, fee: Fee, i: number | null): BuilderRow {
+  const fees = i === null ? [fee] : r.fees;
+  const at = i ?? 0;
+  const stages = readStages(r, stageViews(r, fees, at, fee.stages));
+  const sale = fee.sale ? readStages(r, stageViews(r, fees, at, fee.sale)) : undefined;
+  const c = i === null ? undefined : r.reading.fees[i]!.changes[0];
   const now = stages[0]!;
-  // a later price starts where the one before it ends
-  const k = stages.findIndex((s, j) => j > 0 && !sameStanding(s.standing, now.standing));
-  const later = k > 0 ? { at: stages[k - 1]!.until!, standing: stages[k]!.standing } : undefined;
   const shape = FEE_SHAPES[fee.kind];
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
   return {
     ...refOf(fee),
     stages,
+    priced: i !== null,
+    ...(sale ? { sale } : {}),
     saleSame: shape.saleApart && !ONE_SIDE[fee.kind] ? !fee.sale : null,
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },
     insideFund: insideFund(fee),
     standingNow: now.standing,
-    ...(later ? { standingLater: later } : {}),
   };
 }
 
-/** The builder column of a deal, from the deal read once (`readDealFor`). */
-export function builder(r: DealRead): Builder {
+const offered = (s: Builder["suggestions"], barred: readonly FeeKindId[]): Builder["suggestions"] => ({ usual: s.usual.filter((k) => !barred.includes(k)), rarer: s.rarer.filter((k) => !barred.includes(k)) });
+
+/** The builder column of a deal, from the deal read once (`readDealFor`). `barred`: fees the deal's product may not charge by rule, never offered. */
+export function builder(r: DealRead, barred: readonly FeeKindId[] = []): Builder {
   const deal = r.deal;
   const funds = holdsFunds(deal.kind);
   return {
-    rows: r.fees.map((_, i) => rowOf(r, i)),
-    suggestions: deal.kind && r.kind ? suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), deal.held) : { usual: [], rarer: ["own"] },
+    rows: deal.fees.flatMap((fee) => {
+      const i = r.fees.indexOf(fee);
+      return i >= 0 ? [rowOf(r, fee, i)] : r.unpriced.includes(fee.id) ? [rowOf(r, fee, null)] : [];
+    }),
+    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), deal.held), barred) : { usual: [], rarer: ["own"] },
     holdsFunds: funds,
     ...(funds && deal.held ? { held: deal.held } : {}),
   };
@@ -107,14 +115,10 @@ export interface Panel extends FeeRef {
   oneSide?: "buy" | "sell";
   /** Every price as typed, the passed ones too (the panel edits them all). */
   stages: PanelStage[];
-  /** A sale's own prices: `allowed` where the fee may price a sale apart, `stages` where it does, `limited` as the fee's own. */
-  sale: { allowed: boolean; stages?: PanelStage[]; limited?: boolean };
-  /** Whether the fee's one price holds for a time, after which the fee is free: two prices, the first not free, the second free. */
-  limited: boolean;
+  /** A sale's own prices: `allowed` where the fee may price a sale apart, `stages` where it does. */
+  sale: { allowed: boolean; stages?: PanelStage[] };
   cap: CapLine;
 }
-
-const limitedOf = (stages: readonly Stage[]): boolean => stages.length === 2 && stages[0]!.price.form !== "free" && stages[1]!.price.form === "free";
 
 const fieldsOf = (fee: Fee, p: Price): readonly FieldId[] => (p.form === "free" ? [] : (FEE_SHAPES[fee.kind].fields[p.form] ?? []));
 
@@ -134,8 +138,7 @@ export function panel(r: DealRead, feeId: string): Panel | null {
     shape,
     ...(side ? { oneSide: side } : {}),
     stages: stagesOf(fee.stages),
-    sale: { allowed: shape.saleApart && !side, ...(fee.sale ? { stages: stagesOf(fee.sale), limited: limitedOf(fee.sale) } : {}) },
-    limited: limitedOf(fee.stages),
+    sale: { allowed: shape.saleApart && !side, ...(fee.sale ? { stages: stagesOf(fee.sale) } : {}) },
     cap: capLine(r.kind, fee.kind),
   };
 }

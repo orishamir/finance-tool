@@ -437,18 +437,20 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
  * One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`.
  * `inline`: the label beside the box in muted small words and the words in the box bold, for a name typed in place in a line of other
  * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]"). `icon`: a mark in the box after the words, in the muted ink, that says the
- * words can be typed over (the pencil of the fee page's deal name).
+ * words can be typed over (the pencil of the fee page's deal name). `grow`, with `inline`: the box takes the free space of its line, from its
+ * usual width on, and words too long for it end in an ellipsis while it is not being typed in; the words keep their own direction, so a
+ * cut never shows half of a bracket pair.
  */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; icon?: ReactNode; className?: string }) {
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; className?: string }) {
   const id = useId();
   return (
-    <div className={cx(inline ? "flex flex-wrap items-center gap-2" : "field", className)}>
+    <div className={cx(inline ? cx("flex items-center gap-2", grow ? "min-w-0 flex-1" : "flex-wrap") : "field", className)}>
       <label htmlFor={id} className={inline ? "text-sm text-muted-foreground" : "field-label"}>
         {label}
       </label>
-      <div className="field-body">
-        <div className={cx("field-box", inline && "field-box-compact w-56 max-w-full", error ? "field-box-error" : false)}>
-          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold")} />
+      <div className={cx("field-body", grow && "min-w-0 flex-1")}>
+        <div className={cx("field-box", inline && "field-box-compact max-w-full", inline && (grow ? "w-full min-w-56" : "w-56"), error ? "field-box-error" : false)}>
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold", grow && "text-ellipsis focus:text-clip")} />
           {icon && (
             <span aria-hidden="true" className="inline-flex shrink-0 text-muted-foreground">
               {icon}

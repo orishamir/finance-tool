@@ -149,7 +149,7 @@ function Header({ width, current, ready, onMenu, onSearch }: { width: string; cu
   const navRef = useRef<HTMLElement>(null);
   const navFits = useNavFits(row, name, navRef);
   return (
-    <header className="group/header sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
+    <header data-site-header="" className="group/header sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
       <div ref={row} className={cx("mx-auto h-14 lg:h-16 px-gutter flex items-center justify-between gap-4", width)}>
         <div className="flex items-center gap-6 xl:gap-8 min-w-0">
           <Link ref={name} to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">

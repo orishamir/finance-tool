@@ -16,6 +16,7 @@
 // checks (`--no-hit` skips it).
 // A link, a figure or a term inside running text (a <p> or <li> line with words of its own around it) is left out, as guard 19 leaves a
 // figure in text: its line is the text's line height, and the 44 px rule is for controls that stand alone (design-system 2.5).
+// A figure's or a month's field is measured by its box, which takes a press anywhere in it for the field (the kit's `focusInBox`).
 import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -84,7 +85,15 @@ for (const path of paths.split(",")) {
           const x = Math.min(Math.max(r.left + r.width / 2, 1), innerWidth - 1);
           const y0 = r.top + r.height / 2;
           const labels = e.id ? [...document.querySelectorAll(`label[for="${CSS.escape(e.id)}"]`)] : [];
-          const mine = (n) => !!n && (n === e || e.contains(n) || labels.some((l) => l === n || l.contains(n)) || (n.tagName === "LABEL" && n.contains(e)));
+          // a figure's or a month's field (the kit's FigureField and MonthField, `input[data-figure]`) sits in a 44 px box that passes a
+          // press anywhere in it to the field (`focusInBox`), so the box is the field's, all but a choice or a button in it, which keeps
+          // its own press; the input itself is only its text line
+          const box = e.matches("input[data-figure]") ? e.parentElement : null;
+          const ownPress = (n) => {
+            const c = n.closest("select, button, a");
+            return !!c && box.contains(c);
+          };
+          const mine = (n) => !!n && (n === e || e.contains(n) || labels.some((l) => l === n || l.contains(n)) || (n.tagName === "LABEL" && n.contains(e)) || (!!box && box.contains(n) && !ownPress(n)));
           if (!mine(document.elementFromPoint(x, y0))) {
             const top = document.elementFromPoint(x, y0);
             return { i, name: (e.getAttribute("aria-label") || e.textContent || e.value || e.tagName).trim().replace(/\s+/g, " ").slice(0, 50), tag: e.tagName.toLowerCase(), drawn: Math.round(r.height), span: 0, covered: top ? `${top.tagName.toLowerCase()}.${String(top.className).split(" ")[0]}` : "nothing" };
