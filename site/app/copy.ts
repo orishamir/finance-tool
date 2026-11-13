@@ -2622,7 +2622,7 @@ export const rulesFront = {
   changingOnly: "רק מה שעומד להשתנות",
   questions: "לפי השאלה",
   none: "אין חוק או כלל שעומד להשתנות במוצר הזה.",
-  row: { sources: "{n} מקורות", sourceOne: "מקור אחד", recheck: "ייבדק שוב", more: "ועוד {n}" },
+  row: { sources: "{n} מקורות", sourceOne: "מקור אחד", recheck: "ייבדק שוב", more: "ועוד {n}", openPart: "יש בו שאלה פתוחה" },
   detail: {
     back: "לרשימה",
     empty: "בחרו חוק או כלל מהרשימה, והנוסח המלא והמקורות שלו יופיעו כאן.",
@@ -2671,8 +2671,8 @@ export const rulesFront = {
     "tax-tier2-other.md": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר)",
   } as Record<string, string>,
   products: { all: "כל המוצרים", common: "משותף לכל הקופות", tier2: "עוד לא באתר" },
-  /** `/rules/<shelf>`, the old addresses of the five questions: the line that leads on to the page. */
-  presetAll: "לכל החוקים והכללים",
+  /** `/rules/<shelf>`, the old addresses of the five questions: the line that leads on to the page, opened on that question. */
+  presetAll: "לחוקים והכללים על השאלה הזו",
 } as const;
 
 /** The documents page (synthesis §3.5). */
