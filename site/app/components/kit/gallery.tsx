@@ -2006,6 +2006,7 @@ function Lists({ today }: { today: string }) {
             <span className="flex flex-col gap-1 text-sm">
               <AmountRange min={s.sourced} max={{ ...s.sourced, value: 50000 }} />
               <AmountRange min={s.sourced} max={null} />
+              <AmountRange min={s.sourced} max={{ ...s.sourced, value: null }} />
               <AmountRange min={{ ...s.sourced, value: 0 }} max={{ ...s.sourced, value: 50000 }} />
               <AmountRange min={{ ...s.sourced, value: 0 }} max={null} />
             </span>

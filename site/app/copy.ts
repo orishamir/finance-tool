@@ -1395,7 +1395,7 @@ export const trackBrowser = {
  */
 export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
-  lead: "הריבית שהבנקים מפרסמים לפיקדון בשקלים, בשנה ולפני המס. המינימום שהבנק מפרסם, לא הצעה אישית.",
+  lead: "הריבית שהבנקים מפרסמים לפיקדון בשקלים, בשנה ולפני המס, לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר.",
   /** At the end of the list's heading line: "נקרא מאתרי הבנקים ב־09.11.2026". */
   read: "נקרא מאתרי הבנקים ב־",
   controls: {
@@ -1426,7 +1426,7 @@ export const depositBrowser = {
     titleNoAmount: { fixed: "ריבית קבועה בשנה: הגבוהה בכל תקופה", variable: "ריבית משתנה בשנה: הגבוהה בכל תקופה" },
     axis: "תקופת הפיקדון",
     none: "אין",
-    gap: { otherKind: { fixed: "רק משתנה", variable: "רק קבועה" }, notAtAmount: "לא בסכום הזה", none: "אין הצעות" },
+    gap: { otherKind: { fixed: "רק משתנה", variable: "רק קבועה" }, unknownAtAmount: "לא ידוע בסכום הזה", notAtAmount: "לא בסכום הזה", none: "אין הצעות" },
     /** A column's spoken name: "שנה: 3.25% בבנק ירושלים". */
     atBank: " בבנק ",
     chosen: "נבחרה",
@@ -1465,8 +1465,8 @@ export const depositBrowser = {
   linkedLine: ". הריבית באה בנוסף להצמדה, ולכן הן לא מדורגות מול השאר.",
   /** The tag of a linked row. */
   linked: { cpi: "צמוד למדד", fx: "צמוד למט״ח" },
-  /** The folded group under the list: "22 הצעות שאי אפשר לפתוח ב־10,000 ₪". */
-  closed: { before: "שאי אפשר לפתוח ב־" },
+  /** The folded group under the list: "22 הצעות שאי אפשר לפתוח ב־10,000 ₪"; where the table of one of them does not say whether it takes the amount, `orUnknown`. */
+  closed: { before: "שאי אפשר לפתוח ב־", orUnknown: "שאי אפשר לפתוח, או שלא ידוע אם אפשר לפתוח, ב־" },
   help: { rate: "הריבית שהבנק מפרסם", exits: "תחנות יציאה", break: "שבירת פיקדון", phoneLead: "מה אומרות המילים:" },
   grid: {
     title: { fixed: "הריבית הקבועה הגבוהה בכל בנק ולכל תקופה, ב־", variable: "הריבית המשתנה הגבוהה בכל בנק ולכל תקופה, ב־" },
@@ -1479,7 +1479,7 @@ export const depositBrowser = {
     more: "ועוד",
     /** A sheet line of a bank that prints one name for several amounts: "· מ־250,000 ₪". */
     from: "מ־",
-    gap: { none: "לא מציע", otherKind: { fixed: "רק ריבית משתנה", variable: "רק ריבית קבועה" }, otherOffers: "רק הצעות אחרות", notAtAmount: "לא בסכום הזה" },
+    gap: { none: "לא מציע", otherKind: { fixed: "רק ריבית משתנה", variable: "רק ריבית קבועה" }, otherOffers: "רק הצעות אחרות", conditionalOnly: "רק עם תנאי", unknownAtAmount: "לא ידוע בסכום הזה", notAtAmount: "לא בסכום הזה" },
     /** The cell's button: "להצעות של לאומי לשנה ברשימה, 1.8%". */
     goTo: { before: "להצעות של ", middle: " ל", after: " ברשימה" },
     /** The highest cell of a column: framed, and said. */

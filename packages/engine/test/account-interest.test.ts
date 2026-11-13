@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { DepositTerms } from "@finance-tool/schema";
-import { type BreakRecord, type BreakTerm, type OfferRecord, type PlainDepositRecord, amountOpens, bestOpenOffer, breakCount, breakTermOf, currentAccountYearlyInterest, formulas, listFeeRange, mostCommonRate, oneYearDeposits, plainOneYearDeposits, rateRange, middleIndex } from "../src/index.ts";
+import { type BreakRecord, type BreakTerm, type OfferRecord, type PlainDepositRecord, amountOpens, amountUnknown, bestOpenOffer, breakCount, breakTermOf, currentAccountYearlyInterest, formulas, listFeeRange, mostCommonRate, oneYearDeposits, plainOneYearDeposits, rateRange, middleIndex } from "../src/index.ts";
 
 /** Every collected deposit record, the latest snapshot of each id, as the site reads them (`loadDepositTerms`): a record re-read on a later day is one record, not two. */
 function collectedDeposits(): DepositTerms[] {
@@ -217,6 +217,23 @@ describe("F-108 the best offer an amount opens", () => {
     expect(bestOpenOffer(tiers, 100_000)?.id).toBe("x");
     expect(bestOpenOffer(tiers, 75_000)).toBeNull();
     expect(bestOpenOffer(tiers, 50_000)?.id).toBe("y");
+  });
+
+  it("says an amount an unknown bound leaves undecided is unknown at the offer, not closed", () => {
+    const unknownMax: OfferRecord = { id: "y", rate_offered: { value: 2.15 } as never, amount_range: { min: { value: 50_000 } as never, max: { value: null } as never } };
+    // the minimum opens it; above it the table does not say; below it the known minimum shuts it
+    expect(amountUnknown(unknownMax, 50_000)).toBe(false);
+    expect(amountUnknown(unknownMax, 60_000)).toBe(true);
+    expect(amountUnknown(unknownMax, 5_000_000)).toBe(true);
+    expect(amountUnknown(unknownMax, 49_999)).toBe(false);
+    const unknownMin = (max: number | null): OfferRecord => ({ id: "z", rate_offered: { value: 1 } as never, amount_range: { min: { value: null } as never, max: max === null ? null : ({ value: max } as never) } });
+    expect(amountUnknown(unknownMin(null), 10)).toBe(true);
+    expect(amountUnknown(unknownMin(50_000), 50_000)).toBe(true);
+    expect(amountUnknown(unknownMin(50_000), 50_001)).toBe(false);
+    // known bounds decide every amount
+    expect(amountUnknown(offer("a", 1, 1_000, 99_999), 100_000)).toBe(false);
+    expect(amountUnknown(offer("a", 1, 1_000, 99_999), 500)).toBe(false);
+    expect(amountUnknown(offer("a", 1, 1_000), 5_000)).toBe(false);
   });
 
   it("takes the highest rate the amount opens, then the smaller id, whatever the order", () => {
