@@ -223,20 +223,20 @@ describe("bank deposit", () => {
   });
   it("counts breaking over the banks, and its sheet has one line for each deposit counted (F-104)", () => {
     const b = page("bank-deposit").breakTerms!;
-    // 98 one-year deposits at ten banks (foreign-currency-linked rows are tier 2, D2, and not collected); at seven none can be
-    // broken, five of them with exit points (FIBI, Hapoalim, Leumi, Massad, Mizrahi-Tefahot); Discount's 10 and Mercantile's 2 can, with a
+    // 100 one-year deposits at ten banks (foreign-currency-linked rows are tier 2, D2, and not collected); at seven none can be
+    // broken, five of them with exit points (FIBI, Hapoalim, Leumi, Massad, Mizrahi-Tefahot); Discount's 11 and Mercantile's 3 can, with a
     // penalty, and One Zero's 3, two with a penalty and its daily one free
-    expect([b.deposits.value, b.banks.value, b.lockedBanks.value, b.lockedBanksWithExits.value]).toEqual([98, 10, 7, 5]);
+    expect([b.deposits.value, b.banks.value, b.lockedBanks.value, b.lockedBanksWithExits.value]).toEqual([100, 10, 7, 5]);
     expect(b.breakable.map((x) => [x.id, x.deposits.value, x.withPenalty.value, x.free.value])).toEqual([
-      ["discount", 10, 10, 0],
-      ["mercantile", 2, 2, 0],
+      ["discount", 11, 11, 0],
+      ["mercantile", 3, 3, 0],
       ["one-zero", 3, 2, 1],
     ]);
     const lines = (v: { computed_from?: { inputs?: Record<string, unknown> } }) => Object.keys(v.computed_from?.inputs ?? {}).length;
-    expect(lines(b.deposits as never)).toBe(98);
+    expect(lines(b.deposits as never)).toBe(100);
     // the banks with exits among those that lock every deposit read both columns of each deposit
-    expect(lines(b.lockedBanksWithExits as never)).toBe(196);
-    expect(lines(b.breakable[0]!.deposits as never)).toBe(10);
+    expect(lines(b.lockedBanksWithExits as never)).toBe(200);
+    expect(lines(b.breakable[0]!.deposits as never)).toBe(11);
     // a sheet name still taken gets a number that replaces the last one, never a stack of them
     const twin = { bank: "x", names: { "447": ["פיקדון"] }, type_447: "t", rate_type: "fixed", linkage: "none", exit_points: { exists: false, every_months: null } };
     const names = depositSheetNames(["a", "b", "c"].map((id) => ({ ...twin, id }) as unknown as DepositTerms));
@@ -247,7 +247,7 @@ describe("bank deposit", () => {
     const exits = Object.entries((b.lockedBanksWithExits as { computed_from?: { inputs?: Record<string, { value: unknown; rule_ids?: string[]; notes?: string }> } }).computed_from!.inputs!)
       .filter(([name]) => name.endsWith(` · ${guideSignature.deposit.exitsInput}`))
       .map(([, v]) => v);
-    expect(exits).toHaveLength(98);
+    expect(exits).toHaveLength(100);
     for (const e of exits) expect(e.rule_ids ?? []).toEqual([]);
     // a note only on a deposit with exits, never on "אין"
     expect(exits.filter((e) => e.notes).length).toBeGreaterThan(0);
