@@ -12,7 +12,7 @@ import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, type SiteValue } from "../../lib/value";
-import { aboveZeroCheck, Callout, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
+import { aboveZeroCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
@@ -221,9 +221,22 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             <Term id="קצבת זקנה">{copy.pension.none.pension}</Term> <Term prefix="מ" id="קרן פנסיה">{copy.pension.none.fund}</Term> {copy.pension.none.after} <Num value={earlyAge} display={String(earlyAge.value)} />.
           </Sentence>
         )}
-        <Sentence tone="muted">
-          <Term prefix="ה" id="תשואה">{copy.hishtalmut.assumption.ret}</Term> {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} <Term prefix="וה" id="אינפלציה">{copy.hishtalmut.assumption.inflation}</Term> {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after} {copy.pension.todayMoney}
-        </Sentence>
+        <DotLine
+          items={[
+            copy.hishtalmut.assumption.site,
+            returnPct && (
+              <>
+                <Term id="תשואה">{copy.hishtalmut.assumption.ret}</Term> <Num value={returnPct} /> {copy.hishtalmut.assumption.both}
+              </>
+            ),
+            inflationPct && (
+              <>
+                <Term id="אינפלציה">{copy.hishtalmut.assumption.inflation}</Term> <Num value={inflationPct} /> {copy.hishtalmut.assumption.perYear}
+              </>
+            ),
+            copy.pension.todayMoney,
+          ]}
+        />
       </div>
       <RulesLine ids={[...data.ruleIds, ...model.rules.filter((r) => /^(PEN|TXP)-/.test(r))].filter((r, i, a) => a.indexOf(r) === i)} />
     </div>
