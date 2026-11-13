@@ -18,6 +18,7 @@ import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
+import { CaseDemos } from "./gallery-cases";
 import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
@@ -2116,6 +2117,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <DealDemos today={today} />
+      <CaseDemos today={today} Demo={Demo} State={State} />
       <Demo name="PeriodStrip" use={g.uses.PeriodStrip}>
         <State label="three stretches: all of a group's prices, one of them, then the price list" wide>
           <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 1, label: g.sample.strip.first, tone: "first" }, { from: 1, to: 4, label: g.sample.strip.middle, tone: "middle" }, { from: 4, to: 10, label: g.sample.strip.after, tone: "after" }]} />
