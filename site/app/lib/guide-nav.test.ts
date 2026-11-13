@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { exposureFoldedInto, groupGuides, guideLayout, rulesAnchor, omitsSection } from "./guide-nav";
+import { exposureFoldedInto, firstInGuideOrder, groupGuides, guideLayout, rulesAnchor, omitsSection } from "./guide-nav";
 
 const allIds = guideLayout.flatMap((g) => g.ids);
 
@@ -68,5 +68,17 @@ describe("omitsSection (D49)", () => {
     expect(omitsSection("money-market-fund-daily", "inout")).toBe(true);
     expect(omitsSection("money-market-fund-daily", "cost")).toBe(false);
     expect(omitsSection("keren-hishtalmut", "inout")).toBe(false);
+  });
+});
+
+describe("firstInGuideOrder", () => {
+  it("takes the guide's first of a term's products, whatever the order of their ids", () => {
+    expect(firstInGuideOrder(["ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive"])).toBe("keren-hishtalmut");
+    expect(firstInGuideOrder(["kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general"])).toBe("kupat-gemel-lehashkaa");
+  });
+  it("puts a product the guide's order does not know after the ones it knows, and keeps the order among such", () => {
+    expect(firstInGuideOrder(["makam", "pension-general"])).toBe("pension-general");
+    expect(firstInGuideOrder(["makam", "government-bond"])).toBe("makam");
+    expect(firstInGuideOrder([])).toBeUndefined();
   });
 });

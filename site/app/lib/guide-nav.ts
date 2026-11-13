@@ -85,6 +85,17 @@ export function groupGuides(wrapperIds: readonly string[], layout: { id: string;
   return groups.filter((g) => g.ids.length > 0);
 }
 
+/**
+ * The first of some product ids in the guide's own order (`guideLayout`); ids the layout does not know keep their order after them. The
+ * search opens a term that belongs to several products on this one's page, so the page behind the card is the guide's first of them and
+ * not the first by the letters of an internal id.
+ */
+export function firstInGuideOrder(ids: readonly string[], layout: { id: string; ids: readonly string[] }[] = guideLayout): string | undefined {
+  const order = layout.flatMap((g) => g.ids);
+  const rank = (id: string) => (order.includes(id) ? order.indexOf(id) : order.length);
+  return [...ids].sort((a, b) => rank(a) - rank(b))[0];
+}
+
 /** The il-finance files that hold rules shared by many products or by tax in general, not one product's own rules. */
 const sharedFiles = new Set(["regulators-and-protection.md", "provident-family-common.md", "switching-and-transfers.md", "tax-general.md", "tracks-catalogue-and-decoder.md"]);
 const isTaxFile = (file: string) => file.startsWith("tax-");
