@@ -19,6 +19,8 @@ export const unit = z.enum([
   "nis_millions",
   "usd",
   "eur",
+  /** An amount in pounds sterling, as a British government page prints it (data/abroad/, D114); never converted. */
+  "gbp",
   "pct",
   "pct_per_year",
   "pct_of_deposit",
@@ -28,6 +30,10 @@ export const unit = z.enum([
   "nis_per_trade",
   "nis_per_transfer",
   "usd_per_share",
+  /** A sum for each unit traded in shekels, euros or pounds: a price per unit the person types on the fee page (F-12); no price list prints one. */
+  "nis_per_share",
+  "eur_per_share",
+  "gbp_per_share",
   "usd_per_trade",
   "gbp_per_trade",
   /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
@@ -73,6 +79,8 @@ export const updateRule = z.union([
     "provider-set",
     "market",
     "founder",
+    // set anew for each year by the authority that publishes it, with no rule the site follows (a yearly ceiling abroad: the US IRA limit)
+    "set yearly",
   ]),
   z.string().regex(/^frozen \d{4}-\d{4}$/, 'update_rule "frozen" must name its years, e.g. "frozen 2025-2027"'),
 ]);

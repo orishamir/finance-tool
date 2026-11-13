@@ -4,9 +4,9 @@
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
-import { engineDeal, engineFee, feeInOrder, feePriced, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
+import { engineDeal, engineFee, feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
 import { type FeeKindId, type FormId } from "./shapes";
-import { inputKey, priceFigures, reading, type PriceFigures, type Unit } from "./values";
+import { inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
 
 /** A deal read once: the fees F-110 can read (in order), the engine's deal over them, its reading, and the day and month it is for. */
 export interface DealRead {
@@ -50,9 +50,9 @@ export function subRead(r: DealRead, idx: readonly number[]): { engine: Deal; pe
 // ---------------------------------------------------------------- one price
 
 /**
- * A price as the page shows it: its form, its figures (entered or sourced), the months its rate is for and between charges, the bounds'
- * currency, and its yearly figure (F-111) where it is a share of what is held or a sum per period: the typed figure itself where it is
- * already a year's, else computed.
+ * A price as the page shows it: its form, its figures (entered or sourced), the months its rate is for and between charges, the currency
+ * of its sums (a share of an action's bounds and flat price, a sum per unit, a sum per action), and its yearly figure (F-111) where it is a
+ * share of what is held or a sum per period: the typed figure itself where it is already a year's, else computed.
  */
 export interface PriceView {
   form: FormId;
@@ -68,7 +68,8 @@ export interface PriceView {
 export function priceView(fees: readonly Fee[], i: number, p: Price, today: string): PriceView {
   const fee = fees[i]!;
   const figures = priceFigures(fee, p, today);
-  if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : p.form === "action" ? { currency: p.currency ?? "ILS" } : {}) };
+  const currency = p.form === "action" || p.form === "perUnit" || p.form === "perAction" ? { currency: p.currency ?? "ILS" } : {};
+  if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : currency) };
   switch (p.form) {
     case "held": {
       const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today);
@@ -78,10 +79,8 @@ export function priceView(fees: readonly Fee[], i: number, p: Price, today: stri
       const yearly = p.every === 12 ? figures.amount! : reading((p.amount.v * 12) / p.every, "nis", "F-111", { [inputKey(fees, i)]: figures.amount! }, today);
       return { form: "sum", figures, every: p.every, yearly };
     }
-    case "action":
-      return { form: "action", figures, currency: p.currency ?? "ILS" };
     default:
-      return { form: p.form, figures };
+      return { form: p.form, figures, ...currency };
   }
 }
 
@@ -141,17 +140,24 @@ export const groupKey = (g: GroupOn): string => (g.on === "action" ? `action:${g
 
 // ---------------------------------------------------------------- the marks
 
-/** The unit of a sum a mark names, in its bound's currency. */
-const amountUnit = (currency: string): Unit => (currency === "USD" ? "usd" : currency === "EUR" ? "eur" : currency === "GBP" ? "gbp_per_trade" : "nis");
-
 /**
- * A mark of F-112 as the page states it. `min` and `max`: the fee's bound and rate, and the sum below which the minimum binds or above
- * which the maximum does, in the bound's currency. `meet`: the yearly sums on the account added, the custody fees' yearly rates added,
- * the value held on which the two are equal, and whether below it the sums are the largest cost of holding (`sumsLargest`).
+ * A mark of F-112 as the page states it, each part on the stretch of the amount where it decides the fee's price (in the price's
+ * currency, `currency`; a sum is said in it, and a count of units where `units` is set). `min`: the minimum (`bound`) decides on every
+ * action up to `amount`, measured against the rate (`rate`: a share, or a sum per unit, whose minimum is then reached at a number of units),
+ * from `from` where a flat price or a percent maximum decides before it. `max`: the maximum decides above `amount`. `cap`: the percent
+ * maximum (`bound`, a share of the action) decides up to `amount`, where it meets the bound it caps (`meets`: the minimum, or the maximum
+ * where the cap is below the rate), from `from` where a flat price decides before it. `flat`: the flat price (`bound`) decides on every
+ * action up to its sum (`amount`, the figure as typed or filled). `meet`: the yearly sums on the account added, the custody fees' yearly
+ * rates added, the value held on which the two are equal, and whether below it the sums are the largest cost of holding (`sumsLargest`).
  */
 export type MarkView =
-  | { kind: "min" | "max"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; rate: SiteValue; amount: SiteValue }
+  | { kind: "min" | "max"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; rate: SiteValue; amount: SiteValue; from?: SiteValue; units?: true }
+  | { kind: "cap"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; meets: SiteValue; amount: SiteValue; from?: SiteValue }
+  | { kind: "flat"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; amount: SiteValue }
   | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
+
+/** A mark that names one fee's part: a minimum, a maximum, a percent maximum or a flat price. */
+export type PartMark = Exclude<MarkView, { kind: "meet" }>;
 
 /**
  * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says
@@ -181,11 +187,29 @@ export function markView(m: DealMark, fees: readonly Fee[], period: DealPeriod, 
   const fee = fees[m.fee]!;
   const price = priceAt(fee, period.from, m.side === "sell");
   const figures = priceFigures(fee, price, today);
+  const sums = m.on === "held" ? "nis" : sumUnit(m.currency);
+  const head = { on: m.on, fee: refOf(fee), side: m.side, currency: m.currency };
+  const key = (field: "min" | "max" | "cap" | "flat" | "upTo") => inputKey(fees, m.fee, field);
+  if (m.kind === "flat") return { kind: "flat", ...head, bound: figures.flat!, amount: figures.upTo! };
+  // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
+  const from = m.from === undefined ? {} : { from: price.form !== "free" && "flat" in price && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
+  if (m.kind === "cap") {
+    // the cap meets the minimum where it gives way to it, or the maximum where it gives way to that
+    const meets = figures.min && near(m.amount * fraction(figures.cap!.value as number), figures.min.value as number) ? { field: "min" as const, v: figures.min } : { field: "max" as const, v: figures.max ?? figures.min! };
+    return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap! }, today), ...from };
+  }
   const bound = (m.kind === "min" ? figures.min : figures.max)!;
   // a held share's bound is per charge, so its mark is where one charge's share meets it: the rate of a charge, `rate × every / per`
-  const rate = price.form === "held" && price.per !== price.every ? reading((price.rate.v * price.every) / price.per, "pct_of_balance_per_period", "F-111", { [inputKey(fees, m.fee)]: figures.rate! }, today) : figures.rate!;
-  const unit = m.on === "held" ? "nis" : amountUnit(m.currency);
-  return { kind: m.kind, on: m.on, fee: refOf(fee), side: m.side, currency: m.currency, bound, rate, amount: reading(m.amount, unit, "F-112", { [inputKey(fees, m.fee, m.kind)]: bound, [inputKey(fees, m.fee)]: rate }, today) };
+  const rate = price.form === "held" && price.per !== price.every ? reading((price.rate.v * price.every) / price.per, "pct_of_balance_per_period", "F-111", { [inputKey(fees, m.fee)]: figures.rate! }, today) : (figures.rate ?? figures.amount)!;
+  const inputs = { [key(m.kind)]: bound, [inputKey(fees, m.fee)]: rate, ...(figures.cap ? { [key("cap")]: figures.cap } : {}) };
+  return { kind: m.kind, ...head, bound, rate, amount: reading(m.amount, m.units ? "count" : sums, "F-112", inputs, today), ...from, ...(m.units ? { units: true as const } : {}) };
+}
+
+const near = (a: number, b: number): boolean => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b));
+
+/** The end of a percent maximum's stretch as a reading (F-112): the minimum over the cap. */
+function capEnd(figures: PriceFigures, amount: number, unit: Unit, key: (f: "min" | "cap") => string, today: string): SiteValue {
+  return reading(amount, unit, "F-112", { ...(figures.min ? { [key("min")]: figures.min } : {}), ...(figures.cap ? { [key("cap")]: figures.cap } : {}) }, today);
 }
 
 /** A fee's price (or its sale's) in the month `at`. */

@@ -17,7 +17,8 @@ import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { AbroadNote, type AbroadPlace } from "./abroad-note";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -474,6 +475,9 @@ function Choices() {
         <State label={`counts, line, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} line counts={{ "0": 32, "1": 15, "2": 12, "3": 1 }} bleed="" />
         </State>
+        <State label="missing: a choice that found nothing, dashed and muted, still chosen like any other">
+          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap missing={{ "2": true }} />
+        </State>
         <State label="counts, one that would show nothing: dimmed in place">
           <ChoiceChips ids={["0", "1", "2"]} labels={labels} value="0" onChange={() => {}} ariaLabel={g.sample.title} wrap counts={{ "0": 32, "1": 15, "2": 0 }} />
         </State>
@@ -564,10 +568,31 @@ function SampleRules({ today, children }: { today: string; children: ReactNode }
   return <ProvenanceProvider data={{ rules: rules as never, terms: {}, dimensions: {}, today }}>{children}</ProvenanceProvider>;
 }
 
+/** AbroadNote: three made-up countries, the note opening on the second; the third has nothing like the page's product. */
+function AbroadDemo({ today }: { today: string }) {
+  const s = samples(today);
+  const w = g.sample.abroad;
+  const facts = [<Num key="a" value={s.sourced} />, <Num key="b" value={{ ...s.sourced, value: w.said, unit: "text" }} display={w.said} />, <Num key="c" value={s.rate} />];
+  const source = { publishers: [w.publisher], href: "#" };
+  const places: AbroadPlace[] = [
+    { id: "a", name: w.places.a!, product: "ABC", title: w.title, body: w.body, source, facts, checked: today },
+    { id: "b", name: w.places.b!, product: "XYZ", title: w.titleB, body: w.body, source, facts, checked: today },
+    { id: "c", name: w.places.c!, body: w.none, checked: today },
+  ];
+  return (
+    <Demo name="AbroadNote" use={g.uses.AbroadNote}>
+      <State label={`opens on b, the closest match; c found nothing like it, ${g.states.interactive}`} wide>
+        <AbroadNote places={places} start="b" heads={w.heads} />
+      </State>
+    </Demo>
+  );
+}
+
 function Words({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
+      <AbroadDemo today={today} />
       <Demo name="IdRef" use={g.uses.IdRef}>
         <Grid>
           <State label="rule: D48's chip, opens the rule card at once"><div><IdRef id="TXS-05" /></div></State>
@@ -1028,6 +1053,9 @@ function Fields() {
           </State>
           <State label={`inline with an icon in its box: a pencil says the name is typed in place, ${g.states.interactive}`}>
             <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} icon={<IconPencil size={16} />} />
+          </State>
+          <State label={`labelHidden: the box stands where the name it holds is the heading (a fee of the person's own), its label spoken only, ${g.states.interactive}`}>
+            <TextField inline grow labelHidden label={dealWords.panel.ownName} value={typed} onChange={setTyped} placeholder={dealWords.names.own} icon={<IconPencil size={16} />} />
           </State>
         </Grid>
       </Demo>
@@ -2411,6 +2439,12 @@ function ListRowDemo() {
           onSelect={() => setOn(i)}
         />
       ))}
+      {/* a name that is not chosen itself, over its own rows, each with a quiet line that stays on a phone */}
+      <RowGroup title={shelves[3]!.name}>
+        {shelves.slice(4, 6).map((sh, i) => (
+          <ListRow key={sh.name} sub title={sh.name} line={sh.line} selected={on === 3 + i} onSelect={() => setOn(3 + i)} />
+        ))}
+      </RowGroup>
     </RowList>
     </div>
   );
@@ -2525,8 +2559,8 @@ function DealDemos({ today }: { today: string }) {
           <State label={`entered: typed by the person, ${g.states.interactive}`}>
             <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
           </State>
-          <State label="sourced: filled from a price list and left as it was; the mark opens its source">
-            <FigureField value={rate} label={g.sample.percent} unit="%" words={dealWords.price.per[12]} onCommit={() => undefined} />
+          <State label={`sourced: filled from a price list and left as it was, the grey line under the digits; a press on the box opens a note under it of where it is from, with the link to its source, ${g.states.interactive}`}>
+            <FigureField value={rate} label={g.sample.percent} from={g.sample.from} unit="%" words={dealWords.price.per[12]} onCommit={() => undefined} />
           </State>
           <State label={`optional and not given: a dashed box; emptying a given one clears it, ${g.states.interactive}`}>
             <FigureField value={bound} label={g.sample.field} unit="₪" words={dealWords.builder.minWord} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />

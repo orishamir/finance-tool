@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { AbroadNote, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -22,7 +22,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange", "AbroadNote"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -317,18 +317,50 @@ describe("ChoiceChips", () => {
   });
 });
 
+describe("AbroadNote", () => {
+  const places = [
+    { id: "gb", name: "בריטניה", product: "ISA", title: "TITLE-GB", body: "BODY-GB", rules: "RULES-GB", source: { publishers: ["PUB-A", "PUB-B"], href: "https://www.gov.uk/x" }, facts: ["F1", "F2", "F3"], checked: "2026-11-13" },
+    { id: "us", name: "ארצות הברית", body: "BODY-US", checked: "2026-11-12" },
+  ];
+  const out = html(createElement(AbroadNote, { places, start: "gb", heads: ["H1", "H2", "H3"] }));
+  // the shown note is the last case of LongestCase, after every case laid out unseen
+  const shown = out.slice(out.lastIndexOf('aria-hidden="true" class="invisible"'));
+  it("opens on the country it is given, with its heading, its facts under the three headings and its source line", () => {
+    expect(out).toContain('role="radio" aria-checked="true"');
+    for (const w of ["TITLE-GB", "RULES-GB", "H1", "F3", "PUB-A וPUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
+  });
+  it("keeps a chip for a country with nothing like the product, dashed and saying so in words", () => {
+    expect(out).toMatch(/border-dashed text-muted-foreground[^>]*>.*?ארצות הברית.*?לא נמצא/);
+  });
+  it("lays out every country unseen, the one with nothing found headed by it", () => {
+    expect(out).toContain("בארצות הברית: לא נמצא מוצר דומה");
+    expect(out).toContain("12.11.2026");
+  });
+});
+
 describe("AmountChart's mark labels", () => {
-  it("go a row higher where moving past the value axis's words would put one on the label before it", () => {
-    const axis = [{ right: 100, top: -1000, bottom: 1000 }];
+  it("go a row higher, joined to their point, where moving past the value axis's words would put one on the label before it", () => {
+    const axis = [{ right: 30, top: -1000, bottom: 1000 }];
     const [a, b] = markLabels([{ cx: 5, cy: 200, half: 20 }, { cx: 60, cy: 200, half: 20 }], axis, 600);
-    expect(a).toEqual({ lx: 124, row: 0 });
-    expect(b!.row).toBe(1);
+    expect(a).toEqual({ lx: 54, by: 190, joined: true });
+    expect(b!.by).toBeLessThan(190);
   });
   it("stay over their points in one row where nothing is in the way, and inside the plot", () => {
     expect(markLabels([{ cx: 200, cy: 100, half: 20 }, { cx: 400, cy: 100, half: 20 }, { cx: 598, cy: 100, half: 20 }], [], 600)).toEqual([
-      { lx: 200, row: 0 },
-      { lx: 400, row: 0 },
-      { lx: 580, row: 0 },
+      { lx: 200, by: 90, joined: false },
+      { lx: 400, by: 90, joined: false },
+      { lx: 580, by: 90, joined: false },
     ]);
+  });
+  it("never stand on another mark's point or label, rising past them, and give way where no row is free", () => {
+    // the second point sits just over the first one's label: the first label rises over it
+    const [a, b] = markLabels([{ cx: 200, cy: 100, half: 30 }, { cx: 210, cy: 88, half: 30 }], [], 600);
+    expect(a!.by).toBeLessThan(88 - 7 - 3);
+    expect(b).not.toBeNull();
+    expect(Math.abs(a!.by - b!.by) >= 14 || Math.abs(a!.lx - b!.lx) >= 64).toBe(true);
+    // a label that would hang far from its point gives way rather than run a long line to it
+    expect(markLabels([{ cx: 5, cy: 200, half: 20 }], [{ right: 100, top: -1000, bottom: 1000 }], 600)).toEqual([null]);
+    // near the chart's top a label with its way blocked has nowhere to go
+    expect(markLabels([{ cx: 200, cy: 24, half: 30 }, { cx: 205, cy: 24, half: 30 }], [], 600)[1]).toBeNull();
   });
 });

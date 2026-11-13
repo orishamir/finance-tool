@@ -1,33 +1,13 @@
 // The deal at a glance (method §10.6): first the fees that hold throughout, grouped by what they are charged on, each group with its rate
-// (F-111) where every fee of the group holds throughout, and the marks that belong to it (F-112); then the fees that change, grouped the
+// (F-111) where every fee of the group holds throughout; then the fees that change, grouped the
 // same way at their price now, each group with its rate in the first period, all its fees together; then what changes and when, by date,
 // each changed group with its rate from then, with the months from the device's month to the nearest date (F-110:
 // the page says it as a time from now, so for a deal that starts later it is longer than the first period). Every price carries its
-// standing against its cap (F-113).
-import { dealMarks, groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
+// standing against its cap (F-113). The sums the prices mark (F-112) are not here: the reading's points carry them (reading.ts).
+import { groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { monthKey, monthOf, type MonthKey } from "./model";
-import {
-  engineGroupKey,
-  groupKey,
-  groupOn,
-  groupRateValue,
-  markView,
-  monthBefore,
-  monthsValue,
-  priceAt,
-  priceView,
-  refOf,
-  standingView,
-  subRead,
-  sumsLargest,
-  type DealRead,
-  type FeeRef,
-  type GroupOn,
-  type MarkView,
-  type PriceView,
-  type StandingView,
-} from "./parts";
+import { engineGroupKey, groupKey, groupOn, groupRateValue, monthBefore, monthsValue, priceAt, priceView, refOf, standingView, subRead, type DealRead, type FeeRef, type GroupOn, type PriceView, type StandingView } from "./parts";
 
 /** A fee in a group: its price now (and its sale's, where a sale is priced apart), each with its standing against the cap. */
 export interface GlanceFee extends FeeRef {
@@ -37,14 +17,14 @@ export interface GlanceFee extends FeeRef {
 }
 
 /**
- * Fees charged on one thing, with the rate their shares add to (per side of a trade where a side is priced apart) and their marks. A group
- * of fees that change has no marks, and its rate is the first period's, with the group's fees that hold throughout added in.
+ * Fees charged on one thing, with the rate their shares add to (per side of a trade where a side is priced apart). A group of fees that
+ * change has its rate in the first period, with the group's fees that hold throughout added in. Where a bound, a percent maximum or a flat
+ * price decides is the reading's points' to say (`Reading.statements`).
  */
 export interface GlanceGroup {
   on: GroupOn;
   fees: GlanceFee[];
   rates: { side: DealSide; rate: SiteValue; fees: FeeRef[] }[];
-  marks: MarkView[];
 }
 
 /** A fee's change at a date: the two prices around it, how it changes, and the later price's standing. */
@@ -82,45 +62,33 @@ export interface Glance {
 /** The order the groups are listed in: the actions as F-111 names them, then what is held, the account, cover, and what is not said. */
 const ORDER = ["action:trade", "action:conversion", "action:deposit", "action:distribution", "action:transfer_out", "action:none", "held", "account", "cover", "unsaid"];
 
-/**
- * What the fees that change touch in any period, on either side: the groups their prices fall in, and whether one of them is ever a sum
- * on the account or a custody fee, which the meeting of the sums with custody adds (F-112 (3)).
- */
-function touchedBy(r: DealRead, idx: readonly number[]): { keys: Set<string>; meet: boolean } {
+/** The groups the fees that change fall in, in any period and on either side. */
+function touchedBy(r: DealRead, idx: readonly number[]): Set<string> {
   const keys = new Set<string>();
-  let meet = false;
   for (const i of idx) {
     const fee = r.fees[i]!;
-    for (const p of r.reading.periods)
-      for (const sale of fee.sale ? [false, true] : [false]) {
-        const price = priceAt(fee, p.from, sale);
-        const on = groupOn(r, fee, price);
-        keys.add(groupKey(on));
-        if ((price.form === "sum" && on.on === "account") || (price.form === "held" && fee.kind === "custody")) meet = true;
-      }
+    for (const p of r.reading.periods) for (const sale of fee.sale ? [false, true] : [false]) keys.add(groupKey(groupOn(r, fee, priceAt(fee, p.from, sale))));
   }
-  return { keys, meet };
+  return keys;
 }
 
 /**
- * The fees `idx` (indices into the read fees) grouped by what their price now is charged on; with rates and marks where `adds`. A group's
- * rate is the sum of all its fees (F-111), so where `adds` holds for only some of a group's fees (`others` touch the group in some period)
- * the group lists them with no rate; the meeting of the sums with custody is left out likewise where another fee would add to it.
+ * The fees `idx` (indices into the read fees) grouped by what their price now is charged on; with rates where `adds`. A group's rate is
+ * the sum of all its fees (F-111), so where `adds` holds for only some of a group's fees (`others` touch the group in some period) the
+ * group lists them with no rate.
  */
-function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: { keys: Set<string>; meet: boolean } = { keys: new Set(), meet: false }): GlanceGroup[] {
+function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: Set<string> = new Set()): GlanceGroup[] {
   const at = r.reading.periods[0]!.from;
   const byKey = new Map<string, GlanceGroup>();
-  const keyOf = new Map<number, string>();
   for (const i of idx) {
     const fee = r.fees[i]!;
     const p = priceAt(fee, at);
     const on = groupOn(r, fee, p);
     const key = groupKey(on);
-    keyOf.set(i, key);
     const view = priceView(r.fees, i, p, r.today);
     const sp = fee.sale ? priceAt(fee, at, true) : null;
     const sv = sp ? priceView(r.fees, i, sp, r.today) : null;
-    const g = byKey.get(key) ?? { on, fees: [], rates: [], marks: [] };
+    const g = byKey.get(key) ?? { on, fees: [], rates: [] };
     g.fees.push({ ...refOf(fee), price: view, standing: standingView(r, r.fees, i, p, view), ...(sp && sv ? { sale: { price: sv, standing: standingView(r, r.fees, i, sp, sv) } } : {}) });
     byKey.set(key, g);
   }
@@ -129,15 +97,7 @@ function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: { 
     for (const g of groupRate(sub.engine, sub.period)) {
       const key = engineGroupKey(g);
       const target = byKey.get(key);
-      if (target && !others.keys.has(key)) target.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(sub.fees, g, at, r.today), fees: g.fees.map((k) => refOf(sub.fees[k]!)) });
-    }
-    for (const m of dealMarks(sub.engine, sub.period)) {
-      if (m.kind === "meet" && others.meet) continue;
-      const key = m.kind === "meet" ? "held" : keyOf.get(idx[m.fee]!)!;
-      // the sums are the largest cost of holding only where they are in every period, against every other share of the whole deal
-      const whole = m.kind === "meet" ? { ...m, fees: m.fees.map((k) => idx[k]!), against: m.against.map((k) => idx[k]!) } : null;
-      const largest = !!whole && r.reading.periods.every((p) => sumsLargest(r.engine, p, whole));
-      byKey.get(key)?.marks.push(markView(m, sub.fees, sub.period, r.today, largest));
+      if (target && !others.has(key)) target.rates.push({ side: g.on === "action" ? g.side : "all", rate: groupRateValue(sub.fees, g, at, r.today), fees: g.fees.map((k) => refOf(sub.fees[k]!)) });
     }
   }
   return [...byKey.entries()].sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)).map(([, g]) => g);

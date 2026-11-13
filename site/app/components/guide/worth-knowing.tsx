@@ -4,6 +4,8 @@
 //
 // current-account page: a row can also be a fact computed from the published records, not a rule
 // (`WorthFactRow`): it carries its own content, every figure in it through `Num`, and is listed after the rule rows.
+//
+// `abroad`, the note on how the product works in other countries (D114), closes the section, after the cards, at the cards' full width.
 import type { ReactNode } from "react";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideWorth as copy, provenance as provCopy } from "../../copy";
@@ -51,8 +53,8 @@ export function worthRows(ids: readonly string[] | undefined, rules: Record<stri
   return rows;
 }
 
-export function WorthKnowing({ rows, facts = [] }: { rows: WorthRow[]; facts?: WorthFactRow[] }) {
-  if (rows.length === 0 && facts.length === 0) return null;
+export function WorthKnowing({ rows, facts = [], abroad }: { rows: WorthRow[]; facts?: WorthFactRow[]; abroad?: ReactNode }) {
+  if (rows.length === 0 && facts.length === 0 && !abroad) return null;
   return (
     <GuideSection id="worth" title={copy.title}>
       <p className="text-muted-foreground max-w-measure">{copy.line}</p>
@@ -83,6 +85,7 @@ export function WorthKnowing({ rows, facts = [] }: { rows: WorthRow[]; facts?: W
           </li>
         ))}
       </ul>
+      {abroad && <div data-wide>{abroad}</div>}
     </GuideSection>
   );
 }

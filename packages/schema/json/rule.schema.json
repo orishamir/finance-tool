@@ -68,6 +68,7 @@
                   "nis_millions",
                   "usd",
                   "eur",
+                  "gbp",
                   "pct",
                   "pct_per_year",
                   "pct_of_deposit",
@@ -77,6 +78,9 @@
                   "nis_per_trade",
                   "nis_per_transfer",
                   "usd_per_share",
+                  "nis_per_share",
+                  "eur_per_share",
+                  "gbp_per_share",
                   "usd_per_trade",
                   "gbp_per_trade",
                   "usd_per_event",
@@ -175,7 +179,8 @@
                       "average-wage-linked",
                       "provider-set",
                       "market",
-                      "founder"
+                      "founder",
+                      "set yearly"
                     ]
                   },
                   {
@@ -266,6 +271,7 @@
                         "nis_millions",
                         "usd",
                         "eur",
+                        "gbp",
                         "pct",
                         "pct_per_year",
                         "pct_of_deposit",
@@ -275,6 +281,9 @@
                         "nis_per_trade",
                         "nis_per_transfer",
                         "usd_per_share",
+                        "nis_per_share",
+                        "eur_per_share",
+                        "gbp_per_share",
                         "usd_per_trade",
                         "gbp_per_trade",
                         "usd_per_event",
@@ -373,7 +382,8 @@
                             "average-wage-linked",
                             "provider-set",
                             "market",
-                            "founder"
+                            "founder",
+                            "set yearly"
                           ]
                         },
                         {
@@ -467,6 +477,7 @@
                         "nis_millions",
                         "usd",
                         "eur",
+                        "gbp",
                         "pct",
                         "pct_per_year",
                         "pct_of_deposit",
@@ -476,6 +487,9 @@
                         "nis_per_trade",
                         "nis_per_transfer",
                         "usd_per_share",
+                        "nis_per_share",
+                        "eur_per_share",
+                        "gbp_per_share",
                         "usd_per_trade",
                         "gbp_per_trade",
                         "usd_per_event",
@@ -574,7 +588,8 @@
                             "average-wage-linked",
                             "provider-set",
                             "market",
-                            "founder"
+                            "founder",
+                            "set yearly"
                           ]
                         },
                         {
@@ -656,6 +671,7 @@
                         "nis_millions",
                         "usd",
                         "eur",
+                        "gbp",
                         "pct",
                         "pct_per_year",
                         "pct_of_deposit",
@@ -665,6 +681,9 @@
                         "nis_per_trade",
                         "nis_per_transfer",
                         "usd_per_share",
+                        "nis_per_share",
+                        "eur_per_share",
+                        "gbp_per_share",
                         "usd_per_trade",
                         "gbp_per_trade",
                         "usd_per_event",
@@ -763,7 +782,8 @@
                             "average-wage-linked",
                             "provider-set",
                             "market",
-                            "founder"
+                            "founder",
+                            "set yearly"
                           ]
                         },
                         {

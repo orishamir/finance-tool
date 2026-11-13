@@ -47,6 +47,7 @@ export { ChartTip, ZoomBar, ZoomBrush, pickDim, useChartPick, useYearZoom, type 
 export { PHONE_GONE, TableCols, type ColWidth } from "./table-cols";
 export { FilterChip } from "./filter-chip";
 export { DidYouKnow, type FactItem } from "./did-you-know";
+export { AbroadNote, type AbroadPlace } from "./abroad-note";
 export { useSoftSwap, useSwapGlide } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, ProductFigures, ProductIdLink, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, RowFoldButton, type ProductColumn, type ProductGroup, type ProductRow, type FoldMark } from "./product-table";
 export { PageTabs, type PageTab } from "./page-tabs";
@@ -66,7 +67,7 @@ export { ClampedText } from "./clamped-text";
 export { TabStrip, panelId, tabId, tabKeys, type StripTab } from "./tab-strip";
 export { PanelHead, TabCards, type TabCard } from "./tab-cards";
 export { OptionBars, type OptionBar } from "./option-bars";
-export { ChooseRow, GoRow, GroupHead, ListRow, OpenRow, RowList } from "./list-row";
+export { ChooseRow, GoRow, GroupHead, ListRow, OpenRow, RowGroup, RowList } from "./list-row";
 export { SideNav, SidePage, type SideNavGroup, type SideNavItem } from "./side-nav";
 export { GoLink, TextLink } from "./go-link";
 export { MeterBar } from "./meter-bar";

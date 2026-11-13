@@ -7,6 +7,7 @@ import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, ProseList } from "../../components/kit";
 import { sectionTitle } from "../../lib/guide-nav";
 import { fmt } from "../../lib/format";
+import { AbroadAmount, AbroadCount, AbroadFigure, AbroadSaid, AbroadYears } from "./abroad-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 const Whole = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} display={fmt.nisWhole} /> : null);
@@ -94,6 +95,23 @@ export const content: GuideContent = {
       <RulesLine ids={["TXH-22"]} />
     </>
   ),
+  // how the same kind of saving works in four other countries (D114); every fact is read on that country's own pages, data/abroad/
+  abroad: {
+    heads: ["תוספת המעסיק", "מס הכנסה", "כמה זמן להשאיר בתוכנית"],
+    none: (country) => `האתר לא מצא ב${country} חיסכון שגם העובד וגם המעסיק מפקידים אליו, שנפתח אחרי כמה שנים ושלא נועד לפרישה. זה לא אומר שאין כזה.`,
+    countries: {
+      gb: {
+        title: (p) => <>בבריטניה: תוכנית מניות לעובדים (<bdi dir="ltr">{p}</bdi>)</>,
+        body: (f) => <>המעסיק נותן <AbroadSaid v={f("who")}>לעובדים</AbroadSaid> מניות של החברה, או מוסיף מניות על מה שהעובד קונה מהמשכורת. מי שמשאיר אותן בתוכנית <AbroadFigure v={f("keep_years")} /> שנים לא משלם עליהן מס הכנסה וביטוח לאומי.</>,
+        tiles: (f) => [<>עד <AbroadCount v={f("employer_match")} words={{ one: "מניה אחת", two: "שתי מניות", many: "מניות" }} /> על כל מניה שקונים</>, <><AbroadSaid v={f("income_tax")}>אין</AbroadSaid>, אחרי <AbroadYears v={f("keep_years")} /></>, <AbroadYears v={f("keep_years")} />],
+      },
+      fr: {
+        title: (p) => <>בצרפת: תוכנית <bdi dir="ltr">{p}</bdi></>,
+        body: (f) => <>חיסכון <AbroadSaid v={f("who")}>דרך מקום העבודה</AbroadSaid>. הכסף נעול לפחות <AbroadYears v={f("keep_years")} />, ויש מקרים שבהם אפשר למשוך מוקדם, למשל כשקונים דירה למגורים. המעסיק יכול להוסיף על מה שהעובד מפקיד.</>,
+        tiles: (f) => [<>עד פי <AbroadFigure v={f("employer_multiple")} />, ועד <AbroadAmount v={f("employer_match")} /></>, <AbroadSaid v={f("income_tax")}>אין על תוספת המעסיק</AbroadSaid>, <>לפחות <AbroadYears v={f("keep_years")} /></>],
+      },
+    },
+  },
   risks: () => (
     <>
       <p className="max-w-measure">הפסד בהשקעות הוא שלכם: שווי הקרן עולה ויורד עם ההשקעות של המסלול שבחרתם, והמדינה לא ערבה לו.</p>

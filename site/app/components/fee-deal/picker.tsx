@@ -2,7 +2,9 @@
 // or the tracks of a provident-family kind grouped by company, with a box that filters them by name. The tracks' head names the deal's
 // product, and each track is listed by its short name (D54: the company and the product cut from it, the group's head already says them);
 // the box finds a track by its full name or its short one, or by its company. A price list says under its name how
-// many of its lines it leaves out of the deal; a track says at its end the yearly fee on the savings its pick fills. On opening, the focus is
+// many of its lines it leaves out of the deal; a house whose price list prints several ways to buy what the deal holds lists them under its
+// name, each a row with its trade price, which fills the deal with that plan; a track says at its end the yearly fee on the savings its
+// pick fills. On opening, the focus is
 // in the box, and the arrow keys go from it down the rows and back. A pick is the page's: opened from the bar it opens a new deal from the template and never
 // changes the one on screen; opened from the builder's track step it sets the track on the deal on screen (`pickTrack`).
 // The deal a template filled says so in the builder (`TemplateNote`), with what the template left out and why.
@@ -11,9 +13,10 @@ import { feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, ListRow, RowList, SearchField, Tag } from "../kit";
+import { Disclosure, GroupHead, ListRow, RowGroup, RowList, SearchField, Tag } from "../kit";
 import type { SiteValue } from "../../lib/value";
-import { feeName } from "./words";
+import type { PriceView } from "../../lib/fee-deal/parts";
+import { feeName, PriceWords } from "./words";
 
 const w = copy.picker;
 const f = copy.filled;
@@ -24,6 +27,9 @@ export function leavesText(left: readonly LeftOut[] | undefined): string | undef
   if (left.some((l) => l.why === "no-holding")) return w.noHolding;
   return countPhrase(left.length, w.leaves);
 }
+
+/** A plan's price as plain words inside its row, which is one button: its figures open no source there (the deal it fills shows them). */
+const plainPrice = (price: PriceView): PriceView => ({ ...price, figures: Object.fromEntries(Object.entries(price.figures).map(([k, v]) => [k, { ...v, field: true }])) });
 
 /** What a track's row says at its end: the yearly fee on the savings its pick fills ("0.52% בשנה מהחיסכון"), as its source prints it. */
 const savingText = (v: SiteValue | undefined): string | undefined => (v && typeof v.value === "number" ? `${formatValue(v.value, v.unit)} ${w.saving}` : undefined);
@@ -95,9 +101,18 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
               <div key={group} className="flex flex-col gap-2">
                 <GroupHead count={tracks ? items.length : undefined}>{group}</GroupHead>
                 <RowList label={group}>
-                  {items.map((o) => (
-                    <ListRow key={o.id} title={rowTitle(o)} meta={o.source === "track" ? savingText(o.saving) : leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
-                  ))}
+                  {items.map((o) =>
+                    o.source === "house" && o.plans ? (
+                      // a house with several ways to buy what the deal holds: its name, and each plan a row of its own with its trade price
+                      <RowGroup key={o.id} title={o.name} label={o.name}>
+                        {o.plans.map((plan) => (
+                          <ListRow key={plan.id} sub title={plan.name} line={<PriceWords price={plainPrice(plan.price)} kind="trade" />} onSelect={() => onPick(plan.id)} />
+                        ))}
+                      </RowGroup>
+                    ) : (
+                      <ListRow key={o.id} title={rowTitle(o)} meta={o.source === "track" ? savingText(o.saving) : leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
+                    ),
+                  )}
                 </RowList>
               </div>
             ))}

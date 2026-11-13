@@ -63,8 +63,8 @@ yes or no on a recommendation.
   `docs/glossary.md`. Raise a word only where those do not decide it.
 - Every figure carries its assumption. Keep what was read apart from what was
   inferred, and never sound surer than the evidence.
-- When work runs while he is away, finish what he asked, then stop and list
-  suggestions rather than starting more.
+- When work runs while he is away, finish what he asked, then stop rather
+  than starting more.
 
 ## What to work on
 

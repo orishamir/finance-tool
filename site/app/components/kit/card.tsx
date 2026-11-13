@@ -11,8 +11,9 @@ type CardProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   children: ReactNode;
   as?: "div" | "section" | "li" | "article" | "aside" | "ul" | "header";
   pad?: CardPad;
-  /** `accent`: a 2 px border in the action colour, for the one card a list leads with (a search's closest match). */
-  edge?: "accent";
+  /** `accent`: a 2 px border in the action colour, for the one card a list leads with (a search's closest match). `info`: a thin frame in
+   *  the info colour, for a note that stands beside the page's own matter, not in it (the guide's note on other countries). */
+  edge?: "accent" | "info";
   ref?: Ref<HTMLElement>;
 };
 
@@ -20,7 +21,7 @@ type CardProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
 export function Card({ children, className, as = "div", pad = "default", edge, ...rest }: CardProps) {
   const As = as as ElementType;
   return (
-    <As className={cx("bg-card", edge === "accent" ? "border-2 border-primary" : "border border-border", "rounded-lg", CARD_PAD[pad], className)} {...rest}>
+    <As className={cx("bg-card", edge === "accent" ? "border-2 border-primary" : edge === "info" ? "border border-info-border" : "border border-border", "rounded-lg", CARD_PAD[pad], className)} {...rest}>
       {children}
     </As>
   );
