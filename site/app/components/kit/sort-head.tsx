@@ -4,18 +4,19 @@
 // state on the column too (`ProductColumn.sort`), which sets `aria-sort` on the head's cell. The label starts where a plain head's words
 // start, and the arrow stands on its first line, so a row of heads, sorting or not, reads along one top line. `note` is a short muted
 // second line under the label, inside the head's 44 px (the year of a column's average, "ממוצע 2025"); `SortNote` draws the same line
-// under a head that does not sort.
+// under a head that does not sort. `raised` is for a head with a "?" beside it: the mark's 44 px press area reaches over the head's end, and
+// the raised button keeps every press on its label and arrow.
 import { cx } from "./cx";
 
 export type SortState = "none" | "ascending" | "descending";
 
-export function SortHead({ label, state, onPress, className, alsoHolds, note }: { label: string; state: SortState; onPress: () => void; className?: string; /** The other words this head can carry (the name column says "המסלול" or "החברה"): it holds the longest, so a change of word moves nothing. */ alsoHolds?: string[]; /** A short muted line under the label. */ note?: string }) {
+export function SortHead({ label, state, onPress, className, alsoHolds, note, raised }: { label: string; state: SortState; onPress: () => void; className?: string; /** The other words this head can carry (the name column says "המסלול" or "החברה"): it holds the longest, so a change of word moves nothing. */ alsoHolds?: string[]; /** A short muted line under the label. */ note?: string; /** A "?" stands beside the head: the button is on the tap areas' layer 1, so the mark's 44 px area takes no press on the arrow. */ raised?: boolean }) {
   const on = state !== "none";
   return (
     <button
       type="button"
       onClick={onPress}
-      className={cx("inline-flex items-start gap-1 min-h-11 -my-1 pt-1 text-start rounded-sm hover:text-foreground transition-colors duration-[var(--duration-fast)]", on ? "text-foreground" : "text-muted-foreground", className)}
+      className={cx("inline-flex items-start gap-1 min-h-11 -my-1 pt-1 text-start rounded-sm hover:text-foreground transition-colors duration-[var(--duration-fast)]", on ? "text-foreground" : "text-muted-foreground", raised && "relative z-[1]", className)}
     >
       <span className="inline-flex flex-col">
         <span className="inline-grid *:[grid-area:1/1]">
@@ -35,7 +36,7 @@ export function SortHead({ label, state, onPress, className, alsoHolds, note }: 
   );
 }
 
-const SortNoteLine = ({ note }: { note: string }) => <span className="text-xs leading-4 font-normal text-muted-foreground">{note}</span>;
+const SortNoteLine = ({ note }: { note: string }) => <span className="text-xs leading-4 font-normal whitespace-nowrap text-muted-foreground">{note}</span>;
 
 /** A plain head that does not sort, with the muted second line `SortHead` takes as `note`, in the same 44 px. */
 export function SortNote({ label, note }: { label: string; note: string }) {

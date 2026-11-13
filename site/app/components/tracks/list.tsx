@@ -234,9 +234,9 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
 export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
-  const head = (id: SortId, label: string, alsoHolds?: string[], note?: string) =>
+  const head = (id: SortId, label: string, alsoHolds?: string[], note?: string, raised?: boolean) =>
     sortable.has(id) ? (
-      <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} note={note} />
+      <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} note={note} raised={raised} />
     ) : note ? (
       <SortNote label={label} note={note} />
     ) : (
@@ -251,7 +251,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
     const terms = feeMarkTerms(side, view.id, wrappers);
     return (
       <span className="inline-flex items-start gap-1">
-        {head(id, label, undefined, average)}
+        {head(id, label, undefined, average, true)}
         <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} />
       </span>
     );
@@ -261,8 +261,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const compactColumns: ProductColumn[] = [
     { id: "name", head: head("name", t.columns.track), sort: state("name") },
     { id: "fund", head: t.columns.fund, width: 5 },
-    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 10, sort: state("fee") },
-    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 7, sort: state("dep") }] : []),
+    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 12, sort: state("fee") },
+    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 8.5, sort: state("dep") }] : []),
     { id: "stocks", head: head("stock", short.stocks), width: 5.5, sort: state("stock") },
     { id: "currency", head: short.currency, width: 5 },
     { id: "y3", head: short.y3, width: 7.5, headClassName: "whitespace-nowrap" },
