@@ -167,16 +167,19 @@ function mainFigure(p: DealPrice): { of: string; value: number } | null {
 const near = (a: number, b: number): boolean => Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
 
 /**
- * Whether a price charges nothing (F-110): a free price, a share of 0 or a sum of 0 per unit with no minimum above nothing and no flat
- * price above nothing (a maximum and a cap on nothing cap nothing), or a sum of 0.
+ * Whether a price charges nothing (F-110): a free price, a share or a sum per unit of 0 with no minimum above nothing, or a cap of 0
+ * (which holds every action to nothing), either with no flat price above nothing (the flat price is charged alone, beside the cap; a
+ * maximum and a cap on nothing cap nothing), or a sum of 0.
  */
 export function chargesNothing(p: DealPrice): boolean {
   switch (p.kind) {
     case "free":
       return true;
     case "action":
-    case "perUnit":
-      return (p.kind === "action" ? p.rate : p.amount) === 0 && !(p.min !== undefined && p.min > 0) && !(p.flat !== undefined && p.flat.amount > 0);
+    case "perUnit": {
+      const none = ((p.kind === "action" ? p.rate : p.amount) === 0 && !(p.min !== undefined && p.min > 0)) || p.cap === 0;
+      return none && !(p.flat !== undefined && p.flat.amount > 0);
+    }
     case "held":
       return p.rate === 0 && !(p.min !== undefined && p.min > 0);
     case "sum":

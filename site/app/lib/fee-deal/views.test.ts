@@ -175,6 +175,22 @@ describe("templates", () => {
     expect(filled.fees[0]!.id).toBe("fee-trade");
     expect(filled.fees.find((f) => f.kind === "fund_management")!.stages[0]!.price).toMatchObject({ rate: { v: 0.07 } });
   });
+  it("fills a charge for each corporate event abroad only on a fund that distributes (F-103)", () => {
+    const abroad = (payout: "accumulating" | "distributing"): FeeDeal => ({ ...newDeal("brokerage-account"), held: { place: "abroad", currency: "USD", payout } });
+    const kindsOf = (d: FeeDeal) => fillDeal(d, "house:one-zero", data, TODAY)!.fees.map((f) => f.kind);
+    expect(kindsOf(abroad("accumulating"))).not.toContain("corporate_event");
+    expect(kindsOf(abroad("distributing"))).toContain("corporate_event");
+  });
+  it("fills the conversion F-63 prices a house by: Interactive Brokers' automatic conversion, which charges nothing, over its spot line", () => {
+    const held = { place: "abroad", currency: "USD", payout: "accumulating" } as const;
+    const filled = fillDeal({ ...newDeal("brokerage-account"), held }, "house:interactive-brokers", data, TODAY)!;
+    const fx = filled.fees.filter((f) => f.kind === "fx");
+    expect(fx).toHaveLength(1);
+    expect(fx[0]!.stages[0]!.price).toMatchObject({ form: "action", rate: { v: 0 } });
+    expect(fx[0]!.stages[0]!.price).not.toHaveProperty("min.v");
+    const holding = data.houses.find((h) => h.id === "interactive-brokers")!.holdings["abroad:USD"] ?? data.houses.find((h) => h.id === "interactive-brokers")!.holdings.abroad!;
+    expect(holding.left).toContainEqual({ lineId: "interactive-brokers-fx-spot", why: "another-line" });
+  });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
     expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);
     const tracks = templateOptions("kupat-gemel-lehashkaa", data, TODAY);

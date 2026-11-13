@@ -550,6 +550,12 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     expect(dealMarks(d, first(d)).map((m) => [m.kind, m.amount])).toEqual([["cap", 1000], ["max", 1000]]);
   });
 
+  it("marks a cap on a rate of nothing, and no minimum or maximum (Excellence's 11 $ for each trade, at most 2%)", () => {
+    // 0% with 11 $ at least and at most: the cap up to 11 / 2% = 550 $, and no stretch of the rate for a bound to end
+    const d = one({ kind: "action", rate: 0, min: 11, max: 11, cap: 0.02, currency: "USD" });
+    expect(dealMarks(d, first(d)).map((m) => [m.kind, m.amount])).toEqual([["cap", 550]]);
+  });
+
   it("gives a flat price its stretch, and the minimum starts where it stops (Mizrahi-Tefahot's conversion in the internet service)", () => {
     // 0.133%, at least 5.4 $, at most 2,250 $; 2.85 $ for a conversion up to 50 $
     const d = one({ kind: "action", rate: 0.00133, min: 5.4, max: 2250, flat: { amount: 2.85, upTo: 50 }, currency: "USD" }, "fx");
@@ -594,6 +600,20 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     expect(actionCost(d, first(d), "distribution", 1000, "buy", { USD: 3.7 }).total).toBeCloseTo(185, 10);
     expect(() => actionCost(d, first(d), "distribution", 1000)).toThrow(RangeError);
     expect(dealMarks(d, first(d))).toEqual([]);
+  });
+
+  it("counts a cap of 0 as charging nothing, unless a flat price above nothing is charged beside it", () => {
+    const capped: DealPrice = { kind: "action", rate: 0.0025, min: 15, cap: 0 };
+    expect(changeKind(free, capped)).toBeNull();
+    expect(changeKind(commission, capped)).toBe("ends");
+    expect(changeKind(free, { kind: "perUnit", amount: 0.005, min: 1, cap: 0, currency: "USD" })).toBeNull();
+    const d: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: capped }] }] };
+    expect(actionCost(d, first(d), "trade", 1000).total).toBe(0);
+    // the flat price is charged alone on an action up to its sum, beside the cap
+    const flat: DealPrice = { ...capped, flat: { amount: 4, upTo: 500 } };
+    expect(changeKind(free, flat)).toBe("starts");
+    const f: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: flat }] }] };
+    expect(actionCost(f, first(f), "trade", 400).total).toBe(4);
   });
 
   it("counts a flat price as charging something, and a price per unit or a cap as a change", () => {

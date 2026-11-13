@@ -2,7 +2,7 @@
 // the person edits): a house's price list for a securities account, the lines that apply to what the account holds, read by the engine's
 // own line choice (`tariffLine`, F-63); and a regulated track's two fees for the provident family. A filled figure keeps its record's
 // source and date (sourced) until the person changes it (entered, `retyped`).
-import { lineClasses, memberKindOf, REDEMPTION_BAND, STANDING_ORDER_BAND, tariffLine, type LineChoice } from "@finance-tool/engine";
+import { lineClasses, memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, tariffLine, type LineChoice } from "@finance-tool/engine";
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
@@ -10,7 +10,7 @@ import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
 import { isProductId, NAME_MAX, newDeal, newFeeId, pricePriced, untouched, type BoundCurrency, type Fee, type FeeDeal, type Flat, type Months, type Num, type Price, type ProviderKind } from "./model";
 import { priceView, type PriceView } from "./parts";
-import type { FeeKindId, Held } from "./shapes";
+import { fitsHeld, type FeeKindId, type Held } from "./shapes";
 import { sourcedOf } from "./values";
 
 /** A fee a template fills: a fee without its id in the deal. */
@@ -193,10 +193,27 @@ function planLines(snap: FeesSnapshot, place: Held["place"], currency: string | 
 }
 
 /**
+ * The other ways a house converts for a holding beside its standard conversion line (F-63: a banded conversion line with no currency of
+ * its own and no recurring plan, Interactive Brokers' automatic conversion, F-13).
+ */
+function conversionWays(snap: FeesSnapshot, place: Held["place"], currency: string | null, channel: string): Line[] {
+  return snap.lines.filter((l) => l.base === "fx" && l.band !== null && l.band !== STANDING_CONVERSION_BAND && !l.conversion_currency && l.not_ranked === undefined && appliesTo(l, place, currency, channel));
+}
+
+/**
+ * A conversion line that charges nothing on any conversion: a rate of nothing with no minimum and no flat price, and no spread priced
+ * beside it (F-13: a spread with no ceiling is not priced, D65). No other way to convert costs less on any amount, so F-63's cheapest
+ * reading of the house converts this way whatever the plan.
+ */
+const convertsFree = (l: Line): boolean =>
+  has(l.rate) && l.rate.unit === "pct_of_trade" && l.rate.value === 0 && !has(l.min) && !(l.flat_up_to && has(l.flat_up_to.amount) && l.flat_up_to.amount.value > 0) && !(has(l.spread) && l.spread.value > 0);
+
+/**
  * One holding's fees from a house's price list: the channel is the first of `HOUSE_CHANNELS` with a trade line for the holding's class, or
  * with several ways to buy it (`planLines`); every base's list line is the one a run reads (`tariffLine`); a conversion only where the
- * holding is bought abroad in another currency. Where the list prints two or more ways to buy the holding (its standard trade line where it
- * has one, and its plans), each is a plan with its own trade fee.
+ * holding is bought abroad in another currency, from the way F-63 prices the house by: the standard line, or another way to convert that
+ * charges nothing on any conversion (`convertsFree`), which is always the cheapest. Where the list prints two or more ways to buy the
+ * holding (its standard trade line where it has one, and its plans), each is a plan with its own trade fee.
  */
 function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string | null): HoldingTemplate | undefined {
   const choice = (channel: string): LineChoice => ({ instrumentClass: classOf(place), wrapper: "brokerage-account", channel, ...(currency ? { currency: { code: currency } } : {}) });
@@ -220,9 +237,11 @@ function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string 
   const ways = [...(standard && standard !== "ambiguous" && standard.band === null ? [standard] : []), ...planLines(snap, place, currency, channel)];
   const plans = ways.length >= 2 ? ways : [];
   for (const l of plans) read.add(l.id);
+  // the conversion F-63 takes: a way that charges nothing wins over the standard line, which is then left as another line's
+  const freeWay = place === "abroad" && currency !== null ? conversionWays(snap, place, currency, channel).find(convertsFree) : undefined;
   for (const base of HOUSE_BASES) {
     if (base === "fx" && (place === "israel" || currency === null)) continue;
-    const l = tryLine(channel, base);
+    const l = base === "fx" && freeWay ? freeWay : tryLine(channel, base);
     if (l === undefined) continue;
     // with plans, a trade line the run reads by itself is the standard one, and the plans hold the rest
     if (base === "trade" && plans.length > 0 && (l === "ambiguous" || l.band !== null)) {
@@ -273,13 +292,16 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), holdings };
 }
 
-/** The holding a deal's template reads: Israel, abroad in a currency with its own line, or abroad in any other; with no conversion in shekels. */
+/**
+ * The holding a deal's template reads: Israel, abroad in a currency with its own line, or abroad in any other; with only the fees that fit
+ * what is held (`fitsHeld`): no conversion in shekels, and no charge for each corporate event on a fund that accumulates, which pays no
+ * dividend (F-103).
+ */
 export function holdingOf(template: HouseTemplate, held: Held): HoldingTemplate | undefined {
-  if (held.place === "israel") return template.holdings.israel;
-  const own = template.holdings[`abroad:${held.currency}`];
-  const h = own ?? template.holdings.abroad;
-  if (!h || held.currency !== "ILS") return h;
-  return { ...h, fees: h.fees.filter((f) => f.kind !== "fx" && f.kind !== "fx_spread") };
+  const h = held.place === "israel" ? template.holdings.israel : (template.holdings[`abroad:${held.currency}`] ?? template.holdings.abroad);
+  if (!h) return h;
+  const fits = (f: TemplateFee) => fitsHeld(f.kind, held);
+  return { ...h, fees: h.fees.filter(fits), ...(h.plans ? { plans: h.plans.map((p) => ({ ...p, fees: p.fees.filter(fits) })) } : {}) };
 }
 
 /**

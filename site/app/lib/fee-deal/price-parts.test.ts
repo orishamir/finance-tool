@@ -131,8 +131,8 @@ describe("the templates", () => {
     const filled = fillDeal(deal, fixed!.id, data, TODAY)!;
     expect(filled.fees.find((f) => f.kind === "trade")!.stages[0]!.price).toMatchObject({ form: "perUnit", amount: { v: 0.005 }, cap: { v: 1 } });
     expect(filled.template).toEqual({ id: fixed!.id, name: expect.stringContaining("IBKR Pro - Fixed") });
-    // the plan's template leaves out neither the trade nor the other plans, only the automatic conversion it does not price
-    expect(templateOf(deal, fixed!.id, data, TODAY)!.left).toEqual([{ line: "interactive-brokers-fx-auto-conversion", why: "plan" }]);
+    // the plan's template leaves out neither the trade nor the other plans, only the spot conversion: F-63 converts by the automatic one, which charges nothing
+    expect(templateOf(deal, fixed!.id, data, TODAY)!.left).toEqual([{ line: "interactive-brokers-fx-spot", why: "another-line" }]);
     // the house alone fills no trade fee: its list does not say which plan
     expect(templateOf(deal, "house:interactive-brokers", data, TODAY)!.left).toContainEqual({ line: "trade", why: "ambiguous" });
     expect(templateOf(deal, "house:interactive-brokers/no-such-line", data, TODAY)).toBeNull();
