@@ -9,8 +9,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   flush?: boolean;
   /**
    * `sm`: on `quiet` and `destructive`, 13 px words with no height of their own and a 44 px tap area, for a text action inside a line of
-   * small text; on `icon`, a 36 px round button in the muted ink, its tap area still 44 px, for one that floats over content (a sheet's
-   * back and close). `compact`: on `quiet`, a text action among chips (the rules page's examples): 44 px high on a phone, where the chips
+   * small text; on `icon`, a 36 px round button in the muted ink, its tap area still 44 px both ways, for one that floats over content (a
+   * sheet's back and close, a part's ✕). `compact`: on `quiet`, a text action among chips (the rules page's examples): 44 px high on a phone, where the chips
    * may stand in a strip that scrolls sideways and would cut a tap area off, and from `lg` 28 px high with a 44 px tap area. `sm` on
    * `ghost`: an icon alone in a 36 px round face with a 44 px tap area (its words in `aria-label`).
    */
@@ -61,7 +61,7 @@ export function Button({ variant = "secondary", flush, size, gap, wide, classNam
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
     destructive: cx("text-destructive rounded-md", textAction, textHeight, side),
     icon: size === "sm"
-      ? "size-9 tap-area inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
+      ? "size-9 tap-wide inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
       : "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (

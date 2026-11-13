@@ -14,7 +14,7 @@ import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead
 import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen } from "./links";
-import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName, sumDisplay, upToDisplay } from "./words";
+import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, feeName, refName, sumDisplay, upToDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
 
 const w = copy.read;
@@ -384,13 +384,13 @@ function MarkAmount({ mark, value }: { mark: MarkView; value: SiteValue }) {
 function MarkSentence({ mark }: { mark: MarkView }) {
   const p = w.points;
   if (mark.kind === "meet") return <MeetSentence mark={mark} />;
-  // a step's top (F-115): up to it this case's price, above it the next one's
+  // a step's top (F-115): where the fee's price changes, by the fee's own name; the steps on either side are named by their stretch
   if (mark.kind === "edge")
     return (
       <>
         {copy.cases.step.edge.before}
         <Fig value={mark.amount} />
-        {fill(copy.cases.step.edge.mid, { name: refName(mark.fee) })}
+        {fill(copy.cases.step.edge.mid, { name: feeName(mark.fee.kind, mark.fee.name) })}
       </>
     );
   if (mark.on === "held") {
@@ -519,7 +519,7 @@ function StatementLine({ statement, reading }: { statement: Statement; reading: 
 }
 
 /**
- * A part of a price the reading states without computing (F-118), on the fee it is printed with: "{fee}: נוספת עמלה של צד שלישי בלי סכום
+ * A part of a price the reading states without computing (method §10.6, "What the page states and does not compute"), on the fee it is printed with: "{fee}: נוספת עמלה של צד שלישי בלי סכום
  * בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג."
  */
 function StatedLine({ part }: { part: StatedPart }) {
@@ -537,7 +537,7 @@ function StatedLine({ part }: { part: StatedPart }) {
   );
 }
 
-/** Where the deal changes behaviour (F-112), then what the reading states of a price without computing it (F-118). */
+/** Where the deal changes behaviour (F-112), then what the reading states of a price without computing it (method §10.6, "What the page states and does not compute"). */
 function PointsCard({ reading }: { reading: Reading }) {
   return (
     <Card className="flex flex-col gap-4">

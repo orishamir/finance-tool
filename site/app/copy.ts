@@ -1786,6 +1786,8 @@ export const feeDeal = {
     changesBy: "המחיר משתנה לפי",
     /** Each thing a price may change by, as a pill and as a part in the toolbox (shapes.ts, `ByKind`). */
     things: { what: "מה קונים", held: "מה מחזיקים", channel: "הערוץ", track: "המסלול שבחרתם", currency: "המטבע", actionSize: "גודל הפעולה", portfolioSize: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" } as Record<string, string>,
+    /** The size of the action, by the fee: its own action's size ("גודל ההמרה"); `default` for a fee on a purchase or a sale. */
+    actionSize: { default: "גודל הפעולה", fx: "גודל ההמרה", fx_spread: "גודל ההמרה", deposit: "גודל ההפקדה", insurance_premium: "גודל ההפקדה", exit: "גודל המשיכה", transfer_out: "גודל ההעברה", distribution_handling: "גודל התשלום" } as Record<string, string>,
     /** The values the site names, by thing (shapes.ts, `LIST_IDS`). */
     values: {
       what: { tase: "ניירות ערך בתל אביב", mutualFunds: "קרנות נאמנות", moneyMarket: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם" } as Record<string, string>,
@@ -1793,7 +1795,7 @@ export const feeDeal = {
       currency: { USD: "מדולר או לדולר", EUR: "מאירו או לאירו", GBP: "מלירה שטרלינג או ללירה שטרלינג", other: "ממטבע אחר או למטבע אחר" } as Record<string, string>,
     },
     /** A case's value that is any value of its thing, said fainter than a named one. */
-    any: { what: "בכל מה שקונים", held: "בכל מה שמוחזק", channel: "בכל ערוץ", track: "בכל מסלול", currency: "בכל מטבע", actionSize: "בכל גודל", portfolioSize: "בכל גודל תיק", volume: "בכל היקף", count: "בכל מספר", own: "בכל מקרה" } as Record<string, string>,
+    any: { what: "בכל מה שקונים", held: "בכל מה שמוחזק", channel: "בכל ערוץ", track: "בכל מסלול", currency: "בכל מטבע", actionSize: "בכל גודל", portfolioSize: "בכל גודל תיק", volume: "בכל היקף", count: "בכל מספר", own: "בכל ערך" } as Record<string, string>,
     /** A range's step: up to its top, or above the last top; the unit after a count of units or of actions. */
     upTo: "עד ",
     over: "מעל ",
@@ -1806,7 +1808,27 @@ export const feeDeal = {
     folded: { one: "עוד מסלול אחד בתעריפון", two: "עוד שני מסלולים בתעריפון", many: "עוד {n} מסלולים בתעריפון" },
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
-    byRemoved: "התנאי הוסר, והמקרים שלו אוחדו.",
+    byRemoved: { merged: "התנאי הוסר, והמקרים שנבדלו רק בו אוחדו.", kept: "התנאי הוסר.", slim: "התנאי הוסר, ונשאר המחיר של המקרה הראשון." },
+    /**
+     * The line a price put in another form leaves (undo.ts): that it changed, and what it left behind by name ("המחיר הוחלף, והמינימום
+     * והמקסימום הוסרו.").
+     */
+    formChanged: {
+      plain: "המחיר הוחלף.",
+      lost: "המחיר הוחלף, ו{parts} {verb}.",
+      one: "הוסר",
+      many: "הוסרו",
+      and: "ו",
+      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה" } as Record<string, string>,
+    },
+    /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
+    thingMenu: {
+      title: "המקרים מבחינים בין:",
+      stop: "להפסיק להבחין לפי {thing}",
+      merge: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של הראשון מהם.",
+      kept: "המקרים יישארו כמו שהם, כי הם שונים גם בדבר אחר.",
+      slim: "לעמלה יישאר מחיר אחד: המחיר של המקרה הראשון.",
+    },
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
     groups: { price: "המחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", more: "עוד על המחיר" } as Record<string, string>,
@@ -1829,8 +1851,8 @@ export const feeDeal = {
       refund: "החזר ",
       notes: { unfilled: "גם על הוראה שלא בוצעה", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
-      /** The toolbox's card of a flat price for a small action: "מחיר קבוע לפעולה קטנה, עד ☐". */
-      flatSmall: "מחיר קבוע לפעולה קטנה, עד ",
+      /** The toolbox's card of a flat price for a small action, by the fee: "מחיר קבוע לפעולה קטנה, עד ☐", a conversion's "להמרה קטנה". */
+      flatSmall: { default: "מחיר קבוע לפעולה קטנה, עד ", fx: "מחיר קבוע להמרה קטנה, עד ", fx_spread: "מחיר קבוע להמרה קטנה, עד " } as Record<string, string>,
       /** In a discount in edit: the switch that takes it off the minimum too. */
       discountOnMin: "גם על המינימום",
       /** In a third party's fee in edit: whose fee it is, in the list's words, and the form of its price. */
@@ -1849,7 +1871,7 @@ export const feeDeal = {
       currency: "לפי המטבע: אילו מטבעות יש בתעריפון שלכם?",
       track: "לפי המסלול: אילו מסלולים יש בתעריפון שלכם?",
       own: "תנאי משלכם: מה התנאי, ומה הערכים שלו?",
-      range: "{thing}: עד כמה המחיר הראשון?",
+      range: "{thing}: עד כמה חל המחיר הראשון?",
     } as Record<string, string>,
     /** Each copied case, by the thing: "כל מקרה יועתק לכל ערוץ שסימנתם, עם המחיר שלו." */
     copies: { lead: "כל מקרה יועתק לכל ", tail: " שסימנתם, עם המחיר שלו.", range: "כל מקרה יועתק ל״עד״ ול״מעל״, עם המחיר שלו.", count: "{from} מקרים יהיו {to}." },
@@ -1891,10 +1913,13 @@ export const feeDeal = {
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
-      partial: "כל ביצוע חלקי נגבה בנפרד, ולכן הוראה שמתבצעת בחלקים יכולה לשלם את המינימום יותר מפעם אחת.",
+      partial: "כל ביצוע חלקי נגבה בנפרד, ולכן הוראה שמתבצעת בחלקים יכולה לעלות את המינימום יותר מפעם אחת.",
     },
-    /** A step of a fee read across sizes (F-115), after the fee's name: "עמלת המרה, עד 100 $"; a mark at a step's top. */
-    step: { from: ", מעל ", to: ", עד ", edge: { before: "עד ", mid: " המחיר של {name} הוא של המקרה הזה, ומעליו של המקרה הבא." } },
+    /**
+     * A step of a fee read across sizes (F-115), after the fee's name: "המרת מטבע, עד 100 $", "המרת מטבע, מעל 100 $"; and a step's top,
+     * where the fee's price changes ("ב־100 $ משתנה המחיר של המרת מטבע.").
+     */
+    step: { from: ", מעל ", to: ", עד ", edge: { before: "ב־", mid: " משתנה המחיר של {name}." } },
   },
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
@@ -2049,7 +2074,7 @@ export const feeDeal = {
   },
   /** The template picker (a sheet). */
   picker: {
-    house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית, לפי מה שהעסקה מחזיקה.", group: "בתי השקעות ובנקים" },
+    house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית.", group: "בתי השקעות ובנקים" },
     track: { title: "לבחור מסלול", lede: "הבחירה ממלאת את דמי הניהול של המסלול מהממוצע שרשות שוק ההון מפרסמת: מהחיסכון, ומההפקדה כשיש לה נתון." },
     /** After a track's yearly fee on the savings, at its row's end. */
     saving: "בשנה מהחיסכון",
@@ -4618,7 +4643,6 @@ export const kit = {
       MeterBar: "פס דק של חלק מ־0 עד 100% ליד המספר שלו בשורת טבלה: החשיפה של מסלול למניות ולמט״ח, בצבע של כל אחת. כל הפסים ברשימה באותו אורך, כך שהעין עוברת לאורך העמודה. ריק ב־0, מלא מעל 100%. המספר נושא את המשמעות, והפס רק לעין.",
       FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור, ולחיצה עליו פותחת מתחתיו הערה מאיפה הוא, עם קישור למקור. שדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו.",
-      AlignedList: "רשימה של השדות של דבר אחד, שורה לכל שדה: התוויות בעמודה צרה אחת, והתיבות מתחילות כולן באותו קו אחריה, כך שהעין יורדת לאורך התוויות ולאורך התיבות. שורה לרוחב שתי העמודות נושאת מה שלא שייך לתווית אחת: כותרת של מחיר מאוחר, הערה, פעולה.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
       AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. כשאין מקום לשמות בסוף, הם עוברים למקרא מעל הגרף.",
@@ -4642,7 +4666,7 @@ export const kit = {
       SlimFee: "עמלה שיש לה מחיר אחד: שורה אחת, נקודת הצבע שלה, השם והחלקים. הקשה פותחת אותה במקומה, כמו מקרה. FeeBlock: עמלה שהמחיר שלה משתנה, השם ומתחתיו הפס.",
       Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי סוג, כל קבוצה עם הצבע והסמל שלה. הקשה על חלק מוסיפה אותו; חלק שכבר במקרה מסומן ב־✓ ומעומעם, ולא נעלם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים.",
       AskValues: "השאלה שעולה פעם אחת כשמוסיפים דבר שהמחיר משתנה לפיו: אילו ערכים יש בתעריפון, כבחירות שמסמנים, ״אחר״ בשם משלכם, משפט שאומר כמה מקרים יהיו, ו״להוסיף״ או ״ביטול״.",
-      ValueMenus: "מה שנפתח כשמקישים על מקום של ערך במקרה הפתוח. TickMenu: רשימה לסימון, אפשר כמה, ושורה אחרונה לערך בשם משלכם. TrackMenu: שם המסלול כמו שהוא כתוב, ומתג ״זה המסלול שלי״. RangeMenu: ״עד״ או ״מעל״, המספר והיחידה, ושורה שאומרת מה המקרה שלפניו. ValueMenuSheet: הכרטיס שמחזיק אותם, ליד המקום במחשב ומלמטה בטלפון.",
+      ValueMenus: "מה שנפתח כשמקישים על מקום של ערך במקרה הפתוח. TickMenu: רשימה לסימון, אפשר כמה, ושורה אחרונה לערך בשם משלכם. TrackMenu: שם המסלול כמו שהוא כתוב, ומתג ״זה המסלול שלי״. RangeMenu: ״עד״ או ״מעל״, המספר והיחידה, ושורה שאומרת מה המקרה שלפניו. ValueMenuSheet: הכרטיס שמחזיק אותם, ליד המקום במחשב ומלמטה בטלפון. ThingMenu: מה שנפתח כשמקישים על דבר בראש הפס בזמן שהעמלה פתוחה: הערכים שלו במקרים, ״להפסיק להבחין לפי …״, ושורה שאומרת מה יקרה למקרים.",
       ReadForBand: "השורה הראשונה של קריאת העסקה, בכחול של הפס: בשביל איזה מקרה קוראים, בחירה אחת לכל דבר שהעמלות משתנות לפיו, ושורה מתחת. עסקה בלי פס לא מראה אותה.",
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
@@ -4693,6 +4717,11 @@ export const kit = {
         whatPicks: "מה קונים",
         readNote: "כל עמלה נקראת במקרה שבחרתם כאן. עמלה שמשתנה לפי גודל הפעולה נקראת בכל הגדלים, בגרף שלמטה.",
         menuOpen: "הערך של המקרה",
+        /** ThingMenu: a thing of the band's head opened, its values in the cases, the action that drops it and what that does. */
+        thingTitle: "המקרים מבחינים בין:",
+        thingStop: "להפסיק להבחין לפי המסלול שבחרתם",
+        thingAfter: "4 מקרים יהיו 2: מקרים שנבדלים רק בזה יאוחדו, במחיר של הראשון מהם.",
+        thingOpen: "הדבר שהמחיר משתנה לפיו",
       },
       /** AbroadNote: three made-up countries, two with a product and one without. */
       abroad: {

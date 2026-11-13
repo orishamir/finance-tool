@@ -20,7 +20,19 @@ export function feeName(kind: FeeKindId, own?: string): string {
   return base?.name ?? copy.names[kind] ?? kind;
 }
 
-export const refName = (r: FeeRef) => feeName(r.kind, r.name);
+/** A sum as plain words, isolated left to right inside Hebrew, whole without cents ("100 $"), else as its unit writes it. */
+export const sumText = (v: SiteValue): string => `\u2066${typedSum(v.value as number, v.unit) ?? formatValue(v.value as number, v.unit)}\u2069`;
+
+/**
+ * A fee's name, with its stretch of sizes where it is one step of a fee read across sizes (F-115): "המרת מטבע, עד 100 ₪", "המרת מטבע, מעל
+ * 100 ₪", so two steps of one fee never read alike.
+ */
+export const refName = (r: FeeRef): string => {
+  const name = feeName(r.kind, r.name);
+  const s = r.step;
+  if (!s) return name;
+  return `${name}${s.from ? `${copy.cases.step.from}${sumText(s.from)}` : ""}${s.to ? `${copy.cases.step.to}${sumText(s.to)}` : ""}`;
+};
 
 /** What a price charged on each action is per ("לכל פעולה"), by the fee's kind. */
 export const perActionWord = (kind: FeeKindId): string => copy.price.perAction[kind] ?? copy.price.perAction.default!;
@@ -71,11 +83,12 @@ export function FeeName({ fee, className, before, after }: { fee: FeeRef; classN
 }
 
 /**
- * How the page shows a sum: one the person typed as they typed it (`typedSum`), one the site works out in whole units of its currency
- * (`computedSum`); any other figure as its unit's rules say.
+ * How the page shows a sum: one the person typed, or a price list prints, whole where it is whole ("8 $", never "8.00 $") and else with
+ * its cents (`typedSum`); one the site works out in whole units of its currency (`computedSum`); any other figure (a percent, a price per
+ * unit) as its unit's rules say.
  */
 export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | undefined =>
-  v.state === "entered" ? (n) => typedSum(n, v.unit) : v.state === "computed" ? (n) => computedSum(n, v.unit) : undefined;
+  v.state === "computed" ? (n) => computedSum(n, v.unit) : (n) => typedSum(n, v.unit);
 
 /** A figure on the page: a sum as `sumDisplay` shows it. */
 export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;
@@ -86,10 +99,11 @@ export const upToDisplay = (v: SiteValue) => (n: number): string | undefined => 
 /** The sum a flat price holds up to as plain text, for words inside a box ("לכל המרה עד 50 $"). */
 export const upToText = (v: SiteValue): string => upToDisplay(v)(v.value as number) ?? formatValue(v.value as number, v.unit);
 
-/** A figure with a lead held to it on one line (", מינימום 15 ₪"). */
-const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
+/** A figure with a lead held to it on one line (", מינימום 15 ₪"), and the period it is printed per where it has one (", מינימום 40 ₪ בחודש"). */
+const Bound = ({ lead, value, per }: { lead: string; value: SiteValue; per?: string }) => (
   <>
     , <Fig value={value} prefix={lead} />
+    {per && <> {per}</>}
   </>
 );
 
@@ -159,8 +173,8 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
         <>
           <Num value={f.rate!} /> {p.per[price.per!]} {insideFund ? p.insideFund : saved ? p.heldSaved : p.held}
           {price.every !== price.per && <>, {p.charged[price.every!]}</>}
-          {f.min && <Bound lead={p.min} value={f.min} />}
-          {f.max && <Bound lead={p.max} value={f.max} />}
+          {f.min && <Bound lead={p.min} value={f.min} {...(price.boundsEvery ? { per: p.per[price.boundsEvery] } : {})} />}
+          {f.max && <Bound lead={p.max} value={f.max} {...(price.boundsEvery ? { per: p.per[price.boundsEvery] } : {})} />}
         </>
       );
       break;

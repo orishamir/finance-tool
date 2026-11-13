@@ -45,7 +45,7 @@ const SHORT: Record<string, string> = {
   rate: "r", min: "m", max: "x", currency: "c", per: "q", every: "e", amount: "a", place: "l", payout: "o", id: "i", cap: "Cp", flat: "Fl", upTo: "Ut",
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
   by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
-  discount: "Di", pct: "Pc", alsoMin: "Am", third: "Th", who: "Wh", offset: "Of", refund: "Rf", notes: "No",
+  discount: "Di", pct: "Pc", alsoMin: "Am", third: "Th", who: "Wh", offset: "Of", refund: "Rf", notes: "No", boundsEvery: "Be",
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
 /**
