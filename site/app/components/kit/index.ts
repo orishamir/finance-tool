@@ -72,6 +72,7 @@ export { SideNav, SidePage, type SideNavGroup, type SideNavItem } from "./side-n
 export { GoLink, TextLink } from "./go-link";
 export { MeterBar, PeriodBars, type PeriodBar } from "./period-bars";
 export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
+export { MonthPicker, type MonthBounds } from "./month-picker";
 export { Step } from "./steps";
 export { TypedPlain } from "./typed-plain";
 export { AlignedAcross, AlignedCaption, AlignedList, AlignedRow } from "./aligned-list";
