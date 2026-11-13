@@ -106,7 +106,8 @@ export function firstChoice(choices: readonly { from: MonthKey }[], current: Mon
 
 /**
  * What a curve's headline says: where one minimum, or one maximum, or one of each binds, at its sum (a minimum with the rate above it,
- * where the curve has one, `Curve.rate`); where the sums per period stop being larger than custody (and whether they are the largest cost of holding below it, the mark's `largest`); otherwise how many sums the cost
+ * where the curve has one, `Curve.rate`), where no percent maximum or flat price marks the curve too; where the sums per period stop being
+ * larger than custody (and whether they are the largest cost of holding below it, the mark's `largest`); otherwise how many sums the cost
  * bends at.
  */
 export type CurveHead =
@@ -121,6 +122,7 @@ export function curveHead(curve: Pick<Curve, "marks" | "at" | "rate">): CurveHea
   if (meet) return { kind: "meet", mark: meet };
   const mins = curve.marks.filter((m) => m.kind === "min");
   const maxes = curve.marks.filter((m) => m.kind === "max");
+  if (curve.marks.some((m) => m.kind === "cap" || m.kind === "flat")) return { kind: "marks", n: new Set(curve.at).size };
   if (mins.length === 1 && maxes.length === 0) return { kind: "min", mark: mins[0]!, ...(curve.rate ? { rate: curve.rate } : {}) };
   if (maxes.length === 1 && mins.length === 0) return { kind: "max", mark: maxes[0]! };
   if (mins.length === 1 && maxes.length === 1) {

@@ -68,49 +68,96 @@ export function boundUnit(currency: string | undefined): Unit {
   }
 }
 
-/** The unit of a sum: a month's, else a sum for the period (the period is said beside it). */
-export const sumUnit = (every: number): Unit => (every === 1 ? "nis_per_month" : "nis");
+/** The unit of a sum of money in a currency, on its own (a flat price's sum, a mark's): shekels, dollars, euros or pounds. */
+export function sumUnit(currency: string | undefined): Unit {
+  switch (currency ?? "ILS") {
+    case "USD":
+      return "usd";
+    case "EUR":
+      return "eur";
+    case "GBP":
+      return "gbp_per_trade";
+    default:
+      return "nis";
+  }
+}
 
-/** The unit of a sum on each action: on each transfer for a transfer out, on each action otherwise. */
-export const perActionUnit = (fee: Fee): Unit => (fee.kind === "transfer_out" ? "nis_per_transfer" : "nis_per_trade");
+/** The unit of a sum for each unit traded, in its currency (F-12's price per share). */
+export function perUnitUnit(currency: string | undefined): Unit {
+  switch (currency ?? "ILS") {
+    case "USD":
+      return "usd_per_share";
+    case "EUR":
+      return "eur_per_share";
+    case "GBP":
+      return "gbp_per_share";
+    default:
+      return "nis_per_share";
+  }
+}
+
+/** The unit of a sum per period: a month's, else a sum for the period (the period is said beside it). */
+export const periodSumUnit = (every: number): Unit => (every === 1 ? "nis_per_month" : "nis");
+
+/**
+ * The unit of a sum on each action: in shekels, on each transfer for a transfer out and on each action otherwise; in another currency, on
+ * each event for a corporate event (F-103) and the bound's unit otherwise.
+ */
+export function perActionUnit(fee: Fee, currency?: string): Unit {
+  if (currency && currency !== "ILS") return fee.kind === "corporate_event" && currency === "USD" ? "usd_per_event" : boundUnit(currency);
+  return fee.kind === "transfer_out" ? "nis_per_transfer" : "nis_per_trade";
+}
 
 /** The unit of a held rate as typed: a year's where it is for a year, a period's otherwise. */
 export const heldRateUnit = (per: number): Unit => (per === 12 ? "pct_per_year" : "pct_of_balance_per_period");
 
 /**
  * The key a fee's figure takes among a reading's inputs: `deal:` and the fee's kind, with a number after the kind where the deal has two
- * fees of it, and the field after a dot where it is not the rate or the sum (`deal:trade.min`, `deal:custody 2.yearly`). The prefix keeps
- * the keys apart from other readings' (`balance` is a run's balance there); the copy names every such key.
+ * fees of it, and the field after a dot where it is not the rate or the sum (`deal:trade.min`, `deal:custody 2.yearly`; `cap` the percent
+ * maximum, `flat` a flat price and `upTo` the sum it holds up to). The prefix keeps the keys apart from other readings' (`balance` is a
+ * run's balance there); the copy names every such key.
  */
-export function inputKey(fees: readonly Fee[], i: number, field?: "min" | "max" | "yearly"): string {
+export function inputKey(fees: readonly Fee[], i: number, field?: "min" | "max" | "yearly" | "cap" | "flat" | "upTo"): string {
   const fee = fees[i]!;
   const same = fees.filter((f) => f.kind === fee.kind);
   const n = same.length > 1 ? ` ${same.indexOf(fee) + 1}` : "";
   return `deal:${fee.kind}${n}${field ? `.${field}` : ""}`;
 }
 
-/** The figures of one price as value objects, each in its unit (a free price has none). */
+/**
+ * The figures of one price as value objects, each in its unit (a free price has none), keyed as the screen edits them (edit.ts,
+ * `Figure`): its rate or its sum (`amount`, a sum per unit's among them), its bounds, its percent maximum (`cap`, a share of the action),
+ * and its flat price (`flat`, the price per action) with the sum it holds up to (`upTo`); its sums in the price's currency.
+ */
 export interface PriceFigures {
   rate?: SiteValue;
   min?: SiteValue;
   max?: SiteValue;
   amount?: SiteValue;
+  cap?: SiteValue;
+  flat?: SiteValue;
+  upTo?: SiteValue;
 }
 
-/** A price's figures; a blank rate or sum (`Num.blank`) is left out, since it states nothing. */
+/** A price's figures; a blank rate or sum (`Num.blank`), or a blank figure of a flat price, is left out, since it states nothing. */
 export function priceFigures(fee: Fee, p: Price, today: string): PriceFigures {
-  const given = (n: Num, unit: Unit) => (n.blank ? {} : { [p.form === "sum" || p.form === "perAction" ? "amount" : "rate"]: figure(n, unit, today) });
+  const of = (key: "rate" | "amount", n: Num, unit: Unit) => (n.blank ? {} : { [key]: figure(n, unit, today) });
+  const opt = (key: "min" | "max" | "cap", n: Num | undefined, unit: Unit) => (n ? { [key]: figure(n, unit, today) } : {});
   switch (p.form) {
     case "free":
       return {};
     case "action":
-      return { ...given(p.rate, actionRateUnit(fee)), ...(p.min ? { min: figure(p.min, boundUnit(p.currency), today) } : {}), ...(p.max ? { max: figure(p.max, boundUnit(p.currency), today) } : {}) };
+    case "perUnit": {
+      const main = p.form === "action" ? of("rate", p.rate, actionRateUnit(fee)) : of("amount", p.amount, perUnitUnit(p.currency));
+      const flat = p.flat ? { ...(p.flat.amount.blank ? {} : { flat: figure(p.flat.amount, boundUnit(p.currency), today) }), ...(p.flat.upTo.blank ? {} : { upTo: figure(p.flat.upTo, sumUnit(p.currency), today) }) } : {};
+      return { ...main, ...opt("min", p.min, boundUnit(p.currency)), ...opt("max", p.max, boundUnit(p.currency)), ...opt("cap", p.cap, "pct_of_trade"), ...flat };
+    }
     case "held":
-      return { ...given(p.rate, heldRateUnit(p.per)), ...(p.min ? { min: figure(p.min, "nis", today) } : {}), ...(p.max ? { max: figure(p.max, "nis", today) } : {}) };
+      return { ...of("rate", p.rate, heldRateUnit(p.per)), ...opt("min", p.min, "nis"), ...opt("max", p.max, "nis") };
     case "sum":
-      return given(p.amount, sumUnit(p.every));
+      return of("amount", p.amount, periodSumUnit(p.every));
     case "perAction":
-      return given(p.amount, perActionUnit(fee));
+      return of("amount", p.amount, perActionUnit(fee, p.currency));
   }
 }
 

@@ -28,15 +28,15 @@ const LINK_MAX = 12_000;
 /** Each field's short name in a link, both ways; a key not named here is not carried, and is dropped on the way in. */
 const SHORT: Record<string, string> = {
   name: "n", kind: "k", start: "t", provider: "p", held: "h", fees: "f", template: "T", stages: "s", sale: "S", price: "P", until: "u", form: "F",
-  rate: "r", min: "m", max: "x", currency: "c", per: "q", every: "e", amount: "a", place: "l", payout: "o", id: "i",
+  rate: "r", min: "m", max: "x", currency: "c", per: "q", every: "e", amount: "a", place: "l", payout: "o", id: "i", cap: "Cp", flat: "Fl", upTo: "Ut",
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk",
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
 /**
- * The fields of a price that hold a figure (`Num`): a link writes a figure as its number, `[number, source]` where it is sourced, or `null`
- * where it is not given yet (`Num.blank`).
+ * The fields of a price that hold a figure (`Num`), a flat price's two among them (`amount`, `upTo`): a link writes a figure as its number,
+ * `[number, source]` where it is sourced, or `null` where it is not given yet (`Num.blank`).
  */
-const FIGURES = new Set(["rate", "min", "max", "amount"]);
+const FIGURES = new Set(["rate", "min", "max", "amount", "cap", "upTo"]);
 
 type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);

@@ -1,14 +1,11 @@
 // The changes the fee page makes to a deal, each a pure function from a deal to the next: the screen calls them and saves what they
 // return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number. A price whose
 // terms the person changes (its months, its bounds' currency, its form) becomes theirs whole (`owned`): the source states another price.
-import { blankFigure, blankPrice, newFee, pricesOn, retyped, sameContent, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Side, type Stage } from "./model";
+import { blankFigure, blankPrice, mainFigure, newFee, pricesOn, retyped, sameContent, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Side, type Stage } from "./model";
 import type { DealKind } from "./kinds";
 import { FEE_SHAPES, holdsFunds, kindHas, type FeeKindId, type FormId, type Held } from "./shapes";
 
 export type { Side } from "./model";
-
-/** A figure of a price the screen edits. */
-export type Figure = "rate" | "min" | "max" | "amount";
 
 const stagesOf = pricesOn;
 const withStages = (fee: Fee, side: Side, stages: Stage[]): Fee => (side === "sell" && fee.sale ? { ...fee, sale: stages } : { ...fee, stages });
@@ -55,54 +52,61 @@ export function setStart(deal: FeeDeal, start: MonthKey | null): FeeDeal {
   return start === null ? rest : { ...rest, start };
 }
 
-/** A price with one figure typed, or emptied (`null`): an emptied bound is taken away, an emptied rate or sum is blank again (`blankFigure`). */
-export function withFigure(p: Price, figure: Figure, n: number | null): Price {
-  const keep = (old: Num | undefined): Num | undefined => (n === null ? undefined : old ? retyped(old, n) : typed(n));
-  switch (p.form) {
-    case "action":
-    case "held": {
-      if (figure === "rate") return { ...p, rate: n === null ? blankFigure() : keep(p.rate)! };
-      if (figure !== "min" && figure !== "max") return p;
-      const next = { ...p, [figure]: keep(p[figure]) };
-      if (next[figure] === undefined) delete next[figure];
-      return next;
-    }
-    case "sum":
-    case "perAction":
-      return figure === "amount" ? { ...p, amount: n === null ? blankFigure() : keep(p.amount)! } : p;
-    default:
-      return p;
+/**
+ * A figure of a price the screen edits: its rate, its bounds, its sum (a sum per unit's among them), its percent maximum (`cap`), and its
+ * flat price's two figures (`flat`, the price; `upTo`, the sum it holds up to).
+ */
+export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo";
+
+/** A price that may have bounds, a cap and a flat price: a share of an action or a sum per unit. */
+type Bounded = Extract<Price, { form: "action" | "perUnit" }>;
+const isBounded = (p: Price): p is Bounded => p.form === "action" || p.form === "perUnit";
+
+/** A price's main figure's key: the rate of a share, the sum of the rest. */
+const mainKey = (p: Price): "rate" | "amount" | null => (p.form === "action" || p.form === "held" ? "rate" : p.form === "free" ? null : "amount");
+
+/**
+ * A price with one figure set to `n` (`set` gives the figure from the one it replaces), or emptied (`n` undefined): an emptied bound or cap
+ * is taken away, an emptied rate, sum or figure of a flat price is blank again (`blankFigure`). A figure the price's form has no place for
+ * leaves it as it is, and so does a flat price's figure where the price has no flat price.
+ */
+function setFigure(p: Price, figure: Figure, n: Num | undefined): Price {
+  if (figure === "rate" || figure === "amount") return mainKey(p) === figure ? ({ ...p, [figure]: n ?? blankFigure() } as Price) : p;
+  if (figure === "min" || figure === "max") {
+    if (!isBounded(p) && p.form !== "held") return p;
+    const next = { ...p, [figure]: n };
+    if (n === undefined) delete next[figure];
+    return next;
   }
+  if (!isBounded(p)) return p;
+  if (figure === "cap") {
+    const { cap: _c, ...rest } = p;
+    return n === undefined ? rest : { ...rest, cap: n };
+  }
+  if (!p.flat) return p;
+  return { ...p, flat: { ...p.flat, [figure === "flat" ? "amount" : "upTo"]: n ?? blankFigure() } };
+}
+
+/** A price with one figure typed, or emptied (`null`): an emptied bound or cap is taken away, an emptied rate, sum or flat price's figure is blank again. */
+export function withFigure(p: Price, figure: Figure, n: number | null): Price {
+  const old = figureOf(p, figure);
+  return setFigure(p, figure, n === null ? undefined : old && !old.blank ? retyped(old, n) : typed(n));
 }
 
 /** One figure of a price as it stands, with its source; none where the price has no such figure. */
 export function figureOf(p: Price, figure: Figure): Num | undefined {
-  if (p.form === "action" || p.form === "held") return figure === "rate" ? p.rate : figure === "min" || figure === "max" ? p[figure] : undefined;
-  if (p.form === "sum" || p.form === "perAction") return figure === "amount" ? p.amount : undefined;
-  return undefined;
+  if (figure === "rate" || figure === "amount") return mainKey(p) === figure ? (mainFigure(p) ?? undefined) : undefined;
+  if (figure === "min" || figure === "max") return isBounded(p) || p.form === "held" ? p[figure] : undefined;
+  if (!isBounded(p)) return undefined;
+  if (figure === "cap") return p.cap;
+  return figure === "flat" ? p.flat?.amount : p.flat?.upTo;
 }
 
 /**
- * A price with one figure put back as it stood (`figureOf`), its source with it: none takes a bound away and leaves a rate or a sum blank.
- * A price of another form than the figure's is left as it is.
+ * A price with one figure put back as it stood (`figureOf`), its source with it: none takes a bound or a cap away and leaves a rate, a sum
+ * or a flat price's figure blank. A price of another form than the figure's is left as it is.
  */
-export function figureBack(p: Price, figure: Figure, n: Num | undefined): Price {
-  switch (p.form) {
-    case "action":
-    case "held": {
-      if (figure === "rate") return { ...p, rate: n ?? blankFigure() };
-      if (figure !== "min" && figure !== "max") return p;
-      const next = { ...p, [figure]: n };
-      if (n === undefined) delete next[figure];
-      return next;
-    }
-    case "sum":
-    case "perAction":
-      return figure === "amount" ? { ...p, amount: n ?? blankFigure() } : p;
-    default:
-      return p;
-  }
-}
+export const figureBack = (p: Price, figure: Figure, n: Num | undefined): Price => setFigure(p, figure, n);
 
 /**
  * A price the person changed the terms of is theirs: every figure in it loses a template's source, which states the price as it was (the
@@ -110,10 +114,15 @@ export function figureBack(p: Price, figure: Figure, n: Num | undefined): Price 
  */
 function owned(p: Price): Price {
   const own = (n: Num): Num => (n.blank ? n : typed(n.v));
+  const opt = <K extends "min" | "max" | "cap">(k: K, n: Num | undefined) => (n ? { [k]: own(n) } : {});
   switch (p.form) {
     case "action":
+    case "perUnit": {
+      const main = p.form === "action" ? { rate: own(p.rate) } : { amount: own(p.amount) };
+      return { ...p, ...main, ...opt("min", p.min), ...opt("max", p.max), ...opt("cap", p.cap), ...(p.flat ? { flat: { amount: own(p.flat.amount), upTo: own(p.flat.upTo) } } : {}) } as Price;
+    }
     case "held":
-      return { ...p, rate: own(p.rate), ...(p.min ? { min: typed(p.min.v) } : {}), ...(p.max ? { max: typed(p.max.v) } : {}) };
+      return { ...p, rate: own(p.rate), ...opt("min", p.min), ...opt("max", p.max) };
     case "sum":
     case "perAction":
       return { ...p, amount: own(p.amount) };
@@ -123,12 +132,18 @@ function owned(p: Price): Price {
 }
 
 /**
- * A price in another form: the rate or the sum typed so far carries over where the new form has one, as the person's own figure (`owned`);
- * the rest starts empty.
+ * A price in another form: the rate or the sum typed so far carries over where the new form has the same kind of figure (a share to a
+ * share, a sum per period or per action to the other), as the person's own figure (`owned`); between a share of an action and a sum per
+ * unit, whose figures differ in kind, the bounds, the cap, the flat price and their currency carry over instead, since they price the
+ * action the same way in both. The rest starts empty.
  */
 export function withForm(p: Price, form: FormId): Price {
   if (p.form === form) return p;
   const next = blankPrice(form);
+  if (isBounded(p) && isBounded(next)) {
+    const { form: _f, rate: _r, amount: _a, ...parts } = p as Bounded & { rate?: Num; amount?: Num };
+    return owned({ ...next, ...parts } as Price);
+  }
   const rate = p.form === "action" || p.form === "held" ? p.rate : null;
   const amount = p.form === "sum" || p.form === "perAction" ? p.amount : null;
   if ((next.form === "action" || next.form === "held") && rate) return owned({ ...next, rate });
@@ -146,11 +161,25 @@ export function withMonths(p: Price, which: "per" | "every", months: Months): Pr
   return p;
 }
 
-/** An action's bounds in another currency: the shekel is left unsaid. A currency that differs from the price's makes it the person's (`owned`). */
+/**
+ * A price's sums in another currency: a share of an action's bounds and flat price, a sum per unit with its bounds and flat price, a sum per
+ * action. The shekel is left unsaid. A currency that differs from the price's makes it the person's (`owned`).
+ */
 export function withCurrency(p: Price, currency: BoundCurrency): Price {
-  if (p.form !== "action" || (p.currency ?? "ILS") === currency) return p;
+  if ((p.form !== "action" && p.form !== "perUnit" && p.form !== "perAction") || (p.currency ?? "ILS") === currency) return p;
   const { currency: _c, ...rest } = p;
-  return owned(currency === "ILS" ? rest : { ...rest, currency });
+  return owned((currency === "ILS" ? rest : { ...rest, currency }) as Price);
+}
+
+/**
+ * A share of an action or a sum per unit with a flat price for a small action (`on`), its two figures blank until typed, or without one
+ * (the same price on every action). A price that already has one, or has none to take away, is left as it is.
+ */
+export function withFlat(p: Price, on: boolean): Price {
+  if (!isBounded(p) || on === !!p.flat) return p;
+  if (on) return { ...p, flat: { amount: blankFigure(), upTo: blankFigure() } };
+  const { flat: _f, ...rest } = p;
+  return rest;
 }
 
 /** A fee with the price of one stage replaced by `fn` of it. */

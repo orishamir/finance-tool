@@ -262,7 +262,7 @@ describe("templates", () => {
 });
 
 describe("the securities account of the picture, on 11.2026", () => {
-  it("at a glance: the trade with its conversion at 0.45% and the minimum's mark at 6,000; the fund's 0.07%", () => {
+  it("at a glance: the trade with its conversion at 0.45% and no mark; the fund's 0.07%", () => {
     const g = glance(read(account()));
     expect(g.from).toBe("2026-11");
     const [trade, held] = g.throughout;
@@ -271,9 +271,8 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(trade!.rates).toHaveLength(1);
     expect(v(trade!.rates[0]!.rate)).toBeCloseTo(0.45, 10);
     expect(trade!.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-    expect(trade!.marks).toHaveLength(1);
-    expect(trade!.marks[0]).toMatchObject({ kind: "min", on: "action", currency: "ILS" });
-    expect(v(trade!.marks[0]!.amount)).toBeCloseTo(6000, 6);
+    // the summary gives the rates' sum alone; the minimum's mark is among the reading's points
+    expect(trade!.marks).toEqual([]);
     expect(held!.on).toEqual({ on: "held" });
     // custody joins what is held from 03.2028, so the fund's 0.07% is not what is held costs throughout: no rate here
     expect(held!.fees.map((f) => f.kind)).toEqual(["fund_management"]);

@@ -111,10 +111,8 @@ describe("the curves", () => {
     // a small one stays below the sums at that value: 0.05% is 60 ₪ a year at 120,000 ₪
     d.fees[2]!.stages[0]!.price = { form: "held", rate: typed(0.05), per: 12, every: 12 };
     expect(meetOf(d).largest).toBe(true);
-    // the glance reads it the same way
-    d.fees[2]!.stages[0]!.price = { form: "held", rate: typed(0.5), per: 12, every: 12 };
-    const marks = glance(readDealFor(d, data.kinds, TODAY)).throughout.flatMap((g) => g.marks);
-    expect(marks.find((m) => m.kind === "meet")).toMatchObject({ largest: false });
+    // the summary carries no marks: the points do
+    expect(glance(readDealFor(d, data.kinds, TODAY)).throughout.flatMap((g) => g.marks)).toEqual([]);
   });
   it("puts a curve it cannot draw in its group", () => {
     const d = account();

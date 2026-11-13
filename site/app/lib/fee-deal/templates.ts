@@ -2,13 +2,14 @@
 // the person edits): a house's price list for a securities account, the lines that apply to what the account holds, read by the engine's
 // own line choice (`tariffLine`, F-63); and a regulated track's two fees for the provident family. A filled figure keeps its record's
 // source and date (sourced) until the person changes it (entered, `retyped`).
-import { lineClasses, memberKindOf, tariffLine, type LineChoice } from "@finance-tool/engine";
+import { lineClasses, memberKindOf, REDEMPTION_BAND, STANDING_ORDER_BAND, tariffLine, type LineChoice } from "@finance-tool/engine";
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { isProductId, NAME_MAX, newDeal, newFeeId, pricePriced, untouched, type BoundCurrency, type Fee, type FeeDeal, type Months, type Num, type Price, type ProviderKind } from "./model";
+import { isProductId, NAME_MAX, newDeal, newFeeId, pricePriced, untouched, type BoundCurrency, type Fee, type FeeDeal, type Flat, type Months, type Num, type Price, type ProviderKind } from "./model";
+import { priceView, type PriceView } from "./parts";
 import type { FeeKindId, Held } from "./shapes";
 import { sourcedOf } from "./values";
 
@@ -17,17 +18,9 @@ export type TemplateFee = Omit<Fee, "id">;
 
 /** Why a line of a price list does not fill a deal's field: the deal has no field for it, or the line cannot be read here. */
 export type LeftWhy =
-  /** A price per share (F-12): a deal prices an action by its amount. */
-  | "per-share"
   /** A conversion priced in shekels a dollar (F-13). */
   | "per-dollar"
-  /** A charge in dollars for each corporate event (F-103): a deal's sum on an action is in shekels. */
-  | "per-event-in-dollars"
-  /** A flat price for a small order or conversion (F-12, F-13): the rate and bounds are filled, the flat price is not. */
-  | "flat-price"
-  /** A cap as a share of the trade (F-12): the rate and bounds are filled, the cap is not. */
-  | "share-cap"
-  /** A minimum and a maximum in two currencies, or a bound of a held share not in shekels. */
+  /** A line's sums in two currencies (its bounds, its flat price, its price per unit), or a bound of a held share not in shekels. */
   | "bound-currency"
   /** Two lines apply and the price list does not say which (the snapshot is ambiguous). */
   | "ambiguous"
@@ -50,6 +43,31 @@ export type LeftWhy =
  */
 export type HoldingKey = "israel" | "abroad" | `abroad:${string}`;
 
+/**
+ * One way to buy at a house where its price list prints several for a holding (a plan, the line's `band`: Interactive Brokers' IBKR Pro
+ * Fixed and Tiered on each exchange, an investment house's US tracks, its US and European lines): the trade line it reads (`line`, its id),
+ * its name in the price list's words (`name`: the band, or the line's own name where it has none), and the trade fee it fills with what of
+ * the line is left.
+ */
+export interface HousePlan {
+  line: string;
+  name: string;
+  fees: TemplateFee[];
+  left: LeftWhy[];
+}
+
+/**
+ * The fees a house's price list fills for one holding, read in one channel, and the lines it leaves with why. Where the list prints more
+ * than one way to buy the holding (`plans`, two or more), the trade fee is each plan's: `fees` has the list's standard trade line where it
+ * prints one, and otherwise no trade fee and the trade left as `ambiguous`.
+ */
+export interface HoldingTemplate {
+  channel: string | null;
+  fees: TemplateFee[];
+  left: { lineId: string; why: LeftWhy }[];
+  plans?: HousePlan[];
+}
+
 /** One house's price list as a template: the fees it fills for each holding, and the lines it leaves, with why. */
 export interface HouseTemplate {
   /** The provider id of the snapshot (`leumi`). */
@@ -58,7 +76,7 @@ export interface HouseTemplate {
   snapshot: string;
   name: string;
   provider: ProviderKind;
-  holdings: Partial<Record<HoldingKey, { channel: string | null; fees: TemplateFee[]; left: { lineId: string; why: LeftWhy }[] }>>;
+  holdings: Partial<Record<HoldingKey, HoldingTemplate>>;
 }
 
 /** The security class a holding's lines are read for: an Israeli exchange-traded fund on the Tel Aviv exchange, a foreign security abroad. */
@@ -66,29 +84,35 @@ const classOf = (place: Held["place"]): string => (place === "israel" ? "etf_uni
 
 const PERIOD_MONTHS: Record<string, Months> = { month: 1, quarter: 3, year: 12 };
 const NIS_UNITS = new Set(["nis", "nis_per_trade", "nis_per_month", "nis_per_transfer"]);
-const CURRENCY_OF_UNIT: Partial<Record<ValueObject["unit"], BoundCurrency>> = { nis: "ILS", nis_per_trade: "ILS", nis_per_month: "ILS", usd: "USD", usd_per_trade: "USD", eur: "EUR", gbp_per_trade: "GBP" };
+const CURRENCY_OF_UNIT: Partial<Record<ValueObject["unit"], BoundCurrency>> = { nis: "ILS", nis_per_trade: "ILS", nis_per_month: "ILS", usd: "USD", usd_per_trade: "USD", usd_per_share: "USD", usd_per_event: "USD", eur: "EUR", gbp_per_trade: "GBP" };
 
 type Line = FeesSnapshot["lines"][number];
 type Mapped = { fees: TemplateFee[]; left: LeftWhy[] };
 
 const has = (v: ValueObject | null | undefined): v is ValueObject & { value: number } => !!v && typeof v.value === "number";
 
-/** A price of a share of an action from a line: its rate, and its bounds in their own currency (F-12, F-13). */
-function actionPrice(l: Line, num: (v: ValueObject) => Num): { price: Price } | { left: LeftWhy } {
+/**
+ * A price on each action from a line: a share of the action (its rate in percent of the trade), or a sum per unit (F-12's price per share,
+ * in `usd_per_share`); with its bounds, its cap as a share of the trade (`cap`, F-12) and its flat price for a small action (`flat_up_to`,
+ * F-12, F-13), every sum in one currency (a line whose sums are in two is left, F-13). `cap` is read only where `withCap`: the trade fee's.
+ */
+function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): { price: Price } | { left: LeftWhy } {
   if (!has(l.rate)) return { left: "no-value" };
-  const bounds = [l.min, l.max].filter(has);
-  const currencies = new Set(bounds.map((b) => CURRENCY_OF_UNIT[b.unit]));
+  const perUnit = l.rate.unit === "usd_per_share";
+  const flat = l.flat_up_to && has(l.flat_up_to.amount) && has(l.flat_up_to.up_to) ? { amount: l.flat_up_to.amount, upTo: l.flat_up_to.up_to } : null;
+  const sums = [l.min, l.max, flat?.amount, flat?.upTo, ...(perUnit ? [l.rate] : [])].filter(has);
+  const currencies = new Set(sums.map((b) => CURRENCY_OF_UNIT[b.unit]));
   if (currencies.has(undefined) || currencies.size > 1) return { left: "bound-currency" };
   const currency = [...currencies][0];
-  return {
-    price: {
-      form: "action",
-      rate: num(l.rate),
-      ...(has(l.min) ? { min: num(l.min) } : {}),
-      ...(has(l.max) ? { max: num(l.max) } : {}),
-      ...(currency && currency !== "ILS" ? { currency } : {}),
-    },
+  const cap = withCap && has(l.cap) ? { cap: num(l.cap) } : {};
+  const parts = {
+    ...(has(l.min) ? { min: num(l.min) } : {}),
+    ...(has(l.max) ? { max: num(l.max) } : {}),
+    ...cap,
+    ...(flat ? { flat: { amount: num(flat.amount), upTo: num(flat.upTo) } satisfies Flat } : {}),
+    ...(currency && currency !== "ILS" ? { currency } : {}),
   };
+  return { price: perUnit ? { form: "perUnit", amount: num(l.rate), ...parts } : { form: "action", rate: num(l.rate), ...parts } };
 }
 
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
@@ -97,18 +121,19 @@ export function lineFees(l: Line, own: string): Mapped {
   const fee = (kind: FeeKindId, price: Price): TemplateFee => ({ kind, stages: [{ price }] });
   switch (l.base) {
     case "trade": {
-      if (l.rate.unit === "usd_per_share") return { fees: [], left: ["per-share"] };
-      const p = actionPrice(l, num);
-      if ("left" in p) return { fees: [], left: [p.left] };
-      return { fees: [fee("trade", p.price)], left: [...(l.flat_up_to ? (["flat-price"] as const) : []), ...(l.cap ? (["share-cap"] as const) : [])] };
+      // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
+      if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", { form: "perAction", amount: num(l.rate) })], left: [] } : { fees: [], left: ["no-value"] };
+      if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
+      const p = actionPrice(l, num, true);
+      return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("trade", p.price)], left: [] };
     }
     case "fx": {
       if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
-      const p = actionPrice(l, num);
+      const p = actionPrice(l, num, false);
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", rate: num(l.spread) })] : [];
-      return { fees: [fee("fx", p.price), ...spread], left: l.flat_up_to ? ["flat-price"] : [] };
+      return { fees: [fee("fx", p.price), ...spread], left: [] };
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
@@ -128,8 +153,13 @@ export function lineFees(l: Line, own: string): Mapped {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
       if (!NIS_UNITS.has(l.rate.unit)) return { fees: [], left: ["bound-currency"] };
       return { fees: [fee("transfer_out", { form: "perAction", amount: num(l.rate) })], left: [] };
-    case "corporate_event":
-      return { fees: [], left: ["per-event-in-dollars"] };
+    case "corporate_event": {
+      // F-103: a sum per client for each corporate event, in the line's currency (One Zero's 50 dollars)
+      if (!has(l.rate)) return { fees: [], left: ["no-value"] };
+      const currency = CURRENCY_OF_UNIT[l.rate.unit];
+      if (!currency || l.min || l.max) return { fees: [], left: ["bound-currency"] };
+      return { fees: [fee("corporate_event", { form: "perAction", amount: num(l.rate), ...(currency !== "ILS" ? { currency } : {}) })], left: [] };
+    }
     default:
       return { fees: [], left: ["other-base"] };
   }
@@ -155,10 +185,20 @@ const whyNotRead = (l: Line): LeftWhy => (l.not_ranked !== undefined ? "set-asid
 const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "corporate_event"] as const;
 
 /**
- * One holding's fees from a house's price list: the channel is the first of `HOUSE_CHANNELS` with a trade line for the holding's class;
- * every base's list line is the one a run reads (`tariffLine`); a conversion only where the holding is bought abroad in another currency.
+ * The ways to buy a holding a price list prints in a channel (F-63's plans): its trade lines for the holding with a band, other than a
+ * standing order's, a redemption's and a line set aside (`not_ranked`), which no ordinary purchase reads.
  */
-function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string | null): HouseTemplate["holdings"][HoldingKey] {
+function planLines(snap: FeesSnapshot, place: Held["place"], currency: string | null, channel: string): Line[] {
+  return snap.lines.filter((l) => l.base === "trade" && l.band !== null && l.band !== STANDING_ORDER_BAND && l.band !== REDEMPTION_BAND && l.not_ranked === undefined && appliesTo(l, place, currency, channel));
+}
+
+/**
+ * One holding's fees from a house's price list: the channel is the first of `HOUSE_CHANNELS` with a trade line for the holding's class, or
+ * with several ways to buy it (`planLines`); every base's list line is the one a run reads (`tariffLine`); a conversion only where the
+ * holding is bought abroad in another currency. Where the list prints two or more ways to buy the holding (its standard trade line where it
+ * has one, and its plans), each is a plan with its own trade fee.
+ */
+function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string | null): HoldingTemplate | undefined {
   const choice = (channel: string): LineChoice => ({ instrumentClass: classOf(place), wrapper: "brokerage-account", channel, ...(currency ? { currency: { code: currency } } : {}) });
   const tryLine = (channel: string, base: Line["base"]): Line | undefined | "ambiguous" => {
     try {
@@ -169,17 +209,27 @@ function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string 
   };
   const channel = HOUSE_CHANNELS.find((c) => {
     const t = tryLine(c, "trade");
-    return t !== undefined && t !== "ambiguous";
+    return (t !== undefined && t !== "ambiguous") || planLines(snap, place, currency, c).length >= 2;
   });
   if (!channel) return undefined;
   const fees: TemplateFee[] = [];
   const left: { lineId: string; why: LeftWhy }[] = [];
   const read = new Set<string>();
   const ambiguous = new Set<string>();
+  const standard = tryLine(channel, "trade");
+  const ways = [...(standard && standard !== "ambiguous" && standard.band === null ? [standard] : []), ...planLines(snap, place, currency, channel)];
+  const plans = ways.length >= 2 ? ways : [];
+  for (const l of plans) read.add(l.id);
   for (const base of HOUSE_BASES) {
     if (base === "fx" && (place === "israel" || currency === null)) continue;
     const l = tryLine(channel, base);
     if (l === undefined) continue;
+    // with plans, a trade line the run reads by itself is the standard one, and the plans hold the rest
+    if (base === "trade" && plans.length > 0 && (l === "ambiguous" || l.band !== null)) {
+      ambiguous.add(base);
+      left.push({ lineId: base, why: "ambiguous" });
+      continue;
+    }
     if (l === "ambiguous") {
       ambiguous.add(base);
       left.push({ lineId: base, why: "ambiguous" });
@@ -196,7 +246,12 @@ function holdingFees(snap: FeesSnapshot, place: Held["place"], currency: string 
     left.push({ lineId: l.id, why: (HOUSE_BASES as readonly string[]).includes(l.base) ? whyNotRead(l) : "other-base" });
   }
   const usesChannel = snap.lines.some((l) => l.channel !== null);
-  return { channel: usesChannel ? channel : null, fees, left };
+  const own = snap.provider.name_he;
+  const planOf = (l: Line): HousePlan => {
+    const m = lineFees(l, own);
+    return { line: l.id, name: l.band ?? l.names.tariff[0] ?? l.id, fees: m.fees, left: m.left };
+  };
+  return { channel: usesChannel ? channel : null, fees, left, ...(plans.length ? { plans: plans.map(planOf) } : {}) };
 }
 
 /**
@@ -219,12 +274,23 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
 }
 
 /** The holding a deal's template reads: Israel, abroad in a currency with its own line, or abroad in any other; with no conversion in shekels. */
-export function holdingOf(template: HouseTemplate, held: Held): HouseTemplate["holdings"][HoldingKey] {
+export function holdingOf(template: HouseTemplate, held: Held): HoldingTemplate | undefined {
   if (held.place === "israel") return template.holdings.israel;
   const own = template.holdings[`abroad:${held.currency}`];
   const h = own ?? template.holdings.abroad;
   if (!h || held.currency !== "ILS") return h;
   return { ...h, fees: h.fees.filter((f) => f.kind !== "fx" && f.kind !== "fx_spread") };
+}
+
+/**
+ * A holding read with one of its plans: the plan's trade fee in place of the standard one, and what is left without the trade's ambiguity
+ * and the standard line's own leftovers, with the plan's line's own.
+ */
+function withPlan(h: HoldingTemplate, plan: HousePlan): HoldingTemplate {
+  // the standard line, where the list prints one, is the first plan and the one `fees` holds
+  const standard = h.fees.some((f) => f.kind === "trade") ? h.plans?.[0]?.line : undefined;
+  const left = h.left.filter((x) => !(x.lineId === "trade" && x.why === "ambiguous") && x.lineId !== standard);
+  return { ...h, fees: [...h.fees.filter((f) => f.kind !== "trade"), ...plan.fees], left: [...left, ...plan.left.map((why) => ({ lineId: plan.line, why }))] };
 }
 
 /** The holding a template reads where the deal does not say what it holds: a fund bought in Israel, in shekels, that accumulates. */
@@ -261,25 +327,63 @@ function trackTemplate(track: TrackLite, data: Pick<FeesData, "templates">, toda
 // ---------------------------------------------------------------- the picker, and filling a deal
 
 /**
- * A template a picker offers for a kind: a house's price list, or a track (with its company, to group by, its short name under the company
+ * A plan a picker lists under its house: the template id that fills the deal with it, its name in the price list's words, and its trade
+ * price as the page shows a price (`price`, with its figures sourced).
+ */
+export interface PlanOption {
+  id: string;
+  name: string;
+  price: PriceView;
+}
+
+/**
+ * A template a picker offers for a kind: a house's price list, with its plans for what the deal holds where the list prints several ways
+ * to buy it (`plans`, each a row of its own under the house), or a track (with its company, to group by, its short name under the company
  * where it is shorter, D54, and the yearly fee on the savings its pick fills, `saving`, where it fills one).
  */
-export type TemplateOption = { id: string; name: string; source: "house" } | { id: string; name: string; source: "track"; company: string; short?: string; saving?: SiteValue };
+export type TemplateOption = { id: string; name: string; source: "house"; plans?: PlanOption[] } | { id: string; name: string; source: "track"; company: string; short?: string; saving?: SiteValue };
 
 const HOUSE = "house:";
 const TRACK = "track:";
+/** Between a house's id and a plan's line in a plan's template id (`house:interactive-brokers/interactive-brokers-buy-sell-us-fixed`). */
+const PLAN = "/";
 const houseId = (h: HouseTemplate) => `${HOUSE}${h.id}`;
+const planId = (h: HouseTemplate, plan: HousePlan) => `${houseId(h)}${PLAN}${plan.line}`;
+
+/** A house template id's house and plan line: `house:<id>` or `house:<id>/<line>`. */
+function houseOf(id: string, data: Pick<FeesData, "houses">): { house: HouseTemplate; line: string | null } | null {
+  if (!id.startsWith(HOUSE)) return null;
+  const [hid, line] = id.split(PLAN, 2) as [string, string | undefined];
+  const house = data.houses.find((x) => houseId(x) === hid);
+  return house ? { house, line: line ?? null } : null;
+}
+
+/** A plan's trade price as the page shows it (`priceView`), for its row in the picker. */
+function planPrice(plan: HousePlan, today: string): PriceView | null {
+  const trade = plan.fees.find((f) => f.kind === "trade");
+  if (!trade) return null;
+  const fee: Fee = { id: "plan", ...trade };
+  return priceView([fee], 0, trade.stages[0]!.price, today);
+}
 const trackId = (t: TrackLite) => `${TRACK}${t.id}`;
 
 /** Where a template comes from, by its id: a house's price list or a track. */
 export const templateSource = (id: string): "house" | "track" => (id.startsWith(TRACK) ? "track" : "house");
 
 /**
- * The templates for a kind, for a picker: every house's price list for a securities account; every track the regulator's data maps to the
- * kind, for the provident family. Other kinds have none.
+ * The templates for a kind, for a picker: every house's price list for a securities account, each with its plans for what the deal holds
+ * (`held`; where it does not say, a fund bought in Israel in shekels); every track the regulator's data maps to the kind, for the provident
+ * family. Other kinds have none.
  */
-export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): TemplateOption[] {
-  if (kind === "brokerage-account") return data.houses.map((h) => ({ id: houseId(h), name: h.name, source: "house" }));
+export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string, held?: Held): TemplateOption[] {
+  if (kind === "brokerage-account")
+    return data.houses.map((h) => {
+      const plans = (holdingOf(h, held ?? HELD_UNSAID)?.plans ?? []).flatMap((plan) => {
+        const price = planPrice(plan, today);
+        return price ? [{ id: planId(h, plan), name: plan.name, price }] : [];
+      });
+      return { id: houseId(h), name: h.name, source: "house" as const, ...(plans.length ? { plans } : {}) };
+    });
   if (kind === null) return [];
   return data.tracks
     .filter((t) => t.wrapperId === kind)
@@ -314,13 +418,25 @@ export interface Template {
   provider?: ProviderKind;
 }
 
-/** The template `id` for a deal of `deal`'s kind and holding: a house's for what the deal holds, a track's two fees. Null where the id names no template of the deal's kind. */
+/**
+ * The template `id` for a deal of `deal`'s kind and holding: a house's for what the deal holds (with one of its plans, where the id names
+ * one: its trade price, and the house's name with the plan's), a track's two fees. Null where the id names no template of the deal's kind,
+ * or a plan the house does not print for what the deal holds.
+ */
 export function templateOf(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): Template | null {
   if (id.startsWith(HOUSE) && deal.kind === "brokerage-account") {
-    const h = data.houses.find((x) => houseId(x) === id);
-    if (!h) return null;
-    const holding = holdingOf(h, deal.held ?? HELD_UNSAID);
-    return { name: h.name, fees: holding?.fees ?? [], left: holding ? holding.left.map(({ lineId, why }) => ({ line: lineId, why })) : [{ why: "no-holding" }], provider: h.provider };
+    const found = houseOf(id, data);
+    if (!found) return null;
+    const { house: h, line } = found;
+    let holding = holdingOf(h, deal.held ?? HELD_UNSAID);
+    let name = h.name;
+    if (line !== null) {
+      const plan = holding?.plans?.find((x) => x.line === line);
+      if (!holding || !plan) return null;
+      holding = withPlan(holding, plan);
+      name = `${h.name}, ${plan.name}`;
+    }
+    return { name, fees: holding?.fees ?? [], left: holding ? holding.left.map(({ lineId, why }) => ({ line: lineId, why })) : [{ why: "no-holding" }], provider: h.provider };
   }
   if (id.startsWith(TRACK)) {
     const t = data.tracks.find((x) => trackId(x) === id);
@@ -386,8 +502,8 @@ export function feePriceLists(deal: FeeDeal, kind: FeeKindId, data: Pick<FeesDat
   return data.houses.filter((h) => holdingOf(h, deal.held ?? HELD_UNSAID)?.fees.some((f) => f.kind === kind)).map((h) => ({ id: houseId(h), name: h.name }));
 }
 
-/** A house's name by its template id (`house:<id>`); null where no house has it. */
-export const houseName = (id: string, data: Pick<FeesData, "houses">): string | null => data.houses.find((h) => houseId(h) === id)?.name ?? null;
+/** A house's name by its template id (`house:<id>`, or a plan's `house:<id>/<line>`); null where no house has it. */
+export const houseName = (id: string, data: Pick<FeesData, "houses">): string | null => houseOf(id, data)?.house.name ?? null;
 
 /**
  * The deal with one fee's price filled from a house's price list (`feePriceLists`): the fee keeps its id and place, takes the list's one

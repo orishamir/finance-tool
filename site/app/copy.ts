@@ -1735,7 +1735,9 @@ export const feeDeal = {
     /** The head of a later price whose start is not given (an old deal's price with no month before it). */
     stage: { next: "אחר כך" },
     form: "איך נגבה",
-    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה" } as Record<string, string>,
+    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה" } as Record<string, string>,
+    /** The price parts beyond a rate and its bounds, by the name the reading's sheets give them (values.ts `inputKey`; reading.ts `UNIT_PRICE_KEY`). */
+    parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", unitPrice: "מחיר יחידה בקרן" },
     howMuch: "כמה",
     min: "מינימום",
     max: "מקסימום",
@@ -1973,7 +1975,9 @@ function dealInputNames(): Record<string, string> {
     out[`deal:${k}.min`] = `${name}: המינימום`;
     out[`deal:${k}.max`] = `${name}: המקסימום`;
     out[`deal:${k}.yearly`] = `${name}, בשנה`;
+    for (const part of ["cap", "flat", "upTo"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
+  out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
   return out;
 }
 for (const [key, name] of Object.entries(dealInputNames())) computedInputs.names[key] ??= name;
