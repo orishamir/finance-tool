@@ -15,16 +15,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
-import { addFee, holdOn, laterUnpriced, updateFee, type Side } from "../../lib/fee-deal/edit";
+import { addFee, updateFee, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
-import { dealStore, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { barredFees, dealFromTemplate, feePriceLists, HELD_UNSAID, houseName, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, type DealUndo, type Undo, type Undoable } from "../../lib/fee-deal/undo";
+import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
+import { barredFees, dealFromTemplate, feePriceLists, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -136,11 +136,13 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     }
   }, [chosen]);
 
-  // a deal the address gave is saved at once, and the address is cleared, so a reload opens the deal as it is now, not the link again; the
-  // empty deal a broken or unknown address opens is saved only once it is worth saving, as a new deal is
+  // a deal the address gave is saved at once where it is worth saving, as a typed deal is (a kind alone waits for its first fee or name),
+  // and the address is cleared, so a reload opens the deal as it is now, not the link again; the empty deal a broken or unknown address
+  // opens is a new deal like any other
   useEffect(() => {
     if (!opened.current?.fromAddress) return;
-    if (opened.current.given) dealStore.update((ds) => savedWith(ds, opened.current!.deal, today));
+    const given = opened.current.given ? opened.current.deal : null;
+    if (given) dealStore.update((ds) => savedIfWorth(ds, given, today) ?? ds);
     navigate({ search: "" }, { replace: true, preventScrollReset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -154,9 +156,10 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     keep(next);
     if (undoing && "dealId" in undoing && !standing(undoing, next)) setUndoing(null);
   };
-  // a change that keeps what it took for the undo, in place of any undo before it
-  const kept = (r: Undoable | null) => {
+  // a change that keeps what it took for the undo, in place of any undo before it; one that took nothing the person gave is a plain change
+  const kept = (r: MaybeUndoable | null) => {
     if (!r) return;
+    if (!r.undo) return change(r.deal);
     keep(r.deal);
     setChosen(r.chosen);
     setUndoing(r.undo);
@@ -175,8 +178,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   };
   const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
   const onRemoveStage = (feeId: string, side: Side, k: number) => kept(removeStageKept(deal, feeId, side, k, chosen));
-  // "כל הזמן" on a price takes the prices after it away: through the undo where one of them holds a figure, silently where none does
-  const onHoldOn = (fee: Fee, side: Side, k: number) => (laterUnpriced(fee, side, k) ? onFee(holdOn(fee, side, k)) : kept(holdOnKept(deal, fee.id, side, k, chosen)));
+  const onHoldOn = (fee: Fee, side: Side, k: number) => kept(holdOnKept(deal, fee.id, side, k, chosen));
   // the fee put back takes the focus on its card; a fill's and a stage's lines hand it on themselves
   const onUndo = () => {
     if (!undoing) return;
@@ -300,12 +302,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const shown = undoing && ("dealId" in undoing ? standing(undoing, deal) : true) ? undoing : null;
   const undoWords = (u: Undo | DealUndo): string => {
     if (!("dealId" in u)) return `${copy.end.deleted}${dealLabel(u.deal, kindById(data.kinds, u.deal.kind)?.name ?? null)}.`;
-    if (u.what.kind === "stage") return copy.panel.stageRemoved;
-    if (u.what.kind === "chain") return copy.panel.laterRemoved;
-    if (u.what.kind === "fill") return `${copy.builder.filled(houseName(u.what.house, data) ?? "")}.`;
-    const id = u.what.feeId;
-    const f = "fee" in u.took ? u.took.fee : deal.fees.find((x) => x.id === id);
-    return `${copy.builder.removed}${f ? feeName(f.kind, f.name) : ""}.`;
+    return feeUndoWords(u, (f) => feeName(f.kind, f.name), data);
   };
   const words = shown ? undoWords(shown) : null;
   const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, words, onUndo, onHold: setHolding } : null;

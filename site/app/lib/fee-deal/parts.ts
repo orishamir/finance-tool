@@ -4,7 +4,7 @@
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
-import { engineDeal, engineFee, feeInOrder, feePriced, mainFigure, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
+import { engineDeal, engineFee, feeInOrder, feePriced, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
 import { type FeeKindId, type FormId } from "./shapes";
 import { inputKey, priceFigures, reading, type PriceFigures, type Unit } from "./values";
 
@@ -30,11 +30,13 @@ export interface DealRead {
  * `unpriced`, and both are left out.
  */
 export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string): DealRead {
-  const fees = deal.fees.filter((f) => feeInOrder(f) && feePriced(f));
-  const engine = engineDeal({ ...deal, fees });
   const month = monthOfDate(today);
+  // the reading's first month (F-110: the device's, or the deal's start where it is later): a price given or not before it is past
+  const from = deal.start && deal.start > monthKey(month) ? deal.start : monthKey(month);
+  const fees = deal.fees.filter((f) => feeInOrder(f) && feePriced(f, from));
+  const engine = engineDeal({ ...deal, fees });
   const unread = deal.fees.filter((f) => !feeInOrder(f)).map((f) => f.id);
-  const unpriced = deal.fees.filter((f) => feeInOrder(f) && !feePriced(f)).map((f) => f.id);
+  const unpriced = deal.fees.filter((f) => feeInOrder(f) && !feePriced(f, from)).map((f) => f.id);
   return { deal, kind: kindById(kinds, deal.kind), fees, unread, unpriced, engine, reading: dealPeriods(engine, month), today, month };
 }
 

@@ -158,12 +158,15 @@ export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v
 const figuresOf = (p: Price): (Num | undefined)[] => (p.form === "action" || p.form === "held" ? [p.rate, p.min, p.max] : p.form === "free" ? [] : [p.amount]);
 
 /**
- * Whether a fee is as a template filled it and the person left it: one price with no end, no sale priced apart and no name of its own, as a
- * template fills a fee, and every figure of it still carrying its source (`retyped` drops the source of a figure the person changes).
+ * Whether a fee holds nothing the person gave: one price with no end, no sale priced apart and no name of its own, and either every figure
+ * still carrying a template's source (`retyped` drops the source of a figure the person changes), or its price still asking for its figure
+ * with no bound (a fee just added).
  */
 export function untouched(fee: Fee): boolean {
   if (fee.stages.length !== 1 || fee.stages[0]!.until !== undefined || fee.sale || fee.name !== undefined) return false;
-  const figures = figuresOf(fee.stages[0]!.price).filter((n): n is Num => n !== undefined);
+  const price = fee.stages[0]!.price;
+  const figures = figuresOf(price).filter((n): n is Num => n !== undefined);
+  if (mainFigure(price)?.blank) return figures.length === 1;
   return figures.length > 0 && figures.every((n) => n.src !== undefined);
 }
 
@@ -189,8 +192,27 @@ export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.fo
 /** Whether a price states a price: free, or its rate or sum typed or filled (not blank). */
 export const pricePriced = (p: Price): boolean => !mainFigure(p)?.blank;
 
-/** Whether every price of a fee states one (`pricePriced`): a fee with a price not yet given is left out of the reading and of a link. */
-export const feePriced = (f: Fee): boolean => f.stages.every((s) => pricePriced(s.price)) && (!f.sale || f.sale.every((s) => pricePriced(s.price)));
+/** The prices of a stage list that hold at `from` or later: a price that ended by then is past, and F-110 does not read it. */
+export const pricesFrom = (stages: readonly Stage[], from: MonthKey): Stage[] => stages.filter((s) => s.until === undefined || s.until > from);
+
+/**
+ * Whether every price of a fee from `from` on states one (`pricePriced`): a fee with a price not yet given there is left out of the
+ * reading. A price that has passed by `from` does not count, given or not.
+ */
+export const feePriced = (f: Fee, from: MonthKey): boolean => [f.stages, ...(f.sale ? [f.sale] : [])].every((st) => pricesFrom(st, from).every((s) => pricePriced(s.price)));
+
+/** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
+export type Side = "buy" | "sell";
+
+/** A fee's prices on a side: the sale's where it is priced apart, else the fee's own. */
+export const pricesOn = (fee: Fee, side: Side): Stage[] => (side === "sell" && fee.sale ? fee.sale : fee.stages);
+
+/** Two values with the same content, whatever order their fields were set in (a deal, a fee, a price). */
+export function sameContent(a: unknown, b: unknown): boolean {
+  return a === b || canonical(a) === canonical(b);
+}
+const canonical = (v: unknown): string =>
+  Array.isArray(v) ? `[${v.map(canonical).join(",")}]` : v && typeof v === "object" ? `{${Object.keys(v).sort().filter((k) => (v as Record<string, unknown>)[k] !== undefined).map((k) => `${JSON.stringify(k)}:${canonical((v as Record<string, unknown>)[k])}`).join(",")}}` : JSON.stringify(v);
 
 /** A new fee of a kind: one price of its usual form that holds throughout. */
 export function newFee(kind: FeeKindId, name?: string): Fee {
@@ -329,10 +351,21 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
 
 const currencyIndex: Record<string, true> = Object.fromEntries(BOUND_CURRENCIES.map((c) => [c, true]));
 
+/**
+ * What keeps price `k` of a list from the order F-110 reads, or null: a price before the last that has no month it ends (`missing`), a month
+ * not after the one the price before it ends (`after`, that month), or a last price that has an end (`end`).
+ */
+export function stageFault(stages: readonly Stage[], k: number): { kind: "missing" } | { kind: "after"; month: MonthKey } | { kind: "end" } | null {
+  const s = stages[k]!;
+  if (k === stages.length - 1) return s.until === undefined ? null : { kind: "end" };
+  if (s.until === undefined || !MONTH.test(s.until)) return { kind: "missing" };
+  const before = k > 0 ? stages[k - 1]!.until : undefined;
+  return before !== undefined && s.until <= before ? { kind: "after", month: before } : null;
+}
+
 /** Whether a fee's prices are what F-110 reads: at least one, each but the last ending, the ends in order, the last with none. */
 export function stagesInOrder(stages: readonly Stage[]): boolean {
-  if (stages.length === 0) return false;
-  return stages.every((s, k) => (k === stages.length - 1 ? s.until === undefined : s.until !== undefined && MONTH.test(s.until) && (k === 0 || s.until > stages[k - 1]!.until!)));
+  return stages.length > 0 && stages.every((_, k) => stageFault(stages, k) === null);
 }
 
 /** Whether every fee of a deal can be read (F-110): the screen leaves a fee whose prices are not in order out of the reading until they are. */

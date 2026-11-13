@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addLater, editPrice, holdOn, laterUnpriced, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { addFee, addLater, editPrice, holdOn, laterUntouched, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
@@ -47,9 +47,9 @@ describe("the fee page's edits", () => {
     const two = addLater(fee, "buy", "2028-03");
     expect(two.stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("held") }]);
     expect(feeInOrder(two)).toBe(true);
-    expect(feePriced(two)).toBe(false);
+    expect(feePriced(two, "2026-11")).toBe(false);
     const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
-    expect(feePriced(priced)).toBe(true);
+    expect(feePriced(priced, "2026-11")).toBe(true);
     // a priced price is followed by one of its own form
     const three = addLater(priced, "buy", "2030-01");
     expect(three.stages[2]!.price).toEqual(blankPrice("held"));
@@ -62,9 +62,9 @@ describe("the fee page's edits", () => {
     // "לזמן מוגבל" on the only price, with its month: the next price follows, asking for its price, never a hidden free one
     const two = setLimited(fee, "buy", 0, "2028-03");
     expect(two.stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("held") }]);
-    expect(feePriced(two)).toBe(false);
+    expect(feePriced(two, "2026-11")).toBe(false);
     const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
-    expect(feePriced(priced)).toBe(true);
+    expect(feePriced(priced, "2026-11")).toBe(true);
     expect(feeInOrder(priced)).toBe(true);
     // "לזמן מוגבל" on the next one continues the chain the same way
     const three = setLimited(priced, "buy", 1, "2030-01");
@@ -75,21 +75,32 @@ describe("the fee page's edits", () => {
     expect(moved.stages.map((s) => s.until)).toEqual(["2028-06", "2030-01", undefined]);
     expect(moved.stages).toHaveLength(3);
   });
-  it("\"כל הזמן\" on a price takes away the prices after it; they go without an undo only where none of them holds a figure", () => {
+  it("\"כל הזמן\" on a price takes away the prices after it; they go without an undo only where they hold nothing the person gave", () => {
     const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
     const two = setLimited(fee, "buy", 0, "2028-03");
-    expect(laterUnpriced(two, "buy", 0)).toBe(true);
+    expect(laterUntouched(two, "buy", 0)).toBe(true);
     expect(holdOn(two, "buy", 0).stages).toEqual([{ price: { form: "free" } }]);
     const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
-    expect(laterUnpriced(priced, "buy", 0)).toBe(false);
+    expect(laterUntouched(priced, "buy", 0)).toBe(false);
     const bounded = editPrice(two, "buy", 1, (p) => withFigure(p, "min", 5));
-    expect(laterUnpriced(bounded, "buy", 0)).toBe(false);
+    expect(laterUntouched(bounded, "buy", 0)).toBe(false);
+    // a choice with no figure holds something too: another form, another period, a month of its own
+    expect(laterUntouched(editPrice(two, "buy", 1, (p) => withForm(p, "sum")), "buy", 0)).toBe(false);
+    expect(laterUntouched(editPrice(two, "buy", 1, (p) => withMonths(p, "every", 3)), "buy", 0)).toBe(false);
+    expect(laterUntouched(setLimited(two, "buy", 1, "2030-01"), "buy", 0)).toBe(false);
+    // a figure typed and emptied again holds nothing
+    expect(laterUntouched(editPrice(priced, "buy", 1, (p) => withFigure(p, "rate", null)), "buy", 0)).toBe(true);
     const three = setLimited(priced, "buy", 1, "2030-01");
     expect(holdOn(three, "buy", 1).stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, priced.stages[1]]);
-    expect(laterUnpriced(three, "buy", 1)).toBe(true);
-    expect(laterUnpriced(three, "buy", 0)).toBe(false);
+    expect(laterUntouched(three, "buy", 1)).toBe(true);
+    expect(laterUntouched(three, "buy", 0)).toBe(false);
     // the last price is already held on
     expect(holdOn(three, "buy", 2)).toEqual(three);
+  });
+  it("a currency chosen for a later price's bounds holds something", () => {
+    const fee = setLimited({ ...newFee("trade"), stages: [{ price: { form: "free" } }] }, "buy", 0, "2028-03");
+    expect(laterUntouched(fee, "buy", 0)).toBe(true);
+    expect(laterUntouched(editPrice(fee, "buy", 1, (p) => withCurrency(p, "USD")), "buy", 0)).toBe(false);
   });
   it("taking a middle price away joins its neighbours: the price before it runs until its end, the next starts where it did", () => {
     const fee: Fee = {
@@ -112,12 +123,12 @@ describe("the fee page's edits", () => {
   });
   it("a rate emptied is blank again, and a blank rate stays blank through a change of terms", () => {
     const fee = editPrice(newFee("trade"), "buy", 0, (p) => withFigure(p, "rate", 0.1));
-    expect(feePriced(fee)).toBe(true);
+    expect(feePriced(fee, "2026-11")).toBe(true);
     const emptied = editPrice(fee, "buy", 0, (p) => withFigure(p, "rate", null));
-    expect(feePriced(emptied)).toBe(false);
-    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withCurrency(p, "USD")))).toBe(false);
-    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withForm(p, "free")))).toBe(true);
-    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withFigure(p, "rate", 0)))).toBe(true);
+    expect(feePriced(emptied, "2026-11")).toBe(false);
+    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withCurrency(p, "USD")), "2026-11")).toBe(false);
+    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withForm(p, "free")), "2026-11")).toBe(true);
+    expect(feePriced(editPrice(emptied, "buy", 0, (p) => withFigure(p, "rate", 0)), "2026-11")).toBe(true);
   });
 
   it("a sale priced apart starts as a copy of the purchase, and edits only itself", () => {

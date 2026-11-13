@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { Glance, GlanceChange, GlanceFee, GlanceGroup } from "../../lib/fee-deal/glance";
-import { groupKey, type GroupOn, type MarkView } from "../../lib/fee-deal/parts";
+import { groupKey, type FeeRef, type GroupOn, type MarkView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
@@ -171,6 +171,18 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
   );
 }
 
+/** A fee not read yet because a price of it is not given: its name, and that its price is still to come. */
+function UnpricedLine({ fee }: { fee: FeeRef }) {
+  const { marked, handlers } = useFeeMark(fee.fee);
+  const onClick = useLineOpen(fee.fee);
+  return (
+    <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-glance-fee={fee.fee}>
+      <FeeOpen fee={fee} after={copy.price.sep} />
+      <span className="text-muted-foreground">{copy.builder.facts.noPrice}</span>
+    </li>
+  );
+}
+
 /**
  * The column, for a deal with a fee. `law`: the reading's law rows, which a fee with a cap draws its block from; `saved`: the deal's product
  * saves, so a share of what is held reads "what has built up". The figures the person typed read as plain words here: the builder's boxes
@@ -183,7 +195,7 @@ export function GlanceColumn({ glance, law, saved, names, empty }: { glance: Gla
   return (
     <Section title={copy.glance.title} level="kick" heading="h2">
       <TypedPlain className="flex flex-col gap-4">
-          {empty && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
+          {empty && glance.unpriced.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
           {!empty && glance.throughout.length > 0 && (
             <Section title={copy.glance.throughout} level="card" heading="h3" gap="snug">
               {glance.throughout.map((g) => (
@@ -224,6 +236,13 @@ export function GlanceColumn({ glance, law, saved, names, empty }: { glance: Gla
               </div>
             ))}
           </Section>
+          )}
+          {glance.unpriced.length > 0 && (
+            <ul className="flex flex-col gap-1 text-sm">
+              {glance.unpriced.map((f) => (
+                <UnpricedLine key={f.fee} fee={f} />
+              ))}
+            </ul>
           )}
           {glance.unread.length > 0 && (
             <p className="text-sm text-muted-foreground">

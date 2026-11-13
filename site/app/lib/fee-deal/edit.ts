@@ -2,16 +2,15 @@
 // return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number. A price whose
 // terms the person changes (its months, its bounds' currency, its form) becomes theirs whole (`owned`): the source states another price.
 import type { ProductId } from "@finance-tool/schema";
-import { blankFigure, blankPrice, newFee, pricePriced, retyped, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Stage } from "./model";
+import { blankFigure, blankPrice, newFee, pricesOn, retyped, sameContent, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Side, type Stage } from "./model";
 import { FEE_SHAPES, holdsFunds, type FeeKindId, type FormId, type Held } from "./shapes";
 
-/** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
-export type Side = "buy" | "sell";
+export type { Side } from "./model";
 
 /** A figure of a price the screen edits. */
 export type Figure = "rate" | "min" | "max" | "amount";
 
-const stagesOf = (fee: Fee, side: Side): Stage[] => (side === "sell" && fee.sale ? fee.sale : fee.stages);
+const stagesOf = pricesOn;
 const withStages = (fee: Fee, side: Side, stages: Stage[]): Fee => (side === "sell" && fee.sale ? { ...fee, sale: stages } : { ...fee, stages });
 
 /** The deal with one fee replaced by `fn` of it. */
@@ -145,9 +144,11 @@ export function setUntil(fee: Fee, side: Side, k: number, month: MonthKey | null
 export function addLater(fee: Fee, side: Side, until: MonthKey): Fee {
   const stages = stagesOf(fee, side);
   const last = stages.at(-1)!;
-  const form = last.price.form === "free" ? FEE_SHAPES[fee.kind].usual : last.price.form;
-  return withStages(fee, side, [...stages.slice(0, -1), { ...last, until }, { price: blankPrice(form) }]);
+  return withStages(fee, side, [...stages.slice(0, -1), { ...last, until }, { price: blankPrice(laterForm(fee, last.price)) }]);
 }
+
+/** The form of the price that follows `before`: the same form, or the fee's usual one after a free price. */
+const laterForm = (fee: Fee, before: Price): FormId => (before.form === "free" ? FEE_SHAPES[fee.kind].usual : before.form);
 
 /** Price `k` for a limited time, up to the start of `month`: the last price ends there and the next one follows it (`addLater`); another moves its end. */
 export function setLimited(fee: Fee, side: Side, k: number, month: MonthKey): Fee {
@@ -162,11 +163,14 @@ export function holdOn(fee: Fee, side: Side, k: number): Fee {
   return withStages(fee, side, [...stages.slice(0, k), open]);
 }
 
-/** Whether the prices after `k` hold nothing the person gave: each still asks for its price and has no bound. They go then without an undo. */
-export function laterUnpriced(fee: Fee, side: Side, k: number): boolean {
-  return stagesOf(fee, side)
-    .slice(k + 1)
-    .every((s) => !pricePriced(s.price) && !("min" in s.price && s.price.min) && !("max" in s.price && s.price.max));
+/**
+ * Whether the prices after `k` hold nothing the person gave: one price only, as "לזמן מוגבל" added it (no month, its form the one it
+ * came with, its figures, periods and currency untouched). Anything chosen in it counts. They go then without an undo.
+ */
+export function laterUntouched(fee: Fee, side: Side, k: number): boolean {
+  const stages = stagesOf(fee, side);
+  const later = stages.slice(k + 1);
+  return later.length === 1 && later[0]!.until === undefined && sameContent(later[0]!.price, blankPrice(laterForm(fee, stages[k]!.price)));
 }
 
 /**

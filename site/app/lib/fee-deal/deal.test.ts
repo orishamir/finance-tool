@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
 import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
 import { blankPrice, engineDeal, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
-import { DEALS_KEY, parseDeals, savedTwin, savedWith, without, worthSaving } from "./store";
+import { DEALS_KEY, parseDeals, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
 
 const src: Sourced = { url: "https://www.example.org/tariff.pdf", title: "Tariff", publisher: "Bank", strength: "institution", checked: "2026-10-01", effectiveFrom: "2026-01-01" };
@@ -119,16 +119,16 @@ describe("a price not given yet", () => {
   it("starts a new fee blank, which is not a price of zero", () => {
     const fee = newFee("trade");
     expect(fee.stages[0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
-    expect(feePriced(fee)).toBe(false);
-    expect(feePriced({ ...fee, stages: [{ price: { form: "action", rate: typed(0) } }] })).toBe(true);
-    expect(feePriced({ ...fee, stages: [{ price: { form: "free" } }] })).toBe(true);
+    expect(feePriced(fee, "2026-11")).toBe(false);
+    expect(feePriced({ ...fee, stages: [{ price: { form: "action", rate: typed(0) } }] }, "2026-11")).toBe(true);
+    expect(feePriced({ ...fee, stages: [{ price: { form: "free" } }] }, "2026-11")).toBe(true);
   });
   it("is kept as blank by the device, and a deal saved before stays a price of zero, read as before", () => {
     const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
     expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
     const old = readDeal(JSON.parse(JSON.stringify(older)))!;
     expect(old.fees[0]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0 } });
-    expect(feePriced(old.fees[0]!)).toBe(true);
+    expect(feePriced(old.fees[0]!, "2026-11")).toBe(true);
     expect(parseDeals({ version: 1, deals: [older] })).toEqual([old]);
   });
   it.each([
@@ -145,12 +145,16 @@ describe("a price not given yet", () => {
     d.fees[0].stages[0].price.min = { v: 0, blank: true };
     expect(readDeal(d)).toBeNull();
   });
-  it("is left out of a link, and a link written before opens its zeros as prices of zero", () => {
+  it("is carried blank by a link, and a link written before opens as it did: its zeros prices of zero, a fee it left out not there", () => {
     const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
     const back = decodeDeal(encodeDeal(d))!;
-    expect(back.fees.map((f) => f.kind)).toEqual(account().fees.map((f) => f.kind));
+    expect(back.fees.map((f) => f.kind)).toEqual(d.fees.map((f) => f.kind));
+    expect(back.fees.at(-1)!.stages[0]!.price).toEqual(newFee("transfer_out").stages[0]!.price);
     const old = decodeDeal(encodeDeal(older as FeeDeal))!;
     expect(old.fees[0]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0 } });
+    // a link written while a blank fee was left out of links: the deal without it, as it opened then
+    const before = Buffer.from(JSON.stringify([1, { n: "", k: "brokerage-account", f: [{ k: "trade", s: [{ P: { F: "action", r: 0.25 } }] }] }, []])).toString("base64url");
+    expect(decodeDeal(before)!.fees.map((f) => f.stages[0]!.price)).toEqual([{ form: "action", rate: { v: 0.25 } }]);
   });
 });
 
@@ -234,13 +238,23 @@ describe("the saved deals", () => {
     expect(worthSaving({ ...fresh, fees: [newFee("trade")] }, [])).toBe(true);
     expect(worthSaving(fresh, [fresh])).toBe(true);
   });
+  it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", () => {
+    const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
+    const kindAlone = dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")!;
+    expect(kindAlone.given).toBe(true);
+    expect(savedIfWorth([], kindAlone.deal, "2026-11-12")).toBeNull();
+    const linked = dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")!;
+    expect(savedIfWorth([], linked.deal, "2026-11-12")).toHaveLength(1);
+  });
   it("finds the saved deal a link's deal is the same as, whatever its ids and saved day", () => {
     const d = { ...account(), saved: "2026-11-01" };
     const back = decodeDeal(encodeDeal(d))!;
     expect(savedTwin(back, [d])).toBe(d);
     expect(savedTwin({ ...back, name: "אחר" }, [d])).toBeUndefined();
-    // a fee with no price yet is not carried, so it does not tell the two apart
-    expect(savedTwin(back, [{ ...d, fees: [...d.fees, newFee("transfer_out")] }])).toBeDefined();
+    // a fee with no price yet is carried as it is, so it tells the two apart, and a deal with one opens its saved twin too
+    expect(savedTwin(back, [{ ...d, fees: [...d.fees, newFee("transfer_out")] }])).toBeUndefined();
+    const blank = { ...d, fees: [...d.fees, newFee("transfer_out")] };
+    expect(savedTwin(decodeDeal(encodeDeal(blank))!, [blank])).toBe(blank);
   });
   it("travels in the export file: read with each deal checked, added by id, written and read back from the device", () => {
     const a = account();

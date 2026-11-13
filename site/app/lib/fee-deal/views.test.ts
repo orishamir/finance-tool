@@ -7,7 +7,8 @@ import { builder, panel } from "./builder";
 import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
-import { NAME_MAX, newDeal, readDeal, typed, untouched, type FeeDeal } from "./model";
+import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num } from "./model";
+import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
 import { barredFees, dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
@@ -488,6 +489,21 @@ describe("a track picked in the builder, on the deal on screen", () => {
     // a name the person typed over the first track's stays
     expect(pickTrack({ ...first, name: "שלי" }, `track:${b.id}`, data, TODAY)!.name).toBe("שלי");
   });
+  it("counts a fee still asking for its price as untouched: one of a kind the track fills is filled, keeping its id; another stays", () => {
+    const t = templateOf(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
+    const kind = t.fees[0]!.kind as Exclude<FeeKindId, "own">;
+    const blank = { ...newFee(kind), id: "fee-blank" };
+    const other = FEE_KIND_IDS.find((k) => k !== "own" && !t.fees.some((f) => f.kind === k))!;
+    const mine = { ...newFee(other), id: "fee-mine" };
+    const deal: FeeDeal = { ...newDeal("kupat-gemel-lehashkaa"), fees: [blank, mine] };
+    expect(untouched(blank)).toBe(true);
+    const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
+    expect(next.template?.feesKept).toBeUndefined();
+    const filled = next.fees.find((f) => f.kind === kind)!;
+    expect(filled.id).toBe("fee-blank");
+    expect(filled.stages).toEqual(t.fees[0]!.stages);
+    expect(next.fees.at(-1)).toEqual(mine);
+  });
   it("keeps every fee where one among the filled ones is typed or changed", () => {
     const first = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${a.id}`, data, TODAY)!;
     const deposit = first.fees.find((f) => f.kind === "deposit")!;
@@ -619,5 +635,26 @@ describe("a fee with a price not given yet", () => {
   it("is read once a figure is typed, a zero among them", () => {
     const typedZero = updateFee(withBlank(), "fee-deposit", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0)));
     expect(read(typedZero).fees.map((f) => f.id)).toContain("fee-deposit");
+  });
+  it("is listed at a glance by its name, apart from the fees read", () => {
+    const g = glance(read(withBlank()));
+    expect(g.unpriced.map((f) => f.fee)).toEqual(["fee-deposit"]);
+    expect(glance(read(provident())).unpriced).toEqual([]);
+  });
+  it("counts only from the month the reading starts: a blank price that has ended does not hold the fee back, a later blank one does", () => {
+    const blank: Num = { v: 0, blank: true };
+    const withPrices = (first: Num, until: MonthKey, then: Num): FeeDeal => ({
+      ...provident(),
+      fees: [{ id: "fee-m", kind: "balance", stages: [{ price: { form: "held", rate: first, per: 12, every: 12 }, until }, { price: { form: "held", rate: then, per: 12, every: 12 } }] }],
+    });
+    const ended = withPrices(blank, "2026-06", typed(0.5));
+    expect(read(ended).fees.map((f) => f.id)).toEqual(["fee-m"]);
+    expect(read(ended).unpriced).toEqual([]);
+    const later = withPrices(typed(0.5), "2027-06", blank);
+    expect(read(later).fees).toEqual([]);
+    expect(read(later).unpriced).toEqual(["fee-m"]);
+    // a deal that starts after today is read from its start, so a blank price before it holds nothing back either
+    expect(read({ ...withPrices(blank, "2027-02", typed(0.5)), start: "2027-03" }).unpriced).toEqual([]);
+    expect(read(withPrices(blank, "2027-02", typed(0.5))).unpriced).toEqual(["fee-m"]);
   });
 });

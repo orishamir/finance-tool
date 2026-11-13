@@ -2,7 +2,7 @@
 // the export file and merged by import as the other side stores are. Saving a deal puts it first, in place of the one with its id, and
 // stamps the day: the first deal is the one last worked on, which the fee page opens when its address names none.
 import { deviceStore } from "../device-store";
-import { feePriced, readDeal, type FeeDeal } from "./model";
+import { readDeal, sameContent, type FeeDeal } from "./model";
 
 export const DEALS_KEY = "mekor.v2.fee-deals";
 
@@ -39,15 +39,14 @@ export const without = (deals: readonly FeeDeal[], id: string): FeeDeal[] => dea
  */
 export const worthSaving = (deal: FeeDeal, deals: readonly FeeDeal[]): boolean => deal.fees.length > 0 || deal.name.trim() !== "" || deals.some((d) => d.id === deal.id);
 
-/** JSON with every object's keys in order, so two equal deals read the same whatever order their fields were set in. */
-const sorted = (v: unknown): string =>
-  Array.isArray(v) ? `[${v.map(sorted).join(",")}]` : v && typeof v === "object" ? `{${Object.keys(v).sort().filter((k) => (v as Record<string, unknown>)[k] !== undefined).map((k) => `${JSON.stringify(k)}:${sorted((v as Record<string, unknown>)[k])}`).join(",")}}` : JSON.stringify(v);
+/** The deals with `deal` saved where it is worth saving (`worthSaving`), whether it was typed or opened from an address; else null. */
+export const savedIfWorth = (deals: readonly FeeDeal[], deal: FeeDeal, today: string): FeeDeal[] | null => (worthSaving(deal, deals) ? savedWith(deals, deal, today) : null);
 
-/** A deal as a link carries it: no id, no saved day, no fee ids, and no fee with a price not given yet (link.ts). */
-const asCarried = (d: FeeDeal): string => {
+/** A deal as a link carries it: no id, no saved day, no fee ids (link.ts). */
+const asCarried = (d: FeeDeal) => {
   const { id: _id, saved: _saved, ...rest } = d;
-  return sorted({ ...rest, fees: d.fees.filter(feePriced).map(({ id: _f, ...f }) => f) });
+  return { ...rest, fees: d.fees.map(({ id: _f, ...f }) => f) };
 };
 
 /** The saved deal a deal from a link is the same as (everything a link carries alike), or none: opening the link opens it and adds nothing. */
-export const savedTwin = (deal: FeeDeal, deals: readonly FeeDeal[]): FeeDeal | undefined => deals.find((d) => asCarried(d) === asCarried(deal));
+export const savedTwin = (deal: FeeDeal, deals: readonly FeeDeal[]): FeeDeal | undefined => deals.find((d) => sameContent(asCarried(d), asCarried(deal)));

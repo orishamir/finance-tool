@@ -3,7 +3,7 @@
 // broken or hostile value opens an empty deal and never throws.
 import type { FeesData } from "../fee-page-data";
 import { dealPagePath } from "../site-paths";
-import { feePriced, isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
+import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
 import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
@@ -32,7 +32,10 @@ const SHORT: Record<string, string> = {
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk",
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
-/** The fields of a price that hold a figure (`Num`): a link writes a figure as its number, or `[number, source]` where it is sourced. */
+/**
+ * The fields of a price that hold a figure (`Num`): a link writes a figure as its number, `[number, source]` where it is sourced, or `null`
+ * where it is not given yet (`Num.blank`).
+ */
 const FIGURES = new Set(["rate", "min", "max", "amount"]);
 
 type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
@@ -67,15 +70,16 @@ const fromBase64Url = (s: string): string => {
 /**
  * A deal as the `d` of its link: its fields under short names, each figure as its number (or its number and the index of its source in a
  * table, where a template filled it), base64url. The deal's id, its fees' ids and when it was saved are left out: a link opens a new deal.
- * A fee with a price not given yet is left out too (`feePriced`): it is not part of the deal until it is given, so a link never carries it.
+ * A price not given yet is carried as it is (its figure `null`), so a link copied while a price is being entered keeps every other price.
  */
 export function encodeDeal(deal: FeeDeal): string {
   const sources: Sourced[] = [];
   const keyOf = (s: Sourced) => JSON.stringify(s);
   const { id: _id, saved: _saved, ...rest } = deal;
-  const body = { ...rest, fees: deal.fees.filter(feePriced).map(({ id: _f, ...f }) => f) };
+  const body = { ...rest, fees: deal.fees.map(({ id: _f, ...f }) => f) };
   const figure = (_k: string, x: unknown): Json => {
-    const n = x as { v: number; src?: Sourced };
+    const n = x as { v: number; src?: Sourced; blank?: true };
+    if (n.blank) return null;
     if (!n.src) return n.v;
     let at = sources.findIndex((s) => keyOf(s) === keyOf(n.src!));
     if (at < 0) at = sources.push(n.src) - 1;
@@ -99,6 +103,7 @@ export function decodeDeal(d: string): FeeDeal | null {
   const table = raw[2].map((s) => renamed(s, LONG, (_k, x) => x));
   const figure = (_k: string, x: unknown): unknown => {
     if (typeof x === "number") return { v: x };
+    if (x === null) return { v: 0, blank: true };
     if (Array.isArray(x) && x.length === 2 && typeof x[0] === "number" && Number.isInteger(x[1]) && x[1] >= 0 && x[1] < table.length) return { v: x[0], src: table[x[1]] };
     return null;
   };
