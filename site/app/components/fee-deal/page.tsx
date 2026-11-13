@@ -1,13 +1,14 @@
-// The fee page's top (method §10.6): the head, the bar of the deal, and its three columns: the builder, the chosen fee's panel and the deal
-// at a glance. The deal is kept on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal
-// in `?d=`, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal last worked
-// on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the pre-rendered page
-// shows the head and the words that it is loading, never a deal of another day. The bar's end opens another saved deal or a new one,
-// copies the deal's link, and opens the template picker; a template opens a new deal beside this one. The builder's track step opens the
-// same picker, and the track it picks is set on the deal on screen (`pickTrack`). A deal with no fee shows the bar and the builder alone,
-// the builder in the column it keeps once the deal has fees, so the first fee moves nothing; the glance and the panel come with it, and
-// the reading once a fee has its price. The columns are one thing: a fee under the pointer or the focus in one is marked in the other, and
-// a fee's name in the glance or the reading chooses it (`FeeLinks`). A change that loses something (a fee taken away, a fee filled from a
+// The fee page (method §10.6): the head, the bar of the deal, three columns for entering it (what the deal is, its fees, the chosen fee's
+// panel), and under them the reading, which opens with the deal at a glance. The deal is kept on this device, saved as it changes from its
+// first fee or a typed name. It opens from the address (a deal in `?d=`, the saved one where the link's deal is one already; a kind in
+// `?wrapper=`, a track in `?track=`), else the deal last worked on, else an empty deal with the kinds to choose from. "Today" is the
+// device's day, read after the page loads: the pre-rendered page shows the head and the words that it is loading, never a deal of another
+// day. The bar's end opens another saved deal or a new one, and copies the deal's link. The first column's price list step opens the
+// template picker, where a price list opens a new deal beside this one; its track step opens the tracks, and the track picked is set on
+// the deal on screen (`pickTrack`). A deal with no kind shows the first column alone, a deal with a kind its fees' column beside it, each
+// in the place it keeps, so the first fee moves nothing; the panel comes with a chosen fee, and the reading with the first fee. The
+// columns and the reading are one thing: a fee under the pointer or the focus in one is marked in the others, and a fee's name in the
+// summary or the reading chooses it (`FeeLinks`). A change that loses something (a fee taken away, a fee filled from a
 // price list, a stage taken away, a saved deal deleted) leaves one undo line where it happened (lib/fee-deal/undo.ts), which takes the
 // focus as it appears and lives through edits elsewhere until it is undone, a newer such change replaces it, another deal opens, the part
 // it would put back into changes, or ten seconds pass while neither the focus nor the pointer is on it.
@@ -29,18 +30,24 @@ import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
-import { useIsoLayoutEffect } from "../../lib/hooks";
-import { Button, Callout, Card, PageHead, Section } from "../kit";
+import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
+import { Button, Callout, Card, PageHead, Section, cx } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
-import { BuilderColumn, bringIntoView, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
+import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
 import { FeeLinksProvider, type FeeLinks } from "./links";
 import { UndoLine } from "./undo-line";
-import { GlanceColumn, READING_ID } from "./glance";
+import { GlanceCard, READING_ID } from "./glance";
 import { PanelColumn, type PanelUndoLine } from "./panel";
 import { TemplatePicker } from "./picker";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
+
+/**
+ * Where the window is wide enough for the chosen fee's panel to have a column of its own, beside the fees' column (each of the two then at
+ * least about 26rem); narrower, the panel opens right under its fee's card.
+ */
+const PANEL_COLUMN = "(min-width: 80rem)";
 
 /** How long the undo line stays while neither the focus nor the pointer is on it, in milliseconds. */
 const UNDO_MS = 10_000;
@@ -94,11 +101,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     const t = window.setTimeout(() => setSaid(null), UNDO_MS);
     return () => window.clearTimeout(t);
   }, [said]);
-  // the template picker, open at the button it was opened from; `pickFrom` says which, and outlives the sheet's closing: the bar's (a pick
-  // opens a new deal) or the builder's track step (a pick sets the track on this deal)
+  // the template picker, open at the button it was opened from; `pickFrom` says which, and outlives the sheet's closing: the price list
+  // step's (a pick opens a new deal) or the track step's (a pick sets the track on this deal)
   const [picker, setPicker] = useState<HTMLElement | null>(null);
-  const [pickFrom, setPickFrom] = useState<"bar" | "track">("bar");
-  const openPicker = (from: "bar" | "track") => (anchor: HTMLElement) => {
+  const [pickFrom, setPickFrom] = useState<"new" | "track">("new");
+  const openPicker = (from: "new" | "track") => (anchor: HTMLElement) => {
     setPickFrom(from);
     setPicker(anchor);
   };
@@ -313,6 +320,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const views = useMemo(() => (read.deal.fees.length > 0 ? { glance: glance(read), reading: readingOf(read, data.fx) } : null), [read, data.fx]);
   const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);
   const hasTracks = options.some((o) => o.source === "track");
+  const hasHouses = options.some((o) => o.source === "house");
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
   const nameOf = (feeId: string) => {
@@ -328,7 +336,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     return feeUndoWords(u, (f) => feeName(f.kind, f.name), data);
   };
   const words = shown ? undoWords(shown) : null;
-  const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, words, onUndo, onHold: setHolding, take: take(shown) } : null;
+  const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, fee: (shown as Undo).before, words, onUndo, onHold: setHolding, take: take(shown) } : null;
   // a change of kind's line stands under the kind, in the builder
   const kindLine: KindUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "product" ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
   // a stage's and a fill's lines stand in the panel, while the panel shows their fee
@@ -340,6 +348,40 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
       : null;
   const dealLine = shown && words && !("dealId" in shown) ? words : null;
   const readSome = read.fees.length > 0;
+  const groupOf = (fee: Fee) => feeGroup(read, fee, saves);
+  // the chosen fee's panel: in a column of its own where the window has the room, sticking under the header as the fees scroll by; else
+  // right under its fee's card
+  const panelColumn = useMedia(PANEL_COLUMN);
+  const panelView =
+    views && panel && chosenFee ? (
+      <div
+        ref={panelCard}
+        className={cx("come-in", panelColumn && "col-start-3 row-start-1 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-lg")}
+        {...(panelRest ? { inert: true } : {})}
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && !e.defaultPrevented) {
+            e.preventDefault();
+            onClosePanel();
+          }
+        }}
+      >
+        <Card edge="accent" className="flex flex-col gap-4">
+          <PanelColumn
+            key={chosenFee.id}
+            panel={panel}
+            fee={chosenFee}
+            product={deal.kind}
+            fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
+            line={panelLine}
+            onFee={onFee}
+            onRemove={onRemoveInPanel}
+            onRemoveStage={(side, k) => onRemoveStage(chosenFee.id, side, k)}
+            onHoldOn={(side, k) => onHoldOn(chosenFee, side, k)}
+            onClose={onClosePanel}
+          />
+        </Card>
+      </div>
+    ) : null;
 
   return (
     <FeeLinksProvider value={links}>
@@ -359,12 +401,10 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
             onNew={() => open(newDeal(null))}
             onRename={onRename}
             onDelete={onDelete}
-            onTemplates={options.length > 0 ? openPicker("bar") : null}
-            templateWords={hasTracks ? copy.picker.track.title : copy.end.template}
           />
         }
       />
-      {/* for a screen reader: what the undo line says, else what the bar's end just did (a template opened a new deal, the link was copied) */}
+      {/* for a screen reader: what the undo line says, else what the page just did (a price list opened a new deal, the link was copied) */}
       <p role="status" className="sr-only">
         {words ?? said ?? (link.copied ? copy.end.copied : "")}
       </p>
@@ -391,71 +431,56 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
           )}
         </div>
       )}
-      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "bar"} product={kind?.name ?? null} onPick={onPick} />
-      {/* where the builder column can be at least about 480 px wide, three columns: the glance at the start (the right), the builder, the
-          panel at the end; narrower, two: the glance, and the builder with the panel under it. They stand in the page in that order, so
-          the Tab key reads them as the eye does. Each has its own place in the grid whatever the deal holds, so the first fee sets the
-          other columns around the builder and moves nothing: the builder, the focus and the scroll stay where they were. A phone stacks
-          the builder, the panel and the glance, in that order (`order`), so the glance coming with the first fee moves nothing above it. */}
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2 min-[90rem]:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_minmax(0,28rem)]">
-        {views && (
-          <Card className="order-3 flex flex-col gap-4 lg:order-none lg:col-start-1 lg:row-start-1 lg:row-span-2 min-[90rem]:row-span-1">
-            <GlanceColumn glance={views.glance} law={views.reading.law} saved={saves} names={nameOf} empty={!readSome} />
-          </Card>
-        )}
-        <Card className="order-1 flex flex-col gap-4 lg:order-none lg:col-start-2 lg:row-start-1">
-          <BuilderColumn
+      <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "new"} product={kind?.name ?? null} onPick={onPick} />
+      {/* the columns for entering the deal, in the page in their reading order, so the Tab key reads them as the eye does: what the deal
+          is (21rem), its fees, and where the window has the room the chosen fee's panel, the two sharing the rest; narrower, the panel
+          stands under its card in the fees' column, and a phone stacks the two columns. Each column has its own place in the grid
+          whatever the deal holds, so the first fee, and the panel coming with it, move nothing. */}
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] min-[80rem]:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,1fr)]">
+        <Card className="flex flex-col gap-4 lg:col-start-1 lg:row-start-1">
+          <SetupColumn
             deal={deal}
             view={builderView}
             kinds={data.kinds}
-            chosen={chosen}
             onPickTrack={hasTracks ? openPicker("track") : null}
+            onTemplates={hasHouses ? openPicker("new") : null}
             left={left}
-            line={feeLine}
             kindLine={kindLine}
-            focus={focus}
-            onFocused={() => setFocus(null)}
             onDeal={change}
             onKind={onKind}
-            onChoose={onChoose}
-            onAdd={onAdd}
-            onRemove={onRemove}
           />
         </Card>
-        {views && panel && chosenFee && (
-          <div
-            ref={panelCard}
-            className="come-in order-2 lg:order-none lg:col-start-2 lg:row-start-2 min-[90rem]:col-start-3 min-[90rem]:row-start-1 min-[90rem]:sticky min-[90rem]:top-20 min-[90rem]:max-h-[calc(100vh-6rem)] min-[90rem]:overflow-y-auto min-[90rem]:rounded-lg"
-            {...(panelRest ? { inert: true } : {})}
-            onKeyDown={(e) => {
-              if (e.key === "Escape" && !e.defaultPrevented) {
-                e.preventDefault();
-                onClosePanel();
-              }
-            }}
-          >
-            <Card edge="accent" className="flex flex-col gap-4">
-              <PanelColumn
-                key={chosenFee.id}
-                panel={panel}
-                fee={chosenFee}
-                product={deal.kind}
-                fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
-                line={panelLine}
-                onFee={onFee}
-                onRemove={onRemoveInPanel}
-                onRemoveStage={(side, k) => onRemoveStage(chosenFee.id, side, k)}
-                onHoldOn={(side, k) => onHoldOn(chosenFee, side, k)}
-                onClose={onClosePanel}
-              />
-            </Card>
-          </div>
+        {kind && (
+          <Card className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1">
+            <FeesColumn
+              deal={deal}
+              view={builderView}
+              groupOf={groupOf}
+              chosen={chosen}
+              panel={panelColumn ? null : panelView}
+              line={feeLine}
+              focus={focus}
+              onFocused={() => setFocus(null)}
+              onDeal={change}
+              onChoose={onChoose}
+              onAdd={onAdd}
+              onRemove={onRemove}
+            />
+          </Card>
         )}
+        {panelColumn && panelView}
       </div>
-      {views && readSome && (
+      {views && (
         <Section id={READING_ID} title={copy.reading}>
           {/* the chart's chosen period belongs to the deal it was chosen on: another deal starts from its own */}
-          <ReadingCards key={deal.id} reading={views.reading} saved={saves} fx={data.fx} />
+          <ReadingCards
+            key={deal.id}
+            reading={views.reading}
+            saved={saves}
+            fx={data.fx}
+            read={readSome}
+            glance={<GlanceCard glance={views.glance} law={views.reading.law} saved={saves} names={nameOf} empty={!readSome} />}
+          />
         </Section>
       )}
     </FeeLinksProvider>

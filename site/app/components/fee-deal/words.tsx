@@ -80,7 +80,7 @@ export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | 
 /** A figure on the page: a sum as `sumDisplay` shows it. */
 export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;
 
-/** A figure with a lead held to it on one line (", לא פחות מ־15 ₪"). */
+/** A figure with a lead held to it on one line (", מינימום 15 ₪"). */
 const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
   <>
     , <Fig value={value} prefix={lead} />
@@ -88,7 +88,7 @@ const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
 );
 
 /**
- * A price in words around its figures: "0.25% מהפעולה, לא פחות מ־15 ₪", "0.4% בשנה ממה שמוחזק", "10 ₪ בחודש", "חינם". `saved`: the
+ * A price in words around its figures: "0.25% מהפעולה, מינימום 15 ₪", "0.4% בשנה ממה שמוחזק", "10 ₪ בחודש", "חינם". `saved`: the
  * product saves (its fees are charged from what has built up), so a share of what is held reads "ממה שנצבר". A fee charged inside a fund
  * says so in place of what it is a share of.
  */

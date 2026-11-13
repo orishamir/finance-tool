@@ -1547,13 +1547,11 @@ export const feeDeal = {
   larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
-  /** The bar under the page's head: the deal's name, its kind, its start and where it is kept. */
+  /** The bar under the page's head: the deal's name and where it is kept. */
   bar: {
     label: "העסקה",
     /** The name a deal shows before the person gives one: its kind's, or a new deal's before a kind is chosen. */
     namePlaceholder: (kind: string | null) => (kind ? `${kind} שלי` : "עסקה חדשה"),
-    start: "תאריך התחלה",
-    optional: "לא חובה",
     saved: "נשמרת במכשיר הזה",
     unsaved: "המכשיר הזה לא שומר אותה",
   },
@@ -1580,8 +1578,8 @@ export const feeDeal = {
     /** After an action's rate: what it is a share of, by the fee; `default` for the rest. */
     of: { default: "מהפעולה", fx: "מההמרה", fx_spread: "מההמרה", deposit: "מההפקדה", distribution_handling: "מכל תשלום", transfer_out: "מההעברה", exit: "מהמשיכה", insurance_premium: "מההפקדה" } as Record<string, string>,
     /** Before a bound, after a comma. */
-    min: "לא פחות מ־",
-    max: "לא יותר מ־",
+    min: "מינימום ",
+    max: "מקסימום ",
     /** After a share of what is held, beside its period. */
     held: "ממה שמוחזק",
     heldSaved: "ממה שנצבר",
@@ -1595,6 +1593,11 @@ export const feeDeal = {
     /** Between a fee's name and its price. */
     sep: ": ",
   },
+  /**
+   * Where a figure a template filled is from, in the note a press on its box opens: a house's price list, with the page of the document
+   * where the record names one, or the regulator's data on a track.
+   */
+  figureFrom: { list: "מהתעריפון של ", page: ", עמ׳ ", cma: "מנתוני רשות שוק ההון." },
   /** The deal at a glance (F-110 to F-113). */
   glance: {
     title: "העסקה במבט אחד",
@@ -1611,21 +1614,14 @@ export const feeDeal = {
     instead: ", במקום ",
     /** A fee that starts after a free time, before its name, by the name's gender and number ("מתחילים דמי חשבון קבועים, 10 ₪ בחודש"). */
     starts: { m: "מתחיל ", f: "מתחילה ", mp: "מתחילים ", fp: "מתחילות " } as Record<string, string>,
-    toReading: "לקריאה המלאה של העסקה",
     /** Fees left out of every reading until their prices' months are in order, by name. */
     unread: "לא נקראות עד שהתאריכים שלהן מסודרים: ",
     /** The deal has fees, and none has its price yet. */
     noneRead: "עוד אין בעסקה עמלה עם מחיר.",
   },
-  /** The sums a deal's own prices mark (F-112), as a group's line. `noun` is the action the bound is on. */
+  /** The sums a deal's own prices mark (F-112), as the points say them. `noun` is the action a bound is on. */
   marks: {
     noun: { trade: "פעולה", conversion: "המרה", deposit: "הפקדה", distribution: "תשלום", transfer_out: "העברה", none: "פעולה" } as Record<string, string>,
-    minAction: { before: "עד {noun} של ", after: " המינימום קובע." },
-    maxAction: { before: "מעל {noun} של ", after: " המקסימום קובע." },
-    minHeld: { before: "על פחות מ־", after: " המינימום קובע." },
-    maxHeld: { before: "על יותר מ־", after: " המקסימום קובע." },
-    /** Whose bound it is, where the group has several fees. */
-    whose: "{name}: ",
     /**
      * The yearly sums on the account against custody's yearly rate (F-112 (3)). `after` where they are the largest cost of holding below
      * that value; else `smaller` and custody's name ("…. על פחות מזה הם גדולים מ{custody}."), `custody` where the deal has several
@@ -1676,9 +1672,9 @@ export const feeDeal = {
     from: "מ־",
     now: "היום ",
   },
-  /** The middle column: three steps that build the deal. */
+  /** The two columns that enter the deal: what it is, in steps, and its fees. */
   builder: {
-    title: "בונים את העסקה",
+    title: "על מה העסקה",
     kind: "סוג המוצר",
     kindChange: "להחליף",
     kindPick: "בחרו את סוג המוצר",
@@ -1693,8 +1689,11 @@ export const feeDeal = {
     track: "החברה והמסלול",
     trackNone: "לא נבחרו · לא חובה",
     trackPick: "לבחור מסלול",
+    /** The step that fills the deal from a price list, and its button opens the price lists. */
+    fill: "מילוי מתעריפון",
+    start: "תאריך התחלה",
+    optional: "לא חובה",
     fees: "העמלות בעסקה",
-    feesLead: "כל ערך אפשר לשנות כאן. לחיצה על עמלה פותחת את כל השדות שלה.",
     chosen: "נבחרה",
     /** After a bound in a row's box. */
     minWord: "מינימום",
@@ -1716,8 +1715,6 @@ export const feeDeal = {
     fieldName: (fee: string, field: string) => `${fee}, ${field}`,
     /** The facts a row says beside its prices. */
     facts: {
-      saleSame: "מכירה כמו קנייה",
-      saleApart: "מכירה במחיר אחר",
       noBounds: "בלי מינימום ובלי מקסימום",
       /** A fee whose rate or sum nobody typed yet: it is not read until it is. */
       noPrice: "עוד לא הוזן מחיר",
@@ -4250,8 +4247,8 @@ export const kit = {
   legend: "מקרא",
   /** A figure or a month typed in place (kit FigureField, MonthField). */
   figure: {
-    /** The document mark beside a figure a price list or a track filled: it opens the figure's source. */
-    source: (label: string) => `המקור של ${label}`,
+    /** In the note a press on a sourced figure's box opens: the link that opens the figure's source. */
+    toSource: "למקור",
     /** What an empty month's box says, beside its calendar mark: a press opens the months to choose from, and typing works too. */
     monthPlaceholder: "בחרו חודש",
     monthError: "כתבו חודש ושנה, כמו 03.2027.",
@@ -4415,7 +4412,7 @@ export const kit = {
       CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
       PeriodBars: "בחירה של תקופה אחת, מצוירת כתרשים עמודות: כל עמודה כולה כפתור אחד, ובה המספר, העמודה, שם התקופה ומי משלם. כל העמודות על סולם אחד מאפס, בלי קווי רשת ובלי ציר, כי כל עמודה נושאת את המספר שלה. הנבחרת במסגרת וברקע, השם שלה במילוי. עמודה בלי מספר כותבת ״אין״ ואפשר לבחור גם אותה. בטלפון השמות מתקצרים ושם הבנק יורד.",
       MeterBar: "פס דק של חלק מ־0 עד 100% ליד המספר שלו בשורת טבלה: החשיפה של מסלול למניות ולמט״ח, בצבע של כל אחת. כל הפסים ברשימה באותו אורך, כך שהעין עוברת לאורך העמודה. ריק ב־0, מלא מעל 100%. המספר נושא את המשמעות, והפס רק לעין.",
-      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
+      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור, ולחיצה עליו פותחת מתחתיו הערה מאיפה הוא, עם קישור למקור. שדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו.",
       AlignedList: "רשימה של השדות של דבר אחד, שורה לכל שדה: התוויות בעמודה צרה אחת, והתיבות מתחילות כולן באותו קו אחריה, כך שהעין יורדת לאורך התוויות ולאורך התיבות. שורה לרוחב שתי העמודות נושאת מה שלא שייך לתווית אחת: כותרת של מחיר מאוחר, הערה, פעולה.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
@@ -4439,6 +4436,8 @@ export const kit = {
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
+      /** FigureField: where a sourced figure is from, in the note a press on its box opens. */
+      from: "מהתעריפון של בית השקעות לדוגמה.",
       /** LeftOutLine: a made-up house's left-out things, one that can change a price and two that are only listed. */
       leftOut: { house: "בית לדוגמה", what: "מסלול מחירים לדוגמה", why: "מחיר אחר למי שעושה הרבה פעולות. האתר מחשב לפי המחיר הרגיל.", doc: "תעריפון לדוגמה, עמוד 3", others: ["שירות לדוגמה", "עוד שירות לדוגמה"] },
       /** TabCards: three made-up questions, their answers and the panel's words. */

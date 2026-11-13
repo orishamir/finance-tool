@@ -439,13 +439,14 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
  * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]"). `icon`: a mark in the box after the words, in the muted ink, that says the
  * words can be typed over (the pencil of the fee page's deal name). `grow`, with `inline`: the box takes the free space of its line, from its
  * usual width on, and words too long for it end in an ellipsis while it is not being typed in; the words keep their own direction, so a
- * cut never shows half of a bracket pair.
+ * cut never shows half of a bracket pair. `labelHidden`: the label is spoken, not shown, where the box stands in the place of what it names
+ * (the fee page's panel, whose heading is the name of a fee of the person's own, typed in place).
  */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; className?: string }) {
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, labelHidden, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; labelHidden?: boolean; className?: string }) {
   const id = useId();
   return (
     <div className={cx(inline ? cx("flex items-center gap-2", grow ? "min-w-0 flex-1" : "flex-wrap") : "field", className)}>
-      <label htmlFor={id} className={inline ? "text-sm text-muted-foreground" : "field-label"}>
+      <label htmlFor={id} className={labelHidden ? "sr-only" : inline ? "text-sm text-muted-foreground" : "field-label"}>
         {label}
       </label>
       <div className={cx("field-body", grow && "min-w-0 flex-1")}>

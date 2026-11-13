@@ -1,6 +1,6 @@
-// The section "קוראים את העסקה" under the columns (method §10.6, `readingOf`): the deal period after period (F-110), the two curves of
-// F-112 where the library draws them, the points where the deal changes behaviour (F-112), and what the law says of each fee with a cap
-// line (F-113). The headlines and the choices are worked out in lib/fee-deal/reading-heads.ts; this file words and draws them.
+// The section "קוראים את העסקה" under the columns (method §10.6, `readingOf`): the deal at a glance (glance.tsx) beside the points where the
+// deal changes behaviour (F-112), the deal period after period (F-110), the two curves of F-112 where the library draws them, and what the
+// law says of each fee with a cap line (F-113). The headlines and the choices are worked out in lib/fee-deal/reading-heads.ts; this file words and draws them.
 import { useState, type ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
@@ -433,36 +433,39 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
 
 // ---------------------------------------------------------------- the section
 
-/** The reading's cards. `saved`: the deal's product saves, so a share of what is held reads "what has built up". */
-export function ReadingCards({ reading, saved, fx }: { reading: Reading; saved: boolean; fx: FxSnapshot | null }) {
-  const groups = curveGroups(reading);
-  const points = reading.statements.length > 0;
-  const law = reading.law.length > 0;
+/**
+ * The reading's cards, in the order they are read: the summary (`glance`, the deal at a glance) beside the points where the deal changes
+ * behaviour, then the deal period after period, the curves, and the law. No row leaves half of it empty where another card can fill it:
+ * the summary or the points alone take the law card beside them, else one curve does. `saved`: the deal's product saves, so a share of
+ * what is held reads "what has built up". `read`: whether any fee of the deal is read; where none is, the summary stands alone.
+ */
+export function ReadingCards({ reading, saved, fx, glance, read = true }: { reading: Reading; saved: boolean; fx: FxSnapshot | null; glance?: ReactNode; read?: boolean }) {
+  const groups = read ? curveGroups(reading) : [];
+  const points = read && reading.statements.length > 0 ? <PointsCard reading={reading} /> : null;
+  const law = read && reading.law.length > 0 ? <LawCard reading={reading} saved={saved} /> : null;
+  const first = [glance, points].filter(Boolean);
+  // the law card fills the first row where it holds one card, else the curves' row where it holds one curve, else it stands alone
+  const lawFirst = first.length === 1 && !!law;
+  const lawCurve = !lawFirst && groups.length === 1 && !!law;
   return (
     <TypedPlain className="flex flex-col gap-4">
-      {reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
-      {/* one chart leaves no half row empty: the points card (else the law card) stands beside it, and what is left takes the next row */}
-      {groups.length === 1 ? (
-        <>
-          <div className="grid items-start gap-4 lg:grid-cols-2">
-            <CurveCard group={groups[0]!} reading={reading} saved={saved} fx={fx} />
-            {points ? <PointsCard reading={reading} /> : law && <LawCard reading={reading} saved={saved} />}
-          </div>
-          {points && law && <LawCard reading={reading} saved={saved} />}
-        </>
-      ) : groups.length > 1 ? (
+      {first.length > 0 && (
+        <div className="grid items-start gap-4 lg:grid-cols-2">
+          {glance && <Card className="flex flex-col gap-4">{glance}</Card>}
+          {points}
+          {lawFirst && law}
+        </div>
+      )}
+      {read && reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
+      {groups.length > 0 && (
         <div className="grid items-start gap-4 lg:grid-cols-2">
           {groups.map((g) => (
             <CurveCard key={g.key} group={g} reading={reading} saved={saved} fx={fx} />
           ))}
-        </div>
-      ) : null}
-      {groups.length !== 1 && (points || law) && (
-        <div className={cx("grid items-start gap-4", points && law && "lg:grid-cols-2")}>
-          {points && <PointsCard reading={reading} />}
-          {law && <LawCard reading={reading} saved={saved} />}
+          {lawCurve && law}
         </div>
       )}
+      {!lawFirst && !lawCurve && law}
     </TypedPlain>
   );
 }

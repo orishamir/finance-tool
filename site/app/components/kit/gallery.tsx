@@ -1029,6 +1029,9 @@ function Fields() {
           <State label={`inline with an icon in its box: a pencil says the name is typed in place, ${g.states.interactive}`}>
             <TextField inline label={dealWords.bar.label} value={typed} onChange={setTyped} placeholder={dealWords.bar.namePlaceholder(null)} icon={<IconPencil size={16} />} />
           </State>
+          <State label={`labelHidden: the box stands where the name it holds is the heading (a fee of the person's own), its label spoken only, ${g.states.interactive}`}>
+            <TextField inline grow labelHidden label={dealWords.panel.ownName} value={typed} onChange={setTyped} placeholder={dealWords.names.own} icon={<IconPencil size={16} />} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="CheckField" use={g.uses.CheckField}>
@@ -2525,8 +2528,8 @@ function DealDemos({ today }: { today: string }) {
           <State label={`entered: typed by the person, ${g.states.interactive}`}>
             <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
           </State>
-          <State label="sourced: filled from a price list and left as it was; the mark opens its source">
-            <FigureField value={rate} label={g.sample.percent} unit="%" words={dealWords.price.per[12]} onCommit={() => undefined} />
+          <State label={`sourced: filled from a price list and left as it was, the grey line under the digits; a press on the box opens a note under it of where it is from, with the link to its source, ${g.states.interactive}`}>
+            <FigureField value={rate} label={g.sample.percent} from={g.sample.from} unit="%" words={dealWords.price.per[12]} onCommit={() => undefined} />
           </State>
           <State label={`optional and not given: a dashed box; emptying a given one clears it, ${g.states.interactive}`}>
             <FigureField value={bound} label={g.sample.field} unit="₪" words={dealWords.builder.minWord} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />

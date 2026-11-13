@@ -1,4 +1,5 @@
-// The column "העמלה שבחרתם" (method §10.6, `panel`): every field of the chosen fee by its shape, one line each in a list whose labels share
+// The column "העמלה שבחרתם" (method §10.6, `panel`): the fee's name as its heading, typed in place for a fee of the person's own (a pencil
+// in its box, its spoken name "שם העמלה"); every field of the chosen fee by its shape, one line each in a list whose labels share
 // one narrow column and whose boxes start at one edge after it; each price with how long it holds, a price for a limited time followed by
 // the next one; a sale priced apart where the shape allows it; and at the foot, filling the price from a price list and taking the fee
 // away. The law is the reading's law card's alone: the panel says nothing of a cap. A price just taken away leaves the page's undo line
@@ -11,14 +12,14 @@ import { BOUND_CURRENCIES, MONTHS, NAME_MAX, pricesOn, stageFault, untilRange, t
 import { refOf } from "../../lib/fee-deal/parts";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
-import { IconBin, IconClose } from "../icons";
+import { IconBin, IconClose, IconPencil } from "../icons";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AlignedAcross as Across, AlignedCaption as Caption, AlignedList, AlignedRow as Row, Button, HelpMark, InlineSelect, MenuPicker, MonthField, Section, SegmentedControl, Tag, TextField, When, monthText } from "../kit";
+import { AlignedAcross as Across, AlignedCaption as Caption, AlignedList, AlignedRow as Row, Button, HelpMark, InlineSelect, MenuPicker, MonthField, Section, SegmentedControl, Swatch, Tag, TextField, When, cx, monthText } from "../kit";
 import { useProvenanceData } from "../provenance";
 import { fmt, joinLead } from "../../lib/format";
 import { PriceFigure, mainFieldId } from "./figures";
 import { UndoLine } from "./undo-line";
-import { FeeName, feeName, perActionWord, refName } from "./words";
+import { FeeName, feeColour, feeName, perActionWord, refName } from "./words";
 
 const p = copy.panel;
 
@@ -299,13 +300,23 @@ export function PanelColumn({ panel, fee, product, fill, line, onFee, onRemove, 
     <Section title={p.title} level="kick" heading="h2" gap="tight" action={<Button variant="icon" size="sm" aria-label={p.close} title={p.close} onClick={onClose} className="-my-2"><IconClose size={18} /></Button>}>
       {/* clear of the head's close button by the 6 px its tap area reaches under its face, so the two areas never meet */}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1.5">
-        <h3 className="text-lg font-semibold">
-          <FeeName fee={panel} />
-        </h3>
+        {fee.kind === "own" ? (
+          // a fee of the person's own: its heading is its name, typed in place (an empty name reads as the page names such a fee)
+          <>
+            <h3 className="sr-only">{refName(panel)}</h3>
+            <span className="flex min-w-0 flex-[1_1_14rem] items-center gap-2">
+              <Swatch shape="box" className={cx("shrink-0", feeColour(fee.kind).bg)} />
+              <TextField inline grow labelHidden label={p.ownName} value={fee.name ?? ""} placeholder={feeName("own")} maxLength={NAME_MAX} icon={<IconPencil size={16} />} onChange={(v) => onFee(setFeeName(fee, v))} />
+            </span>
+          </>
+        ) : (
+          <h3 className="text-lg font-semibold">
+            <FeeName fee={panel} />
+          </h3>
+        )}
         {panel.oneSide && <Tag tone="outline">{p.oneSide[panel.oneSide]}</Tag>}
         {explained && term && <HelpMark term={explained} about={term} words={p.whatIs} className="ms-auto" />}
       </div>
-      {fee.kind === "own" && <TextField label={p.ownName} value={fee.name ?? ""} maxLength={NAME_MAX} onChange={(v) => onFee(setFeeName(fee, v))} />}
       {base && (
         <p className="text-sm text-muted-foreground">
           {p.base}
