@@ -379,7 +379,10 @@ function DistributionName({ kind }: { kind: InstitutionKind }) {
   return (
     <span className="inline-flex items-center gap-1">
       {d.name}
-      <HelpMark about={d.name} text={`${d.who(kind === "bank" ? d.toBank : d.toBroker)}${kind === "bank" ? ` ${d.withoutAgreement}` : ""}`} rules={distributionRuleIds(kind)} />
+      {/* positioned, so where the strip's weak line wraps under the name (a phone) the mark lies over it and keeps its 44 px */}
+      <span className="relative inline-flex">
+        <HelpMark about={d.name} text={`${d.who(kind === "bank" ? d.toBank : d.toBroker)}${kind === "bank" ? ` ${d.withoutAgreement}` : ""}`} rules={distributionRuleIds(kind)} />
+      </span>
     </span>
   );
 }
