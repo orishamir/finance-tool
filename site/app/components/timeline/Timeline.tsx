@@ -198,6 +198,8 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
   // the age changes a run only through a rule that turns on it (the tax at 60, TXG-04; a lock-up to an age): with no tax and no such
   // lock it changes nothing, so the field is left out unless an age is already entered
   const ageMatters = ageReachesRun && (hasTax || !!lock?.age || state.age !== null);
+  // the run holds the monthly deposit constant in real terms (A-04), said only where there is a monthly deposit to raise
+  const depositsRise = !lumpSum && (state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0;
   const panel = <ValuesPanel bundle={bundle} focusField={focusField} employment={employment} showAge={ageMatters} cash={cash} lumpSum={!!lumpSum} ownRate={ownRate} setOwnRate={(n) => cash && setOwnRate(cash.id, n ?? undefined)} />;
 
   const tableCard =
@@ -275,6 +277,9 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
             <HelpMark about={copy.modeHelp.about} text={copy.modeHelp.text} />
           </div>
         </div>
+        {/* why the deposits grow past what was typed: in sight under the switch below lg, where the assumptions are a sheet behind a tap;
+            from lg the open panel beside the chart says it */}
+        {depositsRise && <p className="lg:hidden text-xs text-muted-foreground max-w-measure">{valuesCopy.hints.deposits}</p>}
 
         {timeline.kind === "ok" ? (
           <>
@@ -495,6 +500,8 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   const pctCheck = percentCheck(pctRange ?? undefined);
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
   const common = cash?.common;
+  // from lg only: below it the same line stands in sight under the chart's switch, and this panel is a sheet
+  const deposits = !lumpSum && current("monthly_deposit") > 0 ? <span className="max-lg:hidden">{valuesCopy.hints.deposits}</span> : null;
   const hints = cash ? (
     <div className="flex flex-col gap-0.5 text-xs text-muted-foreground -mt-2">
       {common ? (
@@ -506,14 +513,14 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
       )}
       <span>{valuesCopy.returnNoteCash}</span>
       <span>{valuesCopy.hints.inflation}</span>
-      {!lumpSum && <span>{valuesCopy.hints.deposits}</span>}
+      {deposits}
     </div>
   ) : (
     <div className="flex flex-col gap-0.5 text-xs text-muted-foreground -mt-2">
       <span>{valuesCopy.hints.return}</span>
       <span>{valuesCopy.returnNote}</span>
       <span>{valuesCopy.hints.inflation}</span>
-      {!lumpSum && <span>{valuesCopy.hints.deposits}</span>}
+      {deposits}
     </div>
   );
   return (
