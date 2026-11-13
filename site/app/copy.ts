@@ -1038,7 +1038,8 @@ export const guideBlocks = {
     per: {
       person_per_calendar_year: "לשנה, לכל אדם בכל הקופות יחד",
       person_per_month: "לחודש, לכל אדם",
-      person_total_across_all_ira_accounts: "בסך הכול, לכל אדם בכל חשבונות הניהול האישי יחד",
+      // the regulation caps the index-tracking money, the pension or savings test's and a new account's, less capital money (IRA-07 (ב))
+      person_total_across_all_ira_accounts: "בסך הכול, לכל אדם בכל חשבונות הניהול האישי יחד, על חלק מסוגי הכסף",
       person_total_across_all_study_fund_accounts: "בסך הכול, לכל אדם בכל חשבונות קרן ההשתלמות יחד",
     } as Record<string, string>,
     labelTotal: "תקרה על הסכום הכולל",
@@ -2971,7 +2972,7 @@ export const guideSignature = {
         },
         room: { you: "אם תפקידו עוד", employer: "אם המעסיק יפקיד עוד", andEmployer: "והמעסיק עוד", month: "בחודש", year: "בשנה", exempt: "גם הם יקבלו פטור." },
       },
-      early: { noClaim: "בלי בקשת החזר ממס הכנסה נשארים לכם", because: ": הקרן מעבירה", toTax: "למס הכנסה,", and: "ו־", onlyIf: "מהם חוזרים רק אם מבקשים. הסכומים למעלה כוללים את ההחזר.", before: "משיכה אחרי", first: ": לחשבון נכנסים", withheld: ", והקרן מעבירה", stop: "למס הכנסה.", owedBefore: "למס הכנסה. בדוח השנתי משלמים עוד", owed: ", וזה כלול בסכומים למעלה.", rate: "שיעור הניכוי במקור", linkage: "המס כאן כולל גם מס על החלק של הרווח שרק משלים את עליית המחירים. לא נמצא טקסט שאומר אם את המס על החלק הזה אפשר לקבל בחזרה בדוח השנתי, ולכן האתר מחשב אותו כמס." },
+      early: { noClaim: "בלי בקשת החזר ממס הכנסה נשארים לכם", because: ": הקרן מעבירה", toTax: "למס הכנסה,", and: "ו־", onlyIf: "מהם חוזרים רק אם מבקשים. הסכומים למעלה כוללים את ההחזר.", before: "משיכה אחרי", first: ": לחשבון נכנסים", withheld: ", והקרן מעבירה", stop: "למס הכנסה.", owedBefore: "למס הכנסה. בדוח השנתי משלמים עוד", owed: ", וזה כלול בסכומים למעלה.", rate: "שיעור הניכוי במקור", linkage: "מס ההכנסה כאן כולל גם את המס על החלק של הרווח שרק משלים את עליית המחירים. לא נמצא טקסט שאומר אם אפשר לקבל אותו בחזרה בדוח השנתי, ולכן האתר מחשב אותו." },
       // one sentence each, beside what it qualifies (guidelines/wording.md "Notes and caveats")
       hints: {
         fee: { before: "ערך התחלתי:", fee: "דמי הניהול", middle: "הממוצעים שנגבו במסלול", number: "מספר", after: "." },
