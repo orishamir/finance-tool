@@ -11,7 +11,7 @@ import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
 import { pickHeld, setHeld, setUntil, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
-import { BOUND_CURRENCIES, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, pricesOn, untilRange, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
@@ -95,6 +95,7 @@ function SideFigures({ row, stages, fee, side, onFee }: { row: BuilderRow; stage
               lead={`${copy.price.free} ${copy.standing.until.trim()}`}
               tight
               label={b.fieldName(name, copy.panel.until)}
+              {...untilRange(typed, k)}
               onCommit={(m) => onFee(setUntil(fee, side, k, m))}
             />
           );

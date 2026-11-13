@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
 import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
 import { blankPrice, engineDeal, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
+import { stageFault, untilRange } from "./model";
 import { DEALS_KEY, parseDeals, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
 
@@ -277,5 +278,31 @@ describe("the saved deals", () => {
     expect(DEALS_KEY).toBe("mekor.v2.fee-deals");
     const a = account();
     expect(parseDeals(JSON.parse(JSON.stringify({ version: 1, deals: [a] })))).toEqual([a]);
+  });
+});
+
+describe("the months a price may end in", () => {
+  const stages = [{ until: "2026-12" }, { until: "2027-06" }, { until: "2028-01" }, {}];
+  it("are after the month the price before ends and before the month the price after ends, where that price is not the last", () => {
+    expect(untilRange(stages, 0)).toEqual({ latest: "2027-05" });
+    expect(untilRange(stages, 1)).toEqual({ earliest: "2027-01", latest: "2027-12" });
+    expect(untilRange(stages, 2)).toEqual({ earliest: "2027-07" });
+    expect(untilRange([{}], 0)).toEqual({});
+  });
+  it("are the months stageFault has nothing to say of, for the price or the one after it", () => {
+    const fine = (k: number, until: string) => {
+      const next = stages.map((s, i) => (i === k ? { until } : s));
+      return stageFault(next, k) === null && (k + 1 >= next.length || stageFault(next, k + 1) === null);
+    };
+    for (const k of [0, 1, 2]) {
+      const { earliest, latest } = untilRange(stages, k);
+      for (const m of ["2026-11", "2026-12", "2027-01", "2027-05", "2027-06", "2027-07", "2027-12", "2028-01", "2028-02"]) {
+        const inside = (earliest === undefined || m >= earliest) && (latest === undefined || m <= latest);
+        expect(fine(k, m), `${k} ${m}`).toBe(inside);
+      }
+    }
+  });
+  it("of a last price just being given an end (a later price will follow) start after the price before it", () => {
+    expect(untilRange([{ until: "2027-03" }, {}], 1)).toEqual({ earliest: "2027-04" });
   });
 });
