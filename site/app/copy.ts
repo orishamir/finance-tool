@@ -3027,7 +3027,7 @@ export const guideSignature = {
       blocked: "המס על המשיכה הזו תלוי בשאלה פתוחה, ולכן אין כאן מספר.",
     } as Record<string, string>,
     // the pension visual's assumptions, in the short form of the indices page's plan line (DotLine)
-    assumption: { site: "הנחות של האתר, לא תחזית", ret: "תשואה", both: "בשנה, בשתי הדרכים", inflation: "אינפלציה", perYear: "בשנה" },
+    assumption: { site: "הנחות של האתר, לא תחזית", ret: "תשואה", inflation: "אינפלציה", perYear: "בשנה" },
     inputNames: { trackFee: "דמי הניהול של המסלול", lockYears: "שנות הנעילה", cap: "תקרת המשכורת הקובעת", selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה" },
   },
   pension: {
@@ -3043,7 +3043,15 @@ export const guideSignature = {
     monthLead: "כל חודש מופקדים בסך הכול",
     parts: { you: "ממכם", employer: "מהמעסיק, תגמולים", severance: "מהמעסיק, פיצויים" },
     chart: { aria: "פס אחד שמחולק לשלושה חלקים: מה שהעובד מפקיד, מה שהמעסיק מפקיד לתגמולים, ומה שהמעסיק מפקיד לפיצויים" },
-    returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי מס, שמחושב בדוח השנתי." },
+    returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי ממס.", when: "אם הוא מגיע כל חודש דרך המשכורת או רק בדוח השנתי, עוד לא ידוע: שאלה פתוחה" },
+    // the general fund's page: only the deposit above the comprehensive fund's ceiling reaches it (PEN-10, PEN-08; method F-67)
+    general: {
+      below: { before: "לקרן הכללית לא מגיע מההפקדה הזו כלום: כולה נכנסת לקרן המקיפה, כי היא מתחת ל", term: "תקרת ההפקדה", middle: "שלה,", after: "בחודש. לקרן הכללית עובר רק מה שמופקד מעל התקרה, ובשיעורי המינימום זה לא קורה בשום משכורת." },
+      split: { before: "מעל התקרה של הקרן המקיפה,", middle: "בחודש, עוברים לקרן הכללית", after: "בחודש. איך העודף מתחלק בין ההפקדה שלכם להפקדות המעסיק, הכללים שנאספו לא אומרים, ולכן אין כאן חישוב של מה שנצבר בה." },
+      toGeneral: "מה שמופקד בחודש מעל תקרת ההפקדה של הקרן המקיפה, ועובר לקרן הכללית",
+    },
+    // what the balance assumes, beside the return and inflation (method F-67, "What the visual assumes")
+    assume: { flat: "ההפקדות באותו סכום בשקלים בכל השנים, בלי עליית שכר", noInsurance: "בלי דמי ביטוח, כי לא הוזנו" },
     figures: { net: "בפועל יוצא מהכיס שלכם, אחרי הזיכוי", insurance: "דמי הביטוח בקרן הפנסיה", depositFee: "דמי ניהול מההפקדה", balance: "מה שנצבר בקרן אחרי" },
     balanceGap: { "no-fees": "אין חישוב; הסיבה למטה", "no-run": "החישוב לא הצליח עם הערכים האלה" } as Record<string, string>,
     ratesLine: { before: "ההפקדות הן המינימום לפי צו ההרחבה:", middle: "מכם,", severance: "מהמעסיק לתגמולים, ועוד", wage: "מהמעסיק לפיצויים, על שכר של עד", after: "בחודש (השכר הממוצע במשק). בהסכם העבודה שיעורי ההפקדה יכולים להיות גבוהים יותר." },
