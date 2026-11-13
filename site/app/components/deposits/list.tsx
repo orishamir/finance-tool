@@ -204,8 +204,9 @@ export function DepositList({ ranked, linked, ctx, sort, onSort, foot }: { ranke
           <HelpMark term={HELP_TERMS.rate} about={t.help.rate} />
         </span>
       ),
-      // the figure ("1.52%") with a variable rate's anchor and spread under it, and the head with its arrow and "?"
-      width: 7.75,
+      // the figure ("1.52%") with a variable rate's anchor and spread under it, and the head on one line while it sorts (bold, with its
+      // arrow and "?": 105 px, and the cell's 24)
+      width: 8.25,
       sort: onSort ? state("rate") : undefined,
     },
     ...(ctx.amount
