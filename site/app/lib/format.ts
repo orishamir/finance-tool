@@ -214,14 +214,29 @@ const currencyOfUnit = (unit: string): string | null => (/^nis/.test(unit) ? "IL
  * ("12.75 ₪", "7.50 €"). A sum the site works out keeps the number rules (`formatValue`). Undefined for a unit that is no sum of money.
  */
 export function typedSum(v: number, unit: string): string | undefined {
+  const f = sumForms(unit);
+  return f ? withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? f.whole : f.cents).format(v))) : undefined;
+}
+
+/**
+ * A sum the site works out, in any currency, by the rule for shekels (`nisShown`): whole units ("3,529 $", "952 ₪"), except a sum under
+ * ten that has cents ("3.20 $"). Undefined for a unit that is no sum of money.
+ */
+export function computedSum(v: number, unit: string): string | undefined {
+  const f = sumForms(unit);
+  return f ? withMinus(plainMarks((Math.abs(v) >= 10 || Number.isInteger(v) ? f.whole : f.cents).format(v))) : undefined;
+}
+
+/** The two forms of a sum in a unit's currency, whole and with two decimals; none for a unit that is no sum of money. */
+function sumForms(unit: string): { whole: Intl.NumberFormat; cents: Intl.NumberFormat } | null {
   const cur = currencyOfUnit(unit);
-  if (!cur) return undefined;
+  if (!cur) return null;
   let f = typedForms.get(cur);
   if (!f) {
     f = { whole: new Intl.NumberFormat(he, { style: "currency", currency: cur, maximumFractionDigits: 0 }), cents: new Intl.NumberFormat(he, { style: "currency", currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 }) };
     typedForms.set(cur, f);
   }
-  return withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? f.whole : f.cents).format(v)));
+  return f;
 }
 
 /**

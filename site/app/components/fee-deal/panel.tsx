@@ -7,7 +7,7 @@ import { Fragment, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { Panel, PanelStage } from "../../lib/fee-deal/builder";
 import { editPrice, setFeeName, setLimited, setSaleApart, withCurrency, withForm, withMonths, type Side } from "../../lib/fee-deal/edit";
-import { BOUND_CURRENCIES, MONTHS, NAME_MAX, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, MONTHS, NAME_MAX, pricesOn, stageFault, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
@@ -29,15 +29,13 @@ const monthOptions = (words: Record<number, string>) => MONTHS.map((m) => ({ id:
 
 /** What a price among several lacks in its month, under its own month: none given though a later price follows, or not after the one before. */
 function monthNote(stages: readonly PanelStage[], k: number): ReactNode {
-  if (k === stages.length - 1) return null;
-  const until = stages[k]!.until;
-  if (!until) return p.untilMissing;
-  const before = k > 0 ? stages[k - 1]!.until : undefined;
-  if (!before || until > before) return null;
+  const fault = stageFault(stages, k);
+  if (fault?.kind === "missing") return p.untilMissing;
+  if (fault?.kind !== "after") return null;
   return (
     <>
       {p.outOfOrder.before}
-      <bdi dir="ltr">{monthText(before)}</bdi>
+      <bdi dir="ltr">{monthText(fault.month)}</bdi>
       {p.outOfOrder.after}
     </>
   );
@@ -46,7 +44,7 @@ function monthNote(stages: readonly PanelStage[], k: number): ReactNode {
 /** One price's lines (`name`, the price's name in its fields' labels), by its form: how it is charged where the fee has several forms, then its figures, each in its box. */
 function PriceRows({ fee, side, k, s, forms, name, onFee }: { fee: Fee; side: Side; k: number; s: PanelStage; forms: readonly FormId[]; name: string; onFee: (f: Fee) => void }) {
   const label = (field: string) => copy.builder.fieldName(name, field);
-  const price = (fee.sale && side === "sell" ? fee.sale : fee.stages)[k]!.price;
+  const price = pricesOn(fee, side)[k]!.price;
   const edit = (fn: Parameters<typeof editPrice>[3]) => onFee(editPrice(fee, side, k, fn));
   const has = (f: FieldId) => s.fields.includes(f);
   const figure = (f: "rate" | "min" | "max" | "amount", unit?: ReactNode) => (

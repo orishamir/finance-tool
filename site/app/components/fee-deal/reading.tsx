@@ -14,7 +14,7 @@ import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead
 import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen } from "./links";
-import { CapRules, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName } from "./words";
+import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName, sumDisplay } from "./words";
 
 const w = copy.read;
 
@@ -188,7 +188,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
     return (
       <>
         {fill((head.mark.on === "held" ? h.minHeld : h.min).before, { noun })}
-        <Num value={head.mark.amount} />
+        <Fig value={head.mark.amount} />
         {h.minRate.lead}
         {above}
         {h.minRate.cost}
@@ -202,7 +202,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return (
         <>
           {fill(words.before, { noun })}
-          <Num value={head.mark.amount} />
+          <Fig value={head.mark.amount} />
           {words.after}
         </>
       );
@@ -211,9 +211,9 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return (
         <>
           {h.minMax.before}
-          <Num value={head.min.amount} />
+          <Fig value={head.min.amount} />
           {h.minMax.middle}
-          <Num value={head.max.amount} />
+          <Fig value={head.max.amount} />
           {h.minMax.after}
         </>
       );
@@ -226,7 +226,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
       return (
         <>
           {h.meet.before}
-          <Num value={mark.amount} />
+          <Fig value={mark.amount} />
           {named ? ` ${named.the}` : h.meet.sums}
           {mark.largest ? (named ? h.meetOne[named.g] : h.meet.largest) : `${copy.larger[named?.g ?? "mp"]}${custodyName(mark.against)}`}
         </>
@@ -238,7 +238,7 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
 }
 
 /** A mark's label on the curve: its sum as the headline says it, in the bound's currency (the curve's place is that sum in shekels, F-84). */
-const markLabel = (v: SiteValue) => formatValue(v.value as number, v.unit, v.state);
+export const markLabel = (v: SiteValue): string => sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
 
 /** The line beside a curve with a bound in another currency: the rate of F-84 it enters the curve at, and its day. */
 function RateLine({ currency, rate, fx }: { currency: string; rate: Curve["rates"][number]["rate"]; fx: FxSnapshot | null }) {
@@ -324,9 +324,9 @@ function MarkSentence({ mark }: { mark: MarkView }) {
   return (
     <>
       {fill(words.before, { name: refName(mark.fee), side: sideWord(mark.side) })}
-      <Num value={mark.bound} />
+      <Fig value={mark.bound} />
       {fill(words.middle, { noun })}
-      <Num value={mark.amount} />
+      <Fig value={mark.amount} />
       {words.after}
     </>
   );

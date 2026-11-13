@@ -16,7 +16,7 @@ import { BuilderColumn } from "./builder";
 import { GlanceColumn } from "./glance";
 import { feeName } from "./words";
 import { PanelColumn } from "./panel";
-import { ReadingCards } from "./reading";
+import { markLabel, ReadingCards } from "./reading";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -102,9 +102,14 @@ describe("a fee against its cap", () => {
     expect(shown).toContain(feeDeal.standing.tag.below);
     expect(shown).not.toContain(feeDeal.standing.tag.above);
   });
-  it("carries the same tag in the glance and the law card: at the cap from 03.2028; the panel says nothing of the law", () => {
+  it("carries the same tag of now in the glance, the builder and the law card, below the cap, never a later price's; the panel says nothing of the law", () => {
     const deal = provident();
-    for (const shown of [drawGlance(deal), drawReading(deal)]) expect(count(shown, "בתקרה ממרץ 2028")).toBe(1);
+    const builderText = drawBuilder(deal, null).replace(/<[^>]+>/g, "");
+    for (const shown of [drawGlance(deal), drawReading(deal)]) {
+      expect(shown).toContain(feeDeal.standing.tag.below);
+      expect(shown).not.toContain("בתקרה ממרץ 2028");
+    }
+    expect(builderText).not.toContain("בתקרה מ");
     const panelText = drawPanel(deal, "fee-balance");
     expect(panelText).not.toContain("בתקרה");
     expect(panelText).not.toContain(feeDeal.standing.tag.below);
@@ -112,6 +117,13 @@ describe("a fee against its cap", () => {
 });
 
 describe("the glance", () => {
+  it("names a fee whose price is not given yet, apart from the fees it reads", () => {
+    const deal = provident();
+    const blank: FeeDeal = { ...deal, fees: [deal.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
+    const shown = drawGlance(blank);
+    expect(shown).toContain(`${feeName("deposit")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
+    expect(drawGlance(deal)).not.toContain(feeDeal.builder.facts.noPrice);
+  });
   it("says where the sums on the account and custody meet, where both hold throughout", () => {
     const d = account();
     d.fees = [
@@ -215,5 +227,17 @@ describe("the reading on screen", () => {
     expect(shown).not.toContain(feeDeal.read.curves.kicker.held);
     // the fee on the savings is a yearly rate charged each month: the one point the library states
     expect(shown).toContain("נגבה כל חודש: חלק אחד מ־12 בכל פעם.");
+  });
+});
+
+describe("a sum on the page", () => {
+  const at = (value: number, unit: string, state: "computed" | "entered") => ({ value, unit, state, as_of: TODAY }) as unknown as Parameters<typeof markLabel>[0];
+  it("the site works out shows in whole units of its currency, under ten with its cents; one typed shows as typed", () => {
+    expect(markLabel(at(3529.41, "usd", "computed"))).toBe("3,529 $");
+    expect(markLabel(at(1250.5, "eur", "computed"))).toBe("1,251 €");
+    expect(markLabel(at(3.2, "usd", "computed"))).toBe("3.20 $");
+    expect(markLabel(at(7, "usd", "entered"))).toBe("7 $");
+    expect(markLabel(at(7.5, "usd", "entered"))).toBe("7.50 $");
+    expect(markLabel(at(2400.4, "nis", "computed"))).toBe("2,400 ₪");
   });
 });

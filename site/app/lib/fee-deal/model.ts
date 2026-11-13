@@ -355,7 +355,7 @@ const currencyIndex: Record<string, true> = Object.fromEntries(BOUND_CURRENCIES.
  * What keeps price `k` of a list from the order F-110 reads, or null: a price before the last that has no month it ends (`missing`), a month
  * not after the one the price before it ends (`after`, that month), or a last price that has an end (`end`).
  */
-export function stageFault(stages: readonly Stage[], k: number): { kind: "missing" } | { kind: "after"; month: MonthKey } | { kind: "end" } | null {
+export function stageFault(stages: readonly { until?: MonthKey }[], k: number): { kind: "missing" } | { kind: "after"; month: MonthKey } | { kind: "end" } | null {
   const s = stages[k]!;
   if (k === stages.length - 1) return s.until === undefined ? null : { kind: "end" };
   if (s.until === undefined || !MONTH.test(s.until)) return { kind: "missing" };

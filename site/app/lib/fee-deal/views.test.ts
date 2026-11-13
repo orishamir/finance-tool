@@ -400,10 +400,14 @@ describe("the provident fund of the picture, on 11.2026", () => {
     expect(v(date!.months)).toBe(16);
     expect(date!.changes[0]).toMatchObject({ kind: "balance", change: "rises", standing: { standing: { judged: true, standing: "at" } } });
   });
-  it("in the builder: the fee on the savings below the cap now and at it from 03.2028", () => {
+  it("in the builder: the fee on the savings tagged below the cap, as it stands now, its rise in 03.2028 in its notes", () => {
     const row = builder(read(provident())).rows[0]!;
     expect(row.standingNow.standing).toMatchObject({ standing: "below" });
-    expect(row.standingLater).toMatchObject({ at: "2028-03", standing: { standing: { standing: "at" } } });
+    expect(row.next).toEqual({ at: "2028-03", change: "rises" });
+    // the law card's row too: its tag is of now, its later price stands at the cap in its own line
+    const law = readingOf(read(provident()), data.fx).law.find((x) => x.fee === "fee-balance")!;
+    expect(law.now?.standing).toMatchObject({ standing: "below" });
+    expect(law.prices.at(-1)!.standing.standing).toMatchObject({ standing: "at" });
     expect(row.insideFund).toBe(false);
   });
   it("in its panel: two prices, the cap's line, the fields of a share of what is held", () => {
@@ -629,7 +633,6 @@ describe("a fee with a price not given yet", () => {
     const row = builder(read(withBlank())).rows.find((x) => x.fee === "fee-deposit")!;
     expect(row.priced).toBe(false);
     expect(row.stages[0]!.price).toMatchObject({ form: "action", blank: true, figures: {} });
-    expect(row.standingLater).toBeUndefined();
     expect(panel(read(withBlank()), "fee-deposit")!.stages[0]!.price.blank).toBe(true);
   });
   it("is read once a figure is typed, a zero among them", () => {

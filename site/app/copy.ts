@@ -1629,8 +1629,6 @@ export const feeDeal = {
   /** A price against its legal cap (F-113). */
   standing: {
     tag: { below: "מתחת לתקרה", at: "בתקרה", above: "מעל התקרה", none: "אין תקרה בחוק" } as Record<string, string>,
-    /** The tag of a later price whose standing differs, before its month ("בתקרה ממרץ 2028"). */
-    tagFrom: { below: "מתחת לתקרה מ־", at: "בתקרה מ־", above: "מעל התקרה מ־" } as Record<string, string>,
     /** "{price}, שהם {share} מהתקרה." */
     share: { before: ", שהם ", after: " מהתקרה." },
     /** In a builder row's line: "{share} מהתקרה". */
@@ -1761,7 +1759,6 @@ export const feeDeal = {
     saleApart: "מחיר אחר",
     salePrices: "המחיר במכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
-    law: "מול החוק",
     remove: "להסיר את העמלה",
     /** Opens the site's explanation of the fee (its glossary card). */
     whatIs: "מה זה",

@@ -10,7 +10,7 @@ import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
 import { pickHeld, setHeld, setKind, setUntil, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
-import { BOUND_CURRENCIES, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
@@ -39,13 +39,13 @@ function rowWords(kind: FeeKindId, s: StageView, later: boolean): string {
 }
 
 /**
- * A row's standing against the cap, after the fee's name: the first later price whose standing differs, else the share of the cap or the
- * standing now. A tag leads to the fee's row of the law card; a share opens its calculation.
+ * A row's standing against the cap now, after the fee's name: the share of the cap or the standing's tag; a later price's standing is
+ * said with that price, and the row's next change is in its notes. A tag leads to the fee's row of the law card; a share opens its
+ * calculation.
  */
 function RowStanding({ row }: { row: BuilderRow }) {
   if (!row.priced) return null;
   const now = row.standingNow.standing;
-  if (row.standingLater) return <LawTag fee={row.fee} standing={row.standingLater.standing} from={row.standingLater.at} />;
   if (now.judged && now.standing === "below" && row.standingNow.share)
     return (
       <span className="text-sm text-muted-foreground">
@@ -61,7 +61,7 @@ function RowStanding({ row }: { row: BuilderRow }) {
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
   if (!row.priced) notes.push(b.facts.noPrice);
-  if (!row.standingLater && row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
+  if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
   if (row.saleSame !== null) notes.push(row.saleSame ? b.facts.saleSame : b.facts.saleApart);
   if (row.priced && row.stages[0]!.price.form === "action" && FEE_SHAPES[fee.kind].fields.action?.includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
@@ -79,7 +79,7 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
 function SideFigures({ row, stages, fee, side, onFee }: { row: BuilderRow; stages: readonly StageView[]; fee: Fee; side: "buy" | "sell"; onFee: (f: Fee) => void }) {
   const name = refName(row);
   // the row shows the prices from the reading's month on: the passed ones are a prefix of the fee's prices
-  const typed = side === "sell" && fee.sale ? fee.sale : fee.stages;
+  const typed = pricesOn(fee, side);
   const offset = typed.length - stages.length;
   return (
     <>

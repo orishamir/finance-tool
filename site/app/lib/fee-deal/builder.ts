@@ -4,7 +4,7 @@
 import type { ChangeKind } from "@finance-tool/engine";
 import { capLine, type CapLine } from "./kinds";
 import { monthKey, type Fee, type MonthKey, type Price, type Stage } from "./model";
-import { priceView, refOf, sameStanding, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
+import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { FEE_SHAPES, holdsFunds, ONE_SIDE, suggestions, type FeeKindId, type FeeShape, type FieldId, type Held } from "./shapes";
 import { insideFund } from "./values";
 
@@ -36,9 +36,8 @@ export interface BuilderRow extends FeeRef {
   bounds: { min: boolean; max: boolean };
   /** Whether the fee is charged inside a fund. */
   insideFund: boolean;
-  /** The standing now, and the first later price whose standing differs (with the month it starts). */
+  /** The standing now; a later price's is said with that price. */
   standingNow: StandingView;
-  standingLater?: { at: MonthKey; standing: StandingView };
 }
 
 export interface Builder {
@@ -69,9 +68,6 @@ function rowOf(r: DealRead, fee: Fee, i: number | null): BuilderRow {
   const sale = fee.sale ? readStages(r, stageViews(r, fees, at, fee.sale)) : undefined;
   const c = i === null ? undefined : r.reading.fees[i]!.changes[0];
   const now = stages[0]!;
-  // a later price starts where the one before it ends; a fee not read has no standing to say
-  const k = i === null ? -1 : stages.findIndex((s, j) => j > 0 && !sameStanding(s.standing, now.standing));
-  const later = k > 0 ? { at: stages[k - 1]!.until!, standing: stages[k]!.standing } : undefined;
   const shape = FEE_SHAPES[fee.kind];
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
   return {
@@ -84,7 +80,6 @@ function rowOf(r: DealRead, fee: Fee, i: number | null): BuilderRow {
     bounds: { min: has("min"), max: has("max") },
     insideFund: insideFund(fee),
     standingNow: now.standing,
-    ...(later ? { standingLater: later } : {}),
   };
 }
 

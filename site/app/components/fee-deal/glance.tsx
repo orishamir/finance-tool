@@ -14,7 +14,7 @@ import { IconArrowDown } from "../icons";
 import { GroupHead, Section, Tag, TextLink, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
-import { CapBlock, MeetSentence, PriceWords, StandingWords, refName } from "./words";
+import { CapBlock, Fig, MeetSentence, PriceWords, StandingWords, refName } from "./words";
 
 /** The id of the reading's section under the columns, which the column's last line links to. */
 export const READING_ID = "deal-reading";
@@ -59,7 +59,7 @@ function MarkLine({ mark, action, many }: { mark: MarkView; action: string; many
       <SideLead side={mark.side} />
       {many && fill(m.whose, { name: refName(mark.fee) })}
       {fill(words.before, { noun: m.noun[action] ?? m.noun.none! })}
-      <Num value={mark.amount} />
+      <Fig value={mark.amount} />
       {words.after}
     </p>
   );

@@ -79,9 +79,9 @@ export function FeeOpen({ fee, className, before, after }: { fee: FeeRef; classN
  * A fee's standing tag (`StandingTag`) that brings the fee's row of the law card into view, on the page; the plain tag outside it, or
  * where nothing is judged. `fee`: the fee's id.
  */
-export function LawTag({ fee, standing, from }: { fee: string; standing: StandingView; from?: string }) {
+export function LawTag({ fee, standing }: { fee: string; standing: StandingView }) {
   const links = useContext(FeeLinksCtx);
-  const tag = <StandingTag standing={standing} from={from} />;
+  const tag = <StandingTag standing={standing} />;
   if (!links || !standing.standing.judged) return tag;
   return (
     <button
@@ -100,8 +100,7 @@ export function LawTag({ fee, standing, from }: { fee: string; standing: Standin
   );
 }
 
-/** The tag of a fee's law row, as `CapBlock` draws it: of the first later price whose standing differs, with its month, else of now. */
+/** The tag of a fee's law row, as `CapBlock` draws it: of its standing now. */
 export function LawRowTag({ row }: { row: LawRow }) {
-  if (row.later) return <LawTag fee={row.fee} standing={row.later.standing} from={row.later.at} />;
   return row.now ? <LawTag fee={row.fee} standing={row.now} /> : null;
 }

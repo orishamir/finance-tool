@@ -8,7 +8,7 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
-import { fmt, typedSum } from "../../lib/format";
+import { computedSum, fmt, typedSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
 import { Num } from "../provenance";
@@ -70,11 +70,15 @@ export function FeeName({ fee, className, before, after }: { fee: FeeRef; classN
   );
 }
 
-/** A typed sum shows as it was typed (`typedSum`); any other figure as its unit's rules say. */
-const typedDisplay = (v: SiteValue) => (v.state === "entered" ? (n: number) => typedSum(n, v.unit) : undefined);
+/**
+ * How the page shows a sum: one the person typed as they typed it (`typedSum`), one the site works out in whole units of its currency
+ * (`computedSum`); any other figure as its unit's rules say.
+ */
+export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | undefined =>
+  v.state === "entered" ? (n) => typedSum(n, v.unit) : v.state === "computed" ? (n) => computedSum(n, v.unit) : undefined;
 
-/** A figure of a price, a typed sum as typed. */
-const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={typedDisplay(value)} />;
+/** A figure on the page: a sum as `sumDisplay` shows it. */
+export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;
 
 /** A figure with a lead held to it on one line (", לא פחות מ־15 ₪"). */
 const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
@@ -133,15 +137,14 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
   return <span>{body}</span>;
 }
 
-/** The tag of a price's standing against its cap, or of the first later price whose standing differs ("בתקרה ממרץ 2028"); none where
- *  nothing is judged. Never colour alone: the tag is its words. */
-export function StandingTag({ standing, from }: { standing: StandingView; from?: string }) {
+/** The tag of a price's standing against its cap; none where nothing is judged. Never colour alone: the tag is its words. */
+export function StandingTag({ standing }: { standing: StandingView }) {
   const s = standing.standing;
   if (!s.judged) return null;
   const tone = s.standing === "above" ? "blocked" : s.standing === "at" ? "neutral" : "outline";
   return (
     <Tag tone={tone} shape="pill">
-      {from ? <When iso={from} lead={copy.standing.tagFrom[s.standing]!} /> : copy.standing.tag[s.standing]}
+      {copy.standing.tag[s.standing]}
     </Tag>
   );
 }
@@ -227,8 +230,8 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
 }
 
 /**
- * A fee against its cap (F-113), the one block the glance and the law card draw: its name and the tag of its standing (or of the first
- * later one that differs, with its month), then `children` (its price or prices in words, and the cap's line where the place says it). It
+ * A fee against its cap (F-113), the one block the glance and the law card draw: its name and the tag of its standing now (a later price's
+ * standing is said with that price), then `children` (its price or prices in words, and the cap's line where the place says it). It
  * reads the fee's law row of the reading, so the two never disagree. The standing is said in words only: no bar. Its container lays the
  * pieces out as a column. Nothing where the cap has no figure.
  */
@@ -238,7 +241,7 @@ export function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fe
     <>
       <span className="flex flex-wrap items-center gap-2">
         {name ?? <FeeName fee={row} className="font-medium" />}
-        {tag !== undefined ? tag : row.later ? <StandingTag standing={row.later.standing} from={row.later.at} /> : row.now && <StandingTag standing={row.now} />}
+        {tag !== undefined ? tag : row.now && <StandingTag standing={row.now} />}
       </span>
       {children}
     </>
@@ -261,11 +264,11 @@ export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" 
   return (
     <>
       {m.before}
-      <Num value={mark.sum} />
+      <Fig value={mark.sum} />
       {m.sum}
       <Num value={mark.rate} />
       {m.rate}
-      <Num value={mark.amount} />
+      <Fig value={mark.amount} />
       {mark.largest ? m.after : `${m.smaller}${custodyName(mark.against)}.`}
     </>
   );
