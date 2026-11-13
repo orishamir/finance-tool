@@ -2091,7 +2091,7 @@ function Lists({ today }: { today: string }) {
             <MeterBar share={0.4} tone="muted" hollow />
           </div>
         </State>
-        <State label="tone computed: the site's own reckoning of the share (a company's products, each against its largest)" wide>
+        <State label="tone computed: the site's own reckoning of the share" wide>
           <div className="flex flex-col gap-3 max-w-48">
             <MeterBar share={1} tone="computed" />
             <MeterBar share={0.35} tone="computed" />
