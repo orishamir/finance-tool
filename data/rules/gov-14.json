@@ -20,12 +20,12 @@
       "value": "unlinked",
       "unit": "text",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים, p.41",
-        "publisher": "Ministry of Finance, Accountant General",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.6 (gazette p.404) (no linkage clause; the linked type's regulations in the same booklet have reg. 8 \"תנאי הצמדה\")",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-14",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,7 +34,7 @@
         "GOV-14"
       ],
       "state": "sourced",
-      "notes": "An unlinked government bond with a variable rate set from the average makam yield (glossary p. 41, \"אג\"ח בריבית משתנה\"). The Accountant General lists both floating-rate types under unlinked bonds (TXI open question 8 and GOV open question 5 closed 2026-10-26)."
+      "notes": "The type auctioned now is created by the 2006 regulations for \"אג\"ח ממשלתית - ריבית משתנה\", which have no linkage clause, while the regulations for \"אג\"ח ממשלתית צמודה\" in the same booklet set one (reg. 8). The Debt Unit glossary (annual report 2024, p.41, \"אג\"ח בריבית משתנה\") calls it an unlinked bond with a variable rate set from the average makam yield, and the Accountant General lists both floating-rate types under unlinked bonds (TXI open question 8 and GOV open question 5 closed 2026-10-26)."
     },
     "coupon_every_months": {
       "value": 3,

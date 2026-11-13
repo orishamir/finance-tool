@@ -1,0 +1,44 @@
+{
+  "id": "BANK-50",
+  "title": "From the published annual rate to a term's interest: Schedule A, with how often the product calculates interest",
+  "title_he": "מהריבית השנתית שהבנק מפרסם לריבית על כל התקופה",
+  "text_he": "הריבית שהבנק מפרסם בטבלת הפיקדונות היא ריבית שנתית נומינלית, לא ריבית אפקטיבית. כללי הגילוי הנאות של בנק ישראל נותנים נוסחה שהופכת אותה לריבית על כל תקופת הפיקדון, והתוצאה תלויה בשאלה כמה פעמים בשנה הבנק מחשב את הריבית. אם הריבית מחושבת ומצטרפת לקרן פעם בשנה, בפיקדון ליותר משנה מקבלים ריבית על הריבית; אם היא מחושבת פעם אחת בסוף, מקבלים את הריבית השנתית כפול מספר השנים. כמה פעמים מחשבים קובעים תנאי הפיקדון של כל בנק, לא הכללים.",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-14",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf#page=2",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2, s.5(א)",
+      "locator_he": "עמוד 2, סעיף 5(א)",
+      "page": 2,
+      "quote": "תוצג הריבית השנתית הנומינלית",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf#page=16",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, Schedule A (תוספת א')",
+      "page": 16,
+      "quote": "דרך חישוב ריבית מתואמת שנתית",
+      "checked": "2026-11-14"
+    }
+  ]
+}

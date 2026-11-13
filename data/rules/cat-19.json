@@ -1,8 +1,8 @@
 {
   "id": "CAT-19",
-  "title": "In provident funds that are not study funds or investment provident funds, the default is an age-dependent track and the general track is closed to new members",
+  "title": "Age-dependent and general tracks in pension and tagmulim-type funds (decoding names like \"לבני 50 ומטה\"): a general track is closed to new joiners",
   "title_he": "בקופות גמל אחרות ברירת המחדל היא מסלול תלוי גיל",
-  "text_he": "בקופות גמל שאינן קרן השתלמות ואינן קופת גמל להשקעה, עמית חדש שלא בחר מסלול מצטרף למסלול ברירת המחדל שמתאים לגילו. המודל הוא שלושה מסלולים, עד גיל המדרגה הראשונה, בין המדרגה הראשונה לשנייה, ומגיל המדרגה השנייה ומעלה, או מסלולים לפי שנתוני לידה שכל אחד מכסה טווח של כמה שנים לפי החוזר. בקופות גמל לקצבה המסלול הכללי סגור למצטרפים חדשים, כפי שהרשות כותבת ברשימת מסלולי ההשקעה. זה מסביר שמות כמו לבני חמישים ומטה או לבני שישים ומעלה; טיוטת תקנות על העברת עמיתים למסלולים לפי גיל נראתה רק ככותרת בחיפוש.",
+  "text_he": "בקופות גמל שאינן קרן השתלמות ואינן קופת גמל להשקעה, עמית חדש שלא בחר מסלול מצטרף למסלול ברירת המחדל שמתאים לגילו. המודל הוא שלושה מסלולים, עד גיל המדרגה הראשונה, בין המדרגה הראשונה לשנייה, ומגיל המדרגה השנייה ומעלה, או מסלולים לפי שנתוני לידה שכל אחד מכסה טווח של כמה שנים לפי החוזר. קופה כזו, וגם קרן פנסיה, רשאית להמשיך לנהל מסלול כללי רק אם הוא סגור למי שלא היה בו ביום תחילת החוזר, ולכן מצטרף חדש לא יכול להצטרף למסלול הכללי של קרן פנסיה או של קופת גמל לקצבה. זה מסביר שמות כמו לבני חמישים ומטה או לבני שישים ומעלה; טיוטת תקנות על העברת עמיתים למסלולים לפי גיל נראתה רק ככותרת בחיפוש.",
   "figure_names_he": {
     "age_band_1": "גיל המדרגה הראשונה",
     "age_band_2": "גיל המדרגה השנייה"
@@ -56,7 +56,7 @@
     }
   },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-14",
   "scope": "general",
   "sources": [
     {
@@ -67,11 +67,52 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.4, ss.3 to 4; s.3(ד)",
-      "locator_he": "עמוד 4, סעיפים 3 עד 4; סעיף 3(ד)",
+      "locator": "p.3, s.2",
+      "locator_he": "עמוד 3, סעיף 2",
+      "page": 3,
+      "quote": "מסלול כללי",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, ss.3 to 4; s.3(ד) as",
       "page": 4,
-      "quote": "במסגרת פוליסות ביטוח שהן קופות ביטוח ששווקו לפני שנת 2004, גוף מוסדי יהיה רשאי לנהל מסלול כללי",
-      "checked": "2026-10-26"
+      "quote": "במסגרת פוליסות ביטוח שהן קופות ביטוח ששווקו לפני שנת 2004",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "quote": "נוספה הוראה שמאפשרת להמשיך לנהל את המסלולים הכלליים כשבקופות גמל לקצבה הם ימשיכו להיות סגורים למצטרפים חדשים",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/investmentsoptions16112020/he/2020-9-18.pdf",
+      "title": "חוזר גופים מוסדיים 2020-9-18 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2020-9-18 מסלולי השקעה בקופות גמל - תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.1",
+      "locator_he": "עמוד 1, סעיף 1",
+      "page": 1,
+      "quote": "שתחילתו הייתה ביום 1 בינואר 2016",
+      "checked": "2026-11-14"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_word.docx",

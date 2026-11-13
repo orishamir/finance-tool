@@ -304,7 +304,7 @@ Out, and where it lives:
   - **No trading below the floor.** A licensed corporation may not operate while below the insurance and equity conditions (law s.20ג).
 - Conditions / exceptions:
   - No Israeli investor-compensation scheme was found (BRK summary).
-  - The deposit-insurance bill would exclude portfolio managers as claimants (REG-05).
+  - The deposit-insurance bill, which lapsed, would have excluded portfolio managers as claimants (REG-05).
   - The equity figure is reg. 2 as read in the ISA's copy, file p.1 (2026-10-31): "הון עצמי של תאגיד מורשה לא יפחת, בכל עת, מסכום של מאתיים אלף שקלים חדשים", with no separate tier by assets managed in that regulation. The indexed amount is still open (open question 7).
 - Figures: NIS 200,000 equity floor, CPI-linked from Nov 1998; the indexed amount was not computed. Security stays valid 1 year after the licensee stops operating.
 - Source: [Investment Advice Regulations (Equity and Insurance), Securities Authority's consolidated copy, file of 2.1.2022](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_4105.pdf#page=1) (file pages: s.1 1; s.2 1; s.3 2; s.4 2; s.7 3; s.10 5), regs. 1, 2, 3, 4, 7, 10. The last amendment listed is תשפ"ב, ק"ת 1170. · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording); [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=36) (file pages: s.20ג 36), s.20ג · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
