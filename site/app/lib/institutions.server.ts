@@ -19,7 +19,8 @@ import type {
   TariffLineRow,
 } from "../components/decoder/institutions/types";
 import { distributionRuleIds } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadProducts, loadWrappers, pointedRecords, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedRecords, root, today } from "./data.server";
+import { HELP_TERMS as DEPOSIT_TERMS } from "./deposit-browser";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { isFxToFx } from "./invest";
@@ -321,6 +322,9 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
     for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
   }
+  // the glossary card behind the "?" of a deposit table's rate head (the deposits page's), with the rules it cites
+  const helpTerms = deposits.length ? Object.fromEntries(loadTerms().filter((x) => x.he === DEPOSIT_TERMS.rate).map((x) => [x.he, x])) : {};
+  for (const term of Object.values(helpTerms)) for (const r of term.ruleIds) cited.add(r);
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
   // what the site found in the company's own documents (D30): the records that name it, by topic; their cards open from the same data
   const registryIds = registryIdsOfPage(id);
@@ -345,6 +349,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     catalogue,
     rules,
     pointed,
+    helpTerms,
     terms: { groups: termGroups, company: registryIds[0] ?? null, pageCompanies: registryIds, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };
 }

@@ -5,7 +5,7 @@
 import { useMemo, type ReactNode } from "react";
 import { companyPath } from "../../lib/site-paths";
 import { Link } from "react-router";
-import { track as trackCopy, trackBrowser as t } from "../../copy";
+import { company as companyCopy, track as trackCopy, trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, feeMarkTerms, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
@@ -232,7 +232,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
  *  row of the group. `fold`: the page holds which groups are open (the track browser's companies, folded but the first); without it every
  *  group starts open. `foldRows`: on a phone a row is one line that opens in place (a long list under the companies).
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, caps, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; /** A company page's shorter table: the product's legal caps (its record's `fee_caps`), each the caption over the fee head it limits. */ caps?: { balance: SiteValue | null; deposit: SiteValue | null } | null; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[], note?: string, raised?: boolean) =>
     sortable.has(id) ? (
@@ -243,31 +243,44 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>
     );
   // a company page's fee heads: the fee, the year whose average the column shows under it, and a "?" beside the head (never inside its
-  // button) that opens what the figure is and, where its card names this product, the fee's own card
+  // button) that opens what the figure is and, where its card names this product, the fee's own card; the savings fee's also opens, first,
+  // what the column leaves out (the direct expenses, with their card and its rules)
   const provenance = useProvenanceData();
   const wrappers = (term: string) => provenance?.terms[term]?.wrapperIds;
-  const average = feeYear ? t.columns.average.replace("{year}", feeYear) : undefined;
+  const average = feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear;
   const feeHead = (id: SortId, label: string, side: "savings" | "deposit") => {
-    const terms = feeMarkTerms(side, view.id, wrappers);
+    const terms = side === "savings" ? [...feeMarkTerms(side, view.id, wrappers), HELP_TERMS.direct] : feeMarkTerms(side, view.id, wrappers);
     return (
       <span className="inline-flex items-start gap-1">
         {head(id, label, undefined, average, true)}
-        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} />
+        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} lead={side === "savings" ? companyCopy.fees.direct : undefined} />
       </span>
     );
   };
   const periodText = fmt.period(period);
+  const periodNote = t.columns.endOf.replace("{period}", periodText);
+  // the past yield: what it is in the head, before fees and tax in the muted line under it, and the whole caution in its "?"
+  const pastHead = (label: string, note: string) => <SortNote label={label} note={note} mark={<HelpMark about={t.help.past} text={t.pastNote} />} />;
   const short = t.columns.short;
+  // a cap over the fee head it limits, its figure opening its source (the regulations)
+  const capHead = (cap: SiteValue) => (
+    <span className="whitespace-nowrap">
+      {companyCopy.fees.cap} <Num value={cap} />
+    </span>
+  );
+  // one date over the five columns whose figures share it (the exposure, the yields, the assets)
+  const asOf = t.columns.asOf.replace("{period}", periodText);
+  const dated = { band: asOf };
   const compactColumns: ProductColumn[] = [
     { id: "name", head: head("name", t.columns.track), sort: state("name") },
     { id: "fund", head: t.columns.fund, width: 5 },
-    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 12, sort: state("fee") },
-    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 8.5, sort: state("dep") }] : []),
-    { id: "stocks", head: head("stock", short.stocks), width: 5.5, sort: state("stock") },
-    { id: "currency", head: short.currency, width: 5 },
-    { id: "y3", head: short.y3, width: 7.5, headClassName: "whitespace-nowrap" },
-    { id: "y5", head: short.y5, width: 7.5, headClassName: "whitespace-nowrap" },
-    { id: "assets", head: head("assets", short.assets), width: 8.5, sort: state("assets") },
+    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 12, sort: state("fee"), ...(caps?.balance ? { band: "cap-savings", bandHead: capHead(caps.balance) } : {}) },
+    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 8.5, sort: state("dep"), ...(caps?.deposit ? { band: "cap-deposit", bandHead: capHead(caps.deposit) } : {}) }] : []),
+    { id: "stocks", head: head("stock", short.stocks), width: 5, sort: state("stock"), ...dated },
+    { id: "currency", head: short.currency, width: 5, ...dated },
+    { id: "y3", head: pastHead(short.y3, t.columns.beforeFees), width: 9.75, headClassName: "whitespace-nowrap", ...dated },
+    { id: "y5", head: pastHead(short.y5, t.columns.beforeFees), width: 9.75, headClassName: "whitespace-nowrap", ...dated },
+    { id: "assets", head: head("assets", short.assets), width: 8.5, sort: state("assets"), ...dated },
   ];
   // the full table's one fee head over both figures: its "?" opens the two averages, then each fee's card that names the product
   const [savingsAverage, ...savingsCard] = feeMarkTerms("savings", view.id, wrappers);
@@ -280,13 +293,18 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       id: "fee",
       head: (
         <span className="flex flex-col">
+          {/* the year of the average in muted words beside the head, the two heads that sort under them and the "?" after them: on the
+              heads' line it covers no arrow and keeps its 44 px, and the raised heads keep every press on their own words and arrows */}
           <span className="inline-flex items-center gap-1">
-            {feeYear ? t.columns.fee.replace("{year}", feeYear) : t.columns.feeNoYear}
-            <HelpMark term={fullFeeTerms} about={t.help.fee} />
+            {t.columns.fee}
+            <span className="font-normal">{average}</span>
           </span>
           <span className="flex flex-wrap gap-x-3">
-            {head("fee", t.columns.feeSavings)}
-            {head("dep", t.columns.feeDeposits)}
+            {head("fee", t.columns.feeSavings, undefined, undefined, true)}
+            <span className="inline-flex items-start gap-1">
+              {head("dep", t.columns.feeDeposits, undefined, undefined, true)}
+              <HelpMark term={fullFeeTerms} about={t.help.fee} />
+            </span>
           </span>
         </span>
       ),
@@ -297,23 +315,25 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       id: "exposure",
       head: (
         <span className="inline-flex items-start gap-1">
-          {head("stock", t.columns.exposure.replace("{period}", periodText))}
+          {head("stock", t.columns.exposure, undefined, periodNote, true)}
           <HelpMark term={HELP_TERMS.exposure} about={t.help.exposure} />
         </span>
       ),
       width: 13.5,
       sort: state("stock"),
     },
-    { id: "yield", head: t.columns.yield, width: 11 },
+    { id: "yield", head: pastHead(t.columns.yield, `${t.columns.beforeFees} · ${periodNote}`), width: 15.25 },
     {
       id: "assets",
       head: (
         <span className="inline-flex items-start gap-1">
-          {head("assets", t.columns.assets.replace("{period}", periodText))}
+          {head("assets", t.columns.assets, undefined, periodNote, true)}
           <HelpMark term={HELP_TERMS.assets} about={t.help.assets} />
         </span>
       ),
-      width: 10,
+      // the date under the head is wider than the label, so the "?" stands far along the head: 10.75 rem keeps its 44 px inside the column,
+      // clear of the arrow column's sticky head
+      width: 10.75,
       sort: state("assets"),
     },
     { id: "open", head: <span className="sr-only">{t.columns.open}</span>, width: 4.5 },

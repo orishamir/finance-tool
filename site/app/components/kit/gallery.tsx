@@ -1605,8 +1605,8 @@ function Lists({ today }: { today: string }) {
         <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
           <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
         </State>
-        <State label="on the house's own page: the same rows, each group's name under its short words, a line of where the words stand, and a link under a group the index page offers as a radio (to that page with it picked)" wide>
-          <GroupPriceRows entries={sampleGroups()} sources own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
+        <State label={'on the house\'s own page: the same rows, each group\'s name under its short words, a line of where the words stand, a link under a group the index page offers as a radio (to that page with it picked), and with headHelp what "names no fund" means as the "?" beside "מה זול יותר" instead of a note under the rows'} wide>
+          <GroupPriceRows entries={sampleGroups()} sources headHelp own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
         </State>
         <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
           <GroupChoiceDemo />
@@ -1709,6 +1709,9 @@ function Lists({ today }: { today: string }) {
             <SortNote label={p.figure} note={p.note} />
           </div>
         </State>
+        <State label={'SortNote with mark: a "?" beside the label on its first line and the note under both, so a note wider than its label never pushes the mark past the column'}>
+          <SortNote label={p.figure} note={p.note} mark={<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />} />
+        </State>
         <State label={'with a "?" beside it: the head is raised, so a press on its arrow sorts and never opens the mark, whose 44 px area reaches over the head\'s end'}>
           <span className="inline-flex items-start gap-1">
             <SortHead label={p.figure} note={p.note} state="ascending" onPress={() => {}} raised />
@@ -1747,6 +1750,12 @@ function Lists({ today }: { today: string }) {
           <span className="inline-flex items-center gap-1 text-sm font-medium">
             {g.sample.helpText.head}
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
+          </span>
+        </State>
+        <State label="rules: the text ends with the chip of the rules behind it (a sentence moved from beside a table keeps its rules)">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {g.sample.helpText.head}
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} rules={["TXS-05", "TXS-06"]} />
           </span>
         </State>
         <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">
@@ -1907,6 +1916,9 @@ function Lists({ today }: { today: string }) {
         <State label="what every row shares, said once over a table" wide>
           <SharedFacts title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i] }))} className="max-w-xl" />
         </State>
+        <State label={'plain, its last line on a phone only (an item\'s className "md:hidden": what a head\'s "?" says from md, on a phone with no heads)'} wide>
+          <SharedFacts plain title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i], ...(i === 2 ? { className: "md:hidden" } : {}) }))} className="max-w-xl" />
+        </State>
         <State label="small figures one under the other, one set aside by a choice and dimmed in place">
           <FigureLines items={[0, 1, 2].map((i) => ({ id: String(i), label: g.sample.option[i], figure: <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, dim: i === 2 }))} />
         </State>
@@ -1915,6 +1927,12 @@ function Lists({ today }: { today: string }) {
         <State label="a caption over two columns, one column dimmed by a choice" wide>
           <ProductTable
             columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8, dim: true }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label={'bandHead: a caption that holds a "?" beside its words (or a figure that opens its source), over the columns of its band'} wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, bandHead: <span className="inline-flex items-center gap-1">{g.sampleSource}<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span>, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8 }]}
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
           />
         </State>

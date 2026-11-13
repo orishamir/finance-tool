@@ -119,14 +119,14 @@ export function DoubtNote({ text, className }: { text: string; className?: strin
  * What is true of every row of the table under it, said once over the table instead of on each row ("נכון לכל הפיקדונות בטבלה:"): a muted
  * box with one point each. A fact true of only some rows stays in those rows.
  */
-export function SharedFacts({ title, items, className, plain, foot }: { title: ReactNode; items: { key: string; text: ReactNode }[]; className?: string; /** Each item a line of plain sentences, with no bullets (a company page, the designer's mocks). */ plain?: boolean; /** After the lines: the rules behind them, as one quiet line of chips. */ foot?: ReactNode }) {
+export function SharedFacts({ title, items, className, plain, foot }: { title: ReactNode; items: { key: string; text: ReactNode; /** An item shown at some widths only (`md:hidden`: what a column head's "?" says from md, on a phone with no heads). */ className?: string }[]; className?: string; /** Each item a line of plain sentences, with no bullets (a company page, the designer's mocks). */ plain?: boolean; /** After the lines: the rules behind them, as one quiet line of chips. */ foot?: ReactNode }) {
   if (items.length === 0) return null;
   if (plain)
     return (
       <div className={cx("rounded-lg border border-border bg-card px-4 py-3 flex flex-col gap-1 text-sm", className)}>
         <p className="font-medium">{title}</p>
         {items.map((it) => (
-          <p key={it.key} className="text-muted-foreground">
+          <p key={it.key} className={cx("text-muted-foreground", it.className)}>
             {it.text}
           </p>
         ))}
@@ -138,7 +138,9 @@ export function SharedFacts({ title, items, className, plain, foot }: { title: R
       <p className="font-medium">{title}</p>
       <ul className="flex flex-col gap-1 list-disc ps-5 marker:text-chart-axis max-w-measure">
         {items.map((it) => (
-          <li key={it.key}>{it.text}</li>
+          <li key={it.key} className={it.className}>
+            {it.text}
+          </li>
         ))}
       </ul>
     </div>

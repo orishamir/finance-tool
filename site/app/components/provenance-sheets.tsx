@@ -152,7 +152,7 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
-      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} parts={item.parts} data={data} headId={headId} />}
+      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} rules={item.rules} parts={item.parts} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
@@ -1194,7 +1194,7 @@ const sheetPart = (p: SheetPart) => (
   </div>
 );
 
-function TermsSheet({ ids, name, lead, parts, data, headId }: { ids: readonly string[]; name: string; lead?: string; parts?: readonly SheetPart[] | undefined; data: ProvenanceData; headId: string }) {
+function TermsSheet({ ids, name, lead, rules, parts, data, headId }: { ids: readonly string[]; name: string; lead?: string; rules?: readonly string[] | undefined; parts?: readonly SheetPart[] | undefined; data: ProvenanceData; headId: string }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -1202,6 +1202,7 @@ function TermsSheet({ ids, name, lead, parts, data, headId }: { ids: readonly st
           {name}
         </h2>
         {lead && <p className="text-muted-foreground">{lead}</p>}
+        {rules && rules.length > 0 && <RulesLine ids={rules} name={name} className="pt-1" />}
       </div>
       {/* the sheet's own sentences, each with the document it rests on right under it; then each group under its heading, where a part
           with no head and no document is a line of a list */}

@@ -8,6 +8,7 @@ import { useLoaderData, useLocation, type ShouldRevalidateFunctionArgs } from "r
 import type { Route } from "./+types/company";
 import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, companyPage as w, pagePreview, r4catalogue } from "../copy";
 import { pageMeta } from "../lib/page-meta";
+import { fmt } from "../lib/format";
 import { InstitutionPage } from "../components/decoder/institutions/page";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
@@ -17,7 +18,7 @@ import { CompanyTracks } from "../components/tracks/company-browser";
 import { assetsText, buildProductView, feeRangeOf, tracksPhrase, type ProductView, type TbData } from "../lib/track-browser";
 import { Callout, Card, Disclosure, FeeWordsNote, TariffDate, When, gershayim } from "../components/kit";
 import { CompanyTemplate, type CompanyPart } from "../components/company/template";
-import { Overview, OverviewTable, type OverviewTableRow } from "../components/company/overview";
+import { Overview, OverviewTable, type OverviewHeads, type OverviewTableRow } from "../components/company/overview";
 import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
 import { accountSections } from "../components/decoder/institutions/sections";
 import { addressId, entryIds, splitDocGroups } from "../lib/company-page";
@@ -151,7 +152,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     body: (
       <>
         <StaleSaid on={!!data.period.stale}>
-          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} foot={<FeeFoot caps={data.caps[v.id] ?? null} />} />
+          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} caps={data.caps[v.id] ?? null} foot={(depositCapAbove) => <FeeFoot caps={data.caps[v.id] ?? null} depositCapAbove={depositCapAbove} />} />
         </StaleSaid>
         <ProductDocs product={v.name} groups={docs.byProduct[v.id] ?? []} />
       </>
@@ -255,6 +256,9 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     { key: "trade", label: w.groups.trade },
   ];
   const tableGroups = many ? listGroups.map((g) => ({ key: g.key, label: g.label, rows: parts.filter((p) => p.group === g.key).map(tableRow) })).filter((g) => g.rows.length > 0) : [{ key: "all", rows: parts.map(tableRow) }];
+  // what the tracks' fee range, money and bar are: in the heads from md, in the note under the table on a phone
+  const tableHeads: OverviewHeads | undefined =
+    views.length > 0 ? { fees: w.overviewTable.heads.fees, assets: w.overviewTable.heads.assets(fmt.period(browser.reportPeriod)), ...(top > 0 ? { bar: w.overviewTable.heads.bar(data.name) } : {}) } : undefined;
   const tableNote =
     views.length > 0 ? (
       <>
@@ -300,7 +304,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
         }
         parts={parts}
         groups={many ? listGroups : undefined}
-        overview={{ anchors: [companyTermsAnchor, "unassigned", ...entryIds(docs.rest)], body: <Overview heading={w.whatsIn(data.name)} table={parts.length > 0 ? <OverviewTable groups={tableGroups} note={tableNote} /> : null}>{after}</Overview> }}
+        overview={{ anchors: [companyTermsAnchor, "unassigned", ...entryIds(docs.rest)], body: <Overview heading={w.whatsIn(data.name)} table={parts.length > 0 ? <OverviewTable groups={tableGroups} heads={tableHeads} note={tableNote} /> : null}>{after}</Overview> }}
         single={<div className="flex flex-col gap-section pt-4">{after}</div>}
       />
     </PageShell>
@@ -339,8 +343,11 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
   );
 }
 
-/** Under each track table (D34): the product's legal caps, then that the direct expenses come on top (PF-10). */
-function FeeFoot({ caps }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null }) {
+/** Under each track table on a phone, whose rows have no heads (D36): the product's legal caps, then that the direct expenses come on top
+ *  (PF-10). From md the caps are the captions over the fee heads and the direct expenses the savings fee's "?"; a deposit fee's cap with
+ *  no column under it is the line over the list's, at every width, and not repeated here. */
+function FeeFoot({ caps: all, depositCapAbove }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The line over the list says the deposit fee's cap: the foot leaves it out. */ depositCapAbove: boolean }) {
+  const caps = all && depositCapAbove ? { ...all, deposit: null } : all;
   return (
     <div className="flex flex-col gap-1 text-xs text-muted-foreground">
       {caps && (caps.balance || caps.deposit) && (
