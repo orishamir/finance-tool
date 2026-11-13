@@ -1692,6 +1692,8 @@ export const feeDeal = {
     then: "אחר כך",
     /** The line a fee just taken away leaves in its place, before its name. */
     removed: "הוסרה מהעסקה: ",
+    /** The line another kind of product leaves where it took several fees away, before their names. */
+    removedMany: "הוסרו מהעסקה: ",
     /** The line in the panel of a fee just filled from a house's price list. */
     filled: (house: string) => `העמלה מולאה מהתעריפון של ${house}`,
     /** The action on the undo line that puts the deal back as it was. */

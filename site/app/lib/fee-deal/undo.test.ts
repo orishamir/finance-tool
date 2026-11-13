@@ -3,8 +3,9 @@ import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { addFee, editPrice, setLimited, setName, setSaleApart, setStart, setUntil, updateFee, withFigure } from "./edit";
 import { newDeal, typed, type FeeDeal } from "./model";
-import { feePriceLists, pickTrack } from "./templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, undoWords } from "./undo";
+import { barredFees, feePriceLists, pickTrack } from "./templates";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
+import { kindById } from "./kinds";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -209,5 +210,78 @@ describe("a saved deal deleted", () => {
     expect(back.map((d) => d.id)).toEqual(["deal-a", "deal-b", "deal-c"]);
     expect(undoDelete(back, r.undo)).toBeNull();
     expect(deleteDealKept([a], "deal-x", "deal-a")).toBeNull();
+  });
+});
+
+describe("another kind of product for the deal", () => {
+  const kind = (id: string) => kindById(data.kinds, id as FeeDeal["kind"])!;
+  const provident = (): FeeDeal => ({
+    id: "deal-p",
+    name: "",
+    kind: "kupat-gemel-lehashkaa",
+    template: { id: "track:1", name: "מסלול" },
+    fees: [
+      { id: "fee-balance", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.7), per: 12, every: 12 } }] },
+      { id: "fee-own", kind: "own", name: "דמי טיפול", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+      { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
+    ],
+  });
+  it("takes away the two management fees a securities account does not have, keeps a fee of the person's own, and drops the track", () => {
+    const d = provident();
+    const r = setKindKept(d, kind("brokerage-account"), barredFees("brokerage-account", data, "2026-11-13"), "fee-balance");
+    expect(r.deal.kind).toBe("brokerage-account");
+    expect(r.deal.fees.map((f) => f.id)).toEqual(["fee-own"]);
+    expect(r.deal.template).toBeUndefined();
+    expect(r.chosen).toBe("fee-own");
+    expect(r.undo).not.toBeNull();
+    expect(undoWords(r.undo!, (f) => f.kind, data)).toBe(`${copy.builder.removedMany}balance, deposit.`);
+  });
+  it("puts the kind, the fees, the track and the choice back together, as the deal was", () => {
+    const d = provident();
+    const r = setKindKept(d, kind("brokerage-account"), [], "fee-balance");
+    const back = undo(r.deal, r.undo!, r.chosen)!;
+    expect(back.deal).toEqual(d);
+    expect(back.chosen).toBe("fee-balance");
+  });
+  it("keeps a fee typed since when undone, and stands no more once the deal has a fee of a kind it took away or another kind", () => {
+    const d = provident();
+    const r = setKindKept(d, kind("brokerage-account"), [], null);
+    const { deal: more } = addFee(r.deal, "trade");
+    expect(standing(r.undo, more)).toBe(true);
+    expect(undo(more, r.undo!, null)!.deal.fees.map((f) => f.kind)).toEqual(["balance", "own", "deposit", "trade"]);
+    const own = { ...r.deal, fees: [...r.deal.fees, { id: "fee-x", kind: "balance" as const, stages: [{ price: { form: "free" as const } }] }] };
+    expect(standing(r.undo, own)).toBe(false);
+    expect(standing(r.undo, { ...r.deal, kind: "ira-provident" })).toBe(false);
+  });
+  it("keeps a fee both kinds have as typed", () => {
+    const d = provident();
+    const r = setKindKept(d, kind("keren-hishtalmut"), [], null);
+    expect(r.deal.fees).toEqual(d.fees);
+    expect(r.undo).toBeNull();
+    expect(setKindKept(account(), kind("ira-provident"), [], null).deal.fees.map((f) => f.id)).toEqual(["fee-trade", "fee-custody", "fee-fx"]);
+  });
+  it("takes away a fee the new kind may not charge by rule", () => {
+    const d = provident();
+    expect(setKindKept(d, kind("keren-hishtalmut"), ["deposit"], null).deal.fees.map((f) => f.id)).toEqual(["fee-balance", "fee-own"]);
+  });
+  it("takes away fees with nothing typed in them silently", () => {
+    let d: FeeDeal = { ...newDeal("kupat-gemel-lehashkaa"), id: "deal-q" };
+    d = addFee(addFee(d, "balance").deal, "deposit").deal;
+    const r = setKindKept(d, kind("brokerage-account"), [], null);
+    expect(r.deal.fees).toEqual([]);
+    expect(r.undo).toBeNull();
+  });
+  it("drops the provider kind a house's price list gave, and gives it back", () => {
+    const d: FeeDeal = { ...account(), template: { id: "house:x", name: "בית" }, provider: "bank" };
+    const r = setKindKept(d, kind("pension-general"), [], null);
+    expect(r.deal.provider).toBeUndefined();
+    expect(r.deal.held).toBeUndefined();
+    expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
+  });
+  it("leaves a deal of the same kind as it is", () => {
+    const d = provident();
+    const r = setKindKept(d, kind("kupat-gemel-lehashkaa"), [], null);
+    expect(r.deal).toBe(d);
+    expect(r.undo).toBeNull();
   });
 });

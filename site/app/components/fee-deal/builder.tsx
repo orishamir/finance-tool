@@ -1,14 +1,15 @@
 // The column "בונים את העסקה" (method §10.6, `builder`): the deal's kind, what it holds (three facts each chosen in place) or, in the
 // provident family, the place for its company and track, and its fees, one card each with its figures typed in place, its standing
 // against the cap after its name, the chosen card marked, and a way to take it away. A fee with a price not given yet shows its empty
-// boxes and says so. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as its card was. Under the
-// cards, one quiet line offers the fees the deal could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the
-// person's own; a fee added takes the focus in its first box. A card under the pointer or the focus marks the fee in the glance.
+// boxes and says so. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as its card was; another kind
+// that takes fees away leaves it under the kind. Under the cards, one quiet line offers the fees the deal could add: the kind's usual ones
+// it lacks first, then the rarer ones and a fee of the person's own; a fee added takes the focus in its first box. A card under the pointer
+// or the focus marks the fee in the glance.
 import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
-import { pickHeld, setHeld, setKind, setUntil, updateFee } from "../../lib/fee-deal/edit";
+import { pickHeld, setHeld, setUntil, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { BOUND_CURRENCIES, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
@@ -224,6 +225,9 @@ export interface FeeUndoLine {
   take: () => boolean;
 }
 
+/** The page's undo line of another kind of product that took fees away: it stands under the kind. */
+export type KindUndoLine = Omit<FeeUndoLine, "what">;
+
 /** A fee whose card or first box takes the focus once drawn: one put back by the undo (its card), one just added (its first box). */
 export interface FeeFocus {
   fee: string;
@@ -244,7 +248,7 @@ export function bringIntoView(el: Element | null | undefined) {
   el.scrollIntoView({ block: "nearest", behavior: still ? "auto" : "smooth" });
 }
 
-export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, line, focus, onFocused, onDeal, onChoose, onAdd, onRemove }: {
+export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, line, kindLine, focus, onFocused, onDeal, onKind, onChoose, onAdd, onRemove }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
@@ -255,10 +259,14 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, li
   left: readonly LeftOut[] | null;
   /** The undo line of a fee just taken away; null where none stands. */
   line: FeeUndoLine | null;
+  /** The undo line of another kind just chosen that took fees away; null where none stands. */
+  kindLine: KindUndoLine | null;
   /** What takes the focus once drawn, and what to call once it has. */
   focus: FeeFocus | null;
   onFocused: () => void;
   onDeal: (deal: FeeDeal) => void;
+  /** Another kind chosen for the deal. */
+  onKind: (kind: ProductId) => void;
   /** A card chosen, and how: by the pointer, the keyboard (the panel's first field then takes the focus) or a field of it taking the focus. */
   onChoose: (feeId: string, by: "pointer" | "keyboard" | "field") => void;
   onAdd: (kind: FeeKindId) => void;
@@ -282,7 +290,8 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, li
     for (const li of list.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
     if (kindChosen.current) {
       kindChosen.current = false;
-      root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)")?.focus();
+      // the undo line of a kind that took fees away has the focus already
+      if (!kindLine) root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)")?.focus();
     }
     if (!focus) return;
     const li = list.current?.querySelector<HTMLElement>(`li[data-fee="${focus.fee}"]`);
@@ -335,10 +344,15 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, li
               ariaLabel={b.kindsAria}
               onChange={(id: ProductId) => {
                 kindChosen.current = true;
-                onDeal(setKind(deal, id));
+                onKind(id);
                 setPicking(false);
               }}
             />
+          )}
+          {kindLine && (
+            <UndoLine key={`undo:product:${deal.kind}`} as="div" onUndo={kindLine.onUndo} onHold={kindLine.onHold} take={kindLine.take} refocusOnUndo refocus={() => root.current?.querySelector<HTMLElement>("button")}>
+              {kindLine.words}
+            </UndoLine>
           )}
         </Step>
         {kind && view.holdsFunds && (

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
+import type { FeeBase, ProductId } from "@finance-tool/schema";
+import type { DealKind } from "./kinds";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
 import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+
+/** A kind with the bases its record lists, for the edits that read them. */
+const BASES: Partial<Record<ProductId, FeeBase[]>> = { "ira-provident": ["balance", "trade", "custody", "fx", "direct_expenses"], "pension-comprehensive": ["deposit", "balance", "direct_expenses", "insurance_premium"] };
+const kindOf = (id: ProductId): DealKind => ({ id, name: id, bases: BASES[id] ?? [], caps: {} });
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
@@ -152,10 +158,10 @@ describe("the fee page's edits", () => {
   it("a deal's kind, what it holds and its start", () => {
     const { deal } = addFee(setHeld(newDeal("brokerage-account"), { place: "abroad", currency: "USD", payout: "accumulating" }), "trade");
     expect(deal.fees.map((f) => f.kind)).toEqual(["trade"]);
-    expect(setKind(deal, "ira-provident").held).toEqual(deal.held);
-    const pension = setKind(deal, "pension-comprehensive");
+    expect(setKind(deal, kindOf("ira-provident")).held).toEqual(deal.held);
+    const pension = setKind(deal, kindOf("pension-comprehensive"));
     expect(pension.held).toBeUndefined();
-    expect(pension.fees).toEqual(deal.fees);
+    expect(pension.fees).toEqual([]);
     expect(setStart(setStart(deal, "2026-03"), null).start).toBeUndefined();
   });
 });

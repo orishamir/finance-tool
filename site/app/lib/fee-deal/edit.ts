@@ -1,9 +1,9 @@
 // The changes the fee page makes to a deal, each a pure function from a deal to the next: the screen calls them and saves what they
 // return. A figure the person types becomes theirs (`retyped`): it loses a template's source unless it is the same number. A price whose
 // terms the person changes (its months, its bounds' currency, its form) becomes theirs whole (`owned`): the source states another price.
-import type { ProductId } from "@finance-tool/schema";
 import { blankFigure, blankPrice, newFee, pricesOn, retyped, sameContent, typed, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Num, type Price, type Side, type Stage } from "./model";
-import { FEE_SHAPES, holdsFunds, type FeeKindId, type FormId, type Held } from "./shapes";
+import type { DealKind } from "./kinds";
+import { FEE_SHAPES, holdsFunds, kindHas, type FeeKindId, type FormId, type Held } from "./shapes";
 
 export type { Side } from "./model";
 
@@ -24,10 +24,17 @@ export function addFee(deal: FeeDeal, kind: FeeKindId): { deal: FeeDeal; fee: Fe
 
 export const removeFee = (deal: FeeDeal, feeId: string): FeeDeal => ({ ...deal, fees: deal.fees.filter((f) => f.id !== feeId) });
 
-/** A deal of another kind: what it holds goes where the new kind holds no funds; its fees stay as typed. */
-export function setKind(deal: FeeDeal, kind: ProductId): FeeDeal {
-  const { held: _held, ...rest } = deal;
-  return holdsFunds(kind) && deal.held ? { ...deal, kind } : { ...rest, kind };
+/**
+ * A deal of another kind: a fee the new kind does not have (`kindHas`), or may not charge by rule (`barred`), leaves it, and the fees of
+ * kinds both have stay as typed, a fee of the person's own among them. What it holds goes where the new kind holds no funds. Its template
+ * goes, with the provider kind the template gave: a template belongs to one kind (a house's price list to the securities account, a track
+ * to its product). The same kind leaves the deal as it is.
+ */
+export function setKind(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindId[] = []): FeeDeal {
+  if (deal.kind === kind.id) return deal;
+  const { held: _held, template: _template, provider: _provider, ...rest } = deal;
+  const fees = deal.fees.filter((f) => kindHas(kind.id, kind.bases, f.kind) && !barred.includes(f.kind));
+  return { ...rest, kind: kind.id, fees, ...(holdsFunds(kind.id) && deal.held ? { held: deal.held } : {}) };
 }
 
 export const setHeld = (deal: FeeDeal, held: Held): FeeDeal => ({ ...deal, held });

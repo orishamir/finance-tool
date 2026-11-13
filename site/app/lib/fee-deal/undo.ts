@@ -1,11 +1,15 @@
 // The fee page's one undo: a change that loses something the person typed or chose (a fee taken away, a fee filled from a price list over
 // its own prices, a later price taken away, the prices after one taken away by "כל הזמן") keeps what it took, for a moment, so one action
 // puts it back. Only the last such change is kept. It stands while the part it would put back into is as the change left it: for a fee
-// taken away, the deal has no fee of its kind (of the person's own: no fee with its id); for the others, the fee is unchanged since. Edits
+// taken away, the deal has no fee of its kind (of the person's own: no fee with its id); for the others, the fee is unchanged since. A
+// change of the deal's kind that takes fees away (`setKindKept`) is kept the same way, and puts the kind and the fees back together. Edits
 // elsewhere in the deal keep it standing and stay when it is used; once its part changes, it goes. The words of its line are here too.
 import { feeDeal as copy } from "../../copy";
-import { holdOn, laterUntouched, removeStage, updateFee, type Side } from "./edit";
-import { pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import type { ProductId } from "@finance-tool/schema";
+import { holdOn, laterUntouched, removeStage, setKind, updateFee, type Side } from "./edit";
+import type { DealKind } from "./kinds";
+import { newFee, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import type { FeeKindId } from "./shapes";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
 
@@ -91,12 +95,70 @@ export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, 
   return feeChange(deal, fee, changed, { kind: "chain", feeId, side, k }, chosen);
 }
 
+// ---------------------------------------------------------------- the deal's kind changed
+
+/**
+ * The deal's kind changed and took fees away (`setKind`): the deal as it was, and where each fee taken away stood in it, so one action puts
+ * the kind and the fees back together.
+ */
+export interface KindUndo {
+  what: { kind: "product"; to: ProductId };
+  dealId: string;
+  /** The deal before the change. */
+  before: FeeDeal;
+  /** The fees taken away, each with its place in the deal before. */
+  gone: { fee: Fee; at: number }[];
+  chosenBefore: string | null;
+  chosenAfter: string | null;
+}
+
+/** A fee as the builder adds it, nothing typed or filled in it: one price of its usual form, its figure blank. */
+const blankFee = (f: Fee): boolean => f.name === undefined && !f.sale && sameContent(f.stages, newFee(f.kind).stages);
+
+/**
+ * The deal of another kind (`setKind`), kept for the undo where a fee it takes away holds anything typed or filled; silent where every fee
+ * it takes away is blank, or none is. A chosen fee taken away hands the choice to the first fee left.
+ */
+export function setKindKept(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindId[], chosen: string | null): Omit<MaybeUndoable, "undo"> & { undo: KindUndo | null } {
+  const next = setKind(deal, kind, barred);
+  const gone = deal.fees.flatMap((fee, at) => (next.fees.some((f) => f.id === fee.id) ? [] : [{ fee, at }]));
+  const chosenAfter = chosen !== null && !next.fees.some((f) => f.id === chosen) ? (next.fees[0]?.id ?? null) : chosen;
+  if (gone.every((g) => blankFee(g.fee))) return { deal: next, chosen: chosenAfter, undo: null };
+  return { deal: next, chosen: chosenAfter, undo: { what: { kind: "product", to: kind.id }, dealId: deal.id, before: deal, gone, chosenBefore: chosen, chosenAfter } };
+}
+
+/**
+ * Whether a kind's undo still stands: the same deal, still of the kind the change gave it, with no fee of a kind taken away (of the person's
+ * own: no fee with its id).
+ */
+function kindStanding(u: KindUndo, deal: FeeDeal): boolean {
+  if (deal.id !== u.dealId || deal.kind !== u.what.to) return false;
+  return !u.gone.some(({ fee }) => deal.fees.some((f) => f.id === fee.id || (fee.kind !== "own" && f.kind === fee.kind)));
+}
+
+/**
+ * The deal put back to its kind with the fees taken away in their places, as it is now otherwise (a fee typed since stays); its template,
+ * provider kind and holding as they were.
+ */
+function kindBack(deal: FeeDeal, u: KindUndo): FeeDeal {
+  const fees = [...deal.fees];
+  for (const { fee, at } of u.gone) fees.splice(Math.min(at, fees.length), 0, fee);
+  const { held: _h, template: _t, provider: _p, ...rest } = deal;
+  const { held, template, provider } = u.before;
+  return { ...rest, kind: u.before.kind, fees, ...(held ? { held } : {}), ...(template ? { template } : {}), ...(provider ? { provider } : {}) };
+}
+
 /**
  * Whether an undo still stands on the deal on screen: the same deal, and the part it puts back into as its change left it (no fee of the
  * removed fee's kind, or of a fee of the person's own its id; the changed fee unchanged since).
  */
-export function standing(u: Undo | null, deal: FeeDeal): u is Undo {
+export function standing<U extends Undo | KindUndo>(u: U | null, deal: FeeDeal): u is U {
   if (!u || deal.id !== u.dealId) return false;
+  if (u.what.kind === "product") return kindStanding(u as KindUndo, deal);
+  return feeStanding(u as Undo, deal);
+}
+
+function feeStanding(u: Undo, deal: FeeDeal): boolean {
   if (u.what.kind === "remove") {
     const gone = u.before;
     return !deal.fees.some((f) => f.id === gone.id || (gone.kind !== "own" && f.kind === gone.kind));
@@ -109,21 +171,28 @@ export function standing(u: Undo | null, deal: FeeDeal): u is Undo {
  * What the change took, put back into the deal as it is now; null where the undo no longer stands. The choice goes back to what it was
  * only where it is still what the change left; a fee chosen since stays chosen.
  */
-export function undo(deal: FeeDeal, u: Undo, chosen: string | null): { deal: FeeDeal; chosen: string | null } | null {
+export function undo(deal: FeeDeal, u: Undo | KindUndo, chosen: string | null): { deal: FeeDeal; chosen: string | null } | null {
   if (!standing(u, deal)) return null;
+  if (u.what.kind === "product") return { deal: kindBack(deal, u as KindUndo), chosen: chosen === u.chosenAfter ? u.chosenBefore : chosen };
+  const f = u as Undo;
   let back: FeeDeal;
-  if (u.what.kind === "remove") {
-    const at = Math.min(u.what.at, deal.fees.length);
-    back = { ...deal, fees: [...deal.fees.slice(0, at), u.before, ...deal.fees.slice(at)] };
+  if (f.what.kind === "remove") {
+    const at = Math.min(f.what.at, deal.fees.length);
+    back = { ...deal, fees: [...deal.fees.slice(0, at), f.before, ...deal.fees.slice(at)] };
   } else {
-    back = updateFee(deal, u.before.id, () => u.before);
-    if (u.provider && !back.provider) back = { ...back, provider: u.provider };
+    back = updateFee(deal, f.before.id, () => f.before);
+    if (f.provider && !back.provider) back = { ...back, provider: f.provider };
   }
-  return { deal: back, chosen: chosen === u.chosenAfter ? u.chosenBefore : chosen };
+  return { deal: back, chosen: chosen === f.chosenAfter ? f.chosenBefore : chosen };
 }
 
 /** The words of an undo's line: what its change did, with the fee's or the house's name where the line says it. */
-export function undoWords(u: Undo, names: (fee: Fee) => string, data: Pick<FeesData, "houses">): string {
+export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data: Pick<FeesData, "houses">): string {
+  if (u.what.kind === "product") {
+    const gone = (u as KindUndo).gone;
+    return `${gone.length > 1 ? copy.builder.removedMany : copy.builder.removed}${gone.map((g) => names(g.fee)).join(", ")}.`;
+  }
+  u = u as Undo;
   switch (u.what.kind) {
     case "stage":
       return copy.panel.stageRemoved;

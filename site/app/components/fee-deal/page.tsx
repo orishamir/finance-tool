@@ -13,6 +13,7 @@
 // it would put back into changes, or ten seconds pass while neither the focus nor the pointer is on it.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
 import { addFee, updateFee, type Side } from "../../lib/fee-deal/edit";
@@ -24,7 +25,7 @@ import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { barredFees, dealFromTemplate, feePriceLists, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -32,7 +33,7 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Button, Callout, Card, PageHead, Section } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
-import { BuilderColumn, bringIntoView, type FeeFocus, type FeeUndoLine } from "./builder";
+import { BuilderColumn, bringIntoView, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
 import { FeeLinksProvider, type FeeLinks } from "./links";
 import { UndoLine } from "./undo-line";
 import { GlanceColumn, READING_ID } from "./glance";
@@ -104,15 +105,15 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const link = useCopyLink();
   // the last change that lost something, while it can be undone; whether the focus or the pointer is on its line; what takes the focus
   // once drawn (a card put back, a fee just added)
-  const [undoing, setUndoing] = useState<Undo | DealUndo | null>(null);
+  const [undoing, setUndoing] = useState<Undo | KindUndo | DealUndo | null>(null);
   // the undo just made, whose line takes the focus when it appears; a line drawn again later (its fee's panel opened again) does not
-  const fresh = useRef<Undo | DealUndo | null>(null);
-  const take = (u: Undo | DealUndo) => () => {
+  const fresh = useRef<Undo | KindUndo | DealUndo | null>(null);
+  const take = (u: Undo | KindUndo | DealUndo) => () => {
     if (fresh.current !== u) return false;
     fresh.current = null;
     return true;
   };
-  const made = (u: Undo | DealUndo) => {
+  const made = (u: Undo | KindUndo | DealUndo) => {
     fresh.current = u;
     setUndoing(u);
   };
@@ -121,7 +122,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   // the fee under the pointer or the focus in any column, which the others mark
   const [marked, setMarked] = useState<string | null>(null);
   // the line's time left: it runs while the line is not held, and stops, keeping what is left, while it is
-  const clock = useRef<{ u: Undo | DealUndo | null; left: number }>({ u: null, left: UNDO_MS });
+  const clock = useRef<{ u: Undo | KindUndo | DealUndo | null; left: number }>({ u: null, left: UNDO_MS });
   useEffect(() => {
     if (!undoing || holding) return;
     if (clock.current.u !== undoing) clock.current = { u: undoing, left: UNDO_MS };
@@ -174,7 +175,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (undoing && "dealId" in undoing && !standing(undoing, next)) setUndoing(null);
   };
   // a change that keeps what it took for the undo, in place of any undo before it; one that took nothing the person gave is a plain change
-  const kept = (r: MaybeUndoable | null) => {
+  const kept = (r: (Omit<MaybeUndoable, "undo"> & { undo: Undo | KindUndo | null }) | null) => {
     if (!r) return;
     if (!r.undo) return change(r.deal);
     keep(r.deal);
@@ -192,6 +193,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const onRemoveInPanel = (feeId: string) => {
     onRemove(feeId);
     setPanelRest(true);
+  };
+  // another kind of product: the fees it does not have leave the deal, kept for the undo where any of them held something
+  const onKind = (id: ProductId) => {
+    const to = kindById(data.kinds, id);
+    if (to) kept(setKindKept(deal, to, barredFees(id, data, today), chosen));
   };
   const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
   const onRemoveStage = (feeId: string, side: Side, k: number) => kept(removeStageKept(deal, feeId, side, k, chosen));
@@ -317,15 +323,17 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   // the undo on screen: a deal's change only while what it took has a place on the deal on screen; its words, which the live region says too
   const shown = undoing && ("dealId" in undoing ? standing(undoing, deal) : true) ? undoing : null;
-  const undoWords = (u: Undo | DealUndo): string => {
+  const undoWords = (u: Undo | KindUndo | DealUndo): string => {
     if (!("dealId" in u)) return `${copy.end.deleted}${dealLabel(u.deal, kindById(data.kinds, u.deal.kind)?.name ?? null)}.`;
     return feeUndoWords(u, (f) => feeName(f.kind, f.name), data);
   };
   const words = shown ? undoWords(shown) : null;
   const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, words, onUndo, onHold: setHolding, take: take(shown) } : null;
+  // a change of kind's line stands under the kind, in the builder
+  const kindLine: KindUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "product" ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
   // a stage's and a fill's lines stand in the panel, while the panel shows their fee
   const panelLine: PanelUndoLine | null =
-    shown && words && "dealId" in shown && shown.what.kind !== "remove" && shown.what.feeId === chosen
+    shown && words && "dealId" in shown && shown.what.kind !== "remove" && shown.what.kind !== "product" && shown.what.feeId === chosen
       ? shown.what.kind === "stage" || shown.what.kind === "chain"
         ? { kind: "stage", side: shown.what.side, k: shown.what.kind === "chain" ? shown.what.k + 1 : shown.what.k, words, onUndo, onHold: setHolding, take: take(shown) }
         : { kind: "fill", words, onUndo, onHold: setHolding, take: take(shown) }
@@ -404,9 +412,11 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
             onPickTrack={hasTracks ? openPicker("track") : null}
             left={left}
             line={feeLine}
+            kindLine={kindLine}
             focus={focus}
             onFocused={() => setFocus(null)}
             onDeal={change}
+            onKind={onKind}
             onChoose={onChoose}
             onAdd={onAdd}
             onRemove={onRemove}
