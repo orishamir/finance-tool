@@ -1904,6 +1904,9 @@ function Lists({ today }: { today: string }) {
         <State label="what every row shares, said once over a table" wide>
           <SharedFacts title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i] }))} className="max-w-xl" />
         </State>
+        <State label={'plain, its last line on a phone only (an item\'s className "md:hidden": what a head\'s "?" says from md, on a phone with no heads)'} wide>
+          <SharedFacts plain title={g.sample.option[0]} items={[0, 1, 2].map((i) => ({ key: String(i), text: g.sample.option[i], ...(i === 2 ? { className: "md:hidden" } : {}) }))} className="max-w-xl" />
+        </State>
         <State label="small figures one under the other, one set aside by a choice and dimmed in place">
           <FigureLines items={[0, 1, 2].map((i) => ({ id: String(i), label: g.sample.option[i], figure: <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, dim: i === 2 }))} />
         </State>
@@ -1912,6 +1915,12 @@ function Lists({ today }: { today: string }) {
         <State label="a caption over two columns, one column dimmed by a choice" wide>
           <ProductTable
             columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8, dim: true }]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label={'bandHead: a caption that holds a "?" beside its words (or a figure that opens its source), over the columns of its band'} wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], band: g.sampleSource, bandHead: <span className="inline-flex items-center gap-1">{g.sampleSource}<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span>, width: 8 }, { id: "c", head: g.sample.option[2], band: g.sampleSource, width: 8 }]}
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
           />
         </State>
