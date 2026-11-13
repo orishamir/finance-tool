@@ -60,6 +60,9 @@ const termIdsIn = (src: string): string[] => {
 const BY_EXPRESSION: Record<string, readonly string[]> = {
   "{fees.feeTerms}": brands.funds.feeTerms,
   "{HELP_TERMS.fee}": [HELP_TERMS.fee],
+  // a fee head's "?" (components/tracks/list.tsx, feeMarkTerms): the averages, and each fee's card where it names the product
+  "{fullFeeTerms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard],
+  "{terms.length === 1 ? terms[0] : terms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard],
   "{HELP_TERMS.exposure}": [HELP_TERMS.exposure],
   "{HELP_TERMS.assets}": [HELP_TERMS.assets],
   "{HELP_TERMS.rate}": [DEPOSIT_TERMS.rate],

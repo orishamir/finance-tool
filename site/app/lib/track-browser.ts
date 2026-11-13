@@ -206,12 +206,26 @@ export function buildProductView(data: TbData, productId: string): ProductView |
 }
 
 /** The glossary terms behind the "?" of the column heads, by their Hebrew names: only where the card says what the head leaves out (an
- * average, not anyone's price; the money of all the savers together). The loader ships these cards. */
+ * average, not anyone's price; the money of all the savers together). The loader ships these cards. `fee` and `depositFee` are the
+ * regulator's averages the fee columns show; `savingsCard` and `depositCard` are the fees themselves, each card for the products it names. */
 export const HELP_TERMS = {
   fee: "שיעור דמי ניהול ממוצעת שנתי – נכסים",
+  depositFee: "שיעור דמי ניהול ממוצעת- הפקדות",
+  savingsCard: "דמי ניהול מחיסכון",
+  depositCard: "דמי ניהול מהפקדה",
   exposure: 'חשיפה למניות ולמט"ח',
   assets: "יתרת נכסים לסוף תקופה",
 } as const;
+
+/**
+ * The cards a fee column's "?" opens, by their Hebrew names: first the regulator's average the column shows (what the figure is: what the
+ * product's savers were charged on average, not a price offered), then the fee's own card where that card names the product (`wrappers`
+ * gives a card's products; a card that does not name the product is left out, so no card speaks of a fee the product may not charge).
+ */
+export function feeMarkTerms(side: "savings" | "deposit", product: string, wrappers: (term: string) => readonly string[] | undefined): string[] {
+  const [average, card] = side === "savings" ? [HELP_TERMS.fee, HELP_TERMS.savingsCard] : [HELP_TERMS.depositFee, HELP_TERMS.depositCard];
+  return [average, ...(wrappers(card)?.includes(product) ? [card] : [])];
+}
 
 // ---------------------------------------------------------------- filter, sort, group
 

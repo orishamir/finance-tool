@@ -7,10 +7,10 @@ import { companyPath } from "../../lib/site-paths";
 import { Link } from "react-router";
 import { track as trackCopy, trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
+import { HELP_TERMS, assetsText, feeMarkTerms, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
-import { ExposureCell, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { Num, useProvenanceData } from "../provenance";
+import { ExposureCell, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, SortNote, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
@@ -232,23 +232,47 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
  *  row of the group. `fold`: the page holds which groups are open (the track browser's companies, folded but the first); without it every
  *  group starts open. `foldRows`: on a phone a row is one line that opens in place (a long list under the companies).
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, no "?" and no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
-  const head = (id: SortId, label: string, alsoHolds?: string[]) =>
-    sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>;
+  const head = (id: SortId, label: string, alsoHolds?: string[], note?: string) =>
+    sortable.has(id) ? (
+      <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} note={note} />
+    ) : note ? (
+      <SortNote label={label} note={note} />
+    ) : (
+      <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>
+    );
+  // a company page's fee heads: the fee, the year whose average the column shows under it, and a "?" beside the head (never inside its
+  // button) that opens what the figure is and, where its card names this product, the fee's own card
+  const provenance = useProvenanceData();
+  const wrappers = (term: string) => provenance?.terms[term]?.wrapperIds;
+  const average = feeYear ? t.columns.average.replace("{year}", feeYear) : undefined;
+  const feeHead = (id: SortId, label: string, side: "savings" | "deposit") => {
+    const terms = feeMarkTerms(side, view.id, wrappers);
+    return (
+      <span className="inline-flex items-start gap-1">
+        {head(id, label, undefined, average)}
+        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} />
+      </span>
+    );
+  };
   const periodText = fmt.period(period);
   const short = t.columns.short;
   const compactColumns: ProductColumn[] = [
     { id: "name", head: head("name", t.columns.track), sort: state("name") },
     { id: "fund", head: t.columns.fund, width: 5 },
-    { id: "fee", head: head("fee", short.fee), width: 8.5, sort: state("fee") },
-    ...(compact === "with-deposit" ? [{ id: "dep", head: head("dep", short.deposit), width: 7, sort: state("dep") }] : []),
+    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 10, sort: state("fee") },
+    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 7, sort: state("dep") }] : []),
     { id: "stocks", head: head("stock", short.stocks), width: 5.5, sort: state("stock") },
     { id: "currency", head: short.currency, width: 5 },
     { id: "y3", head: short.y3, width: 7.5, headClassName: "whitespace-nowrap" },
     { id: "y5", head: short.y5, width: 7.5, headClassName: "whitespace-nowrap" },
     { id: "assets", head: head("assets", short.assets), width: 8.5, sort: state("assets") },
   ];
+  // the full table's one fee head over both figures: its "?" opens the two averages, then each fee's card that names the product
+  const [savingsAverage, ...savingsCard] = feeMarkTerms("savings", view.id, wrappers);
+  const [depositAverage, ...depositCard] = feeMarkTerms("deposit", view.id, wrappers);
+  const fullFeeTerms = [savingsAverage!, depositAverage!, ...savingsCard, ...depositCard];
   const columns: ProductColumn[] = compact ? compactColumns : [
     { id: "name", head: head("name", by === "company" ? t.columns.track : t.columns.company, [t.columns.track, t.columns.company]), sort: state("name") },
     { id: "fund", head: t.columns.fund, width: 5.5 },
@@ -258,7 +282,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
         <span className="flex flex-col">
           <span className="inline-flex items-center gap-1">
             {feeYear ? t.columns.fee.replace("{year}", feeYear) : t.columns.feeNoYear}
-            <HelpMark term={HELP_TERMS.fee} about={t.help.fee} />
+            <HelpMark term={fullFeeTerms} about={t.help.fee} />
           </span>
           <span className="flex flex-wrap gap-x-3">
             {head("fee", t.columns.feeSavings)}

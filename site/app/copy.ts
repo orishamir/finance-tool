@@ -1354,9 +1354,13 @@ export const trackBrowser = {
     open: "פתיחה",
     /** A company page's shorter table, one figure a cell (designer's mock, 2026-11-10); its dates are said once over it. */
     short: { fee: "דמי ניהול מהחיסכון", deposit: "מהפקדה", stocks: "מניות", currency: "מט״ח", y3: "תשואה, 3 שנים", y5: "תשואה, 5 שנים", assets: "כסף מנוהל" },
+    /** Under a fee head of a company page's table, muted: the year whose average the column shows. */
+    average: "ממוצע {year}",
   },
-  /** Over a company page's table: what its dates are, and a deposit fee every track shares. */
-  dates: (year: string | null, period: string) => `${year ? `דמי הניהול הם הממוצע שנגבה ב־${year}; ` : ""}החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
+  /** Over a company page's table: what its dates are, and a deposit fee every track shares. The fees' year is said on a phone, whose rows
+   * have no heads; from md the fee heads say it. */
+  feeAverage: (year: string) => `דמי הניהול הם הממוצע שנגבה ב־${year}; `,
+  dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
   inAll: (name: string) => `${name} בכל החברות`,
@@ -1368,7 +1372,7 @@ export const trackBrowser = {
   /** The guide's link to a product's tracks: "כל המסלולים של קופת גמל להשקעה בכל החברות". */
   guideLink: { before: "כל המסלולים של ", after: " בכל החברות" },
   /** What each "?" explains, for its spoken name; on a phone, the line above the list that opens the same cards. */
-  help: { fee: "דמי ניהול ממוצעים", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", phoneLead: "מה אומרים המספרים:" },
+  help: { fee: "דמי ניהול ממוצעים", deposit: "דמי ניהול ממוצעים מהפקדה", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", phoneLead: "מה אומרים המספרים:" },
   pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",
   oldData: "נתוני הרשות לא עודכנו מאז",
   /** At the end of a phone's track row opened in place under its company. */
@@ -4447,7 +4451,7 @@ export const kit = {
       tariffPart: "חלק ניירות הערך",
       whenLead: "תעריפון מ־",
       steps: ["בכל רגע", "תוך יום מסחר", "במועדים קבועים", "בסוף השנה"],
-      products: { name: "שם", number: "מספר", link: "קישור", figure: "שיעור", a: "מוצר ראשון", b: "מוצר שני", c: "מוצר שלישי", banner: "שורת זהירות מעל שתי שורות ששייכות יחד", go: "לעמוד" },
+      products: { name: "שם", number: "מספר", link: "קישור", figure: "שיעור", note: "שורה שנייה קצרה", a: "מוצר ראשון", b: "מוצר שני", c: "מוצר שלישי", banner: "שורת זהירות מעל שתי שורות ששייכות יחד", go: "לעמוד" },
       compare: { product: "אפשרות", when: "מתי", rate: "ריבית שנתית", a: "אפשרות ראשונה", b: "אפשרות שנייה", c: "אפשרות שלישית", mine: "בעמוד", range: "טווח לדוגמה" },
       notes: ["הערה ראשונה: מה המספר לא כולל.", "הערה שנייה: מאיפה הריבית מגיעה."],
       list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
