@@ -1,6 +1,6 @@
 // The deal at a glance, the column "העסקה במבט אחד" (method §10.6, `glance`): the fees that hold throughout, grouped by what they are
 // charged on, each group with the rate its shares add to (F-111) and the sums its prices mark (F-112); then what changes and when: the
-// fees that change at their price today, each group with its rate today, and by date. A fee with a cap shows its bar and its standing
+// fees that change at their price today, each group with its rate today, and by date. A fee with a cap shows its standing in words
 // (F-113) inside its own block, read from its row of the reading's law card.
 import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
@@ -13,7 +13,7 @@ import type { SiteValue } from "../../lib/value";
 import { IconArrowDown } from "../icons";
 import { GroupHead, Section, Tag, TextLink, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
-import { FeeOpen, markedLine, useFeeMark, useLineOpen } from "./links";
+import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
 import { CapBlock, MeetSentence, PriceWords, StandingWords, refName } from "./words";
 
 /** The id of the reading's section under the columns, which the column's last line links to. */
@@ -66,8 +66,8 @@ function MarkLine({ mark, action, many }: { mark: MarkView; action: string; many
 }
 
 /**
- * One fee in a group. A fee whose price is judged against its cap is a block (`row`, its law row): its name and standing tag, the bar,
- * and the price with what its standing says. Any other fee is one line: its name and its price (and its sale's, where a sale is priced apart).
+ * One fee in a group. A fee whose price is judged against its cap is a block (`row`, its law row): its name and standing tag, which leads
+ * to its row of the law card, and the price with what its standing says. Any other fee is one line: its name and its price (and its sale's, where a sale is priced apart).
  */
 function FeeLine({ fee, row, saved, lead }: { fee: GlanceFee; row: LawRow | undefined; saved: boolean; lead?: string }) {
   const price = <PriceWords price={fee.price} kind={fee.kind} saved={saved} />;
@@ -77,7 +77,7 @@ function FeeLine({ fee, row, saved, lead }: { fee: GlanceFee; row: LawRow | unde
   if (row?.cap.state === "value" && fee.standing.standing.judged)
     return (
       <li className={cx("flex flex-col gap-2 py-1", markedLine(marked), onClick && "cursor-pointer")} {...line}>
-        <CapBlock row={row} name={<FeeOpen fee={row} className="font-medium" />}>
+        <CapBlock row={row} name={<FeeOpen fee={row} className="font-medium" />} tag={<LawRowTag row={row} />}>
           <p className="text-sm text-muted-foreground">
             {lead}
             {price}

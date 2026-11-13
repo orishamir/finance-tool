@@ -63,10 +63,8 @@ const saves = (deal: FeeDeal) => deal.kind !== "brokerage-account";
 
 const panelOf = (deal: FeeDeal, feeId: string) => {
   const r = readDealFor(deal, data.kinds, TODAY);
-  const reading = readingOf(r, data.fx);
   const fee = deal.fees.find((f) => f.id === feeId)!;
-  const law = reading.law.find((x) => x.fee === feeId) ?? null;
-  return createElement(PanelColumn, { panel: panel(r, feeId)!, fee, product: deal.kind, law, first: reading.from, saved: saves(deal), fill: null, line: null, onFee: () => {}, onRemove: () => {}, onRemoveStage: () => {}, onClose: () => {} });
+  return createElement(PanelColumn, { panel: panel(r, feeId)!, fee, product: deal.kind, fill: null, line: null, onFee: () => {}, onRemove: () => {}, onRemoveStage: () => {}, onHoldOn: () => {}, onClose: () => {} });
 };
 const drawPanel = (deal: FeeDeal, feeId: string) => text(panelOf(deal, feeId));
 
@@ -99,16 +97,17 @@ const drawReading = (deal: FeeDeal) => text(createElement(ReadingCards, { readin
 const count = (hay: string, needle: string) => hay.split(needle).length - 1;
 
 describe("a fee against its cap", () => {
-  it("is tagged in the panel by the price of today, not by a price that has passed", () => {
-    const shown = drawPanel(passedAbove(), "fee-balance");
-    expect(shown).toContain(feeDeal.panel.law);
+  it("is tagged in the glance by the price of today, not by a price that has passed", () => {
+    const shown = drawGlance(passedAbove());
     expect(shown).toContain(feeDeal.standing.tag.below);
     expect(shown).not.toContain(feeDeal.standing.tag.above);
-    expect(shown).not.toContain(feeDeal.standing.above);
   });
-  it("carries the same tag in the glance, the panel and the law card: at the cap from 03.2028", () => {
+  it("carries the same tag in the glance and the law card: at the cap from 03.2028; the panel says nothing of the law", () => {
     const deal = provident();
-    for (const shown of [drawGlance(deal), drawPanel(deal, "fee-balance"), drawReading(deal)]) expect(count(shown, "בתקרה ממרץ 2028")).toBe(1);
+    for (const shown of [drawGlance(deal), drawReading(deal)]) expect(count(shown, "בתקרה ממרץ 2028")).toBe(1);
+    const panelText = drawPanel(deal, "fee-balance");
+    expect(panelText).not.toContain("בתקרה");
+    expect(panelText).not.toContain(feeDeal.standing.tag.below);
   });
 });
 
@@ -141,9 +140,9 @@ describe("the glance's changes", () => {
 });
 
 describe("the panel", () => {
-  it("says a fee with no cap in one line, with no heading of its own, and no field twice", () => {
+  it("says nothing of the law for a fee with no cap either, and draws no field twice", () => {
     const shown = drawPanel(account(), "fee-trade");
-    expect(count(shown, feeDeal.standing.tag.none!)).toBe(1);
+    expect(count(shown, feeDeal.standing.tag.none!)).toBe(0);
     expect(shown).not.toContain(feeDeal.bar.optional);
     expect(shown).toContain(feeDeal.panel.when);
     expect(shown).toContain(feeDeal.panel.remove);
@@ -153,17 +152,21 @@ describe("the panel", () => {
     for (const field of [feeDeal.panel.howMuch, feeDeal.panel.min, feeDeal.panel.max]) expect(count(html, `aria-label="${feeDeal.builder.fieldName(name, field)}"`)).toBe(1);
     expect(count(html, `>${feeDeal.builder.fieldName(name, feeDeal.panel.currency)}</label>`)).toBe(1);
   });
-  it("asks how long one price holds whatever its form, a free one too, and draws several prices as stages with the way to add one more", () => {
+  it("asks how long each price holds whatever its form, a free one too; a later price is headed by its month and can be taken away", () => {
     const d = provident();
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "free" } }] }];
     const free = drawPanel(d, "fee-deposit");
+    expect(count(free, feeDeal.panel.when)).toBe(1);
     expect(free).toContain(feeDeal.panel.limited);
-    expect(free).not.toContain(feeDeal.panel.addLater);
+    expect(free).not.toContain(feeDeal.panel.removeStage);
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) }, until: "2027-06" }, { price: { form: "free" } }] }];
     const two = drawPanel(d, "fee-deposit");
-    expect(two).toContain(feeDeal.panel.stage.first);
-    expect(two).toContain(feeDeal.panel.addLater);
-    expect(two).not.toContain(feeDeal.panel.limited);
+    expect(count(two, feeDeal.panel.when)).toBe(2);
+    expect(two).toContain("מיוני 2027");
+    const html = markup(panelOf(d, "fee-deposit"));
+    expect(count(html, `aria-label="${feeDeal.panel.removeStage}, `)).toBe(1);
+    // the later price's fields say which price they are
+    expect(html).toContain(`>${feeDeal.builder.fieldName(`${feeName("deposit")}, מיוני 2027`, feeDeal.panel.form)}</label>`);
   });
   it("draws a price not given yet as an empty box", () => {
     const d = provident();

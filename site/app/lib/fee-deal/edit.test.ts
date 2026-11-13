@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { blankPrice, feeInOrder, feePriced, newDeal, newFee, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addLater, editPrice, pickHeld, removeStage, setHeld, setKind, setSaleApart, setStart, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
+import { addFee, addLater, editPrice, holdOn, laterUnpriced, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
@@ -56,6 +56,59 @@ describe("the fee page's edits", () => {
     const back = removeStage(priced, "buy", 1);
     expect(back.stages).toEqual([{ price: { form: "free" } }]);
     expect(removeStage(back, "buy", 0)).toBe(back);
+  });
+  it("a chain of prices made by \"עד מתי\": free until a month, then a price asked for, then another for a limited time", () => {
+    const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
+    // "לזמן מוגבל" on the only price, with its month: the next price follows, asking for its price, never a hidden free one
+    const two = setLimited(fee, "buy", 0, "2028-03");
+    expect(two.stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("held") }]);
+    expect(feePriced(two)).toBe(false);
+    const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
+    expect(feePriced(priced)).toBe(true);
+    expect(feeInOrder(priced)).toBe(true);
+    // "לזמן מוגבל" on the next one continues the chain the same way
+    const three = setLimited(priced, "buy", 1, "2030-01");
+    expect(three.stages.map((s) => s.until)).toEqual(["2028-03", "2030-01", undefined]);
+    expect(three.stages[2]!.price).toEqual(blankPrice("held"));
+    // a price before others moves only its end
+    const moved = setLimited(three, "buy", 0, "2028-06");
+    expect(moved.stages.map((s) => s.until)).toEqual(["2028-06", "2030-01", undefined]);
+    expect(moved.stages).toHaveLength(3);
+  });
+  it("\"כל הזמן\" on a price takes away the prices after it; they go without an undo only where none of them holds a figure", () => {
+    const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
+    const two = setLimited(fee, "buy", 0, "2028-03");
+    expect(laterUnpriced(two, "buy", 0)).toBe(true);
+    expect(holdOn(two, "buy", 0).stages).toEqual([{ price: { form: "free" } }]);
+    const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
+    expect(laterUnpriced(priced, "buy", 0)).toBe(false);
+    const bounded = editPrice(two, "buy", 1, (p) => withFigure(p, "min", 5));
+    expect(laterUnpriced(bounded, "buy", 0)).toBe(false);
+    const three = setLimited(priced, "buy", 1, "2030-01");
+    expect(holdOn(three, "buy", 1).stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, priced.stages[1]]);
+    expect(laterUnpriced(three, "buy", 1)).toBe(true);
+    expect(laterUnpriced(three, "buy", 0)).toBe(false);
+    // the last price is already held on
+    expect(holdOn(three, "buy", 2)).toEqual(three);
+  });
+  it("taking a middle price away joins its neighbours: the price before it runs until its end, the next starts where it did", () => {
+    const fee: Fee = {
+      ...newFee("custody"),
+      stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.2), per: 12, every: 12 }, until: "2030-01" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }],
+    };
+    const joined = removeStage(fee, "buy", 1);
+    expect(joined.stages).toEqual([{ price: { form: "free" }, until: "2030-01" }, fee.stages[2]]);
+    expect(feeInOrder(joined)).toBe(true);
+    // the last taken away leaves the one before it held on
+    expect(removeStage(fee, "buy", 2).stages).toEqual([fee.stages[0], { price: fee.stages[1]!.price }]);
+    expect(setUntil(fee, "buy", 1, null).stages[1]).toEqual({ price: fee.stages[1]!.price });
+  });
+  it("the sale's own prices make their chain the same way", () => {
+    const fee = setSaleApart({ ...newFee("trade"), stages: [{ price: { form: "free" } }] }, true);
+    const two = setLimited(fee, "sell", 0, "2028-03");
+    expect(two.stages).toEqual([{ price: { form: "free" } }]);
+    expect(two.sale).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("action") }]);
+    expect(holdOn(two, "sell", 0).sale).toEqual([{ price: { form: "free" } }]);
   });
   it("a rate emptied is blank again, and a blank rate stays blank through a change of terms", () => {
     const fee = editPrice(newFee("trade"), "buy", 0, (p) => withFigure(p, "rate", 0.1));

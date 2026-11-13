@@ -1,10 +1,13 @@
 // The fee page's columns as one thing (method §10.6 reads one deal, and each column shows it another way): a fee under the pointer or the
 // focus in the glance marks its card in the builder, and a card marks the fee's lines in the glance; pressing a fee's name in the glance or
-// in the reading chooses it and brings its card and panel into view. Each column reads the page's `FeeLinks` from here.
+// in the reading chooses it and brings its card and panel into view; a fee's standing tag on its card or in the glance brings its row of
+// the reading's law card into view. Each column reads the page's `FeeLinks` from here.
 import { createContext, useContext, type HTMLAttributes, type ReactNode } from "react";
-import type { FeeRef } from "../../lib/fee-deal/parts";
+import type { FeeRef, StandingView } from "../../lib/fee-deal/parts";
+import type { LawRow } from "../../lib/fee-deal/reading";
 import { cx } from "../kit";
-import { FeeName } from "./words";
+import { feeDeal as copy } from "../../copy";
+import { FeeName, StandingTag } from "./words";
 
 export interface FeeLinks {
   /** The fee under the pointer or the focus somewhere on the page, or null. */
@@ -12,6 +15,8 @@ export interface FeeLinks {
   mark: (feeId: string | null) => void;
   /** Chooses a fee and brings its card and panel into view. */
   open: (feeId: string) => void;
+  /** Brings the fee's row of the law card into view, the focus on it. */
+  toLaw: (feeId: string) => void;
 }
 
 const FeeLinksCtx = createContext<FeeLinks | null>(null);
@@ -68,4 +73,35 @@ export function FeeOpen({ fee, className, before, after }: { fee: FeeRef; classN
       <FeeName fee={fee} className={className} before={before} after={after} />
     </button>
   );
+}
+
+/**
+ * A fee's standing tag (`StandingTag`) that brings the fee's row of the law card into view, on the page; the plain tag outside it, or
+ * where nothing is judged. `fee`: the fee's id.
+ */
+export function LawTag({ fee, standing, from }: { fee: string; standing: StandingView; from?: string }) {
+  const links = useContext(FeeLinksCtx);
+  const tag = <StandingTag standing={standing} from={from} />;
+  if (!links || !standing.standing.judged) return tag;
+  return (
+    <button
+      type="button"
+      data-lift=""
+      data-law-tag=""
+      onClick={(e) => {
+        e.stopPropagation();
+        links.toLaw(fee);
+      }}
+      className="tap-area inline-flex rounded-full focus-visible:outline-2 focus-visible:outline-ring"
+    >
+      {tag}
+      <span className="sr-only">{copy.standing.toLaw}</span>
+    </button>
+  );
+}
+
+/** The tag of a fee's law row, as `CapBlock` draws it: of the first later price whose standing differs, with its month, else of now. */
+export function LawRowTag({ row }: { row: LawRow }) {
+  if (row.later) return <LawTag fee={row.fee} standing={row.later.standing} from={row.later.at} />;
+  return row.now ? <LawTag fee={row.fee} standing={row.now} /> : null;
 }

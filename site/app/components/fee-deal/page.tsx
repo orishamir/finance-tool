@@ -15,7 +15,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
-import { addFee, updateFee, type Side } from "../../lib/fee-deal/edit";
+import { addFee, holdOn, laterUnpriced, updateFee, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
@@ -24,7 +24,7 @@ import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { dealFromTemplate, feePriceLists, HELD_UNSAID, houseName, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
-import { deleteDealKept, fillFeeKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, type DealUndo, type Undo, type Undoable } from "../../lib/fee-deal/undo";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, type DealUndo, type Undo, type Undoable } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -175,6 +175,8 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   };
   const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
   const onRemoveStage = (feeId: string, side: Side, k: number) => kept(removeStageKept(deal, feeId, side, k, chosen));
+  // "כל הזמן" on a price takes the prices after it away: through the undo where one of them holds a figure, silently where none does
+  const onHoldOn = (fee: Fee, side: Side, k: number) => (laterUnpriced(fee, side, k) ? onFee(holdOn(fee, side, k)) : kept(holdOnKept(deal, fee.id, side, k, chosen)));
   // the fee put back takes the focus on its card; a fill's and a stage's lines hand it on themselves
   const onUndo = () => {
     if (!undoing) return;
@@ -214,6 +216,12 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
         bringIntoView(document.querySelector(`li[data-fee="${CSS.escape(feeId)}"]`));
         bringIntoView(panelCard.current);
       }
+    },
+    toLaw: (feeId) => {
+      const row = document.querySelector<HTMLElement>(`[data-law-row="${CSS.escape(feeId)}"]`);
+      if (!row) return;
+      bringIntoView(row);
+      row.focus({ preventScroll: true });
     },
   };
 
@@ -291,6 +299,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const undoWords = (u: Undo | DealUndo): string => {
     if (!("dealId" in u)) return `${copy.end.deleted}${dealLabel(u.deal, kindById(data.kinds, u.deal.kind)?.name ?? null)}.`;
     if (u.what.kind === "stage") return copy.panel.stageRemoved;
+    if (u.what.kind === "chain") return copy.panel.laterRemoved;
     if (u.what.kind === "fill") return `${copy.builder.filled(houseName(u.what.house, data) ?? "")}.`;
     const id = u.what.feeId;
     const f = "fee" in u.took ? u.took.fee : deal.fees.find((x) => x.id === id);
@@ -300,9 +309,9 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, words, onUndo, onHold: setHolding } : null;
   // a stage's and a fill's lines stand in the panel, while the panel shows their fee
   const panelLine: PanelUndoLine | null =
-    shown && words && "dealId" in shown && (shown.what.kind === "stage" || shown.what.kind === "fill") && shown.what.feeId === chosen
-      ? shown.what.kind === "stage"
-        ? { kind: "stage", side: shown.what.side, k: shown.what.k, words, onUndo, onHold: setHolding }
+    shown && words && "dealId" in shown && shown.what.kind !== "remove" && shown.what.feeId === chosen
+      ? shown.what.kind === "stage" || shown.what.kind === "chain"
+        ? { kind: "stage", side: shown.what.side, k: shown.what.kind === "chain" ? shown.what.k + 1 : shown.what.k, words, onUndo, onHold: setHolding }
         : { kind: "fill", words, onUndo, onHold: setHolding }
       : null;
   const dealLine = shown && words && !("dealId" in shown) ? words : null;
@@ -405,14 +414,12 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
                 panel={panel}
                 fee={chosenFee}
                 product={deal.kind}
-                law={views.reading.law.find((r) => r.fee === chosen) ?? null}
-                first={views.reading.from}
-                saved={saves}
                 fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
                 line={panelLine}
                 onFee={onFee}
                 onRemove={onRemoveInPanel}
                 onRemoveStage={(side, k) => onRemoveStage(chosenFee.id, side, k)}
+                onHoldOn={(side, k) => onHoldOn(chosenFee, side, k)}
                 onClose={onClosePanel}
               />
             </Card>

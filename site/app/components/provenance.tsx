@@ -280,6 +280,8 @@ export interface NumProps {
   prefix?: ReactNode;
   /** The full word behind a short mark in a crowded cell ("—" for "עוד לא דווח"): what the sheet heads with and a screen reader says. */
   fullWord?: string;
+  /** What the figure is of, said first by a screen reader where the words around it do not say it (a cap's figure: whose cap, and that its sheet holds the rules). */
+  name?: string;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
@@ -328,7 +330,7 @@ export function valueItem(value: SiteValue, written: string | undefined, exact: 
 }
 
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
-export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord }: NumProps) {
+export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
   const value = ownPage && !given.own && strengthOf(given) === "institution" ? { ...given, own: "page" } : given;
   const open = useOpen();
@@ -371,7 +373,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
   // an open value is no sourced figure: its label says the open question and the lock, not "ממקור"
   const doubt = value.doubt ? numbers.doubt : null;
-  const label = [fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
+  const label = [name, fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
   // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence. At figure size a date ahead
@@ -693,10 +695,10 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
 }
 
 /** `RulesChip` as the last line of its block, never inside a sentence. */
-export function RulesLine({ ids, lead, name, dense, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; /** One of a list of one-line rows at least 34 px apart (the fee page's law card): the chip holds no band of its own in the line, the rows' spacing keeps each chip's 44 px area clear of the chip above and below. */ dense?: boolean; className?: string }) {
+export function RulesLine({ ids, lead, name, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; className?: string }) {
   if (ids.length === 0 && !lead) return null;
   return (
-    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", dense && "rules-line-dense", className)}>
+    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
       {lead}
       <RulesChip ids={ids} name={name} />
     </p>

@@ -1653,8 +1653,12 @@ export const feeDeal = {
     } as Record<string, string>,
     /** The cap's line: its figure, with its unit's words after it. */
     capLine: "התקרה: ",
-    /** The cap's label at the end of its bar. */
-    capMark: "התקרה ",
+    /** What the cap's figure (or "אין תקרה בחוק") opens, said before it by a screen reader: the fee's cap and the rules that set it. */
+    capRules: (fee: string) => `התקרה על ${fee} והחוקים שקובעים אותה`,
+    /** What "אין תקרה בחוק" opens, said before it by a screen reader: the rules on the fee. */
+    noCapRules: (fee: string) => `החוקים על ${fee}`,
+    /** After a standing's tag on a card or in the glance, for a screen reader: pressing it leads to the fee's row of the law card. */
+    toLaw: ", מה החוק קובע עליה",
     /** Before a price's standing: the month its price ends, or the month it starts. */
     until: "עד ",
     from: "מ־",
@@ -1714,7 +1718,8 @@ export const feeDeal = {
     ownName: "שם העמלה",
     /** What the fee is charged on, from the guide's words for its base. */
     base: "ממה",
-    stage: { first: "בהתחלה", next: "אחר כך" },
+    /** The head of a later price whose start is not given (an old deal's price with no month before it). */
+    stage: { next: "אחר כך" },
     form: "איך נגבה",
     forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה" } as Record<string, string>,
     howMuch: "כמה",
@@ -1738,15 +1743,16 @@ export const feeDeal = {
     until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
-    /** How long the price holds: on, or up to a month, after which the fee is free. */
+    /** How long a price holds: on, or up to a month, after which the next price follows. */
     when: "עד מתי",
     always: "כל הזמן",
     limited: "לזמן מוגבל",
-    /** Adds one later price, after asking the month the last one ends. */
-    addLater: "מחיר אחר אחר כך",
-    removeStage: "להסיר את השלב",
-    /** The line a stage just taken away leaves in its place. */
-    stageRemoved: "השלב הוסר.",
+    /** Takes a later price away (its button's name, with the price's name after a comma). */
+    removeStage: "להסיר את המחיר",
+    /** The line a later price just taken away leaves in its place. */
+    stageRemoved: "המחיר הוסר.",
+    /** The line the prices after one leave, taken away by "כל הזמן" on it. */
+    laterRemoved: "המחירים שאחריו הוסרו.",
     /** Under a price's month, where a later price follows and the month is not given, or is not after the month of the price before it. */
     untilMissing: "הזינו עד איזה חודש המחיר הזה.",
     outOfOrder: { before: "הזינו חודש אחרי ", after: "." },
@@ -4375,7 +4381,6 @@ export const kit = {
       MeterBar: "פס דק מתחת למספר בשורת טבלה: האורך שלו הוא החלק של המספר מהגבוה ברשימה. השורה הראשונה בצבע ההדגשה, השאר בצבע הערך, ושורה שעומדת בנפרד (הצעה עם תנאי) חלולה. גדל מתחילת השורה.",
       FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה שמקלידים במקום, כמו 03.2027, באותה תיבה של FigureField. נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק.",
-      CapBar: "מחיר מול התקרה שלו: פס דק עד התקרה, סימן במקום התקרה והמספר שלה בסוף. מחיר מאוחר יותר בקו מתאר, ומה שמעל התקרה בפסים אדומים. המשפט שליד הפס אומר את המצב במילים.",
       AlignedList: "רשימה של השדות של דבר אחד, שורה לכל שדה: התוויות בעמודה צרה אחת, והתיבות מתחילות כולן באותו קו אחריה, כך שהעין יורדת לאורך התוויות ולאורך התיבות. שורה לרוחב שתי העמודות נושאת מה שלא שייך לתווית אחת: כותרת של מחיר מאוחר, הערה, פעולה.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",

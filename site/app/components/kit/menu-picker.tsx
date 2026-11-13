@@ -2,7 +2,7 @@
 // זמן"): a 44 px button that shows the chosen item and a chevron, and under it the list. The items are links (a page each) or buttons;
 // an item the person added can be renamed in place or deleted after a question, as `ChipList` does for pills (or at once, where the page
 // can undo it); the last row adds one. A row may carry a muted line under its name that tells two rows apart. The list opens upward where
-// the window has no room for it below the button.
+// the window (or a box around it that clips) has no room for it below the button, and scrolls inside where neither side holds it.
 // A native select cannot hold the rename, the delete or the add, so this is a disclosure: the button says whether the list is open, the
 // arrow keys move between the rows, Escape and a tap outside close it and give the focus back to the button, and the focus leaving the
 // list (a Tab past its last row) closes it. In a heading, the button stays in the heading's words and the list is drawn in `listHost`, an
@@ -63,13 +63,27 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
   const button = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLUListElement>(null);
   const chosen = items.find((i) => i.id === value) ?? null;
-  // the list opens upward where the window has less room under the button than over it and too little for the list
+  // the list opens upward where it has less room under the button than over it and too little for the list; the room is the window's,
+  // cut by any box around the picker that clips what overflows it (a panel that scrolls on its own). Where neither side holds the whole
+  // list, it takes the larger side's room and scrolls inside.
   const [up, setUp] = useState(false);
+  const [room, setRoom] = useState<number | null>(null);
   useLayoutEffect(() => {
     if (!open || listHost) return;
     const b = button.current?.getBoundingClientRect();
-    const h = list.current?.getBoundingClientRect().height ?? 0;
-    if (b) setUp(window.innerHeight - b.bottom < h + 8 && b.top > window.innerHeight - b.bottom);
+    if (!b) return;
+    let top = 0, bottom = window.innerHeight;
+    for (let el = root.current?.parentElement; el; el = el.parentElement) {
+      if (getComputedStyle(el).overflowY === "visible") continue;
+      const r = el.getBoundingClientRect();
+      top = Math.max(top, r.top);
+      bottom = Math.min(bottom, r.bottom);
+    }
+    const h = list.current?.scrollHeight ?? 0;
+    const below = bottom - b.bottom - 8, above = b.top - top - 8;
+    const goUp = below < h && above > below;
+    setUp(goUp);
+    setRoom(h > (goUp ? above : below) ? Math.max(goUp ? above : below, 120) : null);
   }, [open, listHost, items.length]);
   // in a host: the list's place under the button, measured against the host, again when the window changes size
   const [at, setAt] = useState<CSSProperties | null>(null);
@@ -123,6 +137,12 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
     }
   };
   const onButtonKey = (e: KeyboardEvent) => {
+    // a list opened by a press leaves the focus on the button: Escape there closes the list, and only the list
+    if (e.key === "Escape" && open) {
+      e.preventDefault();
+      close();
+      return;
+    }
     if (e.key !== "ArrowDown") return;
     e.preventDefault();
     setOpen(true);
@@ -151,10 +171,10 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       aria-label={name}
       onKeyDown={onListKey}
       onBlur={onListBlur}
-      style={listHost ? (at ?? undefined) : undefined}
+      style={listHost ? (at ?? undefined) : room !== null ? { maxHeight: room } : undefined}
       className={cx(
         "absolute z-[var(--z-popover)] flex w-max max-w-[min(22rem,calc(100vw-2rem))] flex-col gap-0.5 rounded-lg border border-border bg-popover p-1 text-base font-normal leading-normal shadow-md",
-        !listHost && cx("start-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1"),
+        !listHost && cx("start-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1", room !== null && "overflow-y-auto"),
       )}
     >
       {items.map((item) => {

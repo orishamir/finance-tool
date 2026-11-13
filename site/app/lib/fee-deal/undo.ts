@@ -1,18 +1,28 @@
 // The fee page's one undo: a change that loses something the person typed or chose (a fee taken away, a fee filled from a price list over
-// its own prices, a price stage taken away) keeps what it took, for a moment, so one action puts it back. Only the last such change is
+// its own prices, a later price taken away, the prices after one taken away by "כל הזמן") keeps what it took, for a moment, so one action puts it back. Only the last such change is
 // kept. Other edits made meanwhile stay: the undo puts back only what its change took (the fee at its place, the fee's prices as they were
 // before the fill, the stage at its place) into the deal as it is now. It stands while the deal is the one it was made on and what it would
-// put back has a place to go: the fee is still away, or still there to take back its prices or its stage.
-import { removeStage, updateFee, type Side } from "./edit";
+// put back has a place to go: the fee is still away, or still there to take back its prices, its later price or the prices after one.
+import { holdOn, removeStage, updateFee, type Side } from "./edit";
 import type { Fee, FeeDeal, MonthKey, ProviderKind, Stage } from "./model";
 import { fillFee } from "./templates";
 import type { FeesData } from "../fee-page-data";
 
-/** What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house, the stage taken away. */
-export type UndoWhat = { kind: "remove"; feeId: string; at: number } | { kind: "fill"; feeId: string; house: string } | { kind: "stage"; feeId: string; side: Side; k: number };
+/**
+ * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
+ * price `k` taken away, or the prices after price `k` taken away (`chain`).
+ */
+export type UndoWhat =
+  | { kind: "remove"; feeId: string; at: number }
+  | { kind: "fill"; feeId: string; house: string }
+  | { kind: "stage"; feeId: string; side: Side; k: number }
+  | { kind: "chain"; feeId: string; side: Side; k: number };
 
-/** What the change took: the fee away or as it was before the fill (with the deal's provider, where the fill took it), or the stage away. */
-type Took = { fee: Fee; provider?: ProviderKind } | { stage: Stage; endBefore?: MonthKey };
+/**
+ * What the change took: the fee away or as it was before the fill (with the deal's provider, where the fill took it); a price away with the
+ * end the price before it had; or the prices after one, with the end that one had.
+ */
+type Took = { fee: Fee; provider?: ProviderKind } | { stage: Stage; endBefore?: MonthKey } | { later: Stage[]; end?: MonthKey };
 
 export interface Undo {
   what: UndoWhat;
@@ -54,16 +64,25 @@ export function fillFeeKept(deal: FeeDeal, feeId: string, house: string, data: P
   return { deal: after, chosen, undo: { what: { kind: "fill", feeId, house }, dealId: deal.id, took, chosenBefore: chosen, chosenAfter: chosen } };
 }
 
-/** The deal with stage `k` of a fee's prices on `side` taken away (`removeStage`). Null where the fee has one price on that side. */
+/** The deal with price `k` of a fee's prices on `side` taken away (`removeStage`). Null where the fee has one price on that side. */
 export function removeStageKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null): Undoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   const stages = fee && stagesOf(fee, side);
   if (!fee || !stages?.[k]) return null;
   const changed = removeStage(fee, side, k);
   if (changed === fee) return null;
-  // the last stage taken away takes the end of the one before it with it (the price left last has no end): the undo gives it back
-  const endBefore = k === stages.length - 1 ? stages[k - 1]?.until : undefined;
+  // the price before it ends elsewhere now (where the one taken away ended, or nowhere where it is left last): the undo gives its end back
+  const endBefore = stages[k - 1]?.until;
   return { deal: updateFee(deal, feeId, () => changed), chosen, undo: { what: { kind: "stage", feeId, side, k }, dealId: deal.id, took: { stage: stages[k]!, ...(endBefore ? { endBefore } : {}) }, chosenBefore: chosen, chosenAfter: chosen } };
+}
+
+/** The deal with price `k` of a fee's prices on `side` held on and the prices after it taken away (`holdOn`). Null where none follows it. */
+export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null): Undoable | null {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  const stages = fee && stagesOf(fee, side);
+  if (!fee || !stages?.[k] || k === stages.length - 1) return null;
+  const end = stages[k]!.until;
+  return { deal: updateFee(deal, feeId, () => holdOn(fee, side, k)), chosen, undo: { what: { kind: "chain", feeId, side, k }, dealId: deal.id, took: { later: stages.slice(k + 1), ...(end ? { end } : {}) }, chosenBefore: chosen, chosenAfter: chosen } };
 }
 
 /** The deal as it is now with what the change took put back; null where it has no place to go (another deal, the fee or its side gone, the fee already back). */
@@ -88,8 +107,20 @@ function restored(deal: FeeDeal, u: Undo): FeeDeal | null {
     if (!fee || !stages) return null;
     const at = Math.min(w.k, stages.length);
     const next = [...stages.slice(0, at), took.stage, ...stages.slice(at)];
-    // put back last: the price before it ends again where it ended
-    if (at === stages.length && at > 0) next[at - 1] = { ...next[at - 1]!, ...(took.endBefore ? { until: took.endBefore } : {}) };
+    // the price before it ends again where it ended
+    if (at > 0) {
+      const { until: _u, ...before } = next[at - 1]!;
+      next[at - 1] = took.endBefore ? { ...before, until: took.endBefore } : before;
+    }
+    return updateFee(deal, w.feeId, (f) => (w.side === "sell" ? { ...f, sale: next } : { ...f, stages: next }));
+  }
+  if (w.kind === "chain" && "later" in u.took) {
+    const took = u.took;
+    const fee = deal.fees.find((f) => f.id === w.feeId);
+    const stages = fee && stagesOf(fee, w.side);
+    // the prices go back after price k only while it is still the last: a chain built again since has them in its place
+    if (!fee || !stages || stages.length !== w.k + 1) return null;
+    const next = [...stages.slice(0, w.k), { ...stages[w.k]!, ...(took.end ? { until: took.end } : {}) }, ...took.later];
     return updateFee(deal, w.feeId, (f) => (w.side === "sell" ? { ...f, sale: next } : { ...f, stages: next }));
   }
   return null;

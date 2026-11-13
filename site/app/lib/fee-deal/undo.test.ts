@@ -1,10 +1,10 @@
 // The fee page's one undo, on the site's own price lists: a fee taken away, a fee filled from a price list, a stage taken away.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import { editPrice, setName, setSaleApart, setStart, updateFee, withFigure } from "./edit";
+import { editPrice, setLimited, setName, setSaleApart, setStart, updateFee, withFigure } from "./edit";
 import { typed, type FeeDeal } from "./model";
 import { feePriceLists } from "./templates";
-import { deleteDealKept, fillFeeKept, removeFeeKept, removeStageKept, standing, undo, undoDelete } from "./undo";
+import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete } from "./undo";
 
 const data = feesData();
 
@@ -85,6 +85,23 @@ describe("one undo for a change that loses something", () => {
     const back = undo(edited, r.undo, null)!.deal;
     expect(back.fees[1]).toEqual(d.fees[1]);
     expect(back.fees[0]!.stages[0]!.price).toMatchObject({ rate: { v: 0.1 } });
+  });
+  it("puts a middle price back with the end the price before it had", () => {
+    const d = account();
+    const three = updateFee(d, "fee-custody", (f) => setLimited(f, "buy", 1, "2030-01"));
+    const r = removeStageKept(three, "fee-custody", "buy", 1, null)!;
+    expect(r.deal.fees[1]!.stages.map((s) => s.until)).toEqual(["2030-01", undefined]);
+    expect(undo(r.deal, r.undo, null)!.deal).toEqual(three);
+  });
+  it("puts back the prices \"כל הזמן\" took away after a price, with its end, while it is still the last", () => {
+    const d = account();
+    const r = holdOnKept(d, "fee-custody", "buy", 0, null)!;
+    expect(r.deal.fees[1]!.stages).toEqual([{ price: { form: "free" } }]);
+    expect(undo(r.deal, r.undo, null)!.deal).toEqual(d);
+    // a chain built again since has the prices' place: the undo no longer stands
+    const again = updateFee(r.deal, "fee-custody", (f) => setLimited(f, "buy", 0, "2029-01"));
+    expect(standing(r.undo, again)).toBe(false);
+    expect(holdOnKept(d, "fee-custody", "buy", 1, null)).toBeNull();
   });
   it("stands only while what it would put back has a place to go", () => {
     const d = account();

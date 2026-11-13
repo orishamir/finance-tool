@@ -394,16 +394,16 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
 
 function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
   if (row.cap.state === "absent") return null;
-  // a fee the law sets no cap for is one line: its name, the words and the rules
+  // a fee the law sets no cap for is one line: its name, and the words, which open the rules
   if (row.cap.state === "none")
     return (
-      <li className="flex flex-wrap items-center gap-x-3">
+      <li data-law-row={row.fee} tabIndex={-1} className="anchor-target flex flex-wrap items-center gap-x-3 rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
         <FeeOpen fee={row} className="font-medium" />
-        <CapRules cap={row.cap} dense />
+        <CapRules cap={row.cap} fee={refName(row)} />
       </li>
     );
   return (
-    <li className="flex flex-col gap-2 py-2 first:pt-0 last:pb-0">
+    <li data-law-row={row.fee} tabIndex={-1} className="anchor-target flex flex-col gap-2 py-2 first:pt-0 last:pb-0 rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
       <LawBlock row={row} saved={saved} first={first} name={<FeeOpen fee={row} className="font-medium" />} />
     </li>
   );
@@ -415,7 +415,7 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
       <PanelHead kicker={w.law.kicker}>
         <LawHeadline rows={reading.law} />
       </PanelHead>
-      {/* one-line rows a short list, about 35 px apart; a fee with a cap keeps room around its bar */}
+      {/* one-line rows a short list, about 35 px apart; a fee with a cap is a block with room around it */}
       <ul className="flex flex-col gap-2">
         {reading.law.map((r) => (
           <LawRowView key={r.fee} row={r} saved={saved} first={reading.from} />

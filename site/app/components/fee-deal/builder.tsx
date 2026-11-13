@@ -21,10 +21,10 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, ChoiceChips, InlineSelect, MonthField, PickCard, Section, Step, Tag, When, monthText, type AddItem } from "../kit";
 import { Num } from "../provenance";
 import { PriceFigure, mainFieldId } from "./figures";
-import { useFeeMark } from "./links";
+import { LawTag, useFeeMark } from "./links";
 import { TemplateNote } from "./picker";
 import { UndoLine } from "./undo-line";
-import { FeeName, StandingTag, feeName, perActionWord, refName } from "./words";
+import { FeeName, feeName, perActionWord, refName } from "./words";
 
 const b = copy.builder;
 
@@ -38,11 +38,14 @@ function rowWords(kind: FeeKindId, s: StageView, later: boolean): string {
   return [unit, when].filter(Boolean).join(s.until ? ", " : " ");
 }
 
-/** A row's standing against the cap, after the fee's name: the first later price whose standing differs, else the share of the cap or the standing now. */
+/**
+ * A row's standing against the cap, after the fee's name: the first later price whose standing differs, else the share of the cap or the
+ * standing now. A tag leads to the fee's row of the law card; a share opens its calculation.
+ */
 function RowStanding({ row }: { row: BuilderRow }) {
   if (!row.priced) return null;
   const now = row.standingNow.standing;
-  if (row.standingLater) return <StandingTag standing={row.standingLater.standing} from={row.standingLater.at} />;
+  if (row.standingLater) return <LawTag fee={row.fee} standing={row.standingLater.standing} from={row.standingLater.at} />;
   if (now.judged && now.standing === "below" && row.standingNow.share)
     return (
       <span className="text-sm text-muted-foreground">
@@ -50,7 +53,7 @@ function RowStanding({ row }: { row: BuilderRow }) {
         {copy.standing.shareShort}
       </span>
     );
-  if (now.judged) return <StandingTag standing={row.standingNow} />;
+  if (now.judged) return <LawTag fee={row.fee} standing={row.standingNow} />;
   return null;
 }
 
