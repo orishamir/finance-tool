@@ -153,14 +153,96 @@ export function kindHas(kind: ProductId, bases: readonly FeeBase[], fee: FeeKind
 /**
  * The fees to suggest for a deal: `usual`, the kind's record bases the deal lacks that fit what is held (and, for a kind that holds funds,
  * the fund's own fee); `rarer`, the bases that do not fit, the rarer fees, and `own`, the person's own, last. A fee on a distribution is
- * offered only where the deal says its fund distributes: an accumulating fund, or one the deal says nothing of, pays nothing out to charge.
+ * offered unless `held` says the fund accumulates, which pays nothing out to charge; a deal says nothing of what it holds (its fees change
+ * by what is bought instead, F-114), so every fee its kind has is offered.
  */
 export function suggestions(kind: ProductId, bases: readonly FeeBase[], present: readonly FeeKindId[], held: Held | undefined): { usual: FeeKindId[]; rarer: FeeKindId[] } {
   const lacking = (k: FeeKindId) => !present.includes(k);
   const funds = holdsFunds(kind);
-  const paysOut = (k: FeeKindId) => k !== "distribution_handling" || !funds || held?.payout === "distributing";
+  const paysOut = (k: FeeKindId) => k !== "distribution_handling" || !funds || !held || held.payout === "distributing";
   const own: FeeKindId[] = [...bases, ...(funds ? (["fund_management"] as const) : [])].filter(paysOut);
   const usual = own.filter((k) => lacking(k) && fitsHeld(k, funds ? held : undefined));
   const rarer = [...own.filter((k) => lacking(k) && !usual.includes(k)), ...(funds ? RARER_FOR_FUNDS.filter((k) => lacking(k) && !own.includes(k)) : [])];
   return { usual, rarer: [...rarer, "own"] };
 }
+
+// ---------------------------------------------------------------- what a price may change by (F-114)
+
+/**
+ * A thing a fee's price may change by (F-114): what is bought (`what`), what is held (`held`, the same values, for a fee on what is held),
+ * the channel, the track the person chose, the currency (a conversion's), the size of the action, the size of the portfolio, the trading
+ * in a month (`volume`), the number of actions in a month (`count`), or a condition in the person's own words (`own`).
+ */
+export type ByKind = "what" | "held" | "channel" | "track" | "currency" | "actionSize" | "portfolioSize" | "volume" | "count" | "own";
+
+/** The things whose values are steps of a range, each with its tops (F-114). */
+export type RangeKind = "actionSize" | "portfolioSize" | "volume" | "count";
+export const RANGE_KINDS: readonly RangeKind[] = ["actionSize", "portfolioSize", "volume", "count"];
+export const isRangeKind = (k: ByKind): k is RangeKind => (RANGE_KINDS as readonly string[]).includes(k);
+
+/** The things whose values are named from a list the site knows, or in the person's words: what is bought or held, the channel, the currency. */
+export type ListKind = "what" | "held" | "channel" | "currency";
+export const isListKind = (k: ByKind): k is ListKind => k === "what" || k === "held" || k === "channel" || k === "currency";
+
+/**
+ * What a range's tops count: a sum in a currency (the size of an action, of the portfolio, of a month's trading), units (a month's trading
+ * in shares), or actions (the number of actions in a month).
+ */
+export type RangeUnit = "ILS" | "USD" | "EUR" | "GBP" | "units" | "actions";
+
+/** The units each range may count in, the first its usual one. */
+export const RANGE_UNITS: Readonly<Record<RangeKind, readonly RangeUnit[]>> = {
+  actionSize: ["ILS", "USD", "EUR", "GBP"],
+  portfolioSize: ["ILS", "USD", "EUR", "GBP"],
+  volume: ["ILS", "USD", "EUR", "GBP", "units"],
+  count: ["actions"],
+};
+
+/**
+ * What is bought or held, as the site names it (F-114): where it is bought and its currency (null: a currency other than the shekel that the
+ * value does not name). A value the person names gives the same two facts once (`OwnPlace` on the thing).
+ */
+export const WHAT_VALUES: Readonly<Record<string, { place: Place; currency: string | null }>> = {
+  tase: { place: "israel", currency: "ILS" },
+  mutualFunds: { place: "israel", currency: "ILS" },
+  moneyMarket: { place: "israel", currency: "ILS" },
+  makam: { place: "israel", currency: "ILS" },
+  us: { place: "abroad", currency: "USD" },
+  europe: { place: "abroad", currency: "EUR" },
+  world: { place: "abroad", currency: null },
+};
+export const WHAT_IDS = Object.keys(WHAT_VALUES);
+
+/** The channels a price list prices apart: a branch, the phone, the internet and the app (`direct`). */
+export const CHANNEL_IDS: readonly string[] = ["branch", "phone", "direct"];
+
+/** The currencies a conversion is priced by: from or to dollars, euros, pounds, or another currency (`other`). */
+export const CURRENCY_IDS: readonly string[] = ["USD", "EUR", "GBP", "other"];
+
+/** The values the site names for a list thing, in the order a list shows them. */
+export const LIST_IDS: Readonly<Record<ListKind, readonly string[]>> = { what: WHAT_IDS, held: WHAT_IDS, channel: CHANNEL_IDS, currency: CURRENCY_IDS };
+
+/** Whether a fee is charged on what is held or on the account (its usual form is a share of what is held or a sum per period). */
+export const onHolding = (kind: FeeKindId): boolean => FEE_SHAPES[kind].usual === "held" || FEE_SHAPES[kind].usual === "sum";
+
+/** Whether a fee is a conversion, whose price changes by the currency rather than by what is bought. */
+export const isConversion = (kind: FeeKindId): boolean => kind === "fx" || kind === "fx_spread";
+
+/**
+ * The things a fee may change by, in the toolbox's order: what is bought (what is held, for a fee on what is held or on the account; the
+ * currency, for a conversion), the track, the channel, the size of the action (a fee on an action only), the size of the portfolio, the
+ * trading in a month, the number of actions in a month, and a condition of the person's own.
+ */
+export function byKindsFor(kind: FeeKindId): ByKind[] {
+  const first: ByKind = isConversion(kind) ? "currency" : onHolding(kind) ? "held" : "what";
+  return [first, "track", "channel", ...(onHolding(kind) ? [] : (["actionSize"] as const)), "portfolioSize", "volume", "count", "own"];
+}
+
+/**
+ * Whether a range is read across sizes rather than picked (F-115): the size of the action always, and the size of the portfolio for a fee on
+ * what is held or on the account. Every other range is picked.
+ */
+export const readAcross = (fee: FeeKindId, by: ByKind): boolean => by === "actionSize" || (by === "portfolioSize" && onHolding(fee));
+
+/** The most things one fee's price changes by. */
+export const BY_MAX = 3;

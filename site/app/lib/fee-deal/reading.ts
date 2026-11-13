@@ -1,10 +1,14 @@
-// The reading of a deal (method §10.6): its periods as cards (F-110), the sums its prices mark as statements (F-112), the two curves' series
-// with their axis end (F-112), and the law rows for the deal's own fees that have a cap on the kind's record (F-113).
+// The reading of a deal (method §10.6): the picks it is read for (F-114), its periods as cards (F-110), the sums its prices mark as
+// statements (F-112, F-115), the two curves' series with their axis end (F-112), the law rows for the deal's own fees that have a cap on the
+// kind's record (F-113), and what it states without computing (F-118).
 import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, holdingCost, type ChangeKind, type DealAction, type DealMark, type DealPeriod, type DealSide } from "@finance-tool/engine";
+import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
+import { feeNameOf, whenWords, type PartWords, type WhenWords } from "./builder";
+import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
-import { monthKey, type MonthKey, type Months, type Stage } from "./model";
+import { hasCases, isRange, monthKey, pickKey, placeOf, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
 import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { holdsFunds, ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
@@ -53,7 +57,7 @@ function cardOf(r: DealRead, k: number): PeriodCard {
       const sc = before?.sale ? changeKind(before.sale, now.sale) : null;
       sale = { price: sv, standing: standingView(r, r.fees, i, sp, sv), ...(sc ? { change: sc } : {}) };
     }
-    return { ...refOf(fee), price: view, standing: standingView(r, r.fees, i, pr, view), ...(change ? { change } : {}), ...(sale ? { sale } : {}) };
+    return { ...refOf(fee, r.today), price: view, standing: standingView(r, r.fees, i, pr, view), ...(change ? { change } : {}), ...(sale ? { sale } : {}) };
   });
   return {
     from: monthKey(p.from),
@@ -96,9 +100,11 @@ function statementsOf(r: DealRead): Statement[] {
     r.fees.forEach((fee, i) => {
       const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
-        if (price.form === "held" && price.every < 12 && price.rate.v > 0) add(`every:${fee.id}:${price.every}`, at, () => ({ kind: "every", fee: refOf(fee), every: price.every, periods: [at] }));
+        if (price.form === "held" && price.every < 12 && price.rate.v > 0) add(`every:${fee.id}:${price.every}`, at, () => ({ kind: "every", fee: refOf(fee, r.today), every: price.every, periods: [at] }));
         const main = price.form === "action" || price.form === "held" ? price.rate.v : price.form === "perUnit" ? price.amount.v : 0;
-        if ((price.form === "action" || price.form === "perUnit" || price.form === "held") && main > 0 && price.min && !price.max) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
+        // a step with a top grows no further than its top (F-115): only the last step, or a fee read whole, grows without end
+        const topped = !!fee.read?.step?.to;
+        if ((price.form === "action" || price.form === "perUnit" || price.form === "held") && main > 0 && price.min && !price.max && !topped) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee, r.today), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
       }
     });
   }
@@ -180,11 +186,16 @@ export interface UnitPrice {
 /** The key of the unit's price among a curve's inputs; the copy names it. */
 export const UNIT_PRICE_KEY = "deal:unit-price";
 
-/** The currency a deal's unit price is asked in (`UnitPrice`), or null where no price the reading reads is a sum per unit. */
+/**
+ * The currency a deal's unit price is asked in (`UnitPrice`): that of what is bought, by the pick (F-114), where the deal holds funds and the
+ * pick names one; else that of its first sum per unit. Null where no price the reading reads is a sum per unit.
+ */
 export function unitCurrency(r: DealRead): string | null {
   const per = r.reading.periods.flatMap((p) => p.prices.flatMap((x) => [x.price, ...(x.sale ? [x.sale] : [])])).find((x) => x.kind === "perUnit");
   if (!per) return null;
-  return r.deal.held && holdsFunds(r.deal.kind) ? r.deal.held.currency : per.kind === "perUnit" ? (per.currency ?? "ILS") : "ILS";
+  const what = r.picks.find((p) => p.by === "what");
+  const bought = what && holdsFunds(r.deal.kind) ? placeOf(r.deal.fees, what.is)?.currency : null;
+  return bought ?? (per.kind === "perUnit" ? (per.currency ?? "ILS") : "ILS");
 }
 
 /** The sides an action is read on in a period: a purchase and a sale apart where one of its fees prices them apart or is on one alone. */
@@ -243,8 +254,9 @@ function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], act
   });
   const perUnit = prices.some((x) => x.kind === "perUnit");
   if (perUnit && (unit.price === null || unit.currency === null)) return { undrawn: { on: "action", action, side, periods: [at], why: "unit-price", currency: unit.currency ?? "ILS" } };
-  // a currency needs its rate only where a sum is typed in it (F-112), the unit's price's among them
-  const currencies = [...new Set([...r.fees.flatMap((_, i) => [p.prices[i]!.price, p.prices[i]!.sale].flatMap(sumCurrency)), ...(perUnit && unit.currency !== "ILS" ? [unit.currency!] : [])])];
+  // a currency needs its rate only where a sum is typed in it (F-112), the unit's price's and a step's range's among them (F-115)
+  const steps = r.engine.fees.flatMap((f) => (f.within?.on === "action" && f.within.currency !== "ILS" ? [f.within.currency] : []));
+  const currencies = [...new Set([...r.fees.flatMap((_, i) => [p.prices[i]!.price, p.prices[i]!.sale].flatMap(sumCurrency)), ...steps, ...(perUnit && unit.currency !== "ILS" ? [unit.currency!] : [])])];
   const rates: Record<string, number> = {};
   const rateValues: CurveRate[] = [];
   for (const c of currencies) {
@@ -261,11 +273,24 @@ function actionCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], act
   return { curve: drawn(r, p, "action", side, on, shekels, cost, rateValues, action, unitInput) };
 }
 
-/** The curve of holding a value in a period, where a mark falls on it. */
-function heldCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[]): Drawn | null {
+/**
+ * The curve of holding a value in a period, where a mark falls on it. A step of the value held in another currency (F-115) is read at F-84's
+ * rate, and its top falls at that many shekels; without the rate the curve is not drawn.
+ */
+function heldCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], fx: FxSnapshot | null): Drawn | null {
   const on = marks.filter((m) => m.on === "held");
   if (!on.length) return null;
-  return { curve: drawn(r, p, "held", "all", on, (m) => m.amount, (v) => holdingCost(r.engine, p, v), []) };
+  const rates: Record<string, number> = {};
+  const rateValues: CurveRate[] = [];
+  for (const c of new Set(r.engine.fees.flatMap((f) => (f.within?.on === "held" && f.within.currency !== "ILS" ? [f.within.currency] : [])))) {
+    const n = fx ? nisPerNumber(fx, c) : null;
+    const v = fx ? nisPer(fx, c, r.today) : null;
+    if (n === null || !v) return null;
+    rates[c] = n;
+    rateValues.push({ currency: c, rate: v });
+  }
+  const shekels = (m: DealMark) => m.amount * (m.currency === "ILS" ? 1 : rates[m.currency]!);
+  return { curve: drawn(r, p, "held", "all", on, shekels, (v) => holdingCost(r.engine, p, v, rates), rateValues) };
 }
 
 function drawn(
@@ -285,10 +310,12 @@ function drawn(
   const views = marks.map((m) => markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)));
   const largestView = views[at.indexOf(largest)]!.amount;
   const end = curveEnd(largest);
-  const amounts = [...new Set([0, ...at.filter((a) => a < end), end])].sort((a, b) => a - b);
+  // at a step's top the cost jumps to the next step's price (F-115): the curve is read at the top and just above it, so the jump is drawn
+  const jumps = marks.flatMap((m, k) => (m.kind === "edge" && at[k]! < end ? [at[k]! * (1 + 1e-9)] : []));
+  const amounts = [...new Set([0, ...at.filter((a) => a < end), ...jumps, end])].sort((a, b) => a - b);
   const costs = amounts.map(cost);
   const fees = [...new Set(costs.flatMap((c) => c.parts.map((x) => x.fee)))].sort((a, b) => a - b);
-  const series = fees.map((i) => ({ fee: refOf(r.fees[i]!), costs: costs.map((c) => c.parts.find((x) => x.fee === i)?.cost ?? 0) }));
+  const series = fees.map((i) => ({ fee: refOf(r.fees[i]!, r.today), costs: costs.map((c) => c.parts.find((x) => x.fee === i)?.cost ?? 0) }));
   const group = groupRate(r.engine, p).find((g) => (on === "held" ? g.on === "held" : g.on === "action" && g.action === action && g.side === side));
   const whole = !!group && group.fees.length === fees.length && group.fees.every((i) => fees.includes(i));
   const inputs = { ...curveInputs(r, p, fees, side), ...Object.fromEntries(rates.map((x) => [rateKey(x.currency), x.rate])), ...extra };
@@ -332,7 +359,7 @@ function curvesOf(r: DealRead, fx: FxSnapshot | null, unit: { price: number | nu
   for (const p of r.reading.periods) {
     const marks = dealMarks(r.engine, p);
     for (const action of ACTIONS) for (const side of sidesOn(r, p, action)) take(actionCurve(r, p, marks, action, side, fx, unit));
-    take(heldCurve(r, p, marks));
+    take(heldCurve(r, p, marks, fx));
   }
   return { curves, undrawn };
 }
@@ -382,13 +409,118 @@ function lawOf(r: DealRead): LawRow[] {
     }
     const judged = prices.filter((x) => x.standing.standing.judged);
     const now = judged[0];
-    return [{ ...refOf(fee), cap, prices, ...(now ? { now: now.standing } : {}) }];
+    return [{ ...refOf(fee, r.today), cap, prices, ...(now ? { now: now.standing } : {}) }];
   });
 }
 
 // ---------------------------------------------------------------- the reading
 
+// ---------------------------------------------------------------- the picks (F-114)
+
+/** One value the reading may be read for: its pick (`is`) and how it is said (the site's words, the person's, or a range's step). */
+export interface PickOption {
+  is: string;
+  words: Omit<WhenWords, "thing">;
+}
+
+/** One thing the reading picks: its key, its words (the pill's name), its values in the order the fees name them, and the one picked. */
+export interface PickThing {
+  by: string;
+  words: string;
+  options: PickOption[];
+  chosen: string;
+}
+
+/**
+ * The reading's first line (spec §3): its head, one pill per thing the deal's fees change by that the reading picks, and the line under them.
+ * Null for a deal with no fee that changes by a thing picked.
+ */
+export interface PickLine {
+  title: string;
+  things: PickThing[];
+  line: string;
+}
+
+export function pickLine(r: DealRead): PickLine | null {
+  const things = new Map<string, PickThing>();
+  for (const fee of r.deal.fees) {
+    if (!hasCases(fee)) continue;
+    fee.by.forEach((b, t) => {
+      if (!picked(fee, b)) return;
+      const key = pickKey(b);
+      const thing = things.get(key) ?? { by: key, words: b.kind === "own" ? b.label : copy.cases.things[b.kind === "held" ? "what" : b.kind]!, options: [], chosen: r.picks.find((p) => p.by === key)?.is ?? "" };
+      things.set(key, thing);
+      const add = (is: string, words: Omit<WhenWords, "thing">) => {
+        if (!thing.options.some((o) => o.is === is)) thing.options.push({ is, words });
+      };
+      if (isRange(b)) {
+        b.tops.forEach((_, k) => add(stepPick(b.tops[k]!.v), whenWords(fee, k, t, r.today)));
+        add(stepPick(b.tops.at(-1)!.v, true), whenWords(fee, b.tops.length, t, r.today));
+        return;
+      }
+      for (const c of fee.cases) {
+        const w = c.when[t]!;
+        if (Array.isArray(w)) for (const v of w) add(v, whenWords(fee, [v], t, r.today));
+      }
+    });
+  }
+  // a range's steps across fees in order of their tops, "מעל" last
+  for (const thing of things.values()) {
+    if (!thing.options.every((o) => /^(<=|>)/.test(o.is))) continue;
+    const top = (o: PickOption) => Number(o.is.replace(/^(<=|>)/, "")) + (o.is.startsWith(">") ? 0.5 : 0);
+    thing.options.sort((a, b) => top(a) - top(b));
+  }
+  if (things.size === 0) return null;
+  return { title: copy.cases.readFor, things: [...things.values()], line: copy.cases.readForLine };
+}
+
+// ---------------------------------------------------------------- what is stated, not computed (F-118)
+
+/**
+ * A part of a price the reading states without computing (F-118), on the fee it is printed with: a third party's fee with no figure, an
+ * offset against another fee, a refund, a fee on an order not carried out, each partial fill charged apart; with its sentence's words.
+ */
+export interface StatedPart {
+  fee: FeeRef;
+  part: "third" | "offset" | "refund" | Note;
+  words: PartWords;
+}
+
+function statedOf(r: DealRead): StatedPart[] {
+  const out: StatedPart[] = [];
+  const from = monthKey(r.reading.from);
+  const st = copy.cases.stated;
+  r.fees.forEach((fee: ReadFee) => {
+    const seen = new Set<string>();
+    const add = (part: StatedPart["part"], words: PartWords) => {
+      if (seen.has(part)) return;
+      seen.add(part);
+      out.push({ fee: refOf(fee, r.today), part, words });
+    };
+    for (const s of [...pricesFrom(fee.stages, from), ...(fee.sale ? pricesFrom(fee.sale, from) : [])]) {
+      const p = s.price;
+      if (p.form === "free") continue;
+      if ((p.form === "action" || p.form === "perUnit" || p.form === "perAction") && p.third && !p.third.price) add("third", p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third });
+      if (p.offset) add("offset", { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail });
+      if (p.refund && !p.refund.blank) {
+        const f = priceFigures(fee, p, r.today).refund;
+        add("refund", { lead: st.refund.lead, ...(f ? { figure: f } : {}), tail: st.refund.tail });
+      }
+      if (p.form === "action" || p.form === "perUnit" || p.form === "perAction") for (const n of p.notes ?? []) add(n, { lead: st[n] });
+    }
+  });
+  return out;
+}
+
+// ---------------------------------------------------------------- the reading
+
 export interface Reading {
+  /** The picks the deal is read for, as its first line; null where it picks nothing. */
+  picks: PickLine | null;
+  /** What the reading states without computing (F-118). */
+  stated: StatedPart[];
+  /** The deal's fees the picks give no case (F-114), by the deal fee's id. */
+  unmatched: FeeRef[];
   from: MonthKey;
   periods: PeriodCard[];
   statements: Statement[];
@@ -409,6 +541,12 @@ export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number
   const price = unitPrice !== undefined && unitPrice !== null && Number.isFinite(unitPrice) && unitPrice > 0 ? unitPrice : null;
   const { curves, undrawn } = curvesOf(r, fx, { price, currency });
   return {
+    picks: pickLine(r),
+    stated: statedOf(r),
+    unmatched: r.unmatched.map((id) => {
+      const f = r.deal.fees.find((x) => x.id === id)!;
+      return { fee: id, kind: f.kind, ...(f.name ? { name: f.name } : {}) };
+    }),
     from: monthKey(r.reading.from),
     periods: r.reading.periods.map((_, k) => cardOf(r, k)),
     statements: statementsOf(r),

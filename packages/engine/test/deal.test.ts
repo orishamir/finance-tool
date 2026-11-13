@@ -1,16 +1,24 @@
-// docs/method.md §10.6, F-110 to F-113: a deal read on its own, with no plan. Every expected figure is worked by hand from the formula.
+// docs/method.md §10.6, F-110 to F-117: a deal read on its own, with no plan. Every expected figure is worked by hand from the formula.
 import { describe, expect, it } from "vitest";
 import {
   actionCost,
+  actionShare,
   capStanding,
+  caseFor,
   changeKind,
   chargedOn,
+  chargesNothing,
   curveEnd,
   dealMarks,
   dealPeriods,
+  discounted,
   groupRate,
   holdingCost,
+  inStep,
   perYear,
+  samePrice,
+  stepOf,
+  stepStretch,
   type Deal,
   type DealCap,
   type DealPrice,
@@ -634,5 +642,130 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     expect(dealMarks(same, first(same)).map((m) => [m.kind, m.side])).toEqual([["cap", "all"], ["min", "all"], ["max", "sell"]]);
     const apart: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: capped }], sale: [{ price: { ...capped, cap: 0.5 } }] }] };
     expect(dealMarks(apart, first(apart)).map((m) => [m.kind, m.side])).toEqual([["cap", "buy"], ["min", "buy"], ["cap", "sell"], ["min", "sell"]]);
+  });
+});
+
+describe("F-114 the case a fee is read in", () => {
+  const cases = [
+    [{ values: ["tase"] }, { any: true }],
+    [{ values: ["us"] }, { values: ["fixed"] }],
+    [{ values: ["us"] }, { any: true }],
+    [{ values: ["us", "europe"] }, { values: ["tiered"] }],
+  ] as const;
+
+  it("takes the case whose every condition holds the picks, the fewest 'any' first", () => {
+    expect(caseFor(cases, ["tase", "fixed"])).toBe(0);
+    expect(caseFor(cases, ["us", "fixed"])).toBe(1);
+    // the case named for the track and the one for any track both hold: the named one is read
+    expect(caseFor(cases, ["us", "tiered"])).toBe(3);
+    expect(caseFor(cases, ["us", "other"])).toBe(2);
+    expect(caseFor(cases, ["europe", "tiered"])).toBe(3);
+  });
+
+  it("has no case where none holds the picks", () => {
+    expect(caseFor(cases, ["europe", "fixed"])).toBeNull();
+    expect(caseFor([], [])).toBeNull();
+  });
+
+  it("reads a range by its step", () => {
+    const tops = [10, 100];
+    expect([0, 10, 10.01, 100, 101].map((x) => stepOf(tops, x))).toEqual([0, 0, 1, 1, 2]);
+    expect(stepStretch(tops, 0)).toEqual({ from: 0, to: 10 });
+    expect(stepStretch(tops, 2)).toEqual({ from: 100, to: null });
+    expect(caseFor([[{ step: 0 }], [{ step: 1 }], [{ any: true }]], [2])).toBe(2);
+    expect(caseFor([[{ step: 0 }], [{ step: 1 }], [{ any: true }]], [1])).toBe(1);
+  });
+});
+
+describe("F-115 a fee charged on one step of sizes", () => {
+  const today = { y: 2026, m: 11 };
+  const first = (d: Deal) => dealPeriods(d, today).periods[0]!;
+  // Discount's conversion as the founder's example: up to 10 $ free, up to 100 $ half price with the minimum, above 100 $ the full price
+  const fx: DealPrice = { kind: "action", rate: 0.0019, min: 6.8, max: 1075, currency: "USD" };
+  const steps: Deal = {
+    foreign: false,
+    fees: [
+      { base: { key: "fx" }, stages: [{ price: { kind: "free" } }], within: { on: "action", from: 0, to: 10, currency: "USD" } },
+      { base: { key: "fx" }, stages: [{ price: discounted(fx, 0.5, true) }], within: { on: "action", from: 10, to: 100, currency: "USD" } },
+      { base: { key: "fx" }, stages: [{ price: fx }], within: { on: "action", from: 100, to: null, currency: "USD" } },
+    ],
+  };
+  const rates = { USD: 3.5 };
+
+  it("charges an action only in the step that holds it", () => {
+    const p = first(steps);
+    expect(actionCost(steps, p, "conversion", 35, "buy", rates).total).toBe(0);
+    // 50 $ is in the second step: half the minimum, 3.4 $
+    expect(actionCost(steps, p, "conversion", 175, "buy", rates).total).toBeCloseTo(3.4 * 3.5, 9);
+    expect(actionCost(steps, p, "conversion", 175, "buy", rates).parts.map((x) => x.fee)).toEqual([1]);
+    // 1,000 $: the full price's minimum, 6.8 $
+    expect(actionCost(steps, p, "conversion", 3500, "buy", rates).total).toBeCloseTo(6.8 * 3.5, 9);
+    expect(inStep({ from: 0, to: 10 }, 0)).toBe(true);
+    expect(inStep({ from: 10, to: 100 }, 10)).toBe(false);
+  });
+
+  it("marks what falls in each step, and each step's top", () => {
+    const marks = dealMarks(steps, first(steps));
+    // the half price's minimum would decide up to 3,579 $, past its step: only its top is marked; the full price's minimum from 100 $ up
+    // to 3,579 $, and its maximum above 565,789 $
+    expect(marks.map((m) => [m.kind, m.kind === "meet" ? null : m.fee, Math.round(m.amount), m.kind === "meet" ? null : (m.from ?? null)])).toEqual([
+      ["edge", 0, 10, null],
+      ["edge", 1, 100, null],
+      ["min", 2, 3579, 100],
+      ["max", 2, 565789, null],
+    ]);
+  });
+
+  it("adds to no rate, and a held step costs only while the value is in it", () => {
+    const one: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001 } }], within: { on: "action", from: 0, to: 1000, currency: "ILS" } }] };
+    expect(groupRate(one, first(one))).toEqual([]);
+    const held: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }], within: { on: "held", from: 0, to: 100000, currency: "ILS" } },
+        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 12 } }] },
+      ],
+    };
+    expect(holdingCost(held, first(held), 50000).total).toBeCloseTo(120 + 50, 9);
+    expect(holdingCost(held, first(held), 200000).total).toBeCloseTo(200, 9);
+    expect(() => holdingCost({ ...held, fees: [{ ...held.fees[0]!, within: { on: "held", from: 0, to: 100, currency: "USD" } }] }, first(held), 50)).toThrow(RangeError);
+  });
+});
+
+describe("F-116 a discount", () => {
+  it("lowers the rate, and the minimum where the list says so", () => {
+    const p: DealPrice = { kind: "action", rate: 0.004, min: 10, max: 100, cap: 0.02, currency: "USD" };
+    expect(discounted(p, 0.5, false)).toEqual({ ...p, rate: 0.002 });
+    expect(discounted(p, 0.5, true)).toEqual({ ...p, rate: 0.002, min: 5 });
+    expect(discounted({ kind: "perAction", amount: 16 }, 0.25, true)).toEqual({ kind: "perAction", amount: 12 });
+    expect(discounted({ kind: "perUnit", amount: 0.01, min: 7.5 }, 0.2, false)).toEqual({ kind: "perUnit", amount: 0.008, min: 7.5 });
+    const held: DealPrice = { kind: "held", rate: 0.001, everyMonths: 3 };
+    expect(discounted(held, 0.5, true)).toBe(held);
+  });
+});
+
+describe("F-117 a third party's fee printed with a price", () => {
+  const today = { y: 2026, m: 11 };
+  const trade = (price: DealPrice): Deal => ({ foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price }] }] });
+  const first = (d: Deal) => dealPeriods(d, today).periods[0]!;
+
+  it("adds its cost to the action's, priced on its own", () => {
+    const d = trade({ kind: "action", rate: 0.001, min: 10, third: { kind: "action", rate: 0.0005, min: 2 } });
+    // 0.1% of 5,000 is 5, lifted to 10; the third party's 0.05% is 2.5
+    expect(actionCost(d, first(d), "trade", 5000).total).toBeCloseTo(12.5, 9);
+    expect(actionCost(d, first(d), "trade", 1000).total).toBeCloseTo(12, 9);
+    const perAction = trade({ kind: "perAction", amount: 16, third: { kind: "perAction", amount: 3, currency: "USD" } });
+    expect(actionCost(perAction, first(perAction), "trade", 1000, "buy", { USD: 3.5 }).total).toBeCloseTo(16 + 10.5, 9);
+  });
+
+  it("adds its share to the price's share, and makes the price charge something", () => {
+    const p: DealPrice = { kind: "action", rate: 0.001, third: { kind: "action", rate: 0.0005 } };
+    expect(actionShare(p)).toBeCloseTo(0.0015, 12);
+    expect(groupRate(trade(p), first(trade(p)))[0]!.rate).toBeCloseTo(0.0015, 12);
+    expect(chargesNothing({ kind: "action", rate: 0, third: { kind: "perAction", amount: 1 } })).toBe(false);
+    expect(chargesNothing({ kind: "action", rate: 0, third: { kind: "action", rate: 0 } })).toBe(true);
+    expect(samePrice(p, { ...p, third: { kind: "action", rate: 0.0005 } })).toBe(true);
+    expect(samePrice(p, { ...p, third: { kind: "action", rate: 0.0006 } })).toBe(false);
+    expect(changeKind(p, { kind: "action", rate: 0.001 })).toBe("changes");
   });
 });

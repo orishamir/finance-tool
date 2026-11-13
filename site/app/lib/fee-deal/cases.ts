@@ -1,0 +1,152 @@
+// A deal read for the reading's picks (method §10.6, F-114 and F-115): each fee whose price changes by things is read in the case the picks
+// give it, and a price that changes by a size read across sizes as one fee per step, charged on that step's sizes alone. A fee whose price
+// changes by nothing is read as it is. What the views read (parts.ts) is the result: plain fees with their prices over time.
+import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
+import { pickKey, placeOf, hasCases, isRange, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
+import { holdsFunds, onHolding, readAcross } from "./shapes";
+
+/**
+ * Where a read fee comes from (F-114, F-115): the deal's fee (`of`), the case it is read in where the fee has cases, and, where its price
+ * changes by a size read across sizes, the stretch it is charged on (`step`: what it is charged on, its bottom and top as the range's
+ * figures, none for the first step's bottom and the last's top, and their currency).
+ */
+export interface ReadOf {
+  of: string;
+  case?: string;
+  step?: { on: "action" | "held"; from: Num | null; to: Num | null; currency: BoundCurrency };
+}
+
+/** A fee as the reading reads it: a fee whose price changes by nothing, with where it comes from where it was read from a case. */
+export type ReadFee = SlimFee & { read?: ReadOf };
+
+/** The deal fee a read fee is from: its own id, or the fee it was read from. */
+export const feeOf = (f: ReadFee): string => f.read?.of ?? f.id;
+
+/** A range's pick as the reading keeps it: up to a top (`<=N`), or above the last (`>N`). */
+export const stepPick = (top: number, above = false): string => `${above ? ">" : "<="}${top}`;
+
+/** The step of a range a pick of it holds (`stepPick`): the first whose top holds the picked top, above it for "above"; null where it is not one. */
+export function stepForPick(tops: readonly number[], is: string): number | null {
+  const m = /^(<=|>)(\d+(?:\.\d+)?)$/.exec(is);
+  if (!m) return null;
+  const x = Number(m[2]);
+  if (m[1] === "<=") return stepOf(tops, x);
+  const k = tops.findIndex((t) => t > x);
+  return k < 0 ? tops.length : k;
+}
+
+/** A thing whose values the reading picks: every one but a size read across sizes (F-115). */
+export const picked = (fee: Fee, b: By): boolean => !(isRange(b) && readAcross(fee.kind, b.kind));
+
+/** The first value a case names for thing `t`, where it names one (a range's step as its pick). */
+function valueOf(fee: CasesFee, c: Case, t: number): string | null {
+  const w = c.when[t]!;
+  const b = fee.by[t]!;
+  if (w === "any") return null;
+  if (typeof w === "number") return isRange(b) ? (w < b.tops.length ? stepPick(b.tops[w]!.v) : stepPick(b.tops.at(-1)!.v, true)) : null;
+  return w[0] ?? null;
+}
+
+/**
+ * The reading's picks as F-114 reads them: the deal's own (`readFor`), and for every other thing its fees change by and the reading picks,
+ * its start: the person's own track (the track of a case marked as theirs), the currency of what is bought where a conversion has a case
+ * for it, and otherwise the first case that names a value. In the order the fees name the things.
+ */
+export function picksOf(deal: Pick<FeeDeal, "fees" | "readFor">): ReadPick[] {
+  const out: ReadPick[] = [...(deal.readFor ?? [])];
+  const has = (key: string) => out.some((p) => p.by === key);
+  for (const fee of deal.fees) {
+    if (!hasCases(fee)) continue;
+    fee.by.forEach((b, t) => {
+      const key = pickKey(b);
+      if (has(key) || !picked(fee, b)) return;
+      let is: string | null = null;
+      if (b.kind === "track") {
+        const mine = fee.cases.find((c) => c.mine);
+        is = mine ? valueOf(fee, mine, t) : null;
+      }
+      if (b.kind === "currency") {
+        const what = out.find((p) => p.by === "what");
+        const currency = what ? placeOf(deal.fees, what.is)?.currency : undefined;
+        const named = currency === undefined ? undefined : currency === null || currency === "ILS" ? "other" : currency;
+        if (named && fee.cases.some((c) => Array.isArray(c.when[t]) && (c.when[t] as string[]).includes(named))) is = named;
+      }
+      is ??= fee.cases.map((c) => valueOf(fee, c, t)).find((v) => v !== null) ?? null;
+      if (is !== null) out.push({ by: key, is });
+    });
+  }
+  return out;
+}
+
+/** A case's conditions as the engine reads them (F-114). */
+const condsOf = (c: Case): CaseCond[] => c.when.map((w: When): CaseCond => (w === "any" ? { any: true } : typeof w === "number" ? { step: w } : { values: w }));
+
+/** A fee read from one case: the case's prices under the fee's id (or a step's), with where it comes from. */
+function fromCase(fee: CasesFee, c: Case, id: string, step?: ReadOf["step"]): ReadFee {
+  return { id, kind: fee.kind, ...(fee.name !== undefined ? { name: fee.name } : {}), stages: c.stages, ...(c.sale ? { sale: c.sale } : {}), read: { of: fee.id, case: c.id, ...(step ? { step } : {}) } };
+}
+
+/**
+ * F-114, F-115 A fee as the reading reads it for the picks: a fee whose price changes by nothing, as it is; a fee with cases, in the case
+ * the picks give it; where its price changes by a size read across sizes, one fee per stretch of steps read in one case (neighbouring steps
+ * in the same case are one stretch, and a single stretch is the fee itself). Null where the picks give it no case, or a step none.
+ */
+export function readFee(fee: Fee, picks: readonly ReadPick[]): ReadFee[] | null {
+  if (!hasCases(fee)) return [fee];
+  const across = fee.by.findIndex((b) => !picked(fee, b));
+  const vector = fee.by.map((b, t): string | number => {
+    if (t === across) return 0;
+    const is = picks.find((p) => p.by === pickKey(b))?.is;
+    if (isRange(b)) return is === undefined ? 0 : (stepForPick(b.tops.map((n) => n.v), is) ?? -1);
+    return is ?? "";
+  });
+  const conds = fee.cases.map(condsOf);
+  if (across < 0) {
+    const k = caseFor(conds, vector);
+    return k === null ? null : [fromCase(fee, fee.cases[k]!, fee.id)];
+  }
+  const range = fee.by[across] as RangeBy;
+  const steps: number[] = [];
+  for (let s = 0; s <= range.tops.length; s++) {
+    const k = caseFor(conds, vector.map((v, t) => (t === across ? s : v)));
+    if (k === null) return null;
+    steps.push(k);
+  }
+  // neighbouring steps read in one case are one stretch
+  const stretches: { k: number; from: number; to: number }[] = [];
+  steps.forEach((k, s) => {
+    const last = stretches.at(-1);
+    if (last && last.k === k) last.to = s;
+    else stretches.push({ k, from: s, to: s });
+  });
+  if (stretches.length === 1) return [fromCase(fee, fee.cases[stretches[0]!.k]!, fee.id)];
+  const on = onHolding(fee.kind) ? "held" : "action";
+  const currency = range.unit as BoundCurrency;
+  return stretches.map((x, j) =>
+    fromCase(fee, fee.cases[x.k]!, `${fee.id}-s${j}`, { on, from: x.from === 0 ? null : range.tops[x.from - 1]!, to: x.to < range.tops.length ? range.tops[x.to]! : null, currency }),
+  );
+}
+
+/** The deal read for its picks: the fees read (`readFee`), in the deal's order, and the ids of the fees the picks give no case. */
+export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[]; picks: ReadPick[] } {
+  const picks = picksOf(deal);
+  const fees: ReadFee[] = [];
+  const unmatched: string[] = [];
+  for (const fee of deal.fees) {
+    const read = readFee(fee, picks);
+    if (read) fees.push(...read);
+    else unmatched.push(fee.id);
+  }
+  return { fees, unmatched, picks };
+}
+
+/**
+ * Whether what the deal is read for is bought in a currency other than the shekel (F-114, F-111's `foreign`): the pick of what is bought,
+ * by where it is bought and its currency, for a kind that holds funds.
+ */
+export function isForeign(deal: Pick<FeeDeal, "kind" | "fees">, picks: readonly ReadPick[]): boolean {
+  if (!holdsFunds(deal.kind)) return false;
+  const what = picks.find((p) => p.by === "what");
+  const place = what ? placeOf(deal.fees, what.is) : null;
+  return !!place && place.currency !== "ILS";
+}

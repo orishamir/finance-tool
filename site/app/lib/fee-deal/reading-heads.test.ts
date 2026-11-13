@@ -16,7 +16,7 @@ const account = (): FeeDeal => ({
   id: "deal-a",
   name: "",
   kind: "brokerage-account",
-  held: { place: "abroad", currency: "USD", payout: "accumulating" },
+  readFor: [{ by: "what", is: "us" }],
   fees: [
     { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) } }] },
     { id: "fee-custody", kind: "custody", stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }] },
@@ -51,7 +51,7 @@ describe("the periods' headline", () => {
     const d = account();
     d.fees[0]!.stages = [{ price: { form: "action", rate: typed(0.25), min: typed(15) }, until: "2027-03" }, { price: { form: "action", rate: typed(0.3), min: typed(15) } }];
     expect(periodsHead(readOn(d, data.fx).periods)).toEqual({ kind: "months", months: ["2027-03", "2028-03"], n: 2 });
-    d.fees[1]!.stages[0]!.until = "2027-03";
+    d.fees[1]!.stages![0]!.until = "2027-03";
     expect(periodsHead(readOn(d, data.fx).periods)).toEqual({ kind: "one-month", at: "2027-03", n: 3 });
     expect(periodsHead(readOn({ ...d, fees: [d.fees[3]!] }, data.fx).periods)).toBeNull();
   });
@@ -108,12 +108,12 @@ describe("the curves", () => {
     d.fees.push({ id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 12 } }] });
     expect(meetOf(d)).toMatchObject({ amount: { value: 120000 }, largest: false });
     // a small one stays below the sums at that value: 0.05% is 60 ₪ a year at 120,000 ₪
-    d.fees[2]!.stages[0]!.price = { form: "held", rate: typed(0.05), per: 12, every: 12 };
+    d.fees[2]!.stages![0]!.price = { form: "held", rate: typed(0.05), per: 12, every: 12 };
     expect(meetOf(d).largest).toBe(true);
   });
   it("puts a curve it cannot draw in its group", () => {
     const d = account();
-    d.fees[0]!.stages[0]!.price = { form: "action", rate: typed(0.1), min: typed(7), currency: "USD" };
+    d.fees[0]!.stages![0]!.price = { form: "action", rate: typed(0.1), min: typed(7), currency: "USD" };
     const groups = curveGroups(readOn(d, null));
     expect(groups[0]).toMatchObject({ key: "action:trade:all", curves: [], undrawn: [{ currency: "USD" }] });
   });
@@ -144,7 +144,7 @@ describe("the law's headline", () => {
   });
   it("puts a price above the cap first, then all below, then nothing judged", () => {
     const d = provident();
-    d.fees[1]!.stages[0]!.price = { form: "action", rate: typed(9) };
+    d.fees[1]!.stages![0]!.price = { form: "action", rate: typed(9) };
     expect(lawHead(readOn(d, data.fx).law)).toEqual({ kind: "above", n: 1 });
     const below = provident();
     below.fees[0]!.stages = [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }];

@@ -20,23 +20,34 @@ export function parseSubject(search: string): { kind: "wrapper"; wrapperId: stri
 
 // ---------------------------------------------------------------- a deal in the address
 
-/** The version the link's payload starts with: a link of another version opens an empty deal. */
-const LINK_VERSION = 1;
-/** No link is longer than this: a longer `d` is not one the site wrote. */
-const LINK_MAX = 12_000;
+/**
+ * The version the link's payload starts with. Version 2 carries cases, a price's parts and the reading's picks; a link of version 1 (a deal
+ * before cases, which said what it held) is read the same way and opens as it was (`readDeal`). A link of another version opens an empty
+ * deal.
+ */
+const LINK_VERSION = 2;
+const READ_VERSIONS: readonly number[] = [1, 2];
+/**
+ * No link is longer than this: a longer `d` is not one the site wrote. A house's whole price list with its cases and each figure's source
+ * comes to about 25,000 characters (Hapoalim's, the longest).
+ */
+const LINK_MAX = 40_000;
 
 /** Each field's short name in a link, both ways; a key not named here is not carried, and is dropped on the way in. */
 const SHORT: Record<string, string> = {
   name: "n", kind: "k", start: "t", provider: "p", held: "h", fees: "f", template: "T", stages: "s", sale: "S", price: "P", until: "u", form: "F",
   rate: "r", min: "m", max: "x", currency: "c", per: "q", every: "e", amount: "a", place: "l", payout: "o", id: "i", cap: "Cp", flat: "Fl", upTo: "Ut",
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
+  by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
+  discount: "Di", pct: "Pc", alsoMin: "Am", third: "Th", who: "Wh", offset: "Of", refund: "Rf", notes: "No",
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
 /**
- * The fields of a price that hold a figure (`Num`), a flat price's two among them (`amount`, `upTo`): a link writes a figure as its number,
- * `[number, source]` where it is sourced, or `null` where it is not given yet (`Num.blank`).
+ * The fields of a price that hold a figure (`Num`), a flat price's two among them (`amount`, `upTo`), a discount's share (`pct`), a refund,
+ * and a range's tops (`tops`, a list of figures): a link writes a figure as its number, `[number, source]` where it is sourced, or `null`
+ * where it is not given yet (`Num.blank`).
  */
-const FIGURES = new Set(["rate", "min", "max", "amount", "cap", "upTo"]);
+const FIGURES = new Set(["rate", "min", "max", "amount", "cap", "upTo", "pct", "refund", "tops"]);
 
 type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -50,7 +61,7 @@ function renamed(v: unknown, names: Record<string, string>, figure: (key: string
     const to = Object.hasOwn(names, k) ? names[k]! : undefined;
     if (to === undefined) continue;
     const long = names === SHORT ? k : to;
-    out[to] = FIGURES.has(long) ? figure(long, x) : renamed(x, names, figure);
+    out[to] = !FIGURES.has(long) ? renamed(x, names, figure) : long === "tops" && Array.isArray(x) ? x.map((n) => figure(long, n)) : figure(long, x);
   }
   return out;
 }
@@ -99,7 +110,7 @@ export function decodeDeal(d: string): FeeDeal | null {
   } catch {
     return null;
   }
-  if (!Array.isArray(raw) || raw.length !== 3 || raw[0] !== LINK_VERSION || !isObj(raw[1]) || !Array.isArray(raw[2])) return null;
+  if (!Array.isArray(raw) || raw.length !== 3 || !READ_VERSIONS.includes(raw[0] as number) || !isObj(raw[1]) || !Array.isArray(raw[2])) return null;
   const table = raw[2].map((s) => renamed(s, LONG, (_k, x) => x));
   const figure = (_k: string, x: unknown): unknown => {
     if (typeof x === "number") return { v: x };

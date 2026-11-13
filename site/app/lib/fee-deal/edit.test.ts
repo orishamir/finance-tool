@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { FeeBase, ProductId } from "@finance-tool/schema";
 import type { DealKind } from "./kinds";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, removeStage, setKind, setLimited, setPick, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 /** A kind with the bases its record lists, for the edits that read them. */
 const BASES: Partial<Record<ProductId, FeeBase[]>> = { "ira-provident": ["balance", "trade", "custody", "fx", "direct_expenses"], "pension-comprehensive": ["deposit", "balance", "direct_expenses", "insurance_premium"] };
@@ -114,11 +114,11 @@ describe("the fee page's edits", () => {
       stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.2), per: 12, every: 12 }, until: "2030-01" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }],
     };
     const joined = removeStage(fee, "buy", 1);
-    expect(joined.stages).toEqual([{ price: { form: "free" }, until: "2030-01" }, fee.stages[2]]);
+    expect(joined.stages).toEqual([{ price: { form: "free" }, until: "2030-01" }, fee.stages![2]]);
     expect(feeInOrder(joined)).toBe(true);
     // the last taken away leaves the one before it held on
-    expect(removeStage(fee, "buy", 2).stages).toEqual([fee.stages[0], { price: fee.stages[1]!.price }]);
-    expect(setUntil(fee, "buy", 1, null).stages[1]).toEqual({ price: fee.stages[1]!.price });
+    expect(removeStage(fee, "buy", 2).stages).toEqual([fee.stages![0], { price: fee.stages![1]!.price }]);
+    expect(setUntil(fee, "buy", 1, null).stages[1]).toEqual({ price: fee.stages![1]!.price });
   });
   it("the sale's own prices make their chain the same way", () => {
     const fee = setSaleApart({ ...newFee("trade"), stages: [{ price: { form: "free" } }] }, true);
@@ -155,25 +155,14 @@ describe("the fee page's edits", () => {
     expect(setSaleApart(sold, false).sale).toBeUndefined();
   });
 
-  it("a deal's kind, what it holds and its start", () => {
-    const { deal } = addFee(setHeld(newDeal("brokerage-account"), { place: "abroad", currency: "USD", payout: "accumulating" }), "trade");
+  it("a deal's kind, the reading's picks and its start", () => {
+    const { deal } = addFee(setPick(newDeal("brokerage-account"), "what", "us"), "trade");
     expect(deal.fees.map((f) => f.kind)).toEqual(["trade"]);
-    expect(setKind(deal, kindOf("ira-provident")).held).toEqual(deal.held);
+    expect(setKind(deal, kindOf("ira-provident")).readFor).toEqual([{ by: "what", is: "us" }]);
     const pension = setKind(deal, kindOf("pension-comprehensive"));
-    expect(pension.held).toBeUndefined();
     expect(pension.fees).toEqual([]);
     expect(setStart(setStart(deal, "2026-03"), null).start).toBeUndefined();
-  });
-});
-
-describe("what a fund-holding deal holds, chosen one fact at a time", () => {
-  it("holds nothing until all three facts are chosen, then holds them, and each later choice changes it at once", () => {
-    let r = pickHeld({}, { place: "abroad" });
-    expect(r).toEqual({ draft: { place: "abroad" }, held: null });
-    r = pickHeld(r.draft, { currency: "USD" });
-    expect(r.held).toBeNull();
-    r = pickHeld(r.draft, { payout: "accumulating" });
-    expect(r.held).toEqual({ place: "abroad", currency: "USD", payout: "accumulating" });
-    expect(pickHeld(r.held!, { place: "israel" }).held).toEqual({ place: "israel", currency: "USD", payout: "accumulating" });
+    expect(setPick(setPick(deal, "what", "europe"), "track", "Tiered").readFor).toEqual([{ by: "what", is: "europe" }, { by: "track", is: "Tiered" }]);
+    expect(setPick(deal, "what", null).readFor).toBeUndefined();
   });
 });

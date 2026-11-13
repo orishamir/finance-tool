@@ -3,7 +3,8 @@
 import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/engine";
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
-import { enginePrice, type Price, type ProviderKind } from "./model";
+import type { Price, ProviderKind } from "./model";
+import { enginePrice } from "./to-engine";
 import { FEE_SHAPES, type FeeKindId } from "./shapes";
 import { recordValue } from "./values";
 

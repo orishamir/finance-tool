@@ -3,25 +3,29 @@
 // puts it back. Only the last such change is kept. It stands while the part it would put back into is as the change left it: for a fee
 // taken away, the deal has no fee of its kind (of the person's own: no fee with its id); for the others, the fee is unchanged since. A
 // change of the deal's kind that takes fees away (`setKindKept`) is kept the same way, and puts the kind and the fees back together. Edits
-// elsewhere in the deal keep it standing and stay when it is used; once its part changes, it goes. The words of its line are here too.
+// elsewhere in the deal keep it standing and stay when it is used; once its part changes, it goes. A case taken away, and a thing a fee's
+// price changes by taken away with the cases it merged (F-114), are kept the same way, as a change of their fee. The words of its line are
+// here too.
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
-import { holdOn, laterUntouched, removeStage, setKind, updateFee, type Side } from "./edit";
+import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
 import type { DealKind } from "./kinds";
-import { newFee, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import { newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { FeeKindId } from "./shapes";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
 
 /**
  * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
- * price `k` taken away, or the prices after price `k` taken away (`chain`).
+ * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, or thing `t` taken away (`by`).
  */
 export type UndoWhat =
   | { kind: "remove"; feeId: string; at: number }
   | { kind: "fill"; feeId: string; house: string }
-  | { kind: "stage"; feeId: string; side: Side; k: number }
-  | { kind: "chain"; feeId: string; side: Side; k: number };
+  | { kind: "stage"; feeId: string; side: Side; k: number; caseId?: string }
+  | { kind: "chain"; feeId: string; side: Side; k: number; caseId?: string }
+  | { kind: "case"; feeId: string; caseId: string }
+  | { kind: "by"; feeId: string; t: number };
 
 export interface Undo {
   what: UndoWhat;
@@ -74,25 +78,46 @@ export function fillFeeKept(deal: FeeDeal, feeId: string, house: string, data: P
   return { deal: filled, chosen, undo: { what: { kind: "fill", feeId, house }, dealId: deal.id, before: fee, ...(provider ? { provider } : {}), after: changed, chosenBefore: chosen, chosenAfter: chosen } };
 }
 
-/** The deal with price `k` of a fee's prices on `side` taken away (`removeStage`). Null where the fee has one price on that side. */
-export function removeStageKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null): Undoable | null {
+/**
+ * The deal with price `k` of a fee's prices on `side` taken away (`removeStage`; in case `caseId` where the fee has cases). Null where the
+ * fee has one price on that side.
+ */
+export function removeStageKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null, caseId?: string): Undoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
-  if (!fee || (side === "sell" && !fee.sale)) return null;
-  const changed = removeStage(fee, side, k);
+  if (!fee || (side === "sell" && !pricedOf(fee, caseId).sale)) return null;
+  const changed = removeStage(fee, side, k, caseId);
   if (changed === fee) return null;
-  return feeChange(deal, fee, changed, { kind: "stage", feeId, side, k }, chosen);
+  return feeChange(deal, fee, changed, { kind: "stage", feeId, side, k, ...(caseId ? { caseId } : {}) }, chosen);
+}
+
+/** The deal with a fee's case taken away (`removeCase`), the fee as it was kept for the undo. Null where it cannot be taken away. */
+export function removeCaseKept(deal: FeeDeal, feeId: string, caseId: string, chosen: string | null): Undoable | null {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  if (!fee) return null;
+  const changed = removeCase(fee, caseId);
+  if (changed === fee) return null;
+  return feeChange(deal, fee, changed, { kind: "case", feeId, caseId }, chosen);
+}
+
+/** The deal with thing `t` of a fee taken away and its cases merged (`removeBy`), the fee as it was kept for the undo. */
+export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: string | null): Undoable | null {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  if (!fee) return null;
+  const changed = removeBy(fee, t);
+  if (changed === fee) return null;
+  return feeChange(deal, fee, changed, { kind: "by", feeId, t }, chosen);
 }
 
 /**
  * The deal with price `k` of a fee's prices on `side` held on and the prices after it taken away (`holdOn`): kept for the undo where they
  * hold anything the person gave, gone silently where they are as "לזמן מוגבל" added them (`laterUntouched`). Null where none follows it.
  */
-export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null): MaybeUndoable | null {
+export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null, caseId?: string): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
-  if (!fee || (side === "sell" && !fee.sale) || k >= pricesOn(fee, side).length - 1) return null;
-  const changed = holdOn(fee, side, k);
-  if (laterUntouched(fee, side, k)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
-  return feeChange(deal, fee, changed, { kind: "chain", feeId, side, k }, chosen);
+  if (!fee || (side === "sell" && !pricedOf(fee, caseId).sale) || k >= pricesOn(fee, side, caseId).length - 1) return null;
+  const changed = holdOn(fee, side, k, caseId);
+  if (laterUntouched(fee, side, k, caseId)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
+  return feeChange(deal, fee, changed, { kind: "chain", feeId, side, k, ...(caseId ? { caseId } : {}) }, chosen);
 }
 
 // ---------------------------------------------------------------- the deal's kind changed
@@ -137,15 +162,15 @@ function kindStanding(u: KindUndo, deal: FeeDeal): boolean {
 }
 
 /**
- * The deal put back to its kind with the fees taken away in their places, as it is now otherwise (a fee typed since stays); its template,
- * provider kind and holding as they were.
+ * The deal put back to its kind with the fees taken away in their places, as it is now otherwise (a fee typed since stays); its template
+ * and provider kind as they were.
  */
 function kindBack(deal: FeeDeal, u: KindUndo): FeeDeal {
   const fees = [...deal.fees];
   for (const { fee, at } of u.gone) fees.splice(Math.min(at, fees.length), 0, fee);
-  const { held: _h, template: _t, provider: _p, ...rest } = deal;
-  const { held, template, provider } = u.before;
-  return { ...rest, kind: u.before.kind, fees, ...(held ? { held } : {}), ...(template ? { template } : {}), ...(provider ? { provider } : {}) };
+  const { template: _t, provider: _p, ...rest } = deal;
+  const { template, provider } = u.before;
+  return { ...rest, kind: u.before.kind, fees, ...(template ? { template } : {}), ...(provider ? { provider } : {}) };
 }
 
 /**
@@ -198,6 +223,10 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
       return copy.panel.stageRemoved;
     case "chain":
       return copy.panel.laterRemoved;
+    case "case":
+      return copy.cases.caseRemoved;
+    case "by":
+      return copy.cases.byRemoved;
     case "fill":
       return `${copy.builder.filled(houseName(u.what.house, data) ?? "")}.`;
     case "remove":

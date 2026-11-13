@@ -25,7 +25,7 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { barredFees, dealFromTemplate, feePriceLists, HELD_UNSAID, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { barredFees, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -283,7 +283,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     made(r.undo);
   };
   // each house's plans are its ways to buy what the deal holds
-  const options = useMemo(() => templateOptions(deal.kind, data, today, deal.held), [deal.kind, deal.held, data, today]);
+  const options = useMemo(() => templateOptions(deal.kind, data, today), [deal.kind, data, today]);
   const onPick = (id: string) => {
     setPicker(null);
     if (pickFrom === "track") {
@@ -304,10 +304,10 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   const pickerLeft = useMemo(() => {
     const m = new Map<string, LeftOut[]>();
     if (!picker) return m;
-    const probe: FeeDeal = { ...newDeal(deal.kind), held: deal.held ?? HELD_UNSAID };
+    const probe: FeeDeal = newDeal(deal.kind);
     for (const o of options) if (o.source === "house") m.set(o.id, templateOf(probe, o.id, data, today)?.left ?? []);
     return m;
-  }, [picker, options, deal.kind, deal.held, data, today]);
+  }, [picker, options, deal.kind, data, today]);
   // what the template left out, only where it filled the deal's fees: a track set on a deal whose fees it kept left nothing out of them
   const left = useMemo(() => (deal.template && !deal.template.feesKept ? (templateOf(deal, deal.template.id, data, today)?.left ?? null) : null), [deal, data, today]);
 
