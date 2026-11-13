@@ -447,8 +447,9 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // once its answer is in a rule, and its number is never used again); one more on 2026-11-12, how an individual would apply for
     // an exemption from withholding on securities (TXS OQ25), and another, what a withdrawal at a deposit's exit point pays (BANK OQ20);
     // on 2026-11-14 two more (BANK OQ21, how often a deposit calculates interest; BANK OQ22, new and small banks) and three answered
-    // ones deleted (BANK OQ7, KGL OQ12, BRK OQ2: bills that lapsed with the 25th Knesset)
-    expect(items.length).toBe(421);
+    // ones deleted (BANK OQ7, KGL OQ12, BRK OQ2: bills that lapsed with the 25th Knesset); and CS OQ18, the fee each child-savings
+    // manager bid in the 2016 tender
+    expect(items.length).toBe(422);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
