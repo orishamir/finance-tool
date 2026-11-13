@@ -2069,7 +2069,9 @@ export const brands = {
   funds: {
     groups: { etf: "קרנות סל", tracking: "קרנות מחקות", "money-market": "קרנות כספיות", other: "קרנות נאמנות" },
     count: { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" },
-    collected: "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן.",
+    /** Over a company page's fund table: which funds it holds. Where the fees come from is the fee head's ("לפי הדוח של הקרן"), and on a
+     *  phone the line over the list that opens the fees' cards under that head. */
+    collected: "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה.",
     /** The fund table (design-system 11 "Lists of products"): the head carries the words, the cell the value. */
     columns: { name: "שם הקרן", number: "מספר נייר", index: "המדד", kind: "סוג הקרן", fees: "דמי ניהול לפי הדוח של הקרן" },
     /** The "?" by the fees' head: one sheet of the three glossary terms, under this line. The names are the glossary's keys. */
