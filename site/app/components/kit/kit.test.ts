@@ -318,17 +318,28 @@ describe("ChoiceChips", () => {
 });
 
 describe("AmountChart's mark labels", () => {
-  it("go a row higher where moving past the value axis's words would put one on the label before it", () => {
-    const axis = [{ right: 100, top: -1000, bottom: 1000 }];
+  it("go a row higher, joined to their point, where moving past the value axis's words would put one on the label before it", () => {
+    const axis = [{ right: 30, top: -1000, bottom: 1000 }];
     const [a, b] = markLabels([{ cx: 5, cy: 200, half: 20 }, { cx: 60, cy: 200, half: 20 }], axis, 600);
-    expect(a).toEqual({ lx: 124, row: 0 });
-    expect(b!.row).toBe(1);
+    expect(a).toEqual({ lx: 54, by: 190, joined: true });
+    expect(b!.by).toBeLessThan(190);
   });
   it("stay over their points in one row where nothing is in the way, and inside the plot", () => {
     expect(markLabels([{ cx: 200, cy: 100, half: 20 }, { cx: 400, cy: 100, half: 20 }, { cx: 598, cy: 100, half: 20 }], [], 600)).toEqual([
-      { lx: 200, row: 0 },
-      { lx: 400, row: 0 },
-      { lx: 580, row: 0 },
+      { lx: 200, by: 90, joined: false },
+      { lx: 400, by: 90, joined: false },
+      { lx: 580, by: 90, joined: false },
     ]);
+  });
+  it("never stand on another mark's point or label, rising past them, and give way where no row is free", () => {
+    // the second point sits just over the first one's label: the first label rises over it
+    const [a, b] = markLabels([{ cx: 200, cy: 100, half: 30 }, { cx: 210, cy: 88, half: 30 }], [], 600);
+    expect(a!.by).toBeLessThan(88 - 7 - 3);
+    expect(b).not.toBeNull();
+    expect(Math.abs(a!.by - b!.by) >= 14 || Math.abs(a!.lx - b!.lx) >= 64).toBe(true);
+    // a label that would hang far from its point gives way rather than run a long line to it
+    expect(markLabels([{ cx: 5, cy: 200, half: 20 }], [{ right: 100, top: -1000, bottom: 1000 }], 600)).toEqual([null]);
+    // near the chart's top a label with its way blocked has nowhere to go
+    expect(markLabels([{ cx: 200, cy: 24, half: 30 }, { cx: 205, cy: 24, half: 30 }], [], 600)[1]).toBeNull();
   });
 });

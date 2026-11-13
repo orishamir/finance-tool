@@ -328,7 +328,7 @@ export const values = {
   fields: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "כמה שנים", "A-01": "תשואה בשנה", cash_rate: "ריבית בשנה", "A-02": "אינפלציה בשנה", age: "גיל", employment: "סוג ההעסקה" },
   optional: "(לא חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
-  units: { nis: "₪", pct: "%", years: "שנים" },
+  units: { nis: "₪", pct: "%", years: "שנים", usd: "$", eur: "€", gbp: "£" },
   hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
@@ -1547,13 +1547,11 @@ export const feeDeal = {
   larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
-  /** The bar under the page's head: the deal's name, its kind, its start and where it is kept. */
+  /** The bar under the page's head: the deal's name and where it is kept. */
   bar: {
     label: "העסקה",
     /** The name a deal shows before the person gives one: its kind's, or a new deal's before a kind is chosen. */
     namePlaceholder: (kind: string | null) => (kind ? `${kind} שלי` : "עסקה חדשה"),
-    start: "תאריך התחלה",
-    optional: "לא חובה",
     saved: "נשמרת במכשיר הזה",
     unsaved: "המכשיר הזה לא שומר אותה",
   },
@@ -1580,8 +1578,8 @@ export const feeDeal = {
     /** After an action's rate: what it is a share of, by the fee; `default` for the rest. */
     of: { default: "מהפעולה", fx: "מההמרה", fx_spread: "מההמרה", deposit: "מההפקדה", distribution_handling: "מכל תשלום", transfer_out: "מההעברה", exit: "מהמשיכה", insurance_premium: "מההפקדה" } as Record<string, string>,
     /** Before a bound, after a comma. */
-    min: "לא פחות מ־",
-    max: "לא יותר מ־",
+    min: "מינימום ",
+    max: "מקסימום ",
     /** After a share of what is held, beside its period. */
     held: "ממה שמוחזק",
     heldSaved: "ממה שנצבר",
@@ -1592,9 +1590,23 @@ export const feeDeal = {
     /** After a sum on each action, or a builder row's rate, by the fee. */
     perAction: { default: "לכל פעולה", fx: "לכל המרה", fx_spread: "לכל המרה", deposit: "לכל הפקדה", insurance_premium: "לכל הפקדה", exit: "לכל משיכה", transfer_out: "לכל העברה", corporate_event: "לכל אירוע", distribution_handling: "לכל תשלום" } as Record<string, string>,
     insideFund: "בתוך הקרן",
+    /** After a sum for each unit traded (a price per unit, F-12). */
+    perUnit: "לכל יחידה",
+    /**
+     * A flat price for a small action, before the rest of the price: "{flat} לכל המרה עד {upTo}. מעל זה {the price}" (F-12, F-13). A
+     * percent maximum is said as a maximum, with what it is a share of: ", מקסימום 25% מהפעולה".
+     */
+    flat: { upTo: " עד ", above: ". מעל זה " },
+    /** After the panel's flat price and its words, before the sum it holds up to: "[2.85 $] לכל המרה, עד המרה של [50 $]". */
+    flatSep: ",",
     /** Between a fee's name and its price. */
     sep: ": ",
   },
+  /**
+   * Where a figure a template filled is from, in the note a press on its box opens: a house's price list, with the page of the document
+   * where the record names one, or the regulator's data on a track.
+   */
+  figureFrom: { list: "מהתעריפון של ", page: ", עמ׳ ", cma: "מנתוני רשות שוק ההון." },
   /** The deal at a glance (F-110 to F-113). */
   glance: {
     title: "העסקה במבט אחד",
@@ -1611,21 +1623,18 @@ export const feeDeal = {
     instead: ", במקום ",
     /** A fee that starts after a free time, before its name, by the name's gender and number ("מתחילים דמי חשבון קבועים, 10 ₪ בחודש"). */
     starts: { m: "מתחיל ", f: "מתחילה ", mp: "מתחילים ", fp: "מתחילות " } as Record<string, string>,
-    toReading: "לקריאה המלאה של העסקה",
     /** Fees left out of every reading until their prices' months are in order, by name. */
     unread: "לא נקראות עד שהתאריכים שלהן מסודרים: ",
     /** The deal has fees, and none has its price yet. */
     noneRead: "עוד אין בעסקה עמלה עם מחיר.",
   },
-  /** The sums a deal's own prices mark (F-112), as a group's line. `noun` is the action the bound is on. */
+  /** The sums a deal's own prices mark (F-112), as the points say them. `noun` is the action a bound is on. */
   marks: {
     noun: { trade: "פעולה", conversion: "המרה", deposit: "הפקדה", distribution: "תשלום", transfer_out: "העברה", none: "פעולה" } as Record<string, string>,
-    minAction: { before: "עד {noun} של ", after: " המינימום קובע." },
-    maxAction: { before: "מעל {noun} של ", after: " המקסימום קובע." },
-    minHeld: { before: "על פחות מ־", after: " המינימום קובע." },
-    maxHeld: { before: "על יותר מ־", after: " המקסימום קובע." },
-    /** Whose bound it is, where the group has several fees. */
-    whose: "{name}: ",
+    /** The action a fee's mark is said on, by the fee: a conversion's on each conversion, any other fee's on each action. */
+    feeNoun: { fx: "המרה", fx_spread: "המרה" } as Record<string, string>,
+    /** A count of units a price per unit's minimum or maximum is reached at (F-112). */
+    units: { one: "יחידה אחת", two: "שתי יחידות", many: "יחידות" },
     /**
      * The yearly sums on the account against custody's yearly rate (F-112 (3)). `after` where they are the largest cost of holding below
      * that value; else `smaller` and custody's name ("…. על פחות מזה הם גדולים מ{custody}."), `custody` where the deal has several
@@ -1676,9 +1685,9 @@ export const feeDeal = {
     from: "מ־",
     now: "היום ",
   },
-  /** The middle column: three steps that build the deal. */
+  /** The two columns that enter the deal: what it is, in steps, and its fees. */
   builder: {
-    title: "בונים את העסקה",
+    title: "על מה העסקה",
     kind: "סוג המוצר",
     kindChange: "להחליף",
     kindPick: "בחרו את סוג המוצר",
@@ -1693,8 +1702,11 @@ export const feeDeal = {
     track: "החברה והמסלול",
     trackNone: "לא נבחרו · לא חובה",
     trackPick: "לבחור מסלול",
+    /** The step that fills the deal from a price list, and its button opens the price lists. */
+    fill: "מילוי מתעריפון",
+    start: "תאריך התחלה",
+    optional: "לא חובה",
     fees: "העמלות בעסקה",
-    feesLead: "כל ערך אפשר לשנות כאן. לחיצה על עמלה פותחת את כל השדות שלה.",
     chosen: "נבחרה",
     /** After a bound in a row's box. */
     minWord: "מינימום",
@@ -1716,8 +1728,6 @@ export const feeDeal = {
     fieldName: (fee: string, field: string) => `${fee}, ${field}`,
     /** The facts a row says beside its prices. */
     facts: {
-      saleSame: "מכירה כמו קנייה",
-      saleApart: "מכירה במחיר אחר",
       noBounds: "בלי מינימום ובלי מקסימום",
       /** A fee whose rate or sum nobody typed yet: it is not read until it is. */
       noPrice: "עוד לא הוזן מחיר",
@@ -1735,14 +1745,16 @@ export const feeDeal = {
     /** The head of a later price whose start is not given (an old deal's price with no month before it). */
     stage: { next: "אחר כך" },
     form: "איך נגבה",
-    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה" } as Record<string, string>,
+    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה" } as Record<string, string>,
+    /** The price parts beyond a rate and its bounds, by the name the reading's sheets give them (values.ts `inputKey`; reading.ts `UNIT_PRICE_KEY`). */
+    parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", unitPrice: "מחיר יחידה בקרן" },
     howMuch: "כמה",
     min: "מינימום",
     max: "מקסימום",
     /** An empty bound's box. */
     empty: "—",
-    /** The spoken name of the bounds' currency, the choice in their boxes. */
-    currency: "המטבע של המינימום והמקסימום",
+    /** The spoken name of the price's currency, the choice in a box of it (the sum per unit's, else the minimum's), for all its sums. */
+    currency: "המטבע של הסכומים",
     currencies: { ILS: "שקלים", USD: "דולרים", EUR: "אירו", GBP: "לירות שטרלינג" } as Record<string, string>,
     signs: { ILS: "₪", USD: "$", EUR: "€", GBP: "£" } as Record<string, string>,
     per: "לכל",
@@ -1754,6 +1766,14 @@ export const feeDeal = {
     /** A sum past what a deal keeps (model.ts, `SUM_MAX`). */
     tooLarge: "הזינו סכום עד מיליארד ₪.",
     perCharge: "לכל חיוב",
+    /** The percent maximum (a share of the action that the fee never passes, F-12), after its box the action it is a share of. */
+    cap: "מקסימום באחוזים",
+    /** A flat price for a small action (F-12, F-13): the same price on every action, or a flat price up to a sum. */
+    small: "פעולה קטנה",
+    smallSame: "אותו מחיר",
+    smallFlat: "מחיר קבוע",
+    /** Before the sum the flat price holds up to, by the fee: "[2.85 $] לכל המרה, עד המרה של [50 $]". */
+    upTo: { default: "עד פעולה של", fx: "עד המרה של" } as Record<string, string>,
     until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
@@ -1857,6 +1877,9 @@ export const feeDeal = {
       rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
       /** A curve the site cannot draw: a bound in a currency it has no rate for. */
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
+      /** A curve with a price per unit (F-112): the unit's price, a chart's field, and beside it why the chart needs it. */
+      unitPrice: "מחיר יחידה בקרן",
+      unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
     },
     /** The statements of F-112 and the reading. */
     points: {
@@ -1868,14 +1891,31 @@ export const feeDeal = {
       untilAfter: " עד ",
       spanEnd: ": ",
       spanSep: ", ",
-      minAction: { before: "המינימום של {name}{side}, ", middle: ", קובע בכל {noun} עד ", after: "." },
-      maxAction: { before: "המקסימום של {name}{side}, ", middle: ", קובע בכל {noun} מעל ", after: "." },
+      /**
+       * A part of an action's price and the stretch it decides (F-112): "{the part} של {name}, {its figure}, קובע בכל {noun} עד {amount}.",
+       * from where it starts where that is above nothing ("מ־100 $ עד 8,333 $"), above the maximum's sum, and in units for a price per
+       * unit ("של עד 200 יחידות"; past the sum where another part stops, "מעל 100 $ של עד 200 יחידות").
+       */
+      part: { min: "המינימום של {name}{side}, ", max: "המקסימום של {name}{side}, ", cap: "המקסימום באחוזים של {name}{side}, ", flat: "המחיר הקבוע של {name}{side}, " } as Record<string, string>,
+      decides: ", קובע בכל {noun} ",
+      upTo: "עד ",
+      above: "מעל ",
+      unitsUpTo: "של עד ",
+      unitsAbove: "של יותר מ־",
+      /** A bound in units whose stretch starts where a percent maximum's or a flat price's sum ends: "בכל פעולה מעל 100 $ של עד 200 יחידות". */
+      unitsFrom: { above: "מעל ", upTo: " של עד " },
+      end: ".",
       minHeld: { before: "המינימום של {name}, ", middle: " לכל חיוב, קובע על פחות מ־", after: "." },
       maxHeld: { before: "המקסימום של {name}, ", middle: " לכל חיוב, קובע על יותר מ־", after: "." },
       /** A share of what is held charged more often than its rate's period: "{name}, 0.4% בשנה, נגבה כל חודש: חלק אחד מ־12 בכל פעם." */
       every: { before: "{name}, ", part: ": חלק אחד מ־{k} בכל פעם." },
       /** A share with a minimum and no maximum. */
       noMax: "{name}{side}: יש מינימום ואין מקסימום, ולכן מעל המינימום העמלה גדלה עם הסכום בלי גבול.",
+      /**
+       * A sum per unit with a minimum and no maximum: "{name}: מעל 200 יחידות העמלה גדלה עם מספר היחידות", and where a percent maximum caps
+       * it ", ולא עוברת 1% מהפעולה".
+       */
+      noMaxUnits: { before: "{name}{side}: מעל ", grows: " העמלה גדלה עם מספר היחידות", cap: ", ולא עוברת ", end: "." },
     },
     /** The law rows of F-113. */
     law: {
@@ -1936,11 +1976,7 @@ export const feeDeal = {
     left: "מה לא נכנס מהתבנית",
     /** Why a price list's line fills nothing (templates.ts, `LeftWhy`). */
     why: {
-      "per-share": "מחיר לכל יחידה: העסקה מתמחרת פעולה לפי הסכום שלה.",
       "per-dollar": "מחיר המרה בשקלים לכל דולר: העסקה מתמחרת המרה באחוז ממנה.",
-      "per-event-in-dollars": "מחיר בדולרים לכל אירוע: העסקה רושמת סכום לפעולה רק בשקלים.",
-      "flat-price": "מחיר קבוע לפעולה קטנה: האחוז, המינימום והמקסימום נכנסו, המחיר הקבוע לא.",
-      "share-cap": "תקרה באחוז מהפעולה: האחוז, המינימום והמקסימום נכנסו, התקרה לא.",
       "bound-currency": "מינימום ומקסימום בשני מטבעות, או מינימום ומקסימום על מה שמוחזק שלא בשקלים: העסקה לא יכולה לרשום אותם.",
       ambiguous: "שתי שורות בתעריפון חלות על העמלה, והתעריפון לא אומר איזו מהן.",
       "no-value": "שורה בלי מחיר.",
@@ -1949,6 +1985,7 @@ export const feeDeal = {
       "set-aside": "מחיר שמופיע בתעריפון, אבל המסמכים של הבית לא מראים שלקוח רגיל יכול לקבל אותו.",
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
+      "spread-unpriced": "המרה בלי עמלה, אבל עם מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
@@ -1973,7 +2010,9 @@ function dealInputNames(): Record<string, string> {
     out[`deal:${k}.min`] = `${name}: המינימום`;
     out[`deal:${k}.max`] = `${name}: המקסימום`;
     out[`deal:${k}.yearly`] = `${name}, בשנה`;
+    for (const part of ["cap", "flat", "upTo"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
+  out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
   return out;
 }
 for (const [key, name] of Object.entries(dealInputNames())) computedInputs.names[key] ??= name;
@@ -4246,8 +4285,8 @@ export const kit = {
   legend: "מקרא",
   /** A figure or a month typed in place (kit FigureField, MonthField). */
   figure: {
-    /** The document mark beside a figure a price list or a track filled: it opens the figure's source. */
-    source: (label: string) => `המקור של ${label}`,
+    /** In the note a press on a sourced figure's box opens: the link that opens the figure's source. */
+    toSource: "למקור",
     /** What an empty month's box says, beside its calendar mark: a press opens the months to choose from, and typing works too. */
     monthPlaceholder: "בחרו חודש",
     monthError: "כתבו חודש ושנה, כמו 03.2027.",
@@ -4394,7 +4433,7 @@ export const kit = {
       OptionBars: "עמודות שמשוות בין אפשרויות: שורה לכל אפשרות, השם ושורה מתחתיו, עמודה מקו אפס אחד והסכום בקצה שלה. הסכומים על העמודות במקום ציר.",
       TabStrip: "לשוניות בתוך עמוד שמחליפות חלק אחד שלו לתצוגה משלה, עם תוכן מסוג אחר, בלי לעזוב אותו (בחיפוש בעמוד החוקים והכללים: מה כתוב בחוק, ומה כתבו החברות): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן. בחירה שרק מצמצמת רשימה אחת היא ChoiceChips עם counts.",
       InlineSelect: "בחירה שיושבת בשורה של פקדים אחרים (הסינון בסוף שורת הלשוניות בחיפוש): התווית והבחירה בתוך רשימה נפתחת אחת, בלי מסגרת של שדה. labelHidden: התווית רק לקורא מסך, כשהמילים שסביבה כבר אומרות מה בוחרים.",
-      ListRow: "שורה קומפקטית ברשימה שכל פריט בה נפתח במלואו לידה או במסך משלו: כותרת, שורה עמומה שנשמטת בטלפון, תגיות, מקור ומזהה בסוף. כל השורה היא כפתור, והנבחרת מסומנת ברקע ובפס בתחילתה.",
+      ListRow: "שורה קומפקטית ברשימה שכל פריט בה נפתח במלואו לידה או במסך משלו: כותרת, שורה עמומה שנשמטת בטלפון, תגיות, מקור ומזהה בסוף. כל השורה היא כפתור, והנבחרת מסומנת ברקע ובפס בתחילתה. שורות תחת שם משלהן, שלא בוחרים בו (בית השקעות מעל התוכניות שלו), מוזחות מתחתיו, ושורה עמומה שלהן נשארת גם בטלפון.",
       ChooseRow: "שורה שבוחרת משהו בעמוד (מסנן) ונגמרת בחץ שמוביל למקום אחר. כל השורה היא כפתור שנלחץ ושוב משחרר, והמספרים בשורה העמומה והחץ שומרים על הלחיצה שלהם. הנבחרת ברקע ובפס בתחילתה, ושורה מעומעמת נשארת במקומה.",
       SideNav: "רשימה בצד של עמוד שמראה חלק אחד בכל פעם (עמוד חברה: סקירה, ואז כל מוצר). כל פריט הוא קישור עם הכתובת שלו, כך שקישור וכפתור חזרה עובדים. הנבחר ברקע ובפס בתחילתו, כמו ListRow, והחלקים שלו נפתחים מתחתיו כקישורים בתוך העמוד. מ־1024 פיקסלים הרשימה ליד התוכן בכל רוחב ונשארת במקום כשגוללים; טבלה רחבה מהמקום שלידה נגללת הצידה בתוך הכרטיס שלה. מתחת ל־1024 פיקסלים הרשימה היא שורה אחת שאומרת מה מוצג ופותחת אותה.",
       GoLink: "קישור בתוך האתר שממשיך הלאה, בסוף חלק: המילים בצבע הקישור וחץ אחריהן, צמוד למילה האחרונה.",
@@ -4411,7 +4450,7 @@ export const kit = {
       CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
       PeriodBars: "בחירה של תקופה אחת, מצוירת כתרשים עמודות: כל עמודה כולה כפתור אחד, ובה המספר, העמודה, שם התקופה ומי משלם. כל העמודות על סולם אחד מאפס, בלי קווי רשת ובלי ציר, כי כל עמודה נושאת את המספר שלה. הנבחרת במסגרת וברקע, השם שלה במילוי. עמודה בלי מספר כותבת ״אין״ ואפשר לבחור גם אותה. בטלפון השמות מתקצרים ושם הבנק יורד.",
       MeterBar: "פס דק של חלק מ־0 עד 100% ליד המספר שלו בשורת טבלה: החשיפה של מסלול למניות ולמט״ח, בצבע של כל אחת. כל הפסים ברשימה באותו אורך, כך שהעין עוברת לאורך העמודה. ריק ב־0, מלא מעל 100%. המספר נושא את המשמעות, והפס רק לעין.",
-      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
+      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור, ולחיצה עליו פותחת מתחתיו הערה מאיפה הוא, עם קישור למקור. שדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו.",
       AlignedList: "רשימה של השדות של דבר אחד, שורה לכל שדה: התוויות בעמודה צרה אחת, והתיבות מתחילות כולן באותו קו אחריה, כך שהעין יורדת לאורך התוויות ולאורך התיבות. שורה לרוחב שתי העמודות נושאת מה שלא שייך לתווית אחת: כותרת של מחיר מאוחר, הערה, פעולה.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
@@ -4435,6 +4474,8 @@ export const kit = {
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
+      /** FigureField: where a sourced figure is from, in the note a press on its box opens. */
+      from: "מהתעריפון של בית השקעות לדוגמה.",
       /** LeftOutLine: a made-up house's left-out things, one that can change a price and two that are only listed. */
       leftOut: { house: "בית לדוגמה", what: "מסלול מחירים לדוגמה", why: "מחיר אחר למי שעושה הרבה פעולות. האתר מחשב לפי המחיר הרגיל.", doc: "תעריפון לדוגמה, עמוד 3", others: ["שירות לדוגמה", "עוד שירות לדוגמה"] },
       /** TabCards: three made-up questions, their answers and the panel's words. */

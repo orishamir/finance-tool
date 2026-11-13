@@ -66,7 +66,7 @@ export { ClampedText } from "./clamped-text";
 export { TabStrip, panelId, tabId, tabKeys, type StripTab } from "./tab-strip";
 export { PanelHead, TabCards, type TabCard } from "./tab-cards";
 export { OptionBars, type OptionBar } from "./option-bars";
-export { ChooseRow, GoRow, GroupHead, ListRow, OpenRow, RowList } from "./list-row";
+export { ChooseRow, GoRow, GroupHead, ListRow, OpenRow, RowGroup, RowList } from "./list-row";
 export { SideNav, SidePage, type SideNavGroup, type SideNavItem } from "./side-nav";
 export { GoLink, TextLink } from "./go-link";
 export { MeterBar } from "./meter-bar";

@@ -36,6 +36,8 @@ export interface FieldProps {
   disabled?: boolean;
   /** Only the box and its error, without the label row (inside a slider's label row). */
   compact?: boolean;
+  /** Compact only: the box as wide as its figure rather than the slider's 152 px, for a short price that stands beside a sentence. */
+  fit?: boolean;
   /** An empty field is allowed and clears the value (optional fields such as age); without a `start` it has no reset. */
   optional?: boolean;
   inputMode?: "decimal" | "numeric";
@@ -97,7 +99,7 @@ function ResetToStart({ shown, start, unit, onReset, describedBy, className }: {
 
 /** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
+  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
   const inputMode = whole ? "numeric" : mode;
@@ -190,7 +192,7 @@ export function NumberField(props: FieldProps) {
     if (!err) later(() => onCommit(n));
   };
   const box = (
-    <div className={cx("field-box", compact && "field-box-compact", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
+    <div className={cx("field-box", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
         ref={inputRef}
         id={ids}
@@ -439,13 +441,14 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
  * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]"). `icon`: a mark in the box after the words, in the muted ink, that says the
  * words can be typed over (the pencil of the fee page's deal name). `grow`, with `inline`: the box takes the free space of its line, from its
  * usual width on, and words too long for it end in an ellipsis while it is not being typed in; the words keep their own direction, so a
- * cut never shows half of a bracket pair.
+ * cut never shows half of a bracket pair. `labelHidden`: the label is spoken, not shown, where the box stands in the place of what it names
+ * (the fee page's panel, whose heading is the name of a fee of the person's own, typed in place).
  */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; className?: string }) {
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, labelHidden, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; labelHidden?: boolean; className?: string }) {
   const id = useId();
   return (
     <div className={cx(inline ? cx("flex items-center gap-2", grow ? "min-w-0 flex-1" : "flex-wrap") : "field", className)}>
-      <label htmlFor={id} className={inline ? "text-sm text-muted-foreground" : "field-label"}>
+      <label htmlFor={id} className={labelHidden ? "sr-only" : inline ? "text-sm text-muted-foreground" : "field-label"}>
         {label}
       </label>
       <div className={cx("field-body", grow && "min-w-0 flex-1")}>

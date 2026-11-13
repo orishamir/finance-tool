@@ -12,8 +12,8 @@ import { typed, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
-import { BuilderColumn } from "./builder";
-import { GlanceColumn } from "./glance";
+import { FeesColumn, feeGroup } from "./builder";
+import { GlanceCard } from "./glance";
 import { feeName } from "./words";
 import { PanelColumn } from "./panel";
 import { markLabel, ReadingCards } from "./reading";
@@ -68,30 +68,29 @@ const panelOf = (deal: FeeDeal, feeId: string) => {
 };
 const drawPanel = (deal: FeeDeal, feeId: string) => text(panelOf(deal, feeId));
 
-const drawBuilder = (deal: FeeDeal, chosen: string | null) =>
-  markup(
-    createElement(BuilderColumn, {
+const drawBuilder = (deal: FeeDeal, chosen: string | null) => {
+  const r = readDealFor(deal, data.kinds, TODAY);
+  return markup(
+    createElement(FeesColumn, {
       deal,
-      view: builder(readDealFor(deal, data.kinds, TODAY)),
-      kinds: data.kinds,
+      view: builder(r),
+      groupOf: (fee) => feeGroup(r, fee, saves(deal)),
       chosen,
-      onPickTrack: null,
-      left: null,
+      panel: null,
       line: null,
-      kindLine: null,
       focus: null,
       onFocused: () => {},
       onDeal: () => {},
-      onKind: () => {},
       onChoose: () => {},
       onAdd: () => {},
       onRemove: () => {},
     }),
   );
+};
 
 const drawGlance = (deal: FeeDeal) => {
   const r = readDealFor(deal, data.kinds, TODAY);
-  return text(createElement(GlanceColumn, { glance: glance(r), law: readingOf(r, data.fx).law, saved: saves(deal), names: (id: string) => id }));
+  return text(createElement(GlanceCard, { glance: glance(r), law: readingOf(r, data.fx).law, saved: saves(deal), names: (id: string) => id }));
 };
 
 const drawReading = (deal: FeeDeal) => text(createElement(ReadingCards, { reading: readingOf(readDealFor(deal, data.kinds, TODAY), data.fx), saved: saves(deal), fx: data.fx }));
@@ -126,15 +125,21 @@ describe("the glance", () => {
     expect(shown).toContain(`${feeName("deposit")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
     expect(drawGlance(deal)).not.toContain(feeDeal.builder.facts.noPrice);
   });
-  it("says where the sums on the account and custody meet, where both hold throughout", () => {
+  it("leaves where a bound takes over or the sums on the account meet custody to the points, and keeps a group's rate", () => {
     const d = account();
     d.fees = [
+      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) } }] },
+      { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2) } }] },
       { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }] },
       { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] },
     ];
     const shown = drawGlance(d);
-    expect(shown).toContain(feeDeal.marks.meet.before);
-    expect(shown).toContain(feeDeal.marks.meet.after);
+    expect(shown).toContain(feeDeal.glance.together);
+    expect(shown).not.toContain(feeDeal.marks.meet.before);
+    // a bound's sentence, in the summary's old words or the points' ("עד פעולה של 6,000 ₪ המינימום קובע", "…, קובע בכל פעולה עד …")
+    expect(shown).not.toContain("קובע");
+    const reading = drawReading(d);
+    expect(reading).toContain(feeDeal.marks.meet.before);
   });
 });
 
@@ -157,7 +162,7 @@ describe("the panel", () => {
   it("says nothing of the law for a fee with no cap either, and draws no field twice", () => {
     const shown = drawPanel(account(), "fee-trade");
     expect(count(shown, feeDeal.standing.tag.none!)).toBe(0);
-    expect(shown).not.toContain(feeDeal.bar.optional);
+    expect(shown).not.toContain(feeDeal.builder.optional);
     expect(shown).toContain(feeDeal.panel.when);
     expect(shown).toContain(feeDeal.panel.remove);
     // each box once: the maximum's box is not drawn again for a phone, and the bounds' currency is chosen in one of them
@@ -182,6 +187,14 @@ describe("the panel", () => {
     // the later price's fields say which price they are
     expect(html).toContain(`>${feeDeal.builder.fieldName(`${feeName("deposit")}, מיוני 2027`, feeDeal.panel.form)}</label>`);
   });
+  it("names a fee of the person's own once, in the heading typed in place, with its spoken name", () => {
+    const d = account();
+    d.fees = [{ id: "fee-own", kind: "own", name: "עמלת בדיקה", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] }];
+    const html = markup(panelOf(d, "fee-own"));
+    expect(count(html, `value="עמלת בדיקה"`)).toBe(1);
+    // the label is spoken, not shown: the heading is the name
+    expect(count(html, `class="sr-only">${feeDeal.panel.ownName}</label>`)).toBe(1);
+  });
   it("draws a price not given yet as an empty box", () => {
     const d = provident();
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }];
@@ -190,10 +203,25 @@ describe("the panel", () => {
   });
 });
 
-describe("the builder", () => {
+describe("the fees' column", () => {
   it("names each card's bin by its fee", () => {
     const html = drawBuilder(account(), "fee-trade");
     for (const f of account().fees) expect(count(html, `aria-label="${feeDeal.builder.fieldName(feeName(f.kind), feeDeal.panel.remove)}"`)).toBe(1);
+  });
+  it("groups the fees under the summary's headings, a group only where the deal has a fee in it, and leaves a sale priced as a purchase unsaid", () => {
+    const shown = drawBuilder(account(), null).replace(/<[^>]+>/g, "");
+    // what is held is in dollars: the conversion stands with the trade fee
+    for (const key of ["action:trade", "held", "account"]) expect(count(shown, feeDeal.on[key]!)).toBe(1);
+    for (const key of ["action:conversion", "action:transfer_out", "action:none"]) expect(shown).not.toContain(feeDeal.on[key]!);
+    expect(shown.indexOf(feeDeal.on.held!)).toBeLessThan(shown.indexOf(feeDeal.on.account!));
+    expect(shown).not.toContain(feeDeal.panel.saleSame);
+  });
+  it("says a sale priced apart by its own line of figures alone, with no note", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "action", rate: typed(0.3) } }] }];
+    const shown = drawBuilder(d, null).replace(/<[^>]+>/g, "");
+    expect(shown).toContain(feeDeal.sides.sell);
+    expect(shown).not.toContain(feeDeal.panel.saleApart);
   });
 });
 
@@ -232,8 +260,31 @@ describe("the reading on screen", () => {
   });
 });
 
+describe("a price per unit in the points and the cards", () => {
+  /** Interactive Brokers, IBKR Pro Fixed, US: 0.005 $ a unit, at least 1 $, at most 1% of the action; its conversion free. */
+  const ib = (): FeeDeal => ({
+    ...account(),
+    fees: [
+      { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0) } }] },
+      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "perUnit", amount: typed(0.005), min: typed(1), cap: typed(1), currency: "USD" } }] },
+    ],
+  });
+  it("says a minimum in units holds above the percent maximum's sum, so the two points agree", () => {
+    const p = feeDeal.read.points;
+    const decides = p.decides.replace("{noun}", "פעולה");
+    const shown = drawReading(ib());
+    expect(shown).toContain(decides + p.unitsFrom.above + "100");
+    expect(shown).toContain(p.unitsFrom.upTo + "200 יחידות");
+    expect(shown).not.toContain(decides + p.unitsUpTo + "200");
+  });
+  it("puts the trade fee's card before the conversion's in their group, whatever order the deal holds them in", () => {
+    const shown = drawBuilder(ib(), null);
+    expect(shown.indexOf(feeName("trade"))).toBeLessThan(shown.indexOf(feeName("fx")));
+  });
+});
+
 describe("a sum on the page", () => {
-  const at = (value: number, unit: string, state: "computed" | "entered") => ({ value, unit, state, as_of: TODAY }) as unknown as Parameters<typeof markLabel>[0];
+  const at = (value: number, unit: string, state: "computed" | "entered", kind = "min", units?: true) => ({ kind, on: "action", amount: { value, unit, state, as_of: TODAY }, ...(units ? { units } : {}) }) as unknown as Parameters<typeof markLabel>[0];
   it("the site works out shows in whole units of its currency, under ten with its cents; one typed shows as typed", () => {
     expect(markLabel(at(3529.41, "usd", "computed"))).toBe("3,529 $");
     expect(markLabel(at(1250.5, "eur", "computed"))).toBe("1,251 €");
@@ -241,5 +292,10 @@ describe("a sum on the page", () => {
     expect(markLabel(at(7, "usd", "entered"))).toBe("7 $");
     expect(markLabel(at(7.5, "usd", "entered"))).toBe("7.50 $");
     expect(markLabel(at(2400.4, "nis", "computed"))).toBe("2,400 ₪");
+  });
+  it("a price per unit's bound shows its count of units, and a flat price's sum shows whole", () => {
+    expect(markLabel(at(200, "count", "computed", "min", true))).toBe("200 יחידות");
+    expect(markLabel(at(1, "count", "computed", "max", true))).toBe("יחידה אחת");
+    expect(markLabel(at(50, "usd", "entered", "flat"))).toBe("50 $");
   });
 });

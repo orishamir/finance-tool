@@ -28,8 +28,6 @@ export interface BuilderRow extends FeeRef {
   priced: boolean;
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
   sale?: StageView[];
-  /** Whether a sale is priced as a purchase is: null where the fee is not one a sale may price apart. */
-  saleSame: boolean | null;
   /** The fee's next change, and whether it is a start from free. */
   next?: NextChange;
   /** Whether the price now has a minimum and a maximum (on any side). */
@@ -68,14 +66,12 @@ function rowOf(r: DealRead, fee: Fee, i: number | null): BuilderRow {
   const sale = fee.sale ? readStages(r, stageViews(r, fees, at, fee.sale)) : undefined;
   const c = i === null ? undefined : r.reading.fees[i]!.changes[0];
   const now = stages[0]!;
-  const shape = FEE_SHAPES[fee.kind];
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
   return {
     ...refOf(fee),
     stages,
     priced: i !== null,
     ...(sale ? { sale } : {}),
-    saleSame: shape.saleApart && !ONE_SIDE[fee.kind] ? !fee.sale : null,
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },
     insideFund: insideFund(fee),

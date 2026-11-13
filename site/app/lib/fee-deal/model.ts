@@ -5,7 +5,7 @@
 import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
 import type { CalendarMonth, Deal, DealFee, DealPrice, DealStage } from "@finance-tool/engine";
 import { newId } from "../ids";
-import { engineBase, FEE_SHAPES, holdsFunds, isFeeKindId, ONE_SIDE, type FeeKindId, type FormId, type Held } from "./shapes";
+import { engineBase, FEE_SHAPES, holdsFunds, isFeeKindId, ONE_SIDE, type FeeKindId, type FieldId, type FormId, type Held } from "./shapes";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -17,6 +17,8 @@ export interface Sourced {
   strength: Strength;
   /** When the record was read, YYYY-MM-DD. */
   checked: string;
+  /** The page of the document the figure stands on, where the record gives it (a PDF's own page count). */
+  page?: number;
   effectiveFrom?: string;
   effectiveTo?: string;
   ruleIds?: string[];
@@ -39,19 +41,39 @@ export interface Num {
 export type Months = 1 | 3 | 6 | 12;
 export const MONTHS: readonly Months[] = [1, 3, 6, 12];
 
-/** A price as typed (F-110). Rates are percent; bounds and sums are shekels unless an action's `currency` names their currency. */
+/**
+ * A flat price for a small action (F-12, F-13): an action of at most `upTo` pays `amount`, both in the price's currency. Its figures are
+ * blank until typed (a switch to a flat price starts it empty), and a price whose flat price is not given states no price yet.
+ */
+export interface Flat {
+  amount: Num;
+  upTo: Num;
+}
+
+/**
+ * A price as typed (F-110). Rates and caps are percent; bounds, flat prices and sums are shekels unless the price's `currency` names
+ * their currency.
+ */
 export type Price =
   | { form: "free" }
-  /** A share of each action, `rate` percent, with a minimum and a maximum per action in `currency` (the shekel where absent). */
-  | { form: "action"; rate: Num; min?: Num; max?: Num; currency?: BoundCurrency }
+  /**
+   * A share of each action, `rate` percent, with a minimum and a maximum per action, a cap as a percent of the action (`cap`, the percent
+   * maximum) and a flat price for a small action, each sum in `currency` (the shekel where absent).
+   */
+  | { form: "action"; rate: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency }
+  /** A sum for each unit traded, `amount` in `currency`, with the same minimum, maximum, cap and flat price as a share of an action. */
+  | { form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency }
   /** A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge. */
   | { form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num }
   /** A sum in shekels every `every` months, whatever the account holds. */
   | { form: "sum"; amount: Num; every: Months }
-  /** A sum in shekels on each action. */
-  | { form: "perAction"; amount: Num };
+  /** A sum on each action, in `currency` (the shekel where absent). */
+  | { form: "perAction"; amount: Num; currency?: BoundCurrency };
 
-/** The currencies a bound may be typed in: the ones the price lists print bounds in (F-12, F-13). */
+/** A price whose sums may be in a currency other than the shekel: a share of an action, a sum per unit, a sum per action. */
+export type PricedIn = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
+
+/** The currencies a bound, a flat price, a sum per unit or a sum per action may be typed in: the ones the price lists print (F-12, F-13, F-103). */
 export type BoundCurrency = "ILS" | "USD" | "EUR" | "GBP";
 export const BOUND_CURRENCIES: readonly BoundCurrency[] = ["ILS", "USD", "EUR", "GBP"];
 
@@ -154,8 +176,21 @@ export const blankFigure = (): Num => ({ v: 0, blank: true });
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
 
-/** The figures of a price (`Num`s): its rate and bounds, or its sum. */
-const figuresOf = (p: Price): (Num | undefined)[] => (p.form === "action" || p.form === "held" ? [p.rate, p.min, p.max] : p.form === "free" ? [] : [p.amount]);
+/** The figures of a price (`Num`s): its rate or sum, its bounds, its cap and its flat price. */
+const figuresOf = (p: Price): (Num | undefined)[] => {
+  switch (p.form) {
+    case "free":
+      return [];
+    case "action":
+    case "perUnit":
+      return [mainFigure(p)!, p.min, p.max, p.cap, p.flat?.amount, p.flat?.upTo];
+    case "held":
+      return [p.rate, p.min, p.max];
+    case "sum":
+    case "perAction":
+      return [p.amount];
+  }
+};
 
 /**
  * Whether a fee holds nothing the person gave: one price with no end, no sale priced apart and no name of its own, and either every figure
@@ -183,14 +218,16 @@ export function blankPrice(form: FormId): Price {
       return { form: "sum", amount: blankFigure(), every: 1 };
     case "perAction":
       return { form: "perAction", amount: blankFigure() };
+    case "perUnit":
+      return { form: "perUnit", amount: blankFigure() };
   }
 }
 
-/** The figure that states a price: its rate, or its sum; none for a free price. */
+/** The figure that states a price: its rate, or its sum (a sum per unit's among them); none for a free price. */
 export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.form === "held" ? p.rate : p.form === "free" ? null : p.amount);
 
-/** Whether a price states a price: free, or its rate or sum typed or filled (not blank). */
-export const pricePriced = (p: Price): boolean => !mainFigure(p)?.blank;
+/** Whether a price states a price: free, or its rate or sum typed or filled (not blank), and its flat price's two figures where it has one. */
+export const pricePriced = (p: Price): boolean => !mainFigure(p)?.blank && !((p.form === "action" || p.form === "perUnit") && p.flat && (p.flat.amount.blank || p.flat.upTo.blank));
 
 /** The prices of a stage list that hold at `from` or later: a price that ended by then is past, and F-110 does not read it. */
 export const pricesFrom = (stages: readonly Stage[], from: MonthKey): Stage[] => stages.filter((s) => s.until === undefined || s.until > from);
@@ -224,28 +261,33 @@ export function newFee(kind: FeeKindId, name?: string): Fee {
 /** A typed percent as the engine's fraction: the one place the two meet. */
 export const fraction = (pct: number): number => pct / 100;
 
+/** The parts a share of an action and a sum per unit share: bounds, the cap as a fraction, and the flat price where both its figures are given. */
+const actionParts = (p: Extract<Price, { form: "action" | "perUnit" }>) => ({
+  ...(p.min ? { min: p.min.v } : {}),
+  ...(p.max ? { max: p.max.v } : {}),
+  ...(p.cap ? { cap: fraction(p.cap.v) } : {}),
+  ...(p.flat && !p.flat.amount.blank && !p.flat.upTo.blank ? { flat: { amount: p.flat.amount.v, upTo: p.flat.upTo.v } } : {}),
+});
+
 /**
- * A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`; a bound's currency goes
- * only with a bound typed, since it prices nothing else (F-110, F-112).
+ * A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`, and a cap a fraction; a
+ * share's currency goes only with a bound or a flat price typed, since it prices nothing else (F-110, F-112); a sum's always.
  */
 export function enginePrice(p: Price): DealPrice {
+  const currency = (c: BoundCurrency | undefined) => (c && c !== "ILS" ? { currency: c } : {});
   switch (p.form) {
     case "free":
       return { kind: "free" };
     case "action":
-      return {
-        kind: "action",
-        rate: fraction(p.rate.v),
-        ...(p.min ? { min: p.min.v } : {}),
-        ...(p.max ? { max: p.max.v } : {}),
-        ...((p.min || p.max) && p.currency && p.currency !== "ILS" ? { currency: p.currency } : {}),
-      };
+      return { kind: "action", rate: fraction(p.rate.v), ...actionParts(p), ...(p.min || p.max || p.flat ? currency(p.currency) : {}) };
+    case "perUnit":
+      return { kind: "perUnit", amount: p.amount.v, ...actionParts(p), ...currency(p.currency) };
     case "held":
       return { kind: "held", rate: (fraction(p.rate.v) * p.every) / p.per, everyMonths: p.every, ...(p.min ? { min: p.min.v } : {}), ...(p.max ? { max: p.max.v } : {}) };
     case "sum":
       return { kind: "sum", amount: p.amount.v, everyMonths: p.every };
     case "perAction":
-      return { kind: "perAction", amount: p.amount.v };
+      return { kind: "perAction", amount: p.amount.v, ...currency(p.currency) };
   }
 }
 
@@ -281,6 +323,10 @@ function readSourced(raw: unknown): Sourced | null {
   // a source opens as a link on the page: only an address on the web or one of the repository's documents, never a script or another scheme
   if (!str(url) || !SOURCE_URL.test(url) || url.includes("..") || !str(title) || !str(publisher) || !STRENGTHS.includes(strength as Strength) || !str(checked) || !DATE.test(checked)) return null;
   const out: Sourced = { url, title, publisher, strength: strength as Strength, checked };
+  if (raw.page !== undefined) {
+    if (!(typeof raw.page === "number" && Number.isInteger(raw.page) && raw.page > 0 && raw.page < 100_000)) return null;
+    out.page = raw.page;
+  }
   if (raw.effectiveFrom !== undefined) {
     if (!str(raw.effectiveFrom) || !DATE.test(raw.effectiveFrom)) return null;
     out.effectiveFrom = raw.effectiveFrom;
@@ -319,17 +365,46 @@ function optNum(raw: unknown, max: number): { ok: true; n?: Num } | { ok: false 
 
 const isMonths = (v: unknown): v is Months => MONTHS.includes(v as Months);
 
+/** A price's currency: absent, or one of the currencies a price may be typed in; `false` where it is anything else. The shekel is left unsaid. */
+function readCurrency(raw: unknown): { currency?: BoundCurrency } | false {
+  if (raw === undefined) return {};
+  if (!(typeof raw === "string" && CURRENCY.test(raw) && raw in currencyIndex)) return false;
+  return raw === "ILS" ? {} : { currency: raw as BoundCurrency };
+}
+
+/** A flat price: absent, or its two figures (each may still be blank); null where it is anything else. */
+function readFlat(raw: unknown): { ok: true; flat?: Flat } | { ok: false } {
+  if (raw === undefined) return { ok: true };
+  if (!isRec(raw)) return { ok: false };
+  const amount = readNum(raw.amount, SUM_MAX), upTo = readNum(raw.upTo, SUM_MAX);
+  return amount && upTo ? { ok: true, flat: { amount, upTo } } : { ok: false };
+}
+
+/**
+ * The parts a share of an action and a sum per unit share, each only where the fee's shape has its field (a cap on the trade fee alone, a
+ * flat price on the trade fee and the conversion): null where one is there that the shape has no field for, or is not what it holds.
+ */
+function readActionParts(raw: Rec, fields: readonly FieldId[]): { min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } | null {
+  const min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), flat = readFlat(raw.flat), currency = readCurrency(raw.currency);
+  if (!min.ok || !max.ok || !cap.ok || !flat.ok || !currency) return null;
+  if ((cap.n && !fields.includes("cap")) || (flat.flat && !fields.includes("flat"))) return null;
+  return { ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(cap.n ? { cap: cap.n } : {}), ...(flat.flat ? { flat: flat.flat } : {}), ...currency };
+}
+
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
   const shape = FEE_SHAPES[kind];
   if (raw.form === "free") return { form: "free" };
   if (!shape.forms.includes(raw.form as never)) return null;
+  const fields = shape.fields[raw.form as Exclude<FormId, "free">] ?? [];
   switch (raw.form) {
     case "action": {
-      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX);
-      if (!rate || !min.ok || !max.ok) return null;
-      if (raw.currency !== undefined && !(typeof raw.currency === "string" && CURRENCY.test(raw.currency) && (raw.currency as string) in currencyIndex)) return null;
-      return { form: "action", rate, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(raw.currency && raw.currency !== "ILS" ? { currency: raw.currency as BoundCurrency } : {}) };
+      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields);
+      return rate && parts ? { form: "action", rate, ...parts } : null;
+    }
+    case "perUnit": {
+      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields);
+      return amount && parts ? { form: "perUnit", amount, ...parts } : null;
     }
     case "held": {
       const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX);
@@ -341,8 +416,9 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
       return amount && isMonths(raw.every) ? { form: "sum", amount, every: raw.every } : null;
     }
     case "perAction": {
-      const amount = readNum(raw.amount, SUM_MAX);
-      return amount ? { form: "perAction", amount } : null;
+      const amount = readNum(raw.amount, SUM_MAX), currency = readCurrency(raw.currency);
+      if (!amount || !currency || (currency.currency && !fields.includes("currency"))) return null;
+      return { form: "perAction", amount, ...currency };
     }
     default:
       return null;

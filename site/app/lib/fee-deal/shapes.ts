@@ -13,13 +13,18 @@ import type { FeeBase, ProductId } from "@finance-tool/schema";
 export type FeeKindId = FeeBase | "fund_management" | "fx_spread" | "current_account" | "own";
 
 /**
- * A price's form (F-110): `free` (nothing charged), `action` (a share of each action, with a minimum and a maximum), `held` (a share of
- * what is held, charged every few months), `sum` (a sum every few months, whatever the account holds), `perAction` (a sum on each action).
+ * A price's form (F-110): `free` (nothing charged), `action` (a share of each action, with a minimum and a maximum), `perUnit` (a sum for
+ * each unit traded, with the same bounds), `held` (a share of what is held, charged every few months), `sum` (a sum every few months,
+ * whatever the account holds), `perAction` (a sum on each action).
  */
 export type FormId = DealPrice["kind"];
 
-/** A field of a price: its rate, the months the rate is for, the months between charges, its bounds, the bounds' currency, a sum. */
-export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount";
+/**
+ * A field of a price: its rate, the months the rate is for, the months between charges, its bounds, the currency of its sums, a sum (a
+ * sum per unit's among them), the percent maximum (`cap`, a share of the action that wins over the minimum, F-12) and the flat price for a
+ * small action (`flat`, its price and the sum it holds up to, F-12, F-13).
+ */
+export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount" | "cap" | "flat";
 
 export interface FeeShape {
   /** The record's fee base the fee is, which gives its cap (F-113); null for a fee no record names. */
@@ -35,11 +40,19 @@ export interface FeeShape {
 }
 
 const ACTION_ALL: readonly FieldId[] = ["rate", "min", "max", "currency"];
+/** The trade fee's share of an action: its bounds, the percent maximum and the flat price (F-12). */
+const TRADE: readonly FieldId[] = ["rate", "min", "max", "cap", "flat", "currency"];
+/** The trade fee's sum per unit (F-12's price per share), with the same parts. */
+const PER_UNIT: readonly FieldId[] = ["amount", "min", "max", "cap", "flat", "currency"];
+/** The conversion's share: its bounds and the flat price (F-13). */
+const FX: readonly FieldId[] = ["rate", "min", "max", "flat", "currency"];
 const RATE: readonly FieldId[] = ["rate"];
 const HELD: readonly FieldId[] = ["rate", "per", "every"];
 const HELD_BOUNDED: readonly FieldId[] = ["rate", "per", "every", "min", "max"];
 const SUM: readonly FieldId[] = ["amount", "every"];
 const AMOUNT: readonly FieldId[] = ["amount"];
+/** A sum per action in a currency of its own (F-103's charge in dollars for each corporate event). */
+const AMOUNT_IN: readonly FieldId[] = ["amount", "currency"];
 
 const action = (fields: readonly FieldId[], saleApart = false): FeeShape => ({ base: null, forms: ["action"], usual: "action", fields: { action: fields }, saleApart });
 const held = (fields: readonly FieldId[] = HELD): FeeShape => ({ base: null, forms: ["held"], usual: "held", fields: { held: fields }, saleApart: false });
@@ -47,16 +60,16 @@ const sum = (): FeeShape => ({ base: null, forms: ["sum"], usual: "sum", fields:
 
 /** Every fee's shape. A record base is its own `base`; the four the records do not list take the base whose cap would apply, or none. */
 export const FEE_SHAPES: Readonly<Record<FeeKindId, FeeShape>> = {
-  trade: { base: "trade", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: true },
+  trade: { base: "trade", forms: ["action", "perUnit", "perAction"], usual: "action", fields: { action: TRADE, perUnit: PER_UNIT, perAction: AMOUNT }, saleApart: true },
   spread: { ...action(RATE), base: "spread" },
   creation_redemption: { ...action(RATE, true), base: "creation_redemption" },
   load: { ...action(RATE), base: "load" },
   redemption_deduction: { ...action(RATE), base: "redemption_deduction" },
-  fx: { ...action(ACTION_ALL), base: "fx" },
+  fx: { ...action(FX), base: "fx" },
   fx_spread: { ...action(RATE), base: null },
   deposit: { ...action(RATE), base: "deposit" },
   distribution_handling: { base: "distribution_handling", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },
-  corporate_event: { base: "corporate_event", forms: ["perAction"], usual: "perAction", fields: { perAction: AMOUNT }, saleApart: false },
+  corporate_event: { base: "corporate_event", forms: ["perAction"], usual: "perAction", fields: { perAction: AMOUNT_IN }, saleApart: false },
   transfer_out: { base: "transfer_out", forms: ["perAction", "action"], usual: "perAction", fields: { perAction: AMOUNT, action: ACTION_ALL }, saleApart: false },
   exit: { base: "exit", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },
   balance: { ...held(), base: "balance" },

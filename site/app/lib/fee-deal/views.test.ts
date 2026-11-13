@@ -11,7 +11,7 @@ import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, ty
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { barredFees, dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
+import { barredFees, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { updateFee, withFigure, editPrice } from "./edit";
 import { latestSnapshots } from "../providers.server";
 import { loadTerms } from "../data.server";
@@ -175,6 +175,29 @@ describe("templates", () => {
     expect(filled.fees[0]!.id).toBe("fee-trade");
     expect(filled.fees.find((f) => f.kind === "fund_management")!.stages[0]!.price).toMatchObject({ rate: { v: 0.07 } });
   });
+  it("names a deal by its template's whole name where it fits, and otherwise cuts it between words, never inside one or an open bracket", () => {
+    expect(dealName("Interactive Brokers")).toBe("Interactive Brokers");
+    const plan = 'Interactive Brokers, IBKR Pro - Fixed: מניות ותעודות סל בארה"ב';
+    expect(dealName(plan)).toBe("Interactive Brokers, IBKR Pro - Fixed: מניות ותעודות סל…");
+    expect(dealName('מיטב גמל להשקעה אשראי ואג"ח עם מניות (עד 25% במניות) (מיטב גמל ופנסיה בע"מ)')).toBe('מיטב גמל להשקעה אשראי ואג"ח עם מניות (עד 25% במניות)…');
+    for (const n of [plan, "x".repeat(80), `${"מילה ".repeat(20)}סוף`]) expect(dealName(n).length).toBeLessThanOrEqual(NAME_MAX);
+  });
+  it("fills a charge for each corporate event abroad only on a fund that distributes (F-103)", () => {
+    const abroad = (payout: "accumulating" | "distributing"): FeeDeal => ({ ...newDeal("brokerage-account"), held: { place: "abroad", currency: "USD", payout } });
+    const kindsOf = (d: FeeDeal) => fillDeal(d, "house:one-zero", data, TODAY)!.fees.map((f) => f.kind);
+    expect(kindsOf(abroad("accumulating"))).not.toContain("corporate_event");
+    expect(kindsOf(abroad("distributing"))).toContain("corporate_event");
+  });
+  it("fills the conversion F-63 prices a house by: Interactive Brokers' automatic conversion, which charges nothing, over its spot line", () => {
+    const held = { place: "abroad", currency: "USD", payout: "accumulating" } as const;
+    const filled = fillDeal({ ...newDeal("brokerage-account"), held }, "house:interactive-brokers", data, TODAY)!;
+    const fx = filled.fees.filter((f) => f.kind === "fx");
+    expect(fx).toHaveLength(1);
+    expect(fx[0]!.stages[0]!.price).toMatchObject({ form: "action", rate: { v: 0 } });
+    expect(fx[0]!.stages[0]!.price).not.toHaveProperty("min.v");
+    const holding = data.houses.find((h) => h.id === "interactive-brokers")!.holdings["abroad:USD"] ?? data.houses.find((h) => h.id === "interactive-brokers")!.holdings.abroad!;
+    expect(holding.left).toContainEqual({ lineId: "interactive-brokers-fx-spot", why: "another-line" });
+  });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
     expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);
     const tracks = templateOptions("kupat-gemel-lehashkaa", data, TODAY);
@@ -262,7 +285,7 @@ describe("templates", () => {
 });
 
 describe("the securities account of the picture, on 11.2026", () => {
-  it("at a glance: the trade with its conversion at 0.45% and the minimum's mark at 6,000; the fund's 0.07%", () => {
+  it("at a glance: the trade with its conversion at 0.45% and no mark; the fund's 0.07%", () => {
     const g = glance(read(account()));
     expect(g.from).toBe("2026-11");
     const [trade, held] = g.throughout;
@@ -271,9 +294,6 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(trade!.rates).toHaveLength(1);
     expect(v(trade!.rates[0]!.rate)).toBeCloseTo(0.45, 10);
     expect(trade!.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-    expect(trade!.marks).toHaveLength(1);
-    expect(trade!.marks[0]).toMatchObject({ kind: "min", on: "action", currency: "ILS" });
-    expect(v(trade!.marks[0]!.amount)).toBeCloseTo(6000, 6);
     expect(held!.on).toEqual({ on: "held" });
     // custody joins what is held from 03.2028, so the fund's 0.07% is not what is held costs throughout: no rate here
     expect(held!.fees.map((f) => f.kind)).toEqual(["fund_management"]);
@@ -298,7 +318,6 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(now.rates[0]!.fees.map((f) => f.kind)).toEqual(["trade", "fx", "fx_spread"]);
     expect(v(now.rates[0]!.rate)).toBeCloseTo(0.25 + 0.2 + 0.1, 10);
     expect(now.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-    expect(now.marks).toEqual([]);
   });
   it("at a glance: gives a group of fees that change its rate today, also where a fee of it is free today", () => {
     const g = glance(read(account()));
@@ -330,11 +349,10 @@ describe("the securities account of the picture, on 11.2026", () => {
   it("in the builder: a row per fee, the minimum said, custody's start, the fund's fee inside the fund, the suggestions", () => {
     const b = builder(read(account()));
     expect(b.rows.map((r) => r.kind)).toEqual(["trade", "custody", "fixed_period", "fx", "fund_management"]);
-    expect(b.rows[0]).toMatchObject({ bounds: { min: true, max: false }, saleSame: true });
+    expect(b.rows[0]).toMatchObject({ bounds: { min: true, max: false } });
     expect(b.rows[1]!.next).toEqual({ at: "2028-03", change: "starts" });
     expect(b.rows[1]!.stages).toHaveLength(2);
     expect(b.rows[4]!.insideFund).toBe(true);
-    expect(b.rows[3]!.saleSame).toBeNull();
     expect(b.suggestions.usual).toEqual(["transfer_out"]);
     expect(b.suggestions.rarer).toEqual(["fx_spread", "corporate_event", "current_account", "own"]);
     const paying = builder(read({ ...account(), held: { place: "abroad", currency: "USD", payout: "distributing" } }));
@@ -354,7 +372,11 @@ describe("the securities account of the picture, on 11.2026", () => {
     const meet = marks.find((s) => s.kind === "mark" && s.mark.kind === "meet")!;
     expect(meet.periods).toEqual(["2028-03"]);
     if (meet.kind === "mark" && meet.mark.kind === "meet") expect(v(meet.mark.amount)).toBeCloseTo(30000, 6);
-    expect(r.statements.some((s) => s.kind === "no-max" && s.fee.kind === "trade")).toBe(true);
+    expect(r.statements.some((s) => s.kind === "no-max" && s.fee.kind === "trade" && s.on === "action")).toBe(true);
+    // a sum per unit with a minimum and no maximum grows with each action, not with what is held
+    const perUnit = account();
+    perUnit.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "perUnit", amount: typed(0.005), min: typed(1), currency: "USD" } }] }];
+    expect(readingOf(read(perUnit), data.fx).statements.find((s) => s.kind === "no-max")).toMatchObject({ on: "action" });
 
     const action = r.curves.find((c) => c.on === "action")!;
     expect(action).toMatchObject({ action: "trade", side: "all", periods: ["2026-11", "2027-03", "2028-03"] });
@@ -476,7 +498,7 @@ describe("a track picked in the builder, on the deal on screen", () => {
     const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
     const t = templateOf(deal, `track:${a.id}`, data, TODAY)!;
     expect(next.id).toBe(deal.id);
-    expect(next.name).toBe(t.name.slice(0, NAME_MAX));
+    expect(next.name).toBe(dealName(t.name));
     expect(next.template).toEqual({ id: `track:${a.id}`, name: t.name });
     expect(next.fees.map(({ id: _id, ...f }) => f)).toEqual(t.fees);
     expect(next.fees.every(untouched)).toBe(true);
@@ -486,7 +508,7 @@ describe("a track picked in the builder, on the deal on screen", () => {
     const next = pickTrack(first, `track:${b.id}`, data, TODAY)!;
     const t = templateOf(first, `track:${b.id}`, data, TODAY)!;
     expect(next.id).toBe(first.id);
-    expect(next.name).toBe(t.name.slice(0, NAME_MAX));
+    expect(next.name).toBe(dealName(t.name));
     expect(next.template).toEqual({ id: `track:${b.id}`, name: t.name });
     expect(next.fees.map(({ id: _id, ...f }) => f)).toEqual(t.fees);
     expect(next.fees.map((f) => f.id)).toEqual(first.fees.map((f) => f.id));
@@ -517,7 +539,7 @@ describe("a track picked in the builder, on the deal on screen", () => {
     expect(next.fees).toEqual(changed.fees);
     expect(next.template).toMatchObject({ id: `track:${b.id}`, feesKept: true });
     // the name the first track gave is still the template's, so it follows the track picked
-    expect(next.name).toBe(templateOf(first, `track:${b.id}`, data, TODAY)!.name.slice(0, NAME_MAX));
+    expect(next.name).toBe(dealName(templateOf(first, `track:${b.id}`, data, TODAY)!.name));
     const added = { ...first, fees: [...first.fees, { id: "fee-own", kind: "own" as const, name: "x", stages: [{ price: { form: "free" as const } }] }] };
     expect(pickTrack(added, `track:${b.id}`, data, TODAY)!.fees).toEqual(added.fees);
   });
@@ -564,7 +586,7 @@ describe("the track picker's rows", () => {
     // the full name, with its company after it, as the template names it; never the short name the picker's row shows
     const full = templateOf(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!.name;
     expect(full.startsWith(o.name)).toBe(true);
-    expect(next.name).toBe(full.slice(0, NAME_MAX));
+    expect(next.name).toBe(dealName(full));
     expect(next.template?.name).toBe(full);
   });
 });

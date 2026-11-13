@@ -61,8 +61,9 @@ export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
  * A typed price in its cap's unit (F-113's `x`), and whether it was `converted` from another period than the cap's by F-111's plain
  * multiple: a free price is 0; a share of what is held against a yearly cap is its yearly rate (`rate × 12 / per`, converted where `per`
  * is not a year), and against a cap per period its share of each charge (`rate × every / per`, converted where the two differ); a share of
- * an action against a share of a deposit or a trade is its rate; a sum on each action against a sum per transfer or trade is the sum; a
- * sum per period against a monthly sum is its month's part (converted where the period is not a month). Where the cap is 0 the unit does
+ * an action against a share of a deposit or a trade is its rate; a sum in shekels on each action against a sum per transfer or trade is the
+ * sum; a sum per period against a monthly sum is its month's part (converted where the period is not a month). A sum per unit, and a sum
+ * per action in another currency, state no figure in a cap's unit. Where the cap is 0 the unit does
  * not matter: a price that charges anything (F-110), a rate of zero with a minimum among them, is above it, so `x` is its main figure, or
  * its minimum where the rate is zero, and 0 for a price that charges nothing. Undefined where the price's form is not one the cap's unit
  * states.
@@ -70,7 +71,7 @@ export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
 export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: number; converted: boolean } | undefined {
   const as = (x: number, converted = false) => ({ x, converted });
   if (p.form === "free") return as(0);
-  if (cap === 0) return as(chargesNothing(enginePrice(p)) ? 0 : mainValue(p) > 0 ? mainValue(p) : (p.form === "action" || p.form === "held") && p.min ? p.min.v : 0);
+  if (cap === 0) return as(chargesNothing(enginePrice(p)) ? 0 : mainValue(p) > 0 ? mainValue(p) : (p.form === "action" || p.form === "perUnit" || p.form === "held") && p.min ? p.min.v : (p.form === "action" || p.form === "perUnit") && p.flat ? p.flat.amount.v : 0);
   switch (unit) {
     case "pct_per_year":
       return p.form === "held" ? as((p.rate.v * 12) / p.per, p.per !== 12) : undefined;
@@ -82,7 +83,7 @@ export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: num
       return p.form === "action" ? as(p.rate.v) : undefined;
     case "nis_per_transfer":
     case "nis_per_trade":
-      return p.form === "perAction" ? as(p.amount.v) : undefined;
+      return p.form === "perAction" && (p.currency ?? "ILS") === "ILS" ? as(p.amount.v) : undefined;
     case "nis_per_month":
       return p.form === "sum" ? as(p.amount.v / p.every, p.every !== 1) : undefined;
     default:

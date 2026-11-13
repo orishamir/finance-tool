@@ -1,7 +1,6 @@
 // The end of the fee page's bar: the deals this device keeps (open one, start a new one, rename one, or delete one at once, which the page
-// can undo), each row with its product and the day it was saved under its name; a link to the deal on screen once it has a kind; and the
-// template picker's button where the deal's kind has templates, worded as the picker it opens is titled. A control that could do nothing
-// is not drawn: no list before a deal is saved. Copying the link says so on its button for a moment; where the browser refuses the
+// can undo), each row with its product and the day it was saved under its name; and a link to the deal on screen once it has a kind. A
+// control that could do nothing is not drawn: no list before a deal is saved. Copying the link says so on its button for a moment; where the browser refuses the
 // clipboard, the page shows the address to copy by hand.
 import { useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
@@ -44,7 +43,7 @@ export function useCopyLink() {
 /** A saved deal's line under its name in the list: its product, and the day it was last saved. */
 export const dealMeta = (d: FeeDeal, kindName: string | null): string => [kindName ?? copy.bar.namePlaceholder(null), d.saved ? `${w.savedOn}${fmt.date(d.saved)}` : null].filter(Boolean).join(" · ");
 
-export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, onRename, onDelete, onTemplates, templateWords }: {
+export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, onRename, onDelete }: {
   deal: FeeDeal;
   saved: readonly FeeDeal[];
   kindName: (d: FeeDeal) => string | null;
@@ -54,10 +53,6 @@ export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, o
   onNew: () => void;
   onRename: (id: string, name: string) => void;
   onDelete: (id: string) => void;
-  /** Opens the template picker from the button tapped (its anchor), where the deal's kind has templates. */
-  onTemplates: ((from: HTMLElement) => void) | null;
-  /** The template button's words: the picker's title. */
-  templateWords: string;
 }) {
   return (
     <>
@@ -88,11 +83,6 @@ export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, o
             </span>
             <span>{copied ? w.copied : w.link}</span>
           </span>
-        </Button>
-      )}
-      {onTemplates && (
-        <Button variant="outline" onClick={(e) => onTemplates(e.currentTarget)}>
-          {templateWords}
         </Button>
       )}
     </>

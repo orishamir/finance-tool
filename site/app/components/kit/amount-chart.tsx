@@ -1,6 +1,7 @@
 // What something costs at each amount of shekels (the fee page's two curves, method F-112): the parts as stacked areas from zero, the
 // amount left to right, each part's name at its band's end, and the amounts where the cost bends as points on the top line with a dashed
-// line down to the axis. A pointer or a tap on the plot reads every part and their sum at an amount. Own SVG; the motion is the kit's glide.
+// line down to the axis, each with its amount over it where that has room (charts.md, "Labels"). A pointer or a tap on the plot reads every
+// part and their sum at an amount. Own SVG; the motion is the kit's glide.
 import { useState, type PointerEvent, type ReactNode } from "react";
 import { scaleLinear } from "d3-scale";
 import { fmt } from "../../lib/format";
@@ -40,9 +41,16 @@ const SWATCH_GAP = 6;
 const NAME_GAP = 18;
 /** The narrowest plot that still takes the names at its end; narrower, the names stand in a legend above the chart. */
 const MIN_PLOT = 200;
-/** Over a mark's point, its label's baseline; a second label that would meet the first stands a row higher. */
+/** Over a mark's point, its label's baseline; a label with something in its way stands a row higher, up to `MARK_ROWS` rows. */
 const MARK_LABEL = 10;
 const MARK_ROW = 16;
+const MARK_ROWS = 4;
+/** How far round a mark's point no label may stand (its 4.5 px dot and its 2 px ring, and air). */
+const POINT_CLEAR = 7;
+/** The least room between a mark's label and another label or the value axis's words. */
+const LABEL_GAP = 4;
+/** The furthest a mark's label may stand from its point, joined to it by a line; further, it gives way. */
+const JOIN_MAX = 40;
 /** How far a line of chart text reaches above and below its baseline. */
 const TEXT_UP = 11;
 const TEXT_DOWN = 3;
@@ -68,30 +76,45 @@ function stacked(amounts: readonly number[], bands: readonly AmountBand[]): Reco
 }
 
 
+type Box = { left: number; right: number; top: number; bottom: number };
+const meet = (a: Box, b: Box, gap: number) => a.left < b.right + gap && b.left < a.right + gap && a.top < b.bottom + gap && b.top < a.bottom + gap;
+
 /**
- * Where each mark's label stands, in the order of the marks along the plot: over its point (`cx`, `cy`; `half` its half width), held
- * inside the plot, moved past the end of the value axis's words where it would meet one, and a row higher where it would then meet a
- * label already placed in its row; two rows at most. The axis words are checked at the row the label ends in.
+ * Where each mark's label stands, in the order of the marks along the plot (charts.md, "Labels": labels are never stacked on each other or
+ * on the axis's words; a label that cannot stand at its mark is joined to it by a short line, or gives way). Its places, nearest first:
+ * over its point (`cx`, `cy`; `half` its half width) or beside it, after it along the line, each a row higher in turn, up to `MARK_ROWS`
+ * rows and never above the chart's top; held inside the plot and moved past the end of the value axis's words where it would meet one. A
+ * place is free where the label meets no word of the axis, no mark's point and no label already placed, and stands no further than
+ * `JOIN_MAX` from its point. `lx`, `by`: the label's middle and its baseline; one not right at its point is `joined` to it by a line. A
+ * label with no free place gives way (null): its point stays, and the points beside the chart say its sum.
  */
-export function markLabels(points: readonly { cx: number; cy: number; half: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number): { lx: number; row: number }[] {
-  const out: { lx: number; row: number; half: number }[] = [];
-  for (const { cx, cy, half } of points) {
-    const at = (row: number) => {
-      const by = cy - MARK_LABEL - row * MARK_ROW;
-      let lx = Math.max(half, Math.min(plotR - half, cx));
-      for (const a of axisWords) if (lx - half < a.right + 4 && by - TEXT_UP < a.bottom && by + TEXT_DOWN > a.top) lx = Math.min(plotR - half, a.right + 4 + half);
-      return lx;
-    };
-    const meets = (lx: number, row: number) => out.some((p) => p.row === row && Math.abs(p.lx - lx) < p.half + half + 6);
-    let row = 0;
-    let lx = at(0);
-    if (meets(lx, 0)) {
-      row = 1;
-      lx = at(1);
+export function markLabels(points: readonly { cx: number; cy: number; half: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number): ({ lx: number; by: number; joined: boolean } | null)[] {
+  const axis: Box[] = axisWords.map((a) => ({ left: 0, right: a.right, top: a.top, bottom: a.bottom }));
+  const dots: Box[] = points.map((p) => ({ left: p.cx - POINT_CLEAR, right: p.cx + POINT_CLEAR, top: p.cy - POINT_CLEAR, bottom: p.cy + POINT_CLEAR }));
+  const taken: Box[] = [];
+  return points.map(({ cx, cy, half }) => {
+    const box = (lx: number, by: number): Box => ({ left: lx - half, right: lx + half, top: by - TEXT_UP, bottom: by + TEXT_DOWN });
+    // how far a label's box stands from its point: nothing where the point is under it or at its side
+    const away = (b: Box) => Math.hypot(Math.max(0, b.left - cx, cx - b.right), Math.max(0, b.top - cy, cy - b.bottom));
+    for (let row = 0; row < MARK_ROWS; row++) {
+      // over the point, then beside it (its baseline a little under the point's middle, so the words sit level with it)
+      for (const [x0, by] of [
+        [cx, cy - MARK_LABEL - row * MARK_ROW],
+        [cx + POINT_CLEAR + 2 + half, cy + 4 - row * MARK_ROW],
+      ] as const) {
+        if (by - TEXT_UP < 0) continue;
+        let lx = Math.max(half, Math.min(plotR - half, x0));
+        for (const a of axis) if (meet(box(lx, by), a, LABEL_GAP)) lx = a.right + LABEL_GAP + half;
+        const b = box(lx, by);
+        if (b.right > plotR || away(b) > JOIN_MAX) continue;
+        if (axis.some((a) => meet(b, a, LABEL_GAP - 1)) || dots.some((d) => meet(b, d, 0)) || taken.some((t) => meet(b, t, LABEL_GAP))) continue;
+        taken.push(b);
+        // a label right over its point or level beside it needs no line; one higher, or moved along the line off its point, is joined to it
+        return { lx, by, joined: away(b) > MARK_LABEL };
+      }
     }
-    out.push({ lx, row, half });
-  }
-  return out.map(({ lx, row }) => ({ lx, row }));
+    return null;
+  });
 }
 
 /**
@@ -164,7 +187,7 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
     .map((t) => ({ right: 2 + chartTextWidth(fmt.compactNisAxis(t.value), CHART_TEXT_PX), top: y(t.value) - 4 - TEXT_UP, bottom: y(t.value) - 4 + TEXT_DOWN }));
   const sorted = [...marks].sort((p, q) => p.at - q.at);
   const points = sorted.map((m) => ({ cx: x(m.at), cy: y(topOf(m.at)), half: chartTextWidth(m.label, CHART_TEXT_PX) / 2 + 2 }));
-  const placed = markLabels(points, axisWords, plotR).map((l, i) => ({ m: sorted[i]!, cx: points[i]!.cx, cy: points[i]!.cy, ...l }));
+  const placed = markLabels(points, axisWords, plotR).map((l, i) => ({ m: sorted[i]!, cx: points[i]!.cx, cy: points[i]!.cy, label: l }));
 
   // the pointer reads an amount: the chart's steps are a hundredth of its end, rounded to a nice step
   const step = (() => {
@@ -226,14 +249,25 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
               </g>
             ))}
           {placed.map((p) => (
-            <g key={p.m.id}>
-              <line x1={p.cx} x2={p.cx} y1={p.cy} y2={base} className="stroke-foreground" strokeWidth={1} strokeDasharray="3 4" />
-              <circle cx={p.cx} cy={p.cy} r={4.5} className="fill-foreground stroke-card" strokeWidth={2} data-mark="point" />
-              <text x={p.lx} y={p.cy - MARK_LABEL - p.row * MARK_ROW} textAnchor="middle" className="fill-foreground stroke-card text-xs font-semibold tabular-nums [paint-order:stroke]" strokeWidth={3}>
-                {p.m.label}
-              </text>
-            </g>
+            <line key={`${p.m.id}:down`} x1={p.cx} x2={p.cx} y1={p.cy} y2={base} className="stroke-foreground" strokeWidth={1} strokeDasharray="3 4" />
           ))}
+          {placed.map(
+            (p) =>
+              p.label?.joined && (
+                <line key={`${p.m.id}:join`} x1={p.cx} y1={p.cy - 5} x2={p.label.lx} y2={p.label.by + TEXT_DOWN + 1} className="stroke-chart-text" strokeWidth={1} />
+              ),
+          )}
+          {placed.map((p) => (
+            <circle key={`${p.m.id}:point`} cx={p.cx} cy={p.cy} r={4.5} className="fill-foreground stroke-card" strokeWidth={2} data-mark="point" />
+          ))}
+          {placed.map(
+            (p) =>
+              p.label && (
+                <text key={`${p.m.id}:label`} x={p.label.lx} y={p.label.by} textAnchor="middle" className="fill-foreground stroke-card text-xs font-semibold tabular-nums [paint-order:stroke]" strokeWidth={3}>
+                  {p.m.label}
+                </text>
+              ),
+          )}
           {at !== null && <line x1={x(at)} x2={x(at)} y1={TOP} y2={base} className="stroke-chart-crosshair" strokeWidth={1.5} />}
         </svg>
         {at !== null && (

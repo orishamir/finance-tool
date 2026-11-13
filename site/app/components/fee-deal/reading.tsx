@@ -1,20 +1,21 @@
-// The section "קוראים את העסקה" under the columns (method §10.6, `readingOf`): the deal period after period (F-110), the two curves of
-// F-112 where the library draws them, the points where the deal changes behaviour (F-112), and what the law says of each fee with a cap
-// line (F-113). The headlines and the choices are worked out in lib/fee-deal/reading-heads.ts; this file words and draws them.
+// The section "קוראים את העסקה" under the columns (method §10.6, `readingOf`): the deal at a glance (glance.tsx) beside the points where the
+// deal changes behaviour (F-112), the deal period after period (F-110), the two curves of F-112 where the library draws them, and what the
+// law says of each fee with a cap line (F-113). The headlines and the choices are worked out in lib/fee-deal/reading-heads.ts; this file words and draws them.
 import { useState, type ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
-import { feeDeal as copy } from "../../copy";
+import { feeDeal as copy, values as valuesCopy } from "../../copy";
 import type { FxSnapshot } from "../../lib/fx";
 import type { SiteValue } from "../../lib/value";
 import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
-import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from "../../lib/fee-deal/reading";
+import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
-import { AmountChart, Card, ChoiceChips, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
+import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen } from "./links";
-import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName, sumDisplay } from "./words";
+import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, refName, sumDisplay, upToDisplay } from "./words";
+import { sumUnit } from "../../lib/fee-deal/values";
 
 const w = copy.read;
 
@@ -237,8 +238,16 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
   }
 }
 
-/** A mark's label on the curve: its sum as the headline says it, in the bound's currency (the curve's place is that sum in shekels, F-84). */
-export const markLabel = (v: SiteValue): string => sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
+/**
+ * A mark's label on the curve: its sum as the headline says it, in the bound's currency (the curve's place is that sum in shekels, F-84),
+ * or its count of units for a price per unit's bound ("200 יחידות").
+ */
+export const markLabel = (mark: MarkView): string => {
+  const v = mark.amount;
+  if ((mark.kind === "min" || mark.kind === "max") && mark.units) return countPhrase(v.value as number, copy.marks.units);
+  if (mark.kind === "flat") return upToDisplay(v)(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
+  return sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
+};
 
 /** The line beside a curve with a bound in another currency: the rate of F-84 it enters the curve at, and its day. */
 function RateLine({ currency, rate, fx }: { currency: string; rate: Curve["rates"][number]["rate"]; fx: FxSnapshot | null }) {
@@ -253,8 +262,41 @@ function RateLine({ currency, rate, fx }: { currency: string; rate: Curve["rates
   );
 }
 
-function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: Reading; saved: boolean; fx: FxSnapshot | null }) {
+/**
+ * The unit's price a curve of a price per unit needs (F-112), a chart's field: a plain number that starts empty, in the currency the reading
+ * asks it in; beside it, why the chart needs it. Until it is given the curve is not drawn.
+ */
+function UnitPriceField({ unit, fee, value, onChange }: { unit: NonNullable<Reading["unitPrice"]>; fee: string; value: number | null; onChange: (n: number | null) => void }) {
   const c = w.curves;
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <span aria-hidden="true" className="text-sm">
+        {c.unitPrice}
+      </span>
+      <NumberField
+        compact
+        fit
+        agorot
+        optional
+        start={null}
+        label={c.unitPrice}
+        unit={sumUnit(unit.currency)}
+        value={value}
+        isEntered={value !== null}
+        validate={(n) => (n > 0 ? null : valuesCopy.errors.positive)}
+        onCommit={onChange}
+        onReset={() => onChange(null)}
+      />
+      <span className="text-sm text-muted-foreground">{fill(c.unitWhy, { name: fee })}</span>
+    </div>
+  );
+}
+
+function CurveCard({ group, reading, saved, fx, unitPrice, onUnitPrice }: { group: CurveGroup; reading: Reading; saved: boolean; fx: FxSnapshot | null; unitPrice: number | null; onUnitPrice: (n: number | null) => void }) {
+  const c = w.curves;
+  // the trade's curve of a price per unit: drawn once the unit's price is given, waiting for it until then
+  const perUnit = group.undrawn.find((u) => u.why === "unit-price") ?? null;
+  const unitFee = perUnit || group.curves.some((x) => UNIT_PRICE_KEY in x.inputs) ? unitFeeOf(reading, group) : null;
   const choices = curveChoices(group, reading.periods);
   const current = reading.periods.find((p) => p.current)?.from ?? null;
   const [picked, setPicked] = useState<MonthKey | null>(null);
@@ -285,11 +327,12 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
       <PanelHead kicker={kicker} end={choice}>
         {curve && <CurveHeadline head={curveHead(curve)} noun={noun} above={c.head.minRate.above[group.on === "held" ? "held" : (group.action ?? "none")] ?? ""} of={copy.glance.of[group.on === "held" ? (saved ? "heldSaved" : "held") : `action:${group.action ?? "none"}`] ?? ""} />}
       </PanelHead>
+      {reading.unitPrice && unitFee && <UnitPriceField unit={reading.unitPrice} fee={unitFee} value={unitPrice} onChange={onUnitPrice} />}
       {curve && (
         <AmountChart
           amounts={curve.amounts}
           bands={curve.series.map((s) => ({ id: s.fee.fee, label: refName(s.fee), fill: feeColour(s.fee.kind).fill, stroke: feeColour(s.fee.kind).stroke, swatch: feeColour(s.fee.kind).bg, values: s.costs }))}
-          marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: markLabel(curve.marks[curve.at.indexOf(at)]!.amount) }))}
+          marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: markLabel(curve.marks[curve.at.indexOf(at)]!) }))}
           xTitle={c.x[xKey] ?? ""}
           tip={(a) => (group.on === "held" ? c.tipHeld(fmt.nisWhole(a)) : c.tipAction(noun, fmt.nisWhole(a)))}
           total={c.total}
@@ -302,32 +345,132 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
         </p>
       )}
       {curve?.rates.map((r) => <RateLine key={r.currency} currency={r.currency} rate={r.rate} fx={fx} />)}
-      {group.undrawn.map((u) => (
-        <p key={u.currency} className="text-sm text-muted-foreground">
-          {c.undrawn(copy.panel.currencies[u.currency] ?? u.currency)}
-        </p>
-      ))}
+      {group.undrawn
+        .filter((u) => u.why === "rate")
+        .map((u) => (
+          <p key={u.currency} className="text-sm text-muted-foreground">
+            {c.undrawn(copy.panel.currencies[u.currency] ?? u.currency)}
+          </p>
+        ))}
     </Card>
   );
+}
+
+/** The name of the fee on a curve that is priced per unit, from the reading's first period with it; null where none is. */
+function unitFeeOf(reading: Reading, group: CurveGroup): string | null {
+  for (const p of reading.periods)
+    for (const r of p.rows) {
+      const price = group.side === "sell" ? (r.sale?.price ?? r.price) : r.price;
+      if (price.form === "perUnit") return refName(r);
+    }
+  return null;
 }
 
 // ---------------------------------------------------------------- the points
 
 const swatchOf = (s: Statement) => (s.kind === "mark" ? (s.mark.kind === "meet" ? s.mark.fees[0]!.kind : s.mark.fee.kind) : s.fee.kind);
 
+/** A mark's sum: a count of units for a price per unit's bound ("200 יחידות"), else a sum in its currency. */
+function MarkAmount({ mark, value }: { mark: MarkView; value: SiteValue }) {
+  if ((mark.kind === "min" || mark.kind === "max") && mark.units) return <Num value={value} display={(n) => countPhrase(n, copy.marks.units)} />;
+  return <Fig value={value} />;
+}
+
+/**
+ * A part of a price and the stretch of the amount it decides (F-112): "{the part} של {name}, {its figure}, קובע בכל {noun} עד {amount}.",
+ * from where it starts where that is above nothing, above the maximum's sum, and for a price per unit's bounds a count of units ("של עד
+ * 200 יחידות"). The noun is the fee's own action: a conversion's mark is said on each conversion.
+ */
 function MarkSentence({ mark }: { mark: MarkView }) {
   const p = w.points;
   if (mark.kind === "meet") return <MeetSentence mark={mark} />;
-  const words = mark.on === "held" ? (mark.kind === "min" ? p.minHeld : p.maxHeld) : mark.kind === "min" ? p.minAction : p.maxAction;
-  // a mark names its fee, not its action: the bound is said on "each action" of that fee
-  const noun = copy.marks.noun.none!;
+  if (mark.on === "held") {
+    const words = mark.kind === "min" ? p.minHeld : p.maxHeld;
+    return (
+      <>
+        {fill(words.before, { name: refName(mark.fee) })}
+        <Fig value={mark.bound} />
+        {words.middle}
+        <Fig value={mark.amount} />
+        {words.after}
+      </>
+    );
+  }
+  const noun = copy.marks.feeNoun[mark.fee.kind] ?? copy.marks.noun.none!;
+  const of = copy.price.of[mark.fee.kind] ?? copy.price.of.default;
+  const units = mark.kind !== "cap" && mark.kind !== "flat" && !!mark.units;
+  let stretch: ReactNode;
+  // a bound in units past the sum where the percent maximum or the flat price stops holds only above that sum: both are said
+  if (units && mark.kind === "min" && mark.from)
+    stretch = (
+      <>
+        {p.unitsFrom.above}
+        <Fig value={mark.from} />
+        {p.unitsFrom.upTo}
+        <MarkAmount mark={mark} value={mark.amount} />
+      </>
+    );
+  else if (units) stretch = <>{mark.kind === "max" ? p.unitsAbove : p.unitsUpTo}<MarkAmount mark={mark} value={mark.amount} /></>;
+  else if (mark.kind === "max") stretch = <>{p.above}<Fig value={mark.amount} /></>;
+  else {
+    const to = mark.kind === "flat" ? <Num value={mark.amount} display={upToDisplay(mark.amount)} /> : <Fig value={mark.amount} />;
+    const from = mark.kind !== "flat" ? mark.from : undefined;
+    stretch = from ? (
+      <>
+        <Fig value={from} prefix={p.from} />
+        {p.untilAfter}
+        {to}
+      </>
+    ) : (
+      <>
+        {p.upTo}
+        {to}
+      </>
+    );
+  }
   return (
     <>
-      {fill(words.before, { name: refName(mark.fee), side: sideWord(mark.side) })}
-      <Fig value={mark.bound} />
-      {fill(words.middle, { noun })}
-      <Fig value={mark.amount} />
-      {words.after}
+      {fill(p.part[mark.kind]!, { name: refName(mark.fee), side: sideWord(mark.side) })}
+      {mark.kind === "cap" ? (
+        <>
+          <Num value={mark.bound} /> {of}
+        </>
+      ) : (
+        <Fig value={mark.bound} />
+      )}
+      {fill(p.decides, { noun })}
+      {stretch}
+      {p.end}
+    </>
+  );
+}
+
+/**
+ * A sum per unit with a minimum and no maximum: above the minimum's count of units the fee grows with the units, up to its percent
+ * maximum where it has one ("מעל 200 יחידות העמלה גדלה עם מספר היחידות, ולא עוברת 1% מהפעולה"); null for any other price, which the
+ * general words say.
+ */
+function noMaxUnits(statement: Extract<Statement, { kind: "no-max" }>, reading: Reading): ReactNode {
+  const p = w.points.noMaxUnits;
+  const row = reading.periods.find((x) => x.from === statement.periods[0])?.rows.find((r) => r.fee === statement.fee.fee);
+  const price = statement.side === "sell" ? (row?.sale?.price ?? row?.price) : row?.price;
+  if (price?.form !== "perUnit") return null;
+  const min = reading.statements.find(
+    (s): s is Extract<Statement, { kind: "mark" }> => s.kind === "mark" && s.mark.kind === "min" && s.mark.units === true && s.mark.fee.fee === statement.fee.fee && s.mark.side === statement.side,
+  )?.mark;
+  if (!min || min.kind !== "min") return null;
+  return (
+    <>
+      {fill(p.before, { name: refName(statement.fee), side: sideWord(statement.side) })}
+      <MarkAmount mark={min} value={min.amount} />
+      {p.grows}
+      {price.figures.cap && (
+        <>
+          {p.cap}
+          <Num value={price.figures.cap} /> {copy.price.of[statement.fee.kind] ?? copy.price.of.default}
+        </>
+      )}
+      {p.end}
     </>
   );
 }
@@ -337,7 +480,7 @@ function StatementLine({ statement, reading }: { statement: Statement; reading: 
   const spans = spansOf(statement.periods, reading.periods);
   let body: ReactNode;
   if (statement.kind === "mark") body = <MarkSentence mark={statement.mark} />;
-  else if (statement.kind === "no-max") body = fill(p.noMax, { name: refName(statement.fee), side: sideWord(statement.side) });
+  else if (statement.kind === "no-max") body = noMaxUnits(statement, reading) ?? fill(p.noMax, { name: refName(statement.fee), side: sideWord(statement.side) });
   else {
     const row = reading.periods.find((x) => x.from === statement.periods[0])?.rows.find((r) => r.fee === statement.fee.fee);
     const price = row?.price;
@@ -433,36 +576,48 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
 
 // ---------------------------------------------------------------- the section
 
-/** The reading's cards. `saved`: the deal's product saves, so a share of what is held reads "what has built up". */
-export function ReadingCards({ reading, saved, fx }: { reading: Reading; saved: boolean; fx: FxSnapshot | null }) {
-  const groups = curveGroups(reading);
-  const points = reading.statements.length > 0;
-  const law = reading.law.length > 0;
+/**
+ * The reading's cards, in the order they are read: the summary (`glance`, the deal at a glance) beside the points where the deal changes
+ * behaviour, then the deal period after period, the curves, and the law. No row leaves half of it empty where another card can fill it:
+ * the summary or the points alone take the law card beside them, else one curve does. `saved`: the deal's product saves, so a share of
+ * what is held reads "what has built up". `read`: whether any fee of the deal is read; where none is, the summary stands alone.
+ */
+export function ReadingCards({ reading, saved, fx, glance, read = true, unitPrice = null, onUnitPrice = () => {} }: {
+  reading: Reading;
+  saved: boolean;
+  fx: FxSnapshot | null;
+  glance?: ReactNode;
+  read?: boolean;
+  /** The unit's price typed beside a curve of a price per unit (`readingOf`'s), and what typing it does. */
+  unitPrice?: number | null;
+  onUnitPrice?: (n: number | null) => void;
+}) {
+  const groups = read ? curveGroups(reading) : [];
+  const points = read && reading.statements.length > 0 ? <PointsCard reading={reading} /> : null;
+  const law = read && reading.law.length > 0 ? <LawCard reading={reading} saved={saved} /> : null;
+  const first = [glance, points].filter(Boolean);
+  // the law card fills the first row where it holds one card, else the curves' row where it holds one curve, else it stands alone
+  const lawFirst = first.length === 1 && !!law;
+  const lawCurve = !lawFirst && groups.length === 1 && !!law;
   return (
     <TypedPlain className="flex flex-col gap-4">
-      {reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
-      {/* one chart leaves no half row empty: the points card (else the law card) stands beside it, and what is left takes the next row */}
-      {groups.length === 1 ? (
-        <>
-          <div className="grid items-start gap-4 lg:grid-cols-2">
-            <CurveCard group={groups[0]!} reading={reading} saved={saved} fx={fx} />
-            {points ? <PointsCard reading={reading} /> : law && <LawCard reading={reading} saved={saved} />}
-          </div>
-          {points && law && <LawCard reading={reading} saved={saved} />}
-        </>
-      ) : groups.length > 1 ? (
+      {first.length > 0 && (
         <div className="grid items-start gap-4 lg:grid-cols-2">
-          {groups.map((g) => (
-            <CurveCard key={g.key} group={g} reading={reading} saved={saved} fx={fx} />
-          ))}
-        </div>
-      ) : null}
-      {groups.length !== 1 && (points || law) && (
-        <div className={cx("grid items-start gap-4", points && law && "lg:grid-cols-2")}>
-          {points && <PointsCard reading={reading} />}
-          {law && <LawCard reading={reading} saved={saved} />}
+          {glance && <Card className="flex flex-col gap-4">{glance}</Card>}
+          {points}
+          {lawFirst && law}
         </div>
       )}
+      {read && reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
+      {groups.length > 0 && (
+        <div className="grid items-start gap-4 lg:grid-cols-2">
+          {groups.map((g) => (
+            <CurveCard key={g.key} group={g} reading={reading} saved={saved} fx={fx} unitPrice={unitPrice} onUnitPrice={onUnitPrice} />
+          ))}
+          {lawCurve && law}
+        </div>
+      )}
+      {!lawFirst && !lawCurve && law}
     </TypedPlain>
   );
 }

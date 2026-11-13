@@ -32,7 +32,8 @@ describe("a saved deal in the list", () => {
 describe("what a template leaves out", () => {
   const probe = { ...newDeal("brokerage-account"), held: HELD_UNSAID };
   it("counts a price list's lines in the picker, and says where it has none for what the deal holds", () => {
-    expect(leavesText(templateOf(probe, "house:leumi", data, TODAY)!.left)).toBe("שתי שורות לא נכנסות");
+    // the percent maximum fills the deal now: only the standing order's line, set aside, stays out
+    expect(leavesText(templateOf(probe, "house:leumi", data, TODAY)!.left)).toBe("שורה אחת לא נכנסת");
     expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBeUndefined();
     expect(leavesText([{ why: "no-holding" }])).toBe(feeDeal.picker.noHolding);
   });
@@ -41,7 +42,6 @@ describe("what a template leaves out", () => {
     expect(templateSource(deal.template!.id)).toBe("house");
     const note = text(createElement(TemplateNote, { template: deal.template!, left: templateOf(deal, deal.template!.id, data, TODAY)!.left }));
     expect(note).toContain(`${feeDeal.filled.from.house}${deal.template!.name}`);
-    expect(note).toContain(feeDeal.filled.why["share-cap"]);
     expect(note).toContain(feeDeal.filled.why["set-aside"]);
     expect(note).toContain("שורה אחת");
   });
