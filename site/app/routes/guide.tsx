@@ -198,7 +198,6 @@ export default function GuidePage() {
     const oneKind = lows.every((l) => l.r.lowKind === lows[0]?.r.lowKind) ? n.kind[lows[0]?.r.lowKind ?? "plain"] : null;
     return (
       <>
-        {copy.feeNoteParts.caps}{" "}
         {sameCount && both && (
           <>
             {n.atCapBoth.before} <Num value={both.atCap} /> {n.atCapBoth.of} <Num value={both.managers} /> {n.atCapBoth.after}{" "}
@@ -226,7 +225,7 @@ export default function GuidePage() {
             )}
           </>
         )}{" "}
-        {copy.feeNoteParts.companyPage}
+        {copy.feeNote}
       </>
     );
   };
@@ -260,11 +259,13 @@ export default function GuidePage() {
       rules: gen([...(cap?.rule_ids ?? []), ...(data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
       varies: feeVaries(base),
       range: listRangeLine(base),
+      // a provident product's figures are the management-fee regulations' caps (PF-02 to PF-06); "no cap" and the provider's own tariff are not
+      regs: provident && !!cap && cap.value !== null,
     });
   }
-  if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
+  if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"], regs: true });
   // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag
-  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
+  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]), regs: true });
 
 
   // ---- tax steps

@@ -179,7 +179,8 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   return (
     <div ref={root} role="radiogroup" aria-label={label} data-anchor={anchorName} className="relative flex flex-col [overflow-anchor:none]">
       {head && (
-        <div className={cx("grid gap-x-3 items-end pb-1.5 text-xs text-muted-foreground", line ? "px-2.5" : "px-4 border-b border-border", gridClass)} style={grid}>
+        // a line list's head holds "?" marks over rows with no rule between: 12 px under it leave a mark its whole 44 px over the first row
+        <div className={cx("grid gap-x-3 items-end text-xs text-muted-foreground", line ? "px-2.5 pb-3" : "px-4 pb-1.5 border-b border-border", gridClass)} style={grid}>
           {!line && <span />}
           {head}
         </div>
