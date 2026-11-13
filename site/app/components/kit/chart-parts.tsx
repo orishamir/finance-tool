@@ -89,7 +89,7 @@ export interface LegendItem {
 /**
  * What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its
  * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps. An item's `after`
- * stands after it, never inside its button.
+ * stands after it, never inside its button. Where the legend wraps, its lines of controls stand 44 px apart, so no press area covers another.
  */
 export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
   // a group's name ("הקרן:") goes on one line with its first item: in a narrow legend, left at a line's end apart from its items, it would
@@ -103,8 +103,11 @@ export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: Chart
       i++;
     } else rows.push({ it });
   }
+  // a legend that holds controls (a pick's buttons, a "?" after an item) puts a wrapped line 44 px under the one above from md, where each
+  // control's press area is 44 px around a 16 px line: closer, the lower line's areas cover the upper's (a phone's buttons are 44 px tall)
+  const controls = !!pick || items.some((it) => !!it.after);
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={kitCopy.legend}>
+    <ul className={cx("flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground", controls && "md:gap-y-7")} aria-label={kitCopy.legend}>
       {rows.map(({ head, it }) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
           {head && <span className="me-2.5">{head.label}</span>}
