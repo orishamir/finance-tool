@@ -4,7 +4,8 @@
 // lists beside one ruler: the chosen start row opens onto its stretch, drawn as a band on the ruler, as a filled wedge; the band opens onto
 // the end list as a faint one, with one thin straight line from each end row's spot on the ruler to that row, the chosen row's solid; the
 // chosen pair is one point on the band, joined by a line straight up to the foot of what stands above (the receipt's total); a pair that is
-// shown but not ranked (`pointOpen`) is a hollow point joined by a dashed line, with no spot. Everything it draws is placed from the rows'
+// shown but not ranked (`pointOpen`) is a hollow point joined by a dashed line, with no spot. A weak title over the ruler (`rulerHead`)
+// says what it measures; the point's line breaks around its words. Everything it draws is placed from the rows'
 // measured positions, again on every change and resize, so rows of any height join where they stand.
 import { useCallback, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { placeOn, ticksOf, type Scale } from "../../lib/stretch";
@@ -46,6 +47,12 @@ const END = 32;
 const BAND_PAD = 10;
 /** Ticks at least this far apart, px. */
 const TICK_GAP = 56;
+/** The room the point's line leaves above and under the ruler's title, px. */
+const HEAD_ROOM = 4;
+
+/** The point's line, from `from` straight down to `to`, broken where it would cross the ruler's title. */
+const lineUp = (x: number, from: number, to: number, head: Geo["head"]): string =>
+  head && head.t > from && head.b < to ? `M${x} ${from}V${head.t}M${x} ${head.b}V${to}` : `M${x} ${from}V${to}`;
 
 interface RowBox {
   top: number;
@@ -65,6 +72,8 @@ interface Geo {
   end: Record<string, RowBox>;
   /** The foot of what stands above, from the box's top (negative: above it). */
   above: number | null;
+  /** The ruler's title, from the box's top: the point's line stops above it and goes on under it, so the words stay clear. */
+  head: { t: number; b: number } | null;
 }
 
 /** The rows of one list, by key, as they stand now (a row sliding to its place included). */
@@ -92,6 +101,8 @@ export interface StretchChartProps {
   endFoot?: ReactNode;
   /** Under both sides. */
   note?: ReactNode;
+  /** The ruler's title: a weak line over the ruler, between the two sides' headings, which says what the ruler measures. */
+  rulerHead?: ReactNode;
   /** The lists' `data-anchor` names (`PickList` `anchor`), by which their rows are found. */
   startAnchor: string;
   endAnchor: string;
@@ -123,6 +134,7 @@ export interface StretchChartProps {
 export function StretchChart(p: StretchChartProps) {
   const box = useRef<HTMLDivElement>(null);
   const ruler = useRef<HTMLDivElement>(null);
+  const head = useRef<HTMLDivElement>(null);
   const [geo, setGeo] = useState<Geo | null>(null);
   const { startAnchor, endAnchor, above } = p;
   const measure = useCallback(() => {
@@ -134,6 +146,7 @@ export function StretchChart(p: StretchChartProps) {
     if (b.width === 0 || r.height === 0) return setGeo(null);
     const firstStart = root.querySelector<HTMLElement>(`[data-anchor="${startAnchor}"] > [data-pick-key]`)?.getBoundingClientRect();
     const ab = above?.current?.getBoundingClientRect();
+    const hb = head.current?.getBoundingClientRect();
     const next: Geo = {
       w: b.width,
       h: b.height,
@@ -142,6 +155,7 @@ export function StretchChart(p: StretchChartProps) {
       start: rowsOf(root, startAnchor, b, r),
       end: rowsOf(root, endAnchor, b, r),
       above: ab && ab.height > 0 ? ab.bottom - b.top : null,
+      head: hb && hb.height > 0 ? { t: hb.top - b.top - HEAD_ROOM, b: hb.bottom - b.top + HEAD_ROOM } : null,
     };
     setGeo((prev) => (prev && JSON.stringify(prev) === JSON.stringify(next) ? prev : next));
   }, [startAnchor, endAnchor, above]);
@@ -171,6 +185,12 @@ export function StretchChart(p: StretchChartProps) {
     <div ref={box} className="relative grid grid-cols-[minmax(0,1fr)_min(17.75rem,28%)_minmax(0,1fr)] grid-rows-[auto_auto_auto_auto] items-start gap-y-3">
       <div className="col-start-1 row-start-1 min-w-0 self-end">{p.startHead}</div>
       <div className="col-start-3 row-start-1 min-w-0 self-end">{p.endHead}</div>
+      {/* its foot 12 px up, so the ruler's box, which reaches 16 px above the lists, never meets its words */}
+      {p.rulerHead && (
+        <div ref={head} className="col-start-2 row-start-1 self-end justify-self-center max-w-full mb-3 px-2 text-center text-xs text-muted-foreground">
+          {p.rulerHead}
+        </div>
+      )}
       <div className="col-start-1 row-start-2 min-w-0">{p.startList}</div>
       {/* the ruler's room: its box reaches a row's half above the lists' first row, and its scale starts at that row's middle */}
       <div ref={ruler} aria-hidden="true" className="col-start-2 row-start-2 mx-auto -mt-4 h-[calc(34rem+2rem)] w-[5.25rem]" />
@@ -234,7 +254,7 @@ function Drawing({ geo, scale, band, point, pointOpen = false, spots, chosenStar
       })}
       {/* the pair in the receipt: one point on the ruler, inside the stretch, joined straight up to the foot of what stands above; a pair
           shown but not ranked: a hollow point at its value, the line dashed, and no spot */}
-      <path d={`M${cx0} ${geo.above ?? R.t}V${yPoint}`} className="stroke-primary" strokeWidth={pointOpen ? 2 : 3} {...(pointOpen ? { strokeDasharray: "5 5" } : {})} />
+      <path d={lineUp(cx0, geo.above ?? R.t, yPoint, geo.head)} className="stroke-primary" strokeWidth={pointOpen ? 2 : 3} {...(pointOpen ? { strokeDasharray: "5 5" } : {})} />
       {!pointOpen && <path d={`M${endX} ${yPoint}H${cx0}`} className="stroke-primary" strokeWidth={3} />}
       {!pointOpen && <circle cx={endX} cy={yPoint} r={6} className="fill-chart-by-fund" data-mark="point" />}
       {pointOpen ? <circle cx={cx0} cy={yPoint} r={6} className="fill-card stroke-primary" strokeWidth={2.5} data-mark="point" /> : <circle cx={cx0} cy={yPoint} r={7} className="fill-primary" data-mark="point" />}

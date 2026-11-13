@@ -3208,7 +3208,7 @@ export const invest = {
       each: "כל נקודה בקטע: קרן אחת שנקנית בו",
       /** An account's figure: what is left with its cheapest fund. */
       upTo: "עד",
-      /** Under the list: the small bar beside each row, on the ruler's scale (from 1280 px) or on one scale (below, with no ruler). */
+      /** In the "?" beside "הקטע": the small bar beside each row, on the ruler's scale (from 1280 px) or on one scale (below, with no ruler). */
       barRuler: "הפס הקטן ליד כל חשבון: הקטע שלו על הסרגל, מהקרן הזולה בו עד היקרה.",
       barAlone: "הפס הקטן ליד כל חשבון: הקטע שלו, מהקרן הזולה בו עד היקרה. לכל החשבונות אותו סולם.",
       /** An account whose every priced fund of the kind rests on an open rule (G-18): shown, not ranked, no stretch; why is G-18's text. */
@@ -3226,7 +3226,7 @@ export const invest = {
       less: "פחות",
       more: "עוד",
       same: "אותו סכום",
-      /** Below 1280 px, where no ruler stands: the small bar beside each fund. */
+      /** In the "?" beside "המקום בקטע", below 1280 px, where no ruler stands: the small bar beside each fund. */
       barAlone: (house: string) => `הפס הקטן ליד כל קרן: הקטע של ${house}, והנקודה בו היא הקרן.`,
       /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
       unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
@@ -3234,8 +3234,10 @@ export const invest = {
       /** The heading over the funds on an open rule (G-18), after the ranked ones of their kind: shown, not ranked. */
       unranked: "לא מדורגות",
     },
-    /** Under both lists. `ruler`: from 1280 px, where the ruler stands between them. */
-    note: (ruler: boolean) => (ruler ? "הסרגל: כמה נשאר לכם בסוף, לפי התוכנית שלכם. לחיצה על חשבון מחליפה את הקטע שעל הסרגל. לחיצה על קרן מזיזה את הנקודה בתוכו." : "לחיצה על חשבון מחליפה את הקטע. לחיצה על קרן מזיזה את הנקודה בתוכו."),
+    /** Under both lists, how a tap moves them. `ruler`: from 1280 px, where the ruler stands between them. */
+    note: (ruler: boolean) => (ruler ? "לחיצה על חשבון מחליפה את הקטע שעל הסרגל. לחיצה על קרן מזיזה את הנקודה בתוכו." : "לחיצה על חשבון מחליפה את הקטע. לחיצה על קרן מזיזה את הנקודה בתוכו."),
+    /** The ruler's title, over it: what it measures. */
+    rulerTitle: "כמה נשאר לכם בסוף, לפי התוכנית שלכם",
     /** Under both lists, for the chosen account: a price for some of its customers that the figure leaves out (a group's, or a standing
      *  order's), and where the card says whose. */
     otherPrice: (house: string, card: string) => `${inName(house)} יש גם מחיר אחר, לחלק מהלקוחות. הוא לא נכנס לחישוב, ולמי הוא מיועד כתוב ב״${card}״.`,
@@ -3824,10 +3826,11 @@ export const invest = {
     listLabelFunds: "קרנות על המדד",
     moreFunds: (n: number) => (n === 1 ? "עוד קרן אחת" : `עוד ${n} קרנות`),
     /**
-     * Under the fund list, where a fund's name carries an exposure profile such as (4D) (ETF-12; "(4D) and (4A) are never
-     * explained"): the term opens its glossary line, and each code on the list is said in plain words. The keys are the profile's two grades.
+     * In the "?" beside the fund list's name head, where a fund's name carries an exposure profile such as (4D) (ETF-12; "(4D) and (4A)
+     * are never explained"): each code on the list in plain words, over the term's glossary card. The keys are the profile's two grades.
      */
     profile: {
+      about: "הקוד בסוגריים בשם של קרן",
       lead: "הקוד בסוגריים בשם של קרן ישראלית הוא",
       term: "פרופיל החשיפה שלה",
       equity: { "4": "יכולה להיות כולה במניות" } as Record<string, string>,
@@ -4421,7 +4424,7 @@ export const kit = {
       chipSentence: "במכירת ניירות ערך הבנק או חבר הבורסה מנכים מס רווח הון במקור",
       docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
       receipt: { title: "קבלה לדוגמה", stubNames: "חשבון לדוגמה + קרן לדוגמה", paid: "הפקדתם", added: "צמיחה לדוגמה", tax: "מס רווחי הון לדוגמה", account: "החשבון: חשבון לדוגמה", accountLine: "עמלה לדוגמה", rate: "0.1% מכל פעולה (דוגמה)", fund: "הקרן: קרן לדוגמה", fundFee: "דמי ניהול לדוגמה", left: "נשאר לכם", gain: "מה שנשאר, פחות מה שהפקדתם", bar: "מה ירד בדרך, לדוגמה" },
-      stretch: { accounts: "חשבונות לדוגמה", funds: "קרנות לדוגמה", upTo: "עד", less: "פחות", chosen: "נבחר", years: "10 שנים לדוגמה" },
+      stretch: { accounts: "חשבונות לדוגמה", funds: "קרנות לדוגמה", ruler: "כמה נשאר בסוף, לדוגמה", upTo: "עד", less: "פחות", chosen: "נבחר", years: "10 שנים לדוגמה" },
       tile: { account: "החשבון", fund: "הקרן", link: "התעריפון", name: "בית השקעות לדוגמה", rows: ["שורה ראשונה", "שורה שנייה"], values: ["ערך לדוגמה", "ערך נוסף"] },
       cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fund: "דמי ניהול הקרן", tax: "מס רווחי הון", remainder: "תוספת משילוב עמלות החשבון", remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       periods: ["יום", "שבוע", "חודש", "3 חודשים", "6 חודשים", "שנה", "שנתיים", "3 שנים"],

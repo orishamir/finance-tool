@@ -1411,6 +1411,7 @@ function StretchDemo() {
         startHead={<p className="text-sm font-semibold">{w.accounts}</p>}
         startList={<PickList look="line" tone="account" anchor="demo-accounts" label={w.accounts} columns="minmax(0,1fr) auto auto" rows={accountRows} />}
         endHead={<p className="text-sm font-semibold">{w.funds}</p>}
+        rulerHead={w.ruler}
         endList={<PickList look="line" tone="fund" anchor="demo-funds" label={w.funds} columns="auto minmax(0,1fr) auto" rows={fundRows} />}
         startAnchor="demo-accounts"
         endAnchor="demo-funds"
@@ -2100,7 +2101,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="StretchChart, StretchBar, PickList (line)" use={g.uses.Stretch}>
-        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
+        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above, its line broken around the ruler's title (`rulerHead`) over the ruler. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
           <div className="max-xl:hidden">
             <StretchDemo />
           </div>
