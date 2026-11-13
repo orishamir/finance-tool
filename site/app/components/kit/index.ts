@@ -72,6 +72,7 @@ export { GoLink, TextLink } from "./go-link";
 export { MeterBar } from "./meter-bar";
 export { PeriodBars, type PeriodBar } from "./period-bars";
 export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
+export { MonthPicker, type MonthBounds } from "./month-picker";
 export { Step } from "./steps";
 export { TypedPlain } from "./typed-plain";
 export { AlignedAcross, AlignedCaption, AlignedList, AlignedRow } from "./aligned-list";

@@ -7,7 +7,7 @@ import { Fragment, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { Panel, PanelStage } from "../../lib/fee-deal/builder";
 import { editPrice, setFeeName, setLimited, setSaleApart, withCurrency, withForm, withMonths, type Side } from "../../lib/fee-deal/edit";
-import { BOUND_CURRENCIES, MONTHS, NAME_MAX, pricesOn, stageFault, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, MONTHS, NAME_MAX, pricesOn, stageFault, untilRange, type BoundCurrency, type Fee, type MonthKey, type Months } from "../../lib/fee-deal/model";
 import { refOf } from "../../lib/fee-deal/parts";
 import type { FieldId, FormId } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
@@ -213,9 +213,9 @@ function Stages({ fee, side, stages, forms, between, line, onFee, onRemoveStage,
                 />
               </span>
               {k < last ? (
-                <MonthField value={s.until ?? null} label={label(p.until)} onCommit={(m) => limit(k, m)} />
+                <MonthField value={s.until ?? null} label={label(p.until)} {...untilRange(stages, k)} onCommit={(m) => limit(k, m)} />
               ) : (
-                asking && <MonthField value={null} label={label(p.until)} waits autoFocus onCommit={(m) => limit(k, m)} />
+                asking && <MonthField value={null} label={label(p.until)} {...untilRange(stages, k)} waits autoFocus onCommit={(m) => limit(k, m)} />
               )}
             </Row>
             {note && (
