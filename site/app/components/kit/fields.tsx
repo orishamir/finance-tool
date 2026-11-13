@@ -499,9 +499,9 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
  * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
  * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
- * period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron and its label for a screen reader only, one of a row of
- * facts each chosen in place (what a fee page's deal holds: "קרן שנקנית בחו״ל ▾", "צוברת ▾"): as wide as its chosen words, the native
- * select laid unseen over them; a chosen value in the entered blue with its edge, while nothing is chosen `all` in the muted ink.
+ * period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron and its label for a screen reader only, a choice made in
+ * place beside a figure (a price's currency "$ ▾", its period "לרבעון ▾"), 44 px tall: as wide as its chosen words, the native select
+ * laid unseen over them; a chosen value in the entered blue with its edge, while nothing is chosen `all` in the muted ink.
  */
 export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean }) {
   const id = useId();

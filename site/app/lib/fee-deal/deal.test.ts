@@ -2,7 +2,7 @@
 // deals' side store and the export file that carries them.
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
-import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
+import { decodeDeal, dealOfAddress, encodeDeal, packDeal, parseSubject, unpackDeal } from "./link";
 import { blankPrice, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Price, type Sourced } from "./model";
 import { engineDeal } from "./to-engine";
 import { stageFault, untilRange } from "./model";
@@ -193,11 +193,30 @@ describe("the link", () => {
     ["not JSON", Buffer.from("{nope", "utf8").toString("base64url")],
     ["another version", Buffer.from(JSON.stringify([3, {}, []])).toString("base64url")],
     ["a source index out of the table", Buffer.from(JSON.stringify([1, { n: "", k: null, f: [{ k: "trade", s: [{ P: { F: "action", r: [1, 5] } }] }] }, []])).toString("base64url")],
-    ["too long", "a".repeat(41_000)],
-  ])("opens nothing from a link that is %s", (_, d) => {
+    ["too long", "a".repeat(13_000)],
+  ])("opens nothing from a link that is %s", async (_, d) => {
     expect(decodeDeal(d)).toBeNull();
     // an empty deal opens, and the address gave none: the page keeps nothing of it
-    expect(dealOfAddress(`?d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
+    expect(await dealOfAddress(`?d=${d}`, "", { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
+  });
+  it.each([
+    ["empty", ""],
+    ["not base64url", "a+b/c="],
+    ["not compressed", encodeDeal({ id: "deal-a", name: "", kind: null, fees: [] })],
+    ["too long", "a".repeat(13_000)],
+  ])("opens nothing from a fragment that is %s", async (_, d) => {
+    expect(await unpackDeal(d)).toBeNull();
+    expect(await dealOfAddress("", `#d=${d}`, { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
+  });
+  it("carries a deal compressed in the fragment, and opens it before a query's", async () => {
+    const d = { ...account(), name: "חשבון", template: { id: "house:leumi", name: "לאומי" } };
+    const packed = await packDeal(d);
+    expect(packed).toMatch(/^[A-Za-z0-9_-]+$/);
+    expect(packed.length).toBeLessThan(encodeDeal(d).length);
+    const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });
+    expect(strip((await unpackDeal(packed))!)).toEqual(strip(d));
+    const data = { kinds: [], houses: [], tracks: [], templates: {} };
+    expect(await dealOfAddress(`?d=${encodeDeal(newDeal(null))}`, `#d=${packed}`, data, "2026-11-12")).toMatchObject({ deal: { name: "חשבון" }, given: true });
   });
   it("sets no stray key from a hostile link", () => {
     const hostile = Buffer.from('[1,{"n":"","k":null,"f":[],"__proto__":{"polluted":1},"constructor":{"x":1}},[]]').toString("base64url");
@@ -206,13 +225,13 @@ describe("the link", () => {
     expect(({} as { polluted?: number }).polluted).toBeUndefined();
     expect(Object.keys(d).sort()).toEqual(["fees", "id", "kind", "name"]);
   });
-  it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", () => {
+  it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", async () => {
     const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
-    expect(dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
-    expect(dealOfAddress("?wrapper=nothing", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
-    expect(dealOfAddress("?track=999", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
-    expect(dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
-    expect(dealOfAddress("", data, "2026-11-12")).toBeNull();
+    expect(await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
+    expect(await dealOfAddress("?wrapper=nothing", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(await dealOfAddress("?track=999", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
+    expect(await dealOfAddress(`?d=${encodeDeal(account())}`, "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
+    expect(await dealOfAddress("", "", data, "2026-11-12")).toBeNull();
     expect(parseSubject("?track=12")).toEqual({ kind: "track", trackId: 12 });
   });
 });
@@ -241,12 +260,12 @@ describe("the saved deals", () => {
     expect(worthSaving({ ...fresh, fees: [newFee("trade")] }, [])).toBe(true);
     expect(worthSaving(fresh, [fresh])).toBe(true);
   });
-  it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", () => {
+  it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", async () => {
     const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
-    const kindAlone = dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")!;
+    const kindAlone = (await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12"))!;
     expect(kindAlone.given).toBe(true);
     expect(savedIfWorth([], kindAlone.deal, "2026-11-12")).toBeNull();
-    const linked = dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")!;
+    const linked = (await dealOfAddress(`?d=${encodeDeal(account())}`, "", data, "2026-11-12"))!;
     expect(savedIfWorth([], linked.deal, "2026-11-12")).toHaveLength(1);
   });
   it("finds the saved deal a link's deal is the same as, whatever its ids and saved day", () => {
