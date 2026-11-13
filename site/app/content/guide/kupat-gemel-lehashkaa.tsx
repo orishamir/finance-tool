@@ -75,8 +75,8 @@ export const content: GuideContent = {
       },
       us: {
         title: (p) => <>בארצות הברית: חשבון <bdi dir="ltr">{p}</bdi></>,
-        body: (f) => <>חשבון חיסכון לפרישה. כמו בקופת גמל להשקעה, ההפקדה לא מורידה מס. ההבדל: מגיל <AbroadFigure v={f("withdraw")} />, אחרי <AbroadFigure v={f("account_years")} /> שנים לפחות בחשבון, מושכים בלי מס, גם על הרווח.</>,
-        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה</>, <AbroadSaid v={f("tax_on_gain")}>אין, בתנאים</AbroadSaid>, <>בלי מס מגיל <AbroadFigure v={f("withdraw")} /></>],
+        body: (f) => <>חשבון חיסכון לפרישה. כמו בקופת גמל להשקעה, ההפקדה לא מורידה את מס ההכנסה. ההבדל: מגיל <AbroadFigure v={f("withdraw")} />, אחרי <AbroadFigure v={f("account_years")} /> שנים לפחות בחשבון, מושכים בלי מס הכנסה, גם על הרווח.</>,
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה</>, <AbroadSaid v={f("tax_on_gain")}>אין, בתנאים</AbroadSaid>, <>בלי מס הכנסה מגיל <AbroadFigure v={f("withdraw")} /></>],
       },
       fr: {
         title: (p) => <>בצרפת: תוכנית <bdi dir="ltr">{p}</bdi></>,
