@@ -329,7 +329,7 @@ export const guide = {
     selfEmployed: { headline: "ההפקדה מקטינה את מס ההכנסה, עד תקרה", before: "אפשר להפחית מההכנסה מהעסק או מהמקצוע עד", middle: "ממנה, ורק על הכנסה של עד", after: "בשנה, ופחות למי שגם שכיר. זה גבול נפרד מהגבול של הפטור כשמושכים." },
   },
   related: "כדאי להכיר גם:",
-  checklist: { blocked: "חסום:", considered: "נלקח בחשבון", notRelevant: "לא רלוונטי", blockedMark: "חסום: שאלה פתוחה", expand: "מאיפה זה", blockedLast: "עד שהשאלה תיסגר, האתר לא מחשב את זה.", intro: "כך האתר בודק כל מוצר, מול אותן שאלות. כאן מה שעוד פתוח; את כל הבדיקות אפשר לפתוח למטה.", showAll: "הצגת כל הבדיקות", hideAll: "הסתרת הבדיקות" },
+  checklist: { blocked: "חסום:", considered: "נלקח בחשבון", uncovered: "עוד לא נלקח בחשבון", blockedMark: "חסום: שאלה פתוחה", expand: "מאיפה זה", blockedLast: "עד שהשאלה תיסגר, האתר לא מחשב את זה.", intro: "כך האתר בודק כל מוצר, מול אותן שאלות. כאן מה שעוד פתוח; את כל הבדיקות אפשר לפתוח למטה.", showAll: "הצגת כל הבדיקות", hideAll: "הסתרת הבדיקות" },
   pcChooseHint: "בחרו מסלול כדי לראות את כל הפרטים ומה לבדוק", // from the approved company mockup
   sliderAria: "מחוון",
 } as const;
@@ -631,6 +631,8 @@ export const company = {
     savings: "מהחיסכון",
     deposits: "מהפקדה",
     cap: "התקרה בתקנות:",
+    /** Before the age a cap binds from, and its colon: "התקרה בתקנות אחרי גיל 21:" (CS-18). */
+    capAfterAge: "התקרה בתקנות אחרי גיל",
     capSavings: "מהחיסכון,",
     capDeposits: "מהפקדה",
     direct: "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון.",
@@ -674,7 +676,8 @@ export const track = {
   feeNone: "אין",
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
   toOther: "למסלול השני",
-  toGuide: "לעמוד המדריך על",
+  /** The link beside the product's name to its guide page. */
+  toGuide: "לעמוד המדריך",
   /** The heading over what the site took into account for this track's product. */
   checklist: "מה לבדוק",
 } as const;
@@ -1412,7 +1415,9 @@ export const trackBrowser = {
   },
   /** Over a company page's table: what its dates are, and a deposit fee every track shares. The fees' year and the figures' date are said
    * on a phone, whose rows have no heads; from md the fee heads and the caption over the columns say them. */
-  feeAverage: (year: string) => `דמי הניהול הם הממוצע שנגבה ב־${year}; `,
+  feeAverage: (year: string, wholeFund = false) => `דמי הניהול הם הממוצע שנגבה ב־${year}${wholeFund ? " בקרן כולה" : ""}; `,
+  /** On a phone, whose rows have no heads, over a pension product's list: whose the fees are (CAT-39). */
+  wholeFund: "בקרן פנסיה דמי הניהול הם של הקרן כולה, לא של המסלול: כל המסלולים של קרן אחת מראים אותם דמי ניהול.",
   dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
@@ -2201,8 +2206,12 @@ export const companyPage = {
   overviewLine: { rate: "ריבית בשנה:", to: "עד", assets: "כסף מנוהל:", fees: "דמי ניהול מהחיסכון:", asOf: "נכון לסוף ", funds: "קרנות שהאתר אסף עליהן דוח" },
   /** A bank's overview row: the fact's label over its figure (designer's mocks, 2026-11-10). */
   overviewFact: {
-    rate: (period: string | null) => (period ? `ריבית בשנה, ${period}` : "ריבית בשנה"),
-    current: "ריבית בשנה על יתרת זכות",
+    /** The range's label: its periods, and the linkage of its records where it names one (a linked rate is not ranged with an unlinked). */
+    rate: (period: string | null, linkage: string | null = null) => ["ריבית בשנה", linkage, period].filter(Boolean).join(", "),
+    /** The linkage the label names: the records of the range are of this one, while the product holds others too, or a linked one alone. */
+    linkage: { none: "לא צמודה", cpi: "צמודה למדד", fx: "צמודה למט״ח" } as Record<string, string>,
+    /** A current account's rate, where the bank pays it only on its conditions (the product's part spells them out). */
+    current: (conditional: boolean) => (conditional ? "ריבית בשנה על יתרת זכות, בתנאים" : "ריבית בשנה על יתרת זכות"),
     parts: "מה יש בו",
     asOf: "נכון ל־",
   },
@@ -2213,9 +2222,9 @@ export const companyPage = {
     tariff: "לפי התעריפון",
     /** Where the table holds tracks, the heads say what their figures are: the fee range's words and the money's date as muted lines under
      *  the heads. */
-    heads: { fees: "במסלולים: מהחיסכון, מהזול ליקר", assets: (period: string) => `נכון לסוף ${period}` },
+    heads: { fees: (year: string | null) => (year ? `הממוצע שנגבה ב־${year}, מהחיסכון: מהזול ליקר` : "במסלולים: מהחיסכון, מהזול ליקר"), assets: (period: string) => `נכון לסוף ${period}` },
     /** On a phone, whose rows have no heads, the same in a note under the table; the date of managed money comes before `end`. */
-    note: { fees: "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר.", assets: "הכסף המנוהל נכון לסוף ", end: "." },
+    note: { fees: (year: string | null) => (year ? `דמי הניהול במסלולים הם הממוצע שנגבה ב־${year}, מהחיסכון, מהמסלול הזול ליקר.` : "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר."), assets: "הכסף המנוהל נכון לסוף ", end: "." },
   },
   deposits: {
     asOf: "לפי פרסום הבנק, נכון ל־",

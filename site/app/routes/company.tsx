@@ -15,13 +15,14 @@ import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage
 import { IdRef, Num, NumAfter, OwnCompanyPage, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { CompanyTracks } from "../components/tracks/company-browser";
+import { CapLead, type ProductCaps } from "../components/tracks/list";
 import { assetsText, buildProductView, feeRangeOf, tracksPhrase, type ProductView, type TbData } from "../lib/track-browser";
 import { Callout, Card, Disclosure, FeeWordsNote, TariffDate, When, gershayim } from "../components/kit";
 import { CompanyTemplate, type CompanyPart } from "../components/company/template";
 import { Overview, OverviewTable, type OverviewHeads, type OverviewTableRow } from "../components/company/overview";
 import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
 import { accountSections } from "../components/decoder/institutions/sections";
-import { addressId, entryIds, splitDocGroups } from "../lib/company-page";
+import { CAPS_FROM_AGE, addressId, entryIds, splitDocGroups } from "../lib/company-page";
 import { companyTermsAnchor } from "../lib/scope";
 import type { SiteValue } from "../lib/value";
 
@@ -46,7 +47,7 @@ async function houseNotes(id: string) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadCma, loadTerms, loadWrappers, today } = await import("../lib/data.server");
+  const { loadCma, loadRules, loadTerms, loadWrappers, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   // D33: a brand's every address shows its one page: the managing company's tracks, the funds, the brokerage account
@@ -71,12 +72,25 @@ export async function loader({ params }: Route.LoaderArgs) {
   const t = today();
   // every track the company runs: the tracks page's data over this company, its products in the founder's order
   const tracks = cma.tracks.filter((x) => x.companyId === company?.id);
-  const rank = (id: string) => classificationOrder.indexOf(tracks.find((x) => x.wrapperId === id || (!x.wrapperId && x.classification === id))?.classification ?? "") + 1 || 99;
+  // a self-directed (IRA) product stands after its regulator type's product (the sort keeps the browser's order between the two)
+  const rank = (id: string) => classificationOrder.indexOf(tracks.find((x) => x.selfDirected === id || (x.wrapperId === id && !x.selfDirected) || (!x.wrapperId && x.classification === id))?.classification ?? "") + 1 || 99;
   const tb = company ? buildTrackBrowser(company.id) : null;
   // a brand with no managing company (funds and an account only) has no tracks: its list holds those alone
   const browser: TbData = tb ? { ...tb, products: [...tb.products].sort((a, b) => rank(a.id) - rank(b.id)) } : { today: t, reportPeriod: String(cma.periodValue.value), feeYear: null, period: cma.periodValue, companies: [], products: [] };
   // the product's legal caps (its wrapper record's fee_caps, sourced to the regulations), for the line under its list
-  const caps = Object.fromEntries(browser.products.map((p) => [p.id, wrapperCaps.get(p.id) ?? null]));
+  // and, where they bind only from an age, that age as its rule's figure (CAPS_FROM_AGE)
+  const capsRules = loadRules();
+  const capsFrom = (id: string): SiteValue | null => {
+    const at = CAPS_FROM_AGE[id];
+    return ((at && capsRules[at.rule]?.figures?.[at.figure]) ?? null) as SiteValue | null;
+  };
+  const caps = Object.fromEntries(
+    browser.products.map((p) => {
+      const c = wrapperCaps.get(p.id);
+      const from = capsFrom(p.id);
+      return [p.id, c ? { ...c, ...(from ? { from } : {}) } : null];
+    }),
+  );
   // the catalogue: this company's entries (data/catalog/), found through the tracks they name
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
@@ -87,7 +101,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
   // what the site found in the company's own documents (D30): the records that cite them, by topic, with their cards' data
   const { brokeragePart, companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
-  const { loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
+  const { loadChecklistRows, pointedRecords } = await import("../lib/data.server");
   const { topicName } = await import("../copy");
   const allRules = loadRules();
   const pageId = brand?.page ?? company!.id;
@@ -103,7 +117,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const helpTerms = Object.fromEntries(terms.filter((x) => helpNames.has(x.he)).map((x) => [x.he, x]));
   const helpRuleIds = Object.values(helpTerms).flatMap((x) => x.ruleIds).filter((id) => allRules[id]);
   // and the rules the browser's figures name (their sheets), as on the tracks page
-  const browserRuleIds = ["PF-06", "PF-10", ...templateRuleIds(browser)].filter((id) => allRules[id]);
+  const browserRuleIds = ["PF-06", "PF-10", ...templateRuleIds(browser), ...browser.products.flatMap((p) => (CAPS_FROM_AGE[p.id] ? [CAPS_FROM_AGE[p.id]!.rule] : []))].filter((id) => allRules[id]);
   const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds, ...browserRuleIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? shortCompanyName(company!.id, company!.name);
@@ -256,11 +270,13 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   ];
   const tableGroups = many ? listGroups.map((g) => ({ key: g.key, label: g.label, rows: parts.filter((p) => p.group === g.key).map(tableRow) })).filter((g) => g.rows.length > 0) : [{ key: "all", rows: parts.map(tableRow) }];
   // what the tracks' fee range is and the date of their money: in the heads from md, in the note under the table on a phone
-  const tableHeads: OverviewHeads | undefined = views.length > 0 ? { fees: w.overviewTable.heads.fees, assets: w.overviewTable.heads.assets(fmt.period(browser.reportPeriod)) } : undefined;
+  // the fees are the regulator's averages of one calendar year (CAT-36), the year the browser's fee figures carry
+  const feeYear = browser.feeYear && typeof browser.feeYear.value === "string" ? browser.feeYear.value : null;
+  const tableHeads: OverviewHeads | undefined = views.length > 0 ? { fees: w.overviewTable.heads.fees(feeYear), assets: w.overviewTable.heads.assets(fmt.period(browser.reportPeriod)) } : undefined;
   const tableNote =
     views.length > 0 ? (
       <>
-        {w.overviewTable.note.fees} <NumAfter lead={w.overviewTable.note.assets} value={data.period} />
+        {w.overviewTable.note.fees(feeYear)} <NumAfter lead={w.overviewTable.note.assets} value={data.period} />
         {w.overviewTable.note.end}
       </>
     ) : null;
@@ -330,7 +346,7 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
                   ))}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen as SiteValue} />
+                  {catalogue.seenAt} {u.where} <NumAfter lead={catalogue.seenOn} value={u.seen as SiteValue} />
                 </span>
               </li>
             ))}
@@ -344,13 +360,13 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
 /** Under each track table on a phone, whose rows have no heads (D36): the product's legal caps, then that the direct expenses come on top
  *  (PF-10). From md the caps are the captions over the fee heads and the direct expenses the savings fee's "?"; a deposit fee's cap with
  *  no column under it is the line over the list's, at every width, and not repeated here. */
-function FeeFoot({ caps: all, depositCapAbove }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The line over the list says the deposit fee's cap: the foot leaves it out. */ depositCapAbove: boolean }) {
+function FeeFoot({ caps: all, depositCapAbove }: { caps: ProductCaps | null; /** The line over the list says the deposit fee's cap: the foot leaves it out. */ depositCapAbove: boolean }) {
   const caps = all && depositCapAbove ? { ...all, deposit: null } : all;
   return (
     <div className="flex flex-col gap-1 text-xs text-muted-foreground">
       {caps && (caps.balance || caps.deposit) && (
         <span>
-          {copy.fees.cap}{" "}
+          <CapLead from={caps.from} />{" "}
           {caps.balance && (
             <>
               <Num value={caps.balance} /> {caps.deposit ? copy.fees.capSavings : copy.fees.savings}{" "}

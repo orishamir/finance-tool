@@ -506,7 +506,7 @@ Names the CMA data and the Maya export do not hold: an institution's own name fo
 {
   "id": "meitav-kaspi-shikli",
   "institution": "meitav",
-  "where_seen": "Meitav operations flyer (פלייר תפעולי), https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
+  "where_seen": "מיטב, פלייר תפעולי, עמוד 3: ״גמל להשקעה - מ.ה קופה 7857״, https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
   "seen_on": "2026-10-22",
   "seen_by": "il-finance CAT-11, CAT-13",
   "names": { "he": ["כספי (שיקלי)"] },
@@ -516,6 +516,7 @@ Names the CMA data and the Maya export do not hold: an institution's own name fo
 }
 ```
 
+- `where_seen` is what the track page shows after "מקור:": each document in Hebrew, as a reader would name it, followed by its link, the documents separated by "; ". The page drops the links; the first one is the source its date opens.
 - The schema is `catalogEntry` (strict, optional `notes`). `status` is `catalogued` or `not-catalogued-yet`. `near_duplicates` is an array of `{ name, track_ids, resolution }`. Optional `default_at_joining` (boolean) is the institution's own statement that this is the track a joiner gets without choosing; the track page shows the "ברירת המחדל" tag from it.
 - `cma_fund_id` is the fund (קופה) number as the institution's documents and the CMA transfer directory give it (CAT-09); the monthly datasets list tracks, not funds, so the validator checks only that every `track_ids` entry is a `fund_id` in the latest file of a `data/cma/` dataset (§4 item 10).
 - `cma_fund_id` and `track_ids` are empty for a bank product; `maps_to` then names the wrapper and, once collected, the `data/terms/deposits/` record.

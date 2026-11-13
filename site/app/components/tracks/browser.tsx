@@ -147,6 +147,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
       </div>
 
       {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
+      {view.dataset === "pensia-net" && <p className="md:hidden text-sm text-muted-foreground">{t.wholeFund}</p>}
       <p className="md:hidden text-sm text-muted-foreground">
         {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
       </p>

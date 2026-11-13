@@ -92,7 +92,7 @@ export function seenValue(c: CatalogEntry): SiteValue {
   return {
     value: c.seen_on,
     unit: "text",
-    source: { url, title: c.where_seen, publisher: c.institution, strength: "institution" },
+    source: { url, title: seenWhere(c), publisher: c.institution, strength: "institution" },
     checked: c.seen_on,
     effective_from: c.seen_on,
     effective_to: null,
@@ -104,7 +104,11 @@ export function seenValue(c: CatalogEntry): SiteValue {
 
 /** Where a name was seen, without the URL (the URL is behind the number). */
 export function seenWhere(c: CatalogEntry): string {
-  return c.where_seen.replace(/,?\s*https?:\/\/\S+/g, "").replace(/;\s*$/, "").trim();
+  return c.where_seen
+    .split(/;\s*/)
+    .map((part) => part.replace(/,?\s*https?:\/\/\S+/g, "").trim())
+    .filter(Boolean)
+    .join("; ");
 }
 
 /** How a near-duplicate's resolution reads (data-schema 3.10: free text; the first words say which). */
