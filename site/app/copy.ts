@@ -498,7 +498,7 @@ export const parametersPage = {
    * page). The same reasons, said of the pages that read the parameter now.
    */
   why: {
-    "P-05": "גרפי המדריכים ועמוד המדדים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. הריבית למוצרים דמויי מזומן היא ההנחה של האתר לאפשרויות שאין להן ריבית שפורסמה (הקרן הכספית, המק״מ והאג״ח הממשלתית): היא לא ריבית שפורסמה ולא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו. בחשבון ניירות ערך, במק״מ ובאג״ח ממשלתית זה התעריפון שמשאיר הכי הרבה מבין מי שנאספו, או שהעמוד אומר שהתעריפונים שקולים. בפיקדון בנקאי זה האמצעי מבין הפיקדונות לשנה שנאספו שאי אפשר לשבור אותם, לצד הטווח של כל הפיקדונות שנאספו, והעמוד אומר זאת.",
+    "P-05": "גרפי המדריכים ועמוד המדדים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. הריבית למוצרים דמויי מזומן היא ריבית בנק ישראל, כפי שבנק ישראל פרסם אותה, וזו ההנחה של האתר לאפשרויות שאין להן ריבית מפורסמת משלהן (הקרן הכספית, המק״מ והאג״ח הממשלתית). היא לא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו. בחשבון ניירות ערך, במק״מ ובאג״ח ממשלתית זה התעריפון שמשאיר הכי הרבה מבין מי שנאספו, או שהעמוד אומר שהתעריפונים שקולים. בפיקדון בנקאי זה האמצעי מבין הפיקדונות לשנה שנאספו שאי אפשר לשבור אותם, לצד הטווח של כל הפיקדונות שנאספו, והעמוד אומר זאת.",
     "P-09": "בעמוד החוקים והכללים מופיעות עובדות ששווה לדעת, ובכל עמוד מדריך שתיים או שלוש מהן. איזה כלל חשוב יותר הוא שיקול דעת, ולכן הרשימה היא פרמטר של האתר: הדירוג המחושב של הכללים (שימוש בחישובים, באתר ובנתונים, מספרים, מוצר, חוזק המקור) מסדר את הכללים בתוך הקבוצות ובוחר דוגמאות, אבל לא את הרשימה הזאת. נבחרו כללים שמכריעים תוצאה באתר או שהמחקר מצא שאנשים טועים בהם או שואלים עליהם שוב ושוב, ושיש להם מקור ראשי עם קישור.",
   } as Record<string, string>,
   /** Over the kinds of saving the first page names (P-10), each its guide's name. */
@@ -1444,7 +1444,7 @@ export const trackBrowser = {
  */
 export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
-  lead: "הריבית שהבנקים מפרסמים לפיקדון בשקלים, בשנה ולפני המס. המינימום שהבנק מפרסם, לא הצעה אישית.",
+  lead: "הריבית שהבנקים מפרסמים לפיקדון בשקלים, בשנה ולפני המס, לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר.",
   /** At the end of the list's heading line: "נקרא מאתרי הבנקים ב־09.11.2026". */
   read: "נקרא מאתרי הבנקים ב־",
   controls: {
@@ -1475,7 +1475,7 @@ export const depositBrowser = {
     titleNoAmount: { fixed: "ריבית קבועה בשנה: הגבוהה בכל תקופה", variable: "ריבית משתנה בשנה: הגבוהה בכל תקופה" },
     axis: "תקופת הפיקדון",
     none: "אין",
-    gap: { otherKind: { fixed: "רק משתנה", variable: "רק קבועה" }, notAtAmount: "לא בסכום הזה", none: "אין הצעות" },
+    gap: { otherKind: { fixed: "רק משתנה", variable: "רק קבועה" }, unknownAtAmount: "לא ידוע בסכום הזה", notAtAmount: "לא בסכום הזה", none: "אין הצעות" },
     /** A column's spoken name: "שנה: 3.25% בבנק ירושלים". */
     atBank: " בבנק ",
     chosen: "נבחרה",
@@ -1514,8 +1514,8 @@ export const depositBrowser = {
   linkedLine: ". הריבית באה בנוסף להצמדה, ולכן הן לא מדורגות מול השאר.",
   /** The tag of a linked row. */
   linked: { cpi: "צמוד למדד", fx: "צמוד למט״ח" },
-  /** The folded group under the list: "22 הצעות שאי אפשר לפתוח ב־10,000 ₪". */
-  closed: { before: "שאי אפשר לפתוח ב־" },
+  /** The folded group under the list: "22 הצעות שאי אפשר לפתוח ב־10,000 ₪"; where the table of one of them does not say whether it takes the amount, `orUnknown`. */
+  closed: { before: "שאי אפשר לפתוח ב־", orUnknown: "שאי אפשר לפתוח, או שלא ידוע אם אפשר לפתוח, ב־" },
   help: { rate: "הריבית שהבנק מפרסם", exits: "תחנות יציאה", break: "שבירת פיקדון", phoneLead: "מה אומרות המילים:" },
   grid: {
     title: { fixed: "הריבית הקבועה הגבוהה בכל בנק ולכל תקופה, ב־", variable: "הריבית המשתנה הגבוהה בכל בנק ולכל תקופה, ב־" },
@@ -1528,7 +1528,7 @@ export const depositBrowser = {
     more: "ועוד",
     /** A sheet line of a bank that prints one name for several amounts: "· מ־250,000 ₪". */
     from: "מ־",
-    gap: { none: "לא מציע", otherKind: { fixed: "רק ריבית משתנה", variable: "רק ריבית קבועה" }, otherOffers: "רק הצעות אחרות", notAtAmount: "לא בסכום הזה" },
+    gap: { none: "לא מציע", otherKind: { fixed: "רק ריבית משתנה", variable: "רק ריבית קבועה" }, otherOffers: "רק הצעות אחרות", conditionalOnly: "רק עם תנאי", unknownAtAmount: "לא ידוע בסכום הזה", notAtAmount: "לא בסכום הזה" },
     /** The cell's button: "להצעות של לאומי לשנה ברשימה, 1.8%". */
     goTo: { before: "להצעות של ", middle: " ל", after: " ברשימה" },
     /** The highest cell of a column: framed, and said. */
@@ -2679,7 +2679,7 @@ export const rulesFront = {
   changingOnly: "רק מה שעומד להשתנות",
   questions: "לפי השאלה",
   none: "אין חוק או כלל שעומד להשתנות במוצר הזה.",
-  row: { sources: "{n} מקורות", sourceOne: "מקור אחד", recheck: "ייבדק שוב", more: "ועוד {n}" },
+  row: { sources: "{n} מקורות", sourceOne: "מקור אחד", recheck: "ייבדק שוב", more: "ועוד {n}", openPart: "יש בו שאלה פתוחה" },
   detail: {
     back: "לרשימה",
     empty: "בחרו חוק או כלל מהרשימה, והנוסח המלא והמקורות שלו יופיעו כאן.",
@@ -2728,8 +2728,8 @@ export const rulesFront = {
     "tax-tier2-other.md": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר)",
   } as Record<string, string>,
   products: { all: "כל המוצרים", common: "משותף לכל הקופות", tier2: "עוד לא באתר" },
-  /** `/rules/<shelf>`, the old addresses of the five questions: the line that leads on to the page. */
-  presetAll: "לכל החוקים והכללים",
+  /** `/rules/<shelf>`, the old addresses of the five questions: the line that leads on to the page, opened on that question. */
+  presetAll: "לחוקים והכללים על השאלה הזו",
 } as const;
 
 /** The documents page (synthesis §3.5). */
@@ -3202,8 +3202,6 @@ export const knowledgeEntry = {
   homeLink: "על מה האתר נשען: החוקים, הכללים והמסמכים",
   menuDocuments: "מסמכים",
 } as const;
-
-Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואלים: תשובה של שורה לכל שאלה בעמוד השאלות, והבלוק ״שווה לדעת״ בכל מדריך" });
 
 /**
  * "השקעה במדד" (D28; spec 8dd1f013:research/specs/2026-10-25-invest-page/spec.md). Figures never appear here: a number is a Num on the page.
@@ -4320,6 +4318,11 @@ export const invest = {
     /** A fund the person typed with a fee left empty (D56). */
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
+    /** A fund whose tax rests on an open rule (F-04, D84): by the rule, said plainly; no figure is shown and nothing is ranked. */
+    ruleOpen: {
+      "TXF-04": "אי אפשר לחשב: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
+    } as Record<string, string>,
+    ruleOpenOther: "אי אפשר לחשב: המס על הקרן תלוי בכלל שעוד לא ידוע, ולכן הקרן לא מדורגת.",
   },
 
   /** The word for an option inside a sentence ("ב…"). */

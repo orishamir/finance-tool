@@ -34,11 +34,13 @@ export function AnchorSpread({ variable, anchor, spread, look = "under" }: { var
 
 /**
  * The amounts a deposit takes, each figure sourced, in the words of `amountRangeForm`: "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪",
- * "ללא מינימום". A range with two ends breaks, where it must, between them.
+ * "ללא מינימום". A range with two ends breaks, where it must, between them. A top the record holds with no number is unknown, not no top
+ * (F-108): "50,000 עד לא ידוע", the unknown figure opening its source.
  */
 export function AmountRange({ min, max, fromOnly }: { min: SiteValue; max: SiteValue | null; /** Ranges that follow one another with no gap: each said by where it starts. */ fromOnly?: boolean }) {
   const low = numberOf(min);
-  const form = amountRangeForm(low, numberOf(max), fromOnly);
+  const unknownTop = !fromOnly && max !== null && numberOf(max) === null && low !== null && low > 0;
+  const form = unknownTop ? "between" : amountRangeForm(low, numberOf(max), fromOnly);
   if (form === "none") return <>{copy.amount.noMin}</>;
   if (form === "from")
     return (

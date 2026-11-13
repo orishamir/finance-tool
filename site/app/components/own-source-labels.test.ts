@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { scopeWords, sourceBlock } from "../copy";
+import { scopeWords, sourceBlock, updateRules } from "../copy";
 import { ProvenanceProvider } from "./provenance";
 import { RuleCard, SourceBlock } from "./provenance-sheets";
 
@@ -76,5 +76,31 @@ describe("the source lines of a company's own term", () => {
     const data = await real();
     const html = render(createElement(RuleCard, { id: "PEN-44", data, inline: true }), data);
     for (const host of ["as-invest.co.il", "moreinvest.co.il", "analyst.co.il"]) expect(html).toContain(host);
+  });
+});
+
+describe("a bracket table's figures on a rule card", () => {
+  it("says the edges are frozen for their years and the rates fixed in law, each under its own figure (TXG-02)", () => {
+    const root = new URL("../../../", import.meta.url);
+    const txg02 = JSON.parse(readFileSync(new URL("data/rules/txg-02.json", root), "utf8")) as RuleRecord;
+    const data = { rules: { "TXG-02": txg02 }, terms: {}, dimensions: {}, today: "2026-11-14" };
+    const html = render(createElement(RuleCard, { id: "TXG-02", data, inline: true }), data).replace(/<!-- -->/g, "");
+    const frozen = updateRules.frozen.split("{years}")[0]!;
+    expect(html).toContain(frozen);
+    expect(html).toMatch(/2025–2027/);
+    expect(html).toContain(updateRules["fixed in law"]);
+    // the edge's note comes before the rate's, in the first row
+    expect(html.indexOf(frozen)).toBeLessThan(html.indexOf(updateRules["fixed in law"]));
+  });
+});
+
+describe("a span of years on a rule card", () => {
+  it("says one year as a year, never \"1 שנים\" (ETF-38's wait after removal)", () => {
+    const root = new URL("../../../", import.meta.url);
+    const etf38 = JSON.parse(readFileSync(new URL("data/rules/etf-38.json", root), "utf8")) as RuleRecord;
+    const data = { rules: { "ETF-38": etf38 }, terms: {}, dimensions: {}, today: "2026-11-14" };
+    const html = render(createElement(RuleCard, { id: "ETF-38", data, inline: true }), data).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(html).not.toMatch(/\b1 שנים/);
+    expect(html).toMatch(/שנה/);
   });
 });
