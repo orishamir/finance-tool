@@ -69,6 +69,8 @@ export interface PriceView {
   figures: PriceFigures;
   per?: Months;
   every?: Months;
+  /** The months a share of what is held prints its bounds per, where not per charge ("מינימום 40 ₪ בחודש"). */
+  boundsEvery?: Months;
   currency?: string;
   yearly?: SiteValue;
   /** The parts of the price beside its figures (F-116, F-117, and the parts §10.6 states without computing), where it has any. */
@@ -114,7 +116,7 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
   switch (p.form) {
     case "held": {
       const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today);
-      return { form: "held", figures, per: p.per, every: p.every, yearly, ...parts };
+      return { form: "held", figures, per: p.per, every: p.every, ...(p.boundsEvery ? { boundsEvery: p.boundsEvery } : {}), yearly, ...parts };
     }
     case "sum": {
       const yearly = p.every === 12 ? figures.amount! : reading((p.amount.v * 12) / p.every, "nis", "F-111", { [inputKey(fees, i)]: figures.amount! }, today);
@@ -278,7 +280,9 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
     const discount = meets.field === "min" && figures.discount && price.form !== "free" && "discount" in price && price.discount?.alsoMin ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {};
     return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap!, ...discount }, today), ...from };
   }
-  const bound = (m.kind === "min" ? figures.min : figures.max)!;
+  const given = (m.kind === "min" ? figures.min : figures.max)!;
+  // a held share's bound printed per another period than its charge is a charge's bound by F-14: the months of a charge over its own
+  const bound = price.form === "held" && price.boundsEvery && price.boundsEvery !== price.every ? reading((given.value as number) * price.every / price.boundsEvery, "nis", "F-14", { [key(m.kind)]: given }, today) : given;
   // a held share's bound is per charge, so its mark is where one charge's share meets it: the rate of a charge, `rate × every / per`
   const rate = price.form === "held" && price.per !== price.every ? reading((price.rate.v * price.every) / price.per, "pct_of_balance_per_period", "F-111", { [inputKey(fees, m.fee)]: figures.rate! }, today) : (figures.rate ?? figures.amount)!;
   const inputs = { [key(m.kind)]: bound, [inputKey(fees, m.fee)]: rate, ...(figures.cap ? { [key("cap")]: figures.cap } : {}), ...(figures.discount ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {}) };

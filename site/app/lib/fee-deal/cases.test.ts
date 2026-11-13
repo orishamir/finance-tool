@@ -661,3 +661,20 @@ describe("a thing of the band's head, opened", () => {
   });
 });
 
+
+describe("the words of a size follow the fee's own action", () => {
+  const conversion = (): FeeDeal => {
+    const fx: Fee = { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.1) } }] };
+    return { ...newDeal("brokerage-account"), fees: [addBy(fx, { kind: "actionSize", unit: "ILS", top: 100 })] };
+  };
+  it("asks, opens and names a conversion's size as the conversion's, a purchase's as the action's", () => {
+    const d = conversion();
+    const fx = d.fees[0]! as CasesFee;
+    const r = readDealFor(d, data.kinds, TODAY);
+    expect(byQuestion(fx, "actionSize").ask).toBe("גודל ההמרה: עד כמה חל המחיר הראשון?");
+    expect(slotEdit(r, fx.id, fx.cases[1]!.id, 0)!.title).toBe("גודל ההמרה במקרה הזה");
+    expect(thingMenu(r, fx.id, 0)!.stop).toBe("להפסיק להבחין לפי גודל ההמרה");
+    expect(builder(r, [], null).rows[0]!.block).toMatchObject({ kind: "band", things: [{ words: "גודל ההמרה" }] });
+    expect(byQuestion(newFee("trade"), "actionSize").ask).toBe("גודל הפעולה: עד כמה חל המחיר הראשון?");
+  });
+});

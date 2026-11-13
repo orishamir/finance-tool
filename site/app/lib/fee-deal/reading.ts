@@ -5,7 +5,7 @@ import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, ho
 import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
-import { feeNameOf, whenWords, type PartWords, type WhenWords } from "./builder";
+import { feeNameOf, thingName, whenWords, type PartWords, type WhenWords } from "./builder";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
 import { hasCases, isRange, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
@@ -476,7 +476,7 @@ export function pickLine(r: DealRead): PickLine | null {
       // the currency is what is bought's, never a pick of its own (F-114)
       if (!picked(fee, b) || b.kind === "currency") return;
       const key = pickKey(b);
-      const thing = things.get(key) ?? { by: key, words: b.kind === "own" ? b.label : copy.cases.things[b.kind === "held" ? "what" : b.kind]!, options: [], chosen: r.picks.find((p) => p.by === key)?.is ?? "" };
+      const thing = things.get(key) ?? { by: key, words: b.kind === "held" ? copy.cases.things.what! : thingName(fee.kind, b), options: [], chosen: r.picks.find((p) => p.by === key)?.is ?? "" };
       things.set(key, thing);
       const add = (is: string, words: Omit<WhenWords, "thing">) => {
         if (!thing.options.some((o) => o.is === is)) thing.options.push({ is, words });

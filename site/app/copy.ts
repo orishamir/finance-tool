@@ -1786,6 +1786,8 @@ export const feeDeal = {
     changesBy: "המחיר משתנה לפי",
     /** Each thing a price may change by, as a pill and as a part in the toolbox (shapes.ts, `ByKind`). */
     things: { what: "מה קונים", held: "מה מחזיקים", channel: "הערוץ", track: "המסלול שבחרתם", currency: "המטבע", actionSize: "גודל הפעולה", portfolioSize: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" } as Record<string, string>,
+    /** The size of the action, by the fee: its own action's size ("גודל ההמרה"); `default` for a fee on a purchase or a sale. */
+    actionSize: { default: "גודל הפעולה", fx: "גודל ההמרה", fx_spread: "גודל ההמרה", deposit: "גודל ההפקדה", insurance_premium: "גודל ההפקדה", exit: "גודל המשיכה", transfer_out: "גודל ההעברה", distribution_handling: "גודל התשלום" } as Record<string, string>,
     /** The values the site names, by thing (shapes.ts, `LIST_IDS`). */
     values: {
       what: { tase: "ניירות ערך בתל אביב", mutualFunds: "קרנות נאמנות", moneyMarket: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם" } as Record<string, string>,
@@ -1807,6 +1809,18 @@ export const feeDeal = {
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
     byRemoved: { merged: "התנאי הוסר, והמקרים שנבדלו רק בו אוחדו.", kept: "התנאי הוסר.", slim: "התנאי הוסר, ונשאר המחיר של המקרה הראשון." },
+    /**
+     * The line a price put in another form leaves (undo.ts): that it changed, and what it left behind by name ("המחיר הוחלף, והמינימום
+     * והמקסימום הוסרו.").
+     */
+    formChanged: {
+      plain: "המחיר הוחלף.",
+      lost: "המחיר הוחלף, ו{parts} {verb}.",
+      one: "הוסר",
+      many: "הוסרו",
+      and: "ו",
+      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה" } as Record<string, string>,
+    },
     /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
     thingMenu: {
       title: "המקרים מבחינים בין:",
@@ -1837,8 +1851,8 @@ export const feeDeal = {
       refund: "החזר ",
       notes: { unfilled: "גם על הוראה שלא בוצעה", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
-      /** The toolbox's card of a flat price for a small action: "מחיר קבוע לפעולה קטנה, עד ☐". */
-      flatSmall: "מחיר קבוע לפעולה קטנה, עד ",
+      /** The toolbox's card of a flat price for a small action, by the fee: "מחיר קבוע לפעולה קטנה, עד ☐", a conversion's "להמרה קטנה". */
+      flatSmall: { default: "מחיר קבוע לפעולה קטנה, עד ", fx: "מחיר קבוע להמרה קטנה, עד ", fx_spread: "מחיר קבוע להמרה קטנה, עד " } as Record<string, string>,
       /** In a discount in edit: the switch that takes it off the minimum too. */
       discountOnMin: "גם על המינימום",
       /** In a third party's fee in edit: whose fee it is, in the list's words, and the form of its price. */
@@ -1901,8 +1915,11 @@ export const feeDeal = {
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       partial: "כל ביצוע חלקי נגבה בנפרד, ולכן הוראה שמתבצעת בחלקים יכולה לעלות את המינימום יותר מפעם אחת.",
     },
-    /** A step of a fee read across sizes (F-115), after the fee's name: "עמלת המרה, עד 100 $"; a mark at a step's top. */
-    step: { from: ", מעל ", to: ", עד ", edge: { before: "עד ", mid: " המחיר של {name} הוא של המקרה הזה, ומעליו של המקרה הבא." } },
+    /**
+     * A step of a fee read across sizes (F-115), after the fee's name: "המרת מטבע, עד 100 $", "המרת מטבע, מעל 100 $"; and a step's top,
+     * where the fee's price changes ("ב־100 $ משתנה המחיר של המרת מטבע.").
+     */
+    step: { from: ", מעל ", to: ", עד ", edge: { before: "ב־", mid: " משתנה המחיר של {name}." } },
   },
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
@@ -2057,7 +2074,7 @@ export const feeDeal = {
   },
   /** The template picker (a sheet). */
   picker: {
-    house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית, לפי מה שהעסקה מחזיקה.", group: "בתי השקעות ובנקים" },
+    house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית.", group: "בתי השקעות ובנקים" },
     track: { title: "לבחור מסלול", lede: "הבחירה ממלאת את דמי הניהול של המסלול מהממוצע שרשות שוק ההון מפרסמת: מהחיסכון, ומההפקדה כשיש לה נתון." },
     /** After a track's yearly fee on the savings, at its row's end. */
     saving: "בשנה מהחיסכון",

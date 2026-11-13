@@ -4,7 +4,7 @@ import { feesData } from "../fees.server";
 import { addFee, editPrice, setLimited, setName, setSaleApart, setStart, setUntil, updateFee, withFigure } from "./edit";
 import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
 import { barredFees, feePriceLists, pickTrack } from "./templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
+import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
 import { kindById } from "./kinds";
 import { feeDeal as copy } from "../../copy";
 
@@ -282,5 +282,49 @@ describe("another kind of product for the deal", () => {
     const r = setKindKept(d, kind("kupat-gemel-lehashkaa"), [], null);
     expect(r.deal).toBe(d);
     expect(r.undo).toBeNull();
+  });
+});
+
+describe("a price put in another form from the toolbox", () => {
+  const names = (f: { kind: string }) => f.kind;
+  /** A trade fee with cases, its US case 0.03 $ a unit with a minimum and a percent maximum, as Excellence's list fills it. */
+  const us = (): FeeDeal => ({
+    ...account(),
+    fees: [
+      {
+        id: "fee-trade",
+        kind: "trade",
+        by: [{ kind: "what" }],
+        cases: [
+          { id: "c1", when: [["tase"]], stages: [{ price: { form: "action", rate: typed(0.4), min: typed(10) } }] },
+          { id: "c2", when: [["us"]], stages: [{ price: { form: "perUnit", amount: typed(0.03), min: typed(8), cap: typed(2), currency: "USD" } }] },
+        ],
+      },
+    ],
+  });
+  it("keeps what carries over, and the price as it was for the undo, saying what it left behind", () => {
+    const d = us();
+    const r = changeFormKept(d, "fee-trade", "share", "fee-trade", "c2")!;
+    const fee = r.deal.fees[0]!;
+    // a share keeps the bounds, the percent maximum and their currency; the other case is untouched
+    expect(fee.cases![1]!.stages[0]!.price).toMatchObject({ form: "action", rate: { blank: true }, min: { v: 8 }, cap: { v: 2 }, currency: "USD" });
+    expect(fee.cases![0]).toEqual(d.fees[0]!.cases![0]);
+    expect(undoWords(r.undo!, names, data)).toBe(copy.cases.formChanged.plain);
+    expect(undo(r.deal, r.undo!, "fee-trade")!.deal).toEqual(d);
+  });
+  it("names the bounds a trade's sum per action has no place for, and puts them back", () => {
+    const d = us();
+    const r = changeFormKept(d, "fee-trade", "perAction", null, "c2")!;
+    expect(r.deal.fees[0]!.cases![1]!.stages[0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
+    expect(undoWords(r.undo!, names, data)).toBe("המחיר הוחלף, והמינימום והמקסימום באחוזים הוסרו.");
+    expect(standing(r.undo!, r.deal)).toBe(true);
+    expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
+  });
+  it("changes a price nobody gave yet silently, and a price already in the form not at all", () => {
+    const blank = addFee(newDeal("brokerage-account"), "trade");
+    const r = changeFormKept(blank.deal, blank.fee.id, "perUnit", null)!;
+    expect(r.undo).toBeNull();
+    expect(r.deal.fees[0]!.stages![0]!.price.form).toBe("perUnit");
+    expect(changeFormKept(us(), "fee-trade", "perUnit", null, "c2")).toBeNull();
   });
 });

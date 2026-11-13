@@ -153,6 +153,12 @@ const readStages = (r: DealRead, views: StageView[]): StageView[] => views.filte
 // ---------------------------------------------------------------- the words of a price's parts
 
 const perAction = (kind: FeeKindId): string => copy.price.perAction[kind] ?? copy.price.perAction.default!;
+/**
+ * A thing a fee's price changes by, in words that follow the fee: the size of its own action ("גודל ההמרה" on a conversion), a condition
+ * of the person's own by its name, any other thing by its name.
+ */
+export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }): string =>
+  b.kind === "own" ? (b.label ?? "") : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
 const shareOf = (kind: FeeKindId): string => copy.price.of[kind] ?? copy.price.of.default!;
 const boundPer = (kind: FeeKindId): string => copy.cases.parts.boundPer[kind] ?? copy.cases.parts.boundPer.default!;
 
@@ -205,7 +211,8 @@ function priceParts(kind: FeeKindId, p: Price, view: PriceView): SlimPart[] {
 function boundParts(kind: FeeKindId, view: PriceView): SlimPart[] {
   const f = view.figures;
   const pp = copy.cases.parts;
-  const per = view.form === "held" ? ` ${copy.panel.perCharge}` : ` ${boundPer(kind)}`;
+  // a held share's bounds are per charge, or in the period the price list prints them ("מינימום 40 ₪ בחודש")
+  const per = view.form === "held" ? ` ${view.boundsEvery ? copy.price.per[view.boundsEvery] : copy.panel.perCharge}` : ` ${boundPer(kind)}`;
   return [
     ...(f.min ? [{ id: "min" as const, kind: "bound" as const, words: { lead: pp.min, figure: f.min, tail: per } }] : []),
     ...(f.max ? [{ id: "max" as const, kind: "bound" as const, words: { lead: pp.max, figure: f.max, tail: per } }] : []),
@@ -251,7 +258,7 @@ export function whenWords(fee: CasesFee, w: When, t: number, today: string): Whe
 }
 
 /** A fee's things as the band's pills. */
-const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: b.kind === "own" ? b.label : copy.cases.things[b.kind]!, picked: picked(fee, b) }));
+const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: thingName(fee.kind, b), picked: picked(fee, b) }));
 
 /** A case as its band row (`open`: the case open in place). */
 function caseRow(r: DealRead, fee: CasesFee, c: Case, open: string | null): CaseRow {
@@ -525,13 +532,14 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   const price: ToolPart[] = [
     ...(can("action") ? [{ id: "share" as const, kind: "price" as const, words: { tail: ` ${perAction(fee.kind)}` }, box: "pct" as const, used: p.form === "action" }] : []),
     ...(can("perUnit") ? [{ id: "perUnit" as const, kind: "price" as const, words: { tail: ` ${pp.perUnit}` }, box: { sign: signOf(cur) }, used: p.form === "perUnit" }] : []),
-    ...(can("perAction") ? [{ id: "perAction" as const, kind: "price" as const, words: { tail: ` ${perAction(fee.kind)}` }, box: { sign: signOf(cur) }, used: p.form === "perAction" }] : []),
+    // a sum per action keeps the price's currency only where the fee may hold one for it (`FEE_SHAPES`), else it is in shekels
+    ...(can("perAction") ? [{ id: "perAction" as const, kind: "price" as const, words: { tail: ` ${perAction(fee.kind)}` }, box: { sign: signOf((shape.fields.perAction ?? []).includes("currency") ? cur : "ILS") }, used: p.form === "perAction" }] : []),
     ...(can("held") ? [{ id: "held" as const, kind: "price" as const, words: { tail: ` ${copy.price.per[12]}` }, box: "pct" as const, used: p.form === "held" }] : []),
     ...(can("sum") ? [{ id: "sum" as const, kind: "price" as const, words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") }, used: p.form === "sum" }] : []),
     ...(onAct || can("action") || can("perAction") ? [{ id: "discount" as const, kind: "price" as const, words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" as const, used: onAct && !!p.discount }] : []),
     ...(onAct || can("action") || can("perAction") ? [{ id: "third" as const, kind: "price" as const, words: { lead: pp.third }, used: onAct && !!p.third }] : []),
     // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)
-    ...((shape.fields.action ?? []).includes("flat") || (shape.fields.perUnit ?? []).includes("flat") ? [{ id: "flat" as const, kind: "price" as const, words: { lead: pp.flatSmall }, box: { sign: signOf(cur) }, used: (p.form === "action" || p.form === "perUnit") && !!p.flat }] : []),
+    ...((shape.fields.action ?? []).includes("flat") || (shape.fields.perUnit ?? []).includes("flat") ? [{ id: "flat" as const, kind: "price" as const, words: { lead: pp.flatSmall[fee.kind] ?? pp.flatSmall.default! }, box: { sign: signOf(cur) }, used: (p.form === "action" || p.form === "perUnit") && !!p.flat }] : []),
     { id: "until", kind: "price", words: { lead: pp.until }, box: "month", used: priced.stages.length > 1 },
   ];
   const bound: ToolPart[] = [
@@ -544,7 +552,7 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   const full = (fee.by?.length ?? 0) >= BY_MAX;
   const by: ToolPart[] = kinds.map((k) => {
     const used = k !== "own" && have.has(k === "held" ? "what" : k);
-    return { id: `by:${k}` as const, kind: "by" as const, words: { lead: copy.cases.things[k]! }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
+    return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });
   const link: ToolPart[] = [
     { id: "offset", kind: "link", words: { lead: pp.offset }, used: p.form !== "free" && !!p.offset },
@@ -603,7 +611,7 @@ export interface ByQuestion {
 export function byQuestion(fee: Fee, kind: ByKind): ByQuestion {
   const c = copy.cases;
   const base = { kind, add: c.add, cancel: c.cancel, ...(canAddBy(fee, kind) || kind === "own" ? {} : { off: (fee.by?.length ?? 0) >= BY_MAX ? c.full : "" }) };
-  if (isRangeKind(kind)) return { ...base, ask: c.ask.range!.replace("{thing}", c.things[kind]!), units: RANGE_UNITS[kind].map((u) => ({ unit: u, words: unitWords(u) })) };
+  if (isRangeKind(kind)) return { ...base, ask: c.ask.range!.replace("{thing}", thingName(fee.kind, { kind })), units: RANGE_UNITS[kind].map((u) => ({ unit: u, words: unitWords(u) })) };
   if (kind === "track" || kind === "own") return { ...base, ask: c.ask[kind]! };
   const ids = LIST_IDS[kind as ListKind];
   return { ...base, ask: c.ask[kind]!, values: ids.map((id) => ({ id, words: valueWords(kind, id) })), other: kind === "channel" ? c.otherChannel : c.otherValue };
@@ -641,7 +649,7 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
   if (!c || !b) return null;
   const w = c.when[t]!;
   const any = { words: copy.cases.any[b.kind]!, ticked: w === "any" };
-  const thing = b.kind === "own" ? b.label : copy.cases.things[b.kind]!;
+  const thing = thingName(fee.kind, b);
   if (isRange(b)) {
     const step = typeof w === "number" ? w : null;
     const before = step !== null && step > 0 ? whenWords(fee, step - 1, t, r.today) : null;
@@ -677,7 +685,7 @@ export function thingMenu(r: DealRead, feeId: string, t: number): ThingMenu | nu
   if (!fee || !hasCases(fee) || !fee.by[t]) return null;
   const m = copy.cases.thingMenu;
   const b = fee.by[t];
-  const thing = b.kind === "own" ? b.label : copy.cases.things[b.kind]!;
+  const thing = thingName(fee.kind, b);
   const seen = new Set<string>();
   const values: WhenWords[] = [];
   for (const c of fee.cases) {

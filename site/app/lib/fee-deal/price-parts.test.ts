@@ -5,17 +5,18 @@ import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
 import type { SiteValue } from "../value";
-import { withCurrency, withFigure, withFlat, withForm, figureOf, figureBack } from "./edit";
+import { setPart, withCurrency, withFigure, withFlat, withForm, figureOf, figureBack } from "./edit";
 import { glance } from "./glance";
 import { inCapUnit, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
 import { feePriced, newDeal, readDeal, typed, type Fee, type FeeDeal, type Num, type Price } from "./model";
-import { enginePrice } from "./to-engine";
+import { engineDeal, enginePrice } from "./to-engine";
 import { readDealFor, type PartMark } from "./parts";
 import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { FEE_SHAPES } from "./shapes";
-import { fillDeal, houseName, templateOf, templateOptions } from "./templates";
+import { builder } from "./builder";
+import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -108,7 +109,12 @@ describe("the price parts as the screen edits them", () => {
     const filled: Price = { form: "action", rate: { v: 0.3, src }, min: { v: 1, src }, cap: { v: 1, src }, currency: "USD" };
     expect(withForm(filled, "perUnit")).toEqual({ form: "perUnit", amount: { v: 0, blank: true }, min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
     expect(withForm(ibFixed, "action")).toEqual({ form: "action", rate: { v: 0, blank: true }, min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
-    expect(withForm(ibFixed, "perAction")).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
+    // a sum per action keeps the currency; a trade's sum per action is in shekels (its shape), so the trade's loses it
+    expect(withForm(ibFixed, "perAction")).toEqual({ form: "perAction", amount: { v: 0, blank: true }, currency: "USD" });
+    expect(setPart(trade(ibFixed), "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
+    const event: Fee = { id: "fee-event", kind: "corporate_event", stages: [{ price: { form: "perAction", amount: typed(50), currency: "USD" } }] };
+    expect(setPart(event, "perAction", true)).toEqual(event);
+    expect(setPart(trade(ibFixed), "share", true).stages![0]!.price).toMatchObject({ form: "action", min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
   });
   it("puts a sum per unit and a sum per action in another currency", () => {
     expect(withCurrency({ form: "perUnit", amount: { v: 0.005, src } }, "USD")).toEqual({ form: "perUnit", amount: { v: 0.005 }, currency: "USD" });
@@ -144,6 +150,39 @@ describe("the templates", () => {
     const tase = read({ ...fillDeal(newDeal("brokerage-account"), "house:one-zero", data, TODAY)!, readFor: [{ by: "what", is: "tase" }] });
     expect(tase.fees.some((f) => f.kind === "corporate_event")).toBe(false);
     expect(tase.unmatched).toEqual([tase.deal.fees.find((f) => f.kind === "corporate_event")!.id]);
+  });
+  it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
+    const snap = (id: string) => data.houses.find((h) => h.id === id)!;
+    const trade = snap("excellence").fees.find((f) => f.kind === "trade")!;
+    // every Excellence trade line is named "(כולל קניה או מכירה שלא בוצעה)" but the one for traditional mutual funds
+    const notes = trade.cases!.map((c) => (c.stages[0]!.price as { notes?: string[] }).notes ?? []);
+    expect(notes.filter((n) => n.includes("unfilled")).length).toBe(trade.cases!.length - 1);
+    const funds = trade.cases!.find((c) => Array.isArray(c.when[0]) && (c.when[0] as string[]).includes("קרנות נאמנות מסורתיות"))!;
+    expect((funds.stages[0]!.price as { notes?: string[] }).notes).toBeUndefined();
+    const line = (names: string[]) => ({ names: { tariff: names } }) as unknown as Parameters<typeof chargesUnfilled>[0];
+    expect(chargesUnfilled(line(["קניה, מכירה ופדיון (כולל קנייה או מכירה שלא בוצעה) - מניות"]))).toBe(true);
+    expect(chargesUnfilled(line(["קניה, מכירה ופדיון של קרנות נאמנות"]))).toBe(false);
+  });
+  it("fill a custody minimum in the period the list prints it, which the engine reads per charge (F-14)", () => {
+    const custody = data.houses.find((h) => h.id === "excellence")!.fees.find((f) => f.kind === "custody")!;
+    const price = custody.stages![0]!.price;
+    // "0.6% לרבעון עם מינימום 40 ₪ לחודש": 40 a month, charged each quarter, so 120 a charge
+    expect(price).toMatchObject({ form: "held", rate: { v: 0.6 }, per: 3, every: 3, min: { v: 40 }, boundsEvery: 1 });
+    expect(price.form === "held" && price.min!.src).toBeTruthy();
+    expect(enginePrice(price)).toMatchObject({ kind: "held", min: 120, everyMonths: 3 });
+    const deal = fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!;
+    const row = builder(read(deal)).rows.find((r) => r.fee === deal.fees.find((f) => f.kind === "custody")!.id)!;
+    const min = row.block.kind === "slim" ? row.block.parts.find((x) => x.id === "min")! : null;
+    expect(min?.words.figure?.value).toBe(40);
+    expect(min?.words.tail?.trim()).toBe(copy.price.per[1]);
+    // the engine's minimum is a charge's: the deal's engine form says 120, and a link carries the period back
+    expect(engineDeal(deal).fees.find((f) => f.stages[0]!.price.kind === "held")!.stages[0]!.price).toMatchObject({ min: 120 });
+    const back = decodeDeal(encodeDeal(deal))!;
+    expect(back.fees.find((f) => f.kind === "custody")!.stages![0]!.price).toMatchObject({ min: { v: 40 }, boundsEvery: 1 });
+    // its mark says a charge's minimum, worked out from the month's (F-14), and where it binds: below 120 / 0.6% = 20,000 ₪
+    const mark = readingOf(read(deal), data.fx).statements.flatMap((x) => (x.kind === "mark" && x.mark.kind === "min" && x.mark.on === "held" ? [x.mark] : []))[0]!;
+    expect(mark.kind === "min" && mark.bound).toMatchObject({ value: 120, state: "computed" });
+    expect(v(mark.amount)).toBeCloseTo(20_000, 6);
   });
   it("fill a base read from one line as a fee whose price changes by nothing only where the line prices every value", () => {
     // Excellence's custody line names the account: every value

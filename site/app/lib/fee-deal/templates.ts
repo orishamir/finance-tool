@@ -91,17 +91,26 @@ function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): {
   return { price: perUnit ? { form: "perUnit", amount: num(l.rate), ...parts } : { form: "action", rate: num(l.rate), ...parts } };
 }
 
+/**
+ * Whether a line's own words say it is charged on an order that was not carried out too: its name in the price list holds "כולל קניה או
+ * מכירה שלא בוצעה" (§10.6's stated parts), as Excellence's and Discount's trade lines print it.
+ */
+const UNFILLED_RE = /כולל קני?יה או מכירה שלא בוצעה/;
+export const chargesUnfilled = (l: Line): boolean => l.names.tariff.some((n) => UNFILLED_RE.test(n));
+
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
 export function lineFees(l: Line, own: string): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
   const fee = (kind: FeeKindId, price: Price): SlimTemplateFee => ({ kind, stages: [{ price }] });
   switch (l.base) {
     case "trade": {
+      // the line's own words say the fee is charged on an order not carried out too: the price carries that note
+      const notes = chargesUnfilled(l) ? { notes: ["unfilled" as const] } : {};
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
-      if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", { form: "perAction", amount: num(l.rate) })], left: [] } : { fees: [], left: ["no-value"] };
+      if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", { form: "perAction", amount: num(l.rate), ...notes })], left: [] } : { fees: [], left: ["no-value"] };
       if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
       const p = actionPrice(l, num, true);
-      return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("trade", p.price)], left: [] };
+      return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("trade", { ...p.price, ...notes } as Price)], left: [] };
     }
     case "fx": {
       if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
@@ -120,9 +129,12 @@ export function lineFees(l: Line, own: string): Mapped {
       const every = l.period ? PERIOD_MONTHS[l.period]! : 1;
       const bounds = [l.min, l.max].filter(has);
       if (bounds.some((b) => !NIS_UNITS.has(b.unit))) return { fees: [], left: ["bound-currency"] };
-      // F-14: a bound printed per month is per charging period here
-      const perCharge = (b: ValueObject & { value: number }): Num => ({ v: b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      return { fees: [fee("custody", { form: "held", rate: num(l.rate), per: every, every, ...(has(l.min) ? { min: perCharge(l.min) } : {}), ...(has(l.max) ? { max: perCharge(l.max) } : {}) })], left: [] };
+      // a bound keeps the figure and the period the list prints it in ("מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bound;
+      // where one bound is printed per month and the other per charge, both are a charge's, the monthly one times the months of a charge
+      const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
+      const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
+      const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
+      return { fees: [fee("custody", { form: "held", rate: num(l.rate), per: every, every, ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { max: bound(l.max) } : {}), ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
     }
     case "fixed_period":
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };

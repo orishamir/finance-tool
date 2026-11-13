@@ -30,7 +30,8 @@ function engineThird(t: ThirdPrice): DealThird {
 }
 
 /**
- * A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`, and a cap a fraction; a
+ * A price as the engine reads it (F-110): a held rate becomes the share of each charge, `rate × every / per`, its bounds a charge's
+ * bounds where the list prints them per another period (F-14), and a cap a fraction; a
  * share's currency goes only with a bound or a flat price typed, since it prices nothing else (F-110, F-112); a sum's always. A third
  * party's fee with its figure goes with the price (F-117), and a discount lowers the price as F-116 says.
  */
@@ -49,8 +50,11 @@ function basePrice(p: Price): DealPrice {
       return { kind: "action", rate: fraction(p.rate.v), ...actionParts(p), ...(p.min || p.max || p.flat ? currencyOf(p.currency) : {}) };
     case "perUnit":
       return { kind: "perUnit", amount: p.amount.v, ...actionParts(p), ...currencyOf(p.currency) };
-    case "held":
-      return { kind: "held", rate: (fraction(p.rate.v) * p.every) / p.per, everyMonths: p.every, ...(p.min ? { min: p.min.v } : {}), ...(p.max ? { max: p.max.v } : {}) };
+    case "held": {
+      // F-14: a bound printed per `boundsEvery` months is multiplied by the months in the charging period
+      const charge = (n: number) => (p.boundsEvery ? (n * p.every) / p.boundsEvery : n);
+      return { kind: "held", rate: (fraction(p.rate.v) * p.every) / p.per, everyMonths: p.every, ...(p.min ? { min: charge(p.min.v) } : {}), ...(p.max ? { max: charge(p.max.v) } : {}) };
+    }
     case "sum":
       return { kind: "sum", amount: p.amount.v, everyMonths: p.every };
     case "perAction":

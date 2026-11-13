@@ -8,16 +8,17 @@
 // here too.
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
-import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
+import { FORM_OF, holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, setPart, updateFee, type PartId, type Side } from "./edit";
 import type { DealKind } from "./kinds";
-import { hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { FeeKindId } from "./shapes";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
 
 /**
  * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
- * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, or thing `t` taken away (`by`).
+ * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, thing `t` taken away (`by`), or the price put
+ * in another form by the toolbox (`form`).
  */
 export type UndoWhat =
   | { kind: "remove"; feeId: string; at: number }
@@ -25,7 +26,8 @@ export type UndoWhat =
   | { kind: "stage"; feeId: string; side: Side; k: number; caseId?: string }
   | { kind: "chain"; feeId: string; side: Side; k: number; caseId?: string }
   | { kind: "case"; feeId: string; caseId: string }
-  | { kind: "by"; feeId: string; t: number };
+  | { kind: "by"; feeId: string; t: number }
+  | { kind: "form"; feeId: string; caseId?: string };
 
 export interface Undo {
   what: UndoWhat;
@@ -106,6 +108,23 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
   const changed = removeBy(fee, t);
   if (changed === fee) return null;
   return feeChange(deal, fee, changed, { kind: "by", feeId, t }, chosen);
+}
+
+/**
+ * The deal with the open case's first price put in the form a toolbox part sets (`setPart`; in case `caseId` where the fee has cases):
+ * what carries over carries (`withForm`), and the price as it stood is kept for the undo where it held anything given, typed or filled;
+ * a price still blank, as the builder added it, changes silently. Null where the part sets no form, or the price is in it already.
+ */
+export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string): MaybeUndoable | null {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  const form = FORM_OF[part];
+  if (!fee || !form) return null;
+  const was = pricesOn(fee, "buy", caseId)[0]!.price;
+  if (was.form === form) return null;
+  const changed = setPart(fee, part, true, caseId ? { caseId } : {});
+  if (changed === fee || sameContent(changed, fee)) return null;
+  if (was.form === "free" || sameContent(was, blankPrice(was.form))) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
+  return feeChange(deal, fee, changed, { kind: "form", feeId, ...(caseId ? { caseId } : {}) }, chosen);
 }
 
 /**
@@ -225,6 +244,8 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
       return copy.panel.laterRemoved;
     case "case":
       return copy.cases.caseRemoved;
+    case "form":
+      return formWords(u);
     case "by": {
       // what the line says follows what the change did: the cases merged, none merged, or the fee left with its first case's price
       const after = u.after;
@@ -237,6 +258,22 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
     case "remove":
       return `${copy.builder.removed}${names(u.before)}.`;
   }
+}
+
+/**
+ * The words of a price put in another form: that it changed, and the bounds, the percent maximum and the flat price it left behind, by
+ * name, where it left any.
+ */
+function formWords(u: Undo): string {
+  const w = copy.cases.formChanged;
+  const caseId = u.what.kind === "form" ? u.what.caseId : undefined;
+  const before = pricesOn(u.before, "buy", caseId)[0]!.price;
+  const after = u.after ? pricesOn(u.after, "buy", caseId)[0]!.price : null;
+  const has = (p: typeof before | null, k: "min" | "max" | "cap" | "flat") => !!p && k in p && (p as Record<string, unknown>)[k] !== undefined;
+  const lost = (["min", "max", "cap", "flat"] as const).filter((k) => has(before, k) && !has(after, k)).map((k) => w.parts[k]!);
+  if (lost.length === 0) return w.plain;
+  const list = lost.length === 1 ? lost[0]! : `${lost.slice(0, -1).join(", ")} ${w.and}${lost.at(-1)!}`;
+  return w.lost.replace("{parts}", list).replace("{verb}", lost.length === 1 ? w.one : w.many);
 }
 
 // ---------------------------------------------------------------- a saved deal deleted
