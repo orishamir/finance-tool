@@ -229,7 +229,8 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     <div className="flex flex-col gap-6">
     <div className="flex flex-col lg:flex-row-reverse lg:items-start gap-6">
       <Card className="flex-1 min-w-0 flex flex-col gap-4" aria-labelledby={titleId}>
-        <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-start lg:justify-between">
+        {/* 8 px more under it from lg, where the switch wraps under the headline: the switch's press areas and the legend's met there */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-start lg:justify-between lg:pb-2">
           <div className="flex flex-col gap-2.5 min-w-0">
             <h3 id={titleId} className="text-lg font-semibold">
               {copy.graphTitle}
