@@ -26,7 +26,7 @@ export const content: GuideContent = {
         </p>
         <RulesLine ids={["MF-07", "MF-08", "MF-35", "MF-36", "MF-37"]} />
         <Sentence measure>
-          המרווח בין מועדים קבועים הוא עד {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת. כשהמרווח {noticeAfter ? <><Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /> או יותר</> : "ארוך"}, מנהל הקרן שולח לפני המועד תזכורת. מנהל הקרן מפרסם מחיר רק למועד הקבוע.
+          המרווח בין מועדים קבועים הוא עד {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת. כשהמרווח בין מועדים {noticeAfter ? <><Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /> או יותר</> : "ארוך"}, מנהל הקרן שולח לפני המועד תזכורת. מנהל הקרן מפרסם מחיר רק למועד הקבוע.
         </Sentence>
         <RulesLine ids={["MF-08", "MF-38", "MF-09"]} />
         <p className="max-w-measure">

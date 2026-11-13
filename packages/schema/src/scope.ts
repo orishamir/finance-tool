@@ -87,6 +87,10 @@ export const notRuleAllowedIn = (id: string, file: string): boolean => Object.ha
  */
 export const ownContextExposures: Readonly<Record<string, readonly string[]>> = {
   "index-sp500": ["ETF-37", "ETF-38", "ETF-39", "ETF-40"],
+  // the facts the opening line states (the companies counted, the countries), each from its provider's methodology or factsheet
+  "index-nasdaq100": ["ETF-46"],
+  "index-msci-world": ["ETF-48"],
+  "index-msci-acwi": ["ETF-48"],
 };
 
 /**

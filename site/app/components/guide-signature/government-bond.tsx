@@ -1,5 +1,5 @@
 // Government bond (D29): what happens to the price if rates move? One control, "rates change by X percentage points" (minus 3 to
-// plus 3), shows what a sale today would bring against holding to redemption and getting what was promised (F-25, `bondPrice`), and
+// plus 3), shows what a sale today would bring against holding to redemption (F-25, `bondPrice`), and
 // the same move on a makam, the short instrument it is set against. The series' terms are the rule P-05 names (GOV-11); the coupon is
 // the site's assumption (P-05 `cash_rate`, D20) and the shift is the person's own.
 import { useId, useMemo, useState } from "react";
@@ -44,6 +44,8 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
   const cash = fact(data, "cashRate")!;
   const every = fact(data, "couponEvery");
   const linkage = fact(data, "linkage");
+  // a CPI-linked series (GOV-11): its principal and coupons move with the index, so the hold figures are before the linkage
+  const linked = linkage?.value === "cpi";
   const [shift, setShift] = useState(1);
   const [yearsOverride, setYears] = useState<number | null>(null);
   // the bond's own years to redemption, starting from the guide's years held to the series' range
@@ -69,7 +71,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
       }
     : null;
   // what a sale today brings against holding to redemption: the gap between the two figures above
-  const diff = v ? differenceOf([copy.bond.bars.sell, v.sale], [copy.bond.bars.hold, v.redeem], "F-25", { today, about: copy.bond.about.diff, round: Math.abs }) : null;
+  const diff = v ? differenceOf([copy.bond.bars.sell, v.sale], [linked ? copy.bond.bars.holdLinked : copy.bond.bars.hold, v.redeem], "F-25", { today, about: copy.bond.about.diff, round: Math.abs }) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -108,13 +110,13 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
           <GainBars
             bars={[
               { key: "sale", label: copy.bond.bars.sell, value: v.sale, tone: "value" },
-              { key: "hold", label: copy.bond.bars.hold, value: v.redeem, tone: "alt" },
+              { key: "hold", label: linked ? copy.bond.bars.holdLinked : copy.bond.bars.hold, value: v.redeem, tone: "alt" },
             ]}
             diff={diff}
             diffLabel={model.saleValue < model.redemption ? copy.bond.diffLoss : copy.bond.diffGain}
           />
           <Sentence size="sm" measure>
-            {copy.bond.holdLine.before} <Num value={v.redeem} /> {copy.bond.holdLine.middle} <Num value={v.coupons} /> {copy.bond.holdLine.after}
+            {copy.bond.holdLine.before} <Num value={v.redeem} /> {copy.bond.holdLine.middle} <Num value={v.coupons} /> {copy.bond.holdLine.after[linked ? "cpi" : "unlinked"]}
           </Sentence>
         </>
       )}

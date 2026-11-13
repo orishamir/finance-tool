@@ -2943,10 +2943,16 @@ export const guideSignature = {
     shiftUnit: "נקודות אחוז",
     shiftUnitOne: "נקודת אחוז",
     figures: { price: "מחיר ל־100 אם מוכרים היום", change: "שינוי מ־100", makam: "מק״מ, אותו שינוי בריבית" },
-    bars: { sell: "אם מוכרים היום", hold: "אם מחזיקים עד הפדיון: הקרן חוזרת" },
+    // a CPI-linked series pays its principal and coupons scaled by the index, up or down (GOV-11, GOV-12: no floor), so the figures are
+    // before the linkage, and nothing is "promised" in shekels
+    bars: { sell: "אם מוכרים היום", hold: "אם מחזיקים עד הפדיון: הקרן חוזרת", holdLinked: "אם מחזיקים עד הפדיון: הקרן, לפני השינוי במדד" },
     diffLoss: "ההפרש: במכירה היום תקבלו {gap} פחות",
     diffGain: "ההפרש: במכירה היום תקבלו {gap} יותר",
-    holdLine: { before: "בפדיון מקבלים בחזרה", middle: "ובדרך משולמים קופונים של", after: "בסך הכול. זה מה שהובטח, כל עוד מחזיקים עד הסוף." },
+    holdLine: {
+      before: "בפדיון מקבלים בחזרה",
+      middle: "ובדרך משולמים קופונים של",
+      after: { unlinked: "בסך הכול, כל עוד מחזיקים עד הסוף.", cpi: "בסך הכול, לפני השינוי במדד: בסדרה צמודה הקרן והקופונים עולים או יורדים עם המדד, ויכולים לרדת גם מתחת לסכום הזה." } as Record<string, string>,
+    },
     note: { before: "מחיר האג״ח זז בכיוון הפוך לריבית, והשינוי גדול יותר ככל שהפדיון רחוק יותר. המחיר כאן לפני", term: "עמלה", after: "ומס." },
     linkage: { cpi: "צמודה למדד", unlinked: "לא צמודה" } as Record<string, string>,
     termsLine: { before: "הסדרה", middle: ", וקופון משולם כל" },
