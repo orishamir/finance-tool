@@ -79,23 +79,25 @@ function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part
  * The toolbox for the open case: `target` names it after "להוסיף למקרה:" (its condition in words), a line says a tap adds a part, then
  * the groups. `onAdd` gets the group's and the part's ids. `ask`: a question a part asks before it is added (`AskValues`), drawn before the
  * groups, in place of the parts on a phone; `foot`: the actions on the whole fee, after the groups. `sheet`: a phone's short sheet, the
- * groups one at a time under a row of their names; `docked` pins it to the foot of the screen and keeps as much room where it is drawn
- * (the page's end), so nothing on the page stays under it (without it the sheet is drawn where it stands, as the gallery shows it). The
+ * groups one at a time under a row of their names; `docked` pins it to the foot of the screen and keeps as much room at the end of the
+ * document, so nothing on the page stays under it (without it the sheet is drawn where it stands, as the gallery shows it). The
  * sheet's handle folds it to its row of names and opens it again, so the page can be read under it.
  */
 export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked }: { target: ReactNode; groups: ToolGroup[]; onAdd: (group: string, part: string) => void; ask?: ReactNode; foot?: ReactNode; sheet?: boolean; docked?: boolean }) {
   const id = useId();
   const [shown, setShown] = useState(groups[0]?.id ?? "");
   const [folded, setFolded] = useState(false);
-  // the pinned sheet's height, kept as room at the page's end
+  // the pinned sheet's height, kept as room at the end of the document (under the site's footer too), so nothing stays under it
   const pinned = useRef<HTMLDivElement>(null);
-  const [room, setRoom] = useState(0);
   useEffect(() => {
     const el = pinned.current;
     if (!sheet || !docked || !el) return;
-    const ro = new ResizeObserver(() => setRoom(el.getBoundingClientRect().height));
+    const ro = new ResizeObserver(() => (document.body.style.paddingBottom = `${el.getBoundingClientRect().height}px`));
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      document.body.style.paddingBottom = "";
+    };
   }, [sheet, docked]);
   const lead = (
     <p className="text-base">
@@ -105,51 +107,48 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked }: { t
   if (sheet) {
     const group = groups.find((g) => g.id === shown) ?? groups[0];
     return (
-      <>
-        <div ref={pinned} data-tool-sheet="" className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 pb-4 shadow-lg", docked && "fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[45vh] overflow-y-auto")}>
-          <button
-            type="button"
-            aria-expanded={!folded}
-            aria-controls={`${id}-parts`}
-            aria-label={folded ? copy.toolbox.unfold : copy.toolbox.fold}
-            onClick={() => setFolded((f) => !f)}
-            className="tap-wide mx-auto flex h-5 w-16 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
-          >
-            <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />
-          </button>
-          {!folded && lead}
-          <ChoiceChips
-            line
-            bleed="-mx-4 px-4"
-            ariaLabel={copy.toolbox.groups}
-            ids={groups.map((g) => g.id)}
-            labels={Object.fromEntries(
-              groups.map((g) => [
-                g.id,
-                <span key={g.id} className="inline-flex items-center gap-2">
-                  <span aria-hidden className={cx("size-2.5 shrink-0 rounded-[3px]", SWATCH[g.kind])} />
-                  {g.name}
-                </span>,
-              ]),
-            )}
-            value={group?.id ?? null}
-            onChange={(g) => {
-              setShown(g);
-              setFolded(false);
-            }}
-          />
-          <div id={`${id}-parts`} hidden={folded} className="flex flex-col gap-3">
-            {ask ??
-              (group && (
-                <div role="group" aria-label={group.name} className="flex flex-col gap-2">
-                  <Parts group={group} onAdd={onAdd} />
-                </div>
-              ))}
-            {foot}
-          </div>
+      <div ref={pinned} data-tool-sheet="" className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 pb-4 shadow-lg", docked && "fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[45vh] overflow-y-auto")}>
+        <button
+          type="button"
+          aria-expanded={!folded}
+          aria-controls={`${id}-parts`}
+          aria-label={folded ? copy.toolbox.unfold : copy.toolbox.fold}
+          onClick={() => setFolded((f) => !f)}
+          className="tap-wide mx-auto flex h-5 w-16 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
+        >
+          <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />
+        </button>
+        {!folded && lead}
+        <ChoiceChips
+          line
+          bleed="-mx-4 px-4"
+          ariaLabel={copy.toolbox.groups}
+          ids={groups.map((g) => g.id)}
+          labels={Object.fromEntries(
+            groups.map((g) => [
+              g.id,
+              <span key={g.id} className="inline-flex items-center gap-2">
+                <span aria-hidden className={cx("size-2.5 shrink-0 rounded-[3px]", SWATCH[g.kind])} />
+                {g.name}
+              </span>,
+            ]),
+          )}
+          value={group?.id ?? null}
+          onChange={(g) => {
+            setShown(g);
+            setFolded(false);
+          }}
+        />
+        <div id={`${id}-parts`} hidden={folded} className="flex flex-col gap-3">
+          {ask ??
+            (group && (
+              <div role="group" aria-label={group.name} className="flex flex-col gap-2">
+                <Parts group={group} onAdd={onAdd} />
+              </div>
+            ))}
+          {foot}
         </div>
-        {docked && <div aria-hidden style={{ height: room }} />}
-      </>
+      </div>
     );
   }
   return (

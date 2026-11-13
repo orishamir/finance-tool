@@ -584,7 +584,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
           />
         </Section>
       )}
-      {/* a phone's toolbox, pinned to the foot of the screen, keeps its room at the page's end */}
+      {/* a phone's toolbox, pinned to the foot of the screen, keeps its room at the end of the document */}
       {phone && toolboxView}
     </FeeLinksProvider>
   );

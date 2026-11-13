@@ -1,7 +1,7 @@
 // The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit, a later price headed by its first
 // month and a sale priced apart under its own head; a part the toolbox added that still needs its figure, its month or its fee, asking for
 // it where it will stand; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, PartField, SlotEdit } from "../../lib/fee-deal/builder";
 import { addOwnPlace, editPrice, setMine, setPart, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withThirdForm, withThirdWho, type PartId, type Side } from "../../lib/fee-deal/edit";
@@ -93,7 +93,7 @@ function PriceParts({
       sign={f.sign}
       label={label(spoken)}
       {...opts}
-      id={k === 0 && side === "buy" ? partFieldId(fee.id, `${part}-${f.figure}`) : undefined}
+      id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
       onFee={onFee}
     />
   );
@@ -235,10 +235,21 @@ function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: 
   const at = { side, k, ...(caseId ? { caseId } : {}) };
   const label = (field: string) => copy.builder.fieldName(name, field);
   const price = pricesOn(fee, side, caseId)[k]!.price;
+  // the part asks where it stands: its box takes the focus as it appears (a month's box takes it itself)
+  useEffect(() => {
+    if (part === "min" || part === "max" || part === "cap") document.getElementById(partFieldId(fee.id, `${part}-pending`))?.focus();
+  }, [fee.id, part]);
   const cur = pricedIn(price) ? (price.currency ?? "ILS") : "ILS";
-  const done = (next: Fee) => {
+  // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
+  const done = (next: Fee, box?: string) => {
     onFee(next);
     onDone();
+    if (box)
+      requestAnimationFrame(() => {
+        const el = document.getElementById(partFieldId(fee.id, box)) as HTMLInputElement | null;
+        el?.focus();
+        el?.setSelectionRange(el.value.length, el.value.length);
+      });
   };
   let body: ReactNode;
   let lead: string | undefined;
@@ -266,7 +277,7 @@ function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: 
         tight
         id={partFieldId(fee.id, `${part}-pending`)}
         words={<span className="text-muted-foreground">{tail}</span>}
-        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }))}
+        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${part}`)}
       />
     );
   }

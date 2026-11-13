@@ -106,7 +106,8 @@ function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind; onFee:
   const note = (
     <>
       {copies.line}
-      {copies.count && <> {copies.count.replace("{from}", String(copies.from)).replace("{to}", String(copies.to))}</>}
+      {/* how many cases there will be, once a value is ticked (a range's two steps are known at once) */}
+      {copies.count && (range || chosen.length > 0) && <> {copies.count.replace("{from}", String(copies.from)).replace("{to}", String(copies.to))}</>}
     </>
   );
   const add = () => {
