@@ -610,7 +610,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         </p>
       )}
 
-      {data.rulesOf ? (
+      {/* a fact of another country's product has no Israeli rules behind it: its source's own page is the only way out */}
+      {value.foreign ? null : data.rulesOf ? (
         <LinkButton to={data.rulesOf.href}>
           {copy.allRulesOf} {data.rulesOf.name}
         </LinkButton>

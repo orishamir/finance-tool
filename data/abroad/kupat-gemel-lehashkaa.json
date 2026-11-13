@@ -207,14 +207,14 @@
       ],
       "who": {
         "statement": "individuals resident in Italy",
-        "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "da persone fisiche residenti nel territorio dello Stato" },
+        "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "da persone fisiche residenti nel territorio dello Stato", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
         "checked": "2026-11-13"
       },
       "facts": {
         "deposit_limit": {
           "value": 40000,
           "unit": "eur",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro" },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
           "checked": "2026-11-13",
           "effective_from": "2022-01-01",
           "effective_to": null,
@@ -225,7 +225,7 @@
         "deposit_total": {
           "value": 200000,
           "unit": "eur",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro" },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
           "checked": "2026-11-13",
           "effective_from": "2022-01-01",
           "effective_to": null,
@@ -236,7 +236,7 @@
         "tax_on_gain": {
           "value": "the plan's income from capital and financial gains is not taxed",
           "unit": "text",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "Non sono soggetti a imposizione i redditi di capitale" },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "Non sono soggetti a imposizione i redditi di capitale", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -247,7 +247,7 @@
         "holding_years": {
           "value": 5,
           "unit": "years",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "Gli strumenti finanziari in cui è investito il piano devono essere detenuti per almeno cinque anni." },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "Gli strumenti finanziari in cui è investito il piano devono essere detenuti per almeno cinque anni.", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,
@@ -258,7 +258,7 @@
         "withdraw": {
           "value": "a sale before five years: the income is taxed by the ordinary rules, with interest and without penalties",
           "unit": "text",
-          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "sono soggetti a imposizione secondo le regole ordinarie, unitamente agli interessi, senza applicazione di sanzioni" },
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "sono soggetti a imposizione secondo le regole ordinarie, unitamente agli interessi, senza applicazione di sanzioni", "superseded": { "from": "2027-01-01", "by": "D.Lgs. 19 giugno 2026, n. 117, art. 209 (commi 1, 2 e 7)" } },
           "checked": "2026-11-13",
           "effective_from": null,
           "effective_to": null,

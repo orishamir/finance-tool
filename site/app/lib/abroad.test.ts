@@ -8,6 +8,8 @@ import { ProvenanceProvider } from "../components/provenance";
 import { abroadPlaces } from "../components/guide/abroad";
 import { AbroadNote } from "../components/kit";
 import { guideContent } from "../content/guide";
+import { ValueSheet } from "../components/provenance-sheets";
+import { provenance as provenanceCopy } from "../copy";
 import { abroadView } from "./abroad";
 import { loadAbroad } from "./data.server";
 
@@ -33,11 +35,25 @@ describe("the note on other countries", () => {
         for (const v of Object.values(c.facts)) {
           expect(v.quote?.length).toBeGreaterThan(7);
           expect(v.notes).toBeUndefined();
+          expect(v.foreign).toBe(true);
+          expect("superseded" in v.source).toBe(false);
           if (["gbp", "usd", "eur"].includes(v.unit)) expect(v.unitText).toBeTruthy();
         }
       }
     });
   }
+
+  it("ends a foreign fact's sheet at its own page, with no link to the Israeli rules, and keeps that link on any other figure's sheet", () => {
+    const view = abroadView(loadAbroad("kupat-gemel-lehashkaa")!);
+    const gb = view.countries[0]!;
+    if (!gb.found) throw new Error("Britain is found");
+    const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-13", rulesOf: { name: "קופת גמל להשקעה", href: "/rules?product=x" } };
+    const sheet = (value: typeof gb.facts.deposit_limit) => html(createElement(ValueSheet, { value: value!, exact: false, data, headId: "h", descId: "d" }));
+    const foreign = sheet(gb.facts.deposit_limit);
+    expect(foreign).toContain("gov.uk");
+    expect(foreign).not.toContain(provenanceCopy.allRulesOf);
+    expect(sheet({ ...gb.facts.deposit_limit!, foreign: undefined })).toContain(provenanceCopy.allRulesOf);
+  });
 
   it("writes a figure the law prints with decimals as it prints them, and an amount in its own currency", () => {
     const keren = abroadPlaces(abroadView(loadAbroad("keren-hishtalmut")!), guideContent["keren-hishtalmut"]!.abroad!)!;

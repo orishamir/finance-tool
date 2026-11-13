@@ -394,7 +394,7 @@ export const provenance = {
     days: "ימים",
     business_days: "ימי עסקים",
     usd: "דולר",
-    eur: "יורו",
+    eur: "אירו",
   },
 } as const;
 

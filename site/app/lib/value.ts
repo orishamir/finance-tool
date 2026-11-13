@@ -48,6 +48,9 @@ export interface SiteValue extends ValueObject {
    * ("20,000", then "ליש״ט"), an age with a half ("59½"). Its sheet heads with it, so the head says what the line says.
    */
   written?: string;
+  /** A fact of another country's product (the guides' note on other countries, D114): no Israeli rule stands behind it, so its sheet
+   *  links to its own page only, never to the site's rules. */
+  foreign?: boolean;
   /** The page's own words the figure rests on, verbatim (a fact read on a government's page abroad): its sheet shows them under the source. */
   quote?: string;
   /** For an entered value:the P-05 value it replaced, and the input key the reset button clears. */

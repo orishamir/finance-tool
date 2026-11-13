@@ -1,5 +1,6 @@
 // The note on other countries (product D114, data-schema §3.16) as a guide page ships it: each country's product, the pages its facts
-// were read on, and its facts as site values, whose sheets show the page's own words. Amounts stay in their own currency.
+// were read on, and its facts as site values, whose sheets show the page's own words and link to no Israeli rule. Amounts stay in their
+// own currency.
 import type { AbroadCountry, AbroadFact, AbroadRecord } from "@finance-tool/schema";
 import { abroad as copy } from "../copy";
 import type { SiteValue } from "./value";
@@ -29,13 +30,13 @@ export interface AbroadView {
 
 /**
  * A fact as a sourced site value: its page's words go to `quote` for the sheet, and an amount's sheet says its currency in the note's word.
- * The record's English working notes stay out of the page.
+ * The record's English working notes and a source's coming replacement (a data check's matter) stay out of the page.
  */
 export function abroadFactValue(f: AbroadFact): SiteValue {
   const { notes: _notes, source, ...rest } = f;
-  const { locator: _locator, quote, ...shown } = source;
+  const { locator: _locator, quote, superseded: _superseded, ...shown } = source;
   const word = copy.currency[f.unit];
-  return { ...rest, source: shown, quote, ...(word ? { unitText: word } : {}) };
+  return { ...rest, source: shown, quote, foreign: true, ...(word ? { unitText: word } : {}) };
 }
 
 export function abroadView(r: AbroadRecord): AbroadView {

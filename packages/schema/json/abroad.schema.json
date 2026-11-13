@@ -175,6 +175,24 @@
                       "quote": {
                         "type": "string",
                         "minLength": 8
+                      },
+                      "superseded": {
+                        "type": "object",
+                        "properties": {
+                          "from": {
+                            "type": "string",
+                            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                          },
+                          "by": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "from",
+                          "by"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [
@@ -293,6 +311,24 @@
                         "quote": {
                           "type": "string",
                           "minLength": 8
+                        },
+                        "superseded": {
+                          "type": "object",
+                          "properties": {
+                            "from": {
+                              "type": "string",
+                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                            },
+                            "by": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "from",
+                            "by"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "required": [

@@ -13,6 +13,8 @@ import {
   feesSnapshot,
   fundListFile,
   fundRecord,
+  type AbroadRecord,
+  type AbroadSource,
   type FundRecord,
   type FundListFile,
   openQuestionsFile,
@@ -158,6 +160,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     // data-schema §3.16: one record per guide page, named by the guide's id
     if (collection === "abroad" && result.success && (parsed.value as { id: string }).id !== parts[parts.length - 1]!.replace(/\.json$/, ""))
       report(file, `id ${(parsed.value as { id: string }).id} differs from the file name: data/abroad/<guide id>.json`);
+    if (collection === "abroad" && result.success) for (const at of supersededAbroad(parsed.value as AbroadRecord, ctx.today ?? israelToday())) warn("note on other countries cites a text no longer in force: move the source", at);
     if (collection === "series" && result.success) {
       for (const message of checkSeries(parsed.value as SeriesRecord)) report(file, message);
     }
@@ -1120,6 +1123,20 @@ function taxYears(node: unknown): number[] {
     if (k === "by_tax_year" && v && typeof v === "object") return Object.keys(v).map(Number).filter(Number.isFinite);
     return taxYears(v);
   });
+}
+
+/**
+ * data-schema §3.16: the sources of a note on other countries whose text is no longer in force on `today` (`superseded.from` reached), as
+ * `<guide>:<country>.<fact> -> <the text that carries it now>`. A warning: the fact may still hold, but its source must move.
+ */
+export function supersededAbroad(record: AbroadRecord, today: string): string[] {
+  const out: string[] = [];
+  for (const c of record.countries) {
+    if (!c.found) continue;
+    const cited: [string, AbroadSource][] = [...(c.who ? [["who", c.who.source] as [string, AbroadSource]] : []), ...Object.entries(c.facts).map(([k, f]): [string, AbroadSource] => [k, f.source])];
+    for (const [key, s] of cited) if (s.superseded && s.superseded.from <= today) out.push(`${record.id}:${c.country}.${key} -> ${s.superseded.by}`);
+  }
+  return out;
 }
 
 /**

@@ -25,6 +25,12 @@ export const abroadSource = z.strictObject({
   locator: z.string().min(1).optional(),
   locator_he: z.string().min(1).optional(),
   quote: z.string().min(8),
+  /**
+   * The day this text stops being the one in force, and the text that carries the same rule from then (Italy's PIR: Law 232/2016 art. 1
+   * cc.100-114, repealed from 1.1.2027 by D.Lgs. 117/2026, whose art. 209 carries it). From `from` on, the data check warns that the source
+   * must move to `by`.
+   */
+  superseded: z.strictObject({ from: isoDate, by: z.string().min(1) }).optional(),
 });
 
 /**
