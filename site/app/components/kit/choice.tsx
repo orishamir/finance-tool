@@ -75,6 +75,8 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
  * (or wraps always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
  * A chip keeps one width whether it is chosen or not (its label holds room for the chosen chip's weight), so choosing moves nothing.
  * `counts` puts a number in a fixed slot after each label (how many rows a choice would show); a chip that would show none dims in place.
+ * `missing` marks chips whose choice holds nothing found (a country with no product like the guide's): a dashed edge and muted words, and
+ * still a chip that can be chosen, since choosing it says what was looked for. Its label says it in words too, never the dashes alone.
  * The row is one radio group and one stop of the Tab key (the chosen chip, else the first): the arrow keys move between the chips, and
  * Space or Enter chooses the one with the focus.
  */
@@ -87,7 +89,7 @@ export function chipName(label: ReactNode, count: number | undefined): string | 
   return count === undefined ? gershayim(label) : `${gershayim(label)} ${fmt.number(count)}`;
 }
 
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, missing, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** Chips whose choice holds nothing found: dashed and muted, still chosen like any other. */ missing?: Partial<Record<T, boolean>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
   const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
   const stop = value !== null && ids.includes(value) ? value : ids[0];
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -104,7 +106,7 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45")}>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("border-dashed", value !== id && "text-muted-foreground"))}>
           {/* the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not */}
           <span className="inline-grid *:[grid-area:1/1]">
             <span aria-hidden="true" className="invisible font-medium">

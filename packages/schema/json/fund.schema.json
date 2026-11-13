@@ -156,6 +156,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -266,7 +267,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -365,6 +367,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -475,7 +478,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -564,6 +568,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -674,7 +679,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -763,6 +769,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -873,7 +880,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -962,6 +970,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -1072,7 +1081,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -1161,6 +1171,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -1271,7 +1282,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -1360,6 +1372,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -1470,7 +1483,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -1559,6 +1573,7 @@
                     "nis_millions",
                     "usd",
                     "eur",
+                    "gbp",
                     "pct",
                     "pct_per_year",
                     "pct_of_deposit",
@@ -1669,7 +1684,8 @@
                         "average-wage-linked",
                         "provider-set",
                         "market",
-                        "founder"
+                        "founder",
+                        "set yearly"
                       ]
                     },
                     {
@@ -2070,6 +2086,7 @@
                 "nis_millions",
                 "usd",
                 "eur",
+                "gbp",
                 "pct",
                 "pct_per_year",
                 "pct_of_deposit",
@@ -2180,7 +2197,8 @@
                     "average-wage-linked",
                     "provider-set",
                     "market",
-                    "founder"
+                    "founder",
+                    "set yearly"
                   ]
                 },
                 {
@@ -2382,6 +2400,7 @@
             "nis_millions",
             "usd",
             "eur",
+            "gbp",
             "pct",
             "pct_per_year",
             "pct_of_deposit",
@@ -2492,7 +2511,8 @@
                 "average-wage-linked",
                 "provider-set",
                 "market",
-                "founder"
+                "founder",
+                "set yearly"
               ]
             },
             {

@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { AbroadNote, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -22,7 +22,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange", "AbroadNote"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -314,6 +314,27 @@ describe("ChoiceChips", () => {
     const out = html(createElement(ChoiceChips, { ids: ["a", "b"], labels: { a: "חוק", b: "תקנות" }, value: "a", counts: { a: 1234, b: 0 }, onChange: () => {}, ariaLabel: "x" }));
     expect(out).toContain('aria-label="חוק 1,234"');
     expect(out).toContain('aria-label="תקנות 0"');
+  });
+});
+
+describe("AbroadNote", () => {
+  const places = [
+    { id: "gb", name: "בריטניה", product: "ISA", title: "TITLE-GB", body: "BODY-GB", rules: "RULES-GB", source: { publishers: ["PUB-A", "PUB-B"], href: "https://www.gov.uk/x" }, facts: ["F1", "F2", "F3"], checked: "2026-11-13" },
+    { id: "us", name: "ארצות הברית", body: "BODY-US", checked: "2026-11-12" },
+  ];
+  const out = html(createElement(AbroadNote, { places, start: "gb", heads: ["H1", "H2", "H3"] }));
+  // the shown note is the last case of LongestCase, after every case laid out unseen
+  const shown = out.slice(out.lastIndexOf('aria-hidden="true" class="invisible"'));
+  it("opens on the country it is given, with its heading, its facts under the three headings and its source line", () => {
+    expect(out).toContain('role="radio" aria-checked="true"');
+    for (const w of ["TITLE-GB", "RULES-GB", "H1", "F3", "PUB-A וPUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
+  });
+  it("keeps a chip for a country with nothing like the product, dashed and saying so in words", () => {
+    expect(out).toMatch(/border-dashed text-muted-foreground[^>]*>.*?ארצות הברית.*?לא נמצא/);
+  });
+  it("lays out every country unseen, the one with nothing found headed by it", () => {
+    expect(out).toContain("בארצות הברית: לא נמצא מוצר דומה");
+    expect(out).toContain("12.11.2026");
   });
 });
 

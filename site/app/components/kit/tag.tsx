@@ -2,12 +2,12 @@
 import type { ReactNode } from "react";
 import { cx } from "./cx";
 
-type TagTone = "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter" | "outline" | "primary";
+type TagTone = "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter" | "outline" | "primary" | "info";
 
 /**
  * A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word.
  * `wrap` lets a label that holds a name (a company's) break onto a second line instead of running past the edge of a phone.
- * `shape`: `tag`, a small rounded box, or `pill`, fully round with more room at the sides (the default for `primary` and `outline`).
+ * `shape`: `tag`, a small rounded box, or `pill`, fully round with more room at the sides (the default for `primary`, `outline` and `info`).
  * `size`: `xs`, 12 px words of medium weight, or `sm`, 14 px words of normal weight, for labels that stand among a row's own words (what a
  * deposit lets you do before its end).
  */
@@ -24,10 +24,12 @@ export function Tag({ tone = "neutral", shape, size = "xs", icon, children, clas
     primary: "bg-primary-subtle text-primary",
     /** A thin frame and no fill: a kind beside figures that should not draw the eye (a rate's type in a table, the designer's mocks). */
     outline: "border border-input text-foreground",
+    /** A thin frame and words in the info colour, no fill: what kind of note a box in the info frame is ("במדינות אחרות"). */
+    info: "border border-info-border text-info-foreground",
   }[tone];
-  const pill = (shape ?? (tone === "primary" || tone === "outline" ? "pill" : "tag")) === "pill";
-  // an outline tag's words are of normal weight at every size: its frame already sets it apart
-  const words = size === "sm" ? "text-sm font-normal" : tone === "outline" ? "text-xs font-normal" : "text-xs font-medium";
+  const pill = (shape ?? (tone === "primary" || tone === "outline" || tone === "info" ? "pill" : "tag")) === "pill";
+  // a framed tag's words (outline, info) are of normal weight at every size: its frame already sets it apart
+  const words = size === "sm" ? "text-sm font-normal" : tone === "outline" || tone === "info" ? "text-xs font-normal" : "text-xs font-medium";
   return (
     <span className={cx("inline-flex w-fit items-center gap-1 align-middle", words, pill ? "rounded-full px-2.5 py-0.5" : "rounded-sm px-1.5 py-px", wrap ? "max-w-full" : "whitespace-nowrap", styles, className)}>
       {icon}

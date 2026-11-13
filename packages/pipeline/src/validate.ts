@@ -4,6 +4,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import type { z } from "zod";
 import {
+  abroadRecord,
   catalogEntry,
   cmaPeriodFile,
   depositTerms,
@@ -12,6 +13,8 @@ import {
   feesSnapshot,
   fundListFile,
   fundRecord,
+  type AbroadRecord,
+  type AbroadSource,
   type FundRecord,
   type FundListFile,
   openQuestionsFile,
@@ -52,6 +55,7 @@ const collections: Record<string, z.ZodType> = {
   series: seriesRecord,
   sources: sourcesFile,
   "open-questions.json": openQuestionsFile,
+  abroad: abroadRecord,
 };
 
 export interface ValidationContext {
@@ -153,6 +157,10 @@ export function validateData(ctx: ValidationContext): Problem[] {
       const rec = parsed.value as RuleLike;
       for (const message of checkRuleSources(rec, ctx, ruleRecords, warn)) report(file, message);
     }
+    // data-schema §3.16: one record per guide page, named by the guide's id
+    if (collection === "abroad" && result.success && (parsed.value as { id: string }).id !== parts[parts.length - 1]!.replace(/\.json$/, ""))
+      report(file, `id ${(parsed.value as { id: string }).id} differs from the file name: data/abroad/<guide id>.json`);
+    if (collection === "abroad" && result.success) for (const at of supersededAbroad(parsed.value as AbroadRecord, ctx.today ?? israelToday())) warn("note on other countries cites a text no longer in force: move the source", at);
     if (collection === "series" && result.success) {
       for (const message of checkSeries(parsed.value as SeriesRecord)) report(file, message);
     }
@@ -906,9 +914,11 @@ export function isCopySource(url: string): boolean {
  * the Securities Authority, National Insurance outside its Laws1 copies), the Bank of Israel, the Tel Aviv Stock Exchange (its own
  * rules, guidelines and lists; an issuer's filing on Maya is the issuer's, isIssuerFiling), the SEC (for an issuer's own filings there), the United States Code as
  * the House's Office of the Law Revision Counsel publishes it and the federal regulations as the Office of the Federal Register publishes
- * them (the eCFR), and foreign regulators and statutory bodies. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
+ * them (the eCFR), and foreign regulators and statutory bodies; for the notes on other countries (data/abroad/, D114) the governments' own
+ * sites of Britain (GOV.UK) and France (Service-Public.fr, under both its hosts), Italy's tax authority, and Normattiva, the Italian
+ * state's portal of the law in force. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
  */
-const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org"];
+const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org", "gov.uk", "service-public.fr", "service-public.gouv.fr", "agenziaentrate.gov.it", "normattiva.it"];
 /**
  * A company's own document is marked `institution` (data-schema 3.1), never `primary`, so it is not caught here. The one kind kept
  * `primary` off those hosts is the defining text of a publisher's own index or numbering standard, cited for that index or standard:
@@ -1113,6 +1123,20 @@ function taxYears(node: unknown): number[] {
     if (k === "by_tax_year" && v && typeof v === "object") return Object.keys(v).map(Number).filter(Number.isFinite);
     return taxYears(v);
   });
+}
+
+/**
+ * data-schema §3.16: the sources of a note on other countries whose text is no longer in force on `today` (`superseded.from` reached), as
+ * `<guide>:<country>.<fact> -> <the text that carries it now>`. A warning: the fact may still hold, but its source must move.
+ */
+export function supersededAbroad(record: AbroadRecord, today: string): string[] {
+  const out: string[] = [];
+  for (const c of record.countries) {
+    if (!c.found) continue;
+    const cited: [string, AbroadSource][] = [...(c.who ? [["who", c.who.source] as [string, AbroadSource]] : []), ...Object.entries(c.facts).map(([k, f]): [string, AbroadSource] => [k, f.source])];
+    for (const [key, s] of cited) if (s.superseded && s.superseded.from <= today) out.push(`${record.id}:${c.country}.${key} -> ${s.superseded.by}`);
+  }
+  return out;
 }
 
 /**

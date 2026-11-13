@@ -3,6 +3,8 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
+  abroadRecord,
+  type AbroadRecord,
   cmaPeriodFile,
   israelToday,
   dimensionId,
@@ -446,6 +448,12 @@ export function loadHomeGuideDoor(): { id: string; name: string }[] {
   const ids = (readJsonCached(join(root, "data/parameters/home-guide-door.json")) as { wrappers: string[] }).wrappers;
   const names = new Map<string, string>(loadProducts().map((w) => [w.id, w.names.he[0]!]));
   return ids.filter((id) => names.has(id)).map((id) => ({ id, name: names.get(id)! }));
+}
+
+/** data/abroad/<id>.json (D114): how a product like the guide's works in other countries, or null where the guide has no such note. */
+export function loadAbroad(id: string): AbroadRecord | null {
+  const file = join(root, "data/abroad", `${id}.json`);
+  return existsSync(file) ? readParsedCached(file, abroadRecord) : null;
 }
 
 /** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */

@@ -58,8 +58,6 @@
   decision. Details only when he asks.
 - Send a screenshot of the live change (`tools/shot.mjs`),
   with one line on what changed.
-- End the report with up to three suggestions for what to do next, one line
-  each, for him to pick from.
 
 ## 7. When the founder reports a flaw
 

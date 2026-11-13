@@ -47,6 +47,7 @@ export { ChartTip, ZoomBar, ZoomBrush, pickDim, useChartPick, useYearZoom, type 
 export { PHONE_GONE, TableCols, type ColWidth } from "./table-cols";
 export { FilterChip } from "./filter-chip";
 export { DidYouKnow, type FactItem } from "./did-you-know";
+export { AbroadNote, type AbroadPlace } from "./abroad-note";
 export { useSoftSwap, useSwapGlide } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, ProductFigures, ProductIdLink, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, RowFoldButton, type ProductColumn, type ProductGroup, type ProductRow, type FoldMark } from "./product-table";
 export { PageTabs, type PageTab } from "./page-tabs";

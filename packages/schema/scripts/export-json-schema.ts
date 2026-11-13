@@ -3,6 +3,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import {
+  abroadRecord,
   catalogEntry,
   cmaPeriodFile,
   depositTerms,
@@ -40,6 +41,7 @@ const schemas = {
   dimension: dimensionRecord,
   series: seriesRecord,
   "open-questions": openQuestionsFile,
+  abroad: abroadRecord,
 };
 for (const [name, schema] of Object.entries(schemas)) {
   writeFileSync(`${out}${name}.schema.json`, JSON.stringify(z.toJSONSchema(schema, { unrepresentable: "any" }), null, 2) + "\n");
