@@ -14,7 +14,7 @@ import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineCh
 import { IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, FoldGroup, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
+import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -268,16 +268,12 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               {headline && <StateTag state="computed" />}
             </div>
           </div>
-          <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="lg:w-auto lg:min-w-[260px] max-w-full" />
+          {/* what each side's figure is stands in the "?" beside the switch; the other side's figure is the switch's other side */}
+          <div className="flex items-center gap-3">
+            <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="flex-1 min-w-0 lg:min-w-[260px]" />
+            <HelpMark about={copy.modeHelp.about} text={copy.modeHelp.text} />
+          </div>
         </div>
-
-        {/* a figure in future shekels read as ignoring inflation; each mode names the other's figure and why deposits exceed what was typed */}
-        {values && timeline.kind === "ok" ? (
-          <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-[3lh]">
-            {copy.modeNote[mode].before} <Num value={values.yearValues(timeline.years[timeline.years.length - 1]!, mode === "real" ? "nominal" : "real").net} /> {copy.modeNote[mode].after}
-            {!lumpSum && (state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0 ? ` ${copy.modeNote.deposits}` : ""}
-          </p>
-        ) : null}
 
         {timeline.kind === "ok" ? (
           <>
@@ -509,12 +505,14 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
       )}
       <span>{valuesCopy.returnNoteCash}</span>
       <span>{valuesCopy.hints.inflation}</span>
+      {!lumpSum && <span>{valuesCopy.hints.deposits}</span>}
     </div>
   ) : (
     <div className="flex flex-col gap-0.5 text-xs text-muted-foreground -mt-2">
       <span>{valuesCopy.hints.return}</span>
       <span>{valuesCopy.returnNote}</span>
       <span>{valuesCopy.hints.inflation}</span>
+      {!lumpSum && <span>{valuesCopy.hints.deposits}</span>}
     </div>
   );
   return (

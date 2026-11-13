@@ -254,12 +254,8 @@ export const guide = {
   // a cash-like page runs on a rate, not a return; a lump-sum page (lumpSumIds) names one amount, with no monthly deposit
   headlineExample: { lead: "דוגמה:", plus: "ועוד", perMonth: "בחודש, בתשואה של", perMonthCash: "בחודש, בריבית של", lump: "בתשואה של", lumpCash: "בריבית של", perYear: "בשנה, משאירים לכם אחרי" },
   modes: { real: "בכסף של היום", nominal: "בשקלים של העתיד" },
-  // the mode says what its figure is and gives the other mode's figure
-  modeNote: {
-    real: { before: "בכסף של היום: מה שהסכום יקנה במחירים של היום. בדוח או בחשבון יהיה כתוב אז", after: "בשקלים של העתיד." },
-    nominal: { before: "בשקלים של העתיד: מה שיהיה כתוב אז בדוח או בחשבון. הסכום הזה יקנה רק כמו", after: "היום, כי המחירים עולים." },
-    deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.",
-  },
+  // the "?" beside the switch says what each side's figure is; the other side's figure is the switch's other side
+  modeHelp: { about: "בכסף של היום ובשקלים של העתיד", text: "בכסף של היום: מה שהסכום יקנה במחירים של היום. בשקלים של העתיד: מה שיהיה כתוב אז בדוח או בחשבון. הוא יקנה פחות, כי המחירים עולים." },
   modeLabel: "אופן הצגת הסכומים",
   // the fees band is what was charged, a total to date, not a rate
   legend: { net: "נשאר לכם", tax: "מס", fees: "דמי ניהול שנגבו", contributions: "ההפקדות שלכם" },
@@ -333,7 +329,7 @@ export const values = {
   optional: "(לא חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
   units: { nis: "₪", pct: "%", years: "שנים" },
-  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
+  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
