@@ -4,9 +4,13 @@
 import type { ReactNode } from "react";
 import { cx } from "./cx";
 
-/** The list: its lines (`AlignedRow`, `AlignedAcross`) as its children, in order. */
+/**
+ * The list: its lines (`AlignedRow`, `AlignedAcross`) as its children, in order. The boxes' column is at least as wide as its widest box
+ * that cannot break (a drop-down, a phrase kept whole); the labels take the rest, one line each where it fits, and a long label wraps
+ * where the list is too narrow for both (a phone's 320 px).
+ */
 export function AlignedList({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cx("grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2", className)}>{children}</div>;
+  return <div className={cx("grid grid-cols-[auto_minmax(min-content,1fr)] items-center gap-x-3 gap-y-2", className)}>{children}</div>;
 }
 
 /**
