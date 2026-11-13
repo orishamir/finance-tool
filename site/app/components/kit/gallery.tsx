@@ -1700,6 +1700,9 @@ function Lists({ today }: { today: string }) {
             <SortNote label={p.figure} note={p.note} />
           </div>
         </State>
+        <State label={'SortNote with mark: a "?" beside the label on its first line and the note under both, so a note wider than its label never pushes the mark past the column'}>
+          <SortNote label={p.figure} note={p.note} mark={<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />} />
+        </State>
         <State label={'with a "?" beside it: the head is raised, so a press on its arrow sorts and never opens the mark, whose 44 px area reaches over the head\'s end'}>
           <span className="inline-flex items-start gap-1">
             <SortHead label={p.figure} note={p.note} state="ascending" onPress={() => {}} raised />

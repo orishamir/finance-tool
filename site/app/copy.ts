@@ -2116,7 +2116,10 @@ export const companyPage = {
     cols: { product: "המוצר", count: "כמה", assets: "כסף מנוהל", fees: "דמי ניהול", go: "פתיחה" },
     fundsFees: (n: number) => (n === 1 ? "לפי הדוח של הקרן" : "לפי הדוח של כל קרן"),
     tariff: "לפי התעריפון",
-    /** The note under it: what the fees and the bar are; the date of managed money comes between. */
+    /** Where the table holds tracks, the heads say what their figures are: the fee range's words and the money's date as muted lines under
+     *  the heads, what the bar is measured against in the "?" beside the money's head. */
+    heads: { fees: "במסלולים: מהחיסכון, מהזול ליקר", assets: (period: string) => `סוף ${period}`, bar: (name: string) => `הפס מתחת לסכום הוא ביחס למוצר הגדול ביותר של ${name}.` },
+    /** On a phone, whose rows have no heads, the same in a note under the table; the date of managed money comes between. */
     note: { fees: "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר.", assets: "הכסף המנוהל נכון לסוף ", bar: (name: string) => `; הפס מתחתיו הוא ביחס למוצר הגדול ביותר של ${name}.` },
   },
   deposits: {
