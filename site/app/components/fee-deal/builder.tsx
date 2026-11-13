@@ -1,25 +1,28 @@
-// The column "בונים את העסקה" (method §10.6, `builder`): the deal's kind, what it holds (three facts each chosen in place) or, in the
-// provident family, the place for its company and track, and its fees, one card each with its figures typed in place, its standing
-// against the cap after its name, the chosen card marked, and a way to take it away. A fee with a price not given yet shows its empty
-// boxes and says so. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as its card was; another kind
-// that takes fees away leaves it under the kind. Under the cards, one quiet line offers the fees the deal could add: the kind's usual ones
-// it lacks first, then the rarer ones and a fee of the person's own; a fee added takes the focus in its first box. A card under the pointer
-// or the focus marks the fee in the glance.
+// The two columns that enter the deal (method §10.6, `builder`). "על מה העסקה" (`SetupColumn`): the deal's kind, what it holds (three
+// facts each chosen in place) or, in the provident family, the place for its company and track, the price list it was filled from with
+// the button that fills a new deal from another, and the month it started. "העמלות בעסקה" (`FeesColumn`): its fees, grouped by what each
+// is charged on under the summary's group headings, a group shown only while the deal has a fee in it; one card each with its figures
+// typed in place, its standing against the cap after its name and the bin at that line's end, the chosen card marked. A fee with a price
+// not given yet shows its empty boxes and says so. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as
+// its card was; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the fees the deal
+// could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own; a fee added lands in its group and
+// takes the focus in its first box. Where the page has no column for the chosen fee's panel (a phone, a narrow window), the panel opens
+// right under its card. A card under the pointer or the focus marks the fee in the summary.
 import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, StageView } from "../../lib/fee-deal/builder";
-import { pickHeld, setHeld, setUntil, updateFee } from "../../lib/fee-deal/edit";
+import { pickHeld, setHeld, setStart, setUntil, updateFee } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { BOUND_CURRENCIES, pricesOn, untilRange, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { refOf } from "../../lib/fee-deal/parts";
+import { groupKey, groupOn, refOf, type DealRead } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
 import { FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
 import { IconBin } from "../icons";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, InlineSelect, MonthField, PickCard, Section, Step, Tag, When, monthText, type AddItem } from "../kit";
+import { AddLine, Button, ChoiceChips, GroupHead, InlineSelect, MonthField, PickCard, Section, Step, Tag, When, cx, monthText, type AddItem } from "../kit";
 import { Num } from "../provenance";
 import { PriceFigure, mainFieldId } from "./figures";
 import { LawTag, useFeeMark } from "./links";
@@ -58,17 +61,20 @@ function RowStanding({ row }: { row: BuilderRow }) {
   return null;
 }
 
-/** The facts a row says at its end: its next change, where it is charged, its sale, its bounds. */
+/**
+ * The facts a row says at its end: its next change, where it is charged, a sale priced apart, its bounds. A sale priced as a purchase is
+ * the default and goes unsaid.
+ */
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
   if (!row.priced) notes.push(b.facts.noPrice);
   if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
-  if (row.saleSame !== null) notes.push(row.saleSame ? b.facts.saleSame : b.facts.saleApart);
+  if (row.saleSame === false) notes.push(b.facts.saleApart);
   if (row.priced && row.stages[0]!.price.form === "action" && FEE_SHAPES[fee.kind].fields.action?.includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
   return (
-    <ul className="flex flex-col items-start gap-1 whitespace-nowrap text-sm text-muted-foreground sm:items-end">
+    <ul className="ms-auto flex flex-col items-start gap-1 whitespace-nowrap text-sm text-muted-foreground sm:items-end">
       {notes.map((n, k) => (
         <li key={k}>{n}</li>
       ))}
@@ -144,9 +150,10 @@ function RowFigures({ row, fee, onFee }: { row: BuilderRow; fee: Fee; onFee: (f:
 /**
  * One fee's card, the whole card the button that chooses it (`PickCard`): the chosen one framed in the action colour with the word. Its
  * button comes first, so the keyboard meets the fee's name, then its boxes, then its bin; Enter in its last box comes back to it. A field
- * of an unchosen card that takes the focus chooses the card. A card under the pointer or the focus marks its fee in the glance, and is
- * marked when the glance points at it. Its end holds the way to take the fee away, a bin: always on the chosen card and on a touch screen,
- * on the others while the pointer is over the card or the focus is in it; while it is not shown it takes no press.
+ * of an unchosen card that takes the focus chooses the card. A card under the pointer or the focus marks its fee in the summary, and is
+ * marked when the summary points at it. The end of its name's line holds the way to take the fee away, a bin, apart from the notes at the
+ * card's end so it is never read as taking a note away: always on the chosen card and on a touch screen, on the others while the pointer
+ * is over the card or the focus is in it; while it is not shown it takes no press.
  */
 function FeeRowCard({ id, chosen, label, onChoose, children }: { id: string; chosen: boolean; label: string; onChoose: (by: "pointer" | "keyboard" | "field") => void; children: ReactNode }) {
   const { marked, handlers } = useFeeMark(id);
@@ -171,7 +178,10 @@ function FeeRowCard({ id, chosen, label, onChoose, children }: { id: string; cho
 /** What takes the focus for a fee's card: its own button. */
 const cardFocus = (li: HTMLElement | null | undefined): HTMLElement | null => li?.querySelector<HTMLElement>("[data-pick-card]") ?? null;
 
-/** A card's bin, by its fee's note at the card's end; its spoken name names the fee. */
+/**
+ * A card's bin, at the end of its fee's name line; its spoken name names the fee. Its round face reaches 4 px past the line above and
+ * below, taking no more height than the name's line and the room around it.
+ */
 function RemoveFee({ name, chosen, onRemove }: { name: string; chosen: boolean; onRemove: () => void }) {
   return (
     <Button
@@ -179,11 +189,11 @@ function RemoveFee({ name, chosen, onRemove }: { name: string; chosen: boolean; 
       size="sm"
       aria-label={b.fieldName(name, copy.panel.remove)}
       onClick={onRemove}
-      className={
-        chosen
-          ? undefined
-          : "opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto focus-visible:opacity-100 [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto"
-      }
+      className={cx(
+        "-my-1 ms-auto shrink-0",
+        !chosen &&
+          "opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto focus-visible:opacity-100 [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto",
+      )}
     >
       <IconBin size={18} />
     </Button>
@@ -215,9 +225,11 @@ function HeldChips({ held, onHeld }: { held: Held | undefined; onHeld: (h: Held)
   );
 }
 
-/** The page's undo line, where it stands in the builder: in the place of a fee taken away. */
+/** The page's undo line, where it stands among the fees: in the place of a fee taken away, in that fee's group. */
 export interface FeeUndoLine {
   what: Extract<UndoWhat, { kind: "remove" }>;
+  /** The fee taken away, whose group the line stands in. */
+  fee: Fee;
   /** What happened, in words: the live region says the same. */
   words: string;
   onUndo: () => void;
@@ -227,7 +239,7 @@ export interface FeeUndoLine {
 }
 
 /** The page's undo line of another kind of product that took fees away: it stands under the kind. */
-export type KindUndoLine = Omit<FeeUndoLine, "what">;
+export type KindUndoLine = Omit<FeeUndoLine, "what" | "fee">;
 
 /** A fee whose card or first box takes the focus once drawn: one put back by the undo (its card), one just added (its first box). */
 export interface FeeFocus {
@@ -249,75 +261,40 @@ export function bringIntoView(el: Element | null | undefined) {
   el.scrollIntoView({ block: "nearest", behavior: still ? "auto" : "smooth" });
 }
 
-export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, line, kindLine, focus, onFocused, onDeal, onKind, onChoose, onAdd, onRemove }: {
+export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left, kindLine, onDeal, onKind }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
-  chosen: string | null;
   /** Opens the track picker from the button tapped, where the deal's kind has tracks (the provident family); null elsewhere. */
   onPickTrack: ((from: HTMLElement) => void) | null;
+  /** Opens the price lists' picker from the button tapped, whose choice fills a new deal, where the deal's kind has price lists; null elsewhere. */
+  onTemplates: ((from: HTMLElement) => void) | null;
   /** What the template the deal was filled from left out; null where no template filled it. */
   left: readonly LeftOut[] | null;
-  /** The undo line of a fee just taken away; null where none stands. */
-  line: FeeUndoLine | null;
   /** The undo line of another kind just chosen that took fees away; null where none stands. */
   kindLine: KindUndoLine | null;
-  /** What takes the focus once drawn, and what to call once it has. */
-  focus: FeeFocus | null;
-  onFocused: () => void;
   onDeal: (deal: FeeDeal) => void;
   /** Another kind chosen for the deal. */
   onKind: (kind: ProductId) => void;
-  /** A card chosen, and how: by the pointer, the keyboard (the panel's first field then takes the focus) or a field of it taking the focus. */
-  onChoose: (feeId: string, by: "pointer" | "keyboard" | "field") => void;
-  onAdd: (kind: FeeKindId) => void;
-  onRemove: (feeId: string) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
-  // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with both closed. The column
+  // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with it closed. The column
   // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
   const [pickingIn, setPickingIn] = useState<string | null>(null);
   const picking = pickingIn === deal.id;
   const setPicking = (open: boolean) => setPickingIn(open ? deal.id : null);
-  // each card's height as last drawn (a card's height changes with the fees and with the choice), so the line a removed fee leaves is as
-  // tall as its card was
   const root = useRef<HTMLDivElement>(null);
-  const list = useRef<HTMLUListElement>(null);
-  const adding = useRef<HTMLDivElement>(null);
-  const heights = useRef(new Map<string, number>());
   // a kind just chosen hands the focus to the next step's first control, where the chips it was chosen in leave
   const kindChosen = useRef(false);
   useIsoLayoutEffect(() => {
-    for (const li of list.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
-    if (kindChosen.current) {
-      kindChosen.current = false;
-      // the undo line of a kind that took fees away has the focus already
-      if (!kindLine) root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)")?.focus();
-    }
-    if (!focus) return;
-    const li = list.current?.querySelector<HTMLElement>(`li[data-fee="${focus.fee}"]`);
-    if (focus.on === "box") {
-      const box = li?.querySelector<HTMLInputElement>("input[data-figure]");
-      bringIntoView(li);
-      box?.focus({ preventScroll: true });
-      box?.select();
-    } else cardFocus(li)?.focus({ preventScroll: true });
-    onFocused();
+    if (!kindChosen.current) return;
+    kindChosen.current = false;
+    // the undo line of a kind that took fees away has the focus already
+    if (!kindLine) root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)")?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deal.fees, deal.kind, chosen, focus]);
-  const cardAt = (i: number) => list.current?.querySelectorAll<HTMLElement>("li[data-fee]")[i];
-  // the line of a fee taken away hands the focus, when it goes, to the card now in its place, else the one before it, else the add line
-  const afterRemoved = (at: number) => () => cardFocus(cardAt(at) ?? cardAt(at - 1)) ?? adding.current?.querySelector("button");
-  const undoLine = (l: FeeUndoLine, height?: number) => (
-    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} take={l.take} refocus={afterRemoved(l.what.at)} height={height}>
-      {l.words}
-    </UndoLine>
-  );
-  const onFee = (f: Fee) => onDeal(updateFee(deal, f.id, () => f));
-  const rows = new Map(view.rows.map((r) => [r.fee, r]));
-  // every chip alike: the usual fees come first, which is their only mark
-  const adds: AddItem[] = [...view.suggestions.usual, ...view.suggestions.rarer].map((k) => ({ id: k, label: feeName(k) }));
+  }, [deal.kind]);
   const track = deal.template && templateSource(deal.template.id) === "track" ? deal.template : null;
+  const house = deal.template && templateSource(deal.template.id) === "house" ? deal.template : null;
   let n = 1;
   return (
     <Section title={b.title} level="kick" heading="h2">
@@ -372,46 +349,170 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, li
                 {b.trackPick}
               </Button>
             }
-          />
-        )}
-        {kind && (
-          <Step n={n++} done={deal.fees.length > 0} title={b.fees}>
-            {deal.template && left && <TemplateNote template={deal.template} left={left} />}
-            {deal.fees.length > 0 && <p className="text-sm text-muted-foreground">{b.feesLead}</p>}
-            <ul ref={list} className="flex flex-col gap-3">
-              {deal.fees.flatMap((fee, i) => {
-                const row = rows.get(fee.id);
-                const name = feeName(fee.kind, fee.name);
-                const on = fee.id === chosen;
-                const card = (
-                  <FeeRowCard key={fee.id} id={fee.id} chosen={on} label={b.open(name)} onChoose={(by) => onChoose(fee.id, by)}>
-                    {/* the note and the bin at the card's end, beside the boxes where the card has room; else on a line of their own under them */}
-                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                      <div className="flex min-w-0 flex-col gap-2">
-                        <span className="flex flex-wrap items-center gap-2">
-                          <FeeName fee={refOf(fee)} className="font-semibold" />
-                          {on && <Tag tone="primary">{b.chosen}</Tag>}
-                          {row && <RowStanding row={row} />}
-                        </span>
-                        {row ? <RowFigures row={row} fee={fee} onFee={onFee} /> : <p className="text-sm text-muted-foreground">{b.unread}</p>}
-                      </div>
-                      <div className="ms-auto flex shrink-0 items-center gap-2">
-                        {row && <RowNotes row={row} fee={fee} />}
-                        <RemoveFee name={name} chosen={on} onRemove={() => onRemove(fee.id)} />
-                      </div>
-                    </div>
-                  </FeeRowCard>
-                );
-                if (line && line.what.at === i) return [undoLine(line, heights.current.get(line.what.feeId)), card];
-                return [card];
-              })}
-              {line && line.what.at >= deal.fees.length && undoLine(line, heights.current.get(line.what.feeId))}
-            </ul>
-            <div ref={adding} className="contents">
-              <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />
-            </div>
+          >
+            {track && left && <TemplateNote template={track} left={left} />}
           </Step>
         )}
+        {kind && onTemplates && (
+          <Step n={n++} done={!!house} title={b.fill}>
+            {house && left && <TemplateNote template={house} left={left} />}
+            <Button variant="outline" className="self-start" onClick={(e) => onTemplates(e.currentTarget)}>
+              {copy.end.template}
+            </Button>
+          </Step>
+        )}
+        {kind && (
+          <Step
+            n={n++}
+            done={!!deal.start}
+            title={b.start}
+            value={b.optional}
+            action={<MonthField value={deal.start ?? null} label={b.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />}
+          />
+        )}
+      </div>
+    </Section>
+  );
+}
+
+/**
+ * The order the fees' groups stand in: the actions a deal is mostly about (a purchase or sale, a conversion, a deposit, a payout), what is
+ * held, the account, a transfer out, any other action, cover, and what is not said.
+ */
+const GROUP_ORDER = ["action:trade", "action:conversion", "action:deposit", "action:distribution", "held", "heldSaved", "account", "action:transfer_out", "action:none", "cover", "unsaid"];
+const groupRank = (key: string) => {
+  const k = GROUP_ORDER.indexOf(key);
+  return k < 0 ? GROUP_ORDER.length : k;
+};
+
+/**
+ * A fee's group among the cards: the heading key of what it is charged on (F-111, `groupOn`), by its first price that is not free, so a
+ * fee free for a while stands where it will be charged; what is held reads "what has built up" in a product that saves.
+ */
+export function feeGroup(read: Pick<DealRead, "engine">, fee: Fee, saved: boolean): string {
+  const stage = fee.stages.find((s) => s.price.form !== "free") ?? fee.stages[0]!;
+  const on = groupOn(read, fee, stage.price);
+  return on.on === "held" && saved ? "heldSaved" : groupKey(on);
+}
+
+export function FeesColumn({ deal, view, groupOf, chosen, panel, line, focus, onFocused, onDeal, onChoose, onAdd, onRemove }: {
+  deal: FeeDeal;
+  view: Builder;
+  /** Each fee's group (`feeGroup`). */
+  groupOf: (fee: Fee) => string;
+  chosen: string | null;
+  /** The chosen fee's panel, drawn right under its card; null where the page draws it in a column of its own. */
+  panel: ReactNode;
+  /** The undo line of a fee just taken away; null where none stands. */
+  line: FeeUndoLine | null;
+  /** What takes the focus once drawn, and what to call once it has. */
+  focus: FeeFocus | null;
+  onFocused: () => void;
+  onDeal: (deal: FeeDeal) => void;
+  /** A card chosen, and how: by the pointer, the keyboard (the panel's first field then takes the focus) or a field of it taking the focus. */
+  onChoose: (feeId: string, by: "pointer" | "keyboard" | "field") => void;
+  onAdd: (kind: FeeKindId) => void;
+  onRemove: (feeId: string) => void;
+}) {
+  // each card's height as last drawn (a card's height changes with the fees and with the choice), so the line a removed fee leaves is as
+  // tall as its card was
+  const root = useRef<HTMLDivElement>(null);
+  const adding = useRef<HTMLDivElement>(null);
+  const heights = useRef(new Map<string, number>());
+  const cardOf = (feeId: string) => root.current?.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(feeId)}"]`);
+  useIsoLayoutEffect(() => {
+    for (const li of root.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
+    if (!focus) return;
+    const li = cardOf(focus.fee);
+    if (focus.on === "box") {
+      const box = li?.querySelector<HTMLInputElement>("input[data-figure]");
+      bringIntoView(li);
+      box?.focus({ preventScroll: true });
+      box?.select();
+    } else cardFocus(li)?.focus({ preventScroll: true });
+    onFocused();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deal.fees, chosen, focus]);
+  const onFee = (f: Fee) => onDeal(updateFee(deal, f.id, () => f));
+  const rows = new Map(view.rows.map((r) => [r.fee, r]));
+  // every chip alike: the usual fees come first, which is their only mark
+  const adds: AddItem[] = [...view.suggestions.usual, ...view.suggestions.rarer].map((k) => ({ id: k, label: feeName(k) }));
+
+  // the groups, each with its cards in the deal's order; the line of a fee taken away stands in that fee's group, where its card was
+  type Item = { fee: Fee; i: number } | "line";
+  const byGroup = new Map<string, Item[]>();
+  deal.fees.forEach((fee, i) => {
+    const key = groupOf(fee);
+    byGroup.set(key, [...(byGroup.get(key) ?? []), { fee, i }]);
+  });
+  if (line) {
+    const key = groupOf(line.fee);
+    const items = byGroup.get(key) ?? [];
+    const at = items.findIndex((it) => it !== "line" && it.i >= line.what.at);
+    items.splice(at < 0 ? items.length : at, 0, "line");
+    byGroup.set(key, items);
+  }
+  const groups = [...byGroup].sort(([a], [b2]) => groupRank(a) - groupRank(b2));
+  // the cards as they stand on the page, so the line of a fee taken away hands the focus, when it goes, to the card now in its place, else
+  // the one before it, else the add line
+  const shown = groups.flatMap(([, items]) => items);
+  const lineAt = shown.indexOf("line");
+  const near = (k: number) => {
+    const it = shown[k];
+    return it && it !== "line" ? it.fee.id : null;
+  };
+  const afterRemoved = () => {
+    const id = near(lineAt + 1) ?? near(lineAt - 1);
+    return (id ? cardFocus(cardOf(id)) : null) ?? adding.current?.querySelector("button");
+  };
+  const undoLine = (l: FeeUndoLine) => (
+    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} take={l.take} refocus={afterRemoved} height={heights.current.get(l.what.feeId)}>
+      {l.words}
+    </UndoLine>
+  );
+  const card = (fee: Fee) => {
+    const row = rows.get(fee.id);
+    const name = feeName(fee.kind, fee.name);
+    const on = fee.id === chosen;
+    return (
+      <FeeRowCard key={fee.id} id={fee.id} chosen={on} label={b.open(name)} onChoose={(by) => onChoose(fee.id, by)}>
+        {/* the card's body is the cell a figure's note stays inside */}
+        <div data-note-cell="" className="flex flex-col gap-2">
+          <span className="flex flex-wrap items-center gap-2">
+            <FeeName fee={refOf(fee)} className="font-semibold" />
+            {on && <Tag tone="primary">{b.chosen}</Tag>}
+            {row && <RowStanding row={row} />}
+            <RemoveFee name={name} chosen={on} onRemove={() => onRemove(fee.id)} />
+          </span>
+          {/* the notes at the card's end, beside the boxes where the card has room; else on a line of their own under them */}
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+            {row ? <RowFigures row={row} fee={fee} onFee={onFee} /> : <p className="text-sm text-muted-foreground">{b.unread}</p>}
+            {row && <RowNotes row={row} fee={fee} />}
+          </div>
+        </div>
+      </FeeRowCard>
+    );
+  };
+  return (
+    <Section title={b.fees} level="kick" heading="h2">
+      <div ref={root} className="flex flex-col gap-6">
+        {groups.map(([key, items]) => (
+          <div key={key} className="flex flex-col gap-3">
+            <GroupHead as="h3" plain>
+              {copy.on[key]}
+            </GroupHead>
+            <ul className="flex flex-col gap-3">
+              {items.flatMap((it) => {
+                if (it === "line") return [undoLine(line!)];
+                if (it.fee.id !== chosen || !panel) return [card(it.fee)];
+                return [card(it.fee), <li key="panel">{panel}</li>];
+              })}
+            </ul>
+          </div>
+        ))}
+        <div ref={adding} className="contents">
+          <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />
+        </div>
       </div>
     </Section>
   );

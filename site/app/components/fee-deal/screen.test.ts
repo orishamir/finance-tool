@@ -12,8 +12,8 @@ import { typed, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
-import { BuilderColumn } from "./builder";
-import { GlanceColumn } from "./glance";
+import { FeesColumn, feeGroup } from "./builder";
+import { GlanceCard } from "./glance";
 import { feeName } from "./words";
 import { PanelColumn } from "./panel";
 import { markLabel, ReadingCards } from "./reading";
@@ -68,30 +68,29 @@ const panelOf = (deal: FeeDeal, feeId: string) => {
 };
 const drawPanel = (deal: FeeDeal, feeId: string) => text(panelOf(deal, feeId));
 
-const drawBuilder = (deal: FeeDeal, chosen: string | null) =>
-  markup(
-    createElement(BuilderColumn, {
+const drawBuilder = (deal: FeeDeal, chosen: string | null) => {
+  const r = readDealFor(deal, data.kinds, TODAY);
+  return markup(
+    createElement(FeesColumn, {
       deal,
-      view: builder(readDealFor(deal, data.kinds, TODAY)),
-      kinds: data.kinds,
+      view: builder(r),
+      groupOf: (fee) => feeGroup(r, fee, saves(deal)),
       chosen,
-      onPickTrack: null,
-      left: null,
+      panel: null,
       line: null,
-      kindLine: null,
       focus: null,
       onFocused: () => {},
       onDeal: () => {},
-      onKind: () => {},
       onChoose: () => {},
       onAdd: () => {},
       onRemove: () => {},
     }),
   );
+};
 
 const drawGlance = (deal: FeeDeal) => {
   const r = readDealFor(deal, data.kinds, TODAY);
-  return text(createElement(GlanceColumn, { glance: glance(r), law: readingOf(r, data.fx).law, saved: saves(deal), names: (id: string) => id }));
+  return text(createElement(GlanceCard, { glance: glance(r), law: readingOf(r, data.fx).law, saved: saves(deal), names: (id: string) => id }));
 };
 
 const drawReading = (deal: FeeDeal) => text(createElement(ReadingCards, { reading: readingOf(readDealFor(deal, data.kinds, TODAY), data.fx), saved: saves(deal), fx: data.fx }));
@@ -126,15 +125,21 @@ describe("the glance", () => {
     expect(shown).toContain(`${feeName("deposit")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
     expect(drawGlance(deal)).not.toContain(feeDeal.builder.facts.noPrice);
   });
-  it("says where the sums on the account and custody meet, where both hold throughout", () => {
+  it("leaves where a bound takes over or the sums on the account meet custody to the points, and keeps a group's rate", () => {
     const d = account();
     d.fees = [
+      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) } }] },
+      { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2) } }] },
       { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }] },
       { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] },
     ];
     const shown = drawGlance(d);
-    expect(shown).toContain(feeDeal.marks.meet.before);
-    expect(shown).toContain(feeDeal.marks.meet.after);
+    expect(shown).toContain(feeDeal.glance.together);
+    expect(shown).not.toContain(feeDeal.marks.meet.before);
+    // a bound's sentence, in the summary's old words or the points' ("עד פעולה של 6,000 ₪ המינימום קובע", "…, קובע בכל פעולה עד …")
+    expect(shown).not.toContain("קובע");
+    const reading = drawReading(d);
+    expect(reading).toContain(feeDeal.marks.meet.before);
   });
 });
 
@@ -157,7 +162,7 @@ describe("the panel", () => {
   it("says nothing of the law for a fee with no cap either, and draws no field twice", () => {
     const shown = drawPanel(account(), "fee-trade");
     expect(count(shown, feeDeal.standing.tag.none!)).toBe(0);
-    expect(shown).not.toContain(feeDeal.bar.optional);
+    expect(shown).not.toContain(feeDeal.builder.optional);
     expect(shown).toContain(feeDeal.panel.when);
     expect(shown).toContain(feeDeal.panel.remove);
     // each box once: the maximum's box is not drawn again for a phone, and the bounds' currency is chosen in one of them
@@ -190,10 +195,18 @@ describe("the panel", () => {
   });
 });
 
-describe("the builder", () => {
+describe("the fees' column", () => {
   it("names each card's bin by its fee", () => {
     const html = drawBuilder(account(), "fee-trade");
     for (const f of account().fees) expect(count(html, `aria-label="${feeDeal.builder.fieldName(feeName(f.kind), feeDeal.panel.remove)}"`)).toBe(1);
+  });
+  it("groups the fees under the summary's headings, a group only where the deal has a fee in it, and leaves a sale priced as a purchase unsaid", () => {
+    const shown = drawBuilder(account(), null).replace(/<[^>]+>/g, "");
+    // what is held is in dollars: the conversion stands with the trade fee
+    for (const key of ["action:trade", "held", "account"]) expect(count(shown, feeDeal.on[key]!)).toBe(1);
+    for (const key of ["action:conversion", "action:transfer_out", "action:none"]) expect(shown).not.toContain(feeDeal.on[key]!);
+    expect(shown.indexOf(feeDeal.on.held!)).toBeLessThan(shown.indexOf(feeDeal.on.account!));
+    expect(shown).not.toContain(feeDeal.panel.saleSame);
   });
 });
 

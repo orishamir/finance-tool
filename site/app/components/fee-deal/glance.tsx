@@ -1,22 +1,21 @@
-// The deal at a glance, the column "העסקה במבט אחד" (method §10.6, `glance`): the fees that hold throughout, grouped by what they are
-// charged on, each group with the rate its shares add to (F-111) and the sums its prices mark (F-112); then what changes and when: the
-// fees that change at their price today, each group with its rate today, and by date. A fee with a cap shows its standing in words
-// (F-113) inside its own block, read from its row of the reading's law card.
+// The deal at a glance, "העסקה במבט אחד" (method §10.6, `glance`), the reading's first card: the fees that hold throughout, grouped by
+// what they are charged on, each group with the rate its shares add to (F-111); then what changes and when: the fees that change at their
+// price today, each group with its rate today, and by date. A fee with a cap shows its standing in words (F-113) inside its own block,
+// read from its row of the reading's law card. Where a bound takes over (F-112) is the points card's to say, beside it.
 import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { Glance, GlanceChange, GlanceFee, GlanceGroup } from "../../lib/fee-deal/glance";
-import { groupKey, type FeeRef, type GroupOn, type MarkView } from "../../lib/fee-deal/parts";
+import { groupKey, type FeeRef, type GroupOn } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { IconArrowDown } from "../icons";
-import { GroupHead, Section, Tag, TextLink, TypedPlain, When, cx, fill } from "../kit";
+import { GroupHead, Section, Tag, TypedPlain, When, cx } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
-import { CapBlock, Fig, MeetSentence, PriceWords, StandingWords, refName } from "./words";
+import { CapBlock, PriceWords, StandingWords } from "./words";
 
-/** The id of the reading's section under the columns, which the column's last line links to. */
+/** The id of the reading's section under the columns. */
 export const READING_ID = "deal-reading";
 
 /** A group's heading key: what is held reads "what has built up" in a product that saves. */
@@ -27,7 +26,7 @@ type LawRows = ReadonlyMap<string, LawRow>;
 
 const SideLead = ({ side }: { side: DealSide }) => (side === "all" ? null : <>{copy.sides[side]} </>);
 
-/** The quiet box under a group: the rate its fees add to, and the sums its prices mark. */
+/** The quiet box under a group: the rate its fees add to. */
 function GroupBox({ children }: { children: ReactNode }) {
   return <div className="flex flex-col gap-1 rounded-md bg-muted/50 px-3 py-2 text-sm">{children}</div>;
 }
@@ -40,27 +39,6 @@ function RateLine({ side, rate, of, lead }: { side: DealSide; rate: SiteValue; o
       <SideLead side={side} />
       {copy.glance.together}
       <Num value={rate} /> {of}
-    </p>
-  );
-}
-
-/** One sum a group's prices mark (F-112), as a sentence. */
-function MarkLine({ mark, action, many }: { mark: MarkView; action: string; many: boolean }) {
-  const m = copy.marks;
-  if (mark.kind === "meet")
-    return (
-      <p>
-        <MeetSentence mark={mark} />
-      </p>
-    );
-  const words = mark.on === "held" ? (mark.kind === "min" ? m.minHeld : m.maxHeld) : mark.kind === "min" ? m.minAction : m.maxAction;
-  return (
-    <p>
-      <SideLead side={mark.side} />
-      {many && fill(m.whose, { name: refName(mark.fee) })}
-      {fill(words.before, { noun: m.noun[action] ?? m.noun.none! })}
-      <Fig value={mark.amount} />
-      {words.after}
     </p>
   );
 }
@@ -108,7 +86,6 @@ function FeeLine({ fee, row, saved, lead }: { fee: GlanceFee; row: LawRow | unde
 
 function Group({ group, rows, saved, lead }: { group: GlanceGroup; rows: LawRows; saved: boolean; lead?: string }) {
   const key = headKey(group.on, saved);
-  const action = group.on.on === "action" ? (group.on.action ?? "none") : "none";
   const rates = group.rates.filter((r) => r.fees.length > 1);
   return (
     <div className="flex flex-col gap-2">
@@ -122,13 +99,10 @@ function Group({ group, rows, saved, lead }: { group: GlanceGroup; rows: LawRows
           ))}
         </ul>
       )}
-      {(rates.length > 0 || group.marks.length > 0) && (
+      {rates.length > 0 && (
         <GroupBox>
           {rates.map((r) => (
             <RateLine key={r.side} side={r.side} rate={r.rate} of={copy.glance.of[key] ?? ""} {...(lead ? { lead } : {})} />
-          ))}
-          {group.marks.map((m, k) => (
-            <MarkLine key={k} mark={m} action={action} many={group.fees.length > 1} />
           ))}
         </GroupBox>
       )}
@@ -184,16 +158,16 @@ function UnpricedLine({ fee }: { fee: FeeRef }) {
 }
 
 /**
- * The column, for a deal with a fee. `law`: the reading's law rows, which a fee with a cap draws its block from; `saved`: the deal's product
- * saves, so a share of what is held reads "what has built up". The figures the person typed read as plain words here: the builder's boxes
- * beside it carry their blue.
+ * The card, for a deal with a fee: its title as the reading's other cards' small heads, its parts' headings under it. `law`: the reading's
+ * law rows, which a fee with a cap draws its block from; `saved`: the deal's product saves, so a share of what is held reads "what has
+ * built up". The figures the person typed read as plain words here: the fee cards' boxes above carry their blue.
  */
-export function GlanceColumn({ glance, law, saved, names, empty }: { glance: Glance; law: readonly LawRow[]; saved: boolean; names: (feeId: string) => string; /** No fee of the deal is read yet (none has its price). */ empty?: boolean }) {
+export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glance; law: readonly LawRow[]; saved: boolean; names: (feeId: string) => string; /** No fee of the deal is read yet (none has its price). */ empty?: boolean }) {
   const rows: LawRows = new Map(law.map((r) => [r.fee, r]));
   // a fee that is free now is said by its date's change; a group of such fees alone stays where its fees that hold throughout add to a rate today
   const changing = glance.changing.map((g) => ({ ...g, fees: g.fees.filter((f) => f.price.form !== "free") })).filter((g) => g.fees.length > 0 || g.rates.some((r) => r.fees.length > 1));
   return (
-    <Section title={copy.glance.title} level="kick" heading="h2">
+    <Section title={copy.glance.title} level="kick" heading="h3" as="div">
       <TypedPlain className="flex flex-col gap-4">
           {empty && glance.unpriced.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
           {!empty && glance.throughout.length > 0 && (
@@ -251,12 +225,6 @@ export function GlanceColumn({ glance, law, saved, names, empty }: { glance: Gla
             </p>
           )}
       </TypedPlain>
-      {!empty && (
-        <TextLink to={`#${READING_ID}`} className="inline-flex items-center gap-1 self-start text-sm">
-          {copy.glance.toReading}
-          <IconArrowDown size={14} aria-hidden="true" />
-        </TextLink>
-      )}
     </Section>
   );
 }

@@ -1,10 +1,13 @@
 // One figure of a fee's price, typed where it stands: the same box in a builder row and in the panel, so a figure reads and edits alike in
-// both. Its state is the figure's (entered, or sourced from a template with its source a tap away); what it commits becomes the person's.
+// both. Its state is the figure's (entered, or sourced from a template, where a press on it says where it is from); what it commits becomes
+// the person's.
 import { useRef, type ReactNode } from "react";
 import { feeDeal as copy, values as valuesCopy } from "../../copy";
 import { editPrice, figureBack, figureOf, withFigure, type Figure, type Side } from "../../lib/fee-deal/edit";
 import { pricesOn, SUM_MAX, type Fee, type Num } from "../../lib/fee-deal/model";
 import type { PriceView } from "../../lib/fee-deal/parts";
+import type { CitedPlace } from "../../lib/sources";
+import type { SiteValue } from "../../lib/value";
 import { FigureField, percentCheck } from "../kit";
 
 /** A sum above the largest a deal keeps is refused as it is typed: reading the deal back would drop it (model.ts). */
@@ -16,6 +19,36 @@ function signOf(view: PriceView, figure: Figure): string {
   if (figure === "rate") return "%";
   if ((figure === "min" || figure === "max") && view.form === "action") return copy.panel.signs[view.currency ?? "ILS"] ?? "";
   return copy.panel.signs.ILS!;
+}
+
+/** The regulator's data a track's figures are from (data/cma): its datasets on the government's data site. */
+const CMA_DATA = /^https:\/\/data\.gov\.il\/(he\/)?datasets?\/cma\//;
+
+/**
+ * Where a sourced figure of a deal is from, for the note its box opens: a house's price list by the house's name (the figure's `own`,
+ * which a house's template sets), with the document's page where the source names one; the regulator's data for a track's figure; else
+ * nothing, and the note holds the source's link alone.
+ */
+export function figureFrom(value: SiteValue | null): ReactNode {
+  if (value?.state !== "sourced") return undefined;
+  const f = copy.figureFrom;
+  if (value.own) {
+    const page = (value.source as CitedPlace).page;
+    return (
+      <>
+        {f.list}
+        {value.own}
+        {page ? (
+          <>
+            {f.page}
+            <bdi dir="ltr">{page}</bdi>
+          </>
+        ) : null}
+        .
+      </>
+    );
+  }
+  return CMA_DATA.test(value.source.url) ? f.cma : undefined;
 }
 
 /** The id of the field of a price's rate or sum, which the page gives the focus to (a fee just added, a later price just added). */
@@ -55,6 +88,7 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, inside, 
     <FigureField
       value={value}
       label={label}
+      from={figureFrom(value)}
       unit={unit ?? signOf(view, figure)}
       sign={signOf(view, figure)}
       onFocus={() => (atFocus.current = figureOf(pricesOn(fee, side)[k]!.price, figure))}
