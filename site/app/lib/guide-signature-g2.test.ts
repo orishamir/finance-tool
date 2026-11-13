@@ -247,7 +247,7 @@ describe("pensions", () => {
   it("gives no general-fund balance for an excess, since the rule base does not divide it between the parts", () => {
     const b = general.bundles["pension-general"]!;
     // a ceiling under the deposit, as a change in the ceiling or the rates would bring
-    const lower = b.rules.map((r) => (r.id === "PEN-08" ? { ...r, figures: { ...r.figures, monthly_deposit_ceiling: { ...(r.figures.monthly_deposit_ceiling as object), value: 2000 } } } : r)) as typeof b.rules;
+    const lower = b.rules.map((r) => (r.id === "PEN-08" ? { ...r, figures: { ...r.figures, monthly_deposit_ceiling: { ...(r.figures?.monthly_deposit_ceiling as object), value: 2000 } } } : r)) as typeof b.rules;
     const d = { ...general, bundles: { ...general.bundles, "pension-general": { ...b, rules: lower } } };
     const m = pensionModel(d, "pension-general", { salary: 12000, years: 10, insurancePct: null })!;
     expect(m.general!.ceiling).toBe(2000);

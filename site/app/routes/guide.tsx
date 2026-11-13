@@ -22,7 +22,7 @@ import { exitRateLines, exitStepMark, type ExitRate } from "../lib/exit-step";
 import { guideContent } from "../content/guide";
 import { GuideAbroad } from "../components/guide/abroad";
 import { abroadView } from "../lib/abroad";
-import { anyDoubt, anyWeak, ruleFigure, type SiteValue } from "../lib/value";
+import { anyDoubt, anyWeak, feeYear, ruleFigure, type SiteValue } from "../lib/value";
 import { generalOnly, isGeneral } from "../lib/scope";
 
 const providentIds = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
@@ -107,7 +107,7 @@ export default function GuidePage() {
     const v = exitValue();
     return {
       id: "withdraw",
-      label: lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
+      label: exit.kind === "at_age" ? blocks.exit.labelAtAge : lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
       value: v.value,
       rules: [...new Set([...v.rules, ...exitTextRules])],
     };
@@ -151,7 +151,8 @@ export default function GuidePage() {
     });
   }
   // the same three rows on every guide they apply to
-  if (withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: blocks.withdrawal.daysCount.value, rules: ["PF-46"] });
+  // when the days start counting means something only beside how many days there are
+  if (exit.payout_business_days && withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: blocks.withdrawal.daysCount.value, rules: ["PF-46"] });
   const messageCeiling = withdrawalRules(record.id).includes("PF-45") ? figure("PF-45", "digital_message_ceiling") : null;
   if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</>, rules: ["PF-45"] });
   const lowOne = withdrawalRules(record.id).includes("TXP-18") ? figure("TXP-18", "low_income_one") : null;
@@ -313,7 +314,8 @@ export default function GuidePage() {
   // the site's reading (the child-savings bank route's rates are the Ordinance's, but no official text says they reach it, TXK-29)
   const exitMark = exitStepMark(strengthOfRules(record.tax_at_exit.rule_ids), rateLines);
   // the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
-  // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
+  // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05).
+  // A self-directed study fund is taxed as a study fund (TXK-17), so its page has the same row.
   const hd = copy.hishtalmutDeposit;
   const deductionPct = figure("TXH-05", "deduction_pct");
   const deductionCeiling = figure("TXH-05", "income_ceiling");
@@ -342,7 +344,7 @@ export default function GuidePage() {
       rules: ["TXH-04", "TXH-01", "TXH-03", "TXH-05"],
     };
   };
-  const byEmployment = record.id === "keren-hishtalmut" && record.deposit_side_tax.formula === "F-33" && ["TXH-04", "TXH-01", "TXH-03", "TXH-05"].every((r) => rules[r]);
+  const byEmployment = (record.id === "keren-hishtalmut" || record.id === "ira-hishtalmut") && record.deposit_side_tax.formula === "F-33" && ["TXH-04", "TXH-01", "TXH-03", "TXH-05"].every((r) => rules[r]);
   const steps: TaxStep[] = [
     byEmployment ? hishtalmutDeposit(inputsState.employment) : plainStep("deposit", copy.taxSteps.deposit, record.deposit_side_tax),
     // the list above already says moving between tracks is not taxed (F-27's line), so a page that asks does not repeat it here
@@ -482,7 +484,9 @@ export default function GuidePage() {
               note={
                 data.feeRange ? (
                   <>
-                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
+                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks}
+                    {/* the regulator's averages are a calendar year's: the year is said, as the fee table's own rows say it */}
+                    {feeYear(data.feeRange.low) ? <> {copy.feeRange.inYear} <bdi>{feeYear(data.feeRange.low)}</bdi></> : null} {copy.feeRange.average} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
                   </>
                 ) : data.listRange ? (
                   listRangeNote()

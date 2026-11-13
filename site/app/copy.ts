@@ -308,7 +308,7 @@ export const guide = {
       discountEnd: "בתום ההנחה מותר לחברה להעלות את דמי הניהול עד התקרה.",
     },
   },
-  feeRange: { caps: "בפועל גובים הרבה פחות מהתקרה: ב־", tracks: "המסלולים, העמיתים שילמו בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
+  feeRange: { caps: "בפועל גובים הרבה פחות מהתקרה: ב־", tracks: "המסלולים, העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
@@ -1029,7 +1029,7 @@ export const guideBlocks = {
   withdrawal: {
     daysCount: { label: "מתי מתחילים לספור את הימים", value: "מבקשה מלאה, לא מהבקשה הראשונה. עיכוב בגלל פרטים שחסרו בבקשה לא נחשב איחור." },
     unlawful: { label: "בקשה למשוך שלא כדין", before: "לפני התשלום הקופה חייבת לקיים שיחת שירות, או, בסכום של עד", after: ", לשלוח הודעה דיגיטלית. היא משלמת רק אחרי אישור מפורש שלכם." },
-    lowIncome: { label: "משיכה בלי ניכוי מס בגלל הכנסה נמוכה", before: "עד ההפרש בין ההכנסה שלכם ושל בן או בת הזוג, מכל מקור, כולל הכנסות פטורות, לבין", one: "בחודש, או", after: "בחודש למי שיש לו ילד מתחת לגיל 18. ההצהרה היא על אחד משני החודשים שלפני הבקשה, ותקפה לאותו חודש ולשני החודשים שאחריו." },
+    lowIncome: { label: "משיכה בלי ניכוי מס בגלל הכנסה נמוכה", before: "עד ההפרש בין ההכנסה שלכם ושל בן או בת הזוג, מכל מקור, כולל הכנסות פטורות, לבין", one: "בחודש, או", after: "בחודש למי שיש לו ילד מתחת לגיל 18. ההצהרה היא על אחד משני החודשים שלפני הבקשה, ותקפה לאותו חודש ולשני החודשים שאחריו. הסכומים הם שכר המינימום כפי שרשות המסים פרסמה אותו; אם הם עלו מאז עם שכר המינימום, לא ידוע." },
   },
   ceiling: {
     perYearAll: "לשנה, לכל אדם בכל הקופות יחד",
@@ -1047,6 +1047,8 @@ export const guideBlocks = {
     anyTime: "בכל עת, את כל הכסף או חלק ממנו",
     labelWithdraw: "משיכה",
     labelFree: "מתי הכסף פנוי",
+    // an exit at an age is when a pension may start (PEN-26, PEN-30), not when the money is free: only some of it may be drawn before
+    labelAtAge: "מתי אפשר להתחיל לקבל קצבה",
     labelDays: "תוך כמה זמן הכסף אצלכם",
     upTo: "עד",
     businessDays: "ימי עסקים",
@@ -2969,7 +2971,7 @@ export const guideSignature = {
         },
         room: { you: "אם תפקידו עוד", employer: "אם המעסיק יפקיד עוד", andEmployer: "והמעסיק עוד", month: "בחודש", year: "בשנה", exempt: "גם הם יקבלו פטור." },
       },
-      early: { noClaim: "בלי בקשת החזר ממס הכנסה נשארים לכם", because: ": הקרן מעבירה", toTax: "למס הכנסה,", and: "ו־", onlyIf: "מהם חוזרים רק אם מבקשים. הסכומים למעלה כוללים את ההחזר.", before: "משיכה אחרי", first: ": לחשבון נכנסים", withheld: ", והקרן מעבירה", stop: "למס הכנסה.", owedBefore: "למס הכנסה. בדוח השנתי משלמים עוד", owed: ", וזה כלול בסכומים למעלה.", rate: "שיעור הניכוי במקור" },
+      early: { noClaim: "בלי בקשת החזר ממס הכנסה נשארים לכם", because: ": הקרן מעבירה", toTax: "למס הכנסה,", and: "ו־", onlyIf: "מהם חוזרים רק אם מבקשים. הסכומים למעלה כוללים את ההחזר.", before: "משיכה אחרי", first: ": לחשבון נכנסים", withheld: ", והקרן מעבירה", stop: "למס הכנסה.", owedBefore: "למס הכנסה. בדוח השנתי משלמים עוד", owed: ", וזה כלול בסכומים למעלה.", rate: "שיעור הניכוי במקור", linkage: "המס כאן כולל גם מס על החלק של הרווח שרק משלים את עליית המחירים. לא נמצא טקסט שאומר אם את המס על החלק הזה אפשר לקבל בחזרה בדוח השנתי, ולכן האתר מחשב אותו כמס." },
       // one sentence each, beside what it qualifies (guidelines/wording.md "Notes and caveats")
       hints: {
         fee: { before: "ערך התחלתי:", fee: "דמי הניהול", middle: "הממוצעים שנגבו במסלול", number: "מספר", after: "." },
@@ -3048,10 +3050,10 @@ export const guideSignature = {
     general: {
       below: { before: "לקרן הכללית לא מגיע מההפקדה הזו כלום: כולה נכנסת לקרן המקיפה, כי היא מתחת ל", term: "תקרת ההפקדה", middle: "שלה,", after: "בחודש. לקרן הכללית עובר רק מה שמופקד מעל התקרה, ובשיעורי המינימום זה לא קורה בשום משכורת." },
       split: { before: "מעל התקרה של הקרן המקיפה,", middle: "בחודש, עוברים לקרן הכללית", after: "בחודש. איך העודף מתחלק בין ההפקדה שלכם להפקדות המעסיק, הכללים שנאספו לא אומרים, ולכן אין כאן חישוב של מה שנצבר בה." },
-      toGeneral: "מה שמופקד בחודש מעל תקרת ההפקדה של הקרן המקיפה, ועובר לקרן הכללית",
+      toGeneral: "מה שמופקד בחודש מעל התקרה של הקרן המקיפה, ועובר לקרן הכללית",
     },
     // what the balance assumes, beside the return and inflation (method F-67, "What the visual assumes")
-    assume: { flat: "ההפקדות באותו סכום בשקלים בכל השנים, בלי עליית שכר", noInsurance: "בלי דמי ביטוח, כי לא הוזנו" },
+    assume: { flat: "ההפקדות באותו סכום בשקלים בכל השנים, בלי עליית שכר", noInsurance: "בלי דמי הביטוח, כי לא הוזנו" },
     figures: { net: "בפועל יוצא מהכיס שלכם, אחרי הזיכוי", insurance: "דמי הביטוח בקרן הפנסיה", depositFee: "דמי ניהול מההפקדה", balance: "מה שנצבר בקרן אחרי" },
     balanceGap: { "no-fees": "אין חישוב; הסיבה למטה", "no-run": "החישוב לא הצליח עם הערכים האלה" } as Record<string, string>,
     ratesLine: { before: "ההפקדות הן המינימום לפי צו ההרחבה:", middle: "מכם,", severance: "מהמעסיק לתגמולים, ועוד", wage: "מהמעסיק לפיצויים, על שכר של עד", after: "בחודש (השכר הממוצע במשק). בהסכם העבודה שיעורי ההפקדה יכולים להיות גבוהים יותר." },
@@ -3097,6 +3099,8 @@ export const abroad = {
   countries: { gb: "בריטניה", us: "ארצות הברית", fr: "צרפת", it: "איטליה" } as Record<string, string>,
   /** A country's chip where no product like the guide's was found, after its name. */
   notFound: "לא נמצא",
+  /** Between the two calendar years of a tax year that spans them ("2026 עד 2027"). */
+  yearTo: "עד",
   /** That country's heading. */
   noneTitle: (country: string) => `ב${country}: לא נמצא מוצר דומה`,
   /** The source line: the pages' publishers, then the day they were read. */

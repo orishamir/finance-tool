@@ -13,7 +13,7 @@ import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
-import { Num, RulesLine, Term } from "../provenance";
+import { Num, ReadingTag, RulesLine, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
@@ -332,6 +332,12 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         <div className="flex flex-col gap-1.5 text-sm max-w-measure">
           {n.st && standingLine(n.st, n.taxed, n.employee)}
           {n.e && earlyLine(n.e)}
+          {/* F-47 taxes the whole nominal gain, its linkage part too: for an employee that part is the site's reading (TXH-13) */}
+          {n.e && (
+            <Sentence size="sm">
+              {story.early.linkage} <ReadingTag />
+            </Sentence>
+          )}
         </div>
       )}
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">

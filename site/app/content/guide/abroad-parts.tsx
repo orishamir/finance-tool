@@ -38,3 +38,17 @@ export function AbroadCount({ v, words }: { v: SiteValue; words: CountWords }) {
 export function AbroadSaid({ v, children }: { v: SiteValue; children: string }) {
   return <Num value={v} display={children} />;
 }
+
+/** The year an amount holds for, from its own dates: "2026", or a tax year that spans two calendar years as "2026 עד 2027". Nothing without a start date. */
+export function AbroadPeriod({ v }: { v: SiteValue }) {
+  const from = v.effective_from?.slice(0, 4);
+  const to = v.effective_to?.slice(0, 4);
+  if (!from) return null;
+  return to && to !== from ? (
+    <>
+      <bdi>{from}</bdi> {copy.yearTo} <bdi>{to}</bdi>
+    </>
+  ) : (
+    <bdi>{from}</bdi>
+  );
+}

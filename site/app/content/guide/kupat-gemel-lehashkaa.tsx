@@ -3,16 +3,16 @@
 // ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { fmt } from "../../lib/format";
-import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RuleStrengthTag, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 import { OpenLossOffset } from "./open-tax";
-import { AbroadAmount, AbroadFigure, AbroadSaid, AbroadYears } from "./abroad-parts";
+import { AbroadAmount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } from "./abroad-parts";
 
 export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        החוק לא קובע תנאי גיל או תושבות לפתיחה, <Term prefix="וה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
+        בחוק ובכללים לא נמצא תנאי גיל או תושבות לפתיחה. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
       </p>
       <p className="max-w-measure">
         הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. על הרווחים בתוך הקופה לא משלמים מס. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, ורק על הרווח.
@@ -46,7 +46,7 @@ export const content: GuideContent = {
             <Callout tone="caution" className="max-w-measure">
               <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ ביולי 2026 על חשבון השקעות עם הטבת מס, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל לא נמצאה הצעת חוק.
             </Callout>
-            <RulesLine ids={["TXK-21"]} />
+            <RulesLine ids={["TXK-21"]} lead={<RuleStrengthTag id="TXK-21" />} />
           </>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">
@@ -79,7 +79,7 @@ export const content: GuideContent = {
           );
         },
         rules: ["TXK-05", "TXK-07", "TXK-09", "TXK-10", "TXK-12"],
-        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה</>, <AbroadSaid v={f("tax_on_gain")}>אין</AbroadSaid>, <AbroadSaid v={f("withdraw")}>בכל עת</AbroadSaid>],
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנת המס <AbroadPeriod v={f("deposit_limit")} /></>, <AbroadSaid v={f("tax_on_gain")}>אין</AbroadSaid>, <AbroadSaid v={f("withdraw")}>בכל עת</AbroadSaid>],
       },
       us: {
         title: (p) => <>בארצות הברית: חשבון <bdi dir="ltr">{p}</bdi></>,
@@ -92,7 +92,7 @@ export const content: GuideContent = {
           );
         },
         rules: ["TXK-05", "TXK-07", "TXK-09", "TXK-10", "TXK-12"],
-        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה</>, <AbroadSaid v={f("tax_on_gain")}>אין, בתנאים</AbroadSaid>, <>בלי מס הכנסה מגיל <AbroadFigure v={f("withdraw")} /></>],
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנת <AbroadPeriod v={f("deposit_limit")} /></>, <AbroadSaid v={f("tax_on_gain")}>אין, בתנאים</AbroadSaid>, <>בלי מס הכנסה מגיל <AbroadFigure v={f("withdraw")} /></>],
       },
       fr: {
         title: (p) => <>בצרפת: תוכנית <bdi dir="ltr">{p}</bdi></>,
