@@ -1,11 +1,12 @@
 // The toolbox for the case open in place (method §10.6, `toolbox`): on a computer the column "העמלה שבחרתם", the fee's name as its head and
 // the parts to add to the open case in groups by kind, the one question a thing to change by asks before it is added, and at its end
 // filling the fee from a price list and taking the fee away; on a phone the same in the short sheet pinned to the foot of the screen.
-// A tap on a part adds it; a part that needs its figure, month or fee first asks for it in the open case (`onPending`).
+// A tap on a part adds it; a part that needs its figure, month or fee first asks for it in the open case (`onPending`), and a form of the
+// price puts the price in that form through the page (`onForm`), which keeps what it replaces for the undo.
 import { useState, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords, type Toolbox as ToolboxView, type ToolPart as ToolPartView } from "../../lib/fee-deal/builder";
-import { addBy, setFeeName, setPart, type NewBy } from "../../lib/fee-deal/edit";
+import { addBy, FORM_OF, setFeeName, setPart, type NewBy, type PartId } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import { isRangeKind, ONE_SIDE, type ByKind, type RangeUnit } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
@@ -188,7 +189,7 @@ export interface FillUndoLine {
  * toolbox's view (`toolbox`); `asking` the thing whose values are asked, where one is; `product` the deal's product, whose sense of the fee's
  * name "מה זה" opens; `fill` the price lists that can fill it; `line` the undo line of a fill just made; `folded`, whether the phone's sheet
  * is folded to its groups' names, which the page holds (`onFold`). `onPending` hands a part that needs its figure, month or fee to the open
- * case; `onClose` un-chooses the fee.
+ * case, and `onForm` a form of the price; `onClose` un-chooses the fee.
  */
 export function ToolboxColumn({
   view,
@@ -203,6 +204,7 @@ export function ToolboxColumn({
   onFold,
   onAsk,
   onFee,
+  onForm,
   onPending,
   onRemove,
   onClose,
@@ -219,6 +221,8 @@ export function ToolboxColumn({
   onFold: (folded: boolean) => void;
   onAsk: (kind: ByKind | null) => void;
   onFee: (f: Fee) => void;
+  /** A form of the price tapped: the page puts the open case's price in it. */
+  onForm: (part: PartId) => void;
   onPending: (part: PendingPart) => void;
   onRemove: (feeId: string) => void;
   onClose: () => void;
@@ -227,6 +231,7 @@ export function ToolboxColumn({
   const onAdd = (_group: string, part: string) => {
     if (part.startsWith("by:")) return onAsk(part.slice(3) as ByKind);
     if (PENDING.includes(part)) return onPending(part as PendingPart);
+    if (FORM_OF[part as PartId]) return onForm(part as PartId);
     onFee(setPart(fee, part as Parameters<typeof setPart>[1], true, caseId ? { caseId } : {}));
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;

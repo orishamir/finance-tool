@@ -78,6 +78,7 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     onFold: () => {},
     onAsk: () => {},
     onFee: () => {},
+    onForm: () => {},
     onPending: () => {},
     onRemove: () => {},
     onClose: () => {},

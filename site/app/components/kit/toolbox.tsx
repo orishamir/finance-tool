@@ -1,7 +1,8 @@
 // The parts that can be added to the open case (design-system 11, "Cases and parts"), in groups by kind, each group headed by its kind's
 // colour and icon. A tap on a part adds it; there is nothing to drag. A part the case already has shows a ✓ in the action colour and is
 // muted, and stays where it is. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
-// at a time, its groups as a row of chips that scrolls sideways and fades at its end.
+// at a time, its groups as a row of chips that scrolls sideways and fades at its end, always whole above the group's parts, which scroll
+// under it.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { ArrowDownToLine, Check, Link2, Plus, Split, type LucideIcon } from "lucide-react";
 import { dealCases as copy } from "../../copy";
@@ -101,16 +102,22 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folde
   const [ownFolded, setOwnFolded] = useState(false);
   const folded = heldFolded ?? ownFolded;
   const setFolded = (f: boolean) => (onFold ? onFold(f) : setOwnFolded(f));
-  // the pinned sheet's height, kept as room at the end of the document (under the site's footer too), so nothing stays under it
+  // the pinned sheet's height, kept as room at the end of the document (under the site's footer too), so nothing stays under it, and as
+  // the window's scroll padding at its foot, so a box that takes the focus, or a part brought into view, stops above the sheet
   const pinned = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = pinned.current;
     if (!sheet || !docked || !el) return;
-    const ro = new ResizeObserver(() => (document.body.style.paddingBottom = `${el.getBoundingClientRect().height}px`));
+    const ro = new ResizeObserver(() => {
+      const h = `${el.getBoundingClientRect().height}px`;
+      document.body.style.paddingBottom = h;
+      document.documentElement.style.scrollPaddingBottom = h;
+    });
     ro.observe(el);
     return () => {
       ro.disconnect();
       document.body.style.paddingBottom = "";
+      document.documentElement.style.scrollPaddingBottom = "";
     };
   }, [sheet, docked]);
   const lead = (
@@ -121,39 +128,47 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folde
   if (sheet) {
     const group = groups.find((g) => g.id === shown) ?? groups[0];
     return (
-      <div ref={pinned} data-tool-sheet="" className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 pb-4 shadow-lg", docked && "fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[45vh] overflow-y-auto")}>
+      <div
+        ref={pinned}
+        data-tool-sheet=""
+        // a pinned sheet is a block the site's "back to the top" button steps aside from (shell.tsx)
+        {...(docked ? { "data-docked": "", "data-keep-clear": "" } : {})}
+        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[45vh]", folded && "pb-4") : "pb-4")}
+      >
         <button
           type="button"
           aria-expanded={!folded}
           aria-controls={`${id}-parts`}
           aria-label={folded ? copy.toolbox.unfold : copy.toolbox.fold}
           onClick={() => setFolded(!folded)}
-          className="tap-wide mx-auto flex h-5 w-16 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
+          className="tap-wide mx-auto flex h-5 w-16 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
         >
           <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />
         </button>
-        {!folded && lead}
-        <ChoiceChips
-          line
-          bleed="-mx-4 px-4"
-          ariaLabel={copy.toolbox.groups}
-          ids={groups.map((g) => g.id)}
-          labels={Object.fromEntries(
-            groups.map((g) => [
-              g.id,
-              <span key={g.id} className="inline-flex items-center gap-2">
-                <span aria-hidden className={cx("size-2.5 shrink-0 rounded-[3px]", SWATCH[g.kind])} />
-                {g.name}
-              </span>,
-            ]),
-          )}
-          value={group?.id ?? null}
-          onChange={(g) => {
-            setShown(g);
-            setFolded(false);
-          }}
-        />
-        <div id={`${id}-parts`} hidden={folded} className="flex flex-col gap-3">
+        {!folded && <div className="shrink-0">{lead}</div>}
+        <div className="shrink-0">
+          <ChoiceChips
+            line
+            bleed="-mx-4 px-4"
+            ariaLabel={copy.toolbox.groups}
+            ids={groups.map((g) => g.id)}
+            labels={Object.fromEntries(
+              groups.map((g) => [
+                g.id,
+                <span key={g.id} className="inline-flex items-center gap-2">
+                  <span aria-hidden className={cx("size-2.5 shrink-0 rounded-[3px]", SWATCH[g.kind])} />
+                  {g.name}
+                </span>,
+              ]),
+            )}
+            value={group?.id ?? null}
+            onChange={(g) => {
+              setShown(g);
+              setFolded(false);
+            }}
+          />
+        </div>
+        <div id={`${id}-parts`} hidden={folded} className={cx("flex flex-col gap-3", docked && "-mx-4 min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4")}>
           {ask ??
             (group && (
               <div role="group" aria-label={group.name} className="flex flex-col gap-2">

@@ -162,12 +162,12 @@ describe("the shared pieces' choices are props, never an overriding class", () =
   it("a fold with the link look draws its label in the link colour", () => {
     expect(html(createElement(Disclosure, { look: "link", label: "more", children: "body" }))).toMatch(/<span class="text-link">more<\/span>/);
   });
-  it("a small text action takes the line's height and a tap area; a small icon button is round and muted", () => {
+  it("a small text action takes the line's height and a tap area; a small icon button is round and muted, its tap area 44 px both ways", () => {
     const text = html(createElement(Button, { variant: "quiet", size: "sm", flush: true, children: "x" }));
     expect(text).toContain("text-xs tap-area");
     expect(text).not.toContain("min-h-target");
     const icon = html(createElement(Button, { variant: "icon", size: "sm", "aria-label": "x", children: "x" }));
-    expect(icon).toContain("size-9 tap-area");
+    expect(icon).toContain("size-9 tap-wide");
     expect(icon).toContain("rounded-full text-muted-foreground");
     expect(html(createElement(Button, { variant: "icon", "aria-label": "x", children: "x" }))).toContain("size-target");
   });

@@ -22,7 +22,7 @@ import { useLocation, useNavigate } from "react-router";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf, slotEdit, thingMenu, toolbox as toolboxOf } from "../../lib/fee-deal/builder";
-import { addFee, setPick, updateFee, type Side } from "../../lib/fee-deal/edit";
+import { addFee, setPick, updateFee, type PartId, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf, unitCurrency } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
@@ -31,12 +31,12 @@ import { hasCases, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/mo
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { barredFees, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
-import { deleteDealKept, fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { ByKind, FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
-import { Button, Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet, cx } from "../kit";
+import { Button, Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet, cx, useStickyColumn } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
 import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type CaseUndoLine, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
@@ -50,8 +50,8 @@ import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
 /**
- * Where the window is wide enough for the toolbox to have a column of its own, beside the fees' column (each of the two then at least
- * about 26rem); narrower, it stands under its fee, and on a phone it is a short sheet at the foot of the screen.
+ * Where the window is wide enough for the toolbox to have a column of its own, beside the fees' column (the fees' the wider, 1.25 to 1);
+ * narrower, it stands under its fee, and on a phone it is a short sheet at the foot of the screen.
  */
 const PANEL_COLUMN = "(min-width: 80rem)";
 const PHONE = "(max-width: 47.99rem)";
@@ -192,7 +192,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (a.how === "panel") panelCard.current?.querySelector<HTMLElement>("input, select, [role=radio], button[aria-pressed]")?.focus();
     else {
       bringIntoView(document.querySelector(`li[data-fee="${CSS.escape(a.fee)}"]`));
-      bringIntoView(panelCard.current);
+      if (!panelColumn) bringIntoView(panelCard.current);
     }
   }, [chosen]);
 
@@ -244,6 +244,18 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   };
   const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
   const onHoldOn = (feeId: string, side: Side, k: number, caseId?: string) => kept(holdOnKept(deal, feeId, side, k, chosen, caseId));
+  // a form of the price from the toolbox: what carries over carries, and the price it replaces is kept for the undo, whose line stands
+  // under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there
+  const onForm = (feeId: string, part: PartId, caseId: string | null) => {
+    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined);
+    if (!r) return;
+    if (r.undo) {
+      keep(r.deal);
+      setUndoing(r.undo);
+    } else change(r.deal);
+    setPending(null);
+    setFocus({ fee: feeId, on: "box" });
+  };
   const onRemoveCase = (feeId: string, caseId: string) => {
     setMenu(null);
     kept(removeCaseKept(deal, feeId, caseId, chosen));
@@ -277,9 +289,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     setChosen(back.chosen);
     if (u.what.kind === "remove") setFocus({ fee: u.what.feeId, on: "card" });
   };
+  // a case opened in place is brought into view once drawn: under the header, and above a phone's sheet, which unfolds with it
+  const [caseShown, setCaseShown] = useState(0);
   // a fee or one of its cases opened in place; from the keyboard, its first box takes the focus once drawn
   const onOpenCase = (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => {
     if (by === "keyboard") after.current = { fee: feeId, how: "panel" };
+    if (caseId) setCaseShown((n) => n + 1);
     setChosen(feeId);
     setCaseOpen(caseId ? { fee: feeId, case: caseId } : null);
     setSheetFolded(false);
@@ -312,7 +327,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       if (feeId === chosen) {
         after.current = null;
         bringIntoView(document.querySelector(`li[data-fee="${CSS.escape(feeId)}"]`));
-        bringIntoView(panelCard.current);
+        if (!panelColumn) bringIntoView(panelCard.current);
       }
     },
     toLaw: (feeId) => {
@@ -410,6 +425,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // the case open: the one named while its fee has it, else the fee's first
   const caseId = chosenFeeNow && hasCases(chosenFeeNow) ? (caseOpen?.fee === chosenFeeNow.id && chosenFeeNow.cases.some((c) => c.id === caseOpen.case) ? caseOpen.case : chosenFeeNow.cases[0]!.id) : null;
   const builderView = useMemo(() => builder(read, barred, chosen ? { fee: chosen, case: caseId } : null), [read, barred, chosen, caseId]);
+  useEffect(() => {
+    if (!caseShown) return;
+    // after the frame, where the sheet has unfolded and the case has its height
+    const f = requestAnimationFrame(() => bringIntoView(document.querySelector("[data-open-case]")));
+    return () => cancelAnimationFrame(f);
+  }, [caseShown]);
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
   const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
   const slot = menu && menu.fee === chosen && menu.case === caseId ? slotEdit(read, menu.fee, menu.case, menu.t) : null;
@@ -434,11 +455,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, fee: (shown as Undo).before, words, onUndo, onHold: setHolding, take: take(shown) } : null;
   // a change of kind's line stands under the kind, in the builder
   const kindLine: KindUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "product" ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
-  // a fill's line stands in the toolbox's foot, while the toolbox shows its fee; a price's, a case's or a thing's under its fee's block
+  // a fill's line stands in the toolbox's foot, while the toolbox shows its fee; a price's, a form's, a case's or a thing's under its
+  // fee's block
   const fillLine: FillUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "fill" && shown.what.feeId === chosen ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
   const caseLine: CaseUndoLine | null =
-    shown && words && "dealId" in shown && (shown.what.kind === "stage" || shown.what.kind === "chain" || shown.what.kind === "case" || shown.what.kind === "by")
-      ? { feeId: shown.what.feeId, words, onUndo, onHold: setHolding, take: take(shown) }
+    shown && words && "dealId" in shown && (shown.what.kind === "stage" || shown.what.kind === "chain" || shown.what.kind === "case" || shown.what.kind === "by" || shown.what.kind === "form")
+      ? { feeId: shown.what.feeId, words, onUndo, onHold: setHolding, take: take(shown), ...(shown.what.kind === "form" ? { inCase: { caseId: shown.what.caseId ?? null } } : {}) }
       : null;
   const dealLine = shown && words && !("dealId" in shown) ? words : null;
   const readSome = read.fees.length > 0;
@@ -463,6 +485,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         onFold={setSheetFolded}
         onAsk={(k) => setAsking(k ? { fee: chosenFee.id, kind: k } : null)}
         onFee={onFee}
+        onForm={(part) => onForm(chosenFee.id, part, caseId)}
         onPending={(part) => setPending({ fee: chosenFee.id, case: caseId, part })}
         onRemove={onRemoveInPanel}
         onClose={onClosePanel}
@@ -472,7 +495,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     toolboxView && !phone ? (
       <div
         ref={panelCard}
-        className={cx("come-in", panelColumn && "col-start-3 row-start-1 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-lg")}
+        className={cx("come-in", panelColumn && "col-start-3 row-start-1 sticky top-20 rounded-lg")}
         {...(panelRest ? { inert: true } : {})}
         onKeyDown={(e) => {
           if (e.key === "Escape" && !e.defaultPrevented) {
@@ -486,6 +509,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         </Card>
       </div>
     ) : null;
+  // the toolbox's column is never cut at the window's height and never scrolls inside itself (`useStickyColumn`)
+  useStickyColumn(panelCard, panelColumn && !!panelView);
   // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
   const picks = views?.reading.picks;
   const pickWords = (w: Parameters<typeof WhenText>[0]["words"]) => (w.figure ? `${w.lead ?? ""}${numText(w.figure)}` : (w.text ?? ""));
@@ -540,10 +565,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       )}
       <TemplatePicker open={picker !== null} onClose={() => setPicker(null)} anchor={picker} options={options} left={pickerLeft} newDeal={pickFrom === "new"} product={kind?.name ?? null} onPick={onPick} />
       {/* the columns for entering the deal, in the page in their reading order, so the Tab key reads them as the eye does: what the deal
-          is (21rem), its fees, and where the window has the room the chosen fee's panel, the two sharing the rest; narrower, the panel
+          is (21rem), its fees, and where the window has the room the chosen fee's panel, the two sharing the rest 1.25 to 1; narrower, the panel
           stands under its card in the fees' column, and a phone stacks the two columns. Each column has its own place in the grid
           whatever the deal holds, so the first fee, and the panel coming with it, move nothing. */}
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] min-[80rem]:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] min-[80rem]:grid-cols-[minmax(0,21rem)_minmax(0,1.25fr)_minmax(0,1fr)]">
         <Card className="flex flex-col gap-4 lg:col-start-1 lg:row-start-1">
           <SetupColumn
             deal={deal}

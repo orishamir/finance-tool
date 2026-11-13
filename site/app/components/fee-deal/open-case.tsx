@@ -11,6 +11,7 @@ import { formatValue, typedSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Button, FigureField, InlineSelect, MonthField, PartEdit, RangeMenu, SegmentedControl, Switch, TextField, TickMenu, TrackMenu, When, monthText, type PartMark } from "../kit";
 import { PriceFigure, partFieldId, signText } from "./figures";
+import { bringIntoView } from "./in-view";
 import { feeName, perActionWord } from "./words";
 
 const cp = copy.cases.parts;
@@ -75,7 +76,7 @@ function PriceParts({
   const edit = (fn: (p: Price) => Price) => onFee(editPrice(fee, side, k, fn, caseId));
   const shape = FEE_SHAPES[fee.kind];
   // the price's currency, where the fee may take another, is chosen beside its first sum (a sum per unit's or per action's, else the
-  // minimum's); every other sum shows it as its sign
+  // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign
   const chooser =
     pricedIn(price) && (shape.fields[price.form] ?? []).includes("currency") ? (
       <InlineSelect chip label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
@@ -91,6 +92,7 @@ function PriceParts({
       figure={f.figure}
       value={f.value}
       sign={f.sign}
+      {...(chooserOn === part && f.figure !== "rate" ? { unit: "" } : {})}
       label={label(spoken)}
       {...opts}
       id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
@@ -235,9 +237,12 @@ function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: 
   const at = { side, k, ...(caseId ? { caseId } : {}) };
   const label = (field: string) => copy.builder.fieldName(name, field);
   const price = pricesOn(fee, side, caseId)[k]!.price;
-  // the part asks where it stands: its box takes the focus as it appears (a month's box takes it itself)
+  // the part asks where it stands: its box takes the focus as it appears (a month's box takes it itself), above a phone's pinned sheet
   useEffect(() => {
-    if (part === "min" || part === "max" || part === "cap") document.getElementById(partFieldId(fee.id, `${part}-pending`))?.focus();
+    if (part !== "min" && part !== "max" && part !== "cap") return;
+    const box = document.getElementById(partFieldId(fee.id, `${part}-pending`));
+    box?.focus({ preventScroll: true });
+    bringIntoView(box?.closest("[data-lift]"));
   }, [fee.id, part]);
   const cur = pricedIn(price) ? (price.currency ?? "ILS") : "ILS";
   // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
@@ -432,12 +437,14 @@ export function SlotMenu({ edit, fee, caseId, t, top, onFee }: { edit: SlotEdit;
   const over = edit.upTo === null;
   const unitChoice = edit.units.length > 1 ? <InlineSelect chip label={m.unit} options={edit.units.map((u) => ({ id: u.unit, name: u.words }))} value={edit.unit} onChange={(v) => v && onFee(setRangeUnit(fee, t, v as RangeUnit))} /> : undefined;
   const sign = edit.units.find((u) => u.unit === edit.unit)?.words ?? "";
+  // three controls side by side: the side, the number in a box of the usual size, and its unit, a choice where there is one
   return (
     <RangeMenu
       title={edit.title}
       side={over ? "over" : "upTo"}
       onSide={(s) => onFee(setStep(fee, caseId, t, s === "over" ? null : tops.at(-1)!.v))}
-      figure={<FigureField value={top} label={edit.title} unit={unitChoice ?? sign} sign={sign} tight onCommit={(n) => onFee(over ? setTop(fee, t, tops.length - 1, n) : setStep(fee, caseId, t, n))} />}
+      figure={<FigureField value={top} label={edit.title} unit={unitChoice ? undefined : sign} sign={sign} wide onCommit={(n) => onFee(over ? setTop(fee, t, tops.length - 1, n) : setStep(fee, caseId, t, n))} />}
+      unit={unitChoice}
       before={edit.before ? <WhenText words={edit.before} /> : undefined}
     />
   );

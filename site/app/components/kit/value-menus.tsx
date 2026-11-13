@@ -1,15 +1,17 @@
 // What opens when a value of the open case is tapped (design-system 11, "Cases and parts"): a list to tick (what is bought, the channel, what
 // is held, the currency; several may be ticked for one case, and "בכל …" is one of the values), a track's name with the switch that makes
 // it the person's own, or a range's side and top; and what a thing of the band's head opens, its values and the action that drops it.
-// They stand in `ValueMenuSheet`: a card beside the value on a computer, a sheet from the
-// foot of the screen on a phone.
-import { useId, type ReactNode } from "react";
+// They stand in `ValueMenuSheet`: a card hanging under the value on a computer, which leaves the page as it is, and a sheet from the foot
+// of the screen on a phone.
+import { useEffect, useId, useLayoutEffect, useRef, type ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Sheet } from "../Sheet";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { InlineSelect, TextField } from "./fields";
+import { useFloat } from "./month-picker";
+import { MQ, useMedia } from "../../lib/hooks";
 import { Tag } from "./tag";
 
 /** A short line that heads a menu, in the muted ink: what is chosen there ("מה קונים במקרה הזה. אפשר לסמן כמה."). */
@@ -51,14 +53,14 @@ export function TickMenu({ title, options, ticked, onToggle, other }: { title: R
 }
 
 /**
- * On or off, as a switch: the track and its knob, and the words beside it; the whole line is the target. The knob stands at the end when on,
- * on the action colour's track.
+ * On or off, as a switch: the track and its knob, and the words beside it; the whole line is the target, the track's own area 44 px both
+ * ways. The knob stands at the end when on, on the action colour's track.
  */
 export function Switch({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (on: boolean) => void }) {
   const id = useId();
   return (
     <div className="flex min-h-target w-fit items-center gap-3">
-      <button type="button" role="switch" id={id} aria-checked={checked} onClick={() => onChange(!checked)} className={cx("tap-area relative h-6 w-10 shrink-0 rounded-full transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary" : "bg-muted-foreground/40")}>
+      <button type="button" role="switch" id={id} aria-checked={checked} onClick={() => onChange(!checked)} className={cx("tap-wide relative h-6 w-10 shrink-0 rounded-full transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary" : "bg-muted-foreground/40")}>
         <span aria-hidden className={cx("absolute top-0.5 size-5 rounded-full transition-[inset-inline-start] duration-[var(--duration-fast)]", checked ? "start-[1.125rem] bg-primary-foreground" : "start-0.5 bg-foreground")} />
       </button>
       <label htmlFor={id} className="cursor-pointer font-medium">
@@ -79,11 +81,11 @@ export function TrackMenu({ name, onName, mine, onMine }: { name: string; onName
 }
 
 /**
- * A range's case: "עד" its top or "מעל" the case before it, the number in its box with its unit (`figure`: the kit's `FigureField`, its
- * unit a choice where the price's currency is one), and the case before it in words (`before`: "עד 100 $"). The last case of a range is
- * always "מעל" the one before it, so a range has no gap.
+ * A range's case, in three controls side by side: "עד" its top or "מעל" the case before it, the number in a field of the usual size
+ * (`figure`: the kit's `FigureField`), and its unit (`unit`: a choice where there is one, else its sign); then the case before it in words
+ * (`before`: "עד 100 $"). The last case of a range is always "מעל" the one before it, so a range has no gap.
  */
-export function RangeMenu({ title, side, onSide, figure, before }: { title: ReactNode; side: "upTo" | "over"; onSide: (side: "upTo" | "over") => void; figure: ReactNode; before?: ReactNode }) {
+export function RangeMenu({ title, side, onSide, figure, unit, before }: { title: ReactNode; side: "upTo" | "over"; onSide: (side: "upTo" | "over") => void; figure: ReactNode; unit?: ReactNode; before?: ReactNode }) {
   return (
     <div className="flex flex-col gap-3">
       <MenuTitle>{title}</MenuTitle>
@@ -99,6 +101,7 @@ export function RangeMenu({ title, side, onSide, figure, before }: { title: Reac
           onChange={(v) => v && onSide(v as "upTo" | "over")}
         />
         {figure}
+        {unit}
       </div>
       {before && (
         <p className="text-sm text-muted-foreground">
@@ -139,11 +142,25 @@ export function ThingMenu({ title, values, stop, onStop, after }: { title: React
 }
 
 /**
- * The card a value's menu opens in: beside the value (`anchor`) on a computer, a sheet from the foot of the screen on a phone (the kit's
- * `Sheet`). `label` is its spoken name.
+ * The card a value's menu opens in. From a tablet's width up it hangs under the value (`anchor`), its inline start on the value's, and
+ * leaves the page as it is: nothing is dimmed and the page still scrolls, there is no ✕, and the focus goes into it, to its first field
+ * where it has one (a track's name, a range's number), else its first control. Escape closes it and gives the focus back to the value; a
+ * press outside it, or the focus leaving it for the page, closes it and leaves the focus where it went. On a phone it is a sheet from the
+ * foot of the screen (the kit's `Sheet`). `label` is its spoken name.
  */
 export function ValueMenuSheet({ open, onClose, anchor, label, children }: { open: boolean; onClose: () => void; anchor: HTMLElement | null; label: string; children: ReactNode }) {
   const id = useId();
+  const wide = useMedia(MQ.md);
+  if (wide)
+    return open && anchor ? (
+      // a card per value: another value's menu is placed by it and takes the focus anew
+      <ValueMenuCard key={anchorKey(anchor)} anchor={anchor} labelledBy={id} onClose={onClose}>
+        <h2 id={id} className="sr-only">
+          {label}
+        </h2>
+        {children}
+      </ValueMenuCard>
+    ) : null;
   return (
     <Sheet open={open} onClose={onClose} anchor={anchor} pc="popover" labelledBy={id}>
       <h2 id={id} className="sr-only">
@@ -151,5 +168,62 @@ export function ValueMenuSheet({ open, onClose, anchor, label, children }: { ope
       </h2>
       {children}
     </Sheet>
+  );
+}
+
+/** A number for each value a menu opens from, kept while the value is on the page. */
+const anchors = new WeakMap<HTMLElement, number>();
+let lastAnchor = 0;
+const anchorKey = (el: HTMLElement): number => {
+  if (!anchors.has(el)) anchors.set(el, ++lastAnchor);
+  return anchors.get(el)!;
+};
+
+/** The fields the focus goes to first in a menu: a figure's box or a name typed in it, before a box to tick or a choice. */
+const FIRST_FIELD = "input[data-figure], input[type=text]:not([data-figure])";
+const FOCUSABLE = "input, select, button, textarea, [tabindex='0']";
+
+function ValueMenuCard({ anchor, labelledBy, onClose, children }: { anchor: HTMLElement; labelledBy: string; onClose: () => void; children: ReactNode }) {
+  const card = useRef<HTMLDivElement>(null);
+  const at = useRef<HTMLElement | null>(anchor);
+  at.current = anchor;
+  const close = useRef(onClose);
+  close.current = onClose;
+  useFloat(card, at);
+  useLayoutEffect(() => {
+    const el = card.current;
+    (el?.querySelector<HTMLElement>(FIRST_FIELD) ?? el?.querySelector<HTMLElement>(FOCUSABLE))?.focus({ preventScroll: true });
+  }, []);
+  useEffect(() => {
+    // a press outside the card and its value closes it; a press on the value is the value's own (it closes the menu itself)
+    const away = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (!card.current?.contains(t) && !at.current?.contains(t)) close.current();
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, []);
+  return (
+    <div
+      ref={card}
+      {...{ popover: "manual" as const }}
+      role="dialog"
+      aria-labelledby={labelledBy}
+      onKeyDown={(e) => {
+        if (e.key !== "Escape" || e.defaultPrevented) return;
+        e.preventDefault();
+        e.stopPropagation();
+        close.current();
+        at.current?.focus({ preventScroll: true });
+      }}
+      onBlur={(e) => {
+        // the focus leaving the card for the page (a Tab past its last control) closes it; a native choice's own list keeps it
+        const to = e.relatedTarget as Node | null;
+        if (to && !card.current?.contains(to) && !at.current?.contains(to)) close.current();
+      }}
+      className="fixed inset-auto m-0 flex max-h-[min(32rem,70vh)] w-max max-w-[min(24rem,calc(100vw-1rem))] flex-col overflow-y-auto rounded-lg border border-border bg-popover p-3 text-base text-foreground shadow-lg"
+    >
+      {children}
+    </div>
   );
 }

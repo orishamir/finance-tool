@@ -23,11 +23,13 @@ export interface CaseWord {
 }
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
+/** A value whose menu is open: a ring in the action colour around its pill. */
+const OPEN_RING = "outline-2 outline-offset-2 outline-primary";
 
 /**
  * The band: its head (the cases' icon, `label`, then one pill per thing) and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`),
  * 4 px apart, then the action that adds a case (`addCase`, "+ עוד מקרה"). With `onThing` the pills are slots, buttons with a chevron
- * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open;
+ * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open, ringed;
  * without it they are words at rest.
  */
 export function ConditionBand({ things, onThing, openThing, label = copy.changesBy, addCase, children }: {
@@ -40,12 +42,13 @@ export function ConditionBand({ things, onThing, openThing, label = copy.changes
 }) {
   return (
     <div className="@container overflow-hidden rounded-lg border border-when-edge bg-when-fill pb-1">
-      <div className="flex min-h-target flex-wrap items-center gap-2 px-3 py-1.5 text-sm text-when-ink">
+      {/* 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge */}
+      <div className="flex min-h-target flex-wrap items-center gap-2 px-3 py-2 text-sm text-when-ink">
         <Split {...icon} />
         <span className="font-medium">{label}</span>
         {things.map((t) =>
           onThing ? (
-            <button key={t.id} type="button" aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className="tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent">
+            <button key={t.id} type="button" aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
               {t.name}
               <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
             </button>
@@ -118,12 +121,12 @@ export function CaseFold({ label, open, onToggle, children }: { label: ReactNode
 }
 
 /**
- * A value of the open case, which a tap opens to change (a `ValueMenuSheet` the page holds): a pill with a chevron. `range` puts the range's
- * icon before it.
+ * A value of the open case, which a tap opens to change (a `ValueMenuSheet` the page holds): a pill with a chevron, ringed in the action
+ * colour while its menu is open. `range` puts the range's icon before it.
  */
 export function CaseSlot({ children, range, open, onOpen }: { children: ReactNode; range?: boolean; /** Its menu is open. */ open?: boolean; onOpen: (at: HTMLElement) => void }) {
   return (
-    <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className="inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3.5 pe-3 text-sm text-foreground hover:bg-accent">
+    <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className={cx("inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3.5 pe-3 text-sm text-foreground hover:bg-accent", open && OPEN_RING)}>
       {range && <ChartNoAxesColumnIncreasing {...icon} className="shrink-0 text-when-ink" />}
       <span className="min-w-0">{children}</span>
       <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-muted-foreground" />
@@ -138,7 +141,7 @@ export function CaseSlot({ children, range, open, onOpen }: { children: ReactNod
  */
 export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: ReactNode; mine?: boolean; onCopy?: () => void; onRemove?: () => void; children: ReactNode }) {
   return (
-    <div className="rounded-lg outline-2 -outline-offset-2 outline-primary" data-figures>
+    <div className="rounded-lg outline-2 -outline-offset-2 outline-primary" data-figures data-open-case="">
       <div className="flex flex-wrap items-center gap-2 px-3 py-2">
         {slots}
         {mine && <Tag tone="primary">{copy.mine}</Tag>}
@@ -146,7 +149,7 @@ export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: R
           {copy.chosen}
         </Tag>
       </div>
-      <div className="mx-1 mb-1 flex flex-col gap-2 rounded-md bg-card p-2">
+      <div className="mx-1 mb-1 flex flex-col gap-2 rounded-md bg-card p-2" data-case-parts="">
         {children}
         {(onCopy || onRemove) && (
           <div className="flex flex-wrap items-center gap-x-5">

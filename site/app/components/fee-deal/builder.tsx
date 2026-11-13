@@ -26,6 +26,7 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, CaseFold, CaseRow, CaseSlot, ChoiceChips, ConditionBand, FeeBlock, GroupHead, MonthField, OpenCase, PartChip, Section, SlimFee, Step, When, monthText, type AddItem, type CaseWord } from "../kit";
 import { Num } from "../provenance";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/builder";
+import { bringIntoView } from "./in-view";
 import { LawTag, useFeeMark } from "./links";
 import { OpenParts, PART_MARK, WhenText, numText, type PendingPart } from "./open-case";
 import { TemplateNote } from "./picker";
@@ -75,19 +76,7 @@ export interface FeeFocus {
   on: "card" | "box";
 }
 
-/** Whether an element stands wholly in the window, under the site's sticky header. */
-function inView(el: Element): boolean {
-  const r = el.getBoundingClientRect();
-  const top = document.querySelector("header")?.getBoundingClientRect().bottom ?? 0;
-  return r.top >= top && r.bottom <= window.innerHeight;
-}
-
-/** Brings an element into the window where it is not wholly in it, gliding unless the device asks for less motion. */
-export function bringIntoView(el: Element | null | undefined) {
-  if (!el || inView(el)) return;
-  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  el.scrollIntoView({ block: "nearest", behavior: still ? "auto" : "smooth" });
-}
+export { bringIntoView } from "./in-view";
 
 export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left, kindLine, onDeal, onKind }: {
   deal: FeeDeal;
@@ -271,8 +260,12 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   );
 }
 
-/** The page's undo line of a change to one fee's cases or prices (a case, a thing, a price taken away): it stands under the fee's block. */
-export type CaseUndoLine = KindUndoLine & { feeId: string };
+/**
+ * The page's undo line of a change to one fee's cases or prices (a case, a thing, a price taken away): it stands under the fee's block.
+ * A price put in another form (`inCase`) leaves it in the open case, under its parts, where the change was made, while that case is open
+ * (`caseId`, none for a fee whose price changes by nothing).
+ */
+export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: string | null } };
 
 export function FeesColumn({
   deal,
@@ -331,10 +324,12 @@ export function FeesColumn({
     if (!focus) return;
     const li = blockOf(focus.fee);
     if (focus.on === "box") {
+      // the fee's first box (the open case's price, in a fee with cases), brought above a phone's pinned sheet with the parts around it,
+      // so an undo line under them is in view too
       const box = li?.querySelector<HTMLInputElement>("input[data-figure]");
-      bringIntoView(li);
       box?.focus({ preventScroll: true });
       box?.select();
+      bringIntoView(box?.closest("[data-case-parts]") ?? box?.closest("[data-lift]") ?? li);
     } else feeFocus(li)?.focus({ preventScroll: true });
     onFocused();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -383,8 +378,22 @@ export function FeesColumn({
     </UndoLine>
   );
 
+  // the undo line of a price put in another form, in the open case it was made in
+  const formLine = (fee: Fee) => {
+    const cl = caseLine?.feeId === fee.id && caseLine.inCase && caseLine.inCase.caseId === open.case && open.fee === fee.id ? caseLine : null;
+    return cl ? (
+      <UndoLine key={`undo:form:${cl.feeId}`} as="div" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => blockOf(cl.feeId)?.querySelector<HTMLElement>("[data-case-parts] input[data-figure]")}>
+        {cl.words}
+      </UndoLine>
+    ) : null;
+  };
   const openParts = (fee: Fee, name: string) =>
-    open.view && <OpenParts fee={fee} open={open.view} deal={deal} name={name} pending={open.pending} onFee={onFee} onHoldOn={(side, k, caseId) => onHoldOn(fee.id, side, k, caseId)} onPendingDone={onPendingDone} />;
+    open.view && (
+      <>
+        <OpenParts fee={fee} open={open.view} deal={deal} name={name} pending={open.pending} onFee={onFee} onHoldOn={(side, k, caseId) => onHoldOn(fee.id, side, k, caseId)} onPendingDone={onPendingDone} />
+        {formLine(fee)}
+      </>
+    );
 
   const block = (fee: Fee) => {
     const row = rows.get(fee.id);
@@ -488,7 +497,8 @@ export function FeesColumn({
             <ul className="flex flex-col gap-3">
               {items.flatMap((it) => {
                 if (it === "line") return [undoLine(line!)];
-                const cl = caseLine?.feeId === it.fee.id ? caseLine : null;
+                // a form's line stands in its open case (`formLine`), and nowhere while that case is closed
+                const cl = caseLine?.feeId === it.fee.id && !caseLine.inCase ? caseLine : null;
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
                     {block(it.fee)}

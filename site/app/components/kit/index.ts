@@ -2,6 +2,7 @@
 // "components/kit", not from a neighbouring feature. One file per component or small family; the gallery at /kit shows each in its states.
 export { cx } from "./cx";
 export { useHeldHeight } from "./held-height";
+export { useStickyColumn } from "./sticky-column";
 export { LongestCase, Unseen, useUnseen } from "./longest-case";
 export { HoldTallest } from "./hold-tallest";
 export { Button, LinkButton } from "./button";

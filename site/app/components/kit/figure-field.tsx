@@ -104,7 +104,7 @@ export function readTyped(text: string, { sign, validate, clearable, left }: { s
  * characters where the browser sizes a field to its content (`field-sizing`), the width in `ch` being only the fallback: a digit is
  * narrower than a `ch` and a point much narrower.
  */
-const widthOf = (text: string, placeholder: string | undefined, tight?: boolean) => `${Math.max(tight && text ? text.length : Math.max(text.length, placeholder?.length ?? 0), tight ? 1 : 2) + (tight ? 0.15 : 0.5)}ch`;
+const widthOf = (text: string, placeholder: string | undefined, tight?: boolean, least = 0) => `${Math.max(tight && text ? text.length : Math.max(text.length, placeholder?.length ?? 0), tight ? 1 : 2, least) + (tight ? 0.15 : 0.5)}ch`;
 const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:!w-auto";
 
 /**
@@ -159,7 +159,7 @@ function placeNote(note: HTMLElement, field: HTMLElement) {
  * the figure by `step`, never below zero, keeping the decimals typed, and do nothing in an empty box; Enter moves to the next field of
  * its group (`enterToNext`). The figure is written in the site's form once the person leaves the box.
  */
-export function FigureField({ value, label, from, unit, sign, words, inside, tight, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: {
+export function FigureField({ value, label, from, unit, sign, words, inside, tight, wide, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
@@ -175,6 +175,8 @@ export function FigureField({ value, label, from, unit, sign, words, inside, tig
   inside?: boolean;
   /** Less room inside the box, for boxes that stand side by side in a narrow card (a fee's row); the box keeps its 44 px height. */
   tight?: boolean;
+  /** Room for six characters at least, for a box that stands alone in a menu with its unit beside it (a range's top). */
+  wide?: boolean;
   onCommit: (n: number) => void;
   /** An optional figure: a box left empty clears it. */
   onClear?: () => void;
@@ -296,7 +298,7 @@ export function FigureField({ value, label, from, unit, sign, words, inside, tig
               } else if (r.kind === "error") setError(r.message);
               else setText(shown);
             }}
-            style={{ width: widthOf(text, placeholder, tight) }}
+            style={{ width: widthOf(text, placeholder, tight, wide ? 6 : 0) }}
             className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
           />
           {unit && <span className="text-sm opacity-80">{unit}</span>}

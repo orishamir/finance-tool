@@ -44,7 +44,7 @@ export function SlimFee({ dot, name, label, onOpen, open, actions, children }: {
               {copy.chosen}
             </Tag>
           </span>
-          <div className="flex flex-col gap-2" data-figures>
+          <div className="flex flex-col gap-2" data-figures data-case-parts="">
             {children}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-x-5">{actions}</div>}

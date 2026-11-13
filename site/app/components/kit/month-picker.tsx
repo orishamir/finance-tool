@@ -106,8 +106,11 @@ export function floatAt(box: { top: number; bottom: number; left: number; right:
   return { top, left };
 }
 
-/** Puts a floating picker by its box, again when the page, a box around it or the visible window scrolls or changes size. */
-function useFloat(surface: RefObject<HTMLDivElement | null>, anchor: RefObject<HTMLElement | null> | undefined) {
+/**
+ * Puts a floating card by its anchor (a month's box, a value's chip), in the browser's top layer, again when the page, a box around it or
+ * the visible window scrolls or changes size.
+ */
+export function useFloat(surface: RefObject<HTMLDivElement | null>, anchor: RefObject<HTMLElement | null> | undefined) {
   useLayoutEffect(() => {
     const el = surface.current;
     if (!anchor || !el) return;
