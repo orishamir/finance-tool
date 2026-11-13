@@ -89,7 +89,7 @@ function SideHead({ swatch, title, count, lead, what, help, line }: { swatch: st
       {/* 8 px under the line with a "?", so the quiet line under it leaves the mark its whole 44 px */}
       <p className={cx("text-base", !!help && "mb-2")}>
         {lead} <span className="font-semibold">{what}</span>
-        {help}
+        {help && <> {help}</>}
       </p>
       {line}
     </header>
