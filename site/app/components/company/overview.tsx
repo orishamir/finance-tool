@@ -80,7 +80,8 @@ export function OverviewTable({ groups, heads, note }: { groups: { key: string; 
       head: heads ? <SortNote label={cols.assets} note={heads.assets} /> : cols.assets,
       width: ASSETS_REM,
     },
-    { id: "fees", head: heads ? <SortNote label={cols.fees} note={heads.fees} /> : cols.fees, width: 12, wrap: true },
+    // as wide as the weak line under its head ("במסלולים: מהחיסכון, מהזול ליקר"), which never wraps; a price list's words wrap under it
+    { id: "fees", head: heads ? <SortNote label={cols.fees} note={heads.fees} /> : cols.fees, width: 12.75, wrap: true },
     { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, tight: true },
   ];
   const name = (r: OverviewTableRow) => (

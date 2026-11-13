@@ -260,7 +260,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const periodText = fmt.period(period);
   const periodNote = t.columns.endOf.replace("{period}", periodText);
   // the past yield: what it is in the head, before fees and tax in the muted line under it, and the whole caution in its "?"
-  const pastHead = (label: string, note: string) => <SortNote label={label} note={note} mark={<HelpMark about={t.help.past} text={t.pastNote} />} />;
+  const pastMark = <HelpMark about={t.help.past} text={t.pastNote} />;
+  const pastHead = (label: string, note: string) => <SortNote label={label} note={note} mark={pastMark} />;
   const short = t.columns.short;
   // a cap over the fee head it limits, its figure opening its source (the regulations)
   const capHead = (cap: SiteValue) => (
@@ -271,16 +272,23 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   // one date over the five columns whose figures share it (the exposure, the yields, the assets)
   const asOf = t.columns.asOf.replace("{period}", periodText);
   const dated = { band: asOf };
+  const pastOver = { key: "past", head: <SortNote beside label={short.past} note={t.columns.beforeFees} mark={pastMark} />, spoken: short.past };
+  // Each fixed column as wide as its longest real content over every company's tracks: the fund's number with its link mark, the fee head
+  // with its arrow and "?" on one line (its cap caption fits under that), the deposit fee's cap caption ("התקרה בתקנות: 4%"), the words a
+  // share takes where it has no figure ("אין נכסים", "לא דווח"), the head over the two yields (with its weak words and "?" it sets their
+  // width), the money ("110.79 מיליארד ₪"). The name keeps the least width where a long real name still takes two lines ("אשראי ואג״ח
+  // עם מניות (עד 25% מניות)", 11.25 rem with the cell's padding).
   const compactColumns: ProductColumn[] = [
-    { id: "name", head: head("name", t.columns.track), sort: state("name") },
-    { id: "fund", head: t.columns.fund, width: 5 },
-    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 12, sort: state("fee"), ...(caps?.balance ? { band: "cap-savings", bandHead: capHead(caps.balance) } : {}) },
+    { id: "name", head: head("name", t.columns.track), sort: state("name"), least: 11.25 },
+    { id: "fund", head: t.columns.fund, width: 6 },
+    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 11, sort: state("fee"), ...(caps?.balance ? { band: "cap-savings", bandHead: capHead(caps.balance) } : {}) },
     ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 8.5, sort: state("dep"), ...(caps?.deposit ? { band: "cap-deposit", bandHead: capHead(caps.deposit) } : {}) }] : []),
-    { id: "stocks", head: head("stock", short.stocks), width: 5, sort: state("stock"), ...dated },
-    { id: "currency", head: short.currency, width: 5, ...dated },
-    { id: "y3", head: pastHead(short.y3, t.columns.beforeFees), width: 9.75, headClassName: "whitespace-nowrap", ...dated },
-    { id: "y5", head: pastHead(short.y5, t.columns.beforeFees), width: 9.75, headClassName: "whitespace-nowrap", ...dated },
-    { id: "assets", head: head("assets", short.assets), width: 8.5, sort: state("assets"), ...dated },
+    { id: "stocks", head: head("stock", short.stocks), width: 5.5, sort: state("stock"), ...dated },
+    { id: "currency", head: short.currency, width: 4.75, ...dated },
+    // one head over the two past yields, what it is and before fees and tax on its line, and each column's years under it
+    { id: "y3", head: t.yield.years3, over: pastOver, width: 6.75, ...dated },
+    { id: "y5", head: t.yield.years5, over: pastOver, width: 6.75, ...dated },
+    { id: "assets", head: head("assets", short.assets), width: 10, sort: state("assets"), ...dated },
   ];
   // the full table's one fee head over both figures: its "?" opens the two averages, then each fee's card that names the product
   const [savingsAverage, ...savingsCard] = feeMarkTerms("savings", view.id, wrappers);

@@ -7,8 +7,9 @@
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
 //            doubt or a lock.
-//   side     on a company page, a table that scrolls sideways beside the side list (2026-11-10: the tracks table at a 1120 px window), at
-//            1440, 1120 and 1024 px;
+//   side     on a company page, the side list folded over the content on a computer, at 1440, 1425 (a 1440 screen with a classic
+//            scrollbar), 1280 and 1024 px, the page wider than the screen there, and a table that scrolls sideways beside the list at 1440 and
+//            1425 (below that a table may scroll inside its own card, its first column in place);
 //   quote    an ASCII double quote between two Hebrew letters in a company page's product view (`?product=`), which the build's
 //            hebrew-quotes check cannot see: only the overview is pre-rendered.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
@@ -31,6 +32,7 @@ if (!existsSync(join(build, "index.html")) && !existsSync(join(build, "404.html"
 }
 
 const WIDTHS = [1440, 390, 320];
+const SIDE_WIDTHS = [1440, 1425, 1280, 1024]; // a company page's side list, at 1440 with a classic scrollbar too (1425)
 const HEIGHT = { 1440: 900, 390: 844, 320: 568 }; // 320 × 568: the smallest phone the site supports
 const SHEET_WIDTH = 320; // where the sheets with a warning are opened
 const SHEET_FIGURES = 3; // figures with a warning opened on each page
@@ -117,17 +119,21 @@ async function selfTest() {
   }
   if (!(await page.evaluate(warningsOutOfSight)).length) missed.push("warning");
   await ctx.close();
-  // a table that scrolls sideways beside a side list, planted on the kit page at a laptop's width
-  const wide = await browser.newContext({ viewport: { width: 1120, height: 800 }, colorScheme: "dark", locale: "he-IL" });
+  // a table that scrolls sideways beside a side list, and a side list folded over its content, planted on the kit page at 1440
+  const wide = await browser.newContext({ viewport: { width: 1440, height: 800 }, colorScheme: "dark", locale: "he-IL" });
   const desk = await wide.newPage();
   await desk.goto(base + "/kit", { waitUntil: "networkidle" });
   await desk.evaluate(settled);
   await desk.evaluate(() => {
     const planted = document.createElement("div");
-    planted.innerHTML = '<div data-side-page="" style="display:grid;grid-template-columns:240px minmax(0,1fr)"><div data-side-nav=""><nav style="height:40px">x</nav></div><div data-side-content="" style="min-width:0"><div style="overflow-x:auto"><table style="width:3000px"><tbody><tr><td>x</td></tr></tbody></table></div></div></div>';
+    planted.id = "planted-side";
+    planted.innerHTML =
+      '<div data-side-page="" style="display:grid;grid-template-columns:240px minmax(0,1fr)"><div data-side-nav=""><nav style="height:40px">x</nav></div><div data-side-content="" style="min-width:0"><div style="overflow-x:auto"><table style="width:3000px"><tbody><tr><td>x</td></tr></tbody></table></div></div></div>' +
+      '<div data-side-page="" style="display:flex;flex-direction:column"><div data-side-nav=""><nav style="height:40px">x</nav></div><div data-side-content="">x</div></div>';
     document.querySelector("main").append(planted);
   });
-  if (!(await desk.evaluate(sideScroll)).length) missed.push("side");
+  const planted = await desk.evaluate(sideLayout, "#planted-side");
+  if (!planted.scrolls.length || !planted.folded) missed.push("side");
   await wide.close();
   return missed;
 }
@@ -217,13 +223,17 @@ async function checkPage(page, path, width) {
     for (const q of hebrewQuotes(shownText(await page.evaluate(() => document.querySelector("main")?.outerHTML ?? "")))) findings.push({ check: "quote", id: q, detail: `an ASCII quote between Hebrew letters: …${q}…; write the gershayim ״, or pass text from the data through the kit's gershayim` });
   }
   if (width === 1440 && path.startsWith("/companies/")) {
-    // the side list stands beside a product only while its widest table fits there (kit SidePage): checked at a laptop's widths too
-    for (const w of [1440, 1120, 1024]) {
+    // the side list stands beside the content at every computer width (kit SidePage); its tables fit beside it on a 1440 screen, with a
+    // classic scrollbar too (1425); below that a table may scroll inside its own card, and the page never does
+    for (const w of SIDE_WIDTHS) {
       if (w !== 1440) {
         await page.setViewportSize({ width: w, height: HEIGHT[1440] });
         await page.evaluate(settled);
       }
-      for (const x of await page.evaluate(sideScroll)) findings.push({ check: "side", id: String(w), detail: `at ${w} px a table scrolls ${x.by} px sideways beside the side list` });
+      const side = await page.evaluate(sideLayout);
+      if (side.folded) findings.push({ check: "side", id: `${w} folded`, detail: `at ${w} px the side list is folded over the content` });
+      if (side.wide) findings.push({ check: "side", id: `${w} wide`, detail: `at ${w} px the page is ${side.wide} px wider than the screen` });
+      if (w >= 1425) for (const x of side.scrolls) findings.push({ check: "side", id: String(w), detail: `at ${w} px a table scrolls ${x.by} px sideways beside the side list` });
     }
     await page.setViewportSize({ width: 1440, height: HEIGHT[1440] });
   }
@@ -366,19 +376,22 @@ function warningsOutOfSight() {
   return out;
 }
 
-// Runs in the page. Beside a side list (kit SidePage, the list standing at the content's side rather than folded over it), each table whose
-// box scrolls sideways, and by how much.
-function sideScroll() {
-  const out = [];
-  for (const box of document.querySelectorAll("[data-side-page]")) {
-    const nav = box.querySelector("[data-side-nav] nav");
+// Runs in the page. Of the side pages (kit SidePage) in `within` (a planted one is looked at alone): whether one's list is folded over its content rather than beside it, how much wider than the screen the page is, and beside a
+// list, each table whose box scrolls sideways and by how much.
+function sideLayout(within = "body") {
+  const out = { folded: false, wide: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth), scrolls: [] };
+  for (const box of document.querySelector(within)?.querySelectorAll("[data-side-page]") ?? []) {
+    const nav = box.querySelector("[data-side-nav]");
     const content = box.querySelector("[data-side-content]");
     if (!nav || !content || !nav.checkVisibility()) continue;
-    if (nav.getBoundingClientRect().bottom <= content.getBoundingClientRect().top + 1) continue; // folded: the list's line over the content
+    if (nav.getBoundingClientRect().bottom <= content.getBoundingClientRect().top + 1) {
+      out.folded = true; // the list's line over the content
+      continue;
+    }
     for (const t of content.querySelectorAll("table")) {
       for (let p = t.parentElement; p && p !== content; p = p.parentElement) {
         if (!["auto", "scroll"].includes(getComputedStyle(p).overflowX)) continue;
-        if (p.scrollWidth > p.clientWidth + 1) out.push({ by: p.scrollWidth - p.clientWidth });
+        if (p.scrollWidth > p.clientWidth + 1) out.scrolls.push({ by: p.scrollWidth - p.clientWidth });
         break;
       }
     }

@@ -23,6 +23,8 @@ export interface ProductColumn {
   head: ReactNode;
   /** As wide as its longest real content, in rem (a number, a link, figures), and not wrapping; the columns without it share the rest. */
   width?: number;
+  /** A column without a `width`: the least it keeps, in rem, before the table scrolls sideways in its card (11 unless said). */
+  least?: number;
   /** A column with a `width` whose cells may wrap onto a second line (words, such as a deposit's exit points or a range of fees). */
   wrap?: boolean;
   /** 4 px at the sides of its head and cells, for a narrow column that holds only an arrow or an icon. */
@@ -38,6 +40,12 @@ export interface ProductColumn {
   /** What the caption shows in place of its `band` words, where it holds a figure that opens its source or a "?" beside its words; read
    *  from the run's first column. The `band` string still tells the runs apart. */
   bandHead?: ReactNode;
+  /**
+   * One head over this column and the neighbours with the same `key`, in the head under the caption row, with each column's own `head`
+   * under it (the past yield over its years: "תשואת עבר" over "3 שנים" and "5 שנים"); the other heads take both lines. `spoken` comes before
+   * each column's own head for a screen reader, so its header reads whole ("תשואת עבר, 3 שנים").
+   */
+  over?: { key: string; head: ReactNode; spoken: string };
 }
 
 export interface ProductRow {
@@ -91,15 +99,27 @@ const DETAIL = "__detail";
 /** A dimmed column fades rather than jumps. */
 const DIM = "transition-opacity duration-[var(--duration-base)]";
 
-/** The head's caption row: each run of neighbouring columns with one `band` under one cell, the others under empty cells. */
+/** The head's caption row: each run of neighbouring columns with one `band` under one cell, the others under empty cells. The first column
+ *  stands alone, so its cell can stay in place while the table scrolls sideways. */
 function bandRuns(columns: readonly ProductColumn[]): { key: string; band: string | null; head: ReactNode; span: number }[] {
   const out: { key: string; band: string | null; head: ReactNode; span: number }[] = [];
-  for (const c of columns) {
+  columns.forEach((c, i) => {
     const band = c.band ?? null;
     const last = out.at(-1);
-    if (last && last.band === band) last.span += 1;
+    if (last && last.band === band && (i !== 1 || band !== null)) last.span += 1;
     else out.push({ key: c.id, band, head: c.bandHead ?? band, span: 1 });
-  }
+  });
+  return out;
+}
+
+/** The heads' first row: a column alone, or a run of neighbouring columns under one `over` head. */
+function overRuns(columns: readonly ProductColumn[]): { key: string; first: number; span: number; over: ProductColumn["over"] }[] {
+  const out: { key: string; first: number; span: number; over: ProductColumn["over"] }[] = [];
+  columns.forEach((c, i) => {
+    const last = out.at(-1);
+    if (c.over && last?.over?.key === c.over.key) last.span += 1;
+    else out.push({ key: c.id, first: i, span: 1, over: c.over });
+  });
   return out;
 }
 
@@ -114,7 +134,8 @@ function usePlace(): "phone" | "table" | null {
 }
 
 /** Whether the table fits the width of its card: then nothing scrolls sideways, a sticky head can stick to the page (a scrolling card would
- *  hold it), and the card clips nothing above or below it (a "?" in the head keeps its 44 px over the card's edge). */
+ *  hold it), and the card clips nothing above or below it (a "?" in the head keeps its 44 px over the card's edge). Otherwise the card marks
+ *  itself `data-scrolled` while it is scrolled from its start, when the first column lies over the others (`tbl-pin`). */
 function useFitsWidth(place: "phone" | "table" | null) {
   const card = useRef<HTMLDivElement>(null);
   const [fits, setFits] = useState(false);
@@ -125,10 +146,16 @@ function useFitsWidth(place: "phone" | "table" | null) {
       const table = el.querySelector("table");
       setFits(!!table && table.offsetWidth <= el.clientWidth + 1);
     };
+    const scrolled = () => el.toggleAttribute("data-scrolled", Math.abs(el.scrollLeft) > 0);
     measure();
+    scrolled();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    return () => ro.disconnect();
+    el.addEventListener("scroll", scrolled, { passive: true });
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", scrolled);
+    };
   }, [place]);
   return { card, fits };
 }
@@ -175,7 +202,11 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
   // the button: a 44 px target, wider with two marks (16 px each and their gaps, beside the 18 px chevron); a tight column's 4 px on each side
   if (marksMost >= 0) columns = [...columns, { id: DETAIL, head: <span className="sr-only">{kit.rowDetail}</span>, width: (Math.max(44, 18 + 20 * marksMost) + 8) / 16, tight: true }];
   // the columns that share the rest keep a readable width: under that the table scrolls inside its card (a narrow tablet)
-  const minRem = columns.reduce((sum, c) => sum + (c.width ?? MIN_SHARED_REM), 0);
+  const minRem = columns.reduce((sum, c) => sum + (c.width ?? c.least ?? MIN_SHARED_REM), 0);
+  const banded = columns.some((c) => c.band);
+  const overs = columns.some((c) => c.over) ? overRuns(columns) : null;
+  // the first column's cells: while the table scrolls sideways in its card, they stay at its start edge on the card's surface
+  const first = (i: number) => (i === 0 ? "tbl-first" : null);
   // the table's last row, if a row ends it (not a heading or a folded group)
   let lastRow: ProductRow | null = null;
   for (const g of [...groups].reverse()) {
@@ -216,14 +247,15 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
       )}
       {place !== "phone" && (
       <Card ref={card} pad="none" className={cx("relative hidden md:block", fits ? "overflow-x-clip" : "overflow-x-auto overflow-y-hidden")}>
-        {/* with a caption row the whole head sticks, so the captions and the heads stay one block (tbl-banded) */}
-        <table className={cx("tbl tbl-rows", fits && stickyHead && "tbl-sticky", columns.some((c) => c.band) && "tbl-banded")} style={{ minWidth: `${minRem}rem` }}>
+        {/* with a caption row or a head over several columns the whole head sticks, so its rows stay one block (tbl-banded); a table that
+            scrolls sideways keeps its first column in place (tbl-pin) */}
+        <table className={cx("tbl tbl-rows", fits && stickyHead && "tbl-sticky", (banded || overs) && "tbl-banded", !fits && "tbl-pin")} style={{ minWidth: `${minRem}rem` }}>
           <TableCols widths={columns.map((c) => (c.width ? `${c.width}rem` : "auto"))} />
           <thead>
-            {columns.some((c) => c.band) && (
+            {banded && (
               <tr className="tbl-band">
-                {bandRuns(columns).map((run) => (
-                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pt-3.5 !pb-2.5 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0")}>
+                {bandRuns(columns).map((run, i) => (
+                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pt-3.5 !pb-2.5 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0", run.span === 1 && first(i))}>
                     {/* a rule under the caption over its columns, so it reads as theirs; room over the caption and under the rule, so a
                         figure or a "?" in the caption keeps its 44 px inside the card's rounded edge and clear of one in a head under it */}
                     {run.band && <span className="block pb-1.5 border-b border-border">{run.head}</span>}
@@ -231,13 +263,43 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
                 ))}
               </tr>
             )}
-            <tr>
-              {columns.map((c) => (
-                <th key={c.id} scope="col" aria-sort={c.sort} className={cx(c.tight && "px-1", c.headClassName, DIM, c.dim && "opacity-45")}>
-                  {c.head}
-                </th>
-              ))}
-            </tr>
+            {overs ? (
+              <>
+                {/* a head over several columns stands on the first line, their own heads under it on the second; every other head takes both */}
+                <tr>
+                  {overs.map((run) => {
+                    const c = columns[run.first]!;
+                    return run.over ? (
+                      <th key={run.key} scope="colgroup" colSpan={run.span} className={cx("tbl-over", DIM, c.dim && "opacity-45")}>
+                        {run.over.head}
+                      </th>
+                    ) : (
+                      <th key={run.key} rowSpan={2} scope="col" aria-sort={c.sort} className={cx(c.tight && "px-1", c.headClassName, DIM, c.dim && "opacity-45", first(run.first))}>
+                        {c.head}
+                      </th>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  {columns.map((c) =>
+                    c.over ? (
+                      <th key={c.id} scope="col" aria-sort={c.sort} className={cx("tbl-under", c.tight && "px-1", c.headClassName, DIM, c.dim && "opacity-45")}>
+                        <span className="sr-only">{`${c.over.spoken}, `}</span>
+                        {c.head}
+                      </th>
+                    ) : null,
+                  )}
+                </tr>
+              </>
+            ) : (
+              <tr>
+                {columns.map((c, i) => (
+                  <th key={c.id} scope="col" aria-sort={c.sort} className={cx(c.tight && "px-1", c.headClassName, DIM, c.dim && "opacity-45", first(i))}>
+                    {c.head}
+                  </th>
+                ))}
+              </tr>
+            )}
           </thead>
           <tbody data-flip-list>
             {groups.flatMap((g) => {
@@ -267,7 +329,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
                 : []),
               ...(shut ? [] : g.rows).flatMap((r) => {
                 const open = !!r.detail && opened.has(r.key);
-                const cellClass = (i: number) => cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width && !columns[i]?.wrap ? "whitespace-nowrap" : null, columns[i]?.tight && "px-1", columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "!border-b-0");
+                const cellClass = (i: number) => cx(first(i), i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width && !columns[i]?.wrap ? "whitespace-nowrap" : null, columns[i]?.tight && "px-1", columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "!border-b-0");
                 const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit", r.mine && "row-mine");
                 const lines = r.lines && r.lines.rows.length > 1 ? r.lines : null;
                 const detailId = `${bannerId}-d-${r.key}`;

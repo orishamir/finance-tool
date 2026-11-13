@@ -1843,8 +1843,8 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="SideNav, SidePage" use={g.uses.SideNav}>
-        <State label="the list beside the content, one item chosen with its parts under it, items under group labels; under 1024 px, one line that opens the list" wide>
-          <SideNavDemo />
+        <State label="the list beside the content from 1024 px at every width, whatever the content needs (a table wider than the room scrolls in its own card), one item chosen with its parts under it, items under group labels; under 1024 px, one line that opens the list" wide>
+          <SideNavDemo today={today} />
         </State>
       </Demo>
       <Demo name="OpenRow" use={g.uses.OpenRow}>
@@ -1939,6 +1939,15 @@ function Lists({ today }: { today: string }) {
             columns={[{ id: "a", head: g.sample.option[0] }, { id: "b", head: g.sample.option[1], width: 8 }]}
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow>, ...(i === 0 ? { detail: { body: <DoubtNote text={g.sample.option[2]} />, label: g.sample.option[i], marks: [{ key: "doubt", icon: <IconAlert size={16} className="text-caution" />, label: g.sample.option[2] }] } } : {}) })) }]}
           />
+        </State>
+        <State label={'over: one head over two columns under the caption row (its words, a weak note on its line and a "?"), each column\'s own head under it, its header read whole by a screen reader ("שיעור, אפשרות שנייה"); the other heads take both lines'} wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, ...[1, 2].map((i) => ({ id: String(i), head: g.sample.option[i], band: g.sampleSource, over: { key: "o", head: <SortNote beside label={p.figure} note={p.note} mark={<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />} />, spoken: p.figure }, width: 6 }))]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label="a table wider than its card scrolls sideways inside it: its first column stays at the start edge on the card's surface, with a line at its end once scrolled; least sets a shared column's least width" wide>
+          <WideTable today={today} />
         </State>
       </Demo>
       <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
@@ -2429,8 +2438,23 @@ function ChooseRowDemo() {
   );
 }
 
+/** A table wider than the room it is given, which scrolls sideways inside its card with its first column in place. */
+function WideTable({ today }: { today: string }) {
+  const s = samples(today);
+  const p = g.sample.products;
+  const figures = ["f1", "f2", "f3", "f4", "f5", "f6"];
+  return (
+    <div className="max-w-xl">
+      <ProductTable
+        columns={[{ id: "name", head: p.name, least: 8 }, ...figures.map((id, k) => ({ id, head: `${p.figure} ${k + 1}`, width: 7 }))]}
+        groups={[{ key: "x", rows: [p.a, p.b, p.c].map((name, i) => ({ key: String(i), cells: [<TextLink tone="plain" to="/kit" className="font-medium">{name}</TextLink>, ...figures.map((id, k) => <Num key={id} value={{ ...s.rate, value: 0.1 * (i + k + 1) }} size="cell" />)], phone: <ProductPhoneRow>{name}</ProductPhoneRow> })) }]}
+      />
+    </div>
+  );
+}
+
 /** The demo's items are addresses of this page (`?side=`), as a company page's are `?product=`. */
-function SideNavDemo() {
+function SideNavDemo({ today }: { today: string }) {
   const [params] = useSearchParams();
   const on = params.get("side") ?? "";
   const to = (id: string) => (id ? `/kit?side=${id}` : "/kit");
@@ -2441,6 +2465,7 @@ function SideNavDemo() {
   return (
     <SidePage chosen={on} summary={g.sample.option[Number(on) || 0]} more={g.sample.phoneFold.more} less={g.sample.phoneFold.less} nav={(close) => <SideNav groups={groups} current={on} ariaLabel={g.sample.option[0] ?? ""} onPick={close} />}>
       <Card>{g.sampleSource}</Card>
+      <WideTable today={today} />
     </SidePage>
   );
 }
