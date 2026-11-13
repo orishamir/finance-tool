@@ -943,14 +943,16 @@
     }
   }
   /* A head over several columns (ProductTable `over`) and their own heads under it read as one head of two lines: no line and no room
-     between them. */
+     between them, each line at the small text's own height, so the two lines take no more than a sorting head's 44 px beside them. */
   .tbl thead th.tbl-over {
     padding-bottom: 0;
     border-bottom: 0;
     box-shadow: none;
+    line-height: var(--text-xs--line-height);
   }
   .tbl thead th.tbl-under {
     padding-top: 0;
+    line-height: var(--text-xs--line-height);
   }
   /* A dense table (ProductTable `dense`, a company page's tracks beside its side list): 8 px at each side of a cell between columns. The
      cells at the table's outer edges keep 12 px on their outer side, so nothing touches the card's border and a "?" or a figure there keeps

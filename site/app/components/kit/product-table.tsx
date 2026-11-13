@@ -262,9 +262,11 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
             {banded && (
               <tr className="tbl-band">
                 {bandRuns(columns).map((run, i, runs) => (
-                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pt-3.5 !pb-2.5 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0", run.span === 1 ? first(i) : i === 0 && "tbl-start", i === runs.length - 1 && "tbl-end")}>
-                    {/* a rule under the caption over its columns, so it reads as theirs; room over the caption and under the rule, so a
-                        figure or a "?" in the caption keeps its 44 px inside the card's rounded edge and clear of one in a head under it */}
+                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pt-3 !pb-0 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0", run.span === 1 ? first(i) : i === 0 && "tbl-start", i === runs.length - 1 && "tbl-end")}>
+                    {/* a rule under the caption over its columns, so it reads as theirs, with the heads' own 10 px under it ("decrease the
+                        forehead on the table"): 12 px over the caption and 16 px from its line to a head's words under it are the least
+                        that lets a figure or a "?" in the caption keep its 44 px inside the card's rounded edge and clear of the head's
+                        sort button, whose area starts 4 px over its words */}
                     {run.band && <span className="block pb-1.5 border-b border-border">{run.head}</span>}
                   </th>
                 ))}

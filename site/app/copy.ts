@@ -2130,7 +2130,7 @@ export const companyPage = {
     tariff: "לפי התעריפון",
     /** Where the table holds tracks, the heads say what their figures are: the fee range's words and the money's date as muted lines under
      *  the heads. */
-    heads: { fees: "במסלולים: מהחיסכון, מהזול ליקר", assets: (period: string) => `סוף ${period}` },
+    heads: { fees: "במסלולים: מהחיסכון, מהזול ליקר", assets: (period: string) => `נכון לסוף ${period}` },
     /** On a phone, whose rows have no heads, the same in a note under the table; the date of managed money comes before `end`. */
     note: { fees: "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר.", assets: "הכסף המנוהל נכון לסוף ", end: "." },
   },
