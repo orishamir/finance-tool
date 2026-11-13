@@ -165,19 +165,19 @@ describe("F-104 breaking a deposit, over the collected deposits", () => {
 
   it("gives the counts of the publications collected", () => {
     const records = collectedDeposits();
-    // 2026-11-09: 98 one-year deposits at 10 banks (every row of the ten banks' standard tables, read that day, with the 24 collected
-    // before; no foreign-currency-linked row, tier 2, D2); at 7 banks none can be broken (FIBI, Hapoalim, Leumi, Massad and
-    // Mizrahi-Tefahot have deposits with exit points), all of Discount's 10 and Mercantile's 2 can be broken with a penalty, and of One
+    // 100 one-year deposits at 10 banks (every row of the ten banks' standard tables, with Discount's 0811 and Mercantile's 0816
+    // CPI-linked rows; no foreign-currency-linked row, tier 2, D2); at 7 banks none can be broken (FIBI, Hapoalim, Leumi, Massad and
+    // Mizrahi-Tefahot have deposits with exit points), all of Discount's 11 and Mercantile's 3 can be broken with a penalty, and of One
     // Zero's 3, two with a penalty and its daily one free
-    expect(oneYearDeposits(records)).toHaveLength(98);
+    expect(oneYearDeposits(records)).toHaveLength(100);
     expect(breakCount(records)).toEqual({
-      deposits: 98,
+      deposits: 100,
       banks: 10,
       lockedBanks: 7,
       lockedBanksWithExits: 5,
       breakable: [
-        { bank: "discount", deposits: 10, withPenalty: 10, free: 0 },
-        { bank: "mercantile", deposits: 2, withPenalty: 2, free: 0 },
+        { bank: "discount", deposits: 11, withPenalty: 11, free: 0 },
+        { bank: "mercantile", deposits: 3, withPenalty: 3, free: 0 },
         { bank: "one-zero", deposits: 3, withPenalty: 2, free: 1 },
       ],
     });
