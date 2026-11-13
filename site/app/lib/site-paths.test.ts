@@ -91,7 +91,7 @@ describe("dealPagePath", () => {
     expect(dealPagePath({ track: "13245" })).toBe("/deal?track=13245");
   });
   it("writes a whole deal's fee page", () => {
-    expect(dealPagePath({ deal: "WzEseyJu_-" })).toBe("/deal?d=WzEseyJu_-");
+    expect(dealPagePath({ deal: "WzEseyJu_-" })).toBe("/deal#d=WzEseyJu_-");
   });
 });
 

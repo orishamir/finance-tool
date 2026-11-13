@@ -2,7 +2,7 @@
 // can undo), each row with its product and the day it was saved under its name; and a link to the deal on screen once it has a kind. A
 // control that could do nothing is not drawn: no list before a deal is saved. Copying the link says so on its button for a moment; where the browser refuses the
 // clipboard, the page shows the address to copy by hand.
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { encodedDealPath } from "../../lib/fee-deal/link";
 import type { FeeDeal } from "../../lib/fee-deal/model";
@@ -17,15 +17,28 @@ const w = copy.end;
 export const dealLabel = (d: FeeDeal, kindName: string | null): string => d.name.trim() || d.template?.name || copy.bar.namePlaceholder(kindName);
 
 /** The deal's address to copy, on this site's origin and base. */
-export const dealLink = (deal: FeeDeal): string => siteAddress(window.location.origin, import.meta.env.BASE_URL, encodedDealPath(deal));
+export const dealLink = async (deal: FeeDeal): Promise<string> => siteAddress(window.location.origin, import.meta.env.BASE_URL, await encodedDealPath(deal));
 
-/** Copying a deal's link: `copied` for a moment after it worked, `blocked` holding the address where the clipboard refused it. */
-export function useCopyLink() {
+/**
+ * Copying the link of the deal on screen: `copied` for a moment after it worked, `blocked` holding the address where the clipboard refused
+ * it. The link is compressed as the deal changes, so a press writes it at once, in the press itself, as a browser asks of the clipboard.
+ */
+export function useCopyLink(deal: FeeDeal) {
   const [copied, setCopied] = useState(false);
   const [blocked, setBlocked] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const copyLink = async (deal: FeeDeal) => {
-    const text = dealLink(deal);
+  const ready = useRef<{ deal: FeeDeal; text: string } | null>(null);
+  useEffect(() => {
+    let on = true;
+    void dealLink(deal).then((text) => {
+      if (on) ready.current = { deal, text };
+    });
+    return () => {
+      on = false;
+    };
+  }, [deal]);
+  const copyLink = async () => {
+    const text = ready.current?.deal === deal ? ready.current.text : await dealLink(deal);
     try {
       await navigator.clipboard.writeText(text);
       setBlocked(null);
