@@ -51,7 +51,7 @@ export { DidYouKnow, type FactItem } from "./did-you-know";
 export { useSoftSwap, useSwapGlide } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, ProductFigures, ProductIdLink, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, RowFoldButton, type ProductColumn, type ProductGroup, type ProductRow, type FoldMark } from "./product-table";
 export { PageTabs, type PageTab } from "./page-tabs";
-export { SortHead, type SortState } from "./sort-head";
+export { SortHead, SortNote, type SortState } from "./sort-head";
 export { AmountRange, AnchorSpread } from "./deposit-words";
 export { ExposureCell, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
 export { HelpMark } from "./help-mark";

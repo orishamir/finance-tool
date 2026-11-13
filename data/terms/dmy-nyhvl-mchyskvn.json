@@ -8,6 +8,10 @@
     "statement"
   ],
   "wrapper_ids": [
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
     "pension-comprehensive",
     "pension-general",
     "provident-for-annuity"
@@ -18,6 +22,9 @@
     "דמי ניהול מן היתרה הצבורה"
   ],
   "rule_ids": [
+    "IRA-17",
+    "KGL-14",
+    "KH-22",
     "PEN-21",
     "PF-02",
     "PF-04",

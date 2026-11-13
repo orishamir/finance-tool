@@ -54,7 +54,8 @@ export function CompanyTracks({ data, product, defaults, foot }: { data: TbData;
           <CompanySize count={tracksPhrase(view.tracks.length)} assets={view.companies[0]?.assets ?? null} />
         </p>
         <p className="text-sm text-muted-foreground">
-          {t.dates(feeYear, fmt.period(data.reportPeriod))}
+          {feeYear && <span className="md:hidden">{t.feeAverage(feeYear)}</span>}
+          {t.dates(fmt.period(data.reportPeriod))}
           {oneDeposit && typeof oneDeposit.value === "number" && (
             <>
               {" "}

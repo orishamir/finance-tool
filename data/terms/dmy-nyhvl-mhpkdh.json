@@ -8,6 +8,7 @@
     "statement"
   ],
   "wrapper_ids": [
+    "kupat-gemel-lehashkaa",
     "pension-comprehensive",
     "pension-general",
     "provident-for-annuity"
@@ -16,6 +17,7 @@
     "דמי ניהול מתוך התשלומים"
   ],
   "rule_ids": [
+    "KGL-14",
     "PEN-21",
     "PF-02",
     "PF-04",

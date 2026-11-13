@@ -24,7 +24,7 @@ export async function loader() {
   for (const name of mutualFunds.searchNames) entries.push(guideRow(name, "/guide/mutual-funds"));
   // the parts of each guide a question can lead to (tax, cost, money in and out, who offers it, risks), found only through a product's
   // name in the question (lib/search.ts `leadRows`), and the page that compares the product across providers
-  const { sectionTitle, topicSection } = await import("../lib/guide-nav");
+  const { firstInGuideOrder, sectionTitle, topicSection } = await import("../lib/guide-nav");
   const { sectionTopicWords } = await import("../lib/search-aliases");
   const proseSections: Record<string, readonly { id: string; title: string }[]> = { "limited-bond-fund": limitedBondFund.sections, "mutual-funds": mutualFunds.sections };
   for (const [href, title] of titles) {
@@ -90,7 +90,8 @@ export async function loader() {
     for (const name of [s.name, ...(row?.variants ?? [])]) entries.push({ kind: "notcovered", name, line: search.notCoveredLine, href: `/not-covered#${s.id}`, norm: normalize(name) });
   }
   for (const term of loadTerms()) {
-    const guide = term.wrapperIds.find((id) => wrappers.some((w) => w.id === id));
+    // a term of several products opens on the first of them in the guide's own order
+    const guide = firstInGuideOrder(term.wrapperIds.filter((id) => wrappers.some((w) => w.id === id)));
     const exposure = guide ? undefined : term.exposureIds.find((id) => exposures.some((e) => e.id === id));
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;

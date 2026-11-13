@@ -1,8 +1,9 @@
 // The track browser's pure logic over the real September 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
-import { SORTS, assetsText, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { HELP_TERMS, SORTS, assetsText, feeMarkTerms, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
 import { pressSort } from "./list-sort";
+import { loadTerms } from "./data.server";
 import { buildTrackBrowser, defaultProduct, trackProductIds } from "./track-browser.server";
 
 const data: TbData = buildTrackBrowser();
@@ -237,5 +238,23 @@ describe("the page's words", () => {
     expect(assetsText(19_137.4)).toBe("19.14 מיליארד ₪");
     expect(assetsText(19_000)).toBe("19.00 מיליארד ₪");
     expect(assetsText(850.4)).toBe("850 מיליון ₪");
+  });
+});
+
+describe("a fee head's \"?\"", () => {
+  const terms = loadTerms();
+  const wrappers = (he: string) => terms.find((t) => t.he === he)?.wrapperIds;
+  it("opens the regulator's average the column shows, and the fee's card where the card names the table's product", () => {
+    expect(feeMarkTerms("savings", "kupat-gemel-lehashkaa", wrappers)).toEqual([HELP_TERMS.fee, HELP_TERMS.savingsCard]);
+    expect(feeMarkTerms("deposit", "kupat-gemel-lehashkaa", wrappers)).toEqual([HELP_TERMS.depositFee, HELP_TERMS.depositCard]);
+    expect(feeMarkTerms("savings", "keren-hishtalmut", wrappers)).toEqual([HELP_TERMS.fee, HELP_TERMS.savingsCard]);
+    expect(feeMarkTerms("deposit", "pension-comprehensive", wrappers)).toEqual([HELP_TERMS.depositFee, HELP_TERMS.depositCard]);
+  });
+  it("leaves out a fee's card for a product the card does not name: a study fund charges no fee from deposits", () => {
+    expect(feeMarkTerms("deposit", "keren-hishtalmut", wrappers)).toEqual([HELP_TERMS.depositFee]);
+    expect(feeMarkTerms("savings", "child-savings-provident", wrappers)).toEqual([HELP_TERMS.fee]);
+  });
+  it("names cards the glossary holds", () => {
+    for (const he of Object.values(HELP_TERMS)) expect(terms.some((t) => t.he === he), he).toBe(true);
   });
 });
