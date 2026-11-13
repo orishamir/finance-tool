@@ -207,7 +207,8 @@ export function buildProductView(data: TbData, productId: string): ProductView |
 
 /** The glossary terms behind the "?" of the column heads, by their Hebrew names: only where the card says what the head leaves out (an
  * average, not anyone's price; the money of all the savers together). The loader ships these cards. `fee` and `depositFee` are the
- * regulator's averages the fee columns show; `savingsCard` and `depositCard` are the fees themselves, each card for the products it names. */
+ * regulator's averages the fee columns show; `savingsCard` and `depositCard` are the fees themselves, each card for the products it names;
+ * `direct` is what comes on top of the fee from the savings, which a company page's savings fee "?" says the column leaves out (PF-10). */
 export const HELP_TERMS = {
   fee: "שיעור דמי ניהול ממוצעת שנתי – נכסים",
   depositFee: "שיעור דמי ניהול ממוצעת- הפקדות",
@@ -215,6 +216,7 @@ export const HELP_TERMS = {
   depositCard: "דמי ניהול מהפקדה",
   exposure: 'חשיפה למניות ולמט"ח',
   assets: "יתרת נכסים לסוף תקופה",
+  direct: "הוצאות ישירות בשל ביצוע עסקאות",
 } as const;
 
 /**

@@ -152,7 +152,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     body: (
       <>
         <StaleSaid on={!!data.period.stale}>
-          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} foot={<FeeFoot caps={data.caps[v.id] ?? null} />} />
+          <CompanyTracks data={browser} product={v.id} defaults={data.defaultIds} caps={data.caps[v.id] ?? null} foot={<FeeFoot caps={data.caps[v.id] ?? null} />} />
         </StaleSaid>
         <ProductDocs product={v.name} groups={docs.byProduct[v.id] ?? []} />
       </>
@@ -343,7 +343,8 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
   );
 }
 
-/** Under each track table (D34): the product's legal caps, then that the direct expenses come on top (PF-10). */
+/** Under each track table on a phone, whose rows have no heads (D36): the product's legal caps, then that the direct expenses come on top
+ *  (PF-10). From md the caps are the captions over the fee heads and the direct expenses the savings fee's "?". */
 function FeeFoot({ caps }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null }) {
   return (
     <div className="flex flex-col gap-1 text-xs text-muted-foreground">

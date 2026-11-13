@@ -618,7 +618,8 @@ export const companyFocus = {
 } as const;
 
 export const company = {
-  /** D34: both fees on every row, the words after each figure; the legal cap and the direct expenses under the table. */
+  /** D36: both fees on every row, the words after each figure. The legal cap is the caption over its fee's head and the direct expenses the
+   *  line of the savings fee's "?"; a phone, with no heads, has both under the table. */
   fees: {
     savings: "מהחיסכון",
     deposits: "מהפקדה",
@@ -1295,10 +1296,12 @@ export const help = {
 export const trackBrowser = {
   title: "כל המסלולים בכל החברות",
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר", deposits: "פיקדונות בבנקים" },
+  /** The page's line: its year and date stand on a phone only, whose rows have no heads; from md the heads say them. */
   lead: {
     intro: "דמי הניהול הם הממוצע שנגבה בפועל ב־",
     figures: "; החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
-    source: ". מנתוני רשות שוק ההון.",
+    end: ". ",
+    source: "מנתוני רשות שוק ההון.",
     noYear: "החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
   },
   controls: {
@@ -1344,21 +1347,28 @@ export const trackBrowser = {
     track: "המסלול",
     company: "החברה",
     fund: "קופה",
-    fee: "דמי ניהול, ממוצע {year}",
-    feeNoYear: "דמי ניהול, ממוצע",
+    /** The full table's fee head, its year beside it in muted words, over the two heads that sort. */
+    fee: "דמי ניהול",
     feeSavings: "מהחיסכון",
     feeDeposits: "מהפקדה",
-    exposure: "חשיפה למניות ולמט״ח, סוף {period}",
-    yield: "תשואה שנתית ממוצעת, לפני דמי ניהול",
-    assets: "כסף מנוהל, סוף {period}",
+    exposure: "חשיפה למניות ולמט״ח",
+    /** The past yield's head: a past record, and in the muted line under it, before fees and tax (the "?" holds the whole sentence). */
+    yield: "תשואת עבר שנתית ממוצעת",
+    beforeFees: "לפני דמי ניהול ומס",
+    assets: "כסף מנוהל",
     open: "פתיחה",
-    /** A company page's shorter table, one figure a cell (designer's mock, 2026-11-10); its dates are said once over it. */
-    short: { fee: "דמי ניהול מהחיסכון", deposit: "מהפקדה", stocks: "מניות", currency: "מט״ח", y3: "תשואה, 3 שנים", y5: "תשואה, 5 שנים", assets: "כסף מנוהל" },
-    /** Under a fee head of a company page's table, muted: the year whose average the column shows. */
+    /** A company page's shorter table, one figure a cell (designer's mock, 2026-11-10); its date is the caption over the columns it holds. */
+    short: { fee: "דמי ניהול מהחיסכון", deposit: "מהפקדה", stocks: "מניות", currency: "מט״ח", y3: "תשואת עבר, 3 שנים", y5: "תשואת עבר, 5 שנים", assets: "כסף מנוהל" },
+    /** Under a fee head, muted: the year whose average the column shows; with no year, the word alone. */
     average: "ממוצע {year}",
+    averageNoYear: "ממוצע",
+    /** Under a head of the full table, muted: the date of its figures. */
+    endOf: "סוף {period}",
+    /** A company page's caption over the columns whose figures share one date. */
+    asOf: "נכון לסוף {period}",
   },
-  /** Over a company page's table: what its dates are, and a deposit fee every track shares. The fees' year is said on a phone, whose rows
-   * have no heads; from md the fee heads say it. */
+  /** Over a company page's table: what its dates are, and a deposit fee every track shares. The fees' year and the figures' date are said
+   * on a phone, whose rows have no heads; from md the fee heads and the caption over the columns say them. */
   feeAverage: (year: string) => `דמי הניהול הם הממוצע שנגבה ב־${year}; `,
   dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
@@ -1372,7 +1382,8 @@ export const trackBrowser = {
   /** The guide's link to a product's tracks: "כל המסלולים של קופת גמל להשקעה בכל החברות". */
   guideLink: { before: "כל המסלולים של ", after: " בכל החברות" },
   /** What each "?" explains, for its spoken name; on a phone, the line above the list that opens the same cards. */
-  help: { fee: "דמי ניהול ממוצעים", deposit: "דמי ניהול ממוצעים מהפקדה", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", phoneLead: "מה אומרים המספרים:" },
+  help: { fee: "דמי ניהול ממוצעים", deposit: "דמי ניהול ממוצעים מהפקדה", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", past: "תשואת עבר", phoneLead: "מה אומרים המספרים:" },
+  /** The past yield's whole caution: the "?" beside its head, and on a phone, whose rows have no heads, under the list. */
   pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",
   oldData: "נתוני הרשות לא עודכנו מאז",
   /** At the end of a phone's track row opened in place under its company. */

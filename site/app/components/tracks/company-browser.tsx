@@ -1,15 +1,16 @@
-// A company's product on its page (components/company/template.tsx): its size and the dates of its figures, then the track browser's list
-// over one company and one product in its shorter form (the designer's mock), the notes under it, and links to the product in every company
-// and to its guide. No kind filter (a company has one or two tracks of a kind) and no
+// A company's product on its page (components/company/template.tsx): its size (on a phone the dates of its figures too), then the track
+// browser's list over one company and one product in its shorter form (the designer's mock), whose heads carry the dates, the caps and the
+// notes from md (a phone has them under the list), and links to the product in every company and to its guide. No kind filter (a company has one or two tracks of a kind) and no
 // search (at most about twenty tracks of a product). The order is in the address (`?sort=`), read once the page is in the browser, as on
 // the tracks page.
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
 import { guidePath, trackBrowserPath } from "../../lib/site-paths";
-import { trackBrowser as t } from "../../copy";
+import { company as companyCopy, trackBrowser as t } from "../../copy";
+import type { SiteValue } from "../../lib/value";
 import { useAddressParams } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
 import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortInForce, sortTracks, sortableIn, tracksPhrase, type SortId, type TbData, type TbGroup } from "../../lib/track-browser";
-import { GoLink, SelectField, useFlip } from "../kit";
+import { GoLink, SelectField, cx, useFlip } from "../kit";
 import { Num, Term } from "../provenance";
 import { fmt } from "../../lib/format";
 import { CompanySize, TrackList } from "./list";
@@ -17,7 +18,7 @@ import { CompanySize, TrackList } from "./list";
 /** As on the tracks page: the first rows at once, the rest the moment after. */
 const FIRST_ROWS = 12;
 
-export function CompanyTracks({ data, product, defaults, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The lines under the list. */ foot: ReactNode }) {
+export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The lines under the list on a phone, whose rows have no heads (the caps, the direct expenses). */ foot: ReactNode }) {
   const view = useMemo(() => buildProductView(data, product) ?? null, [data, product]);
   const { hydrated } = useAddressParams();
   const { chosen: sortSet, set: setSort, press } = useAddressSort(SORT_IDS, defaultSort);
@@ -53,13 +54,23 @@ export function CompanyTracks({ data, product, defaults, foot }: { data: TbData;
         <p>
           <CompanySize count={tracksPhrase(view.tracks.length)} assets={view.companies[0]?.assets ?? null} />
         </p>
-        <p className="text-sm text-muted-foreground">
-          {feeYear && <span className="md:hidden">{t.feeAverage(feeYear)}</span>}
-          {t.dates(fmt.period(data.reportPeriod))}
+        {/* the year and the date stand on a phone only: from md the fee heads and the caption over the columns say them */}
+        <p className={cx("text-sm text-muted-foreground", !(oneDeposit && typeof oneDeposit.value === "number") && "md:hidden")}>
+          <span className="md:hidden">
+            {feeYear && t.feeAverage(feeYear)}
+            {t.dates(fmt.period(data.reportPeriod))}{" "}
+          </span>
           {oneDeposit && typeof oneDeposit.value === "number" && (
             <>
-              {" "}
-              {t.depositOnce} <Num value={oneDeposit} />.
+              {t.depositOnce} <Num value={oneDeposit} />
+              {/* with no deposit column, its cap is said here from md (a phone has it under the list) */}
+              {caps?.deposit && (
+                <span className="hidden md:inline">
+                  {"; "}
+                  {companyCopy.fees.cap} <Num value={caps.deposit} />
+                </span>
+              )}
+              .
             </>
           )}
         </p>
@@ -77,10 +88,13 @@ export function CompanyTracks({ data, product, defaults, foot }: { data: TbData;
         {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
       </p>
       <div ref={list} className="scroll-mt-14 lg:scroll-mt-16 flex flex-col gap-3">
-        <TrackList view={view} groups={groups} by="company" sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={data.reportPeriod} limit={limit} fixed defaults={defaults} compact={oneDeposit ? "no-deposit" : "with-deposit"} />
-        {/* under the table, quiet: the fee's caps and the direct expenses, then what the yield is */}
-        {foot}
-        <p className="text-xs text-muted-foreground">{t.pastNote}</p>
+        <TrackList view={view} groups={groups} by="company" sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={data.reportPeriod} limit={limit} fixed defaults={defaults} compact={oneDeposit ? "no-deposit" : "with-deposit"} caps={caps} />
+        {/* on a phone, whose rows have no heads, under the list: the fee's caps and the direct expenses, then what the yield is; from md the
+            caps are the captions over the fee heads, the direct expenses and the yield's caution the heads' "?" */}
+        <div className="md:hidden flex flex-col gap-3">
+          {foot}
+          <p className="text-xs text-muted-foreground">{t.pastNote}</p>
+        </div>
       </div>
       {!view.noPage && (
         <p className="flex flex-wrap gap-x-6">
