@@ -61,6 +61,12 @@ Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ti
 |---|---|---|---|---|
 | 24 | `data/series/<id>.json` | The documents page (each series' latest value); the indices page (currency conversion, from the two ECB series); the refresh workflows and the data check. No calculation reads the CPI or child-savings series: the deflator runs on the inflation the person enters (A-02) | Published source (CBS under its open licence v2.1 with the attribution line; the Ministry of Finance file on data.gov.il; the ECB) | **4:** `cbs-cpi.json`, `mof-child-savings-rates.json` (refreshed daily by `refresh.yml`), `ecb-fx.json` (the ECB's daily reference rates, D26, F-84) and `ecb-fx-month-end.json` (the ECB's month-end rates of the dollar and the shekel since 2000, F-93), both refreshed daily by `refresh-rates.yml`; each through `packages/pipeline/src/adapters/`. |
 
+### Other countries
+
+| # | Path | Read by | Origin | Today |
+|---|---|---|---|---|
+| 34 | `data/abroad/<guide id>.json` (data-schema 3.16, D114) | The note "במדינות אחרות" at the end of a guide's "שווה לדעת"; data check | Published source: each fact read on a government's or regulator's own page, or the law on the state's own portal, with its words, place and the day read | **2:** `kupat-gemel-lehashkaa.json` (Britain's ISA, the United States' Roth IRA, France's PEA, Italy's PIR) and `keren-hishtalmut.json` (Britain's SIP and France's PEE; no similar product found in the United States or Italy), every page read 13.11.2026 on GOV.UK, irs.gov, Service-Public.fr, the Agenzia delle Entrate's site and Normattiva. |
+
 ### Site parameters
 
 All eleven parameters, P-01 to P-11, exist. The parameters page (`/parameters`) lists every one and shows "עוד לא נקבע" for a parameter without a value. Their reasons are in `docs/parameters-rationale.md`.

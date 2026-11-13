@@ -1,0 +1,137 @@
+{
+  "id": "keren-hishtalmut",
+  "opens_on": "fr",
+  "tiles": ["employer_match", "income_tax", "keep_years"],
+  "countries": [
+    {
+      "country": "gb",
+      "found": true,
+      "product": "SIP",
+      "product_name": "Share Incentive Plan",
+      "pages": [
+        { "url": "https://www.gov.uk/tax-employee-share-schemes/share-incentive-plans-sips", "title": "Tax and Employee Share Schemes: Share Incentive Plans (SIPs)", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "checked": "2026-11-13" },
+        { "url": "https://www.gov.uk/tax-employee-share-schemes", "title": "Tax and Employee Share Schemes: Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "checked": "2026-11-13" }
+      ],
+      "who": {
+        "statement": "employees whose employer offers its company's shares through such a plan",
+        "source": { "url": "https://www.gov.uk/tax-employee-share-schemes", "title": "Tax and Employee Share Schemes: Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Overview", "quote": "Your employer may offer you company shares as a reward for working for them." },
+        "checked": "2026-11-13"
+      },
+      "facts": {
+        "employer_match": {
+          "value": 2,
+          "unit": "count",
+          "source": { "url": "https://www.gov.uk/tax-employee-share-schemes/share-incentive-plans-sips", "title": "Tax and Employee Share Schemes: Share Incentive Plans (SIPs)", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Matching shares", "quote": "Your employer can give you up to 2 free matching shares for each partnership share you buy." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "Free matching shares for each partnership share the employee buys out of salary before tax. The page adds free shares of up to £3,600 a tax year."
+        },
+        "income_tax": {
+          "value": "no Income Tax or National Insurance on the value of shares kept in the plan for 5 years",
+          "unit": "text",
+          "source": { "url": "https://www.gov.uk/tax-employee-share-schemes/share-incentive-plans-sips", "title": "Tax and Employee Share Schemes: Share Incentive Plans (SIPs)", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Share Incentive Plans (SIPs)", "quote": "If you get shares through a Share Incentive Plan (SIP) and keep them in the plan for 5 years you will not pay Income Tax or National Insurance on their value." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "keep_years": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.gov.uk/tax-employee-share-schemes/share-incentive-plans-sips", "title": "Tax and Employee Share Schemes: Share Incentive Plans (SIPs)", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Share Incentive Plans (SIPs)", "quote": "If you get shares through a Share Incentive Plan (SIP) and keep them in the plan for 5 years you will not pay Income Tax or National Insurance on their value." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "How long shares stay in the plan for the exemption. The page does not say the shares are locked for that time."
+        }
+      }
+    },
+    {
+      "country": "us",
+      "found": false,
+      "checked": "2026-11-13",
+      "looked_for": "A savings product that both the employer and the employee pay into, that opens after a few years and is not meant for retirement, on the IRS's and the federal government's pages. Not finding one is no proof there is none."
+    },
+    {
+      "country": "fr",
+      "found": true,
+      "product": "PEE",
+      "product_name": "plan d'épargne entreprise",
+      "pages": [
+        { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "checked": "2026-11-13" }
+      ],
+      "who": {
+        "statement": "the employees of a company that has set up a PEE; the plan must be open to all of them, after at most 3 months of seniority",
+        "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "Qui est concerné par le PEE ?", "quote": "Si l'entreprise a mis en place un PEE, il doit être ouvert à tous les salariés." },
+        "checked": "2026-11-13"
+      },
+      "facts": {
+        "employer_match": {
+          "value": 3844.8,
+          "unit": "eur",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "Versements complémentaires de l'entreprise (abondements)", "quote": "L'abondement ne peut pas dépasser 3 fois le montant versé par le salarié, ni être supérieur à 3 844,8 €." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The employer's addition (abondement) at most. Up to 6,920.64 euro where the employee invests in the company's own shares (same page)."
+        },
+        "employer_multiple": {
+          "value": 3,
+          "unit": "count",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "Versements complémentaires de l'entreprise (abondements)", "quote": "L'abondement ne peut pas dépasser 3 fois le montant versé par le salarié, ni être supérieur à 3 844,8 €." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "income_tax": {
+          "value": "the employer's addition is exempt from income tax for the employee, up to 3,844.8 euro",
+          "unit": "text",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "Quelle est la fiscalité du PEE ? Abondement versé par l'entreprise", "quote": "versé par l'entreprise est exonéré d'impôt sur le revenu pour le salarié, dans la limite de 3 844,8 €." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The addition is subject to CSG and CRDS (same page)."
+        },
+        "keep_years": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "Les sommes versées sur le PEE sont-elles disponibles ?", "quote": "Les sommes investies dans le PEE sont bloquées pendant au moins 5 ans." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "early_release": {
+          "value": "early release in listed cases, among them buying or enlarging the main home",
+          "unit": "text",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2142", "title": "Plan d'épargne entreprise (PEE) (vérifié le 1er janvier 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "Les sommes versées sur le PEE sont-elles disponibles ?", "quote": "Toutefois, le salarié peut demander le déblocage anticipé des sommes dans certains cas." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The cases listed include 'Acquisition ou agrandissement de la résidence principale, avec création de nouvelle surface habitable'."
+        }
+      }
+    },
+    {
+      "country": "it",
+      "found": false,
+      "checked": "2026-11-13",
+      "looked_for": "A savings product that both the employer and the employee pay into, that opens after a few years and is not meant for retirement, on the Italian government's, tax authority's and pension regulator's pages. Not finding one is no proof there is none."
+    }
+  ]
+}

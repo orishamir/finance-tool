@@ -321,8 +321,12 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
   }
   // the figure's own place in the document (its PDF page, the words its web page opens at) before the rule's
   const at = value.source as CitedPlace;
+  // a figure whose source names itself in Hebrew (a page abroad: its publisher, its kind, the paragraph of a law) keeps those names
+  const named = value.source as Partial<Pick<RuleSource, "publisher_he" | "title_he" | "kind" | "locator_he">>;
+  const own = { ...(named.publisher_he ? { publisher_he: named.publisher_he } : {}), ...(named.title_he ? { title_he: named.title_he } : {}), ...(named.kind ? { kind: named.kind } : {}), ...(named.locator_he ? { locator_he: named.locator_he } : {}) };
   const source: RuleSource = {
-    ...(known ?? { title: value.source.title, publisher: value.source.publisher }),
+    ...(known ?? { title: value.source.title, publisher: value.source.publisher, ...own }),
+    ...(value.quote ? { quote: value.quote } : {}),
     url: value.source.url,
     ...(at.page ? { page: at.page } : {}),
     ...(at.fragment ? { fragment: at.fragment } : {}),
@@ -392,7 +396,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   const param = isParameter(value);
   const today = useContext(TodayCtx);
   const blocked = isOpenValue(value);
-  const bare = (typeof value.value !== "number" ? display : undefined) ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
+  const bare = (typeof value.value !== "number" ? display : undefined) ?? value.written ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
   // a figure shown with its sign heads its sheet with it: "+0.37%" in the row read "0.37%" in the sheet
   const text = value.signed && typeof value.value === "number" && value.value !== 0 ? `${value.value > 0 ? "+" : "−"}${formatValue(Math.abs(value.value), value.unit, exact ? undefined : value.state, param)}` : bare;
   // a long word (a deposit's tax: "ריבית לא צמודה; השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge

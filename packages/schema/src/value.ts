@@ -19,6 +19,8 @@ export const unit = z.enum([
   "nis_millions",
   "usd",
   "eur",
+  /** An amount in pounds sterling, as a British government page prints it (data/abroad/, D114); never converted. */
+  "gbp",
   "pct",
   "pct_per_year",
   "pct_of_deposit",

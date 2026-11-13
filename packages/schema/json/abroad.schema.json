@@ -1,0 +1,473 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "current-account",
+            "bank-deposit",
+            "savings-plan",
+            "brokerage-account",
+            "kupat-gemel-lehashkaa",
+            "keren-hishtalmut",
+            "pension-comprehensive",
+            "pension-general",
+            "provident-for-annuity",
+            "child-savings-provident",
+            "child-savings-bank",
+            "ira-hishtalmut",
+            "ira-provident"
+          ]
+        },
+        {
+          "type": "string",
+          "enum": [
+            "makam",
+            "government-bond",
+            "money-market-fund-daily",
+            "money-market-fund-renewable"
+          ]
+        }
+      ]
+    },
+    "opens_on": {
+      "type": "string",
+      "enum": [
+        "gb",
+        "us",
+        "fr",
+        "it"
+      ]
+    },
+    "tiles": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string",
+          "pattern": "^[a-z_]+$"
+        },
+        {
+          "type": "string",
+          "pattern": "^[a-z_]+$"
+        },
+        {
+          "type": "string",
+          "pattern": "^[a-z_]+$"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "countries": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string",
+                "enum": [
+                  "gb",
+                  "us",
+                  "fr",
+                  "it"
+                ]
+              },
+              "found": {
+                "type": "boolean",
+                "const": true
+              },
+              "product": {
+                "type": "string",
+                "minLength": 1
+              },
+              "product_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pages": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "pattern": "^https:\\/\\/"
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "checked": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "publisher_he",
+                    "checked"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "who": {
+                "type": "object",
+                "properties": {
+                  "statement": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "pattern": "^https:\\/\\/"
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "publisher": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "law",
+                          "regulator_page"
+                        ]
+                      },
+                      "strength": {
+                        "type": "string",
+                        "const": "primary"
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "quote": {
+                        "type": "string",
+                        "minLength": 8
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "title",
+                      "publisher",
+                      "publisher_he",
+                      "kind",
+                      "strength",
+                      "quote"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "checked": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  }
+                },
+                "required": [
+                  "statement",
+                  "source",
+                  "checked"
+                ],
+                "additionalProperties": false
+              },
+              "facts": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^[a-z_]+$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": [
+                        "number",
+                        "string",
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "nis",
+                        "nis_millions",
+                        "usd",
+                        "eur",
+                        "gbp",
+                        "pct",
+                        "pct_per_year",
+                        "pct_of_deposit",
+                        "pct_of_trade",
+                        "pct_of_balance_per_period",
+                        "nis_per_month",
+                        "nis_per_trade",
+                        "nis_per_transfer",
+                        "usd_per_share",
+                        "nis_per_share",
+                        "eur_per_share",
+                        "gbp_per_share",
+                        "usd_per_trade",
+                        "gbp_per_trade",
+                        "usd_per_event",
+                        "nis_per_usd",
+                        "fx_per_eur",
+                        "months",
+                        "years",
+                        "days",
+                        "business_days",
+                        "index_points",
+                        "count",
+                        "boolean",
+                        "text"
+                      ]
+                    },
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "pattern": "^https:\\/\\/"
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "publisher": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "publisher_he": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "law",
+                            "regulator_page"
+                          ]
+                        },
+                        "strength": {
+                          "type": "string",
+                          "const": "primary"
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "quote": {
+                          "type": "string",
+                          "minLength": 8
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "title",
+                        "publisher",
+                        "publisher_he",
+                        "kind",
+                        "strength",
+                        "quote"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "checked": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "effective_from": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "effective_to": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "tax_year": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "update_rule": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "fixed in law",
+                            "fixed in regulation",
+                            "cpi-linked 1 jan",
+                            "average-wage-linked",
+                            "provider-set",
+                            "market",
+                            "founder"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^frozen \\d{4}-\\d{4}$"
+                        }
+                      ]
+                    },
+                    "rule_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "state": {
+                      "type": "string",
+                      "const": "sourced"
+                    },
+                    "computed_from": {
+                      "type": "object",
+                      "properties": {
+                        "formula": {
+                          "type": "string",
+                          "pattern": "^[FA]-\\d{2,3}$"
+                        },
+                        "inputs": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {}
+                        }
+                      },
+                      "required": [
+                        "formula",
+                        "inputs"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "rationale_he": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "source",
+                    "checked",
+                    "effective_from",
+                    "effective_to",
+                    "update_rule",
+                    "state"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "country",
+              "found",
+              "product",
+              "pages",
+              "facts"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string",
+                "enum": [
+                  "gb",
+                  "us",
+                  "fr",
+                  "it"
+                ]
+              },
+              "found": {
+                "type": "boolean",
+                "const": false
+              },
+              "checked": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "looked_for": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "country",
+              "found",
+              "checked",
+              "looked_for"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "opens_on",
+    "tiles",
+    "countries"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,282 @@
+{
+  "id": "kupat-gemel-lehashkaa",
+  "opens_on": "gb",
+  "tiles": ["deposit_limit", "tax_on_gain", "withdraw"],
+  "countries": [
+    {
+      "country": "gb",
+      "found": true,
+      "product": "ISA",
+      "product_name": "Individual Savings Account",
+      "pages": [
+        { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "checked": "2026-11-13" },
+        { "url": "https://www.gov.uk/individual-savings-accounts/how-isas-work", "title": "Individual Savings Accounts (ISAs): How ISAs work", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "checked": "2026-11-13" },
+        { "url": "https://www.gov.uk/individual-savings-accounts/withdrawing-your-money", "title": "Individual Savings Accounts (ISAs): Withdrawing your money", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "checked": "2026-11-13" }
+      ],
+      "who": {
+        "statement": "18 or over, and resident in the UK (or a member of the armed forces or a Crown servant, or their spouse or civil partner)",
+        "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Who can open an ISA", "quote": "You must be 18 or over to open an ISA." },
+        "checked": "2026-11-13"
+      },
+      "facts": {
+        "deposit_limit": {
+          "value": 20000,
+          "unit": "gbp",
+          "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Overview", "quote": "In the 2026 to 2027 tax year, the maximum you can save in ISAs is £20,000" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "Across all of a person's ISAs in the British tax year 2026 to 2027, which runs from 6 April to 5 April (How ISAs work: 'The tax year runs from 6 April to 5 April.')."
+        },
+        "tax_on_gain": {
+          "value": "no tax on interest, income or capital gains in an ISA",
+          "unit": "text",
+          "source": { "url": "https://www.gov.uk/individual-savings-accounts/how-isas-work", "title": "Individual Savings Accounts (ISAs): How ISAs work", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "How ISAs work: 'You do not pay tax on:'", "quote": "income or capital gains from investments in an ISA" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "withdraw": {
+          "value": "at any time, without losing any tax benefits",
+          "unit": "text",
+          "source": { "url": "https://www.gov.uk/individual-savings-accounts/withdrawing-your-money", "title": "Individual Savings Accounts (ISAs): Withdrawing your money", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Withdrawing your money", "quote": "You can take your money out of an Individual Savings Account (ISA) at any time, without losing any tax benefits." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The Lifetime ISA has different rules for taking money out (same page); the note speaks of the ISA in general."
+        },
+        "min_age": {
+          "value": 18,
+          "unit": "years",
+          "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "Individual Savings Accounts (ISAs): Overview", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Who can open an ISA", "quote": "You must be 18 or over to open an ISA." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        }
+      }
+    },
+    {
+      "country": "us",
+      "found": true,
+      "product": "Roth IRA",
+      "pages": [
+        { "url": "https://www.irs.gov/retirement-plans/roth-iras", "title": "Roth IRAs (page last reviewed or updated 9 August 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" },
+        { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" },
+        { "url": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits", "title": "Retirement topics - IRA contribution limits (page last reviewed or updated 23 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "checked": "2026-11-13" }
+      ],
+      "facts": {
+        "deposit_limit": {
+          "value": 7500,
+          "unit": "usd",
+          "source": { "url": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits", "title": "Retirement topics - IRA contribution limits (page last reviewed or updated 23 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "For 2026, the total contributions you make each year to all of your traditional IRAs and Roth IRAs can't be more than:", "quote": "$7,500 ($8,600 if you’re age 50 or older), or" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "For 2026, all of a person's traditional and Roth IRAs together; $8,600 from age 50; the page's next line caps it at the person's taxable compensation where that is less. The Roth IRA page adds that the contribution may be limited by filing status and income."
+        },
+        "tax_on_gain": {
+          "value": "withdrawals of contributions and earnings are not taxed if they are a qualified distribution",
+          "unit": "text",
+          "source": { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Taxation of withdrawals", "quote": "Withdrawals of contributions and earnings are not taxed provided it’s a qualified distribution" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "withdraw": {
+          "value": 59.5,
+          "unit": "years",
+          "source": { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Taxation of withdrawals", "quote": "On or after attainment of age 59½." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The age from which a withdrawal is a qualified distribution, the account held at least 5 years; the chart also names disability and death."
+        },
+        "account_years": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.irs.gov/retirement-plans/roth-comparison-chart", "title": "Roth comparison chart (page last reviewed or updated 4 September 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "locator": "Taxation of withdrawals", "quote": "the account is held for at least 5 years" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "no_deduction": {
+          "value": "contributions cannot be deducted",
+          "unit": "text",
+          "source": { "url": "https://www.irs.gov/retirement-plans/roth-iras", "title": "Roth IRAs (page last reviewed or updated 9 August 2026)", "publisher": "Internal Revenue Service", "publisher_he": "רשות המסים של ארצות הברית", "kind": "regulator_page", "strength": "primary", "quote": "You cannot deduct contributions to a Roth IRA." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        }
+      }
+    },
+    {
+      "country": "fr",
+      "found": true,
+      "product": "PEA",
+      "product_name": "plan d'épargne en actions",
+      "pages": [
+        { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "checked": "2026-11-13" }
+      ],
+      "who": {
+        "statement": "of age and tax-domiciled in France",
+        "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelles sont les conditions d'ouverture du PEA bancaire ?", "quote": "Il faut être fiscalement domiciliée en France pour pouvoir ouvrir et détenir un PEA." },
+        "checked": "2026-11-13"
+      },
+      "facts": {
+        "deposit_limit": {
+          "value": 150000,
+          "unit": "eur",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire", "quote": "Le plafond de versement est de 150 000 €." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "A ceiling on the deposits in total, not a year's. The same page gives 20,000 euro for an adult attached to the parents' tax household, and another ceiling for the PEA-PME-ETI."
+        },
+        "tax_on_gain": {
+          "value": "social levies are charged on the gains whatever the date of the withdrawal",
+          "unit": "text",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelle est la fiscalité applicable au PEA bancaire ?", "quote": "Quelle que soit la date des retraits, les gains réalisés sont soumis aux prélèvements sociaux." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "exempt_after_years": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Quelle est la fiscalité applicable au PEA bancaire ?", "quote": "Si les retraits sont effectués après la 5e année du PEA, les gains réalisés sont exonérés d’impôt sur le revenu." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "withdraw": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Comment se font les retraits sur le PEA bancaire ?", "quote": "Un retrait partiel après 5 ans n'entraîne pas la clôture du plan." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        },
+        "closes_before": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.service-public.fr/particuliers/vosdroits/F2385", "title": "Plan d'épargne en actions (PEA) (vérifié le 22 mai 2026)", "publisher": "Service-Public.fr", "publisher_he": "אתר ממשלת צרפת", "kind": "regulator_page", "strength": "primary", "locator": "PEA classique bancaire: Comment se font les retraits sur le PEA bancaire ?", "quote": "En principe, si vous effectuez un retrait dans les 5 premières années du plan, votre PEA sera clôturé." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The page lists the exceptions: dismissal, invalidity or early retirement, shares of a company in liquidation, and a withdrawal reinvested within 3 months to start or take over a business."
+        }
+      }
+    },
+    {
+      "country": "it",
+      "found": true,
+      "product": "PIR",
+      "product_name": "piano individuale di risparmio a lungo termine",
+      "pages": [
+        { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "checked": "2026-11-13" },
+        { "url": "https://www.agenziaentrate.gov.it/portale/web/guest/-/comunicato-stampa-del-4-maggio-2022", "title": "Comunicato stampa del 4 maggio 2022 (circolare n. 10/E)", "publisher": "Agenzia delle Entrate", "publisher_he": "רשות המסים של איטליה", "checked": "2026-11-13" }
+      ],
+      "who": {
+        "statement": "individuals resident in Italy",
+        "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "da persone fisiche residenti nel territorio dello Stato" },
+        "checked": "2026-11-13"
+      },
+      "facts": {
+        "deposit_limit": {
+          "value": 40000,
+          "unit": "eur",
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro" },
+          "checked": "2026-11-13",
+          "effective_from": "2022-01-01",
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "A calendar year's deposits into an ordinary PIR. From 1 January 2022 (Agenzia delle Entrate, press release of 4 May 2022). Normattiva's text from 1 January 2027 shows commi 100 to 114 repealed by D.Lgs. 19 June 2026, n. 117, whose Testo unico imposte sui redditi, art. 209, c. 2, carries the same 40,000 and 200,000 euro (read 13.11.2026, library e7d473a7b041c0b6)."
+        },
+        "deposit_total": {
+          "value": 200000,
+          "unit": "eur",
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 101", "locator_he": "סעיף 1, פסקה 101", "quote": "per un importo non superiore, in ciascun anno solare, a 40.000 euro ed entro un limite complessivo non superiore a 200.000 euro" },
+          "checked": "2026-11-13",
+          "effective_from": "2022-01-01",
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The deposits into an ordinary PIR in total. The same repeal and carry-over from 1 January 2027 as the yearly limit."
+        },
+        "tax_on_gain": {
+          "value": "the plan's income from capital and financial gains is not taxed",
+          "unit": "text",
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 100", "locator_he": "סעיף 1, פסקה 100", "quote": "Non sono soggetti a imposizione i redditi di capitale" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "Income from capital other than from qualifying holdings, and the financial gains of art. 67(1)(c-bis) to (c-quinquies) TUIR, of the plan's investments held at least five years (comma 106). The same text is in the Testo unico imposte sui redditi, art. 209, c. 1, from 1 January 2027."
+        },
+        "holding_years": {
+          "value": 5,
+          "unit": "years",
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "Gli strumenti finanziari in cui è investito il piano devono essere detenuti per almeno cinque anni." },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "The same words are in the Testo unico imposte sui redditi, art. 209, c. 7, from 1 January 2027."
+        },
+        "withdraw": {
+          "value": "a sale before five years: the income is taxed by the ordinary rules, with interest and without penalties",
+          "unit": "text",
+          "source": { "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2016-12-11;232~art1-com101!vig=2026-11-13", "title": "Legge 11 dicembre 2016, n. 232, art. 1, commi 100-114 (testo in vigore dall'8 agosto 2026)", "publisher": "Normattiva", "publisher_he": "אתר החקיקה של ממשלת איטליה", "kind": "law", "strength": "primary", "locator": "art. 1, comma 106", "locator_he": "סעיף 1, פסקה 106", "quote": "sono soggetti a imposizione secondo le regole ordinarie, unitamente agli interessi, senza applicazione di sanzioni" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced",
+          "notes": "Comma 106: on a sale of the plan's instruments before five years, the income realised by the sale and that received during the minimum holding period is taxed by the ordinary rules, together with interest, without penalties; a redemption before five years must be reinvested within ninety days. Testo unico imposte sui redditi, art. 209, c. 7, from 1 January 2027."
+        },
+        "purpose": {
+          "value": "to channel household savings to Italian and European industrial and commercial companies rooted in Italy",
+          "unit": "text",
+          "source": { "url": "https://www.agenziaentrate.gov.it/portale/web/guest/-/comunicato-stampa-del-4-maggio-2022", "title": "Comunicato stampa del 4 maggio 2022 (circolare n. 10/E)", "publisher": "Agenzia delle Entrate", "publisher_he": "רשות המסים של איטליה", "kind": "regulator_page", "strength": "primary", "locator": "Cosa sono i Piani di risparmio a lungo termine", "quote": "favorire la canalizzazione del risparmio delle famiglie verso investimenti in imprese industriali e commerciali italiane ed europee radicate in Italia" },
+          "checked": "2026-11-13",
+          "effective_from": null,
+          "effective_to": null,
+          "update_rule": "fixed in law",
+          "state": "sourced"
+        }
+      }
+    }
+  ]
+}

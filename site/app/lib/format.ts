@@ -91,6 +91,9 @@ export const fmt = {
   /** `25.00 €` and `5.00 £`: a bound a price list prints in euros or pounds, for trades abroad (until then a bare "25"). */
   eur: (v: number) => withMinus(plainMarks(euros.format(v))),
   gbp: (v: number) => withMinus(plainMarks(pounds.format(v))),
+  /** `20,000`, `3,844.80`: an amount written before its currency's word in a Hebrew line (an amount abroad, "20,000 ליש״ט"): whole, or with
+   *  the two decimals the law prints, never rounded and never converted. */
+  amount: (v: number) => (Number.isInteger(v) ? plainNumber(v) : withMinus(fixed(2, "decimal").format(v))),
   /** `0.0035 $`: a price per share. */
   usdFine: (v: number) => withMinus(plainMarks(dollarsFine.format(v))),
   /** `0.005 ₪`, `0.004 €`, `0.003 £`: a price per unit typed in shekels, euros or pounds. */
@@ -289,6 +292,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return fmt.usdFine(value);
     case "eur":
       return fmt.eur(value);
+    case "gbp":
     case "gbp_per_trade":
       return fmt.gbp(value);
     case "nis_millions":

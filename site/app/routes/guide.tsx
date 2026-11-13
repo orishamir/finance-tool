@@ -20,6 +20,8 @@ import { omitsSection, sectionTitle, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { exitRateLines, exitStepMark, type ExitRate } from "../lib/exit-step";
 import { guideContent } from "../content/guide";
+import { GuideAbroad } from "../components/guide/abroad";
+import { abroadView } from "../lib/abroad";
 import { anyDoubt, anyWeak, ruleFigure, type SiteValue } from "../lib/value";
 import { generalOnly, isGeneral } from "../lib/scope";
 
@@ -32,7 +34,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const data = buildGuidePage(params.id, content ? [...(content.switchRules ?? [])] : [], content ? [...content.termIds] : [], content?.relatedIds);
   if (!data) throw new Response("Not found", { status: 404 });
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
-  const { loadPinnedRules, loadProducts, loadRules, pointedWithFlagSlots } = await import("../lib/data.server");
+  const { loadAbroad, loadPinnedRules, loadProducts, loadRules, pointedWithFlagSlots } = await import("../lib/data.server");
   const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
   const allRules = loadRules();
   const rules = { ...data.rules };
@@ -41,7 +43,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   // chips, cards and the flags read them)
   // the fee page takes a deal of every product whose record lists a fee base (method §10.6)
   const feePage = loadProducts().some((p) => p.id === params.id && p.fee_bases_allowed.length > 0);
-  return { ...data, rules, pointed: pointedWithFlagSlots(rules, allRules), worthIds, feePage };
+  // the note on other countries (D114), where the guide has a record and words for it
+  const abroadRecord = content?.abroad ? loadAbroad(params.id) : null;
+  return { ...data, rules, pointed: pointedWithFlagSlots(rules, allRules), worthIds, feePage, abroad: abroadRecord ? abroadView(abroadRecord) : null };
 }
 
 export function meta({ loaderData: data, location }: Route.MetaArgs) {
@@ -384,6 +388,7 @@ export default function GuidePage() {
   const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), common } : null;
   // a fact the site computes from the collected records, listed with the pinned rules
   const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
+  const abroad = data.abroad && content?.abroad ? <GuideAbroad view={data.abroad} words={content.abroad} /> : null;
   const timelineNode =
     data.bundle && data.initial ? (
       <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} />
@@ -408,7 +413,7 @@ export default function GuidePage() {
     <PageShell current="guide" data={provenance}>
       <GuideFrame
         foot={<NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} doubt={anyDoubt((signature?.banks ?? []).map((b) => b.rate))} />}
-        sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
+        sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0 || !!abroad) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
         <GuideHeader title={gershayim(data.name)} lede={data.lede && gershayim(data.lede)} glance={glance}>
           {data.heldIn && (
             <div className="flex flex-col gap-1 max-w-measure">
@@ -449,7 +454,7 @@ export default function GuidePage() {
           </GuideSection>
         )}
 
-        <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
+        <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} abroad={abroad} />
 
         {!omitted("who") && (
           <GuideSection id="who" title={title("who")}>

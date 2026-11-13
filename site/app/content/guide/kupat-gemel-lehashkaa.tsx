@@ -6,6 +6,7 @@ import { fmt } from "../../lib/format";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 import { OpenLossOffset } from "./open-tax";
+import { AbroadAmount, AbroadFigure, AbroadSaid, AbroadYears } from "./abroad-parts";
 
 export const content: GuideContent = {
   what: () => (
@@ -62,6 +63,32 @@ export const content: GuideContent = {
         <OpenLossOffset />
       </>
     );
+  },
+  // how the same kind of saving works in four other countries (D114); every fact is read on that country's own pages, data/abroad/
+  abroad: {
+    heads: ["כמה אפשר להפקיד", "מס על הרווח", "מתי אפשר למשוך"],
+    countries: {
+      gb: {
+        title: (p) => <>בבריטניה: חשבון <bdi dir="ltr">{p}</bdi></>,
+        body: (f) => <>חשבון חיסכון והשקעה עם הטבת מס, לתושבי בריטניה מגיל <AbroadFigure v={f("min_age")} />. ההבדל מקופת גמל להשקעה: גם כשמושכים, לא משלמים מס על הרווח.</>,
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה</>, <AbroadSaid v={f("tax_on_gain")}>אין</AbroadSaid>, <AbroadSaid v={f("withdraw")}>בכל עת</AbroadSaid>],
+      },
+      us: {
+        title: (p) => <>בארצות הברית: חשבון <bdi dir="ltr">{p}</bdi></>,
+        body: (f) => <>חשבון חיסכון לפרישה. כמו בקופת גמל להשקעה, ההפקדה לא מורידה מס. ההבדל: מגיל <AbroadFigure v={f("withdraw")} />, אחרי <AbroadFigure v={f("account_years")} /> שנים לפחות בחשבון, מושכים בלי מס, גם על הרווח.</>,
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה</>, <AbroadSaid v={f("tax_on_gain")}>אין, בתנאים</AbroadSaid>, <>בלי מס מגיל <AbroadFigure v={f("withdraw")} /></>],
+      },
+      fr: {
+        title: (p) => <>בצרפת: תוכנית <bdi dir="ltr">{p}</bdi></>,
+        body: (f) => <>תוכנית השקעה במניות של חברות אירופיות, לבגירים שהם תושבי צרפת לצורכי מס. משיכה לפני <AbroadFigure v={f("closes_before")} /> שנים סוגרת בדרך כלל את התוכנית. אחרי <AbroadFigure v={f("exempt_after_years")} /> שנים הרווח פטור ממס הכנסה, אבל משלמים עליו מסים סוציאליים.</>,
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בסך הכול</>, <>אחרי <AbroadYears v={f("exempt_after_years")} />: <AbroadSaid v={f("tax_on_gain")}>רק מסים סוציאליים</AbroadSaid></>, <>אחרי <AbroadYears v={f("withdraw")} /></>],
+      },
+      it: {
+        title: (p) => <>באיטליה: תוכנית <bdi dir="ltr">{p}</bdi></>,
+        body: (f) => <>תוכנית חיסכון לתושבי איטליה, שנועדה להפנות חסכונות לחברות שפועלות באיטליה. מי שמחזיק את ההשקעות <AbroadFigure v={f("holding_years")} /> שנים לפחות לא משלם מס על הרווח.</>,
+        tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנה, <AbroadAmount v={f("deposit_total")} bare /> בסך הכול</>, <><AbroadSaid v={f("tax_on_gain")}>אין</AbroadSaid>, אחרי <AbroadYears v={f("holding_years")} /></>, <>לפני <AbroadYears v={f("holding_years")} />: <AbroadSaid v={f("withdraw")}>המס הרגיל, עם ריבית</AbroadSaid></>],
+      },
+    },
   },
   risks: () => (
     <>
