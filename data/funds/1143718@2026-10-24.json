@@ -24,7 +24,7 @@
   },
   "manager": "מיטב קרנות נאמנות בע\"מ",
   "domicile": "IL",
-  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן מוגבלת בניירות ערך חוץ; קרן מקבילה (parallel fund) to the kosher ETF 'תכלית סל (40) כשרה ת\"א 125' (1155373) through a kosher swap; units denominated in NIS, 1 ₪ par value (annual report as of 30.06.2026, p. 1)",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן מוגבלת בניירות ערך חוץ; קרן מקבילה (parallel fund) to another of the manager's ETFs (1155373) through a swap; units denominated in NIS, 1 ₪ par value (annual report as of 30.06.2026, p. 1)",
   "exposure_id": "index-ta125",
   "currency": "NIS",
   "trading_currency_on_tase": "NIS",
@@ -54,7 +54,7 @@
         "MF-17"
       ],
       "state": "sourced",
-      "notes": "Fixed management fee (דמי ניהול קבועים). Report note 7: the manager committed to the ISA outline not to raise the fee (fixed or variable) or the load during a calendar year; it may raise it only on 01.01.2027. The same 0.25% is printed on TASE's fund page (market.tase.co.il, 'דמי ניהול (%)', read 2026-10-24) and in the manager's main prospectus of 07.07.2026, section 3.1 row 28. The report says the fee is computed on the assets of the parallel fund including those held against the kosher swap. An institutional 'other people's money' manager gets a full refund (0.25%) under the tracking-fund regulations; that is not a retail saver's fee. Hebrew name as printed in the report; 'תכלית סל תא 125' is TASE's short name; the English names are TASE's ('Full Name' and page title on market.tase.co.il/en), not printed in the report or prospectus."
+      "notes": "Fixed management fee (דמי ניהול קבועים). Report note 7: the manager committed to the ISA outline not to raise the fee (fixed or variable) or the load during a calendar year; it may raise it only on 01.01.2027. The same 0.25% is printed on TASE's fund page (market.tase.co.il, 'דמי ניהול (%)', read 2026-10-24) and in the manager's main prospectus of 07.07.2026, section 3.1 row 28. The report says the fee is computed on the assets of the parallel fund including those held against the swap. An institutional 'other people's money' manager gets a full refund (0.25%) under the tracking-fund regulations; that is not a retail saver's fee. Hebrew name as printed in the report; 'תכלית סל תא 125' is TASE's short name; the English names are TASE's ('Full Name' and page title on market.tase.co.il/en), not printed in the report or prospectus."
     },
     "trustee": {
       "value": 0.02,

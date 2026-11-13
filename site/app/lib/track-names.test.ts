@@ -18,8 +18,8 @@ describe("short names, from the real tracks", () => {
 
   it("a leading dash or the word מסלול goes, and a dash glued to one side is the same dash", () => {
     expect(shortOf("kupat-gemel-lehashkaa", "הראל", 'הראל גמל להשקעה מסלול סחיר- אג"ח עם מניות (עד 25% מניות)')).toBe('סחיר - אג"ח עם מניות (עד 25% מניות)');
-    expect(shortOf("child-savings-provident", "הפניקס", "הפניקס חיסכון לילד- שריעה")).toBe("שריעה");
-    expect(shortOf("child-savings-provident", "הפניקס", "הפניקס חיסכון לילד - הלכה")).toBe("הלכה");
+    expect(shortOf("provident-for-annuity", "הראל", "הראל גמל- משולב סחיר")).toBe("גמל - משולב סחיר");
+    expect(shortOf("provident-for-annuity", "הראל", "הראל גמל - עוקב מדדים גמיש")).toBe("גמל - עוקב מדדים גמיש");
   });
 
   it("a cut stops before a word of a kind's name, with its Hebrew prefix letter too (Analyst, child savings)", () => {
@@ -34,7 +34,7 @@ describe("short names, from the real tracks", () => {
 
   it("a track that does not begin like the others keeps its name, and the others still lose the company's (Infinity, comprehensive pension)", () => {
     expect(shortOf("pension-comprehensive", "אינפיניטי", "מסלול בסיסי למקבלי קצבה")).toBe("בסיסי למקבלי קצבה");
-    expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה הלכה")).toBe("מקיפה הלכה");
+    expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה עוקב מדדי מניות")).toBe("מקיפה עוקב מדדי מניות");
   });
 
   it("the regulator's garbled S&P is written right in the short name", () => {
@@ -78,7 +78,7 @@ describe("the pieces", () => {
 
   it("the kind shows as a chip only where the short name does not say it, and the name under a kind only where it says more", () => {
     expect(nameSaysKind("אשראי ואג\"ח עם מניות (עד 25% מניות)", 'אשראי ואג"ח')).toBe(true);
-    expect(nameSaysKind("הלכה", "הלכה יהודית")).toBe(false);
+    expect(nameSaysKind("יותר מסלול ד'", "כללי")).toBe(false);
     expect(nameSaysKind("כללי", "")).toBe(false);
     expect(nameAddsToKind("מניות", "מניות")).toBe(false);
     expect(nameAddsToKind("מניות סחיר", "מניות")).toBe(true);

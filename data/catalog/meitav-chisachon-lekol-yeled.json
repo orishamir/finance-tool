@@ -18,8 +18,7 @@
     "track_ids": [
       11385,
       11386,
-      11387,
-      11388
+      11387
     ]
   },
   "near_duplicates": [
@@ -30,5 +29,5 @@
     }
   ],
   "status": "catalogued",
-  "notes": "The programme as a whole at Meitav: the kid page spells it \"חיסכון לכל ילד\", the reports page \"חסכון לכל ילד\", and the reports page's link text \"קופת גמל לילדים\". Four tracks in the regulator's 2026-09 list are the track_ids. The kid page says the default where the parents did not choose is the higher-risk track, and that fees are paid by the National Insurance until age 21 (rules live in il-finance, not here)."
+  "notes": "The programme as a whole at Meitav: the kid page spells it \"חיסכון לכל ילד\", the reports page \"חסכון לכל ילד\", and the reports page's link text \"קופת גמל לילדים\". Three tracks in the regulator's 2026-09 list are the track_ids. The kid page says the default where the parents did not choose is the higher-risk track, and that fees are paid by the National Insurance until age 21 (rules live in il-finance, not here)."
 }

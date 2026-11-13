@@ -2825,41 +2825,6 @@
     "id": "amvnh-vkyymvt"
   },
   {
-    "term_he": "הלכה",
-    "term_source": {
-      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
-    },
-    "variants_he": [
-      "הלכתי",
-      "הלכה יהודית",
-      "מסלול הלכה"
-    ],
-    "explain_he": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי ההלכה היהודית; ועדת ההשקעות קובעת את התמהיל",
-    "rule_ids": [
-      "CAT-50",
-      "CAT-10",
-      "CAT-18",
-      "PEN-17"
-    ],
-    "source": {
-      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול הלכה\"",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
-      "checked": "2026-11-07",
-      "strength": "primary",
-      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
-    },
-    "where": [
-      "app",
-      "guide:pension-comprehensive",
-      "guide:pension-general",
-      "guide:provident-for-annuity",
-      "decoder:track"
-    ],
-    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say.",
-    "id": "hlkh"
-  },
-  {
     "term_he": "קיימות",
     "term_source": {
       "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
@@ -3334,30 +3299,6 @@
     "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
   },
   {
-    "term_he": "שריעה",
-    "variants_he": [
-      "הלכה איסלאמית",
-      "מסלול שריעה"
-    ],
-    "explain_he": "מסלול שמשקיע בסוגי נכסים שונים רק לפי כללי השריעה האסלאמית; ועדת ההשקעות קובעת את התמהיל",
-    "rule_ids": [
-      "CAT-50",
-      "CAT-10"
-    ],
-    "source": {
-      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 15, \"מסלול שריעה\"",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=15",
-      "checked": "2026-11-07",
-      "strength": "primary",
-      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
-    },
-    "where": [
-      "gemel-net",
-      "app"
-    ],
-    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
-  },
-  {
     "term_he": "סביבתי",
     "variants_he": [
       "מסלול סביבתי"
@@ -3424,34 +3365,9 @@
     "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
   },
   {
-    "term_he": "מסלול הלכה למקבלי קצבה",
-    "variants_he": [
-      "הלכה למקבלי קצבה",
-      "מסלול שריעה למקבלי קצבה"
-    ],
-    "explain_he": "מסלול למי שכבר מקבלים קצבה, שמשקיע רק לפי כללי ההלכה היהודית; יש גם מסלול כזה לפי כללי השריעה",
-    "rule_ids": [
-      "CAT-51",
-      "CAT-50"
-    ],
-    "source": {
-      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלול הלכה למקבלי קצבה\", \"מסלול שריעה למקבלי קצבה\"",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=3",
-      "checked": "2026-11-07",
-      "strength": "primary",
-      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
-    },
-    "where": [
-      "pensia-net"
-    ],
-    "notes": "Rewritten 2026-11-07 from the CMA list of tracks (every name recorded); the explanation says only what the rules named in rule_ids say."
-  },
-  {
     "term_he": "מסלול מקבלי קצבה קיימים",
-    "variants_he": [
-      "מסלול הלכה למקבלי קצבה קיימים"
-    ],
-    "explain_he": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד שקבעה רשות שוק ההון; יש גם גרסה שלו לפי כללי ההלכה",
+    "variants_he": [],
+    "explain_he": "מסלול סגור בקרן פנסיה, למי שהיו זכאים לקצבה מהקרן לפני מועד שקבעה רשות שוק ההון",
     "rule_ids": [
       "CAT-51"
     ],

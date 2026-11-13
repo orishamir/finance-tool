@@ -14,12 +14,12 @@ describe("the data the loader ships", () => {
   it("has the six products, the default among them, and every company's name", () => {
     expect(data.products.map((p) => p.id)).toEqual([...trackProductIds]);
     expect(trackProductIds).toContain(defaultProduct);
-    expect(gemel.tracks).toHaveLength(143);
+    expect(gemel.tracks).toHaveLength(133);
     expect(gemel.companies).toHaveLength(12);
-    expect(view("provident-for-annuity").tracks).toHaveLength(182);
-    expect(view("child-savings-provident").tracks).toHaveLength(41);
-    expect(view("pension-comprehensive").tracks).toHaveLength(139);
-    expect(view("pension-general").tracks).toHaveLength(131);
+    expect(view("provident-for-annuity").tracks).toHaveLength(172);
+    expect(view("child-savings-provident").tracks).toHaveLength(30);
+    expect(view("pension-comprehensive").tracks).toHaveLength(125);
+    expect(view("pension-general").tracks).toHaveLength(119);
   });
 
   it("the pension products have no kinds, and say so", () => {
@@ -46,9 +46,9 @@ describe("the order of the groups", () => {
     const assets = gemel.companies.map((c) => c.assets!.value as number);
     expect([...assets].sort((a, b) => b - a)).toEqual(assets);
     const harel = gemel.companies.find((c) => c.name === "הראל")!;
-    expect(harel.assets!.value as number).toBeCloseTo(19107.85, 2);
+    expect(harel.assets!.value as number).toBeCloseTo(18972.9, 2);
     expect(harel.assets!.computed_from?.formula).toBe("F-99");
-    expect(harel.tracks).toHaveLength(16);
+    expect(harel.tracks).toHaveLength(15);
   });
 
   it("kinds by the median stock share, the highest first, ties by size (F-100)", () => {
@@ -64,9 +64,9 @@ describe("the order of the groups", () => {
 describe("filter and search", () => {
   it("a kind keeps only its tracks; the search matches the name as the company writes it and the company's name", () => {
     expect(filterTracks(gemel, { kind: "מניות", q: "" })).toHaveLength(12);
-    expect(filterTracks(gemel, { kind: "", q: "הראל" }).length).toBe(16);
+    expect(filterTracks(gemel, { kind: "", q: "הראל" }).length).toBe(15);
     expect(filterTracks(gemel, { kind: "", q: "xyz-nothing" })).toEqual([]);
-    expect(filterTracks(gemel, { kind: "", q: "" })).toHaveLength(143);
+    expect(filterTracks(gemel, { kind: "", q: "" })).toHaveLength(133);
   });
 
   it("quotes, dashes and spaces do not matter in the search", () => {
@@ -77,7 +77,7 @@ describe("filter and search", () => {
   });
 
   it("the search also finds a track by the legal name of its company", () => {
-    expect(filterTracks(gemel, { kind: "", q: "הראל פנסיה וגמל" }).length).toBe(16);
+    expect(filterTracks(gemel, { kind: "", q: "הראל פנסיה וגמל" }).length).toBe(15);
   });
 });
 
@@ -134,18 +134,18 @@ describe("groups", () => {
     const groups = buildGroups(gemel, sorted, "company", data.today);
     expect(groups.map((g) => g.title)).toEqual(gemel.companies.map((c) => c.name));
     const harel = groups.find((g) => g.title === "הראל")!;
-    expect(harel.tracks).toHaveLength(16);
-    expect(harel.total).toBe(16);
+    expect(harel.tracks).toHaveLength(15);
+    expect(harel.total).toBe(15);
     const fees = harel.tracks.map((x) => x.fee.value as number);
     expect([...fees].sort((a, b) => a - b)).toEqual(fees);
     expect(harel.assets!.computed_from?.formula).toBe("F-99");
   });
 
-  it("a group's fee range is the lowest and highest reported fee of its shown tracks (F-100: Harel 0.54% to 0.61%)", () => {
+  it("a group's fee range is the lowest and highest reported fee of its shown tracks (F-100: Harel 0.54% to 0.58%)", () => {
     const harel = gemel.companies.find((c) => c.name === "הראל")!;
     const range = feeRangeOf(harel.tracks, data.today)!;
     expect(range.low.value).toBe(0.54);
-    expect(range.high.value).toBe(0.61);
+    expect(range.high.value).toBe(0.58);
     expect(range.low.computed_from?.formula).toBe("F-100");
     expect(range.low.unit).toBe("pct_per_year");
     // narrowed by a kind, the range follows the shown tracks
@@ -193,8 +193,9 @@ describe("rows", () => {
   });
 
   it("the kind shows as a chip only when the short name leaves it out, and the short name under a kind only when it says more", () => {
-    const hala = gemel.tracks.find((x) => x.sub === "הלכה יהודית")!;
-    expect(showsKindChip(hala)).toBe(true);
+    const general = view("provident-for-annuity").tracks.find((x) => x.fullName === "מנורה מבטחים יותר מסלול ד'")!;
+    expect(general.sub).toBe("כללי");
+    expect(showsKindChip(general)).toBe(true);
     const shares = gemel.tracks.find((x) => x.sub === "מניות" && x.short === "מניות")!;
     expect(showsKindChip(shares)).toBe(false);
     expect(showsShortName(shares)).toBe(false);

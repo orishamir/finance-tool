@@ -371,12 +371,11 @@ Out, and where it lives:
   - "מסלול השקעה משולב זהב";
   - "מסלול משולב קריפטו";
   - "מסלול משולב קרנות גידור בנאמנות": NIS 50,000 minimum; a success fee in the funds, on top of their management fees, of 20% of the fund's return, worked out by a catch-up mechanism and charged only when the return exceeds the Tel Gov–Makam index (the hurdle); monthly dealing;
-  - "מסלול כשר משולב ישראל": up to 100% equity;
   - "מסלול ממוקד נדל"ן ותשתיות".
 
-  The Manager product page lists seven of these, with slightly different names.
+  The Manager product page lists seven of the routes page's tracks, with slightly different names. A religious-law track on the routes page is left out (D113).
 - Conditions / exceptions:
-  - No risk levels or equity limits are published per track, except the kosher track.
+  - No risk levels or equity limits are published for the tracks above.
   - The fund fees per track are not stated.
   - The page does not say where the account is held or in whose name (open question 4).
   - Meitav's page at /test/ on its site is a component demo page ("דף הדגמת רכיבים", with placeholder text "AAAAAA"). Its "20% הנחה בדמי הניהול הישירים" offer, valid to 31.07.26, does not reflect the live terms. This closes domain report open question 23.

@@ -20,7 +20,7 @@
   },
   "manager": "הראל קרנות נאמנות בע\"מ",
   "domicile": "IL",
-  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; currency-hedged (מנוטרלת מט\"ח): exposure code 4A, foreign-currency exposure up to 10% of net assets in absolute value; the fund's aim is the S&P 500's change in US dollars without the dollar/shekel exchange-rate change (p. 1 'מטרת הקרן'); units of 1 ₪ par value; kosher approval. Trustee: מזרחי טפחות חברה לנאמנות בע\"מ. Short name on Maya: 'הראל מחקה SP500 ממ'.",
+  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; currency-hedged (מנוטרלת מט\"ח): exposure code 4A, foreign-currency exposure up to 10% of net assets in absolute value; the fund's aim is the S&P 500's change in US dollars without the dollar/shekel exchange-rate change (p. 1 'מטרת הקרן'); units of 1 ₪ par value. Trustee: מזרחי טפחות חברה לנאמנות בע\"מ. Short name on Maya: 'הראל מחקה SP500 ממ'.",
   "exposure_id": "index-sp500",
   "currency": "NIS",
   "trading_currency_on_tase": null,
