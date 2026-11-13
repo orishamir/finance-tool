@@ -23,7 +23,6 @@
       7980,
       7862,
       7979,
-      7863,
       15350,
       14270,
       15348,
@@ -35,5 +34,5 @@
   },
   "near_duplicates": [],
   "status": "catalogued",
-  "notes": "The fund (קופה) as a whole: \"מיטב גמל להשקעה\", income-tax number 7857, managed by מיטב גמל ופנסיה בע\"מ; its 16 tracks in the regulator's 2026-09 list are the track_ids. \"קופת גמל להשקעה – תכנית חיסכון לכל מטרה\" is the product page's title. Joining online (gemel-invest.meitav.co.il/Join?pt=11&pn=gemelInvestM) lands in the default track 7978 unless another is chosen (CAT-27)."
+  "notes": "The fund (קופה) as a whole: \"מיטב גמל להשקעה\", income-tax number 7857, managed by מיטב גמל ופנסיה בע\"מ; its 15 tracks in the regulator's 2026-09 list are the track_ids. \"קופת גמל להשקעה – תכנית חיסכון לכל מטרה\" is the product page's title. Joining online (gemel-invest.meitav.co.il/Join?pt=11&pn=gemelInvestM) lands in the default track 7978 unless another is chosen (CAT-27)."
 }

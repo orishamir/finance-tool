@@ -5,11 +5,10 @@ import { useId, useState, type ReactNode } from "react";
 import { IconChevronDown } from "../icons";
 import { cx } from "./cx";
 
-// "always" folds at every width and "never" stands open at every width: for a page that decides by measuring (`SidePage`)
-const LINE = { md: "md:hidden", lg: "lg:hidden", always: "", never: "!hidden" } as const;
-const BODY = { md: "hidden md:flex", lg: "hidden lg:flex", always: "hidden", never: "flex" } as const;
+const LINE = { md: "md:hidden", lg: "lg:hidden" } as const;
+const BODY = { md: "hidden md:flex", lg: "hidden lg:flex" } as const;
 
-export function PhoneFold({ summary, more, less, children, below = "md", open: given, onOpenChange }: { /** What is chosen, in a few words ("שנה · מ־10,000 ₪ · ריבית קבועה"). */ summary: ReactNode; /** The line's word while folded ("שינוי"). */ more: string; /** Its word while open ("סגירה"). */ less: string; children: ReactNode; /** The width under which it folds. */ below?: "md" | "lg" | "always" | "never"; open?: boolean; onOpenChange?: (open: boolean) => void }) {
+export function PhoneFold({ summary, more, less, children, below = "md", open: given, onOpenChange }: { /** What is chosen, in a few words ("שנה · מ־10,000 ₪ · ריבית קבועה"). */ summary: ReactNode; /** The line's word while folded ("שינוי"). */ more: string; /** Its word while open ("סגירה"). */ less: string; children: ReactNode; /** The width under which it folds. */ below?: "md" | "lg"; open?: boolean; onOpenChange?: (open: boolean) => void }) {
   const [own, setOwn] = useState(false);
   const open = given ?? own;
   const set = (v: boolean) => (onOpenChange ? onOpenChange(v) : setOwn(v));

@@ -1,14 +1,17 @@
-// A figure the person types where it stands (a fee's rate in a row, a bound in a panel), drawn in its number state, and a month typed the
-// same way. Unlike a chart's field (NumberField), whose default and typed value look alike, a figure here is the person's record of a
+// A figure the person types where it stands (a fee's rate in a row, a bound in a panel), drawn in its number state, and a month in the
+// same box, chosen from its picker or typed. Unlike a chart's field (NumberField), whose default and typed value look alike, a figure here is the person's record of a
 // price: typed by them it is entered (blue ink on a blue highlight); filled from a price list or a track and left as it was, it is sourced
 // (the solid grey line under the digits) and its source opens from the mark beside it (design.md, the number states).
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { flushSync } from "react-dom";
 import { kit as kitCopy, values as valuesCopy } from "../../copy";
 import { formatTyped, parseNumber } from "../../lib/format";
+import { useMedia } from "../../lib/hooks";
 import type { SiteValue } from "../../lib/value";
-import { IconFile } from "../icons";
+import { IconCalendar, IconFile } from "../icons";
 import { useOpen, valueItem } from "../provenance";
 import { cx } from "./cx";
+import { MonthPicker, pickCommit } from "./month-picker";
 
 /**
  * The box of a typed figure or month: its edge, fill and ink say whose the value is. A box whose text is not a value takes the error look
@@ -258,26 +261,37 @@ export function parseMonth(text: string): string | null {
 export const monthText = (key: string) => `${key.slice(5, 7)}.${key.slice(0, 4)}`;
 
 /**
- * A month typed in place, in the box `FigureField` draws: the person writes "03.2027" (or "3/2027"), and the box keeps it in that form.
- * Typed by the person, so entered; empty and dashed until given. A native month input is not used: two of the browsers the site meets
- * draw it as plain text with no form, and the site writes a month as `03.2027` everywhere it is a field's value (design-system 2.7).
- * It commits when the person leaves it or presses Enter, and Enter then moves on as in `FigureField`; with `onClear`, an empty box clears
- * the month, and without it an empty box asks for nothing (`waits`) or says what to write. A box that holds no month takes the error look,
- * and Escape puts back the last month. `lead`: words in the box before the month, so a price that holds until a month is one box ("[חינם
- * עד 03.2028]"). `hang`: the message hangs under the box over what is below, taking no room, for a box in a bar whose line must not grow.
+ * A month in the box `FigureField` draws, chosen from a picker or typed: a calendar mark stands in the box, and a press anywhere in it
+ * opens the picker (`MonthPicker`: the year and its twelve months) by the box, with the focus left in the box for typing; ArrowDown or
+ * Alt+ArrowDown opens it with the focus on its month. Choosing a month commits it, closes the picker and gives the focus back to the box;
+ * Escape, a press outside or Tab out of the box closes it and chooses nothing. The person may also write "03.2027" (or "3/2027"), and the
+ * picker follows what is typed; the box keeps the month in that form. Typed or chosen by the person, so entered; empty and dashed until
+ * given. A native month input is not used: two of the browsers the site meets draw it as plain text with no form, and the site writes a
+ * month as `03.2027` everywhere it is a field's value (design-system 2.7).
+ * A typed month commits when the person leaves the box or presses Enter, and Enter then moves on as in `FigureField`; with `onClear`, an
+ * empty box clears the month, and without it an empty box asks for nothing (`waits`) or says what to write. A box that holds no month
+ * takes the error look, and Escape puts back the last month. `earliest`, `latest`: the months the page around the box would refuse fall
+ * outside them, and the picker offers none of those; what is typed goes to the page as it is. `lead`: words in the box before the month,
+ * so a price that holds until a month is one box ("[חינם עד 03.2028]"). `hang`: the message hangs under the box over what is below,
+ * taking no room, for a box in a bar whose line must not grow. `autoFocus`: the box takes the focus as it appears, with its picker open,
+ * so the month just asked for is one press away and typing still goes to the box.
  */
-export function MonthField({ value, label, lead, tight, onCommit, onClear, waits, hang, autoFocus, className }: {
+export function MonthField({ value, label, lead, tight, earliest, latest, onCommit, onClear, waits, hang, autoFocus, className }: {
   value: string | null;
   label: string;
   lead?: ReactNode;
   /** As `FigureField`'s. */
   tight?: boolean;
+  /** The first month the picker offers, `YYYY-MM`. */
+  earliest?: string;
+  /** The last month the picker offers, `YYYY-MM`. */
+  latest?: string;
   onCommit: (month: string) => void;
   onClear?: () => void;
   /** An empty box is no error: the month is still to come (a later price waits for it). */
   waits?: boolean;
   hang?: boolean;
-  /** The field takes the focus when it appears (a choice just asked for the month). */
+  /** The field takes the focus when it appears (a choice just asked for the month), and its picker opens. */
   autoFocus?: boolean;
   className?: string;
 }) {
@@ -285,8 +299,17 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, waits
   const shown = value ? monthText(value) : "";
   const [text, setText] = useState(shown);
   const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+  // on a touch screen the month is chosen in the picker, which every press on the box opens: the on-screen keyboard stays down, so it
+  // never covers the picker (a keyboard that is plugged in still types)
+  const touch = useMedia("(pointer: coarse)");
+  const root = useRef<HTMLSpanElement>(null);
+  const box = useRef<HTMLSpanElement>(null);
+  const input = useRef<HTMLInputElement>(null);
   const focused = useRef(false);
   const committed = useRef<string | null>(null);
+  // the picker just opened from the keyboard puts the focus on its month
+  const intoGrid = useRef(false);
   useEffect(() => {
     committed.current = null;
     if (!focused.current) {
@@ -294,6 +317,34 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, waits
       setError(false);
     }
   }, [shown]);
+  useEffect(() => {
+    if (autoFocus) setOpen(true);
+  }, [autoFocus]);
+  useLayoutEffect(() => {
+    if (!open || !intoGrid.current) return;
+    intoGrid.current = false;
+    document.getElementById(`${id}-grid`)?.querySelector<HTMLElement>('[tabindex="0"]')?.focus();
+  }, [open, id]);
+  // a press outside the box and its picker closes the picker, and leaves the focus where the press put it
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => !root.current?.contains(e.target as Node) && setOpen(false);
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [open]);
+  const toBox = () => {
+    setOpen(false);
+    input.current?.focus();
+  };
+  const pick = (m: string) => {
+    setText(monthText(m));
+    setError(false);
+    toBox();
+    // the box's own commit on leaving it, or Enter, sees the month already committed
+    const c = pickCommit(m, value, {});
+    if (c !== null && c !== committed.current) onCommit(c);
+    committed.current = m;
+  };
   const commit = () => {
     if (text.trim() === "") {
       setError(!onClear && !waits);
@@ -310,18 +361,48 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, waits
     }
   };
   const placeholder = kitCopy.figure.monthPlaceholder;
+  const grid = `${id}-grid`;
   return (
-    <span className={cx("inline-flex flex-col gap-0.5 align-middle", hang && "relative", className)}>
-      <span className={boxLook(value === null ? "empty" : "entered", error, tight)} data-lift="" onMouseDown={focusInBox}>
+    <span
+      ref={root}
+      className={cx("inline-flex flex-col gap-0.5 align-middle", hang && "relative", className)}
+      // the focus leaving the box and its picker for another control (Enter's move to the next box, a Tab out of the picker) closes it;
+      // read after the frame, where the focus has landed
+      onBlur={() =>
+        requestAnimationFrame(() => {
+          const a = document.activeElement;
+          if (a && a !== document.body && !root.current?.contains(a)) setOpen(false);
+        })
+      }
+    >
+      <span
+        ref={box}
+        className={boxLook(value === null ? "empty" : "entered", error, tight)}
+        data-lift=""
+        onMouseDown={(e) => {
+          if (e.button !== 0) return;
+          // the calendar mark opens and closes the picker, and keeps the focus in the box; a press anywhere else in the box opens it
+          const mark = !!(e.target as HTMLElement).closest("[data-month-mark]");
+          if (mark && document.activeElement === input.current) e.preventDefault();
+          focusInBox(e);
+          setOpen((o) => !(o && mark));
+        }}
+      >
         {lead && <span className="text-sm">{lead}</span>}
         <input
+          ref={input}
           id={id}
           data-figure=""
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           type="text"
-          inputMode="numeric"
+          inputMode={touch ? "none" : "numeric"}
           dir="ltr"
+          role="combobox"
+          aria-haspopup="grid"
+          aria-expanded={open}
+          aria-controls={open ? grid : undefined}
+          aria-autocomplete="none"
           value={text}
           placeholder={placeholder}
           aria-label={label}
@@ -334,7 +415,21 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, waits
             commit();
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              if (open) document.getElementById(grid)?.querySelector<HTMLElement>('[tabindex="0"]')?.focus();
+              else {
+                intoGrid.current = true;
+                setOpen(true);
+              }
+            } else if (e.key === "Tab" && open) {
+              // the picker is reached by ArrowDown, not by Tab: Tab goes on from the box as it would with the picker closed
+              flushSync(() => setOpen(false));
+            } else if (e.key === "Escape" && open) {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(false);
+            } else if (e.key === "Enter") {
               e.preventDefault();
               commit();
               if (parseMonth(text) !== null || (text.trim() === "" && (onClear || waits))) enterToNext(e.currentTarget);
@@ -348,7 +443,11 @@ export function MonthField({ value, label, lead, tight, onCommit, onClear, waits
           style={{ width: widthOf(text, placeholder, tight) }}
           className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT)}
         />
+        <span data-month-mark="" className="inline-flex cursor-pointer text-muted-foreground">
+          <IconCalendar size={16} />
+        </span>
       </span>
+      {open && <MonthPicker id={grid} label={label} chosen={parseMonth(text) ?? value} bounds={{ earliest, latest }} anchor={box} onPick={pick} onClose={toBox} />}
       {error && (
         <span id={`${id}-err`} className={cx("text-xs text-destructive", hang && "absolute start-0 top-full z-10 mt-0.5 whitespace-nowrap")}>
           {kitCopy.figure.monthError}

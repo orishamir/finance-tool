@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { companyAssets, groupFeeRange, kindStockMedian } from "../src/formulas/track-groups.ts";
 
-// The worked examples are Harel's 16 kupat gemel lehashkaa tracks and the kinds of that product in the regulator's 2026-09 file.
+// The worked examples are Harel's 15 kupat gemel lehashkaa tracks and the kinds of that product in the regulator's 2026-09 file.
 const gemel = JSON.parse(readFileSync(new URL("../../../data/cma/gemelnet@2026-09.json", import.meta.url), "utf8")) as {
   funds: { fund_classification: string; sub_specialization: string; managing_corporation: { legal_id: string }; raw_fields: Record<string, string> }[];
 };
@@ -12,8 +12,8 @@ const num = (s: string | undefined) => (s === undefined || s.trim() === "" ? nul
 describe("F-99 a company's assets in one product", () => {
   it("sums the tracks' assets at the period end (Harel, kupat gemel lehashkaa, 2026-09)", () => {
     const harel = gemelLehashkaa.filter((f) => f.managing_corporation.legal_id === "512267592");
-    expect(harel).toHaveLength(16);
-    expect(companyAssets(harel.map((f) => num(f.raw_fields.TOTAL_ASSETS)))).toBeCloseTo(19107.85, 2);
+    expect(harel).toHaveLength(15);
+    expect(companyAssets(harel.map((f) => num(f.raw_fields.TOTAL_ASSETS)))).toBeCloseTo(18972.9, 2);
   });
 
   it("a track that did not report adds nothing; none reporting is null", () => {
@@ -28,9 +28,9 @@ describe("F-99 a company's assets in one product", () => {
 });
 
 describe("F-100 a group's fee range", () => {
-  it("is the lowest and the highest reported fee (Harel, 2026-09: 0.54% to 0.61%)", () => {
+  it("is the lowest and the highest reported fee (Harel, 2026-09: 0.54% to 0.58%)", () => {
     const harel = gemelLehashkaa.filter((f) => f.managing_corporation.legal_id === "512267592");
-    expect(groupFeeRange(harel.map((f) => num(f.raw_fields.AVG_ANNUAL_MANAGEMENT_FEE)))).toEqual({ low: 0.54, high: 0.61, count: 16 });
+    expect(groupFeeRange(harel.map((f) => num(f.raw_fields.AVG_ANNUAL_MANAGEMENT_FEE)))).toEqual({ low: 0.54, high: 0.58, count: 15 });
   });
 
   it("leaves out the tracks without a reported fee, and is null when none reported one", () => {

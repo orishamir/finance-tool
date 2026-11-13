@@ -16,7 +16,8 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { MonthPicker } from "./month-picker";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -1258,24 +1259,6 @@ function AxisDemo({ from, to }: { from: number; to: number }) {
   );
 }
 
-function Rings() {
-  return (
-    <Demo name="ShareRings" use={g.uses.ShareRings}>
-      <Grid>
-        <State label="two rings: 49% stocks outside, 21% currency inside">
-          <ShareRings rings={[{ id: "a", fraction: 0.49, className: "stroke-chart-stocks" }, { id: "b", fraction: 0.21, className: "stroke-chart-currency" }]} />
-        </State>
-        <State label="above 100% draws full; 0 draws an empty ring">
-          <ShareRings rings={[{ id: "a", fraction: 1.087, className: "stroke-chart-stocks" }, { id: "b", fraction: 0, className: "stroke-chart-currency" }]} />
-        </State>
-        <State label="one ring, size 48">
-          <ShareRings size={48} rings={[{ id: "a", fraction: 0.05, className: "stroke-chart-stocks" }]} />
-        </State>
-      </Grid>
-    </Demo>
-  );
-}
-
 /** The table of the track browser's kind in the gallery: two groups with headings and heads that sort the rows by their figure. */
 function SortableTable({ row }: { row: (key: string, name: string, n: string, rate: number, withLabels: boolean) => { key: string; cells: ReactNode[]; phone: ReactNode } }) {
   const p = g.sample.products;
@@ -1861,8 +1844,8 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="SideNav, SidePage" use={g.uses.SideNav}>
-        <State label="the list beside the content, one item chosen with its parts under it, items under group labels; under 1024 px, one line that opens the list" wide>
-          <SideNavDemo />
+        <State label="the list beside the content from 1024 px at every width, whatever the content needs (a table wider than the room scrolls in its own card), one item chosen with its parts under it, items under group labels; under 1024 px, one line that opens the list" wide>
+          <SideNavDemo today={today} />
         </State>
       </Demo>
       <Demo name="OpenRow" use={g.uses.OpenRow}>
@@ -1958,9 +1941,21 @@ function Lists({ today }: { today: string }) {
             groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow>, ...(i === 0 ? { detail: { body: <DoubtNote text={g.sample.option[2]} />, label: g.sample.option[i], marks: [{ key: "doubt", icon: <IconAlert size={16} className="text-caution" />, label: g.sample.option[2] }] } } : {}) })) }]}
           />
         </State>
+        <State label={'over: one head over two columns under the caption row (its words, a weak note on its line and a "?"), each column\'s own head under it, its header read whole by a screen reader ("שיעור, אפשרות שנייה"); the other heads take both lines'} wide>
+          <ProductTable
+            columns={[{ id: "a", head: g.sample.option[0] }, ...[1, 2].map((i) => ({ id: String(i), head: g.sample.option[i], band: g.sampleSource, over: { key: "o", head: <SortNote beside label={p.figure} note={p.note} mark={<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />} />, spoken: p.figure }, width: 6 }))]}
+            groups={[{ key: "x", rows: [0, 1].map((i) => ({ key: String(i), cells: [g.sample.option[i], <Num value={{ ...s.rate, value: 1 + i / 10 }} size="cell" />, <Num value={{ ...s.rate, value: 2 + i / 10 }} size="cell" />], phone: <ProductPhoneRow>{g.sample.option[i]}</ProductPhoneRow> })) }]}
+          />
+        </State>
+        <State label="a table wider than its card scrolls sideways inside it: its first column stays at the start edge on the card's surface, with a line at its end once scrolled; least sets a shared column's least width" wide>
+          <WideTable today={today} />
+        </State>
+        <State label={'dense: 8 px at each side of a cell between columns, 12 at the table\'s outer edges, so the "?" in the last head keeps its 44 px inside the card'} wide>
+          <WideTable today={today} dense />
+        </State>
       </Demo>
       <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
-        <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure with its rings, the labels" wide>
+        <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure, a bar of each share beside its word and figure, the labels" wide>
           <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
             <TrackFeeLines fee={s.rate} deposit={{ ...s.rate, value: 0.3 }} size="cell" />
             <FeeNum value={{ ...s.rate, value: null }} size="cell" />
@@ -2083,18 +2078,12 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="MeterBar" use={g.uses.MeterBar}>
-        <State label="the top row in the accent, a row at 70%, an offer with a condition (hollow), a linked one (muted, hollow)" wide>
-          <div className="flex flex-col gap-3 max-w-48">
-            <MeterBar share={1} tone="accent" />
-            <MeterBar share={0.7} />
-            <MeterBar share={0.9} hollow />
-            <MeterBar share={0.4} tone="muted" hollow />
-          </div>
-        </State>
-        <State label="tone computed: the site's own reckoning of the share (a company's products, each against its largest)" wide>
-          <div className="flex flex-col gap-3 max-w-48">
-            <MeterBar share={1} tone="computed" />
-            <MeterBar share={0.35} tone="computed" />
+        <State label="a track's exposure: a share from 0 to 100% in its measure's colour, stocks 49%, currency 21%, above 100% drawn full, 0 empty; one length in every row" wide>
+          <div className="flex flex-col gap-3 max-w-16">
+            <MeterBar share={0.49} tone="stocks" />
+            <MeterBar share={0.21} tone="currency" />
+            <MeterBar share={1.087} tone="stocks" />
+            <MeterBar share={0} tone="currency" />
           </div>
         </State>
       </Demo>
@@ -2252,7 +2241,6 @@ export function KitGallery({ today }: { today: string }) {
         <Fields />
         <MarkerDemo today={today} />
         <ChartParts today={today} />
-        <Rings />
         <Lists today={today} />
       </div>
     </div>
@@ -2454,8 +2442,25 @@ function ChooseRowDemo() {
   );
 }
 
+/** A table wider than the room it is given, which scrolls sideways inside its card with its first column in place. */
+function WideTable({ today, dense }: { today: string; /** The dense table: narrower columns, the last head with a "?". */ dense?: boolean }) {
+  const s = samples(today);
+  const p = g.sample.products;
+  const figures = ["f1", "f2", "f3", "f4", "f5", "f6"];
+  const head = (k: number) => (dense && k === figures.length - 1 ? <span className="inline-flex items-start gap-1">{`${p.figure} ${k + 1}`}<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span> : `${p.figure} ${k + 1}`);
+  return (
+    <div className={dense ? undefined : "max-w-xl"}>
+      <ProductTable
+        dense={dense}
+        columns={[{ id: "name", head: p.name, least: 8 }, ...figures.map((id, k) => ({ id, head: head(k), width: dense ? 5 : 7 }))]}
+        groups={[{ key: "x", rows: [p.a, p.b, p.c].map((name, i) => ({ key: String(i), cells: [<TextLink tone="plain" to="/kit" className="font-medium">{name}</TextLink>, ...figures.map((id, k) => <Num key={id} value={{ ...s.rate, value: 0.1 * (i + k + 1) }} size="cell" />)], phone: <ProductPhoneRow>{name}</ProductPhoneRow> })) }]}
+      />
+    </div>
+  );
+}
+
 /** The demo's items are addresses of this page (`?side=`), as a company page's are `?product=`. */
-function SideNavDemo() {
+function SideNavDemo({ today }: { today: string }) {
   const [params] = useSearchParams();
   const on = params.get("side") ?? "";
   const to = (id: string) => (id ? `/kit?side=${id}` : "/kit");
@@ -2466,6 +2471,7 @@ function SideNavDemo() {
   return (
     <SidePage chosen={on} summary={g.sample.option[Number(on) || 0]} more={g.sample.phoneFold.more} less={g.sample.phoneFold.less} nav={(close) => <SideNav groups={groups} current={on} ariaLabel={g.sample.option[0] ?? ""} onPick={close} />}>
       <Card>{g.sampleSource}</Card>
+      <WideTable today={today} />
     </SidePage>
   );
 }
@@ -2536,13 +2542,19 @@ function DealDemos({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
-      <Demo name="MonthField" use={g.uses.MonthField}>
+      <Demo name="MonthField, MonthPicker" use={g.uses.MonthField}>
         <Grid>
-          <State label={`a month given, ${g.states.interactive}: type 3.2028 and leave the box`}>
+          <State label={`a month given, the picker closed, ${g.states.interactive}: press the box, or type 3.2028 and leave it`}>
             <MonthField value={month} label={g.sample.field} onCommit={setMonth} onClear={() => setMonth(null)} />
           </State>
           <State label={g.states.empty}>
             <MonthField value={null} label={g.sample.field} onCommit={() => undefined} />
+          </State>
+          <State label={`the picker open with the box's month chosen; today's month, in its own year, has a quiet edge, ${g.states.interactive}`}>
+            <MonthPicker label={g.sample.field} chosen={month} onPick={setMonth} />
+          </State>
+          <State label={`the picker open with an earliest and a latest month: the months outside them struck through, ${g.states.interactive}`}>
+            <MonthPicker label={g.sample.field} chosen={month} bounds={{ earliest: "2027-02", latest: "2027-09" }} onPick={setMonth} />
           </State>
           <State label={`lead: words in the box before the month, a price that holds until it, ${g.states.interactive}`}>
             <MonthField value={month} lead={`${dealWords.price.free} ${dealWords.standing.until.trim()}`} label={g.sample.field} onCommit={setMonth} />

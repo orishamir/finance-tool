@@ -22,7 +22,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "ShareRings", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "PeriodStrip", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "FieldState", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -191,9 +191,12 @@ describe("the shared pieces' choices are props, never an overriding class", () =
     expect(out).toContain("bg-muted");
     expect(out.match(/״/g)).toHaveLength(4);
   });
-  it("a meter in the computed tone takes the computed ink", () => {
-    expect(html(createElement(MeterBar, { share: 0.5, tone: "computed" }))).toContain("bg-computed");
-    expect(html(createElement(MeterBar, { share: 0.5, tone: "computed", hollow: true }))).toContain("border-computed");
+  it("a meter draws a share in its measure's chart colour, hidden from screen readers, full above 100% and empty at 0", () => {
+    expect(html(createElement(MeterBar, { share: 0.5, tone: "stocks" }))).toContain("bg-chart-stocks");
+    expect(html(createElement(MeterBar, { share: 0.5, tone: "currency" }))).toContain("bg-chart-currency");
+    expect(html(createElement(MeterBar, { share: 0.5, tone: "stocks" }))).toContain('aria-hidden="true"');
+    expect(html(createElement(MeterBar, { share: 1.087, tone: "stocks" }))).toContain("width:100%");
+    expect(html(createElement(MeterBar, { share: 0, tone: "currency" }))).toContain("width:0%");
   });
   it("a product table's column wraps with wrap, has tight sides with tight, and a phone row spaces its lines with roomy", () => {
     const out = html(

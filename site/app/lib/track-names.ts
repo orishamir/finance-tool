@@ -3,7 +3,7 @@
 // so the row keeps only what tells it from its neighbours. The full name as the company writes it stays on the track page and in the
 // search. Pure: no React, no storage.
 
-/** The words of a name. A dash glued to one side only ("לילד- שריעה", "-הלכה") is a word of its own, so two spellings of one name share a prefix. */
+/** The words of a name. A dash glued to one side only ("גמל- משולב סחיר", "-כספי") is a word of its own, so two spellings of one name share a prefix. */
 const words = (s: string): string[] =>
   s
     .replace(/(\S)-(\s)/g, "$1 -$2")

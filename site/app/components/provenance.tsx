@@ -282,6 +282,8 @@ export interface NumProps {
   fullWord?: string;
   /** What the figure is of, said first by a screen reader where the words around it do not say it (a cap's figure: whose cap, and that its sheet holds the rules). */
   name?: string;
+  /** Its text may take a second line: words in a narrow column ("אין נכסים" under a share's head) that would otherwise set the column's width. */
+  wrap?: boolean;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
@@ -330,7 +332,7 @@ export function valueItem(value: SiteValue, written: string | undefined, exact: 
 }
 
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
-export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name }: NumProps) {
+export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
   const value = ownPage && !given.own && strengthOf(given) === "institution" ? { ...given, own: "page" } : given;
   const open = useOpen();
@@ -382,7 +384,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const mark = "inline-block align-[-2px] select-none";
   // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge; any other figure is
   // one unit with its icon, which stood alone on the line above its digits in a phone's table
-  const oneLine = !(typeof value.value === "string" && text.length > 24);
+  const oneLine = !wrap && !(typeof value.value === "string" && text.length > 24);
   // a field's value (its default, or what the reader typed) is a plain number: no mark, no sheet; the field beside it is where it changes
   // (charts.md); so is a typed figure in a block that sums up typed boxes (`TypedPlainCtx`)
   if (plain || (typedPlain && value.state === "entered")) {

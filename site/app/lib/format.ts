@@ -24,6 +24,7 @@ const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
 const compactFormat = (v: number) => withMinus(compactNumber.format(v));
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
 const period = new Intl.DateTimeFormat(he, { month: "long", year: "numeric" });
+const monthAlone = new Intl.DateTimeFormat(he, { month: "long" });
 
 /**
  * Intl's he-IL currency text carries a right-to-left mark and a no-break space around the sign. Copied into a note or a
@@ -118,6 +119,8 @@ export const fmt = {
   date: (iso: string) => (/^\d{4}-\d{2}$/.test(iso) ? period.format(new Date(iso + "-01T00:00:00")) : date.format(new Date(iso + "T00:00:00"))),
   /** `ספטמבר 2026` from `2026-09`. */
   period: (ym: string) => period.format(new Date(ym + "-01T00:00:00")),
+  /** `מרץ` from `2027-03`: a month's name without its year, where the year stands once above several months (the kit's month picker). */
+  monthName: (ym: string) => monthAlone.format(new Date(ym + "-01T00:00:00")),
   /** Chart ticks, as running text: `200 אלף ₪`, `1.5 מיליון ₪`. A scale mark, not a figure (design-system Q4). */
   compactNis: (v: number) => {
     const p = compactNisParts(v);

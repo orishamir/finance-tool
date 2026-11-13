@@ -19,6 +19,7 @@ The source to work on is the task's argument. If none was given, ask which one.
 3. Check that a Zod schema for that collection exists in `packages/schema/`, and that `packages/pipeline/src/validate.ts` has the folder in its `collections` map. If not, **stop and report**: the project's order is schema first, then data, and the validator rejects a file in a folder without a schema. Do not add the schema or edit the validator yourself.
 4. If the work needs a tax or financial rule (a rate, a ceiling, a cap), take it from the `il-finance` skill with its rule ID. If it is not there, say the rule is missing and stop on that item.
 5. Look at what already exists for this source under `data/`. A refresh adds a new dated snapshot (`<id>@<YYYY-MM-DD>.json`); the older ones stay.
+6. Leave out every product defined by religious law (Halacha and Sharia tracks, kosher funds; `guidelines/project.md`), and do not mention them in what you write: `isReligiousLaw` in `packages/schema/src/religious-law.ts` is the matcher the CMA refresh drops them by, and the data check fails a record that names one.
 
 ## 2. Read the official page or document
 
