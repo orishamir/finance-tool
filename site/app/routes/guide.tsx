@@ -259,13 +259,13 @@ export default function GuidePage() {
       rules: gen([...(cap?.rule_ids ?? []), ...(data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
       varies: feeVaries(base),
       range: listRangeLine(base),
-      // a provident product's figures are the management-fee regulations' caps (PF-02 to PF-06); "no cap" and the provider's own tariff are not
-      regs: provident && !!cap && cap.value !== null,
+      // a provident product's figure is a cap of the management-fee regulations (PF-02 to PF-06); "no cap" and the provider's own tariff are not caps
+      regsCap: provident && !!cap && cap.value !== null,
     });
   }
-  if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"], regs: true });
+  if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
   // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag
-  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]), regs: true });
+  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
 
 
   // ---- tax steps
