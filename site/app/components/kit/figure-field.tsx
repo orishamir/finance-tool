@@ -57,11 +57,40 @@ function enterToNext(input: HTMLInputElement) {
   } else group.querySelector<HTMLElement>("[data-figures-back]")?.focus();
 }
 
-/** A step of the arrow keys from `n`: up or down by `step`, never below zero, rounded to the step's decimals. */
+/** A step of the arrow keys from `n`: up or down by `step`, never below zero, rounded to the step's decimals or `n`'s own, the more. */
 export function stepped(n: number, step: number, up: boolean): number {
-  const decimals = Math.max(0, -Math.floor(Math.log10(step)));
+  const decimals = Math.max(0, -Math.floor(Math.log10(step)), (String(n).split(".")[1] ?? "").length);
   const next = Math.max(0, n + (up ? step : -step));
   return Number(next.toFixed(decimals));
+}
+
+/** The signs a figure may be typed with: a currency's or a percent. */
+const SIGNS = /[₪$€£%]/g;
+
+/**
+ * A number as typed in a box whose unit's sign is `sign`: that sign may be typed with it, any other sign makes it no number; the rest is
+ * `parseNumber`'s.
+ */
+export function parseInBox(text: string, sign: string | undefined): number {
+  const signs = text.match(SIGNS) ?? [];
+  if (signs.some((s) => s !== sign)) return Number.NaN;
+  return parseNumber(text.replace(SIGNS, ""));
+}
+
+/**
+ * What a figure's box does with its text: commits a number; waits, while the person is still in the box, where the box is empty or the
+ * number ends in its separator ("0,", which commits the number before it); clears the figure where the box is left empty and the figure
+ * may be cleared; else says what is wrong.
+ */
+export type Typed = { kind: "commit"; n: number } | { kind: "wait" } | { kind: "clear" } | { kind: "error"; message: ReactNode };
+
+export function readTyped(text: string, { sign, validate, clearable, left }: { sign?: string; validate?: (n: number) => ReactNode | null; clearable: boolean; left: boolean }): Typed {
+  const t = text.trim();
+  if (t === "") return !left ? { kind: "wait" } : clearable ? { kind: "clear" } : { kind: "error", message: valuesCopy.errors.nan };
+  const n = parseInBox(/\d[.,]$/.test(t) ? t.slice(0, -1) : t, sign);
+  if (Number.isNaN(n)) return { kind: "error", message: valuesCopy.errors.nan };
+  const err = validate?.(n) ?? null;
+  return err ? { kind: "error", message: err } : { kind: "commit", n };
 }
 
 /**
@@ -78,17 +107,23 @@ const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] 
  * `InlineSelect` with its label hidden). `value` is the figure as the
  * page shows it, a value object whose state is the box's look: entered or sourced; null for an optional figure not given, a dashed box.
  * A sourced figure carries a document mark that opens its source; once the person types over it, the caller makes it entered. Each valid
- * number commits as it is typed; one that fails `validate` (or is not a number) stays in the box with its message under it, takes the error
- * look and changes nothing, until it is fixed or Escape puts back the last value. With `onClear`, emptying the box clears the figure.
- * Decimals are allowed: a price list's fee keeps its agorot. The up and down arrows step the figure by `step`, never below zero; Enter
- * moves to the next field of its group (`enterToNext`). The figure is written in the site's form once the person leaves the box.
+ * number commits as it is typed (`readTyped`); one that fails `validate` (or is not a number) stays in the box with its message under it,
+ * takes the error look and changes nothing, until it is fixed. A number ending in its separator ("0,") is no error while the person is in
+ * the box. `sign` is the unit's sign the box accepts typed with the number; any other sign is no number. With `onClear`, a box left empty
+ * clears the figure; emptied, it changes nothing until it is left. Escape puts back what the box held when it took the focus (through
+ * `onRevert` where the caller keeps more of it than the number, such as its source) and keeps the focus; in a box as it was then, Escape
+ * goes on to what is around it (a panel closes). Decimals are allowed: a price list's fee keeps its agorot. The up and down arrows step
+ * the figure by `step`, never below zero, keeping the decimals typed, and do nothing in an empty box; Enter moves to the next field of
+ * its group (`enterToNext`). The figure is written in the site's form once the person leaves the box.
  */
-export function FigureField({ value, label, unit, words, inside, tight, onCommit, onClear, validate, placeholder, step, id: givenId, className }: {
+export function FigureField({ value, label, unit, sign, words, inside, tight, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
   /** The unit drawn in the box, after the number: its sign, or a choice of it. */
   unit?: ReactNode;
+  /** The unit's sign, which may be typed with the number ("%", "$"). */
+  sign?: string;
   /** Words after the box. */
   words?: ReactNode;
   /** The words in the box, after the unit, in the muted ink. */
@@ -96,8 +131,12 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
   /** Less room inside the box, for boxes that stand side by side in a narrow card (a fee's row); the box keeps its 44 px height. */
   tight?: boolean;
   onCommit: (n: number) => void;
-  /** An optional figure: an empty box clears it. */
+  /** An optional figure: a box left empty clears it. */
   onClear?: () => void;
+  /** The box takes the focus: what it holds now is what Escape puts back. */
+  onFocus?: () => void;
+  /** Escape puts back what the box held when it took the focus; without it, the box commits that number again, or clears an empty one. */
+  onRevert?: () => void;
   validate?: (n: number) => ReactNode | null;
   placeholder?: string;
   /** What the up and down arrows add or take away (0.01 for a percent, 1 for a sum); without it they do nothing. */
@@ -113,6 +152,8 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
   const [text, setText] = useState(shown);
   const [error, setError] = useState<ReactNode | null>(null);
   const focused = useRef(false);
+  // what the box held when it took the focus, which Escape puts back
+  const atFocus = useRef(shown);
   // a value from outside (a template, a reset, another field) replaces the text, but never under the person's fingers
   useEffect(() => {
     if (!focused.current) {
@@ -120,31 +161,31 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
       setError(null);
     }
   }, [shown]);
+  const read = (t: string, left: boolean) => readTyped(t, { sign, validate, clearable: !!onClear, left });
   const change = (t: string) => {
     setText(t);
-    if (t.trim() === "") {
-      setError(onClear ? null : valuesCopy.errors.nan);
-      if (onClear) onClear();
-      return;
-    }
-    const n = parseNumber(t);
-    const err = Number.isNaN(n) ? valuesCopy.errors.nan : (validate?.(n) ?? null);
-    setError(err);
-    if (!err) onCommit(n);
+    const r = read(t, false);
+    setError(r.kind === "error" ? r.message : null);
+    if (r.kind === "commit") onCommit(r.n);
   };
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Escape" && (error || text !== shown)) {
-      // the last value the page reads comes back; the Escape stops here, so a panel around the box stays open
+    if (e.key === "Escape" && (error || text.trim() !== atFocus.current)) {
+      // what the box held when it took the focus comes back; the Escape stops here, so a panel around the box stays open
       e.preventDefault();
       e.stopPropagation();
-      setText(shown);
+      const back = atFocus.current;
+      setText(back);
       setError(null);
+      if (onRevert) onRevert();
+      else if (back === "") onClear?.();
+      else onCommit(parseNumber(back));
     } else if (e.key === "Enter") {
       e.preventDefault();
       enterToNext(e.currentTarget);
     } else if ((e.key === "ArrowUp" || e.key === "ArrowDown") && step) {
+      if (text.trim() === "") return;
       e.preventDefault();
-      const now = text.trim() === "" ? 0 : parseNumber(text);
+      const now = parseInBox(text, sign);
       if (Number.isNaN(now)) return;
       change(formatTyped(stepped(now, step, e.key === "ArrowUp")));
     }
@@ -167,10 +208,18 @@ export function FigureField({ value, label, unit, words, inside, tight, onCommit
             aria-describedby={error ? `${id}-err` : undefined}
             onChange={(e) => change(e.target.value)}
             onKeyDown={onKey}
-            onFocus={() => (focused.current = true)}
+            onFocus={() => {
+              focused.current = true;
+              atFocus.current = text.trim();
+              onFocus?.();
+            }}
             onBlur={() => {
               focused.current = false;
-              if (!error && text.trim() !== "") setText(shown);
+              const r = read(text, true);
+              if (r.kind === "clear") {
+                if (value !== null) onClear?.();
+              } else if (r.kind === "error") setError(r.message);
+              else setText(shown);
             }}
             style={{ width: widthOf(text, placeholder, tight) }}
             className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}

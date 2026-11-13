@@ -78,6 +78,15 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
  * The row is one radio group and one stop of the Tab key (the chosen chip, else the first): the arrow keys move between the chips, and
  * Space or Enter chooses the one with the focus.
  */
+/**
+ * A chip's spoken name: its words with their gershayim, and the count after them where the row shows one, as the eye reads the chip. None
+ * for a label that is a node: its content names it.
+ */
+export function chipName(label: ReactNode, count: number | undefined): string | undefined {
+  if (typeof label !== "string") return undefined;
+  return count === undefined ? gershayim(label) : `${gershayim(label)} ${fmt.number(count)}`;
+}
+
 export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
   const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
   const stop = value !== null && ids.includes(value) ? value : ids[0];
@@ -95,7 +104,7 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={typeof labels[id] === "string" ? gershayim(labels[id] as string) : undefined} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45")}>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", counts && "gap-2", value === id ? "sec-chip-on" : "bg-card hover:bg-accent", counts?.[id] === 0 && value !== id && "opacity-45")}>
           {/* the label laid out twice in one cell, once at the chosen weight and unseen: the chip is as wide chosen or not */}
           <span className="inline-grid *:[grid-area:1/1]">
             <span aria-hidden="true" className="invisible font-medium">

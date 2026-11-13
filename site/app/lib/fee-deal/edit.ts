@@ -68,6 +68,35 @@ export function withFigure(p: Price, figure: Figure, n: number | null): Price {
   }
 }
 
+/** One figure of a price as it stands, with its source; none where the price has no such figure. */
+export function figureOf(p: Price, figure: Figure): Num | undefined {
+  if (p.form === "action" || p.form === "held") return figure === "rate" ? p.rate : figure === "min" || figure === "max" ? p[figure] : undefined;
+  if (p.form === "sum" || p.form === "perAction") return figure === "amount" ? p.amount : undefined;
+  return undefined;
+}
+
+/**
+ * A price with one figure put back as it stood (`figureOf`), its source with it: none takes a bound away and leaves a rate or a sum blank.
+ * A price of another form than the figure's is left as it is.
+ */
+export function figureBack(p: Price, figure: Figure, n: Num | undefined): Price {
+  switch (p.form) {
+    case "action":
+    case "held": {
+      if (figure === "rate") return { ...p, rate: n ?? blankFigure() };
+      if (figure !== "min" && figure !== "max") return p;
+      const next = { ...p, [figure]: n };
+      if (n === undefined) delete next[figure];
+      return next;
+    }
+    case "sum":
+    case "perAction":
+      return figure === "amount" ? { ...p, amount: n ?? blankFigure() } : p;
+    default:
+      return p;
+  }
+}
+
 /**
  * A price the person changed the terms of is theirs: every figure in it loses a template's source, which states the price as it was (the
  * same percent for another period, or the same sum in another currency, is a price the source does not give). A blank figure stays blank.

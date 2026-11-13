@@ -8,9 +8,9 @@
 // the builder in the column it keeps once the deal has fees, so the first fee moves nothing; the glance and the panel come with it, and
 // the reading once a fee has its price. The columns are one thing: a fee under the pointer or the focus in one is marked in the other, and
 // a fee's name in the glance or the reading chooses it (`FeeLinks`). A change that loses something (a fee taken away, a fee filled from a
-// price list, a stage taken away, a saved deal deleted) leaves one undo line where it happened (lib/fee-deal/undo.ts), which lives through
-// other edits until it is undone, a newer such change replaces it, another deal opens, what it would put back has no place left, or ten
-// seconds pass while neither the focus nor the pointer is on it.
+// price list, a stage taken away, a saved deal deleted) leaves one undo line where it happened (lib/fee-deal/undo.ts), which takes the
+// focus as it appears and lives through edits elsewhere until it is undone, a newer such change replaces it, another deal opens, the part
+// it would put back into changes, or ten seconds pass while neither the focus nor the pointer is on it.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
@@ -43,6 +43,12 @@ import { feeName } from "./words";
 
 /** How long the undo line stays while neither the focus nor the pointer is on it, in milliseconds. */
 const UNDO_MS = 10_000;
+
+/**
+ * Where the focus goes from a saved deal's undo line, after "ביטול" or when it goes: the saved deals' menu, else (no deal saved, so no
+ * menu) the deal's name in the bar.
+ */
+const dealsMenuOrName = () => document.querySelector<HTMLElement>("[data-deals-menu] button") ?? document.querySelector<HTMLElement>("[data-deal-bar] input");
 
 /** The device's day, YYYY-MM-DD, on its own calendar. */
 function deviceToday(): string {
@@ -99,6 +105,17 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   // the last change that lost something, while it can be undone; whether the focus or the pointer is on its line; what takes the focus
   // once drawn (a card put back, a fee just added)
   const [undoing, setUndoing] = useState<Undo | DealUndo | null>(null);
+  // the undo just made, whose line takes the focus when it appears; a line drawn again later (its fee's panel opened again) does not
+  const fresh = useRef<Undo | DealUndo | null>(null);
+  const take = (u: Undo | DealUndo) => () => {
+    if (fresh.current !== u) return false;
+    fresh.current = null;
+    return true;
+  };
+  const made = (u: Undo | DealUndo) => {
+    fresh.current = u;
+    setUndoing(u);
+  };
   const [holding, setHolding] = useState(false);
   const [focus, setFocus] = useState<FeeFocus | null>(null);
   // the fee under the pointer or the focus in any column, which the others mark
@@ -151,7 +168,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     setDeal(next);
     if (worthSaving(next, saved)) dealStore.update((ds) => savedWith(ds, next, today));
   };
-  // a change to the deal; an undo line stays through it, and goes by itself where what it would put back has no place left
+  // a change to the deal; an undo line stays through it, and goes by itself where the change touched the part it would put back into
   const change = (next: FeeDeal) => {
     keep(next);
     if (undoing && "dealId" in undoing && !standing(undoing, next)) setUndoing(null);
@@ -162,7 +179,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (!r.undo) return change(r.deal);
     keep(r.deal);
     setChosen(r.chosen);
-    setUndoing(r.undo);
+    made(r.undo);
   };
   const onFee = (f: Fee) => change(updateFee(deal, f.id, () => f));
   const onAdd = (kind: FeeKindId) => {
@@ -250,7 +267,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (!r) return;
     dealStore.update(() => r.deals);
     if (r.undo.shown) open(r.deals[0] ?? newDeal(null));
-    setUndoing(r.undo);
+    made(r.undo);
   };
   const options = useMemo(() => templateOptions(deal.kind, data, today), [deal.kind, data, today]);
   const onPick = (id: string) => {
@@ -305,13 +322,13 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     return feeUndoWords(u, (f) => feeName(f.kind, f.name), data);
   };
   const words = shown ? undoWords(shown) : null;
-  const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, words, onUndo, onHold: setHolding } : null;
+  const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, words, onUndo, onHold: setHolding, take: take(shown) } : null;
   // a stage's and a fill's lines stand in the panel, while the panel shows their fee
   const panelLine: PanelUndoLine | null =
     shown && words && "dealId" in shown && shown.what.kind !== "remove" && shown.what.feeId === chosen
       ? shown.what.kind === "stage" || shown.what.kind === "chain"
-        ? { kind: "stage", side: shown.what.side, k: shown.what.kind === "chain" ? shown.what.k + 1 : shown.what.k, words, onUndo, onHold: setHolding }
-        : { kind: "fill", words, onUndo, onHold: setHolding }
+        ? { kind: "stage", side: shown.what.side, k: shown.what.kind === "chain" ? shown.what.k + 1 : shown.what.k, words, onUndo, onHold: setHolding, take: take(shown) }
+        : { kind: "fill", words, onUndo, onHold: setHolding, take: take(shown) }
       : null;
   const dealLine = shown && words && !("dealId" in shown) ? words : null;
   const readSome = read.fees.length > 0;
@@ -344,7 +361,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
         {words ?? said ?? (link.copied ? copy.end.copied : "")}
       </p>
       {dealLine && (
-        <UndoLine key={`undo:deal:${(shown as DealUndo).deal.id}`} as="div" onUndo={onUndo} onHold={setHolding} refocus={() => document.querySelector<HTMLElement>("[aria-controls$='-list']")}>
+        <UndoLine key={`undo:deal:${(shown as DealUndo).deal.id}`} as="div" onUndo={onUndo} onHold={setHolding} take={take(shown!)} refocusOnUndo refocus={dealsMenuOrName}>
           {dealLine}
         </UndoLine>
       )}
@@ -353,7 +370,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
           {said && (
             <p className="flex flex-wrap items-center gap-x-3">
               <span>{said}</span>
-              <Button variant="quiet" size="sm" flush onClick={() => setSaid(null)}>
+              <Button variant="quiet" size="sm" flush wide onClick={() => setSaid(null)}>
                 {copy.end.dismiss}
               </Button>
             </p>

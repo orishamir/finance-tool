@@ -6,12 +6,14 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { Button, chipAfterAdd, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
 import { gershayim, keepTitleWhole } from "./name";
+import { chipName } from "./choice";
+import { markLabels } from "./amount-chart";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -298,5 +300,32 @@ describe("AddLine", () => {
     expect(chipAfterAdd(0, 0, false)).toBeNull();
     expect(chipAfterAdd(null, 3, false)).toBeNull();
     expect(chipAfterAdd(1, 3, true)).toBeNull();
+  });
+});
+
+describe("ChoiceChips", () => {
+  it("names each chip by its words and, where the row counts, its count, as the eye reads it", () => {
+    expect(chipName("אג\"ח", 12)).toBe(`${gershayim("אג\"ח")} 12`);
+    expect(chipName("מניות", undefined)).toBe("מניות");
+    expect(chipName(createElement("bdi", null, "1,000 ₪"), 3)).toBeUndefined();
+    const out = html(createElement(ChoiceChips, { ids: ["a", "b"], labels: { a: "חוק", b: "תקנות" }, value: "a", counts: { a: 1234, b: 0 }, onChange: () => {}, ariaLabel: "x" }));
+    expect(out).toContain('aria-label="חוק 1,234"');
+    expect(out).toContain('aria-label="תקנות 0"');
+  });
+});
+
+describe("AmountChart's mark labels", () => {
+  it("go a row higher where moving past the value axis's words would put one on the label before it", () => {
+    const axis = [{ right: 100, top: -1000, bottom: 1000 }];
+    const [a, b] = markLabels([{ cx: 5, cy: 200, half: 20 }, { cx: 60, cy: 200, half: 20 }], axis, 600);
+    expect(a).toEqual({ lx: 124, row: 0 });
+    expect(b!.row).toBe(1);
+  });
+  it("stay over their points in one row where nothing is in the way, and inside the plot", () => {
+    expect(markLabels([{ cx: 200, cy: 100, half: 20 }, { cx: 400, cy: 100, half: 20 }, { cx: 598, cy: 100, half: 20 }], [], 600)).toEqual([
+      { lx: 200, row: 0 },
+      { lx: 400, row: 0 },
+      { lx: 580, row: 0 },
+    ]);
   });
 });

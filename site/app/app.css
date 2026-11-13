@@ -134,8 +134,8 @@
   }
 }
 
-/* A control that stands alone but draws smaller than a touch target (a link in a strip, a footer, a chart's legend on a computer): its
-   tap area reaches 44 px tall and at least 44 px wide, centred on it, and the look does not change (ground rule 8, kit guard 22). Never on a link inside running
+/* A control that stands alone but draws shorter than a touch target (a link in a strip, a footer, a chart's legend on a computer): its
+   tap area reaches 44 px tall, centred on it, and the look does not change (ground rule 8, kit guard 22). Never on a link inside running
    text, whose area would cover the lines above and below it. */
 @utility tap-area {
   position: relative;
@@ -143,7 +143,22 @@
     content: "";
     position: absolute;
     z-index: 1;
-    /* a control narrower than a target (a short word) reaches 44 px wide too, centred on it */
+    inset-inline: 0;
+    top: 50%;
+    height: max(100%, var(--target));
+    translate: 0 -50%;
+  }
+}
+
+/* A named control narrower than a touch target (a short word, "ביטול") that has room on both sides: its tap area reaches 44 px wide as
+   well as tall, centred on it. Only where nothing else a finger hits stands within 22 px of its middle on either side; a control beside a
+   field or another control keeps `tap-area`, so no two areas overlap. */
+@utility tap-wide {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
     inset-inline: min(0px, calc((100% - var(--target)) / 2));
     top: 50%;
     height: max(100%, var(--target));

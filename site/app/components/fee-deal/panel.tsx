@@ -172,7 +172,7 @@ function Stages({ fee, side, stages, forms, between, line, onFee, onRemoveStage,
   const whenOf = (k: number) => `[data-when="${side}:${k}"] [tabindex="0"]`;
   const undo =
     line?.side === side ? (
-      <UndoLine key={`undo:stage:${side}:${line.k}`} as="div" className="col-span-2" onUndo={line.onUndo} onHold={line.onHold} refocusOnUndo refocus={() => document.querySelector<HTMLElement>(whenOf(Math.max(0, Math.min(line.k, stages.length) - 1)))}>
+      <UndoLine key={`undo:stage:${side}:${line.k}`} as="div" className="col-span-2" onUndo={line.onUndo} onHold={line.onHold} take={line.take} refocusOnUndo refocus={() => document.querySelector<HTMLElement>(whenOf(Math.max(0, Math.min(line.k, stages.length) - 1)))}>
         {line.words}
       </UndoLine>
     ) : null;
@@ -241,6 +241,8 @@ export type PanelUndoLine = ({ kind: "stage"; side: Side; k: number } | { kind: 
   words: string;
   onUndo: () => void;
   onHold: (held: boolean) => void;
+  /** Whether the line takes the focus as it appears (`UndoLine`). */
+  take: () => boolean;
 };
 
 type StageLine = Extract<PanelUndoLine, { kind: "stage" }>;
@@ -295,7 +297,8 @@ export function PanelColumn({ panel, fee, product, fill, line, onFee, onRemove, 
   ) : null;
   return (
     <Section title={p.title} level="kick" heading="h2" gap="tight" action={<Button variant="icon" size="sm" aria-label={p.close} title={p.close} onClick={onClose} className="-my-2"><IconClose size={18} /></Button>}>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      {/* clear of the head's close button by the 6 px its tap area reaches under its face, so the two areas never meet */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1.5">
         <h3 className="text-lg font-semibold">
           <FeeName fee={panel} />
         </h3>
@@ -310,21 +313,24 @@ export function PanelColumn({ panel, fee, product, fill, line, onFee, onRemove, 
           {base}
         </p>
       )}
-      <AlignedList>
-        <Stages fee={fee} side="buy" stages={panel.stages} forms={forms} between={sale} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} onHoldOn={onHoldOn} />
-        {panel.sale.stages && (
-          <>
-            <Across>
-              <span className="text-sm font-medium">{p.salePrices}</span>
-            </Across>
-            <Stages fee={fee} side="sell" stages={panel.sale.stages} forms={forms} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} onHoldOn={onHoldOn} />
-          </>
-        )}
-      </AlignedList>
+      {/* Enter in a box moves to the next box of the panel (`FigureField`) */}
+      <div data-figures="">
+        <AlignedList>
+          <Stages fee={fee} side="buy" stages={panel.stages} forms={forms} between={sale} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} onHoldOn={onHoldOn} />
+          {panel.sale.stages && (
+            <>
+              <Across>
+                <span className="text-sm font-medium">{p.salePrices}</span>
+              </Across>
+              <Stages fee={fee} side="sell" stages={panel.sale.stages} forms={forms} line={stageLine} onFee={onFee} onRemoveStage={onRemoveStage} onHoldOn={onHoldOn} />
+            </>
+          )}
+        </AlignedList>
+      </div>
       {/* the foot: a fill's undo line stands where the fill was chosen, in the picker's place, so nothing above it moves */}
       <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
         {line?.kind === "fill" ? (
-          <UndoLine key="undo:fill" as="div" onUndo={line.onUndo} onHold={line.onHold} refocusOnUndo refocus={() => document.querySelector<HTMLElement>("[data-fill-picker] button")}>
+          <UndoLine key="undo:fill" as="div" onUndo={line.onUndo} onHold={line.onHold} take={line.take} refocusOnUndo refocus={() => document.querySelector<HTMLElement>("[data-fill-picker] button")}>
             {line.words}
           </UndoLine>
         ) : (

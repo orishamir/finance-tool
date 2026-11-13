@@ -220,6 +220,8 @@ export interface FeeUndoLine {
   words: string;
   onUndo: () => void;
   onHold: (held: boolean) => void;
+  /** Whether the line takes the focus as it appears (`UndoLine`). */
+  take: () => boolean;
 }
 
 /** A fee whose card or first box takes the focus once drawn: one put back by the undo (its card), one just added (its first box). */
@@ -297,7 +299,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, li
   // the line of a fee taken away hands the focus, when it goes, to the card now in its place, else the one before it, else the add line
   const afterRemoved = (at: number) => () => cardFocus(cardAt(at) ?? cardAt(at - 1)) ?? adding.current?.querySelector("button");
   const undoLine = (l: FeeUndoLine, height?: number) => (
-    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} refocus={afterRemoved(l.what.at)} height={height}>
+    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} take={l.take} refocus={afterRemoved(l.what.at)} height={height}>
       {l.words}
     </UndoLine>
   );
@@ -317,7 +319,7 @@ export function BuilderColumn({ deal, view, kinds, chosen, onPickTrack, left, li
           value={kind?.name}
           action={
             kind && (
-              <Button variant="quiet" size="sm" flush onClick={() => setPicking(!picking)} aria-expanded={picking}>
+              <Button variant="quiet" size="sm" flush wide onClick={() => setPicking(!picking)} aria-expanded={picking}>
                 {picking ? b.close : b.kindChange}
               </Button>
             )

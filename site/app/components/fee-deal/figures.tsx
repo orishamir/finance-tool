@@ -1,9 +1,9 @@
 // One figure of a fee's price, typed where it stands: the same box in a builder row and in the panel, so a figure reads and edits alike in
 // both. Its state is the figure's (entered, or sourced from a template with its source a tap away); what it commits becomes the person's.
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { feeDeal as copy, values as valuesCopy } from "../../copy";
-import { editPrice, withFigure, type Figure, type Side } from "../../lib/fee-deal/edit";
-import { SUM_MAX, type Fee } from "../../lib/fee-deal/model";
+import { editPrice, figureBack, figureOf, withFigure, type Figure, type Side } from "../../lib/fee-deal/edit";
+import { pricesOn, SUM_MAX, type Fee, type Num } from "../../lib/fee-deal/model";
 import type { PriceView } from "../../lib/fee-deal/parts";
 import { FigureField, percentCheck } from "../kit";
 
@@ -26,6 +26,8 @@ export const mainFieldId = (feeId: string, side: Side, k: number, where: "row" |
  * bound not given is an empty dashed box with a dash in it only where `optional` asks for one. A rate or a sum not given yet
  * (`view.blank`) is an empty dashed box with its unit; emptying a given one makes it so again. `unit` replaces the sign in the box (a
  * bound's currency as a choice); `inside` draws `words` in the box. The arrows step a rate by a hundredth of a percent and a sum by one.
+ * The box accepts its unit's sign typed with the number, and Escape puts the figure back as it stood when the box took the focus, its
+ * source with it.
  */
 export function PriceFigure({ fee, side, k, view, figure, label, words, inside, tight, unit, optional, id, onFee }: {
   fee: Fee;
@@ -45,6 +47,8 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, inside, 
 }) {
   const value = view.figures[figure] ?? null;
   const bound = figure === "min" || figure === "max";
+  // the figure as it stood when the box took the focus
+  const atFocus = useRef<Num | undefined>(undefined);
   if (!value && !optional && !(view.blank && !bound)) return null;
   const set = (n: number | null) => onFee(editPrice(fee, side, k, (p) => withFigure(p, figure, n)));
   return (
@@ -52,6 +56,9 @@ export function PriceFigure({ fee, side, k, view, figure, label, words, inside, 
       value={value}
       label={label}
       unit={unit ?? signOf(view, figure)}
+      sign={signOf(view, figure)}
+      onFocus={() => (atFocus.current = figureOf(pricesOn(fee, side)[k]!.price, figure))}
+      onRevert={() => onFee(editPrice(fee, side, k, (p) => figureBack(p, figure, atFocus.current)))}
       words={words}
       inside={inside}
       tight={tight}

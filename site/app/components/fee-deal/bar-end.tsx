@@ -62,19 +62,21 @@ export function BarEnd({ deal, saved, kindName, copied, onCopy, onOpen, onNew, o
   return (
     <>
       {saved.length > 0 && (
-        <MenuPicker
-          name={w.dealsName}
-          items={saved.map((d) => ({ id: d.id, label: dealLabel(d, kindName(d)), meta: dealMeta(d, kindName(d)), editable: true }))}
-          value={deal.id}
-          placeholder={w.deals}
-          buttonLabel={`${w.deals} · ${saved.length}`}
-          words={w.words}
-          onSelect={onOpen}
-          onRename={onRename}
-          onDelete={onDelete}
-          deleteAsks={false}
-          add={{ label: w.newDeal, onClick: onNew }}
-        />
+        <span data-deals-menu="" className="contents">
+          <MenuPicker
+            name={w.dealsName}
+            items={saved.map((d) => ({ id: d.id, label: dealLabel(d, kindName(d)), meta: dealMeta(d, kindName(d)), editable: true }))}
+            value={deal.id}
+            placeholder={w.deals}
+            buttonLabel={`${w.deals} · ${saved.length}`}
+            words={w.words}
+            onSelect={onOpen}
+            onRename={onRename}
+            onDelete={onDelete}
+            deleteAsks={false}
+            add={{ label: w.newDeal, onClick: onNew }}
+          />
+        </span>
       )}
       {deal.kind && (
         <Button variant="outline" onClick={onCopy}>

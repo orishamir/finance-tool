@@ -29,7 +29,8 @@ describe("parseNumber (audit A6)", () => {
     ["0", 0],
   ];
   for (const [text, want] of ok) it(`"${text}" is ${want}`, () => expect(parseNumber(text)).toBe(want));
-  const bad = ["", " ", "abc", "1e5", "2,5,5", "1,2345", "--3", "5-", "1.2.3", ",", "₪", "12a", "1,234,5"];
+  // a dollar, euro or pound sign is no part of a number the site reads: only a box in that currency takes it (figure-field.tsx)
+  const bad = ["", " ", "abc", "1e5", "2,5,5", "1,2345", "--3", "5-", "1.2.3", ",", "₪", "12a", "1,234,5", "7 $", "€5", "£3"];
   for (const text of bad) it(`"${text}" is not a number`, () => expect(parseNumber(text)).toBeNaN());
 });
 

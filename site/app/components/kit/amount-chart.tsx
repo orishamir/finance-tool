@@ -67,6 +67,33 @@ function stacked(amounts: readonly number[], bands: readonly AmountBand[]): Reco
   return out;
 }
 
+
+/**
+ * Where each mark's label stands, in the order of the marks along the plot: over its point (`cx`, `cy`; `half` its half width), held
+ * inside the plot, moved past the end of the value axis's words where it would meet one, and a row higher where it would then meet a
+ * label already placed in its row; two rows at most. The axis words are checked at the row the label ends in.
+ */
+export function markLabels(points: readonly { cx: number; cy: number; half: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number): { lx: number; row: number }[] {
+  const out: { lx: number; row: number; half: number }[] = [];
+  for (const { cx, cy, half } of points) {
+    const at = (row: number) => {
+      const by = cy - MARK_LABEL - row * MARK_ROW;
+      let lx = Math.max(half, Math.min(plotR - half, cx));
+      for (const a of axisWords) if (lx - half < a.right + 4 && by - TEXT_UP < a.bottom && by + TEXT_DOWN > a.top) lx = Math.min(plotR - half, a.right + 4 + half);
+      return lx;
+    };
+    const meets = (lx: number, row: number) => out.some((p) => p.row === row && Math.abs(p.lx - lx) < p.half + half + 6);
+    let row = 0;
+    let lx = at(0);
+    if (meets(lx, 0)) {
+      row = 1;
+      lx = at(1);
+    }
+    out.push({ lx, row, half });
+  }
+  return out.map(({ lx, row }) => ({ lx, row }));
+}
+
 /**
  * `amounts`: the amounts the bands' values are at, from 0 to the axis's end, rising. `bands`: the parts from the bottom up. `marks`: the
  * amounts where the cost bends. `xTitle` names the amount ("גודל הפעולה"); `tip` heads the reading at an amount ("פעולה של 10,000 ₪")
@@ -135,18 +162,9 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
   const axisWords = ticksOn(yTicks, y, [TOP, base])
     .filter((t) => t.value > 0)
     .map((t) => ({ right: 2 + chartTextWidth(fmt.compactNisAxis(t.value), CHART_TEXT_PX), top: y(t.value) - 4 - TEXT_UP, bottom: y(t.value) - 4 + TEXT_DOWN }));
-  const placed: { m: AmountMark; cx: number; cy: number; lx: number; row: number }[] = [];
-  for (const m of [...marks].sort((p, q) => p.at - q.at)) {
-    const cx0 = x(m.at);
-    const cy0 = y(topOf(m.at));
-    const half = chartTextWidth(m.label, CHART_TEXT_PX) / 2 + 2;
-    let lx = Math.max(half, Math.min(plotR - half, cx0));
-    const prev = placed.at(-1);
-    const row = prev && Math.abs(prev.lx - lx) < half * 2 + 6 && prev.row === 0 ? 1 : 0;
-    const by = cy0 - MARK_LABEL - row * MARK_ROW;
-    for (const a of axisWords) if (lx - half < a.right + 4 && by - TEXT_UP < a.bottom && by + TEXT_DOWN > a.top) lx = Math.min(plotR - half, a.right + 4 + half);
-    placed.push({ m, cx: cx0, cy: cy0, lx, row });
-  }
+  const sorted = [...marks].sort((p, q) => p.at - q.at);
+  const points = sorted.map((m) => ({ cx: x(m.at), cy: y(topOf(m.at)), half: chartTextWidth(m.label, CHART_TEXT_PX) / 2 + 2 }));
+  const placed = markLabels(points, axisWords, plotR).map((l, i) => ({ m: sorted[i]!, cx: points[i]!.cx, cy: points[i]!.cy, ...l }));
 
   // the pointer reads an amount: the chart's steps are a hundredth of its end, rounded to a nice step
   const step = (() => {

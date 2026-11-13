@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addLater, editPrice, holdOn, laterUntouched, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, pickHeld, removeStage, setHeld, setKind, setLimited, setSaleApart, setStart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
@@ -131,6 +131,15 @@ describe("the fee page's edits", () => {
     expect(feePriced(editPrice(emptied, "buy", 0, (p) => withFigure(p, "rate", 0)), "2026-11")).toBe(true);
   });
 
+  it("a figure put back as it stood keeps its source, and none takes a bound away or leaves a rate blank", () => {
+    const src = { url: "https://www.example.org/t.pdf", title: "t", publisher: "p", strength: "institution" as const, checked: "2026-10-01" };
+    const p: Price = { form: "action", rate: { v: 0.25, src }, min: typed(15) };
+    const typedOver = withFigure(p, "rate", 0.3);
+    expect(figureBack(typedOver, "rate", figureOf(p, "rate"))).toEqual(p);
+    expect(figureBack(p, "min", undefined)).toEqual({ form: "action", rate: { v: 0.25, src } });
+    expect(figureBack(p, "rate", undefined)).toEqual({ ...p, rate: { v: 0, blank: true } });
+    expect(figureOf({ form: "free" }, "rate")).toBeUndefined();
+  });
   it("a sale priced apart starts as a copy of the purchase, and edits only itself", () => {
     const fee = editPrice(newFee("trade"), "buy", 0, (p) => withFigure(p, "rate", 0.1));
     const apart = setSaleApart(fee, true);
