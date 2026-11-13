@@ -21,7 +21,7 @@ export function ReadForBand({ picks, note, lead = copy.read.lead }: { picks: Rea
     <div className="flex flex-col gap-2 rounded-lg border border-when-edge bg-when-fill px-4 py-3">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-2 font-medium text-when-ink">
-          <Split size={16} strokeWidth={2} aria-hidden className="shrink-0" />
+          <Split size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />
           {lead}
         </span>
         {picks.map((p) => (

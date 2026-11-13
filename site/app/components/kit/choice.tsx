@@ -242,9 +242,12 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
   );
 }
 
-// Links, buttons, fields and source taps inside a PickCard lie above the card's own button, so they keep working; a field's whole box
-// (`data-lift`, FigureField's) lies above it too, so a press anywhere in the box goes to the field and not to the card.
-const LIFT_INNER = "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:relative [&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:z-10";
+/**
+ * Links, buttons, fields and source taps inside a card whose whole face is one button (`PickCard`, a case's row) lie above that button, so
+ * they keep working; a field's whole box (`data-lift`, FigureField's) lies above it too, so a press anywhere in the box goes to the field
+ * and not to the card. The card's own button carries `data-pick-card`.
+ */
+export const LIFT_INNER = "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:relative [&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:z-10";
 
 /**
  * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by

@@ -1694,15 +1694,8 @@ export const feeDeal = {
     title: "על מה העסקה",
     kind: "סוג המוצר",
     kindChange: "להחליף",
-    kindPick: "בחרו את סוג המוצר",
     kindsAria: "סוגי המוצרים",
-    held: "מה מחזיקים בה",
     close: "סגירה",
-    place: { label: "איפה הקרן נקנית", israel: "בבורסה בתל אביב", abroad: "בחו״ל" } as Record<string, string>,
-    currency: { label: "המטבע של הקרן", ILS: "שקלים", USD: "דולרים", EUR: "אירו", GBP: "לירות שטרלינג" } as Record<string, string>,
-    payout: { label: "מה הקרן עושה עם הריבית והדיבידנדים", accumulating: "צוברת", distributing: "מחלקת" } as Record<string, string>,
-    /** What is held, in short, once chosen. */
-    heldSaid: { israel: "קרן שנקנית בארץ", abroad: "קרן שנקנית בחו״ל", accumulating: "צוברת", distributing: "מחלקת", ILS: "בשקלים", USD: "בדולרים", EUR: "באירו", GBP: "בלירות שטרלינג" } as Record<string, string>,
     track: "החברה והמסלול",
     trackNone: "לא נבחרו · לא חובה",
     trackPick: "לבחור מסלול",
@@ -1711,7 +1704,6 @@ export const feeDeal = {
     start: "תאריך התחלה",
     optional: "לא חובה",
     fees: "העמלות בעסקה",
-    chosen: "נבחרה",
     /** After a bound in a row's box. */
     minWord: "מינימום",
     maxWord: "מקסימום",
@@ -1719,7 +1711,6 @@ export const feeDeal = {
     open: (name: string) => `לפתוח את ${name}`,
     add: "אפשר להוסיף:",
     unread: "התאריכים של המחירים לא מסודרים, ולכן העמלה לא נקראת.",
-    then: "אחר כך",
     /** The line a fee just taken away leaves in its place, before its name. */
     removed: "הוסרה מהעסקה: ",
     /** The line another kind of product leaves where it took several fees away, before their names. */
@@ -1744,11 +1735,6 @@ export const feeDeal = {
   panel: {
     title: "העמלה שבחרתם",
     ownName: "שם העמלה",
-    /** What the fee is charged on, from the guide's words for its base. */
-    base: "ממה",
-    /** The head of a later price whose start is not given (an old deal's price with no month before it). */
-    stage: { next: "אחר כך" },
-    form: "איך נגבה",
     forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה" } as Record<string, string>,
     /** The price parts beyond a rate and its bounds, by the name the reading's sheets give them (values.ts `inputKey`; reading.ts `UNIT_PRICE_KEY`). */
     parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", discount: "ההנחה", third: "העמלה של הצד השלישי", thirdMin: "המינימום של הצד השלישי", thirdMax: "המקסימום של הצד השלישי", refund: "ההחזר", unitPrice: "מחיר יחידה בקרן" },
@@ -1772,31 +1758,15 @@ export const feeDeal = {
     perCharge: "לכל חיוב",
     /** The percent maximum (a share of the action that the fee never passes, F-12), after its box the action it is a share of. */
     cap: "מקסימום באחוזים",
-    /** A flat price for a small action (F-12, F-13): the same price on every action, or a flat price up to a sum. */
-    small: "פעולה קטנה",
-    smallSame: "אותו מחיר",
-    smallFlat: "מחיר קבוע",
     /** Before the sum the flat price holds up to, by the fee: "[2.85 $] לכל המרה, עד המרה של [50 $]". */
     upTo: { default: "עד פעולה של", fx: "עד המרה של" } as Record<string, string>,
     until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
-    /** How long a price holds: on, or up to a month, after which the next price follows. */
-    when: "עד מתי",
-    always: "כל הזמן",
-    limited: "לזמן מוגבל",
-    /** Takes a later price away (its button's name, with the price's name after a comma). */
-    removeStage: "להסיר את המחיר",
     /** The line a later price just taken away leaves in its place. */
     stageRemoved: "המחיר הוסר.",
     /** The line the prices after one leave, taken away by "כל הזמן" on it. */
     laterRemoved: "המחירים שאחריו הוסרו.",
-    /** Under a price's month, where a later price follows and the month is not given, or is not after the month of the price before it. */
-    untilMissing: "הזינו עד איזה חודש המחיר הזה.",
-    outOfOrder: { before: "הזינו חודש אחרי ", after: "." },
-    sale: "מכירה",
-    saleSame: "כמו קנייה",
-    saleApart: "מחיר אחר",
     salePrices: "המחיר במכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
     remove: "להסיר את העמלה",
@@ -1830,21 +1800,15 @@ export const feeDeal = {
     units: { units: "יחידות", actions: "פעולות" } as Record<string, string>,
     /** Between a case's values for two things. */
     sep: " · ",
-    /** The person's own track, and the case open in place. */
-    mine: "שלכם",
-    open: "נבחר",
+    /** A case's row, spoken: the button that opens it, before its values. */
+    openCase: "לפתוח את המקרה: ",
     /** The tracks that are not the person's, folded into one line. */
     folded: { one: "עוד מסלול אחד בתעריפון", two: "עוד שני מסלולים בתעריפון", many: "עוד {n} מסלולים בתעריפון" },
-    addCase: "עוד מקרה",
-    copyCase: "להעתיק את המקרה",
-    removeCase: "להסיר את המקרה",
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
     byRemoved: "התנאי הוסר, והמקרים שלו אוחדו.",
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
-    addToFee: "להוסיף לעמלה",
-    hint: "מקישים על חלק, או גוררים אותו למקרה.",
     groups: { price: "המחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", more: "עוד על המחיר" } as Record<string, string>,
     /** A part of a price, as a toolbox card and as the open case's line; `perAction` and `of` follow the fee (`price.perAction`, `price.of`). */
     parts: {
@@ -1865,6 +1829,15 @@ export const feeDeal = {
       refund: "החזר ",
       notes: { unfilled: "גם על הוראה שלא בוצעה", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
+      /** The toolbox's card of a flat price for a small action: "מחיר קבוע לפעולה קטנה, עד ☐". */
+      flatSmall: "מחיר קבוע לפעולה קטנה, עד ",
+      /** In a discount in edit: the switch that takes it off the minimum too. */
+      discountOnMin: "גם על המינימום",
+      /** In a third party's fee in edit: whose fee it is, in the list's words, and the form of its price. */
+      thirdWho: "שם הצד השלישי",
+      thirdForm: "המחיר של הצד השלישי",
+      /** In an offset in edit, before its fee is chosen. */
+      offsetPick: "בחרו עמלה",
     },
     /** Why a thing cannot be added. */
     full: "המחיר יכול להשתנות לפי שלושה דברים לכל היותר.",
@@ -1884,6 +1857,10 @@ export const feeDeal = {
     copyNoun: { what: "סוג", held: "סוג", channel: "ערוץ", currency: "מטבע", track: "מסלול", own: "ערך" } as Record<string, string>,
     otherValue: "משהו אחר, בשם משלכם",
     otherChannel: "ערוץ אחר",
+    /** Adds a value typed in the person's words to the values asked, ticked. */
+    addValue: "להוסיף לרשימה",
+    /** A condition of the person's own, its name asked first. */
+    ownLabel: "התנאי, במילים שלכם",
     add: "להוסיף",
     cancel: "ביטול",
     /** A case's slot, opened: what it names, several may be ticked; a track by name with the person's own; a range's step. */
@@ -1893,13 +1870,20 @@ export const feeDeal = {
       myTrack: "זה המסלול שלי",
       range: "{thing} במקרה הזה",
       before: "המקרה שלפניו: ",
+      /** A value of the person's own, typed under a list: its name, and for what is bought or held, where it is bought and its currency. */
+      ownName: "השם, כמו שהוא כתוב אצלכם",
+      ownPlace: "איפה זה נקנה",
+      israel: "בארץ",
+      abroad: "בחו״ל",
+      ownCurrency: "המטבע",
+      /** A range's unit, spoken. */
+      unit: "היחידה",
     },
     /** The reading's first line: the picks it is read for. */
     readFor: "קוראים את העסקה בשביל",
     readForLine: "כל עמלה נקראת במקרה שבחרתם כאן. עמלה שמשתנה לפי גודל הפעולה נקראת בכל הגדלים, בגרף שלמטה.",
-    /** A fee the picks give no case (F-114), and the glance's line naming such fees. */
+    /** A fee the picks give no case (F-114), as its line in the glance and its slim line say it. */
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
-    unmatchedList: "לא נקראות, כי אין להן מחיר למה שבחרתם: ",
     /** What the reading states without computing (F-118), after the fee's name and ": ". */
     stated: {
       third: "נוספת עמלה של צד שלישי בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג.",
@@ -4394,7 +4378,6 @@ export const invest = {
   },
 } as const;
 
-/** The kit's own words (components/kit): names that assistive technology reads, and the gallery at /kit (a page for builders, not in the menu or the search). */
 /** What a house's documents hold that its price leaves out (D106): a line under the house's price, the sheet its words open, and the mark
  *  beside an account in the indices page's list. */
 export const leftOut = {
@@ -4439,6 +4422,9 @@ export const dealCases = {
     used: "כבר במקרה",
     /** The phone's row of groups, spoken. */
     groups: "סוגי החלקים",
+    /** The phone sheet's handle, spoken: it folds the sheet to its row of groups, and opens it again. */
+    fold: "לקפל את החלקים",
+    unfold: "לפתוח את החלקים",
   },
   ask: { add: "להוסיף", cancel: "ביטול" },
   menus: {
@@ -4459,6 +4445,7 @@ export const dealCases = {
   },
 };
 
+/** The kit's own words (components/kit): names that assistive technology reads, and the gallery at /kit (a page for builders, not in the menu or the search). */
 export const kit = {
   legend: "מקרא",
   /** A figure or a month typed in place (kit FigureField, MonthField). */

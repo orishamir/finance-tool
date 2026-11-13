@@ -416,7 +416,7 @@ function Choices() {
         </State>
         <State label="fit, in a 220 px column: as wide as its options, their words never wrap; a disabled option is faint">
           <div className="w-[220px]">
-            <SegmentedControl fit label={g.sample.title} options={[{ value: "a", label: dealWords.panel.always }, { value: "b", label: dealWords.panel.limited }]} value="a" onChange={() => undefined} />
+            <SegmentedControl fit label={g.sample.title} options={[{ value: "a", label: dealWords.panel.currencies.ILS! }, { value: "b", label: dealWords.panel.currencies.USD! }]} value="a" onChange={() => undefined} />
           </div>
         </State>
         <State label="a disabled option among three (a period with nothing to draw)">
@@ -2527,14 +2527,13 @@ function InlineSelectCurrency() {
 }
 
 function InlineSelectChipDemo() {
-  const [place, setPlace] = useState<string | null>("abroad");
-  const [payout, setPayout] = useState<string | null>(null);
-  const b = dealWords.builder;
-  const opts = (ids: string[]) => ids.map((id) => ({ id, name: b.heldSaid[id]! }));
+  const [currency, setCurrency] = useState<string | null>("USD");
+  const [per, setPer] = useState<string | null>(null);
+  const p = dealWords.panel;
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <InlineSelect chip label={b.place.label!} all={b.place.label!} options={opts(["israel", "abroad"])} value={place} onChange={setPlace} />
-      <InlineSelect chip label={b.payout.label!} all={b.payout.label!} options={opts(["accumulating", "distributing"])} value={payout} onChange={setPayout} />
+      <InlineSelect chip label={p.currency} options={Object.entries(p.signs).map(([id, name]) => ({ id, name }))} value={currency} onChange={setCurrency} />
+      <InlineSelect chip label={p.per} all={p.per} options={Object.entries(p.perOptions).map(([id, name]) => ({ id, name }))} value={per} onChange={setPer} />
     </div>
   );
 }
@@ -2613,7 +2612,7 @@ function DealDemos({ today }: { today: string }) {
                 <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
               </AlignedRow>
               <AlignedAcross>
-                <AlignedCaption>{dealWords.panel.untilMissing}</AlignedCaption>
+                <AlignedCaption>{dealWords.builder.facts.noBounds}</AlignedCaption>
               </AlignedAcross>
             </AlignedList>
           </State>
@@ -2884,7 +2883,7 @@ function TradeFee({ today }: { today: string }) {
   );
 }
 
-/** The conversion that changes by its size and the channel (round 3's range), at rest, its things editable in the head. */
+/** The conversion that changes by its size and the channel, at rest, its things editable in the head. */
 function Conversion({ today }: { today: string }) {
   const usdFx: Pick<Part, "unit" | "sign"> = { unit: "usd", sign: "$" };
   const upTo = (n: number): CaseWord => ({ text: <>{sc.upTo} <bdi dir="ltr">{fmt.number(n)} $</bdi></>, range: true });

@@ -7,6 +7,7 @@ import { useId, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Plus, Split, Trash2 } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Button } from "./button";
+import { LIFT_INNER } from "./choice";
 import { cx } from "./cx";
 import { Tag } from "./tag";
 
@@ -21,10 +22,7 @@ export interface CaseWord {
   range?: boolean;
 }
 
-/** The controls inside a row that keep their own tap, lifted above the row's button (the kit's `PickCard` does the same). */
-const LIFT = "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-case-pick])]:relative [&_:is(a,button,[role=button],input,select,[data-lift]):not([data-case-pick])]:z-10";
-
-const icon = { size: 16, strokeWidth: 2, "aria-hidden": true, className: "shrink-0" } as const;
+const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 
 /**
  * The band: its head (the cases' icon, `label`, then one pill per thing) and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`),
@@ -47,7 +45,7 @@ export function ConditionBand({ things, onThing, label = copy.changesBy, addCase
           onThing ? (
             <button key={t.id} type="button" onClick={(e) => onThing(t.id, e.currentTarget)} className="tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent">
               {t.name}
-              <ChevronDown size={16} strokeWidth={2} aria-hidden className="text-muted-foreground" />
+              <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
             </button>
           ) : (
             <span key={t.id} className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">
@@ -90,8 +88,8 @@ function CaseWords({ when }: { when: CaseWord[] }) {
  */
 export function CaseRow({ when, label, onOpen, children }: { when: CaseWord[]; label: string; onOpen?: () => void; children: ReactNode }) {
   return (
-    <div className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT))}>
-      {onOpen && <button type="button" data-case-pick aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
+    <div className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
+      {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} />
       <div className={cx("ms-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-s-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0", onOpen && "group-hover:bg-accent")}>{children}</div>
     </div>
@@ -108,7 +106,7 @@ export function CaseFold({ label, open, onToggle, children }: { label: ReactNode
     <>
       <button type="button" aria-expanded={open} aria-controls={id} onClick={onToggle} className="flex min-h-target w-full items-center justify-center gap-1.5 px-3 text-sm text-when-any hover:text-when-ink">
         {label}
-        <ChevronDown size={16} strokeWidth={2} aria-hidden className={cx("shrink-0 transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
+        <ChevronDown size={16} strokeWidth={1.75} aria-hidden className={cx("shrink-0 transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
       </button>
       <div id={id} hidden={!open} className="flex flex-col gap-1 opacity-60">
         {open && children}
@@ -126,7 +124,7 @@ export function CaseSlot({ children, range, open, onOpen }: { children: ReactNod
     <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className="inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3.5 pe-3 text-sm text-foreground hover:bg-accent">
       {range && <ChartNoAxesColumnIncreasing {...icon} className="shrink-0 text-when-ink" />}
       <span className="min-w-0">{children}</span>
-      <ChevronDown size={16} strokeWidth={2} aria-hidden className="shrink-0 text-muted-foreground" />
+      <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-muted-foreground" />
     </button>
   );
 }

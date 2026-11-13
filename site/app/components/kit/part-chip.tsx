@@ -32,7 +32,7 @@ function Lead({ kind, mark, lead }: { kind: PartKind; mark?: PartMark; lead?: Re
   const Icon = mark ? ICONS[mark] : null;
   return (
     <span className={cx("inline-flex items-center gap-1", LEAD_INK[kind])}>
-      {Icon && <Icon size={16} strokeWidth={2} aria-hidden className="shrink-0" />}
+      {Icon && <Icon size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
       {lead}
     </span>
   );
@@ -62,19 +62,21 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
 
 /**
  * A part in edit, in the open case: the full width, its icon and first word, then its boxes and choices as `children` (the kit's
- * `FigureField`, `InlineSelect`, words between them), and ✕ at its end, which removes it. 48 px tall at least; on a narrow screen its
- * boxes wrap and the ✕ stays in the corner.
+ * `FigureField`, `InlineSelect`, words between them), and ✕ at its end, which removes it (none where there is nothing to remove: a free
+ * price). 48 px tall at least; on a narrow screen its boxes wrap and the ✕ stays in the corner.
  */
-export function PartEdit({ kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove: () => void; /** The ✕'s spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
+export function PartEdit({ kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The ✕'s spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
   return (
     <div className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1", PART_LOOK[kind])}>
       <div className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead kind={kind} mark={mark} lead={lead} />
         {children}
       </div>
-      <Button variant="icon" size="sm" aria-label={removeLabel} onClick={onRemove} className="mt-0.5 shrink-0">
-        <X size={16} strokeWidth={2} aria-hidden />
-      </Button>
+      {onRemove && (
+        <Button variant="icon" size="sm" aria-label={removeLabel} onClick={onRemove} className="mt-0.5 shrink-0">
+          <X size={16} strokeWidth={1.75} aria-hidden />
+        </Button>
+      )}
     </div>
   );
 }

@@ -41,7 +41,7 @@ export function TickMenu({ title, options, ticked, onToggle, other }: { title: R
       })}
       {other && (
         <Button variant="quiet" gap="sm" onClick={other.onClick} className="self-start">
-          <Plus size={16} strokeWidth={2} aria-hidden />
+          <Plus size={16} strokeWidth={1.75} aria-hidden />
           {other.label ?? copy.menus.other}
         </Button>
       )}
