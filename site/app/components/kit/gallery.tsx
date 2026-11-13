@@ -1700,6 +1700,12 @@ function Lists({ today }: { today: string }) {
             <SortNote label={p.figure} note={p.note} />
           </div>
         </State>
+        <State label={'with a "?" beside it: the head is raised, so a press on its arrow sorts and never opens the mark, whose 44 px area reaches over the head\'s end'}>
+          <span className="inline-flex items-start gap-1">
+            <SortHead label={p.figure} note={p.note} state="ascending" onPress={() => {}} raised />
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
+          </span>
+        </State>
       </Demo>
       <Demo name="SourcedTag" use={g.uses.SourcedTag}>
         <Grid>
