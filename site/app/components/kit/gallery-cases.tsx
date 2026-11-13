@@ -194,12 +194,14 @@ function Conversion({ today }: { today: string }) {
   const usdFx: Pick<Part, "unit" | "sign"> = { unit: "usd", sign: "$" };
   const upTo = (n: number): CaseWord => ({ text: <>{s.upTo} <bdi dir="ltr">{fmt.number(n)} $</bdi></>, range: true });
   const over = (n: number): CaseWord => ({ text: <>{s.over} <bdi dir="ltr">{fmt.number(n)} $</bdi></>, range: true });
-  const cases: { id: string; when: CaseWord[]; parts: Part[] }[] = [
-    { id: "a", when: [upTo(10), { text: s.anyChannel, any: true }], parts: [{ id: "free", kind: "price", text: dealWords.price.free }] },
-    { id: "b", when: [upTo(100), { text: s.anyChannel, any: true }], parts: [{ id: "off", kind: "price", lead: s.discount, n: 50, ...pct, words: s.ofPrice }] },
+  const said = (side: string, n: number, channel: string) => s.open(`${side} ${fmt.number(n)} $, ${channel}`);
+  const cases: { id: string; when: CaseWord[]; say: string; parts: Part[] }[] = [
+    { id: "a", when: [upTo(10), { text: s.anyChannel, any: true }], say: said(s.upTo, 10, s.anyChannel), parts: [{ id: "free", kind: "price", text: dealWords.price.free }] },
+    { id: "b", when: [upTo(100), { text: s.anyChannel, any: true }], say: said(s.upTo, 100, s.anyChannel), parts: [{ id: "off", kind: "price", lead: s.discount, n: 50, ...pct, words: s.ofPrice }] },
     {
       id: "c",
       when: [over(100), { text: s.channels.branch }],
+      say: said(s.over, 100, s.channels.branch),
       parts: [{ id: "rate", kind: "price", n: 0.19, ...pct, words: dealWords.price.perAction.fx }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 6.8, ...usdFx, words: s.toConversion }, { id: "max", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 1075, ...usdFx, words: s.toConversion }],
     },
   ];
@@ -207,7 +209,7 @@ function Conversion({ today }: { today: string }) {
     <FeeBlock dot="bg-fee-fx" name={s.fx}>
       <ConditionBand things={[{ id: "size", name: s.things.size }, { id: "channel", name: s.things.channel }]} onThing={() => undefined} addCase={{ onAdd: () => undefined }}>
         {cases.map((c) => (
-          <CaseRow key={c.id} when={c.when} label={s.open(c.id)} onOpen={() => undefined}>
+          <CaseRow key={c.id} when={c.when} label={c.say} onOpen={() => undefined}>
             {c.parts.map((p) => (
               <Rest key={p.id} part={p} today={today} />
             ))}
@@ -393,7 +395,7 @@ export function CaseDemos({ today, Demo, State }: { today: string } & Frames) {
         <State label={`drawn in place; on the page each opens in ValueMenuSheet from its slot (the band above opens them), ${g.states.interactive}`} wide>
           <div className="grid gap-4 md:grid-cols-3">
             {(["what", "track", "range"] as const).map((k) => (
-              <Card key={k} pad="tight" className="bg-popover">
+              <Card key={k} pad="tight" className="min-w-0 bg-popover">
                 <MenuBody kind={k} />
               </Card>
             ))}

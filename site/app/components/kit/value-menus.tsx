@@ -70,7 +70,7 @@ export function Switch({ label, checked, onChange }: { label: ReactNode; checked
 /** A track's name as the price list writes it, and the switch that makes it the person's own track (one track of a fee is). */
 export function TrackMenu({ name, onName, mine, onMine }: { name: string; onName: (name: string) => void; mine: boolean; onMine: (on: boolean) => void }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex min-w-0 flex-col gap-3">
       <TextField label={copy.menus.trackName} value={name} onChange={onName} />
       <Switch label={copy.menus.myTrack} checked={mine} onChange={onMine} />
     </div>
