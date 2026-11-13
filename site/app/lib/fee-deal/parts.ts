@@ -1,7 +1,7 @@
 // What every view of a deal is built from (method §10.6): the deal read once by the engine (F-110), each price as the page shows it
 // with its figures in their number states, each price's standing against the cap (F-113), the marks (F-112) and what a fee is
 // charged on (F-111). The views (glance.ts, builder.ts, reading.ts) only arrange these.
-import { chargedOn, dealPeriods, groupAction, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
+import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
 import { engineDeal, engineFee, feeInOrder, monthOf, monthOfDate, monthsBetween, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "./model";
@@ -143,21 +143,36 @@ const amountUnit = (currency: string): Unit => (currency === "USD" ? "usd" : cur
 /**
  * A mark of F-112 as the page states it. `min` and `max`: the fee's bound and rate, and the sum below which the minimum binds or above
  * which the maximum does, in the bound's currency. `meet`: the yearly sums on the account added, the custody fees' yearly rates added,
- * and the value held on which the two are equal.
+ * the value held on which the two are equal, and whether below it the sums are the largest cost of holding (`sumsLargest`).
  */
 export type MarkView =
   | { kind: "min" | "max"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; rate: SiteValue; amount: SiteValue }
-  | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue };
+  | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
 
-/** A mark of the engine on fees `fees` (the engine's indices into them) in a period, as the page states it. */
-export function markView(m: DealMark, fees: readonly Fee[], period: DealPeriod, today: string): MarkView {
+/**
+ * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says
+ * only that they are larger than custody there, and the other shares of what is held (a fund's own fee, a manager's) may cost more. Each
+ * such share's yearly cost rises with the value or stays (a rate with its bounds), and the sums stay, so it holds below `B` exactly where
+ * each other share, priced at `B` as the holding curve prices it (its bounds included), costs no more than the sums.
+ */
+export function sumsLargest(engine: Deal, period: DealPeriod, m: Extract<DealMark, { kind: "meet" }>): boolean {
+  const cost = holdingCost(engine, period, m.amount);
+  const sums = cost.parts.filter((x) => m.fees.includes(x.fee)).reduce((a, x) => a + x.cost, 0);
+  return cost.parts.every((x) => m.fees.includes(x.fee) || m.against.includes(x.fee) || x.cost <= sums);
+}
+
+/**
+ * A mark of the engine on fees `fees` (the engine's indices into them) in a period, as the page states it; `largest`, for a meet mark,
+ * whether its sums are the largest cost of holding below it (`sumsLargest`, read by the caller over the periods the mark is said for).
+ */
+export function markView(m: DealMark, fees: readonly Fee[], period: DealPeriod, today: string, largest = false): MarkView {
   if (m.kind === "meet") {
     const yearly = (i: number) => priceView(fees, i, priceAt(fees[i]!, period.from), today).yearly!;
     const sumIn = Object.fromEntries(m.fees.map((i) => [inputKey(fees, i, "yearly"), yearly(i)]));
     const rateIn = Object.fromEntries(m.against.map((i) => [inputKey(fees, i, "yearly"), yearly(i)]));
     const sum = m.fees.length === 1 ? yearly(m.fees[0]!) : reading(m.sum, "nis", "F-111", sumIn, today);
     const rate = m.against.length === 1 ? yearly(m.against[0]!) : reading(m.rate * 100, "pct_per_year", "F-111", rateIn, today);
-    return { kind: "meet", on: "held", fees: m.fees.map((i) => refOf(fees[i]!)), against: m.against.map((i) => refOf(fees[i]!)), sum, rate, amount: reading(m.amount, "nis", "F-112", { account_sums: sum, custody_rate: rate }, today) };
+    return { kind: "meet", on: "held", fees: m.fees.map((i) => refOf(fees[i]!)), against: m.against.map((i) => refOf(fees[i]!)), sum, rate, amount: reading(m.amount, "nis", "F-112", { account_sums: sum, custody_rate: rate }, today), largest };
   }
   const fee = fees[m.fee]!;
   const price = priceAt(fee, period.from, m.side === "sell");

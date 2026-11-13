@@ -359,10 +359,14 @@ export function feePriceLists(deal: FeeDeal, kind: FeeKindId, data: Pick<FeesDat
   return data.houses.filter((h) => holdingOf(h, deal.held ?? HELD_UNSAID)?.fees.some((f) => f.kind === kind)).map((h) => ({ id: houseId(h), name: h.name }));
 }
 
+/** A house's name by its template id (`house:<id>`); null where no house has it. */
+export const houseName = (id: string, data: Pick<FeesData, "houses">): string | null => data.houses.find((h) => houseId(h) === id)?.name ?? null;
+
 /**
  * The deal with one fee's price filled from a house's price list (`feePriceLists`): the fee keeps its id and place, takes the list's one
- * price with its sources, and so prices a sale as a purchase. No other fee changes, nor the deal's name, template or provider. Null where
- * the list has no line for the fee.
+ * price with its sources, and so prices a sale as a purchase. No other fee changes, nor the deal's name or template. A house of another
+ * provider kind than the deal names takes the deal's provider away: the deal's fees are then priced by more than one kind of provider, and
+ * a cap that binds only some providers is stated without a judgement (F-113). Null where the list has no line for the fee.
  */
 export function fillFee(deal: FeeDeal, feeId: string, houseIdOf: string, data: Pick<FeesData, "houses">): FeeDeal | null {
   const fee = deal.fees.find((f) => f.id === feeId);
@@ -370,7 +374,20 @@ export function fillFee(deal: FeeDeal, feeId: string, houseIdOf: string, data: P
   if (!fee || !h || deal.kind !== "brokerage-account") return null;
   const t = holdingOf(h, deal.held ?? HELD_UNSAID)?.fees.find((f) => f.kind === fee.kind);
   if (!t) return null;
-  return { ...deal, fees: deal.fees.map((f) => (f.id === feeId ? { id: f.id, kind: f.kind, stages: structuredClone(t.stages) } : f)) };
+  const filled: FeeDeal = { ...deal, fees: deal.fees.map((f) => (f.id === feeId ? { id: f.id, kind: f.kind, stages: structuredClone(t.stages) } : f)) };
+  if (!deal.provider || deal.provider === h.provider) return filled;
+  const { provider: _p, ...rest } = filled;
+  return rest;
+}
+
+/** A row's title in the track picker: a track's short name where it has one (D54), else the template's name. */
+export const rowTitle = (o: TemplateOption): string => (o.source === "track" ? (o.short ?? o.name) : o.name);
+
+/** The templates whose name, a track's short name or its company holds the words typed. */
+export function matching(options: readonly TemplateOption[], query: string): readonly TemplateOption[] {
+  const q = query.trim();
+  if (!q) return options;
+  return options.filter((o) => o.name.includes(q) || (o.source === "track" && (o.short?.includes(q) || o.company.includes(q))));
 }
 
 /** A new deal of a track's kind, filled from the track (`/deal?track=`); null where the track maps to no product id. */

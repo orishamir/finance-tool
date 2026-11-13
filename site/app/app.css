@@ -300,6 +300,11 @@
     cursor: pointer;
     white-space: nowrap;
   }
+  /* a rules line in a list of one-line rows (RulesLine `dense`): the rows stand at least 34 px apart, so the 44 px areas of two chips one
+     above the other meet only outside both chips, and the chip needs no band in its own line */
+  .rules-line-dense .rule-chip {
+    margin-block: 0;
+  }
   .rule-chip::after {
     content: "";
     position: absolute;

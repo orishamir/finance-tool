@@ -686,10 +686,10 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
 }
 
 /** `RulesChip` as the last line of its block, never inside a sentence. */
-export function RulesLine({ ids, lead, name, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; className?: string }) {
+export function RulesLine({ ids, lead, name, dense, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; /** One of a list of one-line rows at least 34 px apart (the fee page's law card): the chip holds no band of its own in the line, the rows' spacing keeps each chip's 44 px area clear of the chip above and below. */ dense?: boolean; className?: string }) {
   if (ids.length === 0 && !lead) return null;
   return (
-    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
+    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", dense && "rules-line-dense", className)}>
       {lead}
       <RulesChip ids={ids} name={name} />
     </p>

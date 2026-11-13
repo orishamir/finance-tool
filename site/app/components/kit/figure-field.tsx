@@ -11,9 +11,10 @@ import { useOpen, valueItem } from "../provenance";
 import { cx } from "./cx";
 
 /** The box of a typed figure or month: its edge, fill and ink say whose the value is. */
-function boxLook(state: "entered" | "sourced" | "empty", error: boolean): string {
+function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?: boolean): string {
   return cx(
-    "inline-flex items-center gap-1 min-h-target rounded-md border px-2.5 tabular-nums focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
+    "inline-flex items-center min-h-target rounded-md border tabular-nums focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
+    tight ? "gap-0.5 px-1.5 text-[15px]" : "gap-1 px-2.5",
     state === "entered" && "bg-entered-subtle text-entered border-entered/50",
     state === "sourced" && "bg-card text-foreground border-input",
     state === "empty" && "bg-card text-foreground border-input border-dashed",
@@ -21,8 +22,13 @@ function boxLook(state: "entered" | "sourced" | "empty", error: boolean): string
   );
 }
 
-/** An input as wide as what it holds, so a short figure takes a short box and a long one never cuts. */
-const widthOf = (text: string, placeholder: string | undefined) => `${Math.max(text.length, placeholder?.length ?? 0, 2) + 0.5}ch`;
+/**
+ * An input as wide as what it holds, so a short figure takes a short box and a long one never cuts. A tight box is as wide as its own
+ * characters where the browser sizes a field to its content (`field-sizing`), the width in `ch` being only the fallback: a digit is
+ * narrower than a `ch` and a point much narrower.
+ */
+const widthOf = (text: string, placeholder: string | undefined, tight?: boolean) => `${Math.max(tight && text ? text.length : Math.max(text.length, placeholder?.length ?? 0), tight ? 1 : 2) + (tight ? 0.15 : 0.5)}ch`;
+const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:!w-auto";
 
 /**
  * A figure typed in place: the box holds the number and its unit ("%", "₪"), `words` follow it ("מכל פעולה"), or stand in the box after the
@@ -33,7 +39,7 @@ const widthOf = (text: string, placeholder: string | undefined) => `${Math.max(t
  * number commits as it is typed; one that fails `validate` stays in the box with its message under it. With `onClear`, emptying the box
  * clears the figure. Decimals are allowed: a price list's fee keeps its agorot.
  */
-export function FigureField({ value, label, unit, words, inside, onCommit, onClear, validate, placeholder, className }: {
+export function FigureField({ value, label, unit, words, inside, tight, onCommit, onClear, validate, placeholder, className }: {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
@@ -43,6 +49,8 @@ export function FigureField({ value, label, unit, words, inside, onCommit, onCle
   words?: ReactNode;
   /** The words in the box, after the unit, in the muted ink. */
   inside?: boolean;
+  /** Less room inside the box, for boxes that stand side by side in a narrow card (a fee's row); the box keeps its 44 px height. */
+  tight?: boolean;
   onCommit: (n: number) => void;
   /** An optional figure: an empty box clears it. */
   onClear?: () => void;
@@ -79,7 +87,7 @@ export function FigureField({ value, label, unit, words, inside, onCommit, onCle
   return (
     <span className={cx("inline-flex flex-col gap-0.5 align-middle", className)}>
       <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
-        <span className={boxLook(state, !!error)}>
+        <span className={boxLook(state, !!error, tight)}>
           <input
             id={id}
             type="text"
@@ -96,8 +104,8 @@ export function FigureField({ value, label, unit, words, inside, onCommit, onCle
               focused.current = false;
               if (!error && text.trim() !== "") setText(shown);
             }}
-            style={{ width: widthOf(text, placeholder) }}
-            className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
+            style={{ width: widthOf(text, placeholder, tight) }}
+            className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
           />
           {unit && <span className="text-sm opacity-80">{unit}</span>}
           {inside && words && <span className="text-sm text-muted-foreground">{words}</span>}
@@ -138,7 +146,7 @@ export const monthText = (key: string) => `${key.slice(5, 7)}.${key.slice(0, 4)}
  * It commits when the person leaves it or presses Enter; with `onClear`, an empty box clears the month. `lead`: words in the box before the
  * month, so a price that holds until a month is one box ("[חינם עד 03.2028]").
  */
-export function MonthField({ value, label, lead, onCommit, onClear, className }: { value: string | null; label: string; lead?: ReactNode; onCommit: (month: string) => void; onClear?: () => void; className?: string }) {
+export function MonthField({ value, label, lead, tight, onCommit, onClear, className }: { value: string | null; label: string; lead?: ReactNode; /** As `FigureField`'s. */ tight?: boolean; onCommit: (month: string) => void; onClear?: () => void; className?: string }) {
   const id = useId();
   const shown = value ? monthText(value) : "";
   const [text, setText] = useState(shown);
@@ -166,7 +174,7 @@ export function MonthField({ value, label, lead, onCommit, onClear, className }:
   const placeholder = kitCopy.figure.monthPlaceholder;
   return (
     <span className={cx("inline-flex flex-col gap-0.5 align-middle", className)}>
-      <span className={boxLook(value === null ? "empty" : "entered", error)}>
+      <span className={boxLook(value === null ? "empty" : "entered", error, tight)}>
         {lead && <span className="text-sm">{lead}</span>}
         <input
           id={id}
@@ -187,8 +195,8 @@ export function MonthField({ value, label, lead, onCommit, onClear, className }:
           onKeyDown={(e) => {
             if (e.key === "Enter") commit();
           }}
-          style={{ width: widthOf(text, placeholder) }}
-          className="bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal"
+          style={{ width: widthOf(text, placeholder, tight) }}
+          className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT)}
         />
       </span>
       {error && (

@@ -13,7 +13,13 @@ export interface SegmentOption<T extends string> {
   disabled?: boolean;
 }
 
-/** Two to four short options of equal weight, one always chosen (real or nominal, a count). role="group" with aria-pressed buttons; arrow keys move between options. */
+/**
+ * Two to four short options of equal weight, one always chosen (real or nominal, a count). role="group" with aria-pressed buttons; arrow
+ * keys move between options. A compact strip, 30 px tall with a 44 px tap area, its options never wrapping their words: the chosen one in
+ * the dark action fill with light bold words and a small check; the others in the muted ink. Each option holds room for its words at the
+ * chosen weight, so choosing moves nothing. A disabled option is faint and cannot be chosen. Options too long to stand side by side in
+ * the room given go onto a second row, each still on one line, rather than out of the box.
+ */
 export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy, check = true, fit }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string; /** As wide as its options from 640 px, not the full width. */ fit?: boolean; /** The check on the pressed option; a company page's controls go without it, the fill alone (the designer's mocks). */ check?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -26,23 +32,33 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
     ref.current?.querySelectorAll("button")[options.indexOf(enabled[next]!)]?.focus();
   };
   return (
-    <div ref={ref} role="group" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("inline-flex w-full rounded-md bg-muted p-[3px] gap-[3px]", fit && "sm:w-fit", className)}>
-      {options.map((o) => (
-        <button
-          key={o.value}
-          type="button"
-          aria-pressed={value === o.value}
-          disabled={o.disabled}
-          onClick={() => onChange(o.value)}
-          className={cx(
-            "flex-1 inline-flex items-center justify-center gap-1.5 min-h-target lg:min-h-10 lg:tap-area px-3 rounded-[5px] text-sm transition-colors duration-[var(--duration-fast)] disabled:text-muted-foreground disabled:cursor-not-allowed",
-            value === o.value ? "bg-primary font-medium text-primary-foreground shadow-sm" : "text-foreground hover:bg-accent/60", // a clear pressed state
-          )}
-        >
-          {check && value === o.value && <IconCheck size={16} />}
-          {typeof o.label === "string" ? gershayim(o.label) : o.label}
-        </button>
-      ))}
+    <div ref={ref} role="group" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("inline-flex flex-wrap w-full max-w-full rounded-[10px] border border-input", fit && "sm:w-fit", className)}>
+      {options.map((o) => {
+        const on = value === o.value;
+        const words = typeof o.label === "string" ? gershayim(o.label) : o.label;
+        return (
+          <button
+            key={o.value}
+            type="button"
+            aria-pressed={on}
+            disabled={o.disabled}
+            onClick={() => onChange(o.value)}
+            className={cx(
+              "flex-1 inline-flex items-center justify-center gap-1 whitespace-nowrap min-h-[30px] tap-area px-3 text-sm rounded-[9px] transition-colors duration-[var(--duration-fast)] disabled:opacity-40 disabled:cursor-not-allowed",
+              on ? "bg-primary-subtle text-foreground" : "text-muted-foreground enabled:hover:bg-accent/60 enabled:hover:text-foreground",
+            )}
+          >
+            {check && on && <IconCheck size={14} className="shrink-0 text-primary" />}
+            {/* the words laid out twice in one cell, once at the chosen weight and unseen: an option is as wide chosen or not */}
+            <span className="inline-grid *:[grid-area:1/1]">
+              <span aria-hidden="true" className="invisible font-semibold">
+                {words}
+              </span>
+              <span className={on ? "font-semibold" : undefined}>{words}</span>
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }

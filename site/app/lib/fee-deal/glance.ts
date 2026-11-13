@@ -20,6 +20,7 @@ import {
   refOf,
   standingView,
   subRead,
+  sumsLargest,
   type DealRead,
   type FeeRef,
   type GroupOn,
@@ -131,7 +132,10 @@ function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: { 
     for (const m of dealMarks(sub.engine, sub.period)) {
       if (m.kind === "meet" && others.meet) continue;
       const key = m.kind === "meet" ? "held" : keyOf.get(idx[m.fee]!)!;
-      byKey.get(key)?.marks.push(markView(m, sub.fees, sub.period, r.today));
+      // the sums are the largest cost of holding only where they are in every period, against every other share of the whole deal
+      const whole = m.kind === "meet" ? { ...m, fees: m.fees.map((k) => idx[k]!), against: m.against.map((k) => idx[k]!) } : null;
+      const largest = !!whole && r.reading.periods.every((p) => sumsLargest(r.engine, p, whole));
+      byKey.get(key)?.marks.push(markView(m, sub.fees, sub.period, r.today, largest));
     }
   }
   return [...byKey.entries()].sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)).map(([, g]) => g);

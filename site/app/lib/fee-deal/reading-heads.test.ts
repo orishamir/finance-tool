@@ -5,6 +5,8 @@ import type { FxSnapshot } from "../fx";
 import { typed, type FeeDeal } from "./model";
 import { readDealFor } from "./parts";
 import { readingOf, type LawRow } from "./reading";
+import { glance } from "./glance";
+import type { MarkView } from "./parts";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodChanges, periodsHead, spansOf, withConversion } from "./reading-heads";
 
 const data = feesData();
@@ -84,6 +86,35 @@ describe("the curves", () => {
     d.fees.push({ id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), min: typed(5) } }] });
     const two = curveGroups(readOn(d, data.fx))[0]!.curves[0]!;
     expect(curveHead(two)).toEqual({ kind: "marks", n: 3 });
+  });
+  it("gives the rate above a minimum only where the curve's fees are their whole group (F-111)", () => {
+    const d = account();
+    d.fees = [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12, min: typed(50) } }] }];
+    const alone = curveGroups(readOn(d, data.fx)).find((g) => g.key === "held::all")!.curves[0]!;
+    expect(curveHead(alone)).toMatchObject({ kind: "min", rate: { value: 0.2 } });
+    // a sum per period on the same curve is not a share: the curve is no longer its group alone, and no rate is said
+    d.fees.push({ id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(1), every: 1 } }] });
+    const withSum = curveGroups(readOn(d, data.fx)).find((g) => g.key === "held::all")!.curves.find((c) => c.marks.some((m) => m.kind === "min"))!;
+    expect(withSum.rate).toBeUndefined();
+  });
+  it("calls the sums the largest cost of holding only where every other share costs no more below the meeting value (F-112)", () => {
+    const meetOf = (d: FeeDeal) => curveGroups(readOn(d, data.fx)).find((g) => g.key === "held::all")!.curves[0]!.marks.find((m) => m.kind === "meet") as Extract<MarkView, { kind: "meet" }>;
+    const d = account();
+    d.fees = [
+      { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] },
+      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] },
+    ];
+    expect(meetOf(d)).toMatchObject({ amount: { value: 120000 }, largest: true });
+    // a fund's own fee of 0.5%: 600 ₪ a year at 120,000 ₪ against 120 ₪ of sums, and 500 ₪ against 120 ₪ at 100,000 ₪
+    d.fees.push({ id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 12 } }] });
+    expect(meetOf(d)).toMatchObject({ amount: { value: 120000 }, largest: false });
+    // a small one stays below the sums at that value: 0.05% is 60 ₪ a year at 120,000 ₪
+    d.fees[2]!.stages[0]!.price = { form: "held", rate: typed(0.05), per: 12, every: 12 };
+    expect(meetOf(d).largest).toBe(true);
+    // the glance reads it the same way
+    d.fees[2]!.stages[0]!.price = { form: "held", rate: typed(0.5), per: 12, every: 12 };
+    const marks = glance(readDealFor(d, data.kinds, TODAY)).throughout.flatMap((g) => g.marks);
+    expect(marks.find((m) => m.kind === "meet")).toMatchObject({ largest: false });
   });
   it("puts a curve it cannot draw in its group", () => {
     const d = account();

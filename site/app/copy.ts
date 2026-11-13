@@ -1529,6 +1529,8 @@ export const feeDeal = {
     fx_spread: { g: "m" },
     current_account: { g: "m", the: "החשבון העובר ושב בבנק" },
   } as Record<string, { g: "m" | "f" | "mp" | "fp"; the?: string }>,
+  /** "Larger than", after a name that is the subject, agreeing with it ("דמי החשבון הקבועים גדולים מדמי ניהול הפיקדון"). */
+  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
   /** The bar under the page's head: the deal's name, its kind, its start and where it is kept. */
@@ -1608,8 +1610,19 @@ export const feeDeal = {
     maxHeld: { before: "על יותר מ־", after: " המקסימום קובע." },
     /** Whose bound it is, where the group has several fees. */
     whose: "{name}: ",
-    /** The yearly sums on the account against custody's yearly rate (F-112 (3)). */
-    meet: { before: "הסכומים הקבועים, ", sum: " בשנה, שווים ל־", rate: " על ", after: ". על פחות מזה הם העלות הגדולה בהחזקה." },
+    /**
+     * The yearly sums on the account against custody's yearly rate (F-112 (3)). `after` where they are the largest cost of holding below
+     * that value; else `smaller` and custody's name ("…. על פחות מזה הם גדולים מ{custody}."), `custody` where the deal has several
+     * custody fees.
+     */
+    meet: {
+      before: "הסכומים הקבועים, ",
+      sum: " בשנה, שווים ל־",
+      rate: " על ",
+      after: ". על פחות מזה הם העלות הגדולה בהחזקה.",
+      smaller: ". על פחות מזה הם גדולים מ",
+      custody: "דמי ניהול הפיקדון",
+    },
   },
   /** A price against its legal cap (F-113). */
   standing: {
@@ -1673,8 +1686,11 @@ export const feeDeal = {
     add: "אפשר להוסיף:",
     unread: "התאריכים של המחירים לא מסודרים, ולכן העמלה לא נקראת.",
     then: "אחר כך",
-    /** The line a fee just taken away leaves in its place, before its name, and the action that puts it back. */
+    /** The line a fee just taken away leaves in its place, before its name. */
     removed: "הוסרה מהעסקה: ",
+    /** The line under a fee just filled from a house's price list, before the fee's name. */
+    filled: (house: string) => `מולאה מהתעריפון של ${house}: `,
+    /** The action on the undo line that puts the deal back as it was. */
     undo: "ביטול",
     /** A field's spoken name: the fee, then the figure. */
     fieldName: (fee: string, field: string) => `${fee}, ${field}`,
@@ -1725,6 +1741,8 @@ export const feeDeal = {
     addLater: "מחיר אחר אחר כך",
     addStage: "עוד שלב",
     removeStage: "להסיר את השלב",
+    /** The line a stage just taken away leaves in its place. */
+    stageRemoved: "השלב הוסר.",
     untilMissing: "חסר עד מתי המחיר הזה, ולכן העמלה עוד לא נקראת.",
     outOfOrder: "החודשים צריכים לעלות משלב לשלב. עד שהם מסודרים, העמלה לא נקראת.",
     sale: "מכירה",
@@ -1796,7 +1814,7 @@ export const feeDeal = {
         minHeld: { before: "על פחות מ־", after: " המינימום קובע, ומעל הסכום הזה משלמים אחוז" },
         maxHeld: { before: "על יותר מ־", after: " המקסימום קובע, ומתחת לסכום הזה משלמים אחוז" },
         minMax: { before: "המינימום קובע עד ", middle: ", והמקסימום מעל ", after: ". ביניהם משלמים אחוז" },
-        meet: { before: "מתחת ל־", after: " הסכומים הקבועים הם העלות הגדולה בהחזקה" },
+        meet: { before: "מתחת ל־", sums: " הסכומים הקבועים", largest: " הם העלות הגדולה בהחזקה" },
         /** Where one fee is the sum per period: its name with the article, and the words that agree with it. */
         meetOne: { m: " הוא העלות הגדולה בהחזקה", f: " היא העלות הגדולה בהחזקה", mp: " הם העלות הגדולה בהחזקה", fp: " הן העלות הגדולה בהחזקה" } as Record<string, string>,
         /**
@@ -1860,13 +1878,13 @@ export const feeDeal = {
     linkField: "הקישור לעסקה",
     template: "לבחור תבנית",
     /** Said once a template opened a new deal: from a house's price list, or from a track. */
-    opened: { house: (name: string) => `נפתחה עסקה חדשה מהמחירון של ${name}.`, track: (name: string) => `נפתחה עסקה חדשה מהמסלול ${name}.` },
+    opened: { house: (name: string) => `נפתחה עסקה חדשה מהתעריפון של ${name}.`, track: (name: string) => `נפתחה עסקה חדשה מהמסלול ${name}.` },
     /** After it, where the device keeps deals. */
     kept: " העסקה הקודמת שמורה ב״העסקאות שלי״.",
   },
   /** The template picker (a sheet). */
   picker: {
-    house: { title: "לבחור תבנית", lede: "העמלות מהמחירון האחרון של כל בית, לפי מה שהעסקה מחזיקה.", group: "בתי השקעות ובנקים" },
+    house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית, לפי מה שהעסקה מחזיקה.", group: "בתי השקעות ובנקים" },
     track: { title: "לבחור מסלול", lede: "שני דמי הניהול של המסלול, הממוצע שרשות שוק ההון מפרסמת." },
     /** After the lede where the picker was opened from the bar, whose pick opens a new deal (not from the builder's track step). */
     newDeal: "הבחירה פותחת עסקה חדשה, והעסקה שעל המסך נשארת כמו שהיא.",
@@ -1880,7 +1898,7 @@ export const feeDeal = {
   /** What a template filled and left out, in the builder. */
   filled: {
     /** Before the template's name. */
-    from: { house: "העסקה מולאה מהמחירון של ", track: "העסקה מולאה מהמסלול " },
+    from: { house: "העסקה מולאה מהתעריפון של ", track: "העסקה מולאה מהמסלול " },
     left: "מה לא נכנס מהתבנית",
     /** Why a price list's line fills nothing (templates.ts, `LeftWhy`). */
     why: {
@@ -1890,14 +1908,14 @@ export const feeDeal = {
       "flat-price": "מחיר קבוע לפעולה קטנה: האחוז, המינימום והמקסימום נכנסו, המחיר הקבוע לא.",
       "share-cap": "תקרה באחוז מהפעולה: האחוז, המינימום והמקסימום נכנסו, התקרה לא.",
       "bound-currency": "מינימום ומקסימום בשני מטבעות, או מינימום ומקסימום על מה שמוחזק שלא בשקלים: העסקה לא יכולה לרשום אותם.",
-      ambiguous: "שתי שורות במחירון חלות על העמלה, והמחירון לא אומר איזו מהן.",
+      ambiguous: "שתי שורות בתעריפון חלות על העמלה, והתעריפון לא אומר איזו מהן.",
       "no-value": "שורה בלי מחיר.",
       "no-period": "אחוז ממה שמוחזק בלי תדירות גבייה: העסקה לא יודעת כל כמה זמן הוא נגבה.",
       plan: "מחיר של תוכנית מסוימת, כמו הוראת קבע: חל רק עליה.",
-      "set-aside": "מחיר שמופיע במחירון, אבל המסמכים של הבית לא מראים שלקוח רגיל יכול לקבל אותו.",
+      "set-aside": "מחיר שמופיע בתעריפון, אבל המסמכים של הבית לא מראים שלקוח רגיל יכול לקבל אותו.",
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
-      "no-holding": "במחירון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
+      "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
     } as Record<string, string>,
@@ -4342,9 +4360,10 @@ export const kit = {
       CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
       PeriodBars: "בחירה של תקופה אחת, מצוירת כתרשים עמודות: כל עמודה כולה כפתור אחד, ובה המספר, העמודה, שם התקופה ומי משלם. כל העמודות על סולם אחד מאפס, בלי קווי רשת ובלי ציר, כי כל עמודה נושאת את המספר שלה. הנבחרת במסגרת וברקע, השם שלה במילוי. עמודה בלי מספר כותבת ״אין״ ואפשר לבחור גם אותה. בטלפון השמות מתקצרים ושם הבנק יורד.",
       MeterBar: "פס דק מתחת למספר בשורת טבלה: האורך שלו הוא החלק של המספר מהגבוה ברשימה. השורה הראשונה בצבע ההדגשה, השאר בצבע הערך, ושורה שעומדת בנפרד (הצעה עם תנאי) חלולה. גדל מתחילת השורה.",
-      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא ממחירון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
+      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור ועם סימן שפותח את המקור, ושדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה שמקלידים במקום, כמו 03.2027, באותה תיבה של FigureField. נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק.",
       CapBar: "מחיר מול התקרה שלו: פס דק עד התקרה, סימן במקום התקרה והמספר שלה בסוף. מחיר מאוחר יותר בקו מתאר, ומה שמעל התקרה בפסים אדומים. המשפט שליד הפס אומר את המצב במילים.",
+      AlignedList: "רשימה של השדות של דבר אחד, שורה לכל שדה: התוויות בעמודה צרה אחת, והתיבות מתחילות כולן באותו קו אחריה, כך שהעין יורדת לאורך התוויות ולאורך התיבות. שורה לרוחב שתי העמודות נושאת מה שלא שייך לתווית אחת: כותרת של מחיר מאוחר, הערה, פעולה.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
       AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. כשאין מקום לשמות בסוף, הם עוברים למקרא מעל הגרף.",

@@ -10,10 +10,11 @@ import { decodeDeal, encodeDeal } from "./link";
 import { NAME_MAX, newDeal, readDeal, typed, untouched, type FeeDeal } from "./model";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, pickTrack, templateOf, templateOptions } from "./templates";
-import { matching, rowTitle } from "../../components/fee-deal/picker";
+import { dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { updateFee, withFigure, editPrice } from "./edit";
 import { latestSnapshots } from "../providers.server";
+import { loadTerms } from "../data.server";
+import { termKey } from "../fee-page-data";
 
 const data = feesData();
 const kinds = data.kinds;
@@ -388,7 +389,8 @@ describe("the provident fund of the picture, on 11.2026", () => {
   });
   it("in its panel: two prices, the cap's line, the fields of a share of what is held", () => {
     const p = panel(read(provident()), "fee-balance")!;
-    expect(p.limited).toBe(true);
+    // two prices one after the other, the second not free: not one price for a time
+    expect(p.limited).toBe(false);
     expect(p.cap).toMatchObject({ state: "value" });
     if (p.cap.state === "value") expect(p.cap.value.value).toBe(1.05);
     expect(p.stages[0]!.fields).toEqual(["rate", "per", "every"]);
@@ -541,5 +543,48 @@ describe("one fee filled from a price list", () => {
     expect({ name: next.name, template: next.template, provider: next.provider }).toEqual({ name: deal.name, template: deal.template, provider: deal.provider });
     expect(untouched(next.fees[0]!)).toBe(true);
     expect(feePriceLists(provident(), "balance", data)).toEqual([]);
+  });
+  it("replaces every price of a fee with several and its own sale price with the list's one price, which prices a sale as a purchase", () => {
+    const deal = updateFee(account(), "fee-trade", (f) => ({
+      ...f,
+      stages: [{ price: { form: "free" }, until: "2027-06" }, { price: { form: "action", rate: typed(0.3), min: typed(20) } }],
+      sale: [{ price: { form: "action", rate: typed(0.5) } }],
+    }));
+    const house = feePriceLists(deal, "trade", data)[0]!;
+    const next = fillFee(deal, "fee-trade", house.id, data)!;
+    const fee = next.fees[0]!;
+    expect(fee.sale).toBeUndefined();
+    expect(fee.stages).toHaveLength(1);
+    expect(fee.stages[0]!.until).toBeUndefined();
+    expect(untouched(fee)).toBe(true);
+    expect(panel(read(next), "fee-trade")!.sale.stages).toBeUndefined();
+  });
+});
+
+describe("a price for a time in the panel", () => {
+  it("is one price followed by a free one, on either side", () => {
+    const deal = updateFee(account(), "fee-trade", (f) => ({
+      ...f,
+      stages: [{ price: { form: "action", rate: typed(0.25) }, until: "2027-06" }, { price: { form: "free" } }],
+      sale: [{ price: { form: "action", rate: typed(0.3) } }],
+    }));
+    const p = panel(read(deal), "fee-trade")!;
+    expect(p.limited).toBe(true);
+    expect(p.sale.limited).toBe(false);
+    // free first and priced after is not a price for a time
+    expect(panel(read(deal), "fee-custody")!.limited).toBe(false);
+  });
+});
+
+describe("a fee's glossary card", () => {
+  it("is, for each product, the sense of the fee's name that names the product, where one does", () => {
+    const all = loadTerms();
+    const names = Object.keys(data.terms).filter((k) => !k.includes("@"));
+    expect(names.length).toBeGreaterThan(0);
+    for (const k of data.kinds)
+      for (const name of names) {
+        const shown = data.terms[termKey(name, k.id)] ?? data.terms[name]!;
+        if (all.some((t) => t.he === name && t.wrapperIds.includes(k.id))) expect(shown.wrapperIds).toContain(k.id);
+      }
   });
 });

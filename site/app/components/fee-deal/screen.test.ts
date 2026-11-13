@@ -6,12 +6,13 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { feeDeal } from "../../copy";
 import { feesData } from "../../lib/fees.server";
-import { panel } from "../../lib/fee-deal/builder";
+import { builder, panel } from "../../lib/fee-deal/builder";
 import { glance } from "../../lib/fee-deal/glance";
 import { typed, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
+import { BuilderColumn } from "./builder";
 import { GlanceColumn } from "./glance";
 import { feeName } from "./words";
 import { PanelColumn } from "./panel";
@@ -52,21 +53,41 @@ const passedAbove = (): FeeDeal => ({
   fees: [{ id: "fee-balance", kind: "balance", stages: [{ price: { form: "held", rate: typed(2), per: 12, every: 12 }, until: "2026-01" }, { price: { form: "held", rate: typed(0.6), per: 12, every: 12 } }] }],
 });
 
-const text = (el: ReactElement) => {
+const markup = (el: ReactElement) => {
   const provenance = { rules: {}, terms: {}, dimensions: {}, today: TODAY };
-  const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: provenance, children: el })));
-  return html.replace(/<[^>]+>/g, "").replace(/[⁦-⁩‎‏]/g, "");
+  return renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: provenance, children: el })));
 };
+const text = (el: ReactElement) => markup(el).replace(/<[^>]+>/g, "").replace(/[⁦-⁩‎‏]/g, "");
 
 const saves = (deal: FeeDeal) => deal.kind !== "brokerage-account";
 
-const drawPanel = (deal: FeeDeal, feeId: string) => {
+const panelOf = (deal: FeeDeal, feeId: string) => {
   const r = readDealFor(deal, data.kinds, TODAY);
   const reading = readingOf(r, data.fx);
   const fee = deal.fees.find((f) => f.id === feeId)!;
   const law = reading.law.find((x) => x.fee === feeId) ?? null;
-  return text(createElement(PanelColumn, { panel: panel(r, feeId)!, fee, law, first: reading.from, saved: saves(deal), fill: null, onFee: () => {}, onRemove: () => {} }));
+  return createElement(PanelColumn, { panel: panel(r, feeId)!, fee, product: deal.kind, law, first: reading.from, saved: saves(deal), fill: null, stageLine: null, onFee: () => {}, onRemove: () => {}, onRemoveStage: () => {} });
 };
+const drawPanel = (deal: FeeDeal, feeId: string) => text(panelOf(deal, feeId));
+
+const drawBuilder = (deal: FeeDeal, chosen: string | null) =>
+  markup(
+    createElement(BuilderColumn, {
+      deal,
+      view: builder(readDealFor(deal, data.kinds, TODAY)),
+      kinds: data.kinds,
+      chosen,
+      onPickTrack: null,
+      left: null,
+      line: null,
+      focusFee: null,
+      onFocused: () => {},
+      onDeal: () => {},
+      onChoose: () => {},
+      onAdd: () => {},
+      onRemove: () => {},
+    }),
+  );
 
 const drawGlance = (deal: FeeDeal) => {
   const r = readDealFor(deal, data.kinds, TODAY);
@@ -126,6 +147,11 @@ describe("the panel", () => {
     expect(shown).not.toContain(feeDeal.bar.optional);
     expect(shown).toContain(feeDeal.panel.when);
     expect(shown).toContain(feeDeal.panel.remove);
+    // each box once: the maximum's box is not drawn again for a phone, and the bounds' currency is chosen in one of them
+    const html = markup(panelOf(account(), "fee-trade"));
+    const name = feeName("trade");
+    for (const field of [feeDeal.panel.howMuch, feeDeal.panel.min, feeDeal.panel.max]) expect(count(html, `aria-label="${feeDeal.builder.fieldName(name, field)}"`)).toBe(1);
+    expect(count(html, `>${feeDeal.builder.fieldName(name, feeDeal.panel.currency)}</label>`)).toBe(1);
   });
   it("draws a price for a time as how long it holds, not as two stages", () => {
     const d = provident();
@@ -133,6 +159,13 @@ describe("the panel", () => {
     const shown = drawPanel(d, "fee-deposit");
     expect(shown).toContain(feeDeal.panel.limited);
     expect(shown).not.toContain(feeDeal.panel.stage.first);
+  });
+});
+
+describe("the builder", () => {
+  it("names each card's bin by its fee", () => {
+    const html = drawBuilder(account(), "fee-trade");
+    for (const f of account().fees) expect(count(html, `aria-label="${feeDeal.builder.fieldName(feeName(f.kind), feeDeal.panel.remove)}"`)).toBe(1);
   });
 });
 
@@ -150,10 +183,22 @@ describe("the reading on screen", () => {
     // the sums on the account meet custody from 03.2028
     expect(shown).toContain(feeDeal.marks.meet.before);
     expect(shown).toContain("לעמלות שבעסקה אין תקרה בחוק");
-    // the trade curve's fee is its whole group: past the minimum, the rate is the fee's own
-    expect(shown).toContain(`${feeDeal.read.curves.head.minRate.lead}${feeDeal.read.curves.head.minRate.above.trade}${feeDeal.read.curves.head.minRate.cost}`);
+    // past the minimum, a trade costs the group's rate: the trade fee's 0.25% and the conversion's 0.2%
+    expect(shown).toContain(`${feeDeal.read.curves.head.minRate.lead}${feeDeal.read.curves.head.minRate.above.trade}${feeDeal.read.curves.head.minRate.cost}0.45%`);
     // one fee on the account is a sum per period: the headline names it
     expect(shown).toContain(`${feeDeal.nameForms.fixed_period!.the}${feeDeal.read.curves.head.meetOne.mp}`);
+  });
+  it("offers each period on the held curve's switch, the ones with no mark on the curve disabled, and opens on the first with one", () => {
+    const html = markup(createElement(ReadingCards, { reading: readingOf(readDealFor(account(), data.kinds, TODAY), data.fx), saved: false, fx: data.fx }));
+    const groups = html.split(`role="group" aria-label="${feeDeal.read.curves.choose}"`).slice(1);
+    expect(groups).toHaveLength(1);
+    const options = groups[0]!.slice(0, groups[0]!.indexOf("</div>")).split("<button").slice(1);
+    // today both the sums and custody are free, from 03.2027 only the sums cost: no curve meets a mark until custody starts in 03.2028
+    expect(options.map((o) => [o.includes(`disabled=""`), o.includes(`aria-pressed="true"`)])).toEqual([
+      [true, false],
+      [true, false],
+      [false, true],
+    ]);
   });
   it("reads the provident fund: two periods with the rise to the cap, no curve, the monthly charge, and the law rows", () => {
     const shown = drawReading(provident());

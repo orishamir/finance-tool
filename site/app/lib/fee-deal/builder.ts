@@ -107,12 +107,14 @@ export interface Panel extends FeeRef {
   oneSide?: "buy" | "sell";
   /** Every price as typed, the passed ones too (the panel edits them all). */
   stages: PanelStage[];
-  /** A sale's own prices: `allowed` where the fee may price a sale apart, `stages` where it does. */
-  sale: { allowed: boolean; stages?: PanelStage[] };
-  /** Whether the fee has more than one price (its price is for a time). */
+  /** A sale's own prices: `allowed` where the fee may price a sale apart, `stages` where it does, `limited` as the fee's own. */
+  sale: { allowed: boolean; stages?: PanelStage[]; limited?: boolean };
+  /** Whether the fee's one price holds for a time, after which the fee is free: two prices, the first not free, the second free. */
   limited: boolean;
   cap: CapLine;
 }
+
+const limitedOf = (stages: readonly Stage[]): boolean => stages.length === 2 && stages[0]!.price.form !== "free" && stages[1]!.price.form === "free";
 
 const fieldsOf = (fee: Fee, p: Price): readonly FieldId[] => (p.form === "free" ? [] : (FEE_SHAPES[fee.kind].fields[p.form] ?? []));
 
@@ -132,8 +134,8 @@ export function panel(r: DealRead, feeId: string): Panel | null {
     shape,
     ...(side ? { oneSide: side } : {}),
     stages: stagesOf(fee.stages),
-    sale: { allowed: shape.saleApart && !side, ...(fee.sale ? { stages: stagesOf(fee.sale) } : {}) },
-    limited: fee.stages.length > 1,
+    sale: { allowed: shape.saleApart && !side, ...(fee.sale ? { stages: stagesOf(fee.sale), limited: limitedOf(fee.sale) } : {}) },
+    limited: limitedOf(fee.stages),
     cap: capLine(r.kind, fee.kind),
   };
 }
