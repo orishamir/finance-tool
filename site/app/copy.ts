@@ -1894,7 +1894,7 @@ export const feeDeal = {
       /**
        * A part of an action's price and the stretch it decides (F-112): "{the part} של {name}, {its figure}, קובע בכל {noun} עד {amount}.",
        * from where it starts where that is above nothing ("מ־100 $ עד 8,333 $"), above the maximum's sum, and in units for a price per
-       * unit ("של עד 200 יחידות").
+       * unit ("של עד 200 יחידות"; past the sum where another part stops, "מעל 100 $ של עד 200 יחידות").
        */
       part: { min: "המינימום של {name}{side}, ", max: "המקסימום של {name}{side}, ", cap: "המקסימום באחוזים של {name}{side}, ", flat: "המחיר הקבוע של {name}{side}, " } as Record<string, string>,
       decides: ", קובע בכל {noun} ",
@@ -1902,6 +1902,8 @@ export const feeDeal = {
       above: "מעל ",
       unitsUpTo: "של עד ",
       unitsAbove: "של יותר מ־",
+      /** A bound in units whose stretch starts where a percent maximum's or a flat price's sum ends: "בכל פעולה מעל 100 $ של עד 200 יחידות". */
+      unitsFrom: { above: "מעל ", upTo: " של עד " },
       end: ".",
       minHeld: { before: "המינימום של {name}, ", middle: " לכל חיוב, קובע על פחות מ־", after: "." },
       maxHeld: { before: "המקסימום של {name}, ", middle: " לכל חיוב, קובע על יותר מ־", after: "." },
@@ -1983,6 +1985,7 @@ export const feeDeal = {
       "set-aside": "מחיר שמופיע בתעריפון, אבל המסמכים של הבית לא מראים שלקוח רגיל יכול לקבל אותו.",
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
+      "spread-unpriced": "המרה בלי עמלה, אבל עם מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",

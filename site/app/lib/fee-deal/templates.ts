@@ -35,7 +35,12 @@ export type LeftWhy =
   /** Another line of the same base is the one a run reads for the holding (F-13's own currency, the narrower class; F-63). */
   | "another-line"
   /** A base a house's template does not fill. */
-  | "other-base";
+  | "other-base"
+  /**
+   * A conversion that charges nothing beside a spread the documents do not limit, recorded with no value and so not priced (F-13, D65:
+   * Interactive Brokers' automatic conversion): filled at 0%, the conversion still costs that spread.
+   */
+  | "spread-unpriced";
 
 /**
  * Where a fund is bought, as a template keys its fees: `israel` on the Tel Aviv exchange, where no conversion is priced; `abroad` in a
@@ -133,7 +138,9 @@ export function lineFees(l: Line, own: string): Mapped {
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", rate: num(l.spread) })] : [];
-      return { fees: [fee("fx", p.price), ...spread], left: [] };
+      // a conversion filled at nothing whose spread is recorded but not limited says the spread is not counted, so 0% does not read as free
+      const unpriced = l.spread && !has(l.spread) && convertsFree(l);
+      return { fees: [fee("fx", p.price), ...spread], left: unpriced ? ["spread-unpriced"] : [] };
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
@@ -486,12 +493,29 @@ export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses
 }
 
 /**
+ * A template's name as a deal's name: whole where it fits in `NAME_MAX`; otherwise cut after its last whole word that leaves room for "…",
+ * with the commas, colons and dashes at the cut taken off, never inside a word ("Interactive Brokers, IBKR Pro - Fixed: מניות ותעודות
+ * סל…"), and before a bracket the cut would leave open (a track's company: "… (עד 25% במניות)…"). The template keeps its whole name, which
+ * the page says where the deal was filled from.
+ */
+export function dealName(name: string): string {
+  const n = name.trim();
+  if (n.length <= NAME_MAX) return n;
+  const room = n.slice(0, NAME_MAX); // the "…" takes the place of the space before the cut word
+  const cut = room.lastIndexOf(" ");
+  let head = cut > 0 ? room.slice(0, cut) : room.slice(0, NAME_MAX - 1);
+  const open = head.lastIndexOf("(");
+  if (open > 0 && head.indexOf(")", open) < 0) head = head.slice(0, open);
+  return `${head.replace(/[\s,:;\-–]+$/u, "")}…`;
+}
+
+/**
  * A new deal filled from a template, beside `from` (the deal on screen, which it never changes): of `from`'s kind and holding, named by the
  * template. Null where the id names no template of the kind.
  */
 export function dealFromTemplate(from: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
   const d = fillDeal({ ...newDeal(from.kind), ...(from.held ? { held: from.held } : {}) }, id, data, today);
-  return d && { ...d, name: (d.template?.name ?? "").slice(0, NAME_MAX) };
+  return d && { ...d, name: dealName(d.template?.name ?? "") };
 }
 
 /**
@@ -505,8 +529,8 @@ export function dealFromTemplate(from: FeeDeal, id: string, data: Pick<FeesData,
 export function pickTrack(deal: FeeDeal, id: string, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
   const t = templateOf(deal, id, data, today);
   if (!t) return null;
-  const name = t.name.slice(0, NAME_MAX);
-  const named = deal.name.trim() === "" || (deal.template !== undefined && deal.name === deal.template.name.slice(0, NAME_MAX));
+  const name = dealName(t.name);
+  const named = deal.name.trim() === "" || (deal.template !== undefined && deal.name === dealName(deal.template.name));
   const base = { ...deal, ...(named ? { name } : {}) };
   if (!deal.fees.every(untouched)) return { ...base, template: { id, name: t.name, feesKept: true } };
   // a fee of a kind the deal already has keeps its id, so the fee chosen on screen stays chosen; a fee just added, still asking for its

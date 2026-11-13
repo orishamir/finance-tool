@@ -260,6 +260,29 @@ describe("the reading on screen", () => {
   });
 });
 
+describe("a price per unit in the points and the cards", () => {
+  /** Interactive Brokers, IBKR Pro Fixed, US: 0.005 $ a unit, at least 1 $, at most 1% of the action; its conversion free. */
+  const ib = (): FeeDeal => ({
+    ...account(),
+    fees: [
+      { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0) } }] },
+      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "perUnit", amount: typed(0.005), min: typed(1), cap: typed(1), currency: "USD" } }] },
+    ],
+  });
+  it("says a minimum in units holds above the percent maximum's sum, so the two points agree", () => {
+    const p = feeDeal.read.points;
+    const decides = p.decides.replace("{noun}", "פעולה");
+    const shown = drawReading(ib());
+    expect(shown).toContain(decides + p.unitsFrom.above + "100");
+    expect(shown).toContain(p.unitsFrom.upTo + "200 יחידות");
+    expect(shown).not.toContain(decides + p.unitsUpTo + "200");
+  });
+  it("puts the trade fee's card before the conversion's in their group, whatever order the deal holds them in", () => {
+    const shown = drawBuilder(ib(), null);
+    expect(shown.indexOf(feeName("trade"))).toBeLessThan(shown.indexOf(feeName("fx")));
+  });
+});
+
 describe("a sum on the page", () => {
   const at = (value: number, unit: string, state: "computed" | "entered", kind = "min", units?: true) => ({ kind, on: "action", amount: { value, unit, state, as_of: TODAY }, ...(units ? { units } : {}) }) as unknown as Parameters<typeof markLabel>[0];
   it("the site works out shows in whole units of its currency, under ten with its cents; one typed shows as typed", () => {

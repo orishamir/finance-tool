@@ -19,7 +19,7 @@ import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf } from "../../lib/fee-deal/builder";
 import { addFee, updateFee, type Side } from "../../lib/fee-deal/edit";
 import { glance } from "../../lib/fee-deal/glance";
-import { readingOf } from "../../lib/fee-deal/reading";
+import { readingOf, unitCurrency } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
@@ -318,14 +318,25 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   // a fee the product may not charge by rule is never offered
   const barred = useMemo(() => barredFees(deal.kind, data, today), [deal.kind, data, today]);
   const builderView = useMemo(() => builder(read, barred), [read, barred]);
-  // the unit's price typed beside the curve of a price per unit, one for each deal, kept while the page is open
-  const [unitPrices, setUnitPrices] = useState<Readonly<Record<string, number>>>({});
-  const unitPrice = unitPrices[deal.id] ?? null;
-  const onUnitPrice = (n: number | null) =>
+  // the unit's price typed beside the curve of a price per unit, one for each deal, kept while the page is open with the currency it was
+  // asked in: once the deal asks it in another (what is held, or the sum per unit's currency, changed) it is cleared, never read as a
+  // price in the new currency
+  const [unitPrices, setUnitPrices] = useState<Readonly<Record<string, { n: number; currency: string }>>>({});
+  const askedIn = useMemo(() => unitCurrency(read), [read]);
+  const typedUnit = unitPrices[deal.id];
+  const unitPrice = typedUnit && typedUnit.currency === askedIn ? typedUnit.n : null;
+  const dropUnitPrice = (id: string) =>
     setUnitPrices((all) => {
-      const { [deal.id]: _was, ...rest } = all;
-      return n === null ? rest : { ...rest, [deal.id]: n };
+      const { [id]: _was, ...rest } = all;
+      return rest;
     });
+  useEffect(() => {
+    if (typedUnit && typedUnit.currency !== askedIn) dropUnitPrice(deal.id);
+  }, [typedUnit, askedIn, deal.id]);
+  const onUnitPrice = (n: number | null) => {
+    if (n === null || askedIn === null) dropUnitPrice(deal.id);
+    else setUnitPrices((all) => ({ ...all, [deal.id]: { n, currency: askedIn } }));
+  };
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);

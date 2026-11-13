@@ -141,9 +141,13 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
               {f.max && <Bound lead={p.max} value={f.max} />}
             </>
           )}
+          {/* the percent maximum and what it is a share of are one bound's phrase, never broken inside ("מקסימום 2% מהפעולה") */}
           {f.cap && (
             <>
-              <Bound lead={p.max} value={f.cap} /> {of}
+              ,{" "}
+              <span className="whitespace-nowrap">
+                <Fig value={f.cap} prefix={p.max} /> {of}
+              </span>
             </>
           )}
         </>

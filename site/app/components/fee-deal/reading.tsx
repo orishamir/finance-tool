@@ -275,6 +275,7 @@ function UnitPriceField({ unit, fee, value, onChange }: { unit: NonNullable<Read
       </span>
       <NumberField
         compact
+        fit
         agorot
         optional
         start={null}
@@ -399,7 +400,17 @@ function MarkSentence({ mark }: { mark: MarkView }) {
   const of = copy.price.of[mark.fee.kind] ?? copy.price.of.default;
   const units = mark.kind !== "cap" && mark.kind !== "flat" && !!mark.units;
   let stretch: ReactNode;
-  if (units) stretch = <>{mark.kind === "max" ? p.unitsAbove : p.unitsUpTo}<MarkAmount mark={mark} value={mark.amount} /></>;
+  // a bound in units past the sum where the percent maximum or the flat price stops holds only above that sum: both are said
+  if (units && mark.kind === "min" && mark.from)
+    stretch = (
+      <>
+        {p.unitsFrom.above}
+        <Fig value={mark.from} />
+        {p.unitsFrom.upTo}
+        <MarkAmount mark={mark} value={mark.amount} />
+      </>
+    );
+  else if (units) stretch = <>{mark.kind === "max" ? p.unitsAbove : p.unitsUpTo}<MarkAmount mark={mark} value={mark.amount} /></>;
   else if (mark.kind === "max") stretch = <>{p.above}<Fig value={mark.amount} /></>;
   else {
     const to = mark.kind === "flat" ? <Num value={mark.amount} display={upToDisplay(mark.amount)} /> : <Fig value={mark.amount} />;

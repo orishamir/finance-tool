@@ -98,7 +98,7 @@ function statementsOf(r: DealRead): Statement[] {
       for (const [side, price] of sides) {
         if (price.form === "held" && price.every < 12 && price.rate.v > 0) add(`every:${fee.id}:${price.every}`, at, () => ({ kind: "every", fee: refOf(fee), every: price.every, periods: [at] }));
         const main = price.form === "action" || price.form === "held" ? price.rate.v : price.form === "perUnit" ? price.amount.v : 0;
-        if ((price.form === "action" || price.form === "perUnit" || price.form === "held") && main > 0 && price.min && !price.max) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee), side, on: price.form === "action" ? "action" : "held", periods: [at] }));
+        if ((price.form === "action" || price.form === "perUnit" || price.form === "held") && main > 0 && price.min && !price.max) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
       }
     });
   }
@@ -181,7 +181,7 @@ export interface UnitPrice {
 export const UNIT_PRICE_KEY = "deal:unit-price";
 
 /** The currency a deal's unit price is asked in (`UnitPrice`), or null where no price the reading reads is a sum per unit. */
-function unitCurrency(r: DealRead): string | null {
+export function unitCurrency(r: DealRead): string | null {
   const per = r.reading.periods.flatMap((p) => p.prices.flatMap((x) => [x.price, ...(x.sale ? [x.sale] : [])])).find((x) => x.kind === "perUnit");
   if (!per) return null;
   return r.deal.held && holdsFunds(r.deal.kind) ? r.deal.held.currency : per.kind === "perUnit" ? (per.currency ?? "ILS") : "ILS";

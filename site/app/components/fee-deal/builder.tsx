@@ -19,7 +19,7 @@ import { groupKey, groupOn, refOf, type DealRead } from "../../lib/fee-deal/part
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
-import { FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
+import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type Held } from "../../lib/fee-deal/shapes";
 import { IconBin } from "../icons";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, ChoiceChips, GroupHead, InlineSelect, MonthField, PickCard, Section, Step, Tag, When, cx, monthText, type AddItem } from "../kit";
@@ -142,7 +142,8 @@ function PartFigures({ row, fee, k, onFee }: { row: BuilderRow; fee: Fee; k: num
     <>
       {perActionWord(fee.kind)}
       {copy.price.flat.upTo}
-      <bdi dir="ltr">{upToText(f.upTo)}</bdi>
+      {/* read as the box beside it reads its own sum, the sign after the number ("2.85 $"), not as a sum in running words */}
+      <bdi dir="rtl" className="whitespace-nowrap">{upToText(f.upTo)}</bdi>
     </>
   ) : null;
   return (
@@ -314,13 +315,14 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
   const picking = pickingIn === deal.id;
   const setPicking = (open: boolean) => setPickingIn(open ? deal.id : null);
   const root = useRef<HTMLDivElement>(null);
-  // a kind just chosen hands the focus to the next step's first control, where the chips it was chosen in leave
+  // a kind just chosen hands the focus to the next step's first control, where the chips it was chosen in leave; a kind with no second
+  // step (a current account, a deposit, a makam) hands it to the next thing on the page, the fees column's add line
   const kindChosen = useRef(false);
   useIsoLayoutEffect(() => {
     if (!kindChosen.current) return;
     kindChosen.current = false;
     // the undo line of a kind that took fees away has the focus already
-    if (!kindLine) root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)")?.focus();
+    if (!kindLine) (root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)") ?? document.querySelector<HTMLElement>("[data-fees-add] button"))?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deal.kind]);
   const track = deal.template && templateSource(deal.template.id) === "track" ? deal.template : null;
@@ -467,17 +469,23 @@ export function FeesColumn({ deal, view, groupOf, chosen, panel, line, focus, on
   // every chip alike: the usual fees come first, which is their only mark
   const adds: AddItem[] = [...view.suggestions.usual, ...view.suggestions.rarer].map((k) => ({ id: k, label: feeName(k) }));
 
-  // the groups, each with its cards in the deal's order; the line of a fee taken away stands in that fee's group, where its card was
+  // the groups, each with its cards in one order by the fee's kind (`FEE_KIND_IDS`: a trade before its conversion), whatever order a
+  // template filled them in, and fees of one kind in the deal's order; the line of a fee taken away stands in that fee's group, where its
+  // card was
   type Item = { fee: Fee; i: number } | "line";
+  const before = (a: { fee: Fee; i: number }, b2: { fee: Fee; i: number }) => FEE_KIND_IDS.indexOf(a.fee.kind) - FEE_KIND_IDS.indexOf(b2.fee.kind) || a.i - b2.i;
   const byGroup = new Map<string, Item[]>();
-  deal.fees.forEach((fee, i) => {
-    const key = groupOf(fee);
-    byGroup.set(key, [...(byGroup.get(key) ?? []), { fee, i }]);
-  });
+  deal.fees
+    .map((fee, i) => ({ fee, i }))
+    .sort(before)
+    .forEach((it) => {
+      const key = groupOf(it.fee);
+      byGroup.set(key, [...(byGroup.get(key) ?? []), it]);
+    });
   if (line) {
     const key = groupOf(line.fee);
     const items = byGroup.get(key) ?? [];
-    const at = items.findIndex((it) => it !== "line" && it.i >= line.what.at);
+    const at = items.findIndex((it) => it !== "line" && before(it, { fee: line.fee, i: line.what.at }) >= 0);
     items.splice(at < 0 ? items.length : at, 0, "line");
     byGroup.set(key, items);
   }
@@ -539,7 +547,7 @@ export function FeesColumn({ deal, view, groupOf, chosen, panel, line, focus, on
             </ul>
           </div>
         ))}
-        <div ref={adding} className="contents">
+        <div ref={adding} data-fees-add="" className="contents">
           <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />
         </div>
       </div>
