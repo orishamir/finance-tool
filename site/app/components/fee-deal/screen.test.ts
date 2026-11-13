@@ -216,6 +216,13 @@ describe("the fees' column", () => {
     expect(shown.indexOf(feeDeal.on.held!)).toBeLessThan(shown.indexOf(feeDeal.on.account!));
     expect(shown).not.toContain(feeDeal.panel.saleSame);
   });
+  it("says a sale priced apart by its own line of figures alone, with no note", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "action", rate: typed(0.3) } }] }];
+    const shown = drawBuilder(d, null).replace(/<[^>]+>/g, "");
+    expect(shown).toContain(feeDeal.sides.sell);
+    expect(shown).not.toContain(feeDeal.panel.saleApart);
+  });
 });
 
 describe("the reading on screen", () => {

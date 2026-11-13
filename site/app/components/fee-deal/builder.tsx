@@ -1,7 +1,7 @@
 // The two columns that enter the deal (method §10.6, `builder`). "על מה העסקה" (`SetupColumn`): the deal's kind, what it holds (three
 // facts each chosen in place) or, in the provident family, the place for its company and track, the price list it was filled from with
-// the button that fills a new deal from another, and the month it started. "העמלות בעסקה" (`FeesColumn`): its fees, grouped by what each
-// is charged on under the summary's group headings, a group shown only while the deal has a fee in it; one card each with its figures
+// the button that fills a new deal from another, and on a plain line at its end the month it started. "העמלות בעסקה" (`FeesColumn`): its
+// fees, grouped by what each is charged on under the summary's group headings, a group shown only while the deal has a fee in it; one card each with its figures
 // typed in place, its standing against the cap after its name and the bin at that line's end, the chosen card marked. A fee with a price
 // not given yet shows its empty boxes and says so. A fee just taken away leaves the page's undo line (`UndoLine`) in its place, as tall as
 // its card was; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the fees the deal
@@ -62,15 +62,14 @@ function RowStanding({ row }: { row: BuilderRow }) {
 }
 
 /**
- * The facts a row says at its end: its next change, where it is charged, a sale priced apart, its bounds. A sale priced as a purchase is
- * the default and goes unsaid.
+ * The facts a row says at its end: its next change, where it is charged, its bounds. Whether a sale is priced apart goes unsaid: a sale
+ * priced apart shows its own line of figures after "במכירה".
  */
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
   if (!row.priced) notes.push(b.facts.noPrice);
   if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
-  if (row.saleSame === false) notes.push(b.facts.saleApart);
   if (row.priced && row.stages[0]!.price.form === "action" && FEE_SHAPES[fee.kind].fields.action?.includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
   return (
@@ -361,14 +360,13 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
             </Button>
           </Step>
         )}
+        {/* the month the deal started: a plain line at the column's end under a rule, not a step, since nothing waits on it */}
         {kind && (
-          <Step
-            n={n++}
-            done={!!deal.start}
-            title={b.start}
-            value={b.optional}
-            action={<MonthField value={deal.start ?? null} label={b.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />}
-          />
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-4 text-sm">
+            <span className="text-muted-foreground">{b.start}</span>
+            <MonthField value={deal.start ?? null} label={b.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
+            <span className="text-muted-foreground">{b.optional}</span>
+          </div>
         )}
       </div>
     </Section>
