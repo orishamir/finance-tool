@@ -79,7 +79,7 @@ export { TypedPlain } from "./typed-plain";
 export { AlignedAcross, AlignedCaption, AlignedList, AlignedRow } from "./aligned-list";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";
-export { PART_LOOK, PartChip, PartEdit, type PartKind, type PartMark } from "./part-chip";
+export { PartChip, PartEdit, type PartKind, type PartMark } from "./part-chip";
 export { CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord } from "./case-band";
 export { FeeBlock, SlimFee } from "./fee-block";
 export { ToolBlank, Toolbox, type ToolGroup, type ToolKind, type ToolPart } from "./toolbox";

@@ -16,7 +16,7 @@ export type PartMark = "min" | "max" | "link";
 const ICONS: Record<PartMark, LucideIcon> = { min: ArrowDownToLine, max: ArrowUpToLine, link: Link2 };
 
 /** A part's fill and edge by its kind: the kind's colour at 10% over the card, its edge at 45%. */
-export const PART_LOOK: Record<PartKind, string> = {
+const PART_LOOK: Record<PartKind, string> = {
   price: "bg-secondary border-input",
   bound: "bg-part-bound-fill border-part-bound-edge",
   link: "bg-part-link-fill border-part-link-edge",
