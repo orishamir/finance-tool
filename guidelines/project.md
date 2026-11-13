@@ -16,6 +16,10 @@ and family make saving and investing decisions in Israel.
 - The repository and the site are public: no data whose terms forbid
   republishing or haven't confirmed it, and nothing private (the founder's
   mail, his own finances, anything about the people who use the site).
+- No religious-law products: no Halacha tracks (מסלולי הלכה, "כשר"), no
+  Sharia tracks (שריעה), and nothing else defined by religious law. They are
+  not shown, not kept in `data/` (a pipeline that reads a source drops them),
+  not in the rule base or the glossary, and not researched.
 
 ## What exists
 
