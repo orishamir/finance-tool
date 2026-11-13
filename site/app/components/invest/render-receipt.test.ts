@@ -1,7 +1,7 @@
 // The receipt and the chosen pair's card in the side rail, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { flags, groupPrices, invest } from "../../copy";
+import { flags, groupPrices, help, invest } from "../../copy";
 import { pickableGroups, withGroupPick } from "../../lib/group-pick";
 import { PairLists } from "./lists";
 import { buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
@@ -174,7 +174,10 @@ describe("the lists beside the receipt", () => {
     const priced = allFunds(view).filter((f) => { const a = f.byHouse[pick.house]; return !!a && "valueN" in a && !a.open; }).length;
     expect((out.match(/data-spot-dot=""/g) ?? []).length).toBe(priced);
     expect(shown(out)).toContain(w.lists.note(true));
-    expect(shown(out)).toContain(w.lists.accounts.barRuler);
+    // what the ruler measures is its title, and the small bars are said in the "?" beside "הקטע", not in a line under the list
+    expect(shown(out)).toContain(w.lists.rulerTitle);
+    expect(shown(out)).not.toContain(w.lists.accounts.barRuler);
+    expect(out).toContain(`aria-label="${help.markLabel.replace("{about}", w.lists.accounts.sets.what)}"`);
   });
   it("a fund on an open rule is shown, not ranked: after the ranked funds of its kind, under one heading, with no spot and no tag on its row (G-18)", () => {
     const at = (f: ReturnType<typeof allFunds>[number]) => f.byHouse[pick.house];

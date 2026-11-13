@@ -166,11 +166,20 @@ export interface FeeRow {
   varies?: ReactNode;
   /** What the collected managers' binding documents charge for this fee, over all of them (F-105), under the cap. */
   range?: ReactNode;
+  /** The cell holds a cap the fee regulations set. */
+  regsCap?: boolean;
 }
 
-/** `feePage`: the fee page builds a deal of this guide's product (its record lists a fee base); without one the guide does not send the reader there. */
+/**
+ * `feePage`: the fee page builds a deal of this guide's product (its record lists a fee base); without one the guide does not send the reader there.
+ * The cap column's head says whose caps it holds, read from the rows: "התקרה שבתקנות" where a row holds a cap the fee regulations set
+ * (`regsCap`), since such a cap is the regulations' and never "the law's" (copy.md 3, guard 18), and a cell of that table with no cap says so
+ * in its own words; "תקרה בחוק", the general head, where no row holds one. A phone, whose rows have no heads, says it in the first sentence
+ * under them.
+ */
 export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactNode; feePage: boolean }) {
   const { id } = useParams();
+  const cap = fees.some((f) => f.regsCap) ? "regs" : "law";
   return (
     <div className="flex flex-col gap-3">
       <Card className="md:hidden flex flex-col divide-y divide-border p-0 md:p-0">
@@ -195,7 +204,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
             <tr>
               <th scope="col">{copy.feeTable.type}</th>
               <th scope="col">{copy.feeTable.base}</th>
-              <th scope="col">{copy.feeTable.cap}</th>
+              <th scope="col">{copy.feeTable.cap[cap]}</th>
             </tr>
           </thead>
           <tbody>
@@ -217,7 +226,10 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
           </tbody>
         </table>
       </Card>
-      <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
+      <p className="text-sm text-muted-foreground max-w-measure">
+        <span className="md:hidden">{copy.feeCapsPhone[cap]} </span>
+        {note}
+      </p>
       {id && feePage && (
         <TextLink look="line" to={dealPagePath({ wrapper: id })} className="self-start">
           {feePageLink}

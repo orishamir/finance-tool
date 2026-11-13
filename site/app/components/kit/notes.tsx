@@ -1,5 +1,5 @@
 // Small lines under a control or a visual: where a starting value came from, and a part the site has not worked out yet.
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { guideSignature as copy } from "../../copy";
 import { IconAlert } from "../icons";
 import { cx } from "./cx";
@@ -10,6 +10,25 @@ export function SourceLine({ lead, items }: { lead: ReactNode; items: string[] }
   return (
     <p className="text-xs text-muted-foreground">
       {lead} {items.join(", ")}
+    </p>
+  );
+}
+
+/**
+ * What a calculation runs on, in one weak line of short parts joined by " · " (the indices page's plan, a guide visual's assumptions): whose
+ * numbers they are, said in sight where it is a caution ("הנחות של האתר, לא תחזית"), the figures, and an action at its end. A part that is
+ * `false`, `null` or empty is left out, with its dot.
+ */
+export function DotLine({ items, className }: { items: ReactNode[]; className?: string }) {
+  const shown = items.filter((x) => x !== null && x !== undefined && x !== false && x !== "");
+  return (
+    <p className={cx("text-xs text-muted-foreground", className)}>
+      {shown.map((x, i) => (
+        <Fragment key={i}>
+          {i > 0 && " · "}
+          {x}
+        </Fragment>
+      ))}
     </p>
   );
 }

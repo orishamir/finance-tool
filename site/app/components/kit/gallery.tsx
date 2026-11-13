@@ -16,7 +16,7 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -782,6 +782,11 @@ function Words({ today }: { today: string }) {
           <ProseList items={[...g.sample.notes]} />
         </State>
       </Demo>
+      <Demo name="DotLine" use={g.uses.DotLine}>
+        <State label="what a calculation runs on: whose numbers they are, the figures and an action at the end, joined by dots; an empty part leaves no dot" wide>
+          <DotLine items={[g.sample.dotLine.site, g.sample.dotLine.ret, false, g.sample.dotLine.today]} />
+        </State>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -1195,6 +1200,9 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="ChartLegend, an item with after: a few weak words and a help mark after the item, outside its pick, for what the series rests on" wide>
+        <ChartLegend items={[{ id: "a", swatch: <Swatch shape="line" className="bg-chart-value" />, label: <bdi>{g.sample.seriesA}</bdi> }, { id: "b", swatch: <Swatch shape="line" className="bg-chart-alt" />, label: g.sample.helpText.head, after: <span>· {g.sample.legendAfter} <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span> }]} />
+      </State>
       <State label="ChartLegend with pick: a mouse previews a series, a click or a tap keeps it" wide>
         <LegendPickDemo />
       </State>
@@ -1411,6 +1419,7 @@ function StretchDemo() {
         startHead={<p className="text-sm font-semibold">{w.accounts}</p>}
         startList={<PickList look="line" tone="account" anchor="demo-accounts" label={w.accounts} columns="minmax(0,1fr) auto auto" rows={accountRows} />}
         endHead={<p className="text-sm font-semibold">{w.funds}</p>}
+        rulerHead={w.ruler}
         endList={<PickList look="line" tone="fund" anchor="demo-funds" label={w.funds} columns="auto minmax(0,1fr) auto" rows={fundRows} />}
         startAnchor="demo-accounts"
         endAnchor="demo-funds"
@@ -2118,7 +2127,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="StretchChart, StretchBar, PickList (line)" use={g.uses.Stretch}>
-        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
+        <State label="two lists of one-line rows either side of a ruler: the chosen account's row opens onto its stretch, a band on the ruler; the band opens onto the funds, a line from each fund's spot to its row; the chosen pair a point joined straight up to the total above, its line broken around the ruler's title (`rulerHead`) over the ruler. A pick in either list moves them; it stands only from 1280 px, and the gallery shows it only there" wide>
           <div className="max-xl:hidden">
             <StretchDemo />
           </div>
