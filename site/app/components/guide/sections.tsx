@@ -166,14 +166,18 @@ export interface FeeRow {
   varies?: ReactNode;
   /** What the collected managers' binding documents charge for this fee, over all of them (F-105), under the cap. */
   range?: ReactNode;
+  /** The cell is a cap the regulations set, or says they set none for this fee. */
+  regs?: boolean;
 }
 
 /**
  * `feePage`: the fee page builds a deal of this guide's product (its record lists a fee base); without one the guide does not send the reader there.
- * `cap`: whose caps the cap column holds, said in its head; a phone, whose rows have no heads, says it in the first sentence under them.
+ * The cap column's head says whose caps it holds, read from the rows: "התקרה שבתקנות" only where every row's cell is the regulations' (`regs`),
+ * else the general head, so the head is true of every cell under it. A phone, whose rows have no heads, says it in the first sentence under them.
  */
-export function FeeTable({ fees, note, feePage, cap }: { fees: FeeRow[]; note: ReactNode; feePage: boolean; cap: "regs" | "law" }) {
+export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactNode; feePage: boolean }) {
   const { id } = useParams();
+  const cap = fees.length > 0 && fees.every((f) => f.regs) ? "regs" : "law";
   return (
     <div className="flex flex-col gap-3">
       <Card className="md:hidden flex flex-col divide-y divide-border p-0 md:p-0">
