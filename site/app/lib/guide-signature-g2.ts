@@ -239,7 +239,7 @@ export interface PensionModel {
    *  comprehensive fund's ceiling (`below-ceiling`) or an excess the rule base does not divide between the parts (`general-split`). */
   balanceGap: "no-fees" | "no-run" | "below-ceiling" | "general-split" | null;
   /** On the general fund's page only (PEN-10): the comprehensive fund's monthly deposit ceiling (PEN-08) and the part of the month's
-   *  deposit above it, the only money that reaches the general fund. Null on the other pages. */
+   *  deposit above it, the money that reaches the general fund at these rates (PEN-10 names other cases the visual does not show). Null on the other pages. */
   general: { ceiling: number; toGeneral: number } | null;
   /** Rule ids the model read: the forward relief and the engine runs. */
   rules: string[];

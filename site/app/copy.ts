@@ -3111,7 +3111,7 @@ export const guideSignature = {
     returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי ממס.", when: "אם הוא מגיע כל חודש דרך המשכורת או רק בדוח השנתי, עוד לא ידוע: שאלה פתוחה" },
     // the general fund's page: only the deposit above the comprehensive fund's ceiling reaches it (PEN-10, PEN-08; method F-67)
     general: {
-      below: { before: "לקרן הכללית לא מגיע מההפקדה הזו כלום: כולה נכנסת לקרן המקיפה, כי היא מתחת ל", term: "תקרת ההפקדה", middle: "שלה,", after: "בחודש. לקרן הכללית עובר רק מה שמופקד מעל התקרה, ובשיעורי המינימום זה לא קורה בשום משכורת." },
+      below: { before: "לקרן הכללית לא מגיע מההפקדה הזו כלום: כולה נכנסת לקרן המקיפה, כי היא מתחת ל", term: "תקרת ההפקדה", middle: "שלה,", after: "בחודש. לקרן הכללית עובר מה שמופקד מעל התקרה, ובשיעורי המינימום זה לא קורה בשום משכורת." },
       split: { before: "מעל התקרה של הקרן המקיפה,", middle: "בחודש, עוברים לקרן הכללית", after: "בחודש. איך העודף מתחלק בין ההפקדה שלכם להפקדות המעסיק, הכללים שנאספו לא אומרים, ולכן אין כאן חישוב של מה שנצבר בה." },
       toGeneral: "מה שמופקד בחודש מעל התקרה של הקרן המקיפה, ועובר לקרן הכללית",
     },
@@ -4318,7 +4318,7 @@ export const invest = {
     /** A fund the person typed with a fee left empty (D56). */
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
-    /** A fund whose tax rests on an open rule (F-04, D84): by the rule, said plainly; no figure is shown and nothing is ranked. */
+    /** A fund whose tax rests on an open rule (F-04, G-35): by the rule, said plainly; nothing is ranked, and no figure is shown until D84's pre-tax figures are built. */
     ruleOpen: {
       "TXF-04": "אי אפשר לחשב: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
     } as Record<string, string>,

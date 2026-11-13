@@ -956,7 +956,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx, list);
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
-  // a fund whose tax rests on an open rule is listed with the reason, with no figure and no rank (F-04, G-35; D84)
+  // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35); D84's pre-tax figures are not built yet, so no figure
   const open = securitiesBlockedBy(run.fund, ruleContext(ctx.bundle));
   if (open) return { reason: { code: "rule-open", ruleId: open } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch

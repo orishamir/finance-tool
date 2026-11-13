@@ -215,10 +215,6 @@ export function sumOf(parts: Record<string, SiteValue>, formula: string, options
 }
 
 /**
- * A figure out of a rule record, carrying the rule's strength and re-check date. "name@2027" is a figure set by tax year, for that year
- * (null when the record sets none for it): prose that says a rise the law already sets reads each later year's figure.
- */
-/**
  * The one calendar year an amount is for, so a yearly amount never reads as always true: the year it covers (1 January to 31 December of
  * the same year), else its tax year, else the year an amount indexed each 1 January took effect (`cpi-linked 1 jan` from 1.1.2026 is
  * 2026's); none for an amount not tied to a year.
@@ -232,6 +228,10 @@ export function figureYear(v: Pick<ValueObject, "effective_from" | "effective_to
   return null;
 }
 
+/**
+ * A figure out of a rule record, carrying the rule's strength and re-check date. "name@2027" is a figure set by tax year, for that year
+ * (null when the record sets none for it): prose that says a rise the law already sets reads each later year's figure.
+ */
 export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteValue | null {
   const [base, year] = name.split("@") as [string, string | undefined];
   const f = rule.figures?.[base];
