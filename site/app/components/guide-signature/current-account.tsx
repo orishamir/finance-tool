@@ -128,7 +128,20 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             <Stat label={`${copy.account.figures.account} ${copy.account.after} ${fmt.years(years)}`} tone="net">
               {values && <Num value={values.account} size="inline" />}
             </Stat>
-            <Stat label={<Term prefix="ב" id="קרנות כספיות יומיות">{copy.account.figures.fundTerm}</Term>} tone="alt">
+            <Stat
+              label={
+                <>
+                  <Term prefix="ב" id="קרנות כספיות יומיות">{copy.account.figures.fundTerm}</Term>
+                  <HelpMark about={copy.common.fundAssumption.about} text={copy.common.fundAssumption.help} />
+                </>
+              }
+              note={
+                <>
+                  <Term prefix="ב" id="תשואה">{copy.common.fundAssumption.term}</Term> {copy.common.fundAssumption.after} <Num value={cash} /> {copy.common.fundAssumption.note}
+                </>
+              }
+              tone="alt"
+            >
               {values && <Num value={values.fund} />}
             </Stat>
             <Stat label={copy.account.figures.cost}>{cost && <Num value={cost} />}</Stat>
@@ -138,10 +151,6 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           </Sentence>
         </>
       ) : null}
-
-      <Sentence size="sm" tone="muted" measure>
-        {copy.common.fundAssumption.lead} <Term id="תשואה">{copy.common.fundAssumption.term}</Term> {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
-      </Sentence>
 
       {everyBank.length > 0 ? (
         <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border anchor-target" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>

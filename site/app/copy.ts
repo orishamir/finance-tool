@@ -2676,7 +2676,8 @@ export const guideSignature = {
     rangeTo: "עד", // a range is "1.55% עד 2.25%", not a dash (wording.md)
     // one sentence for the rate most banks pay on a current account, on the current-account page and under the money-market ladder
     commonRate: { before: "רוב הבנקים משלמים בעו״ש", of: "מתוך", after: "הבנקים שנאספו." },
-    fundAssumption: { lead: "אין", term: "תשואה", before: "שפורסמה לקרן כספית שהאתר רשאי להציג, ולכן הקרן רצה כאן על", after: "בשנה. זו הנחה של האתר, לא הבטחה ולא תחזית." },
+    // the fund's return under its figure, with the "?" beside its name holding why the site assumes one (a caution: its short form stays in sight)
+    fundAssumption: { term: "תשואה", after: "של", note: "בשנה, הנחה של האתר", about: "התשואה שהאתר מניח לקרן", help: "אין תשואה שפורסמה לקרן כספית שהאתר רשאי להציג, ולכן הקרן רצה כאן על תשואה שהאתר מניח. זו הנחה של האתר, לא הבטחה ולא תחזית." },
     years: "כמה שנים",
     todayMoney: "הסכומים בכסף של היום, אחרי מס ועלויות.",
     drag: "גררו את הסמן, הקישו על הציר או השתמשו בחצים.",
