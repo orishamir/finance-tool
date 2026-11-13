@@ -51,7 +51,7 @@ D20 keeps Bank of Israel numbers off the site until the Bank consents, so these 
 
 ## 4. Money-market funds
 - **Daily funds:** Leumi's 447A page lists 44 shekel and 27 FX daily funds with the management fee each manager reported.
-  - Shekel fees run from 0.03% (קסם אקטיב כספית כשרה) to 0.25% (מיטב כספית). Two funds print no fee.
+  - Shekel fees run up to 0.25% (מיטב כספית). Two funds print no fee.
   - Daily funds report no expected yield (MF-34: "no expected yield exists for these funds").
   - All 71 rows: `staged/mmf-fees-leumi.jsonl`.
 - **Renewing funds** (Discount's 447A page, "הנתונים נכונים לתאריך 26.10.26"):

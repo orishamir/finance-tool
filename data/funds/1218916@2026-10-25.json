@@ -20,7 +20,7 @@
   },
   "manager": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
   "domicile": "IL",
-  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן בלתי מוגבלת בניירות ערך חוץ; קרן להשקעות חוץ (מטבע עיקרי) שהמטבע העיקרי שלה דולר ארה\"ב; units of 1 ₪ par value; 'ATF' = Analyst Tracking Fund (report footnote 3); units first offered to the public on 08.04.2025 (this is the fund's first annual report); kosher approval in force from 29.03.2026 (footnote 6). Trustee: מזרחי טפחות חברה לנאמנות בע\"מ. REPLICATION: futures and swaps: mainly futures abroad on the tracking asset and swaps on it, with FX forwards and spot (annual report https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf, p. 2, 'הדרך שבה הקרן תנוהל': 'ניהול השקעות הקרן מתאפיין בעיקר בביצוע עסקאות בחוזים עתידיים בחו\"ל על נכס המעקב, בעסקאות החלף על נכס המעקב'; read 2026-10-25).",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן בלתי מוגבלת בניירות ערך חוץ; קרן להשקעות חוץ (מטבע עיקרי) שהמטבע העיקרי שלה דולר ארה\"ב; units of 1 ₪ par value; 'ATF' = Analyst Tracking Fund (report footnote 3); units first offered to the public on 08.04.2025 (this is the fund's first annual report). Trustee: מזרחי טפחות חברה לנאמנות בע\"מ. REPLICATION: futures and swaps: mainly futures abroad on the tracking asset and swaps on it, with FX forwards and spot (annual report https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf, p. 2, 'הדרך שבה הקרן תנוהל': 'ניהול השקעות הקרן מתאפיין בעיקר בביצוע עסקאות בחוזים עתידיים בחו\"ל על נכס המעקב, בעסקאות החלף על נכס המעקב'; read 2026-10-25).",
   "exposure_id": "index-sp500",
   "currency": "NIS",
   "trading_currency_on_tase": "NIS",
