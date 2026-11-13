@@ -5,7 +5,7 @@ import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import type { SiteValue } from "../value";
 import { capLine, type CapLine } from "./kinds";
 import { monthKey, type MonthKey, type Months, type Stage } from "./model";
-import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, sameStanding, stageIn, standingView, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
+import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue } from "./values";
 
@@ -91,7 +91,7 @@ function statementsOf(r: DealRead): Statement[] {
   };
   for (const p of r.reading.periods) {
     const at = monthKey(p.from);
-    for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today), periods: [at] }));
+    for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)), periods: [at] }));
     r.fees.forEach((fee, i) => {
       const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
@@ -238,7 +238,7 @@ function drawn(
 ): Curve {
   const at = marks.map(shekels);
   const largest = Math.max(...at);
-  const views = marks.map((m) => markView(m, r.fees, p, r.today));
+  const views = marks.map((m) => markView(m, r.fees, p, r.today, m.kind === "meet" && sumsLargest(r.engine, p, m)));
   const largestView = views[at.indexOf(largest)]!.amount;
   const end = curveEnd(largest);
   const amounts = [...new Set([0, ...at.filter((a) => a < end), end])].sort((a, b) => a - b);
@@ -306,13 +306,12 @@ export interface LawPrice {
 
 /**
  * A fee of the deal whose kind has a line in the record's caps: the line and each of the fee's prices read against it (F-113), and what
- * its tag and bar show: the standing of its first price that is judged, and the first later one whose standing differs, with its month.
+ * its tag shows: the standing of its first price that is judged.
  */
 export interface LawRow extends FeeRef {
   cap: CapLine;
   prices: LawPrice[];
   now?: StandingView;
-  later?: { at: MonthKey; standing: StandingView };
 }
 
 function lawOf(r: DealRead): LawRow[] {
@@ -339,8 +338,7 @@ function lawOf(r: DealRead): LawRow[] {
     }
     const judged = prices.filter((x) => x.standing.standing.judged);
     const now = judged[0];
-    const later = now && judged.find((x) => x !== now && !sameStanding(x.standing, now.standing));
-    return [{ ...refOf(fee), cap, prices, ...(now ? { now: now.standing } : {}), ...(later ? { later: { at: later.from, standing: later.standing } } : {}) }];
+    return [{ ...refOf(fee), cap, prices, ...(now ? { now: now.standing } : {}) }];
   });
 }
 

@@ -1,19 +1,20 @@
 // The deal at a glance, the column "העסקה במבט אחד" (method §10.6, `glance`): the fees that hold throughout, grouped by what they are
 // charged on, each group with the rate its shares add to (F-111) and the sums its prices mark (F-112); then what changes and when: the
-// fees that change at their price today, each group with its rate today, and by date. A fee with a cap shows its bar and its standing
+// fees that change at their price today, each group with its rate today, and by date. A fee with a cap shows its standing in words
 // (F-113) inside its own block, read from its row of the reading's law card.
 import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { Glance, GlanceChange, GlanceFee, GlanceGroup } from "../../lib/fee-deal/glance";
-import { groupKey, type GroupOn, type MarkView } from "../../lib/fee-deal/parts";
+import { groupKey, type FeeRef, type GroupOn, type MarkView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { IconArrowDown } from "../icons";
-import { GroupHead, Section, Tag, TextLink, TypedPlain, When, fill } from "../kit";
+import { GroupHead, Section, Tag, TextLink, TypedPlain, When, cx, fill } from "../kit";
 import { Num } from "../provenance";
-import { CapBlock, FeeName, MeetSentence, PriceWords, StandingWords, refName } from "./words";
+import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
+import { CapBlock, Fig, MeetSentence, PriceWords, StandingWords, refName } from "./words";
 
 /** The id of the reading's section under the columns, which the column's last line links to. */
 export const READING_ID = "deal-reading";
@@ -58,22 +59,25 @@ function MarkLine({ mark, action, many }: { mark: MarkView; action: string; many
       <SideLead side={mark.side} />
       {many && fill(m.whose, { name: refName(mark.fee) })}
       {fill(words.before, { noun: m.noun[action] ?? m.noun.none! })}
-      <Num value={mark.amount} />
+      <Fig value={mark.amount} />
       {words.after}
     </p>
   );
 }
 
 /**
- * One fee in a group. A fee whose price is judged against its cap is a block (`row`, its law row): its name and standing tag, the bar,
- * and the price with what its standing says. Any other fee is one line: its name and its price (and its sale's, where a sale is priced apart).
+ * One fee in a group. A fee whose price is judged against its cap is a block (`row`, its law row): its name and standing tag, which leads
+ * to its row of the law card, and the price with what its standing says. Any other fee is one line: its name and its price (and its sale's, where a sale is priced apart).
  */
 function FeeLine({ fee, row, saved, lead }: { fee: GlanceFee; row: LawRow | undefined; saved: boolean; lead?: string }) {
   const price = <PriceWords price={fee.price} kind={fee.kind} saved={saved} />;
+  const { marked, handlers } = useFeeMark(fee.fee);
+  const onClick = useLineOpen(fee.fee);
+  const line = { ...handlers, onClick, "data-glance-fee": fee.fee };
   if (row?.cap.state === "value" && fee.standing.standing.judged)
     return (
-      <li className="flex flex-col gap-2">
-        <CapBlock row={row}>
+      <li className={cx("flex flex-col gap-2 py-1", markedLine(marked), onClick && "cursor-pointer")} {...line}>
+        <CapBlock row={row} name={<FeeOpen fee={row} className="font-medium" />} tag={<LawRowTag row={row} />}>
           <p className="text-sm text-muted-foreground">
             {lead}
             {price}
@@ -83,12 +87,18 @@ function FeeLine({ fee, row, saved, lead }: { fee: GlanceFee; row: LawRow | unde
       </li>
     );
   return (
-    <li className="flex flex-wrap items-baseline gap-x-1">
-      <FeeName fee={fee} after={copy.price.sep} />
+    <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...line}>
+      <FeeOpen fee={fee} after={copy.price.sep} />
+      {/* a sale priced apart: the line may break between the purchase and the sale, never inside either */}
       {fee.sale ? (
-        <span>
-          {copy.sides.buy} {price}; {copy.sides.sell} <PriceWords price={fee.sale.price} kind={fee.kind} saved={saved} />
-        </span>
+        <>
+          <span className="whitespace-nowrap">
+            {copy.sides.buy} {price};
+          </span>{" "}
+          <span className="whitespace-nowrap">
+            {copy.sides.sell} <PriceWords price={fee.sale.price} kind={fee.kind} saved={saved} />
+          </span>
+        </>
       ) : (
         price
       )}
@@ -134,10 +144,13 @@ function Group({ group, rows, saved, lead }: { group: GlanceGroup; rows: LawRows
 function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow | undefined; saved: boolean }) {
   const form = change.change === "starts" && change.kind !== "own" ? copy.nameForms[change.kind] : undefined;
   const standing = change.standing.standing.judged && row?.cap.state === "value" ? <StandingWords standing={change.standing} /> : ".";
+  const { marked, handlers } = useFeeMark(change.fee);
+  const onClick = useLineOpen(change.fee);
+  const line = { ...handlers, onClick, className: cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer") };
   if (form)
     return (
-      <li className="flex flex-wrap items-baseline gap-x-1">
-        <FeeName fee={change} before={`${change.side === "all" ? "" : `${copy.sides[change.side]} `}${copy.glance.starts[form.g]}`} after=", " />
+      <li {...line}>
+        <FeeOpen fee={change} before={`${change.side === "all" ? "" : `${copy.sides[change.side]} `}${copy.glance.starts[form.g]}`} after=", " />
         <span>
           <PriceWords price={change.to} kind={change.kind} saved={saved} />
           {standing}
@@ -145,8 +158,8 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
       </li>
     );
   return (
-    <li className="flex flex-wrap items-baseline gap-x-1">
-      <FeeName fee={change} after={copy.price.sep} />
+    <li {...line}>
+      <FeeOpen fee={change} after={copy.price.sep} />
       <span>
         <SideLead side={change.side} />
         <PriceWords price={change.to} kind={change.kind} saved={saved} />
@@ -158,25 +171,39 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
   );
 }
 
+/** A fee not read yet because a price of it is not given: its name, and that its price is still to come. */
+function UnpricedLine({ fee }: { fee: FeeRef }) {
+  const { marked, handlers } = useFeeMark(fee.fee);
+  const onClick = useLineOpen(fee.fee);
+  return (
+    <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-glance-fee={fee.fee}>
+      <FeeOpen fee={fee} after={copy.price.sep} />
+      <span className="text-muted-foreground">{copy.builder.facts.noPrice}</span>
+    </li>
+  );
+}
+
 /**
  * The column, for a deal with a fee. `law`: the reading's law rows, which a fee with a cap draws its block from; `saved`: the deal's product
  * saves, so a share of what is held reads "what has built up". The figures the person typed read as plain words here: the builder's boxes
  * beside it carry their blue.
  */
-export function GlanceColumn({ glance, law, saved, names }: { glance: Glance; law: readonly LawRow[]; saved: boolean; names: (feeId: string) => string }) {
+export function GlanceColumn({ glance, law, saved, names, empty }: { glance: Glance; law: readonly LawRow[]; saved: boolean; names: (feeId: string) => string; /** No fee of the deal is read yet (none has its price). */ empty?: boolean }) {
   const rows: LawRows = new Map(law.map((r) => [r.fee, r]));
   // a fee that is free now is said by its date's change; a group of such fees alone stays where its fees that hold throughout add to a rate today
   const changing = glance.changing.map((g) => ({ ...g, fees: g.fees.filter((f) => f.price.form !== "free") })).filter((g) => g.fees.length > 0 || g.rates.some((r) => r.fees.length > 1));
   return (
     <Section title={copy.glance.title} level="kick" heading="h2">
       <TypedPlain className="flex flex-col gap-4">
-          {glance.throughout.length > 0 && (
+          {empty && glance.unpriced.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
+          {!empty && glance.throughout.length > 0 && (
             <Section title={copy.glance.throughout} level="card" heading="h3" gap="snug">
               {glance.throughout.map((g) => (
                 <Group key={groupKey(g.on)} group={g} rows={rows} saved={saved} />
               ))}
             </Section>
           )}
+          {!empty && (
           <Section title={copy.glance.changes} level="card" heading="h3" gap="snug" className="border-t border-border pt-4">
             {glance.dates.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.still}</p>}
             {changing.map((g) => (
@@ -209,6 +236,14 @@ export function GlanceColumn({ glance, law, saved, names }: { glance: Glance; la
               </div>
             ))}
           </Section>
+          )}
+          {glance.unpriced.length > 0 && (
+            <ul className="flex flex-col gap-1 text-sm">
+              {glance.unpriced.map((f) => (
+                <UnpricedLine key={f.fee} fee={f} />
+              ))}
+            </ul>
+          )}
           {glance.unread.length > 0 && (
             <p className="text-sm text-muted-foreground">
               {copy.glance.unread}
@@ -216,10 +251,12 @@ export function GlanceColumn({ glance, law, saved, names }: { glance: Glance; la
             </p>
           )}
       </TypedPlain>
-      <TextLink to={`#${READING_ID}`} className="inline-flex items-center gap-1 self-start text-sm">
-        {copy.glance.toReading}
-        <IconArrowDown size={14} aria-hidden="true" />
-      </TextLink>
+      {!empty && (
+        <TextLink to={`#${READING_ID}`} className="inline-flex items-center gap-1 self-start text-sm">
+          {copy.glance.toReading}
+          <IconArrowDown size={14} aria-hidden="true" />
+        </TextLink>
+      )}
     </Section>
   );
 }

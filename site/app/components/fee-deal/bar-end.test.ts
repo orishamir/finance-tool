@@ -7,7 +7,7 @@ import { feeDeal } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { newDeal } from "../../lib/fee-deal/model";
 import { dealFromTemplate, HELD_UNSAID, templateOf, templateSource } from "../../lib/fee-deal/templates";
-import { dealLabel } from "./bar-end";
+import { dealLabel, dealMeta } from "./bar-end";
 import { leavesText, TemplateNote } from "./picker";
 
 const data = feesData();
@@ -21,6 +21,11 @@ describe("a saved deal in the list", () => {
     expect(dealLabel({ ...d, template: { id: "house:leumi", name: "לאומי" } }, "חשבון ניירות ערך")).toBe("לאומי");
     expect(dealLabel(d, "חשבון ניירות ערך")).toBe(feeDeal.bar.namePlaceholder("חשבון ניירות ערך"));
     expect(dealLabel(newDeal(null), null)).toBe(feeDeal.bar.namePlaceholder(null));
+  });
+  it("says under its name its product and the day it was saved, so two rows of one name are told apart", () => {
+    const d = { ...newDeal("brokerage-account"), saved: "2026-11-13" };
+    expect(dealMeta(d, "חשבון ניירות ערך")).toBe(`חשבון ניירות ערך · ${feeDeal.end.savedOn}13.11.2026`);
+    expect(dealMeta(newDeal(null), null)).toBe(feeDeal.bar.namePlaceholder(null));
   });
 });
 

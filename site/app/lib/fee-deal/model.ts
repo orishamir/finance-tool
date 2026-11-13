@@ -24,10 +24,15 @@ export interface Sourced {
   own?: string;
 }
 
-/** A figure of a deal: entered by the person where it has no `src`, sourced where a template filled it and the person left it. */
+/**
+ * A figure of a deal: entered by the person where it has no `src`, sourced where a template filled it and the person left it. `blank`: a
+ * rate or a sum nobody typed and no template filled (a new fee's, a later price just added); its box is empty and its `v` (0) means
+ * nothing. A price with a blank figure states no price, so its fee is not read until the figure is typed or the price is made free.
+ */
 export interface Num {
   v: number;
   src?: Sourced;
+  blank?: true;
 }
 
 /** Months a rate is for or between charges: a month, a quarter, half a year, a year. */
@@ -143,6 +148,9 @@ export function newDeal(kind: ProductId | null, name = ""): FeeDeal {
 /** A typed figure, entered by the person. */
 export const typed = (v: number): Num => ({ v });
 
+/** A figure nobody has typed yet. */
+export const blankFigure = (): Num => ({ v: 0, blank: true });
+
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
 
@@ -150,30 +158,61 @@ export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v
 const figuresOf = (p: Price): (Num | undefined)[] => (p.form === "action" || p.form === "held" ? [p.rate, p.min, p.max] : p.form === "free" ? [] : [p.amount]);
 
 /**
- * Whether a fee is as a template filled it and the person left it: one price with no end, no sale priced apart and no name of its own, as a
- * template fills a fee, and every figure of it still carrying its source (`retyped` drops the source of a figure the person changes).
+ * Whether a fee holds nothing the person gave: one price with no end, no sale priced apart and no name of its own, and either every figure
+ * still carrying a template's source (`retyped` drops the source of a figure the person changes), or its price still asking for its figure
+ * with no bound (a fee just added).
  */
 export function untouched(fee: Fee): boolean {
   if (fee.stages.length !== 1 || fee.stages[0]!.until !== undefined || fee.sale || fee.name !== undefined) return false;
-  const figures = figuresOf(fee.stages[0]!.price).filter((n): n is Num => n !== undefined);
+  const price = fee.stages[0]!.price;
+  const figures = figuresOf(price).filter((n): n is Num => n !== undefined);
+  if (mainFigure(price)?.blank) return figures.length === 1;
   return figures.length > 0 && figures.every((n) => n.src !== undefined);
 }
 
-/** A new price of a fee's usual form, with nothing typed in it yet (zero), or free. */
+/** A new price of a form, with nothing typed in it yet (its rate or sum blank), or free. */
 export function blankPrice(form: FormId): Price {
   switch (form) {
     case "free":
       return { form: "free" };
     case "action":
-      return { form: "action", rate: typed(0) };
+      return { form: "action", rate: blankFigure() };
     case "held":
-      return { form: "held", rate: typed(0), per: 12, every: 12 };
+      return { form: "held", rate: blankFigure(), per: 12, every: 12 };
     case "sum":
-      return { form: "sum", amount: typed(0), every: 1 };
+      return { form: "sum", amount: blankFigure(), every: 1 };
     case "perAction":
-      return { form: "perAction", amount: typed(0) };
+      return { form: "perAction", amount: blankFigure() };
   }
 }
+
+/** The figure that states a price: its rate, or its sum; none for a free price. */
+export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.form === "held" ? p.rate : p.form === "free" ? null : p.amount);
+
+/** Whether a price states a price: free, or its rate or sum typed or filled (not blank). */
+export const pricePriced = (p: Price): boolean => !mainFigure(p)?.blank;
+
+/** The prices of a stage list that hold at `from` or later: a price that ended by then is past, and F-110 does not read it. */
+export const pricesFrom = (stages: readonly Stage[], from: MonthKey): Stage[] => stages.filter((s) => s.until === undefined || s.until > from);
+
+/**
+ * Whether every price of a fee from `from` on states one (`pricePriced`): a fee with a price not yet given there is left out of the
+ * reading. A price that has passed by `from` does not count, given or not.
+ */
+export const feePriced = (f: Fee, from: MonthKey): boolean => [f.stages, ...(f.sale ? [f.sale] : [])].every((st) => pricesFrom(st, from).every((s) => pricePriced(s.price)));
+
+/** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
+export type Side = "buy" | "sell";
+
+/** A fee's prices on a side: the sale's where it is priced apart, else the fee's own. */
+export const pricesOn = (fee: Fee, side: Side): Stage[] => (side === "sell" && fee.sale ? fee.sale : fee.stages);
+
+/** Two values with the same content, whatever order their fields were set in (a deal, a fee, a price). */
+export function sameContent(a: unknown, b: unknown): boolean {
+  return a === b || canonical(a) === canonical(b);
+}
+const canonical = (v: unknown): string =>
+  Array.isArray(v) ? `[${v.map(canonical).join(",")}]` : v && typeof v === "object" ? `{${Object.keys(v).sort().filter((k) => (v as Record<string, unknown>)[k] !== undefined).map((k) => `${JSON.stringify(k)}:${canonical((v as Record<string, unknown>)[k])}`).join(",")}}` : JSON.stringify(v);
 
 /** A new fee of a kind: one price of its usual form that holds throughout. */
 export function newFee(kind: FeeKindId, name?: string): Fee {
@@ -263,6 +302,8 @@ function readSourced(raw: unknown): Sourced | null {
 
 function readNum(raw: unknown, max: number): Num | null {
   if (!isRec(raw) || typeof raw.v !== "number" || !Number.isFinite(raw.v) || raw.v < 0 || raw.v > max) return null;
+  // a blank figure is a zero with no source; a deal saved before figures could be blank has none, and its zeros stay prices of zero
+  if (raw.blank !== undefined) return raw.blank === true && raw.v === 0 && raw.src === undefined ? blankFigure() : null;
   if (raw.src === undefined) return { v: raw.v };
   const src = readSourced(raw.src);
   return src ? { v: raw.v, src } : null;
@@ -272,7 +313,8 @@ function readNum(raw: unknown, max: number): Num | null {
 function optNum(raw: unknown, max: number): { ok: true; n?: Num } | { ok: false } {
   if (raw === undefined) return { ok: true };
   const n = readNum(raw, max);
-  return n ? { ok: true, n } : { ok: false };
+  // a bound not given is absent, never blank
+  return n && !n.blank ? { ok: true, n } : { ok: false };
 }
 
 const isMonths = (v: unknown): v is Months => MONTHS.includes(v as Months);
@@ -309,10 +351,21 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
 
 const currencyIndex: Record<string, true> = Object.fromEntries(BOUND_CURRENCIES.map((c) => [c, true]));
 
+/**
+ * What keeps price `k` of a list from the order F-110 reads, or null: a price before the last that has no month it ends (`missing`), a month
+ * not after the one the price before it ends (`after`, that month), or a last price that has an end (`end`).
+ */
+export function stageFault(stages: readonly { until?: MonthKey }[], k: number): { kind: "missing" } | { kind: "after"; month: MonthKey } | { kind: "end" } | null {
+  const s = stages[k]!;
+  if (k === stages.length - 1) return s.until === undefined ? null : { kind: "end" };
+  if (s.until === undefined || !MONTH.test(s.until)) return { kind: "missing" };
+  const before = k > 0 ? stages[k - 1]!.until : undefined;
+  return before !== undefined && s.until <= before ? { kind: "after", month: before } : null;
+}
+
 /** Whether a fee's prices are what F-110 reads: at least one, each but the last ending, the ends in order, the last with none. */
 export function stagesInOrder(stages: readonly Stage[]): boolean {
-  if (stages.length === 0) return false;
-  return stages.every((s, k) => (k === stages.length - 1 ? s.until === undefined : s.until !== undefined && MONTH.test(s.until) && (k === 0 || s.until > stages[k - 1]!.until!)));
+  return stages.length > 0 && stages.every((_, k) => stageFault(stages, k) === null);
 }
 
 /** Whether every fee of a deal can be read (F-110): the screen leaves a fee whose prices are not in order out of the reading until they are. */

@@ -57,9 +57,13 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 key="rate"
                 value={
                   r.range ? (
-                    // a range may wrap at "עד": at 320 px "1.55% עד 2.25%" is wider than its cell, and the figure's slot does not break
-                    <span className="inline-block whitespace-normal">
-                      <Num value={r.range.lo} /> {copy.common.rangeTo} <Num value={r.rate} />
+                    // a range may wrap after "עד": at 390 px "1.05% עד 3.25%" is wider than its cell, and the figure's slot does not break;
+                    // wrapped, its two figures stand 16 px apart, so each keeps a 44 px tap area that the other's does not cover; the column gap is a space
+                    <span className="inline-flex flex-wrap items-baseline gap-x-[0.31em] gap-y-4">
+                      <span>
+                        <Num value={r.range.lo} /> {copy.common.rangeTo}
+                      </span>
+                      <Num value={r.rate} />
                     </span>
                   ) : (
                     <Num value={r.rate} />

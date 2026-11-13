@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { brands, companyFocus, feeDeal as dealWords, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { brands, companyFocus, feeDeal as dealWords, guideBlocks, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -16,9 +16,11 @@ import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, CapBar, Step, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowList, InlineSelect, SortHead, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, ShareRings, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, AlignedList, AlignedRow, AlignedAcross, AlignedCaption, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
+/** A fee's name that is a glossary term, for the HelpMark with words. */
+const custodyName = (guideBlocks.fees.custody as { name: string }).name;
 const g = copy.gallery;
 /** LeftOutLine's demo: one thing that can change a price, with its reason and document (no real address: the kit's own page), and two listed. */
 const leftOutSample = {
@@ -402,6 +404,7 @@ function Choices() {
   const [chip, setChip] = useState<string | null>("0");
   const [own, setOwn] = useState<string | null>(null);
   const [tile, setTile] = useState<"a" | "b" | "c">("a");
+  const [pick, setPick] = useState(0);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
@@ -409,19 +412,25 @@ function Choices() {
         <State label={g.states.interactive}>
           <SegmentedControl label={g.sample.title} options={g.sample.option.map((o, i) => ({ value: (["a", "b", "c"] as const)[i]!, label: o }))} value={seg} onChange={setSeg} />
         </State>
+        <State label="fit, in a 220 px column: as wide as its options, their words never wrap; a disabled option is faint">
+          <div className="w-[220px]">
+            <SegmentedControl fit label={g.sample.title} options={[{ value: "a", label: dealWords.panel.always }, { value: "b", label: dealWords.panel.limited }]} value="a" onChange={() => undefined} />
+          </div>
+        </State>
+        <State label="a disabled option among three (a period with nothing to draw)">
+          <SegmentedControl fit label={g.sample.title} options={[{ value: "a", label: dealWords.read.periods.today }, { value: "b", label: g.sample.option[1]!, disabled: true }, { value: "c", label: g.sample.option[2]! }]} value="c" onChange={() => undefined} />
+        </State>
       </Demo>
       <Demo name="PickCard" use={g.uses.PickCard}>
         <State label={g.states.interactive}>
           <div className="flex flex-col gap-3 md:flex-row">
-            <div className="md:flex-1 rounded-lg border border-primary p-3 flex flex-col gap-1">
-              <span className="text-sm text-primary">{g.sample.option[0]}</span>
-              <span className="text-2xl font-bold">{fmt.nisWhole(1000)}</span>
-            </div>
-            <PickCard label={g.sample.pickCard} onPick={() => {}} className="md:flex-1 p-3 flex flex-col gap-1">
-              <span className="text-sm text-muted-foreground">{g.sample.option[1]}</span>
-              <span className="text-2xl font-bold">{fmt.nisWhole(1040)}</span>
-              <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
-            </PickCard>
+            {[0, 1].map((k) => (
+              <PickCard key={k} label={g.sample.pickCard} chosen={pick === k} onPick={() => setPick(k)} className="md:flex-1 p-3 flex flex-col gap-1">
+                <span className={pick === k ? "text-sm text-primary" : "text-sm text-muted-foreground"}>{g.sample.option[k]}</span>
+                <span className="text-2xl font-bold">{fmt.nisWhole(1000 + 40 * k)}</span>
+                <a href="#kit-pick-card" className="text-link text-sm w-fit hover:underline">{g.sample.pickCardLink}</a>
+              </PickCard>
+            ))}
           </div>
         </State>
         <State label={'pad="snug": Card\'s padding (p-4 md:p-5), for an option in a list of options'}>
@@ -1719,6 +1728,12 @@ function Lists({ today }: { today: string }) {
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} />
           </span>
         </State>
+        <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">
+          <span className="flex items-center gap-3">
+            <span className="text-lg font-semibold">{custodyName}</span>
+            <HelpMark term={custodyName} about={custodyName} words={dealWords.panel.whatIs} className="ms-auto" />
+          </span>
+        </State>
         <State label="a column of several figures (a fund's three fees): one mark opens one sheet with each term's card, under the column's name and a line; the phone, with no heads, has one line over the list">
           <span className="text-sm font-medium">
             <FundFeesHead />
@@ -1763,7 +1778,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="TabCards, PanelHead" use={g.uses.TabCards}>
-        <State label={g.states.interactive} wide>
+        <State label={`${g.states.interactive}; the panel's head with a switch at the end of its small line (end)`} wide>
           <TabCardsDemo />
         </State>
       </Demo>
@@ -2335,7 +2350,9 @@ function TabCardsDemo() {
   return (
     <TabCards idBase="kit-tab-cards" ariaLabel={t.label} openWord={t.open} current={on} onChange={setOn} tabs={t.questions.map((q, i) => ({ key: String(i), question: q, answer: t.answers[i]!, note: t.note }))}>
       <Card pad="roomy" className="flex flex-col gap-3">
-        <PanelHead kicker={t.kicker}>{t.head}</PanelHead>
+        <PanelHead kicker={t.kicker} end={<SegmentedControl fit label={t.label} options={g.sample.option.slice(0, 2).map((o, i) => ({ value: String(i), label: o }))} value={on === "1" ? "1" : "0"} onChange={setOn} />}>
+          {t.head}
+        </PanelHead>
         <p>{t.body}</p>
       </Card>
     </TabCards>
@@ -2493,6 +2510,29 @@ function DealDemos({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
+      <Demo name="AlignedList, AlignedRow, AlignedAcross, AlignedCaption" use={g.uses.AlignedList}>
+        <Grid>
+          <State label={`a thing's fields: the labels in one narrow column, the boxes from one edge; the bounds' line keeps its label by its first line where the maximum goes under the minimum, ${g.states.interactive}`}>
+            <AlignedList>
+              <AlignedRow label={dealWords.panel.howMuch}>
+                <FigureField value={mine} label={g.sample.percent} unit="%" onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
+                <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
+              </AlignedRow>
+              <AlignedRow label={dealWords.panel.min} top>
+                <FigureField value={bound} label={g.sample.field} unit="₪" placeholder={dealWords.panel.empty} onCommit={(n) => setBound(entered(n, "nis_per_trade", today, g.sampleAbout))} onClear={() => setBound(null)} validate={nonNegativeCheck} />
+                <span className="inline-flex items-center gap-x-2">
+                  <AlignedCaption>{dealWords.panel.max}</AlignedCaption>
+                  <FigureField value={null} label={g.sample.field} unit="₪" placeholder={dealWords.panel.empty} onCommit={() => undefined} onClear={() => undefined} />
+                </span>
+                <AlignedCaption>{dealWords.price.perAction.default}</AlignedCaption>
+              </AlignedRow>
+              <AlignedAcross>
+                <AlignedCaption>{dealWords.panel.untilMissing}</AlignedCaption>
+              </AlignedAcross>
+            </AlignedList>
+          </State>
+        </Grid>
+      </Demo>
       <Demo name="TypedPlain" use={g.uses.TypedPlain}>
         <Grid>
           <State label="the same entered figure: in its box, and as plain words in a summary beside the boxes">
@@ -2506,19 +2546,6 @@ function DealDemos({ today }: { today: string }) {
             </span>
           </State>
         </Grid>
-      </Demo>
-      <Demo name="CapBar" use={g.uses.CapBar}>
-        <div className="flex max-w-sm flex-col gap-4">
-          <State label="below the cap, a later price at it (outline)" wide>
-            <CapBar share={0.57} later={1} fill="bg-fee-balance" edge="border-fee-balance" cap="1.05%" />
-          </State>
-          <State label="a quarter of the cap" wide>
-            <CapBar share={0.25} fill="bg-fee-deposit" edge="border-fee-deposit" cap="4%" />
-          </State>
-          <State label="above the cap: the part above in the blocked red's stripes" wide>
-            <CapBar share={1.3} fill="bg-fee-trade" edge="border-fee-trade" cap="0.1%" />
-          </State>
-        </div>
       </Demo>
       <Demo name="Step" use={g.uses.Step}>
         <div className="flex max-w-md flex-col gap-4">
@@ -2539,6 +2566,18 @@ function DealDemos({ today }: { today: string }) {
                 { id: "b", label: g.sample.amount.b, fill: "fill-fee-fx", stroke: "stroke-fee-fx", swatch: "bg-fee-fx", values: [0, 12, 40] },
               ]}
               marks={[{ id: "m", at: 6000, label: fmt.nisWhole(6000) }]}
+              xTitle={g.sample.amount.x}
+              tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
+              total={g.sample.amount.total}
+            />
+          </Card>
+        </State>
+        <State label="a mark near the start at the height of a value on the axis: its label moves past the axis's words" wide>
+          <Card className="max-w-2xl">
+            <AmountChart
+              amounts={[0, 1500, 50000]}
+              bands={[{ id: "a", label: g.sample.amount.a, fill: "fill-fee-trade", stroke: "stroke-fee-trade", swatch: "bg-fee-trade", values: [200, 200, 600] }]}
+              marks={[{ id: "m", at: 1500, label: fmt.nisWhole(1500) }]}
               xTitle={g.sample.amount.x}
               tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
               total={g.sample.amount.total}

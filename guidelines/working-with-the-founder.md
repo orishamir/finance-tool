@@ -58,6 +58,9 @@ yes or no on a recommendation.
   Control and mostly reads the last message, so a question goes in that
   message.
 - Show a change with a screenshot rather than describing it.
+- Do not list wording for him to judge. Whoever writes new or changed words
+  checks them against [wording.md](wording.md), `docs/copy.md` section 10 and
+  `docs/glossary.md`. Raise a word only where those do not decide it.
 - Every figure carries its assumption. Keep what was read apart from what was
   inferred, and never sound surer than the evidence.
 - When work runs while he is away, finish what he asked, then stop and list

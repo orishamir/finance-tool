@@ -437,18 +437,20 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
  * One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`.
  * `inline`: the label beside the box in muted small words and the words in the box bold, for a name typed in place in a line of other
  * facts (the fee page's bar: "העסקה [חשבון המסחר שלי]"). `icon`: a mark in the box after the words, in the muted ink, that says the
- * words can be typed over (the pencil of the fee page's deal name).
+ * words can be typed over (the pencil of the fee page's deal name). `grow`, with `inline`: the box takes the free space of its line, from its
+ * usual width on, and words too long for it end in an ellipsis while it is not being typed in; the words keep their own direction, so a
+ * cut never shows half of a bracket pair.
  */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; icon?: ReactNode; className?: string }) {
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; className?: string }) {
   const id = useId();
   return (
-    <div className={cx(inline ? "flex flex-wrap items-center gap-2" : "field", className)}>
+    <div className={cx(inline ? cx("flex items-center gap-2", grow ? "min-w-0 flex-1" : "flex-wrap") : "field", className)}>
       <label htmlFor={id} className={inline ? "text-sm text-muted-foreground" : "field-label"}>
         {label}
       </label>
-      <div className="field-body">
-        <div className={cx("field-box", inline && "field-box-compact w-56 max-w-full", error ? "field-box-error" : false)}>
-          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold")} />
+      <div className={cx("field-body", grow && "min-w-0 flex-1")}>
+        <div className={cx("field-box", inline && "field-box-compact max-w-full", inline && (grow ? "w-full min-w-56" : "w-56"), error ? "field-box-error" : false)}>
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold", grow && "text-ellipsis focus:text-clip")} />
           {icon && (
             <span aria-hidden="true" className="inline-flex shrink-0 text-muted-foreground">
               {icon}
@@ -494,24 +496,30 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
  * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
  * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
- * period beside its rate: "0.6% לשנה"). `chip`: the select drawn as a bordered pill with a chevron and its label for a screen reader only,
- * one of a row of facts each chosen in place (what a fee page's deal holds: "קרן שנקנית בחו״ל ▾", "צוברת ▾"); while nothing is chosen
- * it shows `all` in the muted ink.
+ * period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron and its label for a screen reader only, one of a row of
+ * facts each chosen in place (what a fee page's deal holds: "קרן שנקנית בחו״ל ▾", "צוברת ▾"): as wide as its chosen words, the native
+ * select laid unseen over them; a chosen value in the entered blue with its edge, while nothing is chosen `all` in the muted ink.
  */
 export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean }) {
   const id = useId();
-  if (chip)
+  if (chip) {
+    const shown = options.find((o) => o.id === value)?.name ?? all ?? "";
+    // the words are drawn in a span, the select laid over it unseen: a native select is as wide as its longest option, the chip as its chosen one
     return (
-      <span className="relative inline-flex max-w-full items-center">
+      <span
+        className={cx(
+          "relative inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm hover:bg-accent has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-ring",
+          value === null ? "border-input text-muted-foreground" : "border-entered/70",
+        )}
+      >
+        <span aria-hidden="true" className={cx("truncate", value !== null && "font-medium text-entered")}>
+          {shown}
+        </span>
+        <IconChevronDown size={16} aria-hidden="true" className="shrink-0 text-muted-foreground" />
         <label htmlFor={id} className="sr-only">
           {label}
         </label>
-        <select
-          id={id}
-          value={value ?? ""}
-          onChange={(e) => onChange(e.target.value || null)}
-          className={cx("min-h-target max-w-full appearance-none truncate rounded-full border border-input bg-card ps-3.5 pe-8 text-sm cursor-pointer hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring", value === null ? "text-muted-foreground" : "font-medium text-foreground")}
-        >
+        <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-full opacity-0">
           {all !== undefined && (
             <option value="" disabled>
               {all}
@@ -523,9 +531,9 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
             </option>
           ))}
         </select>
-        <IconChevronDown size={16} aria-hidden="true" className="pointer-events-none absolute end-3 text-muted-foreground" />
       </span>
     );
+  }
   return (
     <span className="inline-flex items-center gap-1 text-sm">
       <label htmlFor={id} className={labelHidden ? "sr-only" : "text-muted-foreground"}>

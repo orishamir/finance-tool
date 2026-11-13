@@ -166,7 +166,7 @@ const HAND_SCROLL_MARGIN: Record<string, number> = {
 const HAND_SITE_LINK: Record<string, number> = {
     "components/provenance-sheets.tsx": 2,
     "content/exposure/shekel-cash.tsx": 2,
-    "content/guide/bank-deposit.tsx": 2,
+    "content/guide/bank-deposit.tsx": 1,
     "content/guide/government-bond.tsx": 3,
     "content/guide/makam.tsx": 3,
 };

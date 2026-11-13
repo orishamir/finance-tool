@@ -3,8 +3,8 @@
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
 import { decodeDeal, dealOfAddress, encodeDeal, parseSubject } from "./link";
-import { blankPrice, engineDeal, feeInOrder, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
-import { DEALS_KEY, parseDeals, savedWith, without } from "./store";
+import { blankPrice, engineDeal, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Sourced } from "./model";
+import { DEALS_KEY, parseDeals, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "./store";
 import { engineBase, FEE_KIND_IDS, FEE_SHAPES, fitsHeld, suggestions } from "./shapes";
 
 const src: Sourced = { url: "https://www.example.org/tariff.pdf", title: "Tariff", publisher: "Bank", strength: "institution", checked: "2026-10-01", effectiveFrom: "2026-01-01" };
@@ -112,6 +112,52 @@ describe("readDeal", () => {
   });
 });
 
+describe("a price not given yet", () => {
+  /** A deal saved, or a link written, before a figure could be blank: a new fee was a rate of zero, and so it opens. */
+  const older = { id: "deal-old", name: "", kind: "brokerage-account", fees: [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: { v: 0 } } }] }] };
+
+  it("starts a new fee blank, which is not a price of zero", () => {
+    const fee = newFee("trade");
+    expect(fee.stages[0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
+    expect(feePriced(fee, "2026-11")).toBe(false);
+    expect(feePriced({ ...fee, stages: [{ price: { form: "action", rate: typed(0) } }] }, "2026-11")).toBe(true);
+    expect(feePriced({ ...fee, stages: [{ price: { form: "free" } }] }, "2026-11")).toBe(true);
+  });
+  it("is kept as blank by the device, and a deal saved before stays a price of zero, read as before", () => {
+    const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
+    expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
+    const old = readDeal(JSON.parse(JSON.stringify(older)))!;
+    expect(old.fees[0]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0 } });
+    expect(feePriced(old.fees[0]!, "2026-11")).toBe(true);
+    expect(parseDeals({ version: 1, deals: [older] })).toEqual([old]);
+  });
+  it.each([
+    ["a blank figure that holds a number", { v: 1, blank: true }],
+    ["a blank figure with a source", { v: 0, blank: true, src }],
+    ["a blank that is not true", { v: 0, blank: false }],
+  ])("refuses %s", (_, rate) => {
+    const d = JSON.parse(JSON.stringify(older));
+    d.fees[0].stages[0].price.rate = rate;
+    expect(readDeal(d)).toBeNull();
+  });
+  it("refuses a blank bound: a bound not given is absent", () => {
+    const d = JSON.parse(JSON.stringify(older));
+    d.fees[0].stages[0].price.min = { v: 0, blank: true };
+    expect(readDeal(d)).toBeNull();
+  });
+  it("is carried blank by a link, and a link written before opens as it did: its zeros prices of zero, a fee it left out not there", () => {
+    const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
+    const back = decodeDeal(encodeDeal(d))!;
+    expect(back.fees.map((f) => f.kind)).toEqual(d.fees.map((f) => f.kind));
+    expect(back.fees.at(-1)!.stages[0]!.price).toEqual(newFee("transfer_out").stages[0]!.price);
+    const old = decodeDeal(encodeDeal(older as FeeDeal))!;
+    expect(old.fees[0]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0 } });
+    // a link written while a blank fee was left out of links: the deal without it, as it opened then
+    const before = Buffer.from(JSON.stringify([1, { n: "", k: "brokerage-account", f: [{ k: "trade", s: [{ P: { F: "action", r: 0.25 } }] }] }, []])).toString("base64url");
+    expect(decodeDeal(before)!.fees.map((f) => f.stages[0]!.price)).toEqual([{ form: "action", rate: { v: 0.25 } }]);
+  });
+});
+
 describe("new ids", () => {
   it("never repeat, however many are made in one moment, so a deal filled or opened at once keeps every fee (readDeal refuses a repeated id)", () => {
     const fees = Array.from({ length: 20_000 }, newFeeId);
@@ -184,6 +230,31 @@ describe("the saved deals", () => {
     expect(three.map((d) => d.id)).toEqual(["deal-a", "deal-b"]);
     expect(three[0]).toMatchObject({ name: "x", saved: "2026-11-13" });
     expect(without(two, "deal-a").map((d) => d.id)).toEqual(["deal-b"]);
+  });
+  it("keeps a deal from its first fee or a typed name, not from a kind chosen alone", () => {
+    const fresh = newDeal("brokerage-account");
+    expect(worthSaving(fresh, [])).toBe(false);
+    expect(worthSaving({ ...fresh, name: "שלי" }, [])).toBe(true);
+    expect(worthSaving({ ...fresh, fees: [newFee("trade")] }, [])).toBe(true);
+    expect(worthSaving(fresh, [fresh])).toBe(true);
+  });
+  it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", () => {
+    const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
+    const kindAlone = dealOfAddress("?wrapper=brokerage-account", data, "2026-11-12")!;
+    expect(kindAlone.given).toBe(true);
+    expect(savedIfWorth([], kindAlone.deal, "2026-11-12")).toBeNull();
+    const linked = dealOfAddress(`?d=${encodeDeal(account())}`, data, "2026-11-12")!;
+    expect(savedIfWorth([], linked.deal, "2026-11-12")).toHaveLength(1);
+  });
+  it("finds the saved deal a link's deal is the same as, whatever its ids and saved day", () => {
+    const d = { ...account(), saved: "2026-11-01" };
+    const back = decodeDeal(encodeDeal(d))!;
+    expect(savedTwin(back, [d])).toBe(d);
+    expect(savedTwin({ ...back, name: "אחר" }, [d])).toBeUndefined();
+    // a fee with no price yet is carried as it is, so it tells the two apart, and a deal with one opens its saved twin too
+    expect(savedTwin(back, [{ ...d, fees: [...d.fees, newFee("transfer_out")] }])).toBeUndefined();
+    const blank = { ...d, fees: [...d.fees, newFee("transfer_out")] };
+    expect(savedTwin(decodeDeal(encodeDeal(blank))!, [blank])).toBe(blank);
   });
   it("travels in the export file: read with each deal checked, added by id, written and read back from the device", () => {
     const a = account();

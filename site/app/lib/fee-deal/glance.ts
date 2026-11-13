@@ -20,6 +20,7 @@ import {
   refOf,
   standingView,
   subRead,
+  sumsLargest,
   type DealRead,
   type FeeRef,
   type GroupOn,
@@ -74,6 +75,8 @@ export interface Glance {
   dates: GlanceDate[];
   /** Fees left out because their prices are not in order yet. */
   unread: string[];
+  /** Fees left out because a price of theirs from the reading's month on is not given yet: the glance names them, so none vanishes. */
+  unpriced: FeeRef[];
 }
 
 /** The order the groups are listed in: the actions as F-111 names them, then what is held, the account, cover, and what is not said. */
@@ -131,7 +134,10 @@ function groupsOf(r: DealRead, idx: readonly number[], adds: boolean, others: { 
     for (const m of dealMarks(sub.engine, sub.period)) {
       if (m.kind === "meet" && others.meet) continue;
       const key = m.kind === "meet" ? "held" : keyOf.get(idx[m.fee]!)!;
-      byKey.get(key)?.marks.push(markView(m, sub.fees, sub.period, r.today));
+      // the sums are the largest cost of holding only where they are in every period, against every other share of the whole deal
+      const whole = m.kind === "meet" ? { ...m, fees: m.fees.map((k) => idx[k]!), against: m.against.map((k) => idx[k]!) } : null;
+      const largest = !!whole && r.reading.periods.every((p) => sumsLargest(r.engine, p, whole));
+      byKey.get(key)?.marks.push(markView(m, sub.fees, sub.period, r.today, largest));
     }
   }
   return [...byKey.entries()].sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b)).map(([, g]) => g);
@@ -183,5 +189,5 @@ function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
 export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread };
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: r.deal.fees.filter((f) => r.unpriced.includes(f.id)).map(refOf) };
 }

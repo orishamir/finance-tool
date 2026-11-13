@@ -13,6 +13,15 @@ export interface AddItem {
 }
 
 /**
+ * The chip that takes the focus once the chip at `at` added its thing and left the line: the one now in its place, else the last; none
+ * where nothing was added, the line is empty, or the page gave the focus somewhere else meanwhile.
+ */
+export function chipAfterAdd(at: number | null, count: number, focusElsewhere: boolean): number | null {
+  if (at === null || count === 0 || focusElsewhere) return null;
+  return Math.min(at, count - 1);
+}
+
+/**
  * The chips are buttons that add their thing at once (the page then opens it). The usual ones come first in full ink, the rarer ones after
  * them in muted ink: the order and the ink set them apart, never colour alone. Each chip is 32 px tall with a 44 px tap area; rows of
  * chips stand 12 px apart, so two areas never meet. A chip that added its thing leaves the line; the focus goes to the chip now in its
@@ -24,9 +33,9 @@ export function AddLine({ lead, items, onAdd, className }: { lead: ReactNode; it
   useIsoLayoutEffect(() => {
     const at = added.current;
     added.current = null;
-    if (at === null || (document.activeElement && document.activeElement !== document.body)) return;
     const chips = line.current?.querySelectorAll("button");
-    if (chips && chips.length > 0) chips[Math.min(at, chips.length - 1)]!.focus({ preventScroll: true });
+    const k = chipAfterAdd(at, chips?.length ?? 0, !!document.activeElement && document.activeElement !== document.body);
+    if (k !== null) chips![k]!.focus({ preventScroll: true });
   }, [items]);
   if (items.length === 0) return null;
   return (
