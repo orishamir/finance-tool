@@ -259,7 +259,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   };
   const periodText = fmt.period(period);
   const periodNote = t.columns.endOf.replace("{period}", periodText);
-  // the past yield: what it is in the head, before fees and tax in the muted line under it, and the whole caution in its "?"
+  // the full table's past yield: what it is in the head, before fees and tax in the muted line under it, and the whole caution in its "?"
   const pastMark = <HelpMark about={t.help.past} text={t.pastNote} />;
   const pastHead = (label: string, note: string) => <SortNote label={label} note={note} mark={pastMark} />;
   const short = t.columns.short;
@@ -272,12 +272,24 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   // one date over the five columns whose figures share it (the exposure, the yields, the assets)
   const asOf = t.columns.asOf.replace("{period}", periodText);
   const dated = { band: asOf };
-  const pastOver = { key: "past", head: <SortNote beside label={short.past} note={t.columns.beforeFees} mark={pastMark} />, spoken: short.past };
+  // a company page's head over its two yields is the words and the "?" alone: that the figures are before fees and tax is in the "?"
+  // (t.pastNote), which says it first ("make 'לפני דמי ניהול ומס' go into the ?")
+  const pastOver = {
+    key: "past",
+    head: (
+      <span className="inline-flex items-center gap-1 whitespace-nowrap">
+        {short.past}
+        {/* positioned, so the mark lies over the years' heads under it and keeps its 44 px */}
+        <span className="relative inline-flex">{pastMark}</span>
+      </span>
+    ),
+    spoken: short.past,
+  };
   // A dense table (8 px between columns, 12 at its outer edges), each fixed column as wide as its longest real content over every company's
   // tracks, measured with that padding: the fund's number with its link mark (5.35), the fee head with its arrow and "?" in two lines in every
   // sort state (10.3; its cap caption fits under that), the deposit fee's cap caption ("התקרה בתקנות: 4%", 7.9), the sorted share head ("מניות
-  // ▼", 3.85) and "מט״ח" over the figures (3.3), where the words a share takes without a figure ("אין נכסים", "לא דווח") take two lines, the head
-  // over the two yields with its weak words and "?" on one line (13 over both), the money ("110.79 מיליארד ₪", 9.6, at the table's end). The
+  // ▼", 3.85) and "מט״ח" over the figures (3.3), where the words a share takes without a figure ("אין נכסים", "לא דווח") take two lines, a
+  // yield's figure ("33.05%", 4.9 each, the head over both with its "?" fitting over that), the money ("110.79 מיליארד ₪", 9.6, at the table's end). The
   // name keeps the least width where the longest name of the companies with the most tracks still takes two lines ("אשראי ואג״ח עם מניות (עד
   // 25% מניות)", 10.95); a longer name elsewhere may take three.
   const compactColumns: ProductColumn[] = [
@@ -287,9 +299,9 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
     ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 7.9, sort: state("dep"), ...(caps?.deposit ? { band: "cap-deposit", bandHead: capHead(caps.deposit) } : {}) }] : []),
     { id: "stocks", head: head("stock", short.stocks), width: 3.85, wrap: true, sort: state("stock"), ...dated },
     { id: "currency", head: short.currency, width: 3.3, wrap: true, ...dated },
-    // one head over the two past yields, what it is and before fees and tax on its line, and each column's years under it
-    { id: "y3", head: t.yield.years3, over: pastOver, width: 6.5, ...dated },
-    { id: "y5", head: t.yield.years5, over: pastOver, width: 6.5, ...dated },
+    // one head over the two past yields, what it is with its "?", and each column's years under it
+    { id: "y3", head: t.yield.years3, over: pastOver, width: 4.9, ...dated },
+    { id: "y5", head: t.yield.years5, over: pastOver, width: 4.9, ...dated },
     { id: "assets", head: head("assets", short.assets), width: 9.6, sort: state("assets"), ...dated },
   ];
   // the full table's one fee head over both figures: its "?" opens the two averages, then each fee's card that names the product

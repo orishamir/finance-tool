@@ -1188,6 +1188,17 @@
   }
 }
 
+/* Under a table's caption row (ProductTable `band`), a head's "?" takes its 44 px from 4 px over its line downward, as a sorting head's
+   button beside it does, instead of centred on its line: centred, it reached 12 px up into the caption row, where a cap's figure ("4%")
+   stands over the deposit fee's "?" and took 8 px of it (2026-11-13). Its mark is drawn where it was, 2 px under its line's top. Outside the
+   layers, so it wins over the mark's own margins. */
+.tbl-banded thead tr:not(.tbl-band) .help-mark {
+  margin-top: -4px;
+  margin-bottom: -20px;
+  align-items: flex-start;
+  padding-top: 6px;
+}
+
 /* Short screens (a phone on its side): the sticky chip bars, table heads and bottom bars would take most of it, so they
    scroll with the page (audit 2026-10-24, A50). The header stays. */
 @media (max-height: 500px) {
