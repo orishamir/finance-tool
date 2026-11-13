@@ -65,8 +65,8 @@ export function TrackFeeLines({ fee, deposit, size = "inline", inline }: { fee?:
 }
 
 /** F-87 or F-88 (D34) through the provenance component; a share that could not be computed says why in its words and sheet. */
-export function ShareNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
-  return <Num value={value} size={size} display={shareText(value)} />;
+export function ShareNum({ value, size = "inline", wrap }: { value: SiteValue; size?: "inline" | "cell"; /** Where the share has no figure, its words ("אין נכסים", "לא דווח") may take two lines: a narrow column sized by its head and figures. */ wrap?: boolean }) {
+  return <Num value={value} size={size} display={shareText(value)} wrap={wrap && typeof value.value !== "number"} />;
 }
 
 /**

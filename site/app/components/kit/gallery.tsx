@@ -1950,6 +1950,9 @@ function Lists({ today }: { today: string }) {
         <State label="a table wider than its card scrolls sideways inside it: its first column stays at the start edge on the card's surface, with a line at its end once scrolled; least sets a shared column's least width" wide>
           <WideTable today={today} />
         </State>
+        <State label={'dense: 8 px at each side of a cell between columns, 12 at the table\'s outer edges, so the "?" in the last head keeps its 44 px inside the card'} wide>
+          <WideTable today={today} dense />
+        </State>
       </Demo>
       <Demo name="FeeNum, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
         <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure, a bar of each share beside its word and figure, the labels" wide>
@@ -2440,14 +2443,16 @@ function ChooseRowDemo() {
 }
 
 /** A table wider than the room it is given, which scrolls sideways inside its card with its first column in place. */
-function WideTable({ today }: { today: string }) {
+function WideTable({ today, dense }: { today: string; /** The dense table: narrower columns, the last head with a "?". */ dense?: boolean }) {
   const s = samples(today);
   const p = g.sample.products;
   const figures = ["f1", "f2", "f3", "f4", "f5", "f6"];
+  const head = (k: number) => (dense && k === figures.length - 1 ? <span className="inline-flex items-start gap-1">{`${p.figure} ${k + 1}`}<HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} /></span> : `${p.figure} ${k + 1}`);
   return (
-    <div className="max-w-xl">
+    <div className={dense ? undefined : "max-w-xl"}>
       <ProductTable
-        columns={[{ id: "name", head: p.name, least: 8 }, ...figures.map((id, k) => ({ id, head: `${p.figure} ${k + 1}`, width: 7 }))]}
+        dense={dense}
+        columns={[{ id: "name", head: p.name, least: 8 }, ...figures.map((id, k) => ({ id, head: head(k), width: dense ? 5 : 7 }))]}
         groups={[{ key: "x", rows: [p.a, p.b, p.c].map((name, i) => ({ key: String(i), cells: [<TextLink tone="plain" to="/kit" className="font-medium">{name}</TextLink>, ...figures.map((id, k) => <Num key={id} value={{ ...s.rate, value: 0.1 * (i + k + 1) }} size="cell" />)], phone: <ProductPhoneRow>{name}</ProductPhoneRow> })) }]}
       />
     </div>

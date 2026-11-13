@@ -273,22 +273,24 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const asOf = t.columns.asOf.replace("{period}", periodText);
   const dated = { band: asOf };
   const pastOver = { key: "past", head: <SortNote beside label={short.past} note={t.columns.beforeFees} mark={pastMark} />, spoken: short.past };
-  // Each fixed column as wide as its longest real content over every company's tracks: the fund's number with its link mark, the fee head
-  // with its arrow and "?" on one line (its cap caption fits under that), the deposit fee's cap caption ("התקרה בתקנות: 4%"), the words a
-  // share takes where it has no figure ("אין נכסים", "לא דווח"), the head over the two yields (with its weak words and "?" it sets their
-  // width), the money ("110.79 מיליארד ₪"). The name keeps the least width where a long real name still takes two lines ("אשראי ואג״ח
-  // עם מניות (עד 25% מניות)", 11.25 rem with the cell's padding).
+  // A dense table (8 px between columns, 12 at its outer edges), each fixed column as wide as its longest real content over every company's
+  // tracks, measured with that padding: the fund's number with its link mark (5.35), the fee head with its arrow and "?" in two lines in every
+  // sort state (10.3; its cap caption fits under that), the deposit fee's cap caption ("התקרה בתקנות: 4%", 7.9), the sorted share head ("מניות
+  // ▼", 3.85) and "מט״ח" over the figures (3.3), where the words a share takes without a figure ("אין נכסים", "לא דווח") take two lines, the head
+  // over the two yields with its weak words and "?" on one line (13 over both), the money ("110.79 מיליארד ₪", 9.6, at the table's end). The
+  // name keeps the least width where the longest name of the companies with the most tracks still takes two lines ("אשראי ואג״ח עם מניות (עד
+  // 25% מניות)", 10.95); a longer name elsewhere may take three.
   const compactColumns: ProductColumn[] = [
-    { id: "name", head: head("name", t.columns.track), sort: state("name"), least: 11.25 },
-    { id: "fund", head: t.columns.fund, width: 6 },
-    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 11, sort: state("fee"), ...(caps?.balance ? { band: "cap-savings", bandHead: capHead(caps.balance) } : {}) },
-    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 8.5, sort: state("dep"), ...(caps?.deposit ? { band: "cap-deposit", bandHead: capHead(caps.deposit) } : {}) }] : []),
-    { id: "stocks", head: head("stock", short.stocks), width: 5.5, sort: state("stock"), ...dated },
-    { id: "currency", head: short.currency, width: 4.75, ...dated },
+    { id: "name", head: head("name", t.columns.track), sort: state("name"), least: 10.95 },
+    { id: "fund", head: t.columns.fund, width: 5.35 },
+    { id: "fee", head: feeHead("fee", short.fee, "savings"), width: 10.3, sort: state("fee"), ...(caps?.balance ? { band: "cap-savings", bandHead: capHead(caps.balance) } : {}) },
+    ...(compact === "with-deposit" ? [{ id: "dep", head: feeHead("dep", short.deposit, "deposit"), width: 7.9, sort: state("dep"), ...(caps?.deposit ? { band: "cap-deposit", bandHead: capHead(caps.deposit) } : {}) }] : []),
+    { id: "stocks", head: head("stock", short.stocks), width: 3.85, wrap: true, sort: state("stock"), ...dated },
+    { id: "currency", head: short.currency, width: 3.3, wrap: true, ...dated },
     // one head over the two past yields, what it is and before fees and tax on its line, and each column's years under it
-    { id: "y3", head: t.yield.years3, over: pastOver, width: 6.75, ...dated },
-    { id: "y5", head: t.yield.years5, over: pastOver, width: 6.75, ...dated },
-    { id: "assets", head: head("assets", short.assets), width: 10, sort: state("assets"), ...dated },
+    { id: "y3", head: t.yield.years3, over: pastOver, width: 6.5, ...dated },
+    { id: "y5", head: t.yield.years5, over: pastOver, width: 6.5, ...dated },
+    { id: "assets", head: head("assets", short.assets), width: 9.6, sort: state("assets"), ...dated },
   ];
   // the full table's one fee head over both figures: its "?" opens the two averages, then each fee's card that names the product
   const [savingsAverage, ...savingsCard] = feeMarkTerms("savings", view.id, wrappers);
@@ -363,8 +365,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
               <TrackFundId fundId={x.id} dataset={x.dataset} />,
               <span className="font-semibold"><Num value={x.fee} size="cell" /></span>,
               ...(compact === "with-deposit" ? [<Num value={x.deposit} size="cell" />] : []),
-              x.exposure?.stock ? <ShareNum value={x.exposure.stock} size="cell" /> : <span className={mutedWord}>—</span>,
-              x.exposure?.currency ? <ShareNum value={x.exposure.currency} size="cell" /> : <span className={mutedWord}>—</span>,
+              x.exposure?.stock ? <ShareNum value={x.exposure.stock} size="cell" wrap /> : <span className={mutedWord}>—</span>,
+              x.exposure?.currency ? <ShareNum value={x.exposure.currency} size="cell" wrap /> : <span className={mutedWord}>—</span>,
               x.selfManaged ? <span className={mutedWord}>—</span> : <YieldFigure value={x.y3} track={x} years={3} size="cell" />,
               x.selfManaged ? <span className={mutedWord}>—</span> : <YieldFigure value={x.y5} track={x} years={5} size="cell" />,
               <AssetsFigure value={x.assets} />,
@@ -416,6 +418,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
     <ProductTable
       stickyHead
       foldable
+      dense={!!compact}
       columns={columns}
       groups={tableGroups}
       foot={(place) => (

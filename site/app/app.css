@@ -952,6 +952,19 @@
   .tbl thead th.tbl-under {
     padding-top: 0;
   }
+  /* A dense table (ProductTable `dense`, a company page's tracks beside its side list): 8 px at each side of a cell between columns. The
+     cells at the table's outer edges keep 12 px on their outer side, so nothing touches the card's border and a "?" or a figure there keeps
+     its 44 px inside the card. */
+  .tbl-dense th,
+  .tbl-dense td {
+    padding-inline: 8px;
+  }
+  .tbl-dense :is(.tbl-first, .tbl-start) {
+    padding-inline-start: 12px;
+  }
+  .tbl-dense .tbl-end {
+    padding-inline-end: 12px;
+  }
   /* A table wider than its card scrolls sideways inside it (ProductTable `tbl-pin`): its first column stays at the card's start edge, on the
      card's surface, so a row's figures keep their name in sight. While the card is scrolled from its start (`data-scrolled`) the column lies
      over the others, with a line at its end; at the start it lies over nothing, so a press area that reaches into it stays the neighbour's. */
