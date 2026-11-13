@@ -18,12 +18,12 @@
       "value": "unlinked",
       "unit": "text",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים, p.41",
-        "publisher": "Ministry of Finance, Accountant General",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=2",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457), pp.2-3, regs. 1-9 (no linkage clause; the linked type's regulations in the same booklet have reg. 8 \"תנאי הצמדה\")",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-14",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -32,7 +32,7 @@
         "GOV-13"
       ],
       "state": "sourced",
-      "notes": "Per the Debt Unit glossary (p. 41, \"אג\"ח בריבית קבועה\"): payments of principal and interest are not linked to an index, a currency or any other asset. The 2006 \"אג\"ח ממשלתית\" regulations (ק\"ת 6457 pp.2-3) set a fixed rate, NIS 1,000 face value and twelve-month interest periods; the Accountant General's bond page lists \"אג\"ח ממשלתית\" (first issued 6.11.2006, interest once a year) as the current fixed-rate type with these regulations, so today's \"ממשלתית\" series are of this type (GOV open question 4 now asks only for the 1995 \"שחר\" base text and amendments after 2007). Method F-25 takes the coupon frequency of a fixed-rate series from the series data."
+      "notes": "The type is created by the 2006 regulations, which set a fixed annual rate and no linkage: they have no linkage clause, while the regulations for \"אג\"ח ממשלתית צמודה\" in the same booklet set one (reg. 8, \"תנאי הצמדה\"). The Debt Unit glossary says it in words (annual report 2024, p.41, \"אג\"ח בריבית קבועה\": payments of principal and interest are not linked to an index, a currency or any other asset)."
     },
     "coupon_every_months": {
       "value": 12,
