@@ -1904,7 +1904,9 @@ export const feeDeal = {
   /** The template picker (a sheet). */
   picker: {
     house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית, לפי מה שהעסקה מחזיקה.", group: "בתי השקעות ובנקים" },
-    track: { title: "לבחור מסלול", lede: "שני דמי הניהול של המסלול, הממוצע שרשות שוק ההון מפרסמת." },
+    track: { title: "לבחור מסלול", lede: "הבחירה ממלאת את דמי הניהול של המסלול מהממוצע שרשות שוק ההון מפרסמת: מהחיסכון, ומההפקדה כשיש לה נתון." },
+    /** After a track's yearly fee on the savings, at its row's end. */
+    saving: "בשנה מהחיסכון",
     /** After the lede where the picker was opened from the bar, whose pick opens a new deal (not from the builder's track step). */
     newDeal: "הבחירה פותחת עסקה חדשה, והעסקה שעל המסך נשארת כמו שהיא.",
     search: "חיפוש לפי שם",

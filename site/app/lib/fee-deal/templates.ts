@@ -260,8 +260,11 @@ function trackTemplate(track: TrackLite, data: Pick<FeesData, "templates">, toda
 
 // ---------------------------------------------------------------- the picker, and filling a deal
 
-/** A template a picker offers for a kind: a house's price list, or a track (with its company, to group by, and its short name under the company where it is shorter, D54). */
-export type TemplateOption = { id: string; name: string; source: "house" } | { id: string; name: string; source: "track"; company: string; short?: string };
+/**
+ * A template a picker offers for a kind: a house's price list, or a track (with its company, to group by, its short name under the company
+ * where it is shorter, D54, and the yearly fee on the savings its pick fills, `saving`, where it fills one).
+ */
+export type TemplateOption = { id: string; name: string; source: "house" } | { id: string; name: string; source: "track"; company: string; short?: string; saving?: SiteValue };
 
 const HOUSE = "house:";
 const TRACK = "track:";
@@ -275,10 +278,32 @@ export const templateSource = (id: string): "house" | "track" => (id.startsWith(
  * The templates for a kind, for a picker: every house's price list for a securities account; every track the regulator's data maps to the
  * kind, for the provident family. Other kinds have none.
  */
-export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "houses" | "tracks">): TemplateOption[] {
+export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): TemplateOption[] {
   if (kind === "brokerage-account") return data.houses.map((h) => ({ id: houseId(h), name: h.name, source: "house" }));
   if (kind === null) return [];
-  return data.tracks.filter((t) => t.wrapperId === kind).map((t) => ({ id: trackId(t), name: t.name, source: "track", company: t.company, ...(t.short ? { short: t.short } : {}) }));
+  return data.tracks
+    .filter((t) => t.wrapperId === kind)
+    .map((t) => {
+      const balance = trackFees(t, data, today)?.balance;
+      // the fee a pick fills: a known yearly rate above nothing (`trackTemplate`)
+      const saving = balance && typeof balance.value === "number" && balance.value > 0 ? balance : undefined;
+      return { id: trackId(t), name: t.name, source: "track", company: t.company, ...(t.short ? { short: t.short } : {}), ...(saving ? { saving } : {}) };
+    });
+}
+
+/**
+ * The fees a kind's product may not charge by rule, which the builder does not offer: a fee from deposits where the regulator's data says
+ * of every track of the kind that there is none, by rule (PF-06, `depositFeeNoneByRule`). None for a kind with no tracks.
+ */
+export function barredFees(kind: FeeDeal["kind"], data: Pick<FeesData, "tracks" | "templates">, today: string): FeeKindId[] {
+  const tracks = data.tracks.filter((t) => t.wrapperId === kind);
+  if (tracks.length === 0) return [];
+  return tracks.every((t) => {
+    const v = trackFees(t, data, today);
+    return !!v && depositFeeNoneByRule(v.deposit);
+  })
+    ? ["deposit"]
+    : [];
 }
 
 /** A template as it fills a deal: its name, its fees for what the deal holds, what it leaves out with why, and a house's provider kind. */
@@ -390,9 +415,12 @@ export function matching(options: readonly TemplateOption[], query: string): rea
   return options.filter((o) => o.name.includes(q) || (o.source === "track" && (o.short?.includes(q) || o.company.includes(q))));
 }
 
-/** A new deal of a track's kind, filled from the track (`/deal?track=`); null where the track maps to no product id. */
+/**
+ * A new deal of a track's kind, filled from the track (`/deal?track=`) and named by it as a deal that picks the track in the builder is
+ * (`pickTrack`); null where the track maps to no product id.
+ */
 export function dealFromTrack(fundId: number, data: Pick<FeesData, "houses" | "tracks" | "templates">, today: string): FeeDeal | null {
   const t = data.tracks.find((x) => x.id === fundId);
   if (!t?.wrapperId || !isProductId(t.wrapperId)) return null;
-  return fillDeal(newDeal(t.wrapperId), trackId(t), data, today);
+  return pickTrack(newDeal(t.wrapperId), trackId(t), data, today);
 }

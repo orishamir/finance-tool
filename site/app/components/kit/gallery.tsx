@@ -2572,6 +2572,18 @@ function DealDemos({ today }: { today: string }) {
             />
           </Card>
         </State>
+        <State label="a mark near the start at the height of a value on the axis: its label moves past the axis's words" wide>
+          <Card className="max-w-2xl">
+            <AmountChart
+              amounts={[0, 1500, 50000]}
+              bands={[{ id: "a", label: g.sample.amount.a, fill: "fill-fee-trade", stroke: "stroke-fee-trade", swatch: "bg-fee-trade", values: [200, 200, 600] }]}
+              marks={[{ id: "m", at: 1500, label: fmt.nisWhole(1500) }]}
+              xTitle={g.sample.amount.x}
+              tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
+              total={g.sample.amount.total}
+            />
+          </Card>
+        </State>
       </Demo>
       <Demo name="AddLine" use={g.uses.AddLine}>
         <State label={`two usual things and a rarer one; a chip adds its thing, ${g.states.interactive}`} wide>

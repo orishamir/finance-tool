@@ -88,8 +88,10 @@ function rowOf(r: DealRead, fee: Fee, i: number | null): BuilderRow {
   };
 }
 
-/** The builder column of a deal, from the deal read once (`readDealFor`). */
-export function builder(r: DealRead): Builder {
+const offered = (s: Builder["suggestions"], barred: readonly FeeKindId[]): Builder["suggestions"] => ({ usual: s.usual.filter((k) => !barred.includes(k)), rarer: s.rarer.filter((k) => !barred.includes(k)) });
+
+/** The builder column of a deal, from the deal read once (`readDealFor`). `barred`: fees the deal's product may not charge by rule, never offered. */
+export function builder(r: DealRead, barred: readonly FeeKindId[] = []): Builder {
   const deal = r.deal;
   const funds = holdsFunds(deal.kind);
   return {
@@ -97,7 +99,7 @@ export function builder(r: DealRead): Builder {
       const i = r.fees.indexOf(fee);
       return i >= 0 ? [rowOf(r, fee, i)] : r.unpriced.includes(fee.id) ? [rowOf(r, fee, null)] : [];
     }),
-    suggestions: deal.kind && r.kind ? suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), deal.held) : { usual: [], rarer: ["own"] },
+    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), deal.held), barred) : { usual: [], rarer: ["own"] },
     holdsFunds: funds,
     ...(funds && deal.held ? { held: deal.held } : {}),
   };

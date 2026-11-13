@@ -8,7 +8,7 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
-import { fmt } from "../../lib/format";
+import { fmt, typedSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
 import { Num } from "../provenance";
@@ -70,10 +70,16 @@ export function FeeName({ fee, className, before, after }: { fee: FeeRef; classN
   );
 }
 
+/** A typed sum shows as it was typed (`typedSum`); any other figure as its unit's rules say. */
+const typedDisplay = (v: SiteValue) => (v.state === "entered" ? (n: number) => typedSum(n, v.unit) : undefined);
+
+/** A figure of a price, a typed sum as typed. */
+const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={typedDisplay(value)} />;
+
 /** A figure with a lead held to it on one line (", לא פחות מ־15 ₪"). */
 const Bound = ({ lead, value }: { lead: string; value: SiteValue }) => (
   <>
-    , <Num value={value} prefix={lead} />
+    , <Fig value={value} prefix={lead} />
   </>
 );
 
@@ -112,14 +118,14 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
     case "sum":
       body = (
         <>
-          <Num value={f.amount!} /> {p.per[price.every!]}
+          <Fig value={f.amount!} /> {p.per[price.every!]}
         </>
       );
       break;
     case "perAction":
       body = (
         <>
-          <Num value={f.amount!} /> {perActionWord(kind)}
+          <Fig value={f.amount!} /> {perActionWord(kind)}
         </>
       );
       break;

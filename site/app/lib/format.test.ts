@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countPhrase, fmt, formatValue, nisShown, parseNumber, withMinus } from "./format";
+import { countPhrase, fmt, formatValue, nisShown, parseNumber, typedSum, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -31,6 +31,17 @@ describe("parseNumber (audit A6)", () => {
   for (const [text, want] of ok) it(`"${text}" is ${want}`, () => expect(parseNumber(text)).toBe(want));
   const bad = ["", " ", "abc", "1e5", "2,5,5", "1,2345", "--3", "5-", "1.2.3", ",", "₪", "12a", "1,234,5"];
   for (const text of bad) it(`"${text}" is not a number`, () => expect(parseNumber(text)).toBeNaN());
+});
+
+describe("a sum the person typed", () => {
+  it("shows as typed in every currency: no decimals on a whole sum, else two", () => {
+    expect(typedSum(12.75, "nis_per_trade")).toBe("12.75 ₪");
+    expect(typedSum(15, "usd_per_trade")).toBe("15 $");
+    expect(typedSum(7.5, "eur")).toBe("7.50 €");
+    expect(typedSum(1000, "nis_per_month")).toBe("1,000 ₪");
+    expect(typedSum(5, "gbp_per_trade")).toBe("5 £");
+    expect(typedSum(0.4, "pct")).toBeUndefined();
+  });
 });
 
 describe("display rounding (audit A13)", () => {

@@ -43,6 +43,9 @@ const MIN_PLOT = 200;
 /** Over a mark's point, its label's baseline; a second label that would meet the first stands a row higher. */
 const MARK_LABEL = 10;
 const MARK_ROW = 16;
+/** How far a line of chart text reaches above and below its baseline. */
+const TEXT_UP = 11;
+const TEXT_DOWN = 3;
 /** The least room between two amounts written under the plot. */
 const X_LABEL_GAP = 8;
 
@@ -127,15 +130,21 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
     if (edge || (xSpan(i)[0] >= before + X_LABEL_GAP && xSpan(i)[1] + X_LABEL_GAP <= xSpan(steps.length - 1)[0])) written.push(i);
   });
 
-  // a mark's label over its point, held inside the plot; one that would meet the label before it goes a row higher
+  // a mark's label over its point, held inside the plot and clear of the value axis's words at the plot's start (it moves past their end
+  // where it would meet one); one that would meet the label before it goes a row higher
+  const axisWords = ticksOn(yTicks, y, [TOP, base])
+    .filter((t) => t.value > 0)
+    .map((t) => ({ right: 2 + chartTextWidth(fmt.compactNisAxis(t.value), CHART_TEXT_PX), top: y(t.value) - 4 - TEXT_UP, bottom: y(t.value) - 4 + TEXT_DOWN }));
   const placed: { m: AmountMark; cx: number; cy: number; lx: number; row: number }[] = [];
   for (const m of [...marks].sort((p, q) => p.at - q.at)) {
     const cx0 = x(m.at);
     const cy0 = y(topOf(m.at));
     const half = chartTextWidth(m.label, CHART_TEXT_PX) / 2 + 2;
-    const lx = Math.max(half, Math.min(plotR - half, cx0));
+    let lx = Math.max(half, Math.min(plotR - half, cx0));
     const prev = placed.at(-1);
     const row = prev && Math.abs(prev.lx - lx) < half * 2 + 6 && prev.row === 0 ? 1 : 0;
+    const by = cy0 - MARK_LABEL - row * MARK_ROW;
+    for (const a of axisWords) if (lx - half < a.right + 4 && by - TEXT_UP < a.bottom && by + TEXT_DOWN > a.top) lx = Math.min(plotR - half, a.right + 4 + half);
     placed.push({ m, cx: cx0, cy: cy0, lx, row });
   }
 

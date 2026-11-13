@@ -579,10 +579,16 @@
       width: min(46rem, calc(100vw - 2rem));
       max-height: min(92vh, 62rem);
     }
+    /* a card beside what opened it: wider where the window allows, so a list of rules reads in fewer lines */
     .sheet[data-pc="popover"] {
       transform: none;
       inset: auto;
-      width: min(22rem, calc(100vw - 2rem));
+      width: min(26rem, calc(100vw - 2rem));
+    }
+    @media (min-width: 80rem) {
+      .sheet[data-pc="popover"] {
+        width: 30rem;
+      }
     }
     .sheet[data-pc="popover"][open] {
       animation: pop-in var(--duration-base) var(--ease-standard);

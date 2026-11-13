@@ -198,7 +198,8 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
 }
 
 /** On PC (`isPc`, the `lg` width), puts a popover card beside its anchor (right edges aligned), on the side with more room: below it, unless
- * it does not fit there and the room above is larger. The card's max-height is capped to that room. */
+ * it does not fit there and the room above is larger. The card's max-height is capped to that room, which starts under the site's header:
+ * the card never covers it. */
 function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center", isPc: boolean) {
   dialog.style.top = "";
   dialog.style.left = "";
@@ -208,8 +209,9 @@ function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popov
   const w = dialog.offsetWidth;
   const natural = dialog.offsetHeight;
   const gap = 8;
+  const ceiling = Math.max(0, document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0);
   const roomBelow = window.innerHeight - r.bottom - gap * 2;
-  const roomAbove = r.top - gap * 2;
+  const roomAbove = r.top - ceiling - gap * 2;
   const below = natural <= roomBelow || roomBelow >= roomAbove;
   const room = Math.max(120, below ? roomBelow : roomAbove);
   const h = Math.min(natural, room);
@@ -217,6 +219,6 @@ function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popov
   let left = r.right - w;
   left = Math.max(gap, Math.min(left, window.innerWidth - w - gap));
   const top = below ? r.bottom + gap : r.top - gap - Math.min(h, window.innerHeight * 0.6);
-  dialog.style.top = `${Math.max(gap, top)}px`;
+  dialog.style.top = `${Math.max(ceiling + gap, top)}px`;
   dialog.style.left = `${left}px`;
 }

@@ -23,7 +23,7 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { dealFromTemplate, feePriceLists, HELD_UNSAID, houseName, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { barredFees, dealFromTemplate, feePriceLists, HELD_UNSAID, houseName, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import { deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, standing, undo, undoDelete, type DealUndo, type Undo, type Undoable } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -250,7 +250,7 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
     if (r.undo.shown) open(r.deals[0] ?? newDeal(null));
     setUndoing(r.undo);
   };
-  const options = useMemo(() => templateOptions(deal.kind, data), [deal.kind, data]);
+  const options = useMemo(() => templateOptions(deal.kind, data, today), [deal.kind, data, today]);
   const onPick = (id: string) => {
     setPicker(null);
     if (pickFrom === "track") {
@@ -282,7 +282,9 @@ function Deal({ data, today, saved, writable }: { data: FeesData; today: string;
   // the deal is read once for every view; choosing another fee builds only its panel again
   const read = useMemo(() => readDealFor(deal, data.kinds, today), [deal, data.kinds, today]);
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
-  const builderView = useMemo(() => builder(read), [read]);
+  // a fee the product may not charge by rule is never offered
+  const barred = useMemo(() => barredFees(deal.kind, data, today), [deal.kind, data, today]);
+  const builderView = useMemo(() => builder(read, barred), [read, barred]);
   const views = useMemo(() => (read.deal.fees.length > 0 ? { glance: glance(read), reading: readingOf(read, data.fx) } : null), [read, data.fx]);
   const panel = useMemo(() => (chosen ? panelOf(read, chosen) : null), [read, chosen]);
   const hasTracks = options.some((o) => o.source === "track");

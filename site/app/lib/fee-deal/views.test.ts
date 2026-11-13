@@ -2,7 +2,7 @@
 // read on 11.2026: a securities account and a provident fund, at a glance, in the builder, in one fee's panel and in the reading.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import type { SiteValue } from "../value";
+import { depositFeeNoneByRule, type SiteValue } from "../value";
 import { builder, panel } from "./builder";
 import { glance } from "./glance";
 import { capLine, standingOf } from "./kinds";
@@ -10,11 +10,11 @@ import { decodeDeal, encodeDeal } from "./link";
 import { NAME_MAX, newDeal, readDeal, typed, untouched, type FeeDeal } from "./model";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
+import { barredFees, dealFromTemplate, dealFromTrack, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { updateFee, withFigure, editPrice } from "./edit";
 import { latestSnapshots } from "../providers.server";
 import { loadTerms } from "../data.server";
-import { termKey } from "../fee-page-data";
+import { termKey, trackFees } from "../fee-page-data";
 
 const data = feesData();
 const kinds = data.kinds;
@@ -175,11 +175,26 @@ describe("templates", () => {
     expect(filled.fees.find((f) => f.kind === "fund_management")!.stages[0]!.price).toMatchObject({ rate: { v: 0.07 } });
   });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
-    expect(templateOptions("brokerage-account", data).every((o) => o.source === "house")).toBe(true);
-    const tracks = templateOptions("kupat-gemel-lehashkaa", data);
+    expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);
+    const tracks = templateOptions("kupat-gemel-lehashkaa", data, TODAY);
     expect(tracks.length).toBeGreaterThan(0);
     expect(tracks.every((o) => o.source === "track")).toBe(true);
-    expect(templateOptions("bank-deposit", data)).toEqual([]);
+    expect(templateOptions("bank-deposit", data, TODAY)).toEqual([]);
+  });
+  it("gives each track the yearly fee on the savings its pick fills, the same figure the deal gets", () => {
+    const o = templateOptions("kupat-gemel-lehashkaa", data, TODAY).find((x) => x.source === "track" && x.saving)!;
+    expect(o.source === "track" && o.saving!.value).toBeGreaterThan(0);
+    const d = dealFromTemplate({ ...account(), kind: "kupat-gemel-lehashkaa", fees: [] }, o.id, data, TODAY)!;
+    expect(d.fees.find((f) => f.kind === "balance")!.stages[0]!.price).toMatchObject({ rate: { v: o.source === "track" ? o.saving!.value : -1 } });
+  });
+  it("bars a fee from deposits where every track of the kind has none by rule (PF-06), and no fee for a kind with no tracks", () => {
+    const kinds = [...new Set(data.tracks.map((t) => t.wrapperId).filter((k): k is string => !!k))];
+    for (const k of kinds) {
+      const all = data.tracks.filter((t) => t.wrapperId === k).every((t) => { const v = trackFees(t, data, TODAY); return !!v && depositFeeNoneByRule(v.deposit); });
+      expect(barredFees(k as FeeDeal["kind"], data, TODAY)).toEqual(all ? ["deposit"] : []);
+    }
+    expect(barredFees("brokerage-account", data, TODAY)).toEqual([]);
+    expect(kinds.some((k) => barredFees(k as FeeDeal["kind"], data, TODAY).length > 0)).toBe(true);
   });
   it("makes a new deal from a template beside the one on screen, of its kind and holding, named by the template", () => {
     const h = data.houses.find((x) => x.holdings.abroad?.fees.some((f) => f.kind === "fx"))!;
@@ -239,6 +254,9 @@ describe("templates", () => {
     expect(balance).toMatchObject({ form: "held", per: 12, every: 1 });
     if (balance.form === "held") expect(balance.rate.src).toBeDefined();
     expect(d.template?.id).toBe(`track:${t.id}`);
+    // named as a deal that picked the same track in the builder
+    expect(d.name).toBe(pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${t.id}`, data, TODAY)!.name);
+    expect(d.name).not.toBe("");
   });
 });
 
@@ -499,12 +517,12 @@ describe("the track picker's rows", () => {
 
   it("lists for a kind only tracks of that kind", () => {
     for (const k of kindsWithTracks) {
-      const ids = new Set(templateOptions(k as FeeDeal["kind"], data).map((o) => o.id));
+      const ids = new Set(templateOptions(k as FeeDeal["kind"], data, TODAY).map((o) => o.id));
       for (const t of data.tracks) if (ids.has(`track:${t.id}`)) expect(t.wrapperId).toBe(k);
     }
   });
   it("names a track in its company's group by its short name, and finds it by its company's name", () => {
-    const options = templateOptions("kupat-gemel-lehashkaa", data);
+    const options = templateOptions("kupat-gemel-lehashkaa", data, TODAY);
     const cut = options.filter((o) => o.source === "track" && o.short);
     expect(cut.length).toBeGreaterThan(0);
     for (const o of cut) {
@@ -521,7 +539,7 @@ describe("the track picker's rows", () => {
     expect(matching(options, one.short!).some((o) => o.id === one.id)).toBe(true);
   });
   it("names the deal by the track's full name once picked", () => {
-    const o = templateOptions("kupat-gemel-lehashkaa", data).find((x) => x.source === "track" && x.short)!;
+    const o = templateOptions("kupat-gemel-lehashkaa", data, TODAY).find((x) => x.source === "track" && x.short)!;
     const next = pickTrack(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!;
     // the full name, with its company after it, as the template names it; never the short name the picker's row shows
     const full = templateOf(newDeal("kupat-gemel-lehashkaa"), o.id, data, TODAY)!.name;

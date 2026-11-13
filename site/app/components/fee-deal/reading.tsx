@@ -5,7 +5,8 @@ import { useState, type ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { FxSnapshot } from "../../lib/fx";
-import { countPhrase, fmt, joinLead } from "../../lib/format";
+import type { SiteValue } from "../../lib/value";
+import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import type { Curve, LawRow, PeriodCard, PeriodRow, Reading, Statement } from "../../lib/fee-deal/reading";
@@ -236,6 +237,9 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
   }
 }
 
+/** A mark's label on the curve: its sum as the headline says it, in the bound's currency (the curve's place is that sum in shekels, F-84). */
+const markLabel = (v: SiteValue) => formatValue(v.value as number, v.unit, v.state);
+
 /** The line beside a curve with a bound in another currency: the rate of F-84 it enters the curve at, and its day. */
 function RateLine({ currency, rate, fx }: { currency: string; rate: Curve["rates"][number]["rate"]; fx: FxSnapshot | null }) {
   const r = w.curves.rate;
@@ -263,13 +267,15 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
   const xKey = group.on === "held" ? (saved ? "heldSaved" : "held") : (group.action ?? "trade");
   const optionLabel = (from: MonthKey) => (reading.periods.find((p) => p.from === from)?.current ? w.periods.today : fromText(from));
   // a choice of period where the curve is not one for every period of the deal: several curves, or one that holds only in some periods.
-  // F-112 draws a curve only where a mark falls on it, so a period with none is a choice that cannot be made; past four periods the
-  // chips list only those with a curve.
+  // F-112 draws a curve only where a mark falls on it, so only the periods with a curve are choices; one such period is no choice, and the
+  // card's small line names it instead.
   const whole = curve !== null && distinct === 1 && spansOf(curve.periods, reading.periods).length === 0;
   const choice =
     !whole && chosen ? (
-      reading.periods.length <= 4 ? (
-        <SegmentedControl fit label={c.choose} options={reading.periods.map((p) => ({ value: p.from, label: optionLabel(p.from), disabled: !choices.some((x) => x.from === p.from) }))} value={chosen} onChange={setPicked} />
+      choices.length === 1 ? (
+        <span className="text-sm text-muted-foreground">{optionLabel(chosen)}</span>
+      ) : choices.length <= 4 ? (
+        <SegmentedControl fit label={c.choose} options={choices.map((x) => ({ value: x.from, label: optionLabel(x.from) }))} value={chosen} onChange={setPicked} />
       ) : (
         <ChoiceChips line bleed="" ids={choices.map((x) => x.from)} labels={Object.fromEntries(choices.map((x) => [x.from, optionLabel(x.from)]))} value={chosen} ariaLabel={c.choose} onChange={setPicked} />
       )
@@ -283,7 +289,7 @@ function CurveCard({ group, reading, saved, fx }: { group: CurveGroup; reading: 
         <AmountChart
           amounts={curve.amounts}
           bands={curve.series.map((s) => ({ id: s.fee.fee, label: refName(s.fee), fill: feeColour(s.fee.kind).fill, stroke: feeColour(s.fee.kind).stroke, swatch: feeColour(s.fee.kind).bg, values: s.costs }))}
-          marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: fmt.nisWhole(at) }))}
+          marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: markLabel(curve.marks[curve.at.indexOf(at)]!.amount) }))}
           xTitle={c.x[xKey] ?? ""}
           tip={(a) => (group.on === "held" ? c.tipHeld(fmt.nisWhole(a)) : c.tipAction(noun, fmt.nisWhole(a)))}
           total={c.total}
@@ -435,14 +441,23 @@ export function ReadingCards({ reading, saved, fx }: { reading: Reading; saved: 
   return (
     <TypedPlain className="flex flex-col gap-4">
       {reading.periods.length >= 2 && <PeriodsCard reading={reading} saved={saved} />}
-      {groups.length > 0 && (
+      {/* one chart leaves no half row empty: the points card (else the law card) stands beside it, and what is left takes the next row */}
+      {groups.length === 1 ? (
+        <>
+          <div className="grid items-start gap-4 lg:grid-cols-2">
+            <CurveCard group={groups[0]!} reading={reading} saved={saved} fx={fx} />
+            {points ? <PointsCard reading={reading} /> : law && <LawCard reading={reading} saved={saved} />}
+          </div>
+          {points && law && <LawCard reading={reading} saved={saved} />}
+        </>
+      ) : groups.length > 1 ? (
         <div className="grid items-start gap-4 lg:grid-cols-2">
           {groups.map((g) => (
             <CurveCard key={g.key} group={g} reading={reading} saved={saved} fx={fx} />
           ))}
         </div>
-      )}
-      {(points || law) && (
+      ) : null}
+      {groups.length !== 1 && (points || law) && (
         <div className={cx("grid items-start gap-4", points && law && "lg:grid-cols-2")}>
           {points && <PointsCard reading={reading} />}
           {law && <LawCard reading={reading} saved={saved} />}

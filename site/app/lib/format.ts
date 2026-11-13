@@ -206,6 +206,24 @@ export function nisShown(v: number, state?: "sourced" | "computed" | "entered", 
  */
 export const joinLead = (lead: string, next: string): string => (lead.endsWith("\u05be") && /^[\u05d0-\u05ea]/.test(next.trimStart()) ? lead.slice(0, -1) : lead);
 
+const typedForms = new Map<string, { whole: Intl.NumberFormat; cents: Intl.NumberFormat }>();
+const currencyOfUnit = (unit: string): string | null => (/^nis/.test(unit) ? "ILS" : /^usd/.test(unit) && unit !== "usd_per_share" ? "USD" : /^eur/.test(unit) ? "EUR" : /^gbp/.test(unit) ? "GBP" : null);
+
+/**
+ * A sum the person typed, as they typed it, in any currency: a whole sum with no decimals ("15 $", "1,000 ₪"), any other with its two
+ * ("12.75 ₪", "7.50 €"). A sum the site works out keeps the number rules (`formatValue`). Undefined for a unit that is no sum of money.
+ */
+export function typedSum(v: number, unit: string): string | undefined {
+  const cur = currencyOfUnit(unit);
+  if (!cur) return undefined;
+  let f = typedForms.get(cur);
+  if (!f) {
+    f = { whole: new Intl.NumberFormat(he, { style: "currency", currency: cur, maximumFractionDigits: 0 }), cents: new Intl.NumberFormat(he, { style: "currency", currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 }) };
+    typedForms.set(cur, f);
+  }
+  return withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? f.whole : f.cents).format(v)));
+}
+
 /**
  * A `Num` display for the sum a flat price holds up to (F-12, F-13), whole as the price list prints it: a dollar sum with no cents drops
  * them ("99 $", not "99.00 $", which a dollar price keeps); any other sum keeps its unit's form.

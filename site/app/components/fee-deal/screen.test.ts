@@ -202,17 +202,11 @@ describe("the reading on screen", () => {
     // one fee on the account is a sum per period: the headline names it
     expect(shown).toContain(`${feeDeal.nameForms.fixed_period!.the}${feeDeal.read.curves.head.meetOne.mp}`);
   });
-  it("offers each period on the held curve's switch, the ones with no mark on the curve disabled, and opens on the first with one", () => {
+  it("offers no switch where only one period has a curve, and names that period on the card's small line", () => {
     const html = markup(createElement(ReadingCards, { reading: readingOf(readDealFor(account(), data.kinds, TODAY), data.fx), saved: false, fx: data.fx }));
-    const groups = html.split(`role="group" aria-label="${feeDeal.read.curves.choose}"`).slice(1);
-    expect(groups).toHaveLength(1);
-    const options = groups[0]!.slice(0, groups[0]!.indexOf("</div>")).split("<button").slice(1);
     // today both the sums and custody are free, from 03.2027 only the sums cost: no curve meets a mark until custody starts in 03.2028
-    expect(options.map((o) => [o.includes(`disabled=""`), o.includes(`aria-pressed="true"`)])).toEqual([
-      [true, false],
-      [true, false],
-      [false, true],
-    ]);
+    expect(html).not.toContain(`aria-label="${feeDeal.read.curves.choose}"`);
+    expect(text(createElement(ReadingCards, { reading: readingOf(readDealFor(account(), data.kinds, TODAY), data.fx), saved: false, fx: data.fx }))).toContain("ממרץ 2028");
   });
   it("reads the provident fund: two periods with the rise to the cap, no curve, the monthly charge, and the law rows", () => {
     const shown = drawReading(provident());
