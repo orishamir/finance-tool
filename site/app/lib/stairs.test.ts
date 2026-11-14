@@ -4,7 +4,6 @@ import { buildInvest, indexById } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import { chainOf, ceilingOf, climbFrom, gridOf, laneCases, LANES, middleStart, rowsAt, unitOf, type Grid } from "./stairs";
 import { entered } from "./value";
-import { anyTradeCurrency } from "./test-bundles";
 
 /** accounts A..C, funds: t1, t2 (tracking), h1 (hedged tracking), e1 (etf), o1 (abroad, open). */
 const V: Record<string, number | null> = { "A|t1": 100, "B|t1": 110, "C|t1": null, "A|t2": 105, "B|t2": 120, "C|t2": 90, "A|e1": 95, "B|e1": 99, "C|e1": 98, "A|h1": 200, "B|h1": 200, "C|h1": null, "A|o1": 300, "B|o1": 310, "C|o1": null };
@@ -69,12 +68,8 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   // 500 a month wait: the climb goes to Interactive Brokers, then to the distributing iShares there, whose unit of USD 75 buys every month
   it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83525, 6893], [83587, 62]]));
   it("Interactive Israel with the same iShares: to Interactive Brokers (Tiered, the automatic conversion), then the distributing iShares", () => {
-    // the records give a dollar fund in Europe no price at Interactive Israel (F-12): its European line read as printed for any currency
-    expect(grid.cell("interactive-israel", "ie00b5bmr087")).toBeNull();
-    const any = anyTradeCurrency(bundle);
-    const anyGrid = gridOf(buildInvest({ bundle: any, index: indexById(any, "index-sp500")!, plan }), any.snapshots);
-    const c = chainOf(anyGrid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
-    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83525, 39], [83587, 62]]);
+    const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
+    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83309, null], [83525, 216], [83587, 62]]);
     expect(c.chain[1]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie00b5bmr087" });
     expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie0031442068" });
   });

@@ -147,11 +147,11 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "'עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה'. The table rows agree for EUR and GBP (0.15, minimum 2.5 EUR / 2.5 GBP). This line covers a UCITS ETF on the LSE such as CSPX, which trades in USD there (ETF-27/28)."
+        "notes": "'עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה'. The table rows agree for EUR, GBP and CHF (0.15, minimum 2.5 of each). This line covers a UCITS ETF on the LSE such as CSPX, which trades in USD there (ETF-27/28)."
       },
       "min": {
         "value": 2.5,
-        "unit": "trade_ccy_per_trade",
+        "unit": "dearer_ccy_per_trade",
         "source": {
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מינימום 2.5 בהתאם למטבע העסקה",
@@ -170,7 +170,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): 2.5 units of the currency the trade is in. The per-currency table on the same page prints 0.15% with a minimum of 2.5 for EUR, GBP and CHF, so `trade_currencies` holds those three; it prints other figures for the other European currencies (150 DKK, 75 NOK, 20 SEK, 20 PLN) and, for USD, only the per-share line of US shares. The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך' (BRK-40), so a fund traded in dollars on a European exchange pays in that exchange's currency and the list prints no minimum for a dollar trade there: the cautious reading gives such a trade no bound from this line, and the run does not price it (F-12). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
+        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): the Europe line has a 2.5 minimum in every trading currency (BRK-40). The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך', and its share table's one USD row is 'USD (Shares)' 0.01 a share with a minimum of 2.5 USD. For a listing traded in USD on the LSE, whether the 2.5 is in USD or in the exchange's main currency is open (BRK OQ25). The value names the two readings BRK-40 gives, 2.5 USD and 2.5 GBP (`bound_readings`), and a run prices the dearer at its rates (F-12, F-84, D56). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
       },
       "max": null,
       "period": null,
@@ -183,11 +183,15 @@
           "מניות/תעודות סל הנסחרות באירופה"
         ]
       },
-      "trade_currencies": [
-        "EUR",
-        "GBP",
-        "CHF"
-      ]
+      "bound_readings": {
+        "currencies": [
+          "USD",
+          "GBP"
+        ],
+        "open_questions": [
+          "BRK-OQ25"
+        ]
+      }
     },
     {
       "id": "interactive-israel-custody-foreign",
@@ -597,8 +601,8 @@
     {
       "what": "מינימום העמלה על קרן שנסחרת באירופה: 'מינימום 2.5 בהתאם למטבע העסקה' מול 'עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך'",
       "page": 1,
-      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). For a USD-quoted fund on the LSE such as CSPX the record reads the minimum as 2.5 USD (the first sentence); if the second governs, it is 2.5 GBP, the table's GBP row ('GBP (%) 0.15 2.5 GBP'), and every small European purchase costs more. Not settled by any page of the company.",
-      "why_he": "התעריפון לא אומר אם עמלת המינימום על קרן שנסחרת בדולרים בבורסת לונדון היא 2.5 דולר או 2.5 ליש״ט. האתר מחשב 2.5 דולר; אם הכוונה לליש״ט, כל קנייה קטנה באירופה עולה בפועל יותר.",
+      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). For a USD-quoted fund on the LSE such as CSPX, whether the 2.5 minimum is in USD or in the exchange's main currency is open (BRK OQ25). The record prices the dearer of 2.5 USD and 2.5 GBP at the run's rates (D56), today 2.5 GBP; if the cheaper applies, every small European purchase costs less than the site shows.",
+      "why_he": "התעריפון לא אומר אם עמלת המינימום על קרן שנסחרת בדולרים בבורסת לונדון היא 2.5 דולר או 2.5 במטבע הראשי של הבורסה. האתר מחשב לפי היקר מבין 2.5 דולר ל־2.5 ליש״ט, היום 2.5 ליש״ט; אם חל הזול, קנייה קטנה באירופה עולה בפועל פחות.",
       "could_change_price": true
     },
     {

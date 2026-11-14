@@ -158,8 +158,8 @@ describe("sums in the trade's currency printed for some currencies only (trade_c
   it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
     const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
     expect(tradeOf("excellence")).toContain('"inTrade":["ILS","USD","EUR"]');
-    // Interactive Israel's European minimum: 2.5 for euros, pounds and Swiss francs; the deal's currencies hold the first two
-    expect(tradeOf("interactive-israel")).toContain('"inTrade":["EUR","GBP"]');
+    // Interactive Israel's European minimum is the dearer of 2.5 dollars and 2.5 pounds (BRK OQ25): no list of currencies, filled in the dearer
+    expect(tradeOf("interactive-israel")).not.toContain('"inTrade"');
     const deal = account([trade(printed)]);
     expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
@@ -529,7 +529,7 @@ describe("the templates", () => {
     expect(read(world).noCurrency.length).toBeGreaterThan(0);
     // the lines so filled are those whose record prints a bound in the trade's currency (data-schema §3.6a item 1)
     const lines = latestSnapshots().flatMap((x) => x.lines).filter((l) => l.min?.unit === "trade_ccy_per_trade");
-    expect(lines.map((l) => l.id).sort()).toEqual(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "interactive-israel-buy-sell-europe", "meitav-trade-buy-sell-foreign-world"]);
+    expect(lines.map((l) => l.id).sort()).toEqual(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "meitav-trade-buy-sell-foreign-world"]);
   });
   it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
     const minOf = (is: string) => {

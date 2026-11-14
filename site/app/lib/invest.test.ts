@@ -6,7 +6,6 @@ import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
 import { invest as words } from "../copy";
-import { anyTradeCurrency } from "./test-bundles";
 
 const bundle = buildIndicesBundle();
 const t = bundle.today;
@@ -28,14 +27,14 @@ describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
   it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones", () => {
-    // on Interactive Israel's European line read as printed for any currency (test-bundles.ts), where both funds are bought by amount
-    const abroad = buildInvest({ bundle: anyTradeCurrency(bundle), index: sp, plan: plan() }).options.find((o) => o.id === "abroad")!;
+    const abroad = view.options.find((o) => o.id === "abroad")!;
     const of = (id: string) => abroad.funds.find((f) => f.rec.id === id)!;
     for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
       expect(of(id).best?.valueN).toBeGreaterThan(0);
       expect(of(id).best?.open).toBe(false);
-      // paying out costs tax along the way: below the same house's accumulating fund at the same fee, which is not ranked
-      expect(of(id).best!.valueN).toBeLessThan(of("ie00b5bmr087").best!.valueN);
+      // paying out costs tax along the way: below the accumulating fund at the same house and fee, where both are bought by amount
+      const at = (fund: string) => (of(fund).byHouse["interactive-israel"] as { valueN: number }).valueN;
+      expect(at(id)).toBeLessThan(at("ie00b5bmr087"));
     }
     for (const id of ["us-voo", "us-ivv"]) {
       expect(of(id).best).toBeUndefined();
@@ -44,10 +43,8 @@ describe("invest page computation", () => {
   });
 
   it("marks the houses whose monthly purchases run on a price for monthly buying, and only them", () => {
-    // Interactive Israel's conversion inside its recurring plan (p.6 of its tariff), on its European line read as printed for any currency
-    // (test-bundles.ts); the three banks' standing-order lines are set aside (D41)
-    const anyCcy = buildInvest({ bundle: anyTradeCurrency(bundle), index: sp, plan: plan() });
-    const marked = anyCcy.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
+    // Interactive Israel's conversion inside its recurring plan (p.6 of its tariff); the three banks' standing-order lines are set aside (D41)
+    const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
     expect(marked.sort()).toEqual(["interactive-israel"]);
   });
 
@@ -132,19 +129,14 @@ describe("invest page computation", () => {
     // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. Altshuler answered in writing that it
     // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
     // IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
-    // Interactive Israel: its European minimum is printed for euros, pounds and Swiss francs, and the generic fund abroad trades in dollars
-    // (F-12); its US line is per share, and the generic fund has no unit price, which the cell names
-    expect(abroad.cells.filter((c) => c.kind === "not-comparable").map((c) => `${c.providerId}: ${c.reason?.code}`)).toEqual(["interactive-israel: needs-share-price"]);
+    expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
     expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
     expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
     expect(abroad.cells.find((c) => c.providerId === "altshuler-trade")).toMatchObject({ kind: "cost", venue: "us" });
   });
 
-  it("the Europe line of Interactive Israel does not price a fund traded in dollars in Europe: its minimum is printed for EUR, GBP and CHF (F-12)", () => {
-    const f = view.options.find((o) => o.id === "abroad")!.funds.find((x) => x.rec.id === "ie00b5bmr087")!;
-    expect(f.byHouse["interactive-israel"]).toMatchObject({ reason: { code: "not-printed-for-currency", currency: "USD", printed: ["EUR", "GBP", "CHF"] } });
-    // read as printed for any currency, the same line prices it and names the exchange
-    const c = buildInvest({ bundle: anyTradeCurrency(bundle), index: sp, plan: plan() }).options.find((o) => o.id === "abroad")!.cells.find((x) => x.providerId === "interactive-israel")!;
+  it("the Europe line of Interactive Israel prices a London fund and names the exchange", () => {
+    const c = view.options.find((o) => o.id === "abroad")!.cells.find((x) => x.providerId === "interactive-israel")!;
     expect(c.kind).toBe("cost");
     expect(c.venue).toBe("europe");
   });
@@ -587,17 +579,16 @@ describe("Interactive Brokers abroad: its pricing plans and ways to convert", ()
     expect(listReading(bundle, ibkr, "abroad", monthly)!.built.linesUsed).toEqual(expect.arrayContaining(["interactive-brokers-buy-sell-lse-usd-tiered", "interactive-brokers-fx-auto-conversion"]));
   });
   it("charges no conversion at Interactive Brokers, and costs less there than at Interactive Israel on a unit 2,000 a month buys", () => {
-    // Interactive Israel's European line read as printed for any currency (test-bundles.ts): the records give a dollar fund there no price
-    const anyCcy = anyTradeCurrency(bundle);
-    const at = (fundId: string, providerId: string) => pairCosts({ bundle: anyCcy, index: sp, plan: monthly, fundId, providerId })!;
-    expect(pairCosts({ bundle, index: sp, plan: monthly, fundId: "ie00b5bmr087", providerId: "interactive-israel" })).toBeNull();
+    const at = (fundId: string, providerId: string) => pairCosts({ bundle, index: sp, plan: monthly, fundId, providerId })!;
     expect(at("ie00b5bmr087", "interactive-brokers").account.map((l) => l.line)).not.toContain("fx");
     // F-109 (D94): VUAA's unit (USD 146) is bought every month in whole units at Interactive Brokers, and costs less there
     expect(at("ie00bfmxxd54", "interactive-brokers").accountCost).toBeLessThan(at("ie00bfmxxd54", "interactive-israel").accountCost);
     // CSPX's unit (USD 815) is more than 2,000 a month: at Interactive Brokers the money waits for a unit, earning nothing, while
-    // Interactive Israel's recurring plan buys each month by amount, so there it costs less
+    // Interactive Israel's recurring plan buys each month by amount, at a minimum of the dearer of 2.5 dollars and 2.5 pounds (BRK OQ25,
+    // D56), which costs more here
     expect(at("ie00b5bmr087", "interactive-brokers").units).not.toBeNull();
-    expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeLessThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
+    expect(at("ie00b5bmr087", "interactive-israel").units?.skipped).toBe(0);
+    expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeGreaterThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
   });
 });
 

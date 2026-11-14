@@ -115,21 +115,6 @@ describe("F-63 on the foreign brokers' tariffs (E1, E2, E3)", () => {
   });
 });
 
-describe("F-12 a minimum in the trade's currency printed for some currencies only (trade_currencies)", () => {
-  const current = read("fees/interactive-israel@2026-11-12.json");
-  const europe = "מניות ותעודות סל הנסחרות באירופה";
-  it("a trade in a currency the line names is bounded by the minimum in that currency", () => {
-    const wb = providerWorkbench(input({ currency: { code: "GBP", startRate: 4.6 }, providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
-    const r = row(wb.rows, "interactive-israel");
-    if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
-    expect(r.tariff.buy?.min).toBeCloseTo(2.5 * 4.6, 12);
-  });
-  it("a trade in another currency is not priced, with its own reason naming the line, the currency and the line's list", () => {
-    const wb = providerWorkbench(input({ providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
-    expect(notComparable(row(wb.rows, "interactive-israel")).reason).toMatchObject({ code: "not-printed-for-currency", line: "interactive-israel-buy-sell-europe", currency: "USD", printed: ["EUR", "GBP", "CHF"] });
-  });
-});
-
 describe("F-12 a bound the list leaves open between currencies, priced in the dearer (bound_readings, D56)", () => {
   const europe = "מניות ותעודות סל הנסחרות באירופה";
   const excellence = read("fees/excellence@2026-11-12.json");
@@ -149,6 +134,15 @@ describe("F-12 a bound the list leaves open between currencies, priced in the de
     const r = row(wb.rows, "interactive-israel");
     if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
     expect(r.tariff.buy?.min).toBeCloseTo(2.5 * 4.6, 12);
+  });
+  it("Interactive Israel's record: its European minimum is the dearer of 2.5 dollars and 2.5 pounds, with BRK OQ25 open", () => {
+    const current = read("fees/interactive-israel@2026-11-12.json");
+    const line = current.lines.find((x: { id: string }) => x.id === "interactive-israel-buy-sell-europe");
+    expect(line.bound_readings).toEqual({ currencies: ["USD", "GBP"], open_questions: ["BRK-OQ25"] });
+    const wb = providerWorkbench(input({ providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
+    const r = row(wb.rows, "interactive-israel");
+    if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
+    expect(r.tariff.buy?.min).toBeCloseTo(2.5 * Math.max(fx.USD, fx.GBP), 12);
   });
   it("without a rate for one of the currencies the house is not priced, never at the cheaper one", () => {
     const wb = providerWorkbench(input({ fx: { USD: 3.7 }, providers: [{ snapshot: open(), level: "list", band: europe }] }), ctx);
