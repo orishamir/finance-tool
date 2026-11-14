@@ -7,13 +7,15 @@
 // pick fills. On opening, the focus is
 // in the box, and the arrow keys go from it down the rows and back. A pick is the page's: opened from the bar it opens a new deal from the template and never
 // changes the one on screen; opened from the builder's track step it sets the track on the deal on screen (`pickTrack`).
-// The deal a template filled says so in the builder (`TemplateNote`), with what the template left out and why.
+// The deal a template filled says so in the builder (`TemplateNote`), with what the house's record says its price leaves out (D106), and
+// each line the template left out, by its name, under why.
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, ListRow, RowList, SearchField, Tag } from "../kit";
+import { Disclosure, GroupHead, LeftOutLine, ListRow, RowList, SearchField, Tag, gershayim } from "../kit";
+import type { LeftOutView } from "../../lib/left-out";
 import type { SiteValue } from "../../lib/value";
 import { feeName } from "./words";
 
@@ -110,15 +112,23 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   );
 }
 
+/** A left line as the reader reads it: its name as the price list prints it, and its channel where the list prices channels apart. */
+const lineText = (l: { line: string; name?: string; channel?: string }): string => {
+  const channel = l.channel ? copy.cases.values.channel[l.channel] : undefined;
+  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}`;
+};
+
 /**
- * The template a deal was filled from, and what it left out: a price list's lines counted by why, a price list with nothing for what the
- * deal holds, a track's fee the product does not charge by rule or the regulator's data has no figure for.
+ * The template a deal was filled from, and what it left out: what a house's record says its price leaves out that can change what some
+ * reader pays (`leftOut`, the kit's line that opens each with its reason and page, D106); a price list's lines, each by its name under
+ * why it is left; a price list with nothing for what the deal holds; a track's fee the product does not charge by rule or the regulator's
+ * data has no figure for.
  */
-export function TemplateNote({ template, left }: { template: { id: string; name: string }; left: readonly LeftOut[] }) {
-  const lines = new Map<string, number>();
+export function TemplateNote({ template, left, leftOut = null }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null }) {
+  const lines = new Map<string, string[]>();
   const rest: { key: string; fee?: string; why: string }[] = [];
   for (const l of left) {
-    if ("line" in l) lines.set(l.why, (lines.get(l.why) ?? 0) + 1);
+    if ("line" in l) lines.set(l.why, [...(lines.get(l.why) ?? []), lineText(l)]);
     else rest.push({ key: l.fee, ...(l.why === "no-value" ? { fee: feeName(l.fee) } : {}), why: f.why[l.why === "no-value" ? "track-no-value" : l.why]! });
   }
   return (
@@ -127,6 +137,7 @@ export function TemplateNote({ template, left }: { template: { id: string; name:
         {f.from[templateSource(template.id)]}
         {template.name}
       </p>
+      <LeftOutLine view={leftOut} house={gershayim(template.name)} className="text-sm" />
       {left.length > 0 && (
         <Disclosure label={f.left} summaryClassName="text-sm">
           <ul className="flex flex-col gap-2 pt-1">
@@ -136,10 +147,16 @@ export function TemplateNote({ template, left }: { template: { id: string; name:
                 {r.why}
               </li>
             ))}
-            {[...lines].map(([why, n]) => (
-              <li key={why} className="flex flex-col">
+            {[...lines].map(([why, names]) => (
+              <li key={why} className="flex flex-col gap-1">
                 <span>{f.why[why]}</span>
-                <span className="text-xs text-muted-foreground">{countPhrase(n, f.lines)}</span>
+                <ul className="flex flex-col gap-0.5 ps-4 text-muted-foreground">
+                  {[...new Set(names)].map((name) => (
+                    <li key={name} className="list-disc">
+                      {name}
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>

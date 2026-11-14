@@ -3,7 +3,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { feeDeal } from "../../copy";
+import { feeDeal, leftOut as leftOutWords } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { newDeal } from "../../lib/fee-deal/model";
 import { dealFromTemplate, templateOf, templateSource } from "../../lib/fee-deal/templates";
@@ -36,13 +36,16 @@ describe("what a template leaves out", () => {
     expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBe("שתי שורות לא נכנסות");
     expect(leavesText([])).toBeUndefined();
   });
-  it("names the template a new deal was filled from and lists what it left out, by why", () => {
+  it("names the template a new deal was filled from, what its record says the price leaves out, and each line it left out by name under why", () => {
     const deal = dealFromTemplate(probe, "house:leumi", data, TODAY)!;
     expect(templateSource(deal.template!.id)).toBe("house");
-    const note = text(createElement(TemplateNote, { template: deal.template!, left: templateOf(deal, deal.template!.id, data, TODAY)!.left }));
+    const t = templateOf(deal, deal.template!.id, data, TODAY)!;
+    const note = text(createElement(TemplateNote, { template: deal.template!, left: t.left, leftOut: t.leftOut ?? null }));
     expect(note).toContain(`${feeDeal.filled.from.house}${deal.template!.name}`);
     expect(note).toContain(feeDeal.filled.why["set-aside"]);
-    expect(note).toContain("שורה אחת");
+    // the standing order's line by its own name, and the caveats' line (D106)
+    expect(note).toContain("הוראת קבע");
+    expect(note).toContain(leftOutWords.lead);
   });
   it("says a track's deposit fee is none by rule where the product's fee regulation has none", () => {
     const deal = dealFromTemplate(newDeal("keren-hishtalmut"), "track:154", data, TODAY)!;

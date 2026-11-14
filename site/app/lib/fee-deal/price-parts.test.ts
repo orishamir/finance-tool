@@ -376,7 +376,7 @@ describe("the templates", () => {
     }
     expect(house("discount").left.filter((l) => l.why === "bank-funds").map((l) => l.lineId).sort()).toEqual(["discount-buy-sell-tase-branch", "discount-buy-sell-tase-direct"]);
     // a bank's yearly distribution fee on fund units is left out with a reason that names it
-    expect(house("discount").left).toContainEqual({ lineId: "discount-distribution-fee-type-1", why: "distribution-yearly" });
+    expect(house("discount").left).toContainEqual(expect.objectContaining({ lineId: "discount-distribution-fee-type-1", why: "distribution-yearly" }));
     expect(copy.filled.why["distribution-yearly"]).toContain("עמלת הפצה");
   });
   it("read IBI's line outside the United States, Canada and Israel for Europe and a value of its own, never for the rest of the world", () => {
@@ -406,8 +406,8 @@ describe("the templates", () => {
     expect(filledFor("interactive-brokers", [{ by: "what", is: "europe" }, { by: "track", is: "IBKR Pro - Tiered" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.05 }, min: { v: 1.7 }, max: { v: 39 } });
     // the automatic conversion's markup is not counted (D65), and the spot conversion stays out, since F-63 converts by the automatic one
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers", data, TODAY)!.left).toEqual([
-      { line: "interactive-brokers-fx-spot", why: "another-line" },
-      { line: "interactive-brokers-fx-auto-conversion", why: "spread-unpriced" },
+      expect.objectContaining({ line: "interactive-brokers-fx-spot", why: "another-line" }),
+      expect.objectContaining({ line: "interactive-brokers-fx-auto-conversion", why: "spread-unpriced" }),
     ]);
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers/no-such-line", data, TODAY)).toBeNull();
   });

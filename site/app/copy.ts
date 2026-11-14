@@ -2186,8 +2186,6 @@ export const feeDeal = {
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
     } as Record<string, string>,
-    /** A left line counted by its reason, where the reason does not name the fee: "{n} שורות: …". */
-    lines: { one: "שורה אחת", two: "שתי שורות", many: "{n} שורות" },
   },
 } as const;
 

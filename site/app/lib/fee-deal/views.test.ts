@@ -122,20 +122,20 @@ describe("caps that hold only in a case the deal does not state, and converted p
 describe("templates", () => {
   it("lists a custody line with a rate and no period as left out, and every line the template does not read with why", () => {
     const leumi = data.houses.find((h) => h.id === "leumi")!;
-    expect(leumi.left).toContainEqual({ lineId: "leumi-tracking-fund-standing-order", why: "set-aside" });
+    expect(leumi.left).toContainEqual(expect.objectContaining({ lineId: "leumi-tracking-fund-standing-order", why: "set-aside" }));
     const snap = latestSnapshots().find((s) => s.id === "leumi")!;
     const custody = snap.lines.find((l) => l.base === "custody")!;
     expect(lineFees({ ...custody, period: null }, "")).toEqual({ fees: [], left: ["no-period"] });
     expect(lineFees({ ...custody, period: null, rate: { ...custody.rate, value: 0 } }, "").fees).toHaveLength(1);
     // a fee on a distribution that applies to the holding is a base the template does not fill, and is listed
     const line = { ...custody, id: "x-per-payment", base: "distribution_handling" as const, applies_to: ["all"], period: null, min: null, max: null, rate: { ...custody.rate, unit: "nis_per_trade" as const, value: 0.25 } };
-    expect(houseTemplate({ ...snap, lines: [...snap.lines, line] }).left).toContainEqual({ lineId: "x-per-payment", why: "other-base" });
+    expect(houseTemplate({ ...snap, lines: [...snap.lines, line] }).left).toContainEqual(expect.objectContaining({ lineId: "x-per-payment", why: "other-base" }));
   });
   it("lists a bank's yearly distribution fee on the units of a mutual or money-market fund as a fee the deal holds no price for", () => {
     const snaps = latestSnapshots();
     const distribution = snaps.flatMap((s) => s.lines.filter((l) => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period"));
     expect(distribution.length).toBeGreaterThan(0);
-    for (const s of snaps) for (const l of s.lines.filter((x) => distribution.includes(x))) expect(houseTemplate(s).left, l.id).toContainEqual({ lineId: l.id, why: "distribution-yearly" });
+    for (const s of snaps) for (const l of s.lines.filter((x) => distribution.includes(x))) expect(houseTemplate(s).left, l.id).toContainEqual(expect.objectContaining({ lineId: l.id, why: "distribution-yearly" }));
   });
   it("reads every house's whole latest price list into fees, each figure sourced, and lists every line it leaves out", () => {
     expect(data.houses.length).toBeGreaterThan(3);
@@ -194,7 +194,7 @@ describe("templates", () => {
     expect(fx).toHaveLength(1);
     expect(fx[0]!.stages![0]!.price).toMatchObject({ form: "action", rate: { v: 0 } });
     expect(fx[0]!.stages![0]!.price).not.toHaveProperty("min.v");
-    expect(data.houses.find((h) => h.id === "interactive-brokers")!.left).toContainEqual({ lineId: "interactive-brokers-fx-spot", why: "another-line" });
+    expect(data.houses.find((h) => h.id === "interactive-brokers")!.left).toContainEqual(expect.objectContaining({ lineId: "interactive-brokers-fx-spot", why: "another-line" }));
   });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
     expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);
@@ -234,7 +234,10 @@ describe("templates", () => {
   it("says what a template leaves out, with why: a house's lines for the holding, a track's fees the data or the rule leave empty", () => {
     const leumi = data.houses.find((x) => x.id === "leumi")!;
     const left = templateOf(account(), "house:leumi", data, TODAY)!.left;
-    expect(left).toEqual(leumi.left.map((l) => ({ line: l.lineId, why: l.why })));
+    expect(left).toEqual(leumi.left.map(({ lineId, ...rest }) => ({ line: lineId, ...rest })));
+    // each line by its name as the list prints it, with its channel where it has one; and what the record says the price leaves out (D106)
+    expect(left.every((l) => "line" in l && !!l.name)).toBe(true);
+    expect(templateOf(account(), "house:leumi", data, TODAY)!.leftOut?.warn).toBeGreaterThan(0);
     // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out; a figure of zero
     // fills nothing and is not left out
     for (const t of data.tracks.filter((x) => x.wrapperId === "keren-hishtalmut").slice(0, 20)) {

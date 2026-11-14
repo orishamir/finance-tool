@@ -373,8 +373,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     for (const o of options) if (o.source === "house") m.set(o.id, templateOf(probe, o.id, data, today)?.left ?? []);
     return m;
   }, [picker, options, deal.kind, data, today]);
-  // what the template left out, only where it filled the deal's fees: a track set on a deal whose fees it kept left nothing out of them
-  const left = useMemo(() => (deal.template && !deal.template.feesKept ? (templateOf(deal, deal.template.id, data, today)?.left ?? null) : null), [deal, data, today]);
+  // what the template left out, and what a house's record says its price leaves out (D106), only where it filled the deal's fees: a track
+  // set on a deal whose fees it kept left nothing out of them
+  const filled = useMemo(() => {
+    const t = deal.template && !deal.template.feesKept ? templateOf(deal, deal.template.id, data, today) : null;
+    return t ? { left: t.left, leftOut: t.leftOut ?? null } : null;
+  }, [deal, data, today]);
 
   const kind = kindById(data.kinds, deal.kind);
   // the deal is read once for every view; choosing another fee builds only its panel again
@@ -513,7 +517,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             kinds={data.kinds}
             onPickTrack={hasTracks ? openPicker("track") : null}
             onTemplates={hasHouses ? openPicker("new") : null}
-            left={left}
+            filled={filled}
             kindLine={lines.kind}
             onDeal={change}
             onKind={onKind}
