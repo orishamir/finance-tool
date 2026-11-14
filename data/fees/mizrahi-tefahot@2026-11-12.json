@@ -880,7 +880,15 @@
           "הנסחרים בארץ"
         ]
       },
-      "max_per": "unstated"
+      "max_per": "deposit",
+      "max_per_source": {
+        "url": "https://market.tase.co.il/he/market_data/trading_fees",
+        "title": "מחשבון עמלות מסחר של הבורסה: בנק מזרחי טפחות, עמלות תעריפון (עדכון אחרון: 30/06/26), דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution",
+        "quote": "דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון … 10,750.00 ₪ לרבעון",
+        "checked": "2026-11-14"
+      }
     },
     {
       "id": "mizrahi-custody-foreign",
@@ -965,7 +973,15 @@
           "הנסחרים בחוץ לארץ"
         ]
       },
-      "max_per": "unstated"
+      "max_per": "deposit",
+      "max_per_source": {
+        "url": "https://market.tase.co.il/he/market_data/trading_fees",
+        "title": "מחשבון עמלות מסחר של הבורסה: בנק מזרחי טפחות, עמלות תעריפון (עדכון אחרון: 30/06/26), דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution",
+        "quote": "דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון … 10,750.00 ₪ לרבעון",
+        "checked": "2026-11-14"
+      }
     },
     {
       "id": "mizrahi-distribution-fee-type-1",
@@ -1263,7 +1279,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16"
+              "BRK-16",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -1510,7 +1527,8 @@
             "update_rule": "provider-set",
             "rule_ids": [
               "BRK-16",
-              "BRK-19"
+              "BRK-19",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."

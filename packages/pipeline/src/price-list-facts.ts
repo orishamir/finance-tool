@@ -25,6 +25,9 @@ export function checkLineFacts(line: Line, latest: boolean): string[] {
   const hasMax = typeof line.max?.value === "number";
   if (line.max_per !== undefined && (line.base !== "custody" || !hasMax)) out.push(`${at}: max_per belongs to a custody line with a maximum`);
   if (latest && line.base === "custody" && hasMax && line.max_per === undefined) out.push(`${at}: a custody maximum says what it bounds (max_per: security, deposit or unstated)`);
+  // a scope read from another document of the house (its own sheet in TASE's calculator) cites it; an unstated scope cites nothing
+  if (line.max_per_source && (line.max_per === undefined || line.max_per === "unstated")) out.push(`${at}: max_per_source cites where max_per's security or deposit is read`);
+  if (line.max_per_source && line.max_per_source.strength !== "institution") out.push(`${at}: max_per_source is the house's own document (strength institution)`);
   if (line.max_deposit) {
     if (line.max_per !== "security") out.push(`${at}: max_deposit stands beside a maximum on each security (max_per: security)`);
     if (line.max_deposit.unit !== "nis") out.push(`${at}: max_deposit is in nis`);

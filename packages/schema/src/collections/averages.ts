@@ -6,7 +6,7 @@ import { isoDate, valueObject } from "../value.ts";
 const thousands = z.number().nonnegative().nullable();
 
 /**
- * A portfolio band as the sheet prints it, in thousands of shekels of the whole securities portfolio at the end of the period: its words and
+ * A portfolio band as the sheet prints it, in thousands of shekels of the securities portfolio as its band header says (`band_header_he`): its words and
  * the bounds they state (`above` exclusive, `up_to` inclusive; `null` where the band is open at that end).
  */
 export const averagesBand = z
@@ -82,6 +82,14 @@ export const taseMemberFees = z
     const { from, to } = r.averages.period;
     if (from > to) ctx.addIssue({ code: "custom", path: ["averages", "period"], message: "the period ends before it starts" });
     const seen = new Set<string>();
+    // the bands of one column do not overlap: (above, up_to] intervals, an open end reaching every portfolio on that side
+    const bands = new Map<string, { above: number; upTo: number; i: number }[]>();
+    r.averages.rows.forEach((row, i) => {
+      const col = `${row.fee}|${row.securities}`;
+      const band = { above: row.band.above_thousands_nis ?? -Infinity, upTo: row.band.up_to_thousands_nis ?? Infinity, i };
+      for (const other of bands.get(col) ?? []) if (band.above < other.upTo && other.above < band.upTo) ctx.addIssue({ code: "custom", path: ["averages", "rows", i, "band"], message: `the band overlaps row ${other.i}'s in the same column` });
+      bands.set(col, [...(bands.get(col) ?? []), band]);
+    });
     r.averages.rows.forEach((row, i) => {
       if (row.rate.effective_from !== from || row.rate.effective_to !== to)
         ctx.addIssue({ code: "custom", path: ["averages", "rows", i, "rate"], message: "an average's effective_from and effective_to are the reporting period" });
