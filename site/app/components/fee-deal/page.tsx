@@ -51,11 +51,12 @@ import { FeesColumn, SetupColumn, feeGroup } from "./builder";
 import { DealColumns } from "./deal-columns";
 import { DealNotices, useSaid } from "./deal-notices";
 import { FeeLinksProvider } from "./links";
+import { partPlaceId } from "./figures";
 import { UndoLine } from "./undo-line";
 import { GlanceCard, READING_ID } from "./glance";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
-import { ToolboxCard, ToolboxColumn, applyTool } from "./toolbox";
+import { ToolboxCard, ToolboxColumn, applyTool, type ToolHands } from "./toolbox";
 import type { ToolDrop } from "./fee-block";
 import { ReadingCards } from "./reading";
 import { useUnitPrice } from "./use-unit-price";
@@ -163,6 +164,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   });
 
   const onFee = (f: Fee) => change(updateFee(deal, f.id, () => f));
+  // a part a tap or a drop put on at once takes the focus where it now stands, as the card it came from is checked and takes none
+  const onPart = (fee: Fee): ToolHands["onPart"] => (next, at) => {
+    if (next === fee) return;
+    onFee(next);
+    doc.setFocus({ fee: fee.id, on: "part", part: partPlaceId(at.side, at.k, at.part) });
+  };
   const onAdd = (kind: FeeKindId) => {
     const { deal: next, fee } = addOfferedFee(deal, kindById(data.kinds, deal.kind), kind);
     change(next);
@@ -170,11 +177,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     oc.sheet.unfold();
     doc.setFocus({ fee: fee.id, on: "box" });
   };
-  // the open fee's bin, beside its name: the toolbox it was open in rests a moment, as the next fee's may stand where the pointer is
-  const onRemoveFee = (feeId: string) => {
-    kept(removeFeeKept(deal, feeId, chosen));
-    oc.panel.toRest();
-  };
+  // the open fee's bin, beside its name: the fee's undo line takes its place, as tall as its block was, so a second press there finds no control
+  const onRemoveFee = (feeId: string) => kept(removeFeeKept(deal, feeId, chosen));
   // another kind of product: the fees it does not have leave the deal, kept for the undo where any of them held something
   const onKind = (id: ProductId) => {
     const to = kindById(data.kinds, id);
@@ -236,7 +240,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         onAsk: oc.ask.onAsk,
         onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
         onForm: (part) => onForm(feeId, part, on),
-        onFee,
+        onPart: onPart(fee),
       });
     },
   };
@@ -271,6 +275,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         onFold={oc.sheet.setFolded}
         onAsk={oc.ask.onAsk}
         onFee={onFee}
+        onPart={onPart(chosenFee)}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
         onPending={(part) => oc.pending.set({ fee: chosenFee.id, case: caseId, part })}
         onStopBy={(kind) => onStopBy(chosenFee.id, kind)}
@@ -279,7 +284,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     ) : null;
   const panelView =
     toolboxView && !phone ? (
-      <ToolboxCard cardRef={oc.panel.card} column={panelColumn} rest={oc.panel.rest} onClose={oc.onClosePanel}>
+      <ToolboxCard cardRef={oc.panel.card} column={panelColumn} onClose={oc.onClosePanel}>
         {toolboxView}
       </ToolboxCard>
     ) : null;
@@ -351,7 +356,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onRemoveBy,
                 drop,
                 onHoldOn,
-                onPendingDone: () => oc.pending.set(null),
+                pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
               }}
               ask={oc.ask.asking && oc.ask.asking.fee === chosen ? oc.ask.asking.kind : null}

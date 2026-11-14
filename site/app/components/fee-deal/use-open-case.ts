@@ -25,6 +25,9 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
   const [thingOpen, setThingOpen] = useState<{ fee: string; t: number; at: HTMLElement } | null>(null);
   const [pending, setPending] = useState<Pending | null>(null);
+  // the part asking for what it needs whose box has had the focus: drawn again (left waiting while the fee changed by something), it
+  // takes it no more
+  const pendingShown = useRef<Pending | null>(null);
   // whether a phone's toolbox sheet is folded to its groups' names: folded as the page loads, so nothing covers it, and unfolded when a
   // fee or a case is opened, or at its handle
   const [sheetFolded, setSheetFolded] = useState(true);
@@ -32,13 +35,6 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   const { asking, onAsk, onAskDone, drop: dropAsk } = useAskThing(chosen, phone, setSheetFolded);
   // the fee under the pointer or the focus in any column, which the others mark
   const [marked, setMarked] = useState<string | null>(null);
-  // for half a second after a fee is taken away, the panel takes no press: the next fee's panel may stand where the pointer is
-  const [panelRest, setPanelRest] = useState(false);
-  useEffect(() => {
-    if (!panelRest) return;
-    const t = window.setTimeout(() => setPanelRest(false), 500);
-    return () => window.clearTimeout(t);
-  }, [panelRest]);
   const panelCard = useRef<HTMLDivElement>(null);
   // a fee chosen from the keyboard, or from the glance or the reading: its panel's first field, or its card and panel, once drawn
   const after = useRef<{ fee: string; how: "panel" | "view" } | null>(null);
@@ -138,12 +134,17 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     pending: {
       here: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null,
       set: setPending,
+      /** Whether the part asking is drawn for the first time, so its box takes the focus; `onShown` once it is. */
+      fresh: () => pending !== null && pendingShown.current !== pending,
+      onShown: () => {
+        pendingShown.current = pending;
+      },
     },
     /** The question of a thing being added, in the open fee's block. */
     ask: { asking, onAsk, onAskDone },
     /** Whether a phone's toolbox sheet is folded; `unfold` for a fee just added. */
     sheet: { folded: sheetFolded, setFolded: setSheetFolded, unfold: () => setSheetFolded(false) },
-    /** The toolbox's card, and whether it rests for half a second after a fee is taken away (`toRest`). */
-    panel: { card: panelCard, rest: panelRest, toRest: () => setPanelRest(true) },
+    /** The toolbox's card. */
+    panel: { card: panelCard },
   };
 }

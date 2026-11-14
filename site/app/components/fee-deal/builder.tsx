@@ -20,6 +20,7 @@ import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/sha
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, type AddItem } from "../kit";
+import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
 import { FeeBlockView, type BlockActions, type OpenHere } from "./fee-block";
@@ -45,11 +46,11 @@ export interface FeeUndoLine {
 /** The page's undo line of another kind of product that took fees away: it stands under the kind. */
 export type KindUndoLine = Omit<FeeUndoLine, "what" | "fee">;
 
-/** A fee whose card or first box takes the focus once drawn: one put back by the undo (its card), one just added (its first box). */
-export interface FeeFocus {
-  fee: string;
-  on: "card" | "box";
-}
+/**
+ * What in a fee takes the focus once drawn: its card (a fee put back by the undo), its first box (a fee just added, a price put in another
+ * form), or a part just added to its open case (`part`, the part's place as `partPlaceId` names it), at its first control.
+ */
+export type FeeFocus = { fee: string; on: "card" | "box" } | { fee: string; on: "part"; part: string };
 
 
 export function SetupColumn({ deal, view, kinds, offered, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
@@ -257,7 +258,12 @@ export function FeesColumn({
     for (const li of root.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
     if (!focus) return;
     const li = blockOf(focus.fee);
-    if (focus.on === "box") {
+    // a part just added: its first box or choice, else its bin; the open case's first box where it is not drawn
+    const added = focus.on === "part" ? document.getElementById(partFieldId(focus.fee, focus.part))?.querySelector<HTMLElement>("input, select, button") : null;
+    if (added) {
+      added.focus({ preventScroll: true });
+      bringIntoView(added.closest("[data-case-parts]") ?? added.closest("[data-lift]") ?? li);
+    } else if (focus.on !== "card") {
       // the fee's first box (the open case's price, in a fee with cases), brought above a phone's pinned sheet with the parts around it,
       // so an undo line under them is in view too
       const box = li?.querySelector<HTMLInputElement>("input[data-figure]");

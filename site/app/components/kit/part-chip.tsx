@@ -65,9 +65,9 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
  * `FigureField`, `InlineSelect`, words between them), and a bin at its end, which removes it (none where there is nothing to remove: a
  * free price). 48 px tall at least; on a narrow screen its boxes wrap and the bin stays in the corner.
  */
-export function PartEdit({ kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
+export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
   return (
-    <div className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1", PART_LOOK[kind])}>
+    <div id={id} className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1", PART_LOOK[kind])}>
       <div className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead kind={kind} mark={mark} lead={lead} />
         {children}

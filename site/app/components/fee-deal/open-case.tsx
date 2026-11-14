@@ -15,9 +15,9 @@ import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { FigureField, InlineSelect, RangeMenu, TextField, TickMenu, TrackMenu, cx, monthText } from "../kit";
-import { PriceFigure, partFieldId } from "./figures";
+import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
-import { PartLine, PendingEdit, type PartPlace } from "./part-edit";
+import { PartLine, PendingEdit, type PartPlace, type PendingHands } from "./part-edit";
 import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 
 /**
@@ -37,7 +37,7 @@ function PriceParts({
   pending,
   onFee,
   onHoldOn,
-  onPendingDone,
+  pendingHands,
 }: {
   fee: Fee;
   caseId?: string;
@@ -51,7 +51,7 @@ function PriceParts({
   pending: OpenPending | null;
   onFee: (f: Fee) => void;
   onHoldOn: (side: Side, k: number) => void;
-  onPendingDone: () => void;
+  pendingHands: PendingHands;
 }) {
   const { k, until, parts } = stage;
   const stages = pricesOn(fee, side, caseId);
@@ -87,7 +87,7 @@ function PriceParts({
         {...(f.bare ? { unit: "" } : {})}
         label={label(SPOKEN[f.figure])}
         {...opts}
-        id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
+        id={partFieldId(fee.id, `${partPlaceId(side, k, part)}-${f.figure}`)}
         onFee={onFee}
       />
     ),
@@ -102,7 +102,7 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
       ))}
-      {pending && <PendingEdit fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} later={later} onFee={onFee} onDone={onPendingDone} />}
+      {pending && <PendingEdit key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} later={later} onFee={onFee} hands={pendingHands} />}
     </>
   );
 }
@@ -120,7 +120,7 @@ export function OpenParts({
   name,
   onFee,
   onHoldOn,
-  onPendingDone,
+  pendingHands,
 }: {
   fee: Fee;
   open: OpenCase;
@@ -129,7 +129,7 @@ export function OpenParts({
   name: string;
   onFee: (f: Fee) => void;
   onHoldOn: (side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
-  onPendingDone: () => void;
+  pendingHands: PendingHands;
 }) {
   const caseId = open.case ?? undefined;
   const side = (s: Side, stages: readonly OpenStage[]) =>
@@ -149,7 +149,7 @@ export function OpenParts({
             pending={s === "buy" && open.pending?.k === st.k ? open.pending : null}
             onFee={onFee}
             onHoldOn={(sd, k) => onHoldOn(sd, k, caseId, open.later)}
-            onPendingDone={onPendingDone}
+            pendingHands={pendingHands}
           />
         </div>
       );

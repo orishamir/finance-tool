@@ -80,6 +80,7 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     onFold: () => {},
     onAsk: () => {},
     onFee: () => {},
+    onPart: () => {},
     onForm: () => {},
     onPending: () => {},
     onStopBy: () => {},
@@ -105,7 +106,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {} }, onHoldOn: () => {}, onPendingDone: () => {}, onAskDone: () => {} },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {} }, onHoldOn: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {} },
     ask,
   });
 };

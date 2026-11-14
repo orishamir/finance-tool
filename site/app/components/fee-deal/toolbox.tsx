@@ -10,7 +10,7 @@ import { feeDeal as copy } from "../../copy";
 import { cardThing, type Toolbox as ToolboxView, type ToolPart as ToolPartView } from "../../lib/fee-deal/toolbox";
 import { setFeeName } from "../../lib/fee-deal/edits/deal";
 import { isFormPart, isPending, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
-import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
+import { NAME_MAX, type Fee, type Side } from "../../lib/fee-deal/model";
 import { capacity } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { termKey } from "../../lib/fee-page-data";
@@ -82,7 +82,8 @@ export interface ToolHands {
   onAsk: (kind: ByKind) => void;
   onPending: (part: PendingPart) => void;
   onForm: (part: PartId) => void;
-  onFee: (f: Fee) => void;
+  /** A part that goes on the price at once: the fee with it, and the part and the price it went on, which take the focus. */
+  onPart: (next: Fee, at: { part: PartId; side: Side; k: number }) => void;
 }
 
 /**
@@ -96,7 +97,9 @@ export function applyTool(item: string, fee: Fee, caseId: string | null, k: numb
   const id = item as PartId;
   if (isPending(id)) return hands.onPending(id);
   if (isFormPart(id)) return hands.onForm(id);
-  hands.onFee(setPart(fee, id, true, { k, ...(caseId ? { caseId } : {}) }));
+  // the toolbox adds to the purchase's prices, or the only ones
+  const side: Side = "buy";
+  hands.onPart(setPart(fee, id, true, { side, k, ...(caseId ? { caseId } : {}) }), { part: id, side, k });
 }
 
 /** The houses whose price list has a line for the fee, and what filling the fee from one does. */
@@ -133,6 +136,7 @@ export function ToolboxColumn({
   onFold,
   onAsk,
   onFee,
+  onPart,
   onForm,
   onPending,
   onStopBy,
@@ -149,7 +153,10 @@ export function ToolboxColumn({
   onFold: (folded: boolean) => void;
   /** A thing to change by tapped: the page asks its question in the fee's block. */
   onAsk: (kind: ByKind) => void;
+  /** The fee changed in the toolbox itself (a fee of the person's own renamed). */
   onFee: (f: Fee) => void;
+  /** A part that goes on at once tapped (`ToolHands.onPart`). */
+  onPart: ToolHands["onPart"];
   /** A form of the price tapped: the page puts the open case's price in it. */
   onForm: (part: PartId) => void;
   onPending: (part: PendingPart) => void;
@@ -158,7 +165,7 @@ export function ToolboxColumn({
   onClose: () => void;
 }) {
   const terms = useProvenanceData()?.terms;
-  const onAdd = (_group: string, part: string) => applyTool(part, fee, caseId, view.k, { onAsk, onPending, onForm, onFee });
+  const onAdd = (_group: string, part: string) => applyTool(part, fee, caseId, view.k, { onAsk, onPending, onForm, onPart });
   const onRemove = (_group: string, part: string) => {
     const thing = cardThing(part);
     if (thing) onStopBy(thing);
@@ -228,15 +235,14 @@ export function ToolboxColumn({
 /**
  * The toolbox's card on a computer (`cardRef`, which the page brings into view and focuses in): in a column of its own where the window
  * has the room (`column`), sticking under the header as the fees scroll by and never cut at the window's height (`useStickyColumn`), else
- * under its fee. Escape closes it (`onClose`); while it rests (`rest`), just after its fee was taken away, it takes no press.
+ * under its fee. Escape closes it (`onClose`).
  */
-export function ToolboxCard({ cardRef, column, rest, onClose, children }: { cardRef: RefObject<HTMLDivElement | null>; column: boolean; rest: boolean; onClose: () => void; children: ReactNode }) {
+export function ToolboxCard({ cardRef, column, onClose, children }: { cardRef: RefObject<HTMLDivElement | null>; column: boolean; onClose: () => void; children: ReactNode }) {
   useStickyColumn(cardRef, column);
   return (
     <div
       ref={cardRef}
       className={cx("come-in", column && "col-start-3 row-start-1 sticky top-20 rounded-lg")}
-      {...(rest ? { inert: true } : {})}
       onKeyDown={(e) => {
         if (e.key === "Escape" && !e.defaultPrevented) {
           e.preventDefault();

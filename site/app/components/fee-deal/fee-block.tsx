@@ -23,7 +23,7 @@ import { Num } from "../provenance";
 import { AskThing } from "./ask-thing";
 import { LawTag } from "./links";
 import { OpenParts, WhenText, whenText } from "./open-case";
-import { PART_MARK } from "./part-edit";
+import { PART_MARK, type PendingHands } from "./part-edit";
 import { Fig, UnreadWords, feeColour, feeName } from "./words";
 
 const b = copy.builder;
@@ -57,7 +57,8 @@ export interface BlockActions {
   /** Where a part or a thing dragged from the toolbox drops. */
   drop: ToolDrop;
   onHoldOn: (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
-  onPendingDone: () => void;
+  /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
+  pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
   onAskDone: (added: boolean) => void;
 }
@@ -158,7 +159,7 @@ export function FeeBlockView({
   onUnfold: (on: boolean) => void;
   onFee: (f: Fee) => void;
 }) {
-  const { onOpen, onSlot, onThing, onRemoveCase, onRemoveFee, onRemoveBy, onHoldOn, onPendingDone, onAskDone, drop } = actions;
+  const { onOpen, onSlot, onThing, onRemoveCase, onRemoveFee, onRemoveBy, onHoldOn, pendingHands, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name);
   const isOpen = open.fee === fee.id;
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
@@ -167,7 +168,7 @@ export function FeeBlockView({
   const openParts = (spoken: string) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} onPendingDone={onPendingDone} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} pendingHands={pendingHands} />
         {formLine}
       </>
     );
