@@ -300,7 +300,7 @@ describe("a golden scenario rebuilt from equivalent records gives the golden res
     );
 
     const g = golden("S47");
-    g.value("deposit exit", built.deposit.exitReal, 74_044.07);
+    g.value("deposit exit", built.deposit.exitReal, 74_245.96);
     g.value("MMF exit", built.mmf.exitReal, 73_339.31);
     g.value("ETF exit", built.etf.exitReal, 70_220.43);
     g.value("KGL exit", built.kgl.exitReal, 76_594.44);

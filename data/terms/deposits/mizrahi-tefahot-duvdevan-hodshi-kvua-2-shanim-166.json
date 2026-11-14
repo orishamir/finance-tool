@@ -56,6 +56,29 @@
     "state": "sourced",
     "notes": "Nominal annual rate before tax printed '2.00%'. Row '166 - דובדבן-חודשי קבועה 2 ש'': period 'שנתיים', rate type 'קבועה', linkage 'אין', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'אין' 'אין', anchor 'לא רלוונטי', deposit options 'כיצד להפקיד'. Amount tiers merged into this record (each as printed): '100000' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.02%'; '250000' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.02%'; '1000000' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.02%'; '1000000<' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.02%'. Read 2026-11-09 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 09/11/2026 08:31:13; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'."
   },
+  "interest_calc": {
+    "effective_annual": {
+      "value": 2.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+        "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '166 - דובדבן-חודשי קבועה 2 ש'', 'שיעור הריבית המוצע (נומינלי שנתי)', 'ריבית אפקטיבית'",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50",
+        "BANK-04"
+      ],
+      "state": "sourced",
+      "notes": "Printed effective '2.02%' beside the offered rate in every amount tier of the row (rate_offered's notes); the bank's own effective annual rate, read under BANK-50's Schedule A. The terms document pays this deposit's interest monthly (variant interest_during_term, amount_range.min's notes, read 2026-11-14), so it does not compound inside the deposit, and F-21 does not read this rate for it (BANK-50)."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",
@@ -89,7 +112,7 @@
         "publisher": "Mizrahi Tefahot Bank Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
+      "checked": "2026-11-14",
       "effective_from": "2026-11-09",
       "effective_to": null,
       "tax_year": null,
@@ -98,7 +121,7 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "Terms document: 'סכום הפקדה מזערי ₪ 30,000'; the 447 table prints tier upper bounds only."
+      "notes": "Terms document: 'סכום הפקדה מזערי ₪ 30,000'; the 447 table prints tier upper bounds only. The same document, 'תיאור הפיקדון' (p.1), reads 'פיקדון שקלי בריבית קבועה לתקופה של שנתיים (בשנים שלמות) המשלם ריבית חודשית (בניכוי מס) ממשפחת דובדבן', and 'פירעון קרן הפיקדון לעו\"ש': 'במועד הפירעון, הקרן והריבית לתקופת הריבית האחרונה בניכוי מס כחוק יועברו לחשבון העו\"ש': interest is paid out monthly during the term, so the record carries variant 'interest_during_term' (read 2026-11-14)."
     },
     "max": {
       "value": 10000000.0,
@@ -109,7 +132,7 @@
         "publisher": "Mizrahi Tefahot Bank Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
+      "checked": "2026-11-14",
       "effective_from": "2026-11-09",
       "effective_to": null,
       "tax_year": null,
@@ -118,7 +141,7 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "Terms document: 'סכום הפקדה מקסימלי ₪ 10,000,000'; the 447 table's last tier is open ('<')."
+      "notes": "Terms document: 'סכום הפקדה מקסימלי ₪ 10,000,000'; the 447 table's last tier is open ('<'). The same document, 'תיאור הפיקדון' (p.1), reads 'פיקדון שקלי בריבית קבועה לתקופה של שנתיים (בשנים שלמות) המשלם ריבית חודשית (בניכוי מס) ממשפחת דובדבן', and 'פירעון קרן הפיקדון לעו\"ש': 'במועד הפירעון, הקרן והריבית לתקופת הריבית האחרונה בניכוי מס כחוק יועברו לחשבון העו\"ש': interest is paid out monthly during the term, so the record carries variant 'interest_during_term' (read 2026-11-14)."
     }
   },
   "break": {
@@ -138,6 +161,10 @@
     "value": false,
     "max_renewals": null
   },
+  "conditions_he": "הריבית משולמת בכל חודש.",
+  "variant": [
+    "interest_during_term"
+  ],
   "snapshot": "2026-11-09",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",

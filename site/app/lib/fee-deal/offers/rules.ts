@@ -68,8 +68,6 @@ export const RULES: readonly RuleRow[] = [
   { id: "bank-savings-tariff", when: { products: BANK_SAVINGS, fees: ["own"] }, verdict: NONE, cite: ["BANK-06", "BANK-16"] },
   // only management fees, direct expenses and insurance premiums come out of a provident account: no fee of another kind
   { id: "provident-closed-list", when: { products: (f) => providentFamily(f) && !holdsFunds(f.id), fees: ["own"] }, verdict: NONE, cite: ["PF-01", "PF-19", "PF-23"] },
-  // a study fund's fee is from the balance only
-  { id: "study-fund-deposit", when: { products: is("keren-hishtalmut"), fees: ["deposit"] }, verdict: NONE, cite: ["KH-22", "PF-06"] },
   // National Insurance makes every deposit and bears the account's costs until 21
   { id: "child-savings-deposit", when: { products: is("child-savings-provident"), fees: ["deposit"] }, verdict: NONE, cite: ["CS-02", "CS-18"] },
   // the closed list of charges to an IRA has no bank account fee

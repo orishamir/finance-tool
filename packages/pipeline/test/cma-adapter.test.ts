@@ -22,6 +22,8 @@ import {
   readCmaFile,
   EXCLUDED_COMPANIES,
   closedTrack,
+  endsInGeneral,
+  PENSION_GENERAL_CLOSED,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -154,6 +156,27 @@ describe("normalise", () => {
     expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי")).toBe(false);
   });
 
+  it("leaves out the eight pension general tracks CAT-19 closes, by id, and nothing else whose name ends in כללי", () => {
+    for (const [id, name] of PENSION_GENERAL_CLOSED) expect(closedTrack("", name, "pensia-net", id), name).toBe(true);
+    // a name alone is not enough: another track ending in the word is kept by this rule
+    expect(closedTrack("", "קרן חדשה פנסיה - כללי", "pensia-net", 99999)).toBe(false);
+    for (const name of ["מיטב פנסיה כללית לבני 50 ומטה", "הראל פנסיה כללית מניות"]) expect(closedTrack("", name, "pensia-net", 1)).toBe(false);
+    // gemelnet's general tracks are not read by this rule (923 among them, queued for a check one by one)
+    expect(closedTrack("כלל האוכלוסיה", "מיטב בטחון", "gemelnet", 923)).toBe(false);
+    expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet", 880)).toBe(false);
+  });
+
+  it("reports a Pension-Net name ending in כללי that is not on the list, so it is not dropped or kept silently", () => {
+    const head = "FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n";
+    const row = (id: number, name: string) => `"${id}","${name}","קרנות חדשות","בקרה","מנהלת","202609","2015-12-31T00:00:00","0.11","1.25","512065202"\n`;
+    const r = normalise(head + row(99999, "קרן חדשה פנסיה - כללי") + row(2002, "כלל פנסיה כללי"), { ...ctx, config: pensia });
+    expect(r.problems.join(" ")).toContain("fund 99999");
+    expect(r.problems.join(" ")).toContain("is not in PENSION_GENERAL_CLOSED");
+    // a listed track is left out without a report
+    expect(r.problems.join(" ")).not.toContain("fund 2002");
+    expect(endsInGeneral("מיטב פנסיה כללית לבני 50 ומטה")).toBe(false);
+  });
+
   it("reports a population it does not know, in place of treating the track as open", () => {
     const csv = decodeWindows1255(fixture).replaceAll("כלל האוכלוסיה", "אוכלוסיה חדשה");
     expect(normalise(csv, ctx).problems.join(" ")).toContain("unknown TARGET_POPULATION");
@@ -172,7 +195,7 @@ describe("normalise", () => {
     const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
     for (const dataset of ["gemelnet", "pensia-net"] as const) {
       for (const period of listPeriods(cmaDir, dataset)) {
-        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!));
+        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!, dataset, f.fund_id));
         expect(left.map((f) => f.fund_id)).toEqual([]);
       }
     }

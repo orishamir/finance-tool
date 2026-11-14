@@ -33,6 +33,27 @@
     "state": "sourced",
     "notes": "Printed as '30 יום' (row 'פיקדון חודשי', code 0211); recorded as 1 months, the period of a monthly deposit (directive 447 Annex A, BANK-14)."
   },
+  "term_days": {
+    "value": 30,
+    "unit": "days",
+    "source": {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
+      "title": "בנק מרכנתיל דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פיקדון חודשי' (קוד 0211), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "Mercantile Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-08",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14",
+      "BANK-50"
+    ],
+    "state": "sourced",
+    "notes": "Printed '30 יום' beside the term; the term's days as the bank prints them (F-21)."
+  },
   "rate_type": "variable",
   "anchor": "prime",
   "spread": {

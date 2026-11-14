@@ -59,7 +59,7 @@ describe("G-16: money still inside a deposit's term on the last day", () => {
     expect(codes(dep(24, 0))).not.toContain("G-16");
   });
   it("is flagged on a savings plan as on a deposit", () => {
-    const plan: DepositInput = { ...dep(48, 500), deposit: { kind: "savings-plan", rate: 0.03, termMonths: 36, linkage: "unlinked" } };
+    const plan: DepositInput = { ...dep(48, 500), deposit: { kind: "savings-plan", rate: 0.03, termMonths: 36, linkage: "unlinked", interestCalc: { periodsPerYear: 1 } } };
     expect(codes(plan)).toContain("G-16");
     expect(codes({ ...plan, goal: { amountNow: 10_000, monthly: 0, months: 72 } })).not.toContain("G-16");
   });
@@ -85,6 +85,8 @@ describe("G-16 and exit points", () => {
       rate: 0.03,
       termMonths,
       linkage,
+      // a product whose terms say it calculates interest once a year (BANK-50's m), so a term over a year runs (BANK OQ21 otherwise)
+      interestCalc: { periodsPerYear: 1 },
       ...(exits.first !== undefined ? { exitFirstMonth: exits.first } : {}),
       ...(exits.every !== undefined ? { exitEveryMonths: exits.every } : {}),
     },

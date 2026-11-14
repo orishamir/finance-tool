@@ -101,7 +101,8 @@
       "state": "sourced",
       "notes": "Printed '100,000 ש\"ח ומעלה'."
     },
-    "max": null
+    "max": null,
+    "min_edge": "unknown"
   },
   "break": {
     "allowed": false,

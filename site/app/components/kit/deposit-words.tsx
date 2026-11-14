@@ -35,17 +35,19 @@ export function AnchorSpread({ variable, anchor, spread, look = "under" }: { var
 /**
  * The amounts a deposit takes, each figure sourced, in the words of `amountRangeForm`: "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪",
  * "ללא מינימום". A range with two ends breaks, where it must, between them. A top the record holds with no number is unknown, not no top
- * (F-108): "50,000 עד לא ידוע", the unknown figure opening its source.
+ * (F-108): "50,000 עד לא ידוע", the unknown figure opening its source. A bound the bank's table prints as not included (`edges`, F-108)
+ * says so as the table does: "מעל 25,000 ₪" for a minimum, "(לא כולל)" after a maximum.
  */
-export function AmountRange({ min, max, fromOnly }: { min: SiteValue; max: SiteValue | null; /** Ranges that follow one another with no gap: each said by where it starts. */ fromOnly?: boolean }) {
+export function AmountRange({ min, max, fromOnly, edges }: { min: SiteValue; max: SiteValue | null; /** Ranges that follow one another with no gap: each said by where it starts. */ fromOnly?: boolean; /** How the amount at each bound stands, where the record says (F-108). */ edges?: { min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" } }) {
   const low = numberOf(min);
   const unknownTop = !fromOnly && max !== null && numberOf(max) === null && low !== null && low > 0;
   const form = unknownTop ? "between" : amountRangeForm(low, numberOf(max), fromOnly);
+  const topOut = edges?.max_edge === "excluded" ? <> {copy.amount.notIncluded}</> : null;
   if (form === "none") return <>{copy.amount.noMin}</>;
   if (form === "from")
     return (
       <span className="whitespace-nowrap">
-        {copy.amount.from}
+        {edges?.min_edge === "excluded" ? `${copy.amount.above} ` : copy.amount.from}
         <Num value={min} />
       </span>
     );
@@ -53,15 +55,18 @@ export function AmountRange({ min, max, fromOnly }: { min: SiteValue; max: SiteV
     return (
       <span className="whitespace-nowrap">
         {copy.amount.to} <Num value={max!} />
+        {topOut}
       </span>
     );
   return (
     <span>
       <span className="whitespace-nowrap">
+        {edges?.min_edge === "excluded" ? `${copy.amount.above} ` : null}
         <Num value={min} display={fmt.number(low!)} /> {copy.amount.to}
       </span>{" "}
       <span className="whitespace-nowrap">
         <Num value={max!} />
+        {topOut}
       </span>
     </span>
   );

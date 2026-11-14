@@ -50,7 +50,7 @@ const fund = fundFromDraft({ ...said("il-tracking"), name: "קרן שלי", fixe
 const abroad = fundFromDraft({ ...said("abroad"), name: "קרן בחו״ל שלי", fixed: 0.1 }, "custom-fund-abroad", "index-sp500", t);
 
 /** Printed by the script. */
-const EXPECTED = { cheapIl: 153279.0, dearIl: 132143.22, cheapAbroad: 150677.85, oneZeroIl: 144506.01, zerosIl: 154017.67 };
+const EXPECTED = { cheapIl: 153279.0, dearIl: 132143.22, cheapAbroad: 150677.85, ibiIl: 148189.56, zerosIl: 154017.67 };
 
 const ta125 = indexById(bundle, "index-ta125")!;
 const sp = indexById(bundle, "index-sp500")!;
@@ -198,8 +198,8 @@ describe("a fund the person types is priced at the collected houses under its ki
   const spView = buildInvest({ bundle: b, index: sp, plan });
   const mineAbroad = allFunds(spView).find((f) => f.rec.id === abroad.id)!;
 
-  it("an Israeli tracking fund leaves what the script says at One Zero, and has a row at every house", () => {
-    expect((mine.byHouse["one-zero"] as WayPrice).valueN).toBeCloseTo(EXPECTED.oneZeroIl, 1);
+  it("an Israeli tracking fund leaves what the script says at IBI, and has a row at every house, priced where a collected fund is", () => {
+    expect((mine.byHouse["ibi"] as WayPrice).valueN).toBeCloseTo(EXPECTED.ibiIl, 1);
     const collected = view.options.find((o) => o.id === "il-tracking")!.funds.find((f) => f.rec.id !== fund.id)!;
     for (const p of view.providers.filter((x) => !x.custom)) {
       expect(mine.byHouse[p.id], p.id).toBeTruthy();

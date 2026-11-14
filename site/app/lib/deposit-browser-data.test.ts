@@ -2,7 +2,8 @@
 // beside them (Mizrahi-Tefahot 189, read from its newest file, not an older one), and a deposit only for new joiners is limited.
 import { describe, expect, it } from "vitest";
 import { buildDepositBrowser } from "./deposit-browser.server";
-import { cellOf, foldedOffers, isLinked, offersOf, sheetNames, unknownAt } from "./deposit-browser";
+import { cellOf, foldedOffers, interestOn, isLinked, offersOf, opens, sheetNames, unknownAt } from "./deposit-browser";
+import { entered } from "./value";
 
 describe("the deposits page's offers", () => {
   const data = buildDepositBrowser();
@@ -14,24 +15,60 @@ describe("the deposits page's offers", () => {
     expect(o?.rate_offered.doubt).toBeTruthy();
   });
 
-  it("says Yahav's one-year fixed deposit is unknown above 50,000 ₪, where its table prints the top short of a digit, never closed (F-108)", () => {
+  it("opens Yahav's one-year fixed deposit at every amount, each tier from its own amount as the bank's fixed-rate board prints it (F-108)", () => {
     const y = offer("yahav-pikadon-leshana-kavua-from-50000")!;
-    expect(y.amount_range.max?.value).toBeNull();
-    expect(y.amount_range.max?.doubt).toBeTruthy();
-    expect(unknownAt(y, 60_000)).toBe(true);
+    expect(y.amount_range.max?.value).toBe(100_000);
+    expect(y.amount_range.max?.doubt).toBeFalsy();
     const names = sheetNames(data);
     const cell = (amount: number) => cellOf(data, "yahav", "y1", "fixed", amount, (o) => names.get(o.id)!);
-    expect(cell(60_000)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
-    expect(cell(99_999)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
-    // the minimum itself, and the tiers on either side whose bounds are known, open as before
-    expect(cell(50_000).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-50000");
-    expect(cell(40_000).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-1000");
-    expect(cell(150_000).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-100000");
+    const tier = (from: number) => `yahav-pikadon-leshana-kavua-from-${from}`;
+    // "מ-50,000", "מ-100,000", "מ-200,000": the amount a tier starts at is that tier's, not the one below
+    for (const [amount, from, rate] of [[49_999, 1_000, 1.95], [50_000, 50_000, 2.15], [60_000, 50_000, 2.15], [99_999, 50_000, 2.15], [100_000, 100_000, 2.3], [199_999, 100_000, 2.3], [200_000, 200_000, 2.8]] as const) {
+      expect(cell(amount).pick?.id, `${amount}`).toBe(tier(from));
+      expect(cell(amount).pick?.rate_offered.value, `${amount}`).toBe(rate);
+    }
+    for (const from of [1_000, 50_000, 100_000, 200_000]) for (const amount of [50_000, 60_000, 100_000, 200_000]) expect(unknownAt(offer(tier(from))!, amount), `${from} at ${amount}`).toBe(false);
+  });
+
+  it("pays Mizrahi-Tefahot's 166 and 167 interest out monthly, so it does not compound: 4,000 ₪ and 6,000 ₪ on 100,000 ₪ (F-21)", () => {
+    const on = (id: string, amount: number) => interestOn(offer(id)!, amount, entered(amount, "nis", "2026-11-14"), "2026-11-14")?.value;
+    for (const [id, years] of [["mizrahi-tefahot-duvdevan-hodshi-kvua-2-shanim-166", 2], ["mizrahi-tefahot-duvdevan-hodshi-kvua-3-shanim-167", 3]] as const) {
+      expect(offer(id)?.paidOut, id).toBe(true);
+      expect(on(id, 100_000) as number, id).toBeCloseTo(100_000 * (offer(id)!.rate_offered.value as number) / 100 * years, 6);
+    }
+    expect(on("mizrahi-tefahot-duvdevan-hodshi-kvua-2-shanim-166", 100_000) as number).toBeCloseTo(4_000, 6);
+    expect(on("mizrahi-tefahot-duvdevan-hodshi-kvua-3-shanim-167", 100_000) as number).toBeCloseTo(6_000, 6);
+    // Yahav's one-year tiers at the amounts each starts from: 2.15% on 50,000 ₪, 2.30% on 100,000 ₪, 2.80% on 200,000 ₪
+    expect(on("yahav-pikadon-leshana-kavua-from-50000", 50_000) as number).toBeCloseTo(1_075, 6);
+    expect(on("yahav-pikadon-leshana-kavua-from-100000", 100_000) as number).toBeCloseTo(2_300, 6);
+    expect(on("yahav-pikadon-leshana-kavua-from-200000", 200_000) as number).toBeCloseTo(5_600, 6);
+  });
+
+  it("does not open Mizrahi-Tefahot's lower tier at the bound its table prints as not included, nor any Yahav tier at a bound two tiers print (F-108)", () => {
+    const names = sheetNames(data);
+    const cell = (bank: string, term: "y1" | "y2" | "m6" | "week", kind: "fixed" | "variable", amount: number) => cellOf(data, bank, term, kind, amount, (o) => names.get(o.id)!);
+    // 261, "טווח סכום להפקדה (לא כולל)": 100,000 ₪ is the upper tier's (1.97%), not 30,000 to 100,000 (1.72%)
+    const low261 = offer("mizrahi-tefahot-duvdevan-hodshi-prime-shana-261")!;
+    expect(opens(low261, 100_000)).toBe(false);
+    expect(opens(low261, 99_999)).toBe(true);
+    expect(opens(offer("mizrahi-tefahot-duvdevan-hodshi-prime-shana-261-from-100000")!, 100_000)).toBe(true);
+    // 259 at 50,000 ₪: the tier from 50,000 (2%), not the one up to it (1.15%)
+    expect(opens(offer("mizrahi-tefahot-rimonim-rivoni-prime-2-shanim-259")!, 50_000)).toBe(false);
+    expect(opens(offer("mizrahi-tefahot-rimonim-rivoni-prime-2-shanim-259-from-50000")!, 50_000)).toBe(true);
+    // Yahav's six-month fixed deposit at 50,000 and 100,000 ₪: printed by two tiers each, unknown, never both open
+    for (const amount of [50_000, 100_000]) {
+      const both = offersOf(data, "m6", "fixed").filter((o) => o.bank === "yahav");
+      expect(both.filter((o) => opens(o, amount))).toEqual([]);
+      expect(both.some((o) => unknownAt(o, amount))).toBe(true);
+      expect(cell("yahav", "m6", "fixed", amount)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
+    }
   });
 
   it("folds the offers the amount does not open under the list's own two chips, and says where it does not know (F-108)", () => {
     const y1 = offersOf(data, "y1", "fixed");
-    expect(foldedOffers(y1, 60_000, { conditional: false, linked: false }).unknown).toBe(true);
+    // Yahav's six-month fixed deposit: 50,000 ₪ is printed by two of its tiers; every one-year table decides 60,000 ₪
+    expect(foldedOffers(offersOf(data, "m6", "fixed"), 50_000, { conditional: false, linked: false }).unknown).toBe(true);
+    expect(foldedOffers(y1, 60_000, { conditional: false, linked: false }).unknown).toBe(false);
     // 100 ₪ opens few: the fold holds linked offers and offers only some may open, and loses them with their chips off
     const all = foldedOffers(y1, 100, { conditional: true, linked: true });
     expect(all.offers.some(isLinked)).toBe(true);

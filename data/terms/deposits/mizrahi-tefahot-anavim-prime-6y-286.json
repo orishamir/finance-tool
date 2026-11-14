@@ -79,6 +79,28 @@
     "state": "sourced",
     "notes": "Printed '1.00%' with 'P=4.75%' and 'P-3.75%' in every amount tier (1000, 2500, 5000, 10000, 10000<); rate type 'משתנה'; exit points 'תחנת יציאה ראשונה לאחר 3 חודשים ולאחר מכן תחנת יציאה מדי 3 חודשים'; effective rate '1.00%'; deposit options 'בנקאי'. Terms: 'פיקדון בהפקדות חודשיות בהוראת קבע בריבית ניידת כמרווח מריבית הפריים', 'ריבית דריבית שנתית', 'לא ניתן לחידוש'. Read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=additional, 'populationDateAdditional' 06/11/2026 08:30:52; library 1b5cbf3747b9920d) and from the plan's terms document linked from its name. Terms document library f2ec9613beadb429."
   },
+  "interest_calc": {
+    "periods_per_year": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/MiniSites/Pikdonot-Terms/1_99_310_286.pdf",
+        "title": "בנק מזרחי טפחות, 'תנאי פיקדון ענבים - פריים 6 שנים (286)', 'אופן חישוב ריבית' (עמ' 1)",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50"
+      ],
+      "state": "sourced",
+      "notes": "The plan's terms document, p.1, row 'אופן חישוב ריבית', prints 'ריבית דריבית שנתית': interest calculated once a year, Schedule A's m = 1 (BANK-50). The 447 table prints the effective rate '1.00%' beside the nominal 1.00% (rate_offered's notes), which agrees. The document is undated; read 2026-11-14."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",

@@ -5,7 +5,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout } from "../../components/kit";
-import { disabilityRetirement, ExemptShare } from "./pension-parts";
+import { disabilityRetirement, EmployerUntaxed, ExemptShare, LumpSums } from "./pension-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -33,16 +33,14 @@ export const content: GuideContent = {
     </>
   ),
   switchRules: ["PEN-17", "PF-23", "SW-22"],
-  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קופת גמל לקצבה", "קרן פנסיה", "עמית", "משיכה", "גיל הפרישה", "הפקדות המעסיק", "רשות שוק ההון ביטוח וחיסכון", "השלמת תשואה", "קצבה", "חברה מנהלת", "אינפלציה", "תקרת הפקדה"],
+  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קופת גמל לקצבה", "קרן פנסיה", "עמית", "משיכה", "גיל הפרישה", "תגמולי מעסיק", "מרכיב הפיצויים", "רשות שוק ההון ביטוח וחיסכון", "השלמת תשואה", "קצבה", "חברה מנהלת", "אינפלציה", "תקרת הפקדה"],
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
         הכללים זהים למקיפה, כי בחוק שתיהן <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term>. ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
       </p>
-      <p className="max-w-measure">
-        <Term id="הפקדות המעסיק">הפקדות המעסיק</Term> לא ממוסות בהפקדה, עד <N v={figure("TXP-10", "employer_exempt_pct")} /> מהשכר ועד שכר של <N v={figure("TXP-10", "employer_ceiling")} /> בחודש.
-      </p>
-      <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-24"]} />
+      <EmployerUntaxed figure={figure} />
+      <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-11", "TXP-24"]} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>.</span> שאלה פתוחה <IdRef id="PEN OQ7" end="." />
       </Callout>
@@ -50,10 +48,8 @@ export const content: GuideContent = {
         קצבה אפשר לקבל מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל הפטור ממס מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל מדורג לפי שנת הלידה. {disabilityRetirement}
       </p>
       <ExemptShare figure={figure} />
-      <p className="max-w-measure">
-        <Term id="משיכה">משיכה</Term> שלא כקצבה אפשרית רק במקרים מסוימים. החוק קורא לה <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" end="." /> יש חריגים, כמו הוצאות רפואיות גבוהות.
-      </p>
-      <RulesLine ids={["TXP-14", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
+      <LumpSums figure={figure} />
+      <RulesLine ids={["TXP-14", "TXP-15", "PEN-31", "TXP-19", "TXP-17", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
     </>
   ),
   risks: () => (

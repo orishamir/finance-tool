@@ -48,7 +48,7 @@ export interface InstrumentTerms {
   /** Pension: A-17 insurance cost as a share of each deposit, entered by the person (F-53, G-12). Not for a provident fund for annuity (PEN-35). */
   insurance?: PensionInput["insurance"];
   /** Deposits and current accounts: A-15 term, A-16 linkage, the current account's balance ceiling (F-26) and the exit points: the first and the interval after it (F-41). */
-  deposit?: Pick<DepositInput["deposit"], "termMonths" | "linkage" | "balanceCeiling" | "exitFirstMonth" | "exitEveryMonths">;
+  deposit?: Pick<DepositInput["deposit"], "termMonths" | "linkage" | "balanceCeiling" | "exitFirstMonth" | "exitEveryMonths" | "termDays" | "interestCalc" | "interestPaidOut">;
   /** Funds: the fund's kind and drag (A-06 to A-11). */
   fund?: Fund;
   /** Tariff lines (F-12 to F-17). */
@@ -122,7 +122,7 @@ const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
   hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerRate", "employerMonthly", "money", "salaryFollowsPrices"],
   pension: ["employment", "monthlySalary", "annualIncome", "existingEmployeeRate", "employer"],
   insurance: ["rate"],
-  deposit: ["termMonths", "linkage", "balanceCeiling", "exitFirstMonth", "exitEveryMonths"],
+  deposit: ["termMonths", "linkage", "balanceCeiling", "exitFirstMonth", "exitEveryMonths", "termDays", "interestCalc", "interestPaidOut"],
   currency: ["returnIn", "fxChange"],
   ira: ["managerFee", "clockStartMonth"],
   makam: ["termMonths"],

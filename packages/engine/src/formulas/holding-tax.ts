@@ -13,14 +13,64 @@ export function distributionTax(dist: number, israeliRate: number, foreignWithho
   return { foreign, israeli, lost: foreign - credit, net: dist - foreign - israeli };
 }
 
+/** How a product calculates interest, as its record prints it (BANK-50, `interest_calc`): its effective annual rate, or the times a year interest is calculated. */
+export interface InterestCalc {
+  /** The effective annual rate the bank prints, as a fraction. */
+  effectiveAnnual?: number;
+  /** Schedule A's `m`: the times a year the bank's words say interest is calculated or credited. */
+  periodsPerYear?: number;
+}
+
+/** What F-21 reads of a deposit beyond its rate and term: the days the table prints, how it calculates interest, and whether interest is paid out during the term. */
+export interface DepositTermFacts {
+  /** The term in days as the table prints it (`term_days`), for a term under a year. */
+  termDays?: number;
+  calc?: InterestCalc;
+  /** Interest paid out to the current account during the term (`interest_during_term`): it does not compound inside the deposit (BANK-50). */
+  paidOut?: boolean;
+}
+
 /**
- * F-21 Bank deposit, laddered. At maturity `interest = principal × ((1 + r)^(n/12) − 1)`, n months at the
- * effective annual rate r. Unlinked or partly linked: `rate × max(0, interest − deduction)`, the deduction
- * being what is left of TXI-20 for the year. Fully CPI-linked: linkage exempt (TXI-05), the tax is
- * `rate × real interest`, where the real interest is the quoted real rate on the indexed principal.
+ * The effective annual rate of a product from its nominal annual rate `annualRate` (BANK-50, Schedule A): the one the record prints, else
+ * `(1 + i/m)^m − 1` with the record's `m`. Null when the record prints neither: `m` is each product's term, open where unread (BANK OQ21).
  */
-export function depositInterest(principal: number, annualRate: number, months: number): number {
-  return principal * (Math.pow(1 + annualRate, months / 12) - 1);
+export function effectiveAnnualOf(annualRate: number, calc: InterestCalc | undefined): number | null {
+  if (calc?.effectiveAnnual !== undefined) return calc.effectiveAnnual;
+  const m = calc?.periodsPerYear;
+  return m !== undefined && m > 0 ? Math.pow(1 + annualRate / m, m) - 1 : null;
+}
+
+/**
+ * F-21 Bank deposit, laddered. The interest on `principal` over `months` of a deposit whose term is `termMonths`, at `annualRate`, the
+ * bank's annual nominal rate (BANK-50), by the disclosure rules' Schedule A.
+ * - A term under a year pays its interest once, at maturity (m = 365/n): `principal × r × d/365`, `d` the days the table prints
+ *   (`termDays`), or, for a term printed in months only, 365/12 days a month (the method's convention, not BANK-50's).
+ * - Interest paid out during the term (`paidOut`) does not compound inside the deposit, whatever the term: the same `r × d/365`.
+ * - A one-year term: `principal × ((1 + r)^(months/12) − 1)`, which is `r` over the year.
+ * - A term over a year compounds at the effective annual rate `R` the record gives (`effectiveAnnualOf`):
+ *   `principal × ((1 + R)^(months/12) − 1)`. Null where the record gives none (BANK OQ21): an open rule enters no formula.
+ * Unlinked or partly linked: `rate × max(0, interest − deduction)`, the deduction being what is left of TXI-20 for the year. Fully
+ * CPI-linked: linkage exempt (TXI-05), the tax is `rate × real interest`, where the real interest is the quoted real rate on the
+ * indexed principal.
+ */
+export function depositInterest(principal: number, annualRate: number, months: number, termMonths: number = months, facts: DepositTermFacts = {}): number | null {
+  if (termMonths < 12 || facts.paidOut) {
+    const days = facts.termDays !== undefined && termMonths > 0 ? (facts.termDays * months) / termMonths : (months * 365) / 12;
+    return principal * annualRate * (days / 365);
+  }
+  if (termMonths === 12) return principal * (Math.pow(1 + annualRate, months / 12) - 1);
+  const effective = effectiveAnnualOf(annualRate, facts.calc);
+  return effective === null ? null : principal * (Math.pow(1 + effective, months / 12) - 1);
+}
+
+/**
+ * F-26 the current account's monthly rate from its annual nominal rate (BANK-50, BANK-09): where the record prints how often interest is
+ * credited (`periodsPerYear`, Discount's "בכל סוף רבעון" is 4), `(1 + i/m)^(m/12) − 1`; otherwise F-07's `(1 + i)^(1/12) − 1`, the
+ * method's convention (D2: the two readings differ by under 0.01% of a result).
+ */
+export function currentAccountMonthlyRate(annualRate: number, calc: InterestCalc | undefined): number {
+  const m = calc?.periodsPerYear;
+  return m !== undefined && m > 0 ? Math.pow(1 + annualRate / m, m / 12) - 1 : Math.pow(1 + annualRate, 1 / 12) - 1;
 }
 
 /**
