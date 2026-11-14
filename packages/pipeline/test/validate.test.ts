@@ -452,8 +452,10 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // distribution agreements for (BRK OQ24); 2026-11-14 two more, which fund the fee regulations' "ישיר ביטחון" is and whether the
     // guaranteed-yield exclusion takes a named fund whole (CAT OQ36), and what a fall of the CPI does to the s.120ב amounts after
     // the freeze (TXG OQ17), and what a fall of the CPI does to the gemel lehashkaa deposit ceiling (KGL OQ15); later that day one more,
-    // which currency's 2.5 minimum Interactive Israel charges on a USD-traded listing on the LSE (BRK OQ25)
-    expect(items.length).toBe(433);
+    // which currency's 2.5 minimum Interactive Israel charges on a USD-traded listing on the LSE (BRK OQ25); 2026-11-15 eleven more,
+    // the new file on how bonds behave (BND OQ1 to OQ11); later that day seven of those answered by the proofs in method.md section 14
+    // and deleted (BND OQ1, 3, 4, 7, 8, 9, 11) and two more asking for research (BND OQ12, 13)
+    expect(items.length).toBe(439);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);

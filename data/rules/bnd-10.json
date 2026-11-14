@@ -1,0 +1,65 @@
+{
+  "id": "BND-10",
+  "title": "The inflation the bond market expects: what the Bank of Israel derives and where it publishes it",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/ovfhi5dz/%D7%94%D7%90%D7%99%D7%A0%D7%93%D7%99%D7%A7%D7%98%D7%95%D7%A8%D7%99%D7%9D-%D7%9C%D7%90%D7%9E%D7%99%D7%93%D7%AA-%D7%A6%D7%99%D7%A4%D7%99%D7%95%D7%AA-%D7%94%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94-%D7%A9%D7%9C-%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8.pdf#page=6",
+      "title": "בנק ישראל, החטיבה למידע ולסטטיסטיקה: האינדיקטורים לאמידת ציפיות האינפלציה של הציבור (מצגת, 21.3.2023)",
+      "title_he": "בנק ישראל, החטיבה למידע ולסטטיסטיקה: האינדיקטורים לאמידת ציפיות האינפלציה של הציבור (מצגת, 21.3.2023)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "תשואה נומינלית – אג״ח לא צמודות",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://boi.org.il/media/ovfhi5dz/%D7%94%D7%90%D7%99%D7%A0%D7%93%D7%99%D7%A7%D7%98%D7%95%D7%A8%D7%99%D7%9D-%D7%9C%D7%90%D7%9E%D7%99%D7%93%D7%AA-%D7%A6%D7%99%D7%A4%D7%99%D7%95%D7%AA-%D7%94%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94-%D7%A9%D7%9C-%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8.pdf#page=7",
+      "title": "בנק ישראל, החטיבה למידע ולסטטיסטיקה: האינדיקטורים לאמידת ציפיות האינפלציה של הציבור (מצגת, 21.3.2023)",
+      "title_he": "בנק ישראל, החטיבה למידע ולסטטיסטיקה: האינדיקטורים לאמידת ציפיות האינפלציה של הציבור (מצגת, 21.3.2023)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "quote": "פרמיית סיכון אינפלציונית",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://boi.org.il/boi_files/Statistics/Estimation%20of%20yields%20from%20government%20bonds.pdf#page=1",
+      "title": "בנק ישראל: אמידת עקום תשואות אג\"ח ממשלתיות בשיטת נלסון-סיגל-סוונסון (27.7.2022)",
+      "title_he": "בנק ישראל: אמידת עקום תשואות אג\"ח ממשלתיות בשיטת נלסון-סיגל-סוונסון (27.7.2022)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "כפי שמגולמות במחירי אגרות החוב הממשלתיות הנומינליות",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/ZCM/1.0/?format=csv&lastNObservations=1&labels=name",
+      "title": "בנק ישראל, EDGE: ZCM, ציפיות לאינפלציה ועקום 0",
+      "publisher": "Bank of Israel (data)",
+      "publisher_he": "בנק ישראל (מאגר הנתונים)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-15"
+    }
+  ]
+}

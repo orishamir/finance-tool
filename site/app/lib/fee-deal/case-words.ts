@@ -11,6 +11,7 @@ import { priceView, type DealRead, type PriceView } from "./deal-read";
 import { WHAT_VALUES, type FeeKindId } from "./shapes";
 import { pickKind, type ByKind } from "./offers/conditions";
 import { figure, sumUnit } from "./values";
+import { heldAlike } from "./alike";
 
 /** A figure of a part, as its box edits it: which figure of the price, its value, and its box's sign (a percent, or a currency's sign). */
 export interface PartField {
@@ -40,6 +41,8 @@ export interface SlimPart {
   stage?: number;
   fields?: PartField[];
   froms?: readonly (FigureFroms | null)[];
+  /** A later price's part it holds exactly as the price before it (`heldAlike`): a table, a grid and the cases read as rows leave it unsaid. */
+  alike?: true;
 }
 
 /**
@@ -71,9 +74,10 @@ export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRe
   return priced.stages.flatMap((stage, k) => {
     const view = priceView([fee], 0, stage.price, r.today);
     const said = saidParts({ kind: fee.kind, p: stage.price, view, ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
+    const before = k ? priced.stages[k - 1]!.price : null;
     const parts = said.filter((x) => x.id !== "until").map((x) => {
       const fields = figureFields(x.id, stage.price, view);
-      return { ...x, ...(k ? { stage: k } : {}), ...(fields.length ? { fields } : {}) };
+      return { ...x, ...(k ? { stage: k } : {}), ...(fields.length ? { fields } : {}), ...(before && heldAlike(before, stage.price, x.id) ? { alike: true as const } : {}) };
     });
     const change = said.find((x) => x.id === "until");
     return change ? [...parts, { ...change, stage: k + 1 }] : parts;

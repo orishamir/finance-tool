@@ -25,12 +25,20 @@ copied into `data/` or the rule base with its source and date.
 
 ## Rules for every file
 
-1. **Official sources first.** Legislation (Reshumot and the Knesset; Nevo and
+1. **The source that owns the claim** (`guidelines/research.md`, "Which source
+   a claim needs"). For a rule of law or tax: legislation (Reshumot and the Knesset; Nevo and
    Wikisource copies are leads only, never a source), Tax Authority, Capital Market Authority (CMA), Israel Securities
    Authority (ISA), Bank of Israel (BoI), National Insurance (NII), Ministry of
    Finance, TASE. Then the institution's own documents (bylaws, prospectus,
    tariff, product page). Then secondary sources (Kol Zchut, accounting firms,
    press), only where nothing official was reachable, and labelled as such.
+   - **A claim math proves** rests on its proof in `docs/method.md` (an `M-nn`
+     entry, with its assumptions). The record says so under Conditions, and
+     the bodies quoted in its Source line are those that also state it; no
+     open question asks for an official sentence the proof already settles.
+   - **A claim about how the world behaves** rests on research. Until the
+     research is recorded, a body's statement of it is that body's view,
+     said so under Conditions, and the research is an open question.
 2. **Every rule has a link and the date it was checked** (YYYY-MM-DD). A search
    snippet that was not opened is not a source.
 3. **Never guess or fill from memory.** Anything without a source goes under
@@ -201,6 +209,7 @@ Release 1 (tier-1 wrappers and exposures, the catalogue, cross-cutting rules):
 | `etfs-and-index-funds.md` | ETF | domain | Israeli ETFs, foreign funds registered on TASE, foreign-domiciled ETFs |
 | `brokerage-account.md` | BRK | domain | The brokerage wrapper: banks, TASE members, foreign brokers; fee types; client-asset protection |
 | `government-bonds-and-makam.md` | GOV | domain | Makam, Shahar, Galil, Gilon and other government bonds; buying and holding |
+| `bond-behaviour.md` | BND | domain | How bonds behave: price against rates, yield to maturity, duration, the yield curve, the risks apart, nominal against real, ladders, bond funds, the investment horizon |
 | `kupat-gemel-lehashkaa.md` | KGL | domain | Investment provident fund |
 | `keren-hishtalmut.md` | KH | domain | Study fund |
 | `pension-and-gemel-lekitzba.md` | PEN | domain | Comprehensive and general pension fund, provident fund for annuity, mandatory pension |

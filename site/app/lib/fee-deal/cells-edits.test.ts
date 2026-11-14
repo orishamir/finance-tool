@@ -383,7 +383,7 @@ describe("sources on copies", () => {
   });
 
   it("carries a figure read once for every price on to the later prices that held it alike, and Esc puts them all back", () => {
-    const later = (min: number): Case["stages"][number] => ({ price: action(0.5, min) });
+    const later = (min: number): Case["stages"][number] => ({ price: { form: "action", rate: listed(0.5), min: listed(min) } });
     const was: CasesFee = { ...sourced(), cases: sourced().cases.map((c) => ({ ...c, stages: [{ ...c.stages[0]!, until: "2027-03" as const }, { ...later(15), until: "2027-09" as const }, later(40)] })) };
     const typedIn = withFigureIn(was, "a", 20);
     const f = figureOnward(typedIn, was, ["a"], 0, "min", "min") as CasesFee;
@@ -392,6 +392,43 @@ describe("sources on copies", () => {
     expect(mins(f, "a")).toEqual([20, 20, 40]);
     expect(mins(f, "b")).toEqual(mins(was, "b"));
     expect(figuresBack(f, was, ["a"], 0, "min")).toEqual(was);
+  });
+
+  it("decides what an edit carries to by the fee as the box opened, never by an earlier keystroke", () => {
+    // minimums of 10, then 1 from 03.2027 and 1 from 09.2027: typing "15" over the 10 passes through "1"
+    const was: CasesFee = { ...sourced(), cases: sourced().cases.map((c) => ({ ...c, stages: [{ price: { form: "action", rate: listed(0.1), min: listed(10) }, until: "2027-03" as const }, { price: { form: "action", rate: listed(0.5), min: listed(1) }, until: "2027-09" as const }, { price: { form: "action", rate: listed(0.6), min: listed(1) } }] })) };
+    const mins = (x: CasesFee) => x.cases.find((c) => c.id === "a")!.stages.map((s) => (s.price as { min?: { v: number } }).min?.v);
+    let fee: CasesFee = was;
+    for (const typed of [1, 15]) fee = figureOnward(withFigureIn(fee, "a", typed), was, ["a"], 0, "min", "min") as CasesFee;
+    expect(mins(fee)).toEqual([15, 1, 1]);
+  });
+
+  it("carries nothing to a later price said whole or holding the part otherwise than its words show", () => {
+    const held = (rate: number, per: 1 | 12, extra: Partial<Price> = {}): Case["stages"][number]["price"] => ({ form: "held", rate: listed(rate), per, every: 12, ...extra }) as Price;
+    const fee = (a: Price, b: Price): CasesFee => ({ id: "c", kind: "custody", by: [{ kind: "channel" }], cases: [{ id: "a", when: [["direct"]], stages: [{ price: a, until: "2027-03" }, { price: b }] }] });
+    const carried = (a: Price, b: Price, figure: "rate" | "min") => {
+      const was = fee(a, b);
+      const next = figureOnward(editPrice(was, "buy", 0, (p) => withFigure(p, figure, 0.2), "a"), was, ["a"], 0, figure === "rate" ? "held" : "min", figure) as CasesFee;
+      return (next.cases[0]!.stages[1]!.price as { rate?: { v: number }; min?: { v: number } })[figure]?.v;
+    };
+    // a yearly rate, then a monthly one: the same number is another price (F-110, F-111)
+    expect(carried(held(0.1, 12), held(0.1, 1), "rate")).toBe(0.1);
+    // a held share charged every year, then every quarter
+    expect(carried(held(0.1, 12), held(0.1, 12, { every: 3 } as Partial<Price>), "rate")).toBe(0.1);
+    // a later price without a part the one before holds is said whole, and takes no edit
+    const withMin = (rate: number, min?: number): Price => ({ form: "action", rate: listed(rate), ...(min !== undefined ? { min: listed(min) } : {}) });
+    const action2 = (a: Price, b: Price) => {
+      const was: CasesFee = { id: "t", kind: "trade", by: [{ kind: "channel" }], cases: [{ id: "a", when: [["direct"]], stages: [{ price: a, until: "2027-03" }, { price: b }] }] };
+      return figureOnward(editPrice(was, "buy", 0, (p) => withFigure(p, "rate", 0.2), "a"), was, ["a"], 0, "share", "rate") as CasesFee;
+    };
+    expect((action2(withMin(0.1, 5), withMin(0.1)).cases[0]!.stages[1]!.price as { rate: { v: number } }).rate.v).toBe(0.1);
+    // the same rate and minimum, the minimum in another currency
+    const inUsd = { ...withMin(0.1, 5), currency: "USD" } as Price;
+    expect((action2(withMin(0.1, 5), inUsd).cases[0]!.stages[1]!.price as { rate: { v: number } }).rate.v).toBe(0.1);
+    // the same figure typed by the person in the later price: another source, not carried
+    expect((action2(withMin(0.1), { form: "action", rate: typed(0.1) }).cases[0]!.stages[1]!.price as { rate: { v: number } }).rate.v).toBe(0.1);
+    // held alike: carried
+    expect((action2(withMin(0.1), withMin(0.1)).cases[0]!.stages[1]!.price as { rate: { v: number } }).rate.v).toBe(0.2);
   });
 
   it("edits a figure said once for several cases in each case's own price, keeping their other parts", () => {

@@ -1,0 +1,21 @@
+{
+  "id": "akvm-htshvavt",
+  "he": "עקום התשואות",
+  "en": null,
+  "meaning": "התשואה של איגרות החוב לפי הזמן שנשאר עד הפדיון: לשנה, לחמש שנים, לעשר שנים וכן הלאה",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "עקום תשואות"
+  ],
+  "rule_ids": [
+    "BND-06"
+  ],
+  "source": {
+    "url": "https://boi.org.il/boi_files/Statistics/Estimation%20of%20yields%20from%20government%20bonds.pdf#page=1",
+    "title": "בנק ישראל: אמידת עקום תשואות אג\"ח ממשלתיות בשיטת נלסון-סיגל-סוונסון (27.7.2022)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-15"
+  }
+}
