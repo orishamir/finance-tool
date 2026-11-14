@@ -10,7 +10,7 @@ import { byAmount, byRate } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES } from "./offers/figures";
 import { holdsFunds, isFeeKindId, WHAT_VALUES, type FeeKindId, type FormId, type Place } from "./shapes";
 import { capacity, fieldsOf, pricesSaleApart, type FieldId } from "./offers/capacity";
-import { BY_MAX, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type RangeKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -173,6 +173,10 @@ export type By =
 /** A range thing of a fee. */
 export type RangeBy = Extract<By, { tops: Num[] }>;
 export const isRange = (b: By): b is RangeBy => isRangeKind(b.kind);
+
+/** A thing whose values say where they are bought and their currency: what is bought or held, with the values the person named (`own`). */
+export type PlaceBy = Extract<By, { kind: PlaceKind }>;
+export const namesPlaces = (b: By): b is PlaceBy => isPlaceKind(b.kind);
 
 /**
  * What a case says of one thing (F-114): any value (`"any"`), named values (several may be named: the site's ids, or the person's words), or
@@ -422,7 +426,7 @@ export const pickedPlace = (fees: readonly Fee[], pick: ReadPick): { place: Plac
 /** What is bought or held for a value of the reading's pick of `what` (F-114): the site's values, or one the person named on a fee's thing. */
 export function placeOf(fees: readonly Fee[], value: string): { place: Place; currency: string | null } | null {
   if (Object.hasOwn(WHAT_VALUES, value)) return WHAT_VALUES[value]!;
-  for (const f of fees) for (const b of f.by ?? []) if ((b.kind === "what" || b.kind === "held") && b.own) for (const o of b.own) if (o.name === value) return { place: o.place, currency: o.currency };
+  for (const f of fees) for (const b of f.by ?? []) if (namesPlaces(b) && b.own) for (const o of b.own) if (o.name === value) return { place: o.place, currency: o.currency };
   return null;
 }
 
@@ -686,30 +690,35 @@ function readOwnPlace(raw: unknown): OwnPlace | null {
 function readBy(raw: unknown, kind: FeeKindId): By | null {
   if (!isRec(raw) || typeof raw.kind !== "string" || !conditionsFor(kind).includes(raw.kind as ByKind)) return null;
   const k = raw.kind as ByKind;
-  if (isRangeKind(k)) {
-    if (!RANGE_UNITS[k].includes(raw.unit as RangeUnit) || !Array.isArray(raw.tops) || raw.tops.length === 0 || raw.tops.length > TOPS_MAX) return null;
-    const tops: Num[] = [];
-    for (const t of raw.tops) {
-      const n = readNum(t, SUM_MAX);
-      // the tops are in order, each above the one before and above nothing: the steps leave no gap and none is empty
-      if (!n || n.blank || n.v <= 0 || (tops.length > 0 && n.v <= tops.at(-1)!.v)) return null;
-      tops.push(n);
+  switch (CONDITIONS[k].values.kind) {
+    case "range": {
+      const r = k as RangeKind;
+      if (!RANGE_UNITS[r].includes(raw.unit as RangeUnit) || !Array.isArray(raw.tops) || raw.tops.length === 0 || raw.tops.length > TOPS_MAX) return null;
+      const tops: Num[] = [];
+      for (const t of raw.tops) {
+        const n = readNum(t, SUM_MAX);
+        // the tops are in order, each above the one before and above nothing: the steps leave no gap and none is empty
+        if (!n || n.blank || n.v <= 0 || (tops.length > 0 && n.v <= tops.at(-1)!.v)) return null;
+        tops.push(n);
+      }
+      return { kind: r, unit: raw.unit as RangeUnit, tops };
     }
-    return { kind: k, unit: raw.unit as RangeUnit, tops };
-  }
-  if (k === "own") return str(raw.label, NAME_MAX) && raw.label.trim() !== "" ? { kind: "own", label: raw.label } : null;
-  if (k === "what" || k === "held") {
-    if (raw.own === undefined) return { kind: k };
-    if (!Array.isArray(raw.own) || raw.own.length === 0 || raw.own.length > VALUES_MAX) return null;
-    const own: OwnPlace[] = [];
-    for (const o of raw.own) {
-      const x = readOwnPlace(o);
-      if (!x || own.some((y) => y.name === x.name)) return null;
-      own.push(x);
+    case "own":
+      return str(raw.label, NAME_MAX) && raw.label.trim() !== "" ? { kind: "own", label: raw.label } : null;
+    case "track":
+      return { kind: "track" };
+    case "list": {
+      if (!isPlaceKind(k) || raw.own === undefined) return { kind: k } as By;
+      if (!Array.isArray(raw.own) || raw.own.length === 0 || raw.own.length > VALUES_MAX) return null;
+      const own: OwnPlace[] = [];
+      for (const o of raw.own) {
+        const x = readOwnPlace(o);
+        if (!x || own.some((y) => y.name === x.name)) return null;
+        own.push(x);
+      }
+      return { kind: k, own };
     }
-    return { kind: k, own };
   }
-  return { kind: k };
 }
 
 /**
@@ -722,7 +731,7 @@ function readWhen(raw: unknown, by: By): When | null {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > VALUES_MAX || new Set(raw).size !== raw.length) return null;
   const ok = (v: unknown): v is string => {
     if (!str(v, NAME_MAX) || v.trim() === "") return false;
-    if (by.kind === "what" || by.kind === "held") return LIST_IDS[by.kind].includes(v) || !!by.own?.some((o) => o.name === v);
+    if (namesPlaces(by)) return LIST_IDS[by.kind].includes(v) || !!by.own?.some((o) => o.name === v);
     return true;
   };
   return raw.every(ok) ? (raw as string[]) : null;

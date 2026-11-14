@@ -1,6 +1,7 @@
 // F-63 Provider workbench: one fund held, the same goal and behaviour, each provider's tariff at the chosen fee
 // level (D4). Built on F-08 (`runSecurities`), F-61's building blocks (`withoutFeeLine`, `feeLines`) and F-80's
-// tie test. No I/O: the fee snapshots (`data/fees/`) arrive as data.
+// tie test; F-118's workbench reads a fund whose exit tax an open rule blocks before that tax, with no ranking. No I/O: the fee
+// snapshots (`data/fees/`) arrive as data.
 import { feesSnapshot, type FeesSnapshot, type ValueObject } from "@finance-tool/schema";
 import { coverageLine } from "../compare/coverage.ts";
 import { isTie, relativeGap } from "../compare/ranking.ts";
@@ -10,7 +11,7 @@ import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
 import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -758,6 +759,157 @@ export function costByWho(a: CostByWhoInput): { account: number; fund: number; s
   return { account: a.account, fund: a.fund, state: a.base - a.left - a.account - a.fund };
 }
 
+/** One provider read for a run (F-63): its row's base, its tariff at its level, its member kind and the ways it buys the fund (F-109). */
+interface ReadyProvider {
+  kind: "ready";
+  base: ProviderBase;
+  p: ProviderInput;
+  built: TariffBuild;
+  memberKind: NonNullable<SecuritiesInput["memberKind"]>;
+  ways: SecuritiesInput["wholeUnits"][];
+}
+
+/**
+ * A provider's tariff for the run, or its row "not comparable" with the reason (F-63): a snapshot marked missing, a line with no value, an
+ * unreadable record (E5), no line that applies, no average at an average level. The one reading both workbenches share (F-63, F-118).
+ */
+function prepareProvider(input: WorkbenchInput, given: ProviderInput): ReadyProvider | NotComparableProvider {
+  let p = given;
+  const s = checkedSnapshot(p.snapshot);
+  const base: ProviderBase = {
+    id: s.id,
+    name: s.provider.name_he,
+    providerClass: s.provider.class,
+    level: p.level,
+    snapshot: s.snapshot,
+    tariffSource: s.tariff,
+    protectionRuleIds: s.provider.protection_rule_ids,
+    minimums: s.minimums,
+  };
+  const notComparable = (reason: NotComparableReason): NotComparableProvider => ({ ...base, kind: "not-comparable", reason });
+
+  // A snapshot marked missing has no tariff to read. An entered tariff is the person's own and needs none.
+  if (s.missing && p.level !== "entered") return notComparable({ code: "data-missing", detail: s.missing_reason });
+  let built: TariffBuild;
+  try {
+    const forBuild = s.missing ? { ...s, lines: [], averages: [] } : s;
+    if (p.level === "entered" && p.layered) {
+      // F-101: the provider's own list tariff first, then the layers on it
+      const list = buildTariff(input, { ...p, level: "list", entered: undefined, layered: undefined }, forBuild);
+      const layers = p.layered(list.tariff, { fx: input.fx, instrumentClass: input.instrumentClass, currency: input.currency, sharePrice: input.fund?.sharePrice });
+      if ("unusable" in layers) throw new Unusable(layers.unusable, layers.detail);
+      p = { ...p, entered: layers, layered: undefined };
+    }
+    built = buildTariff(input, p, forBuild);
+  } catch (e) {
+    if (e instanceof Unusable) return notComparable({ code: e.code, detail: e.message });
+    // E5: one provider's unreadable record is that provider's row, not a failure of the whole run.
+    if (e instanceof RecordInputError) return notComparable({ code: "record-error", detail: e.message });
+    throw e;
+  }
+  const charged = built.linesUsed.length > 0 || p.level === "entered";
+  if (!charged) return notComparable({ code: "no-applicable-line", detail: `no line of the ${s.snapshot} snapshot applies to ${input.instrumentClass}${input.channel ? ` through ${input.channel}` : ""}` });
+  if ((p.level === "regulator_average" || p.level === "tase_average") && built.averagesApplied === 0) {
+    return notComparable({ code: "no-average", detail: `the snapshot holds no ${p.level} for any line that applies to ${input.instrumentClass}` });
+  }
+
+  // F-14: a money-market unit pays custody at a non-bank member's or a foreign broker's tariff, never at a bank's (BRK-17, BANK-18).
+  const memberKind = memberKindOf(s.provider.class);
+  // F-109: whole units; a house that sells the fund's listing by amount is priced on the way that leaves more
+  try {
+    return { kind: "ready", base, p, built, memberKind, ways: unitWaysAt(input, s, built.tariff) };
+  } catch (e) {
+    if (e instanceof Unusable) return notComparable({ code: e.code, detail: e.message });
+    throw e;
+  }
+}
+
+/** F-63's input for one run of the fund: the goal over `months`, at a tariff, a member kind and a way of buying (F-109). */
+function planOf(input: WorkbenchInput, runFund: Fund) {
+  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"]): SecuritiesInput => {
+    const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: runFund, tariff, profile: input.profile };
+    if (input.broker) p.broker = input.broker;
+    if (memberKind) p.memberKind = memberKind;
+    if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
+    if (wholeUnits) p.wholeUnits = wholeUnits;
+    return p;
+  };
+}
+
+/** F-118: a provider's run of a fund whose exit tax an open rule blocks, read before that tax. Not a compared row: it is never ranked. */
+export interface BeforeTaxProvider extends ProviderBase {
+  kind: "before-tax";
+  /** D7: list and average are sourced; entered is the person's. */
+  feeState: "sourced" | "entered";
+  tariff: SecuritiesInput["tariff"];
+  linesUsed: string[];
+  lineSources: TariffBuild["lineSources"];
+  noLine: ("trade" | "custody")[];
+  notModelled: NotModelled[];
+  flags: string[];
+  standingAside: string[];
+  /** `V_T^pre / I_T`: the real value at the horizon before the exit tax, today's shekels (F-118). */
+  beforeTax: number;
+  /** `B(∅) − B(F_p)`, F-91's account part, with `B = V_T^pre / I_T` for these runs (no tax inside them), real NIS. */
+  horizonCostBeforeTax: number;
+  run: BeforeTaxRun;
+}
+
+/** F-118's workbench: every provider once, read before the exit tax, with no ranking. */
+export interface BeforeTaxWorkbench {
+  formula: "F-118";
+  /** The open rule the exit tax rests on: every row is listed with it, never ranked (B3, D84). */
+  blockedBy: string;
+  /** The same run with no provider fees, before the exit tax: the base of every account's cost. */
+  beforeTaxWithoutProviderFees: number;
+  rows: (BeforeTaxProvider | NotComparableProvider)[];
+}
+
+/**
+ * F-118 on F-63: each provider's run of a fund whose exit tax an open rule blocks (`beforeTaxPathOf`), read before that tax, with the
+ * account's cost from the same runs (F-91's account part). Nothing is ranked and no after-tax figure is computed. Of a house's ways of buying
+ * (F-109), the one that leaves more before tax is the row's, as F-63 takes the one that leaves more after tax.
+ */
+export function providerWorkbenchBeforeTax(input: WorkbenchInput, ctx: RunContext): BeforeTaxWorkbench {
+  const runFund = fundForRun(input);
+  const blockedBy = beforeTaxPathOf(runFund, ctx);
+  if (blockedBy === null) throw new Error("F-118: the fund's exit tax is not blocked by an open rule; its workbench is providerWorkbench's");
+  const plan = planOf(input, runFund);
+  const bare: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
+  const horizon = input.goal.months;
+  const noneT = runSecuritiesBeforeTax(plan(bare, horizon), ctx);
+  const rows: BeforeTaxWorkbench["rows"] = [];
+  for (const given of input.providers) {
+    const ready = prepareProvider(input, given);
+    if (ready.kind === "not-comparable") {
+      rows.push(ready);
+      continue;
+    }
+    const { base, p, built, memberKind, ways } = ready;
+    let run = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, ways[0]), ctx);
+    for (const w of ways.slice(1)) {
+      const other = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, w), ctx);
+      if (other.beforeTaxReal > run.beforeTaxReal) run = other;
+    }
+    rows.push({
+      ...base,
+      kind: "before-tax",
+      feeState: p.level === "entered" ? "entered" : "sourced",
+      tariff: built.tariff,
+      linesUsed: built.linesUsed,
+      lineSources: built.lineSources,
+      noLine: built.noLine,
+      notModelled: built.notModelled,
+      flags: built.flags,
+      standingAside: built.standingAside,
+      beforeTax: run.beforeTaxReal,
+      horizonCostBeforeTax: noneT.beforeTaxReal - run.beforeTaxReal,
+      run,
+    });
+  }
+  return { formula: "F-118", blockedBy, beforeTaxWithoutProviderFees: noneT.beforeTaxReal, rows };
+}
+
 /**
  * F-63 Provider workbench. For each provider `p` with tariff `F_p` at its chosen level (list, regulator or TASE
  * average, entered; D4): `cost_p(horizon) = V_T^real(∅) − V_T^real(F_p)` and `cost_p(year 1) = V_12(∅) − V_12(F_p)`
@@ -770,14 +922,7 @@ export function costByWho(a: CostByWhoInput): { account: number; fund: number; s
  */
 export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): ProviderWorkbench {
   const runFund = fundForRun(input);
-  const plan = (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"]): SecuritiesInput => {
-    const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: runFund, tariff, profile: input.profile };
-    if (input.broker) p.broker = input.broker;
-    if (memberKind) p.memberKind = memberKind;
-    if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
-    if (wholeUnits) p.wholeUnits = wholeUnits;
-    return p;
-  };
+  const plan = planOf(input, runFund);
   const bare: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
   const horizon = input.goal.months;
   const noneT = runSecurities(plan(bare, horizon), ctx);
@@ -785,71 +930,12 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
 
   const rows: ProviderRow[] = [];
   for (const given of input.providers) {
-    let p = given;
-    const s = checkedSnapshot(p.snapshot);
-    const base: ProviderBase = {
-      id: s.id,
-      name: s.provider.name_he,
-      providerClass: s.provider.class,
-      level: p.level,
-      snapshot: s.snapshot,
-      tariffSource: s.tariff,
-      protectionRuleIds: s.provider.protection_rule_ids,
-      minimums: s.minimums,
-    };
-    const notComparable = (reason: NotComparableReason) => rows.push({ ...base, kind: "not-comparable", reason });
-
-    // A snapshot marked missing has no tariff to read. An entered tariff is the person's own and needs none.
-    if (s.missing && p.level !== "entered") {
-      notComparable({ code: "data-missing", detail: s.missing_reason });
+    const ready = prepareProvider(input, given);
+    if (ready.kind === "not-comparable") {
+      rows.push(ready);
       continue;
     }
-    let built: TariffBuild;
-    try {
-      const forBuild = s.missing ? { ...s, lines: [], averages: [] } : s;
-      if (p.level === "entered" && p.layered) {
-        // F-101: the provider's own list tariff first, then the layers on it
-        const list = buildTariff(input, { ...p, level: "list", entered: undefined, layered: undefined }, forBuild);
-        const layers = p.layered(list.tariff, { fx: input.fx, instrumentClass: input.instrumentClass, currency: input.currency, sharePrice: input.fund?.sharePrice });
-        if ("unusable" in layers) throw new Unusable(layers.unusable, layers.detail);
-        p = { ...p, entered: layers, layered: undefined };
-      }
-      built = buildTariff(input, p, forBuild);
-    } catch (e) {
-      if (e instanceof Unusable) {
-        notComparable({ code: e.code, detail: e.message });
-        continue;
-      }
-      // E5: one provider's unreadable record is that provider's row, not a failure of the whole run.
-      if (e instanceof RecordInputError) {
-        notComparable({ code: "record-error", detail: e.message });
-        continue;
-      }
-      throw e;
-    }
-    const charged = built.linesUsed.length > 0 || p.level === "entered";
-    if (!charged) {
-      notComparable({ code: "no-applicable-line", detail: `no line of the ${s.snapshot} snapshot applies to ${input.instrumentClass}${input.channel ? ` through ${input.channel}` : ""}` });
-      continue;
-    }
-    if ((p.level === "regulator_average" || p.level === "tase_average") && built.averagesApplied === 0) {
-      notComparable({ code: "no-average", detail: `the snapshot holds no ${p.level} for any line that applies to ${input.instrumentClass}` });
-      continue;
-    }
-
-    // F-14: a money-market unit pays custody at a non-bank member's or a foreign broker's tariff, never at a bank's (BRK-17, BANK-18).
-    const memberKind = memberKindOf(s.provider.class);
-    // F-109: whole units; a house that sells the fund's listing by amount is priced on the way that leaves more
-    let ways: SecuritiesInput["wholeUnits"][];
-    try {
-      ways = unitWaysAt(input, s, built.tariff);
-    } catch (e) {
-      if (e instanceof Unusable) {
-        notComparable({ code: e.code, detail: e.message });
-        continue;
-      }
-      throw e;
-    }
+    const { base, p, built, memberKind, ways } = ready;
     let units = ways[0];
     let run = runSecurities(plan(built.tariff, horizon, memberKind, units), ctx);
     for (const w of ways.slice(1)) {
@@ -886,7 +972,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
 
     const strength = weakestStrength([...run.rules.map((r) => r.strength), ...(p.level === "entered" ? (["entered"] as const) : built.strengths)]);
     const ruleIds = run.rules.map((r) => r.id);
-    const common = { checked: ctx.runDate, strength, ruleIds, notes: `provider ${s.id}, fee level ${p.level}, snapshot ${s.snapshot}` };
+    const common = { checked: ctx.runDate, strength, ruleIds, notes: `provider ${base.id}, fee level ${p.level}, snapshot ${base.snapshot}` };
     const yearOneNominal = none12.nominal - run12.nominal;
     rows.push({
       ...base,
