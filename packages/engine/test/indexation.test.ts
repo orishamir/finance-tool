@@ -166,23 +166,34 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(sameResult({ a: { working: 1 } }, { a: { working: 2 } }, { a: "output" })).toBe(false);
   });
 
-  it("keeps the flags and labels of every reading where their outputs agree, so a caveat raised under one reading only is not dropped", () => {
+  it("keeps the flags, labels and rules of every reading where their outputs agree, so a caveat raised under one reading only is not dropped", () => {
     const open = openReadings.find((o) => o.question === "TXG OQ17")!;
     const [one, two] = open.readings;
     const run = (c: typeof ctx) => {
       const choice = c.readings?.[open.question];
       if (choice === undefined) throw new OpenReadingError(open);
+      const rule = (id: string, figure: string) => ({ id, strength: "primary" as const, dimensions: [], figures: [{ name: figure, strength: "primary" as const }] });
       return choice === one!.id
-        ? { nominal: 1, flags: [{ code: "A" }, { code: "C", month: 9 }], labels: [{ code: "institution-source" as const, ruleId: "X" }] }
-        : { nominal: 1, flags: [{ code: "B", month: 3 }, { code: "C", month: 4 }], labels: [{ code: "reading" as const, ruleId: "X" }, { code: "derived" as const, ruleId: "Y" }] };
+        ? { nominal: 1, flags: [{ code: "A" }, { code: "C", month: 9 }], labels: [{ code: "institution-source" as const, ruleId: "X" }], rules: [rule("X", "a")] }
+        : {
+            nominal: 1,
+            flags: [{ code: "A", month: 2 }, { code: "B", month: 3 }, { code: "C", month: 4 }],
+            labels: [{ code: "reading" as const, ruleId: "X" }, { code: "derived" as const, ruleId: "Y" }],
+            rules: [rule("X", "b"), rule("Y", "c")],
+          };
     };
     expect(two).toBeDefined();
-    const r = acrossReadings(ctx, run, { nominal: "output", flags: "trail", labels: "trail" });
-    // one flag a code, in the order they first appear, from the earliest month a reading raises it, then the question's own
+    const r = acrossReadings(ctx, run, { nominal: "output", flags: "trail", labels: "trail", rules: "trail" });
+    // one flag a code, in the order they first appear, from the earliest month a reading raises it, a flag with no month (the whole run)
+    // the earliest of all, then the question's own
     expect(r.flags).toEqual([{ code: "A" }, { code: "C", month: 4 }, { code: "B", month: 3 }, { code: "TXG-OQ17" }]);
-    // one label a rule, the strongest a reading gives it
+    // one label a rule, the strongest a reading gives it, and every rule a label names is among the rules, with the figures any reading read
     expect(r.labels).toEqual([{ code: "reading", ruleId: "X" }, { code: "derived", ruleId: "Y" }]);
-    expect(mergedFlags([{ flags: [{ code: "A", month: 5 }] }, { flags: [{ code: "A" }] }])).toEqual([{ code: "A", month: 5 }]);
+    expect(r.rules.map((u) => [u.id, u.figures.map((f) => f.name)])).toEqual([["X", ["a", "b"]], ["Y", ["c"]]]);
+    for (const l of r.labels) expect(r.rules.map((u) => u.id)).toContain(l.ruleId);
+    expect(mergedFlags([{ flags: [{ code: "A", month: 5 }] }, { flags: [{ code: "A" }] }])).toEqual([{ code: "A" }]);
+    expect(mergedFlags([{ flags: [{ code: "A" }] }, { flags: [{ code: "A", month: 5 }] }])).toEqual([{ code: "A" }]);
+    expect(mergedFlags([{ flags: [{ code: "A", month: 5 }] }, { flags: [{ code: "A", month: 2 }] }])).toEqual([{ code: "A", month: 2 }]);
     expect(mergedLabels([{ labels: [{ code: "derived", ruleId: "Z" }] }, { labels: [{ code: "secondary-source", ruleId: "Z" }] }])).toEqual([{ code: "derived", ruleId: "Z" }]);
   });
 
