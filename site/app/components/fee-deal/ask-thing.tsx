@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
 import { addBy, addStep, addValues, newBy, splitCase } from "../../lib/fee-deal/edits/case";
+import { metLimit } from "../../lib/fee-deal/limits";
 import { isRange, NAME_MAX, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import { lastValueWords, rangeSign } from "../../lib/fee-deal/band-layout";
 import { thingName } from "../../lib/fee-deal/case-words";
@@ -62,8 +63,8 @@ export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: 
     const n = newBy(kind, { values: chosen, own, label, top, unit });
     if (!n) return;
     const next = split ? splitCase(fee, split, n) : addBy(fee, n);
-    // a split that would change which case another set of values reads is refused, and says so
-    if (split && next === fee) return setRefused(true);
+    // a split that would change which case another set of values reads is refused, and says so; one past a limit the page says (limits.ts)
+    if (split && next === fee && !metLimit(fee)) return setRefused(true);
     onFee(next);
     onDone(true);
   };

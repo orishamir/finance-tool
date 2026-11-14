@@ -264,6 +264,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (t >= 0) onRemoveBy(feeId, t);
   };
   const onDelete = doc.remove;
+  // a pick of the reading, refused past the picks a deal may keep (limits.ts)
+  const onPick = (by: string, is: string) => {
+    const next = setPick(deal, by, is);
+    if (next === deal) return setRefusal({ feeId: null, words: refusalWords("picks") });
+    change(next);
+  };
 
   const kind = kindById(data.kinds, deal.kind);
   // a fee the product may not charge by rule is never offered
@@ -505,7 +511,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               <ReadForBand
                 lead={picks.title}
                 note={picks.line}
-                picks={picks.things.map((t) => ({ name: t.words, items: t.options.map((o) => ({ id: o.is, label: whenText(o.words) })), value: t.chosen, onSelect: (is: string) => change(setPick(deal, t.by, is)) }))}
+                picks={picks.things.map((t) => ({ name: t.words, items: t.options.map((o) => ({ id: o.is, label: whenText(o.words) })), value: t.chosen, onSelect: (is: string) => onPick(t.by, is) }))}
               />
             </div>
           )}
