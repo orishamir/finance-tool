@@ -135,18 +135,29 @@ export function periodBest(data: DbData, term: TermId, kind: RateKind, amount: n
 /** The offer the page's heading names as the highest when it opens (its term, its kind, P-05's amount): the home page says it too. */
 export const startBest = (data: DbData): DbOffer | null => periodBest(data, START_TERM, START_KIND, data.start).pick;
 
-/** F-21's facts of an offer for the engine: the printed days, the printed effective rate or times a year, interest paid out. */
+/**
+ * F-21's facts of an offer for the engine: how its rate is quoted (its unit, `pct_per_year_effective` being effective), the printed days,
+ * the printed nominal and effective pair or times a year, interest paid out.
+ */
 function factsOf(o: DbOffer) {
+  const nominal = numberOf(o.rate_offered);
   const eff = o.calc?.effectiveAnnual ? numberOf(o.calc.effectiveAnnual) : null;
   const m = o.calc?.periodsPerYear ? numberOf(o.calc.periodsPerYear) : null;
-  const calc = eff !== null || m !== null ? { ...(eff !== null ? { effectiveAnnual: eff / 100 } : {}), ...(m !== null ? { periodsPerYear: m } : {}) } : undefined;
-  return { ...(o.termDays !== undefined ? { termDays: o.termDays } : {}), ...(calc ? { calc } : {}), ...(o.paidOut ? { paidOut: true } : {}) };
+  const printed = eff !== null && nominal !== null ? { printed: { nominal: nominal / 100, effective: eff / 100 } } : {};
+  const calc = eff !== null || m !== null ? { ...printed, ...(m !== null ? { periodsPerYear: m } : {}) } : undefined;
+  return {
+    ...(o.rate_offered.unit === "pct_per_year_effective" ? { basis: "effective" as const } : {}),
+    ...(o.termDays !== undefined ? { termDays: o.termDays } : {}),
+    ...(calc ? { calc } : {}),
+    ...(o.paidOut ? { paidOut: true } : {}),
+  };
 }
 
 /**
  * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21, BANK-50: `A × r × d/365` under a
- * year, by the days the table prints or 365/12 a month; the rate over one year; over a year at the effective rate the record prints), as a
- * computed value over the rate, the amount and, where read, the record's days or effective rate. A variable rate is taken as it stands
+ * year, by the days the table prints or 365/12 a month; the rate over one year; over a year compounded by the times a year the record's
+ * printed nominal and effective pair or its words give; a rate quoted as effective compounded over the term), as a computed value over the
+ * rate, the amount and, where read, the record's days or effective rate. A variable rate is taken as it stands
  * today. Null where the rate is not a number, or where the term is over a year and the record says nothing of how interest is calculated
  * (`interestUnknown`, BANK OQ21).
  */

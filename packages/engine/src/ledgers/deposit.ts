@@ -55,6 +55,8 @@ interface OpenDeposit {
   baseIndex: number;
   /** First month the deposit earns. */
   startMonth: number;
+  /** Interest paid out during the term so far, after the tax withheld on it (F-21: it leaves the deposit as it is paid). */
+  paidNet: number;
 }
 
 /** A count of months the run can use: a positive whole number, or nothing. */
@@ -119,14 +121,16 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const facts = { basis: deposit.rateBasis, termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
   // F-21: a term over a year compounds at a rate only the product's own terms give (BANK-50's m); where the record prints none, the run stops
   if (!isCurrentAccount && !effective && n > 12 && !deposit.interestPaidOut && effectiveAnnualOf(deposit.rate, deposit.interestCalc) === null) throw new NotEvaluatedError("BANK-OQ21");
-  // interest paid out at a rate quoted as effective is not in the method (F-21)
-  if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("BANK-OQ21");
+  // interest paid out at a rate quoted as effective is not in the method (F-21, G-36)
+  if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("G-36");
+  // F-21: interest paid out during the term is paid every month and taxed in the month it is paid (TXI-07, TXI-08)
+  const paysMonthly = !isCurrentAccount && deposit.interestPaidOut === true;
   // F-26: the current account's month at the rate its crediting gives, or F-07's convention; F-07's month itself at an effective rate
   const accountMonth = effective ? annualToMonthly(deposit.rate) : currentAccountMonthlyRate(deposit.rate, deposit.interestCalc);
   const termInterest = (principal: number, months: number) => (isCurrentAccount ? currentAccountInterest(principal, Math.pow(1 + accountMonth, months) - 1) : depositInterest(principal, deposit.rate, months, n, facts)!);
 
-  // The bank withholds at maturity (TXI-07, TXI-08): 25% of the real interest on a fully linked deposit with
-  // linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03).
+  // The bank withholds when it pays the interest, at maturity or, for interest paid out, each month (TXI-07, TXI-08): 25% of the real
+  // interest on a fully linked deposit with linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03).
   let rate: number;
   if (linked) {
     rate = book.rate("TXI-02", "rate");
@@ -156,9 +160,25 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   tally.point(0, 1, 0);
 
   for (let m = 1; m <= T; m++) {
-    if (m === 1 && C[0]! > 0) open.push({ principal: C[0]!, baseIndex: I[0]!, startMonth: 1 });
-    if (C[m]! > 0) open.push({ principal: C[m]!, baseIndex: I[m]!, startMonth: m });
+    if (m === 1 && C[0]! > 0) open.push({ principal: C[0]!, baseIndex: I[0]!, startMonth: 1, paidNet: 0 });
+    if (C[m]! > 0) open.push({ principal: C[m]!, baseIndex: I[m]!, startMonth: m, paidNet: 0 });
     tally.paidIn += (m === 1 ? C[0]! : 0) + C[m]!;
+
+    // F-21: a deposit that pays its interest out pays each open piece its month's share of the term's interest, which the bank taxes
+    // as it pays it (TXI-07, TXI-08), so it falls in this month's tax year
+    if (paysMonthly) {
+      for (const d of open) {
+        const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
+        const interest = depositInterest(indexed, deposit.rate, 1, n, facts)!;
+        const tax = rate * interest;
+        totalInterest += interest;
+        yearTaxable += interest;
+        yearIncome += interest;
+        yearWithheld += tax;
+        tally.taxDuring += tax;
+        d.paidNet += interest - tax;
+      }
+    }
 
     const due = open.filter((d) => d.startMonth + n - 1 === m || m === T);
     open = open.filter((d) => !due.includes(d));
@@ -185,15 +205,15 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       // an exit point (TXI OQ14), so the run reads no exit point for it and says only that it priced the piece as matured.
       if (months < n) tally.flag(!linked && pieceAtExitPoint(m, d.startMonth, deposit) ? "G-34" : "G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
-      // F-26 or F-21, by the product's term (BANK-50)
-      const interest = termInterest(indexed * earning, months);
+      // F-26 or F-21, by the product's term (BANK-50); interest paid out was paid and taxed month by month
+      const interest = paysMonthly ? 0 : termInterest(indexed * earning, months);
       const tax = rate * interest;
       totalInterest += interest;
       yearTaxable += interest;
       yearIncome += indexed - d.principal + interest;
       yearWithheld += tax;
       tally.taxDuring += tax;
-      rolled += indexed + interest - tax;
+      rolled += indexed + interest - tax + d.paidNet;
     }
     if (closesTaxYear(m, T, first)) {
       const deduction = applyTxi20
@@ -211,15 +231,16 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       yearTaxable = yearIncome = yearWithheld = 0;
     }
     if (m < T) {
-      if (rolled !== 0) open.push({ principal: rolled, baseIndex: I[m]!, startMonth: m + 1 });
+      if (rolled !== 0) open.push({ principal: rolled, baseIndex: I[m]!, startMonth: m + 1, paidNet: 0 });
     } else {
       finalValue = rolled;
     }
-    // the value of the pieces still open: each principal with its interest to date, by the same formula as at maturity
+    // the value of the pieces still open: each principal with its interest to date, by the same formula as at maturity, or with the
+    // interest it has paid out after tax
     const accrued = open.reduce((s, d) => {
       const principal = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       const age = m - d.startMonth + 1;
-      return s + principal + termInterest(principal, age);
+      return s + principal + (paysMonthly ? d.paidNet : termInterest(principal, age));
     }, 0);
     tally.point(m, I[m]!, m < T ? accrued : finalValue);
   }

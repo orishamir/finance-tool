@@ -172,9 +172,12 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
         // F-21, F-26 (BANK-50): the days the table prints for the term, how the product calculates interest, and interest paid out
         // during the term, each as the record prints it
         if (!noTerm && rec.term_days && typeof rec.term_days.value === "number") terms.deposit.termDays = rec.term_days.value;
+        // the printed effective rate is read with the nominal rate printed beside it, from which the run takes Schedule A's m
         const eff = rec.interest_calc?.effective_annual?.value;
+        const nominal = rec.rate_offered.value;
         const m = rec.interest_calc?.periods_per_year?.value;
-        if (typeof eff === "number" || typeof m === "number") terms.deposit.interestCalc = { ...(typeof eff === "number" ? { effectiveAnnual: eff / 100 } : {}), ...(typeof m === "number" ? { periodsPerYear: m } : {}) };
+        const printed = typeof eff === "number" && typeof nominal === "number" ? { printed: { nominal: nominal / 100, effective: eff / 100 } } : {};
+        if (typeof eff === "number" || typeof m === "number") terms.deposit.interestCalc = { ...printed, ...(typeof m === "number" ? { periodsPerYear: m } : {}) };
         if ((rec.variant ?? []).includes("interest_during_term")) terms.deposit.interestPaidOut = true;
         // F-41: a deposit's exit points reach the run as the months to the first one (`first_after_months`) and the interval after
         // it (`every_months`), each only as a positive whole number of months. Without a first the run knows no exit point: an

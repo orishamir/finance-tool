@@ -25,7 +25,8 @@ export const unit = z.enum([
   "pct_per_year",
   /**
    * An annual rate quoted as effective, compounded at each payment, where `pct_per_year` on a bank's rate is nominal (BANK-50): the Bank
-   * of Israel's averages of deposit rates paid (BANK-22; reporting directive 877 s.9).
+   * of Israel's averages of deposit rates paid (reporting directive 877 s.9), pending in the rule base, where BANK-22 does not yet record
+   * that definition. Accepted only in P-05's `cash_rate` and a deposit record's `rate_offered` (`EFFECTIVE_RATE_PATHS`).
    */
   "pct_per_year_effective",
   "pct_of_deposit",
@@ -54,6 +55,16 @@ export const unit = z.enum([
   "boolean",
   "text",
 ]);
+
+/**
+ * data-schema §2: where a value in `pct_per_year_effective` may stand, by collection and path, the two places a rate may be either kind:
+ * P-05's `cash_rate` (a run's deposit rate) and a deposit record's `rate_offered`. F-21 reads the unit there; the validator fails it
+ * anywhere else.
+ */
+export const EFFECTIVE_RATE_PATHS: readonly { collection: string; path: string }[] = [
+  { collection: "parameters", path: "inputs.cash_rate" },
+  { collection: "terms/deposits", path: "rate_offered" },
+];
 
 /** data-schema §2, security types for tariff lines and for a snapshot's `availability.applies_to` (`all` is every one). */
 export const instrumentClass = z.enum([

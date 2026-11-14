@@ -125,8 +125,13 @@ describe("an offer's words and interest", () => {
     expect(at(3.65, "day")).toBeCloseTo(1, 6);
     // Yahav's "(90 יום)": 10,000 × 2.2% × 90/365
     expect(at(2.2, "m3", { termDays: 90 })).toBeCloseTo(10000 * 0.022 * 90 / 365, 6);
-    // two years: only at the effective rate the record prints (Mizrahi-Tefahot 166: 2.00%, effective 2.02%), else unknown (BANK OQ21)
-    expect(at(2, "y2", { calc: { effectiveAnnual: { ...real.rate_offered, value: 2.02 } } })).toBeCloseTo(10000 * (1.0202 * 1.0202 - 1), 6);
+    // two years: only where the record gives how often interest is calculated, else unknown (BANK OQ21). Mizrahi-Tefahot's 132 prints
+    // 1.81% and an effective 1.81%, interest yearly: 10,000 × (1.0181² − 1)
+    expect(at(1.81, "y2", { calc: { effectiveAnnual: { ...real.rate_offered, value: 1.81 } } })).toBeCloseTo(10000 * (1.0181 * 1.0181 - 1), 6);
+    // a rate whose unit says it is quoted as effective compounds over the term: 10,000 × (1.032^(3/12) − 1), where 3.2% nominal pays 80
+    const effective = interestOn({ ...plain, term: "m3", rate_offered: { ...real.rate_offered, unit: "pct_per_year_effective", value: 3.2 } }, 10000, amount, "2026-11-10");
+    expect(effective?.value).toBeCloseTo(10000 * (Math.pow(1.032, 3 / 12) - 1), 6);
+    expect(at(3.2, "m3")).toBeCloseTo(80, 6);
     expect(at(3.5, "y2")).toBeUndefined();
     expect(interestUnknown({ ...plain, term: "y2" })).toBe(true);
     expect(interestUnknown({ ...plain, term: "y1" })).toBe(false);

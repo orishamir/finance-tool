@@ -30,6 +30,7 @@ import {
   sourcesFile,
   israelToday,
   isReligiousLaw,
+  EFFECTIVE_RATE_PATHS,
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
@@ -78,6 +79,25 @@ export interface ValidationContext {
 export interface Problem {
   file: string;
   message: string;
+}
+
+/**
+ * data-schema §2: a value in `pct_per_year_effective` stands only where a rate may be either kind (`EFFECTIVE_RATE_PATHS`); anywhere
+ * else nothing reads the unit, so a rate there would be run as nominal whatever it says.
+ */
+export function checkEffectiveRateUnit(collection: string, record: unknown): string[] {
+  const allowed = new Set(EFFECTIVE_RATE_PATHS.filter((p) => p.collection === collection).map((p) => p.path));
+  const out: string[] = [];
+  const walk = (v: unknown, at: string) => {
+    if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${at}[${i}]`));
+    else if (v && typeof v === "object") {
+      if ((v as { unit?: unknown }).unit === "pct_per_year_effective" && !allowed.has(at))
+        out.push(`${at || "(record)"}: unit pct_per_year_effective is read only in ${EFFECTIVE_RATE_PATHS.map((p) => `${p.collection} ${p.path}`).join(" and ")} (data-schema §2)`);
+      for (const [k, x] of Object.entries(v)) walk(x, at ? `${at}.${k}` : k);
+    }
+  };
+  walk(record, "");
+  return out;
 }
 
 /** The first string anywhere in a parsed JSON value that names a product defined by religious law, if any. */
@@ -152,6 +172,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       if (/^F-\d{2,3}$/.test(id) && !ctx.formulas.has(id)) report(file, `formula: ${id} is not defined in docs/method.md (data-schema §4 item 6)`);
     }
     for (const message of checkCitedPages(parsed.value, ctx.filePages)) report(file, message);
+    for (const message of checkEffectiveRateUnit(collection, parsed.value)) report(file, message);
     if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
