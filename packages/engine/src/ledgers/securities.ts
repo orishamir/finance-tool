@@ -233,8 +233,9 @@ export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest
 
 /**
  * F-118: the open rule a fund's after-tax run stops on (F-04), where the value before the exit tax can be read instead, or null. Only a
- * fund that pays nothing out: the tax on a TASE foreign fund's distribution would be paid inside the run, and part of it rests on a letter
- * read only in a copy (TXF-05, TXF-07), so a distributing one keeps no figure.
+ * fund that pays nothing out: a distribution's tax would be paid inside the run, and its 25% is settled for a fund organised as a company
+ * (TXF-05, TXF-30) but open for one organised as an arrangement (TXF open question 19). No record says which form a fund has, so a
+ * distributing one stops on that question (`runSecuritiesBeforeTax` throws "TXF-OQ19").
  */
 export function beforeTaxPathOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "distribution">, ctx: RunContext): string | null {
   if (fund.distribution) return null;
@@ -256,13 +257,14 @@ export interface BeforeTaxRun extends Omit<RunResult, "nominal" | "real" | "taxA
 /**
  * F-118 The value before the exit tax of a run an open rule blocks (D84, B3). The same ledger as `runSecurities`, month by month with every
  * fee, cost and the exchange-rate path, and the sale's costs at the exit; the tax index is never read (a lot's index serves the exit tax
- * alone), so the open rule enters no figure (method section 13). Only for a fund the open rule blocks (`beforeTaxPathOf`); any other run is
+ * alone), so the open rule enters no figure (method section 13). That nothing is taxed before the sale is TXF-11's, cited or labelled a
+ * reading as the after-tax run does. Only for a fund the open rule blocks (`beforeTaxPathOf`); any other run is
  * `runSecurities`'s, unchanged.
  */
 export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTaxRun {
   const rule = beforeTaxPathOf(input.fund, ctx);
   if (rule === null) {
-    if (input.fund.distribution && securitiesBlockedBy(input.fund, ctx) !== null) throw new NotEvaluatedError("G-35");
+    if (input.fund.distribution && securitiesBlockedBy(input.fund, ctx) !== null) throw new NotEvaluatedError("TXF-OQ19");
     throw new Error("F-118: the run's exit tax is not blocked by an open rule; its value is runSecurities's");
   }
   if (input.wrapper || input.carriedLoss) throw new Error("F-118 reads a securities account alone, with no wrapper and no carried loss");
@@ -474,7 +476,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   let israeliDistRate = 0;
   let foreignWithholding = 0;
   if (fund.distribution) {
-    if (beforeTaxOf !== null) throw new NotEvaluatedError("G-35");
+    if (beforeTaxOf !== null) throw new NotEvaluatedError("TXF-OQ19");
     formulas.push("F-20");
     if (fund.kind === "money-market-taxable") {
       // The holder of a taxable fund pays nothing on its distributions; the fund has paid (TXS-11).
@@ -497,7 +499,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     } else {
       israeliDistRate = book.rate("TXS-10", "rate");
     }
-  } else if (isForeign && beforeTaxOf === null) {
+  } else if (isForeign) {
     // An accumulating foreign fund is taxed only at sale under TXF-11, which the law supports by implication (no deemed-distribution
     // rule reaches a non-controlling holder; no sentence says it): computed, labelled a reading, and listed, not ranked (F-65, G-18);
     // unless its own annex reports a ruling that says so. No secondary source is cited.

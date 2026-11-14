@@ -50,9 +50,44 @@ describe("a TASE foreign fund read before tax (F-118, D84)", () => {
     }
   });
 
-  it("reads no tax rule: the open rule, the index rules and the exit tax's rules are not among the run's rules (method section 13)", () => {
+  it("reads no tax index and no exit tax: the open rule, the index rules and the exit tax's rules are not among the run's rules (method section 13)", () => {
     const used = ids(runSecuritiesBeforeTax(tase({}, true), ctx));
-    for (const id of ["TXF-04", "TXF-03", "TXF-02", "TXF-11", "TXS-02", "TXS-06", "TXG-09", "TXG-10"]) expect(used).not.toContain(id);
+    for (const id of ["TXF-04", "TXF-03", "TXF-02", "TXS-02", "TXS-06", "TXG-09", "TXG-10"]) expect(used).not.toContain(id);
+  });
+
+  it("rests its 'nothing is taxed before the sale' on TXF-11, as the after-tax run does: cited on the fund's ruling, else labelled a reading", () => {
+    const ruled = runSecuritiesBeforeTax(tase(), ctx);
+    expect(ids(ruled)).toContain("TXF-11");
+    expect(ruled.labels).not.toContainEqual({ code: "reading", ruleId: "TXF-11" });
+    const read = runSecuritiesBeforeTax(tase({ fund: { kind: "tase-foreign-fund", drag: { management: 0.002 } } }), ctx);
+    expect(read.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
+    expect(read.taxDuring).toBe(0);
+  });
+
+  it("gives the value worked by hand: whole units at a share price, a currency path in the return, F-107's drag", () => {
+    // 10,000 NIS now, nothing monthly, 12 months; A-01 6% in dollars, the dollar +2% a year, CPI 3%; a unit costs 100 NIS; 0.1% to buy and
+    // to sell, no minimum; the fund's fee 0.2% a year, and F-107 for an Irish fund holding US shares: TXF-16's 15% × a 1.5% yield × a 60%
+    // weight = 0.135% a year (data/rules/txf-16.json, 2026-10-25).
+    //   buy (F-109, F-12): the cash buys trade = 10,000 / 1.001 = 9,990.01 at most, so 99 units = 9,900, commission 9.90; 90.10 waits.
+    //   month (F-07, F-10): g = (1.06 × 1.02)^(1/12) − 1 = 0.00652717; δ = 0.002 + 0.00135 = 0.00335; step = 1 + g − δ/12 = 1.00624800.
+    //   at 12: NAV × 1.00624800^12 = 1.07760695; the units are worth 9,900 × 1.07760695 = 10,668.31; the sale's commission 10.67.
+    //   V^pre = 10,668.31 − 10.67 + 90.10 = 10,747.74 nominal; I_12 = 1.03, so V^pre,real = 10,434.70.
+    const r = runSecuritiesBeforeTax(
+      {
+        goal: { amountNow: 10_000, monthly: 0, months: 12 },
+        market: { grossReturn: 0.06, returnIn: "instrument", inflation: 0.03, fxChange: 0.02 },
+        fund: { kind: "tase-foreign-fund", drag: { management: 0.002, usDividends: { yield: 0.015, weight: 0.6 } }, saleOnlyRuling: true },
+        tariff: { buy: { rate: 0.001 }, sell: { rate: 0.001 } },
+        wholeUnits: { price: 100 },
+        profile: {},
+      },
+      ctx,
+    );
+    expect(r.beforeTaxNominal).toBeCloseTo(10_747.74, 2);
+    expect(r.beforeTaxReal).toBeCloseTo(10_434.7, 2);
+    expect(r.fees.trade).toBeCloseTo(9.9 + 10.668, 2);
+    expect(r.detail.cashLeft).toBeCloseTo(90.1, 6);
+    expect(r.formulas).toEqual(expect.arrayContaining(["F-107", "F-109", "F-118"]));
   });
 
   it("equals the value before tax of the same run with TXF-04 settled either way: it depends on neither index", () => {
@@ -99,11 +134,12 @@ describe("a TASE foreign fund read before tax (F-118, D84)", () => {
     expect(beforeTaxPathOf({ kind: "tase-foreign-fund" }, letter)).toBeNull();
   });
 
-  it("gives a fund that pays out no figure: the tax on its distributions rests in part on the letter's copy (TXF-05, TXF-07; G-35)", () => {
+  it("gives a fund that pays out no figure: its form is unknown, and for an arrangement the tax on its distributions is open (TXF open question 19)", () => {
     const fund = { kind: "tase-foreign-fund" as const, distribution: { yield: 0.015, perYear: 4 } };
     expect(securitiesBlockedBy(fund, ctx)).toBe("TXF-04");
     expect(beforeTaxPathOf(fund, ctx)).toBeNull();
     expect(() => runSecuritiesBeforeTax(tase({ fund }), ctx)).toThrow(NotEvaluatedError);
+    expect(() => runSecuritiesBeforeTax(tase({ fund }), ctx)).toThrow("TXF-OQ19");
   });
 });
 

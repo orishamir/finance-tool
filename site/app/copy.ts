@@ -4475,7 +4475,8 @@ export const invest = {
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
     /** A fund whose tax rests on an open rule (F-04, G-35), where no figure before tax is shown for it (an account that does not price it, a
-     *  kind with no fund record, a fund the person typed): by the rule, said plainly; nothing is ranked. Where F-118 prices it, `beforeTax` says it. */
+     *  kind with no fund record, a fund that pays out, the preview of a fund being typed): by the rule, said plainly; nothing is ranked. Where
+     *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
     ruleOpen: {
       "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
     } as Record<string, string>,
