@@ -465,6 +465,19 @@ describe("the templates", () => {
       expect(`${min?.source.quote} ${min?.notes}`, id).toMatch(/במטבע העסקה/);
     }
   });
+  it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
+    const minOf = (is: string) => {
+      const r = read({ ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is }] });
+      const band = builder(r).rows.find((x) => x.kind === "trade")!.block;
+      if (band.kind !== "band") throw new Error("a band");
+      const mins = band.rows.flatMap((x) => x.parts.filter((p) => p.id === "min").map((p) => p.words.figure!));
+      return mins.find((v) => v.value === 35)!;
+    };
+    expect(minOf("europe")).toMatchObject({ value: 35, unit: "eur" });
+    // the rest of the world: the currency is not known, and the fee is not read; on a pick in the US, the case is not the one read
+    expect(minOf("world")).toMatchObject({ value: 35, unit: "count" });
+    expect(minOf("us")).toMatchObject({ value: 35, unit: "count" });
+  });
   it("name a house by the id of one of its ways to buy, which a deal saved before cases may hold", () => {
     expect(houseName("house:interactive-brokers/interactive-brokers-buy-sell-us-fixed", data)).toBe("Interactive Brokers");
     expect(houseName("house:interactive-brokers", data)).toBe("Interactive Brokers");
