@@ -444,7 +444,7 @@ export interface GripAction {
  * around it as `item`, `name` the thing's words (the bin says them); tapped or pressed with Enter, it opens its menu (`actions`), where there
  * is one. `still`: it lifts nothing (nothing would take the thing), its menu alone. `label` is its spoken name. Delete takes the thing
  * away where the menu can (`onRemove`). It takes no room: it stands over the start of the element around it (`inside`), or just before
- * it, over the room between it and its neighbour (`outside`, a table's cell or column head, a fee's name). It is drawn while what it lifts
+ * it, over the room between it and its neighbour (`outside`, a table's cell, a fee's name). It is drawn while what it lifts
  * is under a fine pointer or has the focus; on touch only inside the open fee, where what it stands over makes room for it.
  */
 export function Grip({ item, name, label, actions = [], onRemove, still, place = "inside", className }: { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; still?: boolean; place?: "inside" | "outside"; className?: string }) {

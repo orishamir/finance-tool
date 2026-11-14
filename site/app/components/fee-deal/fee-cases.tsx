@@ -231,7 +231,7 @@ export function FeeCases({
   const removeAction = (l: Lifted): GripAction[] => (lift.binTakes(l) ? [{ label: lw.menu.remove, danger: true, onPick: () => lift.onBin(l) }] : []);
   /**
    * A grip that lifts `l`: its spoken name, its menu's other actions, the thing's own words (the bin says them), where it stands
-   * (`outside`: just before a table's cell or column head), and `still` where nothing would take the thing (its menu alone).
+   * (`outside`: just before a table's cell), and `still` where nothing would take the thing (its menu alone).
    */
   const grip = (l: Lifted, spoken: string, more: GripAction[] = [], o: { name?: string; place?: "inside" | "outside"; still?: boolean } = {}) => {
     const actions = [...more, ...removeAction(l)];
@@ -265,7 +265,8 @@ export function FeeCases({
     const l = headLifted(h, t);
     if (!l) return null;
     const words = stepName(byCase.get(h.cases[0]!)!, t);
-    const place = t === 1 ? ("outside" as const) : ("inside" as const);
+    // a head's grip stands inside it: a head's words fill its column, and nothing of it may pass the column's edge (layout-check's `head`)
+    const place = "inside" as const;
     if (l.k === "step") return grip(l, `${lw.grip.step}${words}`, more, { name: stepWords(words), place, still: !lift.binTakes(l) });
     return grip(l, `${t === 0 ? lw.grip.row : lw.grip.column}${words}`, [...valueActions(t, h.key, words, heads.map((x) => x.key), t === 0), ...more], { name: (t === 0 ? lw.name.row : lw.name.column).replace("{name}", words), place });
   };
@@ -453,7 +454,7 @@ export function FeeCases({
             const more = listThing ? caseActions(col.case, order, words, t) : [];
             const still = !!l && !moves && !lift.binTakes(l);
             const spoken = layout.ladder ? `${lw.grip.step}${words}` : still ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
-            const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : lw.name.case.replace("{name}", words), place: "outside", still }) : null;
+            const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : lw.name.case.replace("{name}", words), still }) : null;
             const target: LiftTarget = l?.k === "value" ? { k: "value", fee: fee.id, t, key: l.key } : { k: "col", fee: fee.id, case: col.case };
             return {
               id: col.case,
