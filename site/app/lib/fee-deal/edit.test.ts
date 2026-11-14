@@ -3,7 +3,7 @@ import type { FeeBase, ProductId } from "@finance-tool/schema";
 import type { DealKind } from "./kinds";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
 import { addFee, setKind, setPick } from "./edits/deal";
-import { addLater, editPrice, holdOn, laterUntouched, removeStage, setLimited, setSaleApart, setUntil } from "./edits/stage";
+import { addLater, editPrice, holdOn, laterUntouched, setLimited, setSaleApart, setUntil } from "./edits/stage";
 import { setFigure, figureOf, withCurrency, withFigure, withMonths } from "./edits/price";
 import { withForm } from "./offers/parts";
 
@@ -53,79 +53,71 @@ describe("the fee page's edits", () => {
 
   it("a later price comes after the month the one before it ends, its figure blank until typed; a free price is followed by the fee's usual form", () => {
     const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
-    const two = addLater(fee, "buy", "2028-03");
+    const two = addLater(fee, "buy", "2028-03", "held");
     expect(two.stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("held") }]);
     expect(feeInOrder(two)).toBe(true);
     expect(feePriced(two, "2026-11")).toBe(false);
     const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
     expect(feePriced(priced, "2026-11")).toBe(true);
     // a priced price is followed by one of its own form
-    const three = addLater(priced, "buy", "2030-01");
+    const three = addLater(priced, "buy", "2030-01", "held");
     expect(three.stages[2]!.price).toEqual(blankPrice("held"));
-    const back = removeStage(priced, "buy", 1);
-    expect(back.stages).toEqual([{ price: { form: "free" } }]);
-    expect(removeStage(back, "buy", 0)).toBe(back);
   });
   it("a chain of prices made by \"עד מתי\": free until a month, then a price asked for, then another for a limited time", () => {
     const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
     // "לזמן מוגבל" on the only price, with its month: the next price follows, asking for its price, never a hidden free one
-    const two = setLimited(fee, "buy", 0, "2028-03");
+    const two = setLimited(fee, "buy", 0, "2028-03", "held");
     expect(two.stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("held") }]);
     expect(feePriced(two, "2026-11")).toBe(false);
     const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
     expect(feePriced(priced, "2026-11")).toBe(true);
     expect(feeInOrder(priced)).toBe(true);
     // "לזמן מוגבל" on the next one continues the chain the same way
-    const three = setLimited(priced, "buy", 1, "2030-01");
+    const three = setLimited(priced, "buy", 1, "2030-01", "held");
     expect(three.stages.map((s) => s.until)).toEqual(["2028-03", "2030-01", undefined]);
     expect(three.stages[2]!.price).toEqual(blankPrice("held"));
     // a price before others moves only its end
-    const moved = setLimited(three, "buy", 0, "2028-06");
+    const moved = setLimited(three, "buy", 0, "2028-06", "held");
     expect(moved.stages.map((s) => s.until)).toEqual(["2028-06", "2030-01", undefined]);
     expect(moved.stages).toHaveLength(3);
   });
   it("\"כל הזמן\" on a price takes away the prices after it; they go without an undo only where they hold nothing the person gave", () => {
     const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
-    const two = setLimited(fee, "buy", 0, "2028-03");
-    expect(laterUntouched(two, "buy", 0)).toBe(true);
+    const two = setLimited(fee, "buy", 0, "2028-03", "held");
+    expect(laterUntouched(two, "buy", 0, "held")).toBe(true);
     expect(holdOn(two, "buy", 0).stages).toEqual([{ price: { form: "free" } }]);
     const priced = editPrice(two, "buy", 1, (p) => withFigure(p, "rate", 0.4));
-    expect(laterUntouched(priced, "buy", 0)).toBe(false);
+    expect(laterUntouched(priced, "buy", 0, "held")).toBe(false);
     const bounded = editPrice(two, "buy", 1, (p) => withFigure(p, "min", 5));
-    expect(laterUntouched(bounded, "buy", 0)).toBe(false);
+    expect(laterUntouched(bounded, "buy", 0, "held")).toBe(false);
     // a choice with no figure holds something too: another form, another period, a month of its own
-    expect(laterUntouched(editPrice(two, "buy", 1, (p) => withForm(p, "sum")), "buy", 0)).toBe(false);
-    expect(laterUntouched(editPrice(two, "buy", 1, (p) => withMonths(p, "every", 3)), "buy", 0)).toBe(false);
-    expect(laterUntouched(setLimited(two, "buy", 1, "2030-01"), "buy", 0)).toBe(false);
+    expect(laterUntouched(editPrice(two, "buy", 1, (p) => withForm(p, "sum")), "buy", 0, "held")).toBe(false);
+    expect(laterUntouched(editPrice(two, "buy", 1, (p) => withMonths(p, "every", 3)), "buy", 0, "held")).toBe(false);
+    expect(laterUntouched(setLimited(two, "buy", 1, "2030-01", "held"), "buy", 0, "held")).toBe(false);
     // a figure typed and emptied again holds nothing
-    expect(laterUntouched(editPrice(priced, "buy", 1, (p) => withFigure(p, "rate", null)), "buy", 0)).toBe(true);
-    const three = setLimited(priced, "buy", 1, "2030-01");
+    expect(laterUntouched(editPrice(priced, "buy", 1, (p) => withFigure(p, "rate", null)), "buy", 0, "held")).toBe(true);
+    const three = setLimited(priced, "buy", 1, "2030-01", "held");
     expect(holdOn(three, "buy", 1).stages).toEqual([{ price: { form: "free" }, until: "2028-03" }, priced.stages[1]]);
-    expect(laterUntouched(three, "buy", 1)).toBe(true);
-    expect(laterUntouched(three, "buy", 0)).toBe(false);
+    expect(laterUntouched(three, "buy", 1, "held")).toBe(true);
+    expect(laterUntouched(three, "buy", 0, "held")).toBe(false);
     // the last price is already held on
     expect(holdOn(three, "buy", 2)).toEqual(three);
   });
   it("a currency chosen for a later price's bounds holds something", () => {
-    const fee = setLimited({ ...newFee("trade"), stages: [{ price: { form: "free" } }] }, "buy", 0, "2028-03");
-    expect(laterUntouched(fee, "buy", 0)).toBe(true);
-    expect(laterUntouched(editPrice(fee, "buy", 1, (p) => withCurrency(p, "USD")), "buy", 0)).toBe(false);
+    const fee = setLimited({ ...newFee("trade"), stages: [{ price: { form: "free" } }] }, "buy", 0, "2028-03", "action");
+    expect(laterUntouched(fee, "buy", 0, "action")).toBe(true);
+    expect(laterUntouched(editPrice(fee, "buy", 1, (p) => withCurrency(p, "USD")), "buy", 0, "action")).toBe(false);
   });
-  it("taking a middle price away joins its neighbours: the price before it runs until its end, the next starts where it did", () => {
+  it("a price's end taken away leaves it with no end", () => {
     const fee: Fee = {
       ...newFee("custody"),
       stages: [{ price: { form: "free" }, until: "2028-03" }, { price: { form: "held", rate: typed(0.2), per: 12, every: 12 }, until: "2030-01" }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }],
     };
-    const joined = removeStage(fee, "buy", 1);
-    expect(joined.stages).toEqual([{ price: { form: "free" }, until: "2030-01" }, fee.stages![2]]);
-    expect(feeInOrder(joined)).toBe(true);
-    // the last taken away leaves the one before it held on
-    expect(removeStage(fee, "buy", 2).stages).toEqual([fee.stages![0], { price: fee.stages![1]!.price }]);
     expect(setUntil(fee, "buy", 1, null).stages[1]).toEqual({ price: fee.stages![1]!.price });
   });
   it("the sale's own prices make their chain the same way", () => {
     const fee = setSaleApart({ ...newFee("trade"), stages: [{ price: { form: "free" } }] }, true);
-    const two = setLimited(fee, "sell", 0, "2028-03");
+    const two = setLimited(fee, "sell", 0, "2028-03", "action");
     expect(two.stages).toEqual([{ price: { form: "free" } }]);
     expect(two.sale).toEqual([{ price: { form: "free" }, until: "2028-03" }, { price: blankPrice("action") }]);
     expect(holdOn(two, "sell", 0).sale).toEqual([{ price: { form: "free" } }]);

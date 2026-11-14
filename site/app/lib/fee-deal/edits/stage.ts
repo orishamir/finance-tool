@@ -2,7 +2,7 @@
 // price's end, a later price added or taken away, a sale priced apart. A fee whose price changes by things (F-114) keeps its prices in its
 // cases: these take the case they edit (`caseId`; a fee with cases is edited in its first case where none is named).
 import { blankPrice, hasCases, pricedOf, pricesOn, sameContent, type Case, type Fee, type MonthKey, type Price, type Priced, type Side, type SlimFee, type Stage } from "../model";
-import { capacity, type ChargedForm } from "../offers/capacity";
+import type { ChargedForm } from "../offers/capacity";
 
 // ---------------------------------------------------------------- a fee's prices over time, whole or in a case
 
@@ -51,11 +51,11 @@ export function setUntil<F extends Fee>(fee: F, side: Side, k: number, month: Mo
 
 /**
  * A fee whose last price on a side ends at the start of `until`, with one more price after it: of the form the last had, or after a free
- * price the form `after` (the first form the product's fee is offered in, `Offer.usual`; the kind's usual form for a fee of no product),
- * its rate or sum blank, so the fee is not read until the person gives it (`feePriced`). The person says the month first, so the prices are
+ * price the form `after`, which the caller takes from the offer (`OpenCase.later`: the first form the product's fee is offered in), its
+ * rate or sum blank, so the fee is not read until the person gives it (`feePriced`). The person says the month first, so the prices are
  * in order from the start.
  */
-export function addLater<F extends Fee>(fee: F, side: Side, until: MonthKey, caseId?: string, after: ChargedForm = capacity(fee.kind).usual): F {
+export function addLater<F extends Fee>(fee: F, side: Side, until: MonthKey, after: ChargedForm, caseId?: string): F {
   const stages = pricesOn(fee, side, caseId);
   const last = stages.at(-1)!;
   return withStages(fee, side, [...stages.slice(0, -1), { ...last, until }, { price: blankPrice(last.price.form === "free" ? after : last.price.form) }], caseId);
@@ -65,8 +65,8 @@ export function addLater<F extends Fee>(fee: F, side: Side, until: MonthKey, cas
  * Price `k` for a limited time, up to the start of `month`: the last price ends there and the next one follows it (`addLater`, in the form
  * `after` where it follows a free price); another moves its end.
  */
-export function setLimited<F extends Fee>(fee: F, side: Side, k: number, month: MonthKey, caseId?: string, after?: ChargedForm): F {
-  return k === pricesOn(fee, side, caseId).length - 1 ? addLater(fee, side, month, caseId, after) : setUntil(fee, side, k, month, caseId);
+export function setLimited<F extends Fee>(fee: F, side: Side, k: number, month: MonthKey, after: ChargedForm, caseId?: string): F {
+  return k === pricesOn(fee, side, caseId).length - 1 ? addLater(fee, side, month, after, caseId) : setUntil(fee, side, k, month, caseId);
 }
 
 /** Price `k` held on with no end: the prices after it go. */
@@ -79,27 +79,14 @@ export function holdOn<F extends Fee>(fee: F, side: Side, k: number, caseId?: st
 
 /**
  * Whether the prices after `k` hold nothing the person gave: one price only, as "לזמן מוגבל" added it (no month, its form the one it
- * came with, its figures, periods and currency untouched). Anything chosen in it counts. They go then without an undo.
+ * came with, after a free price the form `after` the offer gives, its figures, periods and currency untouched). Anything chosen in it counts.
+ * They go then without an undo.
  */
-export function laterUntouched(fee: Fee, side: Side, k: number, caseId?: string, after: ChargedForm = capacity(fee.kind).usual): boolean {
+export function laterUntouched(fee: Fee, side: Side, k: number, after: ChargedForm, caseId?: string): boolean {
   const stages = pricesOn(fee, side, caseId);
   const later = stages.slice(k + 1);
   const form = stages[k]!.price.form === "free" ? after : stages[k]!.price.form;
   return later.length === 1 && later[0]!.until === undefined && sameContent(later[0]!.price, blankPrice(form));
-}
-
-/**
- * A fee without price `k`, its neighbours' times joined: the price before a middle one runs until the end of the one taken away, the next
- * one starting where it did; the price left last has no end. The only price is never removed.
- */
-export function removeStage<F extends Fee>(fee: F, side: Side, k: number, caseId?: string): F {
-  const stages = pricesOn(fee, side, caseId);
-  if (stages.length < 2 || !stages[k]) return fee;
-  const rest = stages.filter((_, j) => j !== k);
-  const end = stages[k]!.until;
-  if (k > 0 && k < stages.length - 1 && end) rest[k - 1] = { ...rest[k - 1]!, until: end };
-  const { until: _u, ...open } = rest.at(-1)!;
-  return withStages(fee, side, [...rest.slice(0, -1), open], caseId);
 }
 
 /** A fee (or its case) whose sale is priced as its purchase, or apart from it (starting as a copy of the purchase's prices). */

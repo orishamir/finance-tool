@@ -158,8 +158,9 @@ const SPECS = {
     ask: "month",
     tool: "price",
     used: (_p: Price, x?: Priced) => !!x && x.stages.length > 1,
-    // on, the price ends at the month and a later one follows it; off, the prices after it go
-    apply: { on: "fee", edit: (fee, on, at) => (on ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month!, at.caseId, at.after) : holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId)) },
+    // on, the price ends at the month and a later one follows it, in the form the offer gives after a free price (nothing without both);
+    // off, the prices after it go
+    apply: { on: "fee", edit: (fee, on, at) => (!on ? holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId) : at.month && at.after ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month, at.after, at.caseId) : fee) },
   },
   min: { kind: "bound", field: "min", carriesIn: formBoundsAction, capField: "min", figures: ["min"], ask: "sum", tool: "bound", lost: true, ...figureEdit("min") },
   max: { kind: "bound", field: "max", carriesIn: formBoundsAction, capField: "max", figures: ["max"], ask: "sum", tool: "bound", lost: true, ...figureEdit("max") },

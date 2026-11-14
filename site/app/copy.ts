@@ -1820,7 +1820,6 @@ export const feeDeal = {
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
     /** The line a later price just taken away leaves in its place. */
-    stageRemoved: "המחיר הוסר.",
     /** The line the prices after one leave, taken away by "כל הזמן" on it. */
     laterRemoved: "המחירים שאחריו הוסרו.",
     salePrices: "המחיר במכירה",

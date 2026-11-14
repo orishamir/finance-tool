@@ -18,7 +18,6 @@ import type { LeftOutView } from "../../lib/left-out";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, type AddItem } from "../kit";
 import { bringIntoView } from "./in-view";
@@ -53,10 +52,12 @@ export interface FeeFocus {
 }
 
 
-export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
+export function SetupColumn({ deal, view, kinds, offered, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
+  /** The products the picker offers (`productOffered`); a saved deal of another still opens with its own. */
+  offered: readonly DealKind[];
   /** Opens the track picker from the button tapped, where the deal's kind has tracks (the provident family); null elsewhere. */
   onPickTrack: ((from: HTMLElement) => void) | null;
   /** Opens the price lists' picker from the button tapped, whose choice fills a new deal, where the deal's kind has price lists; null elsewhere. */
@@ -70,8 +71,6 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, fille
   onKind: (kind: ProductId) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
-  // the products the picker offers (`productOffered`); a saved deal of another still opens with its own
-  const offered = kinds.filter(productOffered);
   // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with it closed. The column
   // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
   const [pickingIn, setPickingIn] = useState<string | null>(null);

@@ -155,11 +155,11 @@ export function feesOffered(product: ProductFacts | null, present: readonly FeeK
 }
 
 /**
- * Whether the page's product picker offers a product: some fee it has is offered. A bank deposit's, a savings plan's and a bank
- * child-savings plan's only fee, breaking it, fits no form the page has (BANK-06, BANK-16, BANK-28), so they are not; a saved deal of one
- * still opens.
+ * Whether the page's product picker offers a product: some fee it has is offered (`feeOffered`, with the fees the data bars for it, `bar`).
+ * A bank deposit's, a savings plan's and a bank child-savings plan's only fee, breaking it, fits no form the page has (BANK-06, BANK-16,
+ * BANK-28), so they are not; a saved deal of one still opens.
  */
-export const productOffered = (product: ProductFacts): boolean => FEE_KIND_IDS.some((f) => feeOffered(product, f));
+export const productOffered = (product: ProductFacts, bar?: DataBar | null): boolean => FEE_KIND_IDS.some((f) => feeOffered(product, f, bar));
 
 /**
  * The ban the law sets on a product's fee for a deal (a row's `ban`): one that binds the deal's provider kind and, where it names values,

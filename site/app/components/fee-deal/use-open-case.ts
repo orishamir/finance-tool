@@ -115,37 +115,35 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     /** The fee open, and its case open (null for a slim fee). */
     fee,
     caseId,
-    menu,
-    thingOpen,
-    pending,
-    /** The pending part where it stands: on the case open of the fee open. */
-    pendingHere: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null,
-    sheetFolded,
-    setSheetFolded,
-    asking,
-    onAsk,
-    onAskDone,
-    panelRest,
-    panelCard,
     links,
     onOpenCase,
     onClosePanel,
-    /** A part the toolbox added that asks for what it needs, on the case open; null when it is given or dropped. */
-    setPending,
-    /** A slot of the open case tapped, at its pill; again, its menu closes. */
-    onSlot: (t: number, at: HTMLElement) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null)),
-    /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
-    onThing: (t: number, at: HTMLElement) => setThingOpen((m) => (m && m.t === t && m.fee === chosen ? null : chosen ? { fee: chosen, t, at } : null)),
-    closeMenu: () => setMenu(null),
-    closeThing: () => setThingOpen(null),
-    /** A fee just added: open, the sheet unfolded. */
-    unfold: () => setSheetFolded(false),
-    /** A fee taken away: the panel rests for half a second. */
-    rest: () => setPanelRest(true),
     /** Another deal on screen: the sheet folded, no thing's menu open. */
     reset: () => {
       setSheetFolded(true);
       setThingOpen(null);
     },
+    /** The menus of the open case's slot and of a thing of its band's head, each with the pill it opened from. */
+    menus: {
+      slot: menu,
+      thing: thingOpen,
+      /** A slot of the open case tapped, at its pill; again, its menu closes. */
+      onSlot: (t: number, at: HTMLElement) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null)),
+      /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
+      onThing: (t: number, at: HTMLElement) => setThingOpen((m) => (m && m.t === t && m.fee === chosen ? null : chosen ? { fee: chosen, t, at } : null)),
+      closeSlot: () => setMenu(null),
+      closeThing: () => setThingOpen(null),
+    },
+    /** A part the toolbox added that asks for what it needs, on the case open (`here`, where it stands); null when given or dropped. */
+    pending: {
+      here: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null,
+      set: setPending,
+    },
+    /** The question of a thing being added, in the open fee's block. */
+    ask: { asking, onAsk, onAskDone },
+    /** Whether a phone's toolbox sheet is folded; `unfold` for a fee just added. */
+    sheet: { folded: sheetFolded, setFolded: setSheetFolded, unfold: () => setSheetFolded(false) },
+    /** The toolbox's card, and whether it rests for half a second after a fee is taken away (`toRest`). */
+    panel: { card: panelCard, rest: panelRest, toRest: () => setPanelRest(true) },
   };
 }

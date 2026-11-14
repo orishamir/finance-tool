@@ -35,6 +35,7 @@ import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
+import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith } from "../../lib/fee-deal/store";
@@ -125,7 +126,9 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
  */
 function Deal({ data, today, saved, writable, address }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; address: AddressDeal }) {
   const first = useOpenedDeal(address, saved, today);
-  const doc = useDealDocument({ first, saved, today, data });
+  // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
+  // goes, and a new deal is saved once it is worth saving
+  const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow() });
   const { deal, chosen, change, kept } = doc;
   const panelColumn = useMedia(PANEL_COLUMN);
   const phone = useMedia(PHONE);
@@ -137,19 +140,13 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const { said, setSaid } = useSaid();
   const link = useCopyLink(deal);
 
-  // another deal on screen: a saved one, a new one or one a template filled; a new deal is saved once it is worth saving
   const afterShow = () => {
     oc.reset();
     setSaid(null);
     link.closeBlocked();
   };
-  const open = (next: FeeDeal) => {
-    doc.show(next);
-    afterShow();
-  };
-  const onUndo = () => {
-    if (doc.onUndo()) afterShow();
-  };
+  const open = doc.show;
+  const onUndo = doc.onUndo;
   const picker = useTemplatePicker({
     deal,
     data,
@@ -170,25 +167,25 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const { deal: next, fee } = addOfferedFee(deal, kindById(data.kinds, deal.kind), kind);
     change(next);
     doc.setChosen(fee.id);
-    oc.unfold();
+    oc.sheet.unfold();
     doc.setFocus({ fee: fee.id, on: "box" });
   };
   // the open fee's bin, beside its name: the toolbox it was open in rests a moment, as the next fee's may stand where the pointer is
   const onRemoveFee = (feeId: string) => {
     kept(removeFeeKept(deal, feeId, chosen));
-    oc.rest();
+    oc.panel.toRest();
   };
   // another kind of product: the fees it does not have leave the deal, kept for the undo where any of them held something
   const onKind = (id: ProductId) => {
     const to = kindById(data.kinds, id);
     if (to) kept(setKindKept(deal, to, dataBar(id, data, today), chosen));
   };
-  const onHoldOn = (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => kept(holdOnKept(deal, feeId, side, k, chosen, caseId, after));
+  const onHoldOn = (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => kept(holdOnKept(deal, feeId, side, k, chosen, after, caseId));
   const onForm = (feeId: string, part: PartId, caseId: string | null) => {
-    if (doc.changeForm(feeId, part, caseId)) oc.setPending(null);
+    if (doc.changeForm(feeId, part, caseId)) oc.pending.set(null);
   };
   const onRemoveCase = (feeId: string, caseId: string) => {
-    oc.closeMenu();
+    oc.menus.closeSlot();
     kept(removeCaseKept(deal, feeId, caseId, chosen));
   };
   // the price stops changing by a thing: the cases that then differ in nothing merge, kept for the undo, whose line says what merged. The
@@ -197,8 +194,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const onRemoveBy = (feeId: string, t: number) => {
     const r = removeByKept(deal, feeId, t, chosen);
     const menuOpen = document.querySelector("dialog[open]");
-    oc.closeThing();
-    oc.closeMenu();
+    oc.menus.closeThing();
+    oc.menus.closeSlot();
     if (menuOpen) menuOpen.addEventListener("close", () => kept(r), { once: true });
     else kept(r);
   };
@@ -208,13 +205,13 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const t = fee && hasCases(fee) ? fee.by.findIndex((x) => pickKind(x.kind) === pickKind(kind)) : -1;
     if (t >= 0) onRemoveBy(feeId, t);
   };
-  const onDelete = (id: string) => {
-    if (doc.remove(id)) afterShow();
-  };
+  const onDelete = doc.remove;
 
   const kind = kindById(data.kinds, deal.kind);
   // a fee the product may not charge by rule is never offered
   const bar = useMemo(() => dataBar(deal.kind, data, today), [deal.kind, data, today]);
+  // the products the picker offers: each with a fee it is offered, the fees its data bars left out
+  const offeredKinds = useMemo(() => data.kinds.filter((k) => productOffered(k, dataBar(k.id, data, today))), [data, today]);
   const { unitPrice, onUnitPrice } = useUnitPrice(read, deal.id);
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
@@ -222,7 +219,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const perDeposit = useMemo(() => perDepositFees(picker.filled?.left ?? []), [picker.filled]);
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice, perDeposit) } : null), [summary, read, data.fx, unitPrice, perDeposit]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
-  const pending = oc.pendingHere;
+  const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);
   const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
@@ -236,15 +233,15 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const on = at ?? caseId;
       if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
       applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined)), {
-        onAsk: oc.onAsk,
-        onPending: (part) => oc.setPending({ fee: feeId, case: on, part }),
+        onAsk: oc.ask.onAsk,
+        onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
         onForm: (part) => onForm(feeId, part, on),
         onFee,
       });
     },
   };
-  const menu = oc.menu;
-  const thingOpen = oc.thingOpen;
+  const menu = oc.menus.slot;
+  const thingOpen = oc.menus.thing;
   const slot = menu && menu.fee === chosen && menu.case === caseId ? slotEdit(read, menu.fee, menu.case, menu.t) : null;
   const thingView = thingOpen && thingOpen.fee === chosen ? thingMenu(read, thingOpen.fee, thingOpen.t) : null;
   // a product that saves charges its fees from what has built up: a share of what is held reads so
@@ -255,7 +252,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   };
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   const { shown, words } = doc.undo;
-  const lines = doc.undo.lines(onUndo);
+  const lines = doc.undo.lines;
   const readSome = read.fees.length > 0;
   // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
   // on a phone a short sheet pinned to the foot of the screen; else right under its fee
@@ -270,19 +267,19 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         product={deal.kind}
         fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => kept(fillFeeKept(deal, chosenFee.id, h, data, chosen)) } : null}
         line={lines.fill}
-        folded={oc.sheetFolded}
-        onFold={oc.setSheetFolded}
-        onAsk={oc.onAsk}
+        folded={oc.sheet.folded}
+        onFold={oc.sheet.setFolded}
+        onAsk={oc.ask.onAsk}
         onFee={onFee}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
-        onPending={(part) => oc.setPending({ fee: chosenFee.id, case: caseId, part })}
+        onPending={(part) => oc.pending.set({ fee: chosenFee.id, case: caseId, part })}
         onStopBy={(kind) => onStopBy(chosenFee.id, kind)}
         onClose={oc.onClosePanel}
       />
     ) : null;
   const panelView =
     toolboxView && !phone ? (
-      <ToolboxCard cardRef={oc.panelCard} column={panelColumn} rest={oc.panelRest} onClose={oc.onClosePanel}>
+      <ToolboxCard cardRef={oc.panel.card} column={panelColumn} rest={oc.panel.rest} onClose={oc.onClosePanel}>
         {toolboxView}
       </ToolboxCard>
     ) : null;
@@ -330,7 +327,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       />
       <TemplatePicker open={picker.anchor !== null} onClose={picker.onClose} anchor={picker.anchor} options={picker.options} left={picker.left} newDeal={picker.newDeal} product={kind?.name ?? null} onPick={picker.onPick} />
       <DealColumns
-        setup={<SetupColumn deal={deal} view={builderView} kinds={data.kinds} onPickTrack={picker.onPickTrack} onTemplates={picker.onTemplates} filled={picker.filled} kindLine={lines.kind} onDeal={change} onKind={onKind} />}
+        setup={<SetupColumn deal={deal} view={builderView} kinds={data.kinds} offered={offeredKinds} onPickTrack={picker.onPickTrack} onTemplates={picker.onTemplates} filled={picker.filled} kindLine={lines.kind} onDeal={change} onKind={onKind} />}
         fees={
           kind && (
             <FeesColumn
@@ -347,28 +344,28 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               onAdd={onAdd}
               actions={{
                 onOpen: oc.onOpenCase,
-                onSlot: oc.onSlot,
-                onThing: oc.onThing,
+                onSlot: oc.menus.onSlot,
+                onThing: oc.menus.onThing,
                 onRemoveCase,
                 onRemoveFee,
                 onRemoveBy,
                 drop,
                 onHoldOn,
-                onPendingDone: () => oc.setPending(null),
-                onAskDone: oc.onAskDone,
+                onPendingDone: () => oc.pending.set(null),
+                onAskDone: oc.ask.onAskDone,
               }}
-              ask={oc.asking && oc.asking.fee === chosen ? oc.asking.kind : null}
+              ask={oc.ask.asking && oc.ask.asking.fee === chosen ? oc.ask.asking.kind : null}
             />
           )
         }
         toolbox={panelColumn ? panelView : null}
       />
       {/* the open slot's menu: beside its pill on a computer, a sheet on a phone */}
-      <ValueMenuSheet open={!!slot} onClose={oc.closeMenu} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
+      <ValueMenuSheet open={!!slot} onClose={oc.menus.closeSlot} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
         {slot && menu && chosenFee && <SlotMenu key={`${menu.fee}:${menu.case}:${menu.t}`} edit={slot} fee={chosenFee} caseId={menu.case} t={menu.t} top={panel?.open.slots[menu.t]?.words.figure ?? null} onFee={onFee} />}
       </ValueMenuSheet>
       {/* a thing of the open fee's band head: its values in the cases, and the action that stops the price changing by it */}
-      <ValueMenuSheet open={!!thingView} onClose={oc.closeThing} anchor={thingView ? thingOpen!.at : null} label={thingView?.name ?? ""}>
+      <ValueMenuSheet open={!!thingView} onClose={oc.menus.closeThing} anchor={thingView ? thingOpen!.at : null} label={thingView?.name ?? ""}>
         {thingView && thingOpen && <ThingMenu title={thingView.title} values={thingView.values.map((w) => ({ text: <WhenText words={w} />, any: w.any }))} stop={thingView.stop} onStop={() => onRemoveBy(thingOpen.fee, thingOpen.t)} after={thingView.after} />}
       </ValueMenuSheet>
       {views && (

@@ -50,27 +50,24 @@ export interface Toolbox {
 }
 
 /**
- * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`), every one of them and no other,
- * which the compiler checks. A flat price stands among the price's cards, though a line says it among the bounds.
+ * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`). The compiler checks that no other
+ * part stands in a group, and offers/parts.test.ts that every one of them does. A flat price stands among the price's cards, though a line says
+ * it among the bounds.
  */
-const TOOL_ORDER = {
+export const TOOL_ORDER = {
   price: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"],
   bound: ["min", "max", "cap", "maxPerSecurity"],
   link: ["offset", "refund"],
   more: ["unfilled", "partial", "inTrade", "sale"],
 } as const satisfies { [G in ToolGroupId]: readonly ToolPartIn<G>[] };
-/** A part of a group that its order leaves out: none, or the order does not compile where it is used. */
-type Unordered = { [G in ToolGroupId]: Exclude<ToolPartIn<G>, (typeof TOOL_ORDER)[G][number]> }[ToolGroupId];
-
 /** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`). */
-const toolboxOf = (order: [Unordered] extends [never] ? typeof TOOL_ORDER : Unordered): readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] => [
-  { group: "price", kind: "price", parts: order.price },
-  { group: "bound", kind: "bound", parts: order.bound },
+const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
+  { group: "price", kind: "price", parts: TOOL_ORDER.price },
+  { group: "bound", kind: "bound", parts: TOOL_ORDER.bound },
   { group: "by", kind: "by", parts: [] },
-  { group: "link", kind: "link", parts: order.link },
-  { group: "more", kind: "note", parts: order.more },
+  { group: "link", kind: "link", parts: TOOL_ORDER.link },
+  { group: "more", kind: "note", parts: TOOL_ORDER.more },
 ];
-const TOOLBOX = toolboxOf(TOOL_ORDER);
 
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
