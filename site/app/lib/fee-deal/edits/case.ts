@@ -276,13 +276,15 @@ export function setStep(fee: Fee, caseId: string, t: number, upTo: number | null
 
 /**
  * A case added where a grid has a place no case holds (F-114): a copy of case `fromId` with its prices, its value of thing `t` set to
- * `when`, at the fee's end. A value that does not fit the thing, or a case the fee does not have, leaves it as it is.
+ * `when`, at the fee's end, on the page too (no rank of its own, so it stands after every ranked case: its row and its column are named
+ * by other cases already, so the grid's order stays). A value that does not fit the thing, or a case the fee does not have, leaves it as it is.
  */
 export function addCaseAt(fee: Fee, fromId: string, t: number, when: When): Fee {
   if (!hasCases(fee) || !fee.by[t] || !fits(fee.by[t]!, when)) return fee;
   const from = fee.cases.find((c) => c.id === fromId);
   if (!from) return fee;
-  return { ...fee, cases: [...fee.cases, asNew(copyOf(from, from.when.map((w, k) => (k === t ? when : w))))] };
+  const { rank: _r, ...made } = asNew(copyOf(from, from.when.map((w, k) => (k === t ? when : w))));
+  return { ...fee, cases: [...fee.cases, made] };
 }
 
 /**

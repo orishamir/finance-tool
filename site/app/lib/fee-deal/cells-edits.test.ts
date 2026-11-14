@@ -3,7 +3,7 @@
 // taken away or duplicated; a ladder's step taken away; two things swapped; the deal's fees put in order; one case split by a thing. Each is
 // read back through the layout where the layout is what the person sees.
 import { describe, expect, it } from "vitest";
-import { stretch, shrink, clearCells, moveCell, moveCellTo, cellMovesTo, figuresBack, figureToAll } from "./edits/cells";
+import { stretch, stretchOver, shrink, shrinkAway, shrinkEmpties, clearCells, moveCell, moveCellTo, cellMovesTo, figuresBack, figureToAll } from "./edits/cells";
 import { duplicateValue, moveCase, moveValue, orderFees, removeStep, removeValue, swapThings } from "./edits/arrange";
 import { removeBy, splitCase } from "./edits/case";
 import { editPrice } from "./edits/stage";
@@ -104,6 +104,86 @@ describe("a cell stretched over its neighbours, and back", () => {
   });
 });
 
+describe("a cell stretched over a place no case holds", () => {
+  /** The conversion grid with no case at branch, above 100 $: an empty place beside b1, and under d2. */
+  const gap = (): CasesFee => ({ ...fx(), cases: fx().cases.filter((c) => c.id !== "b2") });
+  const at = (f: CasesFee, ch: string, size: number) => f.cases.find((c) => (c.when[0] as string[])[0] === ch && c.when[1] === size);
+
+  it("across: fills the place with the cell's price, and they share one cell", () => {
+    const f = stretchOver(gap(), "b1", [], [2], 1) as CasesFee;
+    const made = at(f, "branch", 2)!;
+    expect(made.stages).toEqual(gap().cases.find((c) => c.id === "b1")!.stages);
+    expect(gridCells(f)![1]).toEqual([["b0"], ["b1", made.id]]);
+  });
+
+  it("across, over a case and a place at once: both take the price", () => {
+    const f = stretchOver(gap(), "b0", ["b1"], [2], 1) as CasesFee;
+    expect(gridCells(f)![1]).toEqual([["b0", "b1", at(f, "branch", 2)!.id]]);
+    expect(rateOf(f.cases.find((c) => c.id === "b1")!)).toBe("free");
+  });
+
+  it("down: fills the place under the cell, which spans both rows", () => {
+    const f = stretchOver(gap(), "d2", [], [["branch"]], 0, true) as CasesFee;
+    const l = laid(f);
+    expect(l.shape === "grid" && l.rows[0]!.cells.find((x) => x.case === "d2")).toMatchObject({ down: 2, cases: ["d2", at(f, "branch", 2)!.id] });
+  });
+
+  it("stretched back, leaves the place empty again, as before the stretch", () => {
+    const over = stretchOver(gap(), "b1", [], [2], 1) as CasesFee;
+    const made = at(over, "branch", 2)!;
+    const back = shrinkAway(over, [made.id], WHOLE) as CasesFee;
+    expect(back).toEqual(gap());
+    expect(gridCells(back)![1]).toEqual([["b0"], ["b1"], []]);
+  });
+
+  it("shrink, as a table's price row is stretched back, leaves each case its copy, standing apart", () => {
+    const over = stretchOver(gap(), "b1", [], [2], 1) as CasesFee;
+    const made = at(over, "branch", 2)!;
+    const back = shrink(over, [made.id], WHOLE, 1) as CasesFee;
+    expect(rateOf(at(back, "branch", 2)!)).toBe(0.175);
+    expect(gridCells(back)![1]).toEqual([["b0"], ["b1"], [made.id]]);
+  });
+
+  it("keeps the grid's order after a row was moved: the new case stands after the ranked ones", () => {
+    const moved = moveValue(gap(), 0, valueKey(["branch"]), valueKey(["direct"])) as CasesFee;
+    const f = stretchOver(moved, "d2", [], [["branch"]], 0, true) as CasesFee;
+    const l = laid(f);
+    expect(l.shape === "grid" && l.rows.map((r) => r.key)).toEqual([valueKey(["branch"]), valueKey(["direct"])]);
+    expect(l.shape === "grid" && l.columns.map((c) => c.key)).toEqual(["0", "1", "2"]);
+  });
+
+  it("leaves the fee as it was for a place whose value does not fit the thing", () => {
+    const g = gap();
+    expect(stretchOver(g, "b1", [], [7], 1)).toEqual(g);
+  });
+});
+
+describe("a cell stretched back takes from the places it leaves what the stretch gave", () => {
+  it("empties a grid's place and a part row's case, and leaves a table's price a copy", () => {
+    expect(shrinkEmpties(true, WHOLE)).toBe(true);
+    expect(shrinkEmpties(true, "price")).toBe(true);
+    expect(shrinkEmpties(false, "min")).toBe(true);
+    expect(shrinkEmpties(false, "price")).toBe(false);
+  });
+
+  it("takes a grid's whole case off the place it leaves, the place empty again", () => {
+    const f = shrinkAway(fx(), ["d2"], WHOLE) as CasesFee;
+    expect(f.cases.map((c) => c.id)).not.toContain("d2");
+    expect(gridCells(f)![0]).toEqual([["d0"], ["d1"], []]);
+  });
+
+  it("takes a part from the cases a part cell leaves, their other parts kept", () => {
+    const f = shrinkAway(fx(), ["d2"], "min") as CasesFee;
+    expect(f.cases.find((c) => c.id === "d2")!.stages[0]!.price).toEqual(action(0.1));
+    expect(f.cases.find((c) => c.id === "d1")!.stages[0]!.price).toEqual(action(0.0875, 5));
+  });
+
+  it("never takes the fee's last case", () => {
+    const one: CasesFee = { ...fx(), cases: [fx().cases[1]!] };
+    expect(shrinkAway(one, ["d1"], WHOLE)).toEqual(one);
+  });
+});
+
 describe("a cell's content moved or taken away", () => {
   const table = (): CasesFee => ({ id: "f", kind: "trade", by: [{ kind: "channel" }], cases: [
     { id: "a", when: [["direct"]], stages: [{ price: action(0.1, 15) }] },
@@ -143,7 +223,7 @@ describe("a cell's content moved or taken away", () => {
 describe("how a fee's cases stand", () => {
   it("moves a table's column on the page by rank, the order the reading reads kept", () => {
     const f: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel" }], cases: ["a", "b", "c"].map((id) => ({ id, when: [[id]], stages: [{ price: action(1) }] })) };
-    const moved = moveCase(f, "c", 0) as CasesFee;
+    const moved = moveCase(f, "c", "a") as CasesFee;
     expect(moved.cases.map((c) => c.id)).toEqual(["a", "b", "c"]);
     expect(byRank(moved.cases).map((c) => c.id)).toEqual(["c", "a", "b"]);
     const l = laid(moved);
@@ -151,11 +231,11 @@ describe("how a fee's cases stand", () => {
   });
 
   it("moves a grid's row or column, every other value keeping its order", () => {
-    const f = moveValue(fx(), 0, valueKey(["branch"]), 0) as CasesFee;
+    const f = moveValue(fx(), 0, valueKey(["branch"]), valueKey(["direct"])) as CasesFee;
     expect(byRank(f.cases).map((c) => c.id)).toEqual(["b0", "b1", "b2", "d0", "d1", "d2"]);
     expect(f.cases.map((c) => c.id)).toEqual(fx().cases.map((c) => c.id));
     // a range's steps ascend: they never move
-    expect(moveValue(fx(), 1, "0", 2)).toEqual(fx());
+    expect(moveValue(fx(), 1, "0", "2")).toEqual(fx());
   });
 
   it("takes a grid's row or column away with its cases, never the last", () => {
@@ -247,7 +327,7 @@ describe("what a deal keeps of these", () => {
       { id: "b", when: [["branch"]], stages: [{ price: action(0.3) }] },
     ] };
     const deal: FeeDeal = { id: "deal-x", name: "", kind: "brokerage-account", fees: [f] };
-    const moved: FeeDeal = { ...deal, fees: [moveCase(f, "a", 1)] };
+    const moved: FeeDeal = { ...deal, fees: [moveCase(f, "a", "b")] };
     const caseRead = (d: FeeDeal) => readDealFor(d, data.kinds, "2026-11-14").fees.map((x) => x.read?.case);
     expect(caseRead(moved)).toEqual(caseRead(deal));
     expect(picksOf(moved)).toEqual(picksOf(deal));

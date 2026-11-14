@@ -1,14 +1,15 @@
 // A fee whose price changes by things, laid out by its shape (method §10.6, F-114; lib/fee-deal/band-layout.ts and layout.ts): its
 // condition's head, then, where its block has the room, a table of its cases (one thing; a range as a ladder whose step tops are typed in
-// place) or a grid (two things; a third a switch above it), the parts said once above the cases, the case open under them; narrower, or
-// past five cases, the same cases as rows in the cases' band, a grid's in one group per value of its first thing. Each add slot stands
-// beside the heads (at the end of the column heads, under the row heads): "+ מקרה" copies the open case (else the last) and opens the copy;
-// "+ מדרגה" asks only the new boundary (`AskStep`); a grid's row and column ask their new values (`AskValuesOf`), and a place of a grid no
-// case holds takes a copy of its row's case. Every case shows, in the fee's order, the person's own marked "שלכם" and none set apart for
-// not being theirs. Every head, row, cell and thing of the head has a grip (⋮⋮, lifted.ts says where each drops and what the bin takes),
-// whose menu moves, duplicates or removes by keyboard; every cell of a table or a grid has knobs that stretch it over its neighbours, a
-// cell over its whole row saying so. A toolbox part dragged here drops on a case's head, cell or row, or on the open case; a thing to
-// change by, on a case's head, splits that case alone.
+// place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the case open
+// under them; narrower, or past five cases, the same cases as rows in the cases' band, a grid's in one group per value of its first thing,
+// a part one cell holds for every case said once above them. Each add slot stands beside the heads (at the end of the column heads, under
+// the row heads): "+ מקרה" copies the open case (else the last) and opens the copy; "+ מדרגה" asks only the new boundary (`AskStep`); a
+// grid's row and column ask their new values (`AskValuesOf`), and a place of a grid no case holds takes a copy of its row's case. Every
+// case shows, in the fee's order, the person's own marked "שלכם" and none set apart for not being theirs. Every head, row, cell and thing
+// of the head has a grip (⋮⋮, lifted.ts says where each drops and what the bin takes), whose menu moves, duplicates or removes by
+// keyboard; every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), a cell over its whole row
+// saying so. A toolbox part dragged here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head,
+// splits that case alone.
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
@@ -16,11 +17,12 @@ import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
 import { thingName } from "../../lib/fee-deal/case-words";
 import { addCase, addCaseAt, copyCase, setTop } from "../../lib/fee-deal/edits/case";
 import { duplicateValue, moveCase, moveValue } from "../../lib/fee-deal/edits/arrange";
-import { shrink, stretch, stretchTakes } from "../../lib/fee-deal/edits/cells";
-import { bandLayout, headSaysLead, partsByRow, rangeSign, rowHead, sharedLead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
-import { valueKey, WHOLE, type FeeLayout, type GridCell, type Head, type Shared } from "../../lib/fee-deal/layout";
+import { shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
+import { bandLayout, headSaysLead, partsByRow, rangeSign, rowHead, weakestOf, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
+import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
 import { liftId, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { isRange, NAME_MAX, type CasesFee, type Fee } from "../../lib/fee-deal/model";
+import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, tableSlots, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
 import { AddSlot, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, monthText, useWidth, type AddSpec, type CaseWord, type GripAction } from "../kit";
@@ -133,8 +135,7 @@ type Asking = { thing: number; range: boolean } | null;
  */
 type Reach = { row: string; base: number; from: number; to: number } | null;
 
-/** The cases of one row of a table or a grid by column: the case at each column, null at a place no case holds or a case on any value. */
-type RowCases = (string | null)[];
+
 
 export function FeeCases({
   fee,
@@ -176,16 +177,18 @@ export function FeeCases({
   const lw = c.lifted;
 
   const partsOf = (caseId: string, row: PartRow) => partsByRow(byCase.get(caseId)!.parts).get(row) ?? [];
+  /** The parts a case's row shows, read as rows (a band); a grid's cell, what no part cell under its row holds (`cellParts`). */
   const shownParts = (caseId: string) => layout.shows[caseId]!.flatMap((row) => partsOf(caseId, row as PartRow));
+  const cellParts = (caseId: string) => (layout.shape === "grid" ? layout.cellShows[caseId]! : []).flatMap((row) => partsOf(caseId, row as PartRow));
   /** Figures drawn inside are edited in place for these cases (`EditHere`). */
   const here = (cases: readonly string[], el: ReactNode) => <EditHere.Provider value={{ fee, cases, onFee }}>{el}</EditHere.Provider>;
   /** The parts said once for many cases, each edited for all of them. */
   const saidJoined = (said: readonly Shared[]) => (
     <>
       {said.map((x, k) => (
-        <span key={`${x.row}:${x.currency ?? ""}`}>
+        <span key={x.row}>
           {k > 0 && <span className="text-muted-foreground">{sep}</span>}
-          {here(x.cases, <Joined parts={partsOf(x.cases[0]!, x.row as PartRow)} />)}
+          {here(x.cases, <Joined parts={partsOf(weakestOf(x.cases, (id) => partsOf(id, x.row as PartRow)), x.row as PartRow)} />)}
         </span>
       ))}
     </>
@@ -218,11 +221,15 @@ export function FeeCases({
     const actions = [...more, ...removeAction(l)];
     return <Grip item={liftId(l)} label={spoken} actions={actions} {...(lift.binTakes(l) ? { onRemove: () => lift.onBin(l) } : {})} />;
   };
-  /** A list thing's value moved by one place, and duplicated right after it, named "<value> (עותק)". */
-  const valueActions = (t: number, key: string, words: string, k: number, count: number, down: boolean): GripAction[] => {
+  /**
+   * A list thing's value moved by one place, to where the head beside it stands (`keys`: the heads' values as the page shows them), and
+   * duplicated right after it, named "<value> (עותק)".
+   */
+  const valueActions = (t: number, key: string, words: string, keys: readonly string[], down: boolean): GripAction[] => {
     const out: GripAction[] = [];
-    if (k > 0) out.push({ label: down ? lw.menu.up : lw.menu.before, onPick: () => onFee(moveValue(fee, t, key, k - 1)) });
-    if (k < count - 1) out.push({ label: down ? lw.menu.down : lw.menu.after, onPick: () => onFee(moveValue(fee, t, key, k + 1)) });
+    const k = keys.indexOf(key);
+    if (k > 0) out.push({ label: down ? lw.menu.up : lw.menu.before, onPick: () => onFee(moveValue(fee, t, key, keys[k - 1]!)) });
+    if (k >= 0 && k < keys.length - 1) out.push({ label: down ? lw.menu.down : lw.menu.after, onPick: () => onFee(moveValue(fee, t, key, keys[k + 1]!)) });
     out.push({ label: down ? lw.menu.duplicateRow : lw.menu.duplicateColumn, onPick: () => addAndOpen(duplicateValue(fee, t, key, copyName(words))) });
     return out;
   };
@@ -230,34 +237,36 @@ export function FeeCases({
   const copyName = (words: string) => lw.copyName.replace("{name}", words.slice(0, NAME_MAX - (lw.copyName.length - "{name}".length)).trim());
   const stepName = (r: CaseRowView, t: number) => (r.bounds[t] ? stepText(r.bounds[t]!) : whenText(r.when[t]!));
   /** A head's grip: a range's step (its bin alone), else a value of a list thing (moved, duplicated, removed). */
-  const headGrip = (h: Head, t: number, k: number, count: number) => {
+  const headGrip = (h: Head, t: number, heads: readonly Head[]) => {
     const r = byCase.get(h.cases[0]!)!;
     const words = stepName(r, t);
     if (isRange(fee.by[t]!)) return typeof h.when === "number" ? grip({ k: "step", fee: fee.id, t, step: h.when, name: words }, `${lw.grip.step}${words}`) : null;
-    return grip({ k: "value", fee: fee.id, t, key: h.key, name: words }, `${t === 0 ? lw.grip.row : lw.grip.column}${words}`, valueActions(t, h.key, words, k, count, t === 0));
+    return grip({ k: "value", fee: fee.id, t, key: h.key, name: words }, `${t === 0 ? lw.grip.row : lw.grip.column}${words}`, valueActions(t, h.key, words, heads.map((x) => x.key), t === 0));
   };
   const caseTarget = (caseId: string): LiftTarget => ({ k: "case", fee: fee.id, case: caseId });
 
   // ---------------------------------------------------------------- knobs: a cell stretched over its neighbours, or back
   const plural = (t: number) => lw.things[fee.by[t]!.kind] ?? lw.things.own!;
   /**
-   * The knobs of a cell over columns `from` to `from + span - 1` of a row whose cases by column are `cases`, in part row `row` (or the whole
-   * case) along thing `t`: one on each edge that can move, toward a neighbour it may take, or back where it covers more than one column. A
-   * stretch that takes a different price from a neighbour keeps an undo.
+   * The knobs of a cell over columns `from` to `from + span - 1` of a line whose places are `cases`, in part row `row` (or the whole case)
+   * along thing `t`: one on each edge that can move without overwriting a price (reach.ts), toward a case that holds nothing there (it
+   * takes the cell's part) or a grid's place no case holds (filled with a copy of the case, `stretchOver`), or back where it covers more
+   * than one place, which takes from the places it leaves what the stretch gave (`shrinkAway`; a table's price leaves a copy, `shrink`).
+   * Each keeps an undo.
    */
-  const knobsOf = (rowKey: string, cases: RowCases, from: number, span: number, row: PartRow | typeof WHOLE, t: number, axis: "x" | "y" = "x") => {
+  const knobsOf = (rowKey: string, cases: readonly Slot[], from: number, span: number, row: PartRow | typeof WHOLE, t: number, axis: "x" | "y" = "x") => {
     const to = from + span - 1;
-    let lo = from, hi = to;
-    while (lo > 0 && cases[lo - 1] !== null) lo--;
-    while (hi < cases.length - 1 && cases[hi + 1] !== null) hi++;
-    const own = cases[from]!;
+    const { lo, hi } = reachOf(cases, from, span);
+    const edges = knobEdges(cases, from, span);
+    const own = (cases[from] as { own: string }).own;
     const onReach = (a: number, b: number, done: boolean) => {
       if (!done) return setReach({ row: rowKey, base: from, from: a, to: b });
       setReach(null);
-      const over = cases.slice(a, b + 1).filter((x, k) => x !== null && (a + k < from || a + k > to)) as string[];
-      const off = cases.slice(from, to + 1).filter((x, k) => x !== null && (from + k < a || from + k > b)) as string[];
+      const { over, places, off } = reachEdits(cases, from, to, a, b);
       // down a grid's column only a named span merges (layout.ts): the stretch names one
-      if (over.length) lift.onStretch(stretch(fee, own, over, row, t, axis === "y"), stretchTakes(fee, own, over, row) ? lw.stretched : null);
+      if (places.length) lift.onStretch(stretchOver(fee, own, over, places, t, axis === "y"), lw.stretched);
+      else if (over.length) lift.onStretch(stretch(fee, own, over, row, t, axis === "y"), lw.stretched);
+      else if (off.length && shrinkEmpties(layout.shape === "grid", row)) lift.onStretch(shrinkAway(fee, off, row), shrunk(off, row));
       else if (off.length) onFee(shrink(fee, off, row, t));
     };
     const at = reach && reach.row === rowKey && reach.base === from ? reach : null;
@@ -266,8 +275,8 @@ export function FeeCases({
     return {
       knobs: (
         <>
-          {(lo < from || span > 1) && <SpanKnob edge="before" {...props} />}
-          {(hi > to || span > 1) && <SpanKnob edge="after" {...props} />}
+          {edges.before && <SpanKnob edge="before" {...props} />}
+          {edges.after && <SpanKnob edge="after" {...props} />}
         </>
       ),
       // Shift with an arrow on the cell: its edge after it (left, or its foot), one column or row on, or back
@@ -277,6 +286,9 @@ export function FeeCases({
       },
     };
   };
+  /** The undo line of a cell stretched back: where it left, and what it took there ("מניות בלונדון · בסניף: המקרה הוסר."). */
+  const shrunk = (off: readonly string[], row: PartRow | typeof WHOLE) =>
+    lw.shrunk.replace("{where}", off.map((id) => caseText(byCase.get(id)!.when)).join(", ")).replace("{what}", row === WHOLE ? c.caseRemoved : lw.part[row]!);
   const lit = (rowKey: string, from: number, span: number) => !!reach && reach.row === rowKey && from + span - 1 >= reach.from && from <= reach.to;
   /** The words under a cell over every column of its row: "בכל ערוץ", "בכל גודל". */
   const wholeWords = (span: number, n: number, t: number) => (n > 1 && span === n ? (c.any[fee.by[t]!.kind] ?? null) : null);
@@ -308,15 +320,8 @@ export function FeeCases({
   }));
   const head = { things: headThings, ...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {}), onRemoveThing: (id: string) => onRemoveBy(fee.id, Number(id)) };
 
-  // the parts said once, one line per currency they hold in (every case's first)
-  const sharedLines = (said: readonly Shared[]) => {
-    const groups = [...new Set(said.map((x) => x.currency))].sort((a, b) => (a === null ? -1 : b === null ? 1 : 0));
-    return groups.map((cur) => (
-      <SharedLine key={cur ?? "all"} lead={sharedLead(cur)}>
-        {saidJoined(said.filter((x) => x.currency === cur))}
-      </SharedLine>
-    ));
-  };
+  /** A one-thing table read as rows: the parts one cell holds over every column, said once above the rows, led by the thing's any-words. */
+  const onceLine = (once: readonly Shared[], t: number) => (once.length ? <SharedLine lead={c.onceLead.replace("{any}", c.any[fee.by[t]!.kind] ?? "")}>{saidJoined(once)}</SharedLine> : null);
 
   const openView = (r: CaseRowView) => {
     const ov = open.view!;
@@ -364,12 +369,10 @@ export function FeeCases({
     const t = layout.thing;
     const all = rows.flatMap((r) => r.parts);
     const n = layout.columns.length;
-    const colCases: RowCases = layout.columns.map((col) => col.case);
     const listThing = !layout.ladder && layout.split === null;
     body = (
       <>
         <ConditionHead bare {...head} />
-        {sharedLines(layout.shared)}
         <CaseTable
           label={name}
           ladder={layout.ladder}
@@ -380,7 +383,7 @@ export function FeeCases({
               ? typeof col.when === "number"
                 ? grip({ k: "step", fee: fee.id, t, step: col.when, name: words }, `${lw.grip.step}${words}`)
                 : null
-              : grip({ k: "col", fee: fee.id, case: col.case }, `${lw.grip.col}${words}`, listThing ? caseActions(col.case, k, n, words) : []);
+              : grip({ k: "col", fee: fee.id, case: col.case }, `${lw.grip.col}${words}`, listThing ? caseActions(col.case, layout.columns.map((x) => x.case), words) : []);
             return {
               id: col.case,
               head: col.sub !== undefined ? <SubHead r={r} sub={layout.split!} head={headOf(r, t)} /> : headOf(r, t),
@@ -408,9 +411,9 @@ export function FeeCases({
                   span: cell.span,
                   open: !!openCase && cell.cases.includes(openCase),
                   onOpen: openIt(cell.cases[0]!),
-                  content: here(cell.cases, <Joined parts={partsOf(cell.cases[0]!, pr)} bare={headSaysLead(pr)} />),
+                  content: here(cell.cases, <Joined parts={partsOf(weakestOf(cell.cases, (id) => partsOf(id, pr)), pr)} bare={headSaysLead(pr)} />),
                   grip: grip({ k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t }, `${lw.grip.cell}${rowHeadWords}`),
-                  ...knobsOf(row.row, colCases, cell.from, cell.span, pr, t),
+                  ...knobsOf(row.row, tableSlots(layout, row.cells), cell.from, cell.span, pr, t),
                   onRemove: () => lift.onBin({ k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t }),
                   lit: lit(row.row, cell.from, cell.span),
                   ...(ww ? { whole: ww } : {}),
@@ -427,38 +430,54 @@ export function FeeCases({
   } else if (wide && layout.shape === "grid") {
     const g = layout;
     const n = g.columns.length;
-    /** A grid row's cases by column: a place no case holds, and a case on any value across, take no stretch. */
-    // a cell down over several rows, and a cell it covers, take no stretch across
-    const casesBy = (cells: GridCell[]): RowCases => Array.from({ length: n }, (_, k) => {
-      const cell = cells.find((x) => x.from <= k && k < x.from + x.span)!;
-      return cell.case && !cell.whole && !cell.covered && !cell.down ? cell.cases[k - cell.from]! : null;
-    });
-    /** A grid column's cases by row, for a stretch down: a place held by a one-column case cell (or a row of a cell down over rows). */
-    const columnCases = (k: number): RowCases =>
-      g.rows.map((r) => {
-        const cell = r.cells.find((x) => x.from <= k && k < x.from + x.span)!;
-        return cell.case && !cell.whole && cell.span === 1 ? cell.case : null;
+    /** The part cells under a row: each a real cell of its part row, edited in place, lifted, stretched and taken away like a table's. */
+    const partLines = (row: GridRow) =>
+      row.parts.map((line) => {
+        const pr = line.row as PartRow;
+        const slots = gridPartSlots(g, row, (id) => partsOf(id, pr).length > 0);
+        const lineKey = `${row.key}|${pr}`;
+        return {
+          id: line.row,
+          cells: line.cells.map((cell) => {
+            const l: Lifted = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: 1 };
+            const shown = weakestOf(cell.cases, (id) => partsOf(id, pr));
+            const ww = wholeWords(cell.span, n, 1);
+            return {
+              from: cell.from,
+              span: cell.span,
+              label: label(byCase.get(cell.cases[0]!)!),
+              open: !!openCase && cell.cases.includes(openCase),
+              onOpen: openIt(cell.cases[0]!),
+              content: here(cell.cases, <Joined parts={partsOf(shown, pr)} />),
+              grip: grip(l, `${lw.grip.cell}${rowHead(pr, partsOf(shown, pr))}`),
+              ...knobsOf(lineKey, slots, cell.from, cell.span, pr, 1),
+              ...(lift.binTakes(l) ? { onRemove: () => lift.onBin(l) } : {}),
+              lit: lit(lineKey, cell.from, cell.span),
+              ...(ww ? { whole: ww } : {}),
+              zone: (el: ReactNode) => zone([l as LiftTarget, caseTarget(cell.cases[0]!)], `${lineKey}:${cell.from}`, el),
+            };
+          }),
+        };
       });
     body = (
       <>
         <ConditionHead bare {...head} />
-        {sharedLines(g.shared)}
         <CaseGrid
           label={name}
           steps={g.across.range}
           above={g.switch && <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} mine={(h) => byCase.get(h.cases[0]!)!.mine} onChange={setSwitchTo} />}
           columns={g.columns.map((col, k) => {
-            const hg = headGrip(col, 1, k, n);
-            return { id: col.key, head: headOfValue(col, 1), ...(col.shared.length ? { shared: saidJoined(col.shared) } : {}), ...(hg ? { grip: hg } : {}), zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 1, key: col.key }], `col:${col.key}`, h) };
+            const hg = headGrip(col, 1, g.columns);
+            return { id: col.key, head: headOfValue(col, 1), ...(hg ? { grip: hg } : {}), zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 1, key: col.key }], `col:${col.key}`, h) };
           })}
           rows={g.rows.map((row, j) => {
-            const rc = casesBy(row.cells);
-            const hg = headGrip(row, 0, j, g.rows.length);
+            const rc = gridRowSlots(g, row);
+            const hg = headGrip(row, 0, g.rows);
             return {
               id: row.key,
               head: headOfValue(row, 0),
-              ...(row.shared.length ? { shared: saidJoined(row.shared) } : {}),
               ...(hg ? { grip: hg } : {}),
+              lines: partLines(row),
               zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }], `row:${row.key}`, h),
               cells: row.cells.filter((cell) => !cell.covered).map((cell) => {
                 const col = g.columns[cell.from]!;
@@ -467,6 +486,7 @@ export function FeeCases({
                   return {
                     from: cell.from,
                     span: cell.span,
+                    lit: lit(row.key, cell.from, 1) || lit(`col:${col.key}`, j, 1),
                     empty: { label: c.addSlot.case, spoken: `${c.emptyPlace}${whenText(byCase.get(row.cases[0]!)!.when[0]!)}${sep}${whenText(byCase.get(col.cases[0]!)!.when[1]!)}`, onAdd: () => addAndOpen(addCaseAt(fee, from, 1, col.when)) },
                     zone: (el: ReactNode) => zone([{ k: "place", fee: fee.id, row: from, t: 1, when: col.when }], `place:${row.key}:${cell.from}`, el),
                   };
@@ -478,7 +498,7 @@ export function FeeCases({
                 // across: a cell of one row; down: a cell one column wide
                 const across = !cell.whole && down === 1 ? knobsOf(row.key, rc, cell.from, cell.span, WHOLE, 1) : null;
                 const colKey = `col:${col.key}`;
-                const downward = !cell.whole && cell.span === 1 ? knobsOf(colKey, columnCases(cell.from), j, down, WHOLE, 0, "y") : null;
+                const downward = !cell.whole && cell.span === 1 ? knobsOf(colKey, gridColumnSlots(g, cell.from), j, down, WHOLE, 0, "y") : null;
                 return {
                   from: cell.from,
                   span: cell.span,
@@ -488,7 +508,7 @@ export function FeeCases({
                   open: !!openCase && cell.cases.includes(openCase),
                   content: (
                     <>
-                      {here(cell.cases, <Joined parts={shownParts(cell.case)} />)}
+                      {here(cell.cases, <Joined parts={cellParts(weakestOf(cell.cases, cellParts))} />)}
                       <RowStanding fee={fee.id} priced={r.priced} standing={r.standing} />
                     </>
                   ),
@@ -530,11 +550,10 @@ export function FeeCases({
             <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} mine={(h) => byCase.get(h.cases[0]!)!.mine} onChange={setSwitchTo} />
           </div>
         )}
-        {g.shared.length > 0 && <div className="px-3 pt-1">{sharedLines(g.shared)}</div>}
         {g.rows.map((row, j) => {
-          const hg = headGrip(row, 0, j, g.rows.length);
+          const hg = headGrip(row, 0, g.rows);
           return (
-            <CaseGroup key={row.key} head={headOfValue(row, 0)} {...(row.shared.length ? { shared: saidJoined(row.shared) } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }], `row:${row.key}`, h)}>
+            <CaseGroup key={row.key} head={headOfValue(row, 0)} {...(row.once.length ? { shared: saidJoined(row.once) } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }], `row:${row.key}`, h)}>
               {row.cells.flatMap((cell) => {
                 if (cell.case)
                   return cell.cases.filter((id) => row.cases.includes(id)).map((id) => {
@@ -567,14 +586,14 @@ export function FeeCases({
     const add = ladder ? stepSlot(0) : addOne;
     body = (
       <ConditionBand {...head}>
-        {layout.shared.length > 0 && <div className="px-3 pt-1">{sharedLines(layout.shared)}</div>}
+        {layout.shape === "table" && layout.once.length > 0 && <div className="px-3 pt-1">{onceLine(layout.once, 0)}</div>}
         {order.map((id, k) => {
           const r = byCase.get(id)!;
           const words = ladder ? stepName(r, 0) : caseText(r.when);
           const w0 = fee.cases.find((x) => x.id === id)!.when[0];
           const step = ladder && typeof w0 === "number" ? w0 : null;
           const l: Lifted = step !== null ? { k: "step", fee: fee.id, t: 0, step, name: words } : { k: "col", fee: fee.id, case: id };
-          return <div key={id}>{bandRow(r, caseWords(r.when, r.mine, band.things, r.bounds), l, `${step !== null ? lw.grip.step : lw.grip.col}${words}`, listThing ? caseActions(id, k, order.length, words) : [], listThing ? [{ k: "col", fee: fee.id, case: id }] : [])}</div>;
+          return <div key={id}>{bandRow(r, caseWords(r.when, r.mine, band.things, r.bounds), l, `${step !== null ? lw.grip.step : lw.grip.col}${words}`, listThing ? caseActions(id, order, words) : [], listThing ? [{ k: "col", fee: fee.id, case: id }] : [])}</div>;
         })}
         <div className="px-3 pt-1 pb-1">
           <AddSlot shape="pill" add={add} />
@@ -591,11 +610,15 @@ export function FeeCases({
     </div>
   );
 
-  /** A table's column of a list thing moved by one place, and duplicated right after it ("<value> (עותק)"). */
-  function caseActions(caseId: string, k: number, count: number, words: string): GripAction[] {
+  /**
+   * A table's column of a list thing moved by one place, to where the column beside it stands (`order`: the columns' cases as the page
+   * shows them), and duplicated right after it ("<value> (עותק)").
+   */
+  function caseActions(caseId: string, order: readonly string[], words: string): GripAction[] {
     const out: GripAction[] = [];
-    if (k > 0) out.push({ label: lw.menu.before, onPick: () => onFee(moveCase(fee, caseId, k - 1)) });
-    if (k < count - 1) out.push({ label: lw.menu.after, onPick: () => onFee(moveCase(fee, caseId, k + 1)) });
+    const k = order.indexOf(caseId);
+    if (k > 0) out.push({ label: lw.menu.before, onPick: () => onFee(moveCase(fee, caseId, order[k - 1]!)) });
+    if (k >= 0 && k < order.length - 1) out.push({ label: lw.menu.after, onPick: () => onFee(moveCase(fee, caseId, order[k + 1]!)) });
     const key = valueKey(fee.cases.find((x) => x.id === caseId)!.when[0]!);
     out.push({ label: lw.menu.duplicateColumn, onPick: () => addAndOpen(duplicateValue(fee, 0, key, copyName(words))) });
     return out;

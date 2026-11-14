@@ -28,19 +28,22 @@ const HEAD_SAYS_LEAD: ReadonlySet<PartRow> = new Set(["min", "max", "cap", "maxP
 export const headSaysLead = (row: PartRow): boolean => HEAD_SAYS_LEAD.has(row);
 
 /**
- * A figure's content: equal for the same number in the same unit and state. Two lines of one price list that print the same figure read
- * the same and are said once, the first case's source behind it.
+ * A figure's content: equal for the same number in the same unit, whatever its state. Two cases that print the same figure read the same
+ * to the person and share one cell, also where one holds it from the price list and the other as the person's own (a copy the list does
+ * not print there); the cell then shows it as the person's (`weakestOf`), so no figure is shown with a source it lacks somewhere.
  */
-const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit, v.state] : null);
+const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit] : null);
+
+/** Of cases that share one cell, the one whose parts there it shows: the first whose figure is the person's, else the first. */
+export function weakestOf(cases: readonly string[], parts: (caseId: string) => readonly SlimPart[]): string {
+  return cases.find((id) => parts(id).some((p) => p.words.figure?.state === "entered" || p.words.second?.state === "entered")) ?? cases[0]!;
+}
 
 /** A part's content, equal for two parts that read the same: its id and every word and figure of it. */
 export function partKey(p: SlimPart): string {
   const w = p.words;
   return JSON.stringify([p.id, p.stage ?? 0, w.lead ?? null, figureKey(w.figure), w.mid ?? null, figureKey(w.second), w.month ?? null, w.tail ?? null, w.quiet ?? null]);
 }
-
-/** The currency a part's figure is in; null for a share, a count or a part with no figure. */
-const currencyOf = (p: SlimPart): string | null => (p.words.figure ? currencyOfUnit(p.words.figure.unit) : null);
 
 /**
  * A fee's cases laid out by its shape (`layoutOf`), the cases being the builder's rows of it (`rows`, in the fee's order), with three things
@@ -57,7 +60,7 @@ export function bandLayout(fee: CasesFee, rows: readonly CaseRow[], switchTo: st
       id: r.case,
       when: caseOf.get(r.case)!.when,
       ...(caseOf.get(r.case)!.spans ? { spans: caseOf.get(r.case)!.spans } : {}),
-      parts: [...partsByRow(r.parts)].map(([row, ps]) => ({ row, key: ps.map(partKey).join("|"), currency: ps.map(currencyOf).find((c) => c !== null) ?? null })),
+      parts: [...partsByRow(r.parts)].map(([row, ps]) => ({ row, key: ps.map(partKey).join("|") })),
     })),
   });
 }
@@ -71,9 +74,6 @@ export function rowHead(row: PartRow, parts: readonly SlimPart[]): string {
   if (units.length > 0 && units.every((u) => u !== undefined && currencyOfUnit(u) !== null)) return h.sum!;
   return h.price!;
 }
-
-/** The line a part said once stands under: every case, or the cases of one currency. */
-export const sharedLead = (currency: string | null): string => (currency === null ? copy.cases.shared.all : (copy.cases.shared.in[currency] ?? copy.cases.shared.all));
 
 /** A ladder's step as its head says it: the top of the step before it (none for the first) and its own top (none for the last). */
 export interface StepBounds {

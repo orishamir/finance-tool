@@ -5,8 +5,8 @@
 // (`DropBin`) shows only while something is lifted, at the foot of its block on a computer and at the foot of the screen on a phone.
 // Released on a place, the place does what it does with it (with the modifier key held, it copies); released elsewhere, or with Esc,
 // nothing happens. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard: move, duplicate, remove. A knob (↔,
-// `SpanKnob`) on a cell's edge stretches the cell over its neighbours or back, by dragging or by the arrow keys, and says how far it
-// reaches. Every grip and knob takes a 44 px press: a grip is that tall, its dots drawn in its middle.
+// `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, by dragging anywhere on the edge or by
+// the arrow keys, and says how far it reaches. Every grip and knob takes a 44 px press: a grip is that tall, its dots drawn in its middle.
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
 import { GripVertical, MoveHorizontal, MoveVertical } from "lucide-react";
 import { dealCases as copy } from "../../copy";
@@ -301,14 +301,16 @@ function GripMenu({ actions, onClose, back }: { actions: GripAction[]; onClose: 
 
 /**
  * The bin a lifted thing is taken away in: shown only while something it takes (`accepts`) is lifted, at the foot of its block on a
- * computer, and on a phone (`phone`) fixed at the foot of the screen. A red dashed frame and "גוררים לכאן כדי למחוק".
+ * computer, and on a phone (`phone`) fixed at the foot of the screen. One frame, the zone's own outline: red and dashed while something
+ * is carried, solid and filled while it is over the bin (`DropZone`); "גוררים לכאן כדי למחוק" inside. On a phone it stands on the card's fill, so it
+ * reads over the page under it.
  */
 export function DropBin({ accepts, onDrop, phone }: { accepts: (item: string) => boolean; onDrop: (item: string) => void; phone?: boolean }) {
   const item = useCarried();
   if (item === null || !accepts(item)) return null;
   return (
-    <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx(phone && "fixed inset-x-3 bottom-3 z-50")}>
-      <div data-drop-bin="" className="flex min-h-target items-center justify-center gap-2 rounded-md border border-dashed border-destructive bg-card px-3 py-2 text-sm text-destructive">
+    <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx(phone && "fixed inset-x-3 bottom-3 z-50 rounded-md bg-card")}>
+      <div data-drop-bin="" className="flex min-h-target items-center justify-center gap-2 rounded-md px-3 py-2 text-sm text-destructive">
         <BinIcon />
         {copy.lift.bin}
       </div>
@@ -317,7 +319,8 @@ export function DropBin({ accepts, onDrop, phone }: { accepts: (item: string) =>
 }
 
 /**
- * A cell's knob (↔) on one of its edges (`edge`: toward the columns before it, or after it): dragged over its neighbours, it stretches the
+ * A cell's knob (↔) on one of its edges (`edge`: toward the columns before it, or after it): a grab strip along the whole edge, about 10 px
+ * straddling the border with the resize cursor, the small knob drawn in its middle as the hint. Dragged over its neighbours, it stretches the
  * cell over them, and back, off them; the arrow keys do the same one column at a time (left goes on in reading order, right back). It
  * reaches from column `from` to column `to` and may reach from `min` to `max`; `onReach` hears a new reach as the pointer moves
  * (`done` false) and once it is released or a key is pressed (`done` true). `valueText` says the reach ("חל על 2 מתוך 3 גדלים"). The
@@ -340,12 +343,13 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
     if (a !== from || b !== to) onReach(a, b, true);
   };
   return (
-    // the page is right to left: the edge after the cell is its left one; the knob sits across the edge (down: across its top, toward its
-    // start, or its foot, toward its end, so a cell's foot knob and the top knob of the cell under it never stand on each other)
+    // the page is right to left: the edge after the cell is its left one. The strip runs along the whole edge, straddling it, so the edge
+    // is grabbed anywhere; the knob drawn in its middle is the hint. The strip is placed by a span of its own: a cell makes every button
+    // inside it relative, to stand over its open button (`LIFT_INNER`)
     <span
       className={cx(
         "absolute z-10",
-        axis === "x" ? cx("top-1/2 -translate-y-1/2", edge === "after" ? "end-0 -translate-x-1/2" : "start-0 translate-x-1/2") : edge === "after" ? "bottom-0 left-1/4 -translate-x-1/2 translate-y-1/2" : "top-0 right-1/4 translate-x-1/2 -translate-y-1/2",
+        axis === "x" ? cx("inset-y-0 w-2.5", edge === "after" ? "end-0 -translate-x-1/2" : "start-0 translate-x-1/2") : cx("inset-x-0 h-2.5", edge === "after" ? "bottom-0 translate-y-1/2" : "top-0 -translate-y-1/2"),
       )}
     >
     <button
@@ -395,9 +399,11 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
         e.stopPropagation();
         step(edge === "after" ? by : -by);
       }}
-      className={cx("tap-area flex touch-none items-center justify-center rounded-sm border border-border bg-popover text-muted-foreground transition-opacity duration-[var(--duration-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", axis === "x" ? "h-6 w-4 cursor-ew-resize" : "h-4 w-6 cursor-ns-resize")}
+      className={cx("group/knob flex size-full touch-none items-center justify-center transition-opacity duration-[var(--duration-fast)] focus-visible:outline-none", axis === "x" ? "cursor-ew-resize" : "cursor-ns-resize")}
     >
-      {axis === "x" ? <MoveHorizontal size={12} strokeWidth={2} aria-hidden /> : <MoveVertical size={12} strokeWidth={2} aria-hidden />}
+      <span aria-hidden className={cx("tap-area flex shrink-0 items-center justify-center rounded-sm border border-border bg-popover text-muted-foreground group-hover/knob:text-foreground group-focus-visible/knob:outline-2 group-focus-visible/knob:outline-ring", axis === "x" ? "h-6 w-4" : "h-4 w-6")}>
+        {axis === "x" ? <MoveHorizontal size={12} strokeWidth={2} /> : <MoveVertical size={12} strokeWidth={2} />}
+      </span>
     </button>
     </span>
   );

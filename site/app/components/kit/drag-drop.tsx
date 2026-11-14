@@ -102,8 +102,9 @@ export const useCanDrag = (): boolean => useMedia("(pointer: fine)");
 /**
  * A place a carried thing can be dropped on: `accepts` says whether it takes it (asked only while one is carried), `onDrop` does what the
  * thing's tap does, here (`how.copy`: dropped with the modifier key held). A zone inside another takes the drop alone. `why`, where it
- * does not take the thing, says why, under the pointer. `className` is the zone's own layout; its outline follows its rounding (`rounded`,
- * a large radius by default). `tone="danger"`: a bin, outlined in the danger colour.
+ * does not take the thing, says why, under the pointer. `className` is the zone's own layout, `rounded` its rounding. While it takes the
+ * thing, its frame is drawn on what it wraps, on that element's own edge and rounding, over its border: one frame, dashed, solid and filled
+ * while the thing is over it. `tone="danger"`: a bin, in the danger colour.
  */
 export function DropZone({ accepts, onDrop, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
   const item = useCarried();
@@ -147,14 +148,14 @@ export function DropZone({ accepts, onDrop, why, rounded = "rounded-lg", tone, c
         },
       }
     : {};
-  const ink = tone === "danger" ? "outline-destructive" : "outline-primary";
+  const ink = tone === "danger" ? "*:outline-destructive" : "*:outline-primary";
   return (
     <div
       data-drop-key={key}
       data-drop-zone={takes ? "" : undefined}
       title={refused ?? undefined}
       data-drop-why={refused ?? undefined}
-      className={cx(rounded, takes && cx("outline-2 outline-offset-2", ink), takes && (over > 0 || liftedOver ? "bg-accent outline-solid" : "outline-dashed"), className)}
+      className={cx(rounded, takes && cx("*:outline-2 *:-outline-offset-2", ink), takes && (over > 0 || liftedOver ? "*:bg-accent *:outline-solid" : "*:outline-dashed"), className)}
       {...handlers}
     >
       {children}

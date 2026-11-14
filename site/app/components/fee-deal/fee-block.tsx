@@ -22,6 +22,7 @@ import { FeeCases, RestPart, RowStanding } from "./fee-cases";
 import { OpenParts, type PartGrip } from "./open-case";
 import { EditHere } from "./edit-here";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
+import type { Note } from "../../lib/fee-deal/core";
 import { type PendingHands } from "./part-edit";
 import { UnreadWords, feeColour, feeName } from "./words";
 
@@ -161,10 +162,11 @@ export function FeeBlockView({
       </>
     );
   const remove = isOpen ? { label: copy.panel.remove, onRemove: () => onRemoveFee(fee.id) } : undefined;
-  // a part of the open case's first price lifts onto another case or fee, or into the bin (its row's content: lifted.ts)
+  // a part of the open case's first price lifts onto another case or fee, or into the bin (its row's content, a note alone: lifted.ts)
   const partGrip: PartGrip = (part, side, k) => {
     if (side !== "buy" || k !== 0) return null;
-    const l: Lifted = { k: "part", fee: fee.id, case: open.case, row: ROW_OF[part] };
+    const row = ROW_OF[part];
+    const l: Lifted = { k: "part", fee: fee.id, case: open.case, row, ...(row === "notes" ? { note: part as Note } : {}) };
     const off = lift.binTakes(l);
     return <Grip item={liftId(l)} label={`${copy.cases.lifted.grip.part}${copy.cases.rowHeads[l.row] ?? ""}`} actions={off ? [{ label: copy.cases.lifted.menu.remove, danger: true, onPick: () => lift.onBin(l) }] : []} {...(off ? { onRemove: () => lift.onBin(l) } : {})} />;
   };

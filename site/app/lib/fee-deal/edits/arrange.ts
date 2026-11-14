@@ -22,25 +22,29 @@ function moved<T>(list: readonly T[], from: number, to: number): T[] {
   return out;
 }
 
-/** A fee whose case `caseId` stands at place `to` among its cases: a table's column moved. A range's steps keep their order. */
-export function moveCase(fee: Fee, caseId: string, to: number): Fee {
+/**
+ * A fee whose case `caseId` stands where case `at` stands on the page now (`byRank`), the cases between them moving one place toward where
+ * it was: a table's column moved. A range's steps keep their order.
+ */
+export function moveCase(fee: Fee, caseId: string, at: string): Fee {
   if (!hasCases(fee) || fee.by.length !== 1 || isRange(fee.by[0]!)) return fee;
   const shown = byRank(fee.cases).map((c) => c.id);
-  const from = shown.indexOf(caseId);
-  if (from < 0 || from === to) return fee;
+  const from = shown.indexOf(caseId), to = shown.indexOf(at);
+  if (from < 0 || to < 0 || from === to) return fee;
   return ranked(fee, moved(shown, from, to));
 }
 
 /**
- * A fee whose value `key` (`valueKey`) of thing `t` stands at place `to` among the thing's values: a grid's row or column moved. The cases
+ * A fee whose value `key` (`valueKey`) of thing `t` stands where its value `at` stands on the page now (`valuesOf`), the values between
+ * them moving one place toward where it was: a grid's row or column moved. The cases
  * are put in order by each thing's values in turn (the first thing's first), the moved thing's in its new order, so every other thing's
  * values keep theirs where each row names every column. A range's values keep their order (they ascend).
  */
-export function moveValue(fee: Fee, t: number, key: string, to: number): Fee {
+export function moveValue(fee: Fee, t: number, key: string, at: string): Fee {
   if (!hasCases(fee) || !fee.by[t] || isRange(fee.by[t]!)) return fee;
   const orders = fee.by.map((_, j) => valuesOf(fee, j));
-  const from = orders[t]!.indexOf(key);
-  if (from < 0 || from === to) return fee;
+  const from = orders[t]!.indexOf(key), to = orders[t]!.indexOf(at);
+  if (from < 0 || to < 0 || from === to) return fee;
   orders[t] = moved(orders[t]!, from, to);
   const place = (c: Case) => fee.by.map((_, j) => orders[j]!.indexOf(valueKey(c.when[j]!)));
   const shown = byRank(fee.cases).map((c, i) => ({ c, i, r: place(c) })).sort((a, b) => {

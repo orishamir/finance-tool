@@ -1,9 +1,10 @@
 // A fee's cases laid out by the fee's shape (design-system 11, "Cases and parts"; the layout is lib/fee-deal/layout.ts): under the
 // condition's head, a table for a fee that changes by one thing (its cases as columns, its parts as rows, a range's steps ascending as a
-// ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it), the parts said once
-// for every case on a line above them, and beside the heads a small dashed pill that adds a case, a step, a row or a column: at the end of
-// the column heads, and under the row heads. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop zone, and each
-// cell a knob on its edges that stretches it over its neighbours; a cell covering its whole row says so under its parts. Narrower than a
+// ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
+// cells a cell for each part its cells hold alike), and beside the heads a small dashed pill that adds a case, a step, a row or a column:
+// at the end of the column heads, and under the row heads. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop
+// zone, and each cell a knob on its edges that stretches it over its neighbours; a cell covering its whole row says so under its parts. A
+// part every case holds alike is one cell over every column, not a line of its own. Narrower than a
 // table needs, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table squeezed anyway scrolls inside
 // itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
 // table, its column or cell outlined in the action colour.
@@ -76,8 +77,11 @@ function useCellKeys() {
     }
     if (moved) e.preventDefault();
   };
-  /** What a cell spreads: its role and place, its names (its row's head, its column's, its own words), and the Tab order's one stop. */
-  const cellProps = (row: number, from: number, span: number, first: boolean, rows = 1) => {
+  /**
+   * What a cell spreads: its role and place (`row`, the line it stands on, and the lines it spans), its names (its row's head, `head` where
+   * the row has more lines than one, its column's, its own words), and the Tab order's one stop.
+   */
+  const cellProps = (row: number, from: number, span: number, first: boolean, rows = 1, head = row) => {
     const key = `${row}:${from}`;
     return {
       role: "gridcell",
@@ -86,7 +90,7 @@ function useCellKeys() {
       "data-from": from,
       "data-span": span,
       tabIndex: (active === null ? first : active === key) ? 0 : -1,
-      "aria-labelledby": `${id}-r${row} ${id}-c${from} ${id}-x${key}`,
+      "aria-labelledby": `${id}-r${head} ${id}-c${from} ${id}-x${key}`,
       onFocus: (e: { target: EventTarget; currentTarget: EventTarget }) => e.target === e.currentTarget && setActive(key),
     };
   };
@@ -113,7 +117,7 @@ function cellEvents(el: HTMLElement | null, hands: { onOpen?: () => void; onRemo
   };
 }
 
-/** A part said once for many cases: its lead ("בכל המקרים:", "בכל המקרים בשקלים:") and the parts, in a quiet line above the cases. */
+/** Read as rows, the parts one cell holds for every case, said once: its lead (the thing's any-words, "בכל מסלול:") and the parts, in a quiet line above the rows. */
 export function SharedLine({ lead, children }: { lead: ReactNode; children: ReactNode }) {
   return (
     <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-sm">
@@ -164,7 +168,7 @@ export function AddSlot({ add, shape, className }: { add: AddSpec; shape: "row" 
  */
 function OpenHead({ label, onOpen, open, range, grip, children }: { label: string; onOpen: () => void; open?: boolean; range?: boolean; grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("group relative flex min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN)}>
+    <div data-case-head="" data-liftable="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN)}>
       <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {grip}
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
@@ -250,7 +254,7 @@ export function CaseTable({ columns, rows, add, ladder, foot, label }: { columns
             );
           })}
           {add && (
-            <div className="flex items-end pb-1" style={{ gridColumn: n + 2, gridRow: 1 }}>
+            <div className="flex items-center" style={{ gridColumn: n + 2, gridRow: 1 }}>
               <AddSlot add={add} shape="pill" />
             </div>
           )}
@@ -298,13 +302,22 @@ export function CaseTable({ columns, rows, add, ladder, foot, label }: { columns
   );
 }
 
-/** A grid's row or column head: its value's words, the parts said once for its cases (`shared`) under them, its grip and its drop zone. */
+/** A grid's row or column head: its value's words, its grip and its drop zone. */
 export interface GridHead {
   id: string;
   head: ReactNode;
-  shared?: ReactNode;
   grip?: ReactNode;
   zone?: (head: ReactNode) => ReactNode;
+}
+
+/** A cell of one part row under a grid's row: the columns it spans, the parts its cases hold alike there, and its tap. */
+export interface PartCellView extends CellExtras {
+  from: number;
+  span: number;
+  content: ReactNode;
+  label?: string;
+  onOpen?: () => void;
+  open?: boolean;
 }
 
 /**
@@ -325,33 +338,38 @@ export interface GridCellView extends CellExtras {
 }
 
 /**
- * A grid's head: its grip, its words and its shared parts; a column's (`end`) at the foot of its row, over a hairline, so the heads stand on
- * one line.
+ * A grid's head, its grip and its words, filling its place so the whole head is what is lifted and dropped on: a row's as tall as its row
+ * and its lines, a column's as wide as its column, at the foot of its row over a hairline so the heads stand on one line; the words in its
+ * middle.
  */
-function HeadWords({ head, shared, end, grip }: { head: ReactNode; shared?: ReactNode; end?: boolean; grip?: ReactNode }) {
+function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("flex min-w-0 flex-col gap-0.5 text-sm", end ? "justify-end border-b border-border pb-1.5" : "justify-center")}>
-      <div className="flex items-center gap-1 font-medium">
+    <div data-case-head="" data-liftable="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md text-center text-sm", end ? "justify-end border-b border-border pb-1.5" : "justify-center")}>
+      <div className="flex items-center justify-center gap-1 font-medium">
         {grip}
         <span className="min-w-0">{head}</span>
       </div>
-      {shared && <div className="text-muted-foreground">{shared}</div>}
     </div>
   );
 }
 
 /**
- * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`),
- * each head with the parts said once for its row or column under it; one cell per case (equal neighbours one cell), a button over the whole
- * cell that opens it, a case on any value across spanning its row; at the end of the column heads the pill that adds a value across
- * (`addColumn`), and under the row heads the pill that adds a value down (`addRow`). `above`: the switch of a third thing. `steps`: the
- * values across are a ladder's steps, whose heads hold a box each, and take the room for it. `foot`: what stands under the grid.
+ * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`);
+ * one cell per case (equal neighbours one cell), a button over the whole cell that opens it, a case on any value across spanning its row;
+ * under a row's cells, its `lines`, one per part row, each a cell of the parts two or more of its cells hold alike over them; at the end of
+ * the column heads the pill that adds a value across (`addColumn`), and under the row heads the pill that adds a value down (`addRow`).
+ * A row's head is as tall as its cells and its lines. `above`: the switch of a third thing. `steps`: the values across are a ladder's
+ * steps, whose heads hold a box each, and take the room for it. `foot`: what stands under the grid.
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[] })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[] })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
   // a row's head wraps past 9 rem, so the values across keep their room
   const template = `minmax(6rem, 9rem) repeat(${n}, minmax(${steps ? "11rem" : "8rem"}, 1fr))${addColumn ? " max-content" : ""}`;
+  // each row stands on its cells' line and its part lines under them: the line it starts on, after the heads' line
+  const height = rows.map((r) => 1 + (r.lines?.length ?? 0));
+  const start = height.reduce<number[]>((acc, _, j) => [...acc, j === 0 ? 0 : acc[j - 1]! + height[j - 1]!], []);
+  const lines = start.at(-1)! + height.at(-1)!;
   return (
     <div className="flex flex-col gap-2">
       {above}
@@ -359,7 +377,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {
-            const head = <HeadWords head={c.head} shared={c.shared} end grip={c.grip} />;
+            const head = <HeadWords head={c.head} end grip={c.grip} />;
             return (
               <div key={c.id} role="columnheader" id={keys.headId(k)} data-col={k} style={{ gridColumn: k + 2, gridRow: 1 }} className="flex *:w-full">
                 {c.zone ? c.zone(head) : head}
@@ -367,26 +385,30 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
             );
           })}
           {addColumn && (
-            <div className="flex items-end pb-1" style={{ gridColumn: n + 2, gridRow: 1 }}>
+            <div className="flex items-center" style={{ gridColumn: n + 2, gridRow: 1 }}>
               <AddSlot add={addColumn} shape="pill" />
             </div>
           )}
         </div>
         {rows.map((r, j) => {
-          const head = <HeadWords head={r.head} shared={r.shared} grip={r.grip} />;
+          const head = <HeadWords head={r.head} grip={r.grip} />;
+          const line = start[j]!;
           return (
             <div key={r.id} role="row" className="contents">
-              <div role="rowheader" id={keys.rowId(j)} data-rowpos={j} style={{ gridColumn: 1, gridRow: j + 2 }} className="flex *:w-full">
+              <div role="rowheader" id={keys.rowId(j)} data-rowpos={j} style={{ gridColumn: 1, gridRow: `${line + 2} / span ${height[j]}` }} className="flex *:w-full">
                 {r.zone ? r.zone(head) : head}
               </div>
               {r.cells.map((cell, i) => {
-                const place = { ...placeOf(cell.from, cell.span, j + 2), ...(cell.down ? { gridRow: `${j + 2} / span ${cell.down}` } : {}) };
-                const cp = keys.cellProps(j, cell.from, cell.span, j === 0 && i === 0, cell.down ?? 1);
+                // a cell down over several rows spans their lines too
+                const last = j + (cell.down ?? 1) - 1;
+                const spanned = start[last]! + height[last]! - line;
+                const place = { ...placeOf(cell.from, cell.span, line + 2), ...(cell.down ? { gridRow: `${line + 2} / span ${spanned}` } : {}) };
+                const cp = keys.cellProps(line, cell.from, cell.span, j === 0 && i === 0, cell.down ? spanned : 1, j);
                 if (cell.empty) {
                   const add = cell.empty;
                   const el = (
-                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: () => x?.querySelector<HTMLElement>("[data-add-slot]")?.click() })} className={cx("h-full rounded-md", CELL_FOCUS)}>
-                      <span id={keys.wordsId(j, cell.from)} className="contents">
+                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: () => x?.querySelector<HTMLElement>("[data-add-slot]")?.click() })} className={cx("h-full rounded-md", CELL_FOCUS, cell.lit && LIT)}>
+                      <span id={keys.wordsId(line, cell.from)} className="contents">
                         <AddSlot add={add} shape="row" className="h-full" />
                       </span>
                     </div>
@@ -402,7 +424,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                     {cell.onOpen && <button type="button" tabIndex={-1} data-pick-card aria-label={cell.label} onClick={cell.onOpen} className="absolute inset-0 w-full rounded-md" />}
                     <div className={cx(CELL, "h-full group-hover:bg-accent", cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
-                      <span id={keys.wordsId(j, cell.from)} className="contents">
+                      <span id={keys.wordsId(line, cell.from)} className="contents">
                         {cell.content}
                         {cell.across && <span className="text-muted-foreground">{cell.across}</span>}
                         {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
@@ -417,11 +439,32 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                   </div>
                 );
               })}
+              {r.lines?.map((pl, L) =>
+                pl.cells.map((cell) => {
+                  const at = line + 1 + L;
+                  const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
+                  const el = (
+                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                      {cell.grip}
+                      <span id={keys.wordsId(at, cell.from)} className="contents">
+                        {cell.content}
+                        {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
+                      </span>
+                      {cell.knobs}
+                    </div>
+                  );
+                  return (
+                    <div key={`${pl.id}:${cell.from}`} style={placeOf(cell.from, cell.span, at + 2)} className="min-w-0 *:h-full">
+                      {cell.zone ? cell.zone(el) : el}
+                    </div>
+                  );
+                }),
+              )}
             </div>
           );
         })}
         {addRow && (
-          <div className="flex" style={{ gridColumn: 1, gridRow: rows.length + 2 }}>
+          <div className="flex" style={{ gridColumn: 1, gridRow: lines + 2 }}>
             <AddSlot add={addRow} shape="pill" />
           </div>
         )}

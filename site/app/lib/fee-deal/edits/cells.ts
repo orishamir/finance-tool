@@ -3,14 +3,15 @@
 // neighbours gives them what it holds, so they hold the same and share one cell (layout.ts, rule 2); stretched back, the cases it leaves keep
 // it as a copy, in spans of their own, so they stand apart until changed. A cell's content moves to another case (or another fee), or is
 // taken away. What a part row holds follows the part registry: each part's key, and the row the part stands in (part-rows.ts).
-import { blankFigure, blankPrice, copiedPrice, copiedPriced, copiedStages, hasCases, pricesOn, sameContent, type Case, type Fee, type Priced, type Span, type Stage } from "../model";
+import { blankFigure, blankPrice, copiedPrice, copiedPriced, copiedStages, hasCases, pricesOn, sameContent, type Case, type Fee, type Priced, type Span, type Stage, type When } from "../model";
 import { capacity } from "../offers/capacity";
 import { byRate } from "../offers/capabilities";
 import { editPrice } from "./stage";
 import { figureOf, setFigure, withFigure } from "./price";
 import type { Figure } from "../offers/figures";
-import type { Price } from "../core";
+import type { Note, Price } from "../core";
 import { WHOLE } from "../layout";
+import { addCaseAt, removeCase } from "./case";
 import { PART_ROWS, ROW_OF, isPartRow, type PartRow } from "../part-rows";
 import { PARTS, PART_IDS, fitted, partsSaid, type PartId } from "../offers/parts";
 import { KEY_FORMS, type PartKey } from "../offers/capabilities";
@@ -137,9 +138,8 @@ function freshSpan(cases: readonly Case[]): string {
 
 /**
  * A fee whose cell `row` of case `fromId` is stretched along thing `along` over cases `over`: each takes what the cell holds (`withCell`)
- * and joins its span, so equal neighbours share one cell. A case that cannot hold it is left as it is. Also what a cell dropped on a
- * neighbour does (the neighbour takes its price, and they merge). `named`: the span must have a name (down a grid's column only a named
- * span merges, layout.ts), so a cell in the default span starts one of its own first.
+ * and joins its span, so equal neighbours share one cell. A case that cannot hold it is left as it is. `named`: the span must have a
+ * name (down a grid's column only a named span merges, layout.ts), so a cell in the default span starts one of its own first.
  */
 export function stretch(fee: Fee, fromId: string, over: readonly string[], row: CellRow, along: number, named = false): Fee {
   if (!hasCases(fee) || !fee.by[along]) return fee;
@@ -163,30 +163,51 @@ export function stretch(fee: Fee, fromId: string, over: readonly string[], row: 
 }
 
 /**
- * Whether stretching cell `row` of case `fromId` over cases `over` takes from any of them something different it held there: the stretch
- * then keeps an undo.
+ * A fee whose grid cell, case `fromId`, is stretched along thing `along` over cases `over` and over places no case holds (`places`, each
+ * by its value of `along`): each place takes a copy of the case with its prices first (`addCaseAt`, as "+ מקרה" there does), then every
+ * one joins the cell's span (`stretch`), so they read as one cell. Stretched back, the place is empty again (`shrinkAway`). `named`: as
+ * `stretch`'s, down a grid's column.
  */
-export function stretchTakes(fee: Fee, fromId: string, over: readonly string[], row: CellRow): boolean {
-  if (!hasCases(fee)) return false;
-  const from = fee.cases.find((c) => c.id === fromId);
-  if (!from) return false;
-  return over.some((id) => {
-    const c = fee.cases.find((x) => x.id === id);
-    if (!c || !cellHolds(c, row)) return false;
-    const x = withCell(fee.kind, from, c, row);
-    return !!x && !sameContent({ stages: x.stages, sale: x.sale }, { stages: c.stages, sale: c.sale });
-  });
+export function stretchOver(fee: Fee, fromId: string, over: readonly string[], places: readonly When[], along: number, named = false): Fee {
+  if (!hasCases(fee) || !fee.cases.some((c) => c.id === fromId)) return fee;
+  let next: Fee = fee;
+  const made: string[] = [];
+  for (const when of places) {
+    const after = addCaseAt(next, fromId, along, when);
+    if (after === next || !hasCases(after)) continue;
+    made.push(after.cases.at(-1)!.id);
+    next = after;
+  }
+  return stretch(next, fromId, [...over, ...made], WHOLE, along, named);
 }
 
 /**
- * A fee whose cell `row` is stretched back along thing `along` off cases `off`: each keeps what it holds, as a copy, in a span of its own,
- * so it stands apart from the cell it left until it is changed.
+ * A fee whose cell `row` is stretched back along thing `along` off cases `off`, where a place left must still hold a price (a table's or a
+ * ladder's price row, `shrinkEmpties`): each keeps what it holds, as a copy, in a span of its own, so it stands apart from the cell it left
+ * until it is changed.
  */
 export function shrink(fee: Fee, off: readonly string[], row: CellRow, along: number): Fee {
   if (!hasCases(fee) || !fee.by[along]) return fee;
   let cases = fee.cases;
   for (const id of off) cases = cases.map((c) => (c.id === id ? inSpan(c, row, along, freshSpan(cases)) : c));
   return { ...fee, cases };
+}
+
+/**
+ * Whether a cell stretched back empties the places it leaves (`shrinkAway`) rather than leaving them a copy (`shrink`): every cell of a
+ * grid (a whole case leaves its place with no case, a part cell takes its part from the cases it leaves), and a table's part row other
+ * than the price, which a case may lack. A table's or a ladder's price stays: a column or a step with no price says nothing.
+ */
+export const shrinkEmpties = (grid: boolean, row: CellRow): boolean => grid || row !== "price";
+
+/**
+ * A fee whose cell `row` is stretched back off cases `off`, taking from each what the stretch gave: a whole case (a grid's) leaves its
+ * place with no case, never the fee's last case; a part row is taken from each (`clearCells`). The mirror of `stretchOver` and `stretch`.
+ */
+export function shrinkAway(fee: Fee, off: readonly string[], row: CellRow): Fee {
+  if (!hasCases(fee)) return fee;
+  if (row !== WHOLE) return clearCells(fee, off, row);
+  return off.reduce<Fee>((x, id) => removeCase(x, id), fee);
 }
 
 /** A fee whose cases `ids` no longer hold what part row `row` holds (`withoutCell`). A case with nothing there is left as it is. */
@@ -238,6 +259,40 @@ export function moveCellTo(from: Fee, fromCase: string | null, to: Fee, toCase: 
   const a = pricesOf(from, fromCase)!, b = pricesOf(to, toCase)!;
   const x = withCell(to.kind, a, b, row)!;
   return { from: copy ? from : withPrices(from, fromCase, withoutCell(a, row, from.kind)), to: withPrices(to, toCase, x) };
+}
+
+/** A first price's notes with `note` put in, at the end (`on`), or taken out; its other parts kept. */
+function notesWith(p: Price, note: Note, on: boolean): Price {
+  const was = (p as { notes?: Note[] }).notes ?? [];
+  const notes = on ? (was.includes(note) ? was : [...was, note]) : was.filter((n) => n !== note);
+  const { notes: _n, ...rest } = p as Price & { notes?: Note[] };
+  return (notes.length ? { ...rest, notes } : rest) as Price;
+}
+
+const withFirst = (x: Priced, f: (p: Price) => Price): Priced => ({ ...x, stages: [{ ...x.stages[0]!, price: f(x.stages[0]!.price) }, ...x.stages.slice(1)] });
+
+/** Whether case `caseId` of `fee` (null: a fee whose price changes by nothing) has note `note` on its first price. */
+export const hasNote = (fee: Fee, caseId: string | null, note: Note): boolean => !!(pricesOf(fee, caseId)?.stages[0]!.price as { notes?: Note[] } | undefined)?.notes?.includes(note);
+
+/** A fee whose case `caseId` (null: a fee whose price changes by nothing) no longer has note `note`, its other notes kept. */
+export function withoutNote(fee: Fee, caseId: string | null, note: Note): Fee {
+  const x = pricesOf(fee, caseId);
+  return x && hasNote(fee, caseId, note) ? withPrices(fee, caseId, withFirst(x, (p) => notesWith(p, note, false))) : fee;
+}
+
+/**
+ * One note lifted alone and dropped on another case, of its fee or another (`to`, `toCase`): added to that case's notes, which it keeps,
+ * and taken from its own (`copy`: kept there too). Null where the target's price cannot hold it, has it already, or it is the same case.
+ */
+export function moveNoteTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, note: Note, copy = false): { from: Fee; to: Fee } | null {
+  const same = from.id === to.id;
+  if ((same && fromCase === toCase) || !hasNote(from, fromCase, note) || hasNote(to, toCase, note)) return null;
+  const target = pricesOf(to, toCase);
+  if (!target || !PARTS[note].holds(to.kind, target.stages[0]!.price)) return null;
+  const left = copy ? from : withoutNote(from, fromCase, note);
+  const base = same ? left : to;
+  const added = withPrices(base, toCase, withFirst(pricesOf(base, toCase)!, (p) => notesWith(p, note, true)));
+  return same ? { from: added, to: added } : { from: left, to: added };
 }
 
 /**

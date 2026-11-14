@@ -3041,6 +3041,14 @@ function DragDemo({ today }: { today: string }) {
       <Toolbox target={sc.target} groups={toolGroups(used).filter((gr) => gr.kind === "price" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
       <FeeBlock dot="bg-fee-trade" name={sc.trade}>
         <ConditionBand things={[{ id: "what", name: sc.things.what }]}>
+          <div className="px-3 pt-1">
+            <SharedLine lead={dealWords.cases.onceLead.replace("{any}", dealWords.cases.any.what!)}>
+              <span>
+                {dealWords.cases.parts.min}
+                {fig(20, "nis_per_trade", today)} ₪ {sc.toAction}
+              </span>
+            </SharedLine>
+          </div>
           {zone(TRADE[0]!, true)}
           {zone(TRADE[1]!, false)}
         </ConditionBand>
@@ -3139,7 +3147,10 @@ function LadderTable({ today }: { today: string }) {
   );
 }
 
-/** The trade fee by what is bought and the channel, as a grid: the shekel minimum said once, a row's maximum on its line, abroad spanning its row, a place no case holds. */
+/**
+ * The trade fee by what is bought and the channel, as a grid: under the first row's cells, its maximum and minimum as part cells over
+ * both channels ("בכל ערוץ"); abroad spanning its row; a place no case holds.
+ */
 function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   const [open, setOpen] = useState<string | null>("ta-d");
   const [track, setTrack] = useState("1");
@@ -3147,12 +3158,6 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   return (
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
       <ConditionHead bare things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />
-      <SharedLine lead={dealWords.cases.shared.in.ILS}>
-        <span>
-          {dealWords.cases.parts.min}
-          {fig(20, "nis_per_trade", today)} ₪ {sc.toAction}
-        </span>
-      </SharedLine>
       <CaseGrid
         above={three && <SegmentedControl fit label={sc.things.track} options={sc.tracks.slice(0, 2).map((t, k) => ({ value: String(k + 1), label: t }))} value={track} onChange={setTrack} />}
         columns={[
@@ -3160,7 +3165,15 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
           { id: "branch", head: sc.channels.branch },
         ]}
         rows={[
-          { id: "ta", head: sc.what.ta, shared: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} ₪ {sc.toAction}</span>, cells: [{ from: 0, span: 1, ...cell("ta-d", track === "1" ? 0.5 : 0.45) }, { from: 1, span: 1, ...cell("ta-b", 0.55) }] },
+          {
+            id: "ta",
+            head: sc.what.ta,
+            cells: [{ from: 0, span: 1, ...cell("ta-d", track === "1" ? 0.5 : 0.45) }, { from: 1, span: 1, ...cell("ta-b", 0.55) }],
+            lines: [
+              { id: "min", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.min}{fig(20, "nis_per_trade", today)} ₪ {sc.toAction}</span> }] },
+              { id: "max", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} ₪ {sc.toAction}</span> }] },
+            ],
+          },
           { id: "makam", head: sc.what.makam, cells: [{ from: 0, span: 1, ...cell("mk-d", 0.09) }, { from: 1, span: 1, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam} · ${sc.channels.branch}`, onAdd: () => undefined } }] },
           { id: "abroad", head: sc.heldValues.abroad, cells: [{ from: 0, span: 2, ...cell("ab", 0.6), across: sc.anyChannel }] },
         ]}
@@ -3214,13 +3227,14 @@ function ChangeDemo({ today }: { today: string }) {
 }
 
 /**
- * A conversion's grid with what lifts and stretches: a grip on each column's head and each cell, a knob on each cell's edges, the bin while
- * something is lifted, and a figure edited where it is read. Free up to 10 $, one price above 10 $ and above 100 $ in one cell.
+ * A conversion's grid with what lifts and stretches: a grip on each column's head and each cell, a grab strip along a cell's edge toward a
+ * place no case holds (its knob in the middle), the bin while something is lifted, and a figure edited where it is read. One price above
+ * 10 $ and above 100 $ in one cell, nothing up to 10 $ until it is stretched there.
  */
 function LiftDemo({ today }: { today: string }) {
   const steps = [sc.liftSteps.small, sc.liftSteps.mid, sc.liftSteps.big];
   const [cols, setCols] = useState([0, 1, 2]);
-  // where each row's priced cell starts: at the second step, or stretched over the first
+  // where each row's priced cell starts: at the second step, its first a place no case holds, or stretched over that place
   const [starts, setStarts] = useState([1, 1]);
   const [reach, setReach] = useState<{ row: number; from: number } | null>(null);
   const [rate, setRate] = useState(0.0875);
@@ -3262,7 +3276,7 @@ function LiftDemo({ today }: { today: string }) {
           return {
             id: head,
             head,
-            cells: from === 0 ? [pricedCell] : [{ from: 0, span: from, label: sc.open(head), content: <span>{dealWords.price.free}</span>, grip: <Grip item={`kit:cell:${j}:0`} label={lw.grip.cell} /> }, pricedCell],
+            cells: [...Array.from({ length: from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from })), pricedCell],
           };
         })}
         addColumn={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}
