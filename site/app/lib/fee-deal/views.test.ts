@@ -488,16 +488,16 @@ describe("a fee the law bans at a bank (BRK-17, MF-71)", () => {
     expect(d.provider).toBe("bank");
     const r = read(d);
     const custody = d.fees.find((f) => f.kind === "custody")!;
-    expect(r.banned).toEqual([{ fee: custody.id, rules: ["BRK-17", "BANK-18", "MF-71"] }]);
+    expect(r.banned).toEqual([{ fee: custody.id, rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] }]);
     expect(r.unmatched).not.toContain(custody.id);
     expect(r.fees.some((f) => f.kind === "custody")).toBe(false);
     expect(r.fees.some((f) => f.kind === "trade")).toBe(true);
     const row = builder(r).rows.find((x) => x.fee === custody.id)!;
-    expect(row.banned).toEqual(["BRK-17", "BANK-18", "MF-71"]);
+    expect(row.banned).toEqual({ rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] });
     expect(row.priced).toBe(false);
     expect(glance(r).banned.map((f) => f.fee)).toEqual([custody.id]);
     const law = readingOf(r, data.fx).law.find((x) => x.fee === custody.id)!;
-    expect(law.cap).toEqual({ state: "banned", ruleIds: ["BRK-17", "BANK-18", "MF-71"] });
+    expect(law.cap).toEqual({ state: "banned", ban: { rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] } });
     expect(law.prices).toEqual([]);
   });
   it("bans a typed price too, a bank's trade on money-market units (MF-71), and nothing at a non-bank or for another pick", () => {
@@ -512,7 +512,14 @@ describe("a fee the law bans at a bank (BRK-17, MF-71)", () => {
     expect(read(at("bank", "tase", fees)).banned).toEqual([]);
     // a makam deal at a bank: its custody, whatever is picked
     const makam: FeeDeal = { ...newDeal("makam"), id: "deal-m", provider: "bank", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: held(0.1) }] }] };
-    expect(read(makam).banned).toEqual([{ fee: "fee-c", rules: ["BRK-17", "BANK-18"] }]);
+    expect(read(makam).banned).toEqual([{ fee: "fee-c", rules: ["BRK-17", "BANK-18", "BANK-51"] }]);
+    // the trade's ban is the site's reading of the rules (MF-71), and the distribution fee may still be charged; custody's is the rules' words
+    const mm = read(at("bank", "moneyMarket", fees)).banned;
+    expect(mm.find((b) => b.fee === "fee-t")).toEqual({ fee: "fee-t", rules: ["MF-71", "BRK-16", "BANK-51"], reading: true, distribution: true });
+    expect(mm.find((b) => b.fee === "fee-c")).toEqual({ fee: "fee-c", rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] });
+    // a money-market fund's own deal at a bank: custody by the rules' words, its trade as the site's reading
+    const fund: FeeDeal = { ...newDeal("money-market-fund-daily"), id: "deal-f", provider: "bank", fees };
+    expect(read(fund).banned.map((b) => [b.fee, !!b.reading])).toEqual([["fee-c", false], ["fee-t", true]]);
   });
 });
 

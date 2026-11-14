@@ -445,9 +445,9 @@ function lawOf(r: DealRead): LawRow[] {
     const now = judged[0];
     return [{ ...refOf(fee, r.today), cap, prices, ...(now ? { now: now.standing } : {}) }];
   }).concat(
-    r.banned.map(({ fee: id, rules }) => {
+    r.banned.map(({ fee: id, ...ban }) => {
       const f = r.deal.fees.find((x) => x.id === id)!;
-      return { fee: id, kind: f.kind, ...(f.name ? { name: f.name } : {}), cap: { state: "banned", ruleIds: rules }, prices: [] };
+      return { fee: id, kind: f.kind, ...(f.name ? { name: f.name } : {}), cap: { state: "banned", ban }, prices: [] };
     }),
   );
 }

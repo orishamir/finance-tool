@@ -112,10 +112,13 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   );
 }
 
-/** A left line as the reader reads it: its name as the price list prints it, and its channel where the list prices channels apart. */
-const lineText = (l: { line: string; name?: string; channel?: string }): string => {
+/**
+ * A left line as the reader reads it: its name as the price list prints it, its channel where the list prices channels apart, and the
+ * record's own words where the reason quotes them.
+ */
+const lineText = (l: { line: string; name?: string; channel?: string; quote?: string }): string => {
   const channel = l.channel ? copy.cases.values.channel[l.channel] : undefined;
-  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}`;
+  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}${l.quote ? `${copy.cases.sep}${gershayim(l.quote)}` : ""}`;
 };
 
 /**

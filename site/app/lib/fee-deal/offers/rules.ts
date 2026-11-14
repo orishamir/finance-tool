@@ -23,12 +23,13 @@ export interface Selector {
  * What a row does to the offer: `only` keeps the forms, parts and things to change by it names (of each list it names) and drops the
  * rest; `deny` drops those it names; `ban` takes nothing from the offer, and says the fee is banned by law where the deal's provider is
  * of the kind it names and, where it names values, the deal is read for one of them as what is bought or held (F-114's pick): the fee is
- * then read as nothing charged, and the reading says why.
+ * then read as nothing charged, and the reading says why: as the site's reading where the rules ban it only read together (`reading`), and
+ * with the distribution fee a bank may still charge on the units where the rules allow one (`distribution`, MF-71).
  */
 export type Verdict =
   | { kind: "only"; forms?: readonly FormId[]; parts?: readonly RulePart[]; conditions?: readonly ByKind[] }
   | { kind: "deny"; forms?: readonly FormId[]; parts?: readonly RulePart[]; conditions?: readonly ByKind[] }
-  | { kind: "ban"; provider: ProviderKind; values?: readonly string[] };
+  | { kind: "ban"; provider: ProviderKind; values?: readonly string[]; reading?: true; distribution?: true };
 
 export interface RuleRow {
   id: string;
@@ -75,7 +76,8 @@ export const RULES: readonly RuleRow[] = [
   { id: "ira-account-fee", when: { products: selfDirected, fees: ["current_account"] }, verdict: NONE, cite: ["IRA-16"] },
 
   // ---- the provident family's management fees, from deposits and from the balance
-  // a rate alone, with no bound in money, discounted only for a period, with nothing on top, no refund and no order
+  // a rate, discounted only for a period, with nothing on top, no refund and no order; on money deposited before 2008 a fund may charge a
+  // monthly sum of up to NIS 6, indexed, where higher (PEN-22), a floor the page does not offer, since a balance fee's price holds no minimum
   {
     id: "provident-management-rate",
     when: { products: providentFamily, fees: ["deposit", "balance"] },
@@ -141,11 +143,13 @@ export const RULES: readonly RuleRow[] = [
   { id: "bond-trade", when: { products: is("government-bond"), fees: ["trade"] }, verdict: { kind: "only", forms: ["action"], parts: ["third", "flat", "until", "min", "max", "cap", "unfilled", "partial"], conditions: ["channel", "actionSize", "portfolioSize", "count", "own"] }, cite: ["BRK-64"], records: true },
   { id: "makam-trade", when: { products: is("makam"), fees: ["trade"] }, verdict: { kind: "only", forms: ["action"], parts: ["flat", "min", "max", "cap", "unfilled", "partial", "sale"], conditions: ["channel", "actionSize"] }, cite: ["BANK-18", "BRK-64"], records: true },
 
-  // ---- fees the law bans at a bank
+  // ---- fees the law bans at a bank; a new bank, for five years from its licence, is outside these rules (BANK-51), which each ban says
   // a bank may not charge custody on makam or on money-market units
-  { id: "bank-custody-units", when: { products: is("brokerage-account"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank", values: ["makam", "moneyMarket"] }, cite: ["BRK-17", "BANK-18", "MF-71"] },
-  { id: "bank-custody-makam", when: { products: is("makam"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-18"] },
-  // nor buy, sell or redeem money-market units on a line of its tariff: their only charge there is the distribution fee
-  { id: "bank-trade-money-market", when: { products: is("brokerage-account"), fees: ["trade"] }, verdict: { kind: "ban", provider: "bank", values: ["moneyMarket"] }, cite: ["MF-71", "BRK-16"] },
-  { id: "bank-money-market-deal", when: { products: MONEY_MARKET, fees: ["trade", "custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["MF-71", "BRK-17"] },
+  { id: "bank-custody-units", when: { products: is("brokerage-account"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank", values: ["makam", "moneyMarket"] }, cite: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] },
+  { id: "bank-custody-makam", when: { products: is("makam"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-18", "BANK-51"] },
+  { id: "bank-custody-money-market-deal", when: { products: MONEY_MARKET, fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "MF-71", "BANK-51"] },
+  // nor buy, sell or redeem money-market units on a line of its tariff, in the site's reading of the fee rules with the distribution fee
+  // regulations (MF-71): their only charge there is the distribution fee, up to 0.1% a year where the fund's manager has no agreement with it
+  { id: "bank-trade-money-market", when: { products: is("brokerage-account"), fees: ["trade"] }, verdict: { kind: "ban", provider: "bank", values: ["moneyMarket"], reading: true, distribution: true }, cite: ["MF-71", "BRK-16", "BANK-51"] },
+  { id: "bank-trade-money-market-deal", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "ban", provider: "bank", reading: true, distribution: true }, cite: ["MF-71", "BRK-16", "BANK-51"] },
 ];

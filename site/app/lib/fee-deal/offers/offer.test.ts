@@ -133,7 +133,7 @@ describe("a ban the law sets", () => {
   it("binds a bank, on custody of makam or money-market units and on trading money-market units, and takes nothing from the offer", () => {
     const account = kind("brokerage-account");
     const makam = [{ by: "what", is: "makam" }];
-    expect(banFor(account, "custody", "bank", makam)?.cite).toEqual(["BRK-17", "BANK-18", "MF-71"]);
+    expect(banFor(account, "custody", "bank", makam)?.cite).toEqual(["BRK-17", "BANK-18", "MF-71", "BANK-51"]);
     expect(banFor(account, "custody", "non-bank", makam)).toBeNull();
     expect(banFor(account, "custody", undefined, makam)).toBeNull();
     expect(banFor(account, "custody", "bank", [])).toBeNull();

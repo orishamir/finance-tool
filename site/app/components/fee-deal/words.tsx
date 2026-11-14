@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/deal-read";
+import type { BanSaid, FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -247,13 +247,17 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
 }
 
 /**
- * That the law bans a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: what a fee's card, its line in
- * the glance and the law card say in place of "no price".
+ * That a bank may not charge a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: as the rules' words,
+ * or as the site's reading of them (`reading`); that a new bank is outside those rules for its first five years (BANK-51, among each ban's rules); and, where the
+ * rules leave one, the distribution fee a bank may still charge on the units (MF-71). What a fee's card, its line in the glance and the law
+ * card say in place of "no price".
  */
-export function BannedWords({ rules, fee }: { rules: readonly string[]; fee?: string }) {
+export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
+  const w = copy.cases.ban;
   return (
     <>
-      {copy.cases.banned} <RulesChip ids={rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
+      {ban.reading ? w.reading : w.law} {w.newBank}
+      {ban.distribution && <> {w.distribution}</>} <RulesChip ids={ban.rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
     </>
   );
 }
@@ -269,7 +273,7 @@ export function CapRules({ cap, fee }: { cap: CapLine; fee: string }) {
   if (cap.state === "banned")
     return (
       <p className="text-xs text-muted-foreground">
-        <BannedWords rules={cap.ruleIds} fee={fee} />
+        <BannedWords ban={cap.ban} fee={fee} />
       </p>
     );
   return (
