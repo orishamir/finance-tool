@@ -26,6 +26,18 @@ export function useCarried(): string | null {
 /** What a chip that can be carried spreads on its element: nothing where the pointer is coarse or `item` is null (a chip that can't be). */
 export type DragSourceProps = { draggable?: true; onDragStart?: (e: DragEvent<HTMLElement>) => void; onDragEnd?: () => void };
 
+/**
+ * The type a carried chip's id travels under: the site's own, never a text type, so a text field it is dropped on (or another program)
+ * takes nothing from it.
+ */
+export const CHIP_TYPE = "application/x-mekor-chip";
+
+/** Puts a carried chip's id on a drag's data, under `CHIP_TYPE` alone. */
+export function putChip(data: Pick<DataTransfer, "setData" | "effectAllowed">, item: string): void {
+  data.setData(CHIP_TYPE, item);
+  data.effectAllowed = "copy";
+}
+
 /** Makes a chip carriable as `item` where the pointer is fine; null leaves it a tap alone. */
 export function useDragSource(item: string | null): DragSourceProps {
   const fine = useMedia("(pointer: fine)");
@@ -33,8 +45,7 @@ export function useDragSource(item: string | null): DragSourceProps {
   return {
     draggable: true,
     onDragStart: (e) => {
-      e.dataTransfer.setData("text/plain", item);
-      e.dataTransfer.effectAllowed = "copy";
+      putChip(e.dataTransfer, item);
       carry(item);
     },
     onDragEnd: () => carry(null),
