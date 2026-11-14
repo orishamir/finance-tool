@@ -266,7 +266,7 @@ export function FeeCases({
         <ConditionHead bare {...head} />
         {sharedLines(g.shared)}
         <CaseGrid
-          above={g.switch && <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} onChange={setSwitchTo} />}
+          above={g.switch && <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} mine={(h) => byCase.get(h.cases[0]!)!.mine} onChange={setSwitchTo} />}
           columns={g.columns.map((col) => ({ id: col.key, head: headOfValue(col, 1), ...(col.shared.length ? { shared: <Joined parts={saidParts(col.shared)} /> } : {}) }))}
           rows={g.rows.map((row) => ({
             id: row.key,
@@ -308,7 +308,7 @@ export function FeeCases({
       <ConditionBand {...head}>
         {g.switch && (
           <div className="px-3 pt-1">
-            <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} onChange={setSwitchTo} />
+            <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} mine={(h) => byCase.get(h.cases[0]!)!.mine} onChange={setSwitchTo} />
           </div>
         )}
         {g.shared.length > 0 && <div className="px-3 pt-1">{sharedLines(g.shared)}</div>}
@@ -361,9 +361,9 @@ export function FeeCases({
   );
 }
 
-/** The switch of a fee's third thing, above its grid: its values, the one shown pressed. */
-function ThingSwitch({ fee, values, chosen, words, onChange }: { fee: CasesFee; values: Head[]; chosen: string; words: (h: Head) => WhenWords; onChange: (key: string) => void }) {
-  return <SegmentedControl fit label={`${copy.cases.switchLabel} ${thingName(fee.kind, fee.by[2]!)}`} options={values.map((v) => ({ value: v.key, label: whenText(words(v)) }))} value={chosen} onChange={onChange} />;
+/** The switch of a fee's third thing, above its grid: its values, the one shown pressed, the person's own track saying "שלכם". */
+function ThingSwitch({ fee, values, chosen, words, mine, onChange }: { fee: CasesFee; values: Head[]; chosen: string; words: (h: Head) => WhenWords; mine: (h: Head) => boolean; onChange: (key: string) => void }) {
+  return <SegmentedControl fit label={`${copy.cases.switchLabel} ${thingName(fee.kind, fee.by[2]!)}`} options={values.map((v) => ({ value: v.key, label: `${whenText(words(v))}${mine(v) ? `${sep}${dealCases.mine}` : ""}` }))} value={chosen} onChange={onChange} />;
 }
 
 /**
