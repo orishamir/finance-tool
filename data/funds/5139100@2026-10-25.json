@@ -113,7 +113,7 @@
         "ETF-10"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. For 2025 the report prints the fund's price return 2.93% (standard deviation 18.83) against the tracking asset (S&P 500 NTR 100%, דולר ארה\"ב 100%) 2.61% (standard deviation 20.57); for 12.09.2024 to 31.12.2024: 2.88% against 2.7%. The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+      "notes": "Not printed as one number. For 2025 the report prints the fund's price return 2.93% (standard deviation 18.83) against the tracking asset (S&P 500 NTR 100%, דולר ארה\"ב 100%) 2.61% (standard deviation 20.57); for 12.09.2024 to 31.12.2024: 2.88% against 2.7%. The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
       "value": null,

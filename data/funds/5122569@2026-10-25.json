@@ -113,7 +113,7 @@
         "ETF-10"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 4.68% against 4.96% ('מדד MSCI WORLD שקלי'); 2024 21.18% against 21.37%; 2023 28.01% against 27.46%; 2022 -7.81% against -7.82%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=6&inav=0705 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 4.68% against 4.96% ('מדד MSCI WORLD שקלי'); 2024 21.18% against 21.37%; 2023 28.01% against 27.46%; 2022 -7.81% against -7.82%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=6&inav=0705 for it. That page (Funds Center by Guideline, run for the managers) publishes it; the figure is not collected."
     },
     "median_spread": {
       "value": null,
