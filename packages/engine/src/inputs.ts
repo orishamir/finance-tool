@@ -7,6 +7,7 @@ import type { z } from "zod";
 import type { BondInput } from "./ledgers/bond.ts";
 import type { Profile } from "./ledgers/common.ts";
 import type { DepositInput } from "./ledgers/deposit.ts";
+import type { RateBasis } from "./formulas/holding-tax.ts";
 import type { MakamInput } from "./ledgers/makam.ts";
 import type { PensionInput } from "./ledgers/pension.ts";
 import type { ProvidentInput } from "./ledgers/provident.ts";
@@ -24,9 +25,9 @@ const p05Units = {
   horizon_years: "years",
   "A-01": "pct_per_year",
   "A-02": "pct_per_year",
-  cash_rate: "pct_per_year",
+  cash_rate: ["pct_per_year", "pct_per_year_effective"],
   annual_income: "nis",
-} as const satisfies Record<string, ValueObject["unit"]>;
+} as const satisfies Record<string, ValueObject["unit"] | readonly ValueObject["unit"][]>;
 
 export type P05Input = keyof typeof p05Units;
 
@@ -210,7 +211,9 @@ export function runInputs(
     }
     case "deposit": {
       const kind = depositKind[w.id as keyof typeof depositKind];
-      return { run: "runDeposit", input: { goal, market: { inflation }, deposit: { kind, rate: cashRate, ...t.deposit! }, profile } };
+      // the cash rate's unit says how it is quoted: a bank's own rate is nominal (BANK-50), the Bank of Israel's averages effective (BANK-22)
+      const rateBasis = p05.cash_rate_basis;
+      return { run: "runDeposit", input: { goal, market: { inflation }, deposit: { kind, rate: cashRate, ...(rateBasis ? { rateBasis } : {}), ...t.deposit! }, profile } };
     }
     case "securities": {
       // F-23 G-30: which series a monthly deposit into a renewable fund buys is not set.
@@ -298,7 +301,7 @@ function checkTerms(id: ProductId, family: Family, t: InstrumentTerms) {
 }
 
 /** P-05's seven inputs (the seventh optional) as numbers in their units, each replaced by the person's entered value when there is one. */
-function scenario(parameters: readonly unknown[], entered: Partial<Record<string, ValueObject>>): Record<Exclude<P05Input, "annual_income">, number> & { annual_income?: number } {
+function scenario(parameters: readonly unknown[], entered: Partial<Record<string, ValueObject>>): Record<Exclude<P05Input, "annual_income">, number> & { annual_income?: number; cash_rate_basis?: RateBasis } {
   const found = parameters.filter((p) => (p as { method_id?: unknown })?.method_id === "P-05");
   if (found.length !== 1) throw new RecordInputError(`data/parameters/ holds ${found.length} records for P-05; the run needs exactly one`);
   const p = parse(parameterRecord, found[0], "P-05");
@@ -313,7 +316,7 @@ function scenario(parameters: readonly unknown[], entered: Partial<Record<string
     if (!(key in p05Units)) throw new RecordInputError(`entered ${key} has no P-05 counterpart to replace`);
   }
 
-  const out = {} as Record<P05Input, number>;
+  const out = {} as Record<P05Input, number> & { cash_rate_basis?: RateBasis };
   for (const key of keys) {
     const own = entered[key];
     const where = own ? `entered ${key}` : `P-05 inputs.${key}`;
@@ -322,9 +325,11 @@ function scenario(parameters: readonly unknown[], entered: Partial<Record<string
     if (raw === undefined) throw new RecordInputError(`${where} is missing`);
     const v = parse(valueObject, raw, where);
     if (own && v.state !== "entered") throw new RecordInputError(`${where}: a value the person entered has state "entered", not "${v.state}"`);
-    if (v.unit !== p05Units[key]) throw new RecordInputError(`${where}: unit is ${v.unit}, expected ${p05Units[key]}`);
+    const units: readonly string[] = typeof p05Units[key] === "string" ? [p05Units[key] as string] : (p05Units[key] as readonly string[]);
+    if (!units.includes(v.unit)) throw new RecordInputError(`${where}: unit is ${v.unit}, expected ${units.join(" or ")}`);
     if (typeof v.value !== "number" || !Number.isFinite(v.value)) throw new RecordInputError(`${where}: value ${JSON.stringify(v.value)} is not a number`);
     out[key] = v.value;
+    if (key === "cash_rate" && v.unit === "pct_per_year_effective") out.cash_rate_basis = "effective";
   }
   return out;
 }

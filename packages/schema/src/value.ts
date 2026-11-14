@@ -23,6 +23,11 @@ export const unit = z.enum([
   "gbp",
   "pct",
   "pct_per_year",
+  /**
+   * An annual rate quoted as effective, compounded at each payment, where `pct_per_year` on a bank's rate is nominal (BANK-50): the Bank
+   * of Israel's averages of deposit rates paid (BANK-22; reporting directive 877 s.9).
+   */
+  "pct_per_year_effective",
   "pct_of_deposit",
   "pct_of_trade",
   "pct_of_balance_per_period",

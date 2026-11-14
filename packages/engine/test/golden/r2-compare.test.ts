@@ -509,7 +509,8 @@ describe("S41 idle-cash preset (F-60, F-83)", () => {
         input("ira-provident"),
       ],
       tier2,
-      bankAverage: rate(3.2),
+      // the Bank of Israel's average, a weighted average of effective annual rates (reporting directive 877 s.9)
+      bankAverage: vo(3.2, "pct_per_year_effective", "sourced"),
       ownOffer: rate(3.6, "entered"),
       profile: { ageAtStart: 22 },
     },
@@ -555,6 +556,16 @@ describe("S41 idle-cash preset (F-60, F-83)", () => {
     for (const id of g28) expect(kind(id)).toMatchObject({ kind: "not-evaluated", reasons: [{ code: "idle-cash-not-run", gapIds: ["G-28"] }] });
     for (const t of tier2) expect(kind(t.id)).toMatchObject({ kind: "not-evaluated", reasons: [{ code: "tier-2", gapIds: ["G-24"] }] });
     expect(cov.notRanked).toHaveLength(22);
+  });
+
+  it("runs the bank average as its unit quotes it: an effective average at F-07's month, a bank's nominal rate at r/12", () => {
+    const base = { balance: 80_000, mustStayAvailable: 20_000, inflationPct: 3, parameters, wrappers: [input("current-account", terms.deposit, 0.5), input("bank-deposit", terms.deposit)], tier2: [], restricted: true };
+    const row = (bankAverage: ValueObject) => idleCash({ ...base, bankAverage }, ctx).rows[0]!;
+    const effective = row(vo(3.2, "pct_per_year_effective", "sourced"));
+    // the month at 3.2% effective is 1.032^(1/12) − 1, below the 3.2%/12 the same figure pays read as nominal
+    expect(effective.monthlyCost).toBeCloseTo(x.s41.costs.average, 2);
+    expect(effective.rate.unit).toBe("pct_per_year_effective");
+    expect(row(rate(3.2)).monthlyCost).toBeCloseTo(114.8, 1);
   });
 });
 

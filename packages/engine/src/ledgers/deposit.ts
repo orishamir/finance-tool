@@ -1,6 +1,6 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
-import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, effectiveAnnualOf, lowIncomeDeduction, type InterestCalc } from "../formulas/holding-tax.ts";
-import { closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
+import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, effectiveAnnualOf, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
@@ -12,8 +12,10 @@ export interface DepositInput {
   deposit: {
     /** F-21 deposit (default), F-22 savings plan, or F-26 current-account credit balance. */
     kind?: "deposit" | "savings-plan" | "current-account";
-    /** The bank's annual nominal rate (A-21, A-25 or A-26; BANK-50, BANK-13); for a CPI-linked deposit, the real rate. */
+    /** The bank's annual rate (A-21, A-25 or A-26; BANK-50, BANK-13), nominal unless `rateBasis` says effective; for a CPI-linked deposit, the real rate. */
     rate: number;
+    /** How `rate` is quoted, from its value object's unit (`pct_per_year_effective` is effective); absent, nominal. */
+    rateBasis?: RateBasis;
     /** A-15 term in months; 1 for a current account. */
     termMonths: number;
     /** F-21: the term in days as the record prints them (`term_days`), for a term under a year. */
@@ -113,11 +115,14 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const linked = deposit.linkage === "cpi";
   const isCurrentAccount = deposit.kind === "current-account";
   const tally = new Tally();
-  const facts = { termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
+  const effective = deposit.rateBasis === "effective";
+  const facts = { basis: deposit.rateBasis, termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
   // F-21: a term over a year compounds at a rate only the product's own terms give (BANK-50's m); where the record prints none, the run stops
-  if (!isCurrentAccount && n > 12 && !deposit.interestPaidOut && effectiveAnnualOf(deposit.rate, deposit.interestCalc) === null) throw new NotEvaluatedError("BANK-OQ21");
-  // F-26: the current account's month at the rate its crediting gives, or F-07's convention
-  const accountMonth = currentAccountMonthlyRate(deposit.rate, deposit.interestCalc);
+  if (!isCurrentAccount && !effective && n > 12 && !deposit.interestPaidOut && effectiveAnnualOf(deposit.rate, deposit.interestCalc) === null) throw new NotEvaluatedError("BANK-OQ21");
+  // interest paid out at a rate quoted as effective is not in the method (F-21)
+  if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("BANK-OQ21");
+  // F-26: the current account's month at the rate its crediting gives, or F-07's convention; F-07's month itself at an effective rate
+  const accountMonth = effective ? annualToMonthly(deposit.rate) : currentAccountMonthlyRate(deposit.rate, deposit.interestCalc);
   const termInterest = (principal: number, months: number) => (isCurrentAccount ? currentAccountInterest(principal, Math.pow(1 + accountMonth, months) - 1) : depositInterest(principal, deposit.rate, months, n, facts)!);
 
   // The bank withholds at maturity (TXI-07, TXI-08): 25% of the real interest on a fully linked deposit with

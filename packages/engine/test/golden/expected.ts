@@ -83,7 +83,7 @@ export const r2Expected = {
   },
   s41: {
     amount: 60_000,
-    costs: { average: 114.79, ownOffer: 131.79, makam: 142.07, fund: 129.13 },
+    costs: { average: 112.84, ownOffer: 131.79, makam: 142.07, fund: 129.13 },
     coverage: { considered: 26, baseline: 1, compared: 3, notEligible: 2, notEvaluated: 20 },
   },
   s50: { bankA2: 132_426.4, bankA: 132_353.91, gapPct: 0.05 },
