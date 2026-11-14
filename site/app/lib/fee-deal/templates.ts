@@ -14,6 +14,7 @@ import { trackFees } from "../fee-page-data";
 import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
+import { leftOutOf, type LeftOutView } from "../left-out";
 import { buildPrice, type PriceSpec } from "./offers/build";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
@@ -52,10 +53,28 @@ export type LeftWhy =
    * fund has no trade price in the deal.
    */
   | "bank-funds"
+  /**
+   * A conversion whose price the line gives beside a spread the documents do not limit, recorded with no value (F-13, D65: Excellence's
+   * "אינו כולל מרווח הנקבע בהסכם מול הלקוח"): the price is filled, and the conversion costs that spread on top.
+   */
+  | "spread-on-top"
+  /** A line for redeeming a security when it falls due (band `REDEMPTION_BAND`: makam's at maturity), which no purchase or sale pays (F-63). */
+  | "redemption"
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
   | "distribution-yearly";
 
-/** One house's price list as a template: the fees its whole list fills, and the lines it leaves, with why. */
+/** A line a template leaves out, with why, its name as the price list prints it and its channel where it has one, for the reader. */
+export interface LeftLine {
+  lineId: string;
+  why: LeftWhy;
+  name: string;
+  channel?: string;
+}
+
+/**
+ * One house's price list as a template: the fees its whole list fills, the lines it leaves with why, and what its record says the
+ * documents hold and the price leaves out (`leftOut`, D106: the things that can change what some reader pays, each with its reason).
+ */
 export interface HouseTemplate {
   /** The provider id of the snapshot (`leumi`). */
   id: string;
@@ -64,8 +83,15 @@ export interface HouseTemplate {
   name: string;
   provider: ProviderKind;
   fees: TemplateFee[];
-  left: { lineId: string; why: LeftWhy }[];
+  left: LeftLine[];
+  leftOut: LeftOutView | null;
 }
+
+/** A line's name as the price list prints it: its first name, with its band where the name does not hold it. */
+const lineName = (l: Line): string => {
+  const name = l.names.tariff[0] ?? l.id;
+  return l.band && !name.includes(l.band) ? `${name}, ${l.band}` : name;
+};
 
 const PERIOD_MONTHS: Record<string, Months> = { month: 1, quarter: 3, year: 12 };
 const NIS_UNITS = new Set(["nis", "nis_per_trade", "nis_per_month", "nis_per_transfer"]);
@@ -152,16 +178,25 @@ export const MAX_PER_SECURITY: ReadonlySet<string> = new Set([
   "fibi-custody-foreign",
 ]);
 
+/**
+ * The houses whose list prints a percent maximum beside a minimum with nothing on which wins on a small action, so that the maximum wins
+ * is the site's reading (F-12: Excellence's 2%, BRK-48; Interactive Israel's 2%, BRK-40). A template notes it on those trade prices.
+ */
+export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive-israel"]);
+
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
-export function lineFees(l: Line, own: string, bank = false): Mapped {
+export function lineFees(l: Line, own: string, bank = false, capRead = false): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
   // every price goes through the registries (`buildPrice`), so none is one the fee cannot hold
   const fee = (kind: FeeKindId, spec: PriceSpec): SlimTemplateFee => ({ kind, stages: [{ price: buildPrice(kind, spec) }] });
   switch (l.base) {
     case "trade": {
-      // what the line, or at a bank the fee rules, say of an order not carried out (`unfilledNote`)
+      // what the line, or at a bank the fee rules, say of an order not carried out (`unfilledNote`); and where the house's list does not say
+      // whether its percent maximum wins over its minimum, that the page reads it so (`CAP_READ`, F-12)
       const note = unfilledNote(l, bank);
-      const notes = note ? { notes: [note] } : {};
+      const read = capRead && has(l.cap) && (has(l.min) || !!fixedSum(l)) ? (["capRead"] as const) : [];
+      const all: Note[] = [...(note ? [note] : []), ...read];
+      const notes = all.length ? { notes: all } : {};
       const perAction = (amount: Num, more: Partial<PriceSpec["figures"]> = {}, currency?: BoundCurrency): PriceSpec => ({ form: "perAction", figures: { amount, ...more }, ...(currency && currency !== "ILS" ? { currency } : {}), ...notes });
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
       if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", perAction(num(l.rate)))], left: [] } : { fees: [], left: ["no-value"] };
@@ -179,14 +214,17 @@ export function lineFees(l: Line, own: string, bank = false): Mapped {
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
-      // a conversion filled at nothing whose spread is recorded but not limited says the spread is not counted, so 0% does not read as free
-      const unpriced = l.spread && !has(l.spread) && convertsFree(l);
-      return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? ["spread-unpriced"] : [] };
+      // a spread recorded but not limited is not counted, and says so: on a conversion filled at nothing, so 0% does not read as free; on
+      // one with a price, as a cost on top of it
+      const unpriced = !!l.spread && !has(l.spread);
+      return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? [convertsFree(l) ? "spread-unpriced" : "spread-on-top"] : [] };
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
-      // a zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is; a rate above it needs one
+      // a zero rate prints no period (One Zero's "0 אחוז", IBI's "פטור"): it charges nothing whatever the period is, so it is free rather
+      // than a share of nothing per a period the list never names; a rate above it needs one
       if (!l.period && l.rate.value > 0) return { fees: [], left: ["no-period"] };
+      if (!l.period && !has(l.min)) return { fees: [{ kind: "custody", stages: [{ price: { form: "free" } }] }], left: [] };
       const every = l.period ? PERIOD_MONTHS[l.period]! : 1;
       const bounds = [l.min, l.max].filter(has);
       if (bounds.some((b) => !NIS_UNITS.has(b.unit))) return { fees: [], left: ["bound-currency"] };
@@ -426,7 +464,8 @@ const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "
 export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   const ownName = snap.provider.name_he;
   const bank = memberKindOf(snap.provider.class) === "bank";
-  const left: { lineId: string; why: LeftWhy }[] = [];
+  const left: LeftLine[] = [];
+  const leave = (l: Line, why: LeftWhy) => left.push({ lineId: l.id, why, name: lineName(l), ...(l.channel ? { channel: l.channel } : {}) });
   const fees: TemplateFee[] = [];
   const read = new Set<string>();
   const ownPlaces: OwnPlace[] = [];
@@ -451,20 +490,20 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
     if (base === "fx") {
       const free = lines.find((l) => l.band !== null && !l.conversion_currency && convertsFree(l));
       if (free) {
-        for (const l of lines) if (l !== free && !l.conversion_currency && (l.channel === null || l.channel === free.channel)) left.push({ lineId: l.id, why: "another-line" });
+        for (const l of lines) if (l !== free && !l.conversion_currency && (l.channel === null || l.channel === free.channel)) leave(l, "another-line");
         lines = lines.filter((l) => l === free || !!l.conversion_currency);
       }
     }
     const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf, bank);
     const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
-    for (const l of ambiguous) left.push({ lineId: l.id, why: "ambiguous" });
-    for (const l of unread) left.push({ lineId: l.id, why: "another-line" });
-    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank)]));
+    for (const l of ambiguous) leave(l, "ambiguous");
+    for (const l of unread) leave(l, "another-line");
+    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank, CAP_READ.has(snap.id))]));
     for (const [l, m] of mapped) {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);
-      left.push(...m.left.map((why) => ({ lineId: l.id, why })));
-      if (bankTradeLeavesFunds(l, bank)) left.push({ lineId: l.id, why: "bank-funds" });
+      for (const why of m.left) leave(l, why);
+      if (bankTradeLeavesFunds(l, bank)) leave(l, "bank-funds");
     }
     const first = base === "fx" ? "currency" : base === "custody" || base === "fixed_period" ? "held" : "what";
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));
@@ -476,16 +515,16 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   // every other line is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
-    left.push({ lineId: l.id, why: l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base" });
+    leave(l, l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.band === REDEMPTION_BAND ? "redemption" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base");
   }
-  return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left };
+  return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap) };
 }
 
 /**
  * What a template leaves out of a deal, with why: a line of a house's price list (`line`, its id), or one of a track's two fees (`fee`):
  * one the product may not charge (PF-06, `none-by-rule`), or one the regulator's data gives no figure for (`no-value`).
  */
-export type LeftOut = { line: string; why: LeftWhy } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
+export type LeftOut = { line: string; why: LeftWhy; name?: string; channel?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
 
 /**
  * A regulated track as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its fee on
@@ -560,12 +599,16 @@ export function barredFees(kind: FeeDeal["kind"], data: Pick<FeesData, "tracks" 
     : [];
 }
 
-/** A template as it fills a deal: its name, its fees, what it leaves out with why, and a house's provider kind. */
+/**
+ * A template as it fills a deal: its name, its fees, what it leaves out with why, a house's provider kind, and what a house's record says
+ * its documents hold and the price leaves out (D106).
+ */
 export interface Template {
   name: string;
   fees: TemplateFee[];
   left: LeftOut[];
   provider?: ProviderKind;
+  leftOut?: LeftOutView | null;
 }
 
 /** The template `id` for a deal of `deal`'s kind: a house's whole price list, a track's two fees. Null where the id names no template of the deal's kind. */
@@ -573,7 +616,7 @@ export function templateOf(deal: FeeDeal, id: string, data: Pick<FeesData, "hous
   if (id.startsWith(HOUSE) && deal.kind === "brokerage-account") {
     const h = houseOf(id, data);
     if (!h) return null;
-    return { name: h.name, fees: h.fees, left: h.left.map(({ lineId, why }) => ({ line: lineId, why })), provider: h.provider };
+    return { name: h.name, fees: h.fees, left: h.left.map(({ lineId, ...rest }) => ({ line: lineId, ...rest })), provider: h.provider, leftOut: h.leftOut };
   }
   if (id.startsWith(TRACK)) {
     const t = data.tracks.find((x) => trackId(x) === id);
