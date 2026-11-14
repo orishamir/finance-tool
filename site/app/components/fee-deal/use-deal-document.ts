@@ -8,7 +8,7 @@ import { feeDeal as copy } from "../../copy";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { newDeal, type FeeDeal } from "../../lib/fee-deal/model";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { changeFormKept, deleteDealKept, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { changeFormKept, deleteDealKept, formBack, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { FeesData } from "../../lib/fee-page-data";
 import { dealLabel } from "./bar-end";
@@ -87,6 +87,12 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
    * changed.
    */
   const changeForm = (feeId: string, part: PartId, caseId: string | null, at?: number): boolean => {
+    // a form chosen again right after "חינם" puts the price back as it was, with its parts
+    if (undoing && "dealId" in undoing && formBack(undoing, deal, feeId, part, caseId ?? undefined)) {
+      onUndo();
+      setFocus({ fee: feeId, on: "box" });
+      return true;
+    }
     const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at);
     if (!r) return false;
     if (r.undo) {

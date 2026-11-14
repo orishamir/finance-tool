@@ -360,8 +360,9 @@ describe("the edits that make cases", () => {
       ["c5", [["europe", "world"]]],
     ]);
     expect(noTrack.cases.some((c) => c.mine)).toBe(false);
+    // the first case's price now stands for every case: the list's figures, which it prints for that case alone, become the person's
     const slim = removeBy(noTrack, 0) as SlimFee;
-    expect(slim).toEqual({ id: "fee-trade", kind: "trade", stages: trade().cases[0]!.stages });
+    expect(slim).toEqual({ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: { v: 0.4 }, min: { v: 10 } } }] });
   });
   it("adds, copies, moves and removes cases, never the last", () => {
     const added = addCase(trade()) as CasesFee;
@@ -738,19 +739,19 @@ describe("a provident-family product's management fees", () => {
       { id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-dep")).toEqual([["price", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["price", ["held"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-dep")).toEqual([["price", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "free"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
     // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
     expect(data.kinds.filter(providentFamily).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
-    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
   });
   it("leave an IRA's brokerage fees the parts its annexes print, and its management fee no track: an IRA is a fund of its own (IRA-17)", () => {
     const deal = of("ira-provident", [
       { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-trade")).toEqual([["price", ["share", "perUnit", "perAction", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["more", ["unfilled", "partial"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["price", ["held"]], ["by", ["by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-trade")).toEqual([["price", ["share", "perUnit", "perAction", "free", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["more", ["unfilled", "partial"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "free"]], ["by", ["by:portfolioSize", "by:own"]]]);
     // a brokerage account's custody keeps its bounds and its conditions
     const custody = of("brokerage-account", [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }]);
     expect(ids(custody, "fee-c").map(([g]) => g)).toContain("bound");

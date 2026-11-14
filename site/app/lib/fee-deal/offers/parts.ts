@@ -98,7 +98,7 @@ interface PartSpec {
   figures: readonly Figure[];
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
   ask: Ask;
-  /** The toolbox group it shows in; null where the toolbox does not offer it (free, which a price's bin makes; a note only a template fills). */
+  /** The toolbox group it shows in; null where the toolbox does not offer it (a note only a template fills, a later price). */
   tool: ToolGroupId | null;
   /** Whether the reading states it without computing it (§10.6's stated parts), where the price has it. */
   stated?: true;
@@ -146,7 +146,7 @@ const SPECS = {
   perAction: { kind: "price", form: "perAction", figures: ["amount"], ask: null, tool: "price", ...formEdit("perAction") },
   held: { kind: "price", form: "held", figures: ["rate"], ask: null, tool: "price", ...formEdit("held") },
   sum: { kind: "price", form: "sum", figures: ["amount"], ask: null, tool: "price", ...formEdit("sum") },
-  free: { kind: "price", form: "free", figures: [], ask: null, tool: null, ...formEdit("free") },
+  free: { kind: "price", form: "free", figures: [], ask: null, tool: "price", ...formEdit("free") },
   discount: { kind: "price", field: "discount", figures: ["discount"], ask: null, tool: "price", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
   third: { kind: "price", field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "price", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
   // the month a price changes from (F-110): never a card of the toolbox; the page adds it at the end of the prices, by its month alone, and

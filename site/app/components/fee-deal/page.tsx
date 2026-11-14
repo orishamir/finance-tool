@@ -21,7 +21,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 import type { ProductId } from "@finance-tool/schema";
-import { feeDeal as copy } from "../../copy";
+import { dealCases, feeDeal as copy } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
@@ -38,8 +38,10 @@ import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith } from "../../lib/fee-deal/store";
-import { dataBar, feePriceLists, templateSource } from "../../lib/fee-deal/templates";
-import { fillFeeKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
+import { copyHouseFee, dataBar, feeAlone, feePriceLists, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
+import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
+import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy } from "../../lib/fee-deal/lifted";
+import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useMedia } from "../../lib/hooks";
@@ -56,7 +58,7 @@ import { GlanceCard, READING_ID } from "./glance";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn, applyTool, type ToolHands } from "./toolbox";
-import type { ToolDrop } from "./fee-block";
+import type { LiftHands, ToolDrop } from "./fee-block";
 import { ReadingCards } from "./reading";
 import { useUnitPrice } from "./use-unit-price";
 import { useDealDocument, useOpenedDeal, type AddressDeal } from "./use-deal-document";
@@ -237,6 +239,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);
       if (!fee) return;
+      // a thing to change by dropped on one case's head or cell splits that case alone
+      const thing = cardThing(item);
+      if (thing && at !== null && hasCases(fee)) return oc.ask.onAsk(thing, at);
       const on = at ?? caseId;
       if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
       applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined), on === caseId ? editingK : undefined), {
@@ -246,6 +251,31 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         onPart: onPart(fee),
       });
     },
+  };
+  // a thing lifted by its grip (lifted.ts): dropped on a place, or in a fee's bin, kept for the undo where it took something
+  const liftHands: LiftHands = {
+    takes: (l, on) => liftTakes(deal, l, on),
+    why: (l, on) => liftWhy(deal, l, on),
+    onDrop: (l, on, how) => {
+      const r = liftDrop(deal, l, on, { copy: how.copy });
+      if (r) kept(liftKept(deal, r, chosen));
+    },
+    binTakes: (l) => binTakes(deal, l),
+    onBin: (l) => {
+      const r = liftRemove(deal, l);
+      if (r) kept(liftKept(deal, r, chosen));
+    },
+    binTakesItem: (feeId, it) => {
+      const l = liftedOf(it);
+      return !!l && l.fee === feeId && binTakes(deal, l);
+    },
+    onBinItem: (it) => {
+      const l = liftedOf(it);
+      const r = l && liftRemove(deal, l);
+      if (r) kept(liftKept(deal, r, chosen));
+    },
+    onStretch: (next, words) => kept(liftKept(deal, { deal: updateFee(deal, next.id, () => next), ...(words ? { kept: { feeId: next.id, words } } : {}) }, chosen)),
+    phone,
   };
   const menu = oc.menus.slot;
   const thingOpen = oc.menus.thing;
@@ -294,10 +324,32 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // the fees the deal can still take: in the toolbox's column while no fee is open there, else after the fees (on a computer, while a
   // fee is open, the quiet add line)
   const palette = useMemo(() => paletteItems(builderView, read, kind, saves), [builderView, read, kind, saves]);
-  const adding = panelColumn ? (panelView ? ("line" as const) : null) : { palette };
+  // a fee copied from another house's price list: in place of the deal's fee of its kind (kept for the undo), or beside it; it opens
+  const copyHands = useMemo(() => housesToCopy(deal, data), [deal, data]);
+  const copyFee = copyHands.length
+    ? {
+        houses: copyHands,
+        has: (k: FeeKindId) => deal.fees.some((f) => f.kind === k),
+        // a kind the law caps stands once: the method does not say how two such fees meet one cap (F-113)
+        alone: (k: FeeKindId) => (feeAlone(deal, k, data) ? dealCases.copyFee.capped : null),
+        onCopy: (house: string, k: FeeKindId, how: "beside" | "replace") => {
+          const have = deal.fees.find((f) => f.kind === k);
+          if (how === "replace" && have) {
+            kept(fillFeeKept(deal, have.id, house, data, chosen));
+            doc.setChosen(have.id);
+            return;
+          }
+          const r = copyHouseFee(deal, house, k, "beside", data);
+          if (!r) return;
+          change(r.deal);
+          doc.setChosen(r.feeId);
+        },
+      }
+    : null;
+  const adding = panelColumn ? (panelView ? ("line" as const) : null) : { palette, copy: copyFee };
   const paletteColumn = panelColumn && !panelView && kind && palette.length > 0 ? (
     <Card className="min-[80rem]:sticky min-[80rem]:top-20">
-      <Palette items={palette} onAdd={onAdd} />
+      <Palette items={palette} onAdd={onAdd} copy={copyFee} />
     </Card>
   ) : null;
   // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
@@ -371,8 +423,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onEditPrice: (feeId, caseId, k) => setEditing({ fee: feeId, case: caseId ?? null, k }),
                 pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
+                lift: liftHands,
               }}
-              ask={oc.ask.asking && oc.ask.asking.fee === chosen ? oc.ask.asking.kind : null}
+              ask={oc.ask.asking && oc.ask.asking.fee === chosen ? { kind: oc.ask.asking.kind, ...(oc.ask.asking.split ? { split: oc.ask.asking.split } : {}) } : null}
               adding={adding}
             />
           )

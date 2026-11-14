@@ -67,14 +67,16 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
  * the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box or
  * choice.
  */
-export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
+export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, grip, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; /** A grip (⋮⋮) at its start that lifts it (lift.tsx). */ grip?: ReactNode; children?: ReactNode }) {
   const words = id ? `${id}-words` : undefined;
   return (
     <div
       id={id}
+      data-liftable=""
       {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
       className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", PART_LOOK[kind])}
     >
+      {grip && <span className="flex min-h-target items-center">{grip}</span>}
       <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead kind={kind} mark={mark} lead={lead} />
         {children}

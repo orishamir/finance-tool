@@ -2,7 +2,7 @@
 // it was opened from, what each price list leaves out of a deal of this kind, and what the template the deal was filled from left out.
 import { useMemo, useState } from "react";
 import { newDeal, type FeeDeal } from "../../lib/fee-deal/model";
-import { dealFromTemplate, pickTrack, templateOf, templateOptions, type LeftOut } from "../../lib/fee-deal/templates";
+import { averagesOfFees, dealFromTemplate, leftOfFees, pickTrack, templateOf, templateOptions, type LeftOut } from "../../lib/fee-deal/templates";
 import type { FeesData } from "../../lib/fee-page-data";
 
 /**
@@ -40,7 +40,10 @@ export function useTemplatePicker({ deal, data, today, onTrack, onNew }: { deal:
   // only where it filled the deal's fees: a track set on a deal whose fees it kept left nothing out of them
   const filled = useMemo(() => {
     const t = deal.template && !deal.template.feesKept ? templateOf(deal, deal.template.id, data, today) : null;
-    return t ? { left: t.left, leftOut: t.leftOut ?? null, ...(t.averages ? { averages: t.averages } : {}) } : null;
+    // each fee by its own list: a fee copied from another house brings that house's lines of its kind in place of the template's, and takes the template's averages of its kind away
+    if (!t) return null;
+    const averages = averagesOfFees(deal, t.averages);
+    return { left: leftOfFees(deal, t.left, data), leftOut: t.leftOut ?? null, ...(averages ? { averages } : {}) };
   }, [deal, data, today]);
   return {
     anchor,

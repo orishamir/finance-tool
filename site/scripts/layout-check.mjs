@@ -16,8 +16,12 @@
 //            1425 (below that a table may scroll inside its own card, its first column in place);
 //   quote    an ASCII double quote between two Hebrew letters in a company page's product view (`?product=`), which the build's
 //            hebrew-quotes check cannot see: only the overview is pre-rendered.
+//   keys     on the kit page at 1440, a fee's table or grid (`role=grid`) whose cells the keys do not walk as a spreadsheet's: the left
+//            arrow to the next column in reading order and the right arrow back, Home and End to the row's ends, the down arrow to the
+//            next row, Tab to the next cell; and a cell not named by its row's and its column's heads.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
-// Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages and the kit. Needs a build (npm run build). Exits 1 when a
+// Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
+// page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
 // check fails. What a script cannot judge (balance, what draws the eye, whether a change reads as asked) still needs a look.
 // layout-check-leftovers.json lists what was there when the check came in (2026-11-08), each with why: a listed finding is reported, not
 // failed; a new one fails. A listed one no longer found is said, so the list can shrink.
@@ -54,12 +58,17 @@ const base = server.url.replace(/\/$/, "");
 const browser = await chromium.launch();
 // each check must catch a failure planted on the kit page before its passing on the site counts
 const missed = await selfTest();
+const keyFindings = await keysCheck();
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
 for (const m of missed) console.log(`FAIL  self-test: the ${m} check did not catch the failure planted on /kit`);
 
 let failed = missed.length;
+for (const f of keyFindings) {
+  failed++;
+  console.log(`FAIL  /kit at 1440\n      keys: ${f.where}: ${f.detail}`);
+}
 let sheets = 0;
 let known = 0;
 const used = new Set();
@@ -86,6 +95,74 @@ console.log(
   `\n${failed ? `${failed} failed` : "all passed"}${known ? ` (${known} listed in layout-check-leftovers.json)` : ""}: ${paths.length} pages at ${WIDTHS.join(", ")} px (page width, "?" marks, terms), ${sheets} sheets with a warning opened at ${SHEET_WIDTH} × ${HEIGHT[SHEET_WIDTH]}; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
 );
 process.exit(failed ? 1 : 0);
+
+/**
+ * The keys of every fee's table and grid on the kit page at 1440 (`keys` above), after a grid whose cells take no keys is planted there
+ * (a copy of the first, which React does not drive) and caught. Returns what failed, the planted grid's catch among them as a miss where
+ * it was not caught.
+ */
+async function keysCheck() {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+  const page = await ctx.newPage();
+  await page.goto(base + "/kit", { waitUntil: "networkidle" });
+  await page.evaluate(settled);
+  await page.evaluate(() => {
+    const grid = document.querySelector("[role=grid][data-span-table]");
+    if (!grid) return;
+    const copy = grid.cloneNode(true);
+    copy.id = "planted-keys";
+    for (const el of copy.querySelectorAll("[id]")) el.id = `planted-${el.id}`;
+    document.querySelector("main").append(copy);
+  });
+  const found = [];
+  const grids = page.locator("[role=grid][data-span-table]");
+  const at = () =>
+    page.evaluate(() => {
+      const c = document.activeElement?.closest("[role=gridcell]");
+      return c ? { row: Number(c.dataset.row), from: Number(c.dataset.from) } : null;
+    });
+  for (let i = 0, n = await grids.count(); i < n; i++) {
+    const grid = grids.nth(i);
+    const where = await grid.evaluate((g, k) => g.id || `grid ${k + 1} (${g.closest("[data-demo]")?.getAttribute("data-demo") ?? "kit"})`, i);
+    const fails = [];
+    const named = await grid.evaluate((g) => [...g.querySelectorAll("[role=gridcell]")].every((c) => (c.getAttribute("aria-labelledby") ?? "").split(" ").filter((id) => document.getElementById(id)).length >= 2));
+    if (!named) fails.push("a cell is not named by its row's and its column's heads");
+    const cells = grid.locator("[role=gridcell]");
+    if ((await cells.count()) >= 2) {
+      await cells.first().focus();
+      const start = await at();
+      const rowOf = (r) => grid.evaluate((g, row) => [...g.querySelectorAll(`[role=gridcell][data-row="${row}"]`)].map((c) => Number(c.dataset.from)).sort((a, b) => a - b), r);
+      const row = start ? await rowOf(start.row) : [];
+      const rows = await grid.evaluate((g) => new Set([...g.querySelectorAll("[role=gridcell]")].map((c) => c.dataset.row)).size);
+      if (!start) fails.push("its first cell takes no focus");
+      else if (row.length > 1) {
+        await page.keyboard.press("ArrowLeft");
+        const next = await at();
+        if (!next || next.row !== start.row || next.from <= start.from) fails.push("the left arrow did not go on to the next column");
+        await page.keyboard.press("ArrowRight");
+        if ((await at())?.from !== start.from) fails.push("the right arrow did not go back");
+        await page.keyboard.press("End");
+        if ((await at())?.from !== row.at(-1)) fails.push("End did not go to the row's end");
+        await page.keyboard.press("Home");
+        if ((await at())?.from !== row[0]) fails.push("Home did not go to the row's start");
+        await page.keyboard.press("Tab");
+        const tabbed = await at();
+        if (!tabbed || tabbed.from <= row[0]) fails.push("Tab did not go to the next cell");
+        await page.keyboard.press("Shift+Tab");
+      }
+      if (start && rows > 1) {
+        await cells.first().focus();
+        await page.keyboard.press("ArrowDown");
+        if ((await at())?.row !== start.row + 1) fails.push("the down arrow did not go to the next row");
+      }
+    }
+    if (where === "planted-keys") {
+      if (!fails.length) found.push({ where: "self-test", detail: "the keys check did not catch the grid planted on /kit" });
+    } else for (const detail of fails) found.push({ where, detail });
+  }
+  await ctx.close();
+  return found;
+}
 
 /**
  * Plants one failure of each kind on the kit page at 320 × 568 and runs the check on it: a block 600 px wide, a "?" pushed onto a line of its
@@ -171,7 +248,10 @@ function defaultPages() {
       : [];
   const top = ["/", "/guide", "/indices", "/companies", "/rules", "/parameters", "/deal", "/not-covered", "/tracks", "/deposits", "/transfer", "/documents", "/kit"];
   const companies = under("companies");
-  return [...top.filter((p) => p === "/" || existsSync(join(build, p, "index.html"))), ...under("guide"), ...under("exposure"), ...under("indices"), ...companies, ...companies.flatMap(productViews)];
+  // the fee page pre-renders with no deal: a filled one opens from its link (layout-check-deal.txt, the fee page's demo deal of one bank's
+  // price list, its conversion's grid among its fees)
+  const deal = existsSync(join(here, "layout-check-deal.txt")) ? [readFileSync(join(here, "layout-check-deal.txt"), "utf8").trim()] : [];
+  return [...top.filter((p) => p === "/" || existsSync(join(build, p, "index.html"))), ...deal, ...under("guide"), ...under("exposure"), ...under("indices"), ...companies, ...companies.flatMap(productViews)];
 }
 
 /** A company page shows one product at a time (`?product=`): each product's view, by the links of its pre-rendered side list. */

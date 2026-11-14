@@ -1,7 +1,9 @@
 // The changes the fee page makes to what a fee's price changes by (F-114), each a pure function from a fee to the next: a thing added or
 // taken away, a case made, copied or taken away, a case's values, and a range's tops and steps.
-import { hasCases, isRange, namesPlaces, newCaseId, pickKey, retyped, sameContent, typed, type By, type Case, type CasesFee, type Fee, type OwnPlace, type SlimFee, type When } from "../model";
+import { byRank, copiedPriced, hasCases, isRange, namesPlaces, newCaseId, pickKey, retyped, sameContent, spansWithout, typed, type By, type Case, type CasesFee, type Fee, type OwnPlace, type Priced, type SlimFee, type When } from "../model";
 import { WHAT_VALUES } from "../shapes";
+import { caseFor } from "@finance-tool/engine";
+import { condsOf } from "../cases";
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeUnit, type ValuesOf } from "../offers/conditions";
 
 // ---------------------------------------------------------------- what a fee's price changes by (F-114)
@@ -35,6 +37,15 @@ export function newBy(kind: ByKind, a: ThingAnswers): NewBy | null {
   if (isPlaceKind(kind)) return { kind, values: a.values, ...(a.own.length ? { own: a.own.filter((o) => a.values.includes(o.name)) } : {}) };
   return { kind, values: a.values } as NewBy;
 }
+
+/** A case with its prices replaced (its id, values, mark and spans kept). */
+const withPriced = (c: Case, x: Priced): Case => {
+  const { stages: _s, sale: _sale, ...head } = c;
+  return { ...head, stages: x.stages, ...(x.sale ? { sale: x.sale } : {}) };
+};
+
+/** A case copied to a place the list does not price as it does its own: its figures the person's (`copiedPriced` onto nothing). */
+const asNew = (c: Case): Case => withPriced(c, copiedPriced(c));
 
 /** A case copied with a new id, its track no longer marked as the person's (`mine` names one track, which the copy may not be). */
 const copyOf = (c: Case, when: When[]): Case => {
@@ -133,14 +144,16 @@ export function ownKept(fee: CasesFee, t: number): boolean {
  */
 export function removeBy(fee: Fee, t: number): Fee {
   if (!hasCases(fee) || !fee.by[t]) return fee;
+  // the case kept now stands for the others too: a figure keeps its source only where every one of them held it so (`copiedPriced`)
+  const merged = (g: readonly Case[], c: Case): Priced => g.filter((x) => x !== c).reduce((x: Priced, o) => copiedPriced(x, o), { stages: c.stages, ...(c.sale ? { sale: c.sale } : {}) });
   if (fee.by.length === 1) {
-    const one = keptOf(fee.cases);
+    const one = merged(fee.cases, keptOf(fee.cases));
     const { by: _b, cases: _c, ...head } = fee;
     return { ...head, stages: one.stages, ...(one.sale ? { sale: one.sale } : {}) } as SlimFee;
   }
   const kept = mergedWithout(fee, t).map((g) => {
     const c = keptOf(g);
-    return { ...c, when: c.when.filter((_, j) => j !== t) };
+    return spansWithout(withPriced({ ...c, when: c.when.filter((_, j) => j !== t) }, merged(g, c)), t);
   });
   const by = fee.by.filter((_, j) => j !== t);
   const track = by.some((b) => b.kind === "track");
@@ -181,7 +194,8 @@ function fits(b: By, w: When): boolean {
 /** A fee whose case `caseId` says `when` of thing `t` (several values may be named, F-114). A value that does not fit the thing leaves it as it is. */
 export function setWhen(fee: Fee, caseId: string, t: number, when: When): Fee {
   if (!hasCases(fee) || !fee.by[t] || !fits(fee.by[t]!, when)) return fee;
-  return { ...fee, cases: fee.cases.map((c) => (c.id === caseId ? { ...c, when: c.when.map((w, j) => (j === t ? when : w)) } : c)) };
+  // the case's prices now hold for another value, which the list may price otherwise: its figures become the person's
+  return { ...fee, cases: fee.cases.map((c) => (c.id === caseId && !sameContent(c.when[t], when) ? asNew({ ...c, when: c.when.map((w, j) => (j === t ? when : w)) }) : c)) };
 }
 
 /**
@@ -268,7 +282,7 @@ export function addCaseAt(fee: Fee, fromId: string, t: number, when: When): Fee 
   if (!hasCases(fee) || !fee.by[t] || !fits(fee.by[t]!, when)) return fee;
   const from = fee.cases.find((c) => c.id === fromId);
   if (!from) return fee;
-  return { ...fee, cases: [...fee.cases, copyOf(from, from.when.map((w, k) => (k === t ? when : w)))] };
+  return { ...fee, cases: [...fee.cases, asNew(copyOf(from, from.when.map((w, k) => (k === t ? when : w))))] };
 }
 
 /**
@@ -288,7 +302,7 @@ export function addValues(fee: Fee, t: number, values: readonly string[], own: r
   const from = fee.cases.filter((c) => JSON.stringify(c.when[t]) === lastKey);
   const fresh = [...new Set(values.map((v) => v.trim()).filter((v) => v && !named.has(v)))].filter((v) => fits((next as CasesFee).by[t]!, [v]));
   if (fresh.length === 0 || !hasCases(next)) return fee;
-  return { ...next, cases: [...next.cases, ...fresh.flatMap((v) => from.map((c) => copyOf(c, c.when.map((w, k) => (k === t ? [v] : w)))))] };
+  return { ...next, cases: [...next.cases, ...fresh.flatMap((v) => from.map((c) => asNew(copyOf(c, c.when.map((w, k) => (k === t ? [v] : w))))))] };
 }
 
 /** A range's top `k` typed again (its unit kept): refused where it would not stay above the top before it and below the one after. */
@@ -298,4 +312,63 @@ export function setTop(fee: Fee, t: number, k: number, v: number): Fee {
   const before = b.tops[k - 1]?.v ?? 0, after = b.tops[k + 1]?.v ?? Infinity;
   if (!(v > before && v < after)) return fee;
   return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, tops: b.tops.map((n, i) => (i === k ? retyped(n, v) : n)) } : x)) };
+}
+
+/**
+ * Whether every set of values outside a split case's own reads the same case in `next` as in `fee` (F-114, `caseFor`): each thing's named
+ * values and one none names, a range's steps; the split thing (`t` in `next`; new where `added`) taken out of `fee`'s sets.
+ */
+function readsAlike(fee: CasesFee, next: CasesFee, split: string, t: number, added: boolean): boolean {
+  const values = next.by.map((b, j): (string | number)[] => (isRange(b) ? Array.from({ length: b.tops.length + 1 }, (_, k) => k) : ["", ...new Set(next.cases.flatMap((c) => (Array.isArray(c.when[j]) ? (c.when[j] as string[]) : [])))]));
+  const before = fee.cases.map(condsOf);
+  const after = next.cases.map(condsOf);
+  const sets = values.reduce<(string | number)[][]>((acc, vs) => acc.flatMap((a) => vs.map((v) => [...a, v])), [[]]);
+  return sets.every((v) => {
+    const was = caseFor(before, added ? v.filter((_, j) => j !== t) : v);
+    if (was === null || fee.cases[was]!.id === split) return true;
+    const now = caseFor(after, v);
+    return now !== null && next.cases[now]!.id === fee.cases[was]!.id;
+  });
+}
+
+/**
+ * A fee whose case `caseId` alone is split by a thing (F-114): the case is copied to each of the thing's values with its prices, in its
+ * place, and every other case holds for any value of it, so the rest of the table stands as it was and F-114 reads each pick in one case
+ * (a case on any value holds every pick; the split case's copies only theirs). A thing the fee changes by already splits the case where it
+ * holds for any value of it; a range it changes by already does not (a step is added by its boundary, `addStep`). The copies stand in the
+ * case's place, or after every other case where a set of values outside the case would then read another case (a tie F-114 breaks by
+ * order); where that too would change one, nothing is split (`readsAlike`). A fee whose price changes by nothing splits whole (`addBy`). A
+ * fee that cannot take the thing, or a thing with no value, leaves it as it is.
+ */
+export function splitCase(fee: Fee, caseId: string, n: NewBy): Fee {
+  if (!hasCases(fee)) return addBy(fee, n);
+  const at = fee.cases.findIndex((c) => c.id === caseId);
+  const made = thingOf(n);
+  if (at < 0 || !made) return fee;
+  const c = fee.cases[at]!;
+  const t = fee.by.findIndex((b) => pickKey(b) === pickKey(made.by));
+  const copies = (when: (v: When) => When[]) =>
+    made.values.map((v, j): Case => {
+      const x = j === 0 ? { ...c, when: when(v) } : copyOf(c, when(v));
+      return c.mine ? { ...x, mine: true } : x;
+    });
+  // on the page the copies stand where the case stood, wherever the reading's order puts them (`Rank`)
+  const shownWith = (made: Case[]) => byRank(fee.cases).flatMap((x) => (x.id === caseId ? made.map((m) => m.id) : [x.id]));
+  const ranked = (next: CasesFee, made: Case[]): CasesFee => {
+    const shown = shownWith(made);
+    return { ...next, cases: next.cases.map((x) => ({ ...x, rank: shown.indexOf(x.id) })) };
+  };
+  const placed = (by: By[], others: Case[], made: Case[], tAt: number, added: boolean): Fee => {
+    const inPlace: CasesFee = { ...fee, by, cases: [...others.slice(0, at), ...made, ...others.slice(at)] };
+    if (readsAlike(fee, inPlace, c.id, tAt, added)) return ranked(inPlace, made);
+    const last: CasesFee = { ...fee, by, cases: [...others, ...made] };
+    return readsAlike(fee, last, c.id, tAt, added) ? ranked(last, made) : fee;
+  };
+  const rest = fee.cases.filter((x) => x.id !== caseId);
+  if (t >= 0) {
+    if (isRange(fee.by[t]!) || c.when[t] !== "any" || !made.values.every((v) => fits(fee.by[t]!, v))) return fee;
+    return placed(fee.by, rest, copies((v) => c.when.map((w, k) => (k === t ? v : w))), t, false);
+  }
+  if (!canAddBy(fee, n.kind, "label" in n ? n.label : undefined)) return fee;
+  return placed([...fee.by, made.by], rest.map((x) => ({ ...x, when: [...x.when, "any"] })), copies((v) => [...c.when, v]), fee.by.length, true);
 }

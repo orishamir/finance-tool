@@ -4,49 +4,14 @@
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { currencyOfUnit } from "../format";
-import { isRange, type CasesFee, type When } from "./model";
+import { byRank, isRange, type CasesFee, type When } from "./model";
 import { layoutOf, type FeeLayout } from "./layout";
-import type { PartId } from "./offers/parts";
+import { PART_ROWS, rowOf, type PartRow } from "./part-rows";
 import { figure, sumUnit } from "./values";
 import { valueWords, whenWords, type SlimPart, type WhenWords } from "./case-words";
 import type { CaseRow } from "./rows";
 
-/**
- * The rows of a fee's table, in the order they stand everywhere: the price, then its bounds, then the rest of its parts, then its notes.
- * The price's forms share one row (a case free and another charged stand side by side), and so do the notes.
- */
-export const PART_ROWS = ["price", "min", "max", "cap", "flat", "maxPerSecurity", "discount", "third", "until", "offset", "refund", "notes"] as const;
-export type PartRow = (typeof PART_ROWS)[number];
-
-/** The row each part stands in: keyed by the part registry's ids, so a new part has a row before it compiles. */
-const ROW_OF: Readonly<Record<PartId, PartRow>> = {
-  share: "price",
-  perUnit: "price",
-  perAction: "price",
-  held: "price",
-  sum: "price",
-  free: "price",
-  min: "min",
-  max: "max",
-  cap: "cap",
-  flat: "flat",
-  maxPerSecurity: "maxPerSecurity",
-  discount: "discount",
-  third: "third",
-  until: "until",
-  offset: "offset",
-  refund: "refund",
-  unfilled: "notes",
-  unfilledClerk: "notes",
-  unfilledClerkAbroad: "notes",
-  capRead: "notes",
-  partial: "notes",
-  inTrade: "notes",
-  sale: "notes",
-};
-
-/** The row a part stands in: a later price's parts stand with the month the price before it ends, in its own row. */
-export const rowOf = (p: Pick<SlimPart, "id" | "stage">): PartRow => (p.stage ? "until" : ROW_OF[p.id]);
+export { PART_ROWS, rowOf, type PartRow };
 
 /** A case's parts by row, in the rows' order: the parts of each row a case has (a case may hold two notes, or a price and its later one). */
 export function partsByRow(parts: readonly SlimPart[]): Map<PartRow, SlimPart[]> {
@@ -82,14 +47,16 @@ const currencyOf = (p: SlimPart): string | null => (p.words.figure ? currencyOfU
  * the switch on `switchTo`.
  */
 export function bandLayout(fee: CasesFee, rows: readonly CaseRow[], switchTo: string | null = null): FeeLayout {
-  const whenOf = new Map(fee.cases.map((c) => [c.id, c.when]));
+  const caseOf = new Map(fee.cases.map((c) => [c.id, c]));
   return layoutOf({
     things: fee.by.map((b) => ({ range: isRange(b) })),
     rows: PART_ROWS,
     switchTo,
-    cases: rows.map((r) => ({
+    // the cases in the order the page shows them (`byRank`), which the person may have set apart from the order the reading reads
+    cases: byRank(rows.map((r) => ({ ...r, rank: caseOf.get(r.case)!.rank }))).map((r) => ({
       id: r.case,
-      when: whenOf.get(r.case)!,
+      when: caseOf.get(r.case)!.when,
+      ...(caseOf.get(r.case)!.spans ? { spans: caseOf.get(r.case)!.spans } : {}),
       parts: [...partsByRow(r.parts)].map(([row, ps]) => ({ row, key: ps.map(partKey).join("|"), currency: ps.map(currencyOf).find((c) => c !== null) ?? null })),
     })),
   });

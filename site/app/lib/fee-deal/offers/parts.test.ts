@@ -29,7 +29,7 @@ describe("the part registry", () => {
   it("derives which parts ask, which are forms and which the toolbox offers", () => {
     expect(PART_IDS.filter(isPending)).toEqual(["min", "max", "cap", "maxPerSecurity", "offset"]);
     expect(PART_IDS.filter(isFormPart)).toEqual(["share", "perUnit", "perAction", "held", "sum", "free"]);
-    expect(PART_IDS.filter((id) => PARTS[id].tool === null)).toEqual(["free", "until", "unfilledClerk", "unfilledClerkAbroad", "capRead"]);
+    expect(PART_IDS.filter((id) => PARTS[id].tool === null)).toEqual(["until", "unfilledClerk", "unfilledClerkAbroad", "capRead"]);
   });
 
   it("puts every part the registry gives a toolbox group in that group's order, once", () => {

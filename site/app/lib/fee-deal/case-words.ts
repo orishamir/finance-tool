@@ -3,20 +3,38 @@
 // and the undo's lines arrange them.
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
-import { hasCases, isRange, namesPlaces, type CasesFee, type Fee, type Priced, type When } from "./model";
+import { hasCases, isRange, namesPlaces, type CasesFee, type Fee, type Price, type Priced, type When } from "./model";
+import { FIGURES, type Figure } from "./offers/figures";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
-import { SAID, type PartContext, type PartWords } from "./part-words";
-import { priceView, type DealRead } from "./deal-read";
+import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
+import { priceView, type DealRead, type PriceView } from "./deal-read";
 import { WHAT_VALUES, type FeeKindId } from "./shapes";
 import { pickKind, type ByKind } from "./offers/conditions";
 import { figure, sumUnit } from "./values";
 
-/** A part as a slim line shows it: its id, its kind and its words; `stage`, its price's place among the prices where it is a later one. */
+/** A figure of a part, as its box edits it: which figure of the price, its value, and its box's sign (a percent, or a currency's sign). */
+export interface PartField {
+  figure: Figure;
+  value: SiteValue | null;
+  sign: "pct" | string;
+  /** Its box draws no sign of its own: the currency chooser stands beside it and shows the currency once. */
+  bare?: true;
+}
+
+/** A part's fields: each figure it holds that the price has a place for, with its value and its box's sign. */
+export const figureFields = (id: PartId, p: Price, view: PriceView): PartField[] =>
+  PARTS[id].figures.filter((f) => FIGURES[f].placed(p)).map((f) => ({ figure: f, value: view.figures[f] ?? null, sign: signOfUnit(FIGURES[f].unit(p)) }));
+
+/**
+ * A part as a slim line shows it: its id, its kind and its words; `stage`, its price's place among the prices where it is a later one;
+ * and its figures as a box would edit them (`fields`), so a figure read on a closed fee is edited where it is read.
+ */
 export interface SlimPart {
   id: PartId;
   kind: PartKind;
   words: PartWords;
   stage?: number;
+  fields?: PartField[];
 }
 
 /**
@@ -46,8 +64,12 @@ export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }):
  */
 export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
   return priced.stages.flatMap((stage, k) => {
-    const said = saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
-    const parts = said.filter((x) => x.id !== "until").map((x) => (k ? { ...x, stage: k } : x));
+    const view = priceView([fee], 0, stage.price, r.today);
+    const said = saidParts({ kind: fee.kind, p: stage.price, view, ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
+    const parts = said.filter((x) => x.id !== "until").map((x) => {
+      const fields = figureFields(x.id, stage.price, view);
+      return { ...x, ...(k ? { stage: k } : {}), ...(fields.length ? { fields } : {}) };
+    });
     const change = said.find((x) => x.id === "until");
     return change ? [...parts, { ...change, stage: k + 1 }] : parts;
   });

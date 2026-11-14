@@ -96,8 +96,18 @@ export function picksOf(deal: Pick<FeeDeal, "fees" | "readFor">): ReadPick[] {
   return out;
 }
 
+/**
+ * A deal after a change, read for the same situation as before it (F-114's start picks): each pick the change would move (a case split by a
+ * thing, whose copies now name a value first) is written into the deal's own picks (`readFor`), as it was.
+ */
+export function keepPicks(before: Pick<FeeDeal, "fees" | "readFor">, after: FeeDeal): FeeDeal {
+  const now = picksOf(after);
+  const moved = picksOf(before).filter((p) => p.by !== "currency" && !(after.readFor ?? []).some((x) => x.by === p.by) && !now.some((n) => n.by === p.by && n.is === p.is));
+  return moved.length ? { ...after, readFor: [...(after.readFor ?? []), ...moved] } : after;
+}
+
 /** A case's conditions as the engine reads them (F-114). */
-const condsOf = (c: Case): CaseCond[] => c.when.map((w: When): CaseCond => (w === "any" ? { any: true } : typeof w === "number" ? { step: w } : { values: w }));
+export const condsOf = (c: Case): CaseCond[] => c.when.map((w: When): CaseCond => (w === "any" ? { any: true } : typeof w === "number" ? { step: w } : { values: w }));
 
 /** A fee read from one case: the case's prices under the fee's id (or a step's), with where it comes from. */
 function fromCase(fee: CasesFee, c: Case, id: string, step?: ReadOf["step"]): ReadFee {

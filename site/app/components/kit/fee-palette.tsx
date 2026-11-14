@@ -45,8 +45,8 @@ function PaletteCard({ item, onAdd }: { item: PaletteItem; onAdd: (id: string) =
  * The palette: its heading (`title`, an `h2` heading a column of its own, `h3` under the fees), a hint under it (`hint`), and a card per
  * fee (`items`); `onAdd` adds the fee tapped.
  */
-export function FeePalette({ title, hint, items, onAdd, heading = "h2" }: { title: ReactNode; hint?: ReactNode; items: PaletteItem[]; onAdd: (id: string) => void; heading?: "h2" | "h3" }) {
-  if (items.length === 0) return null;
+export function FeePalette({ title, hint, items, onAdd, heading = "h2", more }: { title: ReactNode; hint?: ReactNode; items: PaletteItem[]; onAdd: (id: string) => void; heading?: "h2" | "h3"; /** What stands after the cards: another way to add a fee (a fee copied from a price list). */ more?: ReactNode }) {
+  if (items.length === 0 && !more) return null;
   const H = heading;
   return (
     <div data-fee-palette="" className="flex flex-col gap-2">
@@ -57,6 +57,7 @@ export function FeePalette({ title, hint, items, onAdd, heading = "h2" }: { titl
           <PaletteCard key={it.id} item={it} onAdd={onAdd} />
         ))}
       </ul>
+      {more}
     </div>
   );
 }

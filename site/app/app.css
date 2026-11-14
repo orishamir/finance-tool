@@ -649,6 +649,71 @@
       transform: translateY(100%);
     }
   }
+  /* Grips and knobs at rest (kit/lift.tsx): drawn only while what they belong to (their nearest `data-liftable`: a head, a row, a cell, a
+     part, a fee) is under a fine pointer or has the keyboard's focus, so a table reads as its figures first. Hidden is see-through, its
+     press kept, so a drag still starts where the grip stands. On touch no grip is drawn (a long press on the thing lifts it), and a cell's
+     knobs show while the cell has the focus a tap gives it. */
+  [data-grip],
+  [data-span-knob] {
+    opacity: 0;
+  }
+  @media (pointer: fine) {
+    [data-liftable]:is(:hover, :focus-visible, :has(:focus-visible)) :is([data-grip], [data-span-knob]),
+    :is([data-grip], [data-span-knob]):is(:focus-visible, :active) {
+      opacity: 1;
+    }
+    /* what lifts inside a thing under the pointer keeps its own grips hidden until it is under the pointer itself */
+    [data-liftable]:hover [data-liftable]:not(:hover, :focus-visible, :has(:focus-visible)) :is([data-grip], [data-span-knob]) {
+      opacity: 0;
+    }
+  }
+  @media (pointer: coarse) {
+    [data-liftable]:focus-within [data-span-knob],
+    [data-span-knob]:active {
+      opacity: 1;
+    }
+    [data-liftable]:focus-within [data-liftable]:not(:focus-within) [data-span-knob] {
+      opacity: 0;
+    }
+    /* a long press lifts: it selects no words and opens no menu */
+    [data-liftable] {
+      -webkit-touch-callout: none;
+      user-select: none;
+    }
+    [data-liftable] :is(input, textarea) {
+      user-select: text;
+    }
+  }
+  /* A thing lifted by its grip (kit/lift.tsx): its place keeps an empty dashed slot of its size while it is away, and its picture follows
+     the pointer on the card's surface, a little raised */
+  [data-lifted] {
+    outline: 2px dashed var(--border);
+    outline-offset: -2px;
+    border-radius: var(--radius-md);
+  }
+  [data-lifted] > * {
+    visibility: hidden;
+  }
+  /* why a place does not take the thing lifted, under the pointer */
+  [data-lift-why] {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 61;
+    pointer-events: none;
+    max-width: 18rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--popover);
+    color: var(--foreground);
+    font-size: var(--text-sm);
+    box-shadow: var(--shadow-md);
+  }
+  [data-lift-ghost] {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+  }
   /* A piece that comes onto the page where it was not (the fee page's card, panel and undo line): the short pop of a popover, at the base
      duration, which a device that asks for less motion sets to nothing (theme.css) */
   .come-in {

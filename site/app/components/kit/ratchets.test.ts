@@ -289,13 +289,14 @@ for (const { name, p, read } of runs) {
 // where the bin is pictured, not pressed: the pill ChipList draws under the pointer while a chip is dragged (chip-list.tsx), and the
 // gallery's sample of the ghost face the bin wears (gallery.tsx). Any other bin is a RemoveButton.
 describe("a bin is drawn only by RemoveButton", () => {
-  const BIN_PICTURES = new Set(["components/kit/chip-list.tsx", "components/kit/gallery.tsx"]);
+  // the drag picture, the gallery's ghost sample, and the bin a lifted thing is dropped in (a place, not a control)
+  const BIN_PICTURES = new Set(["components/kit/chip-list.tsx", "components/kit/gallery.tsx", "components/kit/lift.tsx"]);
   const trashIcon = /\bTrash\d?(?:Icon)?\b|\bIconBin\b|🗑/;
   const sources = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && rel(f) !== "components/kit/remove-button.tsx");
   it("no other file draws a bin icon of its own", () => {
     expect(sources.filter((f) => trashIcon.test(code(readFileSync(f, "utf8")))).map(rel)).toEqual([]);
   });
-  it("BinIcon stands only in the drag picture and the gallery's ghost sample", () => {
+  it("BinIcon stands only in the drag picture, the gallery's ghost sample and the bin of lifted things", () => {
     const users = sources.filter((f) => /<BinIcon\b/.test(code(readFileSync(f, "utf8")))).map(rel);
     expect(users.filter((f) => !BIN_PICTURES.has(f))).toEqual([]);
     expect([...BIN_PICTURES].filter((f) => !users.includes(f))).toEqual([]);

@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { FEE_KIND_IDS } from "./shapes";
 import { CONDITIONS } from "./offers/conditions";
 import { PART_IDS } from "./offers/parts";
-import { layoutOf, MAX_COLUMNS, valueKey, type FeeLayout, type LayoutCase, type LayoutPart } from "./layout";
+import { layoutOf, MAX_COLUMNS, spanOf, valueKey, WHOLE, type FeeLayout, type LayoutCase, type LayoutPart } from "./layout";
 import type { When } from "./model";
 
 const ROWS = ["price", "min", "max", "notes"];
@@ -87,7 +87,7 @@ describe("two things: a grid", () => {
     const l = as(layoutOf({ things: two, rows: ROWS, cases: trade() }), "grid");
     expect(l.rows.map((r) => r.key)).toEqual([valueKey(["tase"]), valueKey(["makam"]), valueKey(["us", "europe"])]);
     expect(l.columns.map((x) => x.key)).toEqual([valueKey(["direct"]), valueKey(["branch"])]);
-    expect(l.rows[2]!.cells).toEqual([{ from: 0, span: 2, case: "ab", whole: true }]);
+    expect(l.rows[2]!.cells).toEqual([{ from: 0, span: 2, case: "ab", cases: ["ab"], whole: true }]);
     expect(l.down).toEqual({ thing: 0, range: false });
     expect(l.across).toEqual({ thing: 1, range: false });
   });
@@ -112,7 +112,7 @@ describe("two things: a grid", () => {
 
   it("leaves a place no case holds empty, for a case to be added there", () => {
     const l = as(layoutOf({ things: two, rows: ROWS, cases: trade().filter((x) => x.id !== "mk-b") }), "grid");
-    expect(l.rows[1]!.cells).toEqual([{ from: 0, span: 1, case: "mk-d", whole: false }, { from: 1, span: 1, case: null, whole: false }]);
+    expect(l.rows[1]!.cells).toEqual([{ from: 0, span: 1, case: "mk-d", cases: ["mk-d"], whole: false }, { from: 1, span: 1, case: null, cases: [], whole: false }]);
   });
 
   it("orders a range's rows ascending", () => {
@@ -131,6 +131,83 @@ describe("two things: a grid", () => {
     expect(layoutOf({ things: two, rows: ROWS, cases: beside }).shape).toBe("rows");
     // every case on any value of the second thing: there is nothing across
     expect(layoutOf({ things: two, rows: ROWS, cases: [c("a", [["x"], "any"], p("price", "1")), c("b", [["y"], "any"], p("price", "2"))] }).shape).toBe("rows");
+  });
+});
+
+describe("equal neighbours share one cell, within one span", () => {
+  /** A conversion by the channel down and the size across: free up to 10, then one price above 10 and above 100. */
+  const fx = (spans?: LayoutCase["spans"]): LayoutCase[] => [
+    c("d0", [["direct"], 0], p("price", "free")),
+    c("d1", [["direct"], 1], p("price", "0.0875%"), p("min", "5$", "USD")),
+    { ...c("d2", [["direct"], 2], p("price", "0.0875%"), p("min", "5$", "USD")), ...(spans ? { spans } : {}) },
+    c("b0", [["branch"], 0], p("price", "free")),
+    c("b1", [["branch"], 1], p("price", "0.175%"), p("min", "6.25$", "USD")),
+    c("b2", [["branch"], 2], p("price", "0.175%"), p("min", "6.25$", "USD")),
+  ];
+  const ranged = [{ range: false }, { range: true }];
+
+  it("merges a grid's equal neighbours in a row into one cell covering both cases", () => {
+    const l = as(layoutOf({ things: ranged, rows: ROWS, cases: fx() }), "grid");
+    expect(l.rows.map((r) => r.cells.map((x) => [x.from, x.span, x.cases]))).toEqual([
+      [[0, 1, ["d0"]], [1, 2, ["d1", "d2"]]],
+      [[0, 1, ["b0"]], [1, 2, ["b1", "b2"]]],
+    ]);
+    // a row whose cells are one merged cell and one other says nothing on its line that would empty them
+    expect(l.rows[0]!.shared).toEqual([]);
+  });
+
+  it("keeps apart equal neighbours whose cells stand in different spans", () => {
+    const l = as(layoutOf({ things: ranged, rows: ROWS, cases: fx([{ row: WHOLE, along: 1, span: "s1" }]) }), "grid");
+    expect(l.rows[0]!.cells.map((x) => x.cases)).toEqual([["d0"], ["d1"], ["d2"]]);
+    expect(l.rows[1]!.cells.map((x) => x.cases)).toEqual([["b0"], ["b1", "b2"]]);
+  });
+
+  it("merges equal cells down a grid's column into one cell over both rows, only within one named span along the first thing", () => {
+    const down = [{ row: WHOLE, along: 0, span: "s1" }];
+    const same = [
+      { ...c("d0", [["direct"], 0], p("price", "free")), spans: down },
+      c("d1", [["direct"], 1], p("price", "1%")),
+      { ...c("b0", [["branch"], 0], p("price", "free")), spans: down },
+      c("b1", [["branch"], 1], p("price", "2%")),
+    ];
+    const l = as(layoutOf({ things: ranged, rows: ROWS, cases: same }), "grid");
+    expect(l.rows[0]!.cells[0]).toEqual({ from: 0, span: 1, case: "d0", cases: ["d0", "b0"], whole: false, down: 2 });
+    // equal rows that nobody joined stay apart: the default span merges across a row, never down a column
+    expect(as(layoutOf({ things: ranged, rows: ROWS, cases: same.map(({ spans: _s, ...x }) => x) }), "grid").rows[0]!.cells[0]!.down).toBeUndefined();
+    expect(l.rows[1]!.cells[0]).toMatchObject({ case: "b0", covered: true });
+    // a column with a cell down over two rows has no line of its own
+    expect(l.columns[0]!.shared).toEqual([]);
+    const apart = as(layoutOf({ things: ranged, rows: ROWS, cases: same.map((x) => (x.id === "b0" ? { ...x, spans: [{ row: WHOLE, along: 0, span: "s2" }] } : x)) }), "grid");
+    expect(apart.rows[0]!.cells[0]!.down).toBeUndefined();
+  });
+
+  it("keeps apart a table's equal neighbours in another span of that row, and merges the other rows", () => {
+    const cases = [c("a", [["x"]], p("price", "1%"), p("min", "5")), { ...c("b", [["y"]], p("price", "1%"), p("min", "5")), spans: [{ row: "price", along: 0, span: "s1" }] }];
+    const l = as(layoutOf({ things: one, rows: ROWS, cases }), "table");
+    expect(l.rows.map((r) => r.cells.map((x) => x.cases))).toEqual([[["a"], ["b"]], [["a", "b"]]]);
+    expect(spanOf(cases[1]!, "price", 0)).toBe("s1");
+    expect(spanOf(cases[0]!, "price", 0)).toBe("");
+  });
+});
+
+describe("two things, one value of the first split by the second: a table", () => {
+  const cases = [
+    c("ta", [["tase"], "any"], p("price", "0.1%")),
+    c("us", [["abroad"], ["USD"]], p("price", "0.2%")),
+    c("eu", [["abroad"], ["EUR"]], p("price", "0.2%")),
+    c("mk", [["makam"], "any"], p("price", "0.05%")),
+  ];
+
+  it("stands the split value's cases side by side under it, each with its sub-head, and the rest as they were", () => {
+    const l = as(layoutOf({ things: two, rows: ROWS, cases }), "table");
+    expect(l.split).toBe(1);
+    expect(l.columns).toEqual([{ case: "ta", when: ["tase"] }, { case: "us", when: ["abroad"], sub: ["USD"] }, { case: "eu", when: ["abroad"], sub: ["EUR"] }, { case: "mk", when: ["makam"] }]);
+    expect(l.rows[0]!.cells.map((x) => x.cases)).toEqual([["ta"], ["us", "eu"], ["mk"]]);
+  });
+
+  it("is a grid once a second value is split, and rows where a value has a case for any value beside others", () => {
+    expect(layoutOf({ things: two, rows: ROWS, cases: [...cases.slice(0, 3), c("mk1", [["makam"], ["USD"]], p("price", "1")), c("mk2", [["makam"], ["EUR"]], p("price", "2"))] }).shape).toBe("grid");
+    expect(as(layoutOf({ things: one, rows: ROWS, cases: [c("a", [["x"]], p("price", "1"))] }), "table").split).toBeNull();
   });
 });
 

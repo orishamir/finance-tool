@@ -2,7 +2,7 @@
 // with a divider between two prices saying the month the later starts (F-110), the dashed "+ המחיר משתנה מתאריך" after them, and a sale
 // priced apart under its own head; a part the toolbox added that still needs its figure or its fee, asking for it on the price it goes on;
 // and the menu a slot of the case opens (`slotEdit`), which the page holds open.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, OpenPending, OpenStage } from "../../lib/fee-deal/panel";
 import type { SlotEdit } from "../../lib/fee-deal/things";
@@ -10,7 +10,7 @@ import { addOwnPlace, setMine, setRangeUnit, setStep, setTop, setWhen } from "..
 import { editPrice, moveChange, splitAt } from "../../lib/fee-deal/edits/stage";
 import { withCurrency } from "../../lib/fee-deal/edits/price";
 import { BOUND_CURRENCIES, namesPlaces, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
-import { setPart } from "../../lib/fee-deal/offers/parts";
+import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { formatValue } from "../../lib/format";
@@ -36,6 +36,7 @@ function PriceParts({
   pending,
   onFee,
   pendingHands,
+  grip,
 }: {
   fee: Fee;
   caseId?: string;
@@ -47,6 +48,7 @@ function PriceParts({
   pending: OpenPending | null;
   onFee: (f: Fee) => void;
   pendingHands: PendingHands;
+  grip?: PartGrip;
 }) {
   const { k, until, parts } = stage;
   const stages = pricesOn(fee, side, caseId);
@@ -94,12 +96,15 @@ function PriceParts({
   return (
     <>
       {parts.map((p) => (
-        <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
+        <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} grip={grip?.(p.id, side, k)} />
       ))}
       {pending && <PendingEdit key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />}
     </>
   );
 }
+
+/** A part's grip in the open case, by its id and the price it is on; null where it has none. */
+export type PartGrip = (part: PartId, side: Side, k: number) => ReactNode;
 
 /**
  * The open case's prices in edit, each with its parts, in time order: between two prices a divider with the month the later starts, typed
@@ -117,6 +122,7 @@ export function OpenParts({
   onRemoveChange,
   onEditing,
   pendingHands,
+  grip,
 }: {
   fee: Fee;
   open: OpenCase;
@@ -128,6 +134,8 @@ export function OpenParts({
   /** The person is in one of the purchase's prices (its parts took the focus or a press), where there are several: the toolbox adds to it. */
   onEditing: (k: number, caseId: string | undefined) => void;
   pendingHands: PendingHands;
+  /** A part's grip, which lifts it onto another case or fee, or into the bin (a part of the purchase's first price; none elsewhere). */
+  grip?: PartGrip;
 }) {
   const caseId = open.case ?? undefined;
   const c = copy.panel.change;
@@ -147,7 +155,7 @@ export function OpenParts({
               />
             )}
             <div className="flex flex-col gap-2" {...(s === "buy" && stages.length > 1 ? { onFocusCapture: () => onEditing(st.k, caseId), onPointerDownCapture: () => onEditing(st.k, caseId) } : {})}>
-              <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={s === "buy" && open.pending?.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} />
+              <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={s === "buy" && open.pending?.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
             </div>
           </div>
         );

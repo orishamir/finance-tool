@@ -56,7 +56,7 @@ describe("a fee's table and grid", () => {
   it("a table's column head opens its case, named for it; its add slot is a button that says what it adds", () => {
     const out = html(h(CaseTable, { columns: [{ id: "a", head: "ערך", label: "לפתוח את המקרה: ערך", onOpen: () => undefined }], rows: [{ id: "price", head: "שיעור", cells: [{ from: 0, span: 1, content: "1%" }] }], add }));
     expect(out).toMatch(/<button[^>]*aria-label="לפתוח את המקרה: ערך"/);
-    expect(out).toMatch(/data-add-slot="column"[^>]*>.*מקרה/);
+    expect(out).toMatch(/data-add-slot="pill"[^>]*>.*מקרה/);
     expect(out).toContain("שיעור");
   });
   it("a table's empty place draws no cell", () => {

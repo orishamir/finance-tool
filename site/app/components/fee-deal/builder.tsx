@@ -19,19 +19,22 @@ import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { LeftOutView } from "../../lib/left-out";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
-import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, DropZone, FeePalette, GroupHead, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type PaletteItem } from "../kit";
+import { AddLine, Button, ChoiceChips, DropZone, FeePalette, Grip, GroupHead, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type GripAction, type PaletteItem } from "../kit";
+import { liftDrop, liftId, liftedOf, liftTakes, type Lifted } from "../../lib/fee-deal/lifted";
+import { keepPicks } from "../../lib/fee-deal/cases";
 import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
-import { FeeBlockView, type BlockActions, type OpenHere } from "./fee-block";
+import { FeeBlockView, type AskOf, type BlockActions, type OpenHere } from "./fee-block";
 import { TemplateNote } from "./picker";
+import { CopyFee } from "./copy-fee";
 import { UndoLine } from "./undo-line";
 import { feeColour, feeName } from "./words";
 import type { HouseAverages } from "../../lib/house-averages";
 
 const b = copy.builder;
+const lw = copy.cases.lifted;
 
 /** The page's undo line, where it stands among the fees: in the place of a fee taken away, in that fee's group. */
 export interface FeeUndoLine {
@@ -200,12 +203,15 @@ export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: st
 
 /**
  * The fees in their groups, each group with its fees in one order by the fee's kind (`FEE_KIND_IDS`: a trade before its conversion),
- * whatever order a template filled them in, and fees of one kind in the deal's order; the line of a fee taken away (`line`) stands in that
+ * whatever order a template filled them in, and fees of one kind in the deal's order; by their ranks where the person moved one (a fee's
+ * card moved by its grip, `Rank`: the page's order, never the reading's); the line of a fee taken away (`line`) stands in that
  * fee's group, where its block was. The groups stand in `GROUP_ORDER`.
  */
 type Item = { fee: Fee; i: number } | "line";
 function groupsOf(fees: readonly Fee[], groupOf: (fee: Fee) => string, line: FeeUndoLine | null): [string, Item[]][] {
-  const before = (a: { fee: Fee; i: number }, b2: { fee: Fee; i: number }) => FEE_KIND_IDS.indexOf(a.fee.kind) - FEE_KIND_IDS.indexOf(b2.fee.kind) || a.i - b2.i;
+  const ranked = fees.some((f) => f.rank !== undefined);
+  const before = (a: { fee: Fee; i: number }, b2: { fee: Fee; i: number }) =>
+    (ranked ? (a.fee.rank ?? Infinity) - (b2.fee.rank ?? Infinity) : FEE_KIND_IDS.indexOf(a.fee.kind) - FEE_KIND_IDS.indexOf(b2.fee.kind)) || a.i - b2.i;
   const byGroup = new Map<string, Item[]>();
   fees
     .map((fee, i) => ({ fee, i }))
@@ -245,10 +251,13 @@ export function paletteItems(view: Builder, read: Pick<DealRead, "engine">, prod
   return [...view.suggestions.usual.map((k) => item(k, false)), ...view.suggestions.rarer.map((k) => item(k, true))];
 }
 
-/** The palette (`paletteItems`): its heading, how a fee is added, and a card per fee; a tap adds the fee. */
-export function Palette({ items, onAdd, heading }: { items: PaletteItem[]; onAdd: (kind: FeeKindId) => void; heading?: "h2" | "h3" }) {
+/** How the palette copies a fee from another house's price list (`CopyFee`); none where the deal's kind has no price lists. */
+export type CopyHands = Parameters<typeof CopyFee>[0];
+
+/** The palette (`paletteItems`): its heading, how a fee is added, and a card per fee; a tap adds the fee; at its end, "מתעריפון אחר". */
+export function Palette({ items, onAdd, heading, copy: copyHands }: { items: PaletteItem[]; onAdd: (kind: FeeKindId) => void; heading?: "h2" | "h3"; copy?: CopyHands | null }) {
   const drag = useCanDrag();
-  return <FeePalette title={b.palette} hint={drag ? b.paletteHint : b.paletteHintTap} items={items} heading={heading} onAdd={(id) => onAdd(id as FeeKindId)} />;
+  return <FeePalette title={b.palette} hint={drag ? b.paletteHint : b.paletteHintTap} items={items} heading={heading} onAdd={(id) => onAdd(id as FeeKindId)} {...(copyHands ? { more: <CopyFee {...copyHands} /> } : {})} />;
 }
 
 export function FeesColumn({
@@ -286,12 +295,12 @@ export function FeesColumn({
   /** What a fee's block hands to the page. */
   actions: BlockActions;
   /** The thing to change by whose question stands in the open fee's block, in place, where its band will stand; null where none is asked. */
-  ask: ByKind | null;
+  ask: AskOf;
   /**
    * How the fees the deal can still take show after the fees: the palette (`palette`, where the page has no column for it), the quiet add
    * line (`line`, while a fee is open in a page whose column holds the palette otherwise), or nothing (the column shows the palette).
    */
-  adding: { palette: PaletteItem[] } | "line" | null;
+  adding: { palette: PaletteItem[]; copy?: CopyHands | null } | "line" | null;
 }) {
   // each block's height as last drawn, so the line a removed fee leaves is as tall as its block was
   const root = useRef<HTMLDivElement>(null);
@@ -339,6 +348,35 @@ export function FeesColumn({
   // the fees as they stand on the page, so the line of a fee taken away hands the focus, when it goes, to the fee now in its place, else
   // the one before it, else the add line
   const shown = groups.flatMap(([, items]) => items);
+  const shownIds = shown.flatMap((it) => (it === "line" ? [] : [it.fee.id]));
+  // a fee's card moves within its group: lifted by its grip onto another card of the group, or by its menu
+  const feeLift = (fee: Fee, group: string, k: number, count: number) => {
+    const l: Lifted = { k: "fee", fee: fee.id, group };
+    const ids = (groups.find(([g]) => g === group)?.[1] ?? []).flatMap((it) => (it === "line" ? [] : [it.fee.id]));
+    const to = (other: string | undefined) => () => {
+      const r = other && liftDrop(deal, l, { k: "fee", fee: other, group }, { shown: shownIds });
+      if (r) onDeal(r.deal);
+    };
+    const menu: GripAction[] = [];
+    if (k > 0) menu.push({ label: lw.menu.up, onPick: to(ids[k - 1]) });
+    if (k < count - 1) menu.push({ label: lw.menu.down, onPick: to(ids[k + 1]) });
+    return count > 1 ? <Grip item={liftId(l)} label={`${lw.grip.fee}${feeName(fee.kind, fee.name)}`} actions={menu} /> : undefined;
+  };
+  const feeZone = (fee: Fee, group: string, el: ReactNode) => (
+    <DropZone
+      accepts={(it) => {
+        const l = liftedOf(it);
+        return !!l && l.k === "fee" && liftTakes(deal, l, { k: "fee", fee: fee.id, group }, shownIds);
+      }}
+      onDrop={(it) => {
+        const l = liftedOf(it);
+        const r = l && liftDrop(deal, l, { k: "fee", fee: fee.id, group }, { shown: shownIds });
+        if (r) onDeal(r.deal);
+      }}
+    >
+      {el}
+    </DropZone>
+  );
   const lineAt = shown.indexOf("line");
   const near = (k: number) => {
     const it = shown[k];
@@ -384,7 +422,9 @@ export function FeesColumn({
     <Section title={b.fees} level="kick" heading="h2">
       <DropZone accepts={(it) => draggedFee(it) !== null} onDrop={(it) => onAdd(draggedFee(it)!)}>
       <div ref={root} className="flex flex-col gap-6">
-        {groups.map(([key, items]) => (
+        {groups.map(([key, items]) => {
+          const fees = items.filter((it): it is { fee: Fee; i: number } => it !== "line");
+          return (
           <div key={key} className="flex flex-col gap-3">
             <GroupHead as="h3" plain>
               {copy.on[key]}
@@ -394,9 +434,10 @@ export function FeesColumn({
                 if (it === "line") return [undoLine(line!)];
                 // a form's line stands in its open case (`formLine`), and nowhere while that case is closed
                 const cl = caseLine?.feeId === it.fee.id && !caseLine.inCase ? caseLine : null;
+                const k = fees.indexOf(it);
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
-                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} />
+                    {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} grip={feeLift(it.fee, key, k, fees.length)} />)}
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}
@@ -408,10 +449,11 @@ export function FeesColumn({
               })}
             </ul>
           </div>
-        ))}
+          );
+        })}
         <div ref={addAt} data-fees-add="" className="contents">
           {adding === "line" && <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />}
-          {adding && adding !== "line" && <Palette items={adding.palette} onAdd={onAdd} heading="h3" />}
+          {adding && adding !== "line" && <Palette items={adding.palette} onAdd={onAdd} heading="h3" copy={adding.copy ?? null} />}
         </div>
       </div>
       </DropZone>
@@ -423,7 +465,7 @@ export function FeesColumn({
 function FeeItem({ id, children }: { id: string; children: ReactNode }) {
   const { handlers } = useFeeMark(id);
   return (
-    <li data-fee={id} data-figures="" className="come-in" {...handlers}>
+    <li data-fee={id} data-figures="" data-liftable="" className="come-in" {...handlers}>
       {children}
     </li>
   );

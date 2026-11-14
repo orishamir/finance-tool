@@ -1,18 +1,58 @@
-// Dragging a chip onto a place that takes it, on a computer (design-system 11, "Cases and parts"): a chip that a tap already acts with
-// (`useDragSource`) can also be carried onto a place on the page (`DropZone`), and dropping it there does what its tap does, in that place.
-// While a chip is carried, every place that takes it is outlined in the action colour, solid under the pointer; a place that would not
-// take it shows nothing. Only with a fine pointer: a phone keeps the tap alone, and the keyboard keeps its own ways. One chip is carried at
-// a time on the whole page, so the carried chip is held once, here, for every place to read.
-import { useEffect, useState, useSyncExternalStore, type DragEvent, type ReactNode } from "react";
-import { useMedia } from "../../lib/hooks";
+// Carrying a thing onto a place that takes it (design-system 11, "Cases and parts"). Two ways carry: a chip that a tap already acts with
+// (`useDragSource`), by the browser's own drag, with a fine pointer only; and a thing lifted by its grip (lift.tsx), with any pointer, a
+// long press on a phone. Either way, dropping it on a place (`DropZone`) does what that place does with it. While a thing is carried, every
+// place that takes it is outlined in the action colour, solid under the pointer; a place that would not take it shows nothing, or, where
+// it says why (`why`), says so under the pointer. One thing is carried at a time on the whole page, so it is held once, here, for every place
+// to read, with the place a lifted thing is over.
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type DragEvent, type ReactNode } from "react";
+import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
 import { cx } from "./cx";
 
 let carried: string | null = null;
+/** The place a lifted thing is over, by its key (`DropZone`), where that place takes it. */
+let overKey: string | null = null;
 const listeners = new Set<() => void>();
-const carry = (item: string | null) => {
-  carried = item;
+const tell = () => {
   for (const on of listeners) on();
 };
+/** Sets the thing carried (null: none), and the place a lifted one is over. */
+export const carry = (item: string | null, over: string | null = null) => {
+  carried = item;
+  overKey = item === null ? null : over;
+  tell();
+};
+
+/** How a thing was dropped: with the modifier key held (`copy`: the thing stays where it was too). */
+export interface DropHow {
+  copy: boolean;
+}
+
+/** A place that takes carried things, as a lifted thing finds it under the pointer (`zoneAt`). */
+interface Zone {
+  accepts: (item: string) => boolean;
+  onDrop: (item: string, how: DropHow) => void;
+}
+const zones = new Map<string, Zone>();
+
+/** The place under a point that takes `item`, by its key; null where none does. */
+export function zoneAt(x: number, y: number, item: string): string | null {
+  let el = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-drop-key]") ?? null;
+  while (el) {
+    const key = el.dataset.dropKey!;
+    if (zones.get(key)?.accepts(item)) return key;
+    el = el.parentElement?.closest<HTMLElement>("[data-drop-key]") ?? null;
+  }
+  return null;
+}
+
+/** Drops `item` on the place `key`, as a lifted thing does on release. */
+export function dropOn(key: string, item: string, how: DropHow): void {
+  const z = zones.get(key);
+  carry(null);
+  if (z?.accepts(item)) z.onDrop(item, how);
+}
+
+const useOverKey = (): string | null => useSyncExternalStore(subscribe, () => overKey, () => null);
 const subscribe = (on: () => void) => {
   listeners.add(on);
   return () => void listeners.delete(on);
@@ -60,13 +100,23 @@ export function useDragSource(item: string | null): DragSourceProps {
 export const useCanDrag = (): boolean => useMedia("(pointer: fine)");
 
 /**
- * A place a carried chip can be dropped on: `accepts` says whether it takes the chip (asked only while one is carried), `onDrop` does what
- * the chip's tap does, here. A zone inside another takes the drop alone. `className` is the zone's own layout; its outline follows its
- * rounding (`rounded`, a large radius by default).
+ * A place a carried thing can be dropped on: `accepts` says whether it takes it (asked only while one is carried), `onDrop` does what the
+ * thing's tap does, here (`how.copy`: dropped with the modifier key held). A zone inside another takes the drop alone. `why`, where it
+ * does not take the thing, says why, under the pointer. `className` is the zone's own layout; its outline follows its rounding (`rounded`,
+ * a large radius by default). `tone="danger"`: a bin, outlined in the danger colour.
  */
-export function DropZone({ accepts, onDrop, rounded = "rounded-lg", className, children }: { accepts: (item: string) => boolean; onDrop: (item: string) => void; rounded?: string; className?: string; children: ReactNode }) {
+export function DropZone({ accepts, onDrop, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
   const item = useCarried();
+  const key = useId();
+  const hands = useRef<Zone>({ accepts, onDrop });
+  hands.current = { accepts, onDrop };
+  useIsoLayoutEffect(() => {
+    zones.set(key, { accepts: (it) => hands.current.accepts(it), onDrop: (it, how) => hands.current.onDrop(it, how) });
+    return () => void zones.delete(key);
+  }, [key]);
+  const liftedOver = useOverKey() === key;
   const takes = item !== null && accepts(item);
+  const refused = item !== null && !takes && why ? why(item) : null;
   // enter and leave fire for each element inside, so the pointer is over the zone while more enters than leaves have been seen
   const [over, setOver] = useState(0);
   useEffect(() => {
@@ -93,12 +143,20 @@ export function DropZone({ accepts, onDrop, rounded = "rounded-lg", className, c
           e.stopPropagation();
           setOver(0);
           carry(null);
-          onDrop(item);
+          onDrop(item, { copy: false });
         },
       }
     : {};
+  const ink = tone === "danger" ? "outline-destructive" : "outline-primary";
   return (
-    <div data-drop-zone={takes ? "" : undefined} className={cx(rounded, takes && "outline-2 outline-offset-2 outline-primary", takes && (over > 0 ? "bg-accent outline-solid" : "outline-dashed"), className)} {...handlers}>
+    <div
+      data-drop-key={key}
+      data-drop-zone={takes ? "" : undefined}
+      title={refused ?? undefined}
+      data-drop-why={refused ?? undefined}
+      className={cx(rounded, takes && cx("outline-2 outline-offset-2", ink), takes && (over > 0 || liftedOver ? "bg-accent outline-solid" : "outline-dashed"), className)}
+      {...handlers}
+    >
       {children}
     </div>
   );
