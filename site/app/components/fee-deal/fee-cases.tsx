@@ -445,7 +445,7 @@ export function FeeCases({
     const listThing = !layout.ladder && layout.split === null && !isRange(fee.by[t]!);
     const order = layout.columns.map((x) => x.case);
     const allCases = layout.columns.map((x) => x.case);
-    const across = rowAdd(allCases, t, { strip: c.rowAdd.allCases, menu: lw.menu.addAllCases, spoken: c.rowAdd.allCases });
+    const across = rowAdd(allCases, t, { strip: c.rowAdd.allCases, menu: lw.menu.addAllCases, spoken: lw.menu.addAllCases });
     /** What a column's grip lifts: a ladder's step (to its bin), a value of the table's thing where it is not the fee's first, else its case. */
     const colLifted = (col: (typeof layout.columns)[number], words: string): Lifted | null =>
       layout.ladder ? (typeof col.when === "number" ? { k: "step", fee: fee.id, t, step: col.when, name: words } : null) : t !== 0 ? { k: "value", fee: fee.id, t, key: valueKey(col.when), name: words } : { k: "col", fee: fee.id, case: col.case };
@@ -565,7 +565,7 @@ export function FeeCases({
             const rc = gridRowSlots(g, row);
             const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
             const words = whenText(byCase.get(row.cases[0]!)!.when[0]!);
-            const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${c.rowAdd.strip}${sep}${words}` });
+            const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
             const hg = headGrip(row, 0, g.rows, strip.menu);
             return {
               id: row.key,
@@ -654,7 +654,7 @@ export function FeeCases({
         {g.rows.map((row) => {
           const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
           const words = whenText(byCase.get(row.cases[0]!)!.when[0]!);
-          const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${c.rowAdd.strip}${sep}${words}` });
+          const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
           const hg = headGrip(row, 0, g.rows, strip.menu);
           return (
             <CaseGroup key={row.key} head={headOfValue(row, 0)} {...(row.once.length ? { shared: saidJoined(row.once) } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }], `row:${row.key}`, h, downList)}>

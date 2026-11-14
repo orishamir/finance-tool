@@ -245,9 +245,10 @@ const placeOf = (from: number, span: number, row: number) => ({ gridColumn: `${f
 const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | null) => (carried === null ? -1 : heads.findIndex((h) => h.liftItem === carried));
 
 /**
- * The slim strip under a row (or a table's last row) that adds a part to every case of it (`add`): drawn only while the pointer is over the
- * row or the focus is in it (`data-row-add`, app.css), straddling the room under it, so it takes none and moves nothing. The keyboard and
- * touch reach the same through the row head's menu.
+ * The plus under a row (or a table's last row) that adds a part to every case of it (`add`): a small knob like a cell's stretch knob, in the
+ * middle of the row's foot, its words only spoken and in its title; drawn only while the pointer is over the row or the focus is in it
+ * (`data-row-add`, app.css), straddling the room under it, so it takes none and moves nothing. The keyboard and touch reach the same
+ * through the row head's menu.
  */
 function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
   // in the controls' layer (app.css, "The tap area"): over the cells and the figures' areas, under every figure's own box, so where it
@@ -260,11 +261,11 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
         data-row-add=""
         aria-expanded={add.expanded}
         aria-label={add.spoken}
+        title={add.spoken}
         onClick={(e) => add.onAdd(e.currentTarget)}
-        className="tap-area absolute inset-x-0 top-0.5 z-[1] inline-flex h-5 items-center justify-center gap-1 rounded-sm border border-dashed border-primary bg-card text-xs text-primary hover:bg-accent"
+        className="tap-area absolute top-0 left-1/2 z-[1] flex h-4 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm border border-border bg-popover text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
       >
         <Plus size={12} strokeWidth={2} aria-hidden />
-        {add.label}
       </button>
     </div>
   );
