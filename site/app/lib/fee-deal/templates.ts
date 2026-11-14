@@ -563,23 +563,30 @@ export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate
  * What a template leaves out of a deal, with why: a line of a house's price list (`line`, its id), or one of a track's two fees (`fee`):
  * one the product may not charge (PF-06, `none-by-rule`), or one the regulator's data gives no figure for (`no-value`).
  */
-export type LeftOut = { line: string; base?: string; why: LeftWhy; name?: string; channel?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
+export type LeftOut = { line: string; base?: string; why: LeftWhy; name?: string; channel?: string; /** The house whose list the line is of, where it is not the template's (a fee copied from that list). */ house?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
 
 /** The house a deal's fees came from where a house's whole price list filled it (`house:<id>`), else null. */
 const dealHouseOf = (deal: FeeDeal): string | null => (deal.template && !deal.template.feesKept && deal.template.id.startsWith(HOUSE) ? deal.template.id.split("/", 1)[0]! : null);
 
 /**
- * The list a fee of the deal came from, as the template's house (`dealHouse`) reads it: the fee's own (`Fee.house`). A fee saved before
- * fees named their list names none; it came from the template's list where a figure of it still carries a source of that house (its
- * name as the list's own figures carry it, or one of the list's documents), since a template's figure keeps its source until the person
- * types over it and no other list filled a fee then. Any other fee names none: the person typed it.
+ * The list a fee of the deal came from: its own (`Fee.house`), which stays the fee's when the person changes its figures. A fee saved
+ * before fees named their list names none; it came from the template's list (`dealHouse`) where a figure of it still carries a source of
+ * that house, since a list's figure keeps its source, naming its house, until the person types over it (a fee filled alone from another
+ * house's list carries that house's). A source is the house's by the house's name in it; one that names no house, by its document's
+ * address where that address is one house's alone (one house's list may cite another's document). Any other fee names none: the person
+ * typed it, or typed over every figure of it.
  */
 function listOf(f: Fee, dealHouse: string | null, data: Pick<FeesData, "houses">): string | null {
   if (f.house) return f.house;
   const h = dealHouse ? houseOf(dealHouse, data) : null;
   if (!h) return null;
-  const docs = new Set(h.fees.flatMap((x) => feeSources(x as Fee).map((src) => src.url)));
-  return feeSources(f).some((src) => src.own === h.name || docs.has(src.url)) ? dealHouse : null;
+  const owners = (url: string) => data.houses.filter((x) => x.fees.some((t) => feeSources(t as Fee).some((src) => src.url === url)));
+  const theirs = (src: { own?: string; url: string }) => {
+    if (src.own) return src.own === h.name;
+    const o = owners(src.url);
+    return o.length === 1 && o[0] === h;
+  };
+  return feeSources(f).some(theirs) ? dealHouse : null;
 }
 
 /** The lists each kind of the deal's fees came from (`listOf`); a fee the person typed counts for none. */
@@ -597,7 +604,7 @@ function housesByKind(deal: FeeDeal, dealHouse: string | null, data: Pick<FeesDa
  * filled the deal), those of each kind of fee the deal still has from that list; for a kind the template filled and the deal no longer
  * has from it (taken away, replaced from another list, or typed by the person), none. A kind the template never filled keeps its lines,
  * which say why it did not, unless the deal has that kind from another list; a line of no kind of fee stays. Then, for each kind whose
- * fees came from other lists, those lists' lines of that kind.
+ * fees came from other lists, those lists' lines of that kind, each naming its house.
  */
 export function leftOfFees(deal: FeeDeal, left: readonly LeftOut[], data: Pick<FeesData, "houses">): LeftOut[] {
   const dealHouse = dealHouseOf(deal);
@@ -606,7 +613,10 @@ export function leftOfFees(deal: FeeDeal, left: readonly LeftOut[], data: Pick<F
   const fromTemplate = (kind: string) => dealHouse !== null && !!kinds.get(kind)?.has(dealHouse);
   const own = (x: LeftOut) => !("line" in x) || !x.base || fromTemplate(x.base) || (!filled.has(x.base as FeeKindId) && !kinds.has(x.base));
   const others = [...kinds].flatMap(([kind, houses]) =>
-    [...houses].filter((h) => h !== dealHouse).flatMap((h) => (houseOf(h, data)?.left ?? []).filter((l) => l.base === kind).map(({ lineId, ...rest }): LeftOut => ({ line: lineId, ...rest }))),
+    [...houses].filter((h) => h !== dealHouse).flatMap((h) => {
+      const house = houseOf(h, data);
+      return (house?.left ?? []).filter((l) => l.base === kind).map(({ lineId, ...rest }): LeftOut => ({ line: lineId, ...rest, house: house!.name }));
+    }),
   );
   return [...left.filter(own), ...others];
 }

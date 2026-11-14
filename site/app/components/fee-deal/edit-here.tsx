@@ -52,7 +52,8 @@ export function PartFig({ part, n, value }: { part: SlimPart; n: number; value: 
   // that part alone, so nothing else of theirs changes
   const onFee = (next: Fee) => {
     const all = figureToAll(next, caseId, others, k, f.figure);
-    at.onFee(at.carry ? figureOnward(all, at.fee, at.cases, k, part.id, f.figure) : all);
+    // carried against the fee as the box opened: a keystroke's figure is never what decides which later prices read as one with it
+    at.onFee(at.carry ? figureOnward(all, was.current ?? at.fee, at.cases, k, part.id, f.figure) : all);
   };
   const onRevert = () => was.current && at.onFee(figuresBack(at.fee, was.current, at.cases, k, f.figure));
   return (
