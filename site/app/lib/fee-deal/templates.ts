@@ -11,9 +11,10 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Flat, type Months, type Num, type OwnPlace, type Price, type ProviderKind, type SlimFee, type When } from "./model";
+import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
+import { buildPrice, type PriceSpec } from "./offers/build";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
 export type SlimTemplateFee = Omit<SlimFee, "id">;
@@ -44,7 +45,15 @@ export type LeftWhy =
    * A conversion that charges nothing beside a spread the documents do not limit, recorded with no value and so not priced (F-13, D65:
    * Interactive Brokers' automatic conversion): filled at 0%, the conversion still costs that spread.
    */
-  | "spread-unpriced";
+  | "spread-unpriced"
+  /**
+   * A bank's line for trading on the Tel Aviv exchange that names mutual fund units: it is read for what it prices there, and a mutual fund
+   * that is neither a tracking fund nor listed on the exchange is left out of it (BRK-16, part 4(א)(1) and footnote 4; MF-27), so such a
+   * fund has no trade price in the deal.
+   */
+  | "bank-funds"
+  /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
+  | "distribution-yearly";
 
 /** One house's price list as a template: the fees its whole list fills, and the lines it leaves, with why. */
 export interface HouseTemplate {
@@ -72,7 +81,7 @@ const has = (v: ValueObject | null | undefined): v is ValueObject & { value: num
  * in `usd_per_share`); with its bounds, its cap as a share of the trade (`cap`, F-12) and its flat price for a small action (`flat_up_to`,
  * F-12, F-13), every sum in one currency (a line whose sums are in two is left, F-13). `cap` is read only where `withCap`: the trade fee's.
  */
-function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): { price: Price } | { left: LeftWhy } {
+function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): { spec: PriceSpec } | { left: LeftWhy } {
   if (!has(l.rate)) return { left: "no-value" };
   const perUnit = l.rate.unit === "usd_per_share";
   const flat = l.flat_up_to && has(l.flat_up_to.amount) && has(l.flat_up_to.up_to) ? { amount: l.flat_up_to.amount, upTo: l.flat_up_to.up_to } : null;
@@ -80,15 +89,14 @@ function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): {
   const currencies = new Set(sums.map((b) => CURRENCY_OF_UNIT[b.unit]));
   if (currencies.has(undefined) || currencies.size > 1) return { left: "bound-currency" };
   const currency = [...currencies][0];
-  const cap = withCap && has(l.cap) ? { cap: num(l.cap) } : {};
-  const parts = {
+  const figures = {
+    ...(perUnit ? { amount: num(l.rate) } : { rate: num(l.rate) }),
     ...(has(l.min) ? { min: num(l.min) } : {}),
     ...(has(l.max) ? { max: num(l.max) } : {}),
-    ...cap,
-    ...(flat ? { flat: { amount: num(flat.amount), upTo: num(flat.upTo) } satisfies Flat } : {}),
-    ...(currency && currency !== "ILS" ? { currency } : {}),
+    ...(withCap && has(l.cap) ? { cap: num(l.cap) } : {}),
+    ...(flat ? { flat: num(flat.amount), upTo: num(flat.upTo) } : {}),
   };
-  return { price: perUnit ? { form: "perUnit", amount: num(l.rate), ...parts } : { form: "action", rate: num(l.rate), ...parts } };
+  return { spec: { form: perUnit ? "perUnit" : "action", figures, ...(currency && currency !== "ILS" ? { currency } : {}) } };
 }
 
 /**
@@ -105,7 +113,7 @@ const ITEM_ONE = new Set(["tase_shares_bonds", "etf_units", "tase_bonds", "tase_
  * What a trade line notes of an order not carried out (§10.6's stated parts). At a bank the fee rules decide it whatever the line's heading
  * says (BRK-16, notes to part 4(א)(1)): an order through a clerk not carried out for a reason on the client's side pays the minimum, so a
  * line of the branch's channel that prices securities on the Tel Aviv exchange carries that note, whose words keep the item's own
- * exception of mutual funds (a bank's line often prices them with the rest), and a direct line none. At a house that is no
+ * exception of mutual funds (`bankTradeLeavesFunds`), and a direct line none. At a house that is no
  * bank, the line's own words say it (`chargesUnfilled`). None where neither does.
  */
 export function unfilledNote(l: Line, bank: boolean): Note | null {
@@ -127,31 +135,33 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
 export function lineFees(l: Line, own: string, bank = false): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
-  const fee = (kind: FeeKindId, price: Price): SlimTemplateFee => ({ kind, stages: [{ price }] });
+  // every price goes through the registries (`buildPrice`), so none is one the fee cannot hold
+  const fee = (kind: FeeKindId, spec: PriceSpec): SlimTemplateFee => ({ kind, stages: [{ price: buildPrice(kind, spec) }] });
   switch (l.base) {
     case "trade": {
       // what the line, or at a bank the fee rules, say of an order not carried out (`unfilledNote`)
       const note = unfilledNote(l, bank);
       const notes = note ? { notes: [note] } : {};
+      const perAction = (amount: Num, more: Partial<PriceSpec["figures"]> = {}, currency?: BoundCurrency): PriceSpec => ({ form: "perAction", figures: { amount, ...more }, ...(currency && currency !== "ILS" ? { currency } : {}), ...notes });
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
-      if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", { form: "perAction", amount: num(l.rate), ...notes })], left: [] } : { fees: [], left: ["no-value"] };
+      if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", perAction(num(l.rate)))], left: [] } : { fees: [], left: ["no-value"] };
       // a share of nothing whose minimum and maximum are one sum, with no flat price, is that sum on each trade, in its currency (Altshuler's
       // "11$ לעסקה", IBI's "פיקס 12$"), under the line's percent maximum where it prints one (Excellence's "11$ פיקס לעסקה" under 2%)
       const fixed = fixedSum(l);
-      if (fixed) return { fees: [fee("trade", { form: "perAction", amount: num(fixed.sum), ...(has(l.cap) ? { cap: num(l.cap) } : {}), ...(fixed.currency !== "ILS" ? { currency: fixed.currency } : {}), ...notes })], left: [] };
+      if (fixed) return { fees: [fee("trade", perAction(num(fixed.sum), has(l.cap) ? { cap: num(l.cap) } : {}, fixed.currency))], left: [] };
       if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
       const p = actionPrice(l, num, true);
-      return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("trade", { ...p.price, ...notes } as Price)], left: [] };
+      return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
       if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
       const p = actionPrice(l, num, false);
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
-      const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", rate: num(l.spread) })] : [];
+      const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
       // a conversion filled at nothing whose spread is recorded but not limited says the spread is not counted, so 0% does not read as free
       const unpriced = l.spread && !has(l.spread) && convertsFree(l);
-      return { fees: [fee("fx", p.price), ...spread], left: unpriced ? ["spread-unpriced"] : [] };
+      return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? ["spread-unpriced"] : [] };
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
@@ -165,21 +175,21 @@ export function lineFees(l: Line, own: string, bank = false): Mapped {
       const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
       const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
       const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      return { fees: [fee("custody", { form: "held", rate: num(l.rate), per: every, every, ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { max: bound(l.max) } : {}), ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
+      return { fees: [fee("custody", { form: "held", figures: { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { max: bound(l.max) } : {}) }, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
     }
     case "fixed_period":
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
-      return { fees: [fee("fixed_period", { form: "sum", amount: num(l.rate), every: l.period ? PERIOD_MONTHS[l.period]! : 1 })], left: [] };
+      return { fees: [fee("fixed_period", { form: "sum", figures: { amount: num(l.rate) }, every: l.period ? PERIOD_MONTHS[l.period]! : 1 })], left: [] };
     case "transfer_out":
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
       if (!NIS_UNITS.has(l.rate.unit)) return { fees: [], left: ["bound-currency"] };
-      return { fees: [fee("transfer_out", { form: "perAction", amount: num(l.rate) })], left: [] };
+      return { fees: [fee("transfer_out", { form: "perAction", figures: { amount: num(l.rate) } })], left: [] };
     case "corporate_event": {
       // F-103: a sum per client for each corporate event, in the line's currency (One Zero's 50 dollars)
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
       const currency = CURRENCY_OF_UNIT[l.rate.unit];
       if (!currency || l.min || l.max) return { fees: [], left: ["bound-currency"] };
-      return { fees: [fee("corporate_event", { form: "perAction", amount: num(l.rate), ...(currency !== "ILS" ? { currency } : {}) })], left: [] };
+      return { fees: [fee("corporate_event", { form: "perAction", figures: { amount: num(l.rate) }, ...(currency !== "ILS" ? { currency } : {}) })], left: [] };
     }
     default:
       return { fees: [], left: ["other-base"] };
@@ -251,9 +261,10 @@ interface OwnValues {
  * "קרנות נאמנות מסורתיות", F-63 reading the standard line for a mutual fund), and a line abroad whose band leaves Canada out (IBI's "מחוץ
  * לארה״ב, לקנדה ולישראל" prices Europe and that value, not the rest of the world).
  */
-function valuesOf(l: Line, own: OwnValues): string[] {
+function valuesOf(l: Line, own: OwnValues, bank: boolean): string[] {
   const out = new Set<string>();
   for (const a of l.applies_to) {
+    if (a === "mutual_fund_units" && bankTradeLeavesFunds(l, bank)) continue;
     if (a === "all" || a === "brokerage-account") WHAT_IDS.forEach((v) => out.add(v));
     else if (TASE_CLASSES.has(a)) {
       const o = SUB_CLASSES.has(a) && l.applies_to.every((x) => SUB_CLASSES.has(x)) ? own.sub(l) : null;
@@ -270,6 +281,13 @@ function valuesOf(l: Line, own: OwnValues): string[] {
   for (const x of l.excludes ?? []) if (CLASS_VALUE[x]) out.delete(CLASS_VALUE[x]!);
   return [...out];
 }
+
+/**
+ * Whether a line is a bank's trade line that leaves mutual funds out (BRK-16, part 4(א)(1): its line for the Tel Aviv exchange excludes
+ * mutual funds but a tracking fund and a fund listed on the exchange, footnote 4; MF-27): a bank's trade line that names the exchange's
+ * classes beside mutual fund units prices the tracking and listed funds as the exchange's value (`tase`, ETFs among it), and no other fund.
+ */
+const bankTradeLeavesFunds = (l: Line, bank: boolean): boolean => bank && l.base === "trade" && l.applies_to.includes("mutual_fund_units") && l.applies_to.some((a) => TASE_CLASSES.has(a));
 
 /** How many classes a line names: a line that names fewer prices what it names more narrowly, and wins over a wider one (F-63). */
 const breadth = (l: Line): number => (l.applies_to.some((a) => a === "all" || a === "brokerage-account") ? Infinity : l.applies_to.length);
@@ -415,7 +433,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
         lines = lines.filter((l) => l === free || !!l.conversion_currency);
       }
     }
-    const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf);
+    const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf, bank);
     const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
     for (const l of ambiguous) left.push({ lineId: l.id, why: "ambiguous" });
     for (const l of unread) left.push({ lineId: l.id, why: "another-line" });
@@ -424,6 +442,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);
       left.push(...m.left.map((why) => ({ lineId: l.id, why })));
+      if (bankTradeLeavesFunds(l, bank)) left.push({ lineId: l.id, why: "bank-funds" });
     }
     const first = base === "fx" ? "currency" : base === "custody" || base === "fixed_period" ? "held" : "what";
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));
@@ -435,7 +454,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   // every other line is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
-    left.push({ lineId: l.id, why: l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base" });
+    left.push({ lineId: l.id, why: l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base" });
   }
   return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left };
 }
@@ -460,10 +479,10 @@ function trackTemplate(track: TrackLite, data: Pick<FeesData, "templates">, toda
   const fees: TemplateFee[] = [];
   const left: LeftOut[] = [];
   if (!known(v.balance)) left.push({ fee: "balance", why: "no-value" });
-  else if (v.balance.value > 0) fees.push({ kind: "balance", stages: [{ price: { form: "held", rate: num(v.balance), per: 12, every: 1 } }] });
+  else if (v.balance.value > 0) fees.push({ kind: "balance", stages: [{ price: buildPrice("balance", { form: "held", figures: { rate: num(v.balance) }, per: 12, every: 1 }) }] });
   if (depositFeeNoneByRule(v.deposit)) left.push({ fee: "deposit", why: "none-by-rule" });
   else if (!known(v.deposit)) left.push({ fee: "deposit", why: "no-value" });
-  else if (v.deposit.value > 0) fees.push({ kind: "deposit", stages: [{ price: { form: "action", rate: num(v.deposit) } }] });
+  else if (v.deposit.value > 0) fees.push({ kind: "deposit", stages: [{ price: buildPrice("deposit", { form: "action", figures: { rate: num(v.deposit) } }) }] });
   return { fees, left };
 }
 

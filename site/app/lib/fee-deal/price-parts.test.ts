@@ -151,8 +151,8 @@ describe("the templates", () => {
     if (t.form === "action") expect(t.cap!.src).toBeDefined();
     expect(price("fx")).toMatchObject({ form: "action", flat: { amount: { v: 2.85 }, upTo: { v: 50 } }, currency: "USD" });
     expect(filledFor("mizrahi-tefahot", [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }])("trade")).toMatchObject({ rate: { v: 0.64 }, min: { v: 50 } });
-    // what stays out is a plan's own line (a redemption) and the fees a template does not fill
-    expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["plan", "other-base"]));
+    // what stays out is a plan's own line (a redemption), mutual funds on the exchange's line, and the yearly distribution fees
+    expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["plan", "bank-funds", "distribution-yearly"]));
   });
   it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars, on what is bought abroad alone", () => {
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
@@ -310,6 +310,19 @@ describe("the templates", () => {
     // IBI: a mutual fund, tracking or not, reads the mutual-fund line's 5 ₪ minimum, not the exchange's 2.35 ₪
     expect(filledFor("ibi", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ rate: { v: 0.08 }, min: { v: 5 } });
     expect(copy.cases.values.what.mutualFunds).toBe("קרנות נאמנות");
+  });
+  it("price no mutual fund on a bank's line for the Tel Aviv exchange, which takes back only tracking and listed funds (BRK-16, MF-27), and say why", () => {
+    for (const id of ["discount", "leumi", "mizrahi-tefahot", "one-zero"]) {
+      const trade = house(id).fees.find((f) => f.kind === "trade")!;
+      const named = (trade.cases ?? []).flatMap((c) => (Array.isArray(c.when[0]) ? c.when[0] : []));
+      expect(named, id).toContain("tase");
+      expect(named, id).not.toContain("mutualFunds");
+      expect(filledFor(id, [{ by: "what", is: "mutualFunds" }])("trade"), id).toBeUndefined();
+    }
+    expect(house("discount").left.filter((l) => l.why === "bank-funds").map((l) => l.lineId).sort()).toEqual(["discount-buy-sell-tase-branch", "discount-buy-sell-tase-direct"]);
+    // a bank's yearly distribution fee on fund units is left out with a reason that names it
+    expect(house("discount").left).toContainEqual({ lineId: "discount-distribution-fee-type-1", why: "distribution-yearly" });
+    expect(copy.filled.why["distribution-yearly"]).toContain("עמלת הפצה");
   });
   it("read IBI's line outside the United States, Canada and Israel for Europe and a value of its own, never for the rest of the world", () => {
     const band = "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל";
