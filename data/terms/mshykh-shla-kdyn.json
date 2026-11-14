@@ -2,15 +2,16 @@
   "id": "mshykh-shla-kdyn",
   "he": "משיכה שלא כדין",
   "en": null,
-  "meaning": "משיכת כסף מקופה לקצבה שלא בדרך שהחוק מתיר; היא ממוסה בשיעור גבוה, עם חריגים מעטים",
+  "meaning": "כסף שקופת גמל משלמת שלא לפי חוק קופות הגמל, כמו סכום חד־פעמי מקופה לקצבה שהחוק לא מתיר או משיכה לפני המועד; הוא ממוסה ב־35% או במס השולי, הגבוה מביניהם, עם חריגים מעטים",
   "where": [],
   "wrapper_ids": [
+    "ira-provident",
     "pension-comprehensive",
     "pension-general",
     "provident-for-annuity"
   ],
   "variants": [
-    "תשלום שלא כדין מקופת גמל לקצבה"
+    "תשלום שלא כדין"
   ],
   "rule_ids": [
     "TXP-18"
@@ -20,6 +21,6 @@
     "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
     "publisher": "see title",
     "strength": "primary",
-    "checked": "2026-10-22"
+    "checked": "2026-11-14"
   }
 }
