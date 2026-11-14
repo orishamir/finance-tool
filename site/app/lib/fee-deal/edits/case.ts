@@ -2,21 +2,39 @@
 // taken away, a case made, copied or taken away, a case's values, and a range's tops and steps.
 import { hasCases, isRange, namesPlaces, newCaseId, pickKey, retyped, sameContent, typed, type By, type Case, type CasesFee, type Fee, type OwnPlace, type SlimFee, type When } from "../model";
 import { WHAT_VALUES } from "../shapes";
-import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "../offers/conditions";
+import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeUnit, type ValuesOf } from "../offers/conditions";
 
 // ---------------------------------------------------------------- what a fee's price changes by (F-114)
 
 /**
  * A thing to add to a fee, with its values asked once: a list thing with the values ticked (the site's ids or the person's words; for what
  * is bought or held, a value of the person's own with where it is bought and its currency, `own`); a track or a condition with its values
- * in the person's words (a condition with its name); a range with its first top and its unit.
+ * in the person's words (a condition with its name); a range with its first top and its unit. Each thing's shape follows how the
+ * conditions registry names its values (`ValuesOf`).
  */
-export type NewBy =
-  | { kind: "what" | "held"; values: string[]; own?: OwnPlace[] }
-  | { kind: "channel" | "currency"; values: string[] }
-  | { kind: "track"; values: string[] }
-  | { kind: "own"; label: string; values: string[] }
-  | { kind: RangeKind; unit: RangeUnit; top: number };
+export type NewBy = { [K in ByKind]: NewByOf<K> }[ByKind];
+type NewByOf<K extends ByKind> =
+  ValuesOf<K> extends { kind: "range" } ? { kind: K; unit: RangeUnit; top: number }
+  : ValuesOf<K> extends { kind: "own" } ? { kind: K; label: string; values: string[] }
+  : ValuesOf<K> extends { places: true } ? { kind: K; values: string[]; own?: OwnPlace[] }
+  : { kind: K; values: string[] };
+
+/** What the person gave in a thing's question (`AskThing`): the values ticked, the values of their own with their places, a name, a top and its unit. */
+export interface ThingAnswers {
+  values: string[];
+  own: OwnPlace[];
+  label: string;
+  top: number | null;
+  unit: RangeUnit | null;
+}
+
+/** The thing to add that a question's answers make, as the conditions registry says its values are named; null where a range has no top or unit. */
+export function newBy(kind: ByKind, a: ThingAnswers): NewBy | null {
+  if (isRangeKind(kind)) return a.top === null || !a.unit ? null : { kind, unit: a.unit, top: a.top };
+  if (CONDITIONS[kind].values.kind === "own") return { kind, label: a.label, values: a.values } as NewBy;
+  if (isPlaceKind(kind)) return { kind, values: a.values, ...(a.own.length ? { own: a.own.filter((o) => a.values.includes(o.name)) } : {}) };
+  return { kind, values: a.values } as NewBy;
+}
 
 /** A case copied with a new id, its track no longer marked as the person's (`mine` names one track, which the copy may not be). */
 const copyOf = (c: Case, when: When[]): Case => {
@@ -54,8 +72,7 @@ export function canAddBy(fee: Fee, kind: ByKind, label?: string): boolean {
   if (!conditionsFor(fee.kind).includes(kind)) return false;
   const by = fee.by ?? [];
   if (by.length >= BY_MAX) return false;
-  const key = kind === "own" ? `own:${label?.trim() ?? ""}` : kind === "held" ? "what" : kind;
-  return !by.some((b) => pickKey(b) === key);
+  return !by.some((b) => pickKey(b) === thingKey(kind, label));
 }
 
 /**
@@ -155,7 +172,7 @@ export function setWhen(fee: Fee, caseId: string, t: number, when: When): Fee {
 export function addOwnPlace(fee: Fee, t: number, own: OwnPlace): Fee {
   const b = fee.by?.[t];
   const name = own.name.trim();
-  if (!hasCases(fee) || !b || (b.kind !== "what" && b.kind !== "held") || !name || Object.hasOwn(WHAT_VALUES, name) || b.own?.some((o) => o.name === name)) return fee;
+  if (!hasCases(fee) || !b || !namesPlaces(b) || !name || Object.hasOwn(WHAT_VALUES, name) || b.own?.some((o) => o.name === name)) return fee;
   return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, own: [...(b.own ?? []), { ...own, name }] } : x)) };
 }
 

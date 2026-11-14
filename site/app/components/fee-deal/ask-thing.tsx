@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/builder";
-import { addBy, type NewBy } from "../../lib/fee-deal/edits/case";
+import { addBy, newBy } from "../../lib/fee-deal/edits/case";
 import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
-import { isPlaceKind, isRangeKind, type ByKind, type RangeUnit } from "../../lib/fee-deal/offers/conditions";
+import type { ByKind, RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, Button, FigureField, InlineSelect, TextField } from "../kit";
 import { bringIntoView } from "./in-view";
 
@@ -37,21 +37,21 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   const [chosen, setChosen] = useState<string[]>([]);
   const [extra, setExtra] = useState<string[]>([]);
   const [own, setOwn] = useState<OwnPlace[]>([]);
-  const [typing, setTyping] = useState<Own | null>(kind === "track" || kind === "own" ? { name: "", place: "abroad", currency: "USD" } : null);
+  const [typing, setTyping] = useState<Own | null>(q.typed?.open ? { name: "", place: "abroad", currency: "USD" } : null);
   const [label, setLabel] = useState("");
   const [top, setTop] = useState<number | null>(null);
   const [unit, setUnit] = useState<RangeUnit | null>(q.units?.[0]?.unit ?? null);
   const toggle = (id: string) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]));
-  const place = isPlaceKind(kind);
+  const place = !!q.typed?.place;
   const typed = () => {
     const name = typing?.name.trim();
     if (!typing || !name) return;
     if (!extra.includes(name) && !q.values?.some((v) => v.id === name)) setExtra((x) => [...x, name]);
     if (place) setOwn((x) => [...x.filter((o) => o.name !== name), { name, place: typing.place, currency: typing.currency }]);
     setChosen((x) => (x.includes(name) ? x : [...x, name]));
-    setTyping(kind === "track" || kind === "own" ? { ...typing, name: "" } : null);
+    setTyping(q.typed?.open ? { ...typing, name: "" } : null);
   };
-  const range = isRangeKind(kind);
+  const range = !!q.units;
   const copies = copiesWords(fee, kind, chosen.length);
   const note = (
     <>
@@ -61,20 +61,15 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
     </>
   );
   const add = () => {
-    let n: NewBy;
-    if (range) {
-      if (top === null || !unit) return;
-      n = { kind, unit, top };
-    } else if (kind === "own") n = { kind, label, values: chosen };
-    else if (place) n = { kind, values: chosen, ...(own.length ? { own: own.filter((o) => chosen.includes(o.name)) } : {}) };
-    else n = { kind: kind as "channel" | "currency" | "track", values: chosen };
+    const n = newBy(kind, { values: chosen, own, label, top, unit });
+    if (!n) return;
     onFee(addBy(fee, n));
     onDone(true);
   };
   const ownForm = typing && (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-end gap-2">
-        <TextField label={kind === "track" ? c.slot.trackName : c.slot.ownName} value={typing.name} maxLength={NAME_MAX} onChange={(name) => setTyping({ ...typing, name })} />
+        <TextField label={q.typed?.name ?? c.slot.ownName} value={typing.name} maxLength={NAME_MAX} onChange={(name) => setTyping({ ...typing, name })} />
         <Button variant="outline" disabled={!typing.name.trim()} onClick={typed}>
           {c.addValue}
         </Button>
@@ -98,8 +93,8 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
       onCommit={setTop}
       onClear={() => setTop(null)}
     />
-  ) : kind === "own" ? (
-    <TextField label={c.ownLabel} value={label} maxLength={NAME_MAX} onChange={setLabel} />
+  ) : q.label ? (
+    <TextField label={q.label} value={label} maxLength={NAME_MAX} onChange={setLabel} />
   ) : undefined;
   return (
     <div
@@ -121,7 +116,7 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
       {...(q.other ? { other: { label: q.other, open: !!typing, onClick: () => setTyping(typing ? null : { name: "", place: "abroad", currency: "USD" }) } } : {})}
       otherField={ownForm}
       note={note}
-      {...(range ? { ready: top !== null && top > 0 && !!unit } : kind === "own" ? { ready: label.trim() !== "" && chosen.length > 0 } : {})}
+      {...(range ? { ready: top !== null && top > 0 && !!unit } : q.label ? { ready: label.trim() !== "" && chosen.length > 0 } : {})}
       onAdd={add}
       onCancel={() => onDone(false)}
     />

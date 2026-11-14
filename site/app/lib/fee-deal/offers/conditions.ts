@@ -1,7 +1,9 @@
 // The things a fee's price may change by (method §10.6, F-114, F-115), one definition each: how its values are named (from a list, a
-// range's steps, the person's track or condition), which fees it can split, a range's units, and whether a range is read across sizes.
-// The toolbox's things, the question a thing asks when it is added, a deal read from the device or a link, and the reading's picks all
-// read this registry. Pure; no Hebrew.
+// range's steps, the person's track or condition), which fees it can split, a range's units, whether a range is read across sizes, the
+// thing it is picked and said as (what is held, as what is bought), and whether the reading picks it at all. The toolbox's things, the
+// question a thing asks when it is added, a deal read from the device or a link, and the reading's picks all read this registry, and the
+// kinds they narrow by (`RangeKind`, `ListKind`, `PlaceKind`, the model's `By`, the edits' `NewBy`, the picks a saved deal may hold) are
+// derived from it. Adding a thing is adding an entry here and its words in the copy. Pure; no Hebrew.
 import type { FeeKindId } from "../core";
 import { CHANNEL_IDS, CURRENCY_IDS, isConversion, onHolding, WHAT_IDS } from "../shapes";
 
@@ -11,15 +13,6 @@ import { CHANNEL_IDS, CURRENCY_IDS, isConversion, onHolding, WHAT_IDS } from "..
  * in a month (`volume`), the number of actions in a month (`count`), or a condition in the person's own words (`own`).
  */
 export type ByKind = "what" | "held" | "channel" | "track" | "currency" | "actionSize" | "portfolioSize" | "volume" | "count" | "own";
-
-/** The things whose values are steps of a range, each with its tops (F-114). */
-export type RangeKind = "actionSize" | "portfolioSize" | "volume" | "count";
-
-/** The things whose values are named from a list the site knows, or in the person's words: what is bought or held, the channel, the currency. */
-export type ListKind = "what" | "held" | "channel" | "currency";
-
-/** The list things whose values say where they are bought and in what currency: what is bought, what is held. */
-export type PlaceKind = "what" | "held";
 
 /**
  * What a range's tops count: a sum in a currency (the size of an action, of the portfolio, of a month's trading), units (a month's trading
@@ -36,8 +29,11 @@ export type RangeUnit = "ILS" | "USD" | "EUR" | "GBP" | "units" | "actions";
 export type ConditionValues = { kind: "list"; ids: readonly string[]; places?: true } | { kind: "range"; units: readonly RangeUnit[] } | { kind: "track" } | { kind: "own" };
 
 export interface ConditionDef {
-  id: ByKind;
   values: ConditionValues;
+  /** The thing it is picked, said and named as, where another's: what is held is what is bought, one pick for both (F-114). */
+  pickAs?: ByKind;
+  /** Never a pick of its own: the reading takes its value from another pick (the currency, from what is bought, F-114). */
+  picked?: false;
   /** Whether a fee of `kind` can change by it: what is bought on an action, what is held on a holding, the currency on a conversion. */
   fits: (kind: FeeKindId) => boolean;
   /**
@@ -53,20 +49,33 @@ const always = () => true;
 const onAction = (kind: FeeKindId) => !onHolding(kind);
 
 /** Every thing, in the toolbox's order: what is bought (or held, or the currency), the track, the channel, then the sizes, then a condition. */
-export const CONDITIONS: Readonly<Record<ByKind, ConditionDef>> = {
-  what: { id: "what", values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k) => !isConversion(k) && onAction(k) },
-  held: { id: "held", values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k) => !isConversion(k) && onHolding(k) },
-  currency: { id: "currency", values: { kind: "list", ids: CURRENCY_IDS }, fits: isConversion },
-  track: { id: "track", values: { kind: "track" }, fits: always },
-  channel: { id: "channel", values: { kind: "list", ids: CHANNEL_IDS }, fits: always },
-  actionSize: { id: "actionSize", values: { kind: "range", units: SUMS }, fits: onAction, readAcross: always },
-  portfolioSize: { id: "portfolioSize", values: { kind: "range", units: SUMS }, fits: always, readAcross: (onHoldingFee) => onHoldingFee },
-  volume: { id: "volume", values: { kind: "range", units: [...SUMS, "units"] }, fits: always },
-  count: { id: "count", values: { kind: "range", units: ["actions"] }, fits: always },
-  own: { id: "own", values: { kind: "own" }, fits: always },
-};
+export const CONDITIONS = {
+  what: { values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k: FeeKindId) => !isConversion(k) && onAction(k) },
+  held: { values: { kind: "list", ids: WHAT_IDS, places: true }, pickAs: "what", fits: (k: FeeKindId) => !isConversion(k) && onHolding(k) },
+  currency: { values: { kind: "list", ids: CURRENCY_IDS }, picked: false, fits: isConversion },
+  track: { values: { kind: "track" }, fits: always },
+  channel: { values: { kind: "list", ids: CHANNEL_IDS }, fits: always },
+  actionSize: { values: { kind: "range", units: SUMS }, fits: onAction, readAcross: always },
+  portfolioSize: { values: { kind: "range", units: SUMS }, fits: always, readAcross: (onHoldingFee: boolean) => onHoldingFee },
+  volume: { values: { kind: "range", units: [...SUMS, "units"] }, fits: always },
+  count: { values: { kind: "range", units: ["actions"] }, fits: always },
+  own: { values: { kind: "own" }, fits: always },
+} as const satisfies Record<ByKind, ConditionDef>;
 
 export const BY_KINDS = Object.keys(CONDITIONS) as ByKind[];
+
+/** How a thing's values are named, by the thing (`CONDITIONS[k].values`). */
+export type ValuesOf<K extends ByKind> = (typeof CONDITIONS)[K]["values"];
+type KindsWhere<C> = { [K in ByKind]: ValuesOf<K> extends C ? K : never }[ByKind];
+
+/** The things whose values are steps of a range, each with its tops (F-114). */
+export type RangeKind = KindsWhere<{ kind: "range" }>;
+/** The things whose values are named from a list the site knows, or in the person's words: what is bought or held, the channel, the currency. */
+export type ListKind = KindsWhere<{ kind: "list" }>;
+/** The list things whose values say where they are bought and in what currency: what is bought, what is held. */
+export type PlaceKind = KindsWhere<{ places: true }>;
+/** The things whose values are the person's words alone: a track's names, a condition's values. */
+export type WordsKind = KindsWhere<{ kind: "track" | "own" }>;
 
 /** The most things one fee's price changes by. */
 export const BY_MAX = 3;
@@ -74,10 +83,32 @@ export const BY_MAX = 3;
 /** The things a fee may change by, in the toolbox's order (`CONDITIONS`). */
 export const conditionsFor = (kind: FeeKindId): ByKind[] => BY_KINDS.filter((k) => CONDITIONS[k].fits(kind));
 
-export const isRangeKind = (k: ByKind): k is RangeKind => CONDITIONS[k].values.kind === "range";
-export const isListKind = (k: ByKind): k is ListKind => CONDITIONS[k].values.kind === "list";
+const def = (k: ByKind): ConditionDef => CONDITIONS[k];
+export const isRangeKind = (k: ByKind): k is RangeKind => def(k).values.kind === "range";
+export const isListKind = (k: ByKind): k is ListKind => def(k).values.kind === "list";
 /** Whether a thing's values say where they are bought and their currency (what is bought or held). */
-export const isPlaceKind = (k: ByKind): k is PlaceKind => { const v = CONDITIONS[k].values; return v.kind === "list" && !!v.places; };
+export const isPlaceKind = (k: ByKind): k is PlaceKind => { const v = def(k).values; return v.kind === "list" && !!v.places; };
+/** Whether a thing is a condition of the person's own, under a name of their own. */
+export const isOwnKind = (k: ByKind): boolean => def(k).values.kind === "own";
+/** Whether a thing's values are the person's words alone (a track's, a condition's): its question opens on typing one. */
+export const isWordsKind = (k: ByKind): k is WordsKind => def(k).values.kind === "track" || def(k).values.kind === "own";
+
+/** The thing a thing is picked, said and named as (`pickAs`): what is held as what is bought, any other as itself. */
+export const pickKind = (k: ByKind): ByKind => def(k).pickAs ?? k;
+/** The key a thing is picked by in the reading: what it is picked as, or a condition's name after `own:`. */
+export const thingKey = (k: ByKind, label?: string): string => (def(k).values.kind === "own" ? `own:${label?.trim() ?? ""}` : pickKind(k));
+/** Whether the reading may pick a thing of its own (the currency is taken from what is bought instead, F-114). */
+export const isPicked = (k: ByKind): boolean => def(k).picked !== false;
+/** The keys of the things the reading takes from another pick, never a pick of their own (`picked`: the currency). */
+export const TAKEN_KEYS: readonly string[] = BY_KINDS.filter((k) => !isPicked(k)).map(pickKind);
+/** Whether a range is read across sizes on every fee, and so is never picked (the size of the action, F-115). */
+const alwaysAcross = (k: ByKind): boolean => !!def(k).readAcross?.(true) && !!def(k).readAcross?.(false);
+
+/**
+ * The keys a saved deal's picks may name, besides a condition's (`own:` and its name): each thing as it is picked (`pickKind`), but a range
+ * read across sizes on every fee. A new thing is among them as it is added.
+ */
+export const PICK_KEYS: readonly string[] = [...new Set(BY_KINDS.filter((k) => def(k).values.kind !== "own" && !alwaysAcross(k)).map(pickKind))];
 export const RANGE_KINDS = BY_KINDS.filter(isRangeKind);
 
 /** The units each range may count in, the first its usual one. */
@@ -87,4 +118,4 @@ export const RANGE_UNITS = Object.fromEntries(RANGE_KINDS.map((k) => [k, (CONDIT
 export const LIST_IDS = Object.fromEntries(BY_KINDS.filter(isListKind).map((k) => [k, (CONDITIONS[k].values as Extract<ConditionValues, { kind: "list" }>).ids])) as Readonly<Record<ListKind, readonly string[]>>;
 
 /** Whether a range is read across sizes rather than picked (F-115): the size of the action always, the size of the portfolio on a holding. */
-export const readAcross = (onHoldingFee: boolean, by: ByKind): boolean => !!CONDITIONS[by].readAcross?.(onHoldingFee);
+export const readAcross = (onHoldingFee: boolean, by: ByKind): boolean => !!def(by).readAcross?.(onHoldingFee);

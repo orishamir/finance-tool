@@ -2,6 +2,7 @@
 // picks give each fee, a size read across sizes, a price's new parts, the views the page renders, and the edits that make cases.
 import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { PICK_KEYS } from "./offers/conditions";
 import { describe, expect, it } from "vitest";
 import { actionCost, dealMarks } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
@@ -93,12 +94,17 @@ describe("cases as the device and a link keep them", () => {
     ["a discount above a hundred percent", (d: any) => (d.fees[1].cases[1].stages[0].price.discount.pct.v = 120)],
     ["a third party's figure of no form", (d: any) => (d.fees[0].cases[4].stages[0].price.third.price = { form: "held", rate: { v: 1 } })],
     ["an offset against a fee no kind has", (d: any) => (d.fees[3].stages[0].price.offset = { kind: "bribe" })],
-    ["a pick of no thing", (d: any) => (d.readFor = [{ by: "colour", is: "red" }])],
     ["a thing picked twice", (d: any) => (d.readFor = [{ by: "what", is: "us" }, { by: "what", is: "tase" }])],
   ])("refuses %s", (_, spoil) => {
     const d = JSON.parse(JSON.stringify(deal()));
     spoil(d);
     expect(readDeal(d)).toBeNull();
+  });
+  it("opens a deal with a pick of no thing the page has, without the pick, and takes every thing's key from the registry", () => {
+    const d = JSON.parse(JSON.stringify(deal()));
+    d.readFor = [{ by: "colour", is: "red" }, { by: "channel", is: "direct" }];
+    expect(readDeal(d)!.readFor).toEqual([{ by: "channel", is: "direct" }]);
+    expect([...PICK_KEYS].sort()).toEqual(["channel", "count", "currency", "portfolioSize", "track", "volume", "what"]);
   });
   it("drops a part a price's form has no place for, as it drops any key it does not know", () => {
     const d = JSON.parse(JSON.stringify(deal()));

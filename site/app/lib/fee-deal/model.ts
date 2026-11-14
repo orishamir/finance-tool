@@ -10,7 +10,7 @@ import { byAmount, byRate, formOnAction, KEY_FORMS, type PartKey } from "./offer
 import { FIGURE_IDS, FIGURES } from "./offers/figures";
 import { holdsFunds, isFeeKindId, WHAT_VALUES, type FeeKindId, type FormId, type Place } from "./shapes";
 import { capacity, fieldsOf, PART_FIELDS, pricesSaleApart, type ChargedForm, type FieldId, type PartFieldId } from "./offers/capacity";
-import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, PICK_KEYS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeKind, type RangeUnit, type ValuesOf } from "./offers/conditions";
 
 export * from "./core";
 import { BOUND_CURRENCIES, MONTHS, NOTES, type BoundCurrency, type Discount, type Flat, type MonthKey, type Months, type Note, type Num, type Price, type Priced, type Side, type Sourced, type Stage, type Strength, type Third } from "./core";
@@ -26,13 +26,15 @@ export interface OwnPlace {
  * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency) names its values in the
  * cases, as the site's ids or in the person's words; what is bought or held keeps where each value of the person's own is bought and its
  * currency (`own`). A track's and a condition's values are the person's words; a condition has a name (`label`). A range has its tops
- * (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps.
+ * (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps. Each thing's shape follows how the conditions
+ * registry names its values (`ValuesOf`), so a new thing has one.
  */
-export type By =
-  | { kind: "what" | "held"; own?: OwnPlace[] }
-  | { kind: "channel" | "currency" | "track" }
-  | { kind: "own"; label: string }
-  | { kind: RangeKind; unit: RangeUnit; tops: Num[] };
+export type By = { [K in ByKind]: ByOf<K> }[ByKind];
+type ByOf<K extends ByKind> =
+  ValuesOf<K> extends { kind: "range" } ? { kind: K; unit: RangeUnit; tops: Num[] }
+  : ValuesOf<K> extends { kind: "own" } ? { kind: K; label: string }
+  : ValuesOf<K> extends { places: true } ? { kind: K; own?: OwnPlace[] }
+  : { kind: K };
 
 /** A range thing of a fee. */
 export type RangeBy = Extract<By, { tops: Num[] }>;
@@ -83,11 +85,8 @@ export type Fee = SlimFee | CasesFee;
 
 export const hasCases = (f: Fee): f is CasesFee => f.cases !== undefined;
 
-/**
- * The key a thing is picked by in the reading: its kind (what is bought and what is held share one, `what`), or a condition's name after
- * `own:`.
- */
-export const pickKey = (b: By): string => (b.kind === "own" ? `own:${b.label}` : b.kind === "held" ? "what" : b.kind);
+/** The key a thing is picked by in the reading (`thingKey`): what it is picked as (what is held as what is bought), or a condition's name after `own:`. */
+export const pickKey = (b: By): string => thingKey(b.kind, "label" in b ? b.label : undefined);
 
 /**
  * The reading's pick for one thing (F-114), by its key (`pickKey`): a named value (the site's id, or the person's words), or a step of a
@@ -663,7 +662,8 @@ function readPicks(raw: unknown): ReadPick[] | null {
   const out: ReadPick[] = [];
   for (const p of raw) {
     if (!isRec(p) || !str(p.by, NAME_MAX + 4) || !str(p.is, NAME_MAX + 4) || p.is.trim() === "" || out.some((x) => x.by === p.by)) return null;
-    if (!PICK_KEYS.includes(p.by) && !(p.by.startsWith("own:") && p.by.length > 4)) return null;
+    // a pick of a thing the page no longer has, or not yet, is left out: the deal opens without it
+    if (!PICK_KEYS.includes(p.by) && !(p.by.startsWith("own:") && p.by.length > 4)) continue;
     if (p.place === undefined && p.currency === undefined) {
       out.push({ by: p.by, is: p.is });
       continue;
@@ -674,7 +674,6 @@ function readPicks(raw: unknown): ReadPick[] | null {
   return out;
 }
 
-const PICK_KEYS: readonly string[] = ["what", "channel", "track", "currency", "portfolioSize", "volume", "count"];
 
 /**
  * What a deal saved before cases said it held, as the reading's pick of what is bought (F-114): a fund on the Tel Aviv exchange is a
