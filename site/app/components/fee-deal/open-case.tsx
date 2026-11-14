@@ -285,5 +285,8 @@ export function WhenText({ words }: { words: { text?: string; lead?: string; fig
   return <>{words.text}</>;
 }
 
+/** A case's value for one thing as plain words: a range's step with its top, else its words. */
+export const whenText = (words: { text?: string; lead?: string; figure?: SiteValue }): string => (words.figure ? `${words.lead ?? ""}${numText(words.figure)}` : (words.text ?? ""));
+
 /** A range's top as plain words ("100 $", "200 יחידות"), for a menu's line and a case's spoken name. */
 export const numText = (v: SiteValue): string => formatValue(v.value as number, v.unit);

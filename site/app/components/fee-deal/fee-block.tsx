@@ -19,7 +19,7 @@ import { CaseFold, CaseRow, CaseSlot, ConditionBand, FeeBlock, OpenCase, PartChi
 import { Num } from "../provenance";
 import { AskThing } from "./ask-thing";
 import { LawTag } from "./links";
-import { OpenParts, WhenText, numText } from "./open-case";
+import { OpenParts, WhenText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
 import type { PendingPart } from "../../lib/fee-deal/offers/parts";
 import { Fig, UnreadWords, feeColour, feeName } from "./words";
@@ -57,7 +57,7 @@ export interface BlockActions {
 }
 
 /** A case's value for each thing in plain words, joined, for its spoken name and the toolbox's line ("בחו״ל, בארה״ב · מסלול 1"). */
-export const caseText = (when: readonly WhenWords[]): string => when.map((w) => (w.figure ? `${w.lead ?? ""}${numText(w.figure)}` : (w.text ?? ""))).join(copy.cases.sep);
+export const caseText = (when: readonly WhenWords[]): string => when.map(whenText).join(copy.cases.sep);
 
 /** A case's value for each thing as a band row says it: the person's track marked "שלכם", a range's step with the range's icon. */
 const caseWords = (when: readonly WhenWords[], mine: boolean, things: readonly { kind: string }[]): CaseWord[] =>

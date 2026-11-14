@@ -4,7 +4,7 @@
 import { newFee, type Fee, type FeeDeal, type ReadPick } from "../model";
 import type { DealKind } from "../kinds";
 import { type FeeKindId, type FormId } from "../shapes";
-import { feeOffered, type DataBar } from "../offers/offer";
+import { feeOffered, offerFor, type DataBar } from "../offers/offer";
 
 /** The deal with one fee replaced by `fn` of it. */
 export const updateFee = (deal: FeeDeal, feeId: string, fn: (f: Fee) => Fee): FeeDeal => ({ ...deal, fees: deal.fees.map((f) => (f.id === feeId ? fn(f) : f)) });
@@ -14,6 +14,9 @@ export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: F
   const fee = newFee(kind, undefined, form);
   return { deal: { ...deal, fees: [...deal.fees, fee] }, fee };
 }
+
+/** The deal with a new fee of a kind at the end, its price in the first form the deal's product (`product`) is offered it in. */
+export const addOfferedFee = (deal: FeeDeal, product: DealKind | null, kind: FeeKindId): { deal: FeeDeal; fee: Fee } => addFee(deal, kind, offerFor(product, kind).usual ?? undefined);
 
 /**
  * A deal of another kind: a fee the new kind is not offered (`feeOffered`: one it does not have, one the data bars, `bar`, or one the rule
