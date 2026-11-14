@@ -17,7 +17,7 @@ describe("the data the loader ships", () => {
     expect(gemel.tracks).toHaveLength(133);
     expect(gemel.companies).toHaveLength(12);
     // a self-directed fund is a product of its own (IRA-03): 8 provident and 7 study funds, out of their regulator types' lists
-    expect(view("provident-for-annuity").tracks).toHaveLength(160);
+    expect(view("provident-for-annuity").tracks).toHaveLength(164);
     expect(view("ira-provident").tracks).toHaveLength(8);
     expect(view("ira-hishtalmut").tracks).toHaveLength(7);
     expect(view("child-savings-provident").tracks).toHaveLength(30);
@@ -197,9 +197,9 @@ describe("rows", () => {
   });
 
   it("the kind shows as a chip only when the short name leaves it out, and the short name under a kind only when it says more", () => {
-    const guaranteed = view("provident-for-annuity").tracks.find((x) => x.fullName === "מנורה מבטחים יותר מסלול א'")!;
-    expect(guaranteed.sub).toBe("מבטיח תשואה");
-    expect(showsKindChip(guaranteed)).toBe(true);
+    const general = view("provident-for-annuity").tracks.find((x) => x.fullName === "מנורה מבטחים יותר מסלול ד'")!;
+    expect(general.sub).toBe("כללי");
+    expect(showsKindChip(general)).toBe(true);
     const shares = gemel.tracks.find((x) => x.sub === "מניות" && x.short === "מניות")!;
     expect(showsKindChip(shares)).toBe(false);
     expect(showsShortName(shares)).toBe(false);
