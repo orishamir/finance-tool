@@ -7,7 +7,7 @@ import type { ChangeKind } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
-import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
+import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
 import { hasFlat } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
@@ -16,7 +16,7 @@ import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
-import { BY_MAX, CONDITIONS, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type ListKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, isRangeKind, type ByKind, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -545,18 +545,26 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
   const w = c.when[t]!;
   const any = { words: copy.cases.any[b.kind]!, ticked: w === "any" };
   const thing = thingName(fee.kind, b);
-  if (isRange(b)) {
-    const step = typeof w === "number" ? w : null;
-    const before = step !== null && step > 0 ? whenWords(fee, step - 1, t, r.today) : null;
-    return { kind: "range", title: copy.cases.slot.range.replace("{thing}", thing), upTo: step !== null && step < b.tops.length ? b.tops[step]!.v : null, any, unit: b.unit, units: RANGE_UNITS[b.kind].map((u) => ({ unit: u, words: unitWords(u) })), before };
-  }
   const named = Array.isArray(w) ? w : [];
-  if (b.kind === "track") return { kind: "track", title: copy.cases.slot.trackName, name: named[0] ?? null, any, mine: !!c.mine, myTrack: copy.cases.slot.myTrack };
-  if (b.kind === "own") return { kind: "own", title: thing, name: named[0] ?? null, any };
-  const ids = [...LIST_IDS[b.kind as ListKind], ...((b.kind === "what" || b.kind === "held") && b.own ? b.own.map((o) => o.name) : [])];
-  // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
-  for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
-  return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+  const values = CONDITIONS[b.kind].values;
+  switch (values.kind) {
+    case "range": {
+      if (!isRange(b)) return null;
+      const step = typeof w === "number" ? w : null;
+      const before = step !== null && step > 0 ? whenWords(fee, step - 1, t, r.today) : null;
+      return { kind: "range", title: copy.cases.slot.range.replace("{thing}", thing), upTo: step !== null && step < b.tops.length ? b.tops[step]!.v : null, any, unit: b.unit, units: values.units.map((u) => ({ unit: u, words: unitWords(u) })), before };
+    }
+    case "track":
+      return { kind: "track", title: copy.cases.slot.trackName, name: named[0] ?? null, any, mine: !!c.mine, myTrack: copy.cases.slot.myTrack };
+    case "own":
+      return { kind: "own", title: thing, name: named[0] ?? null, any };
+    case "list": {
+      const ids = [...values.ids, ...(namesPlaces(b) && b.own ? b.own.map((o) => o.name) : [])];
+      // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
+      for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
+      return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+    }
+  }
 }
 
 // ---------------------------------------------------------------- a thing of the band's head, opened

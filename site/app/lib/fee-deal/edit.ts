@@ -9,6 +9,7 @@ import {
   blankPrice,
   hasCases,
   isRange,
+  namesPlaces,
   newCaseId,
   newFee,
   pickKey,
@@ -42,7 +43,7 @@ import { charged, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES, type Figure } from "./offers/figures";
 import { kindHas, WHAT_VALUES, type FeeKindId, type FormId } from "./shapes";
 import { capacity } from "./offers/capacity";
-import { BY_MAX, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type RangeKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
 
 export type { Side } from "./model";
 
@@ -355,7 +356,8 @@ const copyOf = (c: Case, when: When[]): Case => {
 
 /** The thing a `NewBy` makes, and the values each case is copied to (a range's two steps, "עד" its top and "מעל" it). */
 function thingOf(n: NewBy): { by: By; values: When[] } | null {
-  if (isRangeKind(n.kind)) {
+  const how = CONDITIONS[n.kind].values.kind;
+  if (how === "range") {
     const r = n as Extract<NewBy, { top: number }>;
     if (!RANGE_UNITS[r.kind].includes(r.unit) || !(r.top > 0)) return null;
     return { by: { kind: r.kind, unit: r.unit, tops: [typed(r.top)] }, values: [0, 1] };
@@ -363,13 +365,15 @@ function thingOf(n: NewBy): { by: By; values: When[] } | null {
   const l = n as Exclude<NewBy, { top: number }>;
   const values = [...new Set(l.values.map((v) => v.trim()).filter(Boolean))];
   if (values.length === 0) return null;
-  if (l.kind === "own") return l.label.trim() ? { by: { kind: "own", label: l.label.trim() }, values: values.map((v) => [v]) } : null;
-  if (l.kind === "what" || l.kind === "held") {
-    const own = (l.own ?? []).filter((o) => values.includes(o.name) && !Object.hasOwn(WHAT_VALUES, o.name));
-    if (!values.every((v) => LIST_IDS[l.kind].includes(v) || own.some((o) => o.name === v))) return null;
-    return { by: { kind: l.kind, ...(own.length ? { own } : {}) }, values: values.map((v) => [v]) };
+  const each = values.map((v) => [v]);
+  if (how === "own") return l.kind === "own" && l.label.trim() ? { by: { kind: "own", label: l.label.trim() }, values: each } : null;
+  if (isPlaceKind(l.kind)) {
+    const placed = l as Extract<NewBy, { kind: PlaceKind }>;
+    const own = (placed.own ?? []).filter((o) => values.includes(o.name) && !Object.hasOwn(WHAT_VALUES, o.name));
+    if (!values.every((v) => LIST_IDS[placed.kind].includes(v) || own.some((o) => o.name === v))) return null;
+    return { by: { kind: placed.kind, ...(own.length ? { own } : {}) }, values: each };
   }
-  return { by: { kind: l.kind }, values: values.map((v) => [v]) };
+  return { by: { kind: l.kind } as By, values: each };
 }
 
 /**
@@ -464,7 +468,7 @@ function fits(b: By, w: When): boolean {
   if (w === "any") return true;
   if (isRange(b)) return typeof w === "number" && Number.isInteger(w) && w >= 0 && w <= b.tops.length;
   if (!Array.isArray(w) || w.length === 0 || new Set(w).size !== w.length || w.some((v) => !v.trim())) return false;
-  if (b.kind === "what" || b.kind === "held") return w.every((v) => LIST_IDS[b.kind].includes(v) || !!b.own?.some((o) => o.name === v));
+  if (namesPlaces(b)) return w.every((v) => LIST_IDS[b.kind].includes(v) || !!b.own?.some((o) => o.name === v));
   return true;
 }
 

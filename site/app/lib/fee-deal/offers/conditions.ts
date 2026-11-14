@@ -18,6 +18,9 @@ export type RangeKind = "actionSize" | "portfolioSize" | "volume" | "count";
 /** The things whose values are named from a list the site knows, or in the person's words: what is bought or held, the channel, the currency. */
 export type ListKind = "what" | "held" | "channel" | "currency";
 
+/** The list things whose values say where they are bought and in what currency: what is bought, what is held. */
+export type PlaceKind = "what" | "held";
+
 /**
  * What a range's tops count: a sum in a currency (the size of an action, of the portfolio, of a month's trading), units (a month's trading
  * in shares), or actions (the number of actions in a month).
@@ -26,10 +29,11 @@ export type RangeUnit = "ILS" | "USD" | "EUR" | "GBP" | "units" | "actions";
 
 /**
  * How a thing's values are named: from a list the site knows, or in the person's words beside it (`list`, with the site's ids); as steps
- * of a range, with its tops in a unit (`range`, its units, the first the usual one); a track's name in the person's words (`track`); a
+ * of a range, with its tops in a unit (`range`, its units, the first the usual one); a list whose values the person names says where each
+ * is bought and its currency (`places`); a track's name in the person's words (`track`); a
  * condition's value under its own name (`own`).
  */
-export type ConditionValues = { kind: "list"; ids: readonly string[] } | { kind: "range"; units: readonly RangeUnit[] } | { kind: "track" } | { kind: "own" };
+export type ConditionValues = { kind: "list"; ids: readonly string[]; places?: true } | { kind: "range"; units: readonly RangeUnit[] } | { kind: "track" } | { kind: "own" };
 
 export interface ConditionDef {
   id: ByKind;
@@ -50,8 +54,8 @@ const onAction = (kind: FeeKindId) => !onHolding(kind);
 
 /** Every thing, in the toolbox's order: what is bought (or held, or the currency), the track, the channel, then the sizes, then a condition. */
 export const CONDITIONS: Readonly<Record<ByKind, ConditionDef>> = {
-  what: { id: "what", values: { kind: "list", ids: WHAT_IDS }, fits: (k) => !isConversion(k) && onAction(k) },
-  held: { id: "held", values: { kind: "list", ids: WHAT_IDS }, fits: (k) => !isConversion(k) && onHolding(k) },
+  what: { id: "what", values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k) => !isConversion(k) && onAction(k) },
+  held: { id: "held", values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k) => !isConversion(k) && onHolding(k) },
   currency: { id: "currency", values: { kind: "list", ids: CURRENCY_IDS }, fits: isConversion },
   track: { id: "track", values: { kind: "track" }, fits: always },
   channel: { id: "channel", values: { kind: "list", ids: CHANNEL_IDS }, fits: always },
@@ -72,6 +76,8 @@ export const conditionsFor = (kind: FeeKindId): ByKind[] => BY_KINDS.filter((k) 
 
 export const isRangeKind = (k: ByKind): k is RangeKind => CONDITIONS[k].values.kind === "range";
 export const isListKind = (k: ByKind): k is ListKind => CONDITIONS[k].values.kind === "list";
+/** Whether a thing's values say where they are bought and their currency (what is bought or held). */
+export const isPlaceKind = (k: ByKind): k is PlaceKind => { const v = CONDITIONS[k].values; return v.kind === "list" && !!v.places; };
 export const RANGE_KINDS = BY_KINDS.filter(isRangeKind);
 
 /** The units each range may count in, the first its usual one. */
