@@ -59,6 +59,29 @@
     "state": "sourced",
     "notes": "The board prints for 'מ-100 ש\"ח עד 5 מ' ₪': 'שנה ראשונה' 1.80%, 'שנה שנייה' 2.00%, 'שנה שלישית' 2.20%, 'שנה רביעית' 2.50% ('תעריפית', the same in 'מתואמת'). The product page (served at the address adir-monthly-deposit, headed 'חיסכון מונדיאל (481)') prints 'ריבית - קבועה וידועה מראש לפי מועדים קבועים בהם הריבית משתפרת' and the same four rates; recorded is the fourth year's 2.50%, at the end of the 4-year term. Page: 'תחנות יציאה –לאחר שנה ובכל 3 חודשים לאחר מכן'. Rate board read 2026-11-07 (8 pages, created 05.10.2026, 'מחליף לוח קודם מיום 03/09/2026'; the same file as filed on 2026-10-31, library 124adbb22147699a)."
   },
+  "interest_calc": {
+    "effective_annual": {
+      "value": 2.5,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית חסכונות', 'חיסכון- מונדיאל', 'ריבית שנתית', 'מתואמת' (עמ' 4)",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50",
+        "BANK-04"
+      ],
+      "state": "sourced",
+      "notes": "The board prints for 'מ-100 ש\"ח עד 5 מ' ₪' the row 'מתואמת' equal to the row 'תעריפית' in every year: 'שנה ראשונה' 1.80% / 1.80%, 'שנה שנייה' 2.00% / 2.00%, 'שנה שלישית' 2.20% / 2.20%, 'שנה רביעית' 2.50% / 2.50%. Recorded is the fourth year's 'מתואמת' 2.50%, beside rate_offered's fourth-year rate. Under Schedule A an effective annual rate equal to the nominal one means interest calculated once a year (BANK-50). Neither the board nor the product page says in words how often interest is calculated. Read 2026-11-14 in the file re-issued on 10.11.2026, whose p.4 still prints 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026'."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",

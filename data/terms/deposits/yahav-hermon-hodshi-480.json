@@ -80,6 +80,29 @@
     "state": "sourced",
     "notes": "The board prints for 'מ-100 ש\"ח עד 5 מ' ₪' four periods: 'שנתיים ראשונות' -3.50% / 1.25% / 1.25%, 'שנתיים עד חמש שנים' -3.25% / 1.50% / 1.50%, 'חמש עד שמונה שנים' -3.10% / 1.65% / 1.65%, 'שמונה עד עשר שנים' -2.90% / 1.85% / 1.85% (margin from prime / 'תעריפית' / 'מתואמת'). The product page ties each rate to when a deposit is made: 'הפקדות בשנתיים הראשונות - P-3.5%', 'הפקדות מתום שנתיים ועד השנה החמישית - P-3.25%', 'הפקדות מתום חמש שנים ועד השנה השמינית - P-3.1%', 'הפקדות מתום שמונה שנים ועד תום תקופה - P-2.9%'; recorded is the rate of the first two years' deposits, 1.25%. Page: 'ריבית - שקלית משתנה לפי ריבית הפריים'; 'תחנות יציאה –לאחר שנתיים ובכל חודש לאחר מכן'. Rate board read 2026-11-07 (8 pages, created 05.10.2026, 'מחליף לוח קודם מיום 03/09/2026'; the same file as filed on 2026-10-31, library 124adbb22147699a)."
   },
+  "interest_calc": {
+    "effective_annual": {
+      "value": 1.25,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית חסכונות', 'חיסכון- חרמון חודשי', 'ריבית שנתית', 'מתואמת' (עמ' 4)",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50",
+        "BANK-04"
+      ],
+      "state": "sourced",
+      "notes": "The board prints for 'מ-100 ש\"ח עד 5 מ' ₪' the row 'מתואמת' equal to the row 'תעריפית' in every period: 'שנתיים ראשונות' 1.25% / 1.25%, 'שנתיים עד חמש שנים' 1.50% / 1.50%, 'חמש עד שמונה שנים' 1.65% / 1.65%, 'שמונה עד עשר שנים' 1.85% / 1.85%. Recorded is the first two years' 'מתואמת' 1.25%, beside rate_offered's. Under Schedule A an effective annual rate equal to the nominal one means interest calculated once a year (BANK-50). Neither the board nor the product page says in words how often interest is calculated. Read 2026-11-14 in the file re-issued on 10.11.2026, whose p.4 still prints 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026'."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",

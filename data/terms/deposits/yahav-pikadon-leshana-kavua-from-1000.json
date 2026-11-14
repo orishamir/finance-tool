@@ -125,11 +125,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון לשנה (365 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'טווח סכום להפקדה'",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'לוח שיעורי ריבית על פקדונות בריבית קבועה', עמודת 'מ-360 עד 380 יום', 'סכום' (עמ' 1)",
         "publisher": "Bank Yahav for Government Employees Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
+      "checked": "2026-11-14",
       "effective_from": "2026-10-06",
       "effective_to": null,
       "tax_year": null,
@@ -138,9 +138,9 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "Printed '1,000 עד 50,000 ש\"ח'."
+      "notes": "The 447 table (p.6) prints '1,000 עד 50,000 ש\"ח'; the board (p.1) starts the next tier at 'מ-50,000 ש\"ח'. The fixed-rate board on p.1 prints its amount tiers as starting points, each 'תעריפית' and 'מתואמת' alike, in the column 'מ-360 עד 380 יום': 'מ-1,000 ש\"ח' 1.95%, 'מ-25,000 ש\"ח' 1.95%, 'מ-50,000 ש\"ח' 2.15%, 'מ-100,000 ש\"ח' 2.30%, 'מ-200,000 ש\"ח' 2.80%, 'מ-300,000 ש\"ח' 2.80%, 'מ-500,000 ש\"ח' 2.80%: the same rates as the 447 table's row 'פיקדון לשנה (365 יום)' on p.6 ('1,000 עד 50,000' 1.95%, '50,000 עד 100,00' 2.15%, '100,000 עד 200,000' 2.30%, '200,000 ש\"ח ומעלה' 2.80%; p.6 now headed 'בתוקף מיום: 11/11/2026', '10/11/2026 11_26'). On the board an amount from X takes X's rate, so 50,000, 100,000 and 200,000 ₪ each take the higher tier (F-108). Read 2026-11-14 in the file re-issued on 10.11.2026."
     },
-    "max_edge": "unknown"
+    "max_edge": "excluded"
   },
   "break": {
     "allowed": false,
