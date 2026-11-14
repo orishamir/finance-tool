@@ -1,7 +1,7 @@
 // D29, second wave: the study fund, the provident fund for investing and the pensions. Every figure equals an engine run; the holding
 // on each side is the same index; a gap is a gap, never a number.
 import { describe, expect, it } from "vitest";
-import { runInputs, runPlanned } from "@finance-tool/engine";
+import { ruleBook, runInputs, runPlanned } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { entered as enteredValue } from "./value";
@@ -214,6 +214,18 @@ describe("pensions", () => {
     expect(run.detail.grossDeposits).toBeCloseTo(m.you * 12 * 10, 4);
     expect(m.balance!.real).toBeGreaterThan(0);
     expect(m.general).toBeNull();
+  });
+  it("gives the same balance at every salary from the average wage up, since the deposits are the same and nothing is above TXP-10's limit", () => {
+    const annuity = page("provident-for-annuity").signature!;
+    const book = ruleBook({ rules: annuity.bundles["provident-for-annuity"]!.rules, runDate: annuity.bundles["provident-for-annuity"]!.runDate });
+    const average = book.amount("PEN-04", "average_wage");
+    const at = (salary: number) => pensionModel(annuity, "provident-for-annuity", { salary, years: 10, insurancePct: null })!;
+    const base = at(average);
+    for (const salary of [30000, 50000, 100000]) {
+      const m = at(salary);
+      expect(m.total).toBeCloseTo(base.total, 9);
+      expect(m.balance!.real).toBeCloseTo(base.balance!.real, 6);
+    }
   });
   it("has no insurance for a provident fund for annuity (PEN-35), and no balance where no track is named", () => {
     const annuity = page("provident-for-annuity").signature!;

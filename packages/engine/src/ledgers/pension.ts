@@ -22,8 +22,12 @@ export interface PensionProfile {
   annualIncome?: number;
   /** Employee deposits already made through work, a share of salary. They use the credit cap first (TXP-02). */
   existingEmployeeRate?: number;
-  /** The employer's rates on the payslip, shares of salary: pension (tagmulim) and severance (A-12). */
-  employer?: { pensionRate: number; severanceRate: number };
+  /**
+   * The employer's rates on the payslip, shares of salary: pension (tagmulim) and severance (A-12). `salary` is the salary the employer
+   * deposits on when it is not the whole gross salary (PEN-04 caps the mandatory minimum at the average wage): the rates apply to it, and
+   * it is TXP-10's "salary", the salary on which the employer paid the fund. Without it the employer deposits on `monthlySalary`.
+   */
+  employer?: { pensionRate: number; severanceRate: number; salary?: number };
 }
 
 export interface PensionInput {
@@ -85,8 +89,11 @@ function citeIfPresent(book: RuleBook, ids: readonly string[]) {
   }
 }
 
+/** The salary the employer deposits on (TXP-10's "salary"): the one the payslip's rates apply to. */
+const depositSalary = (p: PensionProfile) => p.employer?.salary ?? p.monthlySalary ?? 0;
+
 const employerMonthly = (p: PensionProfile) =>
-  p.employer ? (p.employer.pensionRate + p.employer.severanceRate) * (p.monthlySalary ?? 0) : 0;
+  p.employer ? (p.employer.pensionRate + p.employer.severanceRate) * depositSalary(p) : 0;
 
 /** Checks the person's A-12 inputs once, with the field named. */
 function check(i: PensionInput) {
@@ -266,10 +273,12 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
  * F-52 Employer line for a pension: the employer's pension and severance deposits, `(pension rate + severance
  * rate) × salary` a month as on the payslip (A-12), run through the same ledger with the wrapper's fees and
  * insurance (F-27, F-53; the independent check charges the insurance on this money too, Q18), reported as the
- * "value at the horizon of money only available here" and never ranked (B2). The employer component above
+ * "value at the horizon of money only available here" and never ranked (B2). `salary` is the salary the employer
+ * deposits on (`employer.salary`, else the gross salary), which is TXP-10's "salary". The employer component above
  * `min(7.5%, rate) × min(salary, 34,423)` is the employee's work income when paid (TXP-10) and is taxed at the
- * person's brackets (TXG-02), subtracted at face value; National Insurance on it is not modelled. The exit is
- * blocked as for the own money (F-49, G-03).
+ * person's brackets (TXG-02) on the gross salary; that tax is withheld from the salary, so the fund's balance
+ * (`detail.grossBalance`) holds the whole deposit and the line's value is that balance less the tax at face value.
+ * National Insurance on it is not modelled. The exit is blocked as for the own money (F-49, G-03).
  *
  * The method says the employer rates apply to wages up to the average wage (PEN-04); the independent check
  * and this function apply the payslip rates to the salary as entered, since the payslip is what the
@@ -286,6 +295,7 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   const I = cpiPath(input.market.inflation, T);
   const tally = new Tally();
   const salary = p.monthlySalary ?? 0;
+  const deposited = depositSalary(p);
   const month = employerMonthly(p);
   const gross = Array.from({ length: T + 1 }, (_, m) => (m === 0 ? 0 : month));
   commonFlags(book, tally, input);
@@ -296,9 +306,9 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   // deposit, which this run does not tax yet, so it is flagged under the rule.
   const ceiling = book.amount("TXP-10", "employer_ceiling");
   const exemptPct = book.rate("TXP-10", "employer_exempt_pct");
-  const pensionPart = p.employer.pensionRate * salary;
-  const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(salary, ceiling));
-  if (p.employer.severanceRate * salary > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
+  const pensionPart = p.employer.pensionRate * deposited;
+  const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(deposited, ceiling));
+  if (p.employer.severanceRate * deposited > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
   const brackets = book.brackets("TXG-02", "brackets");
   const perYear = new Map<number, number>();
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
