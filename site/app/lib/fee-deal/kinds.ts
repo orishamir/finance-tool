@@ -8,13 +8,20 @@ import { enginePrice } from "./to-engine";
 import { FEE_SHAPES, type FeeKindId } from "./shapes";
 import { recordValue } from "./values";
 
-/** One kind of deal: a product record's id, its first Hebrew name, the fee bases it allows and their caps. */
+/**
+ * One kind of deal: a product record's id, its first Hebrew name, the fee bases it allows and their caps, and whether it is of the provident
+ * family (`provident`: its record names the Capital Market Authority as its regulator, which supervises the provident funds, PF-01).
+ */
 export interface DealKind {
   id: ProductId;
   name: string;
   bases: FeeBase[];
   caps: Partial<Record<FeeBase, FeeCap>>;
+  provident?: true;
 }
+
+/** The regulator a product record of the provident family names (data-schema §3.3, `regulator`). */
+const PROVIDENT_REGULATOR = "CMA";
 
 /**
  * The kinds of the product records, for the fee page's data: every record that lists a fee base. Built at build time; each cap ships
@@ -27,8 +34,14 @@ export function dealKindsOf(records: readonly ProductRecord[]): DealKind[] {
   };
   return records
     .filter((r) => r.fee_bases_allowed.length > 0)
-    .map((r) => ({ id: r.id, name: r.names.he[0]!, bases: [...r.fee_bases_allowed], caps: Object.fromEntries(Object.entries(r.fee_caps ?? {}).map(([b, c]) => [b, shipped(c)])) }));
+    .map((r) => ({ id: r.id, name: r.names.he[0]!, bases: [...r.fee_bases_allowed], caps: Object.fromEntries(Object.entries(r.fee_caps ?? {}).map(([b, c]) => [b, shipped(c)])), ...(r.regulator.value === PROVIDENT_REGULATOR ? { provident: true as const } : {}) }));
 }
+
+/**
+ * Whether a fee is a provident-family product's management fee, from each deposit or from the balance (KGL-14): its rules allow those
+ * charges as rates alone (PF-01), with a discount for a period (PF-13), so the toolbox offers it no other part.
+ */
+export const managementFee = (kind: DealKind | null, fee: FeeKindId): boolean => !!kind?.provident && (fee === "deposit" || fee === "balance");
 
 export const kindById = (kinds: readonly DealKind[], id: ProductId | null): DealKind | null => (id === null ? null : (kinds.find((k) => k.id === id) ?? null));
 

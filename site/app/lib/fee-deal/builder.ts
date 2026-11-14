@@ -9,6 +9,7 @@ import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy, type Figure, type PartId } from "./edit";
+import { managementFee } from "./kinds";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
@@ -536,7 +537,9 @@ export interface ToolGroup {
 /**
  * The toolbox for the case open in place: the line naming what it adds to (the case's values, joined; a slim fee's own name), and its
  * groups in order: the price, minimum and maximum, what the price changes by, a link to another fee, and more on the price;
- * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`.
+ * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`. A provident-family
+ * product's management fee (`managementFee`) is offered only what its rules allow: its share, a price for a period, and a condition of the
+ * person's own (PF-01, KGL-14, PF-13); what a deal already holds beyond that still opens and reads.
  */
 export interface Toolbox {
   /** "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`). */
@@ -591,14 +594,22 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
     ...(shape.saleApart && !ONE_SIDE[fee.kind] ? [{ id: "sale" as const, kind: "note" as const, words: { lead: pp.notes.sale! }, used: !!priced.sale }] : []),
   ];
   const c = hasCases(fee) ? (priced as Case) : null;
+  // a provident-family product's management fee: its share, a price for a period, and a condition of the person's own, nothing else
+  // (PF-01, KGL-14, PF-13)
+  const managed = managementFee(r.kind, fee.kind);
   const addTo = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
-  const groups: ToolGroup[] = [
-    { group: "price", head: copy.cases.groups.price!, parts: price },
-    { group: "bound", head: copy.cases.groups.bound!, parts: bound },
-    { group: "by", head: copy.cases.groups.by!, parts: by },
-    { group: "link", head: copy.cases.groups.link!, parts: link },
-    { group: "more", head: copy.cases.groups.more!, parts: more },
-  ];
+  const groups: ToolGroup[] = managed
+    ? [
+        { group: "price", head: copy.cases.groups.price!, parts: price.filter((x) => x.id === "share" || x.id === "held" || x.id === "until") },
+        { group: "by", head: copy.cases.groups.by!, parts: by.filter((x) => x.id === "by:own") },
+      ]
+    : [
+        { group: "price", head: copy.cases.groups.price!, parts: price },
+        { group: "bound", head: copy.cases.groups.bound!, parts: bound },
+        { group: "by", head: copy.cases.groups.by!, parts: by },
+        { group: "link", head: copy.cases.groups.link!, parts: link },
+        { group: "more", head: copy.cases.groups.more!, parts: more },
+      ];
   return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
 }
 
