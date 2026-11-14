@@ -50,8 +50,8 @@ export function spanWords(value: unknown, unit: string): string | null {
 const OPEN_PART = /שאל(?:ה|ות) פתוח(?:ה|ות)/;
 
 /**
- * Whether a rule that is not open as a whole has an open question in its text past the first sentence the row shows (TX2-14: "שתי
- * שאלות פתוחות יכולות לשנות את התוצאה"), so the row says so beside a lead that reads as settled.
+ * Whether a rule that is not open as a whole has an open question in its text past the first sentence the row shows (TXS-14: "אם
+ * התקנות האלה עדיין בתוקף היא שאלה פתוחה"), so the row says so beside a lead that reads as settled.
  */
 export function openPart(rule: Pick<RuleRecord, "strength" | "text_he">): boolean {
   if (rule.strength === "open") return false;
