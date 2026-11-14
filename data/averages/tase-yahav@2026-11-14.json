@@ -1,0 +1,1838 @@
+{
+  "id": "tase-yahav",
+  "kind": "tase_member_fees",
+  "provider_id": "yahav",
+  "member": {
+    "tase_id": 5850,
+    "name_he": "בנק יהב "
+  },
+  "page": {
+    "url": "https://market.tase.co.il/he/market_data/trading_fees",
+    "title": "מחשבון עמלות מסחר",
+    "publisher": "Tel Aviv Stock Exchange",
+    "checked": "2026-11-14"
+  },
+  "exceptional_message_he": null,
+  "member_tariff_link": "https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/",
+  "averages": {
+    "period": {
+      "from": "2026-01-01",
+      "to": "2026-06-30"
+    },
+    "band_header_he": "שווי תיק ניירות ערך בסוף התקופה (באלפי ₪)",
+    "band_note_he": "שווי תיק ניירות ערך כולל ניירות ערך ישראלים וזרים, למעט נגזרים",
+    "definitions_he": {
+      "trade": "שיעור עמלה בפועל - סכום העמלה בפועל חלקי סכום הפעולה",
+      "custody": "שיעור עמלה שנתי בפועל - סכום עמלה בפועל חלקי סכום הפעולה או שווי הנייר לפיו חושבו דמי הניהול, בהתאמה."
+    },
+    "comment_he": null,
+    "rows": [
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "עד 25",
+          "above_thousands_nis": null,
+          "up_to_thousands_nis": 25
+        },
+        "rate": {
+          "value": 0.31,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, עד 25",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "עד 25",
+          "above_thousands_nis": null,
+          "up_to_thousands_nis": 25
+        },
+        "rate": {
+          "value": 0.05,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, עד 25",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "עד 25",
+          "above_thousands_nis": null,
+          "up_to_thousands_nis": 25
+        },
+        "rate": {
+          "value": 0.42,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, עד 25",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "עד 25",
+          "above_thousands_nis": null,
+          "up_to_thousands_nis": 25
+        },
+        "rate": {
+          "value": 0.23,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, עד 25",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "עד 25",
+          "above_thousands_nis": null,
+          "up_to_thousands_nis": 25
+        },
+        "rate": {
+          "value": 0.32,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, עד 25",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 25 ועד 50",
+          "above_thousands_nis": 25,
+          "up_to_thousands_nis": 50
+        },
+        "rate": {
+          "value": 0.36,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 25 ועד 50",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 25 ועד 50",
+          "above_thousands_nis": 25,
+          "up_to_thousands_nis": 50
+        },
+        "rate": {
+          "value": 0.07,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 25 ועד 50",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 25 ועד 50",
+          "above_thousands_nis": 25,
+          "up_to_thousands_nis": 50
+        },
+        "rate": {
+          "value": 0.19,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 25 ועד 50",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 25 ועד 50",
+          "above_thousands_nis": 25,
+          "up_to_thousands_nis": 50
+        },
+        "rate": {
+          "value": 0.28,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 25 ועד 50",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 25 ועד 50",
+          "above_thousands_nis": 25,
+          "up_to_thousands_nis": 50
+        },
+        "rate": {
+          "value": 0.37,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 25 ועד 50",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 50 ועד 75",
+          "above_thousands_nis": 50,
+          "up_to_thousands_nis": 75
+        },
+        "rate": {
+          "value": 0.32,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 50 ועד 75",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 50 ועד 75",
+          "above_thousands_nis": 50,
+          "up_to_thousands_nis": 75
+        },
+        "rate": {
+          "value": 0.07,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 50 ועד 75",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 50 ועד 75",
+          "above_thousands_nis": 50,
+          "up_to_thousands_nis": 75
+        },
+        "rate": {
+          "value": 0.24,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 50 ועד 75",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 50 ועד 75",
+          "above_thousands_nis": 50,
+          "up_to_thousands_nis": 75
+        },
+        "rate": {
+          "value": 0.28,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 50 ועד 75",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 50 ועד 75",
+          "above_thousands_nis": 50,
+          "up_to_thousands_nis": 75
+        },
+        "rate": {
+          "value": 0.31,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 50 ועד 75",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 75 ועד 100",
+          "above_thousands_nis": 75,
+          "up_to_thousands_nis": 100
+        },
+        "rate": {
+          "value": 0.27,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 75 ועד 100",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 75 ועד 100",
+          "above_thousands_nis": 75,
+          "up_to_thousands_nis": 100
+        },
+        "rate": {
+          "value": 0.07,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 75 ועד 100",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 75 ועד 100",
+          "above_thousands_nis": 75,
+          "up_to_thousands_nis": 100
+        },
+        "rate": {
+          "value": 0.31,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 75 ועד 100",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 75 ועד 100",
+          "above_thousands_nis": 75,
+          "up_to_thousands_nis": 100
+        },
+        "rate": {
+          "value": 0.27,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 75 ועד 100",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 75 ועד 100",
+          "above_thousands_nis": 75,
+          "up_to_thousands_nis": 100
+        },
+        "rate": {
+          "value": 0.36,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 75 ועד 100",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 100 ועד 200",
+          "above_thousands_nis": 100,
+          "up_to_thousands_nis": 200
+        },
+        "rate": {
+          "value": 0.24,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 100 ועד 200",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 100 ועד 200",
+          "above_thousands_nis": 100,
+          "up_to_thousands_nis": 200
+        },
+        "rate": {
+          "value": 0.06,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 100 ועד 200",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 100 ועד 200",
+          "above_thousands_nis": 100,
+          "up_to_thousands_nis": 200
+        },
+        "rate": {
+          "value": 0.34,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 100 ועד 200",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 100 ועד 200",
+          "above_thousands_nis": 100,
+          "up_to_thousands_nis": 200
+        },
+        "rate": {
+          "value": 0.22,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 100 ועד 200",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 100 ועד 200",
+          "above_thousands_nis": 100,
+          "up_to_thousands_nis": 200
+        },
+        "rate": {
+          "value": 0.28,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 100 ועד 200",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 200 ועד 400",
+          "above_thousands_nis": 200,
+          "up_to_thousands_nis": 400
+        },
+        "rate": {
+          "value": 0.22,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 200 ועד 400",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 200 ועד 400",
+          "above_thousands_nis": 200,
+          "up_to_thousands_nis": 400
+        },
+        "rate": {
+          "value": 0.06,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 200 ועד 400",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 200 ועד 400",
+          "above_thousands_nis": 200,
+          "up_to_thousands_nis": 400
+        },
+        "rate": {
+          "value": 0.29,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 200 ועד 400",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 200 ועד 400",
+          "above_thousands_nis": 200,
+          "up_to_thousands_nis": 400
+        },
+        "rate": {
+          "value": 0.17,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 200 ועד 400",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 200 ועד 400",
+          "above_thousands_nis": 200,
+          "up_to_thousands_nis": 400
+        },
+        "rate": {
+          "value": 0.22,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 200 ועד 400",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 400 ועד 700",
+          "above_thousands_nis": 400,
+          "up_to_thousands_nis": 700
+        },
+        "rate": {
+          "value": 0.2,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 400 ועד 700",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 400 ועד 700",
+          "above_thousands_nis": 400,
+          "up_to_thousands_nis": 700
+        },
+        "rate": {
+          "value": 0.05,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 400 ועד 700",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 400 ועד 700",
+          "above_thousands_nis": 400,
+          "up_to_thousands_nis": 700
+        },
+        "rate": {
+          "value": 0.2,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 400 ועד 700",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 400 ועד 700",
+          "above_thousands_nis": 400,
+          "up_to_thousands_nis": 700
+        },
+        "rate": {
+          "value": 0.13,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 400 ועד 700",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 400 ועד 700",
+          "above_thousands_nis": 400,
+          "up_to_thousands_nis": 700
+        },
+        "rate": {
+          "value": 0.14,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 400 ועד 700",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 700 ועד 1,000",
+          "above_thousands_nis": 700,
+          "up_to_thousands_nis": 1000
+        },
+        "rate": {
+          "value": 0.18,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 700 ועד 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 700 ועד 1,000",
+          "above_thousands_nis": 700,
+          "up_to_thousands_nis": 1000
+        },
+        "rate": {
+          "value": 0.06,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 700 ועד 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 700 ועד 1,000",
+          "above_thousands_nis": 700,
+          "up_to_thousands_nis": 1000
+        },
+        "rate": {
+          "value": 0.17,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 700 ועד 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 700 ועד 1,000",
+          "above_thousands_nis": 700,
+          "up_to_thousands_nis": 1000
+        },
+        "rate": {
+          "value": 0.09,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 700 ועד 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 700 ועד 1,000",
+          "above_thousands_nis": 700,
+          "up_to_thousands_nis": 1000
+        },
+        "rate": {
+          "value": 0.09,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 700 ועד 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_shares_bonds",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
+        "band": {
+          "text_he": "מעל 1,000",
+          "above_thousands_nis": 1000,
+          "up_to_thousands_nis": null
+        },
+        "rate": {
+          "value": 0.15,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "il_makam",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ",
+        "band": {
+          "text_he": "מעל 1,000",
+          "above_thousands_nis": 1000,
+          "up_to_thousands_nis": null
+        },
+        "rate": {
+          "value": 0.05,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "trade",
+        "securities": "foreign",
+        "column_he": "קניה, מכירה ופדיון - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 1,000",
+          "above_thousands_nis": 1000,
+          "up_to_thousands_nis": null
+        },
+        "rate": {
+          "value": 0.18,
+          "unit": "pct_of_trade",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "il",
+        "column_he": "דמי ניהול - ני\"ע ישראלים",
+        "band": {
+          "text_he": "מעל 1,000",
+          "above_thousands_nis": 1000,
+          "up_to_thousands_nis": null
+        },
+        "rate": {
+          "value": 0.03,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "fee": "custody",
+        "securities": "foreign",
+        "column_he": "דמי ניהול - ני\"ע זרים",
+        "band": {
+          "text_he": "מעל 1,000",
+          "above_thousands_nis": 1000,
+          "up_to_thousands_nis": null
+        },
+        "rate": {
+          "value": 0.03,
+          "unit": "pct_per_year",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 1,000",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-06-30",
+          "update_rule": "market",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      }
+    ]
+  },
+  "list": {
+    "updated": "2026-07-01",
+    "header_he": [
+      "סוג עמלה",
+      "סכום / שיעור עמלה",
+      "מינימום עמלה",
+      "מקסימום עמלה"
+    ],
+    "comment_he": null,
+    "rows": [
+      {
+        "desc_he": "קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
+        "no_service": false,
+        "amount": {
+          "value": "0.4000%  משווי עסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": {
+          "value": "20.00 ₪ לעסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "max": {
+          "value": "4,000.00 ₪ לעסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
+        "no_service": false,
+        "amount": {
+          "value": "0.0900%  משווי עסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": {
+          "value": "13.00 ₪ לעסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "max": {
+          "value": "1,000.00 ₪ לעסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
+        "no_service": false,
+        "amount": {
+          "value": "0.3000%  משווי עסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": {
+          "value": "24.00 $ לעסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "max": {
+          "value": "1,000.00 $ לעסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
+        "no_service": false,
+        "amount": {
+          "value": "2.6000%  משווי עסקה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": {
+          "value": "11.00 ₪ לאופציה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "max": {
+          "value": "85.00 ₪ לאופציה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "קניה/ מכירה/ כתיבה - חוזים עתידיים הנסחרים בישראל",
+        "no_service": true,
+        "amount": null,
+        "min": null,
+        "max": null
+      },
+      {
+        "desc_he": "דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון",
+        "no_service": false,
+        "amount": {
+          "value": "0.1500%  לרבעון",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": null,
+        "max": {
+          "value": "8,500.00 ₪ לרבעון",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון",
+        "no_service": false,
+        "amount": {
+          "value": "0.1900%  לרבעון",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": null,
+        "max": {
+          "value": "8,500.00 ₪ לרבעון",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לפקדון",
+        "no_service": false,
+        "amount": {
+          "value": "0.1900%  לרבעון",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לפקדון",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": null,
+        "max": {
+          "value": "8,500.00 ₪ לרבעון",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לפקדון",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "desc_he": "דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לני\"ע",
+        "no_service": true,
+        "amount": null,
+        "min": null,
+        "max": null
+      },
+      {
+        "desc_he": "דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לני\"ע",
+        "no_service": true,
+        "amount": null,
+        "min": null,
+        "max": null
+      },
+      {
+        "desc_he": "דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לני\"ע",
+        "no_service": true,
+        "amount": null,
+        "min": null,
+        "max": null
+      },
+      {
+        "desc_he": "טיפול בהזמנה של ני''ע בהנפקה - אג\"ח ממשלתי",
+        "no_service": false,
+        "amount": {
+          "value": "0.5000%  משווי הקצאה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, טיפול בהזמנה של ני''ע בהנפקה - אג\"ח ממשלתי",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": {
+          "value": "22.00 ₪ להקצאה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, טיפול בהזמנה של ני''ע בהנפקה - אג\"ח ממשלתי",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "max": null
+      },
+      {
+        "desc_he": "טיפול בהזמנה של ני\"ע בהנפקה – יתר ני\"ע",
+        "no_service": false,
+        "amount": {
+          "value": "0.0400%  משווי הזמנה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, טיפול בהזמנה של ני\"ע בהנפקה – יתר ני\"ע",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "min": {
+          "value": "22.00 ₪ להזמנה",
+          "unit": "text",
+          "source": {
+            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5850",
+            "title": "מחשבון עמלות מסחר: בנק יהב , עמלות תעריפון, טיפול בהזמנה של ני\"ע בהנפקה – יתר ני\"ע",
+            "publisher": "Tel Aviv Stock Exchange",
+            "strength": "primary"
+          },
+          "checked": "2026-11-14",
+          "effective_from": "2026-07-01",
+          "effective_to": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-15",
+            "BRK-33"
+          ],
+          "state": "sourced"
+        },
+        "max": null
+      }
+    ]
+  },
+  "snapshot": "2026-11-14",
+  "card_date_as_printed": "01-06 2026"
+}
