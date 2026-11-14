@@ -6,11 +6,12 @@ import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
 import { thingName, whenWords, type WhenWords } from "./builder";
-import { feeNameOf, type PartWords } from "./part-words";
+import { STATED, type PartWords } from "./part-words";
+import { PARTS, partsSaid, type PartId, type StatedPartId } from "./offers/parts";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
-import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
-import { charged, hasBounds, onAction } from "./offers/capabilities";
+import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Stage } from "./model";
+import { charged, hasBounds } from "./offers/capabilities";
 import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { holdsFunds } from "./shapes";
 import { CAPACITY } from "./offers/capacity";
@@ -516,46 +517,38 @@ export function pickLine(r: DealRead): PickLine | null {
 
 /**
  * A part of a price the reading states without computing (§10.6, "What the page states and does not compute"), on the fee it is printed
- * with: a third party's fee with no figure, an offset against another fee, a refund, a maximum on each security held, a fee on an order
- * not carried out, each partial fill charged apart; with its sentence's words.
+ * with: each part the registry marks stated (`StatedPartId`: a third party's fee with no figure, a maximum on each security held, an offset
+ * against another fee, a refund, the notes on an order), with its sentence's words.
  */
 export interface StatedPart {
   fee: FeeRef;
-  part: "third" | "offset" | "refund" | "maxPerSecurity" | Note;
+  part: StatedPartId;
   words: PartWords;
   /** The rules its sentence states, where it states one (a bank's order through a clerk, BRK-16). */
   rules?: readonly string[];
 }
 
 /** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out, at home and abroad (BRK-16). */
-export const STATED_RULES: Partial<Record<StatedPart["part"], readonly string[]>> = { unfilledClerk: ["BRK-16"], unfilledClerkAbroad: ["BRK-16"] };
+export const STATED_RULES: Partial<Record<StatedPartId, readonly string[]>> = { unfilledClerk: ["BRK-16"], unfilledClerkAbroad: ["BRK-16"] };
 
+const isStated = (id: PartId): id is StatedPartId => !!PARTS[id].stated;
+
+/** Each fee's stated parts, once each, in the order its prices' lines say them (`partsSaid`). */
 function statedOf(r: DealRead): StatedPart[] {
   const out: StatedPart[] = [];
   const from = monthKey(r.reading.from);
-  const st = copy.cases.stated;
   r.fees.forEach((fee: ReadFee) => {
-    const seen = new Set<string>();
-    const add = (part: StatedPart["part"], words: PartWords) => {
-      if (seen.has(part)) return;
-      seen.add(part);
-      const rules = STATED_RULES[part];
-      out.push({ fee: refOf(fee, r.today), part, words, ...(rules ? { rules } : {}) });
-    };
+    const seen = new Set<StatedPartId>();
     for (const s of [...pricesFrom(fee.stages, from), ...(fee.sale ? pricesFrom(fee.sale, from) : [])]) {
       const p = s.price;
       if (!charged(p)) continue;
-      if (onAction(p) && p.third && !p.third.price) add("third", p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third });
-      if (p.offset) add("offset", { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail });
-      if (p.refund && !p.refund.blank) {
-        const f = priceFigures(fee, p, r.today).refund;
-        add("refund", { lead: st.refund.lead, ...(f ? { figure: f } : {}), tail: st.refund.tail });
+      for (const part of partsSaid(p, {}).filter(isStated)) {
+        const words = seen.has(part) ? null : STATED[part]({ p, figures: priceFigures(fee, p, r.today) });
+        if (!words) continue;
+        seen.add(part);
+        const rules = STATED_RULES[part];
+        out.push({ fee: refOf(fee, r.today), part, words, ...(rules ? { rules } : {}) });
       }
-      if (p.form === "held" && p.perSecurity) {
-        const f = priceFigures(fee, p, r.today).perSecurity;
-        add("maxPerSecurity", { lead: st.maxPerSecurity.lead, ...(f ? { figure: f } : {}), tail: st.maxPerSecurity.tail });
-      }
-      if (onAction(p)) for (const n of p.notes ?? []) add(n, { lead: st[n] });
     }
   });
   return out;

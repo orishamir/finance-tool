@@ -6,15 +6,16 @@ import { feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, SlotEdit } from "../../lib/fee-deal/builder";
 import { addOwnPlace, editPrice, setMine, setRangeUnit, setStep, setTop, setWhen, withCurrency, type Side } from "../../lib/fee-deal/edit";
 import { anySourced, BOUND_CURRENCIES, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Price } from "../../lib/fee-deal/model";
-import { hasCurrency } from "../../lib/fee-deal/offers/capabilities";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
-import { fieldsOf } from "../../lib/fee-deal/offers/capacity";
+import { keeps, sumCurrency } from "../../lib/fee-deal/offers/capacity";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Button, FigureField, InlineSelect, RangeMenu, SegmentedControl, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
 import { PriceFigure, partFieldId } from "./figures";
-import { PartLine, PendingEdit, SPOKEN, type PartPlace, type PendingPart } from "./part-edit";
+import { PartLine, PendingEdit, SPOKEN, type PartPlace } from "./part-edit";
+import type { PendingPart } from "../../lib/fee-deal/offers/parts";
+import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 
 /**
  * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's ✕
@@ -30,6 +31,7 @@ function PriceParts({
   parts,
   name,
   deal,
+  later,
   pending,
   onFee,
   onHoldOn,
@@ -43,6 +45,8 @@ function PriceParts({
   parts: OpenPart[];
   name: string;
   deal: FeeDeal;
+  /** The form a price added after a free one takes (`OpenCase.later`). */
+  later: ChargedForm;
   /** The part asking for its figure, month or fee here, where it asks on this price (the last price of the purchase). */
   pending: PendingPart | null;
   onFee: (f: Fee) => void;
@@ -57,8 +61,8 @@ function PriceParts({
   // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign. The chip is plain
   // while the price still holds a figure a template filled (a change of currency makes the whole price the person's, `withCurrency`)
   const chooser =
-    hasCurrency(price) && fieldsOf(fee.kind, price.form).includes("currency") ? (
-      <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
+    keeps(fee.kind, price.form, "currency") ? (
+      <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={sumCurrency(fee.kind, price)} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
     ) : null;
   const chooserOn: PartId | null = chooser ? (price.form === "action" ? (parts.some((p) => p.id === "min") ? "min" : parts.some((p) => p.id === "max") ? "max" : null) : price.form) : null;
   const at: PartPlace = {
@@ -103,7 +107,7 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
       ))}
-      {pending && <PendingEdit fee={fee} caseId={caseId} side={side} k={k} part={pending} deal={deal} name={name} onFee={onFee} onDone={onPendingDone} />}
+      {pending && <PendingEdit fee={fee} caseId={caseId} side={side} k={k} part={pending} deal={deal} name={name} later={later} onFee={onFee} onDone={onPendingDone} />}
     </>
   );
 }
@@ -129,7 +133,7 @@ export function OpenParts({
   name: string;
   pending: PendingPart | null;
   onFee: (f: Fee) => void;
-  onHoldOn: (side: Side, k: number, caseId?: string) => void;
+  onHoldOn: (side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
   onPendingDone: () => void;
 }) {
   const caseId = open.case ?? undefined;
@@ -153,9 +157,10 @@ export function OpenParts({
             parts={st.parts}
             name={stageName}
             deal={deal}
+            later={open.later}
             pending={s === "buy" && j === stages.length - 1 ? pending : null}
             onFee={onFee}
-            onHoldOn={(sd, k) => onHoldOn(sd, k, caseId)}
+            onHoldOn={(sd, k) => onHoldOn(sd, k, caseId, open.later)}
             onPendingDone={onPendingDone}
           />
         </div>

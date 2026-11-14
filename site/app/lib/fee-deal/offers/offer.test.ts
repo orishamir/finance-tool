@@ -7,13 +7,14 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { feesData } from "../../fees.server";
 import type { DealKind } from "../kinds";
-import { FEE_KIND_IDS, kindHas, type FeeKindId } from "../shapes";
+import { FEE_KIND_IDS, type FeeKindId } from "../shapes";
 import { capacity } from "./capacity";
 import type { ByKind } from "./conditions";
-import { banFor, capacityOffer, feeOffered, offerFor, productOffered } from "./offer";
+import { banFor, capacityOffer, feeOffered, kindHas, offerFor, productOffered } from "./offer";
 import { newDeal, readDeal, typed, type FeeDeal } from "../model";
 import { readDealFor } from "../parts";
-import type { PartId } from "./parts";
+import { setPart, type PartId } from "./parts";
+import { panel } from "../builder";
 import { providentFamily, RULES } from "./rules";
 
 const data = feesData();
@@ -288,5 +289,18 @@ describe("a channel or a plan the records do not provide", () => {
   });
   it("prints no trade line for money-market units, so their trade fee changes by nothing a line names", () => {
     expect(lines.filter((l) => l.base === "trade" && l.applies_to.includes("money_market_units")).map((l) => l.id)).toEqual([]);
+  });
+});
+
+describe("a price after a free one", () => {
+  it("takes the first form its product's fee is offered in, not its kind's usual form", () => {
+    // a pension fund's insurance premium is offered free or as a share of each deposit; its kind's usual form is a sum per period
+    expect(capacity("insurance_premium").usual).toBe("sum");
+    const deal: FeeDeal = { ...newDeal("pension-general"), fees: [{ id: "fee-i", kind: "insurance_premium", stages: [{ price: { form: "free" } }] }] };
+    const open = panel(readDealFor(deal, data.kinds, "2026-11-14"), "fee-i")!.open;
+    expect(open.later).toBe(offerFor(kind("pension-general"), "insurance_premium").usual);
+    const fee = setPart(deal.fees[0]!, "until", true, { month: "2028-01", after: open.later });
+    expect(fee.stages!.map((s) => s.price.form)).toEqual(["free", open.later]);
+    expect(open.later).not.toBe("sum");
   });
 });

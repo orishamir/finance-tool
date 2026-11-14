@@ -9,13 +9,14 @@ import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
-import { hasFlat } from "./offers/capabilities";
+import { boundsAction } from "./offers/capabilities";
+import { capacity, type ChargedForm } from "./offers/capacity";
 import { FIGURES, type Figure } from "./offers/figures";
-import { feeOffered, offerFor } from "./offers/offer";
-import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
-import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
+import { feesOffered, offerFor, type DataBar } from "./offers/offer";
+import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
+import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
+import { isConversion, onHolding, WHAT_VALUES, type FeeKindId } from "./shapes";
 import { BY_MAX, CONDITIONS, isRangeKind, type ByKind, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
@@ -288,23 +289,17 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   };
 }
 
-/** The suggestions the deal's product is offered (`feeOffered`, the rule table) and may charge (`barred`). */
-const offered = (s: Builder["suggestions"], product: DealRead["kind"], barred: readonly FeeKindId[]): Builder["suggestions"] => {
-  const ok = (k: FeeKindId) => !barred.includes(k) && feeOffered(product, k);
-  return { usual: s.usual.filter(ok), rarer: s.rarer.filter(ok) };
-};
-
 /**
  * The builder column of a deal, from the deal read once (`readDealFor`): a row per fee, the read ones and those not read for a price not
  * given or for no case for the picks, each with its block; a fee whose prices are out of order has none (the glance names it, `unread`).
- * `barred`: fees the deal's product may not charge by rule, never offered, nor is a fee its product is not offered (`feeOffered`). `open`:
+ * `bar`: the fees the data says the deal's product may not charge, never offered, nor is a fee its product is not offered (`feesOffered`). `open`:
  * the fee open in place, and its case (the first where none is named).
  */
-export function builder(r: DealRead, barred: readonly FeeKindId[] = [], open: { fee: string; case: string | null } | null = null): Builder {
+export function builder(r: DealRead, bar: DataBar | null = null, open: { fee: string; case: string | null } | null = null): Builder {
   const deal = r.deal;
   return {
     rows: deal.fees.filter((fee) => !r.unread.includes(fee.id)).map((fee) => rowOf(r, fee, open)),
-    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), undefined), r.kind, barred) : { usual: [], rarer: ["own"] },
+    suggestions: feesOffered(r.kind, deal.fees.map((f) => f.kind), bar),
   };
 }
 
@@ -353,6 +348,8 @@ export interface OpenCase {
   sell?: { k: number; until?: MonthKey; parts: OpenPart[] }[];
   canCopy: boolean;
   canRemove: boolean;
+  /** The form a price added after a free one takes: the first form the product's fee is offered in (`Offer.usual`). */
+  later: ChargedForm;
 }
 
 /** A part's fields: each figure it holds that the price has a place for, with its value and its box's sign. */
@@ -366,7 +363,7 @@ const fieldsOf = (id: PartId, p: Price, view: PriceView): PartField[] =>
 function openParts(fee: Fee, p: Price, view: PriceView, line: { until?: MonthKey; sale: boolean }): OpenPart[] {
   const said = saidParts({ kind: fee.kind, p, view, ...(line.until ? { until: line.until } : {}) }, line.sale);
   // a flat price nobody typed yet is in the price too: it shows as an empty part where a typed one stands, after the bounds
-  if (hasFlat(p) && p.flat && !said.some((x) => x.id === "flat")) {
+  if (boundsAction(p) && p.flat && !said.some((x) => x.id === "flat")) {
     const at = said.findIndex((x) => PART_IDS.indexOf(x.id) > PART_IDS.indexOf("flat"));
     said.splice(at < 0 ? said.length : at, 0, { id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK });
   }
@@ -386,6 +383,7 @@ function openCase(r: DealRead, fee: Fee, caseId: string | undefined): OpenCase {
     ...(priced.sale ? { sell: stagesOf(priced.sale, false) } : {}),
     canCopy: !!c,
     canRemove: !!c && hasCases(fee) && fee.cases.length > 1,
+    later: offerFor(r.kind, fee.kind).usual ?? capacity(fee.kind).usual,
   };
 }
 
@@ -439,14 +437,28 @@ export interface Toolbox {
   groups: ToolGroup[];
 }
 
-/** The toolbox's groups in order, each with its parts in order; what the price changes by is the fee's things (`conditionsFor`). */
-const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
-  { group: "price", kind: "price", parts: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"] },
-  { group: "bound", kind: "bound", parts: ["min", "max", "cap", "maxPerSecurity"] },
+/**
+ * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`), every one of them and no other,
+ * which the compiler checks. A flat price stands among the price's cards, though a line says it among the bounds.
+ */
+const TOOL_ORDER = {
+  price: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"],
+  bound: ["min", "max", "cap", "maxPerSecurity"],
+  link: ["offset", "refund"],
+  more: ["unfilled", "partial", "inTrade", "sale"],
+} as const satisfies { [G in ToolGroupId]: readonly ToolPartIn<G>[] };
+/** A part of a group that its order leaves out: none, or the order does not compile where it is used. */
+type Unordered = { [G in ToolGroupId]: Exclude<ToolPartIn<G>, (typeof TOOL_ORDER)[G][number]> }[ToolGroupId];
+
+/** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`). */
+const toolboxOf = (order: [Unordered] extends [never] ? typeof TOOL_ORDER : Unordered): readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] => [
+  { group: "price", kind: "price", parts: order.price },
+  { group: "bound", kind: "bound", parts: order.bound },
   { group: "by", kind: "by", parts: [] },
-  { group: "link", kind: "link", parts: ["offset", "refund"] },
-  { group: "more", kind: "note", parts: ["unfilled", "partial", "inTrade", "sale"] },
+  { group: "link", kind: "link", parts: order.link },
+  { group: "more", kind: "note", parts: order.more },
 ];
+const TOOLBOX = toolboxOf(TOOL_ORDER);
 
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);

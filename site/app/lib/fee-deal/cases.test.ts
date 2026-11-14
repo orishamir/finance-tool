@@ -226,7 +226,7 @@ describe("the reading's first line", () => {
 
 describe("the builder's blocks", () => {
   const r = read(deal([{ by: "what", is: "us" }]));
-  const b = builder(r, [], { fee: "fee-trade", case: "c3" });
+  const b = builder(r, null, { fee: "fee-trade", case: "c3" });
   it("shows a fee with cases as its band, the other tracks folded, the open case marked", () => {
     const block = b.rows[0]!.block;
     if (block.kind !== "band") throw new Error("a band");
@@ -679,7 +679,7 @@ describe("the words of a size follow the fee's own action", () => {
     expect(byQuestion(fx, "actionSize").ask).toBe("גודל ההמרה: עד כמה חל המחיר הראשון?");
     expect(slotEdit(r, fx.id, fx.cases[1]!.id, 0)!.title).toBe("גודל ההמרה במקרה הזה");
     expect(thingMenu(r, fx.id, 0)!.stop).toBe("להפסיק להבחין לפי גודל ההמרה");
-    expect(builder(r, [], null).rows[0]!.block).toMatchObject({ kind: "band", things: [{ words: "גודל ההמרה" }] });
+    expect(builder(r, null, null).rows[0]!.block).toMatchObject({ kind: "band", things: [{ words: "גודל ההמרה" }] });
     expect(byQuestion(newFee("trade"), "actionSize").ask).toBe("גודל הפעולה: עד כמה חל המחיר הראשון?");
   });
 });

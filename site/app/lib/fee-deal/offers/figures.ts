@@ -2,7 +2,7 @@
 // two figures, a discount's share, a third party's figure and bounds, a refund. Reading, setting and owning a figure, and listing a price's
 // figures, all go through this table. Pure; it imports no code of the model, so the model can list a price's figures through it.
 import type { BoundCurrency, Num, Price, ThirdPrice } from "../model";
-import { byAmount, byRate, charged, hasBounds, hasCap, hasCurrency, hasFlat, onAction } from "./capabilities";
+import { boundsAction, byAmount, byRate, charged, hasBounds, onAction } from "./capabilities";
 
 /**
  * A figure of a price the screen edits: its rate, its bounds, its sum (a sum per unit's among them), its percent maximum (`cap`), its
@@ -11,6 +11,9 @@ import { byAmount, byRate, charged, hasBounds, hasCap, hasCurrency, hasFlat, onA
  * (`perSecurity`), the last two §10.6's stated parts.
  */
 export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax" | "refund" | "perSecurity";
+
+/** A key a figure is kept under, in the price or in its part (a flat price's two, a discount's share, a third party's figure and bounds). */
+export type FigureKey = "rate" | "amount" | "min" | "max" | "cap" | "upTo" | "pct" | "perSecurity" | "refund";
 
 /** What a figure is counted in: a percent, or a sum in a currency (the shekel where none is named). */
 export type FigureUnit = { pct: true } | { currency: BoundCurrency | undefined };
@@ -27,12 +30,12 @@ interface FigureDef {
   /** What the figure is counted in, for its box's sign. */
   unit: (p: Price) => FigureUnit;
   /** The key the figure is kept under in the price, or in its part (a link writes every figure under these keys as a number). */
-  keys: readonly string[];
+  keys: readonly FigureKey[];
 }
 
 const PCT: FigureUnit = { pct: true };
 /** The price's own currency, for a sum (a share of what is held and a sum per period are in shekels). */
-const inPrice = (p: Price): FigureUnit => ({ currency: hasCurrency(p) ? p.currency : undefined });
+const inPrice = (p: Price): FigureUnit => ({ currency: onAction(p) ? p.currency : undefined });
 
 /** A key of a price set to a figure, or taken away. */
 function keyed<P extends object>(p: P, key: string, n: Num | undefined): P {
@@ -75,10 +78,10 @@ const bound = (key: "min" | "max"): FigureDef => ({
 
 /** A figure of a flat price for a small action: its price (`amount`) or the sum it holds up to (`upTo`). */
 const flat = (key: "amount" | "upTo"): FigureDef => ({
-  get: (p) => (hasFlat(p) ? p.flat?.[key] : undefined),
-  set: (p, n) => (hasFlat(p) && p.flat && n ? { ...p, flat: { ...p.flat, [key]: n } } : p),
+  get: (p) => (boundsAction(p) ? p.flat?.[key] : undefined),
+  set: (p, n) => (boundsAction(p) && p.flat && n ? { ...p, flat: { ...p.flat, [key]: n } } : p),
   emptied: "blank",
-  placed: (p) => hasFlat(p) && !!p.flat,
+  placed: (p) => boundsAction(p) && !!p.flat,
   unit: inPrice,
   keys: [key],
 });
@@ -103,10 +106,10 @@ export const FIGURES: Readonly<Record<Figure, FigureDef>> = {
   min: bound("min"),
   max: bound("max"),
   cap: {
-    get: (p) => (hasCap(p) ? p.cap : undefined),
-    set: (p, n) => (hasCap(p) ? keyed(p, "cap", n) : p),
+    get: (p) => (onAction(p) ? p.cap : undefined),
+    set: (p, n) => (onAction(p) ? keyed(p, "cap", n) : p),
     emptied: "removed",
-    placed: hasCap,
+    placed: onAction,
     unit: () => PCT,
     keys: ["cap"],
   },

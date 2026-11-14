@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { addFee, editPrice, setLimited, setName, setSaleApart, setUntil, updateFee, withFigure } from "./edit";
 import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
-import { barredFees, feePriceLists, pickTrack } from "./templates";
+import { dataBar, feePriceLists, pickTrack } from "./templates";
 import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
 import { kindById } from "./kinds";
 import { feeDeal as copy } from "../../copy";
@@ -227,7 +227,7 @@ describe("another kind of product for the deal", () => {
   });
   it("takes away the two management fees a securities account does not have, keeps a fee of the person's own, and drops the track", () => {
     const d = provident();
-    const r = setKindKept(d, kind("brokerage-account"), barredFees("brokerage-account", data, "2026-11-13"), "fee-balance");
+    const r = setKindKept(d, kind("brokerage-account"), dataBar("brokerage-account", data, "2026-11-13"), "fee-balance");
     expect(r.deal.kind).toBe("brokerage-account");
     expect(r.deal.fees.map((f) => f.id)).toEqual(["fee-own"]);
     expect(r.deal.template).toBeUndefined();
@@ -237,14 +237,14 @@ describe("another kind of product for the deal", () => {
   });
   it("puts the kind, the fees, the track and the choice back together, as the deal was", () => {
     const d = provident();
-    const r = setKindKept(d, kind("brokerage-account"), [], "fee-balance");
+    const r = setKindKept(d, kind("brokerage-account"), null, "fee-balance");
     const back = undo(r.deal, r.undo!, r.chosen)!;
     expect(back.deal).toEqual(d);
     expect(back.chosen).toBe("fee-balance");
   });
   it("keeps a fee typed since when undone, and stands no more once the deal has a fee of a kind it took away or another kind", () => {
     const d = provident();
-    const r = setKindKept(d, kind("brokerage-account"), [], null);
+    const r = setKindKept(d, kind("brokerage-account"), null, null);
     const { deal: more } = addFee(r.deal, "trade");
     expect(standing(r.undo, more)).toBe(true);
     expect(undo(more, r.undo!, null)!.deal.fees.map((f) => f.kind)).toEqual(["balance", "own", "deposit", "trade"]);
@@ -254,33 +254,33 @@ describe("another kind of product for the deal", () => {
   });
   it("keeps a fee both kinds have and offer as typed, and takes away one the new kind has by record but does not offer, which the undo puts back", () => {
     const d = provident();
-    const r = setKindKept(d, kind("keren-hishtalmut"), [], null);
+    const r = setKindKept(d, kind("keren-hishtalmut"), null, null);
     // a study fund's fee is from the balance alone, and a provident account takes no fee of the person's own (the rule table)
     expect(r.deal.fees).toEqual(d.fees.filter((f) => f.kind === "balance"));
     expect(r.undo).not.toBeNull();
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
-    expect(setKindKept(account(), kind("ira-provident"), [], null).deal.fees.map((f) => f.id)).toEqual(["fee-trade", "fee-custody", "fee-fx"]);
+    expect(setKindKept(account(), kind("ira-provident"), null, null).deal.fees.map((f) => f.id)).toEqual(["fee-trade", "fee-custody", "fee-fx"]);
   });
   it("takes away a fee the new kind may not charge by rule", () => {
     const d = provident();
-    expect(setKindKept(d, kind("keren-hishtalmut"), ["deposit"], null).deal.fees.map((f) => f.id)).toEqual(["fee-balance"]);
+    expect(setKindKept(d, kind("keren-hishtalmut"), { fees: ["deposit"], cite: ["PF-06"] }, null).deal.fees.map((f) => f.id)).toEqual(["fee-balance"]);
   });
   it("takes away fees with nothing typed in them silently", () => {
     let d: FeeDeal = { ...newDeal("kupat-gemel-lehashkaa"), id: "deal-q" };
     d = addFee(addFee(d, "balance").deal, "deposit").deal;
-    const r = setKindKept(d, kind("brokerage-account"), [], null);
+    const r = setKindKept(d, kind("brokerage-account"), null, null);
     expect(r.deal.fees).toEqual([]);
     expect(r.undo).toBeNull();
   });
   it("drops the provider kind a house's price list gave, and gives it back", () => {
     const d: FeeDeal = { ...account(), template: { id: "house:x", name: "בית" }, provider: "bank" };
-    const r = setKindKept(d, kind("pension-general"), [], null);
+    const r = setKindKept(d, kind("pension-general"), null, null);
     expect(r.deal.provider).toBeUndefined();
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
   });
   it("leaves a deal of the same kind as it is", () => {
     const d = provident();
-    const r = setKindKept(d, kind("kupat-gemel-lehashkaa"), [], null);
+    const r = setKindKept(d, kind("kupat-gemel-lehashkaa"), null, null);
     expect(r.deal).toBe(d);
     expect(r.undo).toBeNull();
   });

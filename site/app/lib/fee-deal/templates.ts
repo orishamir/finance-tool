@@ -15,6 +15,7 @@ import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouc
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 import { leftOutOf, type LeftOutView } from "../left-out";
+import type { DataBar } from "./offers/offer";
 import { buildPrice, type PriceSpec } from "./offers/build";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
@@ -585,18 +586,17 @@ export function templateOptions(kind: FeeDeal["kind"], data: Pick<FeesData, "hou
 }
 
 /**
- * The fees a kind's product may not charge by rule, which the builder does not offer: a fee from deposits where the regulator's data says
- * of every track of the kind that there is none, by rule (PF-06, `depositFeeNoneByRule`). None for a kind with no tracks.
+ * What the regulator's data bars a kind's product from charging, as the offer reads it (offer.ts, `DataBar`): a fee from deposits where
+ * the data says of every track of the kind that there is none, by rule (PF-06, `depositFeeNoneByRule`). None for a kind with no tracks.
  */
-export function barredFees(kind: FeeDeal["kind"], data: Pick<FeesData, "tracks" | "templates">, today: string): FeeKindId[] {
+export function dataBar(kind: FeeDeal["kind"], data: Pick<FeesData, "tracks" | "templates">, today: string): DataBar | null {
   const tracks = data.tracks.filter((t) => t.wrapperId === kind);
-  if (tracks.length === 0) return [];
-  return tracks.every((t) => {
+  if (tracks.length === 0) return null;
+  const none = tracks.every((t) => {
     const v = trackFees(t, data, today);
     return !!v && depositFeeNoneByRule(v.deposit);
-  })
-    ? ["deposit"]
-    : [];
+  });
+  return none ? { fees: ["deposit"], cite: ["PF-06"] } : null;
 }
 
 /**

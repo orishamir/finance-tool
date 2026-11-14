@@ -11,7 +11,7 @@ import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, ty
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
-import { barredFees, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
+import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { addFee, updateFee, withFigure, editPrice } from "./edit";
 import { offerFor } from "./offers/offer";
 import { latestSnapshots } from "../providers.server";
@@ -213,10 +213,10 @@ describe("templates", () => {
     const kinds = [...new Set(data.tracks.map((t) => t.wrapperId).filter((k): k is string => !!k))];
     for (const k of kinds) {
       const all = data.tracks.filter((t) => t.wrapperId === k).every((t) => { const v = trackFees(t, data, TODAY); return !!v && depositFeeNoneByRule(v.deposit); });
-      expect(barredFees(k as FeeDeal["kind"], data, TODAY)).toEqual(all ? ["deposit"] : []);
+      expect(dataBar(k as FeeDeal["kind"], data, TODAY)).toEqual(all ? { fees: ["deposit"], cite: ["PF-06"] } : null);
     }
-    expect(barredFees("brokerage-account", data, TODAY)).toEqual([]);
-    expect(kinds.some((k) => barredFees(k as FeeDeal["kind"], data, TODAY).length > 0)).toBe(true);
+    expect(dataBar("brokerage-account", data, TODAY)).toBeNull();
+    expect(kinds.some((k) => dataBar(k as FeeDeal["kind"], data, TODAY) !== null)).toBe(true);
   });
   it("makes a new deal from a template beside the one on screen, of its kind and holding, named by the template", () => {
     const h = data.houses.find((x) => x.fees.some((f) => f.kind === "fx"))!;

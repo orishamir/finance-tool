@@ -32,7 +32,7 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { hasCases, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { barredFees, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { dataBar, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -51,6 +51,7 @@ import { SlotMenu, WhenText, numText } from "./open-case";
 import type { Pending } from "./part-edit";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn } from "./toolbox";
+import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import { useAskThing } from "./ask-thing";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
@@ -222,10 +223,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // another kind of product: the fees it does not have leave the deal, kept for the undo where any of them held something
   const onKind = (id: ProductId) => {
     const to = kindById(data.kinds, id);
-    if (to) kept(setKindKept(deal, to, barredFees(id, data, today), chosen));
+    if (to) kept(setKindKept(deal, to, dataBar(id, data, today), chosen));
   };
   const onFill = (feeId: string, house: string) => kept(fillFeeKept(deal, feeId, house, data, chosen));
-  const onHoldOn = (feeId: string, side: Side, k: number, caseId?: string) => kept(holdOnKept(deal, feeId, side, k, chosen, caseId));
+  const onHoldOn = (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => kept(holdOnKept(deal, feeId, side, k, chosen, caseId, after));
   // a form of the price from the toolbox: what carries over carries, and the price it replaces is kept for the undo, whose line stands
   // under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there
   const onForm = (feeId: string, part: PartId, caseId: string | null) => {
@@ -385,14 +386,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const read = useMemo(() => readDealFor(deal, data.kinds, today), [deal, data.kinds, today]);
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
   // a fee the product may not charge by rule is never offered
-  const barred = useMemo(() => barredFees(deal.kind, data, today), [deal.kind, data, today]);
+  const bar = useMemo(() => dataBar(deal.kind, data, today), [deal.kind, data, today]);
   const { unitPrice, onUnitPrice } = useUnitPrice(read, deal.id);
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const chosenFeeNow = deal.fees.find((f) => f.id === chosen) ?? null;
   // the case open: the one named while its fee has it, else the fee's first
   const caseId = chosenFeeNow && hasCases(chosenFeeNow) ? (caseOpen?.fee === chosenFeeNow.id && chosenFeeNow.cases.some((c) => c.id === caseOpen.case) ? caseOpen.case : chosenFeeNow.cases[0]!.id) : null;
-  const builderView = useMemo(() => builder(read, barred, chosen ? { fee: chosen, case: caseId } : null), [read, barred, chosen, caseId]);
+  const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   useEffect(() => {
     if (!caseShown) return;
     // after the frame, where the sheet has unfolded and the case has its height

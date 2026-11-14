@@ -6,8 +6,9 @@ import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenPart, PartField } from "../../lib/fee-deal/builder";
 import { setUntil, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
 import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
-import { charged, hasCurrency, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
-import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
+import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
+import { sumCurrency, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
+import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
 import { partFieldId, signText } from "./figures";
@@ -18,9 +19,6 @@ const cp = copy.cases.parts;
 
 /** The icon before a part's first word: a minimum's, a maximum's (a percent maximum's too), a link's. */
 export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
-
-/** A part the toolbox added that cannot stand until it has what it asks for (`PARTS[id].ask`): a figure, a month or a fee. */
-export type PendingPart = "min" | "max" | "cap" | "maxPerSecurity" | "until" | "offset";
 
 /** Where a pending part stands: its fee, its case (null for a slim fee), and the part. */
 export interface Pending {
@@ -247,7 +245,7 @@ function OffsetChoice({ deal, fee, value, label, onChange }: { deal: FeeDeal; fe
  * A part the toolbox added that asks, where it will stand, for what it needs (`PARTS[part].ask`): a later price its month, an offset its
  * fee, a bound or a percent maximum its figure, whose box takes the focus as it appears.
  */
-export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: { fee: Fee; caseId?: string; side: Side; k: number; part: PendingPart; deal: FeeDeal; name: string; onFee: (f: Fee) => void; onDone: () => void }) {
+export function PendingEdit({ fee, caseId, side, k, part, deal, name, later, onFee, onDone }: { fee: Fee; caseId?: string; side: Side; k: number; part: PendingPart; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; onDone: () => void }) {
   const at = { side, k, ...(caseId ? { caseId } : {}) };
   const label = (field: string) => copy.builder.fieldName(name, field);
   const price = pricesOn(fee, side, caseId)[k]!.price;
@@ -260,7 +258,7 @@ export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onD
     box?.focus({ preventScroll: true });
     bringIntoView(box?.closest("[data-lift]"));
   }, [fee.id, part, figure]);
-  const cur = hasCurrency(price) ? (price.currency ?? "ILS") : "ILS";
+  const cur = sumCurrency(fee.kind, price);
   // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
   const done = (next: Fee, box?: string) => {
     onFee(next);
@@ -276,7 +274,7 @@ export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onD
   let lead: string | undefined;
   if (ask === "month") {
     lead = bare(cp.until);
-    body = <MonthField value={null} label={label(copy.panel.until)} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m }))} />;
+    body = <MonthField value={null} label={label(copy.panel.until)} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
   } else if (ask === "fee") {
     lead = bare(cp.offsetOf.lead);
     body = (

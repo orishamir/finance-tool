@@ -1881,7 +1881,7 @@ export const feeDeal = {
       one: "הוסר",
       many: "הוסרו",
       and: "ו",
-      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה" } as Record<string, string>,
+      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", maxPerSecurity: "המקסימום לכל נייר ערך" },
     },
     /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
     thingMenu: {
@@ -2208,7 +2208,7 @@ function dealInputNames(): Record<string, string> {
     out[`deal:${k}.min`] = `${name}: המינימום`;
     out[`deal:${k}.max`] = `${name}: המקסימום`;
     out[`deal:${k}.yearly`] = `${name}, בשנה`;
-    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
+    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "refund", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
   out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
   return out;

@@ -59,49 +59,6 @@ export const HOLDS_FUNDS: readonly ProductId[] = ["brokerage-account", "ira-prov
 
 export const holdsFunds = (kind: ProductId | null): boolean => kind !== null && HOLDS_FUNDS.includes(kind);
 
-/**
- * Whether a fee fits what is held, where the deal says (where it does not, every fee fits): a conversion and its spread need a currency
- * other than the shekel; a charge for a corporate event abroad needs a fund bought abroad that distributes (F-103); a fee on a
- * distribution needs a fund that distributes (F-18). Every other fee fits.
- */
-export function fitsHeld(kind: FeeKindId, held: Held | undefined): boolean {
-  if (!held) return true;
-  if (kind === "fx" || kind === "fx_spread") return held.currency !== "ILS";
-  if (kind === "corporate_event") return held.place === "abroad" && held.payout === "distributing";
-  if (kind === "distribution_handling") return held.payout === "distributing";
-  return true;
-}
-
-/**
- * The fees a kind offers beyond its record's bases, the rarer ones: for a kind that holds funds, the spread of a conversion, a charge for a
- * corporate event abroad and a current account at a bank. A fee of the person's own (`own`) is offered to every kind, last.
- */
-export const RARER_FOR_FUNDS: readonly FeeKindId[] = ["fx_spread", "corporate_event", "current_account"];
-
-/**
- * Whether a kind has a fee at all: one of its record's bases, for a kind that holds funds the fund's own fee and the rarer fees, and a fee
- * of the person's own, which every kind has. The fees `suggestions` offers, whatever the deal holds.
- */
-export function kindHas(kind: ProductId, bases: readonly FeeBase[], fee: FeeKindId): boolean {
-  return fee === "own" || (bases as readonly FeeKindId[]).includes(fee) || (holdsFunds(kind) && (fee === "fund_management" || RARER_FOR_FUNDS.includes(fee)));
-}
-
-/**
- * The fees to suggest for a deal: `usual`, the kind's record bases the deal lacks that fit what is held (and, for a kind that holds funds,
- * the fund's own fee); `rarer`, the bases that do not fit, the rarer fees, and `own`, the person's own, last. A fee on a distribution is
- * offered unless `held` says the fund accumulates, which pays nothing out to charge; a deal says nothing of what it holds (its fees change
- * by what is bought instead, F-114), so every fee its kind has is offered.
- */
-export function suggestions(kind: ProductId, bases: readonly FeeBase[], present: readonly FeeKindId[], held: Held | undefined): { usual: FeeKindId[]; rarer: FeeKindId[] } {
-  const lacking = (k: FeeKindId) => !present.includes(k);
-  const funds = holdsFunds(kind);
-  const paysOut = (k: FeeKindId) => k !== "distribution_handling" || !funds || !held || held.payout === "distributing";
-  const own: FeeKindId[] = [...bases, ...(funds ? (["fund_management"] as const) : [])].filter(paysOut);
-  const usual = own.filter((k) => lacking(k) && fitsHeld(k, funds ? held : undefined));
-  const rarer = [...own.filter((k) => lacking(k) && !usual.includes(k)), ...(funds ? RARER_FOR_FUNDS.filter((k) => lacking(k) && !own.includes(k)) : [])];
-  return { usual, rarer: [...rarer, "own"] };
-}
-
 // ---------------------------------------------------------------- the values a price may change by (F-114)
 
 /**
