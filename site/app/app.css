@@ -968,6 +968,12 @@
     font-size: var(--text-sm);
     white-space: nowrap;
   }
+  /* A unit that is a sign stands on the number's right, as the page writes a figure ("100,000 ₪", "4%"): the box runs left to right, its
+     number right-aligned against the sign. A unit in words ("שנים") stays after the number in reading order, at the box's end. */
+  .field-box-sign {
+    flex-direction: row-reverse;
+    gap: 4px;
+  }
   /* Everything under the label (the box, then its error or hint, note and state), one child of the field so that a field in
      a row can be a two-row subgrid (2026-10-24 night). */
   .field-body {

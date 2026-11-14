@@ -210,7 +210,7 @@ export function MonthPicker({ id: givenId, label, chosen, bounds = {}, anchor, o
         e.stopPropagation();
         onClose?.();
       }}
-      className={cx("m-0 flex w-max flex-col gap-1 rounded-lg border border-border bg-popover p-2 text-base font-normal leading-normal text-foreground", anchor ? "fixed inset-auto shadow-lg" : "shadow-md", className)}
+      className={cx("come-in m-0 flex w-max flex-col gap-1 rounded-lg border border-border bg-popover p-2 text-base font-normal leading-normal text-foreground", anchor ? "fixed inset-auto shadow-lg" : "shadow-md", className)}
     >
       <div className="flex items-center justify-between gap-1">
         <button type="button" aria-label={kitCopy.figure.yearBack} title={kitCopy.figure.yearBack} aria-disabled={!back || undefined} onClick={() => back && toYear(-1)} className={yearButton}>

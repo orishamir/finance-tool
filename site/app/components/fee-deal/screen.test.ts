@@ -100,7 +100,6 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     view: builder(r, null, chosen ? { fee: chosen, case: caseId } : null),
     groupOf: (f) => feeGroup(r, f, saves(deal)),
     open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, menu: null, thing: null },
-    toolbox: null,
     line: null,
     caseLine: null,
     focus: null,
@@ -452,8 +451,9 @@ describe("a fee read across sizes", () => {
     ];
     const name = feeName("fx");
     const shown = drawGlance(d);
-    expect(shown).toContain(`${name}, עד 100 ₪`);
-    expect(shown).toContain(`${name}, מעל 100 ₪`);
+    // the step's sum is one isolate, its number and sign joined by a no-break space, never wrapped apart
+    expect(shown).toContain(`${name}, עד 100\u00a0₪`);
+    expect(shown).toContain(`${name}, מעל 100\u00a0₪`);
     expect(drawReading(d)).toContain(`ב־100 ₪ משתנה המחיר של ${name}.`);
   });
 });

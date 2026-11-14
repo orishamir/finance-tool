@@ -35,12 +35,13 @@ export function CopyFee({ houses, has, alone, onCopy }: { houses: readonly House
   };
   const h = houses.find((x) => x.id === house);
   return (
-    <div data-copy-fee="" className="flex flex-col gap-2">
+    // open, its houses, fees and question are kept clear by the site's "back to the top" button (shell.tsx), which steps aside
+    <div data-copy-fee="" {...(open ? { "data-keep-clear": "" } : {})} className="flex flex-col gap-2">
       <Button variant="quiet" aria-expanded={open} onClick={() => (open ? close() : setOpen(true))} className="self-start">
         {w.open}
       </Button>
       {open && (
-        <div className="flex flex-col gap-2">
+        <div className="come-in flex flex-col gap-2">
           <ChoiceChips wrap ariaLabel={w.houses} ids={houses.map((x) => x.id)} labels={Object.fromEntries(houses.map((x) => [x.id, x.name]))} value={house} onChange={(id) => (setHouse(id), setKind(null))} />
           {h && (
             <ChoiceChips

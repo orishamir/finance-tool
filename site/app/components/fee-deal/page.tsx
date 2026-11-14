@@ -10,8 +10,8 @@
 // kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first fee moves
 // nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
 // a slim fee or a case's row opens it in place, a tap on its slot, or on a thing of its band's head, opens that one's menu, which the page holds. The toolbox stands in a
-// column of its own where the window has the room, under its fee in a middling window, and on a phone in a short sheet pinned to the
-// foot of the screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
+// column of its own where the window has the room, and anywhere narrower (a phone, a tablet) in a short sheet pinned to the foot of the
+// screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
 // when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer or
 // the focus in one is marked in the others, and a fee's name in the summary or the reading opens it (`FeeLinks`). On a computer a card
 // dragged from the toolbox onto the open fee, or one of its cases, does there what its tap does (`ToolDrop`). A change that loses
@@ -71,7 +71,7 @@ import { feeName } from "./words";
 
 /**
  * Where the window is wide enough for the toolbox to have a column of its own (28rem), beside the fees, which take the rest; narrower, it
- * stands under its fee, and on a phone it is a short sheet at the foot of the screen.
+ * is a short sheet at the foot of the screen.
  */
 const PANEL_COLUMN = "(min-width: 80rem)";
 const PHONE = "(max-width: 47.99rem)";
@@ -151,9 +151,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const { deal, chosen, change, kept } = doc;
   const panelColumn = useMedia(PANEL_COLUMN);
   const phone = useMedia(PHONE);
+  // the toolbox is a short sheet at the foot of the screen wherever it has no column of its own (a phone, a tablet, a narrow window), so
+  // opening a fee never pushes the fees under it down
+  const sheeted = !panelColumn;
   // the deal is read once for every view; choosing another fee builds only its panel again
   const read = useMemo(() => readDealFor(deal, data.kinds, today, (id) => houseName(id, data)), [deal, data, today]);
-  const oc = useOpenCase({ deal, read, chosen, setChosen: doc.setChosen, phone, panelColumn });
+  const oc = useOpenCase({ deal, read, chosen, setChosen: doc.setChosen, phone: sheeted, panelColumn });
   const { caseId } = oc;
   const chosenFee = oc.fee;
   const { said, setSaid } = useSaid();
@@ -353,7 +356,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const lines = doc.undo.lines;
   const readSome = read.fees.length > 0;
   // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
-  // on a phone a short sheet pinned to the foot of the screen; else right under its fee
+  // anywhere narrower a short sheet pinned to the foot of the screen
   const toolboxView =
     views && panel && tools && chosenFee ? (
       <ToolboxColumn
@@ -362,7 +365,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         fee={chosenFee}
         {...(read.copied[chosenFee.id] ? { house: read.copied[chosenFee.id] } : {})}
         caseId={caseId}
-        sheet={phone}
+        sheet={sheeted}
         product={deal.kind}
         fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => kept(fillFeeKept(deal, chosenFee.id, h, data, chosen)) } : null}
         line={lines.fill}
@@ -379,8 +382,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       />
     ) : null;
   const panelView =
-    toolboxView && !phone ? (
-      <ToolboxCard cardRef={oc.panel.card} column={panelColumn} onClose={oc.onClosePanel}>
+    toolboxView && !sheeted ? (
+      <ToolboxCard cardRef={oc.panel.card} onClose={oc.onClosePanel}>
         {toolboxView}
       </ToolboxCard>
     ) : null;
@@ -480,7 +483,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               view={shownBuilder}
               groupOf={(fee: Fee) => feeGroup(read, fee, saves)}
               open={{ fee: chosen, case: caseId, view: shownOpen, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
-              toolbox={panelColumn || phone ? null : panelView}
               line={lines.fee}
               caseLine={lines.case}
               focus={doc.focus}
@@ -541,8 +543,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
           />
         </Section>
       )}
-      {/* a phone's toolbox, pinned to the foot of the screen, keeps its room at the end of the document */}
-      {phone && toolboxView}
+      {/* the toolbox where it has no column, pinned to the foot of the screen, keeps its room at the end of the document */}
+      {sheeted && toolboxView}
     </FeeLinksProvider>
   );
 }

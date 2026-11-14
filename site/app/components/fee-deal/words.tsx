@@ -8,7 +8,7 @@ import type { MonthKey } from "../../lib/fee-deal/model";
 import { unreadReason, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
-import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
+import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
 import { Num, RulesChip } from "../provenance";
@@ -23,8 +23,8 @@ export function feeName(kind: FeeKindId, own?: string, house?: string): string {
   return house ? `${name}${dealCases.copyFee.houseSep}${house}` : name;
 }
 
-/** A sum as plain words, isolated left to right inside Hebrew, as its unit writes it (a whole sum without cents, "100 $"). */
-export const sumText = (v: SiteValue): string => `\u2066${formatValue(v.value as number, v.unit)}\u2069`;
+/** A sum as plain words, isolated left to right inside Hebrew and never wrapped apart (`amountWords`), as its unit writes it (a whole sum without cents, "100 $"). */
+export const sumText = (v: SiteValue): string => amountWords(formatValue(v.value as number, v.unit));
 
 /**
  * A fee's name, with its stretch of sizes where it is one step of a fee read across sizes (F-115): "המרת מטבע, עד 100 ₪", "המרת מטבע, מעל

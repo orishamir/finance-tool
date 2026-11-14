@@ -13,7 +13,7 @@ import { BOUND_CURRENCIES, namesPlaces, pricesOn, untilRange, type BoundCurrency
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
-import { fmt, formatValue } from "../../lib/format";
+import { amountWords, fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { AddSlot, AskValues, ChangeDivider, FigureField, InlineSelect, MonthField, RangeMenu, TextField, TickMenu, TrackMenu, monthText } from "../kit";
 import { bringIntoView } from "./in-view";
@@ -345,5 +345,5 @@ export function WhenText({ words }: { words: { text?: string; lead?: string; fig
 /** A case's value for one thing as plain words: a range's step with its top, else its words. */
 export const whenText = (words: { text?: string; lead?: string; figure?: SiteValue }): string => (words.figure ? `${words.lead ?? ""}${numText(words.figure)}` : (words.text ?? ""));
 
-/** A range's top as plain words ("100 $", "200 יחידות"), for a menu's line and a case's spoken name. */
-export const numText = (v: SiteValue): string => formatValue(v.value as number, v.unit);
+/** A range's top as plain words ("100 $", "200 יחידות"), for a menu's line, a band's step and a case's spoken name: isolated, never wrapped apart (`amountWords`). */
+export const numText = (v: SiteValue): string => amountWords(formatValue(v.value as number, v.unit));

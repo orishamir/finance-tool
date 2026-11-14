@@ -88,7 +88,7 @@ for (const path of paths.split(",")) {
           // a figure's or a month's field (the kit's FigureField and MonthField, `input[data-figure]`) sits in a 44 px box that passes a
           // press anywhere in it to the field (`focusInBox`), so the box is the field's, all but a choice or a button in it, which keeps
           // its own press; the input itself is only its text line
-          const box = e.matches("input[data-figure]") ? e.parentElement : null;
+          const box = e.matches("input[data-figure]") ? e.closest("[data-lift]") : null;
           const ownPress = (n) => {
             const c = n.closest("select, button, a");
             return !!c && box.contains(c);

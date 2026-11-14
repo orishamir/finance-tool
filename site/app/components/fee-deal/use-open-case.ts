@@ -48,12 +48,19 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
       if (!panelColumn) bringIntoView(panelCard.current);
     }
   }, [chosen]);
-  // a case opened in place is brought into view once drawn: under the header, and above a phone's sheet, which unfolds with it
+  // a case opened in place is brought into view once drawn: under the header, and above a phone's sheet, which unfolds with it; opened by a
+  // press on a table's cell or head, never so far that the cell pressed leaves the view
   const [caseShown, setCaseShown] = useState(0);
+  const pressed = useRef<Element | null>(null);
+  useEffect(() => {
+    const press = (e: PointerEvent) => (pressed.current = (e.target as Element | null)?.closest("[role=gridcell], [data-case-head]") ?? null);
+    document.addEventListener("pointerdown", press, true);
+    return () => document.removeEventListener("pointerdown", press, true);
+  }, []);
   useEffect(() => {
     if (!caseShown) return;
     // after the frame, where the sheet has unfolded and the case has its height
-    const f = requestAnimationFrame(() => bringIntoView(document.querySelector("[data-open-case]")));
+    const f = requestAnimationFrame(() => bringIntoView(document.querySelector("[data-open-case]"), pressed.current?.isConnected ? pressed.current : null));
     return () => cancelAnimationFrame(f);
   }, [caseShown]);
 
@@ -63,7 +70,10 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
 
   // a fee or one of its cases opened in place; from the keyboard, its first box takes the focus once drawn
   const onOpenCase = (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => {
-    if (by === "keyboard") after.current = { fee: feeId, how: "panel" };
+    if (by === "keyboard") {
+      after.current = { fee: feeId, how: "panel" };
+      pressed.current = null;
+    }
     if (caseId) setCaseShown((n) => n + 1);
     setChosen(feeId);
     setCaseOpen(caseId ? { fee: feeId, case: caseId } : null);

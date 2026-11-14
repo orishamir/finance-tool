@@ -26,7 +26,10 @@ const p = copy.panel;
 /** The kit's kind of each of the view's groups. */
 const KIND: Record<string, ToolKind> = { price: "price", bound: "bound", by: "when", link: "link", more: "note" };
 
-/** A part's card as it will read, its boxes drawn empty: "☐ % לכל פעולה", "מינימום ☐ ☐". */
+/**
+ * A part's card as it will read, its boxes drawn empty: "☐% לכל פעולה", "מינימום ☐ ☐". The empty box and its sign are one left-to-right
+ * group, the sign on the box's right, as the page writes a figure ("0.3%", "39 ₪") and as the open case's box draws it.
+ */
 function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const w = part.words;
   const lead = w.lead?.trim();
@@ -41,9 +44,10 @@ function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
           <ToolBlank /> <ToolBlank wide />
         </>
       ) : (
-        <>
-          <ToolBlank /> {sign}
-        </>
+        <span dir="ltr" className="inline-flex items-center gap-1 whitespace-nowrap">
+          <ToolBlank />
+          {sign}
+        </span>
       )}
     </>
   ) : null;
@@ -241,16 +245,18 @@ export function ToolboxColumn({
 }
 
 /**
- * The toolbox's card on a computer (`cardRef`, which the page brings into view and focuses in): in a column of its own where the window
- * has the room (`column`), sticking under the header as the fees scroll by and never cut at the window's height (`useStickyColumn`), else
- * under its fee. Escape closes it (`onClose`).
+ * The toolbox's card on a computer wide enough for a column of its own (`cardRef`, which the page brings into view and focuses in):
+ * beside the fees, sticking under the header as they scroll by, scrolling inside itself where it is taller than the window under the
+ * header (`useStickyColumn`), and kept clear by the site's "back to the top" button (`data-keep-clear`). Narrower, the toolbox is the
+ * sheet at the foot of the screen. Escape closes it (`onClose`).
  */
-export function ToolboxCard({ cardRef, column, onClose, children }: { cardRef: RefObject<HTMLDivElement | null>; column: boolean; onClose: () => void; children: ReactNode }) {
-  useStickyColumn(cardRef, column);
+export function ToolboxCard({ cardRef, onClose, children }: { cardRef: RefObject<HTMLDivElement | null>; onClose: () => void; children: ReactNode }) {
+  useStickyColumn(cardRef, true);
   return (
     <div
       ref={cardRef}
-      className={cx("come-in", column && "col-start-2 row-start-1 sticky top-20 rounded-lg")}
+      data-keep-clear=""
+      className="come-in col-start-2 row-start-1 sticky top-20 rounded-lg"
       onKeyDown={(e) => {
         if (e.key === "Escape" && !e.defaultPrevented) {
           e.preventDefault();

@@ -100,6 +100,9 @@ function ResetToStart({ shown, start, unit, onReset, describedBy, className }: {
   );
 }
 
+/** A unit that is a sign (₪, $, €, £, %): it stands on the number's right in the box, as the page writes a figure ("100,000 ₪"); a unit in words follows the number in reading order. */
+const SIGN = /^[₪$€£%]$/;
+
 /** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
   const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
@@ -196,7 +199,7 @@ export function NumberField(props: FieldProps) {
     if (!err) later(() => onCommit(n));
   };
   const box = (
-    <div className={cx("field-box", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
+    <div className={cx("field-box", SIGN.test(unitWord(unit)) && "field-box-sign", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
         ref={inputRef}
         id={ids}
