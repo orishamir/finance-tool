@@ -397,7 +397,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const raw = lists(sp, bundle, plan, pick);
     const text = shown(raw);
     expect(text).toContain(invest.beforeTax.heading);
-    expect(text).toContain(invest.beforeTax.note["TXF-04"]);
+    expect(text).toContain(invest.beforeTax.note["TXF-04"]!.replace("{term}", invest.beforeTax.noteTerm));
     expect(text).toContain(invest.beforeTax.colLeft);
     for (const id of ["1159250", "1183441"]) {
       const f = allFunds(sp).find((x) => x.rec.id === id)!;

@@ -505,9 +505,17 @@ export function PairLists(props: ListsProps) {
         </h4>
         <p className="max-w-measure text-xs text-muted-foreground">
           {beforeTaxRules.map((id) => (
-            <Term key={id} id={[]} name={c.beforeTax.heading} rules={[id]}>
-              {c.beforeTax.note[id] ?? c.beforeTax.noteOther}
-            </Term>
+            <Tpl
+              key={id}
+              t={c.beforeTax.note[id] ?? c.beforeTax.noteOther}
+              vars={{
+                term: (
+                  <Term id={[]} name={c.beforeTax.heading} rules={[id]}>
+                    {c.beforeTax.noteTerm}
+                  </Term>
+                ),
+              }}
+            />
           ))}{" "}
           {c.beforeTax.noteTail}
         </p>

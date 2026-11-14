@@ -3540,11 +3540,12 @@ export const invest = {
   beforeTax: {
     /** The heading over them, in the blocked colours with the lock. */
     heading: "לפני מס, בלי דירוג",
-    /** The plain note under the heading, by the rule: its words open the rule's card. */
+    /** The plain note under the heading, by the rule: `{term}` is `noteTerm`, the words that open the rule's card. */
     note: {
-      "TXF-04": "המס על הקרנות האלה עוד לא ידוע: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
+      "TXF-04": "המס על הקרנות האלה {term}: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
     } as Record<string, string>,
-    noteOther: "המס על הקרנות האלה תלוי בכלל שעוד לא ידוע.",
+    noteOther: "המס על הקרנות האלה {term}: הוא תלוי בכלל שעוד לא נקבע.",
+    noteTerm: "עוד לא ידוע",
     /** The note's last sentence: what the figures are and what is not done with them. */
     noteTail: "לכן הסכומים כאן לפני מס, ואי אפשר להשוות אותם לקרנות שלמעלה או לבחור בהן.",
     /** The list's name, for a screen reader. */
