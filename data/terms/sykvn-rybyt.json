@@ -1,0 +1,23 @@
+{
+  "id": "sykvn-rybyt",
+  "he": "סיכון ריבית",
+  "en": null,
+  "meaning": "הסיכון שמחיר איגרת חוב, או של קרן שמחזיקה איגרות חוב, יירד כי הריבית במשק עלתה",
+  "where": [],
+  "wrapper_ids": [
+    "money-market-fund-daily"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BND-01",
+    "BND-04",
+    "BND-13"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-31"
+  }
+}

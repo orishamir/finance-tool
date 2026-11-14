@@ -1783,7 +1783,11 @@
     },
     "variants_he": [],
     "explain_he": "משך הזמן הממוצע עד שמתקבלים התשלומים של איגרת חוב, משוקלל לפי הסכומים",
-    "rule_ids": [],
+    "rule_ids": [
+      "BND-04",
+      "BND-05",
+      "BND-13"
+    ],
     "source": {
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=10",
@@ -1796,7 +1800,7 @@
       "guide:brokerage-account",
       "guide:government-bond"
     ],
-    "notes": "Terms table only (ISA guide p.30), no rule. The money-market directive uses the related 'משך חיים ממוצע' (MF-30).",
+    "notes": "ISA guide pp.10 and 30; the official formula is BND-05. The money-market directive uses the related 'משך חיים ממוצע' (MF-30).",
     "id": "mchm"
   },
   {
@@ -2212,7 +2216,8 @@
     "rule_ids": [
       "BANK-15",
       "GOV-06",
-      "GOV-20"
+      "GOV-20",
+      "BND-03"
     ],
     "source": {
       "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
@@ -2741,5 +2746,146 @@
       "guide:money-market-fund-renewable"
     ],
     "notes": "Round 2 (2026-11-07): BoI bankipedia, \"שער החליפין הוא המחיר בשקלים שנצטרך לשלם עבור מטבעות זרים\" (fork B)."
+  },
+  {
+    "term_he": "סיכון אשראי",
+    "term_source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25"
+    },
+    "variants_he": [],
+    "explain_he": "הסיכון שמי שהנפיק את איגרת החוב לא יחזיר את הכסף, או יחזיר פחות או באיחור",
+    "rule_ids": [
+      "BND-07"
+    ],
+    "source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25",
+      "checked": "2026-10-31",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "guide:money-market-fund-daily"
+    ],
+    "notes": "ISA guide p.25: mainly in funds holding company bonds; the state stands behind government bonds (GOV-02)."
+  },
+  {
+    "term_he": "סיכון ריבית",
+    "term_source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25"
+    },
+    "variants_he": [],
+    "explain_he": "הסיכון שמחיר איגרת חוב, או של קרן שמחזיקה איגרות חוב, יירד כי הריבית במשק עלתה",
+    "rule_ids": [
+      "BND-01",
+      "BND-04",
+      "BND-13"
+    ],
+    "source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25",
+      "checked": "2026-10-31",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "guide:money-market-fund-daily"
+    ],
+    "notes": "ISA guide p.25: \"הסיכון ששווי השוק של האג\"ח יירד כתוצאה מעלייה בריבית בנק ישראל\"."
+  },
+  {
+    "term_he": "סיכון אינפלציה",
+    "term_source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=26"
+    },
+    "variants_he": [],
+    "explain_he": "הסיכון שעליית המחירים תקטין את מה שהכסף יכול לקנות, בעיקר בהשקעה שלא צמודה למדד ולטווח ארוך",
+    "rule_ids": [
+      "BND-09"
+    ],
+    "source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=26",
+      "checked": "2026-10-31",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "guide:money-market-fund-daily"
+    ],
+    "notes": "ISA guide p.26."
+  },
+  {
+    "term_he": "סיכון נזילות",
+    "term_source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=26"
+    },
+    "variants_he": [],
+    "explain_he": "הסיכון שאי אפשר יהיה למכור נכס כשצריך, או שיהיה צריך למכור אותו בהפסד",
+    "rule_ids": [
+      "BND-07"
+    ],
+    "source": {
+      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=26",
+      "checked": "2026-10-31",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "guide:money-market-fund-daily"
+    ],
+    "notes": "ISA guide pp.25-26, said of a fund's assets."
+  },
+  {
+    "term_he": "עקום התשואות",
+    "term_source": {
+      "title": "בנק ישראל: אמידת עקום תשואות אג\"ח ממשלתיות בשיטת נלסון-סיגל-סוונסון (27.7.2022)",
+      "url": "https://boi.org.il/boi_files/Statistics/Estimation%20of%20yields%20from%20government%20bonds.pdf#page=1"
+    },
+    "variants_he": [
+      "עקום תשואות"
+    ],
+    "explain_he": "התשואה של איגרות החוב לפי הזמן שנשאר עד הפדיון: לשנה, לחמש שנים, לעשר שנים וכן הלאה",
+    "rule_ids": [
+      "BND-06"
+    ],
+    "source": {
+      "title": "בנק ישראל: אמידת עקום תשואות אג\"ח ממשלתיות בשיטת נלסון-סיגל-סוונסון (27.7.2022)",
+      "url": "https://boi.org.il/boi_files/Statistics/Estimation%20of%20yields%20from%20government%20bonds.pdf#page=1",
+      "checked": "2026-11-15",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
+    },
+    "where": [],
+    "notes": "BoI curve note p.1; the ECB's definition is in BND-06."
+  },
+  {
+    "term_he": "ציפיות לאינפלציה",
+    "term_source": {
+      "title": "בנק ישראל, החטיבה למידע ולסטטיסטיקה: האינדיקטורים לאמידת ציפיות האינפלציה של הציבור (מצגת, 21.3.2023)",
+      "url": "https://boi.org.il/media/ovfhi5dz/%D7%94%D7%90%D7%99%D7%A0%D7%93%D7%99%D7%A7%D7%98%D7%95%D7%A8%D7%99%D7%9D-%D7%9C%D7%90%D7%9E%D7%99%D7%93%D7%AA-%D7%A6%D7%99%D7%A4%D7%99%D7%95%D7%AA-%D7%94%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94-%D7%A9%D7%9C-%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8.pdf#page=6"
+    },
+    "variants_he": [
+      "הציפיות לאינפלציה",
+      "הציפיות לאינפלציה הנגזרות משוק ההון"
+    ],
+    "explain_he": "האינפלציה שהשוק מצפה לה, כפי שבנק ישראל מחשב מההפרש בין התשואה של איגרות המדינה הלא צמודות לזו של הצמודות",
+    "rule_ids": [
+      "BND-10"
+    ],
+    "source": {
+      "title": "בנק ישראל, החטיבה למידע ולסטטיסטיקה: האינדיקטורים לאמידת ציפיות האינפלציה של הציבור (מצגת, 21.3.2023)",
+      "url": "https://boi.org.il/media/ovfhi5dz/%D7%94%D7%90%D7%99%D7%A0%D7%93%D7%99%D7%A7%D7%98%D7%95%D7%A8%D7%99%D7%9D-%D7%9C%D7%90%D7%9E%D7%99%D7%93%D7%AA-%D7%A6%D7%99%D7%A4%D7%99%D7%95%D7%AA-%D7%94%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94-%D7%A9%D7%9C-%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8.pdf#page=6",
+      "checked": "2026-11-15",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
+    },
+    "where": [],
+    "notes": "BoI deck pp.6-7; published monthly in EDGE, dataflow ZCM (BND-10)."
   }
 ]

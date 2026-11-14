@@ -61,7 +61,7 @@ export function Kinds({ figure }: ContentProps) {
       </Sentence>
       <RulesLine ids={["ETF-18"]} />
       <Sentence measure>
-        <Term id="קרן כספית">קרן כספית</Term> היא סוג נפרד: קרן שהנכסים שלה בסיכון אשראי נמוך, והסכם הקרן שלה קובע שהיא קרן כספית.
+        <Term id="קרן כספית">קרן כספית</Term> היא סוג נפרד: קרן שהנכסים שלה <Term prefix="ב" id="סיכון אשראי">סיכון אשראי</Term> נמוך, והסכם הקרן שלה קובע שהיא קרן כספית.
       </Sentence>
       <RulesLine ids={["MF-07"]} />
       <Sentence measure>
@@ -190,6 +190,7 @@ export function Tax({ figure }: ContentProps) {
 /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */
 export const termIds = [
   "קרן נאמנות",
+  "סיכון אשראי",
   "בית השקעות",
   "תשואה",
   "עיקול",
