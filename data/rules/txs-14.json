@@ -1,8 +1,8 @@
 {
   "id": "TXS-14",
-  "title": "Which index measures a fund unit's real gain: CPI for shekel units, the exchange rate for currency-denominated units and for foreign-investment funds",
+  "title": "Which index measures a fund unit's real gain: CPI for shekel units, the exchange rate for currency-denominated units and, if the 2003 regulations still operate (TXS OQ26), for foreign-investment funds",
   "title_he": "איזה מדד מודד את הרווח הריאלי על יחידת קרן",
-  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת. בחריגה ארוכה יותר, לפי חוזר של רשות המסים, הקרן מפסיקה להיות קרן להשקעות חוץ ולא חוזרת להיות כזו: מי שפדה לפני החריגה ממוסה כבקרן להשקעות חוץ, ומי שפדה אחריה לפי המדד לכל תקופת ההחזקה. אם התקנות האלה עדיין בתוקף היא שאלה פתוחה. הסעיף בפקודה שמכוחו הותקנו בוטל בתיקון משנת 2005, והתיקון השאיר במפורש בתוקף רק תקנות לפי שני סעיפים אחרים. מנגד, לפי חוק הפרשנות תקנות נשארות בתוקף כשהחוק המבטל קבע הוראות במקום אלה שבוטלו, ואותו תיקון קבע סמכות דומה לקבוע איך מחשבים רווח הון; תקנות משנת 2007 עדיין מפנות אליהן, ולא נמצא ביטול שלהן. לכן לפי קריאה של האתר הן בתוקף, אבל שום טקסט רשמי לא אומר זאת במשפט אחד.",
+  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי, אם תקנות 2003 על קרן להשקעות חוץ, שקובעות זאת, עדיין בתוקף. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת. בחריגה ארוכה יותר, לפי חוזר של רשות המסים, הקרן מפסיקה להיות קרן להשקעות חוץ ולא חוזרת להיות כזו: מי שפדה לפני החריגה ממוסה כבקרן להשקעות חוץ, ומי שפדה אחריה לפי המדד לכל תקופת ההחזקה. אם תקנות 2003 על קרן להשקעות חוץ עדיין בתוקף היא שאלה פתוחה. הסעיף בפקודה שמכוחו הותקנו בוטל בתיקון משנת 2005, והתיקון השאיר במפורש בתוקף רק תקנות לפי שני סעיפים אחרים. מנגד, לפי חוק הפרשנות תקנות נשארות בתוקף כשהחוק המבטל קבע הוראות במקום אלה שבוטלו, ואותו תיקון קבע סמכות דומה לקבוע איך מחשבים רווח הון; תקנות משנת 2007 עדיין מפנות אליהן, ולא נמצא ביטול שלהן. לכן לפי קריאה של האתר הן בתוקף, אבל שום טקסט רשמי לא אומר זאת במשפט אחד.",
   "figure_names_he": {
     "foreign_investment_fund_threshold": "חלק מזערי של ההשקעות הצמוד למטבע העיקרי",
     "tolerance_days": "ימי חריגה מותרים בשנת מס"
@@ -13,7 +13,8 @@
     "currency",
     "tax-at-exit"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-14",
   "figures": {
     "foreign_investment_fund_threshold": {
       "value": 90,
@@ -33,7 +34,7 @@
         "TXS-14"
       ],
       "state": "sourced",
-      "notes": "A foreign-investment fund (קרן נאמנות להשקעות חוץ) is an exempt fund with at least 90% of its investments in each tax year in assets indexed to its principal currency; its inflationary amount uses that currency's exchange rate. A shekel fund holding foreign assets that is not such a fund uses the CPI, so currency moves beyond CPI are taxed as real gain."
+      "notes": "A foreign-investment fund (קרן נאמנות להשקעות חוץ) is an exempt fund with at least 90% of its investments in each tax year in assets indexed to its principal currency; its inflationary amount uses that currency's exchange rate, if the 2003 regulations still operate (TXS OQ26). A shekel fund holding foreign assets that is not such a fund uses the CPI, so currency moves beyond CPI are taxed as real gain."
     },
     "tolerance_days": {
       "value": 10,

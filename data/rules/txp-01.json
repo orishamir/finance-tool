@@ -21,7 +21,7 @@
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-14",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,7 +34,7 @@
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-14",
   "scope": "general",
   "sources": [
     {
@@ -48,7 +48,7 @@
       "locator": "p.81, s.45א(ב)",
       "locator_he": "עמוד 81, סעיף 45א(ב)",
       "page": 81,
-      "checked": "2026-10-25"
+      "checked": "2026-11-14"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -61,7 +61,7 @@
       "locator": "p.86, s.47(ג)",
       "locator_he": "עמוד 86, סעיף 47(ג)",
       "page": 86,
-      "checked": "2026-10-25"
+      "checked": "2026-11-14"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -74,7 +74,7 @@
       "locator": "p.62 and p.71",
       "locator_he": "עמוד 62 ועמוד 71",
       "page": 62,
-      "checked": "2026-10-25"
+      "checked": "2026-11-14"
     }
   ]
 }
