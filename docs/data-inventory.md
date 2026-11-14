@@ -85,7 +85,7 @@ All eleven parameters, P-01 to P-11, exist. The parameters page (`/parameters`) 
 
 - **`data/fund-lists/`** (data-schema 3.14), the Maya export and TASE's foreign-funds list: not collected. The site shows the funds that have records and links out to the lists; it names no count for a list it did not read.
 - **`data/averages/`** (data-schema 3.9): not built. The company and track pages show the per-track CMA fee from row 7; a class average would be a computation in `docs/method.md`.
-- **The Bank of Israel series**: links, not numbers (D20).
+- **The Bank of Israel series**: not collected (D20).
 - **The ISA's fund-fee category averages**: not collected.
 
 ---

@@ -626,7 +626,7 @@ Closed on 2026-11-06, each with its row in section 1: the market sense of "מד�
 
 A term a rule defines but that has no row in section 1 is named on its page without a tap-through explanation until the row exists.
 
-### Shown as a link, not a number
+### Not collected
 
 These figures and lists exist and are not collected, so the site says no average was collected for the line; the only links are TASE's calculator (own-account panel) and Maya.
 
@@ -636,7 +636,7 @@ These figures and lists exist and are not collected, so the site says no average
 | **ממוצע עמלות של בנק (בנק ישראל)** | the Bank's FEES_DASH averages exist (BRK-26) and are not collected (D20); no `averages` row is in any snapshot. Bank fees read "לא נאסף ממוצע לשורות שחלות על …" (the indices page). |
 | **ממוצע עמלות לפי חבר בורסה (הבורסה)** | TASE's per-member averages exist (BRK-33, BRK-37) and are free to read; their data period is not shown, and none is collected. Non-bank broker fees read "לא נאסף ממוצע לשורות שחלות על …" (the indices page), and the own-account panel links to TASE's calculator. |
 | **רשימת הקרנות של מאיה ורשימת קרנות החוץ** | the lists need a browser to export, and neither is collected (CAT-34, ETF-32, product.md dependency 6; `docs/data-inventory.md`). The site shows the funds that have records and links out; it names no count for a list it did not read. |
-| **תשואת מק״מ כמספר** | the Bank of Israel's makam yield series is a link (D20). The makam exposure is "not evaluated: no sourced series" until the person enters a yield. |
+| **תשואת מק״מ כמספר** | the Bank of Israel's makam yield series is not collected (D20). The makam exposure is "not evaluated: no sourced series" until the person enters a yield. |
 
 ### Not in the method or the data
 
