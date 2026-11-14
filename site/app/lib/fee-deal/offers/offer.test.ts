@@ -10,7 +10,9 @@ import type { DealKind } from "../kinds";
 import { FEE_KIND_IDS, kindHas, type FeeKindId } from "../shapes";
 import { capacity } from "./capacity";
 import type { ByKind } from "./conditions";
-import { capacityOffer, feeOffered, offerFor } from "./offer";
+import { capacityOffer, feeOffered, offerFor, productOffered } from "./offer";
+import { newDeal, readDeal, typed, type FeeDeal } from "../model";
+import { readDealFor } from "../parts";
 import type { PartId } from "./parts";
 import { providentFamily, RULES } from "./rules";
 
@@ -123,6 +125,20 @@ describe("fees not offered at all", () => {
       for (const fee of FEE_KIND_IDS.filter((f) => kindHas(k.id, k.bases, f)))
         if (!off.some(([id, f]) => id === k.id && f === fee) && !(k.id === "ira-hishtalmut" && fee === "current_account")) expect(feeOffered(k, fee), `${k.id} · ${fee}`).toBe(true);
     expect(feeOffered(null, "exit")).toBe(true);
+  });
+});
+
+describe("the product picker", () => {
+  it("offers every product with a fee the page can price, so not a bank deposit, a savings plan or a bank child-savings plan (BANK-06, BANK-16, BANK-28)", () => {
+    expect(data.kinds.filter((k) => !productOffered(k)).map((k) => k.id).sort()).toEqual(["bank-deposit", "child-savings-bank", "savings-plan"]);
+    expect(data.kinds.filter(productOffered).length).toBe(data.kinds.length - 3);
+  });
+  it("still opens and reads a saved deal of one", () => {
+    const deal: FeeDeal = { ...newDeal("bank-deposit"), id: "deal-b", fees: [{ id: "fee-exit", kind: "exit", stages: [{ price: { form: "action", rate: typed(1) } }] }] };
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))).toEqual(deal);
+    const r = readDealFor(deal, data.kinds, "2026-11-12");
+    expect(r.kind?.id).toBe("bank-deposit");
+    expect(r.fees.map((f) => f.kind)).toEqual(["exit"]);
   });
 });
 

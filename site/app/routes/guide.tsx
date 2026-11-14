@@ -24,6 +24,7 @@ import { GuideAbroad } from "../components/guide/abroad";
 import { abroadView } from "../lib/abroad";
 import { anyDoubt, anyWeak, feeYear, ruleFigure, type SiteValue } from "../lib/value";
 import { generalOnly, isGeneral } from "../lib/scope";
+import { productOffered } from "../lib/fee-deal/offers/offer";
 
 const providentIds = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
 const isProvidentFamily = (id: string) => providentIds.includes(id);
@@ -41,8 +42,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   for (const id of [...worthIds, ...withdrawalRules(params.id)]) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
   // the records the cards point at, the pinned facts' too, and those the run flags' words read travel beside the page's own rules (only
   // chips, cards and the flags read them)
-  // the fee page takes a deal of every product whose record lists a fee base (method §10.6)
-  const feePage = loadProducts().some((p) => p.id === params.id && p.fee_bases_allowed.length > 0);
+  // the fee page takes a deal of every product its picker offers: one whose record lists a fee base the page can price (method §10.6)
+  const feePage = loadProducts().some((p) => p.id === params.id && p.fee_bases_allowed.length > 0 && productOffered({ id: p.id, bases: p.fee_bases_allowed, regulator: String(p.regulator.value) }));
   // the note on other countries (D114), where the guide has a record and words for it
   const abroadRecord = content?.abroad ? loadAbroad(params.id) : null;
   return { ...data, rules, pointed: pointedWithFlagSlots(rules, allRules), worthIds, feePage, abroad: abroadRecord ? abroadView(abroadRecord) : null };

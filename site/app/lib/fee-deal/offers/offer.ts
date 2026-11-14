@@ -4,7 +4,7 @@
 // opens and reads, since the model reads capacity. Pure; no Hebrew.
 import type { ProviderKind } from "../model";
 import { blankPrice } from "../model";
-import type { FeeKindId, FormId } from "../shapes";
+import { FEE_KIND_IDS, kindHas, type FeeKindId, type FormId } from "../shapes";
 import { capacity, type ChargedForm } from "./capacity";
 import { conditionsFor, type ByKind } from "./conditions";
 import { PART_IDS, PARTS, type PartId } from "./parts";
@@ -103,3 +103,10 @@ export function offerFor(product: ProductFacts | null, fee: FeeKindId): Offer {
 
 /** Whether a product's fee is offered as a fee to add: its offer keeps a form that charges. */
 export const feeOffered = (product: ProductFacts | null, fee: FeeKindId): boolean => offerFor(product, fee).usual !== null;
+
+/**
+ * Whether the page's product picker offers a product: some fee it has (`kindHas`) is offered. A bank deposit's, a savings plan's and a bank
+ * child-savings plan's only fee, breaking it, fits no form the page has (BANK-06, BANK-16, BANK-28), so they are not; a saved deal of one
+ * still opens.
+ */
+export const productOffered = (product: ProductFacts): boolean => FEE_KIND_IDS.some((f) => kindHas(product.id, product.bases, f) && feeOffered(product, f));
