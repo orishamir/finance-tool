@@ -37,9 +37,11 @@ export interface TimelineProps {
    * a monthly deposit entered on another page does not reach this run, and `note` says where money paid in every month goes instead.
    */
   lumpSum?: { note: ReactNode } | null;
+  /** A line under the example where the run does something the product's own terms may not allow (the guide's `chartNote`). */
+  note?: ReactNode;
 }
 
-export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null }: TimelineProps) {
+export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null, note = null }: TimelineProps) {
   const { state, ready, resetAll: resetInputs } = useInputs();
   const [ownRates, setOwnRate] = useOwnRates("guide");
   const ownRate = cash ? ownRates[cash.id] : undefined;
@@ -268,6 +270,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               )}
             </span>
             {lumpSum?.note ? <span className="text-sm text-muted-foreground max-w-measure">{lumpSum.note}</span> : null}
+            {note ? <span className="text-sm text-muted-foreground max-w-measure">{note}</span> : null}
             <div className="flex items-center gap-3 flex-wrap">
               {headline ? (
                 <span className="figure" ref={headlineRef} style={{ scrollMarginTop: "124px" }}>

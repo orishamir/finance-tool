@@ -98,11 +98,14 @@ export function amountRangeForm(min: number | null, max: number | null, fromOnly
 }
 
 /** An amount range in plain words, for a control that holds no sourced figure (a chip); each figure as the bank's table prints it. */
-export function amountRangeText(min: number | null, max: number | null, fromOnly = false): string {
+export function amountRangeText(min: number | null, max: number | null, fromOnly = false, edges?: { min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" }): string {
   const form = amountRangeForm(min, max, fromOnly);
-  if (form === "from") return `${copy.amount.from}${fmt.nis(min!)}`;
-  if (form === "between") return `${fmt.number(min!)} ${copy.amount.to} ${fmt.nis(max!)}`;
-  if (form === "upTo") return `${copy.amount.to} ${fmt.nis(max!)}`;
+  // a bound the bank's table prints as not included says so, as `AmountRange` does (F-108)
+  const above = edges?.min_edge === "excluded" ? `${copy.amount.above} ` : null;
+  const out = edges?.max_edge === "excluded" ? ` ${copy.amount.notIncluded}` : "";
+  if (form === "from") return above ? `${above}${fmt.nis(min!)}` : `${copy.amount.from}${fmt.nis(min!)}`;
+  if (form === "between") return `${above ?? ""}${fmt.number(min!)} ${copy.amount.to} ${fmt.nis(max!)}${out}`;
+  if (form === "upTo") return `${copy.amount.to} ${fmt.nis(max!)}${out}`;
   return copy.amount.noMin;
 }
 

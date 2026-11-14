@@ -9,6 +9,27 @@
     "fee-trade"
   ],
   "likely_to_change": "no",
+  "figures": {
+    "custody_on_money_market_fund": {
+      "value": 0,
+      "unit": "pct_of_balance_per_period",
+      "source": {
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=17",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008, עמוד 17, התוספת הראשונה חלק 4, פרט 4(א)(5)",
+        "publisher": "בנק ישראל",
+        "strength": "primary"
+      },
+      "checked": "2026-11-06",
+      "effective_from": null,
+      "effective_to": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "First Schedule item 4(a)(5): a bank may not charge securities custody on a money-market fund."
+    }
+  },
+  "figure_names_he": {
+    "custody_on_money_market_fund": "דמי ניהול פיקדון ניירות ערך על קרן כספית בבנק"
+  },
   "il_finance_file": "bank-current-account-deposits.md",
   "checked": "2026-11-06",
   "scope": "general",

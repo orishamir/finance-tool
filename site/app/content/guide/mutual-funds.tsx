@@ -5,7 +5,7 @@
 // (8dd1f013:research/specs/2026-11-03-funds-guide/review.md): no risks or documents section, no creation route, no distribution fee, no ETN history.
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
-import { Num, RulesLine, Term } from "../../components/provenance";
+import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, FixedTable, ProseList, Sentence } from "../../components/kit";
 import { INDICES_PATH } from "../../lib/site-paths";
 import { fmt } from "../../lib/format";
@@ -130,11 +130,11 @@ export function Cost({ figure }: ContentProps) {
             בקנייה ובמכירה: בקרן פתוחה המנהל רשאי לגבות בקנייה תוספת למחיר (<Term id="הוספה">הוספה</Term>), שהולכת אליו ולא לקרן, ולפי רשות ניירות ערך רוב הקרנות לא גובות אותה. בקרן סל משלמים בבורסה את הפער בין מחיר הקנייה למחיר המכירה (<Term id="מרווח ציטוט של פקודות קנייה ומכירה">מרווח</Term>).
           </>,
           <>
-            אצל הבנק או בית ההשקעות: בבנק אין <Term id="עמלת קנייה ומכירה">עמלת קנייה ומכירה</Term> על קרן פתוחה שלא מחקה, אבל יש על קרן מחקה ועל קרן שנסחרת בבורסה, והבנק רשאי לגבות <Term id="דמי ניהול פיקדון ניירות ערך">דמי משמרת</Term> על יחידות, חוץ מקרן כספית. לפי דוח משותף של הרגולטורים, רוב חברי הבורסה שהם לא בנקים גובים עמלות קנייה ומכירה גם על יחידות, ולפי רשות ניירות ערך בתי השקעות בדרך כלל לא גובים דמי משמרת על יחידות.
+            אצל הבנק או בית ההשקעות: בבנק אין <Term id="עמלת קנייה ומכירה">עמלת קנייה ומכירה</Term> על קרן פתוחה שלא מחקה, אבל יש על קרן מחקה ועל קרן שנסחרת בבורסה, והבנק רשאי לגבות <Term id="דמי ניהול פיקדון ניירות ערך">דמי משמרת</Term> על יחידות, חוץ מקרן כספית. לפי דוח משותף של הרגולטורים, רוב חברי הבורסה שהם לא בנקים גובים עמלות קנייה ומכירה גם על יחידות. בתעריפון של רוב בתי ההשקעות שנבדקו כתובים ״דמי ניהול פיקדון״ גם על יחידות, ועמוד המדדים מחשב לפי התעריפון. לפי אותו דוח, בבתי השקעות מקובל שדמי משמרת לא נגבים בפועל, ולכן העלות אצלם יכולה להיות נמוכה יותר <RuleRef id="MF-70" end="." />
           </>,
         ]}
       />
-      <RulesLine ids={["MF-16", "MF-20", "MF-21", "ETF-06", "MF-27", "BRK-17", "BANK-18"]} />
+      <RulesLine ids={["MF-16", "MF-20", "MF-21", "ETF-06", "MF-27", "MF-70", "BRK-17", "BANK-18"]} />
       <Sentence measure>
         בקרן מחקה יכולים להיות גם <Term id="דמי ניהול משתנים">דמי ניהול משתנים</Term>, שנגזרים מ<Term id="הפרש עקיבה">הפרש העקיבה</Term>: כשהקרן מפגרת אחרי המדד, המנהל משלם לקרן. בכל כיוון הם לא עולים על {cap("variable_fee_cap_israeli_bonds_or_equities")} בקרן שרוב החשיפה שלה לאג״ח ישראליות או למניות ישראליות עם עלויות יצירה נמוכות, {cap("variable_fee_cap_foreign_indices")} בקרן שרוב החשיפה שלה למדדים שנסחרים בחו״ל, ו־{cap("variable_fee_cap_other")} בשאר הקרנות.
       </Sentence>

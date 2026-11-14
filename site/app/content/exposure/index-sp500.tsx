@@ -158,7 +158,7 @@ export const content: ExposureContent = {
                     <Term id="קרן חוץ">קרן חוץ</Term> שרשומה למסחר בתל אביב
                   </>
                 ),
-                value: <Sentence as="span">אחת מ־{onTase ? <Num value={onTase} /> : null} קרנות החוץ שנסחרות בתל אביב, על מדדים שונים. קונים אותה רק בבורסה.</Sentence>,
+                value: <Sentence as="span">אחת מ־{onTase ? <Num value={onTase} /> : null} קרנות החוץ שנסחרו בתל אביב{onTase?.effective_from ? <> <When iso={onTase.effective_from} lead="ב־" /></> : null}, על מדדים שונים. קונים אותה רק בבורסה.</Sentence>,
                 rules: ["ETF-32", "ETF-26"],
               },
               {
