@@ -12,7 +12,7 @@ import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type StatedPart, type Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
-import { Num } from "../provenance";
+import { Num, RulesChip } from "../provenance";
 import { FeeOpen } from "./links";
 import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, feeName, refName, sumDisplay, upToDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
@@ -534,6 +534,12 @@ function StatedLine({ part }: { part: StatedPart }) {
         {x.lead}
         {x.figure && <Fig value={x.figure} />}
         {x.tail}
+        {part.rules && (
+          <>
+            {" "}
+            <RulesChip ids={part.rules} />
+          </>
+        )}
       </p>
     </li>
   );

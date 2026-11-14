@@ -98,9 +98,13 @@ export interface Offset {
   kind: FeeKindId;
 }
 
-/** What a price list says of an order, beside its price (§10.6's stated parts): charged on an order not carried out too, each partial fill charged apart. */
-export type Note = "unfilled" | "partial";
-export const NOTES: readonly Note[] = ["unfilled", "partial"];
+/**
+ * What a price list says of an order, beside its price (§10.6's stated parts): charged on an order not carried out too; at a bank, an order
+ * through a clerk not carried out for a reason on the client's side charged its minimum (`unfilledClerk`, BRK-16); each partial fill charged
+ * apart.
+ */
+export type Note = "unfilled" | "unfilledClerk" | "partial";
+export const NOTES: readonly Note[] = ["unfilled", "unfilledClerk", "partial"];
 
 /** The parts of a price beside its figures that tie it to another fee (§10.6's stated parts): an offset, and a refund in the price's currency. */
 interface Linked {
@@ -130,9 +134,10 @@ export type Price =
   | ({ form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
   /**
    * A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge, or per
-   * `boundsEvery` months where the price list prints them so ("מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds.
+   * month where the price list prints them so (`boundsEvery: 1`, "מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds; F-14
+   * names no other period a bound is printed in.
    */
-  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; boundsEvery?: Months } & Linked)
+  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; boundsEvery?: 1 } & Linked)
   /** A sum in shekels every `every` months, whatever the account holds. */
   | ({ form: "sum"; amount: Num; every: Months } & Linked)
   /**
@@ -616,8 +621,8 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
     }
     case "held": {
       const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), more = readLinked(raw);
-      if (!rate || !min.ok || !max.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && !isMonths(raw.boundsEvery))) return null;
-      const boundsEvery = raw.boundsEvery !== undefined && (min.n || max.n) ? { boundsEvery: raw.boundsEvery as Months } : {};
+      if (!rate || !min.ok || !max.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && raw.boundsEvery !== 1)) return null;
+      const boundsEvery = raw.boundsEvery === 1 && (min.n || max.n) ? { boundsEvery: 1 as const } : {};
       return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...boundsEvery, ...more };
     }
     case "sum": {

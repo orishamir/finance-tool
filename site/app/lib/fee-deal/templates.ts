@@ -11,7 +11,7 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Flat, type Months, type Num, type OwnPlace, type Price, type ProviderKind, type SlimFee, type When } from "./model";
+import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Flat, type Months, type Num, type OwnPlace, type Price, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 
@@ -93,10 +93,25 @@ function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): {
 
 /**
  * Whether a line's own words say it is charged on an order that was not carried out too: its name in the price list holds "כולל קניה או
- * מכירה שלא בוצעה" (§10.6's stated parts), as Excellence's and Discount's trade lines print it.
+ * מכירה שלא בוצעה" (§10.6's stated parts), as Excellence's trade lines print it.
  */
 const UNFILLED_RE = /כולל קני?יה או מכירה שלא בוצעה/;
 export const chargesUnfilled = (l: Line): boolean => l.names.tariff.some((n) => UNFILLED_RE.test(n));
+
+/** The classes of part 4(א)(1) of the Bank of Israel's fee rules: securities on the Tel Aviv exchange, makam among them (BRK-16). */
+const ITEM_ONE = new Set(["tase_shares_bonds", "etf_units", "tase_bonds", "tase_foreign_fund_units", "makam"]);
+
+/**
+ * What a trade line notes of an order not carried out (§10.6's stated parts). At a bank the fee rules decide it whatever the line's heading
+ * says (BRK-16, notes to part 4(א)(1)): an order through a clerk not carried out for a reason on the client's side pays the minimum, so a
+ * line of the branch's channel that prices securities on the Tel Aviv exchange carries that note, whose words keep the item's own
+ * exception of mutual funds (a bank's line often prices them with the rest), and a direct line none. At a house that is no
+ * bank, the line's own words say it (`chargesUnfilled`). None where neither does.
+ */
+export function unfilledNote(l: Line, bank: boolean): Note | null {
+  if (bank) return l.channel === "branch" && l.applies_to.some((a) => ITEM_ONE.has(a)) ? "unfilledClerk" : null;
+  return chargesUnfilled(l) ? "unfilled" : null;
+}
 
 /**
  * A trade line that is one sum on every trade (F-12: `max(min, min(0 × amount, max))` with `min = max`, held to the line's cap where it has
@@ -110,13 +125,14 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
 }
 
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
-export function lineFees(l: Line, own: string): Mapped {
+export function lineFees(l: Line, own: string, bank = false): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
   const fee = (kind: FeeKindId, price: Price): SlimTemplateFee => ({ kind, stages: [{ price }] });
   switch (l.base) {
     case "trade": {
-      // the line's own words say the fee is charged on an order not carried out too: the price carries that note
-      const notes = chargesUnfilled(l) ? { notes: ["unfilled" as const] } : {};
+      // what the line, or at a bank the fee rules, say of an order not carried out (`unfilledNote`)
+      const note = unfilledNote(l, bank);
+      const notes = note ? { notes: [note] } : {};
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
       if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", { form: "perAction", amount: num(l.rate), ...notes })], left: [] } : { fees: [], left: ["no-value"] };
       // a share of nothing whose minimum and maximum are one sum, with no flat price, is that sum on each trade, in its currency (Altshuler's
@@ -369,6 +385,7 @@ const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "
  */
 export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   const ownName = snap.provider.name_he;
+  const bank = memberKindOf(snap.provider.class) === "bank";
   const left: { lineId: string; why: LeftWhy }[] = [];
   const fees: TemplateFee[] = [];
   const read = new Set<string>();
@@ -402,7 +419,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
     const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
     for (const l of ambiguous) left.push({ lineId: l.id, why: "ambiguous" });
     for (const l of unread) left.push({ lineId: l.id, why: "another-line" });
-    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName)]));
+    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank)]));
     for (const [l, m] of mapped) {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);

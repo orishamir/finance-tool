@@ -552,6 +552,27 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     expect(actionCost(d, first(d), "trade", 3700, "buy", { USD: 3.7 }).total).toBeCloseTo(92.5, 10);
   });
 
+  it("holds a sum per action to its percent maximum through the share's own line: its cost, its one mark, and nothing charged at a cap of 0", () => {
+    // Excellence's "11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה", at 3.20 ₪ a dollar
+    const d = one({ kind: "perAction", amount: 11, cap: 0.02, currency: "USD" });
+    // 100 $ (320 ₪): 2% of it, 6.40 ₪; 1,000 $ (3,200 ₪): the 11 $, 35.20 ₪; the turn at 11 / 2% = 550 $ (1,760 ₪)
+    expect(actionCost(d, first(d), "trade", 320, "buy", { USD: 3.2 }).total).toBeCloseTo(6.4, 10);
+    expect(actionCost(d, first(d), "trade", 3200, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 10);
+    expect(actionCost(d, first(d), "trade", 1760, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 10);
+    expect(dealMarks(d, first(d))).toEqual([expect.objectContaining({ kind: "cap", on: "action", amount: 550, currency: "USD" })]);
+    expect(dealMarks(d, first(d))[0]).not.toHaveProperty("from");
+    // with no cap it costs the sum on any action and marks nothing
+    const plain = one({ kind: "perAction", amount: 11, currency: "USD" });
+    expect(actionCost(plain, first(plain), "trade", 320, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 10);
+    expect(dealMarks(plain, first(plain))).toEqual([]);
+    // a cap of 0 holds every action to nothing; a cap above it charges
+    expect(chargesNothing({ kind: "perAction", amount: 11, cap: 0, currency: "USD" })).toBe(true);
+    expect(chargesNothing({ kind: "perAction", amount: 11, cap: 0.02, currency: "USD" })).toBe(false);
+    // a discount off the sum (F-116) moves the turn: (1 − 50%) × 11 / 2% = 275 $
+    const off = one(discounted({ kind: "perAction", amount: 11, cap: 0.02, currency: "USD" }, 0.5, false));
+    expect(dealMarks(off, first(off))).toEqual([expect.objectContaining({ kind: "cap", amount: 275 })]);
+  });
+
   it("lets a percent maximum below the rate decide until the maximum takes over", () => {
     // 2% with a cap of 1% and a maximum of 10 ₪: the cap up to 1,000 ₪, the maximum above
     const d = one({ kind: "action", rate: 0.02, max: 10, cap: 0.01 });

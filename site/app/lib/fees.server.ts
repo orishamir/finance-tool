@@ -10,6 +10,7 @@ import { feeDeal, guideBlocks } from "../copy";
 import { classificationToWrapper, loadProducts, loadRules, pointedRecords, root, termsFor } from "./data.server";
 import { dealKindsOf } from "./fee-deal/kinds";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
+import { STATED_RULES } from "./fee-deal/reading";
 import { houseTemplate } from "./fee-deal/templates";
 import { termKey, type FeesData, type TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
@@ -93,7 +94,9 @@ export function buildFeesData(): FeesData {
   const terms = termsFor(names, "");
   for (const k of kinds) for (const [name, t] of Object.entries(termsFor(names, k.id))) if (t.explanation !== terms[name]?.explanation) terms[termKey(name, k.id)] = t;
   const allRules = loadRules();
-  const rules: RuleRecord[] = [...ruleIdsIn({ kinds, templates, houses, fx, terms }, new Set())].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
+  // with the rules the reading's stated sentences state (a bank's order through a clerk, BRK-16)
+  const stated = Object.values(STATED_RULES).flatMap((ids) => ids ?? []);
+  const rules: RuleRecord[] = [...ruleIdsIn({ kinds, templates, houses, fx, terms }, new Set(stated))].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
   return { rules, pointed: Object.values(pointedRecords(rules, allRules)), templates, tracks, kinds, houses, fx, terms };
 }
 

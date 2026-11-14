@@ -114,6 +114,10 @@ describe("the price parts as the screen edits them", () => {
     // shekels with no percent maximum by its shape (a payout's handling) loses them
     expect(withForm(ibFixed, "perAction")).toEqual({ form: "perAction", amount: { v: 0, blank: true }, cap: { v: 1 }, currency: "USD" });
     expect(setPart(trade(ibFixed), "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true }, cap: { v: 1 }, currency: "USD" });
+    // a currency that priced nothing (a share with no bound or flat price) is not carried; one a bound priced is
+    expect(setPart(trade({ form: "action", rate: typed(0.3), currency: "USD" }), "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
+    expect(setPart(trade({ form: "action", rate: typed(0.3), currency: "USD" }), "perUnit", true).stages![0]!.price).toEqual({ form: "perUnit", amount: { v: 0, blank: true } });
+    expect(setPart(trade({ form: "action", rate: typed(0.3), min: typed(8), currency: "USD" }), "perAction", true).stages![0]!.price).toMatchObject({ form: "perAction", currency: "USD" });
     const payout: Fee = { id: "fee-payout", kind: "distribution_handling", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5), currency: "USD" } }] };
     expect(setPart(payout, "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
     const event: Fee = { id: "fee-event", kind: "corporate_event", stages: [{ price: { form: "perAction", amount: typed(50), currency: "USD" } }] };
@@ -155,6 +159,28 @@ describe("the templates", () => {
     expect(tase.fees.some((f) => f.kind === "corporate_event")).toBe(false);
     expect(tase.unmatched).toEqual([tase.deal.fees.find((f) => f.kind === "corporate_event")!.id]);
   });
+  it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
+    const notesOf = (id: string) =>
+      data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade")!.cases!.map((c) => ({ when: JSON.stringify(c.when), notes: (c.stages[0]!.price as { notes?: string[] }).notes ?? [] }));
+    for (const bank of ["discount", "hapoalim"]) {
+      const cases = notesOf(bank);
+      // never the plain note, whatever the bank's heading says
+      expect(cases.some((c) => c.notes.includes("unfilled"))).toBe(false);
+      // the branch's case on the exchange carries BRK-16's note; a direct one none
+      expect(cases.some((c) => c.when.includes("branch") && c.when.includes("tase") && c.notes.includes("unfilledClerk"))).toBe(true);
+      expect(cases.filter((c) => c.when.includes("direct") && !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
+    }
+    // a foreign line at a bank is outside part 4(א)(1): no note
+    expect(notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase")).every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
+    const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
+    const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;
+    expect(stated.words.lead).toBe(copy.cases.stated.unfilledClerk);
+    expect(stated.rules).toEqual(["BRK-16"]);
+    expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
+    const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
+    expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
+  });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;
     const trade = snap("excellence").fees.find((f) => f.kind === "trade")!;
@@ -195,6 +221,10 @@ describe("the templates", () => {
     const mark = readingOf(read(deal), data.fx).statements.flatMap((x) => (x.kind === "mark" ? [x.mark] : []));
     expect(mark).toHaveLength(1);
     expect(mark[0]).toMatchObject({ kind: "cap", sum: true, amount: { value: 550, unit: "usd", state: "computed" } });
+    // a discount off the sum moves the turn as F-116 lowers the sum: (1 − 50%) × 11 / 2% = 275 $, the sum it meets 5.50 $
+    const offDeal = account([trade({ ...capped, discount: { pct: typed(50) } } as Price)]);
+    const offMark = readingOf(read(offDeal), data.fx).statements.flatMap((x) => (x.kind === "mark" ? [x.mark] : []))[0]!;
+    expect(offMark).toMatchObject({ kind: "cap", sum: true, amount: { value: 275 }, meets: { value: 5.5, state: "computed" } });
     // a sum per action with no cap marks nothing
     const plain = engineDeal(account([trade({ form: "perAction", amount: { v: 11, src }, currency: "USD" })]));
     expect(dealMarks(plain, dealPeriods(plain, { y: 2026, m: 11 }).periods[0]!)).toEqual([]);
@@ -231,6 +261,15 @@ describe("the templates", () => {
     expect(engineDeal(deal).fees.find((f) => f.stages[0]!.price.kind === "held")!.stages[0]!.price).toMatchObject({ min: 120 });
     const back = decodeDeal(encodeDeal(deal))!;
     expect(back.fees.find((f) => f.kind === "custody")!.stages![0]!.price).toMatchObject({ min: { v: 40 }, boundsEvery: 1 });
+    // F-14 names a bound printed per month alone: a deal saying another period is refused, as a link the site did not write
+    const held = (boundsEvery: unknown) => ({ ...newDeal("brokerage-account"), fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.6), per: 3, every: 3, min: typed(40), boundsEvery } }] }] });
+    expect(readDeal(JSON.parse(JSON.stringify(held(1))))).not.toBeNull();
+    expect(readDeal(JSON.parse(JSON.stringify(held(3))))).toBeNull();
+    expect(readDeal(JSON.parse(JSON.stringify(held(12))))).toBeNull();
+    // the holding curve's inputs show the charge's minimum, 120 ₪, worked out from the 40 ₪ a month (F-14)
+    const curveMin = readingOf(read(deal), data.fx).curves.flatMap((c) => Object.values(c.inputs)).find((x) => x.value === 120 && x.state === "computed");
+    expect(curveMin).toMatchObject({ unit: "nis", state: "computed" });
+    expect(JSON.stringify(curveMin)).toContain("F-14");
     // its mark says a charge's minimum, worked out from the month's (F-14), and where it binds: below 120 / 0.6% = 20,000 ₪
     const mark = readingOf(read(deal), data.fx).statements.flatMap((x) => (x.kind === "mark" && x.mark.kind === "min" && x.mark.on === "held" ? [x.mark] : []))[0]!;
     expect(mark.kind === "min" && mark.bound).toMatchObject({ value: 120, state: "computed" });

@@ -9,7 +9,7 @@ import { feeNameOf, thingName, whenWords, type PartWords, type WhenWords } from 
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
 import { hasCases, isRange, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
-import { groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
+import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { holdsFunds, ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
 
@@ -228,10 +228,12 @@ function curveInputs(r: DealRead, p: DealPeriod, fees: readonly number[], side: 
   const out: Record<string, SiteValue> = {};
   for (const i of fees) {
     const fee = r.fees[i]!;
-    const f = priceFigures(fee, priceAt(fee, p.from, side === "sell"), r.today);
+    const price = priceAt(fee, p.from, side === "sell");
+    const f = priceFigures(fee, price, r.today);
     if (f.rate) out[inputKey(r.fees, i)] = f.rate;
     if (f.amount) out[inputKey(r.fees, i)] = f.amount;
-    for (const k of ["min", "max", "cap", "flat", "upTo"] as const) if (f[k]) out[inputKey(r.fees, i, k)] = f[k];
+    // a held share's bound printed per month is shown as the charge's bound the curve uses, worked out from it (F-14)
+    for (const k of ["min", "max", "cap", "flat", "upTo"] as const) if (f[k]) out[inputKey(r.fees, i, k)] = k === "min" || k === "max" ? chargeBound(price, f[k]!, inputKey(r.fees, i, k), r.today) : f[k]!;
   }
   return out;
 }
@@ -513,7 +515,12 @@ export interface StatedPart {
   fee: FeeRef;
   part: "third" | "offset" | "refund" | Note;
   words: PartWords;
+  /** The rules its sentence states, where it states one (a bank's order through a clerk, BRK-16). */
+  rules?: readonly string[];
 }
+
+/** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out (BRK-16). */
+export const STATED_RULES: Partial<Record<StatedPart["part"], readonly string[]>> = { unfilledClerk: ["BRK-16"] };
 
 function statedOf(r: DealRead): StatedPart[] {
   const out: StatedPart[] = [];
@@ -524,7 +531,8 @@ function statedOf(r: DealRead): StatedPart[] {
     const add = (part: StatedPart["part"], words: PartWords) => {
       if (seen.has(part)) return;
       seen.add(part);
-      out.push({ fee: refOf(fee, r.today), part, words });
+      const rules = STATED_RULES[part];
+      out.push({ fee: refOf(fee, r.today), part, words, ...(rules ? { rules } : {}) });
     };
     for (const s of [...pricesFrom(fee.stages, from), ...(fee.sale ? pricesFrom(fee.sale, from) : [])]) {
       const p = s.price;
