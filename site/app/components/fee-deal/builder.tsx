@@ -18,9 +18,9 @@ import type { LeftOutView } from "../../lib/left-out";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, type AddItem } from "../kit";
+import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, focusPartEdit, type AddItem } from "../kit";
+import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
 import { FeeBlockView, type BlockActions, type OpenHere } from "./fee-block";
@@ -46,17 +46,20 @@ export interface FeeUndoLine {
 /** The page's undo line of another kind of product that took fees away: it stands under the kind. */
 export type KindUndoLine = Omit<FeeUndoLine, "what" | "fee">;
 
-/** A fee whose card or first box takes the focus once drawn: one put back by the undo (its card), one just added (its first box). */
-export interface FeeFocus {
-  fee: string;
-  on: "card" | "box";
-}
+/**
+ * What in a fee takes the focus once drawn: its card (a fee put back by the undo), its first box (a fee just added, a price put in another
+ * form), or a part just added to its open case (`part`, the part's place as `partPlaceId` names it), at its first box or choice, else the part
+ * itself (`focusPartEdit`).
+ */
+export type FeeFocus = { fee: string; on: "card" | "box" } | { fee: string; on: "part"; part: string };
 
 
-export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
+export function SetupColumn({ deal, view, kinds, offered, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
+  /** The products the picker offers (`productOffered`); a saved deal of another still opens with its own. */
+  offered: readonly DealKind[];
   /** Opens the track picker from the button tapped, where the deal's kind has tracks (the provident family); null elsewhere. */
   onPickTrack: ((from: HTMLElement) => void) | null;
   /** Opens the price lists' picker from the button tapped, whose choice fills a new deal, where the deal's kind has price lists; null elsewhere. */
@@ -70,8 +73,6 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, fille
   onKind: (kind: ProductId) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
-  // the products the picker offers (`productOffered`); a saved deal of another still opens with its own
-  const offered = kinds.filter(productOffered);
   // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with it closed. The column
   // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
   const [pickingIn, setPickingIn] = useState<string | null>(null);
@@ -251,14 +252,31 @@ export function FeesColumn({
   const root = useRef<HTMLDivElement>(null);
   const adding = useRef<HTMLDivElement>(null);
   const heights = useRef(new Map<string, number>());
+  // where the top of a fee pressed away by its bin was in the window, for its undo line to stand there as it appears (`UndoLine.standAt`);
+  // read once, by the line drawn in the same pass
+  const pressedAway = useRef<{ fee: string; top: number } | null>(null);
+  const blockActions: BlockActions = {
+    ...actions,
+    onRemoveFee: (feeId) => {
+      const top = blockOf(feeId)?.getBoundingClientRect().top;
+      pressedAway.current = top === undefined ? null : { fee: feeId, top };
+      actions.onRemoveFee(feeId);
+    },
+  };
   // the fees whose folded tracks are open
   const [unfolded, setUnfolded] = useState<ReadonlySet<string>>(new Set());
   const blockOf = (feeId: string) => root.current?.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(feeId)}"]`);
   useIsoLayoutEffect(() => {
+    pressedAway.current = null;
     for (const li of root.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
     if (!focus) return;
     const li = blockOf(focus.fee);
-    if (focus.on === "box") {
+    // a part just added: its first box or choice, else the part itself (never its bin, which a second Enter would press); the open case's
+    // first box where it is not drawn
+    const added = focus.on === "part" ? focusPartEdit(partFieldId(focus.fee, focus.part)) : null;
+    if (added) {
+      bringIntoView(added.closest("[data-case-parts]") ?? added.closest("[data-lift]") ?? li);
+    } else if (focus.on !== "card") {
       // the fee's first box (the open case's price, in a fee with cases), brought above a phone's pinned sheet with the parts around it,
       // so an undo line under them is in view too
       const box = li?.querySelector<HTMLInputElement>("input[data-figure]");
@@ -288,7 +306,15 @@ export function FeesColumn({
     return (id ? feeFocus(blockOf(id)) : null) ?? adding.current?.querySelector("button");
   };
   const undoLine = (l: FeeUndoLine) => (
-    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} take={l.take} refocus={afterRemoved} height={heights.current.get(l.what.feeId)}>
+    <UndoLine
+      key={`undo:${l.what.kind}:${l.what.feeId}`}
+      onUndo={l.onUndo}
+      onHold={l.onHold}
+      take={l.take}
+      refocus={afterRemoved}
+      height={heights.current.get(l.what.feeId)}
+      standAt={pressedAway.current?.fee === l.what.feeId ? pressedAway.current.top : undefined}
+    >
       {l.words}
     </UndoLine>
   );
@@ -326,7 +352,7 @@ export function FeesColumn({
                 const cl = caseLine?.feeId === it.fee.id && !caseLine.inCase ? caseLine : null;
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
-                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} unfolded={unfolded.has(it.fee.id)} formLine={formLine(it.fee)} actions={actions} onUnfold={unfold(it.fee.id)} onFee={onFee} />
+                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} unfolded={unfolded.has(it.fee.id)} formLine={formLine(it.fee)} actions={blockActions} onUnfold={unfold(it.fee.id)} onFee={onFee} />
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}

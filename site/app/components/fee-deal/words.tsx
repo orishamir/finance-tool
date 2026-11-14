@@ -3,9 +3,9 @@
 import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
-import type { CapLine } from "../../lib/fee-deal/kinds";
+import type { BanSaid, CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import { unreadReason, type BanSaid, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
+import { unreadReason, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -241,7 +241,7 @@ export function StandingWords({ standing, binds }: { standing: StandingView; bin
   return <>.</>;
 }
 
-/** What a cap that holds only in a case the deal does not state says, after the cap's figure or "אין תקרה בחוק" (F-113); none without one. */
+/** What a cap that holds only in a case the deal does not state says, after the cap's figure or "לא נמצאה תקרה בחוק" (F-113); none without one. */
 export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
   const words = caveat ? copy.standing.caveat[caveat] : undefined;
   return words ? <>. {words}</> : null;
@@ -272,7 +272,7 @@ export function UnreadWords({ banned, noCurrency, unmatched, fee }: { banned?: B
 
 /**
  * The cap's line: its figure with its caveat, that the law sets none (F-113), or that it bans the fee here; nothing where the kind has no
- * line for the fee. The figure, or the words "אין תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so
+ * line for the fee. The figure, or the words "לא נמצאה תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so
  * the line carries no rules chip of its own; a ban's words carry one. `fee`: the fee's name, which the control's spoken name says with what
  * it opens.
  */

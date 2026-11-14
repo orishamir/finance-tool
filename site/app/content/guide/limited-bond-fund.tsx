@@ -71,7 +71,8 @@ export function Compare() {
                 על <Term prefix="ה" id="ריבית">ריבית</Term> כשהיא משולמת, ועל <Term id="רווח הון">רווח הון</Term> במכירה או בפדיון
               </Fragment>,
               <Fragment key="limited">
-                על <Term id="הרווח הריאלי">הרווח הריאלי</Term> בפדיון
+                {/* two words in a column 64 px wide on a 320 px phone: the term breaks between them there rather than run out of its cell */}
+                על <Term id="הרווח הריאלי" className="whitespace-normal">הרווח הריאלי</Term> בפדיון
               </Fragment>,
               <Fragment key="open">
                 על הרווח הריאלי <Term prefix="ב" id="מכירה">מכירה</Term> או בפדיון
@@ -104,7 +105,7 @@ export function Who({ figure }: ContentProps) {
         columns={[
           { id: "funds", head: "קרנות" },
           { id: "years", head: "שנות סיום" },
-          // the fees are the prospectus's, which a fund may not charge in the end: the caution under the table gives a case
+          // the fees are the prospectus's; a fee can rise after an annual report, and the line under the table gives a case
           { id: "fee", head: <SortNote label="דמי ניהול בשנה" note="לפי התשקיף" /> },
           { id: "trustee", head: <SortNote label="שכר נאמן בשנה" note="לפי התשקיף" />, hideOnPhone: true },
         ]}
@@ -117,7 +118,7 @@ export function Who({ figure }: ContentProps) {
       />
       <RulesLine ids={["MF-62", "MF-63", "MF-64"]} />
       <Sentence measure>
-        קרן יכולה לגבות אחרת ממה שכתוב בתשקיף: בקרן 5137492 של ילין לפידות כתוב בתשקיף {yalin("MF-63", "fee")}, ובדוח השנתי ל־{yalin("MF-63", "fee_report_date")} היו {yalin("MF-63", "fee_report")}.
+        דמי ניהול יכולים לעלות: בקרן 5137492 של ילין לפידות הם היו {yalin("MF-63", "fee_report")} בדוח השנתי ל־{yalin("MF-63", "fee_report_date")}, ובתשקיף המאוחר יותר כתוב {yalin("MF-63", "fee")}. לכן כדאי לבדוק את דמי הניהול בדוח או בתשקיף האחרונים של הקרן.
       </Sentence>
       <RulesLine ids={["MF-63"]} />
       <Sentence measure>מעבר לדמי הניהול, הבנק או בית ההשקעות שדרכו קונים יכולים לגבות <Term id="עמלה">עמלה</Term> על קנייה ומכירה של יחידות, כך כותבת ילין לפידות. לא נמצא אם נגבית עמלה גם על התשלום בפירוק.</Sentence>

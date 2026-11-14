@@ -9,7 +9,7 @@ import { ProseGuide } from "../components/guide/prose-guide";
 import { guidePath, INDICES_PATH } from "../lib/site-paths";
 
 const ruleIds = [
-  "MF-01", "MF-02", "MF-03", "MF-04", "MF-05", "MF-07", "MF-09", "MF-10", "MF-11", "MF-13", "MF-15", "MF-16", "MF-17", "MF-20", "MF-21", "MF-27",
+  "MF-01", "MF-02", "MF-03", "MF-04", "MF-05", "MF-07", "MF-09", "MF-10", "MF-11", "MF-13", "MF-15", "MF-16", "MF-17", "MF-20", "MF-21", "MF-27", "MF-70",
   "ETF-01", "ETF-04", "ETF-05", "ETF-06", "ETF-13", "ETF-14", "ETF-18", "ETF-61", "ETF-67",
   "REG-07", "REG-10", "REG-11", "BANK-18", "BRK-17",
   "TXS-07", "TXS-09", "TXS-11", "TXS-13", "TXS-21", "TXS-22", "TXS-24", "TXG-04",

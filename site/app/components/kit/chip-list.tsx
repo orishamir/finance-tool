@@ -5,9 +5,10 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { GripVertical, Pencil, Trash2 } from "lucide-react";
+import { GripVertical, Pencil } from "lucide-react";
 import { Button } from "./button";
 import { OtherChip } from "./choice";
+import { BinIcon, RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 
 /** Pixels the pointer travels before a press on a pill becomes a drag; a shorter press is a click. */
@@ -273,11 +274,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
                       <Pencil size={16} {...ic} />
                     </Button>
                   )}
-                  {hasBin(i) && (
-                    <Button variant="icon" className="size-9 tap-area rounded-full me-0.5" aria-label={words?.remove} title={words?.remove} aria-expanded={confirm?.id === i.id} onClick={() => askDelete(i)}>
-                      <Trash2 size={16} {...ic} />
-                    </Button>
-                  )}
+                  {hasBin(i) && <RemoveButton label={words?.remove ?? ""} expanded={confirm?.id === i.id} onRemove={() => askDelete(i)} className="me-0.5" />}
                 </>
               )}
               {confirm?.id === i.id && (
@@ -325,8 +322,8 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
                   </span>
                 )}
                 {hasBin(byId.get(drag.id)!) && (
-                  <span className="size-9 inline-flex items-center justify-center">
-                    <Trash2 size={16} {...ic} />
+                  <span className="size-9 max-md:size-target inline-flex items-center justify-center text-muted-foreground">
+                    <BinIcon />
                   </span>
                 )}
               </span>

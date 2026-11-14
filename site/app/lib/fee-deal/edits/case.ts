@@ -224,20 +224,3 @@ export function setTop(fee: Fee, t: number, k: number, v: number): Fee {
   if (!(v > before && v < after)) return fee;
   return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, tops: b.tops.map((n, i) => (i === k ? retyped(n, v) : n)) } : x)) };
 }
-
-/**
- * A range without its top `k`: the steps on either side of it become one, the cases on the upper one moving to it; where two cases then say
- * the same of every thing, the first stays. The last top is never removed: a range has at least one.
- */
-export function removeTop(fee: Fee, t: number, k: number): Fee {
-  const b = fee.by?.[t];
-  if (!hasCases(fee) || !b || !isRange(b) || b.tops.length < 2 || !b.tops[k]) return fee;
-  const kept: Case[] = [];
-  for (const c of fee.cases) {
-    const w = c.when[t]!;
-    const when = c.when.map((x, j) => (j === t && typeof w === "number" && w > k ? w - 1 : x));
-    if (kept.some((x) => sameContent(x.when, when))) continue;
-    kept.push({ ...c, when });
-  }
-  return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, tops: b.tops.filter((_, i) => i !== k) } : x)), cases: kept };
-}

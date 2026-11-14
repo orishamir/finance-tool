@@ -73,7 +73,6 @@ export function undoLines(shown: AnyUndo | null, words: string | null, chosen: s
       return { ...none, kind: base };
     case "fill":
       return what.feeId === chosen ? { ...none, fill: base } : none;
-    case "stage":
     case "chain":
     case "case":
     case "by":

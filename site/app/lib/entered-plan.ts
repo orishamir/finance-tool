@@ -6,13 +6,15 @@ import { computedInputs as ci } from "../copy";
 import { asParameter, parameterOf, type CompareBundle } from "./compare";
 import type { InputsState } from "./inputs";
 import type { WorkbenchInputs } from "./providers";
-import { asField, entered as enteredValue } from "./value";
+import { asField, entered as enteredValue, type SiteValue } from "./value";
 
 export interface EnteredPlan {
   /** The plan as the page's runs take it, without the current accounts it counts (the page's own choice). */
   plan: Omit<WorkbenchInputs, "currentAccounts">;
   /** The values the plan's fields start at (P-05's scenario): what each field's reset goes back to, "חזרה ל־10". */
   starts: { amount: number; monthly: number; years: number; inflation: number; returnV: number };
+  /** The yearly income the runs assume, entered or P-05's, as a figure with its source: the surtax is tested on it with the gain (F-43). */
+  income: SiteValue;
 }
 
 /** The plan from what the person entered, each number not entered taking P-05's; every value is a field's own (`asField`). */
@@ -43,5 +45,6 @@ export function enteredPlan(bundle: CompareBundle, released: InputsState): Enter
       returnFromParameter: e["A-01"] === undefined,
     },
     starts: { amount: num("amount_now"), monthly: num("monthly_deposit"), years: num("horizon_years"), inflation: num("A-02"), returnV: num("A-01") },
+    income: e.annual_income !== undefined ? enteredValue(e.annual_income, "nis", bundle.runDate) : asParameter(p05, inp.annual_income!),
   };
 }

@@ -11,6 +11,7 @@ import { describe, expect, it } from "vitest";
 import { parametersPage } from "../copy";
 import { parameterPageRoutes, parameterPages } from "./parameter-pages";
 import { loader } from "../routes/parameters";
+import { loadParameters } from "./data.server";
 
 const app = resolve(__dirname, "..");
 const routesSrc = readFileSync(join(app, "routes.ts"), "utf8");
@@ -143,9 +144,11 @@ describe("the parameters page shows only what a live page reads", () => {
   });
 
   it("calls the cash rate what its source is, the Bank of Israel's published rate, not an unpublished guess", () => {
-    const why = parametersPage.why["P-05"]!;
+    const why = loadParameters().find((p) => p.method_id === "P-05")!.rationale_he!;
     expect(why).toContain("ריבית בנק ישראל");
     expect(why).not.toMatch(/לא ריבית שפורסמה/);
+    // the bank-deposit page shows the middle deposit, not the range of all of them
+    expect(why).not.toMatch(/לצד הטווח/);
   });
 
   it("names no page the site no longer has in a line it shows", async () => {

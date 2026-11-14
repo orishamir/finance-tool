@@ -60,14 +60,15 @@ export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as cons
 export type FundOutsideCircular = "sick-pay" | "self-directed" | "guaranteed-yield" | "leumi-employees";
 
 /**
- * What the circular makes of a general investment track: closed to members who were not in it on its start date (s.3(ד)); not closed
- * by it, its fund being of a kind s.2 leaves out; or unsettled, where the track may be in such a fund and that is not yet read. An
+ * What the circular makes of a general investment track, with what the reading rests on: closed to members who were not in it on its
+ * start date (s.3(ד)), by the rules named; not closed by it, its fund being of a kind s.2 leaves out, by the rules named; or unsettled,
+ * where the track may be in such a fund and the open question named (as the rule base writes it, "CAT-OQ36") holds whether it is. An
  * unsettled track is kept, since only a reading drops one.
  */
 export type GeneralTrackReading =
-  | { name: string; cat19: "closed" }
-  | { name: string; cat19: "outside"; fund: FundOutsideCircular }
-  | { name: string; cat19: "unsettled"; mayBe: FundOutsideCircular };
+  | { name: string; cat19: "closed"; rules: readonly string[] }
+  | { name: string; cat19: "outside"; fund: FundOutsideCircular; rules: readonly string[] }
+  | { name: string; cat19: "unsettled"; mayBe: FundOutsideCircular; openQuestion: string };
 
 /** The columns of a regulator row that say whether it is a general track. */
 export interface TrackRow {
@@ -82,9 +83,17 @@ export interface GeneralTracks {
   readings: ReadonlyMap<number, GeneralTrackReading>;
 }
 
-const closed = (name: string): GeneralTrackReading => ({ name, cat19: "closed" });
-const outside = (name: string, fund: FundOutsideCircular): GeneralTrackReading => ({ name, cat19: "outside", fund });
-const unsettled = (name: string, mayBe: FundOutsideCircular): GeneralTrackReading => ({ name, cat19: "unsettled", mayBe });
+const closed = (name: string, rules: readonly string[]): GeneralTrackReading => ({ name, cat19: "closed", rules });
+const outside = (name: string, fund: FundOutsideCircular, rules: readonly string[]): GeneralTrackReading => ({ name, cat19: "outside", fund, rules });
+const unsettled = (name: string, mayBe: FundOutsideCircular, openQuestion: string): GeneralTrackReading => ({ name, cat19: "unsettled", mayBe, openQuestion });
+
+/** CAT-19: the circular closes a general track (s.3(ד)), and its s.2 list of the funds it leaves out. */
+const CIRCULAR = ["CAT-19"] as const;
+/**
+ * CAT-53: the five guaranteed-yield funds the fee regulations name are outside the circular, and Gemel-Net's parent-fund data puts the
+ * general track inside each fund matched to a name; CAT-54: each company's documents keep that general track open to joiners.
+ */
+const GUARANTEED_YIELD = ["CAT-53", "CAT-54"] as const;
 
 /** Gemel-Net's classification for a provident fund for annuity, which has none of its own (PEN). */
 export const GEMEL_ANNUITY_CLASSIFICATION = "תגמולים ואישית לפיצויים";
@@ -104,39 +113,40 @@ export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
   "pensia-net": {
     isGeneral: (r) => endsInGeneral(r.name),
     readings: new Map([
-      [2002, closed("כלל פנסיה כללי")],
-      [2009, closed("מנורה מבטחים פנסיה - כללי")],
-      [2102, closed("מגדל מקפת אישית כללי")],
-      [2145, closed("מגדל מקפת משלימה כללי")],
-      [2164, closed("הראל פנסיה כללית - כללי")],
-      [2172, closed("הראל פנסיה - גילעד כללי")],
-      [2176, closed("כלל פנסיה משלימה - כללי")],
-      [2177, closed("הראל פנסיה - מנוף כללי")],
+      [2002, closed("כלל פנסיה כללי", CIRCULAR)],
+      [2009, closed("מנורה מבטחים פנסיה - כללי", CIRCULAR)],
+      [2102, closed("מגדל מקפת אישית כללי", CIRCULAR)],
+      [2145, closed("מגדל מקפת משלימה כללי", CIRCULAR)],
+      [2164, closed("הראל פנסיה כללית - כללי", CIRCULAR)],
+      [2172, closed("הראל פנסיה - גילעד כללי", CIRCULAR)],
+      [2176, closed("כלל פנסיה משלימה - כללי", CIRCULAR)],
+      [2177, closed("הראל פנסיה - מנוף כללי", CIRCULAR)],
     ]),
   },
   gemelnet: {
     isGeneral: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי",
     readings: new Map([
-      // each sits in a family of guaranteed-yield tracks (119 beside 530 to 532; 260 beside 533 and 536; 263 beside 539; 923 beside 120
-      // and 529), and whether its fund is a guaranteed-yield fund is not yet read
-      [119, unsettled("מנורה מבטחים יותר מסלול ד'", "guaranteed-yield")],
-      [260, unsettled("מנורה מבטחים אמיר כללי", "guaranteed-yield")],
-      [263, unsettled("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ", "guaranteed-yield")],
-      [923, unsettled("מיטב בטחון", "guaranteed-yield")],
+      // the general track of a guaranteed-yield fund the fee regulations name: Gemel-Net puts 119 in the fund of 530 to 532 ("מנורה
+      // מבטחים יתר"), 260 in that of 533 and 536 ("מנורה מבטחים אמיר") and 263 in that of 539 ("בר קרן גמולים")
+      [119, outside("מנורה מבטחים יותר מסלול ד'", "guaranteed-yield", GUARANTEED_YIELD)],
+      [260, outside("מנורה מבטחים אמיר כללי", "guaranteed-yield", GUARANTEED_YIELD)],
+      [263, outside("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ", "guaranteed-yield", GUARANTEED_YIELD)],
+      // in Meitav's fund 120 beside 529; whether that fund is the regulations' "ישיר ביטחון" is not read
+      [923, unsettled("מיטב בטחון", "guaranteed-yield", "CAT-OQ36")],
       // named by the circular's definition; its company is also one EXCLUDED_COMPANIES leaves out (520005497)
-      [229, outside("קופת התגמולים של עובדי בנק לאומי", "leumi-employees")],
-      [857, outside("הראל - דקל קופת גמל לדמי מחלה", "sick-pay")],
-      [872, outside("אלטשולר שחם מרפא קופה מרכזית לדמי מחלה", "sick-pay")],
-      [1008, outside("הפניקס קופה לתשלום דמי מחלה", "sick-pay")],
-      [1161, outside("מקפת דמי מחלה", "sick-pay")],
-      [1486, outside("מיטב גמל בניהול אישי", "self-directed")],
-      [1514, outside("סלייס גמל בניהול אישי", "self-directed")],
-      [1541, outside("גלובל נט גמל IRA", "self-directed")],
-      [2023, outside("הפניקס גמל בניהול אישי", "self-directed")],
-      [2098, outside("גלובל נט גמל בניהול אישי", "self-directed")],
-      [8888, outside("מגדל לתגמולים בניהול אישי IRA", "self-directed")],
-      [14938, outside("אקטיון גמל  IRA", "self-directed")],
-      [15367, outside("מנורה מבטחים גמל בניהול אישי IRA", "self-directed")],
+      [229, outside("קופת התגמולים של עובדי בנק לאומי", "leumi-employees", CIRCULAR)],
+      [857, outside("הראל - דקל קופת גמל לדמי מחלה", "sick-pay", CIRCULAR)],
+      [872, outside("אלטשולר שחם מרפא קופה מרכזית לדמי מחלה", "sick-pay", CIRCULAR)],
+      [1008, outside("הפניקס קופה לתשלום דמי מחלה", "sick-pay", CIRCULAR)],
+      [1161, outside("מקפת דמי מחלה", "sick-pay", CIRCULAR)],
+      [1486, outside("מיטב גמל בניהול אישי", "self-directed", CIRCULAR)],
+      [1514, outside("סלייס גמל בניהול אישי", "self-directed", CIRCULAR)],
+      [1541, outside("גלובל נט גמל IRA", "self-directed", CIRCULAR)],
+      [2023, outside("הפניקס גמל בניהול אישי", "self-directed", CIRCULAR)],
+      [2098, outside("גלובל נט גמל בניהול אישי", "self-directed", CIRCULAR)],
+      [8888, outside("מגדל לתגמולים בניהול אישי IRA", "self-directed", CIRCULAR)],
+      [14938, outside("אקטיון גמל  IRA", "self-directed", CIRCULAR)],
+      [15367, outside("מנורה מבטחים גמל בניהול אישי IRA", "self-directed", CIRCULAR)],
     ]),
   },
 };

@@ -5,7 +5,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import type { RuleRecord } from "@finance-tool/schema";
+import { updateRule, type RuleRecord } from "@finance-tool/schema";
 import { scopeWords, sourceBlock, updateRules } from "../copy";
 import { ProvenanceProvider } from "./provenance";
 import { RuleCard, SourceBlock } from "./provenance-sheets";
@@ -91,6 +91,21 @@ describe("a bracket table's figures on a rule card", () => {
     expect(html).toContain(updateRules["fixed in law"]);
     // the edge's note comes before the rate's, in the first row
     expect(html.indexOf(frozen)).toBeLessThan(html.indexOf(updateRules["fixed in law"]));
+  });
+});
+
+describe("the words of an update rule", () => {
+  it("has a word for every update rule the schema allows", () => {
+    const named = updateRule.options[0].options;
+    for (const r of named) expect((updateRules as Record<string, string>)[r], r).toBeTruthy();
+  });
+  it("says a figure a ruling fixes is as its source document has it, on its rule card (TXA-30)", () => {
+    const root = new URL("../../../", import.meta.url);
+    const txa30 = JSON.parse(readFileSync(new URL("data/rules/txa-30.json", root), "utf8")) as RuleRecord;
+    const data = { rules: { "TXA-30": txa30 }, terms: {}, dimensions: {}, today: "2026-11-14" };
+    const html = render(createElement(RuleCard, { id: "TXA-30", data, inline: true }), data);
+    expect(html).toContain(updateRules["fixed in document"]);
+    expect(html).not.toContain(updateRules["fixed in regulation"]);
   });
 });
 

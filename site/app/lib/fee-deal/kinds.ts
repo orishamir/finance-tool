@@ -1,6 +1,5 @@
 // The kinds a deal can be (method §10.6): every product record that lists fee bases, with its bases and its legal caps (`fee_caps`,
 // data-schema §3.3), as the fee page's data carries them. F-113 judges a typed price against its fee's cap here.
-import type { BanSaid } from "./deal-read";
 import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/engine";
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
@@ -44,6 +43,16 @@ export const capOf = (kind: DealKind | null, fee: FeeKindId): FeeCap | undefined
   const base = capacity(fee).base;
   return base && kind ? kind.caps[base] : undefined;
 };
+
+/**
+ * How a ban is said (offers/offer.ts, `Ban`): the rules that ban the fee, whether that is the site's reading of them, and whether a
+ * distribution fee may still be charged on the units.
+ */
+export interface BanSaid {
+  rules: readonly string[];
+  reading?: true;
+  distribution?: true;
+}
 
 /**
  * A fee's cap line, as the page states it beside the fee: `value`, a cap with a value (zero where the law allows no such fee), with its

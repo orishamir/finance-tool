@@ -1,7 +1,7 @@
 // One part of a price in the case open in place (method §10.6): its body, a small component looked up by the part's id (`BODIES`), around
 // the boxes of its figures (`PriceFigure`); and a part the toolbox added that still asks for what it needs (a figure, a month, a fee),
 // asking for it by what it asks (`PendingEdit`, the part registry's `ask`).
-import { useEffect, type ComponentType, type ReactNode } from "react";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenPart, OpenPending, PartField } from "../../lib/fee-deal/panel";
 import { setUntil } from "../../lib/fee-deal/edits/stage";
@@ -13,7 +13,7 @@ import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
-import { partFieldId, signText } from "./figures";
+import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
 import { Fig, feeName, perActionWord } from "./words";
 
@@ -22,12 +22,25 @@ const cp = copy.cases.parts;
 /** The icon before a part's first word: a minimum's, a maximum's (a percent maximum's too), a link's. */
 export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
 
-/** Where a pending part stands: its fee, its case (null for a slim fee), and the part. */
+/**
+ * Where a pending part stands: its fee, its case (null for a slim fee), and the part. These three are the whole of what it is: the price it
+ * asks on is the toolbox's, read when it is drawn (`OpenPending.k`).
+ */
 export interface Pending {
   fee: string;
   case: string | null;
   part: PendingPart;
 }
+
+/**
+ * The pending part once `next` is set over `now`: `now` itself where `next` is the same part in the same place (a second tap or drop of
+ * its card), so the part already drawn stays the one drawn, and its box, which took the focus once, takes it no more.
+ */
+export const pendingAfter = (now: Pending | null, next: Pending | null): Pending | null =>
+  now && next && now.fee === next.fee && now.case === next.case && now.part === next.part ? now : next;
+
+/** Whether the pending part `now` is drawn for the first time, so its box takes the focus: it is not the one `shown` was, whose box had it. */
+export const pendingFresh = (now: Pending | null, shown: Pending | null): boolean => now !== null && now !== shown;
 
 /** A word of a part trimmed of the spaces it carries to stand in a sentence. */
 export const bare = (s: string | undefined) => s?.trim();
@@ -211,11 +224,11 @@ const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: s
   sale: { Body: QuietBody },
 };
 
-/** One part of the open case's price in edit: its icon and lead, its body, and its ✕ (`onRemove`; none for a free price). */
+/** One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; none for a free price). */
 export function PartLine({ part, at, onRemove }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined }) {
   const { Body, lead } = BODIES[part.id];
   return (
-    <PartEdit kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)}>
+    <PartEdit id={partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id))} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)}>
       <Body part={part} at={at} />
     </PartEdit>
   );
@@ -229,23 +242,39 @@ function OffsetChoice({ deal, fee, value, label, onChange }: { deal: FeeDeal; fe
 }
 
 /**
+ * What a part the toolbox added, still asking for what it needs, hands to the page: `onDone`, given or dropped; `fresh`, whether it is
+ * drawn for the first time, so its box takes the focus, and `onShown` once it has been. One left waiting while its fee changed by
+ * something, drawn again when the fee is back to one price, is not fresh and leaves the focus where it is.
+ */
+export interface PendingHands {
+  onDone: () => void;
+  fresh: () => boolean;
+  onShown: () => void;
+}
+
+/**
  * A part the toolbox added that asks, where it will stand, for what it needs (`pending`, as the panel gives it: what it asks, the price it
  * goes on, its words, its box's spoken name and sign): a later price its month, an offset its fee, a bound or a percent maximum its figure,
- * whose box takes the focus as it appears.
+ * whose box takes the focus as it first appears (`hands.fresh`).
  */
-export function PendingEdit({ fee, caseId, pending, deal, name, later, onFee, onDone }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; onDone: () => void }) {
+export function PendingEdit({ fee, caseId, pending, deal, name, later, onFee, hands }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; hands: PendingHands }) {
+  const onDone = hands.onDone;
   const { part, ask, k, words, field, sign, figure } = pending;
   const side = "buy";
   const at = { side, k, ...(caseId ? { caseId } : {}) } as const;
   const label = copy.builder.fieldName(name, field);
   const asksFigure = figure !== undefined;
-  // the part asks where it stands: its box takes the focus as it appears (a month's box takes it itself), above a phone's pinned sheet
+  // the part asks where it stands: drawn for the first time, its box takes the focus, above a phone's pinned sheet (a month's box takes it
+  // itself, with its picker open)
+  const [fresh] = useState(hands.fresh);
   useEffect(() => {
-    if (!asksFigure) return;
+    hands.onShown();
+    if (!fresh || !asksFigure) return;
     const box = document.getElementById(partFieldId(fee.id, `${part}-pending`));
     box?.focus({ preventScroll: true });
     bringIntoView(box?.closest("[data-lift]"));
-  }, [fee.id, part, asksFigure]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
   const done = (next: Fee, box?: string) => {
     onFee(next);
@@ -260,7 +289,7 @@ export function PendingEdit({ fee, caseId, pending, deal, name, later, onFee, on
   const tail = bare(words.tail);
   let body: ReactNode;
   if (ask === "month") {
-    body = <MonthField value={null} label={label} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
+    body = <MonthField value={null} label={label} tight waits autoFocus={fresh} {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
   } else if (ask === "fee") {
     body = (
       <>

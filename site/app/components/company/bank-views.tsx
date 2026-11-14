@@ -6,7 +6,7 @@
 import { Fragment, useId, useMemo, useState, type ReactNode } from "react";
 import { guidePath } from "../../lib/site-paths";
 import { companyPage as w, r4catalogue as copy } from "../../copy";
-import { kindGroups, lineAt, rangeKey, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
+import { kindGroups, lineAt, rangeKey, saidByStart, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
 import { amountRangeText, breakText, depositLabels, exitsText, onlyAtExits, renewText, taxWord, termWords } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS as DEPOSIT_TERMS } from "../../lib/deposit-browser";
@@ -23,7 +23,7 @@ const ALL = "all";
 const RATE_REM = { deposits: 8.5, savings: 9 } as const;
 
 /** An amount band's range in plain words, for a chip (a control holds no figure that opens its own sheet; the column's head holds the sourced one). */
-const rangeText = (b: AmountBand, fromOnly?: boolean): string => amountRangeText(numberOf(b.min), numberOf(b.max), fromOnly);
+const rangeText = (b: AmountBand, fromOnly?: boolean): string => amountRangeText(numberOf(b.min), numberOf(b.max), fromOnly, b.edges);
 
 /** A rate, its anchor and spread under it in the short form ("פריים פחות 4.73"); `inline`, after it on its line (a phone's list of amounts). */
 function Rate({ p, inline }: { p: ProductRowData; inline?: boolean }) {
@@ -236,9 +236,9 @@ function PhoneRow({ row, shared, known, bands, amount, fromOnly }: { row: TableR
   const tiles = bands
     ? bands.flatMap((b) => {
         const x = lineAt(row, b.key);
-        return x ? [{ id: b.key, label: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, figure: <Rate p={x} inline />, dim: amount !== ALL && amount !== b.key }] : [];
+        return x ? [{ id: b.key, label: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} edges={b.edges} />, figure: <Rate p={x} inline />, dim: amount !== ALL && amount !== b.key }] : [];
       })
-    : row.lines.map((x) => ({ id: x.id, label: <AmountRange min={x.amountMin} max={x.amountMax} />, figure: <Rate p={x} inline /> }));
+    : row.lines.map((x) => ({ id: x.id, label: <AmountRange min={x.amountMin} max={x.amountMax} edges={x.amountEdges} />, figure: <Rate p={x} inline /> }));
   return (
     <ProductPhoneRow stacked roomy>
       <span className="flex items-start justify-between gap-2">
@@ -268,14 +268,14 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
   const amountColumn = !bands && new Set(products.map(rangeKey)).size > 1;
   const groups = deposits ? kindGroups(rows) : [{ kind: "", rows: [...rows].sort((a, b) => (numberOf(a.lines[0]!.term) ?? 0) - (numberOf(b.lines[0]!.term) ?? 0)) }];
   // ranges that follow one another with no gap and run on with no top are said by where each starts
-  const fromOnly = !!bands && bands.every((b, i) => (i === bands.length - 1 ? numberOf(b.max) === null : numberOf(b.max) !== null && numberOf(bands[i + 1]!.min) === numberOf(b.max)! + 1));
+  const fromOnly = !!bands && saidByStart(bands);
   const columns: ProductColumn[] = [
     { id: "name", head: deposits ? w.deposits.cols.deposit : w.deposits.cols.plan },
     ...(!deposits && !shared.term ? [{ id: "term", head: copy.labels.term, width: 7 }] : []),
     ...(!shared.rateType ? [{ id: "rateType", head: copy.labels.rateType, width: 6.5 }] : []),
     ...(amountColumn ? [{ id: "amount", head: w.deposits.cols.amount, width: 10 }] : []),
     ...(bands
-      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: RATE_REM[kind], dim: amount !== ALL && amount !== b.key }))
+      ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} edges={b.edges} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: RATE_REM[kind], dim: amount !== ALL && amount !== b.key }))
       : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} deposits={deposits} />, width: RATE_REM[kind] }]),
     ...(!shared.exits ? [{ id: "exits", head: copy.labels.exits, width: 9, wrap: true }] : []),
   ];
@@ -283,7 +283,7 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
     <NameCell row={row} known={known} />,
     ...(!deposits && !shared.term ? [termWords(p.term) ? <Num value={p.term} display={termWords(p.term)!} /> : copy.term.none] : []),
     ...(!shared.rateType ? [<RateType p={p} />] : []),
-    ...(amountColumn ? [<AmountRange min={p.amountMin} max={p.amountMax} />] : []),
+    ...(amountColumn ? [<AmountRange min={p.amountMin} max={p.amountMax} edges={p.amountEdges} />] : []),
     ...(bands ? bands.map((b) => { const x = lineAt(row, b.key); return x ? <Rate p={x} /> : <span className={muted}>—</span>; }) : [<Rate p={p} />]),
     ...(!shared.exits ? [exitsOf(p)] : []),
   ];
@@ -296,7 +296,7 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
       cells: cellsOf(row, p),
       ...(detail ? { detail } : {}),
       phone: <PhoneRow row={row} shared={shared} known={known} bands={bands} amount={amount} fromOnly={fromOnly} />,
-      ...(many ? { lines: { columns: [...(amountColumn ? ["amount"] : []), "rate"], rows: row.lines.map((x) => ({ key: x.id, cells: [...(amountColumn ? [<AmountRange min={x.amountMin} max={x.amountMax} />] : []), <Rate p={x} />] })) } } : {}),
+      ...(many ? { lines: { columns: [...(amountColumn ? ["amount"] : []), "rate"], rows: row.lines.map((x) => ({ key: x.id, cells: [...(amountColumn ? [<AmountRange min={x.amountMin} max={x.amountMax} edges={x.amountEdges} />] : []), <Rate p={x} />] })) } } : {}),
     };
   };
   const countWords = (n: number) => (deposits ? w.units.deposits : w.units.plans)(n);

@@ -13,6 +13,7 @@ import {
   ChevronUp,
   CircleAlert,
   Clock,
+  Coins,
   Copy,
   Download,
   ExternalLink,
@@ -26,7 +27,6 @@ import {
   RotateCcw,
   Search,
   Share2,
-  Trash2,
   X,
   type LucideProps,
   Layers,
@@ -54,8 +54,6 @@ export const IconExternal = base(ExternalLink, true);
 export const IconSearch = base(Search);
 export const IconMenu = base(Menu);
 export const IconClose = base(X);
-/** Taking an item away (a fee from a deal), the bin a list's delete carries. */
-export const IconBin = base(Trash2);
 export const IconClock = base(Clock);
 export const IconAlert = base(CircleAlert);
 export const IconLock = base(Lock);
@@ -72,3 +70,5 @@ export const IconCopy = base(Copy);
 export const IconDownload = base(Download);
 export const IconShare = base(Share2);
 export const IconFileUp = base(FileUp);
+/** Money to put in: an empty state that asks for an amount. */
+export const IconCoins = base(Coins);

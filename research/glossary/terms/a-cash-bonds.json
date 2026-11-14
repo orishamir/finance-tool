@@ -1542,7 +1542,6 @@
     "explain_he": "צמד תווים בשם הקרן שמראה עד כמה היא רשאית להיות חשופה למניות ולמטבע חוץ",
     "rule_ids": [
       "MF-43",
-      "MF-54",
       "ETF-12"
     ],
     "source": {
@@ -1562,7 +1561,7 @@
       "exposure:index-sp500",
       "exposure:index-ta125"
     ],
-    "notes": "A ceiling the fund commits to, not what it holds now (MF-43). Decoding each character is decoder work (MF-43, MF-54). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "A ceiling the fund commits to, not what it holds now (MF-43). Decoding each character is decoder work (MF-43). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "prvpyl-chshyph-a"
   },
   {
@@ -1576,8 +1575,8 @@
     ],
     "explain_he": "סימן בשם הקרן שמזהיר שהיא עלולה להיות חשופה יותר לסיכון שמי שחייב לה כסף לא יחזיר",
     "rule_ids": [
-      "MF-44",
-      "MF-54"
+      "MF-57",
+      "MF-43"
     ],
     "source": {
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
@@ -1590,7 +1589,7 @@
       "fund-name",
       "guide:brokerage-account"
     ],
-    "notes": "The ISA directive behind the mark was not read; meaning from the 2017 ISA guide and a fund manager's page (MF OQ9).",
+    "notes": "The mark is set by the ISA's directive, new text of 19.4.2026 (MF-57); it stands beside the exposure profile (MF-43). The explanation follows the 2017 ISA guide.",
     "id": "symn-kryah"
   },
   {

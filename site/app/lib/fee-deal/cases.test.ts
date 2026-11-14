@@ -12,7 +12,7 @@ import { byQuestion, copiesWords, slotEdit, thingMenu } from "./things";
 import { panel } from "./panel";
 import { toolbox } from "./toolbox";
 import { picksOf, readFee, readFees } from "./cases";
-import { addBy, addCase, canAddBy, copyCase, removeBy, removeCase, removeTop, setMine, setStep, setTop, setWhen } from "./edits/case";
+import { addBy, addCase, canAddBy, copyCase, removeBy, removeCase, setMine, setStep, setTop, setWhen } from "./edits/case";
 import { editPrice } from "./edits/stage";
 import { withFigure } from "./edits/price";
 import { setPart } from "./offers/parts";
@@ -399,12 +399,6 @@ describe("the edits that make cases", () => {
     expect((setStep(fx(), "x4", 0, null) as CasesFee).cases[3]!.when[0]).toBe(2);
     expect((setTop(fx(), 0, 1, 200) as CasesFee).by[0]).toMatchObject({ tops: [{ v: 10 }, { v: 200 }] });
     expect(setTop(fx(), 0, 1, 5)).toEqual(fx());
-    const merged = removeTop(fx(), 0, 0) as CasesFee;
-    expect(merged.cases.map((c) => [c.id, c.when[0]])).toEqual([
-      ["x1", 0],
-      ["x3", 1],
-      ["x4", 1],
-    ]);
   });
   it("adds and takes away a case's parts, as the toolbox does, in that case alone", () => {
     const withMin = setPart(trade(), "min", true, { caseId: "c2" });
@@ -416,7 +410,10 @@ describe("the edits that make cases", () => {
     expect((setPart(trade(), "cap", true, { caseId: "c1", value: 30 }) as CasesFee).cases[0]!.stages[0]!.price).toMatchObject({ cap: { v: 30 } });
     expect(setPart(trade(), "offset", true, { caseId: "c1" })).toEqual(trade());
     expect((setPart(trade(), "sale", true, { caseId: "c3" }) as CasesFee).cases[2]!.sale).toEqual(trade().cases[2]!.stages);
-    expect((setPart(trade(), "until", true, { caseId: "c1", month: "2027-06" }) as CasesFee).cases[0]!.stages.map((s) => s.until)).toEqual(["2027-06", undefined]);
+    expect((setPart(trade(), "until", true, { caseId: "c1", month: "2027-06", after: "action" }) as CasesFee).cases[0]!.stages.map((s) => s.until)).toEqual(["2027-06", undefined]);
+    // a later price takes its form from the offer: without it, or without its month, nothing is added
+    const t = trade();
+    expect(setPart(t, "until", true, { caseId: "c1", month: "2027-06" })).toBe(t);
     expect((setPart(trade(), "share", true, { caseId: "c2" }) as CasesFee).cases[1]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
   });
   it("keeps a case or a thing taken away for the undo", () => {

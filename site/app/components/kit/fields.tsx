@@ -46,6 +46,8 @@ export interface FieldProps {
   /** Thousands separators while the reader types ("10,000" as the last zero goes in), not only when the field is left; whole amounts only. */
   groupAsTyped?: boolean;
   autoFocus?: boolean;
+  /** The box's own id, for a control elsewhere that moves the focus to it (an `EmptyState`'s action); a generated one without it. */
+  inputId?: string;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
   /** Compact only: hands the error to the row that holds the box, which shows it in a line it already keeps, instead of a line under the box that would push what follows down (nothing moves). */
@@ -99,12 +101,13 @@ function ResetToStart({ shown, start, unit, onReset, describedBy, className }: {
 
 /** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
+  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
   const inputMode = whole ? "numeric" : mode;
 
-  const ids = useId();
+  const generated = useId();
+  const ids = inputId ?? generated;
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
   const [error, setError] = useState<ReactNode | null>(null);
   const [focused, setFocused] = useState(false);

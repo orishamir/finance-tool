@@ -439,42 +439,19 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
 /**
  * A money-market fund bought through a bank (method 2.4): a distributor with a distribution agreement may not charge
  * the holder for buying, holding or redeeming units (MF-26), and a bank may not charge securities custody on one
- * (BANK-18). So the trade and custody lines are 0, each a sourced value object carrying its rule. The assumption that
- * the bank has a distribution agreement for the fund (the common case) is written on the value. The tariff's own
- * `mutual_fund_units` lines are not read: they price tracking funds.
+ * (BANK-18). So the trade and custody lines are each rule's zero figure, which carries its own source: the 2016 amendment in
+ * the official gazette (Kovetz HaTakanot 7653, page 1098, regulations 2(b) to 2(d)) for MF-26, the First Schedule's custody item for
+ * BANK-18. The assumption that the bank has a distribution agreement for the fund (the common case) is written on the value. The
+ * tariff's own `mutual_fund_units` lines are not read: they price tracking funds.
  */
 function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>): NonNullable<InstrumentTerms["tariff"]> | null {
-  const mf26 = src.rules["MF-26"];
-  const bank18 = src.rules["BANK-18"];
-  if (!mf26) missing.push(`${wrapperId}: data/rules/ has no record "MF-26" (tariff trade lines)`);
-  if (!bank18) missing.push(`${wrapperId}: data/rules/ has no record "BANK-18" (tariff custody lines)`);
-  if (!mf26 || !bank18) return null;
-  const zero = (rule: RuleRecord, unit: ValueObject["unit"], url: string, title: string, notes: string): SiteValue => ({
-    value: 0,
-    unit,
-    source: { url, title, publisher: "ספר החוקים", strength: rule.strength },
-    checked: rule.checked,
-    effective_from: null,
-    effective_to: null,
-    update_rule: "fixed in regulation",
-    state: "sourced",
-    rule_ids: [rule.id],
-    notes,
-  });
-  feeValues.tradeRate = zero(
-    mf26,
-    "pct_of_trade",
-    "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
-    "תקנות השקעות משותפות בנאמנות (עמלת הפצה), תקנה 2(ד)",
-    "בקרן כספית שיש עליה הסכם הפצה המפיץ לא רשאי לגבות מבעל היחידה עמלה על קנייה, החזקה או פדיון (MF-26). ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן, כמקובל.",
-  );
-  feeValues.custodyRate = zero(
-    bank18,
-    "pct_of_balance_per_period",
-    "https://boi.org.il/media/jbwnaivp/159a.pdf",
-    "כללי הבנקאות (שירות ללקוח) (עמלות), התוספת הראשונה, חלק 4",
-    "בבנק אי אפשר לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית (BANK-18). ההדגמה מניחה שהקרן נקנית דרך הבנק.",
-  );
+  const trade = figure(src, "MF-26", "mmf_unit_fee_under_distribution_agreement");
+  const custody = figure(src, "BANK-18", "custody_on_money_market_fund");
+  if (!trade || trade.value !== 0) missing.push(`${wrapperId}: MF-26 has no zero figure "mmf_unit_fee_under_distribution_agreement" (tariff trade lines)`);
+  if (!custody || custody.value !== 0) missing.push(`${wrapperId}: BANK-18 has no zero figure "custody_on_money_market_fund" (tariff custody lines)`);
+  if (!trade || trade.value !== 0 || !custody || custody.value !== 0) return null;
+  feeValues.tradeRate = { ...trade, notes: investCopy.bankMoneyMarketZero.trade };
+  feeValues.custodyRate = { ...custody, notes: investCopy.bankMoneyMarketZero.custody };
   return { buy: { rate: 0 }, sell: { rate: 0 }, custody: { rate: 0, everyMonths: 12 } };
 }
 

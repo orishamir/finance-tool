@@ -51,6 +51,8 @@ export interface ProductRowData {
   taxBucket: SiteValue;
   amountMin: SiteValue;
   amountMax: SiteValue | null;
+  /** How the amount at each bound stands, where the bank's table says (F-108): "(לא כולל)" after a top, "מעל" before a bottom. */
+  amountEdges: { min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" };
   /** The bank's own printed words about a break (its quoted passages), never the record's English note. */
   breakTerms: { penalty: "none" | "with_penalty" | "not_allowed"; quotes: string[]; rules: string[] };
   exitPoints: ExitPoints;

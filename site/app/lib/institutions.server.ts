@@ -178,6 +178,7 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     taxBucket: mark(d.tax_bucket),
     amountMin: mark(d.amount_range.min),
     amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
+    amountEdges: { ...(d.amount_range.min_edge ? { min_edge: d.amount_range.min_edge } : {}), ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}) },
     breakTerms: { penalty: d.break.penalty, quotes: printedQuotes(d.break.mechanism_text), rules: d.break.rule_ids },
     exitPoints: exitPointsOf(d.exit_points),
     autoRenew: { value: d.auto_renew.value, maxRenewals: d.auto_renew.max_renewals },

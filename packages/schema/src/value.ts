@@ -25,8 +25,7 @@ export const unit = z.enum([
   "pct_per_year",
   /**
    * An annual rate quoted as effective, compounded at each payment, where `pct_per_year` on a bank's rate is nominal (BANK-50): the Bank
-   * of Israel's averages of deposit rates paid (reporting directive 877 s.9), pending in the rule base, where BANK-22 does not yet record
-   * that definition. Accepted only in P-05's `cash_rate` and a deposit record's `rate_offered` (`EFFECTIVE_RATE_PATHS`).
+   * of Israel's averages of deposit rates paid (BANK-53: reporting directives 823A s.8, 823 s.8 and 877 s.9). Accepted only in P-05's `cash_rate` and a deposit record's `rate_offered` (`EFFECTIVE_RATE_PATHS`).
    */
   "pct_per_year_effective",
   "pct_of_deposit",
@@ -89,7 +88,11 @@ export const numberState = z.enum(["sourced", "computed", "entered"]);
 export const updateRule = z.union([
   z.enum([
     "fixed in law",
+    // binding text below a law: regulations, a regulator's circulars and directives, the exchange's rules (an exchange's own index rules among them)
     "fixed in regulation",
+    // fixed by the document the value cites, which binds no one at large: a tax ruling, a report, an index provider's own methodology
+    // (S&P, MSCI); it changes when that document is replaced
+    "fixed in document",
     "cpi-linked 1 jan",
     "average-wage-linked",
     "provider-set",

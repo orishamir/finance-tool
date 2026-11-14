@@ -4,6 +4,8 @@
 //   cut      on a phone, words that don't wrap (a chip, a figure) running past the edge of the card or cell they sit in (2026-11-08: the
 //            open-question chip of an exposure page's cards at 320);
 //   mark     a "?" (HelpMark) on a line of its own, apart from the words it explains (2026-11-08: the rate head of the current account);
+//   term     a glossary term (`.term`, which never wraps) wider than the column it stands in, at every width: a whole sentence marked as one
+//            term runs out of its column, past the screen on a phone;
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
 //            doubt or a lock.
@@ -77,13 +79,13 @@ for (const [i, width] of WIDTHS.entries()) {
 // a full run says which listed leftovers are gone, so the list can shrink
 if (!named.length) for (const l of leftovers.filter((l) => !used.has(l))) console.log(`GONE  ${l.pages} at ${l.width}, ${l.check} ${l.id}: no longer found; remove it from layout-check-leftovers.json`);
 console.log(
-  `\n${failed ? `${failed} failed` : "all passed"}${known ? ` (${known} listed in layout-check-leftovers.json)` : ""}: ${paths.length} pages at ${WIDTHS.join(", ")} px (page width, "?" marks), ${sheets} sheets with a warning opened at ${SHEET_WIDTH} × ${HEIGHT[SHEET_WIDTH]}; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
+  `\n${failed ? `${failed} failed` : "all passed"}${known ? ` (${known} listed in layout-check-leftovers.json)` : ""}: ${paths.length} pages at ${WIDTHS.join(", ")} px (page width, "?" marks, terms), ${sheets} sheets with a warning opened at ${SHEET_WIDTH} × ${HEIGHT[SHEET_WIDTH]}; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
 );
 process.exit(failed ? 1 : 0);
 
 /**
  * Plants one failure of each kind on the kit page at 320 × 568 and runs the check on it: a block 600 px wide, a "?" pushed onto a line of its
- * own, and the caution callout of a doubted figure's sheet pushed below the sheet's fold. Returns the checks that did not catch theirs.
+ * own, a long term in a 160 px column, and the caution callout of a doubted figure's sheet pushed below the sheet's fold. Returns the checks that did not catch theirs.
  */
 async function selfTest() {
   const ctx = await browser.newContext({ viewport: { width: SHEET_WIDTH, height: HEIGHT[SHEET_WIDTH] }, colorScheme: "dark", locale: "he-IL", hasTouch: true, isMobile: true });
@@ -107,6 +109,14 @@ async function selfTest() {
     }
   });
   if (!(await page.evaluate(lonelyMarks)).length) missed.push("mark");
+  await page.evaluate(() => {
+    const col = Object.assign(document.createElement("p"), { id: "planted-term" });
+    col.style.cssText = "width:160px";
+    col.append(Object.assign(document.createElement("button"), { className: "term", textContent: "מילה אחת ועוד הרבה מילים שמסומנות כמונח אחד ארוך מדי" }));
+    document.querySelector("main").append(col);
+  });
+  if (!(await page.evaluate(wideTerms)).some((t) => t.where.includes("planted-term"))) missed.push("term");
+  await page.evaluate(() => document.getElementById("planted-term").remove());
   const doubted = page.locator("main button.num-doubt").first();
   if (await doubted.count()) {
     await doubted.scrollIntoViewIfNeeded();
@@ -202,6 +212,7 @@ async function checkPage(page, path, width) {
       for (const c of await page.evaluate(cutWords)) add({ check: "cut", id: c.box, detail: `"${c.text}" runs ${c.by} px past its ${c.box}` });
     }
     for (const m of await page.evaluate(lonelyMarks)) add({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
+    for (const t of await page.evaluate(wideTerms)) add({ check: "term", id: t.text, detail: `the term "${t.text}" is ${t.width} px wide in a ${t.column} px column (${t.where})` });
   };
   await look();
   // a closed tab card's panel is not in the page (the index page's "לפני שמחליטים"): each is opened in turn and the page looked at again,
@@ -329,6 +340,40 @@ function cutWords() {
     if (["auto", "scroll"].includes(getComputedStyle(box).overflowX)) continue;
     seen.push(el);
     out.push({ text: (el.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 40), by: Math.round(by), box: `${box.tagName.toLowerCase()}${typeof box.className === "string" && box.className ? "." + box.className.split(/\s+/).slice(0, 2).join(".") : ""}` });
+  }
+  return out.slice(0, 6);
+}
+
+// Runs in the page. Every visible glossary term (`.term`, white-space: nowrap) wider than its column: the content box of the nearest ancestor
+// laid out as a block (not inline, not `contents`), which is where its line wraps. A term in a box that scrolls sideways on purpose is left
+// out. One finding for each term's words.
+function wideTerms() {
+  const out = [];
+  const seen = new Set();
+  const columnOf = (el) => {
+    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+      const d = getComputedStyle(p).display;
+      if (!d.startsWith("inline") && d !== "contents") return p;
+    }
+    return null;
+  };
+  const scrolls = (el) => {
+    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) if (["auto", "scroll"].includes(getComputedStyle(p).overflowX)) return true;
+    return false;
+  };
+  for (const el of document.querySelectorAll("main .term")) {
+    if (!el.checkVisibility({ visibilityProperty: true, opacityProperty: true })) continue;
+    const col = columnOf(el);
+    if (!col || scrolls(el)) continue;
+    const cs = getComputedStyle(col);
+    const column = col.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const width = el.getBoundingClientRect().width;
+    if (width <= column + 1) continue;
+    const text = (el.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 60);
+    if (seen.has(text)) continue;
+    seen.add(text);
+    const id = col.id ? `#${col.id}` : typeof col.className === "string" && col.className ? "." + col.className.split(/\s+/).slice(0, 2).join(".") : "";
+    out.push({ text, width: Math.round(width), column: Math.round(column), where: `<${col.tagName.toLowerCase()}${id}>` });
   }
   return out.slice(0, 6);
 }
