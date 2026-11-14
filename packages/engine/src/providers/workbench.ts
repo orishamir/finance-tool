@@ -737,6 +737,14 @@ export function beforeTax(r: RunResult): number {
   return r.real + taxReal(r);
 }
 
+/**
+ * F-91, F-109 helper: what the cash waiting for a whole unit did against the fund, at the horizon in today's shekels (`waitingCarried / I_T`):
+ * above zero where it missed a rise, below zero where it missed a fall; null for a run that is not in whole units.
+ */
+export function waitingReal(r: Pick<RunResult, "waitingCarried" | "series" | "exitMonth" | "nominal" | "real">): number | null {
+  return r.waitingCarried === undefined ? null : r.waitingCarried / indexAtExit(r as RunResult);
+}
+
 /** F-91's inputs, every one a real value at the horizon in today's shekels. */
 export interface CostByWhoInput {
   /** `X`: B of the same deposits in the same fund with no fund cost, no distribution and no account: the plan's return alone. */
@@ -747,16 +755,20 @@ export interface CostByWhoInput {
   account: number;
   /** `B(u with no fund cost, no account) − B(u, no account)`. */
   fund: number;
+  /** F-109: the part of `account` that is the cash waiting for a whole unit (`waitingReal`); none for a run by amount. */
+  waiting?: number;
 }
 
 /**
  * F-91 A way's cost by who takes it. The account and the fund before the tax they save, the fund measured with no account;
  * the state is what remains, `X − left − account − fund`: the tax paid, with the growth a tax paid during the holding would
  * have earned. The three add up to `X − left` by construction, so the gap in what is left between two ways on the same plan
- * is the gap in their costs.
+ * is the gap in their costs. In whole units (F-109) the account's part splits in two: the cash waiting for a unit (`waiting`,
+ * a gain where the fund fell) and what the account's fees took, `fees = account − waiting`; by amount `fees` is the whole part.
  */
-export function costByWho(a: CostByWhoInput): { account: number; fund: number; state: number } {
-  return { account: a.account, fund: a.fund, state: a.base - a.left - a.account - a.fund };
+export function costByWho(a: CostByWhoInput): { account: number; fees: number; waiting: number; fund: number; state: number } {
+  const waiting = a.waiting ?? 0;
+  return { account: a.account, fees: a.account - waiting, waiting, fund: a.fund, state: a.base - a.left - a.account - a.fund };
 }
 
 /** One provider read for a run (F-63): its row's base, its tariff at its level, its member kind and the ways it buys the fund (F-109). */

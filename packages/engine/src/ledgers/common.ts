@@ -121,6 +121,9 @@ export class Tally {
   private carried = emptyFees();
   private growth = 1;
   private grows = false;
+  /** F-109 on a run in whole units: the waiting cash in units of the same index, entered at a month's start and left at its end (`waitFrom`, `waitTo`). */
+  private waited = 0;
+  private waits = false;
 
   fee(type: FeeType, amount: number) {
     this.fees[type] += amount;
@@ -131,6 +134,17 @@ export class Tally {
   grow(factor: number) {
     this.growth *= factor;
     this.grows = true;
+  }
+
+  /** F-109: the cash waiting for a whole unit at a month's start, before the month's growth: what it would have become in the fund. */
+  waitFrom(cash: number) {
+    this.waited += cash / this.growth;
+    this.waits = true;
+  }
+
+  /** F-109: the same cash at the month's end, after every share of the month (`grow`), as it joins the next order. */
+  waitTo(cash: number) {
+    this.waited -= cash / this.growth;
   }
 
   flag(code: string, month?: number) {
@@ -176,6 +190,7 @@ export class Tally {
       formulas: r.formulas,
       rules: book.used(),
       ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
+      ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth } : {}),
     };
   }
 }

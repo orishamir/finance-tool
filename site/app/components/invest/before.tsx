@@ -40,7 +40,7 @@ function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs
       const words = rateWords(l.line, pc.priced, plan.monthly);
       return { id: l.line, name: partName(l.line) ?? "", amount: r.accountLines[i]!, value: l.cost, who: "account" as const, sub: words ? <RateLine words={words} house={pc.priced.house} /> : null };
     }),
-    ...(r.remainder !== 0 ? [{ id: "remainder", name: pc.units ? c.pair.remainderUnits : c.pair.remainder, amount: r.remainder, value: pc.remainder, who: "account" as const, sub: null }] : []),
+    ...(r.remainder !== 0 ? [{ id: "remainder", name: c.pair.remainder, amount: r.remainder, value: pc.remainder, who: "account" as const, sub: null }] : []),
     {
       id: "fund",
       name: c.pair.fundLine,

@@ -281,6 +281,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
     formulas: r.formulas,
     rules: r.rules,
     ...(r.feesCarried ? { feesCarried: r.feesCarried } : {}),
+    ...(r.waitingCarried !== undefined ? { waitingCarried: r.waitingCarried } : {}),
     beforeTaxNominal: r.nominal,
     beforeTaxReal: r.real,
     outcome: { code: "listed-not-ranked", reason: rule },
@@ -554,6 +555,9 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, true);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
+    // F-109, F-91: the cash waiting for a unit this month, which the month's growth and its share of the holdings do not reach (`waitingCarried`)
+    const waitingNow = unitBuy ? waiting(m) : 0;
+    if (unitBuy) tally.waitFrom(waitingNow);
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
     let units = totalUnits(lots);
     const before = units * nav;
@@ -615,6 +619,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     const held = units * nav;
     const custodyAtRate = custodyLine !== undefined && custody > 0 && Math.abs(custody - custodyLine.rate * (held - manager)) <= 1e-9 * Math.max(1, custody);
     tally.grow(1 - (custodyAtRate ? custodyLine.rate * (1 - wrapperFee / 12) : 0) - wrapperFee / 12);
+    if (unitBuy) tally.waitTo(waitingNow);
     const fromUnits = custody + manager + fixed + account - fromCash;
     if (fromUnits > 0) {
       lots = removeFifo(lots, fromUnits / nav);

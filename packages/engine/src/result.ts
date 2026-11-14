@@ -92,6 +92,12 @@ export interface RunResult {
    * the exit; what the money a line took would have been worth in the fund. The split of a whole-units run by fee line reads it (F-63).
    */
   feesCarried?: Record<FeeType, number>;
+  /**
+   * F-109, F-91 (a securities run in whole units): what the cash waiting for a whole unit did against the fund, carried to the exit the same
+   * way, nominal at the exit. Each month, the waiting cash times the month's total return of a shekel in the account (`R_m / R_{m−1} − 1`),
+   * carried from the month's end to the exit (`R_T / R_m`): above zero where the waiting cash missed a rise, below zero where it missed a fall.
+   */
+  waitingCarried?: number;
 }
 
 export function emptyFees(): Record<FeeType, number> {

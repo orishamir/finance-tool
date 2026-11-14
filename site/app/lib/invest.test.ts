@@ -352,9 +352,9 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
       expect(ways.length).toBeGreaterThan(10);
       const sums = ways.map(({ fund, house, at }) => {
         const p = pairCosts({ bundle, index: ix, plan: plan({}, ret), fundId: fund, providerId: house })!;
-        const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + num(p.fund) + num(p.tax);
-        // the account's part is the figure the accounts list shows for the same way
-        expect(p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction).toBeCloseTo(at.accountCost, 6);
+        const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + p.waitingN + num(p.fund) + num(p.tax);
+        // the account's part is the figure a way's cost shows for the same way: its fees and, in whole units, the waiting cash (F-109)
+        expect(p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + p.waitingN).toBeCloseTo(at.accountCost, 6);
         expect(num(p.left) + cost).toBeCloseTo(p.base, 6);
         return p.base;
       });
@@ -372,7 +372,7 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
     expect(paying.length).toBeGreaterThan(0);
     const bases = ways.map(({ fund, house }) => {
       const p = pairCosts({ bundle: b, index: sp, plan: plan(), assumptions, fundId: fund, providerId: house })!;
-      const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + num(p.fund) + num(p.tax);
+      const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + p.waitingN + num(p.fund) + num(p.tax);
       expect(num(p.left) + cost).toBeCloseTo(p.base, 6);
       return p.base;
     });

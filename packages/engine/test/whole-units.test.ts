@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
-import { beforeTax, providerWorkbench, unitWaysAt, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
+import { beforeTax, providerWorkbench, unitWaysAt, waitingReal, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -266,9 +266,43 @@ describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () =>
       }
       expect(r.byType.every((t) => t.cost === null)).toBe(true);
       expect(r.interaction).toBeNull();
-      // the before-tax remainder is what the waiting cash did not earn, the sale's costs on the carried money and what the carry misses: small
+      // the before-tax remainder is what the waiting cash did (F-91's W, at 7% a cost), the sale's costs on the carried money and what the
+      // carry misses: small
       const rest = r.horizonCostBeforeTax - r.byType.reduce((s, t) => s + t.costBeforeTax, 0);
       expect(Math.abs(rest)).toBeLessThan(0.05 * r.horizonCostBeforeTax);
+      expect(waitingReal(r.run)!).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("the waiting cash's part (F-91, F-109: W)", () => {
+  // 600 ₪ a month, a unit of 1,000 ₪, no fee, no inflation, the fund moving 1% a month (up, then down). Month 1: 600 waits through the month's
+  // move and is carried one more month; month 2: 1,200 buys one unit at 1,000 × 1.01 = 1,010, and 190 waits through the last month.
+  // W = 600 × 0.01 × 1.01 + 190 × 0.01 = 7.96. By amount: 600 × 1.01² + 600 × 1.01 = 1,218.06; in whole units 1,010 × 1.01 + 190 = 1,210.10.
+  // Falling 1% a month: the unit is 990, 210 waits, W = 600 × (−0.01) × 0.99 + 210 × (−0.01) = −8.04, a gain: 1,182.06 against 1,190.10.
+  const two = (monthly: number) => input({ goal: { amountNow: 0, monthly: 600, months: 2 }, market: { grossReturn: (1 + monthly) ** 12 - 1, inflation: 0 }, tariff: {}, wholeUnits: { price: 1_000 } });
+  it("is each month's waiting cash times the month's move, carried to the exit: 7.96 ₪ when the fund rose, −8.04 ₪ when it fell", () => {
+    const up = runSecurities(two(0.01), ctx);
+    const down = runSecurities(two(-0.01), ctx);
+    expect(up.waitingCarried).toBeCloseTo(7.96, 9);
+    expect(down.waitingCarried).toBeCloseTo(-8.04, 9);
+    expect(waitingReal(up)).toBeCloseTo(7.96, 9);
+    // the gap between buying by amount and in whole units, before tax, with no account fee: W itself
+    const { wholeUnits: _, ...byAmount } = two(0.01);
+    expect(beforeTax(runSecurities(byAmount, ctx)) - beforeTax(up)).toBeCloseTo(7.96, 9);
+    const { wholeUnits: __, ...byAmountDown } = two(-0.01);
+    expect(beforeTax(runSecurities(byAmountDown, ctx)) - beforeTax(down)).toBeCloseTo(-8.04, 9);
+  });
+  it("with no account fee it is the whole gap to the run by amount, at a rise and at a fall, over ten years with inflation", () => {
+    for (const grossReturn of [0.07, -0.05]) {
+      const base = { goal: { amountNow: 10_000, monthly: 500, months: 120 }, market: { grossReturn, inflation: 0.02 }, tariff: {} };
+      const whole = runSecurities(input({ ...base, wholeUnits: { price: 2_600 } }), ctx);
+      const gap = beforeTax(runSecurities(input(base), ctx)) - beforeTax(whole);
+      expect(waitingReal(whole)!).toBeCloseTo(gap, 6);
+      expect(Math.sign(waitingReal(whole)!)).toBe(Math.sign(grossReturn));
+    }
+  });
+  it("a run by amount has none", () => {
+    expect(runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 } }), ctx).waitingCarried).toBeUndefined();
   });
 });

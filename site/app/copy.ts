@@ -784,6 +784,7 @@ export const formulaNames: Record<string, string> = {
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
   "F-107": "מס אמריקני על דיבידנדים בתוך קרן אירית",
+  "F-109": "קנייה ביחידות שלמות, והכסף שמחכה ליחידה",
   "F-110": "התקופות של העסקה: מתי כל עמלה משתנה",
   "F-111": "על מה כל עמלה נגבית, ומה מצטבר יחד",
   "F-112": "הסכומים שהמחירים בעסקה מסמנים",
@@ -4086,10 +4087,11 @@ export const invest = {
     /** The part of the account's cost no single fee line explains (F-91), named by what it adds and where it comes from. */
     remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.",
-    /** F-109, F-91 (D94): the same part where the house buys the fund in whole units. Each line there is what was paid on it, carried to the
-     *  sale, so this part holds what the cash waiting for a unit did not earn, the sale's costs and the tax on the carried money; it can be a plus */
-    remainderUnits: "כסף שמחכה ליחידה ועלויות המכירה",
-    remainderUnitsAbout: "בחלק הזה נמצא מה שהכסף שמחכה ליחידה שלמה לא הרוויח: בחשבון הזה קונים רק יחידות שלמות, והשאר מחכה בחשבון בלי ריבית. כל עמלה בשורה שלה נספרת עם מה שהכסף שלקחה היה מרוויח עד המכירה, ולכן יש כאן גם את עמלות המכירה והמס על הרווח הזה. בגלל זה החלק הזה יכול לצאת גם בפלוס.",
+    /** F-109, F-91 (D94): where the house buys the fund in whole units, what the cash waiting for a unit did against the fund. Not a fee: its
+     *  own line beside the account's fees, a minus where the fund rose while the cash waited and a plus where it fell; `why` under it by its sign */
+    waiting: "כסף שחיכה ליחידה שלמה",
+    waitingAbout: "ההפרש בין הכסף שחיכה ליחידה שלמה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בכסף של היום",
+    waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },
     /** F-109 (D94): one line on a row whose house buys the fund in whole units, where a monthly deposit buys no unit in most months, or in some */
     unitsEvery: "יחידה עולה יותר מההפקדה החודשית: קונים פעם בכמה חודשים, ובינתיים הכסף מחכה בחשבון בלי ריבית.",
     unitsSome: "קונים רק יחידות שלמות: בחודש שההפקדה לא מגיעה ליחידה, הכסף מחכה בחשבון בלי ריבית.",
