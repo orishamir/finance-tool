@@ -71,7 +71,8 @@ export function Compare() {
                 על <Term prefix="ה" id="ריבית">ריבית</Term> כשהיא משולמת, ועל <Term id="רווח הון">רווח הון</Term> במכירה או בפדיון
               </Fragment>,
               <Fragment key="limited">
-                על <Term id="הרווח הריאלי">הרווח הריאלי</Term> בפדיון
+                {/* two words in a column 64 px wide on a 320 px phone: the term breaks between them there rather than run out of its cell */}
+                על <Term id="הרווח הריאלי" className="whitespace-normal">הרווח הריאלי</Term> בפדיון
               </Fragment>,
               <Fragment key="open">
                 על הרווח הריאלי <Term prefix="ב" id="מכירה">מכירה</Term> או בפדיון
