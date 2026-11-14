@@ -982,6 +982,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -4874,6 +4880,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -5068,6 +5080,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -5262,6 +5280,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -5456,6 +5480,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -5650,6 +5680,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -5844,6 +5880,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -6038,6 +6080,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -6232,6 +6280,12 @@
           "state": "sourced",
           "notes": "לא דווח."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-55"
+        ]
       }
     },
     {
@@ -14407,6 +14461,12 @@
           "state": "sourced",
           "notes": "התשואה השנתית הממוצעת של המסלול ב־5 השנים עד סוף 2026-09: נומינלית וברוטו, כלומר לפני דמי ניהול ולפני מס. זו תשואת עבר, לא הבטחה לעתיד. שנות החישוב נקראות כמסתיימות בחודש הדיווח, והרשות לא כותבת זאת במפורש (CAT-05)."
         }
+      },
+      "closed_to_joiners": {
+        "by": "company-terms",
+        "rule_ids": [
+          "CAT-54"
+        ]
       }
     },
     {

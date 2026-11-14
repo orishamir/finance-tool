@@ -23,7 +23,8 @@ import {
   EXCLUDED_COMPANIES,
   closedTrack,
   endsInGeneral,
-  GENERAL_TRACKS,
+  TRACK_READINGS,
+  closedToJoiners,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -158,8 +159,8 @@ describe("normalise", () => {
   });
 
   it("leaves out the eight pension general tracks CAT-19 closes, by id, and nothing else whose name ends in כללי", () => {
-    const pension = [...GENERAL_TRACKS["pensia-net"].readings];
-    expect(pension.filter(([, r]) => r.cat19 === "closed")).toHaveLength(8);
+    const pension = [...TRACK_READINGS["pensia-net"].readings];
+    expect(pension.filter(([, r]) => r.reading === "closed")).toHaveLength(8);
     for (const [id, r] of pension) expect(closedTrack("", r.name, "pensia-net", id), r.name).toBe(true);
     // a name alone is not enough: another track ending in the word is kept by this rule
     expect(closedTrack("", "קרן חדשה פנסיה - כללי", "pensia-net", 99999)).toBe(false);
@@ -169,19 +170,19 @@ describe("normalise", () => {
   });
 
   it("keeps the general tracks of provident funds for annuity CAT-19 does not reach, and closes none of them while one is unread", () => {
-    const gemel = [...GENERAL_TRACKS.gemelnet.readings];
-    // no Gemel-Net general track is read as closed: 923 may be in a guaranteed-yield fund, which CAT OQ36 holds, and stays
-    expect(gemel.filter(([, r]) => r.cat19 === "closed")).toEqual([]);
-    expect(gemel.filter(([, r]) => r.cat19 === "unsettled").map(([id, r]) => [id, r.cat19 === "unsettled" && [r.mayBe, r.openQuestion]])).toEqual([
-      [923, ["guaranteed-yield", "CAT-OQ36"]],
+    const gemel = [...TRACK_READINGS.gemelnet.readings];
+    // no Gemel-Net general track is read as closed by the circular: 119, 260 and 263 may be in guaranteed-yield funds the exclusion takes
+    // whole, which CAT OQ36 (b) holds, and stay
+    expect(gemel.filter(([, r]) => r.reading === "closed")).toEqual([]);
+    expect(gemel.filter(([, r]) => r.reading === "unsettled").map(([id, r]) => [id, r.reading === "unsettled" && [r.mayBe, r.openQuestion]])).toEqual([
+      [119, ["guaranteed-yield", "CAT-OQ36"]],
+      [260, ["guaranteed-yield", "CAT-OQ36"]],
+      [263, ["guaranteed-yield", "CAT-OQ36"]],
     ]);
     for (const [id, r] of gemel) expect(closedTrack("כלל האוכלוסיה", r.name, "gemelnet", id), r.name).toBe(false);
-    // the circular's "קופת גמל" leaves out sick-pay, self-directed and the five guaranteed-yield funds and names the Leumi employees'
-    // funds, so their general tracks are not closed by it
-    expect(gemel.filter(([, r]) => r.cat19 === "outside").map(([id, r]) => [id, r.cat19 === "outside" && r.fund])).toEqual([
-      [119, "guaranteed-yield"],
-      [260, "guaranteed-yield"],
-      [263, "guaranteed-yield"],
+    // the circular's "קופת גמל" leaves out sick-pay and self-directed funds and names the Leumi employees' funds, so their general tracks
+    // are not closed by it
+    expect(gemel.filter(([, r]) => r.reading === "outside").map(([id, r]) => [id, r.reading === "outside" && r.fund])).toEqual([
       [229, "leumi-employees"],
       [857, "sick-pay"],
       [872, "sick-pay"],
@@ -196,28 +197,60 @@ describe("normalise", () => {
       [14938, "self-directed"],
       [15367, "self-directed"],
     ]);
-    // every track read is a general track of a provident fund for annuity in the stored file's terms
-    for (const [, r] of gemel) expect(GENERAL_TRACKS.gemelnet.isGeneral({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
-    expect(GENERAL_TRACKS.gemelnet.isGeneral({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
+    // every track the circular's readings name is a general track of a provident fund for annuity in the stored file's terms
+    for (const [, r] of gemel) if (r.reading !== "company-closed") expect(TRACK_READINGS.gemelnet.isGeneral({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
+    expect(TRACK_READINGS.gemelnet.isGeneral({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
     // a study fund's general track is open; a Gemel-Net id is read in Gemel-Net only
     expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet", 880)).toBe(false);
     expect(closedTrack("", "מיטב בטחון", "pensia-net", 923)).toBe(false);
   });
 
-  it("rests each reading on rules and open questions the rule base holds: a guaranteed-yield fund's on CAT-53 and CAT-54", () => {
+  it("reads the nine guaranteed-yield tracks (CAT-55) and 923 (CAT-54) as closed on their companies' terms: kept in the data, with the closure on them", () => {
+    const gemel = [...TRACK_READINGS.gemelnet.readings];
+    expect(gemel.filter(([, r]) => r.reading === "company-closed").map(([id, r]) => [id, r.reading === "company-closed" && r.rules]).sort(([a], [b]) => Number(a) - Number(b))).toEqual([
+      [120, ["CAT-55"]],
+      [528, ["CAT-55"]],
+      [529, ["CAT-55"]],
+      [530, ["CAT-55"]],
+      [531, ["CAT-55"]],
+      [532, ["CAT-55"]],
+      [533, ["CAT-55"]],
+      [536, ["CAT-55"]],
+      [539, ["CAT-55"]],
+      [923, ["CAT-54"]],
+    ]);
+    // not the circular's closure, so a refresh keeps them; each carries its company's closure
+    for (const [id, r] of gemel.filter(([, r]) => r.reading === "company-closed")) {
+      expect(closedTrack("כלל האוכלוסיה", r.name, "gemelnet", id), r.name).toBe(false);
+      expect(closedToJoiners("gemelnet", id)).toEqual({ by: "company-terms", rule_ids: id === 923 ? ["CAT-54"] : ["CAT-55"] });
+    }
+    expect(closedToJoiners("gemelnet", 119)).toBeUndefined();
+    expect(closedToJoiners("pensia-net", 923)).toBeUndefined();
+    // the stored file keeps all ten, each with its closure, and no other track carries one
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    for (const dataset of ["gemelnet", "pensia-net"] as const) {
+      for (const period of listPeriods(cmaDir, dataset)) {
+        for (const f of readCmaFile(cmaDir, dataset, period).funds) expect(f.closed_to_joiners, `${dataset} ${f.fund_id}`).toEqual(closedToJoiners(dataset, f.fund_id));
+      }
+    }
+    const stored = readCmaFile(cmaDir, "gemelnet", "2026-09").funds.filter((f) => f.closed_to_joiners).map((f) => f.fund_id);
+    expect(stored).toEqual([120, 528, 529, 530, 531, 532, 533, 536, 539, 923]);
+  });
+
+  it("rests each reading on rules and open questions the rule base holds", () => {
     const base = readRuleBaseIds(fileURLToPath(new URL("../../../.claude/skills/il-finance/references", import.meta.url)));
-    for (const dataset of Object.keys(GENERAL_TRACKS) as (keyof typeof GENERAL_TRACKS)[]) {
-      for (const [id, r] of GENERAL_TRACKS[dataset].readings) {
-        if (r.cat19 === "unsettled") expect(base.openQuestions.has(r.openQuestion), `${id} ${r.openQuestion}`).toBe(true);
+    for (const dataset of Object.keys(TRACK_READINGS) as (keyof typeof TRACK_READINGS)[]) {
+      for (const [id, r] of TRACK_READINGS[dataset].readings) {
+        if (r.reading === "unsettled") expect(base.openQuestions.has(r.openQuestion), `${id} ${r.openQuestion}`).toBe(true);
         else {
           expect(r.rules.length, `${id}`).toBeGreaterThan(0);
           for (const rule of r.rules) expect(base.rules.has(rule), `${id} ${rule}`).toBe(true);
         }
       }
     }
-    for (const id of [119, 260, 263]) expect(GENERAL_TRACKS.gemelnet.readings.get(id)).toMatchObject({ cat19: "outside", rules: ["CAT-53", "CAT-54"] });
-    expect(GENERAL_TRACKS.gemelnet.readings.get(1486)).toMatchObject({ cat19: "outside", rules: ["CAT-19"] });
-    expect(GENERAL_TRACKS["pensia-net"].readings.get(2002)).toMatchObject({ cat19: "closed", rules: ["CAT-19"] });
+    for (const id of [119, 260, 263]) expect(TRACK_READINGS.gemelnet.readings.get(id)).toMatchObject({ reading: "unsettled", openQuestion: "CAT-OQ36" });
+    expect(TRACK_READINGS.gemelnet.readings.get(1486)).toMatchObject({ reading: "outside", rules: ["CAT-19"] });
+    expect(TRACK_READINGS["pensia-net"].readings.get(2002)).toMatchObject({ reading: "closed", rules: ["CAT-19"] });
   });
 
   it("reports a general track of a provident fund for annuity with no reading, so it is not dropped or kept silently", () => {
@@ -228,9 +261,10 @@ describe("normalise", () => {
     const r = normalise(csv, ctx);
     const said = r.problems.join(" ");
     expect(said).toContain("fund 99999");
-    expect(said).toContain("no reading in GENERAL_TRACKS");
-    // an unsettled track and a listed self-directed one are kept without a report, and a study fund is not read
+    expect(said).toContain("no reading in TRACK_READINGS");
+    // a company-closed track and a listed self-directed one are kept without a report, and a study fund is not read
     for (const id of [923, 1486, 99998]) expect(said).not.toContain(`fund ${id}`);
+    expect(r.file?.funds.find((f) => f.fund_id === 923)?.closed_to_joiners).toEqual({ by: "company-terms", rule_ids: ["CAT-54"] });
     expect(r.file?.funds.map((f) => f.fund_id).sort((a, b) => a - b)).toEqual([923, 1486, 99998, 99999]);
   });
 
@@ -239,7 +273,7 @@ describe("normalise", () => {
     const row = (id: number, name: string) => `"${id}","${name}","קרנות חדשות","בקרה","מנהלת","202609","2015-12-31T00:00:00","0.11","1.25","512065202"\n`;
     const r = normalise(head + row(99999, "קרן חדשה פנסיה - כללי") + row(2002, "כלל פנסיה כללי"), { ...ctx, config: pensia });
     expect(r.problems.join(" ")).toContain("fund 99999");
-    expect(r.problems.join(" ")).toContain("no reading in GENERAL_TRACKS");
+    expect(r.problems.join(" ")).toContain("no reading in TRACK_READINGS");
     // a listed track is left out without a report
     expect(r.problems.join(" ")).not.toContain("fund 2002");
     expect(endsInGeneral("מיטב פנסיה כללית לבני 50 ומטה")).toBe(false);

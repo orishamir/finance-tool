@@ -6,6 +6,7 @@ import {
   abroadRecord,
   type AbroadRecord,
   cmaPeriodFile,
+  takesNewMembers,
   israelToday,
   dimensionId,
   dimensionRecord,
@@ -186,6 +187,10 @@ export interface CmaData {
 }
 
 
+/**
+ * The latest file of each dataset, as the site reads it: a track its company's own terms close to new members (`closed_to_joiners`) is
+ * left out, as D51 leaves out tracks closed to joiners; the data keeps it.
+ */
 function latestCmaFiles(): Map<string, CmaPeriodFile> {
   const files = readDir("data/cma", cmaPeriodFile);
   const latest = new Map<string, CmaPeriodFile>();
@@ -193,8 +198,12 @@ function latestCmaFiles(): Map<string, CmaPeriodFile> {
     const prev = latest.get(f.dataset);
     if (!prev || prev.report_period < f.report_period) latest.set(f.dataset, f);
   }
+  for (const [dataset, f] of latest) latest.set(dataset, openTracksOf(f));
   return latest;
 }
+
+/** A CMA file with only the tracks that take new members as far as the readings say (`takesNewMembers`, D51). */
+export const openTracksOf = (f: CmaPeriodFile): CmaPeriodFile => ({ ...f, funds: f.funds.filter(takesNewMembers) });
 
 /** The regulator's two fee averages of every track in the latest period, as the file holds them (value objects). */
 export function loadCmaFees(): Map<number, { balance: ValueObject; deposit: ValueObject }> {
