@@ -447,14 +447,8 @@ function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missi
   if (!trade || trade.value !== 0) missing.push(`${wrapperId}: MF-26 has no zero figure "mmf_unit_fee_under_distribution_agreement" (tariff trade lines)`);
   if (!custody || custody.value !== 0) missing.push(`${wrapperId}: BANK-18 has no zero figure "custody_on_money_market_fund" (tariff custody lines)`);
   if (!trade || trade.value !== 0 || !custody || custody.value !== 0) return null;
-  feeValues.tradeRate = {
-    ...trade,
-    notes: "בקרן כספית שיש עליה הסכם הפצה המפיץ לא רשאי לגבות מבעל היחידה עמלה על קנייה, החזקה או פדיון (MF-26). ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן, כמקובל.",
-  };
-  feeValues.custodyRate = {
-    ...custody,
-    notes: "בבנק אי אפשר לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית (BANK-18). ההדגמה מניחה שהקרן נקנית דרך הבנק.",
-  };
+  feeValues.tradeRate = { ...trade, notes: investCopy.bankMoneyMarketZero.trade };
+  feeValues.custodyRate = { ...custody, notes: investCopy.bankMoneyMarketZero.custody };
   return { buy: { rate: 0 }, sell: { rate: 0 }, custody: { rate: 0, everyMonths: 12 } };
 }
 
