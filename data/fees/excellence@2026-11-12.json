@@ -219,7 +219,7 @@
           "page": 4,
           "quote": "3סנט למניה מינימום 8$"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -229,7 +229,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Third-party fees may apply. This line: 3 US cents a share, recorded as USD 0.03 in the schema's per-share unit."
+        "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Its notes column is empty (p.4, item 6, read on the page image 2026-11-14): the price list prints no third-party fee on a US trade; the third track's '+ 0.3% עמלת ברוקר' is a broker fee it does not size. 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים' is printed on item 7, outside the US, only. This line: 3 US cents a share, recorded as USD 0.03 in the schema's per-share unit."
       },
       "min": {
         "value": 8,
@@ -307,7 +307,7 @@
           "page": 4,
           "quote": "או 11$ פיקס לעסקה"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -317,7 +317,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Third-party fees may apply. This line: USD 11 a trade (rate 0, minimum and maximum USD 11)."
+        "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Its notes column is empty (p.4, item 6, read on the page image 2026-11-14): the price list prints no third-party fee on a US trade; the third track's '+ 0.3% עמלת ברוקר' is a broker fee it does not size. 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים' is printed on item 7, outside the US, only. This line: USD 11 a trade (rate 0, minimum and maximum USD 11)."
       },
       "min": {
         "value": 11,
@@ -417,7 +417,7 @@
           "page": 4,
           "quote": "0.4% משווי העסקה עם מינימום 35"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -427,7 +427,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'0.4% משווי העסקה עם מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה'. Third-party fees may apply in some markets. Band 'מחוץ לארה\"ב' set 2026-11-12, so the indices page reads this line for a fund bought outside the US and the US tracks for a fund bought there (before, the US line's band named no exchange, and this unbanded line priced every fund abroad, US funds included)."
+        "notes": "'0.4% משווי העסקה עם מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה'. Its notes column: 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים' (p.4, item 7, read on the page image 2026-11-14), with no amount, ceiling or list of markets. Band 'מחוץ לארה\"ב' set 2026-11-12, so the indices page reads this line for a fund bought outside the US and the US tracks for a fund bought there (before, the US line's band named no exchange, and this unbanded line priced every fund abroad, US funds included)."
       },
       "min": {
         "value": 35,
@@ -487,7 +487,7 @@
           "page": 4,
           "quote": "0.6% לרבעון עם מינימום 40 ₪לחודש"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -497,7 +497,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'0.6% לרבעון עם מינימום 40 ₪ לחודש', collection 'חודשי/רבעוני' (PDF page 4, item 8, checked on the page image 2026-11-04); the exchange's member sheet (updated 06/07/26) prints the same: 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון 0.6000% לרבעון', minimum '40.00 ₪ לחודש'. So at most 2.4% a year, at least 480 NIS a year. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded. D56 (2026-11-04): the joining page's 'ללא דמי משמרת' is advertising and is contradicted by this line; the handling-fee promotions say in their own terms that they do not cover 'דמי משמרת'. Section (4ב)2 prints a further 'דמי משמרת' of 0.1% for managed accounts or accounts 'שמהות פעילותם היא אחזקת נכסים ולא מסחר פעיל'; it is listed under left_out, not priced here. What customers paid on average (the exchange, H1 2026) is far lower, 0.0492% a year below 25,000 NIS; listed under left_out as a fact, not a price."
+        "notes": "'0.6% לרבעון עם מינימום 40 ₪ לחודש', collection 'חודשי/רבעוני' (PDF page 4, item 8, checked on the page image 2026-11-04); the exchange's member sheet (updated 06/07/26) prints the same: 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון 0.6000% לרבעון', minimum '40.00 ₪ לחודש'. So at most 2.4% a year, at least 480 NIS a year. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded. D56 (2026-11-04): the joining page's 'ללא דמי משמרת' is advertising and is contradicted by this line; the handling-fee promotions say in their own terms that they do not cover 'דמי משמרת'. Section (4ב)2 prints a further 'דמי משמרת' of 0.1% for managed accounts or accounts 'שמהות פעילותם היא אחזקת נכסים ולא מסחר פעיל'; it is listed under left_out, not priced here. What customers paid on average (the exchange, H1 2026) is far lower, 0.0492% a year below 25,000 NIS; listed under left_out as a fact, not a price. 2026-11-14: re-read, the same file (md5 561a2d47, Last-Modified 15.7.2026). 'חודשי/רבעוני' stands in the column 'מועד הגביה', when the fee is collected; the price prints its own periods, '0.6% לרבעון' and 'מינימום 40 ₪ לחודש', so the period stays a quarter. The price list does not say which customers are collected from monthly and which quarterly, and neither does the disclosure page /trading/full-disclosure/ or the disclosure document it links (giluy_naot_0626.pdf, Last-Modified 6.10.2026). The further 0.1% 'דמי משמרת' of 4(ב)2 is collected 'רבעוני', its note 'מחושב ברמה יומית ונגבה אחת לרבעון'."
       },
       "min": {
         "value": 40,
@@ -510,7 +510,7 @@
           "page": 4,
           "quote": "0.6% לרבעון עם מינימום 40 ₪לחודש"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,

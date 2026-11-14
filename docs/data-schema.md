@@ -428,6 +428,57 @@ One file per provider per snapshot: `fees/<provider-id>@<date>.json`. The schema
 - The data check fails a `contradicted` or `offer` entry without `binding_he`, a `not_found` entry with it, a binding source that is the advert's own page, a `price_list` that is not a document the record's tariff or lines cite, any other kind on another site than the house's tariff, and a date after the day it was checked.
 - A guarantee is not a finding, and offers for one profession, employer, age group or community stay under `groups`. The house's page shows the entries; the calculation reads none of them.
 
+### 3.6a Proposed: price-list facts the /deal templates now guess (not in the schema)
+
+**Status: proposed on 2026-11-14, not built.** Nothing below is in `packages/schema` or checked by the validator yet; a record that writes one of these fields fails `npm run validate` until a builder adds it. Today `site/app/lib/fee-deal/templates.ts` holds these facts as stand-ins (`IN_TRADE`, `MAX_PER_SECURITY`, the regex in `perDepositQuote`), or they sit only in a value's English `notes`. Each field below carries the price list's own words as its quote (the place of a value, §3.6: `page` in a PDF, `quote` of at most 240 characters), so a tap opens the document where it says so. The values were read on 2026-11-14 in each house's current list; the collector's report lists them per house.
+
+**1. A bound in the trade's currency.** A new unit, `trade_ccy_per_trade`: an amount per trade in units of whatever currency the trade is in, as the list prints it ("מינימום 30 במטבע העסקה"). It replaces the dollar unit such a `min` (or `max`) carries today. Optional beside it, on the line, `trade_currencies` (array of ISO codes): only where the words name the currencies (Excellence: `["ILS", "USD", "EUR"]` from "בש"ח/$ ארה"ב/יורו"); absent, any currency. Carried by `trade` lines of `bank`, `broker` and `foreign_broker` records. The check: the unit only on a trade line's `min` or `max`, and its quote names "מטבע העסקה" (or "בהתאם למטבע העסקה").
+
+| Line | Value | The list's words (quote) |
+|---|---|---|
+| `excellence-buy-sell-foreign-non-us` `min` | 35, `trade_currencies` ILS, USD, EUR | "0.4% משווי העסקה עם מינימום 35 בש"ח/$ ארה"ב/יורו במטבע העסקה" (p.4, item 7) |
+| `ibi-buy-sell-foreign-other-markets` `min` | 30 | "0.3%, מינימום 30 במטבע העסקה" (annex p.73; the public list p.4: "ני"ע באסיה ובאירופה 0.3% משווי העסקה, מינימום 30 במטבע העסקה") |
+| `meitav-trade-buy-sell-foreign-world` `min` | 25 | "מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה" (p.3) |
+| `interactive-israel-buy-sell-europe` `min` | 2.5 | "עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה" (p.1) |
+
+Psagot's Europe minimum is not one: it is fixed in euros and only collected in the trade's currency ("הגבייה בפועל מהלקוח תעשה בהתאם למטבע בו בוצעה הפעולה ... העמלה המינימלית תהיה 15 יורו לאחר המרתם לפרנק שוויצרי"), so it keeps `eur`.
+
+**2. The scope of a custody maximum.** On a `custody` line with a `max`: `max_per`, required there, one of `security` (each security, Discount's "₪ 7,500 לני"ע לרבעון"), `deposit` (the whole securities deposit, Yahav's "8,500.00 לפיקדון"), or `unstated` (the list prints the figure with no scope; the notes say what else was read). And `max_deposit`, optional: a value object in `nis`, a second maximum on the whole deposit printed beside a `max` on each security, with its own quote. Where the list prints one figure for both (Hapoalim's "10,600.00 לנייר ערך" and "10,600.00 לפקדון"), `max` holds it with `max_per: deposit`, which then binds first, and no `max_deposit`. A maximum's period: every list read prints it in the line's own period (a quarter), so no field is proposed; a list that prints another period would need one. Carried by `custody` lines of `bank` and `broker` records. It replaces `MAX_PER_SECURITY` and the regex.
+
+| Line(s) | `max_per` | `max_deposit` | The list's words (quote) |
+|---|---|---|---|
+| `discount-custody-israel`, `-foreign` | security | none | "₪ 7,500 לני"ע לרבעון" (p.14) |
+| `mercantile-custody-israel`, `-foreign` | security | none | "₪ 7,500 לני"ע לרבעון" (p.15) |
+| `leumi-custody-israel` | security | 11,500 | "מכסימום 3700 ש"ח לני"ע 11500 לפקדון" (p.32) |
+| `leumi-custody-foreign` | security | 23,000 | "מכסימום 7400 ש"ח לני"ע 23000 לפקדון" (p.32) |
+| `pepper-custody-israel`, `-foreign` | security | 11,500 | Leumi's line (p.32); the PEPPER row: "מכסימום 3,700 ש"ח לני"ע, 11,500 ש"ח לפיקדון" (p.11) |
+| `fibi-custody-israel`, `-foreign` | security | 10,000 | "מקס' לנייר/פעולה 4,000 מקס' לפיקדון 10,000" (part 4, p.3) |
+| `massad-custody-israel`, `-foreign` | deposit | none | "מקס' לנייר/פעולה - 10,000 מקס' לפיקדון - 10,000" (part 4, p.3) |
+| `hapoalim-custody-israel`, `-foreign` | deposit | none | "10,600.00 לנייר ערך" and "10,600.00 לפקדון" (the XLS, ניירות ערך) |
+| `yahav-custody-israel`, `-foreign` | deposit | none | "8,500.00 לפיקדון" (p.15) |
+| `jerusalem-custody-israel`, `-foreign` | unstated | none | "0.15% לרבעון (10,000 ₪ מקסימום)" (p.6); the exchange's member sheet says "לפקדון" |
+| `mizrahi-custody-israel`, `-foreign` | unstated | none | "₪ 10,750.00" in the "מירבי" column (p.11); the exchange's member sheet prints it both "לפקדון" and "לני"ע" |
+
+Leumi's notes on how the two combine stay in `notes`: "בחיוב רבעוני - תיגבה עמלת מקסימום לני"ע או לפיקדון הנמוכה מביניהן" and "בהקטנת יתרה במהלך רבעון - תיגבה עמלת מקסימום לעסקה ללא צבירה" (p.32).
+
+**3. A conversion priced by its size.** On an `fx` line: `size_tiers`, an array sorted by amount, each `{ up_to, on, exempt?, discount_pct?, flat?, rate?, source }`: `up_to` a value object in `usd` (the last tier `null`, above the one before); `on` is `fee` (the conversion fee) or `spread` (the spread the line records); exactly one of `exempt: true`, `discount_pct` (a value object in `pct`, off the line's own price, the words saying whether it reaches the minimum), `flat` (a value object in `usd`) or `rate` (a value object in `pct_of_trade`, the spread in that tier). It takes in `flat_up_to` (§3.6), which is its one-tier case. Carried by `fx` lines of `bank`, `broker` and `foreign_broker` records.
+
+| Line(s) | Tiers | The list's words (quote) |
+|---|---|---|
+| `ibi-fx-spread` | on spread: up to 15,000 USD 0.7%; above 0.5% | "מרווח המרה בשיעור של 0.7% לעסקאות ששוויין נמוך מ-15,000 דולר ארה"ב ובשיעור של 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה"ב" (annex p.75, item ד) |
+| `discount-fx-conversion-branch`, `-direct`; `mercantile-fx-conversion-*` | on fee: up to 10 USD exempt; up to 100 USD 50% off, the minimum included | "בעסקאות מט"ח שסכומן עד 10 $-פטור. עד 100$- 50% הנחה, לרבות על המינימום" (Discount p.18, Mercantile p.19, note (*)) |
+| `fibi-fx-conversion-branch`; `massad-fx-conversion-branch` | on fee: up to 10 USD exempt; up to 100 USD 3.0 USD | "עסקות המרה/רכישת מט"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה" (part 5, note 8); "המרות בחשבון - עד 3.0$ - 100$" (part 5, note 2.3) |
+| `mizrahi-fx-conversion-*` | on fee: up to 10 USD exempt; up to 50 USD 3.00 USD | "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00" (p.14, note (6)) |
+| `hapoalim-fx-conversion-branch`, `-direct` | on fee: up to 99 USD 5.50 USD at a clerk, 3.3 USD in a direct channel | the row "עד 99 $" priced "$5.50" (the XLS, מטבע חוץ); annex E "3.3 $" |
+
+Not proposed here: Mizrahi's margin at the "known" rate ("בתוספת 2.00%" on a purchase, "בהפחתה של 2.00%" on a sale, p.14, note (4)) depends on the kind of rate, not the size, and stays in its notes; Interactive Israel's conversion price by currency (p.6) is already `conversion_currency`.
+
+**4. A fixed fee that trading in the month offsets.** On a `fixed_period` line: `offset: { against, source }`, `against` being `trade_fees_same_month` (the trade fees charged in the same month reduce it, never below zero), with the source's words. Carried by `fixed_period` lines of `broker` records. One line today: `ibi-account-fee`, "עלות חודשית הניתנת לקיזוז כנגד חיובי עמלות בגין פעולות אשר בוצעו בחודש החיוב ₪ 15" (annex p.72), the annex adding "החיוב בגין דמי שימוש יתבצע ללא תלות בפעילות ו/או בהיעדר פעילות הלקוח בחודש מסוים". The same annex prints the same offset for the other quote and system tracks (₪ 100, ₪ 30, ₪ 800, ₪ 250), which the record does not price.
+
+**5. Third-party fees.** On a snapshot: `third_party: [{ fee, venues?, ceiling, words_he, source }]`, one entry per place the house's document says a third party's fee may be charged on top of its own. `fee` is `trade`, `custody`, `conversion`, `transfer`, `corporate_event` or `other`; `venues` (`us`, `europe`, `other`) narrows it where the words name markets; `ceiling` is a value object where the document prints a most a fee may be (Leumi's custodian "בעלות מירבית של עד 3 דולר לנייר" in the US, Discount's "עד 2.5$ לפעולה" in the US) and `null` where it prints none ("לפי הגביה בפועל", "בהתאם להוצאה הממשית"); `words_he` is the document's words (at most 240 characters). Read by no price; the page states it beside the house, as `left_out` entries do today, which it replaces for these costs. Carried by `bank`, `broker` and `foreign_broker` records. Examples: Excellence, "ייתכנו עמלות צדדים שלישיים בשווקים מסוימים" (p.4, item 7, outside the US only); Altshuler Trade, "ייתכנו חיובים נוספים בעבור כל פעולה ו/או החזקה של ני"ע" and "יובהר כי חיובים אלו אינם חלק מהעמלות הנגבות בעסקה וייגבו בנוסף לעמלה המוגדרת ללקוח" (p.2, item 7); Discount, "בנוסף, בגין ני"ע נסחרים ושאינם נסחרים בחו"ל, יגבו הוצאות הקסטודיאן בחו"ל" (p.14, note (6)) with its part 11.3.7 (p.31).
+
+**6. When a fee is collected.** On a `custody` or `fixed_period` line: `collection: { words_he, source }`, the list's words in its "מועד הגביה" column. It is not the price's period (`period` stays the period the price prints) and no calculation reads it. Excellence's custody line: "חודשי/רבעוני" (p.4, item 8), beside a price printed "0.6% לרבעון עם מינימום 40 ₪ לחודש"; the list does not say which customers are collected from monthly and which quarterly.
+
 ### 3.7 `data/terms/deposits/` — deposit and savings-plan product terms (BANK, BPN)
 
 One file per bank per product per snapshot. The folder `terms/deposits/` is matched before `terms/`.
