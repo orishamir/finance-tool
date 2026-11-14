@@ -18,7 +18,8 @@ import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
 import { builder, panel } from "./builder";
-import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, MAX_PER_SECURITY, templateOf, templateOptions } from "./templates";
+import { latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -86,6 +87,34 @@ describe("the price parts as the device keeps them", () => {
     expect(inCapUnit({ form: "action", rate: typed(0), min: typed(10), discount: { pct: typed(50), alsoMin: true } }, "pct_of_deposit", 0)).toEqual({ x: 5, converted: false });
     expect(inCapUnit({ form: "action", rate: typed(0), third: { price: { form: "action", rate: typed(0.1), min: typed(3) } } }, "pct_of_deposit", 0)).toEqual({ x: 0, converted: false });
     expect(inCapUnit({ form: "perAction", amount: typed(0), third: { price: { form: "perAction", amount: typed(3) } } }, "nis_per_trade", 0)).toEqual({ x: 0, converted: false });
+  });
+});
+
+describe("sums in the trade's currency", () => {
+  /** IBI's line abroad outside the United States: 0.3%, at least 30 in the trade's currency (BRK-48), typed here. */
+  const inTrade: Price = { form: "action", rate: typed(0.3), min: typed(30), currency: "USD", inTrade: true };
+  const priceFor = (what: string) => read(account([trade(inTrade)], what));
+  it("reads the minimum in the currency of what is bought, where the deal knows it", () => {
+    expect(priceFor("europe").fees[0]!.stages[0]!.price).toMatchObject({ min: { v: 30 }, currency: "EUR" });
+    expect(priceFor("us").fees[0]!.stages[0]!.price).toMatchObject({ currency: "USD" });
+    const home = priceFor("tase").fees[0]!.stages[0]!.price;
+    expect(home).not.toHaveProperty("currency");
+    expect(home).not.toHaveProperty("inTrade");
+  });
+  it("does not read the fee where the currency of what is bought is not known, and says so", () => {
+    const r = priceFor("world");
+    expect(r.fees).toHaveLength(0);
+    expect(r.unmatched).toEqual(["fee-trade"]);
+    expect(r.noCurrency).toEqual(["fee-trade"]);
+    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
+    expect(builder(r, [], null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
+  });
+  it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", () => {
+    const deal = account([trade(inTrade)]);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
+    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(inTrade);
+    expect(setPart(fx({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).not.toHaveProperty("inTrade");
+    expect(setPart(trade({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).toMatchObject({ inTrade: true });
   });
 });
 
@@ -188,8 +217,15 @@ describe("the templates", () => {
       expect(cases.some((c) => c.when.includes("branch") && c.when.includes("tase") && c.notes.includes("unfilledClerk"))).toBe(true);
       expect(cases.filter((c) => c.when.includes("direct") && !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
     }
-    // a foreign line at a bank is outside part 4(א)(1): no note
-    expect(notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase")).every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    // a foreign line at a bank is outside part 4(א)(1): not its note, but the foreign item's own, on the branch's case alone (part 4(א)(4), note 1)
+    const abroad = notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase"));
+    expect(abroad.every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    expect(abroad.some((c) => c.when.includes("branch") && c.notes.includes("unfilledClerkAbroad"))).toBe(true);
+    expect(abroad.filter((c) => !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
+    const foreign = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] };
+    const said = readingOf(read(foreign), data.fx).stated.find((x) => x.part === "unfilledClerkAbroad")!;
+    expect(said.words.lead).toBe(copy.cases.stated.unfilledClerkAbroad);
+    expect(said.rules).toEqual(["BRK-16"]);
     // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
     const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;
@@ -198,6 +234,25 @@ describe("the templates", () => {
     expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
     expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
+  });
+  it("fill a custody maximum on each security as one, stated and never read as the holding's maximum (§10.6's stated parts)", () => {
+    const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
+    // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit
+    expect(custodyOf("discount", "tase")).toMatchObject({ form: "held", rate: { v: 0.2 }, perSecurity: { v: 7500 } });
+    expect(custodyOf("discount", "tase")).not.toHaveProperty("max");
+    expect(custodyOf("leumi", "tase")).toMatchObject({ perSecurity: { v: 3700 } });
+    // Hapoalim's maximum is the same on each security and on the deposit: the holding's maximum, which it then is
+    expect(custodyOf("hapoalim", "tase")).toMatchObject({ max: { v: 10600 } });
+    // the reading states it, and marks no maximum on the holding
+    const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "held", is: "tase" }] };
+    const reading = readingOf(read(d), data.fx);
+    const stated = reading.stated.find((x) => x.part === "maxPerSecurity")!;
+    expect(stated.words.figure?.value).toBe(7500);
+    expect(stated.words.tail).toBe(copy.cases.stated.maxPerSecurity.tail);
+    expect(reading.statements.some((x) => x.kind === "mark" && x.mark.kind === "max" && x.mark.on === "held")).toBe(false);
+    // each line kept as one on each security says so in its record's note
+    const lines = latestSnapshots().flatMap((x) => x.lines);
+    for (const id of MAX_PER_SECURITY) expect(lines.find((l) => l.id === id)?.max?.notes, id).toMatch(/לני"ע|לנייר/);
   });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;

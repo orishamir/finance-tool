@@ -111,13 +111,13 @@ const ITEM_ONE = new Set(["tase_shares_bonds", "etf_units", "tase_bonds", "tase_
 
 /**
  * What a trade line notes of an order not carried out (§10.6's stated parts). At a bank the fee rules decide it whatever the line's heading
- * says (BRK-16, notes to part 4(א)(1)): an order through a clerk not carried out for a reason on the client's side pays the minimum, so a
- * line of the branch's channel that prices securities on the Tel Aviv exchange carries that note, whose words keep the item's own
- * exception of mutual funds (`bankTradeLeavesFunds`), and a direct line none. At a house that is no
- * bank, the line's own words say it (`chargesUnfilled`). None where neither does.
+ * says: an order through a clerk not carried out for a reason on the client's side pays the minimum, on the Tel Aviv exchange (BRK-16,
+ * notes to part 4(א)(1)) and abroad (part 4(א)(4), note 1). So a line of the branch's channel carries that note, in the words of its item:
+ * on the exchange the item's own exception of mutual funds (`bankTradeLeavesFunds`), abroad none; and a direct line none. At a house
+ * that is no bank, the line's own words say it (`chargesUnfilled`). None where neither does.
  */
 export function unfilledNote(l: Line, bank: boolean): Note | null {
-  if (bank) return l.channel === "branch" && l.applies_to.some((a) => ITEM_ONE.has(a)) ? "unfilledClerk" : null;
+  if (bank) return l.channel !== "branch" ? null : l.applies_to.some((a) => ITEM_ONE.has(a)) ? "unfilledClerk" : l.applies_to.includes("foreign_securities") ? "unfilledClerkAbroad" : null;
   return chargesUnfilled(l) ? "unfilled" : null;
 }
 
@@ -131,6 +131,26 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
   if (!currency || CURRENCY_OF_UNIT[l.max.unit] !== currency || l.min.value !== l.max.value) return null;
   return { sum: l.min, currency };
 }
+
+/**
+ * The custody lines whose maximum is on each security and not on the whole deposit, as their records' notes say ("₪ 7,500 לני״ע לרבעון";
+ * Leumi's and FIBI's notes name a larger maximum per deposit beside it, which no field of the record holds). A template fills that maximum
+ * as one on each security (`perSecurity`), which the page states and never reads as the holding's maximum (§10.6's stated parts). A line
+ * whose maximum per deposit is the same figure keeps it as the holding's maximum, which it then is. The records give no field for this, so
+ * the list is kept here, each id checked against its record's note by a test, until a data field does.
+ */
+export const MAX_PER_SECURITY: ReadonlySet<string> = new Set([
+  "discount-custody-israel",
+  "discount-custody-foreign",
+  "mercantile-custody-israel",
+  "mercantile-custody-foreign",
+  "leumi-custody-israel",
+  "leumi-custody-foreign",
+  "pepper-custody-israel",
+  "pepper-custody-foreign",
+  "fibi-custody-israel",
+  "fibi-custody-foreign",
+]);
 
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
 export function lineFees(l: Line, own: string, bank = false): Mapped {
@@ -175,7 +195,9 @@ export function lineFees(l: Line, own: string, bank = false): Mapped {
       const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
       const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
       const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      return { fees: [fee("custody", { form: "held", figures: { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { max: bound(l.max) } : {}) }, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
+      // a maximum on each security is said as one (`MAX_PER_SECURITY`), never as the holding's
+      const maxAs = MAX_PER_SECURITY.has(l.id) ? "perSecurity" : "max";
+      return { fees: [fee("custody", { form: "held", figures: { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { [maxAs]: bound(l.max) } : {}) }, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
     }
     case "fixed_period":
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };

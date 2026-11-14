@@ -52,7 +52,10 @@ export interface PartContext {
 /** A bound's period: per action (or per the fee's own unit), per charge for a share of what is held, or as the price list prints it. */
 const boundTail = ({ kind, view }: PartContext): string => ` ${view.form === "held" ? (view.boundsEvery ? copy.price.per[view.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
 
-const note = (id: "unfilled" | "unfilledClerk" | "partial") => (): PartWords => ({ lead: pp.notes[id]! });
+/** A maximum on each security's period: the price list's where it prints the bounds per month, else each charge. */
+const perSecurityTail = ({ view }: PartContext): string => `${pp.perSecurity.each}${view.form === "held" && view.boundsEvery ? ` ${copy.price.per[view.boundsEvery]}` : pp.perSecurity.charge}`;
+
+const note = (id: "unfilled" | "unfilledClerk" | "unfilledClerkAbroad" | "partial") => (): PartWords => ({ lead: pp.notes[id]! });
 
 /**
  * Each part's words where the price has it, at rest and in the open case; null where it has nothing to say yet (a bound or a flat price
@@ -76,19 +79,22 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
   max: (c) => (c.view.figures.max ? { lead: pp.max, figure: c.view.figures.max, tail: boundTail(c) } : null),
   cap: ({ kind, view }) => (view.figures.cap ? { lead: pp.max, figure: view.figures.cap, tail: ` ${shareOf(kind)}` } : null),
   flat: ({ view }) => (view.figures.flat ? { lead: pp.flat.lead, figure: view.figures.flat, mid: pp.flat.tail, ...(view.figures.upTo ? { second: view.figures.upTo } : {}) } : null),
+  maxPerSecurity: (c) => (c.view.figures.perSecurity ? { lead: pp.max, figure: c.view.figures.perSecurity, tail: perSecurityTail(c) } : null),
   offset: ({ p }) => (charged(p) && p.offset ? { lead: `${pp.offsetOf.lead}${feeNameOf(p.offset.kind)}${pp.offsetOf.tail}` } : null),
   refund: ({ view }) => ({ lead: pp.refund, ...fig(view.figures.refund) }),
   unfilled: note("unfilled"),
   unfilledClerk: note("unfilledClerk"),
+  unfilledClerkAbroad: note("unfilledClerkAbroad"),
   partial: note("partial"),
+  inTrade: () => ({ lead: pp.notes.inTrade! }),
   sale: () => ({ lead: pp.notes.sale! }),
 };
 
 /** A flat price nobody has typed yet, as the open case shows it while it stands empty. */
 export const FLAT_BLANK: PartWords = { lead: pp.flat.lead, mid: pp.flat.tail };
 
-/** The parts the toolbox offers: every part but free (a price's ✕ makes it free) and a bank clerk's note (a bank's template fills it, BRK-16). */
-export type ToolPartId = Exclude<PartId, "free" | "unfilledClerk">;
+/** The parts the toolbox offers: every part but free (a price's ✕ makes it free) and a bank clerk's notes (a bank's template fills them, BRK-16). */
+export type ToolPartId = Exclude<PartId, "free" | "unfilledClerk" | "unfilledClerkAbroad">;
 
 /** The box a toolbox card shows: a percent, a sum in a currency (its sign), a month, or none. */
 export type ToolBox = "pct" | "month" | { sign: string };
@@ -125,9 +131,11 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   min: (c) => ({ words: { lead: pp.min }, box: inPrice(c) }),
   max: (c) => ({ words: { lead: pp.max }, box: inPrice(c) }),
   cap: ({ kind }) => ({ words: { lead: pp.max, tail: ` ${shareOf(kind)}` }, box: "pct" }),
+  maxPerSecurity: () => ({ words: { lead: pp.max, tail: pp.perSecurity.each }, box: { sign: signOf("ILS") } }),
   offset: () => ({ words: { lead: pp.offset } }),
   refund: (c) => ({ words: { lead: pp.refund.trim() }, box: inPrice(c) }),
   unfilled: () => ({ words: { lead: pp.notes.unfilled! } }),
   partial: () => ({ words: { lead: pp.notes.partial! } }),
+  inTrade: () => ({ words: { lead: pp.notes.inTrade! } }),
   sale: () => ({ words: { lead: pp.notes.sale! } }),
 };

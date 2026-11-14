@@ -157,6 +157,8 @@ export interface PriceFigures {
   thirdMax?: SiteValue;
   /** A refund, in the price's currency (§10.6's stated parts). */
   refund?: SiteValue;
+  /** A held share's maximum on each security, in shekels (§10.6's stated parts). */
+  perSecurity?: SiteValue;
 }
 
 /** A third party's figures as value objects (F-117): its rate or sum, and its bounds, in its currency. */
@@ -174,7 +176,7 @@ function thirdFigures(fee: Pick<Fee, "kind">, t: ThirdPrice, today: string): Pri
  */
 export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): PriceFigures {
   const of = (key: "rate" | "amount" | "discount" | "refund", n: Num | undefined, unit: Unit) => (!n || n.blank ? {} : { [key]: figure(n, unit, today) });
-  const opt = (key: "min" | "max" | "cap", n: Num | undefined, unit: Unit) => (n ? { [key]: figure(n, unit, today) } : {});
+  const opt = (key: "min" | "max" | "cap" | "perSecurity", n: Num | undefined, unit: Unit) => (n ? { [key]: figure(n, unit, today) } : {});
   const parts = (x: OnActionPrice) => ({
     ...of("discount", x.discount?.pct, "pct"),
     ...(x.third?.price ? thirdFigures(fee, x.third.price, today) : {}),
@@ -190,7 +192,7 @@ export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): P
       return { ...main, ...opt("min", p.min, boundUnit(p.currency)), ...opt("max", p.max, boundUnit(p.currency)), ...opt("cap", p.cap, "pct_of_trade"), ...flat, ...parts(p) };
     }
     case "held":
-      return { ...of("rate", p.rate, heldRateUnit(p.per)), ...opt("min", p.min, "nis"), ...opt("max", p.max, "nis"), ...of("refund", p.refund, "nis") };
+      return { ...of("rate", p.rate, heldRateUnit(p.per)), ...opt("min", p.min, "nis"), ...opt("max", p.max, "nis"), ...opt("perSecurity", p.perSecurity, "nis"), ...of("refund", p.refund, "nis") };
     case "sum":
       return { ...of("amount", p.amount, periodSumUnit(p.every)), ...of("refund", p.refund, "nis") };
     case "perAction":

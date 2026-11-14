@@ -124,9 +124,9 @@ export const RULES: readonly RuleRow[] = [
   // ---- the securities account and what is bought in it, as the collected price lists print them
   // an offset sits on the account fee that trades reduce, not on the trade
   { id: "trade-offset", when: { fees: ["trade"] }, verdict: { kind: "deny", parts: ["offset"] }, cite: [], records: true },
-  // a deal of one security holds one kind of it
-  { id: "one-security", when: { products: is("government-bond", "makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["trade", "custody"] }, verdict: { kind: "deny", conditions: ["what", "held"] }, cite: [], records: true },
-  { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: [], records: true },
+  // a deal of one security holds one kind of it, and its maximum on each security is its maximum
+  { id: "one-security", when: { products: is("government-bond", "makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["trade", "custody"] }, verdict: { kind: "deny", parts: ["maxPerSecurity"], conditions: ["what", "held"] }, cite: [], records: true },
+  { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max", "maxPerSecurity"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: [], records: true },
   // custody on units: a share of what is held with a minimum where a non-bank charges it, which prints no maximum; a bank charges none (the
   // bans below)
   { id: "units-custody", when: { products: is("makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["min"], conditions: ["own"] }, cite: ["BRK-17"], records: true },

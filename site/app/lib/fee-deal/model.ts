@@ -86,11 +86,11 @@ export interface Offset {
 
 /**
  * What a price list says of an order, beside its price (§10.6's stated parts): charged on an order not carried out too; at a bank, an order
- * through a clerk not carried out for a reason on the client's side charged its minimum (`unfilledClerk`, BRK-16); each partial fill charged
- * apart.
+ * through a clerk not carried out for a reason on the client's side charged its minimum, on the Tel Aviv exchange (`unfilledClerk`, BRK-16,
+ * notes to part 4(א)(1)) and abroad (`unfilledClerkAbroad`, BRK-16, part 4(א)(4) note 1); each partial fill charged apart.
  */
-export type Note = "unfilled" | "unfilledClerk" | "partial";
-export const NOTES: readonly Note[] = ["unfilled", "unfilledClerk", "partial"];
+export type Note = "unfilled" | "unfilledClerk" | "unfilledClerkAbroad" | "partial";
+export const NOTES: readonly Note[] = ["unfilled", "unfilledClerk", "unfilledClerkAbroad", "partial"];
 
 /** The parts of a price beside its figures that tie it to another fee (§10.6's stated parts): an offset, and a refund in the price's currency. */
 interface Linked {
@@ -98,11 +98,16 @@ interface Linked {
   refund?: Num;
 }
 
-/** The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), and notes on an order (§10.6's stated parts). */
+/**
+ * The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), notes on an order (§10.6's stated
+ * parts), and that its sums are in the currency the action is made in (`inTrade`: "מינימום 30 במטבע העסקה"), which a reading takes from
+ * what is bought where the deal knows its currency (its `currency` is then that one) and otherwise does not read the fee.
+ */
 interface OnAction extends Linked {
   discount?: Discount;
   third?: Third;
   notes?: Note[];
+  inTrade?: true;
 }
 
 /**
@@ -121,9 +126,10 @@ export type Price =
   /**
    * A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge, or per
    * month where the price list prints them so (`boundsEvery: 1`, "מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds; F-14
-   * names no other period a bound is printed in.
+   * names no other period a bound is printed in. `perSecurity` is a maximum in shekels on each security held, in the bounds' period
+   * ("₪ 7,500 לני״ע לרבעון"): §10.6 states it and never computes it, since the charge it bounds depends on how many securities are held.
    */
-  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; boundsEvery?: 1 } & Linked)
+  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; perSecurity?: Num; boundsEvery?: 1 } & Linked)
   /** A sum in shekels every `every` months, whatever the account holds. */
   | ({ form: "sum"; amount: Num; every: Months } & Linked)
   /**
@@ -491,6 +497,12 @@ function readCurrency(raw: unknown): { currency?: BoundCurrency } | false {
   return raw === "ILS" ? {} : { currency: raw as BoundCurrency };
 }
 
+/** Whether a price's sums are in the action's currency: absent, or true where its form keeps a currency; null where it is anything else. */
+function readInTrade(raw: unknown, fields: readonly FieldId[]): { inTrade?: true } | null {
+  if (raw === undefined) return {};
+  return raw === true && fields.includes("currency") ? { inTrade: true } : null;
+}
+
 /** A flat price: absent, or its two figures (each may still be blank); null where it is anything else. */
 function readFlat(raw: unknown): { ok: true; flat?: Flat } | { ok: false } {
   if (raw === undefined) return { ok: true };
@@ -579,27 +591,28 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   const fields = fieldsOf(kind, raw.form as FormId);
   switch (raw.form) {
     case "action": {
-      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
-      return rate && parts && more ? { form: "action", rate, ...parts, ...more } : null;
+      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      return rate && parts && more && inTrade ? { form: "action", rate, ...parts, ...more, ...inTrade } : null;
     }
     case "perUnit": {
-      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
-      return amount && parts && more ? { form: "perUnit", amount, ...parts, ...more } : null;
+      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      return amount && parts && more && inTrade ? { form: "perUnit", amount, ...parts, ...more, ...inTrade } : null;
     }
     case "held": {
-      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), more = readLinked(raw);
-      if (!rate || !min.ok || !max.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && raw.boundsEvery !== 1)) return null;
-      const boundsEvery = raw.boundsEvery === 1 && (min.n || max.n) ? { boundsEvery: 1 as const } : {};
-      return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...boundsEvery, ...more };
+      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), perSecurity = optNum(raw.perSecurity, SUM_MAX), more = readLinked(raw);
+      if (!rate || !min.ok || !max.ok || !perSecurity.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && raw.boundsEvery !== 1)) return null;
+      if (perSecurity.n && !fields.includes("perSecurity")) return null;
+      const boundsEvery = raw.boundsEvery === 1 && (min.n || max.n || perSecurity.n) ? { boundsEvery: 1 as const } : {};
+      return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(perSecurity.n ? { perSecurity: perSecurity.n } : {}), ...boundsEvery, ...more };
     }
     case "sum": {
       const amount = readNum(raw.amount, SUM_MAX), more = readLinked(raw);
       return amount && more && isMonths(raw.every) ? { form: "sum", amount, every: raw.every, ...more } : null;
     }
     case "perAction": {
-      const amount = readNum(raw.amount, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw);
-      if (!amount || !cap.ok || !currency || !more || (currency.currency && !fields.includes("currency")) || (cap.n && !fields.includes("cap"))) return null;
-      return { form: "perAction", amount, ...(cap.n ? { cap: cap.n } : {}), ...currency, ...more };
+      const amount = readNum(raw.amount, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      if (!amount || !cap.ok || !currency || !more || !inTrade || (currency.currency && !fields.includes("currency")) || (cap.n && !fields.includes("cap"))) return null;
+      return { form: "perAction", amount, ...(cap.n ? { cap: cap.n } : {}), ...currency, ...more, ...inTrade };
     }
     default:
       return null;

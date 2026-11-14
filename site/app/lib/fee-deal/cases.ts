@@ -2,7 +2,7 @@
 // give it, and a price that changes by a size read across sizes as one fee per step, charged on that step's sizes alone. A fee whose price
 // changes by nothing is read as it is. What the views read (parts.ts) is the result: plain fees with their prices over time.
 import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
-import { pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
+import { BOUND_CURRENCIES, pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type Price, type Stage, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, holdsFunds, onHolding } from "./shapes";
 import { readAcross } from "./offers/conditions";
 
@@ -146,17 +146,47 @@ export function readFee(fee: Fee, picks: readonly ReadPick[]): ReadFee[] | null 
   );
 }
 
-/** The deal read for its picks: the fees read (`readFee`), in the deal's order, and the ids of the fees the picks give no case. */
-export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[]; picks: ReadPick[] } {
+/**
+ * The currency an action is made in, for a price whose sums are in it (`inTrade`): what is bought's, where the picks name it and it is one
+ * a price's sums may be in; null where the deal does not know it (nothing bought is picked, or its currency is not named, "בשאר העולם").
+ */
+export function tradeCurrency(fees: readonly Fee[], picks: readonly ReadPick[]): BoundCurrency | null {
+  const what = picks.find((p) => p.by === "what");
+  const place = what ? pickedPlace(fees, what) : null;
+  return place?.currency && (BOUND_CURRENCIES as readonly string[]).includes(place.currency) ? (place.currency as BoundCurrency) : null;
+}
+
+/** A price whose sums are in the action's currency, in that currency (the shekel left unsaid); any other price as it is. */
+function inCurrency(p: Price, currency: BoundCurrency): Price {
+  if (!("inTrade" in p) || !p.inTrade) return p;
+  const { inTrade: _t, currency: _c, ...rest } = p;
+  return (currency === "ILS" ? rest : { ...rest, currency }) as Price;
+}
+
+/** Whether a read fee has a price whose sums are in the action's currency. */
+const asksTrade = (f: ReadFee): boolean => [...f.stages, ...(f.sale ?? [])].some((s) => "inTrade" in s.price && !!s.price.inTrade);
+
+/**
+ * The deal read for its picks: the fees read (`readFee`), in the deal's order, each price whose sums are in the action's currency in what is
+ * bought's (`tradeCurrency`); the ids of the fees the picks give no case (`unmatched`), and among them the ones read in a case whose sums
+ * are in a currency the deal does not know (`noCurrency`).
+ */
+export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[]; noCurrency: string[]; picks: ReadPick[] } {
   const picks = picksOf(deal);
+  const trade = tradeCurrency(deal.fees, picks);
   const fees: ReadFee[] = [];
   const unmatched: string[] = [];
+  const noCurrency: string[] = [];
+  const resolve = (stages: readonly Stage[]): Stage[] => stages.map((s) => ({ ...s, price: inCurrency(s.price, trade!) }));
   for (const fee of deal.fees) {
     const read = readFee(fee, picks);
-    if (read) fees.push(...read);
-    else unmatched.push(fee.id);
+    if (!read) unmatched.push(fee.id);
+    else if (read.some(asksTrade) && !trade) {
+      unmatched.push(fee.id);
+      noCurrency.push(fee.id);
+    } else fees.push(...(trade ? read.map((f) => (asksTrade(f) ? { ...f, stages: resolve(f.stages), ...(f.sale ? { sale: resolve(f.sale) } : {}) } : f)) : read));
   }
-  return { fees, unmatched, picks };
+  return { fees, unmatched, noCurrency, picks };
 }
 
 /**
