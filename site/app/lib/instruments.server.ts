@@ -446,10 +446,18 @@ function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missi
   if (!mf26) missing.push(`${wrapperId}: data/rules/ has no record "MF-26" (tariff trade lines)`);
   if (!bank18) missing.push(`${wrapperId}: data/rules/ has no record "BANK-18" (tariff custody lines)`);
   if (!mf26 || !bank18) return null;
-  const zero = (rule: RuleRecord, unit: ValueObject["unit"], url: string, title: string, notes: string): SiteValue => ({
+  // each zero cites the official text its rule record names for it, by the provision's locator: the gazette's regulation 2(ד) for MF-26,
+  // the First Schedule's custody item for BANK-18
+  const sourceOf = (rule: RuleRecord, locator: string) => rule.sources?.find((s) => s.locator?.includes(locator));
+  const mf26Source = sourceOf(mf26, "2(ב)-(ד)");
+  const bank18Source = sourceOf(bank18, "4(a)(5)");
+  if (!mf26Source) missing.push(`${wrapperId}: MF-26 names no source for regulation 2(ד) (tariff trade lines)`);
+  if (!bank18Source) missing.push(`${wrapperId}: BANK-18 names no source for item 4(a)(5) (tariff custody lines)`);
+  if (!mf26Source || !bank18Source) return null;
+  const zero = (rule: RuleRecord, unit: ValueObject["unit"], src: NonNullable<RuleRecord["sources"]>[number], provision: string, notes: string): SiteValue => ({
     value: 0,
     unit,
-    source: { url, title, publisher: "ספר החוקים", strength: rule.strength },
+    source: { url: src.url, title: `${src.title_he ?? src.title}, ${provision}`, publisher: src.publisher_he ?? src.publisher, strength: rule.strength },
     checked: rule.checked,
     effective_from: null,
     effective_to: null,
@@ -461,15 +469,15 @@ function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missi
   feeValues.tradeRate = zero(
     mf26,
     "pct_of_trade",
-    "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
-    "תקנות השקעות משותפות בנאמנות (עמלת הפצה), תקנה 2(ד)",
+    mf26Source,
+    "תקנה 2(ד)",
     "בקרן כספית שיש עליה הסכם הפצה המפיץ לא רשאי לגבות מבעל היחידה עמלה על קנייה, החזקה או פדיון (MF-26). ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן, כמקובל.",
   );
   feeValues.custodyRate = zero(
     bank18,
     "pct_of_balance_per_period",
-    "https://boi.org.il/media/jbwnaivp/159a.pdf",
-    "כללי הבנקאות (שירות ללקוח) (עמלות), התוספת הראשונה, חלק 4",
+    bank18Source,
+    "התוספת הראשונה, חלק 4, פרט 4(א)(5)",
     "בבנק אי אפשר לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית (BANK-18). ההדגמה מניחה שהקרן נקנית דרך הבנק.",
   );
   return { buy: { rate: 0 }, sell: { rate: 0 }, custody: { rate: 0, everyMonths: 12 } };

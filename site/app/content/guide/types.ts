@@ -58,6 +58,8 @@ export interface GuideContent {
   termIds: string[];
   /** On a guide whose chart runs one amount (`lumpSumIds`), the line under the chart's example that says where money paid in every month goes. */
   lumpNote?: ReactNode;
+  /** A line under the chart's example where the run does something the product's own terms may not allow (makam: a purchase with every monthly deposit, below the exchange's minimum order). */
+  chartNote?: (p: ContentProps) => ReactNode;
   /** Anything after the tax steps (a blocked route, a note). */
   afterTax?: (p: ContentProps) => ReactNode;
   risks: (p: ContentProps) => ReactNode;

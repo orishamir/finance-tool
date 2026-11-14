@@ -19,8 +19,11 @@ export interface KindGroup {
 }
 
 
-/** An amount range as one key: "1000-99999", "250000-". */
-export const rangeKey = (p: ProductRowData): string => `${numberOf(p.amountMin) ?? 0}-${numberOf(p.amountMax) ?? ""}`;
+/** An amount range as one key: "1000-99999", "250000-"; a bound the table leaves out or leaves unknown (F-108) adds its mark: "1000-100000:/excluded". */
+export const rangeKey = (p: ProductRowData): string => {
+  const { min_edge, max_edge } = p.amountEdges;
+  return `${numberOf(p.amountMin) ?? 0}-${numberOf(p.amountMax) ?? ""}${min_edge || max_edge ? `:${min_edge ?? ""}/${max_edge ?? ""}` : ""}`;
+};
 
 /** Everything about a record but its amount, its rate, its date and its doubt: two records that share it are one deposit at two amounts. */
 const sameDeposit = (p: ProductRowData): string =>
@@ -63,6 +66,8 @@ export interface AmountBand {
   key: string;
   min: SiteValue;
   max: SiteValue | null;
+  /** The bounds' marks, as every row's record at this range holds them (they are in the key). */
+  edges: ProductRowData["amountEdges"];
 }
 
 /**
@@ -73,7 +78,7 @@ export function sharedBands(rows: readonly TableRow[]): AmountBand[] | null {
   if (rows.length === 0) return null;
   const sets = new Set(rows.map((r) => r.lines.map(rangeKey).join(",")));
   if (sets.size !== 1) return null;
-  return rows[0]!.lines.map((p) => ({ key: rangeKey(p), min: p.amountMin, max: p.amountMax }));
+  return rows[0]!.lines.map((p) => ({ key: rangeKey(p), min: p.amountMin, max: p.amountMax, edges: p.amountEdges }));
 }
 
 /** The record of a row at an amount range, if the row has it. */

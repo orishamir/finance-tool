@@ -37,8 +37,8 @@ export async function loader() {
     .filter((p) => Object.hasOwn(parameterPages, p.method_id))
     .sort((a, b) => a.method_id.localeCompare(b.method_id))
     .map((p) => {
-      // the page's own line where the file's still names a page the site no longer has
-      const general = copy.why[p.method_id] ?? p.rationale_he ?? (mostlyHebrew(p.rationale) ? p.rationale : provCopy.parameter.noRationale);
+      // the file's own Hebrew line, else its English line where that is mostly Hebrew
+      const general = p.rationale_he ?? (mostlyHebrew(p.rationale) ? p.rationale : provCopy.parameter.noRationale);
       const entries: Entry[] = [];
       for (const [k, v] of Object.entries(p)) if (!skip.has(k)) walk(v, [k], entries);
       const values = entries.map((e) => ({ ...e, label: fieldLabel(p.method_id, e.path), value: { ...e.value, parameter: { rationale: p.rationale, rationaleHe: general } } }));

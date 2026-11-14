@@ -37,6 +37,7 @@ function rec(id: string, over: Omit<Partial<ProductRowData>, "rate"> & { min?: n
     stale: false,
     snapshot: "2026-11-09",
     ...rest,
+    amountEdges: rest.amountEdges ?? {},
   };
 }
 
@@ -58,6 +59,13 @@ describe("sharedBands", () => {
   it("gives one column per range when every row has the same ranges", () => {
     const rows = tableRows([rec("a", { max: 99999 }), rec("b", { min: 100000 }), rec("c", { months: 3, max: 99999 }), rec("d", { months: 3, min: 100000 })]);
     expect(sharedBands(rows)?.map((b) => b.key)).toEqual(["1000-99999", "100000-"]);
+  });
+  it("keeps a bound the bank's table leaves out (F-108): its band carries the mark the amount words print", () => {
+    const out = { max_edge: "excluded" as const };
+    const bands = sharedBands(tableRows([rec("a", { max: 100000, amountEdges: out }), rec("b", { min: 100000 })]));
+    expect(bands?.map((b) => b.edges)).toEqual([out, {}]);
+    // the same numbers with and without the mark are two ranges, never one column
+    expect(sharedBands(tableRows([rec("a", { max: 100000, amountEdges: out }), rec("c", { months: 3, max: 100000 })]))).toBeNull();
   });
   it("is null when the rows' ranges differ", () => {
     expect(sharedBands(tableRows([rec("a", { max: 99999 }), rec("b", { min: 100000 }), rec("c", { months: 3 })]))).toBeNull();

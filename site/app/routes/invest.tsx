@@ -20,10 +20,10 @@ import { LabelSheetHost } from "../components/kit";
 import { returnHelpOf } from "../components/invest/foot";
 import { BeforeDeciding } from "../components/invest/before";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
-import { Callout, useSwapGlide } from "../components/kit";
+import { Callout, Card, useSwapGlide } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
-import { RulesLine } from "../components/provenance";
+import { Num, RulesLine, Term } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { enteredPlan } from "../lib/entered-plan";
@@ -58,7 +58,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
   // the glossary cards behind the fund list's fees "?", with the rules they cite
   const { loadRules, loadTerms } = await import("../lib/data.server");
-  const names = new Set<string>(brands.funds.feeTerms);
+  // and the surtax's card behind the assumptions' line on income
+  const names = new Set<string>([...brands.funds.feeTerms, c.plan.knobs.income.term]);
   const feeTerms = Object.fromEntries(loadTerms().filter((t) => names.has(t.he)).map((t) => [t.he, t]));
   const all = loadRules();
   const feeRules = [...new Set(Object.values(feeTerms).flatMap((t) => t.ruleIds))].flatMap((id) => (all[id] ? [all[id]] : []));
@@ -225,7 +226,9 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   })();
   const groupOk = (p: Pick) => !!groupParam && !!view && pickableGroups(wb.snapshots.find((x) => x.id === p.house), allFunds(view).find((f) => f.rec.id === p.fund)?.option).has(groupParam);
   const own: Pick | null = fromAddress && groupOk(fromAddress) ? { ...fromAddress, group: groupParam! } : fromAddress;
-  const pick: Pick | null = own ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null);
+  // a plan that puts in nothing has no pair to show: the page says so in place of the pair and the lists
+  const nothing = livePlan.amountNow <= 0 && livePlan.monthly <= 0;
+  const pick: Pick | null = nothing ? null : (own ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null));
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
   const picks = own !== null;
   // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
@@ -358,7 +361,12 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
                   )}
                 </div>
                 <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
-                  {pick && shown && shownView ? (
+                  {nothing ? (
+                    <Card pad="roomy" className="flex flex-col gap-2">
+                      <h3 className="font-semibold">{c.empty.title}</h3>
+                      <p className="text-sm text-muted-foreground max-w-measure">{c.empty.body}</p>
+                    </Card>
+                  ) : pick && shown && shownView ? (
                     <>
                       {railed && receipt}
                       <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} ruler={railed} above={ticketRef} />
@@ -407,6 +415,10 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
         </h2>
         {/* what the results are and what they rest on, said here once (the plan card's line keeps to the return, the inflation and the dollar) */}
         <p className="text-sm text-muted-foreground mb-3">{c.plan.knobs.assumptions}</p>
+        <p className="text-sm text-muted-foreground mb-3">
+          {c.plan.knobs.income.before} <Num value={entered.income} /> {c.plan.knobs.income.after} {c.plan.knobs.income.surtax} <Term id={c.plan.knobs.income.term}>{c.plan.knobs.income.term}</Term>
+          {c.plan.knobs.income.end}
+        </p>
         {panelOpen && <OtherAssumptions inflation={entered.plan.values.inflation} inflationStart={entered.starts.inflation} pct={data.form.pct} />}
       </Sheet>
       </CustomEntriesHost>

@@ -18,7 +18,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
-import { brands, guideSignature } from "../copy";
+import { brands, guideSignature, invest } from "../copy";
 import { HELP_TERMS } from "../lib/track-browser";
 import { HELP_TERMS as DEPOSIT_TERMS, KIND_TERMS } from "../lib/deposit-browser";
 import { FEE_KIND_IDS } from "../lib/fee-deal/shapes";
@@ -79,6 +79,8 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   // the fee panel's "מה זה" opens a fee's name only where the page's data holds its card (fees.server.ts), and the gallery shows custody's
   "{explained}": FEE_KIND_IDS.map((k) => feeName(k)).filter((n) => names.has(n)),
   "{custodyName}": [feeName("custody")],
+  // the indices page's assumptions: the surtax's card after the income the runs assume (routes/invest.tsx)
+  "{c.plan.knobs.income.term}": [invest.plan.knobs.income.term],
 };
 // Today's leftovers: ids that open no row. None.
 const UNRESOLVED: Record<string, readonly string[]> = {};
