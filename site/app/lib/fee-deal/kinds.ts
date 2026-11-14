@@ -47,12 +47,14 @@ export const capOf = (kind: DealKind | null, fee: FeeKindId): FeeCap | undefined
 /**
  * A fee's cap line, as the page states it beside the fee: `value`, a cap with a value (zero where the law allows no such fee), with its
  * unit, whom it binds, the case it holds in alone (`caveat`) and its rules; `none`, the record says the law sets no cap (its value is
- * empty), with the case where it says one is set all the same; `absent`, the record has no entry for the fee, or the fee is no record base.
+ * empty), with the case where it says one is set all the same; `absent`, the record has no entry for the fee, or the fee is no record base;
+ * `banned`, the law bans the fee for the deal (the rule table's `ban`, read in `DealRead.banned`), with the rules that ban it.
  */
 export type CapLine =
   | { state: "value"; value: SiteValue; binds?: FeeCap["binds"]; caveat?: FeeCap["caveat"]; ruleIds: string[] }
   | { state: "none"; value: SiteValue; caveat?: FeeCap["caveat"]; ruleIds: string[] }
-  | { state: "absent" };
+  | { state: "absent" }
+  | { state: "banned"; ruleIds: readonly string[] };
 
 export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
   const cap = capOf(kind, fee);

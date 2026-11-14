@@ -45,6 +45,8 @@ export interface BuilderRow extends FeeRef {
   priced: boolean;
   /** Whether the picks give the fee no case (F-114): it is not read, and its card says so rather than that a price is missing. */
   unmatched: boolean;
+  /** The rules that ban the fee here (`DealRead.banned`): it is read as nothing charged, and its card says it is banned by law. */
+  banned?: readonly string[];
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
   sale?: StageView[];
   /** The fee's next change, and whether it is a start from free. */
@@ -257,8 +259,9 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const caseId = firstCase(fee);
   const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
   const priced = pricedOf(fee, caseId);
-  // a fee the picks give no case is not read, whatever its first case states: its card says so (`unmatched`)
-  const given = i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from)));
+  // a fee the picks give no case, or the law bans here, is not read, whatever its first case states: its card says so
+  const banned = r.banned.find((b) => b.fee === fee.id)?.rules;
+  const given = !banned && (i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from))));
   const fees = i >= 0 ? r.fees : [fee];
   const at = Math.max(i, 0);
   const stages = readStages(r, stageViews(r, fees, at, priced.stages));
@@ -272,6 +275,7 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     stages: stages.length ? stages : [now],
     priced: given,
     unmatched: r.unmatched.includes(fee.id),
+    ...(banned ? { banned } : {}),
     ...(sale ? { sale } : {}),
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },

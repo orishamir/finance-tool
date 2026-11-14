@@ -1731,6 +1731,8 @@ export const feeDeal = {
     capRules: (fee: string) => `התקרה על ${fee} והחוקים שקובעים אותה`,
     /** What "אין תקרה בחוק" opens, said before it by a screen reader: the rules on the fee. */
     noCapRules: (fee: string) => `החוקים על ${fee}`,
+    /** The spoken name of the rules that ban a fee here. */
+    bannedRules: (fee: string) => `החוקים שאוסרים את ${fee}`,
     /** After a standing's tag on a card or in the glance, for a screen reader: pressing it leads to the fee's row of the law card. */
     toLaw: ", מה החוק קובע עליה",
     /** Before a price's standing: the month its price ends, or the month it starts. */
@@ -1966,6 +1968,8 @@ export const feeDeal = {
     readForLine: "כל עמלה נקראת במקרה שבחרתם כאן. עמלה שמשתנה לפי גודל הפעולה נקראת בכל הגדלים, בגרף שלמטה.",
     /** A fee the picks give no case (F-114), as its line in the glance and its slim line say it. */
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
+    /** A fee the law bans here (the rule table's ban), as its card, its line in the glance and the law card say it, before its rules. */
+    banned: "החוק אוסר על בנק לגבות אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
     /** What the reading states without computing (§10.6), after the fee's name and ": ". */
     stated: {
       third: "נוספת עמלה של צד שלישי בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג.",
@@ -2106,6 +2110,8 @@ export const feeDeal = {
       /** No number in it: one fee, or several. */
       noCap: { one: "לעמלה שבעסקה אין תקרה בחוק", several: "לעמלות שבעסקה אין תקרה בחוק" },
       notJudged: "אף מחיר בעסקה לא נבדק מול תקרה",
+      /** A fee the law bans here, where no price is above or at its cap. */
+      banned: { one: "עמלה אחת בעסקה אסורה בחוק בבנק", several: "יש בעסקה עמלות שאסורות בחוק בבנק" },
       /** Before a price after the first: the month it starts. */
       from: "מ־",
     },

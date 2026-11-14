@@ -10,7 +10,7 @@ import type { DealKind } from "../kinds";
 import { FEE_KIND_IDS, kindHas, type FeeKindId } from "../shapes";
 import { capacity } from "./capacity";
 import type { ByKind } from "./conditions";
-import { capacityOffer, feeOffered, offerFor, productOffered } from "./offer";
+import { banFor, capacityOffer, feeOffered, offerFor, productOffered } from "./offer";
 import { newDeal, readDeal, typed, type FeeDeal } from "../model";
 import { readDealFor } from "../parts";
 import type { PartId } from "./parts";
@@ -128,6 +128,24 @@ describe("fees not offered at all", () => {
   });
 });
 
+describe("a ban the law sets", () => {
+  it("binds a bank, on custody of makam or money-market units and on trading money-market units, and takes nothing from the offer", () => {
+    const account = kind("brokerage-account");
+    const makam = [{ by: "what", is: "makam" }];
+    expect(banFor(account, "custody", "bank", makam)?.cite).toEqual(["BRK-17", "BANK-18", "MF-71"]);
+    expect(banFor(account, "custody", "non-bank", makam)).toBeNull();
+    expect(banFor(account, "custody", undefined, makam)).toBeNull();
+    expect(banFor(account, "custody", "bank", [])).toBeNull();
+    expect(banFor(account, "trade", "bank", makam)).toBeNull();
+    expect(banFor(account, "trade", "bank", [{ by: "what", is: "moneyMarket" }])?.cite).toContain("MF-71");
+    for (const id of ["money-market-fund-daily", "money-market-fund-renewable"]) for (const fee of ["trade", "custody"] as const) expect(banFor(kind(id), fee, "bank", [])?.cite, `${id} · ${fee}`).toContain("MF-71");
+    expect(banFor(kind("makam"), "custody", "bank", [])?.cite).toContain("BRK-17");
+    // a non-bank still prices it
+    expect(offerFor(account, "custody").parts).toContain("held");
+    expect(offerFor(kind("money-market-fund-daily"), "trade").parts).toContain("share");
+  });
+});
+
 describe("the product picker", () => {
   it("offers every product with a fee the page can price, so not a bank deposit, a savings plan or a bank child-savings plan (BANK-06, BANK-16, BANK-28)", () => {
     expect(data.kinds.filter((k) => !productOffered(k)).map((k) => k.id).sort()).toEqual(["bank-deposit", "child-savings-bank", "savings-plan"]);
@@ -148,7 +166,7 @@ describe("the product picker", () => {
  */
 const OPEN: { question: string; cells: [string, FeeKindId, (PartId | ByKind)[]][] }[] = [
   {
-    question: "Which variables the Commissioner has approved for grading a provident fee besides the balance (PF-14 s.3(ב)(4)): a deposit's size, an arrangement of the person's own outside a workplace (PF-15)",
+    question: "Which variables the Commissioner has approved for grading a provident fee besides the balance (PF-14 s.3(ב)(4)): a deposit's size, an arrangement of the person's own outside a workplace (PF open question 19)",
     cells: [
       ["kupat-gemel-lehashkaa", "deposit", ["actionSize", "own"]],
       ["kupat-gemel-lehashkaa", "balance", ["own"]],
@@ -170,7 +188,7 @@ const OPEN: { question: string; cells: [string, FeeKindId, (PartId | ByKind)[]][
     ],
   },
   {
-    question: "Whether the closed list of charges to an IRA (IRA-16) allows a conversion fee or spread, a fee on dividends, transfer fees and corporate-event charges",
+    question: "Whether the closed list of charges to an IRA (IRA-16) allows a conversion fee or spread, a fee on dividends, transfer fees and corporate-event charges (IRA open question 17)",
     cells: [
       ["ira-provident", "fx", ["share", "flat", "min", "max", "currency"]],
       ["ira-hishtalmut", "fx", ["share", "flat", "min", "max", "currency"]],
@@ -183,7 +201,7 @@ const OPEN: { question: string; cells: [string, FeeKindId, (PartId | ByKind)[]][
     ],
   },
   {
-    question: "How the pension statement's percent of deposits paid for insurance is counted (PF open question 17)",
+    question: "How the detailed pension report's percent of deposits paid for insurance is counted (PF open question 17)",
     cells: [
       ["pension-comprehensive", "insurance_premium", ["share"]],
       ["pension-general", "insurance_premium", ["share"]],
@@ -199,7 +217,7 @@ const OPEN: { question: string; cells: [string, FeeKindId, (PartId | ByKind)[]][
     ],
   },
   {
-    question: "Whether a house's mutual-fund trade lines cover money-market units: no collected line names them",
+    question: "Whether a non-bank house's mutual-fund trade lines cover money-market units, which no collected line names; a bank charges none (MF-71, MF open question 23)",
     cells: [
       ["money-market-fund-daily", "trade", ["perAction", "min"]],
       ["money-market-fund-renewable", "trade", ["perAction", "min"]],

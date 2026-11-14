@@ -575,6 +575,8 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
       return <>{countPhrase(head.n, l[head.kind])}</>;
     case "below":
       return <>{l.below}</>;
+    case "banned":
+      return <>{head.n === 1 ? l.banned.one : l.banned.several}</>;
     case "no-cap":
       return <>{head.n === 1 ? l.noCap.one : l.noCap.several}</>;
     case "not-judged":
@@ -584,8 +586,8 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
 
 function LawRowView({ row, saved, first }: { row: LawRow; saved: boolean; first: MonthKey }) {
   if (row.cap.state === "absent") return null;
-  // a fee the law sets no cap for is one line: its name, and the words, which open the rules
-  if (row.cap.state === "none")
+  // a fee the law sets no cap for, or bans here, is one line: its name, and the words, which open the rules
+  if (row.cap.state === "none" || row.cap.state === "banned")
     return (
       <li data-law-row={row.fee} tabIndex={-1} className="anchor-target flex flex-wrap items-center gap-x-3 rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
         <FeeOpen fee={row} className="font-medium" />

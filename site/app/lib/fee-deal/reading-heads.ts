@@ -164,10 +164,14 @@ export function spansOf(held: readonly MonthKey[], periods: readonly Pick<Period
 
 // ---------------------------------------------------------------- the law
 
-/** What the law card's headline says, by what its rows hold: a price above the cap first, then one at it, then all below, then none judged. */
+/**
+ * What the law card's headline says, by what its rows hold: a price above the cap first, then one at it, then a fee the law bans here, then
+ * all below, then none judged.
+ */
 export type LawHead =
   | { kind: "above" | "at"; n: number }
   | { kind: "below" }
+  | { kind: "banned"; n: number }
   | { kind: "no-cap"; n: number }
   | { kind: "not-judged" };
 
@@ -178,6 +182,8 @@ export function lawHead(rows: readonly LawRow[]): LawHead | null {
   if (above) return { kind: "above", n: above };
   const at = count("at");
   if (at) return { kind: "at", n: at };
+  const banned = rows.filter((r) => r.cap.state === "banned").length;
+  if (banned) return { kind: "banned", n: banned };
   if (rows.some((r) => r.prices.some((p) => p.standing.standing.judged))) return { kind: "below" };
   if (rows.every((r) => r.cap.state === "none" && !r.cap.caveat)) return { kind: "no-cap", n: rows.length };
   return { kind: "not-judged" };

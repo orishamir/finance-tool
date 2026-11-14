@@ -110,3 +110,13 @@ export const feeOffered = (product: ProductFacts | null, fee: FeeKindId): boolea
  * still opens.
  */
 export const productOffered = (product: ProductFacts): boolean => FEE_KIND_IDS.some((f) => kindHas(product.id, product.bases, f) && feeOffered(product, f));
+
+/**
+ * The ban the law sets on a product's fee for a deal (a row's `ban`): one that binds the deal's provider kind and, where it names values,
+ * holds for the deal's pick of what is bought or held (F-114). Null where none holds, or the deal names no provider kind.
+ */
+export function banFor(product: ProductFacts | null, fee: FeeKindId, provider: ProviderKind | undefined, picks: readonly { by: string; is: string }[]): Ban | null {
+  if (!provider) return null;
+  const what = picks.find((p) => p.by === "what")?.is;
+  return offerFor(product, fee).bans.find((b) => b.provider === provider && (!b.values || (what !== undefined && b.values.includes(what)))) ?? null;
+}

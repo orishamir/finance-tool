@@ -59,6 +59,8 @@ export interface Glance {
   unpriced: FeeRef[];
   /** Fees left out because the picks give them no case (F-114): the price list prints no price for what is picked. */
   unmatched: FeeRef[];
+  /** Fees the law bans here, read as nothing charged, with the rules that ban them (`DealRead.banned`). */
+  banned: (FeeRef & { rules: readonly string[] })[];
 }
 
 /** The order the groups are listed in: the actions as F-111 names them, then what is held, the account, cover, and what is not said. */
@@ -152,5 +154,5 @@ export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
   const refs = (ids: readonly string[]) => r.deal.fees.filter((f) => ids.includes(f.id)).map((f): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) }));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched) };
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched), banned: r.banned.map((b) => ({ ...refs([b.fee])[0]!, rules: b.rules })) };
 }
