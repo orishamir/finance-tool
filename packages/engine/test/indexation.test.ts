@@ -5,6 +5,7 @@ import { cpiLinkedAmount, freezeEnd, indexedAmount, yearlyMoveOf } from "../src/
 import { BlockedError, ruleBook } from "../src/resolver.ts";
 import { fallReadings, OpenReadingError, openReadingOf, sameResult, stoppedOnQuestion } from "../src/open-readings.ts";
 import { runProvident } from "../src/ledgers/provident.ts";
+import { runPension } from "../src/ledgers/pension.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
 import { context } from "./golden/harness.ts";
 
@@ -127,6 +128,27 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(() => kgl(83_641)).toThrow(expect.objectContaining({ ruleId: "KGL-03", question: "KGL OQ15" }));
     // 20,000 a year meets neither: the same run under every reading, flagged
     expect(kgl(20_000).flags.map((f) => f.code)).toContain("KGL-OQ15");
+  });
+
+  it("compares the readings on a run's outputs, not its working: a pension whose capping tax differs by reading but whose relief does not", () => {
+    // salary 8,000, 6% of it (480 a month) for 10 years at −1%: from 2028 the brackets differ by reading, so the year's tax the credit is
+    // capped at differs, but the credit stays under it in every reading, so the balances, the relief and the tax paid are the same
+    const r = runPension(
+      {
+        wrapper: "provident-for-annuity",
+        goal: { amountNow: 0, monthly: 480, months: 120, contributions: "nominal", firstMonth: 1 },
+        market: { grossReturn: 0.05, inflation: -0.01 },
+        fees: { deposit: 0, balance: 0, direct: 0.001 },
+        insurance: { rate: 0 },
+        pension: { employment: "employee", monthlySalary: 8_000, existingEmployeeRate: 0 },
+        profile: {},
+      },
+      ctx,
+    );
+    expect(stoppedOnQuestion(r)).toBeNull();
+    expect(r.flags.map((f) => f.code)).toContain("TXG-OQ17");
+    expect(r.years.every((y) => !y.working.creditCap.binds)).toBe(true);
+    expect(r.nominal).toBeGreaterThan(0);
   });
 
   it("keeps two runs that agree number for number, and tells apart two that do not", () => {

@@ -60,8 +60,11 @@ export interface YearRelief {
   beneficiary: boolean;
   credited: number;
   credit: number;
-  /** The year's tax the credit is capped at, and whether it bound (TXP-01, TXP OQ20). */
-  creditCap: ReliefResult["creditCap"];
+  /**
+   * The year's working, not an output (`sameResult` leaves it out): the year's tax the credit is capped at, and whether it bound (TXP-01,
+   * TXP OQ20); the credit and the relief are the outputs it shapes.
+   */
+  working: { creditCap: ReliefResult["creditCap"] };
   tier1: number;
   tier2: number;
   deduction: number;
@@ -232,7 +235,7 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
     // A-30: a yearly cap reached in the run date's tax year, which the run starts with none of its new money deposited: part of the year's
     // new money gets neither the deduction nor the credit, or the credit is cut to the year's tax
     if (year === 1 && first > 1 && (r.relief.creditCap.binds || r.relief.credited + r.relief.deduction < r.gross - 1e-6)) tally.flag("A-30", 1);
-    years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, creditCap: r.relief.creditCap, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
+    years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, working: { creditCap: r.relief.creditCap }, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
     return r.gross;
   });
   if (years.some((y) => y.formula === "F-32")) formulas.push("F-32");

@@ -77,10 +77,15 @@ export class OpenReadingError extends Error {
 /** The flag a result carries for a question every reading of which gave it: the question's code with a hyphen ("TXG OQ17" → "TXG-OQ17"). */
 export const readingFlag = (question: string) => question.replace(" OQ", "-OQ");
 
-/** What a result is, for the comparison of readings: every number and text in it but the flags, labels, rules read and formulas applied. */
-const notCompared = new Set(["flags", "labels", "rules", "formulas"]);
+/**
+ * What a result is, for the comparison of readings: its outputs, every number and text in it (the balances, the fees, the relief, the tax
+ * paid, the outcome, the named figures a page shows) but the flags, labels, rules read and formulas applied, and its working (`working`:
+ * a figure the run computes on the way to an output and shows nowhere, such as the year's tax a credit is capped at, which can differ by
+ * reading while every output agrees).
+ */
+const notCompared = new Set(["flags", "labels", "rules", "formulas", "working"]);
 
-/** Whether two results of the same run under two readings are the same, number for number (to a billionth of the larger). */
+/** Whether two results of the same run under two readings give the same outputs, number for number (to a billionth of the larger). */
 export function sameResult(a: unknown, b: unknown): boolean {
   if (typeof a === "number" && typeof b === "number") return a === b || Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b));
   if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((x, i) => sameResult(x, b[i]));
