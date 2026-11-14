@@ -2852,8 +2852,7 @@ function MenuBody({ kind }: { kind: "what" | "track" | "range" | "thing" }) {
       title={sc.rangeTitle}
       side={side}
       onSide={setSide}
-      figure={<FigureField value={top} label={sc.things.size} sign="$" wide onCommit={(n) => setTop(entered(n, "usd", "2026-01-01", g.sampleAbout))} />}
-      unit={<InlineSelect chip label={sc.things.size} options={Object.entries(dealWords.panel.signs).map(([id, name]) => ({ id, name }))} value="USD" onChange={() => undefined} />}
+      figure={<FigureField value={top} label={sc.things.size} sign="$" wide unit={<InlineSelect chip label={sc.things.size} options={Object.entries(dealWords.panel.signs).map(([id, name]) => ({ id, name }))} value="USD" onChange={() => undefined} />} onCommit={(n) => setTop(entered(n, "usd", "2026-01-01", g.sampleAbout))} />}
       before={
         <>
           {sc.upTo} <bdi dir="ltr">100 $</bdi>

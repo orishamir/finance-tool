@@ -314,6 +314,9 @@
   --fee-manager: oklch(0.6 0.1 205);
   --fee-fund: var(--chart-stairs-fund);
   --fee-other: var(--palette-neutral-700);
+  /* a fee copied from another house's price list into a securities account's deal, beside the deal's own fee of its kind: an apricot of its
+     own, apart from every securities account's fee by the same check */
+  --fee-copy: oklch(0.85 0.13 45);
   /* A fee's cases and the kinds of its parts (design-system 2.2, "Cases and parts"). A fee whose price changes by something (what is bought,
      the channel, the track, a range) holds one band in this calm blue; each kind of part takes its own hue: a bound green, a link to
      another fee yellow. A price is neutral and a note only dashed. Every fill and edge is its colour mixed over the card, so a kind reads
@@ -551,6 +554,7 @@
   --color-fee-manager: var(--fee-manager);
   --color-fee-fund: var(--fee-fund);
   --color-fee-other: var(--fee-other);
+  --color-fee-copy: var(--fee-copy);
   --color-when: var(--when);
   --color-when-fill: var(--when-fill);
   --color-when-edge: var(--when-edge);

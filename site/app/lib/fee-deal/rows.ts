@@ -182,7 +182,7 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const sale = priced.sale ? readStages(r, stageViews(r, fees, at, priced.sale)) : undefined;
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
   return {
-    ...refOf(i >= 0 ? r.fees[i]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today),
+    ...refOf(i >= 0 ? r.fees[i]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}), ...(r.copied[fee.id] ? { house: r.copied[fee.id] } : {}) }, r.today),
     fee: fee.id,
     stages: stages.length ? stages : [now],
     priced: given,

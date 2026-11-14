@@ -66,7 +66,8 @@ export interface PartPlace {
   label: (field: string) => string;
   edit: (fn: (p: Price) => Price) => void;
   onFee: (f: Fee) => void;
-  box: (part: PartId, f: PartField, opts?: { optional?: boolean }) => ReactNode;
+  /** A figure's box; `unit` replaces its sign in the box (the price's currency chooser, beside the number as a sign is). */
+  box: (part: PartId, f: PartField, opts?: { optional?: boolean; unit?: ReactNode }) => ReactNode;
   chooser: ReactNode;
 }
 
@@ -75,11 +76,14 @@ interface BodyProps {
   at: PartPlace;
 }
 
-/** A price's figure, a share's or a sum's, with the currency chooser where it stands beside it, and the words after it. */
+/**
+ * A price's figure, a share's or a sum's, with the currency chooser where it stands beside it (a sum's in its box, after the number, as
+ * its sign would be; a share's after the box, for the price's sums), and the words after it.
+ */
 const MainBody = ({ part, at }: BodyProps) => (
   <>
-    {at.box(part.id, part.fields[0]!)}
-    {part.chooser && at.chooser}
+    {at.box(part.id, part.fields[0]!, part.chooser && part.fields[0]!.bare && at.chooser ? { unit: at.chooser } : {})}
+    {part.chooser && !part.fields[0]!.bare && at.chooser}
     {quiet(bare(part.words.tail))}
     {part.words.questions?.map((q) => <IdRef key={q} id={q} />)}
   </>
@@ -151,8 +155,7 @@ function ThirdBody({ part, at }: BodyProps) {
 /** A minimum or a maximum: its sum, which may be emptied, with the currency chooser where it stands beside it. */
 const BoundBody = ({ part, at }: BodyProps) => (
   <>
-    {at.box(part.id, part.fields[0]!, { optional: true })}
-    {part.chooser && at.chooser}
+    {at.box(part.id, part.fields[0]!, { optional: true, ...(part.chooser && at.chooser ? { unit: at.chooser } : {}) })}
     {quiet(bare(part.words.tail))}
   </>
 );

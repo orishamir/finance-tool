@@ -125,6 +125,7 @@ export interface FillUndoLine {
 export function ToolboxColumn({
   view,
   fee,
+  house,
   caseId,
   sheet,
   product,
@@ -138,10 +139,13 @@ export function ToolboxColumn({
   onForm,
   onPending,
   onStopBy,
+  onPrice,
   onClose,
 }: {
   view: ToolboxView;
   fee: Fee;
+  /** The house of another price list than the deal's the fee was copied from (`DealRead.copied`), said after its name. */
+  house?: string;
   caseId: string | null;
   sheet: boolean;
   product: string | null;
@@ -160,6 +164,8 @@ export function ToolboxColumn({
   onPending: (part: PendingPart) => void;
   /** A thing the fee changes by tapped again: the page stops it, kept for the undo. */
   onStopBy: (kind: ByKind) => void;
+  /** Another of the case's prices over time chosen in the toolbox: the one it adds to now (`view.k`). */
+  onPrice?: (k: number) => void;
   onClose: () => void;
 }) {
   const terms = useProvenanceData()?.terms;
@@ -188,7 +194,9 @@ export function ToolboxColumn({
       )}
     </div>
   ) : null;
-  const box = <Toolbox key={fee.id} target={target} {...(priceLead ? { targetLead: priceLead } : {})} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
+  const periods = view.addTo.periods;
+  const prices = periods && onPrice ? { label: copy.cases.toolPrice.which, options: periods.map((words, j) => ({ id: String(j), label: words })), value: String(view.k), onChange: (id: string) => onPrice(Number(id)) } : undefined;
+  const box = <Toolbox key={fee.id} target={target} {...(priceLead ? { targetLead: priceLead } : {})} {...(prices ? { prices } : {})} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
   if (sheet) return box;
   // the site's own explanation of the fee: its glossary card by the fee's name, in the deal's product's sense where the glossary gives
   // that product one of its own
@@ -221,7 +229,7 @@ export function ToolboxColumn({
           </>
         ) : (
           <h3 className="text-lg font-semibold">
-            <FeeName fee={{ fee: fee.id, kind: fee.kind }} />
+            <FeeName fee={{ fee: fee.id, kind: fee.kind, ...(house ? { house } : {}) }} />
           </h3>
         )}
         {side && <Tag tone="outline">{p.oneSide[side]}</Tag>}

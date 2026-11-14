@@ -80,11 +80,11 @@ export function TrackMenu({ name, onName, mine, onMine }: { name: string; onName
 }
 
 /**
- * A range's case, in three controls side by side: "עד" its top or "מעל" the case before it, the number in a field of the usual size
- * (`figure`: the kit's `FigureField`), and its unit (`unit`: a choice where there is one, else its sign); then the case before it in words
- * (`before`: "עד 100 $"). The last case of a range is always "מעל" the one before it, so a range has no gap.
+ * A range's case, in two controls side by side: "עד" its top or "מעל" the case before it, and the number in a field of the usual size
+ * with its unit in the box after it, a choice where there is one, else its sign (`figure`: the kit's `FigureField`); then the case before
+ * it in words (`before`: "עד 100 $"). The last case of a range is always "מעל" the one before it, so a range has no gap.
  */
-export function RangeMenu({ title, side, onSide, figure, unit, before }: { title: ReactNode; side: "upTo" | "over"; onSide: (side: "upTo" | "over") => void; figure: ReactNode; unit?: ReactNode; before?: ReactNode }) {
+export function RangeMenu({ title, side, onSide, figure, before }: { title: ReactNode; side: "upTo" | "over"; onSide: (side: "upTo" | "over") => void; figure: ReactNode; before?: ReactNode }) {
   return (
     <div className="flex flex-col gap-3">
       <MenuTitle>{title}</MenuTitle>
@@ -100,7 +100,6 @@ export function RangeMenu({ title, side, onSide, figure, unit, before }: { title
           onChange={(v) => v && onSide(v as "upTo" | "over")}
         />
         {figure}
-        {unit}
       </div>
       {before && (
         <p className="text-sm text-muted-foreground">

@@ -8,7 +8,7 @@ import type { FxSnapshot } from "../../lib/fx";
 import type { SiteValue } from "../../lib/value";
 import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { MarkView, StandingView } from "../../lib/fee-deal/deal-read";
+import type { FeeRef, MarkView, StandingView } from "../../lib/fee-deal/deal-read";
 import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type StatedPart, type Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
@@ -332,7 +332,7 @@ function CurveCard({ group, reading, saved, fx, unitPrice, onUnitPrice }: { grou
       {curve && (
         <AmountChart
           amounts={curve.amounts}
-          bands={curve.series.map((s) => ({ id: s.fee.fee, label: refName(s.fee), fill: feeColour(s.fee.kind).fill, stroke: feeColour(s.fee.kind).stroke, swatch: feeColour(s.fee.kind).bg, values: s.costs }))}
+          bands={curve.series.map((s) => ({ id: s.fee.fee, label: refName(s.fee), fill: feeColour(s.fee.kind, s.fee.house).fill, stroke: feeColour(s.fee.kind, s.fee.house).stroke, swatch: feeColour(s.fee.kind, s.fee.house).bg, values: s.costs }))}
           marks={[...new Set(curve.at)].map((at) => ({ id: String(at), at, label: markLabel(curve.marks[curve.at.indexOf(at)]!) }))}
           xTitle={c.x[xKey] ?? ""}
           tip={(a) => (group.on === "held" ? c.tipHeld(fmt.nisWhole(a)) : c.tipAction(noun, fmt.nisWhole(a)))}
@@ -369,7 +369,7 @@ function unitFeeOf(reading: Reading, group: CurveGroup): string | null {
 
 // ---------------------------------------------------------------- the points
 
-const swatchOf = (s: Statement) => (s.kind === "mark" ? (s.mark.kind === "meet" ? s.mark.fees[0]!.kind : s.mark.fee.kind) : s.fee.kind);
+const swatchOf = (s: Statement): FeeRef => (s.kind === "mark" ? (s.mark.kind === "meet" ? s.mark.fees[0]! : s.mark.fee) : s.fee);
 
 /** A mark's sum: a count of units for a price per unit's bound ("200 יחידות"), else a sum in its currency. */
 function MarkAmount({ mark, value }: { mark: MarkView; value: SiteValue }) {
@@ -392,7 +392,7 @@ function MarkSentence({ mark }: { mark: MarkView }) {
       <>
         {copy.cases.step.edge.before}
         <Fig value={mark.amount} />
-        {fill(copy.cases.step.edge.mid, { name: feeName(mark.fee.kind, mark.fee.name) })}
+        {fill(copy.cases.step.edge.mid, { name: feeName(mark.fee.kind, mark.fee.name, mark.fee.house) })}
       </>
     );
   if (mark.on === "held") {
@@ -499,14 +499,14 @@ function StatementLine({ statement, reading }: { statement: Statement; reading: 
     body = (
       <>
         {fill(p.every.before, { name: refName(statement.fee) })}
-        <Num value={price.figures.rate} /> {copy.price.per[price.per]}, {copy.price.charged[statement.every]}
+        <Fig value={price.figures.rate} /> {copy.price.per[price.per]}, {copy.price.charged[statement.every]}
         {price.per > statement.every ? fill(p.every.part, { k: price.per / statement.every }) : "."}
       </>
     );
   }
   return (
     <li className="grid grid-cols-[0.75rem_minmax(0,1fr)] items-baseline gap-3 text-sm leading-relaxed">
-      <Swatch shape="box" className={cx("translate-y-px", feeColour(swatchOf(statement)).bg)} />
+      <Swatch shape="box" className={cx("translate-y-px", feeColour(swatchOf(statement).kind, swatchOf(statement).house).bg)} />
       <p>
         {spans.length > 0 && (
           <>
@@ -528,7 +528,7 @@ function StatedLine({ part }: { part: StatedPart }) {
   const x = part.words;
   return (
     <li className="grid grid-cols-[0.75rem_minmax(0,1fr)] items-baseline gap-3 text-sm leading-relaxed">
-      <Swatch shape="box" className={cx("translate-y-px", feeColour(part.fee.kind).bg)} />
+      <Swatch shape="box" className={cx("translate-y-px", feeColour(part.fee.kind, part.fee.house).bg)} />
       <p>
         {/* the fee's name in words, as every point says it: the line's own swatch is its one dot */}
         {refName(part.fee)}

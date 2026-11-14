@@ -345,12 +345,18 @@ export function unitWord(unit: string): string {
 
 /**
  * The one parser for every number a person types. Strips spaces (also no-break and thin), ₪, % and bidi
- * marks; a minus sign in any dash form. Decimal point or comma: a single "," followed by one or two digits and no other
- * separator is a decimal point ("2,5" is 2.5, "4,25" is 4.25); a comma followed by exactly three digits is a thousands
- * separator ("12,000" is 12000, "1,234,567" is 1234567); "1.234,5" and "1,234.5" read the last separator as the
- * decimal point. Anything else, letters included, is NaN. Returns a number or NaN, never a guess.
+ * marks; a minus sign in any dash form. With both separators, the last is the decimal point ("1.234,5", "1,234.5"); a single point is a
+ * decimal point. A comma alone depends on the kind of figure (`kind`):
+ * - `amount` (the default, a sum of money or a count): a comma is a thousands separator only in correct groups, one to three digits
+ *   before the first comma, none of them a leading zero, and three after each ("12,000", "1,234,567"); a single comma followed by one or
+ *   two digits, or by three after a lone zero, is a decimal point ("2,5" is 2.5, "4,25" is 4.25, "0,125" is 0.125).
+ * - `rate` (a percentage, a rate, a price per unit): a single comma is always a decimal point, as an Israeli reader types one ("0,125"
+ *   is 0.125, "1,000" is 1); several commas read as an amount's.
+ * Anything else, letters included, is NaN. Returns a number or NaN, never a guess.
  */
-export function parseNumber(text: string): number {
+export type NumberKind = "amount" | "rate";
+
+export function parseNumber(text: string, kind: NumberKind = "amount"): number {
   let t = text.replace(/[\s\u00a0\u202f\u200e\u200f\u202a-\u202e\u2066-\u2069₪%]/g, "").replace(/[−–—‐-]/g, "-");
   if (t === "" || /[^\d.,+-]/.test(t)) return Number.NaN;
   const neg = t.startsWith("-");
@@ -371,10 +377,13 @@ export function parseNumber(text: string): number {
   } else if (lastComma >= 0) {
     const parts = t.split(",");
     const last = parts[parts.length - 1]!;
-    if (parts.length === 2 && last.length >= 1 && last.length <= 2) {
+    // the groups before the first comma and after each are a thousands separator's: one to three digits with no leading zero, then threes
+    const grouped = /^[1-9]\d{0,2}$/.test(parts[0]!) && parts.slice(1).every((p) => p.length === 3);
+    const decimal = parts.length === 2 && last.length >= 1 && (kind === "rate" || last.length <= 2 || (last.length === 3 && /^0?$/.test(parts[0]!)));
+    if (decimal && !(kind === "amount" && grouped)) {
       intPart = parts[0]!;
       frac = last;
-    } else if (parts.slice(1).every((p) => p.length === 3) && parts[0]!.length >= 1) intPart = parts.join("");
+    } else if (grouped) intPart = parts.join("");
     else return Number.NaN;
   } else if (lastDot >= 0) {
     const parts = t.split(".");

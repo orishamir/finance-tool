@@ -10,7 +10,11 @@
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { thingName } from "./case-words";
-import { changeUntouched, removeChange } from "./edits/stage";
+import { changeUntouched, editPrice, removeChange } from "./edits/stage";
+import { withCurrency } from "./edits/price";
+import { onAction, pricedCurrency } from "./offers/capabilities";
+import { keeps } from "./offers/capacity";
+import type { BoundCurrency } from "./core";
 import { ownKept, removeBy, removeCase } from "./edits/case";
 import { setKind, updateFee } from "./edits/deal";
 import { inOrderOf, sameButOrder } from "./edits/arrange";
@@ -113,16 +117,21 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
 /**
  * The deal with the price the toolbox acts on (`toolPrice`) put in the form a toolbox part sets (`setPart`; in case `caseId` where the fee has cases):
  * what carries over carries (`withForm`), and the price as it stood is kept for the undo where it held anything given, typed or filled;
- * a price still blank, as the builder added it, changes silently. Null where the part sets no form, or the price is in it already.
+ * a price still blank, as the builder added it, changes silently. A free price put in a form with sums takes them in the case's currency
+ * (`currency`: what the price was in before it was made free, `freedCurrency`; else its other prices'), never the shekel by default. Null
+ * where the part sets no form, or the price is in it already.
  */
-export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string, at?: number): MaybeUndoable | null {
+export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string, at?: number, currency?: BoundCurrency): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   const form = PARTS[part].form;
   if (!fee || !form) return null;
   const k = toolPrice(pricedOf(fee, caseId), at);
   const was = pricesOn(fee, "buy", caseId)[k]!.price;
   if (was.form === form) return null;
-  const changed = setPart(fee, part, true, { k, ...(caseId ? { caseId } : {}) });
+  const set = setPart(fee, part, true, { k, ...(caseId ? { caseId } : {}) });
+  const own = was.form === "free" ? (currency ?? pricesOn(fee, "buy", caseId).map((s) => pricedCurrency(s.price)).find(Boolean)) : undefined;
+  const now = pricesOn(set, "buy", caseId)[k]?.price;
+  const changed = own && now && onAction(now) && !now.currency && keeps(fee.kind, now.form, "currency") ? editPrice(set, "buy", k, (p) => withCurrency(p, own), caseId) : set;
   if (changed === fee || sameContent(changed, fee)) return null;
   if (was.form === "free" || sameContent(was, blankPrice(was.form))) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
   return feeChange(deal, fee, changed, { kind: "form", feeId, k, ...(caseId ? { caseId } : {}) }, chosen);
@@ -141,6 +150,18 @@ export function formBack(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string
   const now = deal.fees.find((x) => x.id === feeId);
   const was = pricesOn(f.before, "buy", caseId)[w.k]?.price;
   return !!now && pricesOn(now, "buy", caseId)[w.k]?.price.form === "free" && !!was && was.form === PARTS[part].form;
+}
+
+/**
+ * The currency of the price an undo of "חינם" keeps (`u`, a change of form still standing that left the fee's price in case `caseId` free),
+ * where its sums were in one: what a form chosen next takes, so a dollar case made free and priced again stays in dollars.
+ */
+export function freedCurrency(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, caseId?: string): BoundCurrency | undefined {
+  if (!u || u.what.kind !== "form" || !standing(u, deal)) return undefined;
+  const w = (u as Undo).what as Extract<UndoWhat, { kind: "form" }>;
+  if (w.feeId !== feeId || w.caseId !== caseId) return undefined;
+  const was = pricesOn((u as Undo).before, "buy", caseId)[w.k]?.price;
+  return was && onAction(was) && was.currency && was.currency !== "ILS" ? was.currency : undefined;
 }
 
 /**

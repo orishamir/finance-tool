@@ -12,7 +12,7 @@ import { dealBreach, LIMITS, takeRefusal, type Limit } from "../../lib/fee-deal/
 import type { AddressDeal } from "../../lib/fee-deal/link";
 import { NAME_MAX, newDeal, type FeeDeal } from "../../lib/fee-deal/model";
 import { dealStore, lastOpenId, rememberOpen, reopened, sameDeal, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { changeFormKept, deleteDealKept, formBack, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { changeFormKept, deleteDealKept, formBack, freedCurrency, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { FeesData } from "../../lib/fee-page-data";
 import { dealLabel } from "./bar-end";
@@ -156,8 +156,8 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
   };
   /**
    * A form of the price from the toolbox: what carries over carries, and the price it replaces is kept for the undo, whose line stands
-   * under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there. False where nothing
-   * changed.
+   * under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there, except a free price,
+   * which has none: the focus stays on "חינם" in the toolbox. False where nothing changed.
    */
   const changeForm = (feeId: string, part: PartId, caseId: string | null, at?: number): boolean => {
     // a form chosen again right after "חינם" puts the price back as it was, with its parts
@@ -166,13 +166,13 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
       setFocus({ fee: feeId, on: "box" });
       return true;
     }
-    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at);
+    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at, undoing && "dealId" in undoing ? freedCurrency(undoing, deal, feeId, caseId ?? undefined) : undefined);
     if (!r) return false;
     if (r.undo) {
       if (!keep(r.deal)) return false;
       setUndoing(r.undo);
     } else change(r.deal);
-    setFocus({ fee: feeId, on: "box" });
+    if (part !== "free") setFocus({ fee: feeId, on: "box" });
     return true;
   };
   // the fee put back takes the focus on its card; a fill's and a chain's lines hand it on themselves; a deleted deal put back that was on

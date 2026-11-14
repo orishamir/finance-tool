@@ -32,6 +32,23 @@ describe("parseNumber (audit A6)", () => {
   // a dollar, euro or pound sign is no part of a number the site reads: only a box in that currency takes it (figure-field.tsx)
   const bad = ["", " ", "abc", "1e5", "2,5,5", "1,2345", "--3", "5-", "1.2.3", ",", "₪", "12a", "1,234,5", "7 $", "€5", "£3"];
   for (const text of bad) it(`"${text}" is not a number`, () => expect(parseNumber(text)).toBeNaN());
+  it("reads a comma in an amount as thousands only in correct groups, and as a decimal point after a lone zero", () => {
+    expect(parseNumber("0,125")).toBe(0.125);
+    expect(parseNumber(",125")).toBe(0.125);
+    expect(parseNumber("12,500")).toBe(12500);
+    expect(parseNumber("1,000")).toBe(1000);
+    expect(parseNumber("1234,567")).toBeNaN();
+    expect(parseNumber("0,125,000")).toBeNaN();
+  });
+  it("reads a single comma in a rate as a decimal point, whatever follows it", () => {
+    expect(parseNumber("0,125", "rate")).toBe(0.125);
+    expect(parseNumber("0,0875", "rate")).toBe(0.0875);
+    expect(parseNumber("1,000", "rate")).toBe(1);
+    expect(parseNumber("12,5", "rate")).toBe(12.5);
+    expect(parseNumber("1,234,567", "rate")).toBe(1234567);
+    expect(parseNumber("1.234,5", "rate")).toBe(1234.5);
+    expect(parseNumber("2,5,5", "rate")).toBeNaN();
+  });
 });
 
 describe("a sum the person typed", () => {

@@ -102,7 +102,7 @@ interface PartSpec {
   tool: ToolGroupId | null;
   /** Whether the reading states it without computing it (§10.6's stated parts), where the price has it. */
   stated?: true;
-  /** Whether a change of form that leaves it behind says so by name (undo.ts). */
+  /** Whether a change of form that leaves it behind says so by name (undo.ts): every part kept in a key of the price, a bound, a link or a note, so nothing goes unsaid. */
   lost?: true;
   /** Whether a price has it; a part of the fee's prices (a later price, a sale) asks the case's prices `x`. */
   used: (p: Price, x?: Priced) => boolean;
@@ -147,8 +147,8 @@ const SPECS = {
   held: { kind: "price", form: "held", figures: ["rate"], ask: null, tool: "price", ...formEdit("held") },
   sum: { kind: "price", form: "sum", figures: ["amount"], ask: null, tool: "price", ...formEdit("sum") },
   free: { kind: "price", form: "free", figures: [], ask: null, tool: "price", ...formEdit("free") },
-  discount: { kind: "price", field: "discount", figures: ["discount"], ask: null, tool: "price", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
-  third: { kind: "price", field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "price", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
+  discount: { kind: "price", lost: true, field: "discount", figures: ["discount"], ask: null, tool: "price", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
+  third: { kind: "price", lost: true, field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "price", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
   // the month a price changes from (F-110): never a card of the toolbox; the page adds it at the end of the prices, by its month alone, and
   // takes it away at its divider
   until: {
@@ -168,17 +168,18 @@ const SPECS = {
   flat: { kind: "bound", field: "flat", capField: "flat", figures: ["flat", "upTo"], ask: null, tool: "price", lost: true, used: (p: Price) => boundsAction(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)) },
   // a maximum on each security of a held share, stated and never computed (§10.6's stated parts)
   maxPerSecurity: { kind: "bound", field: "perSecurity", capField: "perSecurity", figures: ["perSecurity"], ask: "sum", tool: "bound", stated: true, lost: true, ...figureEdit("perSecurity") },
-  offset: { kind: "link", field: "offset", figures: [], ask: "fee", tool: "link", stated: true, used: (p: Price) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
-  refund: { kind: "link", field: "refund", figures: ["refund"], ask: null, tool: "link", stated: true, used: (p: Price) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
-  unfilled: { kind: "note", field: "notes", figures: [], ask: null, tool: "more", stated: true, ...noteEdit("unfilled") },
+  offset: { kind: "link", lost: true, field: "offset", figures: [], ask: "fee", tool: "link", stated: true, used: (p: Price) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
+  refund: { kind: "link", lost: true, field: "refund", figures: ["refund"], ask: null, tool: "link", stated: true, used: (p: Price) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
+  unfilled: { kind: "note", lost: true, field: "notes", figures: [], ask: null, tool: "more", stated: true, ...noteEdit("unfilled") },
   // a bank's order through a clerk not carried out (BRK-16) and the site's reading of a percent maximum over a minimum (F-12): a template fills them
-  unfilledClerk: { kind: "note", field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("unfilledClerk") },
-  unfilledClerkAbroad: { kind: "note", field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("unfilledClerkAbroad") },
-  capRead: { kind: "note", field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("capRead") },
-  partial: { kind: "note", field: "notes", figures: [], ask: null, tool: "more", stated: true, ...noteEdit("partial") },
+  unfilledClerk: { kind: "note", lost: true, field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("unfilledClerk") },
+  unfilledClerkAbroad: { kind: "note", lost: true, field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("unfilledClerkAbroad") },
+  capRead: { kind: "note", lost: true, field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("capRead") },
+  partial: { kind: "note", lost: true, field: "notes", figures: [], ask: null, tool: "more", stated: true, ...noteEdit("partial") },
   // sums in the currency the trade is made in ("מינימום 30 במטבע העסקה"), where the fee's form lists it: a reading takes it from what is bought
   inTrade: {
     kind: "note",
+    lost: true,
     field: "inTrade",
     capField: "inTrade",
     figures: [],

@@ -79,6 +79,7 @@ export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: 
       sign={q.units?.find((u) => u.unit === unit)?.words ?? ""}
       tight
       words={<span className="text-muted-foreground">{c.upTo.trim()}</span>}
+      asks
       onCommit={setTop}
       onClear={() => setTop(null)}
     />
@@ -143,6 +144,21 @@ export function useAskThing(chosen: string | null, phone: boolean, fold: (folded
   return { asking, onAsk, onAskDone, drop: () => setAsking(null) };
 }
 
+/**
+ * Once a step or a value is added, the focus goes to what was made: the case the page opened for it (its first box, else its first
+ * control), brought into view, else the fee's open case as it stands; never left on the question that is gone.
+ */
+function focusOpened(feeId: string) {
+  requestAnimationFrame(() => {
+    const open = document.querySelector(`li[data-fee="${CSS.escape(feeId)}"] [data-open-case]`);
+    const el = open?.querySelector<HTMLElement>("input[data-figure]") ?? open?.querySelector<HTMLElement>("button, input");
+    if (!el) return;
+    el.focus({ preventScroll: true });
+    if (el instanceof HTMLInputElement) el.select();
+    bringIntoView(el.closest("[data-open-case]") as HTMLElement | null);
+  });
+}
+
 /** The question opens with the focus in its first field or value, brought into view; Escape closes it as "ביטול" does. */
 function useAskFocus() {
   const root = useRef<HTMLDivElement>(null);
@@ -176,7 +192,7 @@ export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; o
     <div ref={root} data-ask-thing="" onKeyDown={escapeCloses(onDone)}>
       <AskValues
         question={c.addStep.ask.replace("{thing}", thingName(fee.kind, b))}
-        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight validate={(n) => (taken(n) ? c.addStep.taken : null)} onCommit={setTop} onClear={() => setTop(null)} />}
+        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight asks validate={(n) => (taken(n) ? c.addStep.taken : null)} onCommit={setTop} onClear={() => setTop(null)} />}
         options={[]}
         chosen={[]}
         onToggle={() => undefined}
@@ -186,6 +202,7 @@ export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; o
           if (top === null) return;
           onFee(addStep(fee, t, top));
           onDone(true);
+          focusOpened(fee.id);
         }}
         onCancel={() => onDone(false)}
       />
@@ -233,6 +250,7 @@ export function AskValuesOf({ fee, t, onFee, onDone }: { fee: CasesFee; t: numbe
           if (chosen.length === 0) return;
           onFee(addValues(fee, t, chosen, own));
           onDone(true);
+          focusOpened(fee.id);
         }}
         onCancel={() => onDone(false)}
       />
