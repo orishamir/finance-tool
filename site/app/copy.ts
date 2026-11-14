@@ -74,11 +74,11 @@ export const numbers = {
   monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   inTradeCurrency: "במטבע העסקה", // a bound printed in whatever currency the trade is in (data-schema §3.6a item 1)
-  /** A bound whose currency the list leaves open between readings, priced in the dearer (`dearer_ccy_per_trade`, D56): "2.5 דולר או ליש״ט, לפי היקר מביניהם". */
+  /** A bound whose currency the list leaves open between readings, priced in the dearer (`dearer_ccy_per_trade`, D56): "2.5 $ או £, לפי היקר". */
   inDearerCurrency: "במטבע היקר מבין השניים",
-  dearerOf: (amount: string, currencies: string[]) => `${amount} ${currencies.join(" או ")}, לפי היקר מביניהם`,
-  /** The currencies such a bound names, in words. */
-  currencyNames: { USD: "דולר", GBP: "ליש״ט", EUR: "אירו", CHF: "פרנק שוויצרי", ILS: "שקל" } as Record<string, string>,
+  dearerOf: (amount: string, signs: string[]) => `${amount} ${signs.join(" או ")}, לפי היקר`,
+  /** The signs of the currencies such a bound names, short enough for a price-list cell on a phone. */
+  currencySigns: { USD: "$", GBP: "£", EUR: "€", CHF: "CHF", ILS: "₪" } as Record<string, string>,
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
   weak: { secondary: "משני", institution: "לפי החברה" },

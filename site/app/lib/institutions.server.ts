@@ -119,7 +119,7 @@ function rateTableUrl(bank: string): string | null {
 function bound(l: FeeLine, v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
   const s = site(v, t, snapshot, owner);
   if (v.unit !== "dearer_ccy_per_trade" || !l.bound_readings || typeof v.value !== "number") return s;
-  return { ...s, value: numbers.dearerOf(fmt.number(v.value), l.bound_readings.currencies.map((c) => numbers.currencyNames[c] ?? c)), unit: "text" };
+  return { ...s, value: numbers.dearerOf(fmt.number(v.value), l.bound_readings.currencies.map((c) => numbers.currencySigns[c] ?? c)), unit: "text" };
 }
 
 export function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
