@@ -75,8 +75,8 @@ export const updateRule = z.union([
     "fixed in law",
     // binding text below a law: regulations, a regulator's circulars and directives, the exchange's rules (an exchange's own index rules among them)
     "fixed in regulation",
-    // fixed by the document the value cites, which binds no one at large: a tax ruling, a circular that binds only the body that wrote it,
-    // a report, an index provider's own methodology (S&P, MSCI); it changes when that document is replaced
+    // fixed by the document the value cites, which binds no one at large: a tax ruling, a report, an index provider's own methodology
+    // (S&P, MSCI); it changes when that document is replaced
     "fixed in document",
     "cpi-linked 1 jan",
     "average-wage-linked",
