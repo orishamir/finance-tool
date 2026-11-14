@@ -327,7 +327,7 @@ describe("P-05 instruments track", () => {
   });
 });
 
-describe("series (data-schema 3.8, terms gate)", () => {
+describe("series (data-schema 3.8)", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const obs = (date: string, value: number, key?: string) => ({
     ...vo,
@@ -347,23 +347,24 @@ describe("series (data-schema 3.8, terms gate)", () => {
     unit: "index_points",
     cadence: "monthly",
     stale_after_days: 45,
-    terms_of_use: { status: "confirmed", fallback: "none needed", terms_url: "https://example.org/licence", attribution: "CBS" },
+    terms_of_use: { terms_url: "https://example.org/licence", read_on: "2026-10-23", attribution: "CBS" },
     rule_ids: [],
     observations: [obs("2026-08-01", 105.8), obs("2026-09-01", 105.3)],
     ...over,
   });
 
-  it("passes a confirmed series with sorted observations", () => {
+  it("passes a series with sorted observations", () => {
     expect(run({ "series/cbs-cpi.json": series() })).toEqual([]);
   });
 
-  it("terms gate: a series that is unconfirmed or not permitted is an error, and the schema still accepts the status", () => {
-    for (const status of ["unconfirmed", "not-permitted"]) {
-      const problems = run({ "series/cbs-cpi.json": series({ terms_of_use: { status, fallback: "link out and show no number" } }) });
-      expect(problems).toHaveLength(1);
-      expect(problems[0]?.message).toMatch(/terms gate: not shipped/);
+  it("terms_of_use holds the licence page, the day it was read and the attribution line, and nothing else", () => {
+    const terms = { terms_url: "https://example.org/licence", read_on: "2026-10-23", attribution: "CBS" };
+    for (const field of ["status", "fallback"]) {
+      const problems = run({ "series/cbs-cpi.json": series({ terms_of_use: { ...terms, [field]: "x" } }) });
+      expect(problems[0]?.message).toMatch(new RegExp(field));
     }
-    expect(run({ "series/cbs-cpi.json": series({ terms_of_use: { status: "maybe", fallback: "x" } }) })[0]?.message).toMatch(/terms_of_use\.status/);
+    const { attribution: _, ...noAttribution } = terms;
+    expect(run({ "series/cbs-cpi.json": series({ terms_of_use: noAttribution }) })[0]?.message).toMatch(/attribution/);
   });
 
   it("rejects observations out of date order and duplicates, per date and key", () => {
@@ -384,7 +385,7 @@ describe("series (data-schema 3.8, terms gate)", () => {
   });
 });
 
-describe("fund lists (data-schema 3.14, terms gate)", () => {
+describe("fund lists (data-schema 3.14)", () => {
   const row = (n: string) => ({
     fund_number: n,
     isin: null,
@@ -400,7 +401,7 @@ describe("fund lists (data-schema 3.14, terms gate)", () => {
     snapshot: "2026-10-22",
     source: { url: "https://maya.tase.co.il/he/funds/mutual-funds", title: "Maya mutual funds", publisher: "TASE", strength: "primary" },
     checked: "2026-10-22",
-    terms_of_use: { status: "confirmed", fallback: "link out and show counts only" },
+    terms_of_use: { terms_url: "https://example.org/terms", read_on: "2026-10-22", attribution: "TASE" },
     raw: { archive_key: "fund-lists/maya-mutual-funds@2026-10-22.csv", sha256: "a".repeat(64) },
     funds: [row("5100001"), row("5100002")],
     ...over,
@@ -408,16 +409,8 @@ describe("fund lists (data-schema 3.14, terms gate)", () => {
   const file = "fund-lists/maya-mutual-funds@2026-10-22.json";
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
 
-  it("passes a confirmed list", () => {
+  it("passes a list", () => {
     expect(run({ [file]: list() })).toEqual([]);
-  });
-
-  it("terms gate: unconfirmed or not-permitted is an error", () => {
-    for (const status of ["unconfirmed", "not-permitted"]) {
-      const problems = run({ [file]: list({ terms_of_use: { status, fallback: "link out" } }) });
-      expect(problems).toHaveLength(1);
-      expect(problems[0]?.message).toMatch(/terms gate: not shipped/);
-    }
   });
 
   it("is strict, and checks file name and duplicate fund numbers", () => {

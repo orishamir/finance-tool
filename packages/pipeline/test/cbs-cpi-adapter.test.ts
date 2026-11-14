@@ -72,7 +72,7 @@ describe("normalise", () => {
       unit: "index_points",
       cadence: "monthly",
       stale_after_days: 45,
-      terms_of_use: { status: "confirmed", terms_url: "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx" },
+      terms_of_use: { terms_url: "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx" },
     });
     expect(f.terms_of_use.attribution).toContain('הלשכה המרכזית לסטטיסטיקה (הלמ"ס)');
     expect(f.terms_of_use.attribution).toContain("(2026-10-23)");

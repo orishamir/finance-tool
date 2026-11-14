@@ -2711,7 +2711,7 @@ export const r4workbench = {
     recordError: "האתר לא מצליח לקרוא את התעריפון הזה בלי לנחש, ולכן לא מחשב לו מחיר.",
   },
   noAverage: "אין ממוצע שנאסף",
-  noAverageReason: "ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור: הפרסום מחדש דורש הסכמה בכתב.",
+  noAverageReason: "ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור.",
   noAverageLinks: { boi: "ללוח הנתונים של בנק ישראל", tase: "למחשבון העמלות של הבורסה" },
   notPrinted: "לא מודפס",
   instrumentClasses: {
@@ -3738,7 +3738,7 @@ export const invest = {
       yoursLabel: "שלכם",
       listNone: "בתעריפון אין שורה לסוג הזה של קרן",
       listWord: "התעריפון",
-      avgBody: (house: string) => `הבורסה מפרסמת כמה שילמו לקוחות ${house} בממוצע, לפי גודל התיק. היא אוסרת להעתיק את המספרים, ולכן הם לא כאן.`,
+      avgBody: (house: string) => `הבורסה מפרסמת כמה שילמו לקוחות ${house} בממוצע, לפי גודל התיק.`,
       avgLink: "למחשבון העמלות של הבורסה",
       sameAsList: "כמו בתעריפון",
       fromGroup: (name: string) => `לפי ${name}`,

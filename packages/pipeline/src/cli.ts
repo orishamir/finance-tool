@@ -15,10 +15,8 @@ const [command, ...rest] = process.argv.slice(2);
 
 /**
  * Refresh sources. They run in the order given.
- * Gated, no adapter on purpose: the Bank of Israel series (policy rate A-20, per-bank deposit averages A-21,
- * makam yields A-22). Its terms of use forbid copying and publishing without the Bank's prior written
- * consent and no data.gov.il copy exists (research report r2-series, finding 1), so under the terms
- * gate (docs/architecture.md 3.3) they are not fetched into data/. Revisit if the Bank consents in writing.
+ * No adapter: the Bank of Israel series (policy rate A-20, per-bank deposit averages A-21, makam yields A-22)
+ * are links, not numbers (product.md D20), and are not fetched into data/.
  */
 const SOURCES = ["cma", "cbs-cpi", "mof-child-savings", "ecb-fx", "ecb-fx-month-end"] as const;
 const USAGE = `usage: cli.ts refresh <${SOURCES.join("|")}>... [--dry-run] [--no-archive] [--force]`;

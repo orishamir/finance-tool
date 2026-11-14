@@ -1,24 +1,15 @@
-// data/series/<id>.json: sourced time series (dependency 7). docs/data-schema.md §3.8.
+// data/series/<id>.json: sourced time series. docs/data-schema.md §3.8.
 // Strict: a field the doc does not name is an error.
 import { z } from "zod";
 import { isoDate, unit, valueObject } from "../value.ts";
 
-/**
- * The terms gate (docs/architecture.md 3.3, product.md dependency 7): a series ships only when the
- * publisher's terms allow republication. `unconfirmed` and `not-permitted` are valid values so a file can
- * say so; the validator then fails it ("terms gate: not shipped").
- */
-export const termsStatus = z.enum(["confirmed", "unconfirmed", "not-permitted"]);
-
+/** The publisher's licence as read (product.md dependency 7): the page, the day it was read, and the line the site shows with the numbers. */
 export const seriesTerms = z.strictObject({
-  status: termsStatus,
-  /** What the site does when the status is not `confirmed` (link out, show no number, ...). */
-  fallback: z.string().min(1),
   /** The licence or terms page that was read. */
-  terms_url: z.string().min(1).optional(),
-  read_on: isoDate.optional(),
+  terms_url: z.string().min(1),
+  read_on: isoDate,
   /** The attribution line the licence prescribes; shown next to the numbers. */
-  attribution: z.string().min(1).optional(),
+  attribution: z.string().min(1),
 });
 
 /** One observation: a value object plus its `date`, and a `key` for a series that holds several (multi-key). */
