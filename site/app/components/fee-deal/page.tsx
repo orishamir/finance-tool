@@ -25,7 +25,7 @@ import { builder, panel as panelOf, slotEdit, thingMenu, toolbox as toolboxOf } 
 import { addFee, setPick, updateFee, type Side } from "../../lib/fee-deal/edit";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import { glance } from "../../lib/fee-deal/glance";
-import { readingOf, unitCurrency } from "../../lib/fee-deal/reading";
+import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { hasCases, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
@@ -40,14 +40,16 @@ import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
 import { Button, Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
-import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type CaseUndoLine, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
+import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type FeeFocus } from "./builder";
+import { undoLines, useUndo, UNDO_MS, type AnyUndo } from "./use-undo";
+import { useUnitPrice } from "./use-unit-price";
 import { FeeLinksProvider, type FeeLinks } from "./links";
 import { UndoLine } from "./undo-line";
 import { GlanceCard, READING_ID } from "./glance";
 import { SlotMenu, WhenText, numText } from "./open-case";
 import type { Pending } from "./part-edit";
 import { TemplatePicker } from "./picker";
-import { ToolboxCard, ToolboxColumn, type FillUndoLine } from "./toolbox";
+import { ToolboxCard, ToolboxColumn } from "./toolbox";
 import { useAskThing } from "./ask-thing";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
@@ -59,8 +61,6 @@ import { feeName } from "./words";
 const PANEL_COLUMN = "(min-width: 80rem)";
 const PHONE = "(max-width: 47.99rem)";
 
-/** How long the undo line stays while neither the focus nor the pointer is on it, in milliseconds. */
-const UNDO_MS = 10_000;
 
 /**
  * Where the focus goes from a saved deal's undo line, after "ביטול" or when it goes: the saved deals' menu, else (no deal saved, so no
@@ -151,36 +151,11 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     setPicker(anchor);
   };
   const link = useCopyLink(deal);
-  // the last change that lost something, while it can be undone; whether the focus or the pointer is on its line; what takes the focus
-  // once drawn (a card put back, a fee just added)
-  const [undoing, setUndoing] = useState<Undo | KindUndo | DealUndo | null>(null);
-  // the undo just made, whose line takes the focus when it appears; a line drawn again later (its fee's panel opened again) does not
-  const fresh = useRef<Undo | KindUndo | DealUndo | null>(null);
-  const take = (u: Undo | KindUndo | DealUndo) => () => {
-    if (fresh.current !== u) return false;
-    fresh.current = null;
-    return true;
-  };
-  const made = (u: Undo | KindUndo | DealUndo) => {
-    fresh.current = u;
-    setUndoing(u);
-  };
-  const [holding, setHolding] = useState(false);
+  // the last change that lost something, while it can be undone (use-undo.ts)
+  const { undoing, setUndoing, made, take, setHolding } = useUndo();
   const [focus, setFocus] = useState<FeeFocus | null>(null);
   // the fee under the pointer or the focus in any column, which the others mark
   const [marked, setMarked] = useState<string | null>(null);
-  // the line's time left: it runs while the line is not held, and stops, keeping what is left, while it is
-  const clock = useRef<{ u: Undo | KindUndo | DealUndo | null; left: number }>({ u: null, left: UNDO_MS });
-  useEffect(() => {
-    if (!undoing || holding) return;
-    if (clock.current.u !== undoing) clock.current = { u: undoing, left: UNDO_MS };
-    const start = Date.now();
-    const t = window.setTimeout(() => setUndoing(null), clock.current.left);
-    return () => {
-      window.clearTimeout(t);
-      clock.current.left -= Date.now() - start;
-    };
-  }, [undoing, holding]);
   // for half a second after a fee is taken away from the panel, the panel takes no press: the next fee's panel stands where the pointer is
   const [panelRest, setPanelRest] = useState(false);
   useEffect(() => {
@@ -406,25 +381,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
   // a fee the product may not charge by rule is never offered
   const barred = useMemo(() => barredFees(deal.kind, data, today), [deal.kind, data, today]);
-  // the unit's price typed beside the curve of a price per unit, one for each deal, kept while the page is open with the currency it was
-  // asked in: once the deal asks it in another (what is held, or the sum per unit's currency, changed) it is cleared, never read as a
-  // price in the new currency
-  const [unitPrices, setUnitPrices] = useState<Readonly<Record<string, { n: number; currency: string }>>>({});
-  const askedIn = useMemo(() => unitCurrency(read), [read]);
-  const typedUnit = unitPrices[deal.id];
-  const unitPrice = typedUnit && typedUnit.currency === askedIn ? typedUnit.n : null;
-  const dropUnitPrice = (id: string) =>
-    setUnitPrices((all) => {
-      const { [id]: _was, ...rest } = all;
-      return rest;
-    });
-  useEffect(() => {
-    if (typedUnit && typedUnit.currency !== askedIn) dropUnitPrice(deal.id);
-  }, [typedUnit, askedIn, deal.id]);
-  const onUnitPrice = (n: number | null) => {
-    if (n === null || askedIn === null) dropUnitPrice(deal.id);
-    else setUnitPrices((all) => ({ ...all, [deal.id]: { n, currency: askedIn } }));
-  };
+  const { unitPrice, onUnitPrice } = useUnitPrice(read, deal.id);
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const chosenFeeNow = deal.fees.find((f) => f.id === chosen) ?? null;
@@ -453,22 +410,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   // the undo on screen: a deal's change only while what it took has a place on the deal on screen; its words, which the live region says too
   const shown = undoing && ("dealId" in undoing ? standing(undoing, deal) : true) ? undoing : null;
-  const undoWords = (u: Undo | KindUndo | DealUndo): string => {
+  const undoWords = (u: AnyUndo): string => {
     if (!("dealId" in u)) return `${copy.end.deleted}${dealLabel(u.deal, kindById(data.kinds, u.deal.kind)?.name ?? null)}.`;
     return feeUndoWords(u, (f) => feeName(f.kind, f.name), data);
   };
   const words = shown ? undoWords(shown) : null;
-  const feeLine: FeeUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "remove" ? { what: shown.what, fee: (shown as Undo).before, words, onUndo, onHold: setHolding, take: take(shown) } : null;
-  // a change of kind's line stands under the kind, in the builder
-  const kindLine: KindUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "product" ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
-  // a fill's line stands in the toolbox's foot, while the toolbox shows its fee; a price's, a form's, a case's or a thing's under its
-  // fee's block
-  const fillLine: FillUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "fill" && shown.what.feeId === chosen ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
-  const caseLine: CaseUndoLine | null =
-    shown && words && "dealId" in shown && (shown.what.kind === "stage" || shown.what.kind === "chain" || shown.what.kind === "case" || shown.what.kind === "by" || shown.what.kind === "form")
-      ? { feeId: shown.what.feeId, words, onUndo, onHold: setHolding, take: take(shown), ...(shown.what.kind === "form" ? { inCase: { caseId: shown.what.caseId ?? null } } : {}), ...(shown.what.kind === "by" ? { thing: shown.what.t } : {}) }
-      : null;
-  const dealLine = shown && words && !("dealId" in shown) ? words : null;
+  const lines = undoLines(shown, words, chosen, { onUndo, onHold: setHolding, take });
   const readSome = read.fees.length > 0;
   const groupOf = (fee: Fee) => feeGroup(read, fee, saves);
   // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
@@ -483,7 +430,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         sheet={phone}
         product={deal.kind}
         fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
-        line={fillLine}
+        line={lines.fill}
         folded={sheetFolded}
         onFold={setSheetFolded}
         onAsk={onAsk}
@@ -529,9 +476,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       <p role="status" className="sr-only">
         {words ?? said ?? (link.copied ? copy.end.copied : "")}
       </p>
-      {dealLine && (
+      {lines.deal && (
         <UndoLine key={`undo:deal:${(shown as DealUndo).deal.id}`} as="div" onUndo={onUndo} onHold={setHolding} take={take(shown!)} refocusOnUndo refocus={dealsMenuOrName}>
-          {dealLine}
+          {lines.deal}
         </UndoLine>
       )}
       {(said || link.blocked) && (
@@ -566,7 +513,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             onPickTrack={hasTracks ? openPicker("track") : null}
             onTemplates={hasHouses ? openPicker("new") : null}
             left={left}
-            kindLine={kindLine}
+            kindLine={lines.kind}
             onDeal={change}
             onKind={onKind}
           />
@@ -579,8 +526,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               groupOf={groupOf}
               open={{ fee: chosen, case: caseId, view: panel?.open ?? null, pending: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
               toolbox={panelColumn || phone ? null : panelView}
-              line={feeLine}
-              caseLine={caseLine}
+              line={lines.fee}
+              caseLine={lines.case}
               focus={focus}
               onFocused={() => setFocus(null)}
               onDeal={change}
