@@ -100,7 +100,7 @@ interface PartSpec {
   figures: readonly Figure[];
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
   ask: Ask;
-  /** The toolbox group it shows in; null where the toolbox does not offer it (free, which a price's ✕ makes; a note only a template fills). */
+  /** The toolbox group it shows in; null where the toolbox does not offer it (free, which a price's bin makes; a note only a template fills). */
   tool: ToolGroupId | null;
   /** Whether the reading states it without computing it (§10.6's stated parts), where the price has it. */
   stated?: true;
@@ -158,8 +158,9 @@ const SPECS = {
     ask: "month",
     tool: "price",
     used: (_p: Price, x?: Priced) => !!x && x.stages.length > 1,
-    // on, the price ends at the month and a later one follows it; off, the prices after it go
-    apply: { on: "fee", edit: (fee, on, at) => (on ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month!, at.caseId, at.after) : holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId)) },
+    // on, the price ends at the month and a later one follows it, in the form the offer gives after a free price (nothing without both);
+    // off, the prices after it go
+    apply: { on: "fee", edit: (fee, on, at) => (!on ? holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId) : at.month && at.after ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month, at.after, at.caseId) : fee) },
   },
   min: { kind: "bound", field: "min", carriesIn: formBoundsAction, capField: "min", figures: ["min"], ask: "sum", tool: "bound", lost: true, ...figureEdit("min") },
   max: { kind: "bound", field: "max", carriesIn: formBoundsAction, capField: "max", figures: ["max"], ask: "sum", tool: "bound", lost: true, ...figureEdit("max") },
@@ -263,7 +264,7 @@ export function putPart(kind: FeeKindId, p: Price, part: PartId, on: boolean, at
 }
 
 /**
- * A fee with a part added (`on`) or taken away, as the toolbox and the open case's ✕ do (`PARTS[part].apply`), on the price `at` names. A
+ * A fee with a part added (`on`) or taken away, as the toolbox and the open case's bin do (`PARTS[part].apply`), on the price `at` names. A
  * part that asks for what `at` does not give, or a price that cannot hold it, leaves the fee as it is.
  */
 export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: PartAt = {}): F {
