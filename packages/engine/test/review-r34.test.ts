@@ -237,8 +237,10 @@ describe("F-61 existing balance in a study fund (review S42)", () => {
       const over = 1500 - limit;
       // The extra money (321.60 a month) lands in the excess pot and grows like any deposit.
       expect(r.detail.grossBalance! - at.detail.grossBalance!).toBeCloseTo(over * growth, 4);
-      // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02): 1,196.352 a year, 11,963.52 over 10.
-      expect(r.detail.employerDepositTax!).toBeCloseTo(11_963.52, 2);
+      // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02) while that band starts at 228,000:
+      // 1,196.352 a year in years 1 to 4. From 2028 the bands grow by π = 2.5% a year (F-119), and in year 5 (2030) the 20% band reaches
+      // 228,000 × 1.025³ = 245,527, above 243,859.20: 771.84 a year in years 5 to 10. 4 × 1,196.352 + 6 × 771.84 = 9,416.448.
+      expect(r.detail.employerDepositTax!).toBeCloseTo(9_416.448, 2);
       // National Insurance and health at the full rate 12.17% (TXG-35, sourced to National Insurance's circular 1473, TXH-26): 0.1217 × 321.60 × 120 = 4,696.6464.
       expect(r.detail.employerSocial!).toBeCloseTo(4_696.6464, 3);
       // The split of the monthly money: own 300 and employer 1,178.40 benefited, 321.60 above.

@@ -1,7 +1,8 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
 import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
 import { NotEvaluatedError } from "./securities.ts";
@@ -107,7 +108,12 @@ export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<De
  * and at one of its exit points (what an exit point pays is not in the records). Neither flag changes an amount.
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
-  const book = ruleBook(ctx);
+  return acrossReadings(ctx, (c) => runDepositUnder(input, c));
+}
+
+/** `runDeposit` under the readings `ctx` holds (method §13). */
+function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, deposit, profile } = input;
   const T = goal.months;
   const first = goal.firstMonth ?? 1;
@@ -220,14 +226,15 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       const deduction = applyTxi20
         ? Math.min(
             yearTaxable,
-            lowIncomeDeduction(profile.annualIncome! + yearIncome, book.amount("TXI-20", "favoured_ceiling"), book.amount("TXI-20", "deduction")),
+            // F-119: the year's own amounts
+            lowIncomeDeduction(profile.annualIncome! + yearIncome, book.inYear(taxYearOf(m, first)).amount("TXI-20", "favoured_ceiling"), book.inYear(taxYearOf(m, first)).amount("TXI-20", "deduction")),
           )
         : 0;
       deductionUsed += deduction;
       const owed = linked ? maxRateTax(book, profile, m, yearTaxable - deduction, rate, first) : { tax: rate * (yearTaxable - deduction), atBrackets: false };
       if (owed.atBrackets) tally.flag("G-21");
       const refund = refundClaimed ? yearWithheld - owed.tax : 0;
-      tally.taxDuring += yearlySurtax(book, profile, yearTaxable - deduction) - refund;
+      tally.taxDuring += yearlySurtax(book, profile, yearTaxable - deduction, taxYearOf(m, first)) - refund;
       rolled += refund;
       yearTaxable = yearIncome = yearWithheld = 0;
     }

@@ -626,7 +626,10 @@
         "quote": "בקרנות נאמנות, הנסחרות בתום יום המסחר (שלא במסגרת המסחר הרציף), בבורסה בתל אביב אשר הבנק התקשר בהסכמי הפצה בגינם. ניתן לעיין בהתקשרויות הבנק בדיווחי מנהל הקרן באתר המאיה."
       },
       "note": "The bank's general execution instructions (information/5683, library 753ef4f007e0fe76, read 2026-11-12; re-read 2026-11-14 in the library copy, the live page answered 403 to a script) limit the Israeli funds it trades to those 'אשר הבנק התקשר בהסכמי הפצה בגינם' and point to the managers' reports on Maya for which they are. Maya refuses scripts, so no fund on the site was checked there. The tariff page's shorter sentence (information/2250, library 1694b41498246f1c), 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב', names the class without the condition; the instructions are the narrower, binding text. Until 2026-11-14 this entry was 'true' on the tariff page's sentence, which priced One Zero for every Israeli mutual fund. Footnote 9 of the tariff (PDF p.10) takes a tracking fund into the TASE line, which says what a trade would cost, not which funds the bank distributes. A person can check on Maya, for each fund the indices pages show, whether its manager reports a distribution agreement with One Zero; the entry returns to 'true' for the funds that do only if the schema gains a way to name them.",
-      "reason_he": "הבנק כותב שאפשר לקנות דרכו קרנות נאמנות שנסחרות בסוף יום המסחר רק אם חתם על הסכם הפצה עם מנהל הקרן, ושאת ההסכמים שלו אפשר למצוא בדיווחים של מנהלי הקרנות באתר מאיה. לכן לא ידוע אם קרן מסוימת נמכרת דרכו, והאתר לא מחשב מחיר לקרן שייתכן שאי אפשר לקנות בחשבון."
+      "reason_he": "הבנק כותב שאפשר לקנות דרכו קרנות נאמנות שנסחרות בסוף יום המסחר רק אם חתם על הסכם הפצה עם מנהל הקרן, ושאת ההסכמים שלו אפשר למצוא בדיווחים של מנהלי הקרנות באתר מאיה. לכן לא ידוע אם קרן מסוימת נמכרת דרכו, והאתר לא מחשב מחיר לקרן שייתכן שאי אפשר לקנות בחשבון.",
+      "rule_ids": [
+        "BRK-38"
+      ]
     },
     {
       "applies_to": [

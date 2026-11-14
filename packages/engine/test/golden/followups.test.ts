@@ -104,11 +104,19 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     expect(flagCodes(r)).toContain("G-07");
   });
 
+  // S53 reads 2028 to 2030 at a falling CPI: the exit's surtax threshold, and the kupat gemel lehashkaa's yearly ceiling, are open readings
+  // (TXG OQ17, KGL OQ15); every reading gives the same run, since the scenario's income never reaches the threshold and its deposits never
+  // reach the ceiling, so the figures stand on the data and carry the questions (method §13)
+  const s53a = { goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fund: s14Fund, tariff: s14Tariff, profile: {} };
+  it("S53 on the data: the same run under every reading of TXG OQ17 and KGL OQ15, flagged with both", () => {
+    const r = runSecurities(s53a, ctx);
+    expect(r.outcome).toEqual({ code: "eligible" });
+    expect(r.flags.map((f) => f.code)).toContain("TXG-OQ17");
+    const k = runProvident({ wrapper: "kupat-gemel-lehashkaa", goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fees: kglFees, profile: {} }, ctx);
+    expect(k.flags.map((f) => f.code)).toEqual(expect.arrayContaining(["TXG-OQ17", "KGL-OQ15"]));
+  });
   it("S53 (a) Israeli ETF under CPI deflation: the inflationary amount is zero", () => {
-    const r = runSecurities(
-      { goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fund: s14Fund, tariff: s14Tariff, profile: {} },
-      ctx,
-    );
+    const r = runSecurities(s53a, ctx);
     const g = golden("S53");
     g.value("nominal gain", r.detail.nominalGain, 19_717.36);
     g.value("real gain", r.detail.realGain, 18_862.65);

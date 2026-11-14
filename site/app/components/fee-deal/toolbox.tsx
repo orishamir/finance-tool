@@ -242,7 +242,7 @@ export function ToolboxCard({ cardRef, column, onClose, children }: { cardRef: R
   return (
     <div
       ref={cardRef}
-      className={cx("come-in", column && "col-start-3 row-start-1 sticky top-20 rounded-lg")}
+      className={cx("come-in", column && "col-start-2 row-start-1 sticky top-20 rounded-lg")}
       onKeyDown={(e) => {
         if (e.key === "Escape" && !e.defaultPrevented) {
           e.preventDefault();

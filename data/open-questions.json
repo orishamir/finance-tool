@@ -188,6 +188,10 @@
     "status": "open"
   },
   {
+    "id": "BRK OQ24",
+    "status": "open"
+  },
+  {
     "id": "CS OQ2",
     "status": "narrowed"
   },
@@ -647,6 +651,10 @@
     "status": "narrowed"
   },
   {
+    "id": "KGL OQ15",
+    "status": "open"
+  },
+  {
     "id": "MGD OQ1",
     "status": "narrowed"
   },
@@ -781,7 +789,7 @@
   },
   {
     "id": "MF OQ23",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "PEN OQ2",
@@ -1231,10 +1239,6 @@
     "blocks_he": "האילוץ ״בלי צורך בדוח שנתי למס״ בטופס המטרה"
   },
   {
-    "id": "TXG OQ8",
-    "status": "open"
-  },
-  {
     "id": "TXG OQ10",
     "status": "open"
   },
@@ -1244,6 +1248,15 @@
   },
   {
     "id": "TXG OQ15",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ16",
+    "status": "open",
+    "title_he": "איך בדיוק יתעדכנו הסכומים שבפקודה מ־2028: העיגול, נתוני המדד והסכום לפני העיגול"
+  },
+  {
+    "id": "TXG OQ17",
     "status": "open"
   },
   {
@@ -1460,6 +1473,11 @@
     "status": "open"
   },
   {
+    "id": "TXP OQ20",
+    "status": "open",
+    "title_he": "מה קורה לזיכוי ממס על הפקדה לקופה לקצבה כשהוא גדול מהמס של אותה שנה"
+  },
+  {
     "id": "TXF OQ1",
     "status": "narrowed",
     "title_he": "האם קרן זרה צוברת ממוסה רק במכירה",
@@ -1628,6 +1646,11 @@
     "id": "TXS OQ25",
     "status": "open",
     "title_he": "מתי אדם פרטי יכול בכל זאת לקבל פטור מניכוי מס במקור בניירות ערך"
+  },
+  {
+    "id": "TXS OQ26",
+    "status": "open",
+    "title_he": "האם התקנות על המדד של קרן נאמנות להשקעות חוץ עדיין בתוקף"
   },
   {
     "id": "TX2 OQ2",

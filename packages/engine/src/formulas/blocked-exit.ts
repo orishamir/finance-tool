@@ -30,8 +30,8 @@ const exits = {
 /**
  * F-45 Kupat gemel lehashkaa, annuity route from 60: the value transferred at 60 is the gross balance; the
  * annuity itself is blocked (conversion factors, PEN OQ7; commutation, TXK OQ4; G-03).
- * F-48 Pension and provident fund for annuity, early withdrawal (only if the person opts in): taxed at the higher of
- * 35% and the marginal rate on the whole amount paid (TXP-18; G-06 closed). The formula is
+ * F-48 Pension, provident fund for annuity and provident fund for benefits, early withdrawal (only if the person opts in): taxed
+ * at the higher of 35% and the marginal rate on the whole amount paid, from either kind of fund (TXP-18, TXK-31; G-06 closed). The formula is
  * not built yet, so it stays blocked even when the person opts in, with "F-48" as its reason and no gap.
  * F-49 Pension and provident fund for annuity at or after retirement: the lawful exit is an annuity, partly
  * exempt (TXP-14, TXP-15) with commutation rules (TXP-17, PEN-28); its value needs conversion factors that

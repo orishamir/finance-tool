@@ -60,15 +60,22 @@ export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as cons
 export type FundOutsideCircular = "sick-pay" | "self-directed" | "guaranteed-yield" | "leumi-employees";
 
 /**
- * What the circular makes of a general investment track, with what the reading rests on: closed to members who were not in it on its
- * start date (s.3(ד)), by the rules named; not closed by it, its fund being of a kind s.2 leaves out, by the rules named; or unsettled,
- * where the track may be in such a fund and the open question named (as the rule base writes it, "CAT-OQ36") holds whether it is. An
- * unsettled track is kept, since only a reading drops one.
+ * What the readings make of a track's joining, with what each rests on:
+ * - `closed`: the investment-tracks circular closes a general track to members who were not in it on its start date (s.3(ד)), by the
+ *   rules named. `closedTrack` leaves it out of the data.
+ * - `outside`: the circular does not close the general track, its fund being of a kind s.2 leaves out, by the rules named. Kept.
+ * - `unsettled`: the general track may be in such a fund, and the open question named (as the rule base writes it, "CAT-OQ36") holds
+ *   whether it is. Kept until it is read.
+ * - `company-closed`: the track's managing company's own terms (its bylaws or its own pages) close it to new members, by the rules named,
+ *   whatever the circular makes of it. A closure of another kind than the circular's, and of any track, a guaranteed-yield track as
+ *   well as a general one: the data keeps the track with the reading on it (`closed_to_joiners`, `closedToJoiners`), and the site leaves
+ *   it out (D51).
  */
-export type GeneralTrackReading =
-  | { name: string; cat19: "closed"; rules: readonly string[] }
-  | { name: string; cat19: "outside"; fund: FundOutsideCircular; rules: readonly string[] }
-  | { name: string; cat19: "unsettled"; mayBe: FundOutsideCircular; openQuestion: string };
+export type TrackReading =
+  | { name: string; reading: "closed"; rules: readonly string[] }
+  | { name: string; reading: "outside"; fund: FundOutsideCircular; rules: readonly string[] }
+  | { name: string; reading: "unsettled"; mayBe: FundOutsideCircular; openQuestion: string }
+  | { name: string; reading: "company-closed"; rules: readonly string[] };
 
 /** The columns of a regulator row that say whether it is a general track. */
 export interface TrackRow {
@@ -77,23 +84,28 @@ export interface TrackRow {
   specialization: string;
 }
 
-/** A dataset's general tracks: which rows are general tracks, and the CAT-19 reading of each, by fund id. */
-export interface GeneralTracks {
+/** A dataset's track readings: which rows are general tracks, each of which needs a reading, and the reading of each track read, by fund id. */
+export interface TrackReadings {
   isGeneral: (row: TrackRow) => boolean;
-  readings: ReadonlyMap<number, GeneralTrackReading>;
+  readings: ReadonlyMap<number, TrackReading>;
 }
 
-const closed = (name: string, rules: readonly string[]): GeneralTrackReading => ({ name, cat19: "closed", rules });
-const outside = (name: string, fund: FundOutsideCircular, rules: readonly string[]): GeneralTrackReading => ({ name, cat19: "outside", fund, rules });
-const unsettled = (name: string, mayBe: FundOutsideCircular, openQuestion: string): GeneralTrackReading => ({ name, cat19: "unsettled", mayBe, openQuestion });
+const closed = (name: string, rules: readonly string[]): TrackReading => ({ name, reading: "closed", rules });
+const outside = (name: string, fund: FundOutsideCircular, rules: readonly string[]): TrackReading => ({ name, reading: "outside", fund, rules });
+const unsettled = (name: string, mayBe: FundOutsideCircular, openQuestion: string): TrackReading => ({ name, reading: "unsettled", mayBe, openQuestion });
+const companyClosed = (name: string, rules: readonly string[]): TrackReading => ({ name, reading: "company-closed", rules });
 
 /** CAT-19: the circular closes a general track (s.3(ד)), and its s.2 list of the funds it leaves out. */
 const CIRCULAR = ["CAT-19"] as const;
 /**
- * CAT-53: the five guaranteed-yield funds the fee regulations name are outside the circular, and Gemel-Net's parent-fund data puts the
- * general track inside each fund matched to a name; CAT-54: each company's documents keep that general track open to joiners.
+ * CAT-OQ36 (b): whether the circular's exclusion of a guaranteed-yield fund the fee regulations name takes the fund whole, its general
+ * track included (CAT-53 reads it so; Menora's pages read it track by track).
  */
-const GUARANTEED_YIELD = ["CAT-53", "CAT-54"] as const;
+const WHOLE_FUND = "CAT-OQ36";
+/** CAT-55: each company's own text closes every one of the nine guaranteed-yield tracks in the CMA's data to new members. */
+const GUARANTEED_TRACK_CLOSED = ["CAT-55"] as const;
+/** CAT-54: Meitav's own page lists its general track 923 among the tracks not open to joining. */
+const MEITAV_GENERAL_CLOSED = ["CAT-54"] as const;
 
 /** Gemel-Net's classification for a provident fund for annuity, which has none of its own (PEN). */
 export const GEMEL_ANNUITY_CLASSIFICATION = "תגמולים ואישית לפיצויים";
@@ -102,14 +114,15 @@ export const GEMEL_ANNUITY_CLASSIFICATION = "תגמולים ואישית לפי�
 export const endsInGeneral = (name: string): boolean => /(?:^|[\s\-])כללי\s*$/.test(name);
 
 /**
- * The general tracks of each dataset and their CAT-19 readings, each read in the regulator's 202609 file. Pension-Net has no
+ * The track readings of each dataset, each read in the regulator's 202609 file. Every general track has one: Pension-Net has no
  * specialization column, so a name ending in "כללי" marks a candidate; that is not enough by itself, since an age or specialised track can
  * carry the word, and each listed one was checked to be a general track in the circular's sense. In Gemel-Net the circular's general tracks
  * are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים", specialization "כללי"; the study funds and the
  * provident funds for investing it does not cover. A refresh reports a general track with no reading, so none is dropped or kept without
- * one. `closedTrack` leaves out the closed ones; an unsettled one stays until it is read.
+ * one. Other tracks have a reading where one closes them on their company's terms. `closedTrack` leaves out the circular's closed ones;
+ * an unsettled one stays until it is read; a company-closed one stays in the data with its reading (`closedToJoiners`).
  */
-export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
+export const TRACK_READINGS: Readonly<Record<CmaDataset, TrackReadings>> = {
   "pensia-net": {
     isGeneral: (r) => endsInGeneral(r.name),
     readings: new Map([
@@ -127,12 +140,23 @@ export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
     isGeneral: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי",
     readings: new Map([
       // the general track of a guaranteed-yield fund the fee regulations name: Gemel-Net puts 119 in the fund of 530 to 532 ("מנורה
-      // מבטחים יתר"), 260 in that of 533 and 536 ("מנורה מבטחים אמיר") and 263 in that of 539 ("בר קרן גמולים")
-      [119, outside("מנורה מבטחים יותר מסלול ד'", "guaranteed-yield", GUARANTEED_YIELD)],
-      [260, outside("מנורה מבטחים אמיר כללי", "guaranteed-yield", GUARANTEED_YIELD)],
-      [263, outside("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ", "guaranteed-yield", GUARANTEED_YIELD)],
-      // in Meitav's fund 120 beside 529; whether that fund is the regulations' "ישיר ביטחון" is not read
-      [923, unsettled("מיטב בטחון", "guaranteed-yield", "CAT-OQ36")],
+      // מבטחים יתר"), 260 in that of 533 and 536 ("מנורה מבטחים אמיר") and 263 in that of 539 ("בר קרן גמולים"); their companies keep
+      // them open (CAT-54)
+      [119, unsettled("מנורה מבטחים יותר מסלול ד'", "guaranteed-yield", WHOLE_FUND)],
+      [260, unsettled("מנורה מבטחים אמיר כללי", "guaranteed-yield", WHOLE_FUND)],
+      [263, unsettled("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ", "guaranteed-yield", WHOLE_FUND)],
+      // in Meitav's fund 120 beside 529, closed on Meitav's own page whichever fund it is
+      [923, companyClosed("מיטב בטחון", MEITAV_GENERAL_CLOSED)],
+      // the nine guaranteed-yield tracks (Gemel-Net's status "מבטיחת תשואה", specialization "מבטיח תשואה")
+      [120, companyClosed("מיטב ביטחון מבטיח תשואה 4.5%", GUARANTEED_TRACK_CLOSED)],
+      [528, companyClosed("הפניקס גמולה מבטיחת תשואה", GUARANTEED_TRACK_CLOSED)],
+      [529, companyClosed("מיטב ביטחון מבטיח תשואה 5.5%", GUARANTEED_TRACK_CLOSED)],
+      [530, companyClosed("מנורה מבטחים יותר מסלול א'", GUARANTEED_TRACK_CLOSED)],
+      [531, companyClosed("מנורה מבטחים יותר מסלול ב'", GUARANTEED_TRACK_CLOSED)],
+      [532, companyClosed("מנורה מבטחים יותר מסלול ג'", GUARANTEED_TRACK_CLOSED)],
+      [533, companyClosed("מנורה מבטחים אמיר מדד ידוע", GUARANTEED_TRACK_CLOSED)],
+      [536, companyClosed("מנורה מבטחים אמיר מדד בגין", GUARANTEED_TRACK_CLOSED)],
+      [539, companyClosed("בר קרן גמולים א' - מבטיח תשואה בשיעור 5.5 אחוז לשנה", GUARANTEED_TRACK_CLOSED)],
       // named by the circular's definition; its company is also one EXCLUDED_COMPANIES leaves out (520005497)
       [229, outside("קופת התגמולים של עובדי בנק לאומי", "leumi-employees", CIRCULAR)],
       [857, outside("הראל - דקל קופת גמל לדמי מחלה", "sick-pay", CIRCULAR)],
@@ -154,13 +178,18 @@ export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
 /**
  * A track closed to joiners, left out with those companies: the regulator marks it as for workers of
  * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
- * of investment tracks), or it is a general track CAT-19 closes (`GENERAL_TRACKS`).
+ * of investment tracks), or it is a general track CAT-19 closes (`TRACK_READINGS`, `closed`).
  */
 export const closedTrack = (population: string, name: string, dataset?: CmaDataset, fundId?: number): boolean =>
   population.trim().startsWith("עובדי ") ||
   /קצבה קיימים|זכאים קיימים/.test(name) ||
-  (dataset !== undefined && fundId !== undefined && GENERAL_TRACKS[dataset].readings.get(fundId)?.cat19 === "closed");
+  (dataset !== undefined && fundId !== undefined && TRACK_READINGS[dataset].readings.get(fundId)?.reading === "closed");
 
+/** What a stored track carries when its company's own terms close it (`company-closed`): `closed_to_joiners`, with the reading's rules; else nothing. */
+export const closedToJoiners = (dataset: CmaDataset, fundId: number): CmaFund["closed_to_joiners"] => {
+  const r = TRACK_READINGS[dataset].readings.get(fundId);
+  return r?.reading === "company-closed" ? { by: "company-terms", rule_ids: [...r.rules] } : undefined;
+};
 
 /**
  * Managing companies left out of the data, by legal id (43 companies): their funds serve one
@@ -534,9 +563,12 @@ export function buildYields(
   return { avg_annual_yield_3y: make(YIELD_FIELDS[0]), avg_annual_yield_5y: make(YIELD_FIELDS[1]) };
 }
 
-/** Attach a fund's derived value objects (fees, and holdings and yields when its raw fields have them). */
+/** Attach a fund's derived fields: its value objects (fees, and holdings and yields when its raw fields have them), and its company's closure where a reading has one. */
 const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">, f: CmaFund): CmaFund => {
   const next: CmaFund = { ...f, fees: buildFees(file, f) };
+  const closure = closedToJoiners(file.dataset, f.fund_id);
+  if (closure) next.closed_to_joiners = closure;
+  else delete next.closed_to_joiners;
   const holdings = buildHoldings(file, f);
   if (holdings) next.holdings = holdings;
   else delete next.holdings;
@@ -546,7 +578,7 @@ const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked
   return next;
 };
 
-/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields; nothing else changes. */
+/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields, and `closed_to_joiners` from the readings; nothing else changes. */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
   return { ...file, funds: file.funds.map((f) => derive(file, f)) };
 }
@@ -603,10 +635,10 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
     if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();
     if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
-    const general = GENERAL_TRACKS[ctx.config.dataset];
+    const general = TRACK_READINGS[ctx.config.dataset];
     const row = { name: get(r, "FUND_NAME"), classification: get(r, "FUND_CLASSIFICATION"), specialization: get(r, "SPECIALIZATION") };
     if (general.isGeneral(row) && !general.readings.has(Number(get(r, "FUND_ID").trim())))
-      problems.push(`fund ${get(r, "FUND_ID")}: "${row.name}" is a general track with no reading in GENERAL_TRACKS; say whether CAT-19 closes it to joiners`);
+      problems.push(`fund ${get(r, "FUND_ID")}: "${row.name}" is a general track with no reading in TRACK_READINGS; say whether CAT-19 closes it to joiners`);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);

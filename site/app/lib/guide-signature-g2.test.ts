@@ -1,7 +1,7 @@
 // D29, second wave: the study fund, the provident fund for investing and the pensions. Every figure equals an engine run; the holding
 // on each side is the same index; a gap is a gap, never a number.
 import { describe, expect, it } from "vitest";
-import { ruleBook, runInputs, runPlanned } from "@finance-tool/engine";
+import { calendarMonthOf, ruleBook, runInputs, runPlanned, taxYearOf } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { entered as enteredValue } from "./value";
@@ -132,6 +132,15 @@ describe("study fund", () => {
     expect(self12.per).toBe("year");
     expect(self12.grows).toBe(false);
   });
+  it("gives a self-employed person's room for a whole tax year, whatever the run date's month (F-97)", () => {
+    // 15,000 a month of business income, 1,500 a month after the tax back: a year is 18,000, and the deduction (4.5% of 180,000 = 8,100,
+    // TXH-05) gives back 20% of it (the 120,720 to 228,000 band, TXG-02), so 19,620 is deposited; the benefited amount is 20,566 (TXH-08)
+    const c = { ...self, income: 15000, ownMonthly: 1500 };
+    const st = studyStanding(d, c, studyYears(d, c, 12))!;
+    expect(st.per).toBe("year");
+    expect(st.over[0]).toBe(0);
+    expect(st.room[0]).toBeCloseTo(946, 6);
+  });
   it("has no tax after the lock on an own deposit above the limit that earned less than prices rose", () => {
     const low = { ...employee, income: 10000, ownMonthly: 500, employerMonthly: 500, returnPct: 1 };
     const years = studyYears(d, low, 12);
@@ -198,6 +207,12 @@ describe("pensions", () => {
     expect(mid.relief.monthly).toBeCloseTo((0.35 * 0.07 * 116400) / 12, 6); // credited up to 7% of the eligible income (TXP-02)
     expect(mid.netYou).toBeCloseTo(mid.you - mid.relief.monthly, 9);
   });
+  it("caps the credit at the year's tax, a tax without credit points, and carries the flags that say so (TXP-01, TXP OQ20, G-23)", () => {
+    // the deposit is 6% of the salary, so 35% of it stays far below the 10% first band: the cap does not bind, the flags stand
+    const m = pensionModel(general, "pension-general", { salary: 4000, years: 10, insurancePct: null })!;
+    expect(m.relief.monthly).toBeCloseTo(0.35 * m.you, 9);
+    expect(m.relief.flags).toEqual(["G-23", "TXP-OQ20"]);
+  });
   it("lets the engine's F-30 find the same gross deposit, so the balance is the ledger's", () => {
     const annuity = page("provident-for-annuity").signature!;
     const b = annuity.bundles["provident-for-annuity"]!;
@@ -206,14 +221,28 @@ describe("pensions", () => {
       b.record,
       [b.p05],
       { ...b.terms, pension: { employment: "employee", monthlySalary: 12000, existingEmployeeRate: 0, employer: { pensionRate: 0.065, severanceRate: 0.06 } } },
-      { entered: { amount_now: enteredValue(0, "nis", b.runDate), monthly_deposit: enteredValue(m.netYou, "nis_per_month", b.runDate) }, profile: { annualIncome: 144000 }, scenarioIncome: true },
+      { entered: { amount_now: enteredValue(0, "nis", b.runDate), monthly_deposit: enteredValue(m.netYou, "nis_per_month", b.runDate) }, profile: { annualIncome: 144000 }, scenarioIncome: true, firstMonth: calendarMonthOf(b.runDate) },
     );
     expect(plan.run).toBe("runPension");
     if (plan.run !== "runPension") return;
     plan.input.goal.contributions = "nominal";
-    const run = runPlanned(plan, { rules: b.rules, runDate: b.runDate });
-    expect(run.detail.grossDeposits).toBeCloseTo(m.you * 12 * 10, 4);
+    const run = runPlanned(plan, { rules: b.rules, runDate: b.runDate }) as ReturnType<typeof runPlanned> & { deposits: number[] };
+    // the same gross deposit while the caps are frozen (2026 and 2027); from 2028 the eligible-income cap grows with the CPI (F-119),
+    // so the same net outlay earns more credit and buys a larger gross deposit, up to the salary's 7%. Month 1 is the run date's month, so
+    // 2028 starts on the calendar's 1 January, not 24 months after the run date
+    const yearOf = (m0: number) => Number(b.runDate.slice(0, 4)) + taxYearOf(m0, calendarMonthOf(b.runDate)) - 1;
+    const first2028 = Array.from({ length: 120 }, (_, i) => i + 1).find((m0) => yearOf(m0) === 2028)!;
+    expect(first2028).toBe(26 - calendarMonthOf(b.runDate) - 12 * (Number(b.runDate.slice(0, 4)) - 2026));
+    // the run date's own tax year holds only the months from the run date, and the year's cap is the whole year's (F-31), so its few
+    // deposits are credited in full and the same net outlay buys a larger gross deposit there; a whole frozen year buys the drawing's
+    const first2027 = Array.from({ length: 120 }, (_, i) => i + 1).find((m0) => yearOf(m0) === 2027)!;
+    for (let m0 = 1; m0 < first2027; m0++) expect(run.deposits[m0]).toBeGreaterThanOrEqual(m.you - 1e-6);
+    for (let m0 = first2027; m0 < first2028; m0++) expect(run.deposits[m0]).toBeCloseTo(m.you, 6);
+    for (let m0 = first2028; m0 <= 120; m0++) expect(run.deposits[m0]).toBeGreaterThan(m.you);
+    expect(run.detail.grossDeposits).toBeGreaterThan(m.you * 12 * 10);
     expect(m.balance!.real).toBeGreaterThan(0);
+    // the balance carries what its runs rest on: the caps grown from 2028 (G-36) and the credit at a tax without credit points (TXP OQ20, G-23)
+    expect(m.balance!.flags).toEqual(expect.arrayContaining(["G-36", "TXP-OQ20", "G-23"]));
     expect(m.general).toBeNull();
   });
   it("gives the same balance at every salary from the average wage up, since the deposits are the same and nothing is above TXP-10's limit", () => {

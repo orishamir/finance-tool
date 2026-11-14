@@ -7,6 +7,7 @@ import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { Button } from "./button";
 import { cx } from "./cx";
+import { NameStack, useListSelect, type ListOption } from "./list-select";
 
 /** Commits typed values that are still waiting out the 150 ms typing pause (F13). */
 const pendingCommits = new Set<() => void>();
@@ -499,63 +500,55 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
 }
 
 /**
- * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name in one native
- * select, no field box. `all` is the first option, chosen when `value` is null; without it one of the options is always chosen.
- * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
- * period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron and its label for a screen reader only, a choice made in
- * place beside a figure (a price's currency "$ ▾", its period "לרבעון ▾"), 44 px tall: as wide as its chosen words, the native select
- * laid unseen over them; a chosen value in the entered blue with its edge, or plain where a template filled it (`plain`), while nothing is
- * chosen `all` in the muted ink.
+ * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name, no field box, the
+ * kit's own list under it (`useListSelect`: a select-only combobox, by the keys as by the pointer). `all` is the first option, chosen when
+ * `value` is null; without it one of the options is always chosen. `labelHidden` keeps the label for a screen reader only, where the words
+ * around the choice already say what it chooses (a price's period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron
+ * and its label for a screen reader only, a choice made in place beside a figure (a price's currency "$ ▾", its period "לרבעון ▾"), 44 px
+ * tall; a chosen value in the entered blue with its edge, or plain where a template filled it (`plain`), while nothing is chosen `all` in
+ * the muted ink, and `all` is then no option of the list. Either way the button is as wide as its longest name (`NameStack`), so it keeps
+ * one width whichever is chosen.
  */
 export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip, plain }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean; /** A chip whose value a template filled, drawn plain until the person changes it. */ plain?: boolean }) {
-  const id = useId();
+  // a chip's `all` only says nothing is chosen yet; a line's is an option, the one that chooses none
+  const list: ListOption[] = chip || all === undefined ? options : [{ id: null, name: all }, ...options];
+  const s = useListSelect({ options: list, value, onChange });
+  const names = list.map((o) => o.name);
+  const at = list.findIndex((o) => o.id === value);
+  // a chip with nothing chosen shows `all`, which its list does not hold: it stands first in the stack
+  const stack = at < 0 && all !== undefined && chip ? { names: [all, ...names], at: 0 } : { names, at: Math.max(at, 0) };
+  const chevron = <IconChevronDown size={16} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fast)]", s.open && "rotate-180")} />;
   if (chip) {
-    const shown = options.find((o) => o.id === value)?.name ?? all ?? "";
-    // the words are drawn in a span, the select laid over it unseen: a native select is as wide as its longest option, the chip as its chosen one
     return (
-      <span
-        className={cx(
-          "relative inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm hover:bg-accent has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-ring",
-          value === null ? "border-input text-muted-foreground" : plain ? "border-input" : "border-entered/70",
-        )}
-      >
-        <span aria-hidden="true" className={cx("truncate", value !== null && (plain ? "font-medium text-foreground" : "font-medium text-entered"))}>
-          {shown}
-        </span>
-        <IconChevronDown size={16} aria-hidden="true" className="shrink-0 text-muted-foreground" />
-        <label htmlFor={id} className="sr-only">
+      <span className="inline-flex max-w-full">
+        <label id={s.labelId} htmlFor={s.buttonId} className="sr-only">
           {label}
         </label>
-        {/* over the chip's edge too, so the select's own target is the chip's whole 44 px */}
-        <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="absolute -inset-px cursor-pointer appearance-none rounded-full opacity-0">
-          {all !== undefined && (
-            <option value="" disabled>
-              {all}
-            </option>
+        <button
+          {...s.button}
+          className={cx(
+            "inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring",
+            value === null ? "border-input text-muted-foreground" : plain ? "border-input" : "border-entered/70",
           )}
-          {options.map((o) => (
-            <option key={o.id} value={o.id}>
-              {o.name}
-            </option>
-          ))}
-        </select>
+        >
+          <NameStack names={stack.names} at={stack.at} className={cx(value !== null && (plain ? "font-medium text-foreground" : "font-medium text-entered"))} />
+          {chevron}
+        </button>
+        {s.list}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 text-sm">
-      <label htmlFor={id} className={labelHidden ? "sr-only" : "text-muted-foreground"}>
+      <label id={s.labelId} htmlFor={s.buttonId} className={labelHidden ? "sr-only" : "text-muted-foreground"}>
         {label}
         {labelHidden ? "" : ":"}
       </label>
-      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="min-h-target max-w-48 truncate bg-transparent font-medium text-foreground rounded-md px-1 hover:bg-accent/50 cursor-pointer">
-        {all !== undefined && <option value="">{all}</option>}
-        {options.map((o) => (
-          <option key={o.id} value={o.id}>
-            {o.name}
-          </option>
-        ))}
-      </select>
+      <button {...s.button} className="inline-flex min-h-target max-w-48 items-center gap-1 rounded-md ps-1 pe-0.5 font-medium text-foreground hover:bg-accent/50 focus-visible:outline-2 focus-visible:outline-ring">
+        <NameStack names={stack.names} at={stack.at} />
+        {chevron}
+      </button>
+      {s.list}
     </span>
   );
 }

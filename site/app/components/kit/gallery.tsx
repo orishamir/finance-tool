@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { DropZone, RemoveButton, AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { DropZone, RemoveButton, AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -1851,13 +1851,13 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="InlineSelect" use={g.uses.InlineSelect}>
-        <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
+        <State label="a choice in a line of other controls: the label and the chosen name, no field box; a press, ArrowDown or a letter opens the kit's own list (a check on the chosen option, the lit one tinted), Escape closes it" wide>
           <InlineSelectDemo />
         </State>
         <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
           <InlineSelectHiddenDemo />
         </State>
-        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron; nothing chosen yet shows `all` in the muted ink" wide>
+        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron, as wide as its longest option whichever is chosen; nothing chosen yet shows `all` in the muted ink" wide>
           <InlineSelectChipDemo />
         </State>
       </Demo>
@@ -2629,6 +2629,22 @@ function DealDemos({ today }: { today: string }) {
             <p className="text-sm text-muted-foreground">{g.sample.body}</p>
           </Step>
         </div>
+      </Demo>
+      <Demo name="StepStrip" use={g.uses.StepStrip}>
+        <State label="two steps made, the line's own action at its end, and a line about what was chosen under it" wide>
+          <Card className="max-w-3xl">
+            <StepStrip
+              heading={dealWords.builder.title}
+              steps={[
+                { id: "kind", title: dealWords.builder.kind, value: g.sample.title, action: <Button variant="quiet" size="sm" flush>{dealWords.builder.kindChange}</Button> },
+                { id: "track", title: dealWords.builder.track, value: dealWords.builder.trackNone, action: <Button variant="quiet" size="sm" flush>{dealWords.builder.trackPick}</Button> },
+              ]}
+              end={<Button variant="quiet" size="sm" flush>{dealWords.end.template}</Button>}
+            >
+              <p className="text-sm text-muted-foreground">{g.sample.body}</p>
+            </StepStrip>
+          </Card>
+        </State>
       </Demo>
       <Demo name="AmountChart" use={g.uses.AmountChart}>
         <State label={`a minimum up to 6,000 and a share above it, under a second share; ${g.states.interactive}: point at the plot or tap it`} wide>

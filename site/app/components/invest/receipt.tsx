@@ -1,6 +1,7 @@
 // The index page's answer: the chosen pair's receipt (F-91, F-106, F-65). What was paid in, what the index added
 // before any cost, what the tax, the account (line by line, each with its rate as the price list prints it) and the fund (its fees as rows
-// of the same shape, each with its rate) took, and what is left; then the gain, what went on the way, and a bar of who took it. The figures follow the plan as a slider moves (the pair is priced
+// of the same shape, each with its rate) took, beside the account's fees what the cash waiting for a whole unit did (F-109, not a fee), and
+// what is left; then the gain, what went on the way, and a bar of who took it. The figures follow the plan as a slider moves (the pair is priced
 // once per plan for this card and the fees panel under the lists, `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
 // From 1280 px it is a ticket across the main column, above the two lists and the ruler, whose point joins its total; below 1280 px it is
 // paper above the lists, and its stub at the screen's foot keeps what is left in sight and leads back to it.
@@ -12,7 +13,7 @@ import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
-import { differenceOf, ownBy, type SiteValue } from "../../lib/value";
+import { differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
 import { isGroupProvider } from "../../lib/group-pick";
@@ -161,12 +162,15 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         const words = rateWords(l.line, pc.priced, plan.monthly);
         return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
       })}
-      {r.remainder !== 0 && <ReceiptLine size="sm" label={pc.units ? c.pair.remainderUnits : c.pair.remainder} value={<Num value={pc.remainder} display={minus(r.remainder)} />} />}
+      {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={pc.remainder} display={minus(r.remainder)} />} />}
       {/* what the house's documents hold and its price leaves out, under its lines (D106); a group's account is its house's */}
       <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === baseHouse))} house={baseShort} />
     </>
   );
   const accountValue = <Num value={account} display={minus(r.account)} />;
+  // F-109: what the cash waiting for a whole unit did, beside the account's fees and never among them: a minus where the fund rose while it
+  // waited, a plus where it fell
+  const waitingLine = pc.waiting && r.waiting !== 0 && <ReceiptLine size="sm" label={c.pair.waiting} value={<Num value={pc.waiting} display={minus(r.waiting)} />} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />;
   const fundValue = <Num value={pc.fund} display={minus(r.fund)} />;
   const fundParts = fund && feeRows(fund.rec, bundle, today);
   // held at its longest case: the dollar's clause comes and goes with the fund and the index, and moves nothing below
@@ -177,7 +181,9 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   );
   const total = <Num value={pc.left} display={fmt.nisWhole(r.left)} />;
   const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={fmt.signedNisWhole(r.gain)} />} sub={c.receipt.gainNote} />;
-  const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={barTotalValue(pc, short, today)} display={fmt.nisWhole(r.lost)} />} />;
+  // what the tax, the account's fees and the fund took: X less what is left, and in whole units less what the waiting cash did (F-91)
+  const lostValue = pc.waiting ? sumOf({ [v.taxName]: pc.tax, [c.receipt.parts.account]: account, [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.receipt.lost, round: Math.round }) : barTotalValue(pc, short, today);
+  const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={lostValue} display={fmt.nisWhole(r.lost)} />} />;
   const bar = (
     <ShareBar
       label={`${c.receipt.lostBar}: ${v.taxName} ${shares[0]}%, ${c.receipt.parts.account} ${shares[1]}%, ${c.receipt.parts.fund} ${shares[2]}%`}
@@ -197,6 +203,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         start={
           <TicketPart label={c.receipt.parts.account} swatch="bg-chart-by-account" name={<MixedName>{short}</MixedName>}>
             <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
+            {waitingLine}
           </TicketPart>
         }
         middle={
@@ -241,6 +248,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
           value={accountValue}
           parts={accountParts}
         />
+        {waitingLine}
         <ReceiptLine
           size="sm"
           swatch="bg-chart-by-fund"

@@ -599,7 +599,8 @@ One file per dataset per report period, written by the pipeline: `cma/<dataset>@
       "yields": {
         "avg_annual_yield_3y": { "value": 13.16, "unit": "pct_per_year", "...": "value object, below" },
         "avg_annual_yield_5y": { "value": 8.19, "unit": "pct_per_year", "...": "value object, below" }
-      }
+      },
+      "closed_to_joiners": "optional: { \"by\": \"company-terms\", \"rule_ids\": [\"CAT-55\"] }, below"
     }
   ]
 }
@@ -620,6 +621,7 @@ One file per dataset per report period, written by the pipeline: `cma/<dataset>@
   - The regulator states that every yield is nominal and gross (CAT-04): before management fees, and not net of tax; the note says so, and that it is a past return. That the window ends at the report month and that the figure is a geometric annualisation are read from the data, not stated (CAT-05), and the note says that too.
   - An empty field is `value: null` with the note "לא דווח." (CAT-05: null when the track is younger than the window), or "לא דווח: למסלול עוד אין N שנים מלאות (נפתח …)" when the track opened less than N years before the period's end. A negative yield is kept as reported.
   - The site marks both stale by the monthly rule (`staleCma`) and never ranks by them.
+- **Closed on the company's terms** (D51). Optional: `closed_to_joiners` is `{ "by": "company-terms", "rule_ids": [...] }` on a track whose managing company's own terms (its bylaws or its own pages) close it to new members, with the rules that quote them, as the adapter's track readings hold it (`TRACK_READINGS`, `company-closed`; `closedToJoiners`). The adapter writes it on a refresh and `renormaliseFees` rebuilds it; a test holds the stored files to the readings. The file keeps such a track, and the site leaves it out wherever it reads the file (`takesNewMembers`). Today: the nine guaranteed-yield tracks (CAT-55) and 923 (CAT-54).
 
 ### 3.14 `data/fund-lists/` — the fund lists (3.4 fund variants, 3.10, product D17)
 

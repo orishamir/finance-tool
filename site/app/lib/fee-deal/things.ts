@@ -2,7 +2,7 @@
 // what adding it does to the cases, a slot's choices, and a thing's menu. Every word is from the copy; a component only lays them out.
 import { feeDeal as copy } from "../../copy";
 import { hasCases, isRange, namesPlaces, type Fee } from "./model";
-import { canAddBy, removeBy } from "./edits/case";
+import { canAddBy, ownKept, removeBy } from "./edits/case";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, CONDITIONS, isPlaceKind, isRangeKind, isWordsKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { thingName, valueWords, whenWords, type WhenWords } from "./case-words";
@@ -109,7 +109,8 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
 /**
  * A thing of a fee's band head, opened while the fee is open: its spoken name, its values as the cases name them, each once in the cases' order; the action
  * that stops the price changing by it (`removeBy`); and what that does to the cases (`after`): how many there are before and after where
- * cases merge, that they stay as they are where none merge, or that the fee keeps its first case's price where it was its only thing.
+ * cases merge, that they stay as they are where none merge, or that the fee keeps one case's price where it was its only thing; whose
+ * price a merged case keeps, the person's track's or the first case's, as `removeBy` keeps it (`ownKept`).
  */
 export interface ThingMenu {
   /** The menu's spoken name: "המחיר משתנה לפי {thing}". */
@@ -137,6 +138,7 @@ export function thingMenu(r: DealRead, feeId: string, t: number): ThingMenu | nu
   const left = removeBy(fee, t);
   const from = fee.cases.length;
   const to = hasCases(left) ? left.cases.length : 1;
-  const after = !hasCases(left) ? m.slim : to < from ? m.merge.replace("{from}", String(from)).replace("{to}", String(to)) : m.kept;
+  const own = ownKept(fee, t);
+  const after = !hasCases(left) ? (own ? m.slimOwn : m.slim) : to < from ? (own ? m.mergeOwn : m.merge).replace("{from}", String(from)).replace("{to}", String(to)) : m.kept;
   return { name: `${copy.cases.changesBy} ${thing}`, title: m.title, values, stop: m.stop.replace("{thing}", thing), after };
 }

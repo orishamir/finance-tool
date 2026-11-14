@@ -6,6 +6,7 @@ import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, totalUnits, type Lot } from "./lots.ts";
@@ -268,7 +269,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
     throw new Error("F-118: the run's exit tax is not blocked by an open rule; its value is runSecurities's");
   }
   if (input.wrapper || input.carriedLoss) throw new Error("F-118 reads a securities account alone, with no wrapper and no carried loss");
-  const r = securitiesLedger(input, ctx, rule);
+  const r = acrossReadings(ctx, (c) => securitiesLedger(input, c, rule));
   return {
     exitMonth: r.exitMonth,
     paidIn: r.paidIn,
@@ -281,6 +282,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
     formulas: r.formulas,
     rules: r.rules,
     ...(r.feesCarried ? { feesCarried: r.feesCarried } : {}),
+    ...(r.waitingCarried !== undefined ? { waitingCarried: r.waitingCarried } : {}),
     beforeTaxNominal: r.nominal,
     beforeTaxReal: r.real,
     outcome: { code: "listed-not-ranked", reason: rule },
@@ -299,7 +301,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
-  return securitiesLedger(input, ctx, null);
+  return acrossReadings(ctx, (c) => securitiesLedger(input, c, null));
 }
 
 /**
@@ -307,7 +309,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
  * open rule that blocks the exit tax, and the run then reads no tax index and stops after the sale's costs.
  */
 function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null): RunResult {
-  const book = ruleBook(ctx);
+  // F-119: a later leg's grid starts that many tax years after the run date's
+  const book = ruleBook(ctx, { inflation: input.market.inflation, startsAfter: Math.floor(((input.goal.firstMonth ?? 1) - 1 + (input.gridOffset ?? 0)) / 12) });
   const { goal, market, fund, tariff, profile } = input;
   // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax; F-118 never reads the index
   const taxIndex = beforeTaxOf === null ? taxIndexOf(fund, book) : null;
@@ -554,6 +557,9 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, true);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
+    // F-109, F-91: the cash waiting for a unit this month, which the month's growth and its share of the holdings do not reach (`waitingCarried`)
+    const waitingNow = unitBuy ? waiting(m) : 0;
+    if (unitBuy) tally.waitFrom(waitingNow);
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
     let units = totalUnits(lots);
     const before = units * nav;
@@ -615,6 +621,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     const held = units * nav;
     const custodyAtRate = custodyLine !== undefined && custody > 0 && Math.abs(custody - custodyLine.rate * (held - manager)) <= 1e-9 * Math.max(1, custody);
     tally.grow(1 - (custodyAtRate ? custodyLine.rate * (1 - wrapperFee / 12) : 0) - wrapperFee / 12);
+    if (unitBuy) tally.waitTo(waitingNow);
     const fromUnits = custody + manager + fixed + account - fromCash;
     if (fromUnits > 0) {
       lots = removeFifo(lots, fromUnits / nav);
@@ -628,7 +635,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + fixed;
 
     if (closesTaxYear(m, T, first)) {
-      if (distThisYear > 0) tally.taxDuring += yearlySurtax(book, profile, distThisYear);
+      if (distThisYear > 0) tally.taxDuring += yearlySurtax(book, profile, distThisYear, taxYearOf(m, first));
       if (m === T) exitYearDist = distThisYear;
       distThisYear = 0;
     }
@@ -700,7 +707,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (step.value) {
       exit = step.value;
       if (step.value.settledByReturn) tally.flag("G-21");
-    } else outcome = { code: "listed-not-ranked", reason: step.blocked };
+    } else outcome = step.outcome;
     if (realGain < 0) tally.flag("G-07");
     tally.flag("G-20");
     if (isForeign && !fund.distribution && !fund.saleOnlyRuling && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };

@@ -307,6 +307,8 @@ describe("the fees' column", () => {
     const closed = drawBuilder(d, null);
     expect(pills(open) - pills(closed)).toBe(2 + 2);
     expect(count(closed, `>${feeDeal.cases.things.what}</span>`)).toBe(1);
+    // closed too, each thing has its bin, which takes it away without opening the fee
+    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(closed, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(1);
   });
   it("says each case's standing against the cap beside it, as a slim line's", () => {
     const d = provident();

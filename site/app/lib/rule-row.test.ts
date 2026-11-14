@@ -39,8 +39,9 @@ describe("rowPills", () => {
 });
 
 describe("openPart", () => {
-  it("marks a rule whose text goes on, past the sentence the row shows, to an open question (TX2-14), and not an open rule or a settled one", () => {
-    expect(openPart(all["TX2-14"]!)).toBe(true);
+  it("marks a rule whose text goes on, past the sentence the row shows, to an open question (TXS-14), and not an open rule, a settled one or one that leads with its question (TX2-14)", () => {
+    expect(openPart(all["TXS-14"]!)).toBe(true);
+    expect(openPart(all["TX2-14"]!)).toBe(false);
     expect(openPart(all["TXF-04"]!)).toBe(false);
     expect(openPart({ strength: "primary", text_he: "זו שאלה פתוחה. ועוד משפט." })).toBe(false);
     expect(openPart({ strength: "primary", text_he: "הכלל קבוע. אם הוא חל גם על קרן סל, זו שאלה פתוחה." })).toBe(true);

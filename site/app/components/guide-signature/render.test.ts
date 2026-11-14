@@ -110,9 +110,10 @@ describe("the pension visuals", () => {
     expect(text).not.toContain("מה שנצבר בקרן אחרי");
     expect(text).not.toContain("דמי הביטוח בקרן הפנסיה");
   });
-  it("says what the balance assumes: deposits flat in shekels, and no insurance until it is entered", () => {
+  it("says what the balance assumes: the net outlay flat in shekels, so the gross deposit can grow from 2028, and no insurance until it is entered", () => {
     const text = textOf("provident-for-annuity");
-    expect(text).toContain("ההפקדות באותו סכום בשקלים בכל השנים");
+    expect(text).toContain("מה שיוצא מהכיס שלכם, אחרי הזיכוי, באותו סכום בשקלים בכל השנים");
+    expect(text).toContain("ולכן ההפקדה עצמה יכולה לגדול");
     expect(text).not.toContain("בשתי הדרכים");
     // a provident fund for annuity has no insurance, so the line does not say it is left out
     expect(text).not.toContain("בלי דמי ביטוח");

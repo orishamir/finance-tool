@@ -21,19 +21,29 @@ const lockIcon = (label: string) => <IconLock size={14} aria-label={label} class
 const NONE: Taken[] = [];
 const hueOf = (lane: Lane | null): StairHue => lane ?? "start";
 
-/** One stair with the three costs it takes, as the stairs show them. */
+/** The parts of F-91 a stair shows, in the table's order: the account's fees, what the cash waiting for a whole unit did (F-109), the fund's part and the state's. */
+const PARTS = ["account", "waiting", "fund", "tax"] as const;
+type Part = 0 | 1 | 2 | 3;
+
+/** One stair with the costs it takes, as the stairs show them. */
 interface Level {
   stair: Stair;
   fundName: string;
   house: ProviderInfo;
   left: SiteValue;
+  /** The account's fees (F-91), as the receipt writes them. */
   account: SiteValue;
+  /** In whole units, what the cash waiting for a unit did against the fund (F-109): not a fee, so apart from `account`; null where the house buys by amount, where it is 0. */
+  waiting: SiteValue | null;
   /** The fund's and the state's parts (F-91); null where the way's cost could not be split by who takes it (`pairCosts` gave none): the cell says so, never a 0. */
   fund: SiteValue | null;
   tax: SiteValue | null;
-  /** The three costs less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start, and where this stair or the one before has no split. */
-  dParts: [number, number, number] | null;
+  /** The four parts less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start, and where this stair or the one before has no split. */
+  dParts: [number, number, number, number] | null;
 }
+
+/** A part's figure at a level as a number: the waiting cash of a way that buys by amount is 0. */
+const partValue = (l: Level, k: Part): number => (PARTS[k] === "waiting" ? ((l.waiting?.value as number | undefined) ?? 0) : (l[PARTS[k]]!.value as number));
 
 /** The status line's jump to the top pair: one element for the line and its unseen cases, which must wrap as it does. */
 function JumpLink({ children, onClick }: { children: ReactNode; onClick?: () => void }) {
@@ -79,15 +89,16 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
         house: house(stair.pos.a),
         left: p.value,
         account: p.cost(`${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`, false),
+        waiting: pc?.waiting ?? null,
         fund: pc?.fund ?? null,
         tax: pc?.tax ?? null,
         dParts: null,
       };
       const prev = out[i - 1];
       if (prev && level.fund && level.tax && prev.fund && prev.tax) {
-        const raw = [level.account, level.fund, level.tax].map((v, k) => (v.value as number) - ([prev.account, prev.fund!, prev.tax!][k]!.value as number)) as [number, number, number];
-        // whole shekels that add up to the difference in what is left, so the three figures under a stair never disagree with the stair
-        level.dParts = wholeParts(raw, -(stair.d ?? 0)) as [number, number, number];
+        const raw = ([0, 1, 2, 3] as const).map((k) => partValue(level, k) - partValue(prev, k));
+        // whole shekels that add up to the difference in what is left, so the figures under a stair never disagree with the stair
+        level.dParts = wholeParts(raw, -(stair.d ?? 0)) as [number, number, number, number];
       }
       out.push(level);
     });
@@ -140,11 +151,13 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
 
   const delta = (n: number, a: SiteValue, an: string, b: SiteValue, bn: string, about: string) => computed(n, "nis", "F-91", { [an]: a, [bn]: b }, { today, about });
   const diffOf = (l: Level, prev: Level) => delta(l.stair.d ?? 0, l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
-  const partOf = (l: Level, prev: Level, k: 0 | 1 | 2) => {
-    const key = (["account", "fund", "tax"] as const)[k];
-    const name = [t.table.accountCost, t.table.fundCost, t.table.tax][k]!;
-    // read only where both stairs have their split (`dParts`), so every part is a figure
-    return delta(l.dParts![k], l[key]!, `${name}: ${l.fundName}, ${l.house.short}`, prev[key]!, `${name}: ${prev.fundName}, ${prev.house.short}`, `${t.about.cost}: ${name}`);
+  const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
+  const partOf = (l: Level, prev: Level, k: Part) => {
+    const name = partName(k);
+    // read only where both stairs have their split (`dParts`), so every part is a figure; a way by amount has no waiting cash, and its 0 is the only side
+    const side = (x: Level) => (PARTS[k] === "waiting" ? x.waiting : x[PARTS[k]]);
+    const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, `${name}: ${x.fundName}, ${x.house.short}`] as [SiteValue, string]] : []));
+    return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about: `${t.about.cost}: ${name}` });
   };
 
   // ---------------------------------------------------------------- the chart and what sits under it
@@ -183,17 +196,18 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     );
 
   const laneWord = (s: Stair) => (s.lane ? t.lanes[s.lane].word : t.startPoint);
-  const tone = (l: Level, k: 0 | 1 | 2) => {
+  const tone = (l: Level, k: Part) => {
     const parts = l.dParts;
     if (!parts) return "";
     const big = Math.max(...parts.map((x) => Math.abs(x)));
     return Math.abs(parts[k]) === big && Math.abs(parts[k]) >= 1 ? "font-bold" : parts[k] === 0 ? "text-muted-foreground" : "";
   };
-  const costCell = (l: Level, i: number, k: 0 | 1 | 2) => {
-    const key = (["account", "fund", "tax"] as const)[k];
+  const costCell = (l: Level, i: number, k: Part) => {
+    const key = PARTS[k];
     const prev = levels[fold + i - 1];
     // the start shows its own costs; a stair whose split is missing (here or on the stair before) says so, never a difference against a 0
     const own = l[key];
+    if (key === "waiting" && !prev && !own) return <span className="text-muted-foreground">—</span>;
     if (!prev) return own ? <Num value={own} /> : <span className="text-muted-foreground">{t.table.notSplit}</span>;
     if (!l.dParts) return <span className="text-muted-foreground">{t.table.notSplit}</span>;
     return (
@@ -202,6 +216,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       </span>
     );
   };
+  const waits = levels.some((l) => l.waiting !== null);
   const rowsTable = [
     {
       id: "what",
@@ -232,8 +247,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       )),
     },
     { id: "ac", head: t.table.accountCost, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 0)}</span>), className: "border-t border-border" },
-    { id: "fc", head: t.table.fundCost, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 1)}</span>) },
-    { id: "tx", head: t.table.tax, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 2)}</span>) },
+    // the waiting cash has a row only on stairs where some house buys in whole units (F-109)
+    ...(waits ? [{ id: "wt", head: t.table.waiting, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 1)}</span>) }] : []),
+    { id: "fc", head: t.table.fundCost, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 2)}</span>) },
+    { id: "tx", head: t.table.tax, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 3)}</span>) },
     { id: "left", head: t.table.left, cells: visible.map((l, i) => <span key={i} className="block border-t border-border pt-1.5 text-base font-semibold"><Num value={l.left} /></span>) },
   ];
   // the result's column: where the steps end, with the pair's own costs, as the start shows its own
@@ -243,6 +260,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     fund: <span className="block min-h-[3lh] text-muted-foreground"><MixedName>{end.fundName}</MixedName></span>,
     account: <span className="block min-h-[3lh] text-muted-foreground"><ProviderLink short p={end.house} muted /></span>,
     ac: own(end.account),
+    wt: end.waiting ? <Num value={end.waiting} /> : <span className="text-muted-foreground">—</span>,
     fc: own(end.fund),
     tx: own(end.tax),
     left: <span className="block border-t border-border pt-1.5 text-base font-semibold"><Num value={end.left} /></span>,
@@ -252,7 +270,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const steps: StairStep[] = levels.map((l, i) => {
     const s = l.stair;
     const prev = levels[i - 1];
-    const parts = prev && l.dParts ? ([0, 1, 2] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{[t.table.accountCost, t.table.fundCost, t.table.tax][k]} <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} /></span>) : null;
+    const parts = prev && l.dParts ? ([0, 1, 2, 3] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{partName(k)} <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} /></span>) : null;
     const what = !s.lane ? `${t.stepStart} ${l.fundName}, ${l.house.short}` : `${t.lanes[s.lane].word}: ${s.lane === "account" ? l.house.short : l.fundName}`;
     return {
       id: `${s.pos.a}|${s.pos.f}|${i}`,

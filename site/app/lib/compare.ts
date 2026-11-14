@@ -2,7 +2,7 @@
 // candidate set (F-83) and ranking (F-80) over them. No rate, fee or rule figure is
 // written here: everything comes from the bundle or from the person, and every number leaves as a value object so the provenance
 // sheet can open it.
-import { buildCandidateSet, coverageLine, withHeldRate, withFeeScaled, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult } from "@finance-tool/engine";
+import { buildCandidateSet, calendarMonthOf, coverageLine, withHeldRate, withFeeScaled, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult } from "@finance-tool/engine";
 import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
 import type { Employment } from "./inputs";
@@ -475,7 +475,8 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
   const needs: Partial<Record<string, FieldKey>> = {};
   const scale = options.scale ?? {};
   const entries = bundle.wrappers.filter((w) => !options.only || options.only.has(w.id));
-  const goal = comparisonGoal(g);
+  // each run's month 1 is the run date's month, so its tax years follow the calendar (F-01)
+  const goal = { ...comparisonGoal(g), firstMonth: calendarMonthOf(bundle.runDate) };
   const inputs: CandidateSetInput = {
     wrappers: entries.map((w) => {
       const terms = termsFor(w, g, scale, needs);

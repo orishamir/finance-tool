@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -178,9 +178,13 @@ export interface WayPrice {
   venue: Venue | null;
   /** The run rests on an open rule (an accumulating foreign fund, G-18): shown, not ranked. */
   open: boolean;
-  /** What the account itself charges over the horizon, before the tax it saves (F-91 on F-63), real shekels: the same figure as the account's part of the cost bar. */
+  /**
+   * What the account's fees take over the horizon, before the tax they save (F-91 on F-63), real shekels: the receipt's fees. In whole units
+   * the account's part also holds what the cash waiting for a unit did (F-109), which is not a fee and is left out here, as the receipt
+   * writes it apart.
+   */
   accountCost: number;
-  /** The account's cost as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
+  /** The account's fees as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
   cost: (about: string, whole?: boolean) => SiteValue;
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
@@ -205,7 +209,7 @@ export interface BeforeTaxPrice {
   /** What is left at the horizon before the exit tax, today's shekels (F-118). */
   left: SiteValue;
   leftN: number;
-  /** What the account itself charges over the horizon (F-91's account part, from the same runs), in whole shekels. */
+  /** What the account's fees take over the horizon (F-91's account part from the same runs, less what the cash waiting for a whole unit did, F-109), in whole shekels. */
   accountCost: SiteValue;
 }
 
@@ -456,7 +460,8 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
-/** The open rule a run of the spec's fund would rest on (F-04), or null. */
+/** The open rule a run of the spec's fund would rest on (F-04), or null. A question whose readings split a run (TXG OQ17 at a falling CPI)
+ *  is the run's own to say: its row is not comparable, "rule-open" (method §13). */
 const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
 
 /** The open rule every fund of a kind would rest on (F-04: a foreign fund in Tel Aviv, TXF-04), or null: what a fund the person types of that kind is told. */
@@ -497,7 +502,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
   if (ctx.plan.income !== null && ctx.plan.income > 0) profile.annualIncome = ctx.plan.income;
   const input = (list: typeof items) => ({
-    goal: { amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years },
+    goal: { amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) },
     market: { ...spec.market, inflation: ctx.plan.inflation },
     fund: spec.fund,
     profile,
@@ -534,6 +539,8 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
         return run([x])[0]!;
       } catch (e) {
         const base = { id: x.s.id, name: x.s.provider.name_he, providerClass: x.s.provider.class, level: "list" as const, snapshot: x.s.snapshot, tariffSource: x.s.tariff, protectionRuleIds: x.s.provider.protection_rule_ids, minimums: x.s.minimums };
+        // a run stopped on an open rule before its exit (an open question whose readings split a yearly tax) is that rule's, not the record's
+        if (e instanceof BlockedError) return { ...base, kind: "not-comparable" as const, reason: { code: "rule-open" as const, ruleId: e.ruleId, question: e.question ?? e.ruleId } };
         return { ...base, kind: "not-comparable" as const, reason: { code: "record-error" as const, detail: e instanceof Error ? e.message : String(e) } };
       }
     });
@@ -554,7 +561,7 @@ export function listReading(bundle: IndicesBundle, s: FeesSnapshot, option: Opti
   const builds = candidates(scopedSnap, option).flatMap((cand) => {
     try {
       const built = buildTariff(
-        { goal: { amountNow: plan.amountNow, monthly: plan.monthly, months: 12 * plan.years }, market: { ...spec.market, inflation: plan.inflation }, profile: {}, instrumentClass: spec.cls, channel: "direct", ...(spec.currency ? { currency: spec.currency } : {}), fx: ctx.fx, theta: ctx.theta, providers: [] },
+        { goal: { amountNow: plan.amountNow, monthly: plan.monthly, months: 12 * plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) }, market: { ...spec.market, inflation: plan.inflation }, profile: {}, instrumentClass: spec.cls, channel: "direct", ...(spec.currency ? { currency: spec.currency } : {}), fx: ctx.fx, theta: ctx.theta, providers: [] },
         { snapshot: scopedSnap, level: "list", ...(cand.band ? { band: cand.band } : {}) },
         scopedSnap,
       );
@@ -581,6 +588,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   if (r.code === "data-missing") return { code: "data-missing", recorded: r.detail };
   if (r.code === "line-without-value") return { code: "line-without-value", detail: r.detail, lineName: s.lines.find((l) => l.id === r.detail.split(" ")[0])?.names.tariff[0] ?? null };
   if (r.code === "record-error") return ambiguity(r.detail, s) ?? { code: "record-error", detail: r.detail };
+  if (r.code === "rule-open") return { code: "rule-open", ruleId: r.ruleId };
   return { code: r.code, detail: r.detail };
 }
 
@@ -933,6 +941,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const open = row.run.outcome.code === "listed-not-ranked";
   const reads: RunReads = { house: providerId, fund: fundId, spec, row };
   const value = valueFigure(ctx, row, reads, about);
+  // F-91, F-109: the account's part less what the cash waiting for a whole unit did, so the figure is its fees, as on the receipt
+  const fees = row.horizonCostBeforeTax - (unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0);
   let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
   // the lines of a way take a run each and the page shows the picked fund's only: read when shown
   const splitOf = () => {
@@ -946,10 +956,10 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     valueN: row.real,
     venue: p.venue,
     open,
-    accountCost: row.horizonCostBeforeTax,
+    accountCost: fees,
     // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
     cost: (about: string, whole = true) =>
-      computed(whole ? accountWhole({ accountCost: row.horizonCostBeforeTax }) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
+      computed(whole ? accountWhole({ accountCost: fees }) : fees, "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
     get lines() {
       return splitOf().lines;
     },
@@ -1049,7 +1059,7 @@ function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec
       providerId: id,
       left: computed(row.beforeTax, "nis", "F-118", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules, flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: copy.beforeTax.leftAbout(nameOf(rec), name) }),
       leftN: row.beforeTax,
-      accountCost: computed(Math.round(row.horizonCostBeforeTax), "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules, flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: copy.beforeTax.costAbout(name) }),
+      accountCost: computed(Math.round(row.horizonCostBeforeTax - (unitsOf(row.run) ? (waitingReal({ ...row.run, nominal: row.run.beforeTaxNominal, real: row.run.beforeTaxReal }) ?? 0) : 0)), "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules, flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: copy.beforeTax.costAbout(name) }),
     };
   }
   return out;
@@ -1360,17 +1370,25 @@ export interface PairCosts {
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
   interaction: number;
-  /** `interaction` as a figure (F-91), so the account's whole cost adds up figures that each open (`accountSum`). */
+  /** `interaction` as a figure (F-91), so the account's fees add up figures that each open (`accountSum`). */
   remainder: SiteValue;
-  /** The account's whole cost before the tax it saves (F-91): its lines and `interaction` together, the figure the account list shows. */
+  /** The account's whole part before the tax it saves (F-91): its fees (`accountFees`) and, in whole units, the waiting cash (`waitingN`). */
   accountCost: number;
+  /** What the account's fees took before the tax they save (F-91): its lines and `interaction` together, without the waiting cash. */
+  accountFees: number;
+  /**
+   * F-109, F-91: in whole units, what the cash waiting for a unit did against the fund, before tax, in today's shekels: above zero where it
+   * missed a rise, below zero where it missed a fall (a gain). Not a fee: the receipt writes it on its own line. 0 and null by amount.
+   */
+  waitingN: number;
+  waiting: SiteValue | null;
   /** The fund pays out (A-10): the state's part holds the tax on what it pays as well as the capital gains tax at the sale. */
   distributes: boolean;
   /** The fund's own costs (management, variable, trustee, tracking, spread, withholding inside it) before the tax they save, with no account (F-91): the same at every account. */
   fund: SiteValue;
   /** The state's part (F-91): what remains, the tax paid during and at exit with the growth a tax paid along the way would have earned, at the horizon in today's shekels. */
   tax: SiteValue;
-  /** F-109: the house buys the fund in whole units (`WayPrice.units`); the remainder then holds what the waiting cash did not earn. */
+  /** F-109: the house buys the fund in whole units (`WayPrice.units`); what the waiting cash did is then `waiting`. */
   units: WayPrice["units"];
   /**
    * The price list as the run read it, so a fee's rate can be said as the list prints it (`lib/rate-words`): the record's lines the run
@@ -1434,12 +1452,15 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   if (!r0 || !rX) return null;
   const noAccount = (r: ComparedProvider) => r.horizonCostBeforeTax + beforeTax(r.run);
   const base = noAccount(rX);
-  const parts = costByWho({ base, left: row.real, account: row.horizonCostBeforeTax, fund: noAccount(r0) - noAccount(row) });
+  // F-109: in whole units, the waiting cash's part of the account's, its own line (F-91)
+  const waitingN = unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0;
+  const parts = costByWho({ base, left: row.real, account: row.horizonCostBeforeTax, fund: noAccount(r0) - noAccount(row), waiting: waitingN });
   // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
   const inputs = inputsOfRun(ctx, { house: s.id, fund: rec.id, spec: fs.spec, row });
   const at = (n: number, formula: string, about: string, from = inputs) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row), about });
   const lines = row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
-  const interaction = row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
+  // what no single line explains, without the waiting cash
+  const interaction = parts.fees - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
   return {
     providerId: s.id,
@@ -1449,8 +1470,11 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction,
-    remainder: at(interaction, "F-91", copy.pair.lineAbout(unitsOf(row.run) ? copy.pair.remainderUnits : copy.pair.remainder)),
+    remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder)),
     accountCost: row.horizonCostBeforeTax,
+    accountFees: parts.fees,
+    waitingN,
+    waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout) : null,
     distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec })),
     tax: at(parts.state, "F-91", distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout),
@@ -1463,8 +1487,8 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
 }
 
 /**
- * The account's whole cost before the tax it saves, as a figure (F-91): its lines and the remainder no single line explains, added up, each
- * part opening its own sheet. `round` shapes it (a whole shekel).
+ * The account's fees before the tax they save, as a figure (F-91): its lines and the remainder no single line explains, added up, each
+ * part opening its own sheet; the cash waiting for a whole unit is not among them (F-109, `waiting`). `round` shapes it (a whole shekel).
  */
 export function accountSum(pc: PairCosts, about: string, today: string, round?: (n: number) => number): SiteValue {
   const parts: Record<string, SiteValue> = {};
@@ -1623,10 +1647,10 @@ export function paybackMayLower(rec: FundRecord, list: GapList): boolean {
 }
 
 /**
- * The account's cost in whole shekels, as every block that shows it writes it: the account list's figure and the pair bar's account parts
- * (1,043 in the list against 689 + 352 + 3 = 1,044 in the bar on the MSCI ACWI).
+ * The account's whole part in whole shekels (F-91: its fees and, in whole units, the cash waiting for a unit), as a way's cost writes it
+ * (the stairs' account row). The receipt writes the fees and the waiting cash apart (lib/receipt).
  */
-export const accountWhole = (x: Pick<WayPrice, "accountCost"> | Pick<PairCosts, "accountCost">): number => Math.round(x.accountCost);
+export const accountWhole = (x: Pick<WayPrice, "accountCost">): number => Math.round(x.accountCost);
 
 /** A fund's listed fees together, percent a year. */
 export const sumFeesPct = (rec: FundRecord) => sumFees(rec) * 100;
