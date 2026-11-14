@@ -198,7 +198,7 @@ Exercises TXH-02 cap (15,712), TXH-03 employer excess taxed at τ_m (TXG-02), G-
 - Profile: salary 20,000; employer 7.5%, employee 2.5%.
 - Goal: horizon 7 years; other inputs as S23.
 - Expected: _(founder)_: employer line net of tax on the excess; own deposit capped at the benefited amount, excess flagged.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S25): Own money (500/month): real V_T/I_T = 42,362.61, nominal 50,355.83; benefited 392.80/month exempt, excess 107.20/month taxed 25% of its real gain at exit (257.96, institution source). Employer line: gross 151,841.38; less tax on the excess at deposit 8,374.46 (31%) and NI and health 3,287.65 (12.17%), and 25% real on the excess gains at exit 773.87: net 139,405.39 nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S25): Own money (500/month): real V_T/I_T = 42,362.61, nominal 50,355.83; benefited 392.80/month exempt, excess 107.20/month taxed 25% of its real gain at exit (257.96, institution source). Employer line: gross 151,841.38; less tax on the excess at deposit 7,100.93 (31% to 2029, 20% after) and NI and health 3,287.65 (12.17%), and 25% real on the excess gains at exit 773.87: net 140,678.92 nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.
 
 ### S26 Self-employed keren hishtalmut
 Exercises F-46 self-employed limb (TXH-05 deduction at τ_m, TXH-08 20,566 benefited), F-30 equal net outlay with a deduction.
@@ -213,7 +213,7 @@ Exercises F-30, F-31 (TXP-01, TXP-02 35% credit, floor), B2 employer line (PEN-0
 - Goal: extra own deposit 300/month net outlay; horizon 30 years (exit at 60).
 - Market: r_g 5%; π = 2%.
 - Expected: _(founder)_: gross deposit per month from F-30, gross balance at 60, the "exit: annuity rules, blocked (G-03)" flag, employer line value.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S27): Gross deposit D_m = 300 × I_m + 27.65 (credit 331.80 a year; the 7% cap binds — the scenario title says it does not, see Q18); month-1 gross deposit 328.15. Gross balance at 60 (month 360): 314,795.14 nominal, 173,789.23 real; fees: deposit 1,575.76, insurance 2,363.65, balance 7,626.14. Flag "exit: annuity rules, blocked (G-03)"; listed, not ranked. Employer line (1,250/month, same fees and insurance): 957,985.61 nominal, 528,875.97 real (972,723.85 if insurance is not charged on employer money, Q18). Subject to Q1, Q18.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S27): Gross deposit D_m = 300 × I_m + 27.65 (credit 331.80 a year; the 7% cap binds — the scenario title says it does not, see Q18); month-1 gross deposit 328.15. Gross balance at 60 (month 360): 319,652.75 nominal, 176,470.98 real; fees: deposit 1,600.15, insurance 2,400.22, balance 7,743.50. Flag "exit: annuity rules, blocked (G-03)"; listed, not ranked. Employer line (1,250/month, same fees and insurance): 957,985.61 nominal, 528,875.97 real (972,723.85 if insurance is not charged on employer money, Q18). Subject to Q1, Q18.
 
 ### S28 Pension deposit, credit cap binding
 Exercises F-31 cap (7% of 116,400 = 8,148/year) and the existing-deposit interaction.
@@ -227,13 +227,13 @@ Exercises F-32 (TXP-03 16% test, TXP-04 credit, TXP-06 deduction tiers), G-13 fl
 - Profile: self-employed, income 240,000/year, no employer deposits; deposits 40,000/year.
 - Goal: horizon 20 years.
 - Expected: _(founder)_
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S29): Deposit side: deduction 20,952.00 (first tier 12,804.00, second tier 8,148.00) worth 5,510.40; credit 35% × 11,640.00 = 4,074.00; total relief 9,584.40 a year, so 40,000 deposited costs 30,415.60 net. Gross balance at 20 years: 1,290,845.92 nominal, 868,702.30 real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S29): Deposit side: deduction 20,952.00 (first tier 12,804.00, second tier 8,148.00) worth 5,510.40; credit 35% × 11,640.00 = 4,074.00; total relief 9,584.40 a year, so 40,000 deposited costs 30,415.60 net. Gross balance at 20 years: 1,273,390.37 nominal, 856,955.21 real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.
 
 ### S30 Provident fund for annuity vs pension, same money
 Exercises PEN-22 vs PEN-21 caps, F-53 zero insurance (PEN-35), F-49 blocked for both.
 - As S27, run in `provident-for-annuity` with fees 0.5% balance, 0% deposits, no insurance.
 - Expected: _(founder)_
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S30): Gross deposit as S27 (300 × I_m + 27.65). Gross balance at 60: 307,835.20 nominal, 169,946.85 real; balance fees 17,195.57; no deposit fee, no insurance. Employer line: 933,375.45 nominal, 515,289.41 real. Exit blocked (G-03), listed. Subject to Q1, Q18.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S30): Gross deposit as S27 (300 × I_m + 27.65). Gross balance at 60: 312,589.94 nominal, 172,571.80 real; balance fees 17,460.65; no deposit fee, no insurance. Employer line: 933,375.45 nominal, 515,289.41 real. Exit blocked (G-03), listed. Subject to Q1, Q18.
 
 ### S31 Child savings, provident route, doubled
 Exercises F-54 (CS-03, CS-04, CS-13 cohort, CS-18 fees) and F-50 (up to 25% of the real gain, TXK-23).
@@ -274,7 +274,7 @@ Exercises F-42 (TXG-04, TXG-08, TXI-19, TXS-23), A-13, A-14.
 - Goal: 300,000 now in an Israeli ETF as S14 (no monthly); horizon 5 years.
 - Market: r_g 6%; π = 2.5%.
 - Expected: _(founder)_: tax at the brackets on the real gain, capped at 25%, and the refund amount versus the 25% withheld.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S34): Real gain 36,635.17; tax at the brackets 4,164.12 (capped at 25% slice by slice, method F-42); 25% withheld 9,158.79; refund 4,994.67; V_T after refund 361,941.76, real 319,903.77; fees: trade 1,998.93, spread 333.17, custody 10,026.38, fund (δ) 18,378.58. Subject to Q2 (exit year = year 5, age 60 reached in it).
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S34): Real gain 36,635.17; tax at the brackets 3,905.40 (capped at 25% slice by slice, method F-42); 25% withheld 9,158.79; refund 5,253.39; V_T after refund 362,200.48, real 320,132.45; fees: trade 1,998.93, spread 333.17, custody 10,026.38, fund (δ) 18,378.58. Subject to Q2 (exit year = year 5, age 60 reached in it).
 
 ### S35 Exit at 60 holding an unlinked bond (fixed 15% unchanged)
 Exercises F-42 fixed-rate branch (TXG-08 (c)).
@@ -288,7 +288,7 @@ Exercises F-43 (TXG-09, TXG-10).
 - Goal: 2,000,000 now in an Israeli ETF as S14; horizon 3 years.
 - Market: r_g 8%; π = 2%.
 - Expected: _(founder)_: 3% on the slice above 721,560 and 2% on the capital-source slice.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S36): Real gain 292,128.70; capital-gains tax 73,032.17; surtax 3% 5,117.06 on 170,568.70 above 721,560; 2% capital-source surtax 0.00 (capital income below the threshold); V_T 2,299,136.04, real 2,166,527.24; fees: trade 13,135.37, spread 2,189.33, custody 39,656.72, fund (δ) 72,465.71.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S36): Real gain 292,128.70; capital-gains tax 73,032.17; surtax 3% 4,684.12 on 156,137.50 above 735,991.20; 2% capital-source surtax 0.00 (capital income below the threshold); V_T 2,299,568.97, real 2,166,935.20; fees: trade 13,135.37, spread 2,189.33, custody 39,656.72, fund (δ) 72,465.71.
 
 ### S37 Negative real gain
 Exercises F-40 `max(0, real)`, G-07.

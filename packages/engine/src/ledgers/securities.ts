@@ -308,7 +308,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
  * open rule that blocks the exit tax, and the run then reads no tax index and stops after the sale's costs.
  */
 function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null): RunResult {
-  const book = ruleBook(ctx);
+  // F-119: a later leg's grid starts that many tax years after the run date's
+  const book = ruleBook(ctx, { inflation: input.market.inflation, startsAfter: Math.floor(((input.goal.firstMonth ?? 1) - 1 + (input.gridOffset ?? 0)) / 12) });
   const { goal, market, fund, tariff, profile } = input;
   // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax; F-118 never reads the index
   const taxIndex = beforeTaxOf === null ? taxIndexOf(fund, book) : null;
@@ -633,7 +634,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + fixed;
 
     if (closesTaxYear(m, T, first)) {
-      if (distThisYear > 0) tally.taxDuring += yearlySurtax(book, profile, distThisYear);
+      if (distThisYear > 0) tally.taxDuring += yearlySurtax(book, profile, distThisYear, taxYearOf(m, first));
       if (m === T) exitYearDist = distThisYear;
       distThisYear = 0;
     }

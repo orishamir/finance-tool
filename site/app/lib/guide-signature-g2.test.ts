@@ -211,8 +211,12 @@ describe("pensions", () => {
     expect(plan.run).toBe("runPension");
     if (plan.run !== "runPension") return;
     plan.input.goal.contributions = "nominal";
-    const run = runPlanned(plan, { rules: b.rules, runDate: b.runDate });
-    expect(run.detail.grossDeposits).toBeCloseTo(m.you * 12 * 10, 4);
+    const run = runPlanned(plan, { rules: b.rules, runDate: b.runDate }) as ReturnType<typeof runPlanned> & { deposits: number[] };
+    // the same gross deposit while the caps are frozen (2026 and 2027); from 2028 the eligible-income cap grows with the CPI (F-119),
+    // so the same net outlay earns more credit and buys a larger gross deposit, up to the salary's 7%
+    for (let m0 = 1; m0 <= 24; m0++) expect(run.deposits[m0]).toBeCloseTo(m.you, 6);
+    for (let m0 = 25; m0 <= 120; m0++) expect(run.deposits[m0]).toBeGreaterThan(m.you);
+    expect(run.detail.grossDeposits).toBeGreaterThan(m.you * 12 * 10);
     expect(m.balance!.real).toBeGreaterThan(0);
     expect(m.general).toBeNull();
   });

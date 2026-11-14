@@ -62,10 +62,10 @@ describe("F-52 employer line, keren hishtalmut (S23, S25)", () => {
     );
     const g = golden("S25");
     g.value("gross balance", line.detail.grossBalance, 151_841.38);
-    g.value("income tax on the excess at deposit", line.detail.employerDepositTax, 8_374.46);
+    g.value("income tax on the excess at deposit", line.detail.employerDepositTax, 7_100.93);
     g.value("NI and health on the excess", line.detail.employerSocial, 3_287.65);
     g.value("tax on the excess gains at exit", line.taxAtExit, 773.87);
-    g.value("employer line nominal", line.nominal, 139_405.39);
+    g.value("employer line nominal", line.nominal, 140_678.92);
     g.done();
     // workings S25: National Insurance's circular 1473 puts the excess in the base (TXH-26), so no label since 2026-11-07
     expect(labelOf(line, "TXG-35")).toBeUndefined();
@@ -208,11 +208,11 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     const g = golden("S27");
     g.value("credit a year", r.years[0]!.credit, 331.8);
     g.value("month-1 gross deposit", r.deposits[1], 328.15);
-    g.value("gross balance nominal", r.nominal, 314_795.14);
-    g.value("gross balance real", r.real, 173_789.23);
-    g.value("deposit fees", r.fees.deposit, 1_575.76);
-    g.value("insurance", r.detail.insurance, 2_363.65);
-    g.value("balance fees", r.fees.balance, 7_626.14);
+    g.value("gross balance nominal", r.nominal, 319_652.75);
+    g.value("gross balance real", r.real, 176_470.98);
+    g.value("deposit fees", r.fees.deposit, 1_600.15);
+    g.value("insurance", r.detail.insurance, 2_400.22);
+    g.value("balance fees", r.fees.balance, 7_743.5);
     g.done();
     expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-03" });
     expect(r.exit).toMatchObject({ formula: "F-49", blocked: true, gap: "G-03" });
@@ -222,11 +222,14 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-03", "G-12"]));
     // 2026-10-25 scope pass: PEN-15 now rests on the CMA standard pension bylaw and the Codex, not on one fund's bylaws, so no institution label.
     expect(labelOf(r, "PEN-15")).toBeUndefined();
-    // Year 1 is an employee below the 16% test (F-31); year 5 crosses it (F-32) with no effect on the relief,
-    // as the independent check finds: all salary is insured income, so the s.45A(e) cap is the same.
+    // Year 1 is an employee below the 16% test (F-31); year 4 crosses it (F-32) with no effect on the relief,
+    // as the independent check finds: all salary is insured income, so the s.45A(e) cap is the same. From 2028 the cap grows with the
+    // CPI (F-119), and from 2029 (year 4) it passes the salary: 7% of 120,000 less the 7,200 already deposited, at 35%, a credit that
+    // brings year 4's deposits over the test.
     expect(r.years[0]!.formula).toBe("F-31");
-    expect(r.years.findIndex((y) => y.formula === "F-32")).toBe(4);
-    expect(r.years[4]!.relief).toBeCloseTo(r.years[0]!.credit, 6);
+    expect(r.years.findIndex((y) => y.formula === "F-32")).toBe(3);
+    expect(r.years[3]!.relief).toBeCloseTo(0.35 * (0.07 * 120_000 - 7_200), 6);
+    expect(r.years[2]!.credit).toBeCloseTo(0.35 * (0.07 * 116_400 * 1.02 - 7_200), 6);
   });
 
   it("S27 employer line: 1,250 a month, the same fees and insurance (Q18), never ranked", () => {
@@ -288,8 +291,8 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     g.value("credited", y.credited, 11_640);
     g.value("credit", y.credit, 4_074);
     g.value("total relief", y.relief, 9_584.4);
-    g.value("gross balance nominal", r.nominal, 1_290_845.92);
-    g.value("gross balance real", r.real, 868_702.3);
+    g.value("gross balance nominal", r.nominal, 1_273_390.37);
+    g.value("gross balance real", r.real, 856_955.21);
     g.done();
     expect(y.beneficiary).toBe(true);
     expect(y.formula).toBe("F-32");
@@ -348,9 +351,9 @@ describe("S30 provident fund for annuity, same money as S27", () => {
   it("same gross deposit, 0.5% balance fee, no deposit fee, no insurance, exit blocked (G-03)", () => {
     const r = runPension(s30, ctx);
     const g = golden("S30");
-    g.value("gross balance nominal", r.nominal, 307_835.2);
-    g.value("gross balance real", r.real, 169_946.85);
-    g.value("balance fees", r.fees.balance, 17_195.57);
+    g.value("gross balance nominal", r.nominal, 312_589.94);
+    g.value("gross balance real", r.real, 172_571.8);
+    g.value("balance fees", r.fees.balance, 17_460.65);
     g.value("deposit fees", r.fees.deposit, 0);
     g.value("insurance", r.detail.insurance, 0);
     g.done();

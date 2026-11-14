@@ -32,7 +32,7 @@ export interface BondInput {
  * bond is sold at par (indexed for a linked series) plus A-27.
  */
 export function runBond(input: BondInput, ctx: RunContext): RunResult {
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, bond, tariff, profile } = input;
   const T = goal.months;
   const first = goal.firstMonth ?? 1;
@@ -106,7 +106,7 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
           else couponCashAtExit += refund;
         }
       }
-      tally.taxDuring += yearlySurtax(book, profile, couponsThisYear);
+      tally.taxDuring += yearlySurtax(book, profile, couponsThisYear, taxYearOf(m, first));
       if (m === T) exitYearCoupons = couponsThisYear;
       couponsThisYear = withheldThisYear = 0;
     }

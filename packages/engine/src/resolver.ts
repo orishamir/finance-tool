@@ -2,6 +2,7 @@
 // (rule ID, figure name) in the run's tax year. An open rule never computes; a figure past its
 // effective_to, or for another tax year, stops the run; every rule served is recorded.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
+import { freezeEnd, indexedAmount } from "./formulas/indexation.ts";
 import type { Label, RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
@@ -60,6 +61,7 @@ const labelWeight: Record<Label["code"], number> = {
 };
 
 export interface RuleBook {
+  /** The calendar tax year the book reads in: the run's, or a later one (`inYear`). */
   readonly taxYear: number;
   /** A percentage figure, returned as a fraction (25 → 0.25). */
   rate(ruleId: string, figure: string): number;
@@ -75,6 +77,22 @@ export interface RuleBook {
   label(code: Label["code"], ruleId: string): void;
   used(): UsedRule[];
   labels(): Label[];
+  /**
+   * F-119: the same rules read in the run's tax year `year` on its grid (1 = the run's own, `taxYearOf`): a money figure or a band's bound
+   * that s.120ב freezes (`update_rule` "frozen YYYY-YYYY") is indexed past its freeze by the run's inflation (`RunYears`); every other
+   * figure is as read. What the view reads is recorded with the book's.
+   */
+  inYear(year: number): RuleBook;
+  /** F-119: the calendar years after a freeze in which an indexed figure was read (method G-36), in order. */
+  indexedYears(): number[];
+}
+
+/** F-119: what a ledger tells its book so a figure can be read in a later tax year: the run's CPI assumption (A-02, F-03). */
+export interface RunYears {
+  /** A-02, a fraction a year. */
+  inflation: number;
+  /** Whole tax years between the run date's and the grid's first (a later leg of a switch, `gridOffset`); default 0. */
+  startsAfter?: number;
 }
 
 /** A run looks up a few rules among hundreds, and a page makes thousands of runs on one list: the list is indexed once. */
@@ -88,11 +106,12 @@ function rulesById(rules: RunContext["rules"]): Map<string, RuleRecord> {
   return byId;
 }
 
-export function ruleBook(ctx: RunContext): RuleBook {
+export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   const byId = rulesById(ctx.rules);
-  const taxYear = Number(ctx.runDate.slice(0, 4));
+  const runYear = Number(ctx.runDate.slice(0, 4));
   const used = new Map<string, UsedRule>();
   const extraLabels: Label[] = [];
+  const indexed = new Set<number>();
 
   function rule(id: string): RuleRecord {
     const r = byId.get(id);
@@ -110,11 +129,11 @@ export function ruleBook(ctx: RunContext): RuleBook {
 
   function current(id: string, name: string, f: unknown): ValueObject {
     const byYear = (f as { by_tax_year?: Record<string, ValueObject> }).by_tax_year;
-    const v = byYear ? byYear[String(taxYear)] : (f as ValueObject);
+    const v = byYear ? byYear[String(runYear)] : (f as ValueObject);
     if (!v) throw new FigureNotUpdatedError(id, name);
     if (v.source.strength === "open") throw new BlockedError(id);
     if (v.effective_to !== null && v.effective_to < ctx.runDate) throw new FigureNotUpdatedError(id, name);
-    if (v.tax_year != null && v.tax_year !== taxYear) throw new FigureNotUpdatedError(id, name);
+    if (v.tax_year != null && v.tax_year !== runYear) throw new FigureNotUpdatedError(id, name);
     used.get(id)!.figures.push({ name, strength: v.source.strength });
     return v;
   }
@@ -124,7 +143,17 @@ export function ruleBook(ctx: RunContext): RuleBook {
     return percentUnits.has(v.unit) ? v.value / 100 : v.value;
   }
 
-  return {
+  /** F-119: a money figure as it stands in calendar year `year`; the run's own year reads it as it is. */
+  function inYearOf(id: string, name: string, v: ValueObject, amount: number, year: number): number {
+    const frozenTo = freezeEnd(v.update_rule);
+    if (year === runYear || frozenTo === null || year <= Math.max(runYear, frozenTo)) return amount;
+    if (!years) throw new Error(`F-119: ${id} ${name} is read for ${year}, after its freeze, and the run gave its book no inflation (RunYears)`);
+    indexed.add(year);
+    return indexedAmount(amount, runYear, frozenTo, year, years.inflation);
+  }
+
+  function bookFor(taxYear: number): RuleBook {
+    const self: RuleBook = {
     taxYear,
     rate(id, name) {
       const v = current(id, name, figure(id, name));
@@ -135,7 +164,8 @@ export function ruleBook(ctx: RunContext): RuleBook {
       const v = current(id, name, figure(id, name));
       const actual = (v as { currency?: string }).currency;
       if ((actual ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
-      return numeric(id, name, v);
+      const n = numeric(id, name, v);
+      return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
     },
     fact(id, name) {
       return current(id, name, figure(id, name)).value;
@@ -144,8 +174,9 @@ export function ruleBook(ctx: RunContext): RuleBook {
       const f = figure(id, name);
       if (!Array.isArray(f)) throw new MissingRuleError(id, `${name} as brackets`);
       return (f as { up_to: ValueObject; rate: ValueObject }[]).map((b) => {
-        const upTo = current(id, name, b.up_to).value;
-        return { upTo: typeof upTo === "number" ? upTo : null, rate: numeric(id, name, current(id, name, b.rate)) };
+        const bound = current(id, name, b.up_to);
+        const upTo = typeof bound.value === "number" ? inYearOf(id, name, bound, bound.value, taxYear) : null;
+        return { upTo, rate: numeric(id, name, current(id, name, b.rate)) };
       });
     },
     cite(id) {
@@ -172,5 +203,11 @@ export function ruleBook(ctx: RunContext): RuleBook {
       extraLabels.forEach(consider);
       return [...best.values()];
     },
-  };
+    inYear: (year) => bookFor(runYear + (years?.startsAfter ?? 0) + year - 1),
+    indexedYears: () => [...indexed].sort((a, b) => a - b),
+    };
+    return self;
+  }
+
+  return bookFor(runYear);
 }

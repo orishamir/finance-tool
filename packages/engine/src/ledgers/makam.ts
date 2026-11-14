@@ -44,7 +44,7 @@ const DAYS = 365;
  * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
  */
 export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, makam, tariff } = input;
   const profile = input.profile ?? {};
   const term = makam.termMonths ?? 12;
@@ -130,7 +130,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
       if (year === taxYearOf(T, first)) exitYearFees += fee + fixed;
     }
     if (closesTaxYear(m, T, first)) {
-      tally.taxDuring += yearlySurtax(book, profile, interestThisYear);
+      tally.taxDuring += yearlySurtax(book, profile, interestThisYear, taxYearOf(m, first));
       if (m === T) exitYearInterest = interestThisYear;
       interestThisYear = 0;
     }

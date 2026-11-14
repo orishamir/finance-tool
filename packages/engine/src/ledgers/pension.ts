@@ -195,7 +195,7 @@ function commonFlags(book: RuleBook, tally: Tally, input: PensionInput) {
  */
 export function runPension(input: PensionInput, ctx: RunContext): PensionResult {
   check(input);
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, pension: p } = input;
   const tally = new Tally();
   const first = goal.firstMonth ?? 1;
@@ -204,7 +204,6 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
   const C = contributions(goal, I);
   const formulas = ["F-08", "F-27", "F-11", "F-15", "F-16", "F-30", "F-53"];
 
-  const brackets = book.brackets("TXG-02", "brackets");
   const employee = p.employment === "employee";
   const income = employee ? 12 * (p.monthlySalary ?? 0) : (p.annualIncome ?? 0);
   const employerMonth = employerMonthly(p);
@@ -216,7 +215,9 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
   const years: YearRelief[] = [];
   const gross = spreadReliefByYear(C, first, taxYearOf, (year, netYear) => {
     const facts: PensionRelief = { taxableIncome: income, insuredIncome: insured, existingOwn, employer: employerMonth * (monthsInYear.get(year) ?? 0), businessIncome: !employee };
-    const r = grossForYear(book, facts, netYear, brackets);
+    // F-119: each tax year's caps, floor and brackets
+    const ofYear = book.inYear(year);
+    const r = grossForYear(ofYear, facts, netYear, ofYear.brackets("TXG-02", "brackets"));
     if (r.gap) tally.flag("TXP-03");
     years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
     return r.gross;
@@ -289,7 +290,7 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   check(input);
   const p = input.pension;
   if (!p.employer || p.employment !== "employee") throw new RangeError("pension.employer is required for the employer line (A-12)");
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal } = input;
   const first = goal.firstMonth ?? 1;
   const T = goal.months;
@@ -310,11 +311,11 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   const pensionPart = p.employer.pensionRate * deposited;
   const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(deposited, ceiling));
   if (p.employer.severanceRate * deposited > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
-  const brackets = book.brackets("TXG-02", "brackets");
   const perYear = new Map<number, number>();
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
   let depositTax = 0;
-  for (const x of perYear.values()) depositTax += deductionValue(brackets, 12 * salary + x, x);
+  // F-119: the brackets of each year the excess is paid in
+  for (const [y, x] of perYear) depositTax += deductionValue(book.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
 
   const exit = blockedWrapperExit("F-49", out.balance);
   if (exit.gap) tally.flag(exit.gap);
