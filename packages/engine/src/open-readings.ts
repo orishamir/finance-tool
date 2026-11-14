@@ -51,7 +51,7 @@ export interface OpenReading {
  * - TXG OQ17: every amount s.120ב moves after its freeze (F-119), since s.120ב(א) adjusts them "לפי שיעור עליית המדד בשנת המס הקודמת"
  *   (TXG-09) and says nothing of a fall.
  * - KGL OQ15: KGL-03's yearly ceiling (F-120), which the Provident Funds Law s.22(א) updates every 1 January "by the rise in the CPI"
- *   (KGL-02) and says nothing of a fall. The question is proposed for the rule base and not yet in it.
+ *   (KGL-02) and says nothing of a fall.
  * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule.
  */
 export const openReadings: readonly OpenReading[] = [
