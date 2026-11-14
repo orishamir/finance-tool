@@ -105,23 +105,27 @@ export interface ReliefResult {
 const creditedUpTo = (paid: number, floor: number, cap: number) => Math.min(Math.max(0, paid), Math.max(floor, cap));
 
 /**
- * The credit for the new deposit, worth at most the year's tax `tax` (TXP-01, TXP OQ20). Deposits already made through
- * work take the tax first, as they take the credited amount first: `min(rate × credited(all), tax) − min(rate × credited(existing), tax)`.
+ * The credit for the new deposit: the year's credit with the new money less the year's credit without it, each worth at most the year's
+ * tax before the credit (TXP-01, TXP OQ20). With the new money the tax is `taxWith`, after any deduction the new money brings; without it,
+ * `taxWithout`, the tax on the whole income: `min(rate × credited(all), taxWith) − min(rate × credited(existing), taxWithout)`. Where the new
+ * money's deduction takes tax the existing deposits' credit would have used, the difference is below zero, and the deduction's value
+ * (`tax(Y) − tax(Y − d)`) holds it: their sum, the relief, is what the new money changes in the year's tax.
  */
-function cappedCredit(rate: number, creditedAll: number, creditedExisting: number, tax: number, gap: YearTax["gap"]) {
-  const credit = Math.min(rate * creditedAll, tax) - Math.min(rate * creditedExisting, tax);
+function cappedCredit(rate: number, creditedAll: number, creditedExisting: number, taxWith: number, taxWithout: number, gap: YearTax["gap"]) {
+  const credit = Math.min(rate * creditedAll, taxWith) - Math.min(rate * creditedExisting, taxWithout);
   const uncapped = rate * (creditedAll - creditedExisting);
-  return { credit, creditCap: { tax, binds: credit < uncapped - 1e-9, gap } };
+  return { credit, creditCap: { tax: taxWith, binds: credit < uncapped - 1e-9, gap } };
 }
 
 /**
- * The open readings a credit rests on, as the run flags them. TXP-OQ20 where the cap bound (the part above the tax is
- * lost on the cautious reading), and G-23 with TXP-OQ20 wherever a credit is given against a tax that leaves out credit
- * points: the person's tax may be lower than the tax counted, and the credit with it.
+ * The open readings a deposit's relief rests on, as the run flags them. G-23 wherever a deduction or a credit is valued against a tax that
+ * leaves out credit points: the person's tax may be lower than the tax counted, and the relief with it. TXP-OQ20 where the credit's cap bound
+ * (the part above the tax is lost on the cautious reading), and wherever a credit is given against such a tax.
  */
-export function creditFlags(r: Pick<ReliefResult, "credit" | "creditCap">): string[] {
-  const unsure = r.creditCap.gap !== null && r.credit > 0;
-  return [...(unsure ? [r.creditCap.gap!] : []), ...(unsure || r.creditCap.binds ? ["TXP-OQ20"] : [])];
+export function reliefFlags(r: Pick<ReliefResult, "credit" | "creditCap" | "deductionValue">): string[] {
+  const valued = r.creditCap.gap !== null;
+  const credit = valued && r.credit > 0;
+  return [...(valued && (credit || r.deductionValue > 0) ? [r.creditCap.gap!] : []), ...(credit || r.creditCap.binds ? ["TXP-OQ20"] : [])];
 }
 
 /**
@@ -129,7 +133,8 @@ export function creditFlags(r: Pick<ReliefResult, "credit" | "creditCap">): stri
  * `35% × credited`, `credited = min(paid, max(floor, 7% × E))`, `E = min(eligible income, 116,400)`
  * (TXP-01, TXP-02). Own deposits already made through work use the cap first: the credit for new money
  * is `credited(existing + new) − credited(existing)`. The credit is worth at most the year's tax on the
- * taxable income, `tax.on(income)` (TXP-01, TXP OQ20), which the existing deposits use first too.
+ * taxable income, `tax.on(income)` (TXP-01, TXP OQ20): the credit for new money is the year's capped credit with it less the year's
+ * capped credit without it.
  *
  * The method writes `max(floor, min(paid, 7% × E))`, which would credit the floor on money never paid;
  * the independent check and the guide ("a minimum deposit of 2,268 paid to the fund") read it as capped
@@ -142,7 +147,8 @@ export function employeeCredit(book: RuleBook, p: PensionRelief, gross: number, 
   const rate = book.rate("TXP-01", "credit_pct");
   const all = creditedUpTo(p.existingOwn + gross, floor, cap);
   const existing = creditedUpTo(p.existingOwn, floor, cap);
-  const { credit, creditCap } = cappedCredit(rate, all, existing, tax.on(p.taxableIncome), tax.gap);
+  const year = tax.on(p.taxableIncome);
+  const { credit, creditCap } = cappedCredit(rate, all, existing, year, year, tax.gap);
   return { formula: "F-31", beneficiary: false, credited: all - existing, credit, creditCap, tier1: 0, tier2: 0, deduction: 0, deductionValue: 0, relief: credit };
 }
 
@@ -159,8 +165,9 @@ export function employeeCredit(book: RuleBook, p: PensionRelief, gross: number, 
  * Business income below the threshold gets TXP-05 limb (1) (7% of eligible non-work income, up to 164,400, plus
  * 4% above 12% of it) and the 5% credit rate; work income gets limb (2).
  *
- * The deduction saves `tax.on(income) − tax.on(income − deduction)`, and the credit is worth at most the tax left,
- * `tax.on(income − deduction)` (TXP-01, TXP OQ20), so the whole relief never passes the year's tax.
+ * The deduction saves `tax.on(income) − tax.on(income − deduction)`. The year's credit with the new money is worth at most the tax left,
+ * `tax.on(income − deduction)`, and without it at most `tax.on(income)` (TXP-01, TXP OQ20); the new money's credit is the difference, so
+ * the whole relief never passes the year's tax.
  *
  * Not modelled (G-13): the extra 0.5% credit (TXP-07) and the enlarged deduction from age 50 (TXP-08,
  * 2026 amounts not found).
@@ -231,11 +238,12 @@ export function beneficiaryRelief(
 
   const deduction = Math.min(gross, tier1 + tier2);
   const taxLeft = tax.on(p.taxableIncome - deduction);
-  const saved = tax.on(p.taxableIncome) - taxLeft;
+  const taxWhole = tax.on(p.taxableIncome);
+  const saved = taxWhole - taxLeft;
   const rest = gross - deduction;
   const all = creditedUpTo(p.existingOwn + rest, floor, creditCap);
   const existing = creditedUpTo(p.existingOwn, floor, creditCap);
-  const capped = cappedCredit(creditRate, all, existing, taxLeft, tax.gap);
+  const capped = cappedCredit(creditRate, all, existing, taxLeft, taxWhole, tax.gap);
   return { formula: "F-32", beneficiary, credited: all - existing, credit: capped.credit, creditCap: capped.creditCap, tier1, tier2, deduction, deductionValue: saved, relief: saved + capped.credit };
 }
 

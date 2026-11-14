@@ -4,7 +4,7 @@
 // 84,120; TXP-02's floor is 2,268, its cap 7% of eligible income; TXP-05 limb (1) deducts 7% of business income plus
 // 4% on the part of the deposit above 12% of it.
 import { describe, expect, it } from "vitest";
-import { beneficiaryRelief, creditFlags, employeeCredit, ruleBook, runPension, taxAtBrackets, type PensionInput, type PensionRelief } from "../src/index.ts";
+import { beneficiaryRelief, reliefFlags, employeeCredit, ruleBook, runPension, taxAtBrackets, type PensionInput, type PensionRelief } from "../src/index.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -22,7 +22,7 @@ describe("F-31: the credit is capped at the year's tax", () => {
     expect(r.credit).toBeCloseTo(600, 9);
     expect(r.relief).toBeCloseTo(600, 9);
     expect(r.creditCap).toEqual({ tax: 600, binds: true, gap: "G-23" });
-    expect(creditFlags(r)).toEqual(["G-23", "TXP-OQ20"]);
+    expect(reliefFlags(r)).toEqual(["G-23", "TXP-OQ20"]);
   });
 
   it("a credit below the tax is unchanged, and still flagged, since the tax leaves out credit points", () => {
@@ -31,7 +31,7 @@ describe("F-31: the credit is capped at the year's tax", () => {
     expect(r.credited).toBeCloseTo(948, 9);
     expect(r.credit).toBeCloseTo(331.8, 9);
     expect(r.creditCap.binds).toBe(false);
-    expect(creditFlags(r)).toEqual(["G-23", "TXP-OQ20"]);
+    expect(reliefFlags(r)).toEqual(["G-23", "TXP-OQ20"]);
   });
 
   it("deposits already made through work use the tax first", () => {
@@ -41,13 +41,13 @@ describe("F-31: the credit is capped at the year's tax", () => {
     expect(r.credit).toBeCloseTo(0, 9);
     expect(r.creditCap.binds).toBe(true);
     // no credit is given, so nothing may be overstated: only the reading that the rest is lost
-    expect(creditFlags(r)).toEqual(["TXP-OQ20"]);
+    expect(reliefFlags(r)).toEqual(["TXP-OQ20"]);
   });
 
   it("no credit, no flag", () => {
     const r = employeeCredit(book, low, 0, tax);
     expect(r.credit).toBe(0);
-    expect(creditFlags(r)).toEqual([]);
+    expect(reliefFlags(r)).toEqual([]);
   });
 });
 

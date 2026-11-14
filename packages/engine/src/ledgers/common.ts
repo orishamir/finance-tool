@@ -1,9 +1,9 @@
 // Pieces every ledger shares: the taxpayer profile, the exit-year tax on "maximum rate" income (F-40 with
 // F-42 and F-43), and assembling the result.
 import { bracketTaxOnTopSlice, surtax } from "../formulas/exit-tax.ts";
-import { lastMonthOfTaxYear, taxYearOf, type Goal } from "../formulas/time.ts";
-import { BlockedError, ruleBook, type RuleBook } from "../resolver.ts";
-import { emptyFees, type FeeType, type Flag, type MonthPoint, type Outcome, type RunContext, type RunResult } from "../result.ts";
+import { lastMonthOfTaxYear, taxYearOf } from "../formulas/time.ts";
+import { BlockedError, type RuleBook } from "../resolver.ts";
+import { emptyFees, type FeeType, type Flag, type MonthPoint, type Outcome, type RunResult } from "../result.ts";
 
 /** The taxpayer inputs (A-12 to A-14). */
 export interface Profile {
@@ -99,29 +99,14 @@ export function yearlySurtax(book: RuleBook, profile: Profile, incomeInYear: num
 }
 
 /**
- * F-119 at a falling CPI: the rule a run would stop on before it starts, or null. Every run with tax reads its exit year's surtax threshold
- * (F-43), so at a negative A-02 a run whose horizon falls in a tax year after the s.120ב freeze stops on TXG-09 (TXG OQ17): what a page
- * reads to list every way with the reason and no value, as it does for a fund `securitiesBlockedBy` names.
- */
-export function s120bFallBlockedBy(goal: Pick<Goal, "months" | "firstMonth">, inflation: number, ctx: RunContext): string | null {
-  try {
-    ruleBook(ctx, { inflation }).inYear(taxYearOf(goal.months, goal.firstMonth ?? 1)).amount("TXG-09", "threshold");
-    return null;
-  } catch (e) {
-    if (e instanceof BlockedError) return e.ruleId;
-    throw e;
-  }
-}
-
-/**
  * Runs the exit-tax step; if a rule it needs is open, the wrapper is listed with its pre-tax value and
- * the rule as the reason, not ranked (B3).
+ * the rule as the reason, not ranked (B3); `outcome` is that listing, with the open question where one stopped it.
  */
-export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined } | { value?: undefined; blocked: string } {
+export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined; outcome?: undefined } | { value?: undefined; blocked: string; outcome: Outcome } {
   try {
     return { value: step() };
   } catch (e) {
-    if (e instanceof BlockedError) return { blocked: e.ruleId };
+    if (e instanceof BlockedError) return { blocked: e.ruleId, outcome: { code: "listed-not-ranked", reason: e.ruleId, ...(e.question ? { question: e.question } : {}) } };
     throw e;
   }
 }

@@ -45,21 +45,6 @@ export function withTxf04AsTheLetterCopy(rules: RuleRecord[]): RuleRecord[] {
   );
 }
 
-/**
- * The rules with every amount s.120ב freezes held at its 2026 figure in every year (its `update_rule` read as "fixed in law"). At a falling
- * CPI an s.120ב amount read for a year after 2027 is open (TXG OQ17, F-119), so a run on the data that reads one is blocked; the deflation
- * scenarios (S10, S53) check their arithmetic on this stand-in, a test fixture, never data, where no figure read rests on that question.
- */
-export function withS120bAmountsHeld(rules: RuleRecord[]): RuleRecord[] {
-  const held = (v: unknown): unknown => {
-    if (Array.isArray(v)) return v.map(held);
-    if (v === null || typeof v !== "object") return v;
-    const o = Object.fromEntries(Object.entries(v).map(([k, x]) => [k, held(x)]));
-    return typeof o.update_rule === "string" && /^frozen /.test(o.update_rule) ? { ...o, update_rule: "fixed in law" } : o;
-  };
-  return rules.map((r) => (r.figures ? ({ ...r, figures: held(r.figures) } as RuleRecord) : r));
-}
-
 /** Run date of the golden scenarios: tax year 2026 for every figure (scenarios.md header). */
 export const runDate = "2026-10-23";
 

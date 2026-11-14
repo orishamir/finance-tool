@@ -1,8 +1,10 @@
 // Figure resolver (docs/architecture.md 3.4, method §13). The engine never holds a rule figure: it asks for
 // (rule ID, figure name) in the run's tax year. An open rule never computes; a figure past its
-// effective_to, or for another tax year, stops the run; every rule served is recorded.
+// effective_to, or for another tax year, stops the run; every rule served is recorded. A case the rule base holds open between named
+// readings (open-readings.ts) is read under the reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
-import { amountInYear, movesBy, s120bFall, yearlyMoveOf } from "./formulas/indexation.ts";
+import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
+import { OpenReadingError, openReadingOf } from "./open-readings.ts";
 import type { Label, RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
@@ -27,7 +29,8 @@ export class RecordInputError extends Error {}
 
 /**
  * A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). `question` names the open question
- * when the rule is settled but the case at hand is not (an s.120ב amount after its freeze while the CPI falls: TXG-09, "TXG OQ17").
+ * when the rule is settled but the case at hand is not, and the readings it allows give the run different results (an s.120ב amount after
+ * its freeze while the CPI falls: TXG-09, "TXG OQ17"; `acrossReadings`).
  */
 export class BlockedError extends Error {
   constructor(readonly ruleId: string, readonly question?: string) {
@@ -149,18 +152,24 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
 
   /**
    * A money figure as it stands in calendar year `year`, by the update its record names: F-119 for an amount s.120ב freezes, F-120 for one
-   * linked to the CPI every 1 January; any other kind, and the run's own year, read it as it is. An s.120ב amount past its freeze at a
-   * falling CPI is open (TXG OQ17) and does not compute.
+   * linked to the CPI every 1 January; any other kind, and the run's own year, read it as it is. At a falling CPI the amount is an open
+   * reading (TXG OQ17, KGL OQ15): it is read under the reading the context chooses (`RunContext.readings`), and a run that has chosen none
+   * for the question stops so that `acrossReadings` can make it under each. A figure no open reading covers does not compute at a fall.
    */
   function inYearOf(id: string, name: string, v: ValueObject, amount: number, year: number): number {
     const move = yearlyMoveOf(v.update_rule);
     if (move === null || !movesBy(move, runYear, year)) return amount;
     if (!years) throw new Error(`F-119/F-120: ${id} ${name} is read for ${year}, after the year it was read for, and the run gave its book no inflation (RunYears)`);
-    if (move.kind === "frozen") {
-      if (years.inflation < 0) throw new BlockedError(s120bFall.ruleId, s120bFall.question);
-      indexed.add(year);
-    }
-    return amountInYear(move, amount, runYear, year, years.inflation);
+    if (move.kind === "frozen") indexed.add(year);
+    if (years.inflation >= 0) return amountInYear(move, amount, runYear, year, years.inflation);
+    const open = openReadingOf(move, id);
+    if (!open) throw new BlockedError(id);
+    const choice = ctx.readings?.[open.question];
+    if (choice === undefined) throw new OpenReadingError(open);
+    if (choice === null) throw new BlockedError(open.ruleId, open.question);
+    const reading = open.readings.find((r) => r.id === choice);
+    if (!reading) throw new Error(`${open.question} has no reading "${choice}"`);
+    return reading.amount(amount, Array.from({ length: movingYears(move, runYear, year) }, () => years.inflation));
   }
 
   function bookFor(taxYear: number): RuleBook {

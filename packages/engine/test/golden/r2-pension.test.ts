@@ -221,6 +221,8 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     expect(r.exit.ruleIds).toEqual(expect.arrayContaining(["TXP-14", "TXP-15", "PEN-27"]));
     expect(r.taxAtExit).toBe(0);
     expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-03", "G-12"]));
+    // the credit is capped at a tax at the brackets without credit points (TXP OQ20, G-23), and the caps grow from 2028 (F-119, G-36)
+    expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-23", "TXP-OQ20", "G-36"]));
     // 2026-10-25 scope pass: PEN-15 now rests on the CMA standard pension bylaw and the Codex, not on one fund's bylaws, so no institution label.
     expect(labelOf(r, "PEN-15")).toBeUndefined();
     // Year 1 is an employee below the 16% test (F-31); year 4 crosses it (F-32) with no effect on the relief,
@@ -298,6 +300,7 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     expect(y.beneficiary).toBe(true);
     expect(y.formula).toBe("F-32");
     expect(flagCodes(r)).toContain("G-13"); // the 0.5% credit and the age-50 enlargement are not modelled
+    expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-23", "TXP-OQ20", "G-36"]));
   });
 
   it("S29 the formula alone: relief for a given gross deposit, then the outlay that buys it", () => {
@@ -362,6 +365,10 @@ describe("S30 provident fund for annuity, same money as S27", () => {
     expect(r.deposits[1]).toBeCloseTo(328.15, 2); // the same gross deposit as S27
     expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-03" });
     expect(flagCodes(r)).not.toContain("G-12");
+    expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-03", "G-23", "TXP-OQ20", "G-36"]));
+    // 2028's credit and from 2029's, as S27's: 35% × (7% × 116,400 × 1.02 − 7,200) = 388.84, and 35% × (7% × 120,000 − 7,200) = 420
+    expect(r.years[2]!.credit).toBeCloseTo(388.836, 6);
+    expect(r.years[3]!.relief).toBeCloseTo(420, 6);
     const line = employerLine({ kind: "pension", input: s30 }, ctx);
     const gl = golden("S30");
     gl.value("employer line nominal", line.nominal, 933_375.45);

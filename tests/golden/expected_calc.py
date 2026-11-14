@@ -801,7 +801,7 @@ def s08_s09_s10():
         + f'\n\nResult: V_T = {f2(r10["V"])}; real {f2(r10["real_V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}.'
     )
     section('S10', 'CPI-linked bond under deflation', 'computed', body,
-            f'Real V_T/I_T = {f2(r10["real_V"])}; nominal V_T = {f2(r10["V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}; tax during {f2(r10["tax_during"])} (25% of the reduced coupons, TXI-25); tax at exit {f2(r10["tax_exit"])}; flag "real loss not carried, G-07". On the rule base the run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119), so the engine blocks it on TXG-09 and lists it, not ranked; these figures are its arithmetic with the s.120ב amounts held at 2026, which the income in the scenario never reaches.')
+            f'Real V_T/I_T = {f2(r10["real_V"])}; nominal V_T = {f2(r10["V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}; tax during {f2(r10["tax_during"])} (25% of the reduced coupons, TXI-25); tax at exit {f2(r10["tax_exit"])}; flag "real loss not carried, G-07". The run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119) between three readings (lowered, held, carried); the income in the scenario never reaches the amounts under any of them, so every reading gives these figures and the run carries the flag TXG-OQ17.')
     return r8
 
 
@@ -1170,17 +1170,17 @@ def s27_s28_s30():
         f'| 8 | No tax during; exit at 60 is an annuity whose value needs conversion factors: blocked | {L("TXP-13", "TXP-14")} (PEN OQ7) | blocked (G-03) |\n'
     )
     section('S27', 'Pension deposit by an employee', 'computed', body,
-            f'Gross deposit D_m = 300 × I_m + {f2(credit / 12)} (credit {f2(credit)} a year; the 7% cap binds — the scenario title says it does not, see Q18); month-1 gross deposit {f2(300 * path.I(1) + credit / 12)}. Gross balance at 60 (month 360): {f2(own["B"])} nominal, {f2(own["B"] / path.I(360))} real; fees: deposit {f2(own["fees"]["deposit"])}, insurance {f2(own["fees"]["insurance"])}, balance {f2(own["fees"]["balance"])}. Flag "exit: annuity rules, blocked (G-03)"; listed, not ranked. Employer line (1,250/month, same fees and insurance): {f2(emp["B"])} nominal, {f2(emp["B"] / path.I(360))} real ({f2(emp_noins["B"])} if insurance is not charged on employer money, Q18). Subject to Q1, Q18.')
+            f'Gross deposit D_m = 300 × I_m + {f2(credit / 12)} in 2026 and 2027 (credit {f2(credit)} a year; the 7% cap binds — the scenario title says it does not, see Q18), + {f2(credit_k(3) / 12)} in 2028 (credit {f2(credit_k(3))}) and + {f2(credit_last / 12)} from 2029 (credit {f2(credit_last)}); month-1 gross deposit {f2(300 * path.I(1) + credit / 12)}. Gross balance at 60 (month 360): {f2(own["B"])} nominal, {f2(own["B"] / path.I(360))} real; fees: deposit {f2(own["fees"]["deposit"])}, insurance {f2(own["fees"]["insurance"])}, balance {f2(own["fees"]["balance"])}. Flags "exit: annuity rules, blocked (G-03)", G-23 and TXP-OQ20 (the credit is worth at most the year\'s tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119); listed, not ranked. Employer line (1,250/month, same fees and insurance): {f2(emp["B"])} nominal, {f2(emp["B"] / path.I(360))} real ({f2(emp_noins["B"])} if insurance is not charged on employer money, Q18). Subject to Q1, Q18.')
 
     own30, emp30 = pension_run(360, path, 0.05, 300.0, credit_k, 0.0, 0.0, 0.005, employer_month=0.125 * salary)
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 1 | Same tax category as a pension fund: same deposit-side credit as S27 | {L("TXP-24", "TXP-02")} | credit {f2(credit)} a year |\n'
+        f'| 1 | Same tax category as a pension fund: same deposit-side credit as S27, year by year | {L("TXP-24", "TXP-02")} | credit {f2(credit)} a year in 2026 and 2027, {f2(credit_k(3))} in 2028, {f2(credit_last)} from 2029 |\n'
         f'| 2 | Fees 0.5% of balance, 0% of deposits (caps 1.05% / 4%); no pooled insurance | {L("PEN-22", "PEN-35")} | — |\n'
         f'| 3 | Exit blocked as S27 | {L("TXP-14")} (PEN OQ7) | G-03 |\n'
     )
     section('S30', 'Provident fund for annuity vs pension, same money', 'computed', body,
-            f'Gross deposit as S27 (300 × I_m + {f2(credit / 12)}). Gross balance at 60: {f2(own30["B"])} nominal, {f2(own30["B"] / path.I(360))} real; balance fees {f2(own30["fees"]["balance"])}; no deposit fee, no insurance. Employer line: {f2(emp30["B"])} nominal, {f2(emp30["B"] / path.I(360))} real. Exit blocked (G-03), listed. Subject to Q1, Q18.')
+            f'Gross deposit as S27 (300 × I_m + {f2(credit / 12)} in 2026 and 2027, + {f2(credit_k(3) / 12)} in 2028, + {f2(credit_last / 12)} from 2029). Gross balance at 60: {f2(own30["B"])} nominal, {f2(own30["B"] / path.I(360))} real; balance fees {f2(own30["fees"]["balance"])}; no deposit fee, no insurance. Employer line: {f2(emp30["B"])} nominal, {f2(emp30["B"] / path.I(360))} real. Exit blocked (G-03), listed; flags G-23 and TXP-OQ20 (the credit is worth at most the year\'s tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119). Subject to Q1, Q18.')
 
 
 
@@ -1782,7 +1782,7 @@ def s28_s29_fill():
         f'| 6 | Exit blocked (annuity), listed with the gross balance at the horizon | {L("TXP-14")} (PEN OQ7) | G-03 |\n'
     )
     section('S29', 'Beneficiary member, self-employed', 'computed', body,
-            f'Deposit side: deduction {f2(ded29)} (first tier {f2(tier1)}, second tier {f2(tier2)}) worth {f2(ded_value)}; credit 35% × {f2(credited)} = {f2(credit29)}; total relief {f2(ded_value + credit29)} a year, so 40,000 deposited costs {f2(dep - ded_value - credit29)} net. Gross balance at 20 years: {f2(r29["B"])} nominal, {f2(r29["B"] / path.I(240))} real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.')
+            f'Deposit side: deduction {f2(ded29)} (first tier {f2(tier1)}, second tier {f2(tier2)}) worth {f2(ded_value)}; credit 35% × {f2(credited)} = {f2(credit29)}; total relief {f2(ded_value + credit29)} a year, so 40,000 deposited costs {f2(dep - ded_value - credit29)} net. Gross balance at 20 years: {f2(r29["B"])} nominal, {f2(r29["B"] / path.I(240))} real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13); G-23 and TXP-OQ20 (the credit is worth at most the year\'s tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.')
 
 
 def s32_fill():
@@ -2189,7 +2189,7 @@ def s53():
         + f'(b) gross {f2(res["B"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; fees: balance {f2(res["fees"]["balance"])}, direct {f2(res["fees"]["direct"])}.'
     )
     section('S53', 'Israeli ETF and kupat gemel lehashkaa under CPI deflation', 'computed', body,
-            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07. On the rule base the run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119), so the engine blocks it on TXG-09 and lists it, not ranked; these figures are its arithmetic with the s.120ב amounts held at 2026, which the income in the scenario never reaches.')
+            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07. The run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119) between three readings (lowered, held, carried); the income in the scenario never reaches the amounts under any of them, so every reading gives these figures and the run carries the flag TXG-OQ17; the deposits to the kupat gemel lehashkaa never reach its yearly ceiling, whose fall is open too (KGL OQ15, proposed), so (b) carries KGL-OQ15 as well.')
 
 
 def s54():

@@ -5,7 +5,7 @@
 import {
   BlockedError,
   calendarMonthOf,
-  s120bFallBlockedBy,
+  stoppedOnQuestion,
   FigureNotUpdatedError,
   MissingRuleError,
   NotEvaluatedError,
@@ -126,10 +126,6 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     const profile = inputs.age === null ? {} : { ageAtStart: inputs.age };
     const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true, firstMonth: calendarMonthOf(bundle.runDate) });
     const ctx = { rules: bundle.rules, runDate: bundle.runDate };
-    // at a falling CPI, a withdrawal after 2027 reads that year's s.120ב amounts, which TXG OQ17 leaves open (F-119): no year is drawn, as for
-    // any open rule, rather than some years at their value before the exit tax
-    const fall = s120bFallBlockedBy(plan.input.goal, plan.input.market.inflation, ctx);
-    if (fall) return { kind: "blocked", ruleId: fall, messageHe: blockedHe };
     const horizon = plan.input.goal.months / 12;
     const years: YearPoint[] = [];
     const flags = new Set<string>();
@@ -137,6 +133,10 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     for (let n = 1; n <= horizon; n++) {
       const yearPlan = { ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months: 12 * n } } } as typeof plan;
       const run = runPlanned(yearPlan, ctx);
+      // a year whose open question's readings give different results (TXG OQ17 at a falling CPI, method §13) stops the drawing: no year is
+      // drawn, as for any open rule, rather than some years at their value before the exit tax
+      const stopped = stoppedOnQuestion(run);
+      if (stopped) return { kind: "blocked", ruleId: stopped.ruleId, messageHe: blockedHe };
       const last = run.series[run.series.length - 1]!;
       years.push({
         year: n,

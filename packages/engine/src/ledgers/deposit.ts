@@ -2,6 +2,7 @@
 import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, effectiveAnnualOf, lowIncomeDeduction, type InterestCalc } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
 import { NotEvaluatedError } from "./securities.ts";
@@ -103,6 +104,11 @@ export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<De
  * and at one of its exit points (what an exit point pays is not in the records). Neither flag changes an amount.
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
+  return acrossReadings(ctx, (c) => runDepositUnder(input, c));
+}
+
+/** `runDeposit` under the readings `ctx` holds (method §13). */
+function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, deposit, profile } = input;
   const T = goal.months;

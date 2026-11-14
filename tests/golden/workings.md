@@ -426,7 +426,7 @@ Status: computed.
 
 Result: V_T = 99,574.19; real 102,622.17; fees: trade 456.34, custody 1,190.84.
 
-**Expected (as written to scenarios.md):** Real V_T/I_T = 102,622.17; nominal V_T = 99,574.19; fees: trade 456.34, custody 1,190.84; tax during 1,403.43 (25% of the reduced coupons, TXI-25); tax at exit 0.00; flag "real loss not carried, G-07". On the rule base the run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119), so the engine blocks it on TXG-09 and lists it, not ranked; these figures are its arithmetic with the s.120ב amounts held at 2026, which the income in the scenario never reaches.
+**Expected (as written to scenarios.md):** Real V_T/I_T = 102,622.17; nominal V_T = 99,574.19; fees: trade 456.34, custody 1,190.84; tax during 1,403.43 (25% of the reduced coupons, TXI-25); tax at exit 0.00; flag "real loss not carried, G-07". The run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119) between three readings (lowered, held, carried); the income in the scenario never reaches the amounts under any of them, so every reading gives these figures and the run carries the flag TXG-OQ17.
 
 ### S11 Daily money-market fund at a bank
 
@@ -790,7 +790,7 @@ Status: computed.
 | 8 | No tax during; exit at 60 is an annuity whose value needs conversion factors: blocked | [TXP-13](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXP-14](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) (PEN OQ7) | blocked (G-03) |
 
 
-**Expected (as written to scenarios.md):** Gross deposit D_m = 300 × I_m + 27.65 (credit 331.80 a year; the 7% cap binds — the scenario title says it does not, see Q18); month-1 gross deposit 328.15. Gross balance at 60 (month 360): 319,652.75 nominal, 176,470.98 real; fees: deposit 1,600.15, insurance 2,400.22, balance 7,743.50. Flag "exit: annuity rules, blocked (G-03)"; listed, not ranked. Employer line (1,250/month, same fees and insurance): 957,985.61 nominal, 528,875.97 real (972,723.85 if insurance is not charged on employer money, Q18). Subject to Q1, Q18.
+**Expected (as written to scenarios.md):** Gross deposit D_m = 300 × I_m + 27.65 in 2026 and 2027 (credit 331.80 a year; the 7% cap binds — the scenario title says it does not, see Q18), + 32.40 in 2028 (credit 388.84) and + 35.00 from 2029 (credit 420.00); month-1 gross deposit 328.15. Gross balance at 60 (month 360): 319,652.75 nominal, 176,470.98 real; fees: deposit 1,600.15, insurance 2,400.22, balance 7,743.50. Flags "exit: annuity rules, blocked (G-03)", G-23 and TXP-OQ20 (the credit is worth at most the year's tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119); listed, not ranked. Employer line (1,250/month, same fees and insurance): 957,985.61 nominal, 528,875.97 real (972,723.85 if insurance is not charged on employer money, Q18). Subject to Q1, Q18.
 
 ### S28 Pension deposit, credit cap binding
 
@@ -823,7 +823,7 @@ Status: computed.
 | 6 | Exit blocked (annuity), listed with the gross balance at the horizon | [TXP-14](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) (PEN OQ7) | G-03 |
 
 
-**Expected (as written to scenarios.md):** Deposit side: deduction 20,952.00 (first tier 12,804.00, second tier 8,148.00) worth 5,510.40; credit 35% × 11,640.00 = 4,074.00; total relief 9,584.40 a year, so 40,000 deposited costs 30,415.60 net. Gross balance at 20 years: 1,273,390.37 nominal, 856,955.21 real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.
+**Expected (as written to scenarios.md):** Deposit side: deduction 20,952.00 (first tier 12,804.00, second tier 8,148.00) worth 5,510.40; credit 35% × 11,640.00 = 4,074.00; total relief 9,584.40 a year, so 40,000 deposited costs 30,415.60 net. Gross balance at 20 years: 1,273,390.37 nominal, 856,955.21 real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13); G-23 and TXP-OQ20 (the credit is worth at most the year's tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.
 
 ### S30 Provident fund for annuity vs pension, same money
 
@@ -831,12 +831,12 @@ Status: computed.
 
 | Step | What | Rule | Value |
 |---|---|---|---|
-| 1 | Same tax category as a pension fund: same deposit-side credit as S27 | [TXP-24](<https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf>), [TXP-02](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | credit 331.80 a year |
+| 1 | Same tax category as a pension fund: same deposit-side credit as S27, year by year | [TXP-24](<https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf>), [TXP-02](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | credit 331.80 a year in 2026 and 2027, 388.84 in 2028, 420.00 from 2029 |
 | 2 | Fees 0.5% of balance, 0% of deposits (caps 1.05% / 4%); no pooled insurance | [PEN-22](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4>), [PEN-35](<https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf>) | — |
 | 3 | Exit blocked as S27 | [TXP-14](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) (PEN OQ7) | G-03 |
 
 
-**Expected (as written to scenarios.md):** Gross deposit as S27 (300 × I_m + 27.65). Gross balance at 60: 312,589.94 nominal, 172,571.80 real; balance fees 17,460.65; no deposit fee, no insurance. Employer line: 933,375.45 nominal, 515,289.41 real. Exit blocked (G-03), listed. Subject to Q1, Q18.
+**Expected (as written to scenarios.md):** Gross deposit as S27 (300 × I_m + 27.65 in 2026 and 2027, + 32.40 in 2028, + 35.00 from 2029). Gross balance at 60: 312,589.94 nominal, 172,571.80 real; balance fees 17,460.65; no deposit fee, no insurance. Employer line: 933,375.45 nominal, 515,289.41 real. Exit blocked (G-03), listed; flags G-23 and TXP-OQ20 (the credit is worth at most the year's tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119). Subject to Q1, Q18.
 
 ### S31 Child savings, provident route, doubled
 
@@ -1315,7 +1315,7 @@ Status: computed.
 (a) V_T 147,697.08, real 155,308.75; fees: trade 2,018.43, spread 144.15, custody 2,643.23, fund (δ) 4,739.09.  
 (b) gross 158,649.68; V_T 153,233.70, real 161,130.71; fees: balance 3,527.77, direct 440.97.
 
-**Expected (as written to scenarios.md):** (a) ETF: nominal gain 19,717.36; real gain 18,862.65 (inflationary amount 0); tax at exit 4,715.66; V_T 147,697.08, real 155,308.75. (b) Kupat gemel lehashkaa: real gain 21,663.90, equal to the nominal gain; tax at exit 5,415.98; V_T 153,233.70, real 161,130.71; label "reading" on TXK-07. On the rule base the run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119), so the engine blocks it on TXG-09 and lists it, not ranked; these figures are its arithmetic with the s.120ב amounts held at 2026, which the income in the scenario never reaches.
+**Expected (as written to scenarios.md):** (a) ETF: nominal gain 19,717.36; real gain 18,862.65 (inflationary amount 0); tax at exit 4,715.66; V_T 147,697.08, real 155,308.75. (b) Kupat gemel lehashkaa: real gain 21,663.90, equal to the nominal gain; tax at exit 5,415.98; V_T 153,233.70, real 161,130.71; label "reading" on TXK-07. The run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119) between three readings (lowered, held, carried); the income in the scenario never reaches the amounts under any of them, so every reading gives these figures and the run carries the flag TXG-OQ17; the deposits to the kupat gemel lehashkaa never reach its yearly ceiling, whose fall is open too (KGL OQ15, proposed), so (b) carries KGL-OQ15 as well.
 
 ### S54 Child savings, provident route, withdrawn at 25
 

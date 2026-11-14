@@ -4,7 +4,7 @@
 import {
   beneficiaryRelief,
   calendarMonthOf,
-  creditFlags,
+  reliefFlags,
   employeeCredit,
   employerLinePension,
   withFee,
@@ -243,7 +243,7 @@ export interface PensionModel {
   total: number;
   /**
    * The yearly relief on the person's own deposit (F-31 credit, or F-32 with a deduction for a beneficiary member), and per month. The
-   * credit is capped at the year's tax (TXP-01, TXP OQ20); `flags` are the open readings it rests on (`creditFlags`: G-23 and TXP-OQ20).
+   * credit is capped at the year's tax (TXP-01, TXP OQ20); `flags` are the open readings it rests on (`reliefFlags`: G-23 and TXP-OQ20).
    */
   relief: { formula: "F-31" | "F-32"; beneficiary: boolean; yearly: number; monthly: number; credit: number; deductionValue: number; flags: string[] };
   /** What the person's own deposit costs after the relief, per month. */
@@ -251,7 +251,7 @@ export interface PensionModel {
   /** F-53: the insurance cost inside the fund per month at A-17, or null when A-17 is not entered (or the product has none). */
   insuranceMonthly: number | null;
   /** The engine's end balance of the deposits, both lines, in today's money, before the fund turns it into a pension (F-49 blocked). */
-  balance: { real: number; years: number } | null;
+  balance: { real: number; years: number; flags: string[]; labels: { code: string; ruleId: string }[] } | null;
   /** Why there is no balance: no fees for the wrapper, a run that failed, or on the general fund's page, no deposit above the
    *  comprehensive fund's ceiling (`below-ceiling`) or an excess the rule base does not divide between the parts (`general-split`). */
   balanceGap: "no-fees" | "no-run" | "below-ceiling" | "general-split" | null;
@@ -286,7 +286,7 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
     const tax = taxAtBrackets(book.brackets("TXG-02", "brackets"));
     const beneficiary = 12 * you + facts.employer >= book.amount("TXP-03", "threshold");
     const r = beneficiary ? beneficiaryRelief(book, facts, 12 * you, tax, true) : employeeCredit(book, facts, 12 * you, tax);
-    const relief = { formula: r.formula, beneficiary, yearly: r.relief, monthly: r.relief / 12, credit: r.credit / 12, deductionValue: r.deductionValue / 12, flags: creditFlags(r) };
+    const relief = { formula: r.formula, beneficiary, yearly: r.relief, monthly: r.relief / 12, credit: r.credit / 12, deductionValue: r.deductionValue / 12, flags: reliefFlags(r) };
     const total = you + employer + severance;
     const hasInsurance = id !== "provident-for-annuity";
     const relieved = { wage, rates, you, employer, severance, total, relief, netYou: you - relief.monthly };
@@ -328,7 +328,10 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
           const line = employerLinePension(plan.input, ctx);
           const index = own.series[own.series.length - 1]!.index;
           // what is in the fund: the employer line's balance before the salary tax on any TXP-10 excess, which the salary pays (F-52)
-          balance = { real: (own.nominal + (line.detail.grossBalance ?? line.nominal)) / index, years: c.years };
+          // the balance rests on what both runs rest on: their flags (G-36 from 2028, the credit's TXP-OQ20 and G-23, and the rest) and labels
+          const flags = [...new Set([...own.flags, ...line.flags].map((f) => f.code))];
+          const labels = [...new Map([...own.labels, ...line.labels].map((l) => [`${l.code} ${l.ruleId}`, { code: l.code, ruleId: l.ruleId }])).values()];
+          balance = { real: (own.nominal + (line.detail.grossBalance ?? line.nominal)) / index, years: c.years, flags, labels };
           for (const u of [...own.rules, ...line.rules]) used.add(u.id);
         }
       } catch {

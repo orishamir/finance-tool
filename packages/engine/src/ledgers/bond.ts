@@ -4,6 +4,7 @@ import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, ty
 import { bondCoupon } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { exitTax, maxRateTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, type Lot } from "./lots.ts";
@@ -32,6 +33,11 @@ export interface BondInput {
  * bond is sold at par (indexed for a linked series) plus A-27.
  */
 export function runBond(input: BondInput, ctx: RunContext): RunResult {
+  return acrossReadings(ctx, (c) => runBondUnder(input, c));
+}
+
+/** `runBond` under the readings `ctx` holds (method §13). */
+function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, bond, tariff, profile } = input;
   const T = goal.months;
@@ -142,7 +148,7 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
     nominal: gross - commission - taxAtExit + couponCashAtExit,
     index: I,
     taxAtExit,
-    outcome: exit.blocked ? { code: "listed-not-ranked", reason: exit.blocked } : undefined,
+    outcome: exit.outcome,
     detail: { ...detail, gain, exitYearFees },
     formulas: ["F-25", "F-12", "F-14", ...(tariff.monthlyFee ? ["F-17"] : []), "F-09", "F-40"],
   });

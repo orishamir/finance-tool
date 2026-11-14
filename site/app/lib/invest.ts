@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, s120bFallBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -460,12 +460,9 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
-/** The open rule every run of the plan would rest on (F-119 at a falling CPI, TXG OQ17), or null. */
-const fallBlockedBy = (ctx: Ctx): string | null =>
-  s120bFallBlockedBy({ months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) }, ctx.plan.inflation, ruleContext(ctx.bundle));
-
-/** The open rule a run of the spec's fund would rest on (F-04, or F-119 at a falling CPI), or null. */
-const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle)) ?? fallBlockedBy(ctx);
+/** The open rule a run of the spec's fund would rest on (F-04), or null. A question whose readings split a run (TXG OQ17 at a falling CPI)
+ *  is the run's own to say: its row is not comparable, "rule-open" (method §13). */
+const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
 
 /** The open rule every fund of a kind would rest on (F-04: a foreign fund in Tel Aviv, TXF-04), or null: what a fund the person types of that kind is told. */
 export function optionOpenRule(bundle: IndicesBundle, option: OptionId): string | null {
@@ -542,6 +539,8 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
         return run([x])[0]!;
       } catch (e) {
         const base = { id: x.s.id, name: x.s.provider.name_he, providerClass: x.s.provider.class, level: "list" as const, snapshot: x.s.snapshot, tariffSource: x.s.tariff, protectionRuleIds: x.s.provider.protection_rule_ids, minimums: x.s.minimums };
+        // a run stopped on an open rule before its exit (an open question whose readings split a yearly tax) is that rule's, not the record's
+        if (e instanceof BlockedError) return { ...base, kind: "not-comparable" as const, reason: { code: "rule-open" as const, ruleId: e.ruleId, question: e.question ?? e.ruleId } };
         return { ...base, kind: "not-comparable" as const, reason: { code: "record-error" as const, detail: e instanceof Error ? e.message : String(e) } };
       }
     });
@@ -589,6 +588,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   if (r.code === "data-missing") return { code: "data-missing", recorded: r.detail };
   if (r.code === "line-without-value") return { code: "line-without-value", detail: r.detail, lineName: s.lines.find((l) => l.id === r.detail.split(" ")[0])?.names.tariff[0] ?? null };
   if (r.code === "record-error") return ambiguity(r.detail, s) ?? { code: "record-error", detail: r.detail };
+  if (r.code === "rule-open") return { code: "rule-open", ruleId: r.ruleId };
   return { code: r.code, detail: r.detail };
 }
 
@@ -1012,9 +1012,6 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
     const path = beforeTaxPathOf(run.fund, ruleContext(ctx.bundle));
     return { reason: { code: "rule-open", ruleId: open }, ...(path ? { beforeTax: { spec, ruleId: path } } : {}) };
   }
-  // at a falling CPI, a sale after 2027 reads that year's surtax threshold, which TXG OQ17 leaves open (F-119): no fund is priced
-  const fall = fallBlockedBy(ctx);
-  if (fall) return { reason: { code: "rule-open", ruleId: fall } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
   return { spec, mismatch };

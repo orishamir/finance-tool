@@ -132,6 +132,15 @@ describe("study fund", () => {
     expect(self12.per).toBe("year");
     expect(self12.grows).toBe(false);
   });
+  it("gives a self-employed person's room for a whole tax year, whatever the run date's month (F-97)", () => {
+    // 15,000 a month of business income, 1,500 a month after the tax back: a year is 18,000, and the deduction (4.5% of 180,000 = 8,100,
+    // TXH-05) gives back 20% of it (the 120,720 to 228,000 band, TXG-02), so 19,620 is deposited; the benefited amount is 20,566 (TXH-08)
+    const c = { ...self, income: 15000, ownMonthly: 1500 };
+    const st = studyStanding(d, c, studyYears(d, c, 12))!;
+    expect(st.per).toBe("year");
+    expect(st.over[0]).toBe(0);
+    expect(st.room[0]).toBeCloseTo(946, 6);
+  });
   it("has no tax after the lock on an own deposit above the limit that earned less than prices rose", () => {
     const low = { ...employee, income: 10000, ownMonthly: 500, employerMonthly: 500, returnPct: 1 };
     const years = studyYears(d, low, 12);
@@ -232,6 +241,8 @@ describe("pensions", () => {
     for (let m0 = first2028; m0 <= 120; m0++) expect(run.deposits[m0]).toBeGreaterThan(m.you);
     expect(run.detail.grossDeposits).toBeGreaterThan(m.you * 12 * 10);
     expect(m.balance!.real).toBeGreaterThan(0);
+    // the balance carries what its runs rest on: the caps grown from 2028 (G-36) and the credit at a tax without credit points (TXP OQ20, G-23)
+    expect(m.balance!.flags).toEqual(expect.arrayContaining(["G-36", "TXP-OQ20", "G-23"]));
     expect(m.general).toBeNull();
   });
   it("gives the same balance at every salary from the average wage up, since the deposits are the same and nothing is above TXP-10's limit", () => {

@@ -1,6 +1,7 @@
 // What every run returns (docs/architecture.md 3.4): numbers with the formulas, rules, labels and flags
 // behind them. The engine returns codes, never Hebrew text; the site maps codes to copy.
 import type { RuleRecord } from "@finance-tool/schema";
+import type { ReadingChoice } from "./open-readings.ts";
 import type { UsedRule } from "./resolver.ts";
 
 /** What a run needs besides its inputs: the resolved rule bundle and the run date (tax year, D3). */
@@ -8,6 +9,8 @@ export interface RunContext {
   rules: readonly RuleRecord[];
   /** `YYYY-MM-DD`. The engine never reads a clock (architecture 3.4, determinism). */
   runDate: string;
+  /** The reading of each open question a run is made under (`acrossReadings` sets it; method §13). Absent for a run not yet evaluated. */
+  readings?: ReadingChoice;
 }
 
 /** Fee types as reported (F-61 breaks totals down by these). Nominal NIS, summed over the run. */
@@ -25,7 +28,7 @@ export type FeeType =
   | "fx"
   | "manager";
 
-/** A G-ID, rule ID or open-question code the page must show, with the month it first applies. */
+/** A G-ID, rule ID, assumption ID (A-nn) or open-question code the page must show, with the month it first applies. */
 export interface Flag {
   code: string;
   month?: number;
@@ -51,7 +54,8 @@ export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11",
 /** Section 8 and B3: whether the run may enter a ranking. */
 export type Outcome =
   | { code: "eligible" }
-  | { code: "listed-not-ranked"; reason: string; untilMonth?: number };
+  /** `question`: the open question that stopped the run on `reason`, the readings it allows giving different results (`acrossReadings`). */
+  | { code: "listed-not-ranked"; reason: string; untilMonth?: number; question?: string };
 
 /** State at the end of month m (m = 0 is the start). Balance is the market value before exit costs. */
 export interface MonthPoint {
