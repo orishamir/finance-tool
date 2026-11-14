@@ -4,7 +4,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, PartField, SlotEdit } from "../../lib/fee-deal/builder";
-import { addOwnPlace, editPrice, setMine, setPart, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type PartId, type Side } from "../../lib/fee-deal/edit";
+import { addOwnPlace, editPrice, setMine, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
+import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { anySourced, BOUND_CURRENCIES, MONTHS, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "../../lib/fee-deal/model";
 import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type RangeUnit } from "../../lib/fee-deal/shapes";
 import { charged, hasCurrency, onAction } from "../../lib/fee-deal/offers/capabilities";

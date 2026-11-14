@@ -7,6 +7,7 @@ import { productIds, type ProductId, type ValueObject } from "@finance-tool/sche
 import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
 import { byAmount, byRate } from "./offers/capabilities";
+import { FIGURE_IDS, FIGURES } from "./offers/figures";
 import {
   BY_MAX,
   byKindsFor,
@@ -325,26 +326,8 @@ export const blankFigure = (): Num => ({ v: 0, blank: true });
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
 
-/** A third party's figures: its rate or sum and its bounds. */
-const thirdFigures = (t: ThirdPrice | undefined): (Num | undefined)[] => (!t ? [] : t.form === "perAction" ? [t.amount] : [t.form === "action" ? t.rate : t.amount, t.min, t.max]);
-
 /** The figures of a price (`Num`s): its rate or sum, its bounds, its cap, its flat price, and its parts' figures (a discount, a third party's, a refund). */
-const figuresOf = (p: Price): (Num | undefined)[] => {
-  const parts = (x: Partial<OnAction>) => [x.discount?.pct, ...thirdFigures(x.third?.price), x.refund];
-  switch (p.form) {
-    case "free":
-      return [];
-    case "action":
-    case "perUnit":
-      return [mainFigure(p)!, p.min, p.max, p.cap, p.flat?.amount, p.flat?.upTo, ...parts(p)];
-    case "held":
-      return [p.rate, p.min, p.max, p.refund];
-    case "sum":
-      return [p.amount, p.refund];
-    case "perAction":
-      return [p.amount, p.cap, ...parts(p)];
-  }
-};
+const figuresOf = (p: Price): (Num | undefined)[] => FIGURE_IDS.map((f) => FIGURES[f].get(p));
 
 /** Whether any figure of a price still carries a template's source: what the template filled in it stands as filled. */
 export const anySourced = (p: Price): boolean => figuresOf(p).some((n) => !!n?.src);

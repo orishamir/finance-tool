@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { FeeBase, ProductId } from "@finance-tool/schema";
 import type { DealKind } from "./kinds";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, removeStage, setKind, setLimited, setPick, setSaleApart, setUntil, withCurrency, withFigure, withForm, withMonths } from "./edit";
+import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, removeStage, setKind, setLimited, setPick, setSaleApart, setUntil, withCurrency, withFigure, withMonths } from "./edit";
+import { withForm } from "./offers/parts";
 
 /** A kind with the bases its record lists, for the edits that read them. */
 const BASES: Partial<Record<ProductId, FeeBase[]>> = { "ira-provident": ["balance", "trade", "custody", "fx", "direct_expenses"], "pension-comprehensive": ["deposit", "balance", "direct_expenses", "insurance_premium"] };

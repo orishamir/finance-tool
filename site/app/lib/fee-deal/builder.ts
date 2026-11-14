@@ -8,9 +8,11 @@ import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
-import { canAddBy, removeBy, type Figure, type PartId } from "./edit";
+import { canAddBy, removeBy } from "./edit";
 import { managementFee } from "./kinds";
 import { charged, hasBounds, hasCap, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
+import type { Figure } from "./offers/figures";
+import type { PartId, PartKind } from "./offers/parts";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
@@ -70,14 +72,6 @@ export interface PartWords {
   quiet?: string;
 }
 
-/**
- * The kind of a part, which gives its colour and icon: `price` (a share, a sum, a discount, a third party's fee, a time limit; neutral),
- * `bound` (a minimum, a maximum, a percent maximum, a flat price for a small action), `link` (an offset or a refund), `note` (words on an
- * order, a sale priced apart; a dashed edge).
- */
-export type PartKind = "price" | "bound" | "link" | "note";
-
-export type { PartId } from "./edit";
 
 /** A part as a slim line shows it: its id, its kind and its words. */
 export interface SlimPart {
