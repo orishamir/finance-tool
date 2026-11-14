@@ -16,7 +16,7 @@ import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
-import { FeesColumn, feeGroup } from "./builder";
+import { FeesColumn, feeGroup, paletteItems } from "./builder";
 import { GlanceCard } from "./glance";
 import { feeName } from "./words";
 import { ToolboxColumn } from "./toolbox";
@@ -450,5 +450,26 @@ describe("a fee read across sizes", () => {
     expect(shown).toContain(`${name}, עד 100 ₪`);
     expect(shown).toContain(`${name}, מעל 100 ₪`);
     expect(drawReading(d)).toContain(`ב־100 ₪ משתנה המחיר של ${name}.`);
+  });
+});
+
+describe("the workbench's closed fees and the fees to add", () => {
+  it("a closed fee with a later price says what its price changes to", () => {
+    const shown = text(builderOf(account(), null));
+    // the account fee: free until 03.2027, then 10 ₪ a month
+    expect(shown.replace(/\s+/g, " ")).toMatch(new RegExp(`${feeDeal.cases.parts.then.trim()} ?10`));
+  });
+  it("a rate a price list prints or the person typed shows with all its decimals", () => {
+    const d = account();
+    d.fees = [{ id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.0875) } }] }];
+    expect(text(builderOf(d, null))).toContain("0.0875%");
+  });
+  it("the palette offers each fee the deal can still take, with the heading of what it is charged on", () => {
+    const d = account();
+    const r = readDealFor(d, data.kinds, TODAY);
+    const items = paletteItems(builder(r), r, data.kinds.find((k) => k.id === d.kind)!, false);
+    expect(items.map((x) => x.id)).not.toContain("trade");
+    for (const it of items) expect(Object.values(feeDeal.on)).toContain(it.line);
+    expect(items.find((x) => x.id === "transfer_out")?.line).toBe(feeDeal.on["action:transfer_out"]);
   });
 });

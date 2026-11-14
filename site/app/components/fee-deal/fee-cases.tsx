@@ -12,7 +12,7 @@ import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
 import { thingName } from "../../lib/fee-deal/case-words";
 import { addCase, addCaseAt, copyCase, setTop } from "../../lib/fee-deal/edits/case";
 import { bandLayout, headSaysLead, partsByRow, rangeSign, rowHead, sharedLead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
-import type { FeeLayout, Head, Shared } from "../../lib/fee-deal/layout";
+import { valueKey, type FeeLayout, type Head, type Shared } from "../../lib/fee-deal/layout";
 import { isRange, type CasesFee, type Fee } from "../../lib/fee-deal/model";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
@@ -133,16 +133,21 @@ export function FeeCases({
   const { onOpen, onSlot, onThing, onRemoveCase, onRemoveBy } = actions;
   const isOpen = open.fee === fee.id;
   const openCase = isOpen ? open.case : null;
-  const [switchTo, setSwitchTo] = useState<string | null>(null);
+  // the switch starts on the person's own case's value, where a case is theirs (their track), else on the first
+  const mineOn = fee.cases.find((c) => c.mine)?.when[2];
+  const [switchTo, setSwitchTo] = useState<string | null>(mineOn !== undefined && mineOn !== "any" ? valueKey(mineOn) : null);
   const [asking, setAsking] = useState<Asking>(null);
   const slot = useRef<HTMLElement | null>(null);
   const [box, width] = useWidth(326);
-  const folded = new Set(band.folded?.rows.map((r) => r.case));
+  // a fee that changes by three things shows one value of the third at a time, on its switch: the tracks that are not the person's are
+  // values of a switch then, never folded
+  const foldable = band.folded && fee.by.length < 3 ? band.folded : null;
+  const folded = new Set(foldable?.rows.map((r) => r.case));
   // the cases shown, in the fee's order: the folded tracks once they are opened
   const rows = useMemo(() => {
-    const byId = new Map([...band.rows, ...(unfolded ? (band.folded?.rows ?? []) : [])].map((r) => [r.case, r]));
+    const byId = new Map([...band.rows, ...(!foldable || unfolded ? (band.folded?.rows ?? []) : [])].map((r) => [r.case, r]));
     return fee.cases.flatMap((c) => byId.get(c.id) ?? []);
-  }, [band, unfolded, fee.cases]);
+  }, [band, unfolded, fee.cases, foldable]);
   const byCase = new Map(rows.map((r) => [r.case, r]));
   const layout = useMemo(() => bandLayout(fee, rows, switchTo), [fee, rows, switchTo]);
   const wide = fits(layout, width);
@@ -234,7 +239,7 @@ export function FeeCases({
         );
 
   const question = asking ? (asking.range ? <AskStep key={`step:${asking.thing}`} fee={fee} t={asking.thing} onFee={addAndOpen} onDone={asked} /> : <AskValuesOf key={`values:${asking.thing}`} fee={fee} t={asking.thing} onFee={addAndOpen} onDone={asked} />) : null;
-  const fold = band.folded && <CaseFold label={band.folded.words} open={unfolded} onToggle={() => onUnfold(!unfolded)}>{null}</CaseFold>;
+  const fold = foldable && <CaseFold label={foldable.words} open={unfolded} onToggle={() => onUnfold(!unfolded)}>{null}</CaseFold>;
 
   let body: ReactNode;
   if (wide && layout.shape === "table") {

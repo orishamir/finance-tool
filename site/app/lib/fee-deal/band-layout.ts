@@ -62,8 +62,11 @@ export function partsByRow(parts: readonly SlimPart[]): Map<PartRow, SlimPart[]>
 const HEAD_SAYS_LEAD: ReadonlySet<PartRow> = new Set(["min", "max", "cap", "maxPerSecurity"]);
 export const headSaysLead = (row: PartRow): boolean => HEAD_SAYS_LEAD.has(row);
 
-/** A figure's content: equal for the same number in the same unit, state and source. */
-const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit, v.state, v.source?.url ?? null, (v.source as { page?: number } | undefined)?.page ?? null] : null);
+/**
+ * A figure's content: equal for the same number in the same unit and state. Two lines of one price list that print the same figure read
+ * the same and are said once, the first case's source behind it.
+ */
+const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit, v.state] : null);
 
 /** A part's content, equal for two parts that read the same: its id and every word and figure of it. */
 export function partKey(p: SlimPart): string {
