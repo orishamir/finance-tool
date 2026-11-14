@@ -42,7 +42,7 @@ export function useTemplatePicker({ deal, data, today, onTrack, onNew }: { deal:
     const t = deal.template && !deal.template.feesKept ? templateOf(deal, deal.template.id, data, today) : null;
     // each fee by its own list: a fee copied from another house brings that house's lines of its kind in place of the template's, and takes the template's averages of its kind away
     if (!t) return null;
-    const averages = averagesOfFees(deal, t.averages);
+    const averages = averagesOfFees(deal, t.averages, data);
     return { left: leftOfFees(deal, t.left, data), leftOut: t.leftOut ?? null, ...(averages ? { averages } : {}) };
   }, [deal, data, today]);
   return {
