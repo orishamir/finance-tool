@@ -5,8 +5,7 @@
 // one (`sumCurrency`). No product narrows it, so every saved deal and link that held a price of these forms and fields still opens. What a
 // product's fee is offered (the toolbox, a template) is narrower, and is decided in offer.ts. Pure data; no Hebrew.
 import type { FeeBase } from "@finance-tool/schema";
-import type { BoundCurrency, Price, Side } from "../model";
-import type { FeeKindId, FormId } from "../shapes";
+import type { BoundCurrency, FeeKindId, FormId, Price, Side } from "../core";
 import { onAction } from "./capabilities";
 
 /**

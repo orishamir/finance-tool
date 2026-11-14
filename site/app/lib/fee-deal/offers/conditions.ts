@@ -2,7 +2,7 @@
 // range's steps, the person's track or condition), which fees it can split, a range's units, and whether a range is read across sizes.
 // The toolbox's things, the question a thing asks when it is added, a deal read from the device or a link, and the reading's picks all
 // read this registry. Pure; no Hebrew.
-import type { FeeKindId } from "../shapes";
+import type { FeeKindId } from "../core";
 import { CHANNEL_IDS, CURRENCY_IDS, isConversion, onHolding, WHAT_IDS } from "../shapes";
 
 /**

@@ -1,7 +1,9 @@
 // The fee page's one undo, on the site's own price lists: a fee taken away, a fee filled from a price list, a stage taken away.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import { addFee, editPrice, setLimited, setName, setSaleApart, setUntil, updateFee, withFigure } from "./edit";
+import { addFee, setName, updateFee } from "./edits/deal";
+import { editPrice, setLimited, setSaleApart, setUntil } from "./edits/stage";
+import { withFigure } from "./edits/price";
 import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
 import { dataBar, feePriceLists, pickTrack } from "./templates";
 import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";

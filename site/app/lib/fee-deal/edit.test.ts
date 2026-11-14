@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import type { FeeBase, ProductId } from "@finance-tool/schema";
 import type { DealKind } from "./kinds";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
-import { addFee, addLater, editPrice, figureBack, figureOf, holdOn, laterUntouched, removeStage, setKind, setLimited, setPick, setSaleApart, setUntil, withCurrency, withFigure, withMonths } from "./edit";
+import { addFee, setKind, setPick } from "./edits/deal";
+import { addLater, editPrice, holdOn, laterUntouched, removeStage, setLimited, setSaleApart, setUntil } from "./edits/stage";
+import { figureBack, figureOf, withCurrency, withFigure, withMonths } from "./edits/price";
 import { withForm } from "./offers/parts";
 
 /** A kind with the bases its record lists, for the edits that read them. */

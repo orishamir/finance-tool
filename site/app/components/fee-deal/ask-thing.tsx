@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/builder";
-import { addBy, type NewBy } from "../../lib/fee-deal/edit";
+import { addBy, type NewBy } from "../../lib/fee-deal/edits/case";
 import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import { isPlaceKind, isRangeKind, type ByKind, type RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, Button, FigureField, InlineSelect, TextField } from "../kit";

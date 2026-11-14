@@ -137,7 +137,7 @@ export function inputKey(fees: readonly Pick<Fee, "kind">[], i: number, field?: 
 }
 
 /**
- * The figures of one price as value objects, each in its unit (a free price has none), keyed as the screen edits them (edit.ts,
+ * The figures of one price as value objects, each in its unit (a free price has none), keyed as the screen edits them (edits/price.ts,
  * `Figure`): its rate or its sum (`amount`, a sum per unit's among them), its bounds, its percent maximum (`cap`, a share of the action),
  * and its flat price (`flat`, the price per action) with the sum it holds up to (`upTo`); its sums in the price's currency.
  */

@@ -4,7 +4,7 @@
 // groups (the name, the note, the buttons); on a phone a group may wrap inside itself too.
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
-import { setName } from "../../lib/fee-deal/edit";
+import { setName } from "../../lib/fee-deal/edits/deal";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { NAME_MAX, type FeeDeal } from "../../lib/fee-deal/model";
 import { IconPencil } from "../icons";

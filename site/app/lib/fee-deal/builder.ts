@@ -8,7 +8,7 @@ import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
-import { canAddBy, removeBy } from "./edit";
+import { canAddBy, removeBy } from "./edits/case";
 import { boundsAction } from "./offers/capabilities";
 import { capacity, type ChargedForm } from "./offers/capacity";
 import { FIGURES, type Figure } from "./offers/figures";
@@ -240,7 +240,7 @@ function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null
 
 // ---------------------------------------------------------------- the rows
 
-/** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edit.ts). */
+/** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edits/stage.ts). */
 const firstCase = (fee: Fee): string | undefined => (hasCases(fee) ? fee.cases[0]!.id : undefined);
 
 /**
@@ -311,7 +311,7 @@ export interface Panel extends FeeRef {
 }
 
 /**
- * A field of a part in the open case: the figure it edits (`edit.ts`, `Figure`), its value (null while it is blank or absent), and the sign
+ * A field of a part in the open case: the figure it edits (`Figure`, offers/figures.ts), its value (null while it is blank or absent), and the sign
  * after its box (a percent, or a currency's sign; none for a sum per period, whose period is said after it).
  */
 export interface PartField {
