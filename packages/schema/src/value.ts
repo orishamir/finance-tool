@@ -25,8 +25,7 @@ export const unit = z.enum([
   "pct_per_year",
   /**
    * An annual rate quoted as effective, compounded at each payment, where `pct_per_year` on a bank's rate is nominal (BANK-50): the Bank
-   * of Israel's averages of deposit rates paid (reporting directive 877 s.9), pending in the rule base, where BANK-22 does not yet record
-   * that definition. Accepted only in P-05's `cash_rate` and a deposit record's `rate_offered` (`EFFECTIVE_RATE_PATHS`).
+   * of Israel's averages of deposit rates paid (BANK-53: reporting directives 823A s.8, 823 s.8 and 877 s.9). Accepted only in P-05's `cash_rate` and a deposit record's `rate_offered` (`EFFECTIVE_RATE_PATHS`).
    */
   "pct_per_year_effective",
   "pct_of_deposit",

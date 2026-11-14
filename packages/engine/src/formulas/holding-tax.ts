@@ -75,7 +75,7 @@ export function effectiveAnnualOf(annualRate: number, calc: InterestCalc | undef
  *   `principal × ((1 + R)^(months/12) − 1)`. Null where the record gives no `m` (BANK OQ21): an open rule enters no formula.
  * - A rate quoted as effective (`basis` `effective`) is that `R` itself, over any term: `principal × ((1 + R)^(d/365) − 1)` over the
  *   days the table prints, else `(1 + R)^(months/12) − 1`, F-07's month compounded. Interest paid out at such a rate is not in the
- *   method (G-36): null.
+ *   method (G-37): null.
  * Unlinked or partly linked: `rate × max(0, interest − deduction)`, the deduction being what is left of TXI-20 for the year. Fully
  * CPI-linked: linkage exempt (TXI-05), the tax is `rate × real interest`, where the real interest is the quoted real rate on the
  * indexed principal.

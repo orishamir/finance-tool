@@ -134,8 +134,8 @@ describe("F-21 at a rate quoted as effective (the unit pct_per_year_effective)",
     expect(depositInterest(10_000, 0.032, 1, 1, { basis: "effective", paidOut: true })).toBeNull();
   });
 
-  it("stops a run that pays interest out at a rate quoted as effective, on the method's gap (G-36)", () => {
+  it("stops a run that pays interest out at a rate quoted as effective, on the method's gap (G-37)", () => {
     const input: DepositInput = { goal: { amountNow: 10_000, monthly: 0, months: 12 }, market: { inflation: 0 }, deposit: { rate: 0.032, rateBasis: "effective", termMonths: 12, linkage: "unlinked", interestPaidOut: true }, profile: {} };
-    expect(() => runDeposit(input, ctx)).toThrow(/G-36/);
+    expect(() => runDeposit(input, ctx)).toThrow(/G-37/);
   });
 });
