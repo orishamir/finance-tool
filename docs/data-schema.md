@@ -540,19 +540,51 @@ One file per bank per product per snapshot. The folder `terms/deposits/` is matc
 
 ### 3.8 `data/series/` — sourced time series (dependency 7)
 
-One file per series, appended on each refresh. Observations are value objects with `date`.
+One file per series, appended on each refresh. Observations are value objects with `date`. The example is `cbs-cpi.json` with its latest observation only.
 
 ```json
 {
-  "id": "boi-policy-rate",
-  "names": { "he": ["ריבית בנק ישראל"] },
-  "publisher": "Bank of Israel",
-  "flow": "EDGE ...", "series_code": "...",
-  "unit": "pct_per_year",
-  "cadence": "on change", "stale_after_days": 45,
-  "terms_of_use": { "terms_url": "https://...", "read_on": "2026-10-22", "attribution": "<the line the licence prescribes>" },
-  "rule_ids": ["BANK-22", "BANK-25"],
-  "observations": [ { "date": "2026-09-03", "value": 3.25, "source": { "...": "value object fields" }, "checked": "2026-10-22" } ]
+  "id": "cbs-cpi",
+  "names": {
+    "he": [
+      "מדד המחירים לצרכן - כללי"
+    ]
+  },
+  "publisher": "Central Bureau of Statistics",
+  "flow": "CBS price-index API (api.cbs.gov.il/index/data/price)",
+  "series_code": "120010",
+  "unit": "index_points",
+  "cadence": "monthly",
+  "stale_after_days": 45,
+  "terms_of_use": {
+    "terms_url": "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx",
+    "read_on": "2026-10-23",
+    "attribution": "הלשכה המרכזית לסטטיסטיקה (הלמ\"ס), מדד המחירים לצרכן - כללי (קוד 120010), (2026-10-23), ניתן לצפייה באתר: https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025 מועתק ומופץ כמות שהוא – as is – על פי רישיון שימוש של הלמ\"ס בכתובת אתר האינטרנט https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx"
+  },
+  "rule_ids": [],
+  "notes": "General CPI as the CBS prints it, base 2024 ממוצע = 100, from 2025-01. The CBS publishes a month's index on the 15th of the next month. Months before 2025-01 are printed in the 2022 base and are not stored; chaining coefficients are at https://api.cbs.gov.il/index/data/price_selected?id=120010. date is the index month (first day); effective_to is its last day. This series is the history deflator, not an inflation expectation.",
+  "raw": {
+    "archive_key": "cbs-cpi/2026-10-23.json.gz",
+    "sha256": "886fbbacd61b15b1f89b73236b5ed58289eb1a9344f9f841e6b1c9d98f7287eb"
+  },
+  "observations": [
+    {
+      "value": 105.3,
+      "unit": "index_points",
+      "source": {
+        "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025",
+        "title": "מדד המחירים לצרכן - כללי (code 120010), CBS price-index API, base 2024 ממוצע = 100, index of 2026-09",
+        "publisher": "Central Bureau of Statistics",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-09-01",
+      "effective_to": "2026-09-30",
+      "update_rule": "market",
+      "state": "sourced",
+      "date": "2026-09-01"
+    }
+  ]
 }
 ```
 
@@ -566,7 +598,7 @@ One file per series, appended on each refresh. Observations are value objects wi
   - `ecb-fx-month-end` (source `ecb-fx-month-end`): the same unit for the dollar and the shekel on each month's last reference day since January 2000, from the ECB Data Portal's `EXR.M.<code>.EUR.SP00.E`, for F-93.
 - **Series written by hand**, with no adapter:
   - `mof-gov-bond-auction-coupons` (GOV-09, GOV-11, GOV-13, GOV-19): the yearly coupon of each tradable government bond series the Ministry of Finance sold at auction in 2026, from the Ministry's dataset "נתוני החוב הממשלתי המקומי" on data.gov.il (resource "הנפקת אג"ח סחירות בשוק המקומי"), under data.gov.il's open licence, with the attribution line it prescribes. Key `<type>|<series>|<redemption date>|<original term>` as the file prints them; for each key the first and the latest 2026 auction, since a series' coupon is fixed for its life. The floating-rate type, and the rows that print a coupon of 0 in a series' first weeks, are left out (the file's `notes`). These are the sourced coupons A-23 names.
-- **Series the method names that are not in the data.** The Bank of Israel's series (`boi-policy-rate` for A-20; `bank-deposit-rate-avg-<bank>-<term>` from INTEREST_DASH for A-21; `makam-yield-<months>` for A-22; `gov-bond-yield-<type>-<years>` for A-23) have no adapter and none is committed (D20); the policy rate is quoted as one published figure in P-05 `cash_rate` (D20, D22), the others are links, not numbers. `cpi-expectations` (A-02, G-01) and `average-wage` (TXP-03, PEN-04, PEN-08) are not sourced.
+- **Series the method names that are not in the data.** The Bank of Israel's series (`boi-policy-rate` for A-20; `bank-deposit-rate-avg-<bank>-<term>` from INTEREST_DASH for A-21; `makam-yield-<months>` for A-22; `gov-bond-yield-<type>-<years>` for A-23) have no adapter and none is committed (D20); the policy rate is quoted as one published figure in P-05 `cash_rate` (D20, D22), the others are not collected. `cpi-expectations` (A-02, G-01) and `average-wage` (TXP-03, PEN-04, PEN-08) are not sourced.
 
 ### 3.9 `data/averages/` — the fees a house actually charged on average
 
@@ -730,7 +762,7 @@ One file per dataset per report period, written by the pipeline: `cma/<dataset>@
 
 ### 3.14 `data/fund-lists/` — the fund lists (3.4 fund variants, 3.10, product D17)
 
-**No file is in the repository.** The site gives the counts with a link to the lists and the by-hand download path, and no fund list (product.md dependency 6). The schema and the reader stand for a saved list: the site reads the latest file of each list (`loadFundLists` in `site/app/lib/variants.server.ts`).
+**No file is in the repository.** The site shows the funds that have records and links out to Maya, with no count and no fund list (product.md dependency 6). The schema and the reader stand for a saved list: the site reads the latest file of each list (`loadFundLists` in `site/app/lib/variants.server.ts`).
 
 The two lists, each saved by hand, because the pages block scripts:
 

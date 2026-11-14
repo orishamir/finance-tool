@@ -18,7 +18,7 @@ import { IconClose, IconPencil } from "../icons";
 import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
 import { useProvenanceData } from "../provenance";
 import { UndoLine } from "./undo-line";
-import { caseText } from "./fee-block";
+import { caseText } from "./fee-cases";
 import { FeeName, feeColour, feeName } from "./words";
 
 const p = copy.panel;
@@ -26,7 +26,7 @@ const p = copy.panel;
 /** The kit's kind of each of the view's groups. */
 const KIND: Record<string, ToolKind> = { price: "price", bound: "bound", by: "when", link: "link", more: "note" };
 
-/** A part's card as it will read, its boxes drawn empty: "☐ % לכל פעולה", "מינימום ☐ ☐", "לזמן מוגבל, עד ☐". */
+/** A part's card as it will read, its boxes drawn empty: "☐ % לכל פעולה", "מינימום ☐ ☐". */
 function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const w = part.words;
   const lead = w.lead?.trim();
@@ -34,9 +34,7 @@ function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const sign = part.box === "pct" ? "%" : typeof part.box === "object" ? part.box.sign : "";
   // a minimum's and a maximum's sum come with the choice of its currency, drawn as a second, wider box
   const bound = part.id === "min" || part.id === "max";
-  const box = part.used ? null : part.box === "month" ? (
-    <ToolBlank wide />
-  ) : part.box ? (
+  const box = part.used ? null : part.box ? (
     <>
       {bound ? (
         <>
@@ -171,6 +169,8 @@ export function ToolboxColumn({
     if (thing) onStopBy(thing);
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
+  // one price of several over time: the heading names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee
+  const priceLead = view.addTo.price ? `${view.addTo.price}:` : undefined;
   // filling the fee from a price list, or the undo line of a fill just made; nothing, and no line above it, where neither stands
   const foot = line || (fill && fill.houses.length > 0) ? (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
@@ -188,7 +188,7 @@ export function ToolboxColumn({
       )}
     </div>
   ) : null;
-  const box = <Toolbox key={fee.id} target={target} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold } : {})} />;
+  const box = <Toolbox key={fee.id} target={target} {...(priceLead ? { targetLead: priceLead } : {})} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
   if (sheet) return box;
   // the site's own explanation of the fee: its glossary card by the fee's name, in the deal's product's sense where the glossary gives
   // that product one of its own

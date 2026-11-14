@@ -2,7 +2,8 @@
 // at a falling CPI) never charged its exit tax, so the workbench does not compare it: the row is not comparable on the rule, with the gap.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { providerWorkbench, runSecurities, type ComparedProvider, type WorkbenchInput } from "../src/index.ts";
+import { providerWorkbench, reasonFromRunOutcome, runSecurities, type ComparedProvider, type WorkbenchInput } from "../src/index.ts";
+import type { ProductRecord } from "@finance-tool/schema";
 import { context, loadRules } from "./golden/harness.ts";
 
 const hapoalim = JSON.parse(readFileSync(new URL("../../../data/fees/hapoalim@2026-10-23.json", import.meta.url), "utf8")) as unknown;
@@ -34,5 +35,15 @@ describe("F-63 a run listed on a method gap", () => {
     if (row.kind === "not-comparable") expect(row.reason).toEqual({ code: "rule-open", ruleId: "TXG-09", gap: "G-38" });
     // at a rising CPI the same figure reads by F-120, and the row is compared
     expect((providerWorkbench(input(0.02), ctx).rows[0] as ComparedProvider).kind).toBe("compared");
+  });
+});
+
+describe("B3 from a run's outcome (`reasonFromRunOutcome`)", () => {
+  const w = {} as ProductRecord;
+  it("keeps the method gap in gapIds and the open question in detail", () => {
+    expect(reasonFromRunOutcome(w, { reason: "TXG-09", gap: "G-38" })).toEqual({ code: "exit-blocked", ruleIds: ["TXG-09"], gapIds: ["G-38"] });
+    expect(reasonFromRunOutcome(w, { reason: "KGL-03", question: "KGL OQ15" })).toEqual({ code: "exit-blocked", ruleIds: ["KGL-03"], gapIds: [], detail: "KGL OQ15" });
+    // a gap as the reason itself is not repeated
+    expect(reasonFromRunOutcome(w, { reason: "G-03", gap: "G-03" })).toEqual({ code: "exit-blocked", ruleIds: [], gapIds: ["G-03"] });
   });
 });

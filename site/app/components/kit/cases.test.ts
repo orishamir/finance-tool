@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { dealCases as words } from "../../copy";
 import { ProvenanceProvider } from "../provenance";
 import { KitGallery } from "./gallery";
-import { CaseRow, ConditionBand, OpenCase, PartChip, PartEdit, ReadForBand, Toolbox } from "./index";
+import { AddSlot, CaseGrid, CaseRow, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, PartChip, PartEdit, ReadForBand, Toolbox } from "./index";
 
 const today = "2026-11-13";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -18,18 +18,18 @@ const bare = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, el
 describe("the gallery's cases and parts", () => {
   const out = html(h(KitGallery, { today }));
   it("names every piece", () => {
-    for (const name of ["PartChip, PartEdit", "ConditionBand, CaseRow, CaseFold, CaseSlot, OpenCase", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
+    for (const name of ["PartChip, PartEdit", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, SharedLine, AddSlot", "ChangeDivider", "FeePalette", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
 });
 
 describe("a fee's band", () => {
-  const band = (children: React.ReactNode) => html(h(ConditionBand, { things: [{ id: "a", name: "א" }], addCase: { onAdd: () => undefined }, children }));
-  it("heads with what the price changes by and ends with the action that adds a case", () => {
+  const band = (children: React.ReactNode) => html(h(ConditionBand, { things: [{ id: "a", name: "א" }], children }));
+  it("heads with what the price changes by and its things alone: adding stands where the new case will", () => {
     const out = band(null);
     expect(out).toContain(words.changesBy);
-    expect(out).toContain(words.addCase);
+    expect(bare(h(ConditionHead, { things: [{ id: "a", name: "א" }], bare: true }))).not.toContain("<button");
   });
   it("says the person's own track in words beside its value", () => {
     const out = band(h(CaseRow, { when: [{ text: "ערך" }, { text: "מסלול", mine: true }], label: "לפתוח", onOpen: () => undefined, children: null }));
@@ -48,6 +48,39 @@ describe("a fee's band", () => {
   it("a row that opens is one button, named for the case", () => {
     const out = band(h(CaseRow, { when: [{ text: "ערך" }], label: "לפתוח את המקרה", onOpen: () => undefined, children: null }));
     expect(out).toMatch(/<button[^>]*aria-label="לפתוח את המקרה"/);
+  });
+});
+
+describe("a fee's table and grid", () => {
+  const add = { label: "מקרה", onAdd: () => undefined };
+  it("a table's column head opens its case, named for it; its add slot is a button that says what it adds", () => {
+    const out = html(h(CaseTable, { columns: [{ id: "a", head: "ערך", label: "לפתוח את המקרה: ערך", onOpen: () => undefined }], rows: [{ id: "price", head: "שיעור", cells: [{ from: 0, span: 1, content: "1%" }] }], add }));
+    expect(out).toMatch(/<button[^>]*aria-label="לפתוח את המקרה: ערך"/);
+    expect(out).toMatch(/data-add-slot="column"[^>]*>.*מקרה/);
+    expect(out).toContain("שיעור");
+  });
+  it("a table's empty place draws no cell", () => {
+    const out = html(h(CaseTable, { columns: [{ id: "a", head: "א", label: "א", onOpen: () => undefined }, { id: "b", head: "ב", label: "ב", onOpen: () => undefined }], rows: [{ id: "max", head: "מקסימום", cells: [{ from: 0, span: 1, content: "10" }, { from: 1, span: 1, content: null }] }] }));
+    expect(out.match(/rounded-md border border-border bg-background/g)).toHaveLength(1);
+  });
+  it("a grid's cell opens its case; a place no case holds is a slot that adds one there, named for the place", () => {
+    const out = html(h(CaseGrid, { columns: [{ id: "x", head: "x" }, { id: "y", head: "y" }], rows: [{ id: "r", head: "r", cells: [{ from: 0, span: 1, content: "1%", label: "לפתוח: r · x", onOpen: () => undefined }, { from: 1, span: 1, empty: { label: "מקרה", spoken: "להוסיף מקרה כאן: r · y", onAdd: () => undefined } }] }], addRow: add }));
+    expect(out).toMatch(/<button[^>]*aria-label="לפתוח: r · x"/);
+    expect(out).toMatch(/aria-label="להוסיף מקרה כאן: r · y"/);
+  });
+  it("an add slot says whether its question is open", () => {
+    expect(bare(h(AddSlot, { add: { ...add, expanded: true }, shape: "row" }))).toContain('aria-expanded="true"');
+  });
+});
+
+describe("the fee palette", () => {
+  it("is a button per fee, with its line", () => {
+    const out = bare(h(FeePalette, { title: "אפשר להוסיף", items: [{ id: "fx", dot: "bg-fee-fx", name: "עמלת המרה", line: "על כל המרה" }], onAdd: () => undefined }));
+    expect(out).toMatch(/<button[^>]*data-palette="fx"/);
+    expect(out).toContain("על כל המרה");
+  });
+  it("draws nothing with nothing to add", () => {
+    expect(bare(h(FeePalette, { title: "אפשר להוסיף", items: [], onAdd: () => undefined }))).toBe("");
   });
 });
 
@@ -72,6 +105,11 @@ describe("the toolbox", () => {
     const out = html(h(Toolbox, { target: "מקרה", groups: two, onAdd: () => undefined, sheet: true }));
     expect(out).toContain(`aria-label="${words.toolbox.groups}"`);
     expect(out).not.toContain("הערה");
+  });
+  it("on a phone, with `onClose`, has a ✕ that closes the open fee, named by what it does", () => {
+    const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, onClose: () => undefined }));
+    expect(out).toMatch(new RegExp(`data-sheet-close=""[^>]*aria-label="${words.toolbox.close}"`));
+    expect(html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true }))).not.toContain("data-sheet-close");
   });
   it("on a phone, held folded by the page, shows its row of groups and hides its parts and the case it adds to", () => {
     const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, folded: true, onFold: () => undefined }));

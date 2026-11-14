@@ -119,7 +119,7 @@ export interface IndicesBundle {
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p05: ParameterRecord;
-  links: { boi: RefLink | null; tase: RefLink | null; maya: RefLink | null; taseForeign: RefLink | null };
+  links: { tase: RefLink | null; maya: RefLink | null };
   /** A provider's snapshot id to the regulator's company id (the legal id the company page is addressed by); absent when the data names no such company. */
   providerCompany: Record<string, string>;
   /** Per provident wrapper: how many managing companies the regulator's data holds (the "one of N" line). */

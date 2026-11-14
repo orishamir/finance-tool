@@ -83,11 +83,12 @@ export function FeeName({ fee, className, before, after }: { fee: FeeRef; classN
 }
 
 /**
- * How the page shows a sum: one the person typed as they typed it (`typedSum`), one the site works out in whole units of its currency
- * (`computedSum`); any other figure as its unit's rules say (a price list's sum whole where it is whole, "8 $", `fmt.usd`).
+ * How the page shows a figure: one the site works out in whole units of its currency (`computedSum`); a rate a price list prints or the
+ * person typed with every decimal it has ("0.0875%", `fmt.pctPrinted`), never rounded; a sum the person typed as they typed it
+ * (`typedSum`); any other figure as its unit's rules say (a price list's sum whole where it is whole, "8 $", `fmt.usd`).
  */
 export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | undefined =>
-  v.state === "entered" ? (n) => typedSum(n, v.unit) : v.state === "computed" ? (n) => computedSum(n, v.unit) : undefined;
+  v.state === "computed" ? (n) => computedSum(n, v.unit) : v.unit.startsWith("pct") ? fmt.pctPrinted : v.state === "entered" ? (n) => typedSum(n, v.unit) : undefined;
 
 /** A figure on the page: a sum as `sumDisplay` shows it. */
 export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;

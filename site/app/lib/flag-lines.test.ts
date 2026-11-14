@@ -18,6 +18,12 @@ describe("each line says what its rule says", () => {
     expect(flags["G-20"]).not.toContain("לא נמצא מקור");
   });
 
+  it("G-39: a makam's commissions against its discount at redemption are not in the rule base, with no claim the tax is high", () => {
+    expect(flags["G-39"]).toContain("דמי הניכיון");
+    expect(flags["G-39"]).not.toContain("1325");
+    expect(flags["G-39"]).not.toContain("גבוה");
+  });
+
   it("G-09: the makam discount is taxed at TXI-11's 15%, with no conflict left to state", () => {
     expect(flags["G-09"]).toContain("15%");
     expect(flags["G-09"]).not.toContain("20%");

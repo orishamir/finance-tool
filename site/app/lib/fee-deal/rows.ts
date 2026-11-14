@@ -1,8 +1,6 @@
 // The builder column (method §10.6): a block per fee, either a slim price or the band of its cases (F-114) with each case's value per thing
-// and its parts in short; the fees to suggest; and each fee's facts beside its prices and its standing against the cap now and where it
-// next changes (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
-import { feeDeal as copy } from "../../copy";
-import type { ChangeKind } from "@finance-tool/engine";
+// and its parts in short, a price that changes with time in one line; the fees to suggest; and each fee's facts beside its prices and its
+// standing against the cap now (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
 import { feeOf, inCurrency, picked, tradeCurrency } from "./cases";
 import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type BoundCurrency, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
 import { feesOffered, type DataBar } from "./offers/offer";
@@ -12,6 +10,7 @@ import { type FeeKindId } from "./shapes";
 import { BY_MAX, type ByKind } from "./offers/conditions";
 import { insideFund } from "./values";
 import type { SiteValue } from "../value";
+import { stepBounds, type StepBounds } from "./band-layout";
 import { firstCase, slimParts, thingName, whenWords, type SlimPart, type WhenWords } from "./case-words";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -19,12 +18,6 @@ export interface StageView {
   price: PriceView;
   until?: MonthKey;
   standing: StandingView;
-}
-
-/** One fee's next change after the reading's month, where it has one (F-110). */
-export interface NextChange {
-  at: MonthKey;
-  change: ChangeKind;
 }
 
 /**
@@ -48,8 +41,6 @@ export interface BuilderRow extends FeeRef {
   banned?: BanSaid;
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
   sale?: StageView[];
-  /** The fee's next change, and whether it is a start from free. */
-  next?: NextChange;
   /** Whether the price now has a minimum and a maximum (on any side). */
   bounds: { min: boolean; max: boolean };
   /** Whether the fee is charged inside a fund. */
@@ -70,6 +61,8 @@ export interface CaseRow {
   /** Whether its prices are given and in order: a case still asking for a figure is read nowhere until it is. */
   priced: boolean;
   parts: SlimPart[];
+  /** For each thing, where it is a range and the case is on one of its steps, the step's bounds (`stepBounds`): a ladder's head says them. */
+  bounds: (StepBounds | null)[];
   /**
    * Its price now against the cap (F-113), as a slim fee's row says it: the price charged, after its discount and without a third party's
    * fee, whichever case the reading reads.
@@ -87,13 +80,12 @@ export interface ThingPill {
 }
 
 /**
- * A fee as a block: `slim`, a fee whose price changes by nothing, its parts in one line; `band`, the head's things and one row per case,
- * the cases on tracks that are not the person's folded into one line (`folded`: how many tracks, and their rows), where the person has
- * marked a track as theirs.
+ * A fee as a block: `slim`, a fee whose price changes by nothing, its parts in one line; `band`, the head's things and every case's row, in
+ * the fee's order, the person's own track marked and none set apart for not being theirs.
  */
 export type FeeBlock =
   | { kind: "slim"; parts: SlimPart[]; open: boolean }
-  | { kind: "band"; things: ThingPill[]; rows: CaseRow[]; folded?: { tracks: number; words: string; rows: CaseRow[] }; canAdd: boolean };
+  | { kind: "band"; things: ThingPill[]; rows: CaseRow[]; canAdd: boolean };
 
 export interface Builder {
   rows: BuilderRow[];
@@ -145,33 +137,15 @@ const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t
 /** A case as its band row (`open`: the case open in place). */
 function caseRow(r: DealRead, fee: CasesFee, c: Case, open: string | null): CaseRow {
   const from = monthKey(r.reading.from);
-  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: lineParts(r, fee, c, c.id), standing: standingNow(r, fee, c, c.id) };
+  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: lineParts(r, fee, c, c.id), bounds: c.when.map((w, t) => stepBounds(fee, w, t, r.today)), standing: standingNow(r, fee, c, c.id) };
 }
 
-/** The count of a number of tracks in words. */
-const tracksWords = (n: number): string => (n === 1 ? copy.cases.folded.one : n === 2 ? copy.cases.folded.two : copy.cases.folded.many.replace("{n}", String(n)));
-
-/**
- * A fee's block: slim, or its band. Where the person marked a track as theirs, the cases of the other tracks fold into one line, with how
- * many tracks they are; a case on any track stays in the band, and so does the open case.
- */
+/** A fee's block: slim, or its band of every case, in the fee's order. */
 function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null } | null): FeeBlock {
   const isOpen = open?.fee === fee.id;
   if (!hasCases(fee)) return { kind: "slim", parts: lineParts(r, fee, fee, undefined), open: isOpen };
   const openCase = isOpen ? (open!.case ?? fee.cases[0]!.id) : null;
-  const t = fee.by.findIndex((b) => b.kind === "track");
-  const marked = t >= 0 && fee.cases.some((c) => c.mine);
-  const foldedCase = (c: Case) => marked && !c.mine && c.when[t] !== "any" && c.id !== openCase;
-  const rows = fee.cases.filter((c) => !foldedCase(c)).map((c) => caseRow(r, fee, c, openCase));
-  const other = fee.cases.filter(foldedCase);
-  const tracks = new Set(other.flatMap((c) => c.when[t] as string[])).size;
-  return {
-    kind: "band",
-    things: pillsOf(fee),
-    rows,
-    ...(other.length ? { folded: { tracks, words: tracksWords(tracks), rows: other.map((c) => caseRow(r, fee, c, openCase)) } } : {}),
-    canAdd: fee.by.length < BY_MAX,
-  };
+  return { kind: "band", things: pillsOf(fee), rows: fee.cases.map((c) => caseRow(r, fee, c, openCase)), canAdd: fee.by.length < BY_MAX };
 }
 
 
@@ -206,7 +180,6 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const banned: BanSaid | undefined = "rules" in ban ? ban : undefined;
   const given = !banned && (i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from))));
   const sale = priced.sale ? readStages(r, stageViews(r, fees, at, priced.sale)) : undefined;
-  const c = i < 0 ? undefined : r.reading.fees[i]!.changes[0];
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
   return {
     ...refOf(i >= 0 ? r.fees[i]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today),
@@ -218,7 +191,6 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     notPrinted: r.notPrinted.includes(fee.id),
     ...(banned ? { banned } : {}),
     ...(sale ? { sale } : {}),
-    ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },
     insideFund: insideFund(fee),
     standingNow: now.standing,

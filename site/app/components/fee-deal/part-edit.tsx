@@ -3,16 +3,14 @@
 // asking for it by what it asks (`PendingEdit`, the part registry's `ask`).
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
-import type { OpenPart, OpenPending, PartField } from "../../lib/fee-deal/panel";
-import { setUntil } from "../../lib/fee-deal/edits/stage";
+import type { LinePart, OpenPart, OpenPending, PartField } from "../../lib/fee-deal/panel";
 import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho } from "../../lib/fee-deal/edits/price";
 import { type Side } from "../../lib/fee-deal/model";
-import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
+import { MONTHS, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
-import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
-import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
+import { FigureField, InlineSelect, PartEdit, Switch, TextField, type PartMark } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
 import { Fig, feeName, perActionWord } from "./words";
@@ -147,7 +145,6 @@ function ThirdBody({ part, at }: BodyProps) {
 }
 
 /** A price for a limited time: the month it ends. */
-const UntilBody = ({ at }: BodyProps) => <MonthField value={at.until ?? null} label={at.label(copy.panel.until)} tight {...untilRange(at.stages, at.k)} onCommit={(m) => at.onFee(setUntil(at.fee, at.side, at.k, m, at.caseId))} />;
 
 /** A minimum or a maximum: its sum, which may be emptied, with the currency chooser where it stands beside it. */
 const BoundBody = ({ part, at }: BodyProps) => (
@@ -198,7 +195,7 @@ const FreeBody = ({ part }: BodyProps) => (part.words.figure ? <Fig value={part.
 const QuietBody = ({ part }: BodyProps) => <>{part.words.quiet ? quiet(bare(part.words.quiet)) : null}</>;
 
 /** Each part's body, and the words it leads with where they are not its words' own (an offset's: its choice of fee is said around it). */
-const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: string }>> = {
+const BODIES: Readonly<Record<LinePart, { Body: ComponentType<BodyProps>; lead?: string }>> = {
   share: { Body: MainBody },
   perUnit: { Body: MainBody },
   perAction: { Body: MainBody },
@@ -207,7 +204,6 @@ const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: s
   free: { Body: FreeBody },
   discount: { Body: DiscountBody },
   third: { Body: ThirdBody },
-  until: { Body: UntilBody },
   min: { Body: BoundBody },
   max: { Body: BoundBody },
   cap: { Body: CapBody },
@@ -254,18 +250,17 @@ export interface PendingHands {
 
 /**
  * A part the toolbox added that asks, where it will stand, for what it needs (`pending`, as the panel gives it: what it asks, the price it
- * goes on, its words, its box's spoken name and sign): a later price its month, an offset its fee, a bound or a percent maximum its figure,
+ * goes on, its words, its box's spoken name and sign): an offset its fee, a bound or a percent maximum its figure,
  * whose box takes the focus as it first appears (`hands.fresh`).
  */
-export function PendingEdit({ fee, caseId, pending, deal, name, later, onFee, hands }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; hands: PendingHands }) {
+export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   const onDone = hands.onDone;
   const { part, ask, k, words, field, sign, figure } = pending;
   const side = "buy";
   const at = { side, k, ...(caseId ? { caseId } : {}) } as const;
   const label = copy.builder.fieldName(name, field);
   const asksFigure = figure !== undefined;
-  // the part asks where it stands: drawn for the first time, its box takes the focus, above a phone's pinned sheet (a month's box takes it
-  // itself, with its picker open)
+  // the part asks where it stands: drawn for the first time, its box takes the focus, above a phone's pinned sheet
   const [fresh] = useState(hands.fresh);
   useEffect(() => {
     hands.onShown();
@@ -288,9 +283,7 @@ export function PendingEdit({ fee, caseId, pending, deal, name, later, onFee, ha
   };
   const tail = bare(words.tail);
   let body: ReactNode;
-  if (ask === "month") {
-    body = <MonthField value={null} label={label} tight waits autoFocus={fresh} {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
-  } else if (ask === "fee") {
+  if (ask === "fee") {
     body = (
       <>
         <OffsetChoice deal={deal} fee={fee} value={null} label={label} onChange={(kind) => done(setPart(fee, part, true, { ...at, against: kind }))} />

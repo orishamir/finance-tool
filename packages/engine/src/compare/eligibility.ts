@@ -74,12 +74,21 @@ export function blockedExit(w: ProductRecord): Reason[] {
   return ruleIds.length + gapIds.length > 0 ? [{ code: "exit-blocked", ruleIds, gapIds }] : [];
 }
 
-/** B3 from a run: its outcome says "B3" (locked until a month) or names the rule or gap that blocks the exit. */
-export function reasonFromRunOutcome(w: ProductRecord, outcome: { reason: string; untilMonth?: number }): Reason {
+/**
+ * B3 from a run: its outcome says "B3" (locked until a month) or names the rule or gap that blocks the exit, with the open question whose
+ * readings split the run (`question`, in `detail`) or the method gap where no reading of the case exists (`gap`, in `gapIds`).
+ */
+export function reasonFromRunOutcome(w: ProductRecord, outcome: { reason: string; untilMonth?: number; question?: string; gap?: string }): Reason {
   if (outcome.reason === "B3") {
     return { code: "locked-until", ruleIds: lawfulExitRuleIds(w), gapIds: [], ...(outcome.untilMonth !== undefined ? { untilMonth: outcome.untilMonth } : {}) };
   }
-  return { code: "exit-blocked", ...splitCodes([outcome.reason]) };
+  const { ruleIds, gapIds } = splitCodes([outcome.reason]);
+  return {
+    code: "exit-blocked",
+    ruleIds,
+    gapIds: outcome.gap && !gapIds.includes(outcome.gap) ? [...gapIds, outcome.gap] : gapIds,
+    ...(outcome.question ? { detail: outcome.question } : {}),
+  };
 }
 
 /**

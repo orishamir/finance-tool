@@ -27,6 +27,8 @@ const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDig
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 /** A small percent to its first two significant digits (`0.0012%`). */
 const percentSmall = new Intl.NumberFormat(he, { style: "percent", maximumSignificantDigits: 2 });
+/** A percent with every decimal a price list prints, up to six (`0.0875%`), none added. */
+const percentPrinted = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 6 });
 /** An ECB reference rate, to the four decimals the ECB publishes it with. */
 const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
@@ -119,6 +121,8 @@ export const fmt = {
    * other than zero to 0%, its first two significant digits (`0.0012%`).
    */
   pctNonZero: (v: number) => (v !== 0 && Math.abs(v) < 0.005 ? withMinus(percentSmall.format(v / 100)) : fmt.pct(v)),
+  /** A percent as its source prints it or the person typed it, with all its decimals (`0.0875%`, `0.5%`): a sourced or typed rate is never rounded. */
+  pctPrinted: (v: number) => withMinus(percentPrinted.format(v / 100)),
   /** The number `pct` shows, as a number: what a field prefilled from a displayed percentage holds (0.4293 reads 0.43). */
   pctShown: (v: number) => {
     const thousandths = v * 1000;
@@ -234,7 +238,7 @@ export const joinLead = (lead: string, next: string): string => (lead.endsWith("
 
 const typedForms = new Map<string, { whole: Intl.NumberFormat; cents: Intl.NumberFormat }>();
 /** The currency of a unit that is a sum of money; none for a price per unit, a fraction of a cent that keeps its own decimals (`formatValue`). */
-const currencyOfUnit = (unit: string): string | null =>
+export const currencyOfUnit = (unit: string): string | null =>
   unit.endsWith("_per_share") ? null : /^nis/.test(unit) ? "ILS" : /^usd/.test(unit) ? "USD" : /^eur/.test(unit) ? "EUR" : /^gbp/.test(unit) ? "GBP" : null;
 
 /**

@@ -31,6 +31,8 @@ interface Series {
   face: number;
   cost: number;
   maturity: number;
+  /** A purchase commission was paid on it, which its cost leaves out: at a redemption G-39 says so of the discount, at a sale G-20 of the gain. */
+  commissioned: boolean;
 }
 
 const DAYS = 365;
@@ -40,7 +42,9 @@ const DAYS = 365;
  * redemption the discount is interest taxed at TXI-11's rate and the net proceeds buy the next series. A
  * series still open at the horizon is sold at the price implied by the unchanged yield, its gain taxed as a
  * capital gain on an unlinked asset (TXI-12). A redemption pays the tariff's redemption line, once a month on the face value redeemed that
- * month: amounts with one maturity are one series, so one redemption. It comes out of the proceeds and does not reduce the taxed discount (G-20).
+ * month: amounts with one maturity are one series, so one redemption. It comes out of the proceeds and does not reduce the taxed discount
+ * (G-39: whether a commission lowers a discount taxed as interest is not in the rule base); a commission does not reduce a sale's gain either
+ * (G-20, as F-09).
  * Custody and the account's monthly fee are paid by selling a slice of each series held: each slice is a sale before redemption, so its
  * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
  */
@@ -70,9 +74,9 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
   const buy = (cash: number, maturity: number): Series => {
     const { trade, commission } = buyWithCash(cash, tariff.buy, { fxRate: 1 });
     tally.fee("trade", commission);
-    // The purchase commission does not reduce the taxed discount or gain (G-20).
-    if (commission > 0) tally.flag("G-20");
-    return { face: (trade / price(term)) * 100, cost: trade, maturity };
+    // The purchase commission is not in the cost, so it reduces neither the taxed discount (G-39) nor a gain (G-20): flagged where the
+    // series is redeemed or sold.
+    return { face: (trade / price(term)) * 100, cost: trade, maturity, commissioned: commission > 0 };
   };
 
   let held: Series[] = [];
@@ -110,7 +114,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
       const face = redeemed.reduce((sum, s) => sum + s.face, 0);
       const commission = Math.min(proceeds, tradeCommission(tariff.redeem, face, { fxRate: 1 }));
       tally.fee("trade", commission);
-      if (commission > 0) tally.flag("G-20");
+      if (commission > 0 || redeemed.some((s) => s.commissioned)) tally.flag("G-39");
       proceeds -= commission;
     }
     // before the horizon the net proceeds buy the next series at once, so a redemption month holds paper when custody is counted
@@ -127,6 +131,8 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
     if (fee + fixed > 0 && heldValue > 0) {
       const sold = (fee + fixed) / heldValue;
       const heldCost = held.reduce((c, s) => c + s.cost, 0);
+      // a slice is a sale: a purchase commission left out of its cost does not reduce its gain (G-20)
+      if (held.some((s) => s.commissioned)) tally.flag("G-20");
       held = held.map((s) => ({ ...s, face: s.face * (1 - sold), cost: s.cost * (1 - sold) }));
       tally.fee("custody", fee);
       tally.fee("fixed", fixed);
@@ -146,6 +152,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
         const gross = (s.face * price(s.maturity - T)) / 100;
         const commission = tradeCommission(tariff.sell, gross, { fxRate: 1 });
         tally.fee("trade", commission);
+        if (commission > 0 || s.commissioned) tally.flag("G-20");
         saleGain += gross - s.cost;
         cashAtExit += gross - commission;
       }
@@ -183,7 +190,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
     taxAtExit,
     outcome: blocked,
     // what a reader needs to redo the tax: the sale's gain and the exit year's slice gains less that year's custody and account fees (TXS-06),
-    // and every discount taxed at a redemption (TXI-11); commissions reduce neither (G-20)
+    // and every discount taxed at a redemption (TXI-11); commissions reduce neither (G-20, G-39)
     detail: { saleGain, sliceGain, exitYearSliceGain: sliceGainByYear.get(exitYear) ?? 0, exitYearFees: held.length > 0 ? exitYearFees : 0, deductedFees, taxedGain, taxedDiscount },
     formulas: ["F-24", "F-12", ...(custodyLine ? ["F-14"] : []), ...(tariff.monthlyFee ? ["F-17"] : []), "F-40"],
   });
