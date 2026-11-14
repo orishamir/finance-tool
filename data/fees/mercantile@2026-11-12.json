@@ -721,7 +721,8 @@
           "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בארץ"
         ]
-      }
+      },
+      "max_per": "security"
     },
     {
       "id": "mercantile-custody-foreign",
@@ -805,7 +806,8 @@
           "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בחוץ לארץ (לרבות מתכות)"
         ]
-      }
+      },
+      "max_per": "security"
     },
     {
       "id": "mercantile-transfer-out-same-client",
@@ -1087,7 +1089,97 @@
         "tariff": [
           "עמלת חליפין מט\"י-מט\"ח"
         ]
-      }
+      },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+              "publisher": "Mercantile Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 19,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2024-06-16",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+            "checked": "2026-11-14",
+            "page": 19,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        },
+        {
+          "up_to": {
+            "value": 100,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+              "publisher": "Mercantile Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 19,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2024-06-16",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "discount_pct": {
+            "value": 50,
+            "unit": "pct",
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+              "publisher": "Mercantile Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 19,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2024-06-16",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Off the line's own price."
+          },
+          "minimum_included": true,
+          "source": {
+            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026)",
+            "checked": "2026-11-14",
+            "page": 19,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        }
+      ]
     },
     {
       "id": "mercantile-fx-conversion-direct",
@@ -1195,7 +1287,100 @@
           "בערוץ ישיר",
           "באינטרנט"
         ]
-      }
+      },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 38)",
+              "publisher": "Mercantile Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 19,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2024-06-16",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 38)",
+            "checked": "2026-11-14",
+            "page": 19,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        },
+        {
+          "up_to": {
+            "value": 100,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 38)",
+              "publisher": "Mercantile Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 19,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2024-06-16",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "discount_pct": {
+            "value": 50,
+            "unit": "pct",
+            "source": {
+              "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 38)",
+              "publisher": "Mercantile Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 19,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2024-06-16",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "Off the line's own price."
+          },
+          "minimum_included": true,
+          "source": {
+            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 18 מתוך 42, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 38)",
+            "checked": "2026-11-14",
+            "page": 19,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        }
+      ]
     }
   ],
   "averages": [],

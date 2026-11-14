@@ -73,6 +73,7 @@ export const numbers = {
   yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
   monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
+  inTradeCurrency: "במטבע העסקה", // a bound printed in whatever currency the trade is in (data-schema §3.6a item 1)
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
   weak: { secondary: "משני", institution: "לפי החברה" },

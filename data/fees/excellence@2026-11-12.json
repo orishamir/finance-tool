@@ -431,16 +431,16 @@
       },
       "min": {
         "value": 35,
-        "unit": "usd",
+        "unit": "trade_ccy_per_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, מינימום (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
-          "quote": "0.4% משווי העסקה עם מינימום 35"
+          "quote": "עם מינימום 35 בש\"ח/ $ ארה\"ב/ יורו במטבע העסקה"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -450,7 +450,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "Printed 'מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה' (p.4, item 7): 35 units of the currency the trade is in, shekels, US dollars or euros. Every fund the site prices on this line trades in US dollars on the London Stock Exchange, so it is recorded as 35 US dollars, as IBI's, Meitav Trade's and Interactive Israel's minimums in the trade's currency are. Until 2026-11-12 the value was empty ('no single currency unit applies'), and the engine reads an empty minimum as none, so every purchase abroad at Excellence was priced at 0.4% with no minimum (2026-11-12 pricing audit)."
+        "notes": "Printed 'מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה' (p.4, item 7): 35 units of the currency the trade is in, for a trade in shekels, US dollars or euros (trade_currencies)."
       },
       "max": null,
       "period": null,
@@ -462,7 +462,12 @@
           "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב (כולל קניה או מכירה שלא בוצעה)",
           "מחוץ לארה\"ב"
         ]
-      }
+      },
+      "trade_currencies": [
+        "ILS",
+        "USD",
+        "EUR"
+      ]
     },
     {
       "id": "excellence-custody",
@@ -531,6 +536,16 @@
         "tariff": [
           "דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)"
         ]
+      },
+      "collection": {
+        "words_he": "חודשי/רבעוני",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, מועד הגביה (עמ' 4)",
+          "checked": "2026-11-14",
+          "page": 4,
+          "quote": "חודשי/רבעוני"
+        }
       }
     },
     {

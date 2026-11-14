@@ -471,7 +471,7 @@
       },
       "min": {
         "value": 30,
-        "unit": "usd",
+        "unit": "trade_ccy_per_trade",
         "source": {
           "url": "docs/company-answers.md#ibi-2026-11-08",
           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה) (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
@@ -480,7 +480,7 @@
           "page": 73,
           "quote": "0.3%, מינימום 30 במטבע העסקה"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-01-27",
         "effective_to": null,
         "tax_year": null,
@@ -490,7 +490,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'מינימום 30 במטבע העסקה' (annex p.73): in the trade's currency; recorded in dollars, the currency IBI's second answer names for the iShares fund ('30 במטבע דולר אמריקאי'). A fund traded in euros or pounds pays 30 of that currency."
+        "notes": "'מינימום 30 במטבע העסקה' (annex p.73): 30 units of the currency the trade is in; IBI's second answer names dollars for the iShares fund ('30 במטבע דולר אמריקאי')."
       },
       "max": null,
       "period": null,
@@ -616,7 +616,102 @@
         "tariff": [
           "מרווח המרה"
         ]
-      }
+      },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 15000,
+            "unit": "usd",
+            "source": {
+              "url": "docs/company-answers.md#ibi-2026-11-08",
+              "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד' מרווח המרה (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+              "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+              "strength": "institution",
+              "page": 75,
+              "quote": "מרווח המרה בשיעור של 0.7% לעסקאות ששוויין נמוך מ-15,000 דולר ארה\"ב"
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-01-27",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-24",
+              "BRK-15",
+              "BRK-25"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "spread",
+          "rate": {
+            "value": 0.7,
+            "unit": "pct_of_trade",
+            "source": {
+              "url": "docs/company-answers.md#ibi-2026-11-08",
+              "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד' מרווח המרה (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+              "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+              "strength": "institution",
+              "page": 75,
+              "quote": "מרווח המרה בשיעור של 0.7% לעסקאות ששוויין נמוך מ-15,000 דולר ארה\"ב"
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-01-27",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-24",
+              "BRK-15",
+              "BRK-25"
+            ],
+            "state": "sourced",
+            "notes": "The spread in this step."
+          },
+          "source": {
+            "url": "docs/company-answers.md#ibi-2026-11-08",
+            "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד' מרווח המרה (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+            "checked": "2026-11-14",
+            "page": 75,
+            "quote": "מרווח המרה בשיעור של 0.7% לעסקאות ששוויין נמוך מ-15,000 דולר ארה\"ב"
+          }
+        },
+        {
+          "up_to": null,
+          "on": "spread",
+          "rate": {
+            "value": 0.5,
+            "unit": "pct_of_trade",
+            "source": {
+              "url": "docs/company-answers.md#ibi-2026-11-08",
+              "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד' מרווח המרה (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+              "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+              "strength": "institution",
+              "page": 75,
+              "quote": "ובשיעור של 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה\"ב"
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-01-27",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-24",
+              "BRK-15",
+              "BRK-25"
+            ],
+            "state": "sourced",
+            "notes": "The spread in this step."
+          },
+          "source": {
+            "url": "docs/company-answers.md#ibi-2026-11-08",
+            "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד' מרווח המרה (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+            "checked": "2026-11-14",
+            "page": 75,
+            "quote": "ובשיעור של 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה\"ב"
+          }
+        }
+      ]
     },
     {
       "id": "ibi-account-fee",
@@ -659,6 +754,16 @@
           "דמי שימוש עבור מסלולי ציטוט",
           "מסלול בסיסי, שכבת מחיר אחת"
         ]
+      },
+      "offset": {
+        "against": "trade_fees_same_month",
+        "source": {
+          "url": "docs/company-answers.md#ibi-2026-11-08",
+          "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, דמי שימוש עבור מסלולי ציטוט (עמ' 72); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+          "checked": "2026-11-14",
+          "page": 72,
+          "quote": "עלות חודשית הניתנת לקיזוז כנגד חיובי עמלות בגין פעולות אשר בוצעו בחודש החיוב ₪ 15"
+        }
       }
     }
   ],

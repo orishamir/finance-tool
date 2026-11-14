@@ -738,6 +738,30 @@
           "דמי ניהול פקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בארץ"
         ]
+      },
+      "max_per": "security",
+      "max_deposit": {
+        "value": 11500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בארץ, מכסימום לפיקדון (עמ' 32)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 32,
+          "quote": "מכסימום 3700 ש\"ח לני\"ע 11500 לפקדון"
+        },
+        "checked": "2026-11-14",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-69"
+        ],
+        "state": "sourced",
+        "notes": "The maximum on the whole securities deposit, printed beside the maximum on each security (data-schema §3.6a item 2), read 2026-11-14."
       }
     },
     {
@@ -822,6 +846,30 @@
           "דמי ניהול פקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בחוץ לארץ"
         ]
+      },
+      "max_per": "security",
+      "max_deposit": {
+        "value": 11500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+          "publisher": "Bank Leumi (PEPPER)",
+          "strength": "institution",
+          "page": 11,
+          "quote": "מכסימום 3,700 ש\"ח לני\"ע, 11,500 ש\"ח לפיקדון"
+        },
+        "checked": "2026-11-14",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-54",
+          "BRK-69"
+        ],
+        "state": "sourced",
+        "notes": "The maximum on the whole securities deposit, printed beside the maximum on each security (data-schema §3.6a item 2), read 2026-11-14."
       }
     },
     {

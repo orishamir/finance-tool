@@ -15,6 +15,37 @@ const ruleIds = z.array(z.string().min(1));
  */
 const place = { page: z.number().int().positive().optional(), quote: z.string().min(1).max(240).optional(), fragment: textFragment.optional() };
 const feeValue = valueObject.safeExtend({ source: source.extend(place) });
+/** A document's place where a fact that is not a value stands: its link, name, the day it was read, its page in a PDF and its own words. */
+const quotedSource = z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() });
+
+/**
+ * data-schema §3.6a item 3: one step of a conversion priced by its size, as the list prints it. `up_to` is the step's top in dollars (`usd`;
+ * the last step `null`, everything above the one before). `on` says what the step prices: the conversion fee (`fee`) or the spread the line
+ * records (`spread`). Exactly one price: `exempt` (nothing), `discount_pct` off the line's own price (unit `pct`; `minimum_included` where the
+ * words take the minimum down too), `flat` (a sum in `usd`) or `rate` (the spread in that step, `pct_of_trade`). The line's `flat_up_to`, where it
+ * has one, is the step the run prices (F-13), and the data check holds the two together.
+ */
+export const sizeTier = z
+  .strictObject({
+    up_to: feeValue.nullable(),
+    on: z.enum(["fee", "spread"]),
+    exempt: z.literal(true).optional(),
+    discount_pct: feeValue.optional(),
+    minimum_included: z.boolean().optional(),
+    flat: feeValue.optional(),
+    rate: feeValue.optional(),
+    source: quotedSource,
+  })
+  .superRefine((t, ctx) => {
+    const kinds = [t.exempt, t.discount_pct, t.flat, t.rate].filter((x) => x !== undefined);
+    if (kinds.length !== 1) ctx.addIssue({ code: "custom", message: "a size step has exactly one of exempt, discount_pct, flat, rate" });
+    if (t.up_to && t.up_to.unit !== "usd") ctx.addIssue({ code: "custom", path: ["up_to"], message: "a size step's top is in usd" });
+    if (t.flat && t.flat.unit !== "usd") ctx.addIssue({ code: "custom", path: ["flat"], message: "a size step's flat price is in usd" });
+    if (t.discount_pct && t.discount_pct.unit !== "pct") ctx.addIssue({ code: "custom", path: ["discount_pct"], message: "a discount is in pct" });
+    if (t.rate && t.rate.unit !== "pct_of_trade") ctx.addIssue({ code: "custom", path: ["rate"], message: "a step's spread is in pct_of_trade" });
+    if (t.rate && t.on !== "spread") ctx.addIssue({ code: "custom", path: ["rate"], message: "a rate prices the spread: on spread" });
+    if (t.minimum_included !== undefined && !t.discount_pct) ctx.addIssue({ code: "custom", path: ["minimum_included"], message: "minimum_included belongs to discount_pct" });
+  });
 
 export const feeLine = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
@@ -64,6 +95,30 @@ export const feeLine = z.strictObject({
     })
     .optional(),
   names: z.strictObject({ tariff: z.array(z.string()) }),
+  /**
+   * data-schema §3.6a item 1: the currencies a bound in the trade's currency (`trade_ccy_per_trade`) is printed for, where the list's words
+   * name them (Excellence's "בש\"ח/$ ארה\"ב/יורו"); absent, it holds in whatever currency the trade is in. ISO codes.
+   */
+  trade_currencies: z.array(z.string().regex(/^[A-Z]{3}$/)).min(1).optional(),
+  /**
+   * data-schema §3.6a item 2: what a custody line's `max` bounds: each security (`security`), the whole securities deposit (`deposit`), or the
+   * list prints the figure with no scope (`unstated`). Required on a custody line with a maximum (the data check, on a house's latest record).
+   */
+  max_per: z.enum(["security", "deposit", "unstated"]).optional(),
+  /** data-schema §3.6a item 2: a second maximum on the whole deposit, printed beside a `max` on each security (unit `nis`, with its quote). */
+  max_deposit: feeValue.optional(),
+  /** data-schema §3.6a item 3: a conversion priced by its size, step by step from the smallest (`fx` lines). */
+  size_tiers: z.array(sizeTier).min(1).optional(),
+  /**
+   * data-schema §3.6a item 4: a fixed fee that the trade fees charged in the same month reduce, never below zero (`fixed_period` lines), with the
+   * list's words.
+   */
+  offset: z.strictObject({ against: z.literal("trade_fees_same_month"), source: quotedSource }).optional(),
+  /**
+   * data-schema §3.6a item 6: when the fee is collected, in the list's words in its "מועד הגביה" column (`custody` and `fixed_period` lines). It is
+   * not the price's period (`period`), and no calculation reads it.
+   */
+  collection: z.strictObject({ words_he: z.string().min(1).max(80), source: quotedSource }).optional(),
 });
 
 /** The exchanges the site tells apart for a fund bought abroad: `us`, and `europe` for every exchange outside the US (a trade line's band, `venueOfBand`). */
@@ -243,6 +298,44 @@ export const advertisingEntry = z.strictObject({
   }),
 });
 
+/**
+ * data-schema §3.6a item 5: a place where the house's document says a third party's fee may be charged on top of its own. `fee` names the kind
+ * of fee, `venues` the markets where the words name them, `ceiling` the most the document prints it may be (a value object) or `null` where it
+ * prints none ("לפי הגביה בפועל"). `words_he` is the document's words. Read by no price: the page states it beside the house.
+ */
+export const thirdPartyEntry = z.strictObject({
+  fee: z.enum(["trade", "custody", "conversion", "transfer", "corporate_event", "other"]),
+  venues: z.array(z.enum(["us", "europe", "other"])).min(1).optional(),
+  ceiling: feeValue.nullable(),
+  words_he: z.string().min(1).max(240),
+  source: quotedSource.omit({ quote: true }).extend({ quote: z.string().min(1).max(240).optional() }),
+});
+
+/**
+ * data-schema §3.6 (BRK-38): the funds a house sells fund by fund, under the distribution agreements their managers report. `applies_to`: the
+ * classes whose availability the agreements decide for each fund. `searched` is the search that found the reports, so "no report names
+ * the fund" is a sourced statement. Each report names, as strings, every fund number it lists (the products defined by religious law left
+ * out); `ends` is the report that ends the agreement, where one was found. A fund a report that has not ended names is sold there; any other
+ * fund of the class is not, as of `searched.checked`.
+ */
+export const distributionReport = z.strictObject({
+  url: z.string().min(1),
+  file: z.string().min(1),
+  manager: z.string().min(1),
+  published: isoDate,
+  reference: z.string().min(1),
+  agreement_date: isoDate,
+  checked: isoDate,
+  ends: z.strictObject({ url: z.string().min(1), published: isoDate, reference: z.string().min(1), checked: isoDate }).optional(),
+  funds: z.array(z.string().regex(/^\d+$/)).min(1),
+});
+export const distributionAgreements = z.strictObject({
+  applies_to: z.array(instrumentClass).min(1),
+  distributor_he: z.string().min(1),
+  searched: z.strictObject({ url: z.string().min(1), words: z.string().min(1), checked: isoDate, result: z.string().min(1) }),
+  reports: z.array(distributionReport),
+});
+
 export const feesSnapshot = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
   provider: z.strictObject({
@@ -323,6 +416,10 @@ export const feesSnapshot = z.strictObject({
   groups: feeGroups.optional(),
   /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */
   advertising: z.array(advertisingEntry).optional(),
+  /** data-schema §3.6a item 5: where the house's document says third parties' fees may be added to its own; read by no price. */
+  third_party: z.array(thirdPartyEntry).optional(),
+  /** data-schema §3.6 (BRK-38): the funds the house sells fund by fund, under its distribution agreements. */
+  distribution_agreements: distributionAgreements.optional(),
 })
   .superRefine((snap, ctx) => {
     const { regulator, regulator_foreign } = snap.provider;
@@ -338,4 +435,7 @@ export type GroupPriceValue = z.infer<typeof groupPriceValue>;
 export type GroupSource = z.infer<typeof groupSource>;
 export type GroupEntry = z.infer<typeof groupEntry>;
 export type AdvertisingEntry = z.infer<typeof advertisingEntry>;
+export type SizeTier = z.infer<typeof sizeTier>;
+export type ThirdPartyEntry = z.infer<typeof thirdPartyEntry>;
+export type DistributionAgreements = z.infer<typeof distributionAgreements>;
 export type FeesSnapshot = z.infer<typeof feesSnapshot>;

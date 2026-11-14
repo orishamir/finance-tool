@@ -41,6 +41,7 @@ export const unit = z.enum([
   "gbp_per_share",
   "usd_per_trade",
   "gbp_per_trade",
+  "trade_ccy_per_trade",
   /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
   "usd_per_event",
   "nis_per_usd",

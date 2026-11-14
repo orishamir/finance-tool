@@ -320,7 +320,7 @@
       },
       "min": {
         "value": 25,
-        "unit": "usd",
+        "unit": "trade_ccy_per_trade",
         "source": {
           "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
           "title": "תעריפון עמלות מיטב טרייד, גרסת 04/2026, חלק 4, (4א) סעיף 5, הערות, מינימום (עמ' 3)",
@@ -329,7 +329,7 @@
           "page": 3,
           "quote": "מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -339,7 +339,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'מינימום 25 במטבע העסקה' (tariff 04/2026, p.3): 25 units of the currency the trade is in. Every fund the site prices on this line trades in US dollars on the London Stock Exchange (CSPX, VUAA and the others), so it is recorded as 25 US dollars, as IBI's 'מינימום 30 במטבע העסקה' and Interactive Israel's 'מינימום 2.5 בהתאם למטבע העסקה' are. A fund bought in euros or pounds would pay 25 of that currency. Until 2026-11-12 it was recorded as 25 euros, which overpriced every small purchase of such a fund by the gap between a euro and a dollar (2026-11-12 pricing audit)."
+        "notes": "'מינימום 25 במטבע העסקה' (tariff 04/2026, p.3): 25 units of the currency the trade is in."
       },
       "max": null,
       "period": null,

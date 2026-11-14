@@ -15,4 +15,5 @@ export * from "./collections/fund-lists.ts";
 export * from "./collections/sources.ts";
 export * from "./collections/open-questions.ts";
 export * from "./collections/abroad.ts";
+export * from "./collections/averages.ts";
 export * from "./religious-law.ts";
