@@ -4896,6 +4896,8 @@ export const dealCases = {
     replace: "להחליף",
     beside: "להוסיף לידה",
     cancel: "ביטול",
+    /** Between a fee's name and the house of another price list it was copied from, wherever the page names it: "עמלת קנייה ומכירה · בנק לאומי". */
+    houseSep: " · ",
   },
   menus: {
     /** The last row of a list of values: a value of the person's own. */
@@ -4925,6 +4927,12 @@ export const kit = {
     /** What an empty month's box says, beside its calendar mark: a press opens the months to choose from, and typing works too. */
     monthPlaceholder: "בחרו חודש",
     monthError: "כתבו חודש ושנה, כמו 03.2027.",
+    /** A month typed outside the months the page around the box takes (kit MonthField's `earliest` and `latest`): it is refused and the box shows its month again. */
+    monthRange: {
+      between: (a: string, b: string) => `החודש צריך להיות בין \u2066${a}\u2069 ל־\u2066${b}\u2069.`,
+      from: (a: string) => `החודש צריך להיות \u2066${a}\u2069 או אחריו.`,
+      until: (b: string) => `החודש צריך להיות \u2066${b}\u2069 או לפניו.`,
+    },
     /** The month picker's year control, for a screen reader and a pointer's hover (the arrows say it to the eye). */
     yearBack: "לשנה הקודמת",
     yearOn: "לשנה הבאה",

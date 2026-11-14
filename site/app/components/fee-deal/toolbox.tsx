@@ -125,6 +125,7 @@ export interface FillUndoLine {
 export function ToolboxColumn({
   view,
   fee,
+  house,
   caseId,
   sheet,
   product,
@@ -142,6 +143,8 @@ export function ToolboxColumn({
 }: {
   view: ToolboxView;
   fee: Fee;
+  /** The house of another price list than the deal's the fee was copied from (`DealRead.copied`), said after its name. */
+  house?: string;
   caseId: string | null;
   sheet: boolean;
   product: string | null;
@@ -221,7 +224,7 @@ export function ToolboxColumn({
           </>
         ) : (
           <h3 className="text-lg font-semibold">
-            <FeeName fee={{ fee: fee.id, kind: fee.kind }} />
+            <FeeName fee={{ fee: fee.id, kind: fee.kind, ...(house ? { house } : {}) }} />
           </h3>
         )}
         {side && <Tag tone="outline">{p.oneSide[side]}</Tag>}

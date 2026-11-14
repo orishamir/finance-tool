@@ -1,7 +1,7 @@
 // A figure or a month typed in place: what its box does with what is typed, the arrows' step, and the month picker's months, keys and place.
 import { describe, expect, it } from "vitest";
 import { values as valuesCopy } from "../../copy";
-import { monthText, parseInBox, parseMonth, readTyped, stepped } from "./figure-field";
+import { monthFault, monthText, onTyping, parseInBox, parseMonth, readTyped, stepped } from "./figure-field";
 import { floatAt, moveMonth, offered, pickCommit, shiftMonth, startMonth, yearMonths, yearOffered } from "./month-picker";
 
 describe("the arrows' step", () => {
@@ -24,6 +24,14 @@ describe("a number typed in a box", () => {
     expect(parseInBox("7%", "₪")).toBeNaN();
     expect(parseInBox("7", undefined)).toBe(7);
   });
+  it("reads a comma in a percent's box as a decimal point, and in a sum's as thousands only in correct groups", () => {
+    expect(parseInBox("0,125", "%")).toBe(0.125);
+    expect(parseInBox("0,125%", "%")).toBe(0.125);
+    expect(parseInBox("1,000", "%")).toBe(1);
+    expect(parseInBox("1,000", "$")).toBe(1000);
+    expect(parseInBox("0,125", "$")).toBe(0.125);
+    expect(parseInBox("0,0035", "$", "rate")).toBe(0.0035);
+  });
 });
 
 describe("what the box does with its text", () => {
@@ -34,16 +42,40 @@ describe("what the box does with its text", () => {
     expect(readTyped("1,", { ...box, left: false })).toEqual({ kind: "commit", n: 1 });
     expect(readTyped("1.", { ...box, left: true })).toEqual({ kind: "commit", n: 1 });
   });
-  it("waits while an emptied box has the focus, and clears the figure once it is left empty; a figure that may not be cleared then asks for a number", () => {
+  it("waits while an emptied box has the focus, and clears the figure once it is left empty; a figure that may not be cleared then comes back", () => {
     expect(readTyped("", { ...box, left: false })).toEqual({ kind: "wait" });
     expect(readTyped(" ", { ...box, left: true })).toEqual({ kind: "clear" });
-    expect(readTyped("", { ...box, clearable: false, left: true })).toEqual({ kind: "error", message: valuesCopy.errors.nan });
+    expect(readTyped("", { ...box, clearable: false, left: true })).toEqual({ kind: "back" });
   });
   it("says what is wrong with what is not a number or fails its check", () => {
     expect(readTyped("abc", { ...box, left: false })).toEqual({ kind: "error", message: valuesCopy.errors.nan });
     expect(readTyped(",", { ...box, left: false })).toEqual({ kind: "error", message: valuesCopy.errors.nan });
     expect(readTyped("200", { ...box, left: false })).toEqual({ kind: "error", message: "too much" });
     expect(readTyped("7 $", { ...box, left: false })).toEqual({ kind: "error", message: valuesCopy.errors.nan });
+  });
+  it("reads the whole text, never a prefix of it: a percent over its check, a sum with another sign, a decimal comma", () => {
+    const pct = { sign: "%", validate: (n: number) => (n > 100 ? "too much" : null), clearable: false };
+    expect(readTyped("150", { ...pct, left: false })).toEqual({ kind: "error", message: "too much" });
+    expect(readTyped("99999999", { ...pct, left: false })).toEqual({ kind: "error", message: "too much" });
+    expect(readTyped("0,125", { ...pct, left: false })).toEqual({ kind: "commit", n: 0.125 });
+    expect(readTyped("5%", { sign: "$", clearable: true, left: false })).toEqual({ kind: "error", message: valuesCopy.errors.nan });
+  });
+});
+
+describe("what a keystroke does to the figure the page holds", () => {
+  const error = { kind: "error", message: "x" } as const;
+  it("commits a whole text that is a number", () => {
+    expect(onTyping({ kind: "commit", n: 15 }, { asks: false, changed: false })).toBe("commit");
+    expect(onTyping({ kind: "commit", n: 15 }, { asks: true, changed: true })).toBe("commit");
+  });
+  it("puts a deal's figure back as it was at the focus once the text is no number, where the box changed it (150 after 15)", () => {
+    expect(onTyping(error, { asks: false, changed: true })).toBe("revert");
+    expect(onTyping({ kind: "wait" }, { asks: false, changed: true })).toBe("revert");
+    expect(onTyping(error, { asks: false, changed: false })).toBe("none");
+  });
+  it("leaves a question's figure none while its text is no number, so its button cannot add a prefix (10 taken after 1)", () => {
+    expect(onTyping(error, { asks: true, changed: false })).toBe("clear");
+    expect(onTyping({ kind: "wait" }, { asks: true, changed: true })).toBe("clear");
   });
 });
 
@@ -61,6 +93,16 @@ describe("a month typed in its box", () => {
   });
   it("writes a month as the box shows it", () => {
     expect(monthText("2027-03")).toBe("03.2027");
+  });
+  it("refuses a month outside the months the box takes, saying which it takes", () => {
+    const b = { earliest: "2027-02", latest: "2027-09" };
+    expect(monthFault("2027-02", b)).toBeNull();
+    expect(monthFault("2027-09", b)).toBeNull();
+    expect(monthFault("2027-10", b)).toContain("09.2027");
+    expect(monthFault("2027-01", b)).toContain("02.2027");
+    expect(monthFault("2026-01", { earliest: "2027-02" })).toContain("02.2027");
+    expect(monthFault("2030-01", { latest: "2027-09" })).toContain("09.2027");
+    expect(monthFault("2030-01", {})).toBeNull();
   });
 });
 

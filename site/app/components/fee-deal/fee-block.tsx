@@ -157,11 +157,11 @@ export function FeeBlockView({
   grip?: ReactNode;
 }) {
   const { onOpen, onRemoveFee, onRemoveChange, onEditPrice, pendingHands, onAskDone, drop } = actions;
-  const name = feeName(fee.kind, fee.name);
+  const name = feeName(fee.kind, fee.name, row?.house);
   const isOpen = open.fee === fee.id;
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
   const question = isOpen && ask ? <AskThing key={`${fee.id}:${ask.kind}:${ask.split ?? ""}`} fee={fee} kind={ask.kind} {...(ask.split ? { split: ask.split } : {})} onFee={ask.split ? onSplit : onFee} onDone={onAskDone} /> : null;
-  const dot = feeColour(fee.kind).bg;
+  const dot = feeColour(fee.kind, row?.house).bg;
   const openParts = (spoken: string) =>
     open.view && (
       <>

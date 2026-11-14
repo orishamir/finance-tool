@@ -79,6 +79,7 @@ export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: 
       sign={q.units?.find((u) => u.unit === unit)?.words ?? ""}
       tight
       words={<span className="text-muted-foreground">{c.upTo.trim()}</span>}
+      asks
       onCommit={setTop}
       onClear={() => setTop(null)}
     />
@@ -176,7 +177,7 @@ export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; o
     <div ref={root} data-ask-thing="" onKeyDown={escapeCloses(onDone)}>
       <AskValues
         question={c.addStep.ask.replace("{thing}", thingName(fee.kind, b))}
-        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight validate={(n) => (taken(n) ? c.addStep.taken : null)} onCommit={setTop} onClear={() => setTop(null)} />}
+        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight asks validate={(n) => (taken(n) ? c.addStep.taken : null)} onCommit={setTop} onClear={() => setTop(null)} />}
         options={[]}
         chosen={[]}
         onToggle={() => undefined}

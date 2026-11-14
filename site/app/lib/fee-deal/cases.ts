@@ -18,7 +18,8 @@ export interface ReadOf {
 }
 
 /** A fee as the reading reads it: a fee whose price changes by nothing, with where it comes from where it was read from a case. */
-export type ReadFee = SlimFee & { read?: ReadOf };
+/** `from`: the house whose price list the fee was filled from, by name, where that is another list than the deal's own (`readDealFor`). */
+export type ReadFee = SlimFee & { read?: ReadOf; from?: string };
 
 /** The deal fee a read fee is from: its own id, or the fee it was read from. */
 export const feeOf = (f: ReadFee): string => f.read?.of ?? f.id;

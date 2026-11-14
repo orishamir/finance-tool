@@ -2,7 +2,7 @@
 // against its cap (F-113) as a tag and as a sentence. Every column of the page writes these through here, so a fee reads the same in each.
 import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
-import { feeDeal as copy, guideBlocks } from "../../copy";
+import { dealCases, feeDeal as copy, guideBlocks } from "../../copy";
 import type { BanSaid, CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import { unreadReason, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
@@ -13,11 +13,14 @@ import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
 import { Num, RulesChip } from "../provenance";
 
-/** A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's. */
-export function feeName(kind: FeeKindId, own?: string): string {
-  if (kind === "own" && own) return own;
+/**
+ * A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's; and after it the house
+ * of another price list than the deal's it was filled from (`house`, `DealRead.copied`): "עמלת קנייה ומכירה · בנק לאומי".
+ */
+export function feeName(kind: FeeKindId, own?: string, house?: string): string {
   const base = guideBlocks.fees[kind] as { name?: string } | undefined;
-  return base?.name ?? copy.names[kind] ?? kind;
+  const name = kind === "own" && own ? own : (base?.name ?? copy.names[kind] ?? kind);
+  return house ? `${name}${dealCases.copyFee.houseSep}${house}` : name;
 }
 
 /** A sum as plain words, isolated left to right inside Hebrew, as its unit writes it (a whole sum without cents, "100 $"). */
@@ -28,7 +31,7 @@ export const sumText = (v: SiteValue): string => `\u2066${formatValue(v.value as
  * 100 ₪", so two steps of one fee never read alike.
  */
 export const refName = (r: FeeRef): string => {
-  const name = feeName(r.kind, r.name);
+  const name = feeName(r.kind, r.name, r.house);
   const s = r.step;
   if (!s) return name;
   return `${name}${s.from ? `${copy.cases.step.from}${sumText(s.from)}` : ""}${s.to ? `${copy.cases.step.to}${sumText(s.to)}` : ""}`;
@@ -66,13 +69,17 @@ const COLOUR: Record<FeeKindId, { bg: string; fill: string; stroke: string }> = 
   own: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
 };
 
-export const feeColour = (kind: FeeKindId) => COLOUR[kind];
+/** The colour of a fee copied from another house's price list (`DealRead.copied`): its own, so it never shares a dot with the deal's fee of its kind. */
+const COPIED = { bg: "bg-fee-copy", fill: "fill-fee-copy", stroke: "stroke-fee-copy" };
+
+/** A fee's colour: its kind's, or a copied fee's own where it is filled from another house's list (`copied`, a `FeeRef`'s `house`). */
+export const feeColour = (kind: FeeKindId, copied?: string | boolean) => (copied ? COPIED : COLOUR[kind]);
 
 /** A fee's swatch and name, the swatch never alone; `before` and `after`: words held to the name, after the swatch ("מתחילים ", ": "). */
 export function FeeName({ fee, className, before, after }: { fee: FeeRef; className?: string; before?: string; after?: string }) {
   return (
     <span className={cx("inline-flex items-center gap-2 min-w-0", className)}>
-      <Swatch shape="box" className={cx("shrink-0", COLOUR[fee.kind].bg)} />
+      <Swatch shape="box" className={cx("shrink-0", feeColour(fee.kind, fee.house).bg)} />
       <span className="min-w-0">
         {before}
         {refName(fee)}
@@ -107,7 +114,8 @@ const Bound = ({ lead, value, per }: { lead: string; value: SiteValue; per?: str
 /**
  * A price in words around its figures: "0.25% מהפעולה, מינימום 15 ₪, מקסימום 25% מהפעולה", "0.005 $ לכל יחידה", "0.4% בשנה ממה
  * שמוחזק", "10 ₪ בחודש", "חינם". A flat price for a small action comes first: "2.85 $ לכל המרה עד 50 $. מעל זה 0.133% מההמרה, …". A
- * share of nothing whose minimum and maximum are one sum is that sum on each action ("11 $ לכל פעולה"), as the price lists print it.
+ * share of nothing whose minimum and maximum are one sum is that sum on each action ("11 $ לכל פעולה"), as the price lists print it. Every
+ * figure reads as the fee's card shows it (`Fig`): a rate with every decimal the price list prints or the person typed ("0.0875%").
  * `saved`: the product saves (its fees are charged from what has built up), so a share of what is held reads "ממה שנצבר". A fee charged
  * inside a fund says so in place of what it is a share of.
  */
@@ -142,11 +150,11 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
             <>
               {price.form === "action" ? (
                 <>
-                  <Num value={f.rate!} /> {of}
+                  <Fig value={f.rate!} /> {of}
                 </>
               ) : (
                 <>
-                  <Num value={f.amount!} /> {p.perUnit}
+                  <Fig value={f.amount!} /> {p.perUnit}
                 </>
               )}
               {f.min && <Bound lead={p.min} value={f.min} />}
@@ -169,7 +177,7 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
     case "held":
       body = (
         <>
-          <Num value={f.rate!} /> {p.per[price.per!]} {insideFund ? p.insideFund : saved ? p.heldSaved : p.held}
+          <Fig value={f.rate!} /> {p.per[price.per!]} {insideFund ? p.insideFund : saved ? p.heldSaved : p.held}
           {price.every !== price.per && <>, {p.charged[price.every!]}</>}
           {f.min && <Bound lead={p.min} value={f.min} {...(price.boundsEvery ? { per: p.per[price.boundsEvery] } : {})} />}
           {f.max && <Bound lead={p.max} value={f.max} {...(price.boundsEvery ? { per: p.per[price.boundsEvery] } : {})} />}
@@ -362,7 +370,7 @@ export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" 
       {m.before}
       <Fig value={mark.sum} />
       {m.sum}
-      <Num value={mark.rate} />
+      <Fig value={mark.rate} />
       {m.rate}
       <Fig value={mark.amount} />
       {mark.largest ? m.after : `${m.smaller}${custodyName(mark.against)}.`}

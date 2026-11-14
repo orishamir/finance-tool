@@ -156,5 +156,5 @@ export function panel(r: DealRead, feeId: string, caseId?: string, pending: Pend
   const priced = pricedOf(fee, shown);
   // a fee not read (prices out of order, not given, no case for the picks) is named on its own
   const at = r.fees.findIndex((x) => feeOf(x) === fee.id && (!hasCases(fee) || x.read?.case === (priced as Case).id));
-  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown, pending, editing) };
+  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}), ...(r.copied[fee.id] ? { house: r.copied[fee.id] } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown, pending, editing) };
 }

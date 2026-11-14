@@ -163,7 +163,9 @@ function UnpricedLine({ fee, unmatched, noCurrency, notPrinted, banned }: { fee:
 }
 
 /**
- * The card, for a deal with a fee: its title as the reading's other cards' small heads, its parts' headings under it. `law`: the reading's
+ * The card, for a deal with a fee: its title as the reading's other cards' small heads, its parts' headings under it. A fee the reading
+ * leaves out (a price not given, or with a figure missing; no case for what it is read for; banned) is said first, so it never drops out
+ * of the card unseen. `law`: the reading's
  * law rows, which a fee with a cap draws its block from; `saved`: the deal's product saves, so a share of what is held reads "what has
  * built up". The figures the person typed read as plain words here: the fee cards' boxes above carry their blue.
  */
@@ -175,6 +177,19 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
     <Section title={copy.glance.title} level="kick" heading="h3" as="div">
       <TypedPlain className="flex flex-col gap-4">
         {empty && glance.unpriced.length === 0 && glance.unmatched.length === 0 && glance.banned.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
+        {glance.unpriced.length + glance.unmatched.length + glance.banned.length > 0 && (
+          <ul className="flex flex-col gap-1 text-sm">
+            {glance.unpriced.map((f) => (
+              <UnpricedLine key={f.fee} fee={f} />
+            ))}
+            {glance.unmatched.map((f) => (
+              <UnpricedLine key={f.fee} fee={f} unmatched noCurrency={!!f.noCurrency} notPrinted={!!f.notPrinted} />
+            ))}
+            {glance.banned.map((f) => (
+              <UnpricedLine key={f.fee} fee={f} banned={f.ban} />
+            ))}
+          </ul>
+        )}
         {!empty && glance.throughout.length > 0 && (
           <Section title={copy.glance.throughout} level="card" heading="h3" gap="snug">
             {glance.throughout.map((g) => (
@@ -215,19 +230,6 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
               </div>
             ))}
           </Section>
-        )}
-        {glance.unpriced.length + glance.unmatched.length + glance.banned.length > 0 && (
-          <ul className="flex flex-col gap-1 text-sm">
-            {glance.unpriced.map((f) => (
-              <UnpricedLine key={f.fee} fee={f} />
-            ))}
-            {glance.unmatched.map((f) => (
-              <UnpricedLine key={f.fee} fee={f} unmatched noCurrency={!!f.noCurrency} notPrinted={!!f.notPrinted} />
-            ))}
-            {glance.banned.map((f) => (
-              <UnpricedLine key={f.fee} fee={f} banned={f.ban} />
-            ))}
-          </ul>
         )}
         {glance.unread.length > 0 && (
           <p className="text-sm text-muted-foreground">

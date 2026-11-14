@@ -49,14 +49,34 @@ export interface DealRead {
   /** The device's day, YYYY-MM-DD, and its month. */
   today: string;
   month: CalendarMonth;
+  /**
+   * The deal's fees filled from another house's price list than the deal's own (a fee copied from it, beside the deal's or in place of
+   * it), by id: that house's name, which every place that names the fee says after its name, so two fees of one kind never read alike.
+   */
+  copied: Record<string, string>;
+}
+
+/** The house part of a price list's id (`house:<id>`, or `house:<id>/<line>`). */
+const houseOfId = (id: string) => id.split("/", 1)[0]!;
+
+/** The deal's fees filled from another house's price list than the deal's own, by id, with that house's name (`houses`). */
+export function copiedFees(deal: FeeDeal, houses: (id: string) => string | null): Record<string, string> {
+  const own = deal.template ? houseOfId(deal.template.id) : null;
+  return Object.fromEntries(
+    deal.fees.flatMap((f) => {
+      if (!f.house || houseOfId(f.house) === own) return [];
+      const name = houses(f.house);
+      return name ? [[f.id, name]] : [];
+    }),
+  );
 }
 
 /**
  * Reads a deal for the views, each fee in the case the picks give it (F-114, F-115). Never throws: a fee the law bans here is listed in
  * `banned`, one whose prices are not in order in `unread`, one with a price not given yet in `unpriced`, one the picks give no case in
- * `unmatched`, and all are left out.
+ * `unmatched`, and all are left out. `houses`: a house's name by its price list's id, for the fees copied from another list (`copied`).
  */
-export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string): DealRead {
+export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string, houses?: (id: string) => string | null): DealRead {
   const month = monthOfDate(today);
   // the reading's first month (F-110: the device's): a price given or not before it is past
   const from = monthKey(month);
@@ -67,12 +87,13 @@ export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: st
     return ban ? [{ fee: f.id, ...banSaid(ban) }] : [];
   });
   const kept = (id: string) => !banned.some((b) => b.fee === id);
-  const fees = read.fees.filter((f) => kept(feeOf(f)) && feeInOrder(f) && feePriced(f, from));
+  const copied = houses ? copiedFees(deal, houses) : {};
+  const fees = read.fees.filter((f) => kept(feeOf(f)) && feeInOrder(f) && feePriced(f, from)).map((f) => (copied[feeOf(f)] ? { ...f, from: copied[feeOf(f)] } : f));
   const engine = engineDeal(deal, fees, read.picks);
   const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))].filter(kept);
   const unread = ids(read.fees.filter((f) => !feeInOrder(f)));
   const unpriced = ids(read.fees.filter((f) => feeInOrder(f) && !feePriced(f, from))).filter((id) => !unread.includes(id));
-  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month };
+  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month, copied };
 }
 
 /** The read deal restricted to some of its fees (by index), for a reading of those alone (what holds throughout, F-111 on them). */
@@ -189,6 +210,8 @@ export interface FeeRef {
   fee: string;
   kind: FeeKindId;
   name?: string;
+  /** The house of another price list than the deal's that the fee was filled from (`DealRead.copied`), said after its name. */
+  house?: string;
   of?: string;
   case?: string;
   step?: StepRef;
@@ -206,10 +229,10 @@ export interface StepRef {
  * carry their state, and a line made without it carries the fee's id and name alone.
  */
 export const refOf = (f: ReadFee | FeeRef, today?: string): FeeRef => {
-  if (!("id" in f)) return { fee: f.fee, kind: f.kind, ...(f.name ? { name: f.name } : {}), ...(f.of ? { of: f.of } : {}), ...(f.case ? { case: f.case } : {}), ...(f.step ? { step: f.step } : {}) };
+  if (!("id" in f)) return { fee: f.fee, kind: f.kind, ...(f.name ? { name: f.name } : {}), ...(f.house ? { house: f.house } : {}), ...(f.of ? { of: f.of } : {}), ...(f.case ? { case: f.case } : {}), ...(f.step ? { step: f.step } : {}) };
   const read = f.read;
   const step = read?.step && today ? { step: { on: read.step.on, from: read.step.from ? figure(read.step.from, sumUnit(read.step.currency), today) : null, to: read.step.to ? figure(read.step.to, sumUnit(read.step.currency), today) : null } } : {};
-  return { fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}), ...(read ? { of: read.of } : {}), ...(read?.case ? { case: read.case } : {}), ...step };
+  return { fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}), ...(f.from ? { house: f.from } : {}), ...(read ? { of: read.of } : {}), ...(read?.case ? { case: read.case } : {}), ...step };
 };
 
 /** The stage of a fee whose price holds in month `i` (F-110: the first whose end is after it, else the last). */

@@ -13,7 +13,7 @@ import { BOUND_CURRENCIES, namesPlaces, pricesOn, untilRange, type BoundCurrency
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
-import { formatValue } from "../../lib/format";
+import { fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { AddSlot, AskValues, ChangeDivider, FigureField, InlineSelect, MonthField, RangeMenu, TextField, TickMenu, TrackMenu, monthText } from "../kit";
 import { bringIntoView } from "./in-view";
@@ -302,14 +302,16 @@ export function SlotMenu({ edit, fee, caseId, t, top, onFee }: { edit: SlotEdit;
   const over = edit.upTo === null;
   const unitChoice = edit.units.length > 1 ? <InlineSelect chip label={m.unit} options={edit.units.map((u) => ({ id: u.unit, name: u.words }))} value={edit.unit} onChange={(v) => v && onFee(setRangeUnit(fee, t, v as RangeUnit))} /> : undefined;
   const sign = edit.units.find((u) => u.unit === edit.unit)?.words ?? "";
-  // three controls side by side: the side, the number in a box of the usual size, and its unit, a choice where there is one
+  // the last case's top moves between the top before it and none; any other case's top splits its step where it falls (`setStep`)
+  const low = over ? (tops.at(-2)?.v ?? 0) : 0;
+  const refused = (n: number) => (n > low ? null : copy.cases.stepTopRange(fmt.number(low), null));
+  // two controls side by side: the side, and the number in a box of the usual size with its unit after it, a choice where there is one
   return (
     <RangeMenu
       title={edit.title}
       side={over ? "over" : "upTo"}
       onSide={(s) => onFee(setStep(fee, caseId, t, s === "over" ? null : tops.at(-1)!.v))}
-      figure={<FigureField value={top} label={edit.title} unit={unitChoice ? undefined : sign} sign={sign} wide onCommit={(n) => onFee(over ? setTop(fee, t, tops.length - 1, n) : setStep(fee, caseId, t, n))} />}
-      unit={unitChoice}
+      figure={<FigureField value={top} label={edit.title} unit={unitChoice ?? sign} sign={sign} wide validate={refused} onCommit={(n) => onFee(over ? setTop(fee, t, tops.length - 1, n) : setStep(fee, caseId, t, n))} />}
       before={edit.before ? <WhenText words={edit.before} /> : undefined}
     />
   );

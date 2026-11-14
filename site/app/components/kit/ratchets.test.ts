@@ -336,7 +336,7 @@ const CHART_ROLES: Record<string, string[]> = {
   "the indices page's two kinds of fund": ["chart-kind-unhedged", "chart-kind-hedged"],
   "a guide page's visual (10)": ["chart-value", "chart-alt"],
   "the pension deposit bar (10)": ["chart-value", "chart-alt", "chart-fee-4"],
-  "the fee page, a securities account's fees": ["fee-trade", "fee-custody", "fee-fx", "fee-fixed", "fee-fund", "fee-spread", "fee-account", "fee-other"],
+  "the fee page, a securities account's fees": ["fee-trade", "fee-custody", "fee-fx", "fee-fixed", "fee-fund", "fee-spread", "fee-account", "fee-other", "fee-copy"],
   "the fee page, a pension or provident product's fees": ["fee-balance", "fee-deposit", "fee-direct", "fee-other"],
   "the fee page, a money-market fund's fees": ["fee-balance", "fee-manager", "fee-trade", "fee-custody", "fee-other"],
   "the fee page, a fund held in a personally managed provident or study fund": ["fee-balance", "fee-trade", "fee-custody", "fee-fx", "fee-direct", "fee-fund", "fee-spread", "fee-account", "fee-other"],

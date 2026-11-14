@@ -25,7 +25,8 @@ function TickChip({ on, onClick, children }: { on: boolean; onClick: () => void;
  * `question` heads it; `field` comes under it where the thing asks for words or a number first (a condition's name, a range's first top);
  * `options` are the thing's values, `chosen` the ids ticked, `onToggle` ticks or unticks one; `other` adds a value of the person's own (the
  * kit's `OtherChip`, "+ ערוץ אחר"), and `otherField` is where it is typed while open; `note` says what adding does ("כל מקרה יועתק לכל ערוץ
- * שסימנתם…"). "להוסיף" waits for a value ticked, or for `ready` where the thing asks for no values.
+ * שסימנתם…"). "להוסיף" waits for a value ticked, or for `ready` where the thing asks for no values; Enter in the field presses it, once
+ * it may be pressed (`enterToNext`: the question is a group of figures whose Enter is "להוסיף"). The field stands as wide as it needs.
  */
 export function AskValues({ question, field, options, chosen, onToggle, other, otherField, note, ready, onAdd, onCancel }: {
   question: ReactNode;
@@ -42,12 +43,12 @@ export function AskValues({ question, field, options, chosen, onToggle, other, o
 }) {
   const id = useId();
   return (
-    <div role="group" aria-labelledby={id} className="flex flex-col gap-3 rounded-lg border border-when-edge bg-when-fill px-3.5 py-3">
+    <div role="group" aria-labelledby={id} data-figures="" className="flex flex-col gap-3 rounded-lg border border-when-edge bg-when-fill px-3.5 py-3">
       <p id={id} className="flex items-start gap-2 font-medium text-when-ink">
         <Split size={16} strokeWidth={1.75} aria-hidden className="mt-1.5 shrink-0" />
         <span>{question}</span>
       </p>
-      {field}
+      {field && <div className="flex flex-col items-start gap-1">{field}</div>}
       {(options.length > 0 || other) && (
         <div className="flex flex-wrap gap-2">
           {options.map((o) => (
@@ -61,7 +62,7 @@ export function AskValues({ question, field, options, chosen, onToggle, other, o
       {otherField}
       {note && <p className="text-sm text-muted-foreground">{note}</p>}
       <div className="flex flex-wrap items-center gap-3">
-        <Button variant="primary" onClick={onAdd} disabled={!(ready ?? chosen.length > 0)} className="disabled:cursor-not-allowed disabled:opacity-45">
+        <Button variant="primary" data-figures-enter="" onClick={onAdd} disabled={!(ready ?? chosen.length > 0)} className="disabled:cursor-not-allowed disabled:opacity-45">
           {copy.ask.add}
         </Button>
         <Button variant="quiet" wide onClick={onCancel}>
