@@ -109,9 +109,11 @@ describe("offerFor", () => {
 });
 
 describe("fees not offered at all", () => {
-  it("are a study fund's and a child-savings fund's deposit fee, a fee of the person's own on a provident fund, and a bank deposit's or savings plan's fees", () => {
+  it("are a child-savings fund's deposit fee, a fee of the person's own on a provident fund, and a bank deposit's or savings plan's fees", () => {
+    // a study fund's record lists no fee from deposits (KH-22), so the page has no such fee to offer, rather than one it does not offer
+    const study = kind("keren-hishtalmut");
+    expect(kindHas(study.id, study.bases, "deposit")).toBe(false);
     const off: [string, FeeKindId, string][] = [
-      ["keren-hishtalmut", "deposit", "KH-22"],
       ["child-savings-provident", "deposit", "CS-18"],
       ...(["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident"].map((id) => [id, "own", "PF-01"]) as [string, FeeKindId, string][]),
       ...(["bank-deposit", "savings-plan", "child-savings-bank"].flatMap((id) => [[id, "exit", "BANK-06"], [id, "own", "BANK-16"]]) as [string, FeeKindId, string][]),

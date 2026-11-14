@@ -226,7 +226,7 @@ describe("F-108 the best offer an amount opens", () => {
   });
 
   it("reads a bound recorded with no number as unknown: nothing past the minimum opens", () => {
-    // Yahav's one-year fixed deposit from 50,000 ₪: its table prints the maximum "100,00", which is recorded with no value
+    // a tier whose table prints its maximum short of a digit ("50,000 עד 100,00"), recorded with no value
     const unknownMax: OfferRecord = { id: "y", rate_offered: { value: 2.15 } as never, amount_range: { min: { value: 50_000 } as never, max: { value: null } as never } };
     expect(amountOpens(unknownMax, 50_000)).toBe(true);
     expect(amountOpens(unknownMax, 50_001)).toBe(false);
@@ -268,7 +268,7 @@ describe("F-108 the best offer an amount opens", () => {
     expect(amountOpens(low, 100_000)).toBe(false);
     expect(amountUnknown(low, 100_000)).toBe(false);
     expect(bestOpenOffer([low, high], 100_000)?.id).toBe("261-from-100000");
-    // Yahav's "1,000 עד 50,000" at 1.95% and "50,000 עד 100,000" at 2.15%: 50,000 is in neither, and unknown at both
+    // two tiers that both print 50,000 ("1,000 עד 50,000", "50,000 עד 100,000", as Yahav's six-month fixed deposit): 50,000 is in neither, and unknown at both
     const a = edged("y-a", 1.95, 1_000, 50_000, { max_edge: "unknown" });
     const b = edged("y-b", 2.15, 50_000, 100_000, { min_edge: "unknown", max_edge: "unknown" });
     expect(amountOpens(a, 50_000)).toBe(false);
