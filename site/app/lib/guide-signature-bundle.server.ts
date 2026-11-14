@@ -30,11 +30,17 @@ export function rulesTouched(bundle: Bundle): Set<string> {
   const ids = new Set<string>();
   // A large entered deposit takes the paths a small one does not (a study fund's deposit above the benefited
   // share reads TXH-11; a gemel lehashkaa's above its ceiling reads its routing rules): probe the slider's top too.
-  const top = p05Range(bundle.p05, "sliders", "monthly_deposit")?.max;
-  const deposits: (number | undefined)[] = top === undefined ? [undefined] : [undefined, top];
+  // The slider's bottom, no monthly deposit, takes another: a fee discount that ends some months after deposits stop
+  // reads PF-14. With no amount now either, a run reads what an empty plan reads.
+  const range = p05Range(bundle.p05, "sliders", "monthly_deposit");
+  const plans: Partial<Record<"amount_now" | "monthly_deposit", number>>[] = [{}];
+  if (range) {
+    for (const monthly_deposit of new Set([range.min, range.max])) plans.push({ monthly_deposit });
+    plans.push({ amount_now: 0, monthly_deposit: range.min });
+  }
   for (const age of [null, 65]) {
-    for (const monthly_deposit of deposits) {
-      const t = runTimeline(bundle, { entered: monthly_deposit === undefined ? {} : { monthly_deposit }, age });
+    for (const entered of plans) {
+      const t = runTimeline(bundle, { entered, age });
       if (t.kind === "ok") t.rules.forEach((r) => ids.add(r.id));
     }
   }

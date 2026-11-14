@@ -5,6 +5,7 @@ import { ruleBook, runInputs, runPlanned } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { entered as enteredValue } from "./value";
+import { runTimeline } from "./engine";
 import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
@@ -266,5 +267,20 @@ describe("pensions", () => {
     expect(m.general!.toGeneral).toBeCloseTo(m.total - 2000, 9);
     expect(m.balance).toBeNull();
     expect(m.balanceGap).toBe("general-split");
+  });
+});
+
+describe("the provident guides' own timelines at the slider's ends", () => {
+  it("runs with no monthly deposit, and with nothing at all, on the rules the page ships (a discount that ends after deposits stop reads PF-14)", () => {
+    for (const id of ["kupat-gemel-lehashkaa", "keren-hishtalmut"]) {
+      const b = page(id).bundle!;
+      for (const entered of [{ monthly_deposit: 0 }, { amount_now: 0, monthly_deposit: 0 }, { monthly_deposit: 10000 }]) {
+        for (const age of [null, 65]) {
+          const t = runTimeline(b, { entered, age });
+          expect(t.kind === "failed" ? `${id} ${JSON.stringify(entered)} ${age}: ${t.message}` : "ok").toBe("ok");
+        }
+      }
+    }
+    expect(page("kupat-gemel-lehashkaa").bundle!.rules.map((r) => r.id)).toContain("PF-14");
   });
 });
