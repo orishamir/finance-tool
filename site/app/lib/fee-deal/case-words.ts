@@ -1,0 +1,103 @@
+// The words of a fee's cases and parts (method §10.6, F-114): a thing's name, a case's value for each thing as a row and a slot say it, a
+// list's values with a lead they share, and a price's parts as a slim line says them. Every word is from the copy; the rows, the panel
+// and the undo's lines arrange them.
+import { feeDeal as copy } from "../../copy";
+import type { SiteValue } from "../value";
+import { hasCases, isRange, namesPlaces, type CasesFee, type Fee, type Priced, type When } from "./model";
+import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
+import { SAID, type PartContext, type PartWords } from "./part-words";
+import { priceView, type DealRead } from "./deal-read";
+import { WHAT_VALUES, type FeeKindId } from "./shapes";
+import { pickKind, type ByKind } from "./offers/conditions";
+import { figure, sumUnit } from "./values";
+
+/** A part as a slim line shows it: its id, its kind and its words. */
+export interface SlimPart {
+  id: PartId;
+  kind: PartKind;
+  words: PartWords;
+}
+
+/**
+ * How a case names its value for one thing, as its band row and its slot say it: `any`, said fainter ("בכל מסלול"); otherwise its words
+ * (`text`: the named values, joined), or for a range its step (`lead` "עד" or "מעל" and the top as a figure).
+ */
+export interface WhenWords {
+  thing: number;
+  any: boolean;
+  text?: string;
+  lead?: string;
+  figure?: SiteValue;
+}
+
+// ---------------------------------------------------------------- the words of a price's parts
+
+/**
+ * A thing a fee's price changes by, in words that follow the fee: the size of its own action ("גודל ההמרה" on a conversion), a condition
+ * of the person's own by its name, any other thing by its name.
+ */
+export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }): string =>
+  b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
+/** A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its end, its bounds, its links and its notes. */
+export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
+  const stage = priced.stages[0]!;
+  return saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, !!priced.sale);
+}
+
+/** The parts a price says, each with its words, and a sale priced apart where the line has one; a part with nothing to say yet is left out. */
+export function saidParts(c: PartContext, sale: boolean): SlimPart[] {
+  return partsSaid(c.p, { ...(c.until ? { until: c.until } : {}), sale }).flatMap((id) => {
+    const words = SAID[id](c);
+    return words ? [{ id, kind: PARTS[id].kind, words }] : [];
+  });
+}
+
+// ---------------------------------------------------------------- a fee's cases
+
+/** The words of one value the site names, or the person's own words. */
+export function valueWords(kind: ByKind, v: string): string {
+  const list = (copy.cases.values as Record<string, Record<string, string>>)[pickKind(kind)];
+  return list?.[v] ?? v;
+}
+
+/** How a case names its value for thing `t` (`WhenWords`). */
+export function whenWords(fee: CasesFee, w: When, t: number, today: string): WhenWords {
+  const b = fee.by[t]!;
+  if (w === "any") return { thing: t, any: true, text: copy.cases.any[b.kind]! };
+  if (isRange(b) && typeof w === "number") {
+    const unit = b.unit === "units" || b.unit === "actions" ? "count" : sumUnit(b.unit);
+    const at = w < b.tops.length ? b.tops[w]! : b.tops.at(-1)!;
+    return { thing: t, any: false, lead: w < b.tops.length ? copy.cases.upTo : copy.cases.over, figure: figure(at, unit, today) };
+  }
+  return { thing: t, any: false, text: listWords(fee, t, w as string[]) };
+}
+
+/** Words that share a lead ending in ", " say it once: "בחו״ל, באירופה, בשאר העולם". */
+function sharedLead(words: readonly string[]): string {
+  const cut = words[0]?.indexOf(", ") ?? -1;
+  const lead = cut > 0 ? words[0]!.slice(0, cut + 2) : "";
+  if (words.length < 2 || !lead || !words.every((x) => x.startsWith(lead) && x.length > lead.length)) return words.join(", ");
+  return lead + words.map((x) => x.slice(lead.length)).join(", ");
+}
+
+/**
+ * A case's values of a list thing in words. Where the case names every value abroad but those the fee's other cases name, it says "מחוץ ל"
+ * theirs after the lead they share ("בחו״ל, מחוץ לארה״ב"); else its values, a lead they share said once (`sharedLead`).
+ */
+function listWords(fee: CasesFee, t: number, values: readonly string[]): string {
+  const b = fee.by[t]!;
+  const words = values.map((v) => valueWords(b.kind, v));
+  if (!namesPlaces(b)) return sharedLead(words);
+  const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
+  const others = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) && c.when[t] !== values ? (c.when[t] as string[]).filter((v) => abroad.includes(v) && !values.includes(v)) : [])));
+  const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
+  if (!all) return sharedLead(words);
+  const o = copy.cases.outside;
+  // the lead the values abroad share ("בחו״ל")
+  const lead = valueWords(b.kind, abroad[0]!).split(", ")[0]!;
+  const names = abroad.filter((v) => others.has(v)).map((v) => o.names[v] ?? valueWords(b.kind, v));
+  return `${lead}, ${o.lead}${names.join(o.and)}`;
+}
+
+/** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edits/stage.ts). */
+export const firstCase = (fee: Fee): string | undefined => (hasCases(fee) ? fee.cases[0]!.id : undefined);

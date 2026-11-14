@@ -1,6 +1,6 @@
 // What every view of a deal is built from (method §10.6): the deal read once by the engine (F-110) for the reading's picks (F-114), each
 // price as the page shows it with its figures in their number states, each price's standing against the cap (F-113), the marks (F-112) and
-// what a fee is charged on (F-111). The views (glance.ts, builder.ts, reading.ts) only arrange these.
+// what a fee is charged on (F-111). The views (glance.ts, rows.ts, panel.ts, reading.ts) only arrange these.
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type ReadFee } from "./cases";

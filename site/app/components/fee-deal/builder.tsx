@@ -9,7 +9,7 @@
 import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
-import type { Builder } from "../../lib/fee-deal/builder";
+import type { Builder } from "../../lib/fee-deal/rows";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { groupKey, groupOn, type DealRead } from "../../lib/fee-deal/deal-read";

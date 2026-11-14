@@ -3,7 +3,8 @@
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
-import { builder, panel } from "./builder";
+import { builder } from "./rows";
+import { panel } from "./panel";
 import { glance } from "./glance";
 import { capLine, kindById, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal, packDeal, unpackDeal } from "./link";

@@ -3,7 +3,7 @@
 // asking for it by what it asks (`PendingEdit`, the part registry's `ask`).
 import { useEffect, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
-import type { OpenPart, PartField } from "../../lib/fee-deal/builder";
+import type { OpenPart, PartField } from "../../lib/fee-deal/panel";
 import { setUntil } from "../../lib/fee-deal/edits/stage";
 import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho } from "../../lib/fee-deal/edits/price";
 import { type Side } from "../../lib/fee-deal/model";

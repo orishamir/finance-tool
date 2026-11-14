@@ -5,7 +5,7 @@ import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, ho
 import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
-import { thingName, whenWords, type WhenWords } from "./builder";
+import { thingName, whenWords, type WhenWords } from "./case-words";
 import { STATED, type PartWords } from "./part-words";
 import { isPicked, pickKind } from "./offers/conditions";
 import { PARTS, partsSaid, type PartId, type StatedPartId } from "./offers/parts";

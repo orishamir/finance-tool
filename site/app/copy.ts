@@ -1827,7 +1827,7 @@ export const feeDeal = {
     close: "סגירה",
   },
   /**
-   * A fee whose price changes by things (F-114), its cases, the parts of a price and the toolbox that adds them (builder.ts), the
+   * A fee whose price changes by things (F-114), its cases, the parts of a price and the toolbox that adds them (rows.ts, panel.ts, toolbox.ts), the
    * reading's picks (reading.ts) and what the reading states without computing (method §10.6, "What the page states and does not compute").
    */
   cases: {

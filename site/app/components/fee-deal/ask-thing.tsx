@@ -2,7 +2,7 @@
 // in the fees' column, where the thing's band will stand, not in the toolbox, which only lists the parts.
 import { useEffect, useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
-import { byQuestion, copiesWords } from "../../lib/fee-deal/builder";
+import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
 import { addBy, newBy } from "../../lib/fee-deal/edits/case";
 import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import type { ByKind, RangeUnit } from "../../lib/fee-deal/offers/conditions";

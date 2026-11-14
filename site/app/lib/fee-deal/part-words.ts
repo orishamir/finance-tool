@@ -1,6 +1,6 @@
 // The words of each part of a price (method §10.6), keyed by the part registry's ids (offers/parts.ts): as a slim line, a case's row and
 // the open case say a part the price has, and as the toolbox's card offers a part to add. Every word is from the copy; the views
-// (builder.ts) only arrange them, and a component only lays them out.
+// (case-words.ts, panel.ts, toolbox.ts) only arrange them, and a component only lays them out.
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { SiteValue } from "../value";
 import type { MonthKey, Note, Price } from "./model";

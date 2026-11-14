@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import { toolbox } from "./builder";
+import { toolbox } from "./toolbox";
 import { decodeDeal, encodeDeal } from "./link";
 import { blankPrice, newDeal, readDeal, typed, type Fee, type FeeDeal, type Price } from "./model";
 import { readDealFor } from "./deal-read";
