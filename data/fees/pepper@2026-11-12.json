@@ -802,7 +802,7 @@
           "page": 11,
           "quote": "מכסימום  3,700ש \"ח לני \"ע,"
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-14",
         "effective_from": "2026-10-01",
         "effective_to": null,
         "tax_year": null,
@@ -811,7 +811,7 @@
           "BRK-54"
         ],
         "state": "sourced",
-        "notes": "'מכסימום 3,700 ש\"ח לני\"ע'."
+        "notes": "'מכסימום 3,700 ש\"ח לני\"ע, 11,500 ש\"ח לפיקדון' (the PEPPER annex row 'דמי ניהול ני\"ע חו\"ל - לרבעון', p.11, re-read 2026-11-14 in the price list updated 01/10/2026): 3,700 on each security and 11,500 on the securities deposit (the whole account). The row prints no period for the maximum apart from the row's 'לרבעון'. Leumi's own line abroad (p.32) prints the same pair as '7400 ש\"ח לני\"ע, 23000 לפקדון' with its note 5, 'בחיוב רבעוני - תיגבה עמלת מקסימום לני\"ע או לפיקדון הנמוכה מביניהן'; the annex row prints no note of its own."
       },
       "period": "quarter",
       "channel": null,
