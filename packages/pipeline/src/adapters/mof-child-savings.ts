@@ -1,7 +1,7 @@
 // Ministry of Finance adapter: bank rates for the child-savings programme, data.gov.il package
 // savingsplaninterest, resource a737b311-.... The datastore API of that resource is stale; the CSV file is current
 // (il-finance CS-23, corrected), so this reads the file (Windows-1255).
-// Terms: data.gov.il licence, status confirmed (the source must be named; data/series/mof-child-savings-rates.json carries it).
+// Licence: data.gov.il (the source must be named; data/series/mof-child-savings-rates.json carries it).
 // Pure functions (normalise, thin, sanityCheck, diffSeries) do no I/O.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, decodeWindows1255, parseCsv, type Downloaded } from "./cma.ts";
@@ -189,11 +189,9 @@ export function normalise(
     cadence: "daily",
     stale_after_days: 7,
     terms_of_use: {
-      status: "confirmed",
       terms_url: TERMS_URL,
       read_on: "2026-10-23",
       attribution: "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי\", data.gov.il (https://data.gov.il/he/datasets/mof/savingsplaninterest), לפי תנאי השימוש במאגרי המידע הממשלתיים",
-      fallback: "none needed",
     },
     rule_ids: ["CS-10", "CS-22", "CS-23"],
     notes:

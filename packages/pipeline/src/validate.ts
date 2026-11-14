@@ -725,13 +725,13 @@ export function checkByAmount(snap: ByAmountSnapshot): string[] {
   return out;
 }
 
-/** F-109: a unit's price is the issuer's own figure, never TASE's or Maya's, whose terms forbid republishing them (guidelines/research.md). */
+/** F-109, D94: a unit's price is the issuer's NAV from its own page, never TASE's or Maya's. */
 export function checkSharePrice(rec: Pick<FundRecord, "share_price">): string[] {
   const p = rec.share_price;
   if (!p) return [];
   const out: string[] = [];
   if (!["usd", "nis", "eur"].includes(p.unit)) out.push(`share_price: unit ${p.unit} is not a currency`);
-  if (/tase\.co\.il/i.test(p.source.url)) out.push(`share_price: ${p.source.url} is TASE's or Maya's; their terms forbid republishing a price`);
+  if (/tase\.co\.il/i.test(p.source.url)) out.push(`share_price: ${p.source.url} is TASE's or Maya's; a unit's price is the issuer's NAV from its own page (D94)`);
   return out;
 }
 
@@ -1379,15 +1379,9 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
   }
 }
 
-/**
- * data-schema §3.8 and docs/architecture.md 3.3: the terms gate (a series whose terms are not `confirmed` is not
- * shipped), observations sorted by date (then key) and no two with the same date and key.
- */
+/** data-schema §3.8: observations sorted by date (then key) and no two with the same date and key. */
 export function checkSeries(record: SeriesRecord): string[] {
   const out: string[] = [];
-  if (record.terms_of_use.status !== "confirmed") {
-    out.push(`terms gate: not shipped (terms_of_use.status is "${record.terms_of_use.status}", it must be "confirmed"; architecture 3.3)`);
-  }
   const order = (o: { date: string; key?: string | undefined }) => `${o.date}\u0000${o.key ?? ""}`;
   record.observations.forEach((o, i) => {
     const prev = record.observations[i - 1];
@@ -1400,15 +1394,11 @@ export function checkSeries(record: SeriesRecord): string[] {
 }
 
 /**
- * data-schema §3.14 and docs/architecture.md 3.3: the terms gate (a list whose terms are not `confirmed` is not
- * shipped), the file name `<list>@<snapshot>.json` matches the content, and a fund number appears once.
+ * data-schema §3.14: the file name `<list>@<snapshot>.json` matches the content, and a fund number appears once.
  * Fund lists are not fund records: exposure `variants` resolve against data/funds/ only (readFundIds).
  */
 export function checkFundList(file: FundListFile, fileName: string): string[] {
   const out: string[] = [];
-  if (file.terms_of_use.status !== "confirmed") {
-    out.push(`terms gate: not shipped (terms_of_use.status is "${file.terms_of_use.status}", it must be "confirmed"; architecture 3.3)`);
-  }
   if (fileName !== `${file.list}@${file.snapshot}.json`) out.push(`file name must be ${file.list}@${file.snapshot}.json (list and snapshot)`);
   const seen = new Set<string>();
   file.funds.forEach((f, i) => {

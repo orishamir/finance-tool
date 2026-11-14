@@ -15,8 +15,6 @@
   "cadence": "monthly",
   "stale_after_days": 45,
   "terms_of_use": {
-    "status": "confirmed",
-    "fallback": "none needed",
     "terms_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
     "read_on": "2026-10-25",
     "attribution": "הבנק המרכזי האירופי (ECB), שערי הייחוס של האירו בסוף כל חודש. הנתונים מועתקים כפי שפורסמו; השינוי של הדולר מול השקל הוא חישוב של האתר ולא של הבנק המרכזי האירופי."
