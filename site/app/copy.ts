@@ -996,7 +996,7 @@ export const flags: Record<string, string> = {
   // F-08 and F-09 leave commissions and conversion fees out of the tax basis, unsourced either way (TXS-06, method G-20)
   "G-20": "עמלות הקנייה והמכירה ועמלות המרת המטבע לא הופחתו מהרווח בחישוב המס, כי לא נמצא מקור שמתיר להפחית אותן. אם מותר, המס כאן מעט גבוה מדי.",
   // F-20: at a foreign broker nothing is withheld in Israel; the advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
-  "TXF-21": "בבית השקעות בחו״ל לא מנכים מס בישראל. את המס משלמים בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי, והחישוב מחשיב אותו כאילו שולם כבר באותו חודש.",
+  "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל מס הכנסה ומס רווחי הון. משלמים אותם בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי, והחישוב מחשיב אותם כאילו שולמו כבר באותו חודש.",
   // F-107: US-situs holdings above TXF-27's filing threshold; Israel has no estate tax treaty with the United States
   "TXF-27": "ההחזקה בקרן אמריקנית עוברת כאן את הסף שמעליו עיזבון של מי שאינו אזרח ארצות הברית ואינו תושב בה חייב בדיווח לרשויות המס האמריקניות, ועשוי לשלם מס עיזבון. לישראל אין אמנה עם ארצות הברית על מס עיזבון, והחישוב לא כולל את המס הזה.",
   // F-44: a kupat gemel lehashkaa balance already held whose gain is not known; the annual report states no tax a withdrawal would bear (PF-36)
