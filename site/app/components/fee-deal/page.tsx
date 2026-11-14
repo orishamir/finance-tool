@@ -40,7 +40,7 @@ import { dealOfAddress, type AddressDeal } from "../../lib/fee-deal/link";
 import { feeRoom } from "../../lib/fee-deal/limits";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
-import { copyHouseFee, dataBar, feeAlone, feePriceLists, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
+import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
@@ -152,7 +152,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const panelColumn = useMedia(PANEL_COLUMN);
   const phone = useMedia(PHONE);
   // the deal is read once for every view; choosing another fee builds only its panel again
-  const read = useMemo(() => readDealFor(deal, data.kinds, today), [deal, data.kinds, today]);
+  const read = useMemo(() => readDealFor(deal, data.kinds, today, (id) => houseName(id, data)), [deal, data, today]);
   const oc = useOpenCase({ deal, read, chosen, setChosen: doc.setChosen, phone, panelColumn });
   const { caseId } = oc;
   const chosenFee = oc.fee;
@@ -346,7 +346,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const saves = !!kind?.bases.includes("balance");
   const nameOf = (feeId: string) => {
     const f = deal.fees.find((x) => x.id === feeId);
-    return f ? feeName(f.kind, f.name) : feeId;
+    return f ? feeName(f.kind, f.name, read.copied[f.id]) : feeId;
   };
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   const { shown, words } = doc.undo;
@@ -360,6 +360,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         key={chosenFee.id}
         view={tools}
         fee={chosenFee}
+        {...(read.copied[chosenFee.id] ? { house: read.copied[chosenFee.id] } : {})}
         caseId={caseId}
         sheet={phone}
         product={deal.kind}
@@ -368,6 +369,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
         onAsk={oc.ask.onAsk}
+        onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k })}
         onFee={onFee}
         onPart={onPart(chosenFee)}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
@@ -398,6 +400,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
           if (how === "replace" && have) {
             kept(fillFeeKept(deal, have.id, house, data, chosen));
             doc.setChosen(have.id);
+            doc.setFocus({ fee: have.id, on: "card" });
             return;
           }
           if (!feeRoom(deal)) return setRefusal({ feeId: null, words: refusalWords("fees") });
@@ -405,6 +408,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
           if (!r) return;
           change(r.deal);
           doc.setChosen(r.feeId);
+          // the fee added beside takes the focus on its card, brought into view
+          doc.setFocus({ fee: r.feeId, on: "card" });
         },
       }
     : null;

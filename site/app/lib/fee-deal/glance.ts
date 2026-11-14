@@ -154,6 +154,6 @@ function withFirstRates(r: DealRead, groups: GlanceGroup[]): GlanceGroup[] {
 export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
-  const refs = (ids: readonly string[]) => r.deal.fees.filter((f) => ids.includes(f.id)).map((f): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) }));
+  const refs = (ids: readonly string[]) => r.deal.fees.filter((f) => ids.includes(f.id)).map((f): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}), ...(r.copied[f.id] ? { house: r.copied[f.id] } : {}) }));
   return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched).map((f) => (r.noCurrency.includes(f.fee) ? { ...f, noCurrency: true as const } : r.notPrinted.includes(f.fee) ? { ...f, notPrinted: true as const } : f)), banned: r.banned.map(({ fee, ...ban }) => ({ ...refs([fee])[0]!, ban })) };
 }

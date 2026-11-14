@@ -3,9 +3,9 @@
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { newDeal, type FeeDeal } from "./model";
-import { averagesOfFees, copyHouseFee, dealFromTemplate, feeAlone, housesToCopy, leftOfFees, templateOf, type LeftOut } from "./templates";
+import { averagesOfFees, copyHouseFee, dealFromTemplate, feeAlone, houseName, housesToCopy, leftOfFees, templateOf, type LeftOut } from "./templates";
 import { capacity } from "./offers/capacity";
-import { readDealFor } from "./deal-read";
+import { readDealFor, refOf } from "./deal-read";
 
 const data = feesData();
 const TODAY = "2026-11-14";
@@ -94,6 +94,21 @@ describe("a fee copied from another price list", () => {
     expect(copied).toEqual(jer);
     expect(house).toBe("house:jerusalem");
     expect(readDealFor(r.deal, data.kinds, TODAY).fees.filter((f) => f.kind === "trade").length).toBe(2);
+  });
+
+  it("names a fee copied from another list by that list's house, and no fee of the deal's own list", () => {
+    const deal = fibi();
+    const names = (id: string) => houseName(id, data);
+    const beside = copyHouseFee(deal, "house:jerusalem", "trade", "beside", data)!;
+    const jerusalem = data.houses.find((h) => h.id === "jerusalem")!.name;
+    expect(readDealFor(beside.deal, data.kinds, TODAY, names).copied).toEqual({ [beside.feeId]: jerusalem });
+    const read = readDealFor(beside.deal, data.kinds, TODAY, names);
+    expect(read.fees.filter((f) => f.kind === "trade").map((f) => f.from)).toEqual([undefined, jerusalem]);
+    expect(refOf(read.fees.find((f) => f.id === beside.feeId)!).house).toBe(jerusalem);
+    expect(readDealFor(deal, data.kinds, TODAY, names).copied).toEqual({});
+    // in place of the deal's own fee, it is named by its house too
+    const replaced = copyHouseFee(deal, "house:jerusalem", "trade", "replace", data)!;
+    expect(readDealFor(replaced.deal, data.kinds, TODAY, names).copied).toEqual({ [replaced.feeId]: jerusalem });
   });
 
   it("replaces the deal's fee of its kind in its place, keeping its id", () => {

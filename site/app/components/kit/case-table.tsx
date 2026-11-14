@@ -4,9 +4,10 @@
 // cells a cell for each part its cells hold alike), and beside the heads a small dashed pill that adds a case, a step, a row or a column:
 // at the end of the column heads, and under the row heads. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop
 // zone, and each cell a knob on its edges that stretches it over its neighbours; a cell covering its whole row says so under its parts. A
-// part every case holds alike is one cell over every column, not a line of its own. Narrower than a
-// table needs, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table squeezed anyway scrolls inside
-// itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
+// part every case holds alike is one cell over every column, not a line of its own. Under a row a slim strip drawn while the pointer is
+// there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
+// slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
+// wider than its block scrolls inside itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
 // table, its column or cell outlined in the action colour.
 import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";

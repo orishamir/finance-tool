@@ -1,15 +1,19 @@
 // A fee whose price changes by things, laid out by its shape (method §10.6, F-114; lib/fee-deal/band-layout.ts and layout.ts): its
 // condition's head, then, where its block has the room, a table of its cases (one thing; a range as a ladder whose step tops are typed in
 // place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the case open
-// under them; narrower, or past five cases, the same cases as rows in the cases' band, a grid's in one group per value of its first thing,
+// under them; on a block narrower than a computer's, the same cases as rows in the cases' band, a grid's in one group per value of its first thing,
 // a part one cell holds for every case said once above them. Each add slot stands beside the heads (at the end of the column heads, under
-// the row heads): "+ מקרה" copies the open case (else the last) and opens the copy; "+ מדרגה" asks only the new boundary (`AskStep`); a
-// grid's row and column ask their new values (`AskValuesOf`), and a place of a grid no case holds takes a copy of its row's case. Every
+// the row heads): "+ מקרה" on a list thing's table and a grid's row and column ask their new values from those the cases name not yet
+// (`AskValuesOf`), on a split table it copies the open case (else the last); "+ מדרגה" asks only the new boundary (`AskStep`); a place of a
+// grid no case holds takes a copy of its row's case. Every
 // case shows, in the fee's order, the person's own marked "שלכם" and none set apart for not being theirs. Every head, row, cell and thing
 // of the head has a grip (⋮⋮, lifted.ts says where each drops and what the bin takes), whose menu moves, duplicates or removes by
-// keyboard; every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), a cell over its whole row
-// saying so. A toolbox part dragged here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head,
-// splits that case alone.
+// keyboard; a table's columns, a grid's rows and columns and the cases read as rows are sortable lists, the others opening the gap where
+// the pointer stands, and every place shows what a drop would do while a thing is over it (the page draws the deal as it would leave it).
+// Every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), the cells it would cover showing its
+// price while it is pulled, a cell over its whole row saying so. Under a grid's row, or a table's last row, a strip drawn while the
+// pointer is there adds a part to every case of it as one stretched cell (`partAcross`), as its head's menu does. A toolbox part dragged
+// here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head, splits that case alone.
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
@@ -227,7 +231,7 @@ export function FeeCases({
   const removeAction = (l: Lifted): GripAction[] => (lift.binTakes(l) ? [{ label: lw.menu.remove, danger: true, onPick: () => lift.onBin(l) }] : []);
   /**
    * A grip that lifts `l`: its spoken name, its menu's other actions, the thing's own words (the bin says them), where it stands
-   * (`outside`: just before a table's cell or column head), and `still` where nothing would take the thing (its menu alone).
+   * (`outside`: just before a table's cell), and `still` where nothing would take the thing (its menu alone).
    */
   const grip = (l: Lifted, spoken: string, more: GripAction[] = [], o: { name?: string; place?: "inside" | "outside"; still?: boolean } = {}) => {
     const actions = [...more, ...removeAction(l)];
@@ -261,7 +265,8 @@ export function FeeCases({
     const l = headLifted(h, t);
     if (!l) return null;
     const words = stepName(byCase.get(h.cases[0]!)!, t);
-    const place = t === 1 ? ("outside" as const) : ("inside" as const);
+    // a head's grip stands inside it: a head's words fill its column, and nothing of it may pass the column's edge (layout-check's `head`)
+    const place = "inside" as const;
     if (l.k === "step") return grip(l, `${lw.grip.step}${words}`, more, { name: stepWords(words), place, still: !lift.binTakes(l) });
     return grip(l, `${t === 0 ? lw.grip.row : lw.grip.column}${words}`, [...valueActions(t, h.key, words, heads.map((x) => x.key), t === 0), ...more], { name: (t === 0 ? lw.name.row : lw.name.column).replace("{name}", words), place });
   };
@@ -449,7 +454,7 @@ export function FeeCases({
             const more = listThing ? caseActions(col.case, order, words, t) : [];
             const still = !!l && !moves && !lift.binTakes(l);
             const spoken = layout.ladder ? `${lw.grip.step}${words}` : still ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
-            const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : lw.name.case.replace("{name}", words), place: "outside", still }) : null;
+            const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : lw.name.case.replace("{name}", words), still }) : null;
             const target: LiftTarget = l?.k === "value" ? { k: "value", fee: fee.id, t, key: l.key } : { k: "col", fee: fee.id, case: col.case };
             return {
               id: col.case,

@@ -56,7 +56,8 @@ export const signText = (sign: "pct" | string): string => (sign === "pct" ? "%" 
 /**
  * The figure `figure` of price `k` on `side` of a fee's case (`caseId`; a slim fee's own price where none), in its box (`value`, null while
  * not given). A bound or a percent maximum (`optional`) may be emptied, which takes it away; not given, it is an empty box with a dash.
- * Any other figure not given is an empty dashed box with its unit; emptying a given one makes it so again. `unit` replaces the sign in the
+ * Any other figure not given (a part just added) is an empty dashed box with its unit; a given one may not be emptied: a box left empty
+ * puts it back, so a price never loses its figure by a slip (the reading says a price with a figure missing as missing). `unit` replaces the sign in the
  * box (a choice of currency). The arrows step a percent by a hundredth, a sum per unit by a thousandth and any other sum by one. The box
  * accepts its unit's sign typed with the number, and Escape puts the figure back as it stood when the box took the focus, its source with
  * it. Its state is the figure's (entered, or sourced from a template, where a press on it says where it is from); what it commits becomes
@@ -100,6 +101,8 @@ export function PriceFigure({
   const price = () => pricesOn(fee, side, caseId)[k]!.price;
   const set = (n: number | null) => onFee(editPrice(fee, side, k, (p) => withFigure(p, figure, n), caseId));
   const pct = sign === "pct";
+  // a price per unit is a rate's figure: a comma typed in it is a decimal point ("0,005")
+  const perUnit = figure === "amount" && price().form === "perUnit";
   return (
     <FigureField
       value={value}
@@ -113,8 +116,9 @@ export function PriceFigure({
       tight
       {...(optional ? { placeholder: copy.panel.empty } : {})}
       onCommit={(n) => set(n)}
-      onClear={() => set(null)}
-      step={pct ? 0.01 : figure === "amount" && price().form === "perUnit" ? 0.001 : 1}
+      {...(optional ? { onClear: () => set(null) } : {})}
+      {...(pct || perUnit ? { kind: "rate" as const } : {})}
+      step={pct ? 0.01 : perUnit ? 0.001 : 1}
       {...(id ? { id } : {})}
       validate={pct ? rateCheck : amountCheck}
     />

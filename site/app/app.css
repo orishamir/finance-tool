@@ -650,7 +650,7 @@
     }
   }
   /* Grips (kit/lift.tsx) take no room of their own: each stands over the start of what it lifts, in its middle (`inside`), or just before
-     it, over the room between it and its neighbour (`outside`: a table's cell or column head, a fee's name), so a cell's lines, a row
+     it, over the room between it and its neighbour (`outside`: a table's cell, a fee's name), so a cell's lines, a row
      head's title and its note, and every fee's name start at one inset whether a grip is there or not. What holds a grip is what it
      stands over. */
   [data-grip-box] {
@@ -704,8 +704,9 @@
     [data-open-fee] [data-grip] {
       opacity: 1;
     }
+    /* over the room's own padding, which a utility sets */
     [data-open-fee] :has(> [data-grip-box]) {
-      padding-inline-start: 1.625rem;
+      padding-inline-start: 1.75rem !important;
     }
     [data-liftable]:focus-within [data-span-knob],
     [data-span-knob]:active {

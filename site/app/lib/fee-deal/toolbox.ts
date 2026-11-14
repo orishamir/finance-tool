@@ -43,8 +43,11 @@ export interface ToolGroup {
  * still opens and reads.
  */
 export interface Toolbox {
-  /** "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`). */
-  addTo: { lead: string; when?: WhenWords[]; name?: string; price?: string };
+  /**
+   * "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`); where the case's price changes over time, which of
+   * its prices the toolbox adds to (`price`), and each price's months (`periods`, in time order), to switch to another.
+   */
+  addTo: { lead: string; when?: WhenWords[]; name?: string; price?: string; periods?: string[] };
   /** The price it acts on, by its place among the purchase's prices (`toolPrice`): a part tapped goes on it, a form of the price changes it. */
   k: number;
   groups: ToolGroup[];
@@ -85,7 +88,7 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number
       : g.parts.filter((id) => offer.parts.includes(id) && PARTS[id].holds(fee.kind, p)).map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced) }));
   const c = hasCases(fee) ? (priced as Case) : null;
   const base = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
-  const addTo = priced.stages.length > 1 ? { ...base, price: priceWords(priced.stages, k) } : base;
+  const addTo = priced.stages.length > 1 ? { ...base, price: priceWords(priced.stages, k), periods: priced.stages.map((_, j) => periodWords(priced.stages, j)) } : base;
   const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g) }));
   return { addTo, k, groups: groups.filter((g) => g.parts.length > 0) };
 }
@@ -101,12 +104,17 @@ const monthBefore = (m: MonthKey): MonthKey => {
  * first month the end of the price before it, its last the month before its own end.
  */
 function priceWords(stages: readonly { until?: MonthKey }[], k: number): string {
+  return [copy.cases.toolPrice.lead, periodWords(stages, k)].join(" ");
+}
+
+/** A price's months among several, in words: "עד דצמבר 2026", "ממינואר 2027", "מינואר 2027 עד דצמבר 2027". */
+function periodWords(stages: readonly { until?: MonthKey }[], k: number): string {
   const w = copy.cases.toolPrice;
   const from = stages[k - 1]?.until;
   const until = stages[k]!.until;
   const fromWords = from ? (() => { const d = fmt.date(from); return `${joinLead(w.from, d)}${d}`; })() : "";
   const untilWords = until ? `${w.until}${fmt.date(monthBefore(until))}` : "";
-  return [w.lead, fromWords, untilWords].filter(Boolean).join(" ");
+  return [fromWords, untilWords].filter(Boolean).join(" ");
 }
 
 /** The things a fee is offered to change by, as the toolbox's cards: one it changes by already is used, and none more can be added past three. */

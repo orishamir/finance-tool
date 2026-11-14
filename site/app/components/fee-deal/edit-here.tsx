@@ -7,6 +7,7 @@ import type { SlimPart } from "../../lib/fee-deal/case-words";
 import { figuresBack, figureToAll } from "../../lib/fee-deal/edits/cells";
 import { hasCases, type Fee } from "../../lib/fee-deal/model";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
+import type { Figure } from "../../lib/fee-deal/offers/figures";
 import type { SiteValue } from "../../lib/value";
 import { EditInPlace } from "../kit";
 import { PriceFigure } from "./figures";
@@ -19,6 +20,9 @@ export interface EditPlace {
   onFee: (f: Fee) => void;
 }
 export const EditHere = createContext<EditPlace | null>(null);
+
+/** The figures a price may be without, as the open case's boxes take them (part-edit.tsx): a bound, a percent maximum, a third party's bound. */
+const OPTIONAL: ReadonlySet<Figure> = new Set<Figure>(["min", "max", "cap", "thirdMin", "thirdMax"]);
 
 /** Figure `n` of a part at rest (`value`): edited in place where the page says where (`EditHere`) and the part has that figure's field. */
 export function PartFig({ part, n, value }: { part: SlimPart; n: number; value: SiteValue }) {
@@ -38,7 +42,7 @@ export function PartFig({ part, n, value }: { part: SlimPart; n: number; value: 
     <EditInPlace
       label={`${copy.cases.lifted.edit}${SPOKEN[f.figure]}`}
       onOpen={() => (was.current = at.fee)}
-      field={() => <PriceFigure fee={at.fee} side="buy" k={k} {...(caseId ? { caseId } : {})} figure={f.figure} value={f.value} sign={f.sign} label={SPOKEN[f.figure]} onFee={onFee} onRevert={onRevert} />}
+      field={() => <PriceFigure fee={at.fee} side="buy" k={k} {...(caseId ? { caseId } : {})} figure={f.figure} value={f.value} sign={f.sign} label={SPOKEN[f.figure]} optional={OPTIONAL.has(f.figure)} onFee={onFee} onRevert={onRevert} />}
     >
       <Fig value={value} />
     </EditInPlace>
