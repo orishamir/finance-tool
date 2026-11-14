@@ -30,7 +30,6 @@ import { addOfferedFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal
 import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
-import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
@@ -40,7 +39,7 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith } from "../../lib/fee-deal/store";
 import { dataBar, feePriceLists, perDepositFees, templateSource } from "../../lib/fee-deal/templates";
-import { fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
+import { fillFeeKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useMedia } from "../../lib/hooks";
@@ -186,7 +185,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const to = kindById(data.kinds, id);
     if (to) kept(setKindKept(deal, to, dataBar(id, data, today), chosen));
   };
-  const onHoldOn = (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => kept(holdOnKept(deal, feeId, side, k, chosen, after, caseId));
+  const onRemoveChange = (feeId: string, side: Side, k: number, caseId: string | undefined) => kept(removeChangeKept(deal, feeId, side, k, chosen, caseId));
   const onForm = (feeId: string, part: PartId, caseId: string | null) => {
     if (doc.changeForm(feeId, part, caseId)) oc.pending.set(null);
   };
@@ -366,7 +365,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onRemoveFee,
                 onRemoveBy,
                 drop,
-                onHoldOn,
+                onRemoveChange,
                 pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
               }}

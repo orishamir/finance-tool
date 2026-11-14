@@ -1793,8 +1793,6 @@ export const feeDeal = {
       /** A fee whose rate or sum nobody typed yet: it is not read until it is. */
       noPrice: "עוד לא הוזן מחיר",
       insideFund: "נגבים בתוך הקרן",
-      /** The fee's next change (F-110), before its month in words. */
-      next: { starts: "מתחיל ב־", ends: "נגמר ב־", rises: "עולה ב־", falls: "יורד ב־", changes: "משתנה ב־" } as Record<string, string>,
     },
   },
   /** The left column: every field of the chosen fee. */
@@ -1826,11 +1824,23 @@ export const feeDeal = {
     cap: "מקסימום באחוזים",
     /** Before the sum the flat price holds up to, by the fee: "[2.85 $] לכל המרה, עד המרה של [50 $]". */
     upTo: { default: "עד פעולה של", fx: "עד המרה של" } as Record<string, string>,
-    until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
-    /** The line the prices after one leave, taken away by the bin of its month. */
-    laterRemoved: "המחירים שאחריו הוסרו.",
+    /**
+     * A price that changes with time (F-110): the divider between two prices ("מ־" and the month the later starts, its box's spoken name,
+     * its bin), the dashed slot at the end that adds a change by its month alone, its question and what it does, the month refused where
+     * the prices change already, and the line a change taken away leaves.
+     */
+    change: {
+      from: "מ־",
+      month: "החודש שהמחיר משתנה בו",
+      remove: "להסיר את השינוי במחיר",
+      add: "המחיר משתנה מתאריך",
+      ask: "מאיזה חודש המחיר משתנה?",
+      note: "המחיר שחל אז יתפצל לשניים: החדש מתחיל כהעתק שלו, עד שתשנו אותו.",
+      taken: "המחיר כבר משתנה בחודש הזה.",
+      removed: "השינוי במחיר הוסר: המחיר שאחריו חזר להיות המחיר שלפניו.",
+    },
     salePrices: "המחיר במכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
     remove: "להסיר את העמלה",
@@ -1942,9 +1952,8 @@ export const feeDeal = {
       /** A third party's fee named in the list's words: "ועוד עמלת הברוקר". */
       thirdOf: "ועוד עמלת ",
       thirdNone: "בלי סכום בתעריפון",
-      until: "לזמן מוגבל, עד ",
-      /** Before a later price's first part, after the month the price before it ends: "ואחר כך 20 ₪ בחודש". */
-      then: "ואחר כך ",
+      /** Before the month a later price starts, on a closed line: "ומינואר 2027". */
+      from: "ומ־",
       min: "מינימום ",
       max: "מקסימום ",
       /** A held share's maximum on each security, after its sum: "מקסימום 7,500 ₪ לכל נייר ערך בכל חיוב" (§10.6's stated parts). */
@@ -4917,6 +4926,7 @@ export const kit = {
       TariffDate: "שורת התאריך של תעריפון: מה שהמסמך עצמו מדפיס, בצבע רגיל. תאריך אחד לכל המסמך, תאריך של החלק שהאתר קורא, גרסה, תאריך שהודפס בטעות כמו שהוא, או שאין תאריך מודפס ומתי האתר בדק. מתחת לכותרת שכבר אומרת ״תעריפון״ המילה לא חוזרת.",
       ConditionBand: "הראש של עמלה שהמחיר שלה משתנה לפי דבר אחד עד שלושה (מה קונים, הערוץ, המסלול, גודל הפעולה): ״המחיר משתנה לפי״ והדברים בפס כחול, ופח ליד כל דבר. כשהמקרים נקראים כשורות (בטלפון, או יותר מחמישה מקרים) הם בפס עצמו: שורה לכל מקרה, התנאי במילים מעל החלקים, ״בכל …״ חלש יותר, ״שלכם״ ליד המסלול של האדם. טבלה של שני דברים נקראת בקבוצה לכל ערך של הדבר הראשון. מקרים שאינם של האדם מקופלים לשורה אחת. מקרה אחד פתוח: מסגרת, ״נבחר״, הערכים שלו כמקומות לבחירה והחלקים עם התיבות שלהם.",
       CaseTable: "המקרים של עמלה לפי הצורה שלה. דבר אחד: המקרים בעמודות והחלקים בשורות, רק השורות שיש למקרה כלשהו, ותא אחד לשכנים שווים. טווח הוא סולם עולה, והגבול של כל מדרגה נכתב במקומו. שני דברים: טבלה, הראשון בצד והשני למעלה, ומקרה שחל בכל ערך של השני תופס את כל השורה. דבר שלישי הוא מתג מעל הטבלה. מה שזהה בכל המקרים נאמר פעם אחת מעליהם, ומה שזהה בשורה או בעמודה נאמר בראש שלה. ההוספה עומדת איפה שהדבר החדש יופיע: עמודה, מדרגה, שורה או מקום ריק בקו מקווקו.",
+      ChangeDivider: "מחיר שמשתנה עם הזמן: המחירים של העמלה זה מתחת לזה לפי הזמן, ובין שניים קו לכל הרוחב עם ״מ־״ והחודש שהמחיר הבא מתחיל בו, שאפשר לשנות במקום, ופח שמוריד את השינוי. בסוף, בקו מקווקו, ״+ המחיר משתנה מתאריך״, ששואל רק על החודש.",
       FeePalette: "העמלות שאפשר עוד להוסיף לעסקה, כשאף עמלה לא פתוחה: כרטיס לכל עמלה, הנקודה שלה, השם ושורה אחת על מה היא נגבית. הקשה מוסיפה אותה ופותחת אותה, ובמחשב אפשר גם לגרור אותה אל העסקה.",
       PartChip: "חלק של מחיר: מחיר, מינימום או מקסימום, קשר לעמלה אחרת, או הערה. במנוחה דק, והסמל והמילה הראשונה בצבע של הסוג; המספרים במצב שלהם, כמו בכל מקום. PartEdit: אותו חלק בעריכה, על כל הרוחב, עם התיבות והבחירות שלו ופח להסרה. סדר החלקים קבוע.",
       SlimFee: "עמלה שיש לה מחיר אחד: שורה אחת, נקודת הצבע שלה, השם והחלקים. הקשה פותחת אותה במקומה, כמו מקרה. FeeBlock: עמלה שהמחיר שלה משתנה, השם ומתחתיו הפס.",

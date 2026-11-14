@@ -9,7 +9,7 @@
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { thingName } from "./case-words";
-import { holdOn, laterUntouched } from "./edits/stage";
+import { changeUntouched, removeChange } from "./edits/stage";
 import { ownKept, removeBy, removeCase } from "./edits/case";
 import { setKind, updateFee } from "./edits/deal";
 import { type Side } from "./model";
@@ -17,7 +17,6 @@ import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/
 import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, toolPrice, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { DataBar } from "./offers/offer";
-import type { ChargedForm } from "./offers/capacity";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
 
@@ -122,14 +121,15 @@ export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chose
 }
 
 /**
- * The deal with price `k` of a fee's prices on `side` held on and the prices after it taken away (`holdOn`): kept for the undo where they
- * hold anything the person gave, gone silently where they are as "לזמן מוגבל" added them (`laterUntouched`). Null where none follows it.
+ * The deal with change `k` of a fee's prices on `side` taken away at its divider, the later price merging back into the earlier
+ * (`removeChange`): kept for the undo where the later price differs from the earlier, gone silently where it is still the earlier's copy
+ * (`changeUntouched`). Null where no change `k` stands.
  */
-export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null, after: ChargedForm, caseId?: string): MaybeUndoable | null {
+export function removeChangeKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null, caseId?: string): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   if (!fee || (side === "sell" && !pricedOf(fee, caseId).sale) || k >= pricesOn(fee, side, caseId).length - 1) return null;
-  const changed = holdOn(fee, side, k, caseId);
-  if (laterUntouched(fee, side, k, after, caseId)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
+  const changed = removeChange(fee, side, k, caseId);
+  if (changeUntouched(fee, side, k, caseId)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
   return feeChange(deal, fee, changed, { kind: "chain", feeId, side, k, ...(caseId ? { caseId } : {}) }, chosen);
 }
 
@@ -233,7 +233,7 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
   u = u as Undo;
   switch (u.what.kind) {
     case "chain":
-      return copy.panel.laterRemoved;
+      return copy.panel.change.removed;
     case "case":
       return copy.cases.caseRemoved;
     case "form":

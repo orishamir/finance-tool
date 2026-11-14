@@ -40,15 +40,16 @@ export interface WhenWords {
 export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }): string =>
   b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
 /**
- * A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its end, its bounds, its links and its notes; where it ends,
- * each later price's after it, the first of them led by "ואחר כך" (`stage`, its place among the prices), so a closed fee says what its
- * price changes to.
+ * A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its bounds, its links and its notes; where it changes with
+ * time, after each price the month the next starts ("ומינואר 2027", `SAID.until`) and then that price's parts (`stage`, its place among
+ * the prices), so a closed fee reads its whole sequence on one line: "חינם · ומינואר 2027 · 20 ₪ בחודש".
  */
 export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
   return priced.stages.flatMap((stage, k) => {
-    const parts = saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
-    if (k === 0) return parts;
-    return parts.map((x, j) => ({ ...x, stage: k, ...(j === 0 ? { words: { ...x.words, lead: `${copy.cases.parts.then}${x.words.lead ?? ""}` } } : {}) }));
+    const said = saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
+    const parts = said.filter((x) => x.id !== "until").map((x) => (k ? { ...x, stage: k } : x));
+    const change = said.find((x) => x.id === "until");
+    return change ? [...parts, { ...change, stage: k + 1 }] : parts;
   });
 }
 

@@ -347,11 +347,13 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(second!.groups).toHaveLength(1);
     expect(v(second!.groups[0]!.rate)).toBeCloseTo(0.47, 10);
   });
-  it("in the builder: a row per fee, the minimum said, custody's start, the fund's fee inside the fund, the suggestions", () => {
+  it("in the builder: a row per fee, the minimum said, custody's start in its line, the fund's fee inside the fund, the suggestions", () => {
     const b = builder(read(account()));
     expect(b.rows.map((r) => r.kind)).toEqual(["trade", "custody", "fixed_period", "fx", "fund_management"]);
     expect(b.rows[0]).toMatchObject({ bounds: { min: true, max: false } });
-    expect(b.rows[1]!.next).toEqual({ at: "2028-03", change: "starts" });
+    // custody's start is said in its own line, after its free price: no separate note
+    expect(b.rows[1]!.block).toMatchObject({ kind: "slim" });
+    expect(b.rows[1]!.block.kind === "slim" && b.rows[1]!.block.parts.map((p) => [p.id, p.stage ?? 0])).toEqual([["free", 0], ["until", 1], ["held", 1]]);
     expect(b.rows[1]!.stages!).toHaveLength(2);
     expect(b.rows[4]!.insideFund).toBe(true);
     expect(b.suggestions.usual).toEqual(["distribution_handling", "transfer_out"]);
@@ -421,19 +423,21 @@ describe("the provident fund of the picture, on 11.2026", () => {
     expect(v(date!.months)).toBe(16);
     expect(date!.changes[0]).toMatchObject({ kind: "balance", change: "rises", standing: { standing: { judged: true, standing: "at" } } });
   });
-  it("in the builder: the fee on the savings tagged below the cap, as it stands now, its rise in 03.2028 in its notes", () => {
+  it("in the builder: the fee on the savings tagged below the cap, as it stands now, its rise in 03.2028 in its line", () => {
     const row = builder(read(provident())).rows[0]!;
     expect(row.standingNow.standing).toMatchObject({ standing: "below" });
-    expect(row.next).toEqual({ at: "2028-03", change: "rises" });
+    // its rise in 03.2028 is in its line: the month, then the later price
+    expect(row.block.kind === "slim" && row.block.parts.filter((p) => p.stage).map((p) => p.id)).toEqual(["until", "held"]);
     // the law card's row too: its tag is of now, its later price stands at the cap in its own line
     const law = readingOf(read(provident()), data.fx).law.find((x) => x.fee === "fee-balance")!;
     expect(law.now?.standing).toMatchObject({ standing: "below" });
     expect(law.prices.at(-1)!.standing.standing).toMatchObject({ standing: "at" });
     expect(row.insideFund).toBe(false);
   });
-  it("open in place: two prices, the first ending with its month, each a share of what is held; nothing of a sale", () => {
+  it("open in place: two prices in time order, the month between them the divider's, each a share of what is held; nothing of a sale", () => {
     const p = panel(read(provident()), "fee-balance")!;
-    expect(p.open.buy.map((s) => s.parts.map((x) => x.id))).toEqual([["held", "until"], ["held"]]);
+    expect(p.open.buy.map((s) => s.parts.map((x) => x.id))).toEqual([["held"], ["held"]]);
+    expect(p.open.buy.map((s) => s.until)).toEqual(["2028-03", undefined]);
     expect(p.open.buy[0]!.parts[0]!.fields.map((f) => f.figure)).toEqual(["rate"]);
     expect(p.open.sell).toBeUndefined();
     expect(panel(read(provident()), "nothing")).toBeNull();

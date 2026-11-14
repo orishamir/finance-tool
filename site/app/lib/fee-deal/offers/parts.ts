@@ -7,10 +7,10 @@
 // are derived from it. Adding a part is adding an entry here and its words (part-words.ts and the copy); a table keyed by a derived type
 // fails to compile until it has the part. Pure; no Hebrew.
 import { blankPrice, mainFigure, typed, type Fee, type MonthKey, type Note, type Price, type Priced, type Side } from "../model";
-import { editPrice, holdOn, setLimited, setSaleApart } from "../edits/stage";
+import { editPrice, removeChange, setSaleApart, splitAt } from "../edits/stage";
 import { withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edits/price";
 import { type FeeKindId, type FormId } from "../shapes";
-import { keeps, PART_FIELDS, pricesSaleApart, takes, type ChargedForm, type PartFieldId } from "./capacity";
+import { keeps, PART_FIELDS, pricesSaleApart, takes, type PartFieldId } from "./capacity";
 import { boundsAction, byRate, charged, formBoundsAction, KEY_FORMS, onAction, pricedCurrency, sameFigureKind, type PartKey } from "./capabilities";
 import { FIGURES, type Figure } from "./figures";
 
@@ -57,14 +57,13 @@ export type PartKind = "price" | "bound" | "link" | "note";
 /** The toolbox's groups a part may show in: the price, minimum and maximum, a link to another fee, more on the price. */
 export type ToolGroupId = "price" | "bound" | "link" | "more";
 
-/** What a part asks for before it can stand, where it asks: a percent, a sum, a month (a later price's) or a fee (an offset's). */
-export type Ask = "pct" | "sum" | "month" | "fee" | null;
+/** What a part asks for before it can stand, where it asks: a percent, a sum or a fee (an offset's). */
+export type Ask = "pct" | "sum" | "fee" | null;
 
 /**
  * Where a part goes, and what it needs: the case (`caseId`; a fee with cases is edited in its first where none is named), the side and the
  * price (`side`, `k`: the purchase's first where none is said), a bound's or a percent maximum's figure (`value`: a bound is never blank),
- * a later price's month (`month`) and the form it takes after a free price (`after`: the first form the product's fee is offered in), and
- * the fee an offset is against (`against`).
+ * the month a price changes from (`month`), and the fee an offset is against (`against`).
  */
 export interface PartAt {
   caseId?: string;
@@ -72,7 +71,6 @@ export interface PartAt {
   k?: number;
   value?: number;
   month?: MonthKey;
-  after?: ChargedForm;
   against?: FeeKindId;
 }
 
@@ -151,17 +149,19 @@ const SPECS = {
   free: { kind: "price", form: "free", figures: [], ask: null, tool: null, ...formEdit("free") },
   discount: { kind: "price", field: "discount", figures: ["discount"], ask: null, tool: "price", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
   third: { kind: "price", field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "price", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
+  // the month a price changes from (F-110): never a card of the toolbox; the page adds it at the end of the prices, by its month alone, and
+  // takes it away at its divider
   until: {
     kind: "price",
     feeHolds: () => true,
     figures: [],
-    ask: "month",
-    tool: "price",
+    ask: null,
+    tool: null,
     used: (_p: Price, x?: Priced) => !!x && x.stages.length > 1,
-    // on, the price ends at the month and a later one follows it, in the form the offer gives after a free price (nothing without both);
-    // off, the prices after it go
-    apply: { on: "fee", edit: (fee, on, at) => (!on ? holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId) : at.month && at.after ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month, at.after, at.caseId) : fee) },
+    // on, the price in force at the month splits in two there (nothing without a month); off, change `k` goes, the later price merging back
+    apply: { on: "fee", edit: (fee, on, at) => (!on ? removeChange(fee, at.side ?? "buy", at.k ?? 0, at.caseId) : at.month ? splitAt(fee, at.side ?? "buy", at.month, at.caseId) : fee) },
   },
+
   min: { kind: "bound", field: "min", carriesIn: formBoundsAction, capField: "min", figures: ["min"], ask: "sum", tool: "bound", lost: true, ...figureEdit("min") },
   max: { kind: "bound", field: "max", carriesIn: formBoundsAction, capField: "max", figures: ["max"], ask: "sum", tool: "bound", lost: true, ...figureEdit("max") },
   cap: { kind: "bound", field: "cap", capField: "cap", figures: ["cap"], ask: "pct", tool: "bound", lost: true, ...figureEdit("cap") },
@@ -245,10 +245,9 @@ export function partsSaid(p: Price, line: { until?: MonthKey; sale?: boolean }):
   return out;
 }
 
-/** Whether `at` gives what a part asks for: a percent's or a sum's figure, a month, a fee. */
+/** Whether `at` gives what a part asks for: a percent's or a sum's figure, a fee. */
 function gives(at: PartAt, ask: Ask): boolean {
   if (ask === "pct" || ask === "sum") return at.value !== undefined;
-  if (ask === "month") return !!at.month;
   if (ask === "fee") return !!at.against;
   return true;
 }

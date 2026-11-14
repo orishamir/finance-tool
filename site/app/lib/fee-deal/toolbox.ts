@@ -55,7 +55,7 @@ export interface Toolbox {
  * it among the bounds.
  */
 export const TOOL_ORDER = {
-  price: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"],
+  price: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat"],
   bound: ["min", "max", "cap", "maxPerSecurity"],
   link: ["offset", "refund"],
   more: ["unfilled", "partial", "inTrade", "sale"],

@@ -1,7 +1,6 @@
 // The builder column (method §10.6): a block per fee, either a slim price or the band of its cases (F-114) with each case's value per thing
-// and its parts in short; the fees to suggest; and each fee's facts beside its prices and its standing against the cap now and where it
-// next changes (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
-import type { ChangeKind } from "@finance-tool/engine";
+// and its parts in short, a price that changes with time in one line; the fees to suggest; and each fee's facts beside its prices and its
+// standing against the cap now (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
 import { feeOf, inCurrency, picked, tradeCurrency } from "./cases";
 import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type BoundCurrency, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
 import { feesOffered, type DataBar } from "./offers/offer";
@@ -19,12 +18,6 @@ export interface StageView {
   price: PriceView;
   until?: MonthKey;
   standing: StandingView;
-}
-
-/** One fee's next change after the reading's month, where it has one (F-110). */
-export interface NextChange {
-  at: MonthKey;
-  change: ChangeKind;
 }
 
 /**
@@ -46,8 +39,6 @@ export interface BuilderRow extends FeeRef {
   banned?: BanSaid;
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
   sale?: StageView[];
-  /** The fee's next change, and whether it is a start from free. */
-  next?: NextChange;
   /** Whether the price now has a minimum and a maximum (on any side). */
   bounds: { min: boolean; max: boolean };
   /** Whether the fee is charged inside a fund. */
@@ -187,7 +178,6 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const banned: BanSaid | undefined = "rules" in ban ? ban : undefined;
   const given = !banned && (i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from))));
   const sale = priced.sale ? readStages(r, stageViews(r, fees, at, priced.sale)) : undefined;
-  const c = i < 0 ? undefined : r.reading.fees[i]!.changes[0];
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
   return {
     ...refOf(i >= 0 ? r.fees[i]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today),
@@ -198,7 +188,6 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     noCurrency: r.noCurrency.includes(fee.id),
     ...(banned ? { banned } : {}),
     ...(sale ? { sale } : {}),
-    ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },
     insideFund: insideFund(fee),
     standingNow: now.standing,

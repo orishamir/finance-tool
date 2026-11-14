@@ -84,6 +84,7 @@ export { PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from 
 export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
 export { AddSlot, CaseGrid, CaseTable, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type GridCellView, type GridHead } from "./case-table";
 export { FeePalette, type PaletteItem } from "./fee-palette";
+export { ChangeDivider } from "./change-divider";
 export { FeeBlock, SlimFee, type FeeRemove } from "./fee-block";
 export { RemoveButton } from "./remove-button";
 export { DropZone, useCanDrag, useCarried, useDragSource, type DragSourceProps } from "./drag-drop";

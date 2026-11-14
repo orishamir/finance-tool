@@ -12,9 +12,9 @@ import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/panel";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { keeps, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
+import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, SlimFee, When } from "../kit";
+import { DropZone, FeeBlock, SlimFee } from "../kit";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
 import { OpenParts } from "./open-case";
@@ -51,7 +51,8 @@ export interface BlockActions {
   onRemoveBy: (feeId: string, t: number) => void;
   /** Where a part or a thing dragged from the toolbox drops. */
   drop: ToolDrop;
-  onHoldOn: (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
+  /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
+  onRemoveChange: (feeId: string, side: Side, k: number, caseId: string | undefined) => void;
   /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
   pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
@@ -74,7 +75,6 @@ const isThing = (item: string): boolean => cardThing(item) !== null;
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
   if (row.banned || !row.priced) notes.push(<UnreadWords key="unread" banned={row.banned} noCurrency={row.noCurrency} unmatched={row.unmatched} />);
-  if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
   if (row.priced && row.stages[0]!.price.form === "action" && keeps(fee.kind, "action", "min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
@@ -110,7 +110,7 @@ export function FeeBlockView({
   actions: BlockActions;
   onFee: (f: Fee) => void;
 }) {
-  const { onOpen, onRemoveFee, onHoldOn, pendingHands, onAskDone, drop } = actions;
+  const { onOpen, onRemoveFee, onRemoveChange, pendingHands, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name);
   const isOpen = open.fee === fee.id;
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
@@ -119,7 +119,7 @@ export function FeeBlockView({
   const openParts = (spoken: string) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} pendingHands={pendingHands} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} pendingHands={pendingHands} />
         {formLine}
       </>
     );

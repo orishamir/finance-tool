@@ -18,7 +18,7 @@ const bare = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, el
 describe("the gallery's cases and parts", () => {
   const out = html(h(KitGallery, { today }));
   it("names every piece", () => {
-    for (const name of ["PartChip, PartEdit", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, SharedLine, AddSlot", "FeePalette", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
+    for (const name of ["PartChip, PartEdit", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, SharedLine, AddSlot", "ChangeDivider", "FeePalette", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
