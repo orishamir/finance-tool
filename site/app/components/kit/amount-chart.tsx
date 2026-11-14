@@ -39,8 +39,14 @@ const SWATCH = 10;
 const SWATCH_GAP = 6;
 /** Top to top between two band names at the end. */
 const NAME_GAP = 18;
-/** The narrowest plot that still takes the names at its end; narrower, the names stand in a legend above the chart. */
+/**
+ * The narrowest plot that still takes the names at its end, and the least share of the chart's width it keeps; narrower, the names stand
+ * in a legend above the chart, so long names never squeeze the plot to a strip.
+ */
 const MIN_PLOT = 200;
+const MIN_PLOT_SHARE = 0.6;
+/** Between the value axis's words, in their own room at the plot's start, and the plot. */
+const AXIS_GAP = 8;
 /** Over a mark's point, its label's baseline; a label with something in its way stands a row higher, up to `MARK_ROWS` rows. */
 const MARK_LABEL = 10;
 const MARK_ROW = 16;
@@ -79,16 +85,30 @@ function stacked(amounts: readonly number[], bands: readonly AmountBand[]): Reco
 type Box = { left: number; right: number; top: number; bottom: number };
 const meet = (a: Box, b: Box, gap: number) => a.left < b.right + gap && b.left < a.right + gap && a.top < b.bottom + gap && b.top < a.bottom + gap;
 
+/** A line a mark's label must not stand on: a band's top line (its height at an amount's place, `y`), or a mark's dashed drop (`x`, from `top` down to `bottom`). */
+export type LabelLine = { y: (x: number) => number } | { x: number; top: number; bottom: number };
+
+/** Whether a line runs through a label's box (or within 2 px of it), the box sampled every 3 px along a band's line. */
+function crosses(b: Box, l: LabelLine): boolean {
+  if ("x" in l) return l.x > b.left - 2 && l.x < b.right + 2 && l.top < b.bottom + 2 && b.top - 2 < l.bottom;
+  for (let x = b.left; x <= b.right; x += 3) {
+    const y = l.y(x);
+    if (y > b.top - 2 && y < b.bottom + 2) return true;
+  }
+  return false;
+}
+
 /**
- * Where each mark's label stands, in the order of the marks along the plot (charts.md, "Labels": labels are never stacked on each other or
- * on the axis's words; a label that cannot stand at its mark is joined to it by a short line, or gives way). Its places, nearest first:
- * over its point (`cx`, `cy`; `half` its half width) or beside it, after it along the line, each a row higher in turn, up to `MARK_ROWS`
- * rows and never above the chart's top; held inside the plot and moved past the end of the value axis's words where it would meet one. A
- * place is free where the label meets no word of the axis, no mark's point and no label already placed, and stands no further than
- * `JOIN_MAX` from its point. `lx`, `by`: the label's middle and its baseline; one not right at its point is `joined` to it by a line. A
- * label with no free place gives way (null): its point stays, and the points beside the chart say its sum.
+ * Where each mark's label stands, in the order of the marks along the plot (charts.md, "Labels": labels are never stacked on each other,
+ * on the axis's words or on the chart's lines; a label that cannot stand at its mark is joined to it by a short line, or gives way). Its
+ * places, nearest first: over its point (`cx`, `cy`; `half` its half width) or beside it, after it along the line, each a row higher in
+ * turn, up to `MARK_ROWS` rows and never above the chart's top; then beside it before it, row by row. Each is held inside the plot (from
+ * `plotL` to `plotR`) and moved past the end of the value axis's words where it would meet one. A place is free where the label meets no
+ * word of the axis, no mark's point, no label already placed and no line (`lines`: the bands' top lines and the marks' drops), and stands
+ * no further than `JOIN_MAX` from its point. `lx`, `by`: the label's middle and its baseline; one not right at its point is `joined` to it
+ * by a line. A label with no free place gives way (null): its point stays, and the points beside the chart say its sum.
  */
-export function markLabels(points: readonly { cx: number; cy: number; half: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number): ({ lx: number; by: number; joined: boolean } | null)[] {
+export function markLabels(points: readonly { cx: number; cy: number; half: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number, lines: readonly LabelLine[] = [], plotL = 0): ({ lx: number; by: number; joined: boolean } | null)[] {
   const axis: Box[] = axisWords.map((a) => ({ left: 0, right: a.right, top: a.top, bottom: a.bottom }));
   const dots: Box[] = points.map((p) => ({ left: p.cx - POINT_CLEAR, right: p.cx + POINT_CLEAR, top: p.cy - POINT_CLEAR, bottom: p.cy + POINT_CLEAR }));
   const taken: Box[] = [];
@@ -96,23 +116,29 @@ export function markLabels(points: readonly { cx: number; cy: number; half: numb
     const box = (lx: number, by: number): Box => ({ left: lx - half, right: lx + half, top: by - TEXT_UP, bottom: by + TEXT_DOWN });
     // how far a label's box stands from its point: nothing where the point is under it or at its side
     const away = (b: Box) => Math.hypot(Math.max(0, b.left - cx, cx - b.right), Math.max(0, b.top - cy, cy - b.bottom));
-    for (let row = 0; row < MARK_ROWS; row++) {
-      // over the point, then beside it (its baseline a little under the point's middle, so the words sit level with it)
-      for (const [x0, by] of [
-        [cx, cy - MARK_LABEL - row * MARK_ROW],
-        [cx + POINT_CLEAR + 2 + half, cy + 4 - row * MARK_ROW],
-      ] as const) {
-        if (by - TEXT_UP < 0) continue;
-        let lx = Math.max(half, Math.min(plotR - half, x0));
-        for (const a of axis) if (meet(box(lx, by), a, LABEL_GAP)) lx = a.right + LABEL_GAP + half;
-        const b = box(lx, by);
-        if (b.right > plotR || away(b) > JOIN_MAX) continue;
-        if (axis.some((a) => meet(b, a, LABEL_GAP - 1)) || dots.some((d) => meet(b, d, 0)) || taken.some((t) => meet(b, t, LABEL_GAP))) continue;
-        taken.push(b);
-        // a label right over its point or level beside it needs no line; one higher, or moved along the line off its point, is joined to it
-        return { lx, by, joined: away(b) > MARK_LABEL };
+    // a mark's own drop runs down from its point, under any place its label takes
+    const others = lines.filter((l) => !("x" in l) || Math.abs(l.x - cx) > 0.5);
+    const tries = (row: number, before: boolean): (readonly [number, number])[] =>
+      before
+        ? [[cx - POINT_CLEAR - 2 - half, cy + 4 - row * MARK_ROW]]
+        : [
+            [cx, cy - MARK_LABEL - row * MARK_ROW],
+            [cx + POINT_CLEAR + 2 + half, cy + 4 - row * MARK_ROW],
+          ];
+    for (const before of [false, true])
+      for (let row = 0; row < MARK_ROWS; row++) {
+        for (const [x0, by] of tries(row, before)) {
+          if (by - TEXT_UP < 0) continue;
+          let lx = Math.max(plotL + half, Math.min(plotR - half, x0));
+          for (const a of axis) if (meet(box(lx, by), a, LABEL_GAP)) lx = a.right + LABEL_GAP + half;
+          const b = box(lx, by);
+          if (b.right > plotR || away(b) > JOIN_MAX) continue;
+          if (axis.some((a) => meet(b, a, LABEL_GAP - 1)) || dots.some((d) => meet(b, d, 0)) || taken.some((t) => meet(b, t, LABEL_GAP)) || others.some((l) => crosses(b, l))) continue;
+          taken.push(b);
+          // a label right over its point or level beside it needs no line; one higher, or moved along the line off its point, is joined to it
+          return { lx, by, joined: away(b) > MARK_LABEL };
+        }
       }
-    }
     return null;
   });
 }
@@ -133,12 +159,15 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
   const [xMax, yMax] = useGlidingNumbers([end, yGoal]) as [number, number];
   const yTicks = useFadingTicks(ticksTo(yGoal));
 
-  // each band's name at its end, in the text colours with the band's swatch before it, as wide as the widest name; on a narrow chart the
-  // names go to a legend above it
+  // the value axis's words stand in their own room at the plot's start, so no band runs under them
+  const plotL = Math.ceil(Math.max(0, ...ticksTo(yGoal).filter((v) => v > 0).map((v) => 2 + chartTextWidth(fmt.compactNisAxis(v), CHART_TEXT_PX)))) + AXIS_GAP;
+  // each band's name at its end, in the text colours with the band's swatch before it, as wide as the widest name; where the names would
+  // leave the plot too little of the chart, they go to a legend above it
   const nameWidth = Math.ceil(Math.max(0, ...bands.map((b) => chartTextWidth(b.label, CHART_TEXT_PX))));
-  const named = w - (12 + SWATCH + SWATCH_GAP + nameWidth) >= MIN_PLOT;
-  const plotR = named ? w - (12 + SWATCH + SWATCH_GAP + nameWidth) : w - 4;
-  const x = (a: number) => (a / (xMax || 1)) * plotR;
+  const namedR = w - (12 + SWATCH + SWATCH_GAP + nameWidth);
+  const named = namedR - plotL >= Math.max(MIN_PLOT, MIN_PLOT_SHARE * w);
+  const plotR = named ? namedR : w - 4;
+  const x = (a: number) => plotL + (a / (xMax || 1)) * (plotR - plotL);
   const y = (v: number) => TOP + (1 - v / (yMax || 1)) * (H - TOP - BOTTOM);
   const base = H - BOTTOM;
 
@@ -187,7 +216,12 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
     .map((t) => ({ right: 2 + chartTextWidth(fmt.compactNisAxis(t.value), CHART_TEXT_PX), top: y(t.value) - 4 - TEXT_UP, bottom: y(t.value) - 4 + TEXT_DOWN }));
   const sorted = [...marks].sort((p, q) => p.at - q.at);
   const points = sorted.map((m) => ({ cx: x(m.at), cy: y(topOf(m.at)), half: chartTextWidth(m.label, CHART_TEXT_PX) / 2 + 2 }));
-  const placed = markLabels(points, axisWords, plotR).map((l, i) => ({ m: sorted[i]!, cx: points[i]!.cx, cy: points[i]!.cy, label: l }));
+  // the lines a label must not stand on: each band's top line, and each mark's drop to the axis
+  const lines: LabelLine[] = [
+    ...bands.map((b) => ({ y: (px: number) => y(valueOn(drawn[b.id] ?? [], ((px - plotL) / (plotR - plotL || 1)) * (xMax || 1))) })),
+    ...points.map((p) => ({ x: p.cx, top: p.cy, bottom: base })),
+  ];
+  const placed = markLabels(points, axisWords, plotR, lines, plotL).map((l, i) => ({ m: sorted[i]!, cx: points[i]!.cx, cy: points[i]!.cy, label: l }));
 
   // the pointer reads an amount: the chart's steps are a hundredth of its end, rounded to a nice step
   const step = (() => {
@@ -197,7 +231,7 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
   })();
   const read = (e: PointerEvent<SVGSVGElement>) => {
     const box = e.currentTarget.getBoundingClientRect();
-    const a = ((e.clientX - box.left) / plotR) * (xMax || 1);
+    const a = ((e.clientX - box.left - plotL) / (plotR - plotL || 1)) * (xMax || 1);
     setAt(Math.max(0, Math.min(end, Math.round(a / step) * step)));
   };
   const valueAt = (b: AmountBand, a: number) => {
@@ -220,7 +254,7 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
           onPointerLeave={(e) => e.pointerType === "mouse" && setAt(null)}
         >
           {ticksOn(yTicks, y, [TOP, base]).map((t) => (
-            <line key={t.value} x1={0} x2={plotR} y1={y(t.value)} y2={y(t.value)} className="stroke-chart-grid" strokeWidth={1} />
+            <line key={t.value} x1={plotL} x2={plotR} y1={y(t.value)} y2={y(t.value)} className="stroke-chart-grid" strokeWidth={1} />
           ))}
           {bands.map((b, k) => (
             <g key={b.id}>
@@ -228,7 +262,7 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
               <path d={line(b.id)} fill="none" className={b.stroke} strokeWidth={2} />
             </g>
           ))}
-          <line x1={0} x2={plotR} y1={base} y2={base} className="stroke-chart-axis" strokeWidth={1} />
+          <line x1={plotL} x2={plotR} y1={base} y2={base} className="stroke-chart-axis" strokeWidth={1} />
           <AxisLabels ticks={ticksOn(yTicks, y, [TOP, base])} y={y} />
           {written.map((i) => {
             const v = steps[i]!;
@@ -243,7 +277,8 @@ export function AmountChart({ amounts, bands, marks, xTitle, tip, total, classNa
             ends.map((e) => (
               <g key={e.b.id}>
                 <rect x={plotR + 12} y={e.y - 5} width={SWATCH} height={SWATCH} rx={2} className={e.b.fill} />
-                <text x={plotR + 12 + SWATCH + SWATCH_GAP} y={e.y + 4} className="fill-chart-text text-xs">
+                {/* the name is Hebrew with its figures: drawn right to left, its left end after the swatch, so its words keep their order */}
+                <text x={plotR + 12 + SWATCH + SWATCH_GAP} y={e.y + 4} direction="rtl" textAnchor="end" className="fill-chart-text text-xs">
                   {e.b.label}
                 </text>
               </g>

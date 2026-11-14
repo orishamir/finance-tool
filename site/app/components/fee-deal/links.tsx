@@ -69,7 +69,9 @@ export function FeeOpen({ fee, className, before, after }: { fee: FeeRef; classN
   const links = useContext(FeeLinksCtx);
   if (!links) return <FeeName fee={fee} className={className} before={before} after={after} />;
   return (
-    <button type="button" data-fee-open="" onClick={() => links.open(fee.of ?? fee.fee)} className="inline-flex min-w-0 rounded-sm text-start hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring">
+    // a 44 px tap area round a name a line tall (`tap-area`); on a phone the name's line is the target's height, so the areas of names on
+    // lines one under the other never take each other's room
+    <button type="button" data-fee-open="" onClick={() => links.open(fee.of ?? fee.fee)} className="tap-area inline-flex min-w-0 items-center rounded-sm text-start max-md:min-h-target hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring">
       <FeeName fee={fee} className={className} before={before} after={after} />
     </button>
   );

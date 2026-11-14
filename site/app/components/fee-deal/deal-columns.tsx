@@ -9,8 +9,7 @@ import { Card } from "../kit";
 /** The columns: `setup` (what the deal is about), `fees` (none while the deal has no kind), and `toolbox` in its own column (none where it has no room). */
 export function DealColumns({ setup, fees, toolbox }: { setup: ReactNode; fees: ReactNode | null; toolbox: ReactNode | null }) {
   return (
-    // the workbench's typed figures show in the entered ink alone, no highlight behind each (`nums-entered-bare`, app.css)
-    <div className="nums-entered-bare grid grid-cols-1 items-start gap-4 min-[80rem]:grid-cols-[minmax(0,1fr)_28rem]">
+    <div className="grid grid-cols-1 items-start gap-4 min-[80rem]:grid-cols-[minmax(0,1fr)_28rem]">
       <Card className="flex flex-col gap-4 min-[80rem]:col-start-1 min-[80rem]:row-start-1">
         {setup}
         {fees && <div className="border-t border-border pt-4">{fees}</div>}

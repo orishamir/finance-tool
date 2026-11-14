@@ -5,8 +5,7 @@
 // the deal has a fee in it, each fee in its block (fee-block.tsx). A fee just taken away leaves the page's undo line (`UndoLine`) in its
 // place, in the block's room for a moment before it closes up to the line; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the
 // fees the deal could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own; a fee added lands in
-// its group, open, and takes the focus in its first box. Where the page has no column for the toolbox and no sheet for it, the toolbox
-// stands under its fee. A block under the pointer or the focus marks the fee in the summary.
+// its group, open, and takes the focus in its first box. A block under the pointer or the focus marks the fee in the summary.
 import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
@@ -269,7 +268,6 @@ export function FeesColumn({
   view,
   groupOf,
   open,
-  toolbox,
   line,
   caseLine,
   focus,
@@ -286,8 +284,6 @@ export function FeesColumn({
   /** Each fee's group (`feeGroup`). */
   groupOf: (fee: Fee) => string;
   open: OpenHere;
-  /** The toolbox for the open fee, drawn under its block; null where the page draws it in a column of its own or a sheet. */
-  toolbox: ReactNode;
   /** The undo line of a fee just taken away; null where none stands. */
   line: FeeUndoLine | null;
   /** The undo line of a change to one fee's cases or prices; null where none stands. */
@@ -367,7 +363,8 @@ export function FeesColumn({
     const menu: GripAction[] = [];
     if (k > 0) menu.push({ label: lw.menu.up, onPick: to(ids[k - 1]) });
     if (k < count - 1) menu.push({ label: lw.menu.down, onPick: to(ids[k + 1]) });
-    return count > 1 ? <Grip item={liftId(l)} label={`${lw.grip.fee}${feeName(fee.kind, fee.name)}`} actions={menu} /> : undefined;
+    // named as its card names it: a fee copied from another house's list says the house after its name
+    return count > 1 ? <Grip item={liftId(l)} label={`${lw.grip.fee}${feeName(fee.kind, fee.name, rows.get(fee.id)?.house)}`} actions={menu} /> : undefined;
   };
   const feeZone = (fee: Fee, group: string, el: ReactNode) => (
     <DropZone
@@ -453,7 +450,7 @@ export function FeesColumn({
                     )}
                   </FeeItem>
                 );
-                return it.fee.id === open.fee && toolbox ? [li, <li key="toolbox">{toolbox}</li>] : [li];
+                return [li];
               })}
             </ul>
           </div>

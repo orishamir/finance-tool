@@ -174,7 +174,8 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
   // a fee that is free now is said by its date's change; a group of such fees alone stays where its fees that hold throughout add to a rate today
   const changing = glance.changing.map((g) => ({ ...g, fees: g.fees.filter((f) => f.price.form !== "free") })).filter((g) => g.fees.length > 0 || g.rates.some((r) => r.fees.length > 1));
   return (
-    <Section title={copy.glance.title} level="kick" heading="h3" as="div">
+    // the small name 4 px over the card's first heading, as the reading's other cards set theirs, so the cards' first lines align
+    <Section title={copy.glance.title} level="kick" heading="h3" as="div" gap="close">
       <TypedPlain className="flex flex-col gap-4">
         {empty && glance.unpriced.length === 0 && glance.unmatched.length === 0 && glance.banned.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
         {glance.unpriced.length + glance.unmatched.length + glance.banned.length > 0 && (

@@ -18,12 +18,15 @@ import { MonthPicker, pickCommit } from "./month-picker";
 /**
  * The box of a typed figure or month: its edge and ink say whose the value is, on the card's fill (an entered figure has the entered
  * edge and ink, no fill of its own: a page of typed figures is not a page of blue boxes). A box whose text is not a value takes the error
- * look alone (the danger edge), never the entered ink: what it holds is not what the page reads. The whole box takes the
- * pointer as its field (`focusInBox`), and is a 44 px target both ways whatever its figure.
+ * look alone (the danger edge), never the entered ink: what it holds is not what the page reads. With the focus in it the box has one
+ * frame, 2 px in the focus ring's colour (its own edge turned that colour, with a 1 px outline flush on it), never an edge inside a ring
+ * with a gap; a box in error keeps the danger colour in that frame. The whole box takes the pointer as its field (`focusInBox`), and is a
+ * 44 px target both ways whatever its figure.
  */
 function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?: boolean): string {
   return cx(
-    "inline-flex items-center justify-center min-h-target min-w-target rounded-md border tabular-nums cursor-text focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
+    "inline-flex items-center justify-center min-h-target min-w-target rounded-md border tabular-nums cursor-text focus-within:outline-1 focus-within:outline-offset-0",
+    error ? "focus-within:outline-destructive" : "focus-within:border-ring focus-within:border-solid focus-within:outline-ring",
     tight ? "gap-0.5 px-1.5 text-[15px]" : "gap-1 px-2.5",
     error && "bg-card text-foreground border-destructive",
     !error && state === "entered" && "bg-card text-entered border-entered/50",
@@ -136,11 +139,11 @@ const widthOf = (text: string, placeholder: string | undefined, tight?: boolean,
 const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:!w-auto";
 
 /**
- * The box the note of a sourced figure stays inside, the row's cell the figure stands in: the nearest one marked `data-note-cell`, else the
- * nearest block around the figure.
+ * The box a sourced figure's note is measured against, the row's cell the figure stands in: the nearest one marked `data-note-cell`, else
+ * its table's cell, else the nearest block around the figure.
  */
 function cellOf(el: HTMLElement): HTMLElement | null {
-  const marked = el.parentElement?.closest<HTMLElement>("[data-note-cell]");
+  const marked = el.parentElement?.closest<HTMLElement>("[data-note-cell], [role=gridcell]");
   if (marked) return marked;
   for (let p = el.parentElement; p; p = p.parentElement) {
     const d = getComputedStyle(p).display;
@@ -149,23 +152,24 @@ function cellOf(el: HTMLElement): HTMLElement | null {
   return null;
 }
 
+/** The narrowest a figure's note is let to be, so its sentence never stands a word a line: 18rem, or the window less its margins. */
+const NOTE_LEAST = 288;
+
 /**
- * Places a figure's note under its box: no wider than the row's cell, its inline start on the box's; where it would pass the cell's far
- * edge from there, its inline start on the cell's, where the row's boxes start (a box late in its line, a flat price's "עד" sum). Measured
- * before the note is painted, so it never shows out of place.
+ * Places a figure's note under its box, in the top layer (a `popover`), so no cell or chip after it paints over it: as wide as its row's
+ * cell, and never narrower than `NOTE_LEAST` nor wider than the window less 8 px each side; its inline start on the box's, moved in where it
+ * would pass the window's edge. Measured before it is painted and again as the page scrolls, so it never shows out of place.
  */
 function placeNote(note: HTMLElement, field: HTMLElement) {
-  const cell = cellOf(field);
-  if (!cell) return;
-  const c = cell.getBoundingClientRect();
-  const f = field.getBoundingClientRect();
-  note.style.maxWidth = `${c.width}px`;
+  const box = (field.querySelector<HTMLElement>("[data-lift]") ?? field).getBoundingClientRect();
+  const view = document.documentElement.clientWidth;
+  const cell = cellOf(field)?.getBoundingClientRect().width ?? 0;
+  note.style.maxWidth = `${Math.min(view - 16, Math.max(cell, NOTE_LEAST))}px`;
   const w = note.getBoundingClientRect().width;
   const rtl = getComputedStyle(field).direction === "rtl";
-  const fits = rtl ? f.right - w >= c.left : f.left + w <= c.right;
-  const left = fits ? (rtl ? f.right - w : f.left) : rtl ? c.right - w : c.left;
-  note.style.left = `${left - f.left}px`;
-  note.style.right = "auto";
+  const left = Math.max(8, Math.min(rtl ? box.right - w : box.left, view - 8 - w));
+  note.style.left = `${left}px`;
+  note.style.top = `${box.bottom + 4}px`;
 }
 
 /**
@@ -246,7 +250,18 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   const sourced = value?.state === "sourced" ? value : null;
   const noteOpen = noting && !!sourced;
   useLayoutEffect(() => {
-    if (noteOpen && note.current && root.current) placeNote(note.current, root.current);
+    const el = note.current;
+    const field = root.current;
+    if (!noteOpen || !el || !field) return;
+    if (typeof el.showPopover === "function" && !el.matches(":popover-open")) el.showPopover();
+    const place = () => placeNote(el, field);
+    place();
+    window.addEventListener("scroll", place, { capture: true, passive: true });
+    window.addEventListener("resize", place);
+    return () => {
+      window.removeEventListener("scroll", place, { capture: true });
+      window.removeEventListener("resize", place);
+    };
   }, [noteOpen]);
   // a value from outside (a template, a reset, another field) replaces the text, but never under the person's fingers
   useEffect(() => {
@@ -318,6 +333,7 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
     }
   };
   const state = value === null ? "empty" : value.state === "sourced" ? "sourced" : "entered";
+  const signUnit = typeof unit !== "string" || !/[\u0590-\u05ff]/.test(unit);
   return (
     <span
       ref={root}
@@ -336,13 +352,15 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
             if (e.button === 0 && sourced && !(e.target as HTMLElement).closest("select, button, a")) setNoting(true);
           }}
         >
-          {/* the number and its unit, one left-to-right group as the page writes a figure: the unit on the number's right */}
-          <span dir="ltr" className={cx("inline-flex items-center whitespace-nowrap", tight ? "gap-0.5" : "gap-1")}>
+          {/* the number and its unit as the page writes a figure, never wrapped apart: a sign (or a choice of one) on the number's right in one
+              left-to-right group ("39 ₪", "0.3%"); a unit in words after the number in reading order ("200 יחידות") */}
+          <span dir={signUnit ? "ltr" : undefined} className={cx("inline-flex items-center whitespace-nowrap", tight ? "gap-0.5" : "gap-1")}>
             <input
               id={id}
               data-figure=""
               type="text"
               inputMode="decimal"
+              dir="ltr"
               value={text}
               placeholder={placeholder}
               aria-label={label}
@@ -364,7 +382,7 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
               }}
               style={{ width: widthOf(text, placeholder, tight, wide ? 6 : 0) }}
               // an empty box beside its unit keeps room to be typed in, so it never reads as the unit alone
-              className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, tight && !text && unit && "min-w-[2.5ch]", state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
+              className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, tight && !text && !!unit && "min-w-[2.5ch]", state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
             />
             {unit && (
               <span dir="auto" className="text-sm opacity-80">
@@ -380,7 +398,9 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
         <span
           ref={note}
           data-figure-note=""
-          className="absolute top-full z-30 mt-1 w-max text-pretty rounded-md border border-border bg-popover px-3 py-2 text-sm leading-relaxed text-foreground shadow-lg"
+          popover="manual"
+          // the top layer's own place and look are set aside: the note stands by its box (`placeNote`), on the popover surface
+          className="come-in fixed inset-auto m-0 w-max text-pretty rounded-md border border-border bg-popover px-3 py-2 text-sm leading-relaxed text-foreground shadow-lg"
           onMouseDown={(e) => e.preventDefault()}
         >
           {from && <>{from} </>}

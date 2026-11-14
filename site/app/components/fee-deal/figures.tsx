@@ -1,6 +1,6 @@
 // One figure of a fee's price, typed where it stands in the case open in place.
 import { useRef, type ReactNode } from "react";
-import { feeDeal as copy, values as valuesCopy } from "../../copy";
+import { feeDeal as copy, numbers, values as valuesCopy } from "../../copy";
 import { editPrice } from "../../lib/fee-deal/edits/stage";
 import { setFigure, figureOf, withFigure } from "../../lib/fee-deal/edits/price";
 import { type Side } from "../../lib/fee-deal/model";
@@ -8,6 +8,8 @@ import type { Figure } from "../../lib/fee-deal/offers/figures";
 import { pricesOn, SUM_MAX, type Fee, type Num } from "../../lib/fee-deal/model";
 import type { CitedPlace } from "../../lib/sources";
 import type { SiteValue } from "../../lib/value";
+import { fromKey } from "../../lib/fee-deal/band-layout";
+import type { FigureFroms } from "../../lib/fee-deal/case-words";
 import { FigureField, percentCheck } from "../kit";
 
 /** A sum above the largest a deal keeps is refused as it is typed: reading the deal back would drop it (model.ts). */
@@ -18,13 +20,14 @@ const rateCheck = percentCheck();
 const CMA_DATA = /^https:\/\/data\.gov\.il\/(he\/)?datasets?\/cma\//;
 
 /**
- * Where a sourced figure of a deal is from, for the note its box opens: a house's price list by the house's name (the figure's `own`,
- * which a house's template sets), with the document's page where the source names one; the regulator's data for a track's figure; else
- * nothing, and the note holds the source's link alone.
+ * Where a figure of a deal is from, in words with no full stop: a house's price list by the house's name (the figure's `own`, which a
+ * house's template sets), with the document's page where the source names one; the regulator's data for a track's figure; "הזנתם" for
+ * the person's own; else nothing.
  */
-export function figureFrom(value: SiteValue | null): ReactNode {
-  if (value?.state !== "sourced") return undefined;
+function fromWords(value: SiteValue): ReactNode {
   const f = copy.figureFrom;
+  if (value.state === "entered") return numbers.legend.entered;
+  if (value.state !== "sourced") return undefined;
   if (value.own) {
     const page = (value.source as CitedPlace).page;
     return (
@@ -37,11 +40,48 @@ export function figureFrom(value: SiteValue | null): ReactNode {
             <bdi dir="ltr">{page}</bdi>
           </>
         ) : null}
-        .
       </>
     );
   }
   return CMA_DATA.test(value.source.url) ? f.cma : undefined;
+}
+
+/**
+ * Where a sourced figure of a deal is from, for the note its box opens, one sentence (`fromWords`); else nothing, and the note holds the
+ * source's link alone.
+ */
+export function figureFrom(value: SiteValue | null): ReactNode {
+  if (value?.state !== "sourced") return undefined;
+  const words = fromWords(value);
+  return words ? <>{words}.</> : undefined;
+}
+
+/**
+ * Where each case a cell covers holds one of its figures from, where they hold it from more than one place (`FigureFroms`): the cases
+ * from one place together, each named by what tells it apart (`named`), then where they hold it from ("באינטרנט ובאפליקציה: מהתעריפון של
+ * …, עמ׳ 3 · בסניף: הזנתם."), for the note the figure's box opens.
+ */
+export function FromEach({ froms, named }: { froms: FigureFroms; named: (caseId: string) => string }) {
+  const groups: { key: string; cases: string[]; value: SiteValue }[] = [];
+  for (const f of froms) {
+    const key = fromKey(f.value);
+    const g = groups.find((x) => x.key === key);
+    if (g) g.cases.push(f.case);
+    else groups.push({ key, cases: [f.case], value: f.value });
+  }
+  return (
+    <>
+      {groups.map((g, k) => (
+        <span key={g.key}>
+          {k > 0 && copy.figureFrom.each}
+          {g.cases.map(named).join(", ")}
+          {copy.figureFrom.at}
+          {fromWords(g.value) ?? numbers.legend.sourced}
+        </span>
+      ))}
+      .
+    </>
+  );
 }
 
 /** The id of a part's box, or of the part itself (`partPlaceId`), in a fee, which the page gives the focus to (a fee just added, a part just added). */
@@ -76,6 +116,7 @@ export function PriceFigure({
   words,
   optional,
   id,
+  from,
   onFee,
   onRevert,
 }: {
@@ -92,6 +133,8 @@ export function PriceFigure({
   words?: ReactNode;
   optional?: boolean;
   id?: string;
+  /** Where the figure is from, in place of its own source's words (a figure a cell's cases hold from different places, `FromEach`). */
+  from?: ReactNode;
   onFee: (fee: Fee) => void;
   /** What Esc does in place of putting this price's figure back as it stood when the box took the focus (a figure edited for several cases). */
   onRevert?: () => void;
@@ -107,7 +150,7 @@ export function PriceFigure({
     <FigureField
       value={value}
       label={label}
-      from={figureFrom(value)}
+      from={from ?? figureFrom(value)}
       unit={unit ?? signText(sign)}
       sign={signText(sign)}
       onFocus={() => (atFocus.current = figureOf(price(), figure))}

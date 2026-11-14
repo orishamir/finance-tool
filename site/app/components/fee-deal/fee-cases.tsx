@@ -22,7 +22,7 @@ import { thingName } from "../../lib/fee-deal/case-words";
 import { addCase, addCaseAt, copyCase, setTop } from "../../lib/fee-deal/edits/case";
 import { duplicateValue, moveCase, moveValue, swapThings } from "../../lib/fee-deal/edits/arrange";
 import { partAcross, shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
-import { bandLayout, headSaysLead, partsByRow, rangeSign, rowHead, weakestOf, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
+import { bandLayout, headSaysLead, laterChanges, mergedParts, partsByRow, rangeSign, rowHead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
 import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
 import { liftId, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { isRange, NAME_MAX, type CasesFee, type Fee } from "../../lib/fee-deal/model";
@@ -178,8 +178,8 @@ export function FeeCases({
   const [reach, setReach] = useState<Reach>(null);
   const slot = useRef<HTMLElement | null>(null);
   const [box, width] = useWidth(326);
-  // every case, in the fee's order: none is set apart for not being the person's
-  const rows = band.rows;
+  // every case, in the fee's order: none is set apart for not being the person's; a later price says only what it changes
+  const rows = useMemo(() => band.rows.map((r) => ({ ...r, parts: laterChanges(r.parts) })), [band.rows]);
   const byCase = new Map(rows.map((r) => [r.case, r]));
   const layout = useMemo(() => bandLayout(fee, rows, switchTo), [fee, rows, switchTo]);
   const wide = fits(layout, width);
@@ -190,15 +190,24 @@ export function FeeCases({
   /** The parts a case's row shows, read as rows (a band); a grid's cell, what no part cell under its row holds (`cellParts`). */
   const shownParts = (caseId: string) => layout.shows[caseId]!.flatMap((row) => partsOf(caseId, row as PartRow));
   const cellParts = (caseId: string) => (layout.shape === "grid" ? layout.cellShows[caseId]! : []).flatMap((row) => partsOf(caseId, row as PartRow));
-  /** Figures drawn inside are edited in place for these cases (`EditHere`). */
-  const here = (cases: readonly string[], el: ReactNode) => <EditHere.Provider value={{ fee, cases, onFee }}>{el}</EditHere.Provider>;
+  /** Of several cases, each one's value of the first thing they differ by, in words: what tells them apart in a cell over them all. */
+  const namedAmong = (cases: readonly string[]) => (id: string) => {
+    const at = byCase.get(id)!.when;
+    const t = at.findIndex((_, k) => cases.some((o) => JSON.stringify(byCase.get(o)!.when[k]) !== JSON.stringify(at[k])));
+    return whenText(at[t < 0 ? 0 : t]!);
+  };
+  /**
+   * Figures drawn inside are edited in place for these cases (`EditHere`), and carried on to the later prices that held them alike; a
+   * figure the cases hold from different places names each case by what tells it apart.
+   */
+  const here = (cases: readonly string[], el: ReactNode) => <EditHere.Provider value={{ fee, cases, onFee, carry: true, named: namedAmong(cases) }}>{el}</EditHere.Provider>;
   /** The parts said once for many cases, each edited for all of them. */
   const saidJoined = (said: readonly Shared[]) => (
     <>
       {said.map((x, k) => (
         <span key={x.row}>
           {k > 0 && <span className="text-muted-foreground">{sep}</span>}
-          {here(x.cases, <Joined parts={partsOf(weakestOf(x.cases, (id) => partsOf(id, x.row as PartRow)), x.row as PartRow)} />)}
+          {here(x.cases, <Joined parts={mergedParts(x.cases, (id) => partsOf(id, x.row as PartRow))} />)}
         </span>
       ))}
     </>
@@ -481,7 +490,7 @@ export function FeeCases({
                 const cellZone = (el: ReactNode) => zone([target, caseTarget(cell.cases[0]!)], `${row.row}:${cell.from}`, el);
                 if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...fillAt(row.row, cell.from, cell.span) };
                 const ww = wholeWords(cell.span, n, t);
-                const content = here(cell.cases, <Joined parts={partsOf(weakestOf(cell.cases, (id) => partsOf(id, pr)), pr)} bare={headSaysLead(pr)} />);
+                const content = here(cell.cases, <Joined parts={mergedParts(cell.cases, (id) => partsOf(id, pr))} bare={headSaysLead(pr)} />);
                 const cl: Lifted = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t };
                 return {
                   id: cell.cases.join("+"),
@@ -519,14 +528,13 @@ export function FeeCases({
           id: line.row,
           cells: line.cells.map((cell) => {
             const l: Lifted = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: 1 };
-            const shown = weakestOf(cell.cases, (id) => partsOf(id, pr));
+            const shown = mergedParts(cell.cases, (id) => partsOf(id, pr));
             const ww = wholeWords(cell.span, n, 1);
-            const content = here(cell.cases, <Joined parts={partsOf(shown, pr)} />);
-            const words = rowHead(pr, partsOf(shown, pr));
+            const content = here(cell.cases, <Joined parts={shown} />);
+            const words = rowHead(pr, shown);
             return {
               from: cell.from,
               span: cell.span,
-              label: label(byCase.get(cell.cases[0]!)!),
               open: !!openCase && cell.cases.includes(openCase),
               onOpen: openIt(cell.cases[0]!),
               content,
@@ -586,7 +594,7 @@ export function FeeCases({
                 const ww = cell.whole ? null : (wholeWords(cell.span, n, 1) ?? wholeWords(down, g.rows.length, 0));
                 const content = (
                   <>
-                    {here(cell.cases, <Joined parts={cellParts(weakestOf(cell.cases, cellParts))} />)}
+                    {here(cell.cases, <Joined parts={mergedParts(cell.cases, cellParts)} />)}
                     <RowStanding fee={fee.id} priced={r.priced} standing={r.standing} />
                   </>
                 );
@@ -601,7 +609,6 @@ export function FeeCases({
                   from: cell.from,
                   span: cell.span,
                   ...(down > 1 ? { down } : {}),
-                  label: label(r),
                   onOpen: openIt(cell.case),
                   open: !!openCase && cell.cases.includes(openCase),
                   content,
@@ -756,7 +763,7 @@ function ThingSwitch({ fee, values, chosen, words, mine, onChange }: { fee: Case
 /**
  * A ladder's step as its head says it: "עד {top}", "{bottom} עד {top}", or "מעל {bottom}", on one line where its column has the room, else
  * wrapped inside it, each number held to its currency's sign and "עד" to the number before it, never past the column. The top is a box
- * typed in place, kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that
+ * typed in place, its sign inside it on the number's right, kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that
  * top moves it too and the steps keep no gap or overlap.
  */
 function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; onFee: (f: Fee) => void }) {
@@ -785,18 +792,16 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
           c.upTo
         )}
       </span>
-      <span data-lift="" className="inline-flex items-center gap-1 whitespace-nowrap">
-        <FigureField
-          value={bounds.to}
-          label={c.stepTop}
-          unit=""
-          sign={sign}
-          tight
-          validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
-          onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
-        />
-        <span>{sign}</span>
-      </span>
+      {/* the top's sign in its box, on the number's right, as every figure writes its unit (design-system 2.7) */}
+      <FigureField
+        value={bounds.to}
+        label={c.stepTop}
+        unit={sign}
+        sign={sign}
+        tight
+        validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
+        onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
+      />
     </div>
   );
 }

@@ -247,6 +247,17 @@ const figuresOf = (p: Price): (Num | undefined)[] => FIGURE_IDS.map((f) => FIGUR
 export const anySourced = (p: Price): boolean => figuresOf(p).some((n) => !!n?.src);
 
 /**
+ * The sources a fee's figures still carry, each as a template filled it (a figure the person typed carries none): in every price over
+ * time and a sale's, in every case, a free price's own, and a range's tops.
+ */
+export function feeSources(fee: Fee): Sourced[] {
+  const ofPrice = (p: Price): Sourced[] => [...(p.form === "free" && p.src ? [p.src] : []), ...figuresOf(p).flatMap((n) => (n?.src ? [n.src] : []))];
+  const ofPriced = (x: Priced): Sourced[] => [...x.stages, ...(x.sale ?? [])].flatMap((st) => ofPrice(st.price));
+  if (!hasCases(fee)) return ofPriced(fee);
+  return [...fee.by.flatMap((b) => (isRange(b) ? b.tops.flatMap((n) => (n.src ? [n.src] : [])) : [])), ...fee.cases.flatMap(ofPriced)];
+}
+
+/**
  * Whether a fee holds nothing the person gave: one price with no end, no sale priced apart and no name of its own, and either every figure
  * still carrying a template's source (`retyped` drops the source of a figure the person changes), or its price still asking for its figure
  * with no bound (a fee just added). A fee with cases holds nothing the person gave where every case is so and nothing in its things is

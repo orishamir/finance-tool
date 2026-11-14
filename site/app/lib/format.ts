@@ -398,6 +398,12 @@ export function parseNumber(text: string, kind: NumberKind = "amount"): number {
   return neg ? -n : n;
 }
 
+/**
+ * An amount with its unit as plain words inside Hebrew (a fee's name, a case's step, a menu's line): left to right in an isolate of its
+ * own, its number and sign joined by a no-break space, so it is neither reordered ("עד 10 $", never "$ 10 עד") nor wrapped apart.
+ */
+export const amountWords = (text: string): string => `\u2066${text.replace(/ /g, "\u00a0")}\u2069`;
+
 /** Thousands separators for a typed field, left to right (`1,500`, `5`, `-2.5`). */
 export function formatTyped(n: number): string {
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: 4 }).format(n);

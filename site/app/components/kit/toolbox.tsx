@@ -11,7 +11,7 @@ import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
 import { useCanDrag, useDragSource } from "./lift";
 
-/** A group's kind: a price (neutral), a bound (green), what the price changes by (the cases' blue), a link (yellow), a note (dashed). */
+/** A group's kind: a price, a bound, a link (neutral, a bound's and a link's told by their icon), what the price changes by (the cases' blue), a note (dashed). */
 export type ToolKind = "price" | "bound" | "when" | "link" | "note";
 
 export interface ToolPart {
@@ -39,13 +39,13 @@ export interface ToolGroup {
 
 const ICONS: Partial<Record<ToolKind, LucideIcon>> = { bound: ArrowDownToLine, when: Split, link: Link2 };
 /** A group's head: its icon and name in its kind's ink. */
-const HEAD_INK: Record<ToolKind, string> = { price: "text-foreground", bound: "text-part-bound-ink", when: "text-when-ink", link: "text-part-link-ink", note: "text-foreground" };
-/** A part's card: its kind's colour at 10% over the card, its edge at 45%. */
-const CARD: Record<ToolKind, string> = { price: "bg-card border-input", bound: "bg-part-bound-fill border-part-bound-edge", when: "bg-when-part border-when-part-edge", link: "bg-part-link-fill border-part-link-edge", note: "border-dashed border-input" };
+const HEAD_INK: Record<ToolKind, string> = { price: "text-foreground", bound: "text-foreground", when: "text-when-ink", link: "text-foreground", note: "text-foreground" };
+/** A part's card: neutral for a price, a bound and a link (green and amber mean a state on this site, never a kind); the cases' blue for what the price changes by; dashed for a note. */
+const CARD: Record<ToolKind, string> = { price: "bg-card border-input", bound: "bg-card border-input", when: "bg-when-part border-when-part-edge", link: "bg-card border-input", note: "border-dashed border-input" };
 /** A used part keeps its kind's edge, solid, with no fill. */
-const USED_EDGE: Record<ToolKind, string> = { price: "border-input", bound: "border-part-bound-edge", when: "border-when-part-edge", link: "border-part-link-edge", note: "border-input" };
+const USED_EDGE: Record<ToolKind, string> = { price: "border-input", bound: "border-input", when: "border-when-part-edge", link: "border-input", note: "border-input" };
 /** The phone's chip for a group: a small square of its kind's colour. */
-const SWATCH: Record<ToolKind, string> = { price: "bg-muted-foreground", bound: "bg-part-bound", when: "bg-when", link: "bg-part-link", note: "border border-dashed border-muted-foreground" };
+const SWATCH: Record<ToolKind, string> = { price: "bg-muted-foreground", bound: "bg-muted-foreground", when: "bg-when", link: "bg-muted-foreground", note: "border border-dashed border-muted-foreground" };
 
 /** An empty box in a part's label, where its figure will go; `wide` for a sum with its unit, a month. */
 export function ToolBlank({ wide }: { wide?: boolean }) {

@@ -33,7 +33,7 @@ import type { LiftResult } from "./lifted";
  * in another form by the toolbox (`form`).
  */
 export type UndoWhat =
-  | { kind: "remove"; feeId: string; at: number }
+  | { kind: "remove"; feeId: string; at: number; beside?: string[] }
   | { kind: "fill"; feeId: string; house: string }
   | { kind: "chain"; feeId: string; side: Side; k: number; caseId?: string }
   | { kind: "case"; feeId: string; caseId: string }
@@ -83,7 +83,10 @@ export function removeFeeKept(deal: FeeDeal, feeId: string, chosen: string | nul
   const order = shown.filter((id) => id === feeId || after.fees.some((f) => f.id === id));
   const k = order.indexOf(feeId);
   const next = chosen === feeId ? (k < 0 ? after.fees[0]?.id : (order[k + 1] ?? order[k - 1])) ?? null : chosen;
-  return { deal: after, chosen: next, undo: { what: { kind: "remove", feeId, at }, dealId: deal.id, before: deal.fees[at]!, chosenBefore: chosen, chosenAfter: next } };
+  // the fees of its kind it stood beside (one copied from another list beside the deal's): the undo stands while those alone are of its kind
+  const gone = deal.fees[at]!;
+  const beside = gone.kind === "own" ? [] : after.fees.filter((f) => f.kind === gone.kind).map((f) => f.id);
+  return { deal: after, chosen: next, undo: { what: { kind: "remove", feeId, at, ...(beside.length ? { beside } : {}) }, dealId: deal.id, before: gone, chosenBefore: chosen, chosenAfter: next } };
 }
 
 /** The deal with one fee filled from a house's price list (`fillFee`), its own prices kept for the undo. Null where nothing fills it. */
@@ -242,8 +245,9 @@ function kindBack(deal: FeeDeal, u: KindUndo): FeeDeal {
 }
 
 /**
- * Whether an undo still stands on the deal on screen: the same deal, and the part it puts back into as its change left it (no fee of the
- * removed fee's kind, or of a fee of the person's own its id; the changed fee unchanged since).
+ * Whether an undo still stands on the deal on screen: the same deal, and the part it puts back into as its change left it (no fee with the
+ * removed fee's id, and of its kind only the fees it stood beside, a fee copied from another list beside the deal's; the changed fee
+ * unchanged since).
  */
 export function standing<U extends Undo | KindUndo>(u: U | null, deal: FeeDeal): u is U {
   if (!u || deal.id !== u.dealId) return false;
@@ -254,7 +258,12 @@ export function standing<U extends Undo | KindUndo>(u: U | null, deal: FeeDeal):
 function feeStanding(u: Undo, deal: FeeDeal): boolean {
   if (u.what.kind === "remove") {
     const gone = u.before;
-    return !deal.fees.some((f) => f.id === gone.id || (gone.kind !== "own" && f.kind === gone.kind));
+    if (deal.fees.some((f) => f.id === gone.id)) return false;
+    if (gone.kind === "own") return true;
+    // no fee of its kind came since: those of its kind are the ones it stood beside, if any
+    const now = deal.fees.filter((f) => f.kind === gone.kind).map((f) => f.id);
+    const beside = u.what.beside ?? [];
+    return now.length === beside.length && now.every((id) => beside.includes(id));
   }
   // a move since (a column, a row, the fee among its group) changes only the order the page shows things in: the undo still stands
   const now = deal.fees.find((f) => f.id === u.before.id);
