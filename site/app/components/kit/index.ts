@@ -80,7 +80,7 @@ export { Step } from "./steps";
 export { TypedPlain } from "./typed-plain";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";
-export { PartChip, PartEdit, type PartKind, type PartMark } from "./part-chip";
+export { PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
 export { CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord } from "./case-band";
 export { FeeBlock, SlimFee, type FeeRemove } from "./fee-block";
 export { RemoveButton } from "./remove-button";

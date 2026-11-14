@@ -19,7 +19,7 @@ import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, type AddItem } from "../kit";
+import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, focusPartEdit, type AddItem } from "../kit";
 import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
@@ -48,7 +48,8 @@ export type KindUndoLine = Omit<FeeUndoLine, "what" | "fee">;
 
 /**
  * What in a fee takes the focus once drawn: its card (a fee put back by the undo), its first box (a fee just added, a price put in another
- * form), or a part just added to its open case (`part`, the part's place as `partPlaceId` names it), at its first control.
+ * form), or a part just added to its open case (`part`, the part's place as `partPlaceId` names it), at its first box or choice, else the part
+ * itself (`focusPartEdit`).
  */
 export type FeeFocus = { fee: string; on: "card" | "box" } | { fee: string; on: "part"; part: string };
 
@@ -258,10 +259,10 @@ export function FeesColumn({
     for (const li of root.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
     if (!focus) return;
     const li = blockOf(focus.fee);
-    // a part just added: its first box or choice, else its bin; the open case's first box where it is not drawn
-    const added = focus.on === "part" ? document.getElementById(partFieldId(focus.fee, focus.part))?.querySelector<HTMLElement>("input, select, button") : null;
+    // a part just added: its first box or choice, else the part itself (never its bin, which a second Enter would press); the open case's
+    // first box where it is not drawn
+    const added = focus.on === "part" ? focusPartEdit(partFieldId(focus.fee, focus.part)) : null;
     if (added) {
-      added.focus({ preventScroll: true });
       bringIntoView(added.closest("[data-case-parts]") ?? added.closest("[data-lift]") ?? li);
     } else if (focus.on !== "card") {
       // the fee's first box (the open case's price, in a fee with cases), brought above a phone's pinned sheet with the parts around it,

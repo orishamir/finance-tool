@@ -63,12 +63,19 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
 /**
  * A part in edit, in the open case: the full width, its icon and first word, then its boxes and choices as `children` (the kit's
  * `FigureField`, `InlineSelect`, words between them), and a bin at its end, which removes it (none where there is nothing to remove: a
- * free price). 48 px tall at least; on a narrow screen its boxes wrap and the bin stays in the corner.
+ * free price). 48 px tall at least; on a narrow screen its boxes wrap and the bin stays in the corner. With an `id` the page can give it
+ * the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box or
+ * choice.
  */
 export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
+  const words = id ? `${id}-words` : undefined;
   return (
-    <div id={id} className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1", PART_LOOK[kind])}>
-      <div className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
+    <div
+      id={id}
+      {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
+      className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", PART_LOOK[kind])}
+    >
+      <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead kind={kind} mark={mark} lead={lead} />
         {children}
       </div>
@@ -77,4 +84,17 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
       )}
     </div>
   );
+}
+
+/**
+ * Gives the focus to the `PartEdit` of id `id`, just put on the price: to its first box or choice, else to the part itself, never to its
+ * bin, so a second Enter (a key held down, a double press) does nothing to it. The element that took it, or null where no such part is
+ * drawn.
+ */
+export function focusPartEdit(id: string): HTMLElement | null {
+  const part = document.getElementById(id);
+  if (!part) return null;
+  const to = part.querySelector<HTMLElement>("[data-part-body] :is(input, select, button)") ?? part;
+  to.focus({ preventScroll: true });
+  return to;
 }
