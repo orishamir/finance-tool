@@ -2,7 +2,7 @@
 // (F-111) where every fee of the group holds throughout; then the fees that change, grouped the
 // same way at their price now, each group with its rate in the first period, all its fees together; then what changes and when, by date,
 // each changed group with its rate from then, with the months from the device's month to the nearest date (F-110:
-// the page says it as a time from now, so for a deal that starts later it is longer than the first period). Every price carries its
+// the page says it as a time from now). Every price carries its
 // standing against its cap (F-113). The sums the prices mark (F-112) are not here: the reading's points carry them (reading.ts).
 import { groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
@@ -38,7 +38,7 @@ export interface GlanceChange extends FeeRef {
 
 /**
  * A date something changes at: the months from the device's month to it (on the nearest date only; F-110 counts the time to a change from
- * now, not from a later start), the changes, and each group a changed fee is in from then.
+ * now), the changes, and each group a changed fee is in from then.
  */
 export interface GlanceDate {
   at: MonthKey;
@@ -48,7 +48,7 @@ export interface GlanceDate {
 }
 
 export interface Glance {
-  /** The month the deal is read from (F-110: the device's month, or the deal's start where it is later). */
+  /** The month the deal is read from (F-110: the device's month). */
   from: MonthKey;
   throughout: GlanceGroup[];
   changing: GlanceGroup[];

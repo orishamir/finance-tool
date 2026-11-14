@@ -126,3 +126,29 @@ describe("the month picker", () => {
     expect(floatAt({ top: 150, bottom: 194, left: 200, right: 380 }, size, { top: 0, bottom: 400, width: 390 }, 56, true)).toEqual({ top: 142, left: 120 });
   });
 });
+
+describe("a figure's box", () => {
+  it("is a 44 px target both ways whatever its figure, a one-digit sum's box among them", async () => {
+    const { createElement } = await import("react");
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { FigureField } = await import("./figure-field");
+    const html = renderToStaticMarkup(createElement(FigureField, { value: null, label: "x", unit: "$", tight: true, onCommit: () => undefined }));
+    expect(html).toMatch(/class="[^"]*min-h-target[^"]*min-w-target/);
+  });
+});
+
+describe("a value's menu by its chip", () => {
+  it("hangs under the chip, else above it, else under it with its own scroll, never over it", async () => {
+    const { menuAt } = await import("./value-menus");
+    const view = { top: 64, bottom: 900, width: 1440 };
+    const chip = (top: number) => ({ top, bottom: top + 44, left: 600, right: 800 });
+    // room under it: under
+    expect(menuAt(chip(118), { w: 300, h: 512 }, view, true)).toEqual({ top: 166, left: 500, maxHeight: null });
+    // none under, room above: above
+    expect(menuAt(chip(608), { w: 300, h: 512 }, view, true)).toMatchObject({ top: 608 - 4 - 512, maxHeight: null });
+    // room neither under nor above (the recheck's chip at 428): under, with its own scroll, its top below the chip
+    const r = menuAt(chip(428), { w: 300, h: 512 }, view, true);
+    expect(r.top).toBeGreaterThanOrEqual(428 + 44);
+    expect(r.maxHeight).toBe(900 - 8 - (428 + 44) - 4);
+  });
+});

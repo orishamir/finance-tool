@@ -501,9 +501,10 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * `labelHidden` keeps the label for a screen reader only, where the words around the select already say what it chooses (a price's
  * period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron and its label for a screen reader only, a choice made in
  * place beside a figure (a price's currency "$ ▾", its period "לרבעון ▾"), 44 px tall: as wide as its chosen words, the native select
- * laid unseen over them; a chosen value in the entered blue with its edge, while nothing is chosen `all` in the muted ink.
+ * laid unseen over them; a chosen value in the entered blue with its edge, or plain where a template filled it (`plain`), while nothing is
+ * chosen `all` in the muted ink.
  */
-export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean }) {
+export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip, plain }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean; /** A chip whose value a template filled, drawn plain until the person changes it. */ plain?: boolean }) {
   const id = useId();
   if (chip) {
     const shown = options.find((o) => o.id === value)?.name ?? all ?? "";
@@ -512,10 +513,10 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
       <span
         className={cx(
           "relative inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm hover:bg-accent has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-ring",
-          value === null ? "border-input text-muted-foreground" : "border-entered/70",
+          value === null ? "border-input text-muted-foreground" : plain ? "border-input" : "border-entered/70",
         )}
       >
-        <span aria-hidden="true" className={cx("truncate", value !== null && "font-medium text-entered")}>
+        <span aria-hidden="true" className={cx("truncate", value !== null && (plain ? "font-medium text-foreground" : "font-medium text-entered"))}>
           {shown}
         </span>
         <IconChevronDown size={16} aria-hidden="true" className="shrink-0 text-muted-foreground" />

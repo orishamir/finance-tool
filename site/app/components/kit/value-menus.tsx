@@ -3,14 +3,13 @@
 // it the person's own, or a range's side and top; and what a thing of the band's head opens, its values and the action that drops it.
 // They stand in `ValueMenuSheet`: a card hanging under the value on a computer, which leaves the page as it is, and a sheet from the foot
 // of the screen on a phone.
-import { useEffect, useId, useLayoutEffect, useRef, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, type ReactNode, type RefObject } from "react";
 import { Plus } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Sheet } from "../Sheet";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { InlineSelect, TextField } from "./fields";
-import { useFloat } from "./month-picker";
 import { MQ, useMedia } from "../../lib/hooks";
 import { Tag } from "./tag";
 
@@ -142,7 +141,8 @@ export function ThingMenu({ title, values, stop, onStop, after }: { title: React
 }
 
 /**
- * The card a value's menu opens in. From a tablet's width up it hangs under the value (`anchor`), its inline start on the value's, and
+ * The card a value's menu opens in. From a tablet's width up it hangs under the value (`anchor`), its inline start on the value's, else
+ * above it, else under it with its own scroll, never over the value (`menuAt`), and
  * leaves the page as it is: nothing is dimmed and the page still scrolls, there is no ✕, and the focus goes into it, to its first field
  * where it has one (a track's name, a range's number), else its first control. Escape closes it and gives the focus back to the value; a
  * press outside it, or the focus leaving it for the page, closes it and leaves the focus where it went. On a phone it is a sheet from the
@@ -171,6 +171,65 @@ export function ValueMenuSheet({ open, onClose, anchor, label, children }: { ope
   );
 }
 
+/** The room kept between a menu and its value, and between a menu and the window's edges, in pixels. */
+const GAP = 4;
+const EDGE = 8;
+/** A menu needs at least this much room under its value to hang there with its own scroll; with less, the page first brings the value up. */
+const FEW_LINES = 160;
+
+/**
+ * Where a menu stands by its value, never over it (`menuAt`): under it where it fits, else above it where it fits there, else under it,
+ * held to the room under it with its own scroll. Its inline start is the value's, kept inside the window.
+ */
+export function menuAt(box: { top: number; bottom: number; left: number; right: number }, size: { w: number; h: number }, view: { top: number; bottom: number; width: number }, rtl: boolean): { top: number; left: number; maxHeight: number | null } {
+  const below = view.bottom - EDGE - box.bottom - GAP;
+  const above = box.top - GAP - (view.top + EDGE);
+  const start = rtl ? box.right - size.w : box.left;
+  const left = Math.max(EDGE, Math.min(start, view.width - size.w - EDGE));
+  if (size.h <= below) return { top: box.bottom + GAP, left, maxHeight: null };
+  if (size.h <= above) return { top: box.top - GAP - size.h, left, maxHeight: null };
+  return { top: box.bottom + GAP, left, maxHeight: Math.max(0, below) };
+}
+
+/**
+ * Puts a menu by its value (`menuAt`), again as the page or a box around it scrolls and as the window changes size. Where too little room
+ * is left under the value for the menu to scroll in, the page first brings the value up to just under the site's header.
+ */
+function useMenuPlace(card: RefObject<HTMLDivElement | null>, at: RefObject<HTMLElement | null>) {
+  useLayoutEffect(() => {
+    const el = card.current;
+    if (!el) return;
+    if (typeof el.showPopover === "function" && !el.matches(":popover-open")) el.showPopover();
+    const view = () => {
+      const header = Math.max(0, document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0);
+      return { top: header, bottom: window.innerHeight, width: document.documentElement.clientWidth };
+    };
+    const place = () => {
+      const a = at.current;
+      if (!a) return;
+      el.style.maxHeight = "";
+      const box = a.getBoundingClientRect();
+      const r = menuAt(box, { w: el.offsetWidth, h: el.offsetHeight }, view(), getComputedStyle(a).direction === "rtl");
+      el.style.top = `${r.top}px`;
+      el.style.left = `${r.left}px`;
+      if (r.maxHeight !== null) el.style.maxHeight = `${r.maxHeight}px`;
+    };
+    const a = at.current;
+    if (a) {
+      const v = view(), box = a.getBoundingClientRect(), h = el.offsetHeight;
+      if (h > v.bottom - EDGE - box.bottom - GAP && h > box.top - GAP - (v.top + EDGE) && v.bottom - EDGE - box.bottom - GAP < Math.min(h, FEW_LINES))
+        window.scrollBy({ top: box.top - v.top - EDGE, behavior: "instant" });
+    }
+    place();
+    window.addEventListener("scroll", place, true);
+    window.addEventListener("resize", place);
+    return () => {
+      window.removeEventListener("scroll", place, true);
+      window.removeEventListener("resize", place);
+    };
+  }, [card, at]);
+}
+
 /** A number for each value a menu opens from, kept while the value is on the page. */
 const anchors = new WeakMap<HTMLElement, number>();
 let lastAnchor = 0;
@@ -189,7 +248,7 @@ function ValueMenuCard({ anchor, labelledBy, onClose, children }: { anchor: HTML
   at.current = anchor;
   const close = useRef(onClose);
   close.current = onClose;
-  useFloat(card, at);
+  useMenuPlace(card, at);
   useLayoutEffect(() => {
     const el = card.current;
     (el?.querySelector<HTMLElement>(FIRST_FIELD) ?? el?.querySelector<HTMLElement>(FOCUSABLE))?.focus({ preventScroll: true });

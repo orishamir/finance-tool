@@ -14,20 +14,21 @@ import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, CaseRow as CaseRowView, SlimPart, WhenWords } from "../../lib/fee-deal/builder";
-import { addCase, copyCase, setStart, type Side } from "../../lib/fee-deal/edit";
+import { addCase, copyCase, type Side } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { groupKey, groupOn, type DealRead, type StandingView } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
-import { FEE_KIND_IDS, FEE_SHAPES, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
+import { FEE_KIND_IDS, FEE_SHAPES, holdsFunds, type ByKind, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, CaseFold, CaseRow, CaseSlot, ChoiceChips, ConditionBand, FeeBlock, GroupHead, MonthField, OpenCase, PartChip, Section, SlimFee, Step, When, monthText, type AddItem, type CaseWord } from "../kit";
+import { AddLine, Button, CaseFold, CaseRow, CaseSlot, ChoiceChips, ConditionBand, FeeBlock, GroupHead, OpenCase, PartChip, Section, SlimFee, Step, When, monthText, type AddItem, type CaseWord } from "../kit";
 import { Num } from "../provenance";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/builder";
 import { bringIntoView } from "./in-view";
 import { LawTag, useFeeMark } from "./links";
+import { AskThing } from "./ask-thing";
 import { OpenParts, PART_MARK, WhenText, numText, type PendingPart } from "./open-case";
 import { TemplateNote } from "./picker";
 import { UndoLine } from "./undo-line";
@@ -174,14 +175,6 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
             </Button>
           </Step>
         )}
-        {/* the month the deal started: a plain line at the column's end under a rule, not a step, since nothing waits on it */}
-        {kind && (
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-4 text-sm">
-            <span className="text-muted-foreground">{b.start}</span>
-            <MonthField value={deal.start ?? null} label={b.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
-            <span className="text-muted-foreground">{b.optional}</span>
-          </div>
-        )}
       </div>
     </Section>
   );
@@ -263,9 +256,10 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
 /**
  * The page's undo line of a change to one fee's cases or prices (a case, a thing, a price taken away): it stands under the fee's block.
  * A price put in another form (`inCase`) leaves it in the open case, under its parts, where the change was made, while that case is open
- * (`caseId`, none for a fee whose price changes by nothing).
+ * (`caseId`, none for a fee whose price changes by nothing). A thing taken away (`thing`, its place) gives the focus back, on "ביטול", to
+ * its pill in the band's head, else to the open case, brought into view.
  */
-export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: string | null } };
+export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: string | null }; thing?: number };
 
 export function FeesColumn({
   deal,
@@ -285,6 +279,8 @@ export function FeesColumn({
   onRemoveCase,
   onHoldOn,
   onPendingDone,
+  ask,
+  onAskDone,
 }: {
   deal: FeeDeal;
   view: Builder;
@@ -311,6 +307,10 @@ export function FeesColumn({
   onRemoveCase: (feeId: string, caseId: string) => void;
   onHoldOn: (feeId: string, side: Side, k: number, caseId?: string) => void;
   onPendingDone: () => void;
+  /** The thing to change by whose question stands in the open fee's block, in place, where its band will stand; null where none is asked. */
+  ask: ByKind | null;
+  /** The question closed: the thing added, or not. */
+  onAskDone: (added: boolean) => void;
 }) {
   // each block's height as last drawn, so the line a removed fee leaves is as tall as its block was
   const root = useRef<HTMLDivElement>(null);
@@ -378,6 +378,13 @@ export function FeesColumn({
     </UndoLine>
   );
 
+  // where the focus goes from a case's or a thing's undo line: a thing put back, its pill (else the open case); else the fee's first row
+  const backTo = (cl: CaseUndoLine): HTMLElement | null => {
+    const li = blockOf(cl.feeId);
+    const el = (cl.thing !== undefined ? (li?.querySelector<HTMLElement>(`[data-thing="${cl.thing}"]`) ?? li?.querySelector<HTMLElement>("[data-open-case] button")) : null) ?? feeFocus(li);
+    bringIntoView(el);
+    return el;
+  };
   // the undo line of a price put in another form, in the open case it was made in
   const formLine = (fee: Fee) => {
     const cl = caseLine?.feeId === fee.id && caseLine.inCase && caseLine.inCase.caseId === open.case && open.fee === fee.id ? caseLine : null;
@@ -399,12 +406,15 @@ export function FeesColumn({
     const row = rows.get(fee.id);
     const name = feeName(fee.kind, fee.name);
     const isOpen = open.fee === fee.id;
+    // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
+    const question = isOpen && ask ? <AskThing key={`${fee.id}:${ask}`} fee={fee} kind={ask} onFee={onFee} onDone={onAskDone} /> : null;
     const dot = feeColour(fee.kind).bg;
     if (!row) return <p className="text-sm text-muted-foreground">{b.unread}</p>;
     if (row.block.kind === "slim")
       return (
         <div className="flex flex-col gap-1.5">
           <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} onOpen={() => onOpen(fee.id, null, "pointer")}>
+            {question}
             {isOpen ? openParts(fee, name) : row.block.parts.map((p) => <RestPart key={p.id} part={p} />)}
             {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
           </SlimFee>
@@ -464,6 +474,7 @@ export function FeesColumn({
     }
     return (
       <FeeBlock dot={dot} name={name}>
+        {question}
         <ConditionBand things={things} {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {})} addCase={{ onAdd: () => addOne(fee) }}>
           {items}
         </ConditionBand>
@@ -503,7 +514,7 @@ export function FeesColumn({
                   <FeeItem key={it.fee.id} id={it.fee.id}>
                     {block(it.fee)}
                     {cl && (
-                      <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => feeFocus(blockOf(cl.feeId))}>
+                      <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}
                       </UndoLine>
                     )}

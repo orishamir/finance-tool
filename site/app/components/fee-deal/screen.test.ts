@@ -10,6 +10,7 @@ import { feesData } from "../../lib/fees.server";
 import { builder, panel, toolbox } from "../../lib/fee-deal/builder";
 import { glance } from "../../lib/fee-deal/glance";
 import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
+import type { ByKind } from "../../lib/fee-deal/shapes";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
@@ -70,7 +71,6 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     fee,
     caseId: null,
     sheet: false,
-    asking: null,
     product: deal.kind,
     fill: null,
     line: null,
@@ -87,7 +87,7 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
 const drawToolbox = (deal: FeeDeal, feeId: string) => text(toolboxOf(deal, feeId));
 
 /** The fees' column, `chosen` open in place (its first case, where it has cases). */
-const builderOf = (deal: FeeDeal, chosen: string | null) => {
+const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = null) => {
   const r = readDealFor(deal, data.kinds, TODAY);
   const fee = deal.fees.find((f) => f.id === chosen);
   const caseId = fee && hasCases(fee) ? fee.cases[0]!.id : null;
@@ -109,6 +109,8 @@ const builderOf = (deal: FeeDeal, chosen: string | null) => {
     onRemoveCase: () => {},
     onHoldOn: () => {},
     onPendingDone: () => {},
+    ask,
+    onAskDone: () => {},
   });
 };
 const drawBuilder = (deal: FeeDeal, chosen: string | null) => markup(builderOf(deal, chosen));
@@ -205,6 +207,28 @@ describe("the case open in place", () => {
     d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "action", rate: typed(0.3) } }] }];
     expect(text(builderOf(d, null))).toContain(feeDeal.cases.parts.notes.sale!);
     expect(text(builderOf(d, "fee-trade"))).toContain(feeDeal.panel.salePrices);
+  });
+});
+
+describe("the question that adds a thing to change by", () => {
+  it("stands in the fee's block in the fees' column, in place, before its cases or its price, and never in the toolbox", () => {
+    const d = account();
+    // a fee with one price: the question above its parts, in its own open line
+    const slim = markup(builderOf(d, "fee-trade", "what"));
+    const q = feeDeal.cases.ask.what!;
+    expect(slim).toContain(q);
+    const block = slim.slice(slim.indexOf('data-fee="fee-trade"'));
+    expect(block.indexOf(q)).toBeGreaterThan(-1);
+    expect(block.indexOf(q)).toBeLessThan(block.indexOf('data-figure=""'));
+    expect(slim).toContain("data-ask-thing");
+    // another fee's block holds none, and the toolbox never draws it
+    expect(slim.slice(slim.indexOf('data-fee="fee-fx"')).includes(q)).toBe(false);
+    expect(drawToolbox(d, "fee-trade")).not.toContain(q);
+    expect(markup(toolboxOf(d, "fee-trade"))).toContain('data-part="by:what"');
+    // a fee with cases: the question before its band
+    d.fees = [{ id: "fee-trade", kind: "trade", by: [{ kind: "what" }], cases: [{ id: "c1", when: [["tase"]], stages: [{ price: { form: "action", rate: typed(0.4) } }] }, { id: "c2", when: ["any"], stages: [{ price: { form: "action", rate: typed(0.1) } }] }] }];
+    const banded = markup(builderOf(d, "fee-trade", "channel"));
+    expect(banded.indexOf(feeDeal.cases.ask.channel!)).toBeLessThan(banded.indexOf(dealCases.changesBy));
   });
 });
 

@@ -68,10 +68,6 @@ export function setKind(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindI
 
 export const setName = (deal: FeeDeal, name: string): FeeDeal => ({ ...deal, name });
 
-export function setStart(deal: FeeDeal, start: MonthKey | null): FeeDeal {
-  const { start: _start, ...rest } = deal;
-  return start === null ? rest : { ...rest, start };
-}
 
 // ---------------------------------------------------------------- the reading's picks (F-114)
 
@@ -199,35 +195,49 @@ function owned(p: Price): Price {
 const ownThird = (t: ThirdPrice, own: (n: Num) => Num): ThirdPrice =>
   t.form === "perAction" ? { ...t, amount: own(t.amount) } : t.form === "action" ? { ...t, rate: own(t.rate), ...(t.min ? { min: own(t.min) } : {}), ...(t.max ? { max: own(t.max) } : {}) } : { ...t, amount: own(t.amount), ...(t.min ? { min: own(t.min) } : {}), ...(t.max ? { max: own(t.max) } : {}) };
 
+/**
+ * The currency a price's sums are in, where it prices something (F-110, F-112): a sum per unit's and a sum per action's always, a share's
+ * only with a bound or a flat price typed; none for the shekel. A currency that priced nothing is not carried into another form.
+ */
+function pricedCurrency(p: Price): BoundCurrency | undefined {
+  if (!isOnAction(p) || !p.currency || p.currency === "ILS") return undefined;
+  return p.form !== "action" || p.min || p.max || p.flat ? p.currency : undefined;
+}
+
 /** The parts a price keeps in another form: the parts on an action where the new form is on an action, and an offset and a refund always. */
 function partsInto(p: Price, next: Price): Price {
   if (p.form === "free" || next.form === "free") return next;
   const linked = { ...(p.offset ? { offset: p.offset } : {}), ...(p.refund ? { refund: p.refund } : {}) };
-  const onAction = isOnAction(p) && isOnAction(next) ? { ...(p.currency ? { currency: p.currency } : {}), ...(p.cap ? { cap: p.cap } : {}), ...(p.discount ? { discount: p.discount } : {}), ...(p.third ? { third: p.third } : {}), ...(p.notes ? { notes: p.notes } : {}) } : {};
+  const currency = pricedCurrency(p);
+  const onAction = isOnAction(p) && isOnAction(next) ? { ...(currency ? { currency } : {}), ...(p.cap ? { cap: p.cap } : {}), ...(p.discount ? { discount: p.discount } : {}), ...(p.third ? { third: p.third } : {}), ...(p.notes ? { notes: p.notes } : {}) } : {};
   return { ...next, ...linked, ...onAction } as Price;
 }
 
 /**
  * A price in another form: the rate or the sum typed so far carries over where the new form has the same kind of figure (a share to a
- * share, a sum per period or per action to the other), as the person's own figure (`owned`); between a share of an action and a sum per
+ * share, a sum per period or per action to the other), as the person's own figure, since the same number in another form is a price the
+ * source does not give; every other figure that carries over keeps its source, as the list printed it (a list's 2% maximum stays the
+ * list's). Between a share of an action and a sum per
  * unit, whose figures differ in kind, the bounds, the cap, the flat price and their currency carry over instead, since they price the
- * action the same way in both. Between any two forms on an action the currency of the sums and the percent maximum carry over (a sum per
- * unit in dollars under 2% becomes a sum per action in dollars under 2%), and so do a discount, a third party's fee and notes; an offset and
- * a refund carry over between any two.
+ * action the same way in both. Between any two forms on an action the currency that priced something carries over (a sum per unit in
+ * dollars becomes a sum per action in dollars; a share's currency only where a bound or a flat price was typed in it), and so do the percent
+ * maximum, a discount, a third party's fee and notes; an offset and a refund carry over between any two.
  * The rest starts empty.
  */
 export function withForm(p: Price, form: FormId): Price {
   if (p.form === form) return p;
   const next = blankPrice(form);
   if (isBounded(p) && isBounded(next)) {
-    const { form: _f, rate: _r, amount: _a, ...parts } = p as Bounded & { rate?: Num; amount?: Num };
-    return owned({ ...next, ...parts } as Price);
+    const { form: _f, rate: _r, amount: _a, currency: _c, ...parts } = p as Bounded & { rate?: Num; amount?: Num };
+    const currency = pricedCurrency(p);
+    return { ...next, ...parts, ...(currency ? { currency } : {}) } as Price;
   }
+  const own = (n: Num): Num => (n.blank ? n : typed(n.v));
   const rate = p.form === "action" || p.form === "held" ? p.rate : null;
   const amount = p.form === "sum" || p.form === "perAction" ? p.amount : null;
-  if ((next.form === "action" || next.form === "held") && rate) return owned(partsInto(p, { ...next, rate }));
-  if ((next.form === "sum" || next.form === "perAction") && amount) return owned(partsInto(p, { ...next, amount }));
-  return owned(partsInto(p, next));
+  if ((next.form === "action" || next.form === "held") && rate) return partsInto(p, { ...next, rate: own(rate) });
+  if ((next.form === "sum" || next.form === "perAction") && amount) return partsInto(p, { ...next, amount: own(amount) });
+  return partsInto(p, next);
 }
 
 /**
@@ -696,6 +706,7 @@ export type PartId =
   | "offset"
   | "refund"
   | "unfilled"
+  | "unfilledClerk"
   | "partial"
   | "sale";
 
@@ -759,6 +770,7 @@ export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: Pa
     case "refund":
       return edit((p) => withRefund(p, on));
     case "unfilled":
+    case "unfilledClerk":
     case "partial":
       return edit((p) => withNote(p, part, on));
     case "sale":

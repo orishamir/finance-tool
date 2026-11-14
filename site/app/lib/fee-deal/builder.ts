@@ -9,8 +9,9 @@ import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy, type Figure, type PartId } from "./edit";
+import { managementFee } from "./kinds";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
+import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -254,7 +255,34 @@ export function whenWords(fee: CasesFee, w: When, t: number, today: string): Whe
     const at = w < b.tops.length ? b.tops[w]! : b.tops.at(-1)!;
     return { thing: t, any: false, lead: w < b.tops.length ? copy.cases.upTo : copy.cases.over, figure: figure(at, unit, today) };
   }
-  return { thing: t, any: false, text: (w as string[]).map((v) => valueWords(b.kind, v)).join(", ") };
+  return { thing: t, any: false, text: listWords(fee, t, w as string[]) };
+}
+
+/** Words that share a lead ending in ", " say it once: "בחו״ל, באירופה, בשאר העולם". */
+function sharedLead(words: readonly string[]): string {
+  const cut = words[0]?.indexOf(", ") ?? -1;
+  const lead = cut > 0 ? words[0]!.slice(0, cut + 2) : "";
+  if (words.length < 2 || !lead || !words.every((x) => x.startsWith(lead) && x.length > lead.length)) return words.join(", ");
+  return lead + words.map((x) => x.slice(lead.length)).join(", ");
+}
+
+/**
+ * A case's values of a list thing in words. Where the case names every value abroad but those the fee's other cases name, it says "מחוץ ל"
+ * theirs after the lead they share ("בחו״ל, מחוץ לארה״ב"); else its values, a lead they share said once (`sharedLead`).
+ */
+function listWords(fee: CasesFee, t: number, values: readonly string[]): string {
+  const b = fee.by[t]!;
+  const words = values.map((v) => valueWords(b.kind, v));
+  if (b.kind !== "what" && b.kind !== "held") return sharedLead(words);
+  const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
+  const others = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) && c.when[t] !== values ? (c.when[t] as string[]).filter((v) => abroad.includes(v) && !values.includes(v)) : [])));
+  const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
+  if (!all) return sharedLead(words);
+  const o = copy.cases.outside;
+  // the lead the values abroad share ("בחו״ל")
+  const lead = valueWords(b.kind, abroad[0]!).split(", ")[0]!;
+  const names = abroad.filter((v) => others.has(v)).map((v) => o.names[v] ?? valueWords(b.kind, v));
+  return `${lead}, ${o.lead}${names.join(o.and)}`;
 }
 
 /** A fee's things as the band's pills. */
@@ -509,7 +537,9 @@ export interface ToolGroup {
 /**
  * The toolbox for the case open in place: the line naming what it adds to (the case's values, joined; a slim fee's own name), and its
  * groups in order: the price, minimum and maximum, what the price changes by, a link to another fee, and more on the price;
- * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`.
+ * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`. A provident-family
+ * product's management fee (`managementFee`) is offered only what its rules allow: its share, a price for a period, and a condition of the
+ * person's own (PF-01, KGL-14, PF-13); what a deal already holds beyond that still opens and reads.
  */
 export interface Toolbox {
   /** "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`). */
@@ -564,14 +594,22 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
     ...(shape.saleApart && !ONE_SIDE[fee.kind] ? [{ id: "sale" as const, kind: "note" as const, words: { lead: pp.notes.sale! }, used: !!priced.sale }] : []),
   ];
   const c = hasCases(fee) ? (priced as Case) : null;
+  // a provident-family product's management fee: its share, a price for a period, and a condition of the person's own, nothing else
+  // (PF-01, KGL-14, PF-13)
+  const managed = managementFee(r.kind, fee.kind);
   const addTo = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
-  const groups: ToolGroup[] = [
-    { group: "price", head: copy.cases.groups.price!, parts: price },
-    { group: "bound", head: copy.cases.groups.bound!, parts: bound },
-    { group: "by", head: copy.cases.groups.by!, parts: by },
-    { group: "link", head: copy.cases.groups.link!, parts: link },
-    { group: "more", head: copy.cases.groups.more!, parts: more },
-  ];
+  const groups: ToolGroup[] = managed
+    ? [
+        { group: "price", head: copy.cases.groups.price!, parts: price.filter((x) => x.id === "share" || x.id === "held" || x.id === "until") },
+        { group: "by", head: copy.cases.groups.by!, parts: by.filter((x) => x.id === "by:own") },
+      ]
+    : [
+        { group: "price", head: copy.cases.groups.price!, parts: price },
+        { group: "bound", head: copy.cases.groups.bound!, parts: bound },
+        { group: "by", head: copy.cases.groups.by!, parts: by },
+        { group: "link", head: copy.cases.groups.link!, parts: link },
+        { group: "more", head: copy.cases.groups.more!, parts: more },
+      ];
   return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
 }
 

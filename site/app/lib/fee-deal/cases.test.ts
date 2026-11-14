@@ -634,7 +634,8 @@ describe("a thing of the band's head, opened", () => {
     // five cases, two of them on what is bought in the US: they merge into one
     expect(track.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "4"));
     const what = thingMenu(r, "fee-trade", 0)!;
-    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, `${copy.cases.values.what.europe}, ${copy.cases.values.what.world}`]);
+    // the case of Europe and the rest of the world names every value abroad but the US case's: "outside the US", the lead said once
+    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, "בחו״ל, מחוץ לארה״ב"]);
     expect(what.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "3"));
     const size = thingMenu(r, "fee-fx", 0)!;
     expect(size.values.map((w) => [w.lead, w.figure?.value])).toEqual([
@@ -678,5 +679,39 @@ describe("the words of a size follow the fee's own action", () => {
     expect(thingMenu(r, fx.id, 0)!.stop).toBe("להפסיק להבחין לפי גודל ההמרה");
     expect(builder(r, [], null).rows[0]!.block).toMatchObject({ kind: "band", things: [{ words: "גודל ההמרה" }] });
     expect(byQuestion(newFee("trade"), "actionSize").ask).toBe("גודל הפעולה: עד כמה חל המחיר הראשון?");
+  });
+});
+
+describe("a provident-family product's management fees", () => {
+  const ids = (deal: FeeDeal, feeId: string) => toolbox(read(deal), feeId)!.groups.map((g) => [g.group, g.parts.map((x) => x.id)]);
+  const of = (kind: FeeDeal["kind"], fees: Fee[]): FeeDeal => ({ ...newDeal(kind), fees });
+  it("offer only the share, a price for a period and a condition of the person's own (PF-01, KGL-14, PF-13)", () => {
+    const deal = of("kupat-gemel-lehashkaa", [
+      { id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
+      { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }] },
+    ]);
+    expect(ids(deal, "fee-dep")).toEqual([["price", ["share", "until"]], ["by", ["by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "until"]], ["by", ["by:own"]]]);
+    // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
+    expect(data.kinds.filter((k) => k.provident).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
+    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share", "until"]], ["by", ["by:own"]]]);
+  });
+  it("leave an IRA's brokerage fees their parts, and narrow only its management fee", () => {
+    const deal = of("ira-provident", [
+      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+      { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 1 } }] },
+    ]);
+    const trade = ids(deal, "fee-trade").map(([g]) => g);
+    expect(trade).toEqual(["price", "bound", "by", "link", "more"]);
+    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "until"]], ["by", ["by:own"]]]);
+    // a brokerage account's custody keeps its bounds and its conditions
+    const custody = of("brokerage-account", [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }]);
+    expect(ids(custody, "fee-c").map(([g]) => g)).toContain("bound");
+  });
+  it("still open and read a deal that holds parts the toolbox no longer offers", () => {
+    const deal = of("kupat-gemel-lehashkaa", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1), discount: { pct: typed(50) } } }] }]);
+    const back = readDeal(JSON.parse(JSON.stringify(deal)));
+    expect(back).toEqual(deal);
+    expect(panel(read(deal), "fee-dep")!.open.buy[0]!.parts.map((x) => x.id)).toContain("discount");
   });
 });

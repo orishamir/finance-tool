@@ -56,6 +56,7 @@ function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part
           <button
             key={p.id}
             type="button"
+            data-part={p.id}
             disabled={p.used || p.off}
             aria-label={p.spoken}
             onClick={() => onAdd(group.id, p.id)}
@@ -78,19 +79,20 @@ function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part
 
 /**
  * The toolbox for the open case: `target` names it after "להוסיף למקרה:" (its condition in words), a line says a tap adds a part, then
- * the groups. `onAdd` gets the group's and the part's ids. `ask`: a question a part asks before it is added (`AskValues`), drawn before the
- * groups, in place of the parts on a phone; `foot`: the actions on the whole fee, after the groups. `sheet`: a phone's short sheet, the
- * groups one at a time under a row of their names; `docked` pins it to the foot of the screen and keeps as much room at the end of the
+ * the groups. `onAdd` gets the group's and the part's ids (each part's button carries its id, `data-part`, so the page can give the focus
+ * back to it); a question a part asks before it is added stands in the page, in place, not here. `foot`: the actions on the whole fee,
+ * after the groups. `sheet`: a phone's short sheet, the
+ * groups one at a time under a row of their names; `docked` pins it to the foot of the screen, at most 216 px tall as drawn, its case line
+ * on one line and the group's parts scrolling under its row of names, and keeps as much room at the end of the
  * document, so nothing on the page stays under it (without it the sheet is drawn where it stands, as the gallery shows it). The
  * sheet's handle folds it to its row of names and opens it again, so the page can be read under it; a tap on a name opens it on that
  * group. `folded` and `onFold` let the page hold whether it is folded (a phone's sheet starts folded, so nothing covers the page as it
  * loads, and unfolds when a case is opened); without them the sheet holds it, open at first.
  */
-export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folded: heldFolded, onFold }: {
+export function Toolbox({ target, groups, onAdd, foot, sheet, docked, folded: heldFolded, onFold }: {
   target: ReactNode;
   groups: ToolGroup[];
   onAdd: (group: string, part: string) => void;
-  ask?: ReactNode;
   foot?: ReactNode;
   sheet?: boolean;
   docked?: boolean;
@@ -133,7 +135,7 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folde
         data-tool-sheet=""
         // a pinned sheet is a block the site's "back to the top" button steps aside from (shell.tsx)
         {...(docked ? { "data-docked": "", "data-keep-clear": "" } : {})}
-        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[45vh]", folded && "pb-4") : "pb-4")}
+        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[13.5rem]", folded && "pb-4") : "pb-4")}
       >
         <button
           type="button"
@@ -145,7 +147,8 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folde
         >
           <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />
         </button>
-        {!folded && <div className="shrink-0">{lead}</div>}
+        {/* one line in the sheet, so the parts keep their room; the open case above says its values whole */}
+        {!folded && <div className="shrink-0 truncate [&>p]:truncate">{lead}</div>}
         <div className="shrink-0">
           <ChoiceChips
             line
@@ -169,12 +172,11 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folde
           />
         </div>
         <div id={`${id}-parts`} hidden={folded} className={cx("flex flex-col gap-3", docked && "-mx-4 min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4")}>
-          {ask ??
-            (group && (
-              <div role="group" aria-label={group.name} className="flex flex-col gap-2">
-                <Parts group={group} onAdd={onAdd} />
-              </div>
-            ))}
+          {group && (
+            <div role="group" aria-label={group.name} className="flex flex-col gap-2">
+              <Parts group={group} onAdd={onAdd} />
+            </div>
+          )}
           {foot}
         </div>
       </div>
@@ -186,7 +188,6 @@ export function Toolbox({ target, groups, onAdd, ask, foot, sheet, docked, folde
         {lead}
         <p className="text-sm text-muted-foreground">{copy.toolbox.hint}</p>
       </div>
-      {ask}
       {groups.map((g) => {
         const Icon = ICONS[g.kind];
         return (

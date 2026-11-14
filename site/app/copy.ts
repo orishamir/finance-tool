@@ -1665,7 +1665,6 @@ export const feeDeal = {
     title: "העסקה במבט אחד",
     throughout: "לאורך כל העסקה",
     changes: "מה משתנה ומתי",
-    still: "אף עמלה בעסקה לא משתנה עם הזמן.",
     /** Before the months to the nearest change (a computed figure). */
     inMonths: "בעוד ",
     /** Before the rate a group's fees add to (F-111). */
@@ -1750,8 +1749,6 @@ export const feeDeal = {
     trackPick: "לבחור מסלול",
     /** The step that fills the deal from a price list, and its button opens the price lists. */
     fill: "מילוי מתעריפון",
-    start: "תאריך התחלה",
-    optional: "לא חובה",
     fees: "העמלות בעסקה",
     /** After a bound in a row's box. */
     minWord: "מינימום",
@@ -1843,6 +1840,11 @@ export const feeDeal = {
       channel: { branch: "בסניף", phone: "בטלפון", direct: "באינטרנט ובאפליקציה" } as Record<string, string>,
       currency: { USD: "מדולר או לדולר", EUR: "מאירו או לאירו", GBP: "מלירה שטרלינג או ללירה שטרלינג", other: "ממטבע אחר או למטבע אחר" } as Record<string, string>,
     },
+    /**
+     * A case naming every value abroad but those another case names: "מחוץ ל" and theirs ("בחו״ל, מחוץ לארה״ב"); several joined by "ול"
+     * ("מחוץ לארה״ב ולאירופה").
+     */
+    outside: { lead: "מחוץ ל", and: " ול", names: { us: "ארה״ב", europe: "אירופה", world: "שאר העולם" } as Record<string, string> },
     /** A case's value that is any value of its thing, said fainter than a named one. */
     any: { what: "בכל מה שקונים", held: "בכל מה שמוחזק", channel: "בכל ערוץ", track: "בכל מסלול", currency: "בכל מטבע", actionSize: "בכל גודל", portfolioSize: "בכל גודל תיק", volume: "בכל היקף", count: "בכל מספר", own: "בכל ערך" } as Record<string, string>,
     /** A range's step: up to its top, or above the last top; the unit after a count of units or of actions. */
@@ -1906,7 +1908,7 @@ export const feeDeal = {
       /** An offset against a named fee: "מתקזזת מול {fee} של אותו חודש". */
       offsetOf: { lead: "מתקזזת מול ", tail: " של אותו חודש" },
       refund: "החזר ",
-      notes: { unfilled: "גם על הוראה שלא בוצעה", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
+      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
       /** The toolbox's card of a flat price for a small action, by the fee: "מחיר קבוע לפעולה קטנה, עד ☐", a conversion's "להמרה קטנה". */
       flatSmall: { default: "מחיר קבוע לפעולה קטנה, עד ", fx: "מחיר קבוע להמרה קטנה, עד ", fx_spread: "מחיר קבוע להמרה קטנה, עד " } as Record<string, string>,
@@ -1970,6 +1972,8 @@ export const feeDeal = {
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
+      /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)). */
+      unfilledClerk: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
       partial: "כל ביצוע חלקי נגבה בנפרד, ולכן הוראה שמתבצעת בחלקים יכולה לעלות את המינימום יותר מפעם אחת.",
     },
     /**
