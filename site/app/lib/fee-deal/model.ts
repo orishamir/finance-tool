@@ -201,6 +201,8 @@ export function untouched(fee: Fee): boolean {
 const pricesUntouched = (x: Priced): boolean => {
   if (x.stages.length !== 1 || x.stages[0]!.until !== undefined || x.sale) return false;
   const price = x.stages[0]!.price;
+  // a free price a template filled holds its source, as a figure does
+  if (price.form === "free") return price.src !== undefined;
   const figures = figuresOf(price).filter((n): n is Num => n !== undefined);
   if (mainFigure(price)?.blank) return figures.length === 1;
   return figures.length > 0 && figures.every((n) => n.src !== undefined);
@@ -458,7 +460,11 @@ const READ_BEYOND: Partial<Record<FormId, readonly FieldId[]>> = { action: ["min
  */
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
-  if (raw.form === "free") return { form: "free" };
+  if (raw.form === "free") {
+    if (raw.src === undefined) return { form: "free" };
+    const src = readSourced(raw.src);
+    return src ? { form: "free", src } : null;
+  }
   if (!capacity(kind).forms.includes(raw.form as never)) return null;
   const form = raw.form as ChargedForm;
   const fields = [...fieldsOf(kind, form), ...(READ_BEYOND[form] ?? [])];

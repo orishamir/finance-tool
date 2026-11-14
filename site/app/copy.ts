@@ -1976,15 +1976,23 @@ export const feeDeal = {
     /** A fee whose sums are in the action's currency, read for something bought in a currency the deal does not know. */
     noCurrency: "הסכומים שלה במטבע של העסקה, ובמה שבחרתם המטבע לא ידוע, ולכן העמלה לא נקראת.",
     /** A fee the law bans here (the rule table's ban), as its card, its line in the glance and the law card say it, before its rules. */
-    banned: "החוק אוסר על בנק לגבות אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
+    ban: {
+      law: "כללי הבנקאות אוסרים על בנק לגבות אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
+      /** Where the rules ban it only read together (MF-71): the site's reading, not their words. */
+      reading: "לפי כללי הבנקאות, בקריאת האתר, בנק לא גובה אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
+      /** BANK-51: a new bank, for five years from its licence, is outside the rules' closed list and tariffs (ss. 9ט, 9י). */
+      newBank: "בנק חדש, בחמש השנים הראשונות מהרישיון שלו, לא כפוף לכללים האלה.",
+      /** MF-71: the distribution fee a bank may charge on money-market units where the fund's manager has no agreement with it. */
+      distribution: "על יחידות של קרן כספית בנק עדיין יכול לגבות עמלת הפצה של עד 0.1% בשנה, אם אין לו הסכם הפצה עם מנהל הקרן.",
+    },
     /** What the reading states without computing (§10.6), after the fee's name and ": ". */
     stated: {
       third: "נוספת עמלה של צד שלישי בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג.",
       thirdOf: { lead: "נוספת עמלת ", tail: " בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג." },
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
-      /** A maximum on each security held: it bounds each security's charge, never the whole holding's. */
-      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך ולא על כל מה שמוחזק, ולכן האתר לא מחשב אותו: הוא תלוי בכמה ניירות ערך מחזיקים ובשווי של כל אחד." },
+      /** A maximum on each security held: it bounds each security's charge, and the page cannot apply it without them. */
+      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך, ולכן האתר לא מחשב אותו: הוא תלוי בכמה ניירות ערך מחזיקים ובשווי של כל אחד." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)). */
       unfilledClerk: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
@@ -2185,9 +2193,12 @@ export const feeDeal = {
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
       "spread-unpriced": "המרה בלי עמלה, אבל עם מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
-      "bank-funds": "בבנק השורה הזו לא חלה על קרן נאמנות שאינה קרן מחקה ואינה רשומה בבורסה, לפי כללי העמלות של בנק ישראל. לכן לקרן כזו אין בעסקה מחיר קנייה ומכירה.",
+      /** BRK-16 part 4(א)(1) and footnote 4: the line prices tracking funds and listed funds, and no other mutual fund. */
+      "bank-funds": "בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית, לפי כללי העמלות של בנק ישראל, ולכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
+      /** A maximum on the whole deposit the record prints beside the one on each security, which the page does not apply yet. */
+      "per-deposit": "המחירון קובע גם מקסימום לכל הפיקדון, ליד המקסימום לכל נייר ערך. האתר לא מחיל אותו עד שיהיה לו שדה בנתונים, ולכן על פיקדון גדול העמלה בפועל יכולה להיות נמוכה ממה שמוצג.",
       "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",

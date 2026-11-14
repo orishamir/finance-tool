@@ -124,7 +124,8 @@ interface ActionParts extends Linked {
  * their currency.
  */
 export type Price =
-  | { form: "free" }
+  /** Nothing charged; with the source a template filled it from (`src`, IBI's "פטור"), kept until the person changes the price. */
+  | { form: "free"; src?: Sourced }
   /**
    * A share of each action, `rate` percent, with a minimum and a maximum per action, a cap as a percent of the action (`cap`, the percent
    * maximum) and a flat price for a small action, each sum in `currency` (the shekel where absent).

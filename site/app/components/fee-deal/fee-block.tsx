@@ -98,7 +98,7 @@ function RestPart({ part }: { part: SlimPart }) {
 /** The facts a slim line says at its end: that its price is not given yet or not read, its next change, where it is charged, its bounds. */
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
-  if (row.banned) notes.push(<BannedWords key="banned" rules={row.banned} />);
+  if (row.banned) notes.push(<BannedWords key="banned" ban={row.banned} />);
   else if (!row.priced) notes.push(row.noCurrency ? copy.cases.noCurrency : row.unmatched ? copy.cases.unmatched : b.facts.noPrice);
   if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);

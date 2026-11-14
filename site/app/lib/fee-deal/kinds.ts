@@ -1,5 +1,6 @@
 // The kinds a deal can be (method §10.6): every product record that lists fee bases, with its bases and its legal caps (`fee_caps`,
 // data-schema §3.3), as the fee page's data carries them. F-113 judges a typed price against its fee's cap here.
+import type { BanSaid } from "./deal-read";
 import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/engine";
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
@@ -54,7 +55,7 @@ export type CapLine =
   | { state: "value"; value: SiteValue; binds?: FeeCap["binds"]; caveat?: FeeCap["caveat"]; ruleIds: string[] }
   | { state: "none"; value: SiteValue; caveat?: FeeCap["caveat"]; ruleIds: string[] }
   | { state: "absent" }
-  | { state: "banned"; ruleIds: readonly string[] };
+  | { state: "banned"; ban: BanSaid };
 
 export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
   const cap = capOf(kind, fee);

@@ -3,10 +3,10 @@
 // next changes (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
 import { feeDeal as copy } from "../../copy";
 import type { ChangeKind } from "@finance-tool/engine";
-import { feeOf, picked } from "./cases";
+import { feeOf, inCurrency, picked, tradeCurrency } from "./cases";
 import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
 import { feesOffered, type DataBar } from "./offers/offer";
-import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./deal-read";
+import { priceView, refOf, standingView, type BanSaid, type DealRead, type FeeRef, type PriceView, type StandingView } from "./deal-read";
 import { type FeeKindId } from "./shapes";
 import { BY_MAX, type ByKind } from "./offers/conditions";
 import { insideFund } from "./values";
@@ -40,8 +40,8 @@ export interface BuilderRow extends FeeRef {
   unmatched: boolean;
   /** Whether its case's sums are in the action's currency, which the deal does not know for the picks: its card says so. */
   noCurrency: boolean;
-  /** The rules that ban the fee here (`DealRead.banned`): it is read as nothing charged, and its card says it is banned by law. */
-  banned?: readonly string[];
+  /** How the ban on the fee here is said (`DealRead.banned`): it is read as nothing charged, and its card says it is banned. */
+  banned?: BanSaid;
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
   sale?: StageView[];
   /** The fee's next change, and whether it is a start from free. */
@@ -153,7 +153,9 @@ function caseRead(r: DealRead, fee: Fee, priced: Priced, caseId: string | undefi
   const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
   const fees = i >= 0 ? r.fees : [fee];
   const at = Math.max(i, 0);
-  const views = stageViews(r, fees, at, priced.stages);
+  // sums in the trade's currency are shown in it where the picks give it (BRK-48), as the reading reads them
+  const trade = tradeCurrency(r.deal.fees, r.picks);
+  const views = stageViews(r, fees, at, trade ? priced.stages.map((s) => ({ ...s, price: inCurrency(s.price, trade) })) : priced.stages);
   const stages = readStages(r, views);
   return { i, fees, at, stages, now: stages[0] ?? views.at(-1)! };
 }
@@ -170,7 +172,8 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const priced = pricedOf(fee, caseId);
   const { i, fees, at, stages, now } = caseRead(r, fee, priced, caseId);
   // a fee the picks give no case, or the law bans here, is not read, whatever its first case states: its card says so
-  const banned = r.banned.find((b) => b.fee === fee.id)?.rules;
+  const { fee: _f, ...ban } = r.banned.find((b) => b.fee === fee.id) ?? { fee: "" };
+  const banned: BanSaid | undefined = "rules" in ban ? ban : undefined;
   const given = !banned && (i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from))));
   const sale = priced.sale ? readStages(r, stageViews(r, fees, at, priced.sale)) : undefined;
   const c = i < 0 ? undefined : r.reading.fees[i]!.changes[0];

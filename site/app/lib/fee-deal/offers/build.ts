@@ -13,8 +13,9 @@ export interface PriceSpec {
   form: ChargedForm;
   figures: Partial<Record<Figure, Num>>;
   notes?: readonly Note[];
-  /** The currency of its sums, for a form on an action. */
+  /** The currency of its sums, for a form on an action; or that they are in the currency the action is made in (`inTrade`). */
   currency?: BoundCurrency;
+  inTrade?: true;
   /** The months a share of what is held is for and between charges, and the months its bounds are printed per. */
   per?: Months;
   every?: Months;
@@ -44,5 +45,6 @@ export function buildPrice(kind: FeeKindId, spec: PriceSpec): Price {
     p = FIGURES[figure].set(p, n);
   }
   for (const note of spec.notes ?? []) p = putPart(kind, p, note, true);
+  if (spec.inTrade) p = putPart(kind, p, "inTrade", true);
   return fitted(kind, p);
 }

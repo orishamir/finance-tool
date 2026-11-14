@@ -157,7 +157,7 @@ export function tradeCurrency(fees: readonly Fee[], picks: readonly ReadPick[]):
 }
 
 /** A price whose sums are in the action's currency, in that currency (the shekel left unsaid); any other price as it is. */
-function inCurrency(p: Price, currency: BoundCurrency): Price {
+export function inCurrency(p: Price, currency: BoundCurrency): Price {
   if (!("inTrade" in p) || !p.inTrade) return p;
   const { inTrade: _t, currency: _c, ...rest } = p;
   return (currency === "ILS" ? rest : { ...rest, currency }) as Price;
