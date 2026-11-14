@@ -19,7 +19,7 @@ import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, TextLink, u
 /** The kind chip that stands for every kind (the regulator never names a kind so). */
 const ALL_KINDS = "*";
 import { Term } from "../provenance";
-import { TrackList } from "./list";
+import { CHILD_SAVINGS, ChildFeeNote, TrackList } from "./list";
 
 /** The rows drawn at once when the list is new (a product, a kind): the first screens. The rest are drawn the moment after, in a transition, so a click is answered at once. */
 const FIRST_ROWS = 12;
@@ -148,6 +148,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
 
       {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
       {view.dataset === "pensia-net" && <p className="md:hidden text-sm text-muted-foreground">{t.wholeFund}</p>}
+      {view.id === CHILD_SAVINGS && <ChildFeeNote />}
       <p className="md:hidden text-sm text-muted-foreground">
         {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
       </p>

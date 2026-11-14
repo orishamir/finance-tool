@@ -35,11 +35,11 @@ export function buildTrackBrowser(companyId?: string): TbData {
 
   const companyIds: string[] = [];
   const own = (x: (typeof cma.tracks)[number]) => !companyId || x.companyId === companyId;
-  // on a company's page a self-directed (IRA) fund is a product of its own, with its own guide and cap (lib/self-directed.ts); the
-  // tracks page lists it under its regulator type, where its yields say why they are not shown
+  // a self-directed (IRA) fund is a product of its own, with its own guide and cap (lib/self-directed.ts), on the tracks page and on a
+  // company's page alike: its regulator type's list, range and count leave it out (method F-100)
+  const selfDirected = (id: string): boolean => (SELF_DIRECTED_PRODUCTS as readonly string[]).includes(id);
   const kinds = [
-    ...trackProductIds.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => x.wrapperId === id && !(companyId && x.selfDirected) })),
-    ...(companyId ? SELF_DIRECTED_PRODUCTS.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => x.selfDirected === id })) : []),
+    ...trackProductIds.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => (selfDirected(id) ? x.selfDirected === id : x.wrapperId === id && !x.selfDirected) })),
     ...(companyId ? [...new Set(cma.tracks.filter((x) => own(x) && !x.wrapperId).map((x) => x.classification))].map((c) => ({ id: c, page: false, of: (x: (typeof cma.tracks)[number]) => !x.wrapperId && x.classification === c })) : []),
   ];
   const products: TbProduct[] = kinds.flatMap(({ id, page, of }) => {

@@ -8,6 +8,7 @@ import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, checklistMark, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter, OwnCompanyPage } from "../components/provenance";
+import { CHILD_SAVINGS, ChildFeeNote } from "../components/tracks/list";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, FeeNum, GemelNetLink, KeyValueList, MixedName, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
@@ -121,7 +122,9 @@ export default function TrackPage() {
   const data = useLoaderData<typeof loader>();
   const { track } = data;
   // pension fees belong to the fund, not to the track (CAT-39)
-  const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
+  // a child-savings fee is what members over 21 paid, spread over the whole track (CS OQ9)
+  const child = data.wrapper?.id === CHILD_SAVINGS;
+  const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : child ? `, ${copy.feeOver21}` : "");
   // a page about one company's track: its own figures carry no "לפי החברה"
   return (
     <OwnCompanyPage>
@@ -197,6 +200,7 @@ export default function TrackPage() {
               { id: "period", label: copy.labels.period, value: <Num value={data.values.period} /> },
             ]}
           />
+          {child && <ChildFeeNote />}
           {data.feePage && <div className="pt-1 border-t border-border">
             <TextLink look="line" to={dealPagePath({ track: track.fundId })}>
               {feePageLink}

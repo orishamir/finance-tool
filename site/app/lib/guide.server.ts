@@ -305,7 +305,8 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
 
   const cma = loadCma();
   const seen = new Map<string, string>();
-  for (const track of cma.tracks) if (track.wrapperId === id && !seen.has(track.companyId)) seen.set(track.companyId, track.companyName);
+  // a self-directed fund is its own product (IRA-03): it names its company on the self-directed guide, not on its regulator type's
+  for (const track of cma.tracks) if ((track.selfDirected ?? track.wrapperId) === id && !seen.has(track.companyId)) seen.set(track.companyId, track.companyName);
   const companies = [...seen.entries()].map(([cid, name]) => ({ id: cid, name })).sort((a, b) => heCollator.compare(a.name, b.name));
   const folds = exposureFolds();
   const exposuresHeld = loadExposures()

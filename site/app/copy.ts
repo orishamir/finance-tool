@@ -319,7 +319,7 @@ export const guide = {
       discountEnd: "בתום ההנחה מותר לחברה להעלות את דמי הניהול עד התקרה.",
     },
   },
-  feeRange: { caps: "בפועל גובים הרבה פחות מהתקרה: ב־", tracks: "המסלולים, העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
+  feeRange: { caps: "הממוצעים רחוקים מהתקרה: ב־", tracks: "המסלולים, העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
@@ -666,12 +666,13 @@ export const track = {
   /** The fund number as a link to the track's page on the regulator's Gemel-Net (Pensia-Net has no page per fund). */
   gemelNet: { label: "מסלול {id} באתר גמל נט של רשות שוק ההון", page: "עמוד המסלול בגמל נט" },
   labels: { manager: "חברה מנהלת", product: "סוג מוצר", classification: "סיווג", holds: "במה הכסף מושקע", feeBalance: "דמי ניהול מחיסכון", feeDeposit: "דמי ניהול מהפקדה", period: "נכון לחודש", inception: "נפתח ב־" },
+  /** The regulator's own words for the figure in members' reports ("דמי ניהול שנגבו בפועל"; CAT-37, which each value's sheet cites). */
   feeBalanceLabel: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year}",
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
+  /** A child-savings fee is what members over 21 paid, spread over the whole track (CS OQ9). */
+  feeOver21: "מעמיתים מעל גיל 21",
   feeNotReported: "עוד לא דווח",
-  /** What a crowded table cell writes for an empty figure; a tap opens its sheet, headed with the full word. */
-  emptyMark: "—",
   /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
   feeNone: "אין",
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
@@ -761,14 +762,14 @@ export const system = {
  */
 export const pagePreview = {
   companies: "בתי השקעות, חברות מנהלות ובנקים, ומה כל אחד מציע: גמל, השתלמות ופנסיה, קרנות, מסחר בניירות ערך ופיקדונות.",
-  tracks: "כל המסלולים בכל החברות, מוצר אחר מוצר: דמי הניהול שנגבו בפועל, החשיפה, התשואה והכסף המנוהל, מנתוני רשות שוק ההון.",
+  tracks: "כל המסלולים בכל החברות, מוצר אחר מוצר: ממוצע דמי הניהול, החשיפה, התשואה והכסף המנוהל, מנתוני רשות שוק ההון.",
   fees: "מזינים את העמלות של עסקה אחת, כמו שהיא, והאתר מראה מה היא גובה, על מה ומתי.",
   notFound: "בכתובת הזו אין עמוד באתר.",
   /** A company's or a bank's page, after its "מה יש ב…" (companyPage.whatsIn). */
   company: (whatsIn: string) => `${whatsIn}: המוצרים, התנאים והעמלות, עם מקור לכל מספר.`,
   /** A track's page: whose track it is, and in which product when the site knows it. */
   track: (company: string, product: string | null) =>
-    `מסלול${product ? ` ${inName(product)}` : ""} של ${company}: דמי הניהול שנגבו בפועל ובמה הכסף מושקע, מנתוני רשות שוק ההון.`,
+    `מסלול${product ? ` ${inName(product)}` : ""} של ${company}: ממוצע דמי הניהול ובמה הכסף מושקע, מנתוני רשות שוק ההון.`,
   /** One of the rules page's five questions, with its line (rulesFront.shelves). */
   shelf: (line: string) => `חוקים וכללים: ${line}.`,
   /** A guide or an exposure page whose record has no line of its own. */
@@ -1272,6 +1273,7 @@ export const guideBlocks = {
       fundTracking: "הפרש העקיבה של הקרן",
       fundWithholding: "מס זר שנגבה בתוך הקרן",
       fundHalfSpread: "חצי ממרווח הקנייה והמכירה",
+      // the regulator's own words for the figure in members' reports (CAT-37, which the value's sheet cites)
       regBalance: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year} (לא תעריפון)",
       regDeposit: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year} (לא תעריפון)",
       ninetyPercentTest: "מבחן 90% בקרן זרה",
@@ -1348,7 +1350,7 @@ export const trackBrowser = {
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר", deposits: "פיקדונות בבנקים" },
   /** The page's line: its year and date stand on a phone only, whose rows have no heads; from md the heads say them. */
   lead: {
-    intro: "דמי הניהול הם הממוצע שנגבה בפועל ב־",
+    intro: "דמי הניהול הם הממוצע שנגבה ב־",
     figures: "; החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
     end: ". ",
     source: "מנתוני רשות שוק ההון.",
@@ -1423,6 +1425,8 @@ export const trackBrowser = {
   feeAverage: (year: string, wholeFund = false) => `דמי הניהול הם הממוצע שנגבה ב־${year}${wholeFund ? " בקרן כולה" : ""}; `,
   /** On a phone, whose rows have no heads, over a pension product's list: whose the fees are (CAT-39). */
   wholeFund: "בקרן פנסיה דמי הניהול הם של הקרן כולה, לא של המסלול: כל המסלולים של קרן אחת מראים אותם דמי ניהול.",
+  /** Over a child-savings list or track: what its fee figure is, as the rule base reads it (CS OQ9); the question's chip follows. */
+  childFee: "בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל 21 שילמו, בממוצע על כל הנכסים של המסלול. עד גיל 21 הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה",
   dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
@@ -3213,7 +3217,7 @@ export const guideSignature = {
     broker: "חשבון ניירות ערך",
     track: "מסלול",
     trackFee: "דמי הניהול שלו:",
-    perYearAvg: "בשנה, הממוצע שנגבה בפועל לפי הרשות.",
+    perYearAvg: "בשנה, הממוצע שהרשות מפרסמת.",
     fund: "קרן",
     employmentLabel: "סוג ההעסקה",
     income: { employee: "משכורת ברוטו בחודש", "self-employed": "הכנסה חייבת בחודש" } as Record<string, string>,
@@ -3255,7 +3259,7 @@ export const guideSignature = {
     beneficiary: { before: "אתם נחשבים", term: "עמית מוטב", middle: "ההפקדות שלכם ושל המעסיק יחד עוברות את הסף של", after: "בשנה, ולכן הזיכוי מחושב לפי הכללים לעמית מוטב." },
     insuranceNote: "בקרן פנסיה חלק מההפקדה משלם ביטוח למקרה מוות או נכות. דמי הביטוח תלויים בגיל ובכיסוי.",
     noInsurance: "בתגמולים ואישית לפיצויים אין ביטוח משותף: ההפקדה, אחרי דמי הניהול, נכנסת כולה לחיסכון.",
-    feesLine: { before: "דמי הניהול הם הממוצע שנגבה בפועל במסלול", balance: "בשנה מהחיסכון", deposit: "ועוד", ofDeposit: "מההפקדה", after: "בפנסיה הנתון הוא של הקרן כולה ולא של המסלול." },
+    feesLine: { before: "דמי הניהול הם הממוצע שהרשות מפרסמת למסלול", balance: "בשנה מהחיסכון", deposit: "ועוד", ofDeposit: "מההפקדה", after: "בפנסיה הנתון הוא של הקרן כולה ולא של המסלול." },
     none: { pension: "קצבת זקנה", fund: "קרן פנסיה", after: "מתחילה לא לפני גיל" },
     todayMoney: "הסכומים בכסף של היום",
     inputNames: { avgWage: "השכר הממוצע במשק", employee: "שיעור ההפקדה של העובד", employer: "שיעור ההפקדה של המעסיק לתגמולים", severance: "שיעור ההפקדה של המעסיק לפיצויים", credit: "שיעור הזיכוי", threshold: "סף ההפקדות לעמית מוטב", depositFee: "דמי הניהול מההפקדה" },

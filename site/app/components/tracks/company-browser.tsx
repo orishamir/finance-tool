@@ -12,7 +12,7 @@ import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortIn
 import { GoLink, SelectField, cx, useFlip } from "../kit";
 import { Num, Term } from "../provenance";
 import { fmt } from "../../lib/format";
-import { CapLead, CompanySize, TrackList, type ProductCaps } from "./list";
+import { CapLead, CHILD_SAVINGS, ChildFeeNote, CompanySize, TrackList, type ProductCaps } from "./list";
 
 /** As on the tracks page: the first rows at once, the rest the moment after. */
 const FIRST_ROWS = 12;
@@ -82,6 +82,7 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
             )
           )}
         </p>
+        {view.id === CHILD_SAVINGS && <ChildFeeNote />}
       </div>
       <SelectField
         className="md:hidden"

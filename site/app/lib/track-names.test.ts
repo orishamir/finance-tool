@@ -61,7 +61,8 @@ describe("short names, from the real tracks", () => {
   });
 
   it("a company with one track loses only its own name", () => {
-    const view = buildProductView(data, "keren-hishtalmut")!;
+    // every company offers one self-directed study fund (IRA-03)
+    const view = buildProductView(data, "ira-hishtalmut")!;
     const one = view.companies.find((c) => c.tracks.length === 1)!;
     expect(one.tracks[0]!.short).toBe(one.tracks[0]!.fullName.replace(new RegExp(`^${one.name}\\s*`), ""));
     expect(one.tracks[0]!.short).not.toBe("");

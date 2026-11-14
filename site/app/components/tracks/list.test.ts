@@ -41,6 +41,13 @@ describe("a pension product's fees (CAT-39)", () => {
   });
 });
 
+describe("a child-savings product's fees (CS OQ9)", () => {
+  it("say under the fee head that they are what members over 21 paid, and another product's do not", () => {
+    expect(draw("child-savings-provident")).toContain(`${t.columns.average.replace("{year}", "2025")}, ${trackCopy.feeOver21}`);
+    expect(draw("kupat-gemel-lehashkaa")).not.toContain(trackCopy.feeOver21);
+  });
+});
+
 describe("a fee the regulator left empty", () => {
   it("says in words that it was not reported yet, not a dash", () => {
     const view = buildProductView(data, "kupat-gemel-lehashkaa")!;
@@ -48,6 +55,16 @@ describe("a fee the regulator left empty", () => {
     expect(empty).toBeDefined();
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms, dimensions: {}, today: data.today }, children: createElement(FeeNum, { value: empty!.fee }) })));
     expect(html).toContain(trackCopy.feeNotReported);
-    expect(html).not.toContain(trackCopy.emptyMark);
+    expect(html).not.toContain("—");
+  });
+  it("and so does an empty yield, in its cell, with its window beside it", () => {
+    const view = buildProductView(data, "provident-for-annuity")!;
+    const empty = view.tracks.filter((x) => (x.y3?.value === null && !x.young3) || (x.y5?.value === null && !x.young5)).slice(0, 3);
+    expect(empty.length).toBeGreaterThan(0);
+    const group: TbGroup = { key: "p:empty", by: "company", title: view.name, tracks: empty, total: empty.length, assets: null, fees: feeRangeOf(empty, data.today) };
+    const list = createElement(TrackList, { view, groups: [group], by: "company", sort: { id: "fee", dir: 1 }, sortable: new Set<SortId>(["fee"]), onSort: () => {}, feeYear: "2025", period: data.reportPeriod, compact: "with-deposit", fixed: true });
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms, dimensions: {}, today: data.today }, children: list })));
+    expect(html).toContain(trackCopy.feeNotReported);
+    expect(html).not.toMatch(/>—</);
   });
 });
