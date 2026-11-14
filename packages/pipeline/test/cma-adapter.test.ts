@@ -198,8 +198,9 @@ describe("normalise", () => {
       [15367, "self-directed"],
     ]);
     // every track the circular's readings name is a general track of a provident fund for annuity in the stored file's terms
-    for (const [, r] of gemel) if (r.reading !== "company-closed") expect(TRACK_READINGS.gemelnet.isGeneral({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
-    expect(TRACK_READINGS.gemelnet.isGeneral({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
+    const general = TRACK_READINGS.gemelnet.families.find((f) => f.id === "general")!;
+    for (const [, r] of gemel) if (r.reading !== "company-closed") expect(general.holds({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
+    expect(general.holds({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
     // a study fund's general track is open; a Gemel-Net id is read in Gemel-Net only
     expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet", 880)).toBe(false);
     expect(closedTrack("", "מיטב בטחון", "pensia-net", 923)).toBe(false);
@@ -266,6 +267,18 @@ describe("normalise", () => {
     for (const id of [923, 1486, 99998]) expect(said).not.toContain(`fund ${id}`);
     expect(r.file?.funds.find((f) => f.fund_id === 923)?.closed_to_joiners).toEqual({ by: "company-terms", rule_ids: ["CAT-54"] });
     expect(r.file?.funds.map((f) => f.fund_id).sort((a, b) => a - b)).toEqual([923, 1486, 99998, 99999]);
+  });
+
+  it("reports a guaranteed-yield track with no reading, in any classification, so it is not kept silently", () => {
+    const head = "FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,TARGET_POPULATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n";
+    const row = (id: number, name: string, classification: string, spec: string) =>
+      `"${id}","${name}","${classification}","בקרה","מנהלת","202609","2015-12-31T00:00:00","כלל האוכלוסיה","${spec}","${spec}","0.5","0.1","512065202"\n`;
+    const csv = head + row(99997, "גמל חדשה מבטיחת תשואה", "תגמולים ואישית לפיצויים", "מבטיח תשואה") + row(99996, "השתלמות מבטיחת תשואה", "קרנות השתלמות", "מבטיח תשואה") + row(530, "מנורה מבטחים יותר מסלול א'", "תגמולים ואישית לפיצויים", "מבטיח תשואה");
+    const said = normalise(csv, ctx).problems.join(" ");
+    expect(said).toContain('fund 99997: "גמל חדשה מבטיחת תשואה" is a guaranteed-yield track with no reading in TRACK_READINGS');
+    expect(said).toContain("fund 99996");
+    // a track read on its company's terms (CAT-55) is kept without a report
+    expect(said).not.toContain("fund 530");
   });
 
   it("reports a Pension-Net name ending in כללי with no reading, so it is not dropped or kept silently", () => {

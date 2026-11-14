@@ -84,10 +84,29 @@ export interface TrackRow {
   specialization: string;
 }
 
-/** A dataset's track readings: which rows are general tracks, each of which needs a reading, and the reading of each track read, by fund id. */
+/**
+ * A family of tracks every member of which needs a reading before a refresh keeps or drops it: the rows it holds, and what a reading of a
+ * member must settle. The general tracks (CAT-19 may close them) and the guaranteed-yield tracks (their companies close them, CAT-55) are
+ * the two.
+ */
+export interface TrackFamily {
+  id: "general" | "guaranteed-yield";
+  holds: (row: TrackRow) => boolean;
+  /** What the refresh asks of a member with no reading. */
+  ask: string;
+}
+
+/** A dataset's track readings: the families whose every track needs a reading, and the reading of each track read, by fund id. */
 export interface TrackReadings {
-  isGeneral: (row: TrackRow) => boolean;
+  families: readonly TrackFamily[];
   readings: ReadonlyMap<number, TrackReading>;
+}
+
+/** What a refresh reports of a track of a family that has no reading, or null where it has one or is in no such family. */
+export function unreadTrack(readings: TrackReadings, fundId: number, row: TrackRow): string | null {
+  if (readings.readings.has(fundId)) return null;
+  const family = readings.families.find((f) => f.holds(row));
+  return family ? `fund ${fundId}: "${row.name}" is a ${family.id} track with no reading in TRACK_READINGS; ${family.ask}` : null;
 }
 
 const closed = (name: string, rules: readonly string[]): TrackReading => ({ name, reading: "closed", rules });
@@ -113,18 +132,26 @@ export const GEMEL_ANNUITY_CLASSIFICATION = "תגמולים ואישית לפי�
 /** A Pension-Net name whose last word is "כללי" ("פנסיה כללית", the general fund itself, is not). */
 export const endsInGeneral = (name: string): boolean => /(?:^|[\s\-])כללי\s*$/.test(name);
 
+/** Gemel-Net's specialization for a guaranteed-yield track ("מבטיח תשואה"). */
+export const GUARANTEED_YIELD_SPECIALIZATION = "מבטיח תשואה";
+
+const ASK_CIRCULAR = "say whether CAT-19 closes it to joiners";
+const ASK_COMPANY = "say whether its company's own terms close it to new members, as CAT-55 reads the nine known";
+
 /**
- * The track readings of each dataset, each read in the regulator's 202609 file. Every general track has one: Pension-Net has no
- * specialization column, so a name ending in "כללי" marks a candidate; that is not enough by itself, since an age or specialised track can
- * carry the word, and each listed one was checked to be a general track in the circular's sense. In Gemel-Net the circular's general tracks
- * are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים", specialization "כללי"; the study funds and the
- * provident funds for investing it does not cover. A refresh reports a general track with no reading, so none is dropped or kept without
- * one. Other tracks have a reading where one closes them on their company's terms. `closedTrack` leaves out the circular's closed ones;
- * an unsettled one stays until it is read; a company-closed one stays in the data with its reading (`closedToJoiners`).
+ * The track readings of each dataset, each read in the regulator's 202609 file. Every track of a family has one (`TrackFamily`):
+ * - the general tracks. Pension-Net has no specialization column, so a name ending in "כללי" marks a candidate; that is not enough by
+ *   itself, since an age or specialised track can carry the word, and each listed one was checked to be a general track in the circular's
+ *   sense. In Gemel-Net the circular's general tracks are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים",
+ *   specialization "כללי"; the study funds and the provident funds for investing it does not cover.
+ * - Gemel-Net's guaranteed-yield tracks, specialization "מבטיח תשואה", which their companies close (CAT-55).
+ * A refresh reports a track of a family with no reading (`unreadTrack`), so none is dropped or kept without one. `closedTrack` leaves out
+ * the circular's closed ones; an unsettled one stays until it is read; a company-closed one stays in the data with its reading
+ * (`closedToJoiners`).
  */
 export const TRACK_READINGS: Readonly<Record<CmaDataset, TrackReadings>> = {
   "pensia-net": {
-    isGeneral: (r) => endsInGeneral(r.name),
+    families: [{ id: "general", holds: (r) => endsInGeneral(r.name), ask: ASK_CIRCULAR }],
     readings: new Map([
       [2002, closed("כלל פנסיה כללי", CIRCULAR)],
       [2009, closed("מנורה מבטחים פנסיה - כללי", CIRCULAR)],
@@ -137,7 +164,10 @@ export const TRACK_READINGS: Readonly<Record<CmaDataset, TrackReadings>> = {
     ]),
   },
   gemelnet: {
-    isGeneral: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי",
+    families: [
+      { id: "general", holds: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי", ask: ASK_CIRCULAR },
+      { id: "guaranteed-yield", holds: (r) => r.specialization.trim() === GUARANTEED_YIELD_SPECIALIZATION, ask: ASK_COMPANY },
+    ],
     readings: new Map([
       // the general track of a guaranteed-yield fund the fee regulations name: Gemel-Net puts 119 in the fund of 530 to 532 ("מנורה
       // מבטחים יתר"), 260 in that of 533 and 536 ("מנורה מבטחים אמיר") and 263 in that of 539 ("בר קרן גמולים"); their companies keep
@@ -635,10 +665,8 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
     if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();
     if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
-    const general = TRACK_READINGS[ctx.config.dataset];
-    const row = { name: get(r, "FUND_NAME"), classification: get(r, "FUND_CLASSIFICATION"), specialization: get(r, "SPECIALIZATION") };
-    if (general.isGeneral(row) && !general.readings.has(Number(get(r, "FUND_ID").trim())))
-      problems.push(`fund ${get(r, "FUND_ID")}: "${row.name}" is a general track with no reading in TRACK_READINGS; say whether CAT-19 closes it to joiners`);
+    const unread = unreadTrack(TRACK_READINGS[ctx.config.dataset], Number(get(r, "FUND_ID").trim()), { name: get(r, "FUND_NAME"), classification: get(r, "FUND_CLASSIFICATION"), specialization: get(r, "SPECIALIZATION") });
+    if (unread) problems.push(unread);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);
