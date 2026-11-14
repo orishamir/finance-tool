@@ -21,13 +21,14 @@ import { groupKey, groupOn, type DealRead, type StandingView } from "../../lib/f
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
-import { FEE_KIND_IDS, FEE_SHAPES, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
+import { FEE_KIND_IDS, FEE_SHAPES, holdsFunds, type ByKind, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, CaseFold, CaseRow, CaseSlot, ChoiceChips, ConditionBand, FeeBlock, GroupHead, OpenCase, PartChip, Section, SlimFee, Step, When, monthText, type AddItem, type CaseWord } from "../kit";
 import { Num } from "../provenance";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/builder";
 import { bringIntoView } from "./in-view";
 import { LawTag, useFeeMark } from "./links";
+import { AskThing } from "./ask-thing";
 import { OpenParts, PART_MARK, WhenText, numText, type PendingPart } from "./open-case";
 import { TemplateNote } from "./picker";
 import { UndoLine } from "./undo-line";
@@ -278,6 +279,8 @@ export function FeesColumn({
   onRemoveCase,
   onHoldOn,
   onPendingDone,
+  ask,
+  onAskDone,
 }: {
   deal: FeeDeal;
   view: Builder;
@@ -304,6 +307,10 @@ export function FeesColumn({
   onRemoveCase: (feeId: string, caseId: string) => void;
   onHoldOn: (feeId: string, side: Side, k: number, caseId?: string) => void;
   onPendingDone: () => void;
+  /** The thing to change by whose question stands in the open fee's block, in place, where its band will stand; null where none is asked. */
+  ask: ByKind | null;
+  /** The question closed: the thing added, or not. */
+  onAskDone: (added: boolean) => void;
 }) {
   // each block's height as last drawn, so the line a removed fee leaves is as tall as its block was
   const root = useRef<HTMLDivElement>(null);
@@ -399,12 +406,15 @@ export function FeesColumn({
     const row = rows.get(fee.id);
     const name = feeName(fee.kind, fee.name);
     const isOpen = open.fee === fee.id;
+    // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
+    const question = isOpen && ask ? <AskThing key={`${fee.id}:${ask}`} fee={fee} kind={ask} onFee={onFee} onDone={onAskDone} /> : null;
     const dot = feeColour(fee.kind).bg;
     if (!row) return <p className="text-sm text-muted-foreground">{b.unread}</p>;
     if (row.block.kind === "slim")
       return (
         <div className="flex flex-col gap-1.5">
           <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} onOpen={() => onOpen(fee.id, null, "pointer")}>
+            {question}
             {isOpen ? openParts(fee, name) : row.block.parts.map((p) => <RestPart key={p.id} part={p} />)}
             {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
           </SlimFee>
@@ -464,6 +474,7 @@ export function FeesColumn({
     }
     return (
       <FeeBlock dot={dot} name={name}>
+        {question}
         <ConditionBand things={things} {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {})} addCase={{ onAdd: () => addOne(fee) }}>
           {items}
         </ConditionBand>

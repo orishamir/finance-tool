@@ -1,4 +1,4 @@
-// The toolbox's one question when a thing to change by is added to a fee (design-system 11, "Cases and parts"): which values of it the price
+// The one question when a thing to change by is added to a fee, drawn in place in the fee's block (design-system 11, "Cases and parts"): which values of it the price
 // list has ("לפי הערוץ: אילו ערוצים יש בתעריפון שלכם?"), each a toggle, a value of the person's own, a sentence on what adding does to the
 // cases, and "להוסיף" or "ביטול". Asked once; the cases are made from the answer.
 import { useId, type ReactNode } from "react";

@@ -291,6 +291,26 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   };
   // a case opened in place is brought into view once drawn: under the header, and above a phone's sheet, which unfolds with it
   const [caseShown, setCaseShown] = useState(0);
+  // a thing to change by asks its question in place, in the open fee's block; on a phone the sheet folds to its tabs while it is open.
+  // Closed, the focus goes to the new thing's pill where it was added, else back to the toolbox's part it was asked from.
+  const onAsk = (kind: ByKind) => {
+    if (!chosen) return;
+    setAsking({ fee: chosen, kind });
+    if (phone) setSheetFolded(true);
+  };
+  const onAskDone = (added: boolean) => {
+    const was = asking;
+    setAsking(null);
+    if (phone) setSheetFolded(false);
+    if (!was) return;
+    requestAnimationFrame(() => {
+      const li = document.querySelector(`li[data-fee="${CSS.escape(was.fee)}"]`);
+      const pills = li?.querySelectorAll<HTMLElement>("[data-thing]");
+      const el = added && pills?.length ? pills[pills.length - 1]! : document.querySelector<HTMLElement>(`[data-part="by:${was.kind}"]`);
+      el?.focus({ preventScroll: true });
+      bringIntoView(el);
+    });
+  };
   // a fee or one of its cases opened in place; from the keyboard, its first box takes the focus once drawn
   const onOpenCase = (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => {
     if (by === "keyboard") after.current = { fee: feeId, how: "panel" };
@@ -477,13 +497,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         fee={chosenFee}
         caseId={caseId}
         sheet={phone}
-        asking={asking?.fee === chosenFee.id ? asking.kind : null}
         product={deal.kind}
         fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => onFill(chosenFee.id, h) } : null}
         line={fillLine}
         folded={sheetFolded}
         onFold={setSheetFolded}
-        onAsk={(k) => setAsking(k ? { fee: chosenFee.id, kind: k } : null)}
+        onAsk={onAsk}
         onFee={onFee}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
         onPending={(part) => setPending({ fee: chosenFee.id, case: caseId, part })}
@@ -602,6 +621,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               onRemoveCase={onRemoveCase}
               onHoldOn={onHoldOn}
               onPendingDone={() => setPending(null)}
+              ask={asking && asking.fee === chosen ? asking.kind : null}
+              onAskDone={onAskDone}
             />
           </Card>
         )}
