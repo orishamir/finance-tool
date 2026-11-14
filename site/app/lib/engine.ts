@@ -65,7 +65,8 @@ export interface TimelineResult {
 }
 
 export type TimelineError =
-  | { kind: "blocked"; ruleId: string; messageHe: string }
+  /** `question`: the open question that stopped it (its readings gave the run different results, method §13), which the band opens. */
+  | { kind: "blocked"; ruleId: string; question?: string; messageHe: string }
   | { kind: "figure-not-updated"; ruleId: string; figure: string; messageHe: string }
   | { kind: "failed"; message: string; messageHe: string };
 
@@ -136,7 +137,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
       // a year whose open question's readings give different results (TXG OQ17 at a falling CPI, method §13) stops the drawing: no year is
       // drawn, as for any open rule, rather than some years at their value before the exit tax
       const stopped = stoppedOnQuestion(run);
-      if (stopped) return { kind: "blocked", ruleId: stopped.ruleId, messageHe: blockedHe };
+      if (stopped) return { kind: "blocked", ruleId: stopped.ruleId, question: stopped.question, messageHe: blockedHe };
       const last = run.series[run.series.length - 1]!;
       years.push({
         year: n,
@@ -158,7 +159,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     }
     return { kind: "ok", horizon, years, rules: [...rules.values()], flags: [...flags], enteredReturn: "A-01" in entered };
   } catch (e) {
-    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, messageHe: blockedHe };
+    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}), messageHe: blockedHe };
     if (e instanceof FigureNotUpdatedError) return { kind: "figure-not-updated", ruleId: e.ruleId, figure: e.figure, messageHe: figureNotUpdatedHe };
     if (e instanceof NotEvaluatedError || e instanceof RecordInputError || e instanceof MissingRuleError) return { kind: "failed", message: (e as Error).message, messageHe: failureHe((e as Error).message) };
     { const message = e instanceof Error ? e.message : String(e); return { kind: "failed", message, messageHe: failureHe(message) }; }

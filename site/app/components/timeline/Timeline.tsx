@@ -12,7 +12,7 @@ import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear
 import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
-import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
+import { IdRef, Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
 
@@ -343,6 +343,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
         ) : timeline.kind === "blocked" ? (
           <Callout tone="blocked">
             {copy.blockedBand} <RuleRef id={timeline.ruleId} />
+            {timeline.question && <> <IdRef id={timeline.question} /></>}
           </Callout>
         ) : timeline.kind === "figure-not-updated" ? (
           <Callout tone="caution">

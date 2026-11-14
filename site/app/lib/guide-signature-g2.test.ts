@@ -314,6 +314,15 @@ describe("the provident guides' own timelines at the slider's ends", () => {
   });
 });
 
+describe("a timeline its open question stops", () => {
+  it("names the question with the rule, for the band to open its card (KGL OQ15)", () => {
+    // 6,970 a month into a kupat gemel lehashkaa at −1%: 83,640 a year, under 2026's ceiling and over 2027's lowered one, so the readings
+    // route different amounts and the drawing stops on KGL-03 with the question
+    const t = runTimeline(page("kupat-gemel-lehashkaa").bundle!, { entered: { amount_now: 0, monthly_deposit: 6_970, "A-02": -1 } as never, age: null });
+    expect(t).toMatchObject({ kind: "blocked", ruleId: "KGL-03", question: "KGL OQ15" });
+  });
+});
+
 describe("the study fund's wait figures (F-96)", () => {
   it("count only the income tax at the withdrawal, not what the salary pays on the employer's money above the limit, at a salary above 15,712", () => {
     const d = page("keren-hishtalmut").signature!;

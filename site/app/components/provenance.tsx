@@ -25,6 +25,8 @@ export interface SheetPart {
   head?: string;
   text: string;
   doc?: { href: string; title: string };
+  /** The open question the sentence rests on (a run its readings stopped, method §13): its chip after the sentence opens its card. */
+  question?: string;
   /** A heading the part stands under, after the parts with none ("" for a list with no heading of its own): a part of a group with no
    *  head and no document is a line of a list (what a price list holds and the price leaves out, D106). */
   group?: string;
