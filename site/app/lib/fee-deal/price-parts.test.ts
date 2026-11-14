@@ -17,7 +17,7 @@ import { readDealFor, type PartMark } from "./parts";
 import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
-import { builder } from "./builder";
+import { builder, panel } from "./builder";
 import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
 import { feeDeal as copy } from "../../copy";
 
@@ -399,5 +399,14 @@ describe("a filled figure's source", () => {
     expect(decodeDeal(encodeDeal(d))!.fees[0]!.stages![0]!.price).toEqual(fx);
     const shown = readingOf(read(d), data.fx).periods[0]!.rows[0]!.price.figures.rate!;
     expect((shown.source as { page?: number }).page).toBe(page);
+  });
+});
+
+describe("a flat price in the open case", () => {
+  it("stands where a typed one goes, after the bounds and before the links and notes, while its figures are blank", () => {
+    const blank: Price = { form: "action", rate: typed(0.1), min: typed(5), flat: { amount: { v: 0, blank: true }, upTo: { v: 0, blank: true } }, refund: typed(1), notes: ["unfilled"] };
+    const ids = (p: Price) => panel(read(account([trade(p)])), "fee-trade")!.open.buy[0]!.parts.map((x) => x.id);
+    expect(ids(blank)).toEqual(["share", "min", "flat", "refund", "unfilled"]);
+    expect(ids({ ...blank, flat: { amount: typed(3), upTo: typed(50) } } as Price)).toEqual(ids(blank));
   });
 });

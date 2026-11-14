@@ -5,8 +5,8 @@ import { useEffect, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenPart, PartField } from "../../lib/fee-deal/builder";
 import { setUntil, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
-import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage } from "../../lib/fee-deal/model";
-import { charged, hasCurrency, onAction } from "../../lib/fee-deal/offers/capabilities";
+import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
+import { charged, hasCurrency, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
 import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
@@ -136,9 +136,9 @@ function ThirdBody({ part, at }: BodyProps) {
       <InlineSelect
         chip
         label={at.label(cp.thirdForm)}
-        options={[{ id: "none", name: cp.thirdNone }, ...(["action", "perUnit", "perAction"] as const).map((f) => ({ id: f, name: copy.panel.forms[f]! }))]}
+        options={[{ id: "none", name: cp.thirdNone }, ...ON_ACTION_FORMS.map((f) => ({ id: f, name: copy.panel.forms[f]! }))]}
         value={price.third.price?.form ?? "none"}
-        onChange={(v) => v && at.edit((x) => withThirdForm(x, v === "none" ? null : (v as "action" | "perUnit" | "perAction")))}
+        onChange={(v) => v && at.edit((x) => withThirdForm(x, v === "none" ? null : (v as ThirdPrice["form"])))}
       />
       {part.fields.map((f) => (
         <span key={f.figure} className="inline-flex items-center gap-2">

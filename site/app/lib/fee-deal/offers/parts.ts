@@ -5,8 +5,8 @@
 import { blankPrice, mainFigure, typed, type Fee, type MonthKey, type Note, type Price, type Priced, type Side } from "../model";
 import { editPrice, holdOn, setLimited, setSaleApart, withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edit";
 import { type FeeKindId, type FormId } from "../shapes";
-import { anyField, fieldsOf, pricesSaleApart, takes, takesAny, type FieldId } from "./capacity";
-import { byRate, charged, formBoundsAction, formCharged, formOnAction, hasCurrency, hasFlat, onAction, pricedCurrency, sameFigureKind } from "./capabilities";
+import { fieldsOf, pricesSaleApart, takes, type FieldId } from "./capacity";
+import { boundsAction, byRate, charged, formBoundsAction, formCharged, formOnAction, hasBounds, hasCurrency, hasFlat, onAction, pricedCurrency, sameFigureKind } from "./capabilities";
 import { FIGURES, type Figure } from "./figures";
 
 /**
@@ -80,8 +80,9 @@ export interface PartDef {
   /** The figures it holds, in the order its boxes stand. */
   figures: readonly Figure[];
   /**
-   * Whether a fee of `kind` can hold it on the price `p` (its capacity): some parts stand on the forms the fee can take, some on the fields
-   * of the price's own form, some on the price itself (a discount on a price on an action).
+   * Whether a fee of `kind` can hold it on the price `p` as it stands: a form where the fee can take it; any other part where the price's
+   * own form can hold it (a discount on a price on an action) and, for a percent maximum, a flat price or a held share's bounds, where the
+   * fee's capacity gives that form the field. A part the price cannot hold is not offered; a form of the price that can is.
    */
   holds: (kind: FeeKindId, p: Price) => boolean;
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
@@ -96,8 +97,12 @@ export interface PartDef {
 
 const onPrice = (edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price): PartEdit => ({ on: "price", edit });
 
-/** A part on an action: where the price is on one, or the fee can take a price that `of` holds of. */
-const onActionWhere = (of: (form: FormId) => boolean) => (kind: FeeKindId, p: Price) => onAction(p) || takesAny(kind, of);
+/** Whether the price is on an action. */
+const onActionPrice = (_kind: FeeKindId, p: Price) => onAction(p);
+/** Whether the price charges something. */
+const chargedPrice = (_kind: FeeKindId, p: Price) => charged(p);
+/** Whether the price's form has a field in the fee's capacity. */
+const withField = (field: FieldId) => (kind: FeeKindId, p: Price) => fieldsOf(kind, p.form).includes(field);
 const always = () => true;
 
 /** A form of the price: on, the price in that form with what carries over (`withForm`), as the fee may hold it (`fitted`); off, free. */
@@ -120,9 +125,9 @@ const boundPart = (id: "min" | "max" | "cap", ask: Ask, carriesIn: (form: FormId
   carriesIn,
   ...(id === "cap" ? { needsField: "cap" as const } : {}),
   figures: [id],
-  // a minimum and a maximum where the price's form has them, and on any share of an action or sum per unit the fee can take; a percent
-  // maximum where a form of the fee has one
-  holds: id === "cap" ? (kind) => anyField(kind, "cap") : (kind, p) => fieldsOf(kind, p.form).includes(id) || takesAny(kind, formBoundsAction),
+  // a minimum and a maximum on a share of an action or a sum per unit, and on a held share whose form has them; a percent maximum where
+  // the price's form has one
+  holds: id === "cap" ? withField("cap") : (kind, p) => boundsAction(p) || (hasBounds(p) && withField(id)(kind, p)),
   ask,
   used: (p) => FIGURES[id].get(p) !== undefined,
   apply: onPrice((p, on, at) => withFigure(p, id, on ? at.value! : null)),
@@ -137,7 +142,7 @@ const notePart = (id: Note): PartDef => ({
   carriesIn: formOnAction,
   figures: [],
   // an order is a share of an action or a sum per unit, so not a sum on each event alone (a corporate event's)
-  holds: onActionWhere(formBoundsAction),
+  holds: onActionPrice,
   ask: null,
   used: (p) => onAction(p) && !!p.notes?.includes(id),
   apply: onPrice((p, on) => withNote(p, id, on)),
@@ -151,8 +156,8 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   held: formPart("held", "held", ["rate"]),
   sum: formPart("sum", "sum", ["amount"]),
   free: formPart("free", "free", []),
-  discount: { id: "discount", kind: "price", field: "discount", carriesIn: formOnAction, figures: ["discount"], holds: onActionWhere(formOnAction), ask: null, used: (p) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
-  third: { id: "third", kind: "price", field: "third", carriesIn: formOnAction, figures: ["third", "thirdMin", "thirdMax"], holds: onActionWhere(formOnAction), ask: null, used: (p) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
+  discount: { id: "discount", kind: "price", field: "discount", carriesIn: formOnAction, figures: ["discount"], holds: onActionPrice, ask: null, used: (p) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
+  third: { id: "third", kind: "price", field: "third", carriesIn: formOnAction, figures: ["third", "thirdMin", "thirdMax"], holds: onActionPrice, ask: null, used: (p) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
   until: {
     id: "until",
     kind: "price",
@@ -166,9 +171,9 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   min: boundPart("min", "sum", formBoundsAction),
   max: boundPart("max", "sum", formBoundsAction),
   cap: boundPart("cap", "pct", formOnAction),
-  flat: { id: "flat", kind: "bound", field: "flat", carriesIn: formBoundsAction, needsField: "flat", figures: ["flat", "upTo"], holds: (kind) => anyField(kind, "flat"), ask: null, used: (p) => hasFlat(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true },
-  offset: { id: "offset", kind: "link", field: "offset", carriesIn: formCharged, figures: [], holds: always, ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
-  refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], holds: always, ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
+  flat: { id: "flat", kind: "bound", field: "flat", carriesIn: formBoundsAction, needsField: "flat", figures: ["flat", "upTo"], holds: (kind, p) => hasFlat(p) && withField("flat")(kind, p), ask: null, used: (p) => hasFlat(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true },
+  offset: { id: "offset", kind: "link", field: "offset", carriesIn: formCharged, figures: [], holds: chargedPrice, ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
+  refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], holds: chargedPrice, ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
   unfilled: notePart("unfilled"),
   unfilledClerk: notePart("unfilledClerk"),
   partial: notePart("partial"),

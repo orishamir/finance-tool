@@ -16,7 +16,9 @@ export type AmountPrice = Extract<Price, { form: "perUnit" | "sum" | "perAction"
 /** A price that charges something: every form but free. */
 export type ChargedPrice = Exclude<Price, { form: "free" }>;
 
-const ON_ACTION: readonly FormId[] = ["action", "perUnit", "perAction"];
+/** The forms on an action, which a third party's fee takes too (F-117). */
+export const ON_ACTION_FORMS = ["action", "perUnit", "perAction"] as const satisfies readonly FormId[];
+const ON_ACTION: readonly FormId[] = ON_ACTION_FORMS;
 const BOUNDS_ACTION: readonly FormId[] = ["action", "perUnit"];
 const BOUNDED: readonly FormId[] = ["action", "perUnit", "held"];
 const BY_RATE: readonly FormId[] = ["action", "held"];
