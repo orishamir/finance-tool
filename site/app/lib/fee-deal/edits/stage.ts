@@ -1,6 +1,7 @@
 // The changes the fee page makes to a fee's prices over time, each a pure function from a fee to the next: a price edited in place, a
 // price's end, a change of price added, moved or taken away, a sale priced apart. A fee whose price changes by things (F-114) keeps its prices in its
 // cases: these take the case they edit (`caseId`; a fee with cases is edited in its first case where none is named).
+import { held } from "../limits";
 import { hasCases, pricedOf, pricesOn, sameContent, type Case, type Fee, type MonthKey, type Price, type Priced, type Side, type SlimFee, type Stage } from "../model";
 
 // ---------------------------------------------------------------- a fee's prices over time, whole or in a case
@@ -53,7 +54,8 @@ const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
 
 /**
  * A fee whose price on a side changes from `month` (F-110): the price in force then splits in two at it, both halves its price, the later
- * a copy the person then changes. A month the prices change in already, or no month, leaves the fee as it is.
+ * a copy the person then changes. A month the prices change in already, or no month, leaves the fee as it is, and so do prices that
+ * number `STAGES_MAX` already (marked so, limits.ts).
  */
 export function splitAt<F extends Fee>(fee: F, side: Side, month: MonthKey, caseId?: string): F {
   const stages = pricesOn(fee, side, caseId);
@@ -62,7 +64,7 @@ export function splitAt<F extends Fee>(fee: F, side: Side, month: MonthKey, case
   const at = k < 0 ? stages.length - 1 : k;
   const s = stages[at]!;
   const later: Stage = { price: structuredClone(s.price), ...(s.until !== undefined ? { until: s.until } : {}) };
-  return withStages(fee, side, [...stages.slice(0, at), { ...s, until: month }, later, ...stages.slice(at + 1)], caseId);
+  return held(fee, withStages(fee, side, [...stages.slice(0, at), { ...s, until: month }, later, ...stages.slice(at + 1)], caseId));
 }
 
 /**

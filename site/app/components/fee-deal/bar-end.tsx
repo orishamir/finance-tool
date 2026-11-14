@@ -1,7 +1,7 @@
 // The end of the fee page's bar: the deals this device keeps (open one, start a new one, rename one, or delete one at once, which the page
 // can undo), each row with its product and the day it was saved under its name; and a link to the deal on screen once it has a kind. A
 // control that could do nothing is not drawn: no list before a deal is saved. Copying the link says so on its button for a moment; where the browser refuses the
-// clipboard, the page shows the address to copy by hand.
+// clipboard, the page shows the address to copy by hand, and where the deal is too big for a link that opens, it says so and copies nothing.
 import { useEffect, useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { encodedDealPath } from "../../lib/fee-deal/link";
@@ -16,18 +16,23 @@ const w = copy.end;
 /** How a saved deal is listed: its name, else its template's, else the bar's placeholder for its kind. */
 export const dealLabel = (d: FeeDeal, kindName: string | null): string => d.name.trim() || d.template?.name || copy.bar.namePlaceholder(kindName);
 
-/** The deal's address to copy, on this site's origin and base. */
-export const dealLink = async (deal: FeeDeal): Promise<string> => siteAddress(window.location.origin, import.meta.env.BASE_URL, await encodedDealPath(deal));
+/** The deal's address to copy, on this site's origin and base; null where it would be too long to open (`packDeal`). */
+export async function dealLink(deal: FeeDeal): Promise<string | null> {
+  const path = await encodedDealPath(deal);
+  return path === null ? null : siteAddress(window.location.origin, import.meta.env.BASE_URL, path);
+}
 
 /**
  * Copying the link of the deal on screen: `copied` for a moment after it worked, `blocked` holding the address where the clipboard refused
- * it. The link is compressed as the deal changes, so a press writes it at once, in the press itself, as a browser asks of the clipboard.
+ * it, and `tooLong` where the deal is too big for a link that opens, so nothing is copied. The link is compressed as the deal changes, so
+ * a press writes it at once, in the press itself, as a browser asks of the clipboard. `blocked` and `tooLong` belong to the deal as it was
+ * when copied: any change to it, or another deal, takes them away, so the box never holds a link of another state of the deal.
  */
 export function useCopyLink(deal: FeeDeal) {
   const [copied, setCopied] = useState(false);
-  const [blocked, setBlocked] = useState<string | null>(null);
+  const [failed, setFailed] = useState<{ deal: FeeDeal; text: string | null } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const ready = useRef<{ deal: FeeDeal; text: string } | null>(null);
+  const ready = useRef<{ deal: FeeDeal; text: string | null } | null>(null);
   useEffect(() => {
     let on = true;
     void dealLink(deal).then((text) => {
@@ -39,18 +44,24 @@ export function useCopyLink(deal: FeeDeal) {
   }, [deal]);
   const copyLink = async () => {
     const text = ready.current?.deal === deal ? ready.current.text : await dealLink(deal);
+    if (text === null) {
+      setCopied(false);
+      setFailed({ deal, text: null });
+      return;
+    }
     try {
       await navigator.clipboard.writeText(text);
-      setBlocked(null);
+      setFailed(null);
       setCopied(true);
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
-      setBlocked(text);
+      setFailed({ deal, text });
     }
   };
-  return { copied, blocked, copyLink, closeBlocked: () => setBlocked(null) };
+  const now = failed?.deal === deal ? failed : null;
+  return { copied, blocked: now?.text ?? null, tooLong: !!now && now.text === null, copyLink, closeBlocked: () => setFailed(null) };
 }
 
 /** A saved deal's line under its name in the list: its product, and the day it was last saved. */

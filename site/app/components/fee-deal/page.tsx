@@ -4,7 +4,8 @@
 // were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
 // pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end opens another saved deal
-// or a new one, and copies the deal's link. The line's "לבחור תבנית" opens the template picker, where a price list opens a new deal
+// or a new one, and copies the deal's link. A link pasted into the address while the page is open opens as a fresh load would. A link
+// that does not open says why above the kind chooser, and one whose fees do not all open opens the rest and names the ones left out. The line's "לבחור תבנית" opens the template picker, where a price list opens a new deal
 // beside this one; its track's button opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
 // kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first fee moves
 // nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
@@ -19,7 +20,7 @@
 // undone, a newer such change replaces it, another deal opens, the part it would put back into changes, or ten seconds pass while neither
 // the focus nor the pointer is on it.
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import type { ProductId } from "@finance-tool/schema";
 import { dealCases, feeDeal as copy } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
@@ -35,9 +36,10 @@ import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { productOffered } from "../../lib/fee-deal/offers/offer";
-import { dealOfAddress } from "../../lib/fee-deal/link";
+import { dealOfAddress, type AddressDeal } from "../../lib/fee-deal/link";
+import { feeRoom } from "../../lib/fee-deal/limits";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
-import { dealStore, savedWith } from "../../lib/fee-deal/store";
+import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy } from "../../lib/fee-deal/lifted";
@@ -48,9 +50,10 @@ import { useMedia } from "../../lib/hooks";
 import { Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
-import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems } from "./builder";
+import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
 import { DealColumns } from "./deal-columns";
-import { DealNotices, useSaid } from "./deal-notices";
+import { DealNotices, useSaid, type NoticeLine } from "./deal-notices";
+import { UNDO_MS } from "./use-undo";
 import { FeeLinksProvider } from "./links";
 import { partPlaceId } from "./figures";
 import { UndoLine } from "./undo-line";
@@ -61,7 +64,7 @@ import { ToolboxCard, ToolboxColumn, applyTool, type ToolHands } from "./toolbox
 import type { LiftHands, ToolDrop } from "./fee-block";
 import { ReadingCards } from "./reading";
 import { useUnitPrice } from "./use-unit-price";
-import { useDealDocument, useOpenedDeal, type AddressDeal } from "./use-deal-document";
+import { refusalWords, useDealDocument, useOpenedDeal } from "./use-deal-document";
 import { useOpenCase } from "./use-open-case";
 import { useTemplatePicker } from "./use-template-picker";
 import { feeName } from "./words";
@@ -98,7 +101,7 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
   // the deal the address names, read once the page has what it needs (a deal in the fragment is opened by the browser's own decompression,
   // which takes a moment): `undefined` while it is read
   const { search, hash } = useLocation();
-  const [address, setAddress] = useState<AddressDeal | undefined>(undefined);
+  const [address, setAddress] = useState<AddressDeal | null | undefined>(undefined);
   useEffect(() => {
     if (!data || !today || address !== undefined) return;
     let on = true;
@@ -126,8 +129,22 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
  * The deal on screen and its views: its document (use-deal-document.ts), the fee open in place (use-open-case.ts), the template picker
  * (use-template-picker.ts), and the deal read once for every view, of which the columns, the toolbox, the menus and the reading are drawn.
  */
-function Deal({ data, today, saved, writable, address }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; address: AddressDeal }) {
+/** What a link that did not open whole says: why it failed, else the fees it carried that did not open, each with why; null where it opened whole. */
+function linkWords(a: AddressDeal | null): string | null {
+  if (!a) return null;
+  if (a.failed) return copy.end.failed + copy.end.failedWhy[a.failed]!;
+  if (a.left.length === 0) return null;
+  const w = copy.end.left;
+  const what = a.left.map((l) => (l.kind === null ? w.kind : feeName(l.kind) + (l.why === "prices" ? w.prices : ""))).join("; ");
+  return a.left.length === 1 ? w.one(what) : w.many(a.left.length, what);
+}
+
+function Deal({ data, today, saved, writable, address }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; address: AddressDeal | null }) {
   const first = useOpenedDeal(address, saved, today);
+  // what the link the page opened from, or one pasted since, did not open: it stands until it is closed or another deal opens
+  const [linkNote, setLinkNote] = useState<string | null>(() => linkWords(address));
+  // saved deals that do not open (lib/fee-deal/store.ts), said until closed
+  const [unreadClosed, setUnreadClosed] = useState(false);
   // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
   // goes, and a new deal is saved once it is worth saving
   const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow() });
@@ -145,8 +162,36 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const afterShow = () => {
     oc.reset();
     setSaid(null);
+    setLinkNote(null);
     link.closeBlocked();
   };
+  // a link pasted into the address while the page is open (a change of the fragment alone loads nothing): its deal opens as on a fresh
+  // load, saved as a deal, the one on screen kept among the saved ones; the address is cleared again
+  const navigate = useNavigate();
+  useEffect(() => {
+    let on = true;
+    const onHash = () => {
+      if (!new URLSearchParams(window.location.hash.replace(/^#/, "")).has("d")) return;
+      void dealOfAddress("", window.location.hash, data, today).then((a) => {
+        if (!on || !a) return;
+        doc.openGiven(a);
+        setLinkNote(linkWords(a));
+        navigate({ search: "", hash: "" }, { replace: true, preventScrollReset: true });
+      });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => {
+      on = false;
+      window.removeEventListener("hashchange", onHash);
+    };
+  });
+  // a refusal stands for as long as an undo line would, or until the next change
+  const { refusal, setRefusal } = doc;
+  useEffect(() => {
+    if (!refusal) return;
+    const t = window.setTimeout(() => setRefusal(null), UNDO_MS);
+    return () => window.clearTimeout(t);
+  }, [refusal, setRefusal]);
   const open = doc.show;
   const onUndo = doc.onUndo;
   const picker = useTemplatePicker({
@@ -172,16 +217,18 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     doc.setFocus({ fee: fee.id, on: "part", part: partPlaceId(at.side, at.k, at.part) });
   };
   const onAdd = (kind: FeeKindId) => {
-    const { deal: next, fee } = addOfferedFee(deal, kindById(data.kinds, deal.kind), kind);
+    const added = addOfferedFee(deal, kindById(data.kinds, deal.kind), kind);
+    if (!added) return setRefusal({ feeId: null, words: refusalWords("fees") });
+    const { deal: next, fee } = added;
     change(next);
     doc.setChosen(fee.id);
     oc.sheet.unfold();
     doc.setFocus({ fee: fee.id, on: "box" });
   };
-  // the open fee's bin, beside its name: the fee's undo line takes its place, as tall as its block was, and stands where the block stood on
-  // the screen whichever fee opens in its stead, the next or, after the last, the one above (`UndoLine.standAt`), so a second press of a
-  // double-click lands on the line, never in the fee that opened
-  const onRemoveFee = (feeId: string) => kept(removeFeeKept(deal, feeId, chosen));
+  // the open fee's bin, beside its name: the fee's undo line takes its place, in the block's room for a moment before it closes up to the
+  // line, and stands where the block stood on the screen whichever fee opens in its stead, the one under it on the page or, after the
+  // last, the one above (`UndoLine.standAt`), so a second press of a double-click lands on the line, never in the fee that opened
+  const onRemoveFee = (feeId: string) => kept(removeFeeKept(deal, feeId, chosen, shownFeeOrder(deal.fees, (f) => feeGroup(read, f, saves))));
   // another kind of product: the fees it does not have leave the deal, kept for the undo where any of them held something
   const onKind = (id: ProductId) => {
     const to = kindById(data.kinds, id);
@@ -339,6 +386,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             doc.setChosen(have.id);
             return;
           }
+          if (!feeRoom(deal)) return setRefusal({ feeId: null, words: refusalWords("fees") });
           const r = copyHouseFee(deal, house, k, "beside", data);
           if (!r) return;
           change(r.deal);
@@ -354,6 +402,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   ) : null;
   // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
   const picks = views?.reading.picks;
+  // the lines that stand under the bar until closed or no longer true
+  const unread = unreadDeals();
+  const notices: NoticeLine[] = [
+    ...(linkNote ? [{ key: "link", text: linkNote, onClose: () => setLinkNote(null) }] : []),
+    ...(doc.deletedElsewhere ? [{ key: "deleted", text: copy.end.deletedElsewhere, action: { label: copy.end.keepAnyway, onClick: doc.keepAnyway } }] : []),
+    ...(unread > 0 && !unreadClosed ? [{ key: "unread", text: copy.end.unread(unread), onClose: () => setUnreadClosed(true) }] : []),
+    ...(link.tooLong ? [{ key: "too-long", text: copy.end.tooLong, onClose: link.closeBlocked }] : []),
+  ];
 
   return (
     <FeeLinksProvider value={oc.links}>
@@ -382,7 +438,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       {/* for a screen reader: what the undo line says, else what the page just did (a price list opened a new deal, the link was copied);
           where the browser would not copy the link, the link to copy by hand */}
       <DealNotices
-        status={words ?? said ?? (link.copied ? copy.end.copied : "")}
+        status={words ?? refusal?.words ?? said ?? (link.copied ? copy.end.copied : "")}
+        lines={notices}
         undoLine={
           lines.deal && (
             <UndoLine key={`undo:deal:${(shown as DealUndo).deal.id}`} as="div" onUndo={onUndo} onHold={doc.undo.setHolding} take={doc.undo.take(shown!)} refocusOnUndo refocus={dealsMenuOrName}>
@@ -425,6 +482,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onAskDone: oc.ask.onAskDone,
                 lift: liftHands,
               }}
+              refusal={refusal}
               ask={oc.ask.asking && oc.ask.asking.fee === chosen ? { kind: oc.ask.asking.kind, ...(oc.ask.asking.split ? { split: oc.ask.asking.split } : {}) } : null}
               adding={adding}
             />

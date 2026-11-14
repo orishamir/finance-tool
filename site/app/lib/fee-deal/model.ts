@@ -14,6 +14,7 @@ import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, 
 
 export * from "./core";
 import { PART_ROWS } from "./part-rows";
+import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX } from "./limits";
 import { BOUND_CURRENCIES, MONTHS, NOTES, type BoundCurrency, type Discount, type Flat, type MonthKey, type Months, type Note, type Num, type Price, type Priced, type Side, type Sourced, type Stage, type Strength, type Third } from "./core";
 
 /** A value of what is bought or held that the person named, with where it is bought and its currency (null: a foreign one not named). */
@@ -169,8 +170,6 @@ const TEXT_MAX = 400;
 /** No typed percent is above this, and no sum above this many shekels: anything larger is not a price and is refused. */
 const PCT_MAX = 100;
 export const SUM_MAX = 1_000_000_000;
-const FEES_MAX = 40;
-const STAGES_MAX = 12;
 const MONTH = /^(\d{4})-(0[1-9]|1[0-2])$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ID = /^[a-z0-9-]{1,40}$/;
@@ -625,11 +624,6 @@ function readPriced(raw: Rec, kind: FeeKindId): Priced | null {
   return sale ? { stages, sale } : null;
 }
 
-const CASES_MAX = 40;
-const TOPS_MAX = 12;
-const VALUES_MAX = 20;
-const PICKS_MAX = 12;
-
 /** A value the person named for what is bought or held: its name, where it is bought, and its currency (a code, or null). */
 function readOwnPlace(raw: unknown): OwnPlace | null {
   if (!isRec(raw) || !str(raw.name, NAME_MAX) || raw.name.trim() === "" || Object.hasOwn(WHAT_VALUES, raw.name)) return null;
@@ -802,15 +796,37 @@ function heldPick(raw: unknown): ReadPick | null {
  * cases opens with every fee and price as it was, what it held becoming the reading's pick of what is bought.
  */
 export function readDeal(raw: unknown): FeeDeal | null {
+  const r = readDealParts(raw, false);
+  return r && r.deal;
+}
+
+/**
+ * A fee a link carried that does not open: its kind where it names one the site has (null: a kind the site does not know), and why (`kind`:
+ * a kind the site does not know; `prices`: its prices or its cases are not what a fee holds).
+ */
+export interface FeeLeftOut {
+  kind: FeeKindId | null;
+  why: "kind" | "prices";
+}
+
+/**
+ * A deal from a link: as `readDeal`, except that a fee that does not open is left out and named (`left`) while the rest of the deal opens.
+ * Null where anything else in it is not what a deal holds.
+ */
+export const readLinkedDeal = (raw: unknown): { deal: FeeDeal; left: FeeLeftOut[] } | null => readDealParts(raw, true);
+
+function readDealParts(raw: unknown, leaveFees: boolean): { deal: FeeDeal; left: FeeLeftOut[] } | null {
   if (!isRec(raw) || typeof raw.id !== "string" || !ID.test(raw.id) || !str(raw.name, NAME_MAX)) return null;
   if (raw.kind !== null && !isProductId(raw.kind)) return null;
   const kind = raw.kind as ProductId | null;
   if (!Array.isArray(raw.fees) || raw.fees.length > FEES_MAX) return null;
   const fees: Fee[] = [];
+  const left: FeeLeftOut[] = [];
   for (const f of raw.fees) {
     const fee = readFee(f);
-    if (!fee || fees.some((x) => x.id === fee.id)) return null;
-    fees.push(fee);
+    if (fee && !fees.some((x) => x.id === fee.id)) fees.push(fee);
+    else if (leaveFees) left.push({ kind: isRec(f) && isFeeKindId(f.kind) ? f.kind : null, why: isRec(f) && isFeeKindId(f.kind) ? "prices" : "kind" });
+    else return null;
   }
   const deal: FeeDeal = { id: raw.id, name: raw.name, kind, fees };
   if (raw.readFor !== undefined) {
@@ -838,5 +854,5 @@ export function readDeal(raw: unknown): FeeDeal | null {
     if (typeof raw.saved !== "string" || !DATE.test(raw.saved)) return null;
     deal.saved = raw.saved;
   }
-  return deal;
+  return { deal, left };
 }

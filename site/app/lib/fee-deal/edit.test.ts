@@ -137,7 +137,7 @@ describe("the fee page's edits", () => {
   });
 
   it("a deal's kind and the reading's picks", () => {
-    const { deal } = addFee(setPick(newDeal("brokerage-account"), "what", "us"), "trade");
+    const { deal } = addFee(setPick(newDeal("brokerage-account"), "what", "us"), "trade")!;
     expect(deal.fees.map((f) => f.kind)).toEqual(["trade"]);
     expect(setKind(deal, kindOf("ira-provident")).readFor).toEqual([{ by: "what", is: "us" }]);
     const pension = setKind(deal, kindOf("pension-comprehensive"));

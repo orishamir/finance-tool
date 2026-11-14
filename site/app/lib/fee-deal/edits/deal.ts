@@ -3,20 +3,25 @@
 // offered; the edits of a fee's prices, stages and cases are in price.ts, stage.ts and case.ts.
 import { newFee, type Fee, type FeeDeal, type ReadPick } from "../model";
 import type { DealKind } from "../kinds";
+import { feeRoom, PICKS_MAX } from "../limits";
 import { type FeeKindId, type FormId } from "../shapes";
 import { feeOffered, offerFor, type DataBar } from "../offers/offer";
 
 /** The deal with one fee replaced by `fn` of it. */
 export const updateFee = (deal: FeeDeal, feeId: string, fn: (f: Fee) => Fee): FeeDeal => ({ ...deal, fees: deal.fees.map((f) => (f.id === feeId ? fn(f) : f)) });
 
-/** The deal with a new fee of a kind at the end, its price in the form given (the first its product's fee is offered in, `Offer.usual`). */
-export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: FeeDeal; fee: Fee } {
+/**
+ * The deal with a new fee of a kind at the end, its price in the form given (the first its product's fee is offered in, `Offer.usual`).
+ * Null where the deal holds as many fees as a deal may (`FEES_MAX`).
+ */
+export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: FeeDeal; fee: Fee } | null {
+  if (!feeRoom(deal)) return null;
   const fee = newFee(kind, undefined, form);
   return { deal: { ...deal, fees: [...deal.fees, fee] }, fee };
 }
 
 /** The deal with a new fee of a kind at the end, its price in the first form the deal's product (`product`) is offered it in. */
-export const addOfferedFee = (deal: FeeDeal, product: DealKind | null, kind: FeeKindId): { deal: FeeDeal; fee: Fee } => addFee(deal, kind, offerFor(product, kind).usual ?? undefined);
+export const addOfferedFee = (deal: FeeDeal, product: DealKind | null, kind: FeeKindId): { deal: FeeDeal; fee: Fee } | null => addFee(deal, kind, offerFor(product, kind).usual ?? undefined);
 
 /**
  * A deal of another kind: a fee the new kind is not offered (`feeOffered`: one it does not have, one the data bars, `bar`, or one the rule
@@ -40,9 +45,13 @@ export const setFeeName = <F extends Fee>(fee: F, name: string): F => ({ ...fee,
 
 // ---------------------------------------------------------------- the reading's picks (F-114)
 
-/** The deal read for `is` of the thing keyed `by` (`pickKey`); `null` takes the pick away, and the thing starts as F-114 says. */
+/**
+ * The deal read for `is` of the thing keyed `by` (`pickKey`); `null` takes the pick away, and the thing starts as F-114 says. A new pick
+ * past `PICKS_MAX` leaves the deal as it is: the thing is read as F-114 starts it.
+ */
 export function setPick(deal: FeeDeal, by: string, is: string | null): FeeDeal {
   const { readFor: _r, ...rest } = deal;
   const picks: ReadPick[] = [...(deal.readFor ?? []).filter((p) => p.by !== by), ...(is === null ? [] : [{ by, is }])];
+  if (picks.length > PICKS_MAX) return deal;
   return picks.length ? { ...rest, readFor: picks } : rest;
 }
