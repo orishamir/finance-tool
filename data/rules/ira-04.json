@@ -1,0 +1,56 @@
+{
+  "id": "IRA-04",
+  "title": "A separate fund, not a track",
+  "title_he": "קופה בניהול אישי היא קופה נפרדת, לא מסלול",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-14",
+  "text_he": "בנתוני רשות שוק ההון (גמל־נט) כל קופה בניהול אישי מדווחת כקופה בפני עצמה, עם מספר קופה משלה, ולא כמסלול בקופה רגילה של אותה חברה. התקנות מ־2009 מחילות את הכללים של ניהול אישי גם על מסלול בקופה מסלולית שבו העמית מכוון את ההשקעות (״מסלול השקעה אישי״). בטיוטה מ־2025 רשות שוק ההון כותבת שמסלול כזה לא קיים, ומציעה למחוק את התקנה. עד 31.10.2026 לא פורסמו תקנות סופיות.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-11-14",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.5 (gazette p.57), reg. 10",
+      "locator_he": "עמוד הקובץ 5 (עמוד הרשומות 57), תקנה 10",
+      "page": 5,
+      "quote": "ויראו את המסלול האמור כאילו היה קופת גמל בניהול אישי",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf#page=7",
+      "title": "CMA draft 2025",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "quote": "לא קיים מסלול קופת גמל בניהול אישי בקופת גמל מסלולית",
+      "checked": "2026-11-14",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",
+      "title": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
+      "title_he": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-14"
+    }
+  ]
+}

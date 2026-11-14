@@ -442,7 +442,7 @@ The Maya export file was downloaded once through the browser, into your Download
 |---|---|---|
 | Bank Yahav's full tariff 2.2026 (PDF and XLSX, 'נכון ליום: 01/10/2026') and its 16/09/2026 change notice; snapshot `yahav@2026-10-24` (14 lines) | BRK-30 | data gap O12 (Yahav) |
 | Bank of Jerusalem's individuals tariff (PDF and XLSX per part; part 4 printed 'בתוקף מתאריך : 06/02/20217', part 5 20/06/2021); snapshot `jerusalem@2026-10-24` (13 lines) | BRK-30 | O12 (Jerusalem) |
-| One Zero's full tariff (26.7.2026): TA-125 shares, Israeli funds and US securities only; zero custody; one rate for clerk and internet; plan ONE 49 NIS a month with a 66% trade benefit; snapshot `one-zero@2026-10-24` (11 lines) | BRK-38 | O12 (One Zero) |
+| One Zero's full tariff (26.7.2026): TA-125 shares, the Israeli funds it has distribution agreements for (its execution instructions; which funds is BRK OQ24) and US securities only; zero custody; one rate for clerk and internet; plan ONE 49 NIS a month with a 66% trade benefit; snapshot `one-zero@2026-10-24` (11 lines) | BRK-38 | O12 (One Zero) |
 | Meitav Trade: still no tariff; the four-tracks page gives words only (its tariff was found on 2026-10-31) | BRK-30 | — |
 | Maya list: 2,009 funds; counts by top classification (two heading trees, 1,163 active and 846 tracking/ETF) and tax status (1,986 / 21 / 2); the by-hand export path | CAT-42 | CAT-33, CAT-34 refresh |
 | TASE terms (August 2026): no republishing without written consent; limited quotation with a link only on www.tase.co.il; no databases | CAT-43 | product dependency 7 (fund lists: not shipped) |
