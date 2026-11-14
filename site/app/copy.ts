@@ -1984,8 +1984,8 @@ export const feeDeal = {
     insertMenu: { before: "הוספה לפני", after: "הוספה אחרי" },
     /** The ✕ at the end of one part line in a cell, after a long rest on it: what it takes from the case ("להסיר מהמקרה: מקסימום"). */
     partOff: "להסיר מהמקרה: {part}",
-    /** A closed fee card's corner actions under the pointer, and the same in its grip's menu. */
-    feeCorner: { remove: "מחיקת העמלה", duplicate: "שכפול העמלה" },
+    /** A closed fee card's duplicate in its corner under the pointer (its bin there says `panel.remove`), and the same in its grip's menu. */
+    feeCorner: { duplicate: "לשכפל את העמלה", menuDuplicate: "שכפול העמלה", grip: "לשכפל או למחוק את העמלה: " },
     addStep: { ask: "{thing}: איפה הגבול של המדרגה החדשה?", note: "המדרגה שהגבול נופל בה תתפצל לשתיים, ושתיהן יישארו במחיר שלה עד שתשנו אותו.", field: "הגבול החדש", taken: "יש כבר מדרגה שמתחילה כאן." },
     addValues: "כל ערך שתסמנו יקבל את המחירים של {last}, עד שתשנו אותם.",
     /** The switch above a grid of a fee that changes by three things, spoken. */

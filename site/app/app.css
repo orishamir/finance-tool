@@ -809,6 +809,27 @@
   :root:has([data-lift-ghost], [data-reach-frame]) [data-part-off] {
     display: none;
   }
+  /* A closed fee card's corner actions (kit/fee-block.tsx): drawn, and taking a press, only while a fine pointer is over the card; touch
+     and the keyboard reach the same in the fee's grip menu; never while something is carried */
+  [data-fee-corner] {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) linear;
+  }
+  @media (pointer: fine) {
+    :has(> [data-fee-corner]):hover > [data-fee-corner] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  @media (pointer: coarse) {
+    [data-fee-corner] {
+      display: none;
+    }
+  }
+  :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-corner] {
+    display: none;
+  }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */
   [data-lifted] {
