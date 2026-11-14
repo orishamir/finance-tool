@@ -2568,7 +2568,7 @@ function DealDemos({ today }: { today: string }) {
     <>
       <Demo name="FigureField" use={g.uses.FigureField}>
         <Grid>
-          <State label={`entered: typed by the person, ${g.states.interactive}`}>
+          <State label={`entered: typed by the person, the entered ink and edge on the card's fill, no highlight behind it, ${g.states.interactive}`}>
             <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
           </State>
           <State label={`sourced: filled from a price list and left as it was, the grey line under the digits; a press on the box opens a note under it of where it is from, with the link to its source, ${g.states.interactive}`}>
