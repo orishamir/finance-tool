@@ -10,7 +10,7 @@
 // The deal a template filled says so in the builder (`TemplateNote`), with what the house's record says its price leaves out (D106), and
 // each line the template left out, by its name, under why.
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
-import { feeDeal as copy } from "../../copy";
+import { dealCases, feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
@@ -113,10 +113,14 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   );
 }
 
-/** A left line as the reader reads it: its name as the price list prints it, and its channel where the list prices channels apart. */
-const lineText = (l: { line: string; name?: string; channel?: string }): string => {
+/**
+ * A left line as the reader reads it: its name as the price list prints it, its channel where the list prices channels apart, and the
+ * house of its list where that is not the template's (a fee copied from another house's list), so lines of the same name from two houses
+ * stand apart.
+ */
+const lineText = (l: { line: string; name?: string; channel?: string; house?: string }): string => {
   const channel = l.channel ? copy.cases.values.channel[l.channel] : undefined;
-  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}`;
+  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}${l.house ? `${dealCases.copyFee.houseSep}${gershayim(l.house)}` : ""}`;
 };
 
 /**

@@ -32,6 +32,9 @@ describe("a fee copied from another price list", () => {
     const left = kindsOf(leftOfFees(leumi, t.left, data));
     expect(left.some((x) => x.line.startsWith("fibi-") && x.base === "trade")).toBe(false);
     expect(left.filter((x) => x.line.startsWith("leumi-") && x.base === "trade")).toHaveLength(data.houses.find((h) => h.id === "leumi")!.left.filter((l) => l.base === "trade").length);
+    // each of the other list's lines names its house; the template's name none
+    expect(left.filter((x) => x.line.startsWith("leumi-")).every((x) => x.house === data.houses.find((h) => h.id === "leumi")!.name)).toBe(true);
+    expect(left.filter((x) => x.line.startsWith("fibi-")).every((x) => x.house === undefined)).toBe(true);
     // the other kinds keep the template's lines
     expect(left.some((x) => x.line.startsWith("fibi-") && x.base === "fx")).toBe(true);
   });
@@ -89,6 +92,23 @@ describe("a fee copied from another price list", () => {
     const typedTrade: Fee = { ...newFee("trade"), stages: [{ price: { form: "action", rate: typed(0.1) } }] };
     const mixed: FeeDeal = { ...saved, fees: [...saved.fees.filter((f) => f.kind !== "trade"), typedTrade] };
     expect([...new Set(averagesOfFees(mixed, t.averages, data)?.columns.map((c) => c.column.fee))]).toEqual(["custody"]);
+  });
+
+  it("counts a fee of an old deal filled alone from another house's list as that house's, not the template's, by the house named in its sources", () => {
+    const deal = fibi();
+    const t = templateOf(deal, deal.template!.id, data, TODAY)!;
+    const leumi = copyHouseFee(deal, "house:leumi", "custody", "replace", data)!.deal;
+    const saved: FeeDeal = { ...leumi, fees: leumi.fees.map(({ house: _h, ...f }) => f as Fee) };
+    expect([...new Set(averagesOfFees(saved, t.averages, data)?.columns.map((c) => c.column.fee))]).toEqual(["trade"]);
+  });
+
+  it("keeps a fee filled from the template's list the list's once the person types over its figures, the tag deciding", () => {
+    const deal = fibi();
+    const t = templateOf(deal, deal.template!.id, data, TODAY)!;
+    const strip = (x: unknown): unknown => (Array.isArray(x) ? x.map(strip) : x && typeof x === "object" ? Object.fromEntries(Object.entries(x).filter(([k]) => k !== "src").map(([k, v]) => [k, strip(v)])) : x);
+    const typedOver: FeeDeal = { ...deal, fees: deal.fees.map((f) => (f.kind === "custody" ? (strip(f) as Fee) : f)) };
+    expect(typedOver.fees.find((f) => f.kind === "custody")!.house).toBe("house:fibi");
+    expect([...new Set(averagesOfFees(typedOver, t.averages, data)?.columns.map((c) => c.column.fee))]).toEqual(["trade", "custody"]);
   });
 
   it("never adds a second fee of a kind the law caps beside the first: only replaces it", () => {
