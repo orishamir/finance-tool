@@ -108,6 +108,14 @@ describe("the index page's sections render", () => {
   });
 });
 
+describe("an account whose run an open question stopped", () => {
+  it("says why in the rule's words, and its sentence carries the question, whose card it opens (TXG OQ17)", () => {
+    const told = whyNoKindAt(bundle, "psagot", [{ option: "il-etf", at: { reason: { code: "rule-open", ruleId: "TXG-09", question: "TXG OQ17" } } }]);
+    expect(told.why).toBe(invest.reasons.ruleOpen["TXG-09"]);
+    expect(told.parts).toEqual([{ text: invest.reasons.ruleOpen["TXG-09"], question: "TXG OQ17" }]);
+  });
+});
+
 describe("an account that prices no fund on an index says why, over every kind of fund the index has", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
   const pick = pickOfHeadline(view)!;

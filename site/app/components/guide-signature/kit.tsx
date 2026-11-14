@@ -70,9 +70,9 @@ export function Gap({ id, from = "common", className }: { id: string; from?: key
   return <GapNote reason={<IdText text={reason} />} className={className} />;
 }
 
-/** A computed value of a visual: the engine run or formula that gave it, the inputs it read and the rules. */
-export function figure(value: number, unit: SiteValue["unit"], formula: string, inputs: Record<string, SiteValue>, today: string, about: string, rules: { id: string; strength: Strength }[] = []): SiteValue {
-  return computed(value, unit, formula, inputs, { today, about, rules });
+/** A computed value of a visual: the engine run or formula that gave it, the inputs it read, the rules, and the flags it rests on. */
+export function figure(value: number, unit: SiteValue["unit"], formula: string, inputs: Record<string, SiteValue>, today: string, about: string, rules: { id: string; strength: Strength }[] = [], flags: string[] = []): SiteValue {
+  return computed(value, unit, formula, inputs, { today, about, rules, ...(flags.length ? { flags } : {}) });
 }
 
 /**

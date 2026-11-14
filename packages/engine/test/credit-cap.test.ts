@@ -4,7 +4,7 @@
 // 84,120; TXP-02's floor is 2,268, its cap 7% of eligible income; TXP-05 limb (1) deducts 7% of business income plus
 // 4% on the part of the deposit above 12% of it.
 import { describe, expect, it } from "vitest";
-import { beneficiaryRelief, reliefFlags, employeeCredit, ruleBook, runPension, taxAtBrackets, type PensionInput, type PensionRelief } from "../src/index.ts";
+import { beneficiaryRelief, reliefFlags, employeeCredit, employerLinePension, ruleBook, runPension, taxAtBrackets, type PensionInput, type PensionRelief } from "../src/index.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -95,7 +95,7 @@ describe("F-30 follows the capped credit", () => {
     expect(y.net).toBeCloseTo(3_000, 9);
     expect(y.gross).toBeCloseTo(3_600, 6);
     expect(y.credit).toBeCloseTo(600, 6);
-    expect(y.creditCap.binds).toBe(true);
+    expect(r.working.years[0]!.creditCap.binds).toBe(true);
     const flags = r.flags.map((f) => f.code);
     expect(flags).toContain("G-23");
     expect(flags).toContain("TXP-OQ20");
@@ -107,7 +107,28 @@ describe("F-30 follows the capped credit", () => {
     const y = r.years[0]!;
     expect(y.gross).toBeCloseTo(3_600 / 0.65, 6);
     expect(y.credit).toBeCloseTo(0.35 * (3_600 / 0.65), 6);
-    expect(y.creditCap.binds).toBe(false);
+    expect(r.working.years[0]!.creditCap.binds).toBe(false);
     expect(r.flags.map((f) => f.code)).toEqual(expect.arrayContaining(["G-23", "TXP-OQ20"]));
+  });
+});
+
+describe("the employer line's money above the exempt limit (F-52)", () => {
+  it("is taxed at the brackets when paid, without credit points, so the line carries G-23 though it owes nothing at its exit", () => {
+    // 6.5% of 40,000 is 2,600 a month; TXP-10 exempts 6.5% of 34,423, so 362.50 a month is work income taxed at the brackets
+    const line = employerLinePension(
+      {
+        wrapper: "pension-comprehensive",
+        goal: { amountNow: 0, monthly: 0, months: 24, contributions: "nominal", firstMonth: 1 },
+        market: { grossReturn: 0.05, inflation: 0.02 },
+        fees: { deposit: 0, balance: 0, direct: 0 },
+        insurance: { rate: 0 },
+        pension: { employment: "employee", monthlySalary: 40_000, existingEmployeeRate: 0, employer: { pensionRate: 0.065, severanceRate: 0 } },
+        profile: {},
+      },
+      ctx,
+    );
+    expect(line.taxAtExit).toBe(0);
+    expect(line.detail.depositTax).toBeGreaterThan(0);
+    expect(line.flags.map((f) => f.code)).toContain("G-23");
   });
 });

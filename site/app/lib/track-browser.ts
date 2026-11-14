@@ -33,6 +33,7 @@ export interface TbRow {
   y3: CompactFee | null; // average annual yield, 3 years
   y5: CompactFee | null; // average annual yield, 5 years
   s?: 1; // a self-managed (IRA) fund: each member directs its money (IRA-01), so it has no one yield to show
+  jo?: string; // the open question that holds whether new members may join (`joining_open`)
 }
 
 export interface TbTemplates {
@@ -89,6 +90,8 @@ export interface TbTrack {
   /** The inception date and the report period: what the labels beside the name read (lib/track-labels.ts). */
   inception: string | null;
   reportPeriod: string;
+  /** The open question that holds whether new members may join, or null: the labels beside the name say so. */
+  joiningOpen: string | null;
   fee: SiteValue;
   deposit: SiteValue;
   exposure: ExposureShares | null;
@@ -158,6 +161,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       isNew: trackLabels({ inception: r.inc, reportPeriod: p.period }).includes("new"),
       inception: r.inc,
       reportPeriod: p.period,
+      joiningOpen: r.jo ?? null,
       fee: expandFee(r.b, tpl.balance),
       deposit: expandFee(r.d, tpl.deposit),
       exposure,

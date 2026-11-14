@@ -49,6 +49,11 @@ export interface LimitStanding {
   per: "month" | "year";
   /** The first year a deposit goes above the limit; null when none does in these runs. */
   firstOverYear: number | null;
+  /**
+   * The flags `over` and `room` carry: G-23 where they hold a tax valued at the brackets, which leave out the person's credit points (a
+   * self-employed person's whole year grossed up for the tax back, `detail.fullYearRelief`).
+   */
+  flags: string[];
 }
 
 /** F-97 Where a study fund's deposits stand against the limit (TXH-08, TXH-01), from the runs that hold them. */
@@ -60,6 +65,7 @@ export function limitStanding(runs: readonly RunResult[]): LimitStanding {
     room: runs.map((r) => (yearly ? r.detail.roomYear : r.detail.roomMonthly) ?? 0),
     per: yearly ? "year" : "month",
     firstOverYear: months.length ? Math.ceil(Math.min(...months) / 12) : null,
+    flags: yearly && runs.some((r) => (r.detail.fullYearRelief ?? 0) > 0) ? ["G-23"] : [],
   };
 }
 

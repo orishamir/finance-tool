@@ -13,8 +13,7 @@ and family make saving and investing decisions in Israel.
   each on their own device. No accounts, no personal data on a server.
 - Non-commercial: no accessibility, legal or commercial work. No referral,
   affiliate or agent links.
-- The repository and the site are public: no data whose terms forbid
-  republishing or haven't confirmed it, and nothing private (the founder's
+- The repository and the site are public: nothing private (the founder's
   mail, his own finances, anything about the people who use the site).
 - No religious-law products: no Halacha tracks (מסלולי הלכה, "כשר"), no
   Sharia tracks (שריעה), and nothing else defined by religious law. They are
@@ -32,8 +31,7 @@ and family make saving and investing decisions in Israel.
   inventing one. When something changes, update the text that describes it.
   `docs/discovery.md` holds the founder interview and the research behind it.
 - **The data.** What is collected, from where and on what terms:
-  `docs/data-inventory.md`. There is no fund list, because TASE's terms
-  forbid republishing it.
+  `docs/data-inventory.md`. There is no fund list.
 - **Saved state.** Version 3, under `mekor.v2.state`. Entered offers, variant
   assumptions, playbook ticks and entered rates are four separate stores on
   the device. The export file carries them; they aren't yet merged into the

@@ -346,8 +346,8 @@ describe("a unit's price (F-109)", () => {
   const price = (url: string, unit = "usd") => ({ share_price: { value: 814.9, unit, source: { url } } }) as never;
   it("takes the issuer's page and refuses TASE's and Maya's", () => {
     expect(checkSharePrice(price("https://www.ishares.com/uk/individual/en/products/253743/"))).toEqual([]);
-    expect(checkSharePrice(price("https://api.tase.co.il/api/company/securitydata?securityId=1159250"))[0]).toMatch(/forbid/);
-    expect(checkSharePrice(price("https://maya.tase.co.il/api/v1/funds/mutual/5139282"))[0]).toMatch(/forbid/);
+    expect(checkSharePrice(price("https://api.tase.co.il/api/company/securitydata?securityId=1159250"))[0]).toMatch(/issuer.s NAV/);
+    expect(checkSharePrice(price("https://maya.tase.co.il/api/v1/funds/mutual/5139282"))[0]).toMatch(/issuer.s NAV/);
     expect(checkSharePrice(price("https://www.ishares.com/", "pct"))[0]).toMatch(/not a currency/);
   });
 });

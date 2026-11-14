@@ -7,7 +7,7 @@ import { pageMeta } from "../lib/page-meta";
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, checklistMark, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
-import { Num, NumAfter, OwnCompanyPage } from "../components/provenance";
+import { IdRef, Num, NumAfter, OwnCompanyPage } from "../components/provenance";
 import { CHILD_SAVINGS, ChildFeeNote } from "../components/tracks/list";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, FeeNum, GemelNetLink, KeyValueList, MixedName, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
@@ -150,6 +150,11 @@ export default function TrackPage() {
           <Sentence tone="muted">
             {copy.fundLine} <Num value={data.values.fundId} /> <GemelNetLink fundId={track.fundId} dataset={track.dataset} />
           </Sentence>
+          {track.joiningOpen && (
+            <Callout tone="caution">
+              {companyCopy.joiningOpen.sentence} <IdRef id={track.joiningOpen} end="." />
+            </Callout>
+          )}
           {data.others.length > 0 && (
             <Callout tone="caution">
               {copy.sameNameElsewhere} {companyCopy.sameName.distinct}.{" "}

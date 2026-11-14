@@ -12,8 +12,6 @@
   "cadence": "monthly",
   "stale_after_days": 45,
   "terms_of_use": {
-    "status": "confirmed",
-    "fallback": "none needed",
     "terms_url": "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx",
     "read_on": "2026-10-23",
     "attribution": "הלשכה המרכזית לסטטיסטיקה (הלמ\"ס), מדד המחירים לצרכן - כללי (קוד 120010), (2026-10-23), ניתן לצפייה באתר: https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025 מועתק ומופץ כמות שהוא – as is – על פי רישיון שימוש של הלמ\"ס בכתובת אתר האינטרנט https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx"

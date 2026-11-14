@@ -94,18 +94,6 @@
     "terms_of_use": {
       "type": "object",
       "properties": {
-        "status": {
-          "type": "string",
-          "enum": [
-            "confirmed",
-            "unconfirmed",
-            "not-permitted"
-          ]
-        },
-        "fallback": {
-          "type": "string",
-          "minLength": 1
-        },
         "terms_url": {
           "type": "string",
           "minLength": 1
@@ -120,8 +108,9 @@
         }
       },
       "required": [
-        "status",
-        "fallback"
+        "terms_url",
+        "read_on",
+        "attribution"
       ],
       "additionalProperties": false
     },

@@ -127,7 +127,7 @@ export function reasonFromError(e: unknown): Reason | undefined {
   if (e instanceof NotEvaluatedError) return { code: "gap", ruleIds: [], gapIds: [e.gap] };
   if (e instanceof MissingRuleError) return { code: "rule-missing", ruleIds: [e.ruleId], gapIds: [], ...(e.figure ? { detail: e.figure } : {}) };
   if (e instanceof FigureNotUpdatedError) return { code: "figure-not-updated", ruleIds: [e.ruleId], gapIds: [], detail: e.figure };
-  if (e instanceof BlockedError) return { code: "rule-open", ruleIds: [e.ruleId], gapIds: [], ...(e.question ? { detail: e.question } : {}) };
+  if (e instanceof BlockedError) return { code: "rule-open", ruleIds: [e.ruleId], gapIds: e.gap ? [e.gap] : [], ...(e.question ? { detail: e.question } : {}) };
   if (e instanceof RecordInputError) {
     // runInputs stops with the field named: a missing term is a missing input; a run the engine does not have yet is "no run".
     if (/ is missing/.test(e.message)) return { code: "missing-input", ruleIds: [], gapIds: [], detail: e.message };

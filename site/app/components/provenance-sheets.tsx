@@ -1201,6 +1201,7 @@ const sheetPart = (p: SheetPart) => (
     <p className="text-muted-foreground">
       {p.head && <span className="text-foreground font-medium">{p.head}: </span>}
       {p.text}
+      {p.question && <> <IdRef id={p.question} /></>}
     </p>
     {p.doc && <DocLink href={p.doc.href}>{p.doc.title}</DocLink>}
   </div>
