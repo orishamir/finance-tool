@@ -53,11 +53,21 @@ export const USER_AGENT =
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
 /**
- * What the investment-tracks circular makes of a general investment track (CAT-19, circular 2022-9-30): closed to members who were not
- * in it on its start date (s.3(ד)), or not closed by it, its fund being one the circular's "קופת גמל" leaves out (s.2: a sick-pay fund,
- * a self-directed fund).
+ * A kind of fund the investment-tracks circular's "קופת גמל" leaves out (CAT-19, circular 2022-9-30 p.3 s.2), so a general track of it is
+ * not closed by the circular: a sick-pay fund, a self-directed fund, a guaranteed-yield fund ("קופת גמל מבטיחת תשואה", as the
+ * management-fee regulations define it), or the Leumi employees' provident funds the definition names.
  */
-export type GeneralTrackReading = { name: string; cat19: "closed" } | { name: string; cat19: "outside"; fund: "sick-pay" | "self-directed" };
+export type FundOutsideCircular = "sick-pay" | "self-directed" | "guaranteed-yield" | "leumi-employees";
+
+/**
+ * What the circular makes of a general investment track: closed to members who were not in it on its start date (s.3(ד)); not closed
+ * by it, its fund being of a kind s.2 leaves out; or unsettled, where the track may be in such a fund and that is not yet read. An
+ * unsettled track is kept, since only a reading drops one.
+ */
+export type GeneralTrackReading =
+  | { name: string; cat19: "closed" }
+  | { name: string; cat19: "outside"; fund: FundOutsideCircular }
+  | { name: string; cat19: "unsettled"; mayBe: FundOutsideCircular };
 
 /** The columns of a regulator row that say whether it is a general track. */
 export interface TrackRow {
@@ -73,7 +83,8 @@ export interface GeneralTracks {
 }
 
 const closed = (name: string): GeneralTrackReading => ({ name, cat19: "closed" });
-const outside = (name: string, fund: "sick-pay" | "self-directed"): GeneralTrackReading => ({ name, cat19: "outside", fund });
+const outside = (name: string, fund: FundOutsideCircular): GeneralTrackReading => ({ name, cat19: "outside", fund });
+const unsettled = (name: string, mayBe: FundOutsideCircular): GeneralTrackReading => ({ name, cat19: "unsettled", mayBe });
 
 /** Gemel-Net's classification for a provident fund for annuity, which has none of its own (PEN). */
 export const GEMEL_ANNUITY_CLASSIFICATION = "תגמולים ואישית לפיצויים";
@@ -87,7 +98,7 @@ export const endsInGeneral = (name: string): boolean => /(?:^|[\s\-])כללי\s*
  * carry the word, and each listed one was checked to be a general track in the circular's sense. In Gemel-Net the circular's general tracks
  * are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים", specialization "כללי"; the study funds and the
  * provident funds for investing it does not cover. A refresh reports a general track with no reading, so none is dropped or kept without
- * one. `closedTrack` leaves out the closed ones.
+ * one. `closedTrack` leaves out the closed ones; an unsettled one stays until it is read.
  */
 export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
   "pensia-net": {
@@ -106,10 +117,14 @@ export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
   gemelnet: {
     isGeneral: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי",
     readings: new Map([
-      [119, closed("מנורה מבטחים יותר מסלול ד'")],
-      [260, closed("מנורה מבטחים אמיר כללי")],
-      [263, closed("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ")],
-      [923, closed("מיטב בטחון")],
+      // each sits in a family of guaranteed-yield tracks (119 beside 530 to 532; 260 beside 533 and 536; 263 beside 539; 923 beside 120
+      // and 529), and whether its fund is a guaranteed-yield fund is not yet read
+      [119, unsettled("מנורה מבטחים יותר מסלול ד'", "guaranteed-yield")],
+      [260, unsettled("מנורה מבטחים אמיר כללי", "guaranteed-yield")],
+      [263, unsettled("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ", "guaranteed-yield")],
+      [923, unsettled("מיטב בטחון", "guaranteed-yield")],
+      // named by the circular's definition; its company is also one EXCLUDED_COMPANIES leaves out (520005497)
+      [229, outside("קופת התגמולים של עובדי בנק לאומי", "leumi-employees")],
       [857, outside("הראל - דקל קופת גמל לדמי מחלה", "sick-pay")],
       [872, outside("אלטשולר שחם מרפא קופה מרכזית לדמי מחלה", "sick-pay")],
       [1008, outside("הפניקס קופה לתשלום דמי מחלה", "sick-pay")],

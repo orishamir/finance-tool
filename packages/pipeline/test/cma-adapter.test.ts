@@ -167,12 +167,33 @@ describe("normalise", () => {
     expect(closedTrack("כלל האוכלוסיה", "כלל פנסיה כללי", "gemelnet", 2002)).toBe(false);
   });
 
-  it("leaves out the four general tracks of provident funds for annuity CAT-19 closes, by id, and keeps the sick-pay and self-directed ones", () => {
+  it("keeps the general tracks of provident funds for annuity CAT-19 may not reach, and closes none of them while each is unread", () => {
     const gemel = [...GENERAL_TRACKS.gemelnet.readings];
-    expect(gemel.filter(([, r]) => r.cat19 === "closed").map(([id]) => id)).toEqual([119, 260, 263, 923]);
-    for (const [id, r] of gemel) expect(closedTrack("כלל האוכלוסיה", r.name, "gemelnet", id), r.name).toBe(r.cat19 === "closed");
-    // the circular's "קופת גמל" leaves out sick-pay and self-directed funds, so their general tracks are not closed by it
-    expect(gemel.filter(([, r]) => r.cat19 === "outside").map(([id]) => id)).toEqual([857, 872, 1008, 1161, 1486, 1514, 1541, 2023, 2098, 8888, 14938, 15367]);
+    // no Gemel-Net general track is read as closed: the four that may be guaranteed-yield funds wait for that reading and stay
+    expect(gemel.filter(([, r]) => r.cat19 === "closed")).toEqual([]);
+    expect(gemel.filter(([, r]) => r.cat19 === "unsettled").map(([id, r]) => [id, r.cat19 === "unsettled" && r.mayBe])).toEqual([
+      [119, "guaranteed-yield"],
+      [260, "guaranteed-yield"],
+      [263, "guaranteed-yield"],
+      [923, "guaranteed-yield"],
+    ]);
+    for (const [id, r] of gemel) expect(closedTrack("כלל האוכלוסיה", r.name, "gemelnet", id), r.name).toBe(false);
+    // the circular's "קופת גמל" leaves out sick-pay and self-directed funds and names the Leumi employees' funds, so their general tracks are not closed by it
+    expect(gemel.filter(([, r]) => r.cat19 === "outside").map(([id, r]) => [id, r.cat19 === "outside" && r.fund])).toEqual([
+      [229, "leumi-employees"],
+      [857, "sick-pay"],
+      [872, "sick-pay"],
+      [1008, "sick-pay"],
+      [1161, "sick-pay"],
+      [1486, "self-directed"],
+      [1514, "self-directed"],
+      [1541, "self-directed"],
+      [2023, "self-directed"],
+      [2098, "self-directed"],
+      [8888, "self-directed"],
+      [14938, "self-directed"],
+      [15367, "self-directed"],
+    ]);
     // every track read is a general track of a provident fund for annuity in the stored file's terms
     for (const [, r] of gemel) expect(GENERAL_TRACKS.gemelnet.isGeneral({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
     expect(GENERAL_TRACKS.gemelnet.isGeneral({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
@@ -190,9 +211,9 @@ describe("normalise", () => {
     const said = r.problems.join(" ");
     expect(said).toContain("fund 99999");
     expect(said).toContain("no reading in GENERAL_TRACKS");
-    // a closed track is left out without a report, a listed sick-pay or self-directed one is kept without one, and a study fund is not read
+    // an unsettled track and a listed self-directed one are kept without a report, and a study fund is not read
     for (const id of [923, 1486, 99998]) expect(said).not.toContain(`fund ${id}`);
-    expect(r.file?.funds.map((f) => f.fund_id).sort()).toEqual([1486, 99998, 99999]);
+    expect(r.file?.funds.map((f) => f.fund_id).sort((a, b) => a - b)).toEqual([923, 1486, 99998, 99999]);
   });
 
   it("reports a Pension-Net name ending in כללי with no reading, so it is not dropped or kept silently", () => {
