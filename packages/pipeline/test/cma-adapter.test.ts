@@ -24,6 +24,7 @@ import {
   closedTrack,
   endsInGeneral,
   TRACK_READINGS,
+  joiningOpen,
   closedToJoiners,
   KEPT_COLUMNS,
   feeYear,
@@ -236,6 +237,18 @@ describe("normalise", () => {
     }
     const stored = readCmaFile(cmaDir, "gemelnet", "2026-09").funds.filter((f) => f.closed_to_joiners).map((f) => f.fund_id);
     expect(stored).toEqual([120, 528, 529, 530, 531, 532, 533, 536, 539, 923]);
+  });
+
+  it("stamps the open question on 119, 260 and 263, whose joining their reading leaves open, and on no other track", () => {
+    for (const id of [119, 260, 263]) expect(joiningOpen("gemelnet", id)).toEqual({ open_question: "CAT-OQ36" });
+    expect(joiningOpen("gemelnet", 923)).toBeUndefined();
+    expect(joiningOpen("pensia-net", 119)).toBeUndefined();
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    for (const dataset of ["gemelnet", "pensia-net"] as const) {
+      for (const period of listPeriods(cmaDir, dataset)) {
+        for (const f of readCmaFile(cmaDir, dataset, period).funds) expect(f.joining_open, `${dataset} ${f.fund_id}`).toEqual(joiningOpen(dataset, f.fund_id));
+      }
+    }
   });
 
   it("rests each reading on rules and open questions the rule base holds", () => {

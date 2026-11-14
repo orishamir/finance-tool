@@ -2001,6 +2001,9 @@ function Lists({ today }: { today: string }) {
             <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
           </div>
         </State>
+        <State label="the labels of a track whose joining the readings leave open: the caution tag and the question's chip">
+          <TrackLabels track={{ inception: "2001-01-01", reportPeriod: "2026-09", joiningOpen: "CAT OQ36" }} />
+        </State>
       </Demo>
       <Demo name="AnchorSpread, AmountRange" use={g.uses.DepositWords}>
         <State label={'a variable rate\'s anchor and spread: look="under" a rate, "after" it on its line, "words" in a sentence; the amounts a deposit takes, each form, and a bound the bank\'s table prints as not included'} wide>

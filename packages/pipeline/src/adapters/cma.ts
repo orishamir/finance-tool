@@ -65,7 +65,7 @@ export type FundOutsideCircular = "sick-pay" | "self-directed" | "guaranteed-yie
  *   rules named. `closedTrack` leaves it out of the data.
  * - `outside`: the circular does not close the general track, its fund being of a kind s.2 leaves out, by the rules named. Kept.
  * - `unsettled`: the general track may be in such a fund, and the open question named (as the rule base writes it, "CAT-OQ36") holds
- *   whether it is. Kept until it is read.
+ *   whether it is. Kept until it is read, with the question on it (`joining_open`, `joiningOpen`), which the site shows beside it.
  * - `company-closed`: the track's managing company's own terms (its bylaws or its own pages) close it to new members, by the rules named,
  *   whatever the circular makes of it. A closure of another kind than the circular's, and of any track, a guaranteed-yield track as
  *   well as a general one: the data keeps the track with the reading on it (`closed_to_joiners`, `closedToJoiners`), and the site leaves
@@ -214,6 +214,12 @@ export const closedTrack = (population: string, name: string, dataset?: CmaDatas
   population.trim().startsWith("עובדי ") ||
   /קצבה קיימים|זכאים קיימים/.test(name) ||
   (dataset !== undefined && fundId !== undefined && TRACK_READINGS[dataset].readings.get(fundId)?.reading === "closed");
+
+/** What a stored track carries when its reading leaves its joining open (`unsettled`): `joining_open`, with the reading's open question; else nothing. */
+export const joiningOpen = (dataset: CmaDataset, fundId: number): CmaFund["joining_open"] => {
+  const r = TRACK_READINGS[dataset].readings.get(fundId);
+  return r?.reading === "unsettled" ? { open_question: r.openQuestion } : undefined;
+};
 
 /** What a stored track carries when its company's own terms close it (`company-closed`): `closed_to_joiners`, with the reading's rules; else nothing. */
 export const closedToJoiners = (dataset: CmaDataset, fundId: number): CmaFund["closed_to_joiners"] => {
@@ -593,12 +599,18 @@ export function buildYields(
   return { avg_annual_yield_3y: make(YIELD_FIELDS[0]), avg_annual_yield_5y: make(YIELD_FIELDS[1]) };
 }
 
-/** Attach a fund's derived fields: its value objects (fees, and holdings and yields when its raw fields have them), and its company's closure where a reading has one. */
+/**
+ * Attach a fund's derived fields: its value objects (fees, and holdings and yields when its raw fields have them), its company's closure
+ * where a reading has one, and the open question where a reading leaves its joining open.
+ */
 const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">, f: CmaFund): CmaFund => {
   const next: CmaFund = { ...f, fees: buildFees(file, f) };
   const closure = closedToJoiners(file.dataset, f.fund_id);
   if (closure) next.closed_to_joiners = closure;
   else delete next.closed_to_joiners;
+  const open = joiningOpen(file.dataset, f.fund_id);
+  if (open) next.joining_open = open;
+  else delete next.joining_open;
   const holdings = buildHoldings(file, f);
   if (holdings) next.holdings = holdings;
   else delete next.holdings;
@@ -608,7 +620,7 @@ const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked
   return next;
 };
 
-/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields, and `closed_to_joiners` from the readings; nothing else changes. */
+/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields, and `closed_to_joiners` and `joining_open` from the readings; nothing else changes. */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
   return { ...file, funds: file.funds.map((f) => derive(file, f)) };
 }

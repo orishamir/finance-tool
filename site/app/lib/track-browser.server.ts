@@ -77,6 +77,7 @@ export function buildTrackBrowser(companyId?: string): TbData {
         y3: y && y3 ? compactFee(y.avg_annual_yield_3y, y3) : null,
         y5: y && y5 ? compactFee(y.avg_annual_yield_5y, y5) : null,
         ...(ira ? { s: 1 as const } : {}),
+        ...(x.joiningOpen ? { jo: x.joiningOpen } : {}),
       };
     });
     const wrapper = wrappers.find((w) => w.id === id);

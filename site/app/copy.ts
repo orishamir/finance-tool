@@ -631,6 +631,9 @@ export const company = {
   },
   /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
   labels: { new: "חדש" } as Record<string, string>,
+  /** A track whose readings leave open whether new members may join (`joining_open`, CAT OQ36): the tag beside its name in a list, and the
+   *  sentence on its page, each with the question's chip. */
+  joiningOpen: { tag: "הצטרפות: שאלה פתוחה", sentence: "אם אפשר להצטרף היום למסלול הזה, זו שאלה פתוחה" },
   /** The track page's note when another track has its name (the company page's same-name banners went with its old list). */
   sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות" },
   oldData: "נתוני הרשות לא עודכנו מאז",

@@ -600,7 +600,8 @@ One file per dataset per report period, written by the pipeline: `cma/<dataset>@
         "avg_annual_yield_3y": { "value": 13.16, "unit": "pct_per_year", "...": "value object, below" },
         "avg_annual_yield_5y": { "value": 8.19, "unit": "pct_per_year", "...": "value object, below" }
       },
-      "closed_to_joiners": "optional: { \"by\": \"company-terms\", \"rule_ids\": [\"CAT-55\"] }, below"
+      "closed_to_joiners": "optional: { \"by\": \"company-terms\", \"rule_ids\": [\"CAT-55\"] }, below",
+      "joining_open": "optional: { \"open_question\": \"CAT-OQ36\" }, below"
     }
   ]
 }
@@ -622,6 +623,7 @@ One file per dataset per report period, written by the pipeline: `cma/<dataset>@
   - An empty field is `value: null` with the note "לא דווח." (CAT-05: null when the track is younger than the window), or "לא דווח: למסלול עוד אין N שנים מלאות (נפתח …)" when the track opened less than N years before the period's end. A negative yield is kept as reported.
   - The site marks both stale by the monthly rule (`staleCma`) and never ranks by them.
 - **Closed on the company's terms** (D51). Optional: `closed_to_joiners` is `{ "by": "company-terms", "rule_ids": [...] }` on a track whose managing company's own terms (its bylaws or its own pages) close it to new members, with the rules that quote them, as the adapter's track readings hold it (`TRACK_READINGS`, `company-closed`; `closedToJoiners`). The adapter writes it on a refresh and `renormaliseFees` rebuilds it; a test holds the stored files to the readings. The file keeps such a track, and the site leaves it out wherever it reads the file (`takesNewMembers`). Today: the nine guaranteed-yield tracks (CAT-55) and 923 (CAT-54).
+- **Joining open** (D51). Optional: `joining_open` is `{ "open_question": "CAT-OQ36" }` on a track whose reading leaves open whether new members may join, with the open question that holds it as the rule base writes it (`TRACK_READINGS`, `unsettled`; `joiningOpen`). The adapter writes it on a refresh and `renormaliseFees` rebuilds it; a test holds the stored files to the readings. The data and the site keep such a track, and the site says beside it, on its page and in the tracks list, that whether new members may join is open, with the question's card. Today: 119, 260 and 263 (CAT OQ36).
 
 ### 3.14 `data/fund-lists/` — the fund lists (3.4 fund variants, 3.10, product D17)
 
