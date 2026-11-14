@@ -325,7 +325,8 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // an exposure that is this page, or a security the row above already links, is not linked twice
   const exposures = exposuresHeld.filter((e) => e.href !== guidePath(record.id) && !securities.some((x) => x.href === e.href));
 
-  const feeRange = id === "keren-hishtalmut" ? reportedFeeRange(id, t) : null;
+  // what members paid on average, by track (F-64): on the study fund and the provident fund for investing, beside the documents' rates
+  const feeRange = id === "keren-hishtalmut" || id === "kupat-gemel-lehashkaa" ? reportedFeeRange(id, t) : null;
   const breakTerms = id === "bank-deposit" ? depositBreakTerms(t) : null;
   // the break rules of each bank the prose links to (its records' own), so each link opens
   for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;

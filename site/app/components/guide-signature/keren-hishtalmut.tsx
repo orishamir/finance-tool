@@ -141,18 +141,28 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   };
   const leftValue = slice ? ranValue(slice.net, story.about.left, false) : null;
   const ownValue = slice ? paidValue(slice.own, story.about.own, ownIn) : null;
+  // what the multiple is of: the person's deposits, and an employee's employer's too, so the employer's money is not counted as growth
+  const paidShown = slice && ownValue ? (isEmployee ? { n: slice.own + slice.extra, name: story.inputs.paid, value: paidValue(slice.own + slice.extra, story.about.paid, { ...ownIn, ...extraIn }) } : { n: slice.own, name: story.bar.own, value: ownValue }) : null;
 
   // the choice the drawing is for: the year picked against the lock year (or, from the lock on, against the year before it)
   const yearAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.slice ?? null) : null);
   const compareYear = year < lock ? lock : lock - 1 >= 1 ? lock - 1 : null;
   const lockSlice = yearAt(lock);
   const beforeLock = yearAt(lock - 1);
-  // what waiting for the lock's end adds and saves: the gaps between the year picked and the lock year, each of the two its own figure
+  // what waiting for the lock's end adds and saves, each its own figure: what is left above what was paid in at the lock year less the same
+  // at the year picked, since the deposits of the years between are paid either way (after an early withdrawal they go on into the fund),
+  // and the income tax the wait saves (F-96)
   const lockNet = lockSlice ? nis(lockSlice.net, story.about.lockNet, lockIn) : null;
+  const paidIn = (s: NonNullable<typeof slice>) => s.own + s.extra;
   const waitWords =
     slice && lockSlice && lockNet && leftValue && year < lock
       ? {
-          more: differenceOf([story.inputs.lockNet, lockNet], [story.inputs.left, leftValue], "F-96", { today, about: story.about.waitMore }),
+          more: nis(lockSlice.net - paidIn(lockSlice) - (slice.net - paidIn(slice)), story.about.waitMore, {
+            [story.inputs.lockNet]: lockNet,
+            [story.inputs.lockPaid]: nis(paidIn(lockSlice), story.about.lockPaid, lockIn),
+            [story.inputs.left]: leftValue,
+            [story.inputs.paid]: nis(paidIn(slice), story.about.paid),
+          }),
           saved: differenceOf([story.inputs.tax, ranValue(slice.tax, story.about.tax, true)], [story.inputs.lockTax, nis(lockSlice.tax, story.about.lockTax, lockIn)], "F-96", { today, about: story.about.taxSaved }),
           at: lockNet,
         }
@@ -416,9 +426,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        {slice && leftValue && ownValue && (
+        {slice && leftValue && ownValue && paidShown && (
           <StatRow cols={2}>
-            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / slice.own, "count", "F-96", { [story.bar.left]: leftValue, [story.bar.own]: ownValue }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {head.times.after} (<Num value={ownValue} display={fmt.nisWhole} />)</span>}>
+            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / paidShown.n, "count", "F-96", { [story.bar.left]: leftValue, [paidShown.name]: paidShown.value }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {isEmployee ? head.times.afterBoth : head.times.after} (<Num value={paidShown.value} display={fmt.nisWhole} />)</span>}>
               <Num value={leftValue} display={fmt.nisWhole} />
             </StatTile>
             {secondCard}

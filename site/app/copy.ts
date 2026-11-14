@@ -290,7 +290,7 @@ export const guide = {
   /** What the cap column's head says, for a phone, where the fees stand as rows with no heads: the first sentence under the table. */
   feeCapsPhone: { regs: "אלה התקרות שבתקנות.", law: "כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק." },
   /** Under the table: where the prices actually charged are. */
-  feeNote: "כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
+  feeNote: "כמה העמיתים שילמו בממוצע, בכל חברה ובכל מסלול, מופיע בעמוד של החברה.",
   feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע.",
   /** Under a fee's cap on a provident guide with several managers' lists collected (F-105): the range over every collected manager. */
   // F-105: the rates the documents print, not a price for the whole period (a rate under the cap is a discount, A-19); no sentence ends on a number, whose full stop RTL draws before it
@@ -319,7 +319,7 @@ export const guide = {
       discountEnd: "בתום ההנחה מותר לחברה להעלות את דמי הניהול עד התקרה.",
     },
   },
-  feeRange: { caps: "הממוצעים רחוקים מהתקרה: ב־", tracks: "המסלולים, העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
+  feeRange: { caps: "לפי רשות שוק ההון, ב־", tracks: "המסלולים העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול. כמה הם שילמו בכל חברה ובכל מסלול מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
@@ -3124,15 +3124,15 @@ export const guideSignature = {
       // the choice the drawing is for, in two figures: what is left after the year picked, and what waiting for the lock changes
       head: {
         at: "אם מושכים אחרי",
-        times: { before: "פי", after: "ממה שהפקדתם" },
+        times: { before: "פי", after: "ממה שהפקדתם", afterBoth: "ממה שהופקד, מכם ומהמעסיק" },
         wait: "אם מחכים עד אחרי",
-        more: { before: "עוד", middle: ", מתוכם", after: "מס הכנסה שלא משלמים" },
+        more: { before: "עוד", middle: " מעבר להפקדות שבינתיים, מתוכם", after: "מס הכנסה שלא משלמים" },
         taxAt: "המס אם מושכים אחרי",
         wasBefore: { before: "במשיכה אחרי", after: "המס היה" },
         taxStays: { before: "על הרווח ממה שהופקד מעל התקרה יש מס הכנסה גם אחרי", after: "." },
       },
       chartLine: "נטו בידיים, באלפי ₪",
-      note: { wait: "מחכים עוד", more: "יותר בידיים", saved: "מזה הם מס הכנסה שנחסך" },
+      note: { wait: "מחכים עוד", more: "יותר בידיים, מעבר להפקדות שבינתיים, שמגיעות בכל מקרה", saved: "מזה הם מס הכנסה שנחסך" },
       bar: {
         own: "הפקדתם",
         employer: "המעסיק הוסיף",
@@ -3148,7 +3148,7 @@ export const guideSignature = {
       },
       yearName: "אחרי כמה שנים מושכים",
       // the two figures of a gap between the year picked and the end of the lock, as its sheet names them
-      inputs: { left: "נשאר בידיים בשנה שנבחרה", lockNet: "נשאר בידיים בסוף שנות הנעילה", tax: "המס בשנה שנבחרה", lockTax: "המס בסוף שנות הנעילה" },
+      inputs: { left: "נשאר בידיים בשנה שנבחרה", lockNet: "נשאר בידיים בסוף שנות הנעילה", paid: "מה שהופקד עד השנה שנבחרה", lockPaid: "מה שהופקד עד סוף שנות הנעילה", tax: "המס בשנה שנבחרה", lockTax: "המס בסוף שנות הנעילה" },
       aria: "הכסף בקרן בשנה שנבחרה: ההפקדות והתשואה, מה שדמי הניהול והמס לקחו, ומה שנשאר",
       strip: { aria: "הכסף בקרן אם מושכים אחרי כל אחת מ־12 השנים. אפשר לבחור שנה", before: "לפני", taxed: ": מס", from: "מ־", exempt: ": פטור ממס", exemptUnderLimit: ": פטור עד התקרה" },
       selfGap: { before: "לעצמאים עוד אין כאן חישוב למשיכה לפני", after: ": במשיכה כזו משלמים מס כמו על הכנסה מהעסק, על הרווח ועל ההפקדות שקיבלתם עליהן ניכוי." },
@@ -3188,10 +3188,12 @@ export const guideSignature = {
         extraSelf: "המס שחזר אליכם בזכות הניכוי על ההפקדות עד השנה שנבחרה, בכסף של היום",
         gain: "מה שהתשואה הוסיפה מעבר לעליית המחירים, לפני דמי ניהול, בכסף של היום. מתחת לאפס כשעליית המחירים לוקחת יותר מהתשואה",
         fee: "מה שדמי הניהול לקחו עד השנה שנבחרה, כל תשלום בכסף של היום",
-        times: "מה שנשאר בידיים חלקי מה שהפקדתם מהשכר, בשנה שנבחרה",
+        times: "מה שנשאר בידיים חלקי מה שהופקד, בשנה שנבחרה: מה שהפקדתם, ואצל שכירים גם מה שהמעסיק הפקיד",
         lockNet: "מה שנשאר בידיים אם מושכים בסוף שנות הנעילה, בכסף של היום",
         lockTax: "המס אם מושכים בסוף שנות הנעילה, בכסף של היום",
-        waitMore: "ההפרש בין מה שנשאר אם מושכים בסוף שנות הנעילה למה שנשאר אם מושכים בשנה שנבחרה, בכסף של היום",
+        paid: "מה שהופקד עד השנה שנבחרה, ואצל שכירים גם מה שהמעסיק הפקיד, כל הפקדה בכסף של היום",
+        lockPaid: "מה שהופקד עד סוף שנות הנעילה, ואצל שכירים גם מה שהמעסיק הפקיד, כל הפקדה בכסף של היום",
+        waitMore: "מה שנשאר מעל מה שהופקד אם מושכים בסוף שנות הנעילה, פחות מה שנשאר מעל מה שהופקד אם מושכים בשנה שנבחרה, בכסף של היום. ההפקדות שבינתיים לא נספרות, כי הן מגיעות בכל מקרה",
         taxSaved: "המס במשיכה בשנה שנבחרה פחות המס במשיכה בסוף שנות הנעילה, בכסף של היום",
         taxBefore: "המס אם מושכים שנה לפני סוף שנות הנעילה, בכסף של היום",
         tax: "המס במשיכה, ועל מה שהמעסיק הפקיד מעל התקרה גם מס הכנסה, דמי ביטוח לאומי ודמי ביטוח בריאות, בכסף של היום",

@@ -9,6 +9,10 @@ import { ProvenanceProvider } from "../provenance";
 import { WorthKnowing, worthRows } from "../guide/worth-knowing";
 import { accountWorthRow } from "./current-account";
 import { SignatureFrame, signatureRegistry } from "./index";
+import { fact } from "../../lib/guide-signature";
+import { studyYears } from "../../lib/guide-signature-g2";
+import { p05Number } from "../../lib/engine";
+import { fmt } from "../../lib/format";
 
 const inProviders = (p: NonNullable<ReturnType<typeof buildGuidePage>>, child: ReactNode) =>
   createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: child }) }));
@@ -122,5 +126,26 @@ describe("the pension visuals", () => {
       expect(text, id).toContain("קריאה של האתר");
       expect(text, id).not.toContain("שמחושב בדוח השנתי");
     }
+  });
+});
+
+describe("study fund page", () => {
+  const p = buildGuidePage("keren-hishtalmut")!;
+  const d = p.signature!;
+  const html = renderToString(inProviders(p, createElement(SignatureFrame, { id: "keren-hishtalmut", data: d, today: p.today, timeline: null })));
+  const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
+
+  it("counts what waiting adds above the deposits of the years between, which are paid either way (F-96)", () => {
+    const income = p05Number(d.bundles["keren-hishtalmut"]!.p05, "annual_income") / 12;
+    const plan = { employment: "employee" as const, income, ownMonthly: (income * Number(fact(d, "ownPct")!.value)) / 100, employerMonthly: (income * Number(fact(d, "employerPct")!.value)) / 100, returnPct: p05Number(d.bundles["keren-hishtalmut"]!.p05, "A-01"), feePct: null };
+    const years = studyYears(d, plan, 12);
+    const lock = Number(fact(d, "lockYears")!.value);
+    const at = (y: number) => years[y - 1]!.slice!;
+    const above = (y: number) => at(y).net - at(y).own - at(y).extra;
+    const more = Math.round(above(lock) - above(lock - 1));
+    expect(more).toBeLessThan(Math.round(at(lock).net - at(lock - 1).net));
+    expect(text).toContain(`${fmt.nisWhole(more)} מעבר להפקדות שבינתיים`);
+    // the multiple is of everything deposited, the employer's money too, not of the person's own deposits alone
+    expect(text).toContain("ממה שהופקד, מכם ומהמעסיק");
   });
 });
