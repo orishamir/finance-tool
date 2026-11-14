@@ -363,7 +363,8 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
                 settle();
               }}
               style={{ width: widthOf(text, placeholder, tight, wide ? 6 : 0) }}
-              className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
+              // an empty box beside its unit keeps room to be typed in, so it never reads as the unit alone
+              className={cx("bg-transparent outline-none text-end font-medium placeholder:text-muted-foreground placeholder:font-normal", tight && FIT, tight && !text && unit && "min-w-[2.5ch]", state === "sourced" && "underline decoration-sourced decoration-1 underline-offset-4")}
             />
             {unit && (
               <span dir="auto" className="text-sm opacity-80">

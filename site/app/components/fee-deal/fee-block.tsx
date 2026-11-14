@@ -12,7 +12,7 @@ import type { BuilderRow } from "../../lib/fee-deal/rows";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/panel";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import { type Side } from "../../lib/fee-deal/model";
-import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
@@ -214,6 +214,12 @@ export function FeeBlockView({
     );
   };
   const slimTarget: LiftTarget = { k: "case", fee: fee.id, case: null };
+  // a slim fee whose price changes over time: a press on one of its prices opens the fee with the toolbox adding to that price
+  const timed = !hasCases(fee) && pricesOn(fee, "buy").length > 1;
+  const openAt = (k: number) => {
+    onEditPrice(fee.id, undefined, k);
+    onOpen(fee.id, null, "pointer");
+  };
 
   if (!row) return <p className="text-sm text-muted-foreground">{b.unread}</p>;
   if (row.block.kind === "slim")
@@ -240,7 +246,22 @@ export function FeeBlockView({
         >
           <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} onOpen={() => onOpen(fee.id, null, "pointer")}>
             {question}
-            {isOpen ? openParts(name) : <EditHere.Provider value={{ fee, cases: null, onFee }}>{row.block.parts.map((p) => <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />)}</EditHere.Provider>}
+            {isOpen ? (
+              openParts(name)
+            ) : (
+              <EditHere.Provider value={{ fee, cases: null, onFee }}>
+                {row.block.parts.map((p) =>
+                  // a price among several over time opens the fee at that price, the toolbox adding to it, above the card's own button
+                  timed ? (
+                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className="inline-flex max-w-full" onClick={() => openAt(p.stage ?? 0)}>
+                      <RestPart part={p} />
+                    </span>
+                  ) : (
+                    <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />
+                  ),
+                )}
+              </EditHere.Provider>
+            )}
             {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
             {/* the line's notes stand in its card, under its prices, never between two cards */}
             {!isOpen && <RowNotes row={row} fee={fee} />}

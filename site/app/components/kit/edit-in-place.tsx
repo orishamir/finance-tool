@@ -5,9 +5,19 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cx } from "./cx";
 
-/** Where the focus goes back to once a figure edited in place is at rest again: its table's cell, else the nearest stop around it (a card). */
+/**
+ * Where the focus goes back to once a figure edited in place is at rest again: its table's cell; else the card it stands on, by the card's
+ * own button (a `PickCard`'s `[data-pick-card]`, which lies over the card beside the figure, not around it); else the nearest stop around it.
+ */
 export function restStop(el: HTMLElement | null): HTMLElement | null {
-  return el?.closest<HTMLElement>("[role=gridcell]") ?? el?.closest<HTMLElement>("[data-figures-back], [tabindex]:not([tabindex='-1']), button, a[href]") ?? null;
+  if (!el) return null;
+  const cell = el.closest<HTMLElement>("[role=gridcell]");
+  if (cell) return cell;
+  for (let p = el.parentElement; p; p = p.parentElement) {
+    const card = p.querySelector<HTMLElement>(":scope > [data-pick-card]");
+    if (card) return card;
+  }
+  return el.closest<HTMLElement>("[data-figures-back], [tabindex]:not([tabindex='-1']), button, a[href]");
 }
 
 /**

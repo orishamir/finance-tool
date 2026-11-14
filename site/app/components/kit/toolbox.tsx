@@ -52,22 +52,27 @@ export function ToolBlank({ wide }: { wide?: boolean }) {
   return <span aria-hidden className={cx("inline-block h-6 border border-dashed border-input bg-card", wide ? "w-11 rounded-full" : "w-6 rounded-sm")} />;
 }
 
-/** One part's card: a tap adds it (or, where the case has it and `onRemove` is given, takes it away); one that can be added can be dragged. */
+/**
+ * One part's card: a tap adds it (or, where the case has it and `onRemove` is given, takes it away); one that can be added can be dragged.
+ * A part the case has whose tap does nothing is `aria-disabled`, not disabled, so a card tapped that becomes so ("חינם") keeps the focus.
+ */
 function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: ToolPart; onAdd: () => void; onRemove?: (() => void) | undefined }) {
   const removes = !!(p.used && p.removeLabel && onRemove);
+  const inert = !!p.used && !removes;
   const drag = useDragSource(p.used || p.off ? null : p.id);
   return (
     <button
       type="button"
       data-part={p.id}
-      disabled={(p.used && !removes) || p.off}
+      disabled={p.off}
+      aria-disabled={inert || undefined}
       aria-label={removes ? p.removeLabel : p.spoken}
       title={removes ? p.removeLabel : undefined}
-      onClick={removes ? onRemove : onAdd}
+      onClick={inert ? undefined : removes ? onRemove : onAdd}
       {...drag}
       className={cx(
         "inline-flex min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border px-3 py-1.5 text-start text-sm transition-[filter] duration-[var(--duration-fast)]",
-        p.used ? cx(USED_EDGE[kind], kind === "note" && "border-dashed", "text-muted-foreground", removes && "enabled:hover:brightness-125") : cx(CARD[kind], "enabled:hover:brightness-125"),
+        p.used ? cx(USED_EDGE[kind], kind === "note" && "border-dashed", "text-muted-foreground", removes ? "enabled:hover:brightness-125" : "cursor-default") : cx(CARD[kind], "enabled:hover:brightness-125"),
         p.off && "opacity-45",
       )}
     >
@@ -105,10 +110,15 @@ function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: st
  * handle's row ("סגירת העמלה"), which closes the open fee and the sheet with it. The row of names scrolls sideways where it is longer
  * than the sheet, a fade at its cut edge saying so.
  */
-export function Toolbox({ target, targetLead = copy.toolbox.target, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold, onClose }: {
+export function Toolbox({ target, targetLead = copy.toolbox.target, prices, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold, onClose }: {
   target: ReactNode;
   /** The words before `target`: "להוסיף למקרה:", or what the page names in its stead (one price of several, "להוסיף למחיר ממינואר 2027"). */
   targetLead?: ReactNode;
+  /**
+   * Where the case's price changes over time: its prices by their months, the one the toolbox adds to chosen, a tap on another switching
+   * to it (on a computer, under the line that names it; on a phone a tap in the price itself switches).
+   */
+  prices?: { label: string; options: { id: string; label: string }[]; value: string; onChange: (id: string) => void };
   groups: ToolGroup[];
   onAdd: (group: string, part: string) => void;
   onRemove?: (group: string, part: string) => void;
@@ -231,6 +241,9 @@ export function Toolbox({ target, targetLead = copy.toolbox.target, groups, onAd
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         {lead}
+        {prices && (
+          <ChoiceChips wrap ariaLabel={prices.label} ids={prices.options.map((o) => o.id)} labels={Object.fromEntries(prices.options.map((o) => [o.id, o.label]))} value={prices.value} onChange={prices.onChange} />
+        )}
         <p className="text-sm text-muted-foreground">{canDrag ? copy.toolbox.hintDrag : copy.toolbox.hint}</p>
       </div>
       {groups.map((g) => {

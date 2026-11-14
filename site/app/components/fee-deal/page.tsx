@@ -369,6 +369,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
         onAsk={oc.ask.onAsk}
+        onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k })}
         onFee={onFee}
         onPart={onPart(chosenFee)}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
@@ -399,6 +400,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
           if (how === "replace" && have) {
             kept(fillFeeKept(deal, have.id, house, data, chosen));
             doc.setChosen(have.id);
+            doc.setFocus({ fee: have.id, on: "card" });
             return;
           }
           if (!feeRoom(deal)) return setRefusal({ feeId: null, words: refusalWords("fees") });
@@ -406,6 +408,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
           if (!r) return;
           change(r.deal);
           doc.setChosen(r.feeId);
+          // the fee added beside takes the focus on its card, brought into view
+          doc.setFocus({ fee: r.feeId, on: "card" });
         },
       }
     : null;

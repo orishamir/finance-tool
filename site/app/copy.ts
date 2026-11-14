@@ -2025,7 +2025,23 @@ export const feeDeal = {
       one: "הוסר",
       many: "הוסרו",
       and: "ו",
-      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", maxPerSecurity: "המקסימום לכל נייר ערך" },
+      parts: {
+        min: "המינימום",
+        max: "המקסימום",
+        cap: "המקסימום באחוזים",
+        flat: "המחיר הקבוע לפעולה קטנה",
+        maxPerSecurity: "המקסימום לכל נייר ערך",
+        discount: "ההנחה",
+        third: "העמלה של הצד השלישי",
+        offset: "הקיזוז מול עמלה אחרת",
+        refund: "ההחזר",
+        unfilled: "ההערה על הוראה שלא בוצעה",
+        unfilledClerk: "ההערה על הוראה דרך פקיד שלא בוצעה",
+        unfilledClerkAbroad: "ההערה על הוראה דרך פקיד שלא בוצעה",
+        capRead: "ההערה על המקסימום באחוזים",
+        partial: "ההערה על ביצוע חלקי",
+        inTrade: "הסכומים במטבע של העסקה",
+      },
     },
     /**
      * A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. The
@@ -2043,7 +2059,8 @@ export const feeDeal = {
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
     /** Which of a fee's prices over time the toolbox adds to: "להוסיף למחיר ממינואר 2027", "להוסיף למחיר עד דצמבר 2026". */
-    toolPrice: { lead: "להוסיף למחיר", from: "מ־", until: "עד " },
+    /** Which of a case's prices over time the toolbox adds to; `which`, its chips' spoken name, a tap on another switching to it. */
+    toolPrice: { lead: "להוסיף למחיר", from: "מ־", until: "עד ", which: "לאיזה מחיר להוסיף" },
     groups: { price: "המחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", more: "עוד על המחיר" } as Record<string, string>,
     /** A part of a price, as a toolbox card and as the open case's line; `perAction` and `of` follow the fee (`price.perAction`, `price.of`). */
     parts: {

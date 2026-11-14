@@ -154,7 +154,7 @@ export function OpenParts({
                 onRemove={() => onRemoveChange(s, j - 1, caseId)}
               />
             )}
-            <div className="flex flex-col gap-2" {...(s === "buy" && stages.length > 1 ? { onFocusCapture: () => onEditing(st.k, caseId), onPointerDownCapture: () => onEditing(st.k, caseId) } : {})}>
+            <div className="flex flex-col gap-2" {...(from ? { "data-stage-from": `${s}:${from}` } : {})} {...(s === "buy" && stages.length > 1 ? { onFocusCapture: () => onEditing(st.k, caseId), onPointerDownCapture: () => onEditing(st.k, caseId) } : {})}>
               <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={s === "buy" && open.pending?.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
             </div>
           </div>
@@ -179,7 +179,8 @@ export function OpenParts({
 /**
  * "+ המחיר משתנה מתאריך" after a side's prices: a tap asks only the month; the price in force then splits in two at it, the later a copy
  * the person then changes (`splitAt`). A month the prices change in already is refused at its box. Escape or "ביטול" closes the question,
- * the focus back on the slot; added, the focus goes back to the slot, now after the new price.
+ * the focus back on the slot; added (by "להוסיף", or Enter in the month's box), the focus goes to the new price's first box, where the
+ * person changes it, else back to the slot.
  */
 function AddChange({ fee, side, caseId, name, onFee }: { fee: Fee; side: Side; caseId: string | undefined; name: string; onFee: (f: Fee) => void }) {
   const c = copy.panel.change;
@@ -194,24 +195,36 @@ function AddChange({ fee, side, caseId, name, onFee }: { fee: Fee; side: Side; c
     root.current?.querySelector<HTMLElement>("input, button")?.focus({ preventScroll: true });
     bringIntoView(root.current);
   }, [asking]);
-  const close = () => {
+  const close = (added?: string) => {
     setAsking(false);
     setMonth(null);
-    requestAnimationFrame(() => slot.current?.isConnected && slot.current.focus());
+    requestAnimationFrame(() => {
+      // the slot is drawn again once a price is added (its key counts the prices): the fee's block is found by the fee
+      const li = document.querySelector(`li[data-fee="${CSS.escape(fee.id)}"]`);
+      const box = added ? li?.querySelector<HTMLInputElement>(`[data-stage-from="${side}:${added}"] input[data-figure]`) : null;
+      if (box) {
+        box.focus({ preventScroll: true });
+        box.select();
+        bringIntoView(box.closest<HTMLElement>("[data-stage-from]"));
+      } else if (slot.current?.isConnected) slot.current.focus();
+      else li?.querySelector<HTMLElement>(`[data-add-change="${side}"] button`)?.focus();
+    });
   };
   return (
     <>
-      <AddSlot
-        shape="row"
-        add={{
-          label: c.add,
-          expanded: asking,
-          onAdd: (at) => {
-            slot.current = at;
-            setAsking((a) => !a);
-          },
-        }}
-      />
+      <div data-add-change={side} className="contents">
+        <AddSlot
+          shape="row"
+          add={{
+            label: c.add,
+            expanded: asking,
+            onAdd: (at) => {
+              slot.current = at;
+              setAsking((a) => !a);
+            },
+          }}
+        />
+      </div>
       {asking && (
         <div
           ref={root}
@@ -238,9 +251,9 @@ function AddChange({ fee, side, caseId, name, onFee }: { fee: Fee; side: Side; c
             onAdd={() => {
               if (month === null || taken) return;
               onFee(splitAt(fee, side, month, caseId));
-              close();
+              close(month);
             }}
-            onCancel={close}
+            onCancel={() => close()}
           />
         </div>
       )}
