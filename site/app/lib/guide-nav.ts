@@ -65,7 +65,9 @@ export function topicSection(guideId: string, topic: GuideTopic): string | null 
 
 /**
  * The withdrawal rules a guide's money-in-and-out section shows. PF-46 holds for every provident product. PF-45 and TXP-18
- * speak of money drawn against the rules, read for the provident funds for annuity, so only those guides carry them.
+ * speak of money drawn against the rules under s.23 of the Provident Funds Law, which TXP-18 taxes alike from a provident fund
+ * for annuity and from one for benefits: the pensions, the provident fund for annuity and the IRA provident fund (approved as
+ * either, TXK-16) carry them. A study fund's early withdrawal has its own tax (F-47), and its guide does not.
  */
 const providentFamily = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
 const annuityFamily = ["pension-comprehensive", "pension-general", "provident-for-annuity", "ira-provident"];

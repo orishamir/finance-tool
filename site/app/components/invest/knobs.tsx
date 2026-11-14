@@ -28,6 +28,8 @@ const KNOBS: { id: Id; key: "amountNow" | "monthly" | "years" | "grossReturn"; r
   { id: "ret", key: "grossReturn", range: "A-01", scale: 100 },
 ];
 const k = c.plan.knobs;
+/** The amount knob's box, which the page's empty state focuses when the plan puts in nothing. */
+export const PLAN_AMOUNT_FIELD = "plan-amount";
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
 
 /** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
@@ -68,7 +70,7 @@ export function PlanKnobs({ entered, ranges, pct, stacked }: { entered: EnteredP
   };
   const negative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
   const knobs: Knob[] = [
-    { ...field("amount"), unit: "nis", ...span(ranges.amount_now), validate: negative },
+    { ...field("amount"), unit: "nis", ...span(ranges.amount_now), validate: negative, inputId: PLAN_AMOUNT_FIELD },
     { ...field("monthly"), unit: "nis_per_month", ...span(ranges.monthly_deposit), validate: negative },
     { ...field("years"), unit: "years", ...span(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
     { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },

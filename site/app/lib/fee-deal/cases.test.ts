@@ -12,7 +12,7 @@ import { byQuestion, copiesWords, slotEdit, thingMenu } from "./things";
 import { panel } from "./panel";
 import { toolbox } from "./toolbox";
 import { picksOf, readFee, readFees } from "./cases";
-import { addBy, addCase, canAddBy, copyCase, removeBy, removeCase, removeTop, setMine, setStep, setTop, setWhen } from "./edits/case";
+import { addBy, addCase, canAddBy, copyCase, keptOf, ownKept, removeBy, removeCase, setMine, setStep, setTop, setWhen } from "./edits/case";
 import { editPrice } from "./edits/stage";
 import { withFigure } from "./edits/price";
 import { setPart } from "./offers/parts";
@@ -399,12 +399,6 @@ describe("the edits that make cases", () => {
     expect((setStep(fx(), "x4", 0, null) as CasesFee).cases[3]!.when[0]).toBe(2);
     expect((setTop(fx(), 0, 1, 200) as CasesFee).by[0]).toMatchObject({ tops: [{ v: 10 }, { v: 200 }] });
     expect(setTop(fx(), 0, 1, 5)).toEqual(fx());
-    const merged = removeTop(fx(), 0, 0) as CasesFee;
-    expect(merged.cases.map((c) => [c.id, c.when[0]])).toEqual([
-      ["x1", 0],
-      ["x3", 1],
-      ["x4", 1],
-    ]);
   });
   it("adds and takes away a case's parts, as the toolbox does, in that case alone", () => {
     const withMin = setPart(trade(), "min", true, { caseId: "c2" });
@@ -416,7 +410,10 @@ describe("the edits that make cases", () => {
     expect((setPart(trade(), "cap", true, { caseId: "c1", value: 30 }) as CasesFee).cases[0]!.stages[0]!.price).toMatchObject({ cap: { v: 30 } });
     expect(setPart(trade(), "offset", true, { caseId: "c1" })).toEqual(trade());
     expect((setPart(trade(), "sale", true, { caseId: "c3" }) as CasesFee).cases[2]!.sale).toEqual(trade().cases[2]!.stages);
-    expect((setPart(trade(), "until", true, { caseId: "c1", month: "2027-06" }) as CasesFee).cases[0]!.stages.map((s) => s.until)).toEqual(["2027-06", undefined]);
+    expect((setPart(trade(), "until", true, { caseId: "c1", month: "2027-06", after: "action" }) as CasesFee).cases[0]!.stages.map((s) => s.until)).toEqual(["2027-06", undefined]);
+    // a later price takes its form from the offer: without it, or without its month, nothing is added
+    const t = trade();
+    expect(setPart(t, "until", true, { caseId: "c1", month: "2027-06" })).toBe(t);
     expect((setPart(trade(), "share", true, { caseId: "c2" }) as CasesFee).cases[1]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
   });
   it("keeps a case or a thing taken away for the undo", () => {
@@ -674,6 +671,41 @@ describe("a thing of the band's head, opened", () => {
     expect(thingMenu(read(deal()), "fee-trade", 1)!.after).toContain("5 מקרים יהיו 4");
     expect(words({ ...deal(), fees: [{ ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") }] }, 1)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.");
     expect(words({ ...deal(), fees: [removeBy(trade(), 1)] }, 0)).toBe("המחיר כבר לא משתנה לפי מה קונים. נשאר המחיר של המקרה הראשון.");
+  });
+  it("keeps the person's own track's price where cases become one, else the first case's, and says whose it kept", () => {
+    // the track the only thing, the person's track second: the fee is left with their track's price, not the first track's
+    const byTrack: CasesFee = {
+      id: "fee-trade",
+      kind: "trade",
+      by: [{ kind: "track" }],
+      cases: [
+        { id: "t1", when: [["מסלול 1"]], stages: [{ price: { form: "free" } }] },
+        { id: "t2", when: [["מסלול 2"]], mine: true, stages: [{ price: { form: "perAction", amount: typed(16) } }] },
+      ],
+    };
+    expect(keptOf(byTrack.cases).id).toBe("t2");
+    expect(ownKept(byTrack, 0)).toBe(true);
+    expect(removeBy(byTrack, 0)).toEqual({ id: "fee-trade", kind: "trade", stages: byTrack.cases[1]!.stages });
+    const one = (f: Fee): FeeDeal => ({ ...deal(), fees: [f] });
+    expect(undoWords(removeByKept(one(byTrack), "fee-trade", 0, null)!.undo, () => "", data)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם. נשאר המחיר של המסלול שלכם.");
+    expect(thingMenu(read(one(byTrack)), "fee-trade", 0)!.after).toBe(copy.cases.thingMenu.slimOwn);
+    // no case the person's: the first case's price, as before
+    const noneMine: CasesFee = { ...byTrack, cases: byTrack.cases.map(({ mine: _m, ...c }) => c) };
+    expect(ownKept(noneMine, 0)).toBe(false);
+    expect(removeBy(noneMine, 0)).toEqual({ id: "fee-trade", kind: "trade", stages: byTrack.cases[0]!.stages });
+    expect(thingMenu(read(one(noneMine)), "fee-trade", 0)!.after).toBe(copy.cases.thingMenu.slim);
+    // two things, the person's US track after the other: the two US cases become one at the first one's place, with the person's prices
+    const t = trade();
+    const swapped: CasesFee = { ...t, cases: [t.cases[0]!, t.cases[1]!, t.cases[3]!, t.cases[2]!, t.cases[4]!] };
+    const merged = removeBy(swapped, 1) as CasesFee;
+    expect(merged.cases.map((c) => c.id)).toEqual(["c1", "c2", "c3", "c5"]);
+    expect(merged.cases[2]!.stages).toEqual(t.cases[2]!.stages);
+    expect(merged.cases.some((c) => c.mine)).toBe(false);
+    expect(ownKept(swapped, 1)).toBe(true);
+    expect(thingMenu(read(one(swapped)), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.mergeOwn.replace("{from}", "5").replace("{to}", "4"));
+    // the person's case first in its group already: the first case's words stay true
+    expect(ownKept(trade(), 1)).toBe(false);
+    expect(thingMenu(read(deal()), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "4"));
   });
 });
 

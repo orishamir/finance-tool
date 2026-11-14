@@ -1,7 +1,8 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
-import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, effectiveAnnualOf, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
+import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
 import { NotEvaluatedError } from "./securities.ts";
@@ -107,7 +108,12 @@ export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<De
  * and at one of its exit points (what an exit point pays is not in the records). Neither flag changes an amount.
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
-  const book = ruleBook(ctx);
+  return acrossReadings(ctx, (c) => runDepositUnder(input, c));
+}
+
+/** `runDeposit` under the readings `ctx` holds (method §13). */
+function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, deposit, profile } = input;
   const T = goal.months;
   const first = goal.firstMonth ?? 1;
@@ -119,10 +125,11 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const tally = new Tally();
   const effective = deposit.rateBasis === "effective";
   const facts = { basis: deposit.rateBasis, termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
-  // F-21: a term over a year compounds at a rate only the product's own terms give (BANK-50's m); where the record prints none, the run stops
-  if (!isCurrentAccount && !effective && n > 12 && !deposit.interestPaidOut && effectiveAnnualOf(deposit.rate, deposit.interestCalc) === null) throw new NotEvaluatedError("BANK-OQ21");
-  // interest paid out at a rate quoted as effective is not in the method (F-21, G-36)
-  if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("G-36");
+  // interest paid out at a rate quoted as effective is not in the method (F-21, G-37)
+  if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("G-37");
+  // F-21: a term of a year or more compounds at a rate only the product's own terms give (BANK-50's m); where the record gives none, or
+  // its printed pair leaves the run's rate open, the run stops
+  if (!isCurrentAccount && depositInterest(1, deposit.rate, n, n, facts) === null) throw new NotEvaluatedError("BANK-OQ21");
   // F-21: interest paid out during the term is paid every month and taxed in the month it is paid (TXI-07, TXI-08)
   const paysMonthly = !isCurrentAccount && deposit.interestPaidOut === true;
   // F-26: the current account's month at the rate its crediting gives, or F-07's convention; F-07's month itself at an effective rate
@@ -219,14 +226,15 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       const deduction = applyTxi20
         ? Math.min(
             yearTaxable,
-            lowIncomeDeduction(profile.annualIncome! + yearIncome, book.amount("TXI-20", "favoured_ceiling"), book.amount("TXI-20", "deduction")),
+            // F-119: the year's own amounts
+            lowIncomeDeduction(profile.annualIncome! + yearIncome, book.inYear(taxYearOf(m, first)).amount("TXI-20", "favoured_ceiling"), book.inYear(taxYearOf(m, first)).amount("TXI-20", "deduction")),
           )
         : 0;
       deductionUsed += deduction;
       const owed = linked ? maxRateTax(book, profile, m, yearTaxable - deduction, rate, first) : { tax: rate * (yearTaxable - deduction), atBrackets: false };
       if (owed.atBrackets) tally.flag("G-21");
       const refund = refundClaimed ? yearWithheld - owed.tax : 0;
-      tally.taxDuring += yearlySurtax(book, profile, yearTaxable - deduction) - refund;
+      tally.taxDuring += yearlySurtax(book, profile, yearTaxable - deduction, taxYearOf(m, first)) - refund;
       rolled += refund;
       yearTaxable = yearIncome = yearWithheld = 0;
     }

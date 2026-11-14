@@ -8,14 +8,16 @@
 // list (a Tab past its last row) closes it. In a heading, the button stays in the heading's words and the list is drawn in `listHost`, an
 // element after the heading, placed under the button: a heading holds no list of controls, and the Tab order still runs from the button
 // into the list.
-import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { IconCheck, IconChevronDown } from "../icons";
 import { Button } from "./button";
 import { RenameInput, type ChipListWords } from "./chip-list";
+import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
+import { DROP_PANEL, DROP_ROW, dropRoom, usePressAway } from "./drop-list";
 
 export interface MenuItem {
   id: string;
@@ -79,11 +81,9 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       top = Math.max(top, r.top);
       bottom = Math.min(bottom, r.bottom);
     }
-    const h = list.current?.scrollHeight ?? 0;
-    const below = bottom - b.bottom - 8, above = b.top - top - 8;
-    const goUp = below < h && above > below;
-    setUp(goUp);
-    setRoom(h > (goUp ? above : below) ? Math.max(goUp ? above : below, 120) : null);
+    const r = dropRoom(b, list.current?.scrollHeight ?? 0, top, bottom);
+    setUp(r.up);
+    setRoom(r.room);
   }, [open, listHost, items.length]);
   // in a host: the list's place under the button, measured against the host, again when the window changes size
   const [at, setAt] = useState<CSSProperties | null>(null);
@@ -108,12 +108,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
     if (focus) button.current?.focus();
   };
   // a press outside the picker closes it, and leaves the focus where the press put it
-  useEffect(() => {
-    if (!open) return;
-    const away = (e: PointerEvent) => !root.current?.contains(e.target as Node) && !list.current?.contains(e.target as Node) && close(false);
-    document.addEventListener("pointerdown", away);
-    return () => document.removeEventListener("pointerdown", away);
-  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+  usePressAway(open, [root, list], () => close(false));
 
   const faces = () => [...(list.current?.querySelectorAll<HTMLElement>("[data-menu-face]") ?? [])];
   const move = (by: number | "first" | "last") => {
@@ -162,7 +157,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       if (!open || !a || a === document.body || list.current?.contains(a) || a === button.current) return;
       close(false);
     });
-  const face = "flex flex-1 min-w-0 items-center gap-2 min-h-target rounded-md px-3 text-start hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring";
+  const face = cx(DROP_ROW, "hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring");
 
   const menu = (
     <ul
@@ -173,7 +168,8 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       onBlur={onListBlur}
       style={listHost ? (at ?? undefined) : room !== null ? { maxHeight: room } : undefined}
       className={cx(
-        "absolute z-[var(--z-popover)] flex w-max max-w-[min(22rem,calc(100vw-2rem))] flex-col gap-0.5 rounded-lg border border-border bg-popover p-1 text-base font-normal leading-normal shadow-md",
+        "absolute z-[var(--z-popover)]",
+        DROP_PANEL,
         !listHost && cx("start-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1", room !== null && "overflow-y-auto"),
       )}
     >
@@ -236,20 +232,15 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
                     </Button>
                   )}
                   {onDelete && (
-                    <Button
-                      variant="icon"
-                      className="size-9 tap-area rounded-full shrink-0"
-                      aria-label={`${words?.remove ?? ""}: ${item.label}`}
-                      title={words?.remove}
-                      aria-expanded={deleteAsks ? confirm === item.id : undefined}
-                      onClick={() => {
+                    <RemoveButton
+                      label={`${words?.remove ?? ""}: ${item.label}`}
+                      {...(deleteAsks ? { expanded: confirm === item.id } : {})}
+                      onRemove={() => {
                         if (deleteAsks) return setConfirm((c) => (c === item.id ? null : item.id));
                         close();
                         onDelete(item.id);
                       }}
-                    >
-                      <Trash2 size={16} {...ic} />
-                    </Button>
+                    />
                   )}
                 </>
               )}

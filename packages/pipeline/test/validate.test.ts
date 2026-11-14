@@ -452,8 +452,14 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // in the 2016 tender (CS OQ18); BANK OQ7, KGL OQ12 and BRK OQ2 deleted, bills that lapsed with the 25th Knesset; later that day
     // three more from the combinations sweep, the Commissioner's approved fee variables (PF OQ19), what reg. 7 lets an IRA fund be
     // charged (IRA OQ17) and the non-bank fund trade lines on money-market units (MF OQ23), and PEN OQ28 deleted, the 2013
-    // insurance-cover regulations now read in the gazette (PEN-15)
-    expect(items.length).toBe(426);
+    // insurance-cover regulations now read in the gazette (PEN-15); later still, from the tax-questions pass, three more and one answered:
+    // whether an unused s.45A credit is lost, refunded or carried (TXP OQ20), whether the 2003 regulations on a foreign-investment
+    // fund's index still operate (TXS OQ26) and what keeps the 2028 indexation from being exact (TXG OQ16); TXG OQ8 deleted, the
+    // bill's explanatory notes say the 2028 indexation adds only the 2027 CPI rise (TXG-06), and which Israeli funds One Zero has
+    // distribution agreements for (BRK OQ24); 2026-11-14 two more, which fund the fee regulations' "ישיר ביטחון" is and whether the
+    // guaranteed-yield exclusion takes a named fund whole (CAT OQ36), and what a fall of the CPI does to the s.120ב amounts after
+    // the freeze (TXG OQ17), and what a fall of the CPI does to the gemel lehashkaa deposit ceiling (KGL OQ15)
+    expect(items.length).toBe(432);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
@@ -703,9 +709,9 @@ describe("a deposit's first exit point (2026-11-12)", () => {
 
 describe("the unit of a rate quoted as effective (data-schema §2)", () => {
   const v = (unit: string) => ({ value: 3.2, unit });
-  it("stands only in P-05's cash_rate and a deposit record's rate_offered", () => {
+  it("stands only in P-05's cash_rate: a deposit record's rate_offered is a directive 447 rate, nominal (BANK-50)", () => {
     expect(checkEffectiveRateUnit("parameters", { method_id: "P-05", inputs: { cash_rate: v("pct_per_year_effective"), "A-01": v("pct_per_year") } })).toEqual([]);
-    expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year_effective") })).toEqual([]);
+    expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year_effective") })).toEqual([expect.stringContaining("rate_offered: unit pct_per_year_effective is read only in parameters inputs.cash_rate")]);
     // a bank's printed effective rate is effective by its field, and nothing reads the unit there
     expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year"), interest_calc: { effective_annual: v("pct_per_year_effective") } })).toEqual([
       expect.stringContaining("interest_calc.effective_annual: unit pct_per_year_effective is read only in"),

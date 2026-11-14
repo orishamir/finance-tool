@@ -5,6 +5,7 @@ import { computedInputs, feeDeal as copy } from "../../../copy";
 import { feesData } from "../../fees.server";
 import { blankPrice, newDeal, typed, type FeeDeal, type Price } from "../model";
 import { OFFERED, SAID, STATED } from "../part-words";
+import { TOOL_ORDER } from "../toolbox";
 import { FEE_KIND_IDS } from "../shapes";
 import { changeFormKept, undoWords } from "../undo";
 import { capacity, keeps } from "./capacity";
@@ -29,6 +30,10 @@ describe("the part registry", () => {
     expect(PART_IDS.filter(isPending)).toEqual(["until", "min", "max", "cap", "maxPerSecurity", "offset"]);
     expect(PART_IDS.filter(isFormPart)).toEqual(["share", "perUnit", "perAction", "held", "sum", "free"]);
     expect(PART_IDS.filter((id) => PARTS[id].tool === null)).toEqual(["free", "unfilledClerk", "unfilledClerkAbroad", "capRead"]);
+  });
+
+  it("puts every part the registry gives a toolbox group in that group's order, once", () => {
+    for (const [group, order] of Object.entries(TOOL_ORDER)) expect([...order].sort(), group).toEqual(PART_IDS.filter((id) => PARTS[id].tool === group).sort());
   });
 
   it("has words for every part, every card the toolbox offers and every stated part", () => {

@@ -2,12 +2,13 @@
 // F-32), the provident-family ledger (F-27, F-11, F-15, F-16), the insurance cost (F-53) and the exit, which
 // is blocked (F-49, G-03; F-48 is not built yet). The employer's deposits run through the same ledger as a separate
 // line (F-52, B2).
-import { deductionValue, grossForYear, spreadReliefByYear, type PensionRelief } from "../formulas/deposit-side.ts";
+import { reliefFlags, deductionValue, grossForYear, spreadReliefByYear, taxAtBrackets, type PensionRelief, type ReliefResult } from "../formulas/deposit-side.ts";
 import { blockedWrapperExit, type BlockedExit } from "../formulas/blocked-exit.ts";
 import { balanceFee, depositFee, feeForMonth, type Discount } from "../formulas/fees.ts";
 import { insuranceCost } from "../formulas/insurance.ts";
 import { annualToMonthly, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { MissingRuleError, ruleBook, type RuleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { Tally, type Profile } from "./common.ts";
 
@@ -59,6 +60,8 @@ export interface YearRelief {
   beneficiary: boolean;
   credited: number;
   credit: number;
+  /** The year's tax the credit is capped at, and whether it bound (TXP-01, TXP OQ20). */
+  creditCap: ReliefResult["creditCap"];
   tier1: number;
   tier2: number;
   deduction: number;
@@ -186,7 +189,8 @@ function commonFlags(book: RuleBook, tally: Tally, input: PensionInput) {
 /**
  * The pension and provident-for-annuity run, own money. F-30 turns the person's net outlay into the gross
  * deposit year by year, with the relief of F-31 (employee credit) or F-32 (beneficiary member, self-employed);
- * the ledger of F-27 with F-11, F-15, F-16 and F-53 gives the balance. The exit is an annuity whose value
+ * the credit is worth at most the year's tax (TXP-01, TXP OQ20), a tax without credit points (G-23), so a year with a credit
+ * flags both; the ledger of F-27 with F-11, F-15, F-16 and F-53 gives the balance. The exit is an annuity whose value
  * needs conversion factors, so it is blocked (F-49, G-03), or, if the person opts into early withdrawal,
  * blocked as well (F-48, G-06): the run returns the gross balance at the horizon, the flag and the rule IDs,
  * and the wrapper is listed, not ranked (B3). `paidIn` is the person's net outlay; the gross deposits and the
@@ -194,8 +198,13 @@ function commonFlags(book: RuleBook, tally: Tally, input: PensionInput) {
  * crossed; routing the excess to the general fund (PEN-10) is not modelled.
  */
 export function runPension(input: PensionInput, ctx: RunContext): PensionResult {
+  return acrossReadings(ctx, (c) => runPensionUnder(input, c));
+}
+
+/** `runPension` under the readings `ctx` holds (method §13). */
+function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   check(input);
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, pension: p } = input;
   const tally = new Tally();
   const first = goal.firstMonth ?? 1;
@@ -204,21 +213,26 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
   const C = contributions(goal, I);
   const formulas = ["F-08", "F-27", "F-11", "F-15", "F-16", "F-30", "F-53"];
 
-  const brackets = book.brackets("TXG-02", "brackets");
   const employee = p.employment === "employee";
+  // The person's work in every tax year is a whole year's: the income, the own deposits already made through work and the employer's
+  // deposits, so TXP-03's 16% test counts own and employer money on one basis; only the run's new money starts at the run date (A-30).
   const income = employee ? 12 * (p.monthlySalary ?? 0) : (p.annualIncome ?? 0);
   const employerMonth = employerMonthly(p);
   const insured = employee && employerMonth > 0 ? income : 0;
   const existingOwn = employee ? (p.existingEmployeeRate ?? 0) * income : 0;
-  const monthsInYear = new Map<number, number>();
-  for (let m = 1; m <= T; m++) monthsInYear.set(taxYearOf(m, first), (monthsInYear.get(taxYearOf(m, first)) ?? 0) + 1);
 
   const years: YearRelief[] = [];
   const gross = spreadReliefByYear(C, first, taxYearOf, (year, netYear) => {
-    const facts: PensionRelief = { taxableIncome: income, insuredIncome: insured, existingOwn, employer: employerMonth * (monthsInYear.get(year) ?? 0), businessIncome: !employee };
-    const r = grossForYear(book, facts, netYear, brackets);
+    const facts: PensionRelief = { taxableIncome: income, insuredIncome: insured, existingOwn, employer: 12 * employerMonth, businessIncome: !employee };
+    // F-119: each tax year's caps, floor and brackets; the credit is capped at the year's tax, which leaves out credit points (G-23)
+    const ofYear = book.inYear(year);
+    const r = grossForYear(ofYear, facts, netYear, taxAtBrackets(ofYear.brackets("TXG-02", "brackets")));
     if (r.gap) tally.flag("TXP-03");
-    years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
+    for (const code of reliefFlags(r.relief)) tally.flag(code);
+    // A-30: a yearly cap reached in the run date's tax year, which the run starts with none of its new money deposited: part of the year's
+    // new money gets neither the deduction nor the credit, or the credit is cut to the year's tax
+    if (year === 1 && first > 1 && (r.relief.creditCap.binds || r.relief.credited + r.relief.deduction < r.gross - 1e-6)) tally.flag("A-30", 1);
+    years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, creditCap: r.relief.creditCap, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
     return r.gross;
   });
   if (years.some((y) => y.formula === "F-32")) formulas.push("F-32");
@@ -286,10 +300,15 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
  * as F-67's pension visual does with `min(salary, average wage)`.
  */
 export function employerLinePension(input: PensionInput, ctx: RunContext): PensionEmployerLine {
+  return acrossReadings(ctx, (c) => employerLinePensionUnder(input, c));
+}
+
+/** `employerLinePension` under the readings `ctx` holds (method §13). */
+function employerLinePensionUnder(input: PensionInput, ctx: RunContext): PensionEmployerLine {
   check(input);
   const p = input.pension;
   if (!p.employer || p.employment !== "employee") throw new RangeError("pension.employer is required for the employer line (A-12)");
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal } = input;
   const first = goal.firstMonth ?? 1;
   const T = goal.months;
@@ -310,11 +329,11 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   const pensionPart = p.employer.pensionRate * deposited;
   const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(deposited, ceiling));
   if (p.employer.severanceRate * deposited > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
-  const brackets = book.brackets("TXG-02", "brackets");
   const perYear = new Map<number, number>();
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
   let depositTax = 0;
-  for (const x of perYear.values()) depositTax += deductionValue(brackets, 12 * salary + x, x);
+  // F-119: the brackets of each year the excess is paid in
+  for (const [y, x] of perYear) depositTax += deductionValue(book.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
 
   const exit = blockedWrapperExit("F-49", out.balance);
   if (exit.gap) tally.flag(exit.gap);

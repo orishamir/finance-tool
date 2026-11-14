@@ -1,8 +1,8 @@
 {
   "id": "TXS-14",
-  "title": "Which index measures a fund unit's real gain: CPI for shekel units, the exchange rate for currency-denominated units and for foreign-investment funds",
+  "title": "Which index measures a fund unit's real gain: CPI for shekel units, the exchange rate for currency-denominated units and, if the 2003 regulations still operate (TXS OQ26), for foreign-investment funds",
   "title_he": "איזה מדד מודד את הרווח הריאלי על יחידת קרן",
-  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת. בחריגה ארוכה יותר, לפי חוזר של רשות המסים, הקרן מפסיקה להיות קרן להשקעות חוץ ולא חוזרת להיות כזו: מי שפדה לפני החריגה ממוסה כבקרן להשקעות חוץ, ומי שפדה אחריה לפי המדד לכל תקופת ההחזקה. אם התקנות האלה עדיין בתוקף היא שאלה פתוחה: הן נשענות על סעיפים בפקודה שבוטלו בתיקון משנת 2005, ולא נמצא תיקון שמשאיר אותן בתוקף או מבטל אותן.",
+  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי, אם תקנות 2003 על קרן להשקעות חוץ, שקובעות זאת, עדיין בתוקף. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת. בחריגה ארוכה יותר, לפי חוזר של רשות המסים, הקרן מפסיקה להיות קרן להשקעות חוץ ולא חוזרת להיות כזו: מי שפדה לפני החריגה ממוסה כבקרן להשקעות חוץ, ומי שפדה אחריה לפי המדד לכל תקופת ההחזקה. אם תקנות 2003 על קרן להשקעות חוץ עדיין בתוקף היא שאלה פתוחה. הסעיף בפקודה שמכוחו הותקנו בוטל בתיקון משנת 2005, והתיקון השאיר במפורש בתוקף רק תקנות לפי שני סעיפים אחרים. מנגד, לפי חוק הפרשנות תקנות נשארות בתוקף כשהחוק המבטל קבע הוראות במקום אלה שבוטלו, ואותו תיקון קבע סמכות דומה לקבוע איך מחשבים רווח הון; תקנות משנת 2007 עדיין מפנות אליהן, ולא נמצא ביטול שלהן. לכן לפי קריאה של האתר הן בתוקף, אבל שום טקסט רשמי לא אומר זאת במשפט אחד.",
   "figure_names_he": {
     "foreign_investment_fund_threshold": "חלק מזערי של ההשקעות הצמוד למטבע העיקרי",
     "tolerance_days": "ימי חריגה מותרים בשנת מס"
@@ -13,7 +13,8 @@
     "currency",
     "tax-at-exit"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-14",
   "figures": {
     "foreign_investment_fund_threshold": {
       "value": 90,
@@ -33,7 +34,7 @@
         "TXS-14"
       ],
       "state": "sourced",
-      "notes": "A foreign-investment fund (קרן נאמנות להשקעות חוץ) is an exempt fund with at least 90% of its investments in each tax year in assets indexed to its principal currency; its inflationary amount uses that currency's exchange rate. A shekel fund holding foreign assets that is not such a fund uses the CPI, so currency moves beyond CPI are taxed as real gain."
+      "notes": "A foreign-investment fund (קרן נאמנות להשקעות חוץ) is an exempt fund with at least 90% of its investments in each tax year in assets indexed to its principal currency; its inflationary amount uses that currency's exchange rate, if the 2003 regulations still operate (TXS OQ26). A shekel fund holding foreign assets that is not such a fund uses the CPI, so currency moves beyond CPI are taxed as real gain."
     },
     "tolerance_days": {
       "value": 10,
@@ -60,6 +61,48 @@
   "checked": "2026-10-25",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=25",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007, קובץ התקנות 6625",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.25 (gazette p.153), reg. 1",
+      "locator_he": "עמוד הקובץ 25 (עמוד הרשומות 153), תקנה 1",
+      "page": 25,
+      "quote": "חישוב סכום אינפלציוני במכירת יחידה בקרן",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=26",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007, קובץ התקנות 6625",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.26 (gazette p.154), reg. 3(ב)(7)",
+      "locator_he": "עמוד הקובץ 26 (עמוד הרשומות 154), תקנה 3(ב)(7)",
+      "page": 26,
+      "quote": "לגבי קרן כזו יצוין גם שער המטבע העיקרי שלה",
+      "checked": "2026-11-08"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=166",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.166, s.101א(א)(1)",
+      "locator_he": "עמוד 166, סעיף 101א(א)(1)",
+      "page": 166,
+      "quote": "הדרך והשיטה לחישוב רווח ההון ורווח ההון הריאלי",
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
@@ -112,6 +155,48 @@
       "locator_he": "עמודים 17 עד 18, סעיף 4.1",
       "page": 17,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209361.PDF#page=4",
+      "title": "חוק הפרשנות, התשמ\"א-1981",
+      "title_he": "חוק הפרשנות, התשמ\"א-1981",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.23",
+      "locator_he": "עמוד 4, סעיף 23",
+      "page": 4,
+      "quote": "אולם מקום שהחיקוק המבטל קובע הוראות במקום המבוטלות",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209361.PDF#page=4",
+      "title": "חוק הפרשנות, התשמ\"א-1981",
+      "title_he": "חוק הפרשנות, התשמ\"א-1981",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.25",
+      "locator_he": "עמוד 4, סעיף 25",
+      "page": 4,
+      "quote": "לרבות הוראות שנוספו בו והוראות שבאו במקומו בחיקוק אחר",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/15/law/15_lsr_300605.pdf#page=36",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 132), התשס\"ב-2002, ספר החוקים 1863",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 132), התשס\"ב-2002, ספר החוקים 1863",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.36 (gazette p.565), s.105יט",
+      "locator_he": "עמוד הקובץ 36 (עמוד ספר החוקים 565), סעיף 105יט",
+      "page": 36,
+      "quote": "הדרך לחישוב רווח ההון, לרבות קביעת המחיר המקורי ויום הרכישה",
+      "checked": "2026-11-14"
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299994.pdf",

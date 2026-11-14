@@ -3,9 +3,9 @@
 // figures keep their own number state (the sourced line, the entered blue), as everywhere on the site. Parts keep a fixed order: there is
 // no grip and nothing to drag.
 import type { ReactNode } from "react";
-import { ArrowDownToLine, ArrowUpToLine, Link2, X, type LucideIcon } from "lucide-react";
+import { ArrowDownToLine, ArrowUpToLine, Link2, type LucideIcon } from "lucide-react";
 import { dealCases as copy } from "../../copy";
-import { Button } from "./button";
+import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 
 /** What a part is: a price (neutral), a minimum or a maximum (green), a link to another fee (yellow), a note (a dashed edge, no fill). */
@@ -62,21 +62,39 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
 
 /**
  * A part in edit, in the open case: the full width, its icon and first word, then its boxes and choices as `children` (the kit's
- * `FigureField`, `InlineSelect`, words between them), and ✕ at its end, which removes it (none where there is nothing to remove: a free
- * price). 48 px tall at least; on a narrow screen its boxes wrap and the ✕ stays in the corner.
+ * `FigureField`, `InlineSelect`, words between them), and a bin at its end, which removes it (none where there is nothing to remove: a
+ * free price). 48 px tall at least; on a narrow screen its boxes wrap and the bin stays in the corner. With an `id` the page can give it
+ * the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box or
+ * choice.
  */
-export function PartEdit({ kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The ✕'s spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
+export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; children?: ReactNode }) {
+  const words = id ? `${id}-words` : undefined;
   return (
-    <div className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1", PART_LOOK[kind])}>
-      <div className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
+    <div
+      id={id}
+      {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
+      className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", PART_LOOK[kind])}
+    >
+      <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead kind={kind} mark={mark} lead={lead} />
         {children}
       </div>
       {onRemove && (
-        <Button variant="icon" size="sm" aria-label={removeLabel} onClick={onRemove} className="mt-0.5 shrink-0">
-          <X size={16} strokeWidth={1.75} aria-hidden />
-        </Button>
+        <RemoveButton label={removeLabel} onRemove={onRemove} className="mt-0.5" />
       )}
     </div>
   );
+}
+
+/**
+ * Gives the focus to the `PartEdit` of id `id`, just put on the price: to its first box or choice, else to the part itself, never to its
+ * bin, so a second Enter (a key held down, a double press) does nothing to it. The element that took it, or null where no such part is
+ * drawn.
+ */
+export function focusPartEdit(id: string): HTMLElement | null {
+  const part = document.getElementById(id);
+  if (!part) return null;
+  const to = part.querySelector<HTMLElement>("[data-part-body] :is(input, select, button)") ?? part;
+  to.focus({ preventScroll: true });
+  return to;
 }

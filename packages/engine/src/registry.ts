@@ -39,6 +39,7 @@ import { studyFundEarlyWithdrawal } from "./formulas/early-withdrawal.ts";
 import { blockedWrapperExit } from "./formulas/blocked-exit.ts";
 import { insuranceCost } from "./formulas/insurance.ts";
 import { runSecurities, runSecuritiesBeforeTax } from "./ledgers/securities.ts";
+import { cpiLinkedAmount, indexedAmount } from "./formulas/indexation.ts";
 import { buildCandidateSet } from "./compare/candidates.ts";
 import { idleCash } from "./compare/idle-cash.ts";
 import { lossFilter } from "./compare/loss-filter.ts";
@@ -153,6 +154,8 @@ export const formulas = {
   "F-116": discounted,
   "F-117": actionShare,
   "F-118": runSecuritiesBeforeTax,
+  "F-119": indexedAmount,
+  "F-120": cpiLinkedAmount,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

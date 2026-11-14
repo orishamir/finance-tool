@@ -10,9 +10,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   /**
    * `sm`: on `quiet` and `destructive`, 13 px words with no height of their own and a 44 px tap area, for a text action inside a line of
    * small text; on `icon`, a 36 px round button in the muted ink, its tap area still 44 px both ways, for one that floats over content (a
-   * sheet's back and close, a part's ✕). `compact`: on `quiet`, a text action among chips (the rules page's examples): 44 px high on a phone, where the chips
-   * may stand in a strip that scrolls sideways and would cut a tap area off, and from `lg` 28 px high with a 44 px tap area. `sm` on
-   * `ghost`: an icon alone in a 36 px round face with a 44 px tap area (its words in `aria-label`).
+   * sheet's back and close). `compact`: on `quiet`, a text action among chips (the rules page's examples): 44 px high on a phone, where the chips
+   * may stand in a strip that scrolls sideways and would cut a tap area off, and from `lg` 28 px high with a 44 px tap area.
    */
   size?: "sm" | "compact";
   /** The room between an icon and the words: `sm` 6 px (a back arrow before its word, a copy mark); 8 px otherwise. */
@@ -28,9 +27,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 /**
  * An action. `primary` once per screen, `secondary` for the rest, `quiet` for a text-style action, `destructive` for a quiet one that
  * deletes, `icon` for a 44 px icon-only button. `outline`: a bordered button on the card's own surface, the face `MenuPicker` has, for an
- * action that stands beside such a picker in a bar (the fee page's "קישור לעסקה"); `ghost`: a quiet action that takes something away and
- * can be undone at once, in the muted ink with no edge, the danger colour only under the pointer or the focus (a fee's "להסיר את העמלה",
- * its bin and its words); with `size="sm"`, the icon alone (a fee card's bin). `inline`: an action inside a sentence, around words that may wrap with it (a name that
+ * action that stands beside such a picker in a bar (the fee page's "קישור לעסקה"); `ghost`: the face of the kit's bin (`RemoveButton`, the
+ * one control that takes something away), an icon alone in a 36 px round face with a 44 px tap area, 44 px square on a phone, in the muted ink with no edge, the
+ * danger colour only under the pointer or the focus. `inline`: an action inside a sentence, around words that may wrap with it (a name that
  * picks a pair, the way back from a choice that changed something else): underlined in the link colour, on the sentence's lines, its
  * 44 px target a layer reaching 12 px above and below the words, so it takes no more height than they do (a layer, not a margin pulled
  * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). A disabled text action reads in the muted ink.
@@ -53,10 +52,7 @@ export function Button({ variant = "secondary", flush, size, gap, wide, classNam
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 lg:tap-area px-5 rounded-md hover:bg-accent",
     outline: "min-h-target px-4 rounded-md border border-input bg-card text-foreground hover:bg-accent",
-    ghost: cx(
-      "text-muted-foreground hover:bg-accent hover:text-destructive focus-visible:text-destructive",
-      size === "sm" ? "size-9 tap-area rounded-full" : cx("min-h-target rounded-md", side),
-    ),
+    ghost: "size-9 max-md:size-target tap-area rounded-full text-muted-foreground hover:bg-accent hover:text-destructive focus-visible:text-destructive",
     quiet: cx("text-link rounded-md", textAction, textHeight, side),
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
     destructive: cx("text-destructive rounded-md", textAction, textHeight, side),

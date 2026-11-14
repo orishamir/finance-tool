@@ -36,7 +36,7 @@ export const content: GuideContent = {
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה. עצמאים שמפקידים יותר מקבלים גם <Term id="ניכוי">ניכוי</Term>.
+        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם ועד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה. עצמאים שמפקידים יותר מקבלים גם <Term id="ניכוי">ניכוי</Term>.
       </p>
       <EmployerUntaxed figure={figure} />
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-11", "TXP-06", "TXP-24"]} />

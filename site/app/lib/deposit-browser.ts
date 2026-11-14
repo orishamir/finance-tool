@@ -1,7 +1,7 @@
 // The deposits page (D92, `/deposits`): every bank's standard shekel deposits side by side. Pure: the shapes the loader sends, the term
 // of a record, which offers the reader's amount opens, the period chart's bars and the grid's cell (F-108), the interest an offer pays on
 // the amount (F-21), the list's order and its words. No React, no I/O.
-import { amountOpens, amountUnknown, bestOpenOffer, depositInterest } from "@finance-tool/engine";
+import { amountOpens, amountUnknown, bestOpenOffer, depositInterest, interestCalcOf } from "@finance-tool/engine";
 import { depositBrowser as t } from "../copy";
 import { breakText, exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
 import { countPhrase, fmt } from "./format";
@@ -60,7 +60,7 @@ export interface DbOffer {
   /** F-21 (BANK-50): the term's days as the table prints them, how the product calculates interest (its printed effective rate, as a
    *  value, or the times a year), and whether interest is paid out during the term; each only where the record says. */
   termDays?: number;
-  calc?: { effectiveAnnual?: SiteValue; periodsPerYear?: SiteValue };
+  calc?: { effectiveAnnual?: SiteValue; effectiveDecimals?: SiteValue; periodsPerYear?: SiteValue };
   paidOut?: boolean;
 }
 
@@ -136,17 +136,15 @@ export function periodBest(data: DbData, term: TermId, kind: RateKind, amount: n
 export const startBest = (data: DbData): DbOffer | null => periodBest(data, START_TERM, START_KIND, data.start).pick;
 
 /**
- * F-21's facts of an offer for the engine: how its rate is quoted (its unit, `pct_per_year_effective` being effective), the printed days,
- * the printed nominal and effective pair or times a year, interest paid out.
+ * F-21's facts of an offer for the engine: the printed days, the printed nominal and effective pair with the effective rate's decimals or
+ * the times a year, interest paid out. Its rate is the bank's directive 447 rate, nominal (BANK-50).
  */
 function factsOf(o: DbOffer) {
-  const nominal = numberOf(o.rate_offered);
   const eff = o.calc?.effectiveAnnual ? numberOf(o.calc.effectiveAnnual) : null;
+  const decimals = o.calc?.effectiveDecimals ? numberOf(o.calc.effectiveDecimals) : null;
   const m = o.calc?.periodsPerYear ? numberOf(o.calc.periodsPerYear) : null;
-  const printed = eff !== null && nominal !== null ? { printed: { nominal: nominal / 100, effective: eff / 100 } } : {};
-  const calc = eff !== null || m !== null ? { ...printed, ...(m !== null ? { periodsPerYear: m } : {}) } : undefined;
+  const calc = interestCalcOf(numberOf(o.rate_offered), eff !== null && decimals !== null ? { pct: eff, decimals } : null, m);
   return {
-    ...(o.rate_offered.unit === "pct_per_year_effective" ? { basis: "effective" as const } : {}),
     ...(o.termDays !== undefined ? { termDays: o.termDays } : {}),
     ...(calc ? { calc } : {}),
     ...(o.paidOut ? { paidOut: true } : {}),
@@ -155,11 +153,10 @@ function factsOf(o: DbOffer) {
 
 /**
  * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21, BANK-50: `A × r × d/365` under a
- * year, by the days the table prints or 365/12 a month; the rate over one year; over a year compounded by the times a year the record's
- * printed nominal and effective pair or its words give; a rate quoted as effective compounded over the term), as a computed value over the
- * rate, the amount and, where read, the record's days or effective rate. A variable rate is taken as it stands
- * today. Null where the rate is not a number, or where the term is over a year and the record says nothing of how interest is calculated
- * (`interestUnknown`, BANK OQ21).
+ * year, by the days the table prints or 365/12 a month; a year or more compounded by the times a year the record's printed nominal and
+ * effective pair or its words give, and one year at the rate itself where the record gives neither), as a computed value over the rate,
+ * the amount and, where read, the record's days or effective rate. A variable rate is taken as it stands today. Null where the rate is not
+ * a number, or where the term is over a year and the record says nothing of how interest is calculated (`interestUnknown`, BANK OQ21).
  */
 export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, today: string): SiteValue | null {
   const r = numberOf(o.rate_offered);
@@ -168,15 +165,19 @@ export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, t
   const v = depositInterest(amount, r / 100, months, months, factsOf(o));
   if (v === null) return null;
   const inputs: Record<string, SiteValue> = { [t.interest.inputs.rate]: o.rate_offered, [t.interest.inputs.amount]: amountValue };
-  if (months > 12 && !o.paidOut && o.calc?.effectiveAnnual) inputs[t.interest.inputs.effective] = o.calc.effectiveAnnual;
-  else if (months > 12 && !o.paidOut && o.calc?.periodsPerYear) inputs[t.interest.inputs.periods] = o.calc.periodsPerYear;
+  if (months >= 12 && !o.paidOut && o.calc?.effectiveAnnual) inputs[t.interest.inputs.effective] = o.calc.effectiveAnnual;
+  else if (months >= 12 && !o.paidOut && o.calc?.periodsPerYear) inputs[t.interest.inputs.periods] = o.calc.periodsPerYear;
   return computed(v, "nis", "F-21", inputs, { today, about: `${t.interest.about}${t.termIn[o.term]}`, notes: o.kind === "variable" ? t.interest.variableNote : undefined });
 }
 
-/** The term is over a year and the record says nothing of how the product calculates interest: the interest is not known (BANK OQ21). */
+/**
+ * The record does not fix the interest at its own rate: the term is over a year and it says nothing of how the product calculates
+ * interest, or its printed pair leaves the rate open (BANK OQ21).
+ */
 export function interestUnknown(o: DbOffer): boolean {
   const months = TERM_YEARS[o.term]! * 12;
-  return numberOf(o.rate_offered) !== null && depositInterest(1, 0.01, months, months, factsOf(o)) === null;
+  const r = numberOf(o.rate_offered);
+  return r !== null && depositInterest(1, r / 100, months, months, factsOf(o)) === null;
 }
 
 /** "כ־325 ₪", and under one shekel "פחות מ־1 ₪": the interest in whole shekels, as the list says it. */

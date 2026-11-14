@@ -49,10 +49,11 @@ export function useOpenedDeal(address: AddressDeal, saved: readonly FeeDeal[], t
 /**
  * The deal on screen, from `first`: `change` a change to it (an undo line stays through it, and goes by itself where the change touched
  * the part it would put back into); `kept` a change that keeps what it took for the undo, in place of any undo before it (one that took
- * nothing the person gave is a plain change); `show` another deal on screen, its first fee chosen and the undo line gone. `undo` puts back
- * what the undo line took, `remove` deletes a saved deal (asking nothing, and undoable): each says whether another deal came on screen.
+ * nothing the person gave is a plain change); `show` another deal on screen, its first fee chosen and the undo line gone. `onUndo` puts
+ * back what the undo line took, `remove` deletes a saved deal (asking nothing, and undoable). Whenever another deal comes on screen, by
+ * any of them, `onShown` is told, so the page can drop what belonged to the deal before.
  */
-export function useDealDocument({ first, saved, today, data }: { first: FeeDeal; saved: readonly FeeDeal[]; today: string; data: FeesData }) {
+export function useDealDocument({ first, saved, today, data, onShown }: { first: FeeDeal; saved: readonly FeeDeal[]; today: string; data: FeesData; onShown: () => void }) {
   const [deal, setDeal] = useState<FeeDeal>(first);
   const [chosen, setChosen] = useState<string | null>(first.fees[0]?.id ?? null);
   const [focus, setFocus] = useState<FeeFocus | null>(null);
@@ -78,6 +79,7 @@ export function useDealDocument({ first, saved, today, data }: { first: FeeDeal;
     setDeal(next);
     setChosen(next.fees[0]?.id ?? null);
     setUndoing(null);
+    onShown();
   };
   /**
    * A form of the price from the toolbox: what carries over carries, and the price it replaces is kept for the undo, whose line stands
@@ -94,25 +96,24 @@ export function useDealDocument({ first, saved, today, data }: { first: FeeDeal;
     setFocus({ fee: feeId, on: "box" });
     return true;
   };
-  // the fee put back takes the focus on its card; a fill's and a stage's lines hand it on themselves
-  const onUndo = (): boolean => {
-    if (!undoing) return false;
+  // the fee put back takes the focus on its card; a fill's and a chain's lines hand it on themselves; a deleted deal put back that was on
+  // screen comes back on screen
+  const onUndo = () => {
+    if (!undoing) return;
     const u = undoing;
     setUndoing(null);
     if (!("dealId" in u)) {
       const back = undoDelete(saved, u);
-      if (!back) return false;
+      if (!back) return;
       dealStore.update(() => back);
-      if (!u.shown) return false;
-      show(u.deal);
-      return true;
+      if (u.shown) show(u.deal);
+      return;
     }
     const back = undo(deal, u, chosen);
-    if (!back) return false;
+    if (!back) return;
     keep(back.deal);
     setChosen(back.chosen);
     if (u.what.kind === "remove") setFocus({ fee: u.what.feeId, on: "card" });
-    return false;
   };
   const rename = (id: string, name: string) => {
     if (id === deal.id) return change({ ...deal, name });
@@ -120,13 +121,12 @@ export function useDealDocument({ first, saved, today, data }: { first: FeeDeal;
     if (d) dealStore.update((ds) => ds.map((x) => (x.id === id ? { ...d, name } : x)));
   };
   // the deal on screen deleted opens the next saved deal, or a new one
-  const remove = (id: string): boolean => {
+  const remove = (id: string) => {
     const r = deleteDealKept(saved, id, deal.id);
-    if (!r) return false;
+    if (!r) return;
     dealStore.update(() => r.deals);
     if (r.undo.shown) show(r.deals[0] ?? newDeal(null));
     made(r.undo);
-    return r.undo.shown;
   };
   // the undo on screen: a deal's change only while what it took has a place on the deal on screen; its words, which the live region says too
   const shown = undoing && ("dealId" in undoing ? standing(undoing, deal) : true) ? undoing : null;
@@ -149,6 +149,6 @@ export function useDealDocument({ first, saved, today, data }: { first: FeeDeal;
     rename,
     remove,
     /** The undo line on screen, its words, and each place's line (`undoLines`, `chosen` the fee the toolbox shows). */
-    undo: { shown, words, lines: (onUndo: () => void) => undoLines(shown, words, chosen, { onUndo, onHold: setHolding, take }), take, setHolding },
+    undo: { shown, words, lines: undoLines(shown, words, chosen, { onUndo, onHold: setHolding, take }), take, setHolding },
   };
 }

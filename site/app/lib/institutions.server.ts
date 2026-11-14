@@ -6,7 +6,7 @@ import { companyPath, documentsPath } from "./site-paths";
 import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { companyTermRule, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { companyTermRule, institutionsTable, ownDocumentCompanies, takesNewMembers, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
   AvailabilityRow,
   InstitutionKind,
@@ -178,6 +178,7 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     taxBucket: mark(d.tax_bucket),
     amountMin: mark(d.amount_range.min),
     amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
+    amountEdges: { ...(d.amount_range.min_edge ? { min_edge: d.amount_range.min_edge } : {}), ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}) },
     breakTerms: { penalty: d.break.penalty, quotes: printedQuotes(d.break.mechanism_text), rules: d.break.rule_ids },
     exitPoints: exitPointsOf(d.exit_points),
     autoRenew: { value: d.auto_renew.value, maxRenewals: d.auto_renew.max_renewals },
@@ -426,8 +427,9 @@ export function companyLinks(): Record<string, CompanyLink> {
 function loadCmaCompanyIds(): string[] {
   const ids = new Set<string>();
   for (const f of readdirSync(join(root, "data/cma")).filter((x) => x.endsWith(".json"))) {
-    const d = readJsonCached(join(root, "data/cma", f)) as { funds: { managing_corporation: { legal_id: string } }[] };
-    for (const fund of d.funds) ids.add(fund.managing_corporation.legal_id);
+    const d = readJsonCached(join(root, "data/cma", f)) as { funds: { managing_corporation: { legal_id: string }; closed_to_joiners?: unknown }[] };
+    // a company is the site's by a track the site shows (D51: not one its own terms close)
+    for (const fund of d.funds) if (takesNewMembers(fund)) ids.add(fund.managing_corporation.legal_id);
   }
   return [...ids];
 }

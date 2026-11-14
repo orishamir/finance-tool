@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { cmaPeriodFile, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
 import { feeDeal, guideBlocks } from "../copy";
-import { classificationToWrapper, loadProducts, loadRules, pointedRecords, root, termsFor } from "./data.server";
+import { classificationToWrapper, loadProducts, loadRules, openTracksOf, pointedRecords, root, termsFor } from "./data.server";
 import { dealKindsOf } from "./fee-deal/kinds";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
 import { STATED_RULES } from "./fee-deal/reading";
@@ -43,7 +43,7 @@ function cmaFiles() {
   return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
     .sort()
-    .map((f) => readParsedCached(join(dir, f), cmaPeriodFile));
+    .map((f) => openTracksOf(readParsedCached(join(dir, f), cmaPeriodFile)));
 }
 
 /** Every `rule_ids` and `ruleIds` inside a node: the rules a figure's sheet or a cap's line cites. */

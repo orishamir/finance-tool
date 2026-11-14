@@ -1,0 +1,94 @@
+{
+  "id": "MF-67",
+  "title": "How the TASE clearing house handles fund orders: each fund's own hour, settlement on the next business day, and no way to take units out of the member's name",
+  "title_he": "איך מסלקת הבורסה מטפלת בהוראות בקרן נאמנות",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-06",
+  "text_he": "לכל קרן נאמנות יש שעה יעודה משלה לקבלת הוראות קנייה ופדיון, ומי שמייצג את הקרן מודיע עליה למסלקה. חבר הבורסה מעביר למסלקה את הוראות הלקוחות עד השעה הזו, ועד אליה אפשר לשנות או לבטל אותן. הוראה שהגיעה עד השעה היעודה בקרן שנסלקת בשקלים נסלקת ביום העסקים הבא, וחבר הבורסה מעדכן את חשבון הלקוח לא יאוחר מיום הסליקה. יחידות שמוחזקות דרך חבר בורסה אי אפשר להעביר לרישום על שם הלקוח בפנקס בעלי היחידות של הקרן.",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=88",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.88, ch. י\"ב s.2ד",
+      "locator_he": "עמוד 88, פרק י\"ב סעיף 2ד",
+      "page": 88,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=89",
+      "title": "p.89",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.89, s.3, s.4ב(1)-(2)",
+      "locator_he": "עמוד 89, סעיף 3, סעיף 4ב(1)-(2)",
+      "page": 89,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=90",
+      "title": "p.90",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.90, s.4ב(3), s.4ג(1)-(3)",
+      "locator_he": "עמוד 90, סעיף 4ב(3), סעיף 4ג(1)-(3)",
+      "page": 90,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=92",
+      "title": "p.92",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.92, s.4ח, s.5ב",
+      "locator_he": "עמוד 92, סעיף 4ח, סעיף 5ב",
+      "page": 92,
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=94",
+      "title": "pp.94-96",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.94-96, ss.10 to 14",
+      "locator_he": "עמודים 94 עד 96, סעיפים 10 עד 14",
+      "page": 94,
+      "checked": "2026-11-06",
+      "qualifier": "(clearing-house rules made under Securities Law s.50ב, ISA-supervised)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=35",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.35, s.27א(1)-(2), s.27ג",
+      "locator_he": "עמוד 35, סעיף 27א(1)-(2), סעיף 27ג",
+      "page": 35,
+      "checked": "2026-11-06",
+      "qualifier": "(exchange rules, ISA-approved)"
+    }
+  ]
+}

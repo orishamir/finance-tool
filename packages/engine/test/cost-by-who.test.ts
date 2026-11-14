@@ -12,6 +12,17 @@ describe("F-91", () => {
     expect(p.state).toBeCloseTo(5_703.31, 2);
   });
 
+  it("in whole units the account's part splits into its fees and the waiting cash; the state does not move", () => {
+    // the indices page's S&P 500 at −5% (2026-11-14 data): the account's part −175 is 147 of fees and a waiting cash that gained 322
+    const p = costByWho({ base: 48_000, left: 47_399, account: -175, fund: 573, waiting: -322 });
+    expect(p.fees).toBeCloseTo(147, 9);
+    expect(p.waiting).toBe(-322);
+    expect(p.fees + p.waiting).toBe(p.account);
+    expect(p.state).toBeCloseTo(48_000 - 47_399 + 175 - 573, 9);
+    // by amount there is no waiting cash: the fees are the whole part
+    expect(costByWho({ base: 10, left: 8, account: 1, fund: 0.5 })).toMatchObject({ fees: 1, waiting: 0 });
+  });
+
   it("tax is divided by the index at the exit, also when the value left is nothing", () => {
     expect(taxReal(run({ taxDuring: 11, taxAtExit: 22 }))).toBeCloseTo(30, 9);
     expect(taxReal(run({ nominal: 0, real: 0, taxDuring: 11 }))).toBeCloseTo(10, 9);

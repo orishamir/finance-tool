@@ -14,7 +14,7 @@ import { feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, LeftOutLine, ListRow, RowList, SearchField, Tag, gershayim } from "../kit";
+import { Disclosure, GroupHead, LeftOutLine, ListRow, RowList, SearchField, Tag, cx, gershayim } from "../kit";
 import type { LeftOutView } from "../../lib/left-out";
 import type { SiteValue } from "../../lib/value";
 import { feeName } from "./words";
@@ -127,7 +127,12 @@ const lineText = (l: { line: string; name?: string; channel?: string; quote?: st
  * why it is left; a price list with nothing for what the deal holds; a track's fee the product does not charge by rule or the regulator's
  * data has no figure for.
  */
-export function TemplateNote({ template, left, leftOut = null }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null }) {
+/**
+ * The deal a template filled: its name, what the house's record says its price leaves out, and the lines it left out under a fold. One
+ * under the other by default; `row` lays the three on one line where it has the room (under the builder's strip), each at the fold's
+ * height, the fold opening under its own words.
+ */
+export function TemplateNote({ template, left, leftOut = null, row = false }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null; row?: boolean }) {
   const lines = new Map<string, string[]>();
   const rest: { key: string; fee?: string; why: string }[] = [];
   for (const l of left) {
@@ -135,14 +140,20 @@ export function TemplateNote({ template, left, leftOut = null }: { template: { i
     else rest.push({ key: l.fee, ...(l.why === "no-value" ? { fee: feeName(l.fee) } : {}), why: f.why[l.why === "no-value" ? "track-no-value" : l.why]! });
   }
   return (
-    <div className="flex flex-col gap-1 text-sm">
-      <p className="text-muted-foreground">
-        {f.from[templateSource(template.id)]}
-        {template.name}
-      </p>
-      <LeftOutLine view={leftOut} house={gershayim(template.name)} className="text-sm" />
+    <div className={row ? "flex flex-wrap items-start gap-x-6 text-sm" : "flex flex-col gap-1 text-sm"}>
+      <div className={cx(row && "flex min-h-target items-center")}>
+        <p className="text-muted-foreground">
+          {f.from[templateSource(template.id)]}
+          {template.name}
+        </p>
+      </div>
+      {leftOut && (
+        <div className={cx(row && "flex min-h-target items-center")}>
+          <LeftOutLine view={leftOut} house={gershayim(template.name)} className="text-sm" />
+        </div>
+      )}
       {left.length > 0 && (
-        <Disclosure label={f.left} summaryClassName="text-sm">
+        <Disclosure label={f.left} className={cx(row && "min-w-[16rem] flex-1")} summaryClassName="text-sm">
           <ul className="flex flex-col gap-2 pt-1">
             {rest.map((r) => (
               <li key={r.key}>

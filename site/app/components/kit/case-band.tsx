@@ -2,12 +2,13 @@
 // naming the things, then one flat row per case (design-system 11, "Cases and parts"). Never a band inside a band. A case's condition is
 // words in the band at the row's start (a fixed column where the band is wide, above the parts where it is narrow, by the band's own
 // width: from 25 rem, a computer's column), its parts in the dark cell beside them. One case may be open, in place: its condition's values as slots, its parts with their
-// boxes, and the actions on the case.
+// boxes, and the actions on the case as icons in its head.
 import { useId, type ReactNode } from "react";
-import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Plus, Split, Trash2 } from "lucide-react";
+import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Plus, Split } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Button } from "./button";
 import { LIFT_INNER } from "./choice";
+import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 import { Tag } from "./tag";
 
@@ -27,47 +28,50 @@ const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shr
 const OPEN_RING = "outline-2 outline-offset-2 outline-primary";
 
 /**
- * The band: its head (the cases' icon, `label`, then one pill per thing) and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`),
- * 4 px apart, then the action that adds a case (`addCase`, "+ עוד מקרה"). With `onThing` the pills are slots, buttons with a chevron
+ * The band: its head (the cases' icon, `label`, one pill per thing, and at its end the action that adds a case, `addCase`, "+ עוד מקרה")
+ * and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`), 4 px apart. With `onThing` the pills are slots, buttons with a chevron
  * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open, ringed;
- * without it they are words at rest.
+ * without `onThing` they are words at rest. With `onRemoveThing` a bin beside each pill, a slot or words, drops its thing at once
+ * (`removeLabel` its spoken name), so a thing can be taken away with its fee closed too. Each pill and its bin stand in one element marked
+ * `data-thing-place` with the thing's id, where the page gives the focus back to the first control after an undo.
  */
-export function ConditionBand({ things, onThing, openThing, label = copy.changesBy, addCase, children }: {
-  things: { id: string; name: string }[];
+export function ConditionBand({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, addCase, children }: {
+  things: { id: string; name: string; removeLabel?: string }[];
   onThing?: (id: string, at: HTMLElement) => void;
   openThing?: string | null;
+  onRemoveThing?: (id: string) => void;
   label?: ReactNode;
   addCase?: { onAdd: () => void; label?: string };
   children: ReactNode;
 }) {
   return (
     <div className="@container overflow-hidden rounded-lg border border-when-edge bg-when-fill pb-1">
-      {/* 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge */}
-      <div className="flex min-h-target flex-wrap items-center gap-2 px-3 py-2 text-sm text-when-ink">
+      {/* 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
+          wrapped lines, so a bin's area and "עוד מקרה"'s under it never meet */}
+      <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink">
         <Split {...icon} />
         <span className="font-medium">{label}</span>
-        {things.map((t) =>
-          onThing ? (
-            <button key={t.id} type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
-              {t.name}
-              <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
-            </button>
-          ) : (
-            <span key={t.id} className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">
-              {t.name}
-            </span>
-          ),
-        )}
-      </div>
-      <div className="flex flex-col gap-1">{children}</div>
-      {addCase && (
-        <div className="px-2">
-          <Button variant="quiet" gap="sm" onClick={addCase.onAdd}>
+        {things.map((t) => (
+          <span key={t.id} data-thing-place={t.id} className="inline-flex items-center gap-0.5">
+            {onThing ? (
+              <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
+                {t.name}
+                <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
+              </button>
+            ) : (
+              <span className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">{t.name}</span>
+            )}
+            {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
+          </span>
+        ))}
+        {addCase && (
+          <Button variant="quiet" size="compact" gap="sm" onClick={addCase.onAdd} className="ms-auto">
             <Plus {...icon} />
             {addCase.label ?? copy.addCase}
           </Button>
-        </div>
-      )}
+        )}
+      </div>
+      <div className="flex flex-col gap-1">{children}</div>
     </div>
   );
 }
@@ -89,11 +93,13 @@ function CaseWords({ when }: { when: CaseWord[] }) {
 
 /**
  * A case at rest: its condition in words (`when`) and its parts (`PartChip`s) in the dark cell. With `onOpen` the whole row is one button
- * that opens the case (`label` is its spoken name); a figure in it keeps its own tap. Under the pointer the cell lights up.
+ * that opens the case (`label` is its spoken name); a figure in it keeps its own tap. Under the pointer the cell lights up. The words stand
+ * in a column of 8.5rem beside the cell, 12rem in a band of 44rem and more, where the parts have room to spare and a long condition (three
+ * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell.
  */
 export function CaseRow({ when, label, onOpen, children }: { when: CaseWord[]; label: string; onOpen?: () => void; children: ReactNode }) {
   return (
-    <div className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
+    <div className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} />
       <div className={cx("ms-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-s-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0", onOpen && "group-hover:bg-accent")}>{children}</div>
@@ -136,8 +142,8 @@ export function CaseSlot({ children, range, open, onOpen }: { children: ReactNod
 
 /**
  * The open case, in place: a 2 px outline in the action colour and "נבחר"; its values as `slots` (`CaseSlot`s) across the top, "שלכם"
- * after them where it is the person's track (`mine`); under them its parts in edit (`PartEdit`s, the `children`), then "להעתיק את המקרה"
- * and "להסיר את המקרה". Enter in a box goes on to the next box of the case.
+ * after them where it is the person's track (`mine`), and at the head's end its actions as icons, copying it ("להעתיק את המקרה") and its
+ * bin ("להסיר את המקרה"); under them its parts in edit (`PartEdit`s, the `children`). Enter in a box goes on to the next box of the case.
  */
 export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: ReactNode; mine?: boolean; onCopy?: () => void; onRemove?: () => void; children: ReactNode }) {
   return (
@@ -145,28 +151,18 @@ export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: R
       <div className="flex flex-wrap items-center gap-2 px-3 py-2">
         {slots}
         {mine && <Tag tone="primary">{copy.mine}</Tag>}
-        <Tag tone="primary" className="ms-auto">
-          {copy.chosen}
-        </Tag>
+        <span className="ms-auto inline-flex items-center gap-2">
+          <Tag tone="primary">{copy.chosen}</Tag>
+          {onCopy && (
+            <Button variant="icon" size="sm" aria-label={copy.copyCase} title={copy.copyCase} onClick={onCopy} className="max-md:size-target">
+              <Copy {...icon} />
+            </Button>
+          )}
+          {onRemove && <RemoveButton label={copy.removeCase} onRemove={onRemove} />}
+        </span>
       </div>
       <div className="mx-1 mb-1 flex flex-col gap-2 rounded-md bg-card p-2" data-case-parts="">
         {children}
-        {(onCopy || onRemove) && (
-          <div className="flex flex-wrap items-center gap-x-5">
-            {onCopy && (
-              <Button variant="quiet" gap="sm" onClick={onCopy}>
-                <Copy {...icon} />
-                {copy.copyCase}
-              </Button>
-            )}
-            {onRemove && (
-              <Button variant="ghost" gap="sm" onClick={onRemove}>
-                <Trash2 {...icon} />
-                {copy.removeCase}
-              </Button>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

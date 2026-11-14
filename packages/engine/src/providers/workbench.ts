@@ -12,6 +12,7 @@ import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { stoppedOnQuestion } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -174,7 +175,9 @@ export type NotComparableReason =
   /** a line in a foreign currency and `fx` holds no rate for it. */
   | { code: "needs-fx-rate"; detail: string }
   /** the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
-  | { code: "record-error"; detail: string };
+  | { code: "record-error"; detail: string }
+  /** a run of the row stopped on an open question whose readings gave it different results (`acrossReadings`): nothing is ranked on one. */
+  | { code: "rule-open"; ruleId: string; question: string };
 
 export interface ProviderBase {
   id: string;
@@ -737,6 +740,14 @@ export function beforeTax(r: RunResult): number {
   return r.real + taxReal(r);
 }
 
+/**
+ * F-91, F-109 helper: what the cash waiting for a whole unit did against the fund, at the horizon in today's shekels (`waitingCarried / I_T`):
+ * above zero where it missed a rise, below zero where it missed a fall; null for a run that is not in whole units.
+ */
+export function waitingReal(r: Pick<RunResult, "waitingCarried" | "series" | "exitMonth" | "nominal" | "real">): number | null {
+  return r.waitingCarried === undefined ? null : r.waitingCarried / indexAtExit(r as RunResult);
+}
+
 /** F-91's inputs, every one a real value at the horizon in today's shekels. */
 export interface CostByWhoInput {
   /** `X`: B of the same deposits in the same fund with no fund cost, no distribution and no account: the plan's return alone. */
@@ -747,16 +758,20 @@ export interface CostByWhoInput {
   account: number;
   /** `B(u with no fund cost, no account) − B(u, no account)`. */
   fund: number;
+  /** F-109: the part of `account` that is the cash waiting for a whole unit (`waitingReal`); none for a run by amount. */
+  waiting?: number;
 }
 
 /**
  * F-91 A way's cost by who takes it. The account and the fund before the tax they save, the fund measured with no account;
  * the state is what remains, `X − left − account − fund`: the tax paid, with the growth a tax paid during the holding would
  * have earned. The three add up to `X − left` by construction, so the gap in what is left between two ways on the same plan
- * is the gap in their costs.
+ * is the gap in their costs. In whole units (F-109) the account's part splits in two: the cash waiting for a unit (`waiting`,
+ * a gain where the fund fell) and what the account's fees took, `fees = account − waiting`; by amount `fees` is the whole part.
  */
-export function costByWho(a: CostByWhoInput): { account: number; fund: number; state: number } {
-  return { account: a.account, fund: a.fund, state: a.base - a.left - a.account - a.fund };
+export function costByWho(a: CostByWhoInput): { account: number; fees: number; waiting: number; fund: number; state: number } {
+  const waiting = a.waiting ?? 0;
+  return { account: a.account, fees: a.account - waiting, waiting, fund: a.fund, state: a.base - a.left - a.account - a.fund };
 }
 
 /** One provider read for a run (F-63): its row's base, its tariff at its level, its member kind and the ways it buys the fund (F-109). */
@@ -942,6 +957,12 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w), ctx);
       if (other.real > run.real) [units, run] = [w, other];
     }
+    // a run the readings of an open question split (TXG OQ17 at a falling CPI) has no value after tax to compare, with or without the fees
+    const stopped = stoppedOnQuestion(noneT) ?? stoppedOnQuestion(run);
+    if (stopped) {
+      rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
+      continue;
+    }
     const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units) } as const;
     const run12 = runSecurities(plan(built.tariff, 12, memberKind, units), ctx);
     const total = noneT.real - run.real;
@@ -1051,12 +1072,15 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
   });
   if (top && second) Object.defineProperty(ranking, "topTwo", { enumerable: true, get: decide });
 
-  const reasonOf = (r: NotComparableProvider): Reason => ({
-    code: r.reason.code === "data-missing" || r.reason.code === "record-error" ? "missing-record" : "missing-input",
-    ruleIds: [],
-    gapIds: [],
-    detail: r.reason.detail ?? r.reason.code,
-  });
+  const reasonOf = (r: NotComparableProvider): Reason =>
+    r.reason.code === "rule-open"
+      ? { code: "rule-open", ruleIds: [r.reason.ruleId], gapIds: [], detail: r.reason.question }
+      : {
+          code: r.reason.code === "data-missing" || r.reason.code === "record-error" ? "missing-record" : "missing-input",
+          ruleIds: [],
+          gapIds: [],
+          detail: r.reason.detail ?? r.reason.code,
+        };
   const coverage = coverageLine(
     rows.map((r) => ({ id: r.id, name: r.name, kind: r.kind === "compared" ? ("ranked" as const) : ("not-evaluated" as const), reasons: r.kind === "compared" ? [] : [reasonOf(r)] })),
     ["ranked", "not-evaluated"] as const,

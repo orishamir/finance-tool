@@ -278,6 +278,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -473,6 +474,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -678,6 +680,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -873,6 +876,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -1068,6 +1072,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -1273,6 +1278,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -1468,6 +1474,7 @@
                         "enum": [
                           "fixed in law",
                           "fixed in regulation",
+                          "fixed in document",
                           "cpi-linked 1 jan",
                           "average-wage-linked",
                           "provider-set",
@@ -1541,6 +1548,30 @@
             "required": [
               "avg_annual_yield_3y",
               "avg_annual_yield_5y"
+            ],
+            "additionalProperties": false
+          },
+          "closed_to_joiners": {
+            "type": "object",
+            "properties": {
+              "by": {
+                "type": "string",
+                "enum": [
+                  "company-terms"
+                ]
+              },
+              "rule_ids": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "by",
+              "rule_ids"
             ],
             "additionalProperties": false
           }

@@ -137,5 +137,7 @@ export interface ComparisonGoal {
    */
   mustNotNeedAnnualReturn?: boolean;
   profile?: Profile;
+  /** The calendar month of each run's month 1 (`Goal.firstMonth`): the site gives its run date's (`calendarMonthOf`). */
+  firstMonth?: number;
 }
 

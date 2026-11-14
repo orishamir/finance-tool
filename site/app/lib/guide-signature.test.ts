@@ -5,7 +5,7 @@ import { buildGuidePage, depositSheetNames } from "./guide.server";
 import type { DepositTerms } from "@finance-tool/schema";
 import { runTimeline } from "./engine";
 import { guideSignature } from "../copy";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer } from "./guide-signature";
+import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -331,6 +331,15 @@ describe("the ladder", () => {
   });
 });
 
+
+/** The signature with its bundle's cash rate (P-05 `cash_rate`) quoted as effective, as the Bank of Israel's averages are (BANK-53). */
+const withEffectiveCash = (d: SignatureData, id: string): SignatureData => {
+  const b = d.bundles[id]!;
+  const inputs = (b.p05 as unknown as { inputs: Record<string, object> }).inputs;
+  const p05 = { ...b.p05, inputs: { ...inputs, cash_rate: { ...inputs.cash_rate, unit: "pct_per_year_effective" } } } as unknown as typeof b.p05;
+  return { ...d, bundles: { ...d.bundles, [id]: { ...b, p05 } } };
+};
+
 describe("makam", () => {
   const d = page("makam").signature!;
   it("prices by F-24 and takes gain, tax and net from the ledger run", () => {
@@ -369,6 +378,11 @@ describe("makam", () => {
       }
     }
   });
+  it("reads a cash rate quoted as effective as the yield to redemption, an effective annual rate (F-24, F-60)", () => {
+    const m = makamModel(withEffectiveCash(d, "makam"), { amount: 10000, month: 6 })!;
+    expect(m.yieldPct).toBeCloseTo(3.25, 12);
+    expect(m.price).toBe(makamPrice(0.0325, (365 * 6) / 12));
+  });
   it("gives one answer for a month however the marker got there", () => {
     const at = (month: number) => JSON.stringify(makamModel(d, { amount: 10000, month }));
     const first = Array.from({ length: 12 }, (_, i) => at(i + 1));
@@ -389,5 +403,15 @@ describe("government bond", () => {
     expect(m.changePct).toBeLessThan(0);
     expect(Math.abs(m.makamChangePct)).toBeLessThan(Math.abs(m.changePct));
     expect(bondModel(d, { amount: 10000, years: 10, shiftPct: -1 })!.price).toBeGreaterThan(100);
+  });
+  it("takes a cash rate quoted as effective as the coupon whose payments compound to it, and prices at par when rates do not move (F-25, F-60)", () => {
+    // twice a year at 3.25% effective: the coupon is 2 × (1.0325^(1/2) − 1) = 3.2241%, and at the same yield the bond is at par
+    const half = { ...withEffectiveCash(d, "government-bond"), facts: { ...d.facts, couponEvery: { ...d.facts.couponEvery!, value: 6 } } };
+    const m = bondModel(half, { amount: 10000, years: 10, shiftPct: 0 })!;
+    expect(m.couponPct).toBeCloseTo(200 * (Math.sqrt(1.0325) - 1), 9);
+    expect(m.price).toBeCloseTo(100, 9);
+    // read as nominal, the same 3.25% is the coupon itself
+    const nominal = bondModel({ ...d, facts: half.facts }, { amount: 10000, years: 10, shiftPct: 0 })!;
+    expect(nominal.couponPct).toBeCloseTo(3.25, 12);
   });
 });

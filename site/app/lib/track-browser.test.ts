@@ -16,8 +16,11 @@ describe("the data the loader ships", () => {
     expect(trackProductIds).toContain(defaultProduct);
     expect(gemel.tracks).toHaveLength(133);
     expect(gemel.companies).toHaveLength(12);
-    // a self-directed fund is a product of its own (IRA-03): 8 provident and 7 study funds, out of their regulator types' lists
-    expect(view("provident-for-annuity").tracks).toHaveLength(164);
+    // a self-directed fund is a product of its own (IRA-03): 8 provident and 7 study funds, out of their regulator types' lists; the nine
+    // guaranteed-yield tracks and 923, closed on their companies' own terms (CAT-55, CAT-54), are left out (D51)
+    expect(view("provident-for-annuity").tracks).toHaveLength(154);
+    for (const id of [120, 528, 529, 530, 531, 532, 533, 536, 539, 923]) expect(data.products.flatMap((p) => p.rows).some((r) => r.f === id), `${id}`).toBe(false);
+    for (const id of [119, 260, 263]) expect(view("provident-for-annuity").tracks.some((t) => t.id === id), `${id}`).toBe(true);
     expect(view("ira-provident").tracks).toHaveLength(8);
     expect(view("ira-hishtalmut").tracks).toHaveLength(7);
     expect(view("child-savings-provident").tracks).toHaveLength(30);

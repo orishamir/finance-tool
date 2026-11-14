@@ -19,7 +19,14 @@ const cmaFund = z.object({
   holdings: z.object({ total_assets: valueObject, stock_market_exposure: valueObject, foreign_currency_exposure: valueObject.optional() }).optional(),
   // The average annual yields of the last 3 and 5 years, percent per year, nominal and before management fees (CAT-04, CAT-05); absent in files written before 2026-11-03.
   yields: z.object({ avg_annual_yield_3y: valueObject, avg_annual_yield_5y: valueObject }).optional(),
+  // Closed to new members on its managing company's own terms (its bylaws or its own pages), with the rules that quote them, as the
+  // pipeline's track readings hold it (`company-closed`); absent where no reading closes it so. The data keeps such a track; the site
+  // leaves it out (D51).
+  closed_to_joiners: z.strictObject({ by: z.enum(["company-terms"]), rule_ids: z.array(z.string().min(1)).min(1) }).optional(),
 });
+
+/** Whether a stored track takes new members as far as the readings say: false where its company's own terms close it (`closed_to_joiners`, D51). */
+export const takesNewMembers = (fund: { closed_to_joiners?: unknown }): boolean => fund.closed_to_joiners === undefined;
 
 export const cmaPeriodFile = z.object({
   dataset: z.enum(["gemelnet", "pensia-net"]),

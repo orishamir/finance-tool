@@ -1,7 +1,10 @@
 // Figure resolver (docs/architecture.md 3.4, method §13). The engine never holds a rule figure: it asks for
 // (rule ID, figure name) in the run's tax year. An open rule never computes; a figure past its
-// effective_to, or for another tax year, stops the run; every rule served is recorded.
+// effective_to, or for another tax year, stops the run; every rule served is recorded. A case the rule base holds open between named
+// readings (open-readings.ts) is read under the reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
+import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
+import { OpenReadingError, openReadingOf } from "./open-readings.ts";
 import type { Label, RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
@@ -24,10 +27,14 @@ export interface Bracket {
 /** A record, a parameter or an input does not make a run; the message names the field (" is missing" marks a missing input, F-83). */
 export class RecordInputError extends Error {}
 
-/** A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). */
+/**
+ * A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). `question` names the open question
+ * when the rule is settled but the case at hand is not, and the readings it allows give the run different results (an s.120ב amount after
+ * its freeze while the CPI falls: TXG-09, "TXG OQ17"; `acrossReadings`).
+ */
 export class BlockedError extends Error {
-  constructor(readonly ruleId: string) {
-    super(`${ruleId} is open in il-finance; it does not compute (D10)`);
+  constructor(readonly ruleId: string, readonly question?: string) {
+    super(`${ruleId}${question ? ` (${question})` : ""} is open in il-finance; it does not compute (D10)`);
   }
 }
 
@@ -60,6 +67,7 @@ const labelWeight: Record<Label["code"], number> = {
 };
 
 export interface RuleBook {
+  /** The calendar tax year the book reads in: the run's, or a later one (`inYear`). */
   readonly taxYear: number;
   /** A percentage figure, returned as a fraction (25 → 0.25). */
   rate(ruleId: string, figure: string): number;
@@ -75,6 +83,23 @@ export interface RuleBook {
   label(code: Label["code"], ruleId: string): void;
   used(): UsedRule[];
   labels(): Label[];
+  /**
+   * F-119, F-120: the same rules read in the run's tax year `year` on its grid (1 = the run's own, `taxYearOf`): a money figure or a band's
+   * bound that s.120ב freezes (`update_rule` "frozen YYYY-YYYY") is indexed past its freeze, and one linked to the CPI every 1 January
+   * ("cpi-linked 1 jan") past the year read, by the run's inflation (`RunYears`); every other figure is as read. What the view reads is
+   * recorded with the book's.
+   */
+  inYear(year: number): RuleBook;
+  /** F-119: the calendar years after a freeze in which an indexed figure was read (method G-36), in order. */
+  indexedYears(): number[];
+}
+
+/** F-119, F-120: what a ledger tells its book so a figure can be read in a later tax year: the run's CPI assumption (A-02, F-03). */
+export interface RunYears {
+  /** A-02, a fraction a year. */
+  inflation: number;
+  /** Whole tax years between the run date's and the grid's first (a later leg of a switch, `gridOffset`); default 0. */
+  startsAfter?: number;
 }
 
 /** A run looks up a few rules among hundreds, and a page makes thousands of runs on one list: the list is indexed once. */
@@ -88,11 +113,12 @@ function rulesById(rules: RunContext["rules"]): Map<string, RuleRecord> {
   return byId;
 }
 
-export function ruleBook(ctx: RunContext): RuleBook {
+export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   const byId = rulesById(ctx.rules);
-  const taxYear = Number(ctx.runDate.slice(0, 4));
+  const runYear = Number(ctx.runDate.slice(0, 4));
   const used = new Map<string, UsedRule>();
   const extraLabels: Label[] = [];
+  const indexed = new Set<number>();
 
   function rule(id: string): RuleRecord {
     const r = byId.get(id);
@@ -110,11 +136,11 @@ export function ruleBook(ctx: RunContext): RuleBook {
 
   function current(id: string, name: string, f: unknown): ValueObject {
     const byYear = (f as { by_tax_year?: Record<string, ValueObject> }).by_tax_year;
-    const v = byYear ? byYear[String(taxYear)] : (f as ValueObject);
+    const v = byYear ? byYear[String(runYear)] : (f as ValueObject);
     if (!v) throw new FigureNotUpdatedError(id, name);
     if (v.source.strength === "open") throw new BlockedError(id);
     if (v.effective_to !== null && v.effective_to < ctx.runDate) throw new FigureNotUpdatedError(id, name);
-    if (v.tax_year != null && v.tax_year !== taxYear) throw new FigureNotUpdatedError(id, name);
+    if (v.tax_year != null && v.tax_year !== runYear) throw new FigureNotUpdatedError(id, name);
     used.get(id)!.figures.push({ name, strength: v.source.strength });
     return v;
   }
@@ -124,7 +150,30 @@ export function ruleBook(ctx: RunContext): RuleBook {
     return percentUnits.has(v.unit) ? v.value / 100 : v.value;
   }
 
-  return {
+  /**
+   * A money figure as it stands in calendar year `year`, by the update its record names: F-119 for an amount s.120ב freezes, F-120 for one
+   * linked to the CPI every 1 January; any other kind, and the run's own year, read it as it is. At a falling CPI the amount is an open
+   * reading (TXG OQ17, KGL OQ15): it is read under the reading the context chooses (`RunContext.readings`), and a run that has chosen none
+   * for the question stops so that `acrossReadings` can make it under each. A figure no open reading covers does not compute at a fall.
+   */
+  function inYearOf(id: string, name: string, v: ValueObject, amount: number, year: number): number {
+    const move = yearlyMoveOf(v.update_rule);
+    if (move === null || !movesBy(move, runYear, year)) return amount;
+    if (!years) throw new Error(`F-119/F-120: ${id} ${name} is read for ${year}, after the year it was read for, and the run gave its book no inflation (RunYears)`);
+    if (move.kind === "frozen") indexed.add(year);
+    if (years.inflation >= 0) return amountInYear(move, amount, runYear, year, years.inflation);
+    const open = openReadingOf(move, id);
+    if (!open) throw new BlockedError(id);
+    const choice = ctx.readings?.[open.question];
+    if (choice === undefined) throw new OpenReadingError(open);
+    if (choice === null) throw new BlockedError(open.ruleId, open.question);
+    const reading = open.readings.find((r) => r.id === choice);
+    if (!reading) throw new Error(`${open.question} has no reading "${choice}"`);
+    return reading.amount(amount, Array.from({ length: movingYears(move, runYear, year) }, () => years.inflation));
+  }
+
+  function bookFor(taxYear: number): RuleBook {
+    const self: RuleBook = {
     taxYear,
     rate(id, name) {
       const v = current(id, name, figure(id, name));
@@ -135,7 +184,8 @@ export function ruleBook(ctx: RunContext): RuleBook {
       const v = current(id, name, figure(id, name));
       const actual = (v as { currency?: string }).currency;
       if ((actual ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
-      return numeric(id, name, v);
+      const n = numeric(id, name, v);
+      return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
     },
     fact(id, name) {
       return current(id, name, figure(id, name)).value;
@@ -144,8 +194,9 @@ export function ruleBook(ctx: RunContext): RuleBook {
       const f = figure(id, name);
       if (!Array.isArray(f)) throw new MissingRuleError(id, `${name} as brackets`);
       return (f as { up_to: ValueObject; rate: ValueObject }[]).map((b) => {
-        const upTo = current(id, name, b.up_to).value;
-        return { upTo: typeof upTo === "number" ? upTo : null, rate: numeric(id, name, current(id, name, b.rate)) };
+        const bound = current(id, name, b.up_to);
+        const upTo = typeof bound.value === "number" ? inYearOf(id, name, bound, bound.value, taxYear) : null;
+        return { upTo, rate: numeric(id, name, current(id, name, b.rate)) };
       });
     },
     cite(id) {
@@ -172,5 +223,11 @@ export function ruleBook(ctx: RunContext): RuleBook {
       extraLabels.forEach(consider);
       return [...best.values()];
     },
-  };
+    inYear: (year) => bookFor(runYear + (years?.startsAfter ?? 0) + year - 1),
+    indexedYears: () => [...indexed].sort((a, b) => a - b),
+    };
+    return self;
+  }
+
+  return bookFor(runYear);
 }

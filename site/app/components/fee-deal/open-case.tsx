@@ -1,5 +1,5 @@
 // The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit (part-edit.tsx), a later price
-// headed by its first month and a sale priced apart under its own head; a part the toolbox added that still needs its figure, its month or
+// right after the month the price before it ends, and a sale priced apart under its own head; a part the toolbox added that still needs its figure, its month or
 // its fee, asking for it on the price it goes on; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
 import { useState } from "react";
 import { feeDeal as copy } from "../../copy";
@@ -14,14 +14,14 @@ import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { FigureField, InlineSelect, RangeMenu, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
-import { PriceFigure, partFieldId } from "./figures";
+import { FigureField, InlineSelect, RangeMenu, TextField, TickMenu, TrackMenu, cx, monthText } from "../kit";
+import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
-import { PartLine, PendingEdit, type PartPlace } from "./part-edit";
+import { PartLine, PendingEdit, type PartPlace, type PendingHands } from "./part-edit";
 import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 
 /**
- * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's ✕
+ * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's bin
  * takes it away (`setPart`), the main price's makes the price free, and a later price's month taken away takes the prices after it with
  * it (`onHoldOn`). The price's currency, where the fee may take another, is chosen beside the part the panel marks (`stage.chooser`),
  * whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign.
@@ -37,7 +37,7 @@ function PriceParts({
   pending,
   onFee,
   onHoldOn,
-  onPendingDone,
+  pendingHands,
 }: {
   fee: Fee;
   caseId?: string;
@@ -51,7 +51,7 @@ function PriceParts({
   pending: OpenPending | null;
   onFee: (f: Fee) => void;
   onHoldOn: (side: Side, k: number) => void;
-  onPendingDone: () => void;
+  pendingHands: PendingHands;
 }) {
   const { k, until, parts } = stage;
   const stages = pricesOn(fee, side, caseId);
@@ -87,7 +87,7 @@ function PriceParts({
         {...(f.bare ? { unit: "" } : {})}
         label={label(SPOKEN[f.figure])}
         {...opts}
-        id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
+        id={partFieldId(fee.id, `${partPlaceId(side, k, part)}-${f.figure}`)}
         onFee={onFee}
       />
     ),
@@ -102,14 +102,15 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
       ))}
-      {pending && <PendingEdit fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} later={later} onFee={onFee} onDone={onPendingDone} />}
+      {pending && <PendingEdit key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} later={later} onFee={onFee} hands={pendingHands} />}
     </>
   );
 }
 
 /**
- * The open case's prices in edit, each with its parts: the purchase's (or the only) prices, a later one headed by its first month; then a
- * sale priced apart under its head. A part the toolbox added that asks for its figure, month or fee asks on the price it goes on
+ * The open case's prices in edit, each with its parts: the purchase's (or the only) prices, a later one after the part that says the month
+ * the price before it ends ("לזמן מוגבל, עד 07.2027"), which is its first month, so no head repeats it, and a line parts them;
+ * then a sale priced apart under its head. A part the toolbox added that asks for its figure, month or fee asks on the price it goes on
  * (`open.pending`).
  */
 export function OpenParts({
@@ -119,7 +120,7 @@ export function OpenParts({
   name,
   onFee,
   onHoldOn,
-  onPendingDone,
+  pendingHands,
 }: {
   fee: Fee;
   open: OpenCase;
@@ -128,7 +129,7 @@ export function OpenParts({
   name: string;
   onFee: (f: Fee) => void;
   onHoldOn: (side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
-  onPendingDone: () => void;
+  pendingHands: PendingHands;
 }) {
   const caseId = open.case ?? undefined;
   const side = (s: Side, stages: readonly OpenStage[]) =>
@@ -136,12 +137,7 @@ export function OpenParts({
       const from = j > 0 ? stages[j - 1]!.until : undefined;
       const stageName = from ? `${name}, ${monthText(from)}` : name;
       return (
-        <div key={`${s}-${st.k}`} className="flex flex-col gap-2">
-          {from && (
-            <p className="text-sm font-medium">
-              <When iso={from} lead={copy.read.periods.from} />
-            </p>
-          )}
+        <div key={`${s}-${st.k}`} className={cx("flex flex-col gap-2", from && "border-t border-border pt-2")}>
           <PriceParts
             fee={fee}
             {...(caseId ? { caseId } : {})}
@@ -153,7 +149,7 @@ export function OpenParts({
             pending={s === "buy" && open.pending?.k === st.k ? open.pending : null}
             onFee={onFee}
             onHoldOn={(sd, k) => onHoldOn(sd, k, caseId, open.later)}
-            onPendingDone={onPendingDone}
+            pendingHands={pendingHands}
           />
         </div>
       );

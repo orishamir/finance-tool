@@ -9,6 +9,27 @@
     "fee-custody"
   ],
   "likely_to_change": "no",
+  "figures": {
+    "mmf_unit_fee_under_distribution_agreement": {
+      "value": 0,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653), עמוד 10 (עמוד הרשומות 1098), תקנה 2(ב)-(ד)",
+        "publisher": "רשומות (משרד המשפטים)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "Reg. 2(d) as amended in 2016: a distributor that is not an investment marketer and has a distribution agreement for a money-market fund charges the holder nothing for buying, holding or redeeming its units."
+    }
+  },
+  "figure_names_he": {
+    "mmf_unit_fee_under_distribution_agreement": "עמלה על קנייה, החזקה או פדיון של קרן כספית, אצל מפיץ שיש לו הסכם הפצה"
+  },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-26",
   "scope": "general",

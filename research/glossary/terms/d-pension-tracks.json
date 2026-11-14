@@ -2023,7 +2023,7 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=74"
     },
     "variants_he": [],
-    "explain_he": "סכום שיורד ישירות מהמס שלכם, בגובה אחוז קבוע מההפקדה לפנסיה, בלי קשר לשיעור המס שלכם",
+    "explain_he": "סכום שיורד ישירות מהמס שלכם, בגובה אחוז קבוע מההפקדה לפנסיה, בלי קשר לשיעור המס שלכם ועד גובה המס שאתם משלמים באותה שנה",
     "rule_ids": [
       "TXP-01",
       "TXP-02",
@@ -2041,7 +2041,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Starting term 'זיכוי ממס על הפקדה לפנסיה' is descriptive; the Tax Authority term is 'זיכוי ממס' (s.45A). Up to a ceiling of eligible income (TXP-02). Whether payroll grants it monthly is open (TXP OQ6).",
+    "notes": "Starting term 'זיכוי ממס על הפקדה לפנסיה' is descriptive; the Tax Authority term is 'זיכוי ממס' (s.45A). Up to a ceiling of eligible income (TXP-02). Whether payroll grants it monthly is open (TXP OQ6). Worth at most the year's tax, the rest lost on the cautious reading (TXP-01, TXP OQ20).",
     "id": "zykvy-mms"
   },
   {
@@ -2460,24 +2460,25 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=45"
     },
     "variants_he": [
-      "תשלום שלא כדין מקופת גמל לקצבה"
+      "תשלום שלא כדין"
     ],
-    "explain_he": "משיכת כסף מקופה לקצבה שלא בדרך שהחוק מתיר; היא ממוסה בשיעור גבוה, עם חריגים מעטים",
+    "explain_he": "כסף שקופת גמל משלמת שלא לפי חוק קופות הגמל, כמו סכום חד־פעמי מקופה לקצבה שהחוק לא מתיר או משיכה לפני המועד; הוא ממוסה ב־35% או במס השולי, הגבוה מביניהם, עם חריגים מעטים",
     "rule_ids": [
       "TXP-18"
     ],
     "source": {
       "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=45",
-      "checked": "2026-10-22",
+      "checked": "2026-11-14",
       "strength": "primary"
     },
     "where": [
       "guide:pension-comprehensive",
       "guide:pension-general",
-      "guide:provident-for-annuity"
+      "guide:provident-for-annuity",
+      "guide:ira-provident"
     ],
-    "notes": "Exceptions: low household income, large medical expenses, severe disability, death (TXP-18). Taxable base not settled (TXP OQ3). Sibling glossary c has 'משיכת כספים שלא כדין'.",
+    "notes": "Any provident fund, not only one for annuity: a payment contrary to s.23 of the Provident Funds Law (TXP-18; guide p.45 s.29, \"משיכה מקופת גמל לקצבה, או משיכה מקופת גמל טרם מועד משיכתה\"). Widened 2026-11-14 (finance review); the variant was the deductions booklet's withholding row for a fund for annuity and is now the neutral \"תשלום שלא כדין\" (the 1962 regulations' title, both booklet rows). Exceptions: low household income, large medical expenses, severe disability, death (TXP-18). Sibling glossary c has 'משיכת כספים שלא כדין'.",
     "id": "mshykh-shla-kdyn"
   },
   {

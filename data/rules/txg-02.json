@@ -2,7 +2,7 @@
   "id": "TXG-02",
   "title": "Income-tax brackets for 2026, personal-effort income",
   "title_he": "מדרגות המס על הכנסה מיגיעה אישית",
-  "text_he": "הכנסה חייבת שנתית מיגיעה אישית ממוסה במדרגות: שיעור נמוך על החלק הראשון, ושיעורים עולים על כל חלק שמעליו, עד השיעור הגבוה ביותר על כל שקל נוסף. שתי מדרגות הביניים הורחבו בחוק ההתייעלות הכלכלית לשנת התקציב הנוכחית, בתוקף מתחילת שנת המס. החוק רואה בסכומים האלה את הסכומים המתואמים לצורך ההקפאה, ולכן הם נשארים קבועים עד תום תקופת ההקפאה ומוצמדים אחריה.",
+  "text_he": "הכנסה חייבת שנתית מיגיעה אישית ממוסה במדרגות: שיעור נמוך על החלק הראשון, ושיעורים עולים על כל חלק שמעליו, עד השיעור הגבוה ביותר על כל שקל נוסף. שתי מדרגות הביניים הורחבו בחוק ההתייעלות הכלכלית לשנת התקציב הנוכחית, בתוקף מתחילת שנת המס. כל המדרגות נשארות קבועות עד תום תקופת ההקפאה ומוצמדות אחריה. את הסכומים שהחוק הזה קבע הוא רואה כסכומים המתואמים, שמהם יוצאת ההצמדה שאחרי ההקפאה. שתי המדרגות הנמוכות לא נקבעו בו: הן הסכומים שלפני ההקפאה אחרי עיגול, והסכומים שלהן לפני העיגול, שמהם תצא ההצמדה, לא מתפרסמים.",
   "figure_names_he": {
     "brackets": "מדרגות המס על הכנסה מיגיעה אישית"
   },
@@ -34,7 +34,7 @@
             "TXG-02"
           ],
           "state": "sourced",
-          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Personal-effort income, tax year 2026 (law of 31.3.2026, in force from 1.1.2026; amounts deemed 1.1.2024 amounts, frozen through 2027, indexed from 1.1.2028 per TXG-06)."
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Personal-effort income, tax year 2026 (law of 31.3.2026, in force from 1.1.2026). This amount is not one the 2026 law sets: it is the 1.1.2024 amount after rounding (2024 deductions booklet p.9), kept through 2027 by s.120ב(ה)(1); from 1.1.2028 its 1.1.2024 amount before rounding, which is not published, is indexed (TXG-06, TXG OQ16)."
         },
         "rate": {
           "value": 10,
@@ -75,7 +75,7 @@
             "TXG-02"
           ],
           "state": "sourced",
-          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 14%: 84,121 to 120,720."
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 14%: 84,121 to 120,720. This amount is not one the 2026 law sets: it is the 1.1.2024 amount after rounding (2024 deductions booklet p.9), kept through 2027 by s.120ב(ה)(1); from 1.1.2028 its 1.1.2024 amount before rounding, which is not published, is indexed (TXG-06, TXG OQ16)."
         },
         "rate": {
           "value": 14,
@@ -116,7 +116,7 @@
             "TXG-02"
           ],
           "state": "sourced",
-          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 20%: 120,721 to 228,000 (widened by the 2026 law; was 193,800 in 2025)."
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 20%: 120,721 to 228,000 (widened by the 2026 law; was 193,800 in 2025). Set by the 2026 law (SH 3511 s.5), which deems it the adjusted amount of 1.1.2024 (s.7)."
         },
         "rate": {
           "value": 20,
@@ -157,7 +157,7 @@
             "TXG-02"
           ],
           "state": "sourced",
-          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 31%: 228,001 to 301,200 (widened by the 2026 law; was 269,280 in 2025)."
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 31%: 228,001 to 301,200 (widened by the 2026 law; was 269,280 in 2025). Set by the 2026 law (SH 3511 s.5), which deems it the adjusted amount of 1.1.2024 (s.7)."
         },
         "rate": {
           "value": 31,
@@ -198,7 +198,7 @@
             "TXG-02"
           ],
           "state": "sourced",
-          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 35%: 301,201 to 560,280."
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 35%: 301,201 to 560,280. Set by the 2026 law (SH 3511 s.5), which deems it the adjusted amount of 1.1.2024 (s.7)."
         },
         "rate": {
           "value": 35,
@@ -268,6 +268,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2024.pdf#page=9",
+      "title": "לוח ניכויים חודשי 2024",
+      "title_he": "לוח ניכויים חודשי 2024",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "checked": "2026-11-14"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\"",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
@@ -300,10 +313,10 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.4, ss.5-7",
-      "locator_he": "עמוד 4, סעיפים 5-7",
+      "locator": "file p.4 (gazette p.416), ss.5-7",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 416), סעיפים 5-7",
       "page": 4,
-      "checked": "2026-10-25"
+      "checked": "2026-11-14"
     }
   ]
 }

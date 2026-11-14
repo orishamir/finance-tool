@@ -76,11 +76,16 @@ describe("whole units on the indices page (F-109, D94)", () => {
     expect(etf.noUnitPrice).toBe(true);
     const funds = shown(lists(view, priced, plan, { house: "leumi", fund: etf.rec.id }, { today: priced.today }));
     expect(funds).toContain(invest.pair.unitPriceMissing);
-    // the cost bar's part that holds the waiting cash says so, at a house that buys in whole units
+    // the waiting cash is its own figure at a house that buys in whole units, apart from the account's fees and its remainder (F-109, F-91)
     const pc = pairCosts({ bundle: priced, index: sp, plan, fundId: etfId, providerId: "leumi" })!;
     expect(pc.units).not.toBeNull();
-    expect(pc.remainder.about).toContain(invest.pair.remainderUnits);
-    expect(pairCosts({ bundle: bare, index: sp, plan, fundId: etfId, providerId: "leumi" })!.units).toBeNull();
+    expect(pc.waiting?.about).toBe(invest.pair.waitingAbout);
+    expect(pc.remainder.about).toContain(invest.pair.remainder);
+    expect(pc.accountFees + pc.waitingN).toBeCloseTo(pc.accountCost, 9);
+    const byAmount = pairCosts({ bundle: bare, index: sp, plan, fundId: etfId, providerId: "leumi" })!;
+    expect(byAmount.units).toBeNull();
+    expect(byAmount.waiting).toBeNull();
+    expect(byAmount.accountFees).toBe(byAmount.accountCost);
   });
   it("a fund the person typed has no unit price: an ETF or a fund abroad says so on its row; a tracking fund is bought by amount anyway", () => {
     const typed = (kind: Parameters<typeof fundDraftOf>[1]) =>

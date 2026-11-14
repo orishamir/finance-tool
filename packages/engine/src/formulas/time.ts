@@ -11,7 +11,10 @@ export interface Goal {
   months: number;
   /** A-04: "real" (default) raises each month's contribution with inflation; "nominal" keeps it flat. */
   contributions?: "real" | "nominal";
-  /** Calendar month (1 to 12) of month 1 on the grid. Default 1, January, as in the golden scenarios (Q2). */
+  /**
+   * Calendar month (1 to 12) of month 1 on the grid. A run on the site starts on its run date (`monthOfDate`), so it sets the run date's
+   * month (`calendarMonthOf`) and its tax years follow the calendar. Default 1, January, as in the golden scenarios (Q2).
+   */
   firstMonth?: number;
 }
 
@@ -34,6 +37,11 @@ export function lastMonthOfTaxYear(month: number, firstMonth = 1): number {
   let m = Math.max(1, month);
   while (taxYearOf(m + 1, firstMonth) === taxYearOf(m, firstMonth)) m++;
   return m;
+}
+
+/** The calendar month (1 to 12) of a `YYYY-MM-DD` date: a run dated then has its grid's month 1 in that month (F-01). */
+export function calendarMonthOf(date: string): number {
+  return Number(date.slice(5, 7));
 }
 
 /** The run's month in which a calendar date falls, month 1 starting on the run date (`YYYY-MM-DD` both); 0 or less for a date before it. */

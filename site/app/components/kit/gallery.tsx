@@ -6,7 +6,7 @@ import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, gui
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { IconAlert, IconBin, IconClose, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
+import { IconAlert, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
@@ -18,7 +18,8 @@ import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
-import { AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { BinIcon } from "./remove-button";
+import { DropZone, RemoveButton, AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -120,14 +121,10 @@ function Basics() {
             </Button>
           </div>
         </State>
-        <State label={'ghost: a removal that can be undone at once, muted, the danger colour only under the pointer or the focus; size="sm" an icon alone, 36 px round with a 44 px tap area'}>
+        <State label="ghost: the bin's face (RemoveButton), an icon alone, 36 px round with a 44 px tap area, muted, the danger colour only under the pointer or the focus">
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="ghost">
-              <IconBin size={18} />
-              {dealWords.panel.remove}
-            </Button>
-            <Button variant="ghost" size="sm" aria-label={dealWords.panel.remove}>
-              <IconBin size={18} />
+            <Button variant="ghost" aria-label={dealWords.panel.remove}>
+              <BinIcon />
             </Button>
           </div>
         </State>
@@ -223,6 +220,18 @@ function Basics() {
           <Callout tone="upcoming" title="עומד להשתנות" tag={<When iso="2027-07-01" lead="מ־" />}>
             {g.sample.body}
           </Callout>
+        </Grid>
+      </Demo>
+      <Demo name="EmptyState" use={g.uses.EmptyState}>
+        <Grid>
+          <State label="the action moves the focus to the field that fills the block">
+            <EmptyState icon={<IconCoins />} title={investWords.empty.title} action={{ label: `${investWords.empty.action} ${g.sample.field}`, onClick: () => document.getElementById("kit-empty-field")?.focus() }}>
+              {investWords.empty.body}
+            </EmptyState>
+          </State>
+          <State label="the field">
+            <NumberField label={g.sample.field} unit="nis" value={0} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} inputId="kit-empty-field" />
+          </State>
         </Grid>
       </Demo>
       <Demo name="Card, pad" use={g.uses.Card}>
@@ -1842,13 +1851,13 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="InlineSelect" use={g.uses.InlineSelect}>
-        <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
+        <State label="a choice in a line of other controls: the label and the chosen name, no field box; a press, ArrowDown or a letter opens the kit's own list (a check on the chosen option, the lit one tinted), Escape closes it" wide>
           <InlineSelectDemo />
         </State>
         <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
           <InlineSelectHiddenDemo />
         </State>
-        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron; nothing chosen yet shows `all` in the muted ink" wide>
+        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron, as wide as its longest option whichever is chosen; nothing chosen yet shows `all` in the muted ink" wide>
           <InlineSelectChipDemo />
         </State>
       </Demo>
@@ -2621,6 +2630,22 @@ function DealDemos({ today }: { today: string }) {
           </Step>
         </div>
       </Demo>
+      <Demo name="StepStrip" use={g.uses.StepStrip}>
+        <State label="two steps made, the line's own action at its end, and a line about what was chosen under it" wide>
+          <Card className="max-w-3xl">
+            <StepStrip
+              heading={dealWords.builder.title}
+              steps={[
+                { id: "kind", title: dealWords.builder.kind, value: g.sample.title, action: <Button variant="quiet" size="sm" flush>{dealWords.builder.kindChange}</Button> },
+                { id: "track", title: dealWords.builder.track, value: dealWords.builder.trackNone, action: <Button variant="quiet" size="sm" flush>{dealWords.builder.trackPick}</Button> },
+              ]}
+              end={<Button variant="quiet" size="sm" flush>{dealWords.end.template}</Button>}
+            >
+              <p className="text-sm text-muted-foreground">{g.sample.body}</p>
+            </StepStrip>
+          </Card>
+        </State>
+      </Demo>
       <Demo name="AmountChart" use={g.uses.AmountChart}>
         <State label={`a minimum up to 6,000 and a share above it, under a second share; ${g.states.interactive}: point at the plot or tap it`} wide>
           <Card className="max-w-2xl">
@@ -2813,7 +2838,7 @@ function MenuBody({ kind }: { kind: "what" | "track" | "range" | "thing" }) {
   );
 }
 
-/** The trade fee of the picture, live: a tap on a row opens its case, a slot opens its menu, ✕ removes a part, the fold opens. */
+/** The trade fee of the picture, live: a tap on a row opens its case, a slot opens its menu, a part's bin removes it, the fold opens. */
 function TradeFee({ today }: { today: string }) {
   const [open, setOpen] = useState("us1");
   const [folded, setFolded] = useState(true);
@@ -2849,13 +2874,14 @@ function TradeFee({ today }: { today: string }) {
   };
   return (
     <>
-      <FeeBlock dot="bg-fee-trade" name={sc.trade}>
+      <FeeBlock dot="bg-fee-trade" name={sc.trade} remove={{ label: dealWords.panel.remove, onRemove: () => undefined }}>
         <ConditionBand
           things={[
-            { id: "what", name: sc.things.what },
-            { id: "track", name: sc.things.track },
+            { id: "what", name: sc.things.what, removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", sc.things.what) },
+            { id: "track", name: sc.things.track, removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", sc.things.track) },
           ]}
           onThing={(_id, at) => setMenu({ kind: "thing", at })}
+          onRemoveThing={() => undefined}
           openThing={menu?.kind === "thing" ? "track" : null}
           addCase={{ onAdd: () => undefined }}
         >
@@ -2955,7 +2981,7 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
       id: "when",
       kind: "when",
       name: sc.groups.when,
-      parts: Object.entries(sc.whenParts).map(([id, label]) => ({ id, label, used: u(id), off: full && !u(id) })),
+      parts: Object.entries(sc.whenParts).map(([id, label]) => ({ id, label, used: u(id), off: full && !u(id), ...(u(id) ? { removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", label) } : {}) })),
       offWhy: sc.fourth,
     },
     { id: "link", kind: "link", name: sc.groups.link, parts: [{ id: "offset", label: sc.offset }, { id: "refund", label: <>{sc.refund} <ToolBlank /></>, spoken: sc.refund }] },
@@ -2963,7 +2989,7 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
   ];
 }
 
-/** A tap adds a part (its card takes the ✓); a tap on "הערוץ" asks for the channels first. */
+/** A tap adds a part (its card takes the ✓); a tap on "הערוץ" asks for the channels first; a tap on a thing with its ✓ takes it away. */
 function ToolboxDemo() {
   const [used, setUsed] = useState(["unit", "min", "cap", "what", "track", "unexecuted"]);
   const [asking, setAsking] = useState(false);
@@ -2972,7 +2998,33 @@ function ToolboxDemo() {
   return (
     <div className="flex max-w-lg flex-col gap-4">
       {ask}
-      <Toolbox target={sc.target} groups={toolGroups(used)} onAdd={(group, part) => (group === "when" && part === "channel" ? setAsking(true) : setUsed((u) => [...u, part]))} />
+      <Toolbox target={sc.target} groups={toolGroups(used)} onAdd={(group, part) => (group === "when" && part === "channel" ? setAsking(true) : setUsed((u) => [...u, part]))} onRemove={(_group, part) => setUsed((u) => u.filter((x) => x !== part))} />
+    </div>
+  );
+}
+
+/** Parts dragged from the toolbox onto a case: the first case takes a part it has not got, the second takes none, so it shows nothing. */
+function DragDemo({ today }: { today: string }) {
+  const [used, setUsed] = useState(["unit", "min"]);
+  const add = (part: string) => setUsed((u) => [...u, part]);
+  const zone = (c: Case, takes: boolean) => (
+    <DropZone key={c.id} accepts={(it) => takes && !used.includes(it)} onDrop={add}>
+      <CaseRow when={c.when} label={sc.open(c.slots.map((sl) => sl.text).join(", "))}>
+        {c.parts.map((p) => (
+          <Rest key={p.id} part={p} today={today} />
+        ))}
+      </CaseRow>
+    </DropZone>
+  );
+  return (
+    <div className="grid items-start gap-4 lg:grid-cols-2">
+      <Toolbox target={sc.target} groups={toolGroups(used).filter((gr) => gr.kind === "price" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
+      <FeeBlock dot="bg-fee-trade" name={sc.trade}>
+        <ConditionBand things={[{ id: "what", name: sc.things.what }]}>
+          {zone(TRADE[0]!, true)}
+          {zone(TRADE[1]!, false)}
+        </ConditionBand>
+      </FeeBlock>
     </div>
   );
 }
@@ -3015,7 +3067,7 @@ function CaseDemos({ today }: { today: string }) {
             <Rest part={unexecuted} today={today} />
           </div>
         </State>
-        <State label={`in edit: the full width, the figure in its box, ✕ at the end; on a phone the boxes wrap and the ✕ stays in the corner, ${g.states.interactive}`} wide>
+        <State label={`in edit: the full width, the figure in its box, a bin at the end; on a phone the boxes wrap and the bin stays in the corner, ${g.states.interactive}`} wide>
           <div className="flex max-w-lg flex-col gap-2" data-figures>
             {TRADE[2]!.parts.map((p) => (
               <Edit key={p.id} part={p} today={today} onRemove={() => undefined} />
@@ -3024,7 +3076,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="ConditionBand, CaseRow, CaseFold, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
-        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place; ${g.states.interactive}: a row opens its case, a slot its menu, ✕ removes a part, the fold opens the other tracks`} wide>
+        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name, a bin beside each thing, "עוד מקרה" at the head's end; ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
           <div className="max-w-xl">
             <TradeFee today={today} />
           </div>
@@ -3048,7 +3100,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="Toolbox, ToolBlank" use={g.uses.Toolbox}>
-        <State label={`the column on a computer: the case already has the parts with a ✓; ${g.states.interactive}: a tap adds a part, "הערוץ" asks for the channels first`} wide>
+        <State label={`the column on a computer: the case already has the parts with a ✓; ${g.states.interactive}: a tap adds a part, "הערוץ" asks for the channels first, a thing with its ✓ is taken away by a tap`} wide>
           <ToolboxDemo />
         </State>
         <State label="a fee that changes by three things: the fourth is off, and the group says why" wide>
@@ -3060,6 +3112,16 @@ function CaseDemos({ today }: { today: string }) {
           <PhoneFrame>
             <Toolbox sheet target={sc.target} groups={toolGroups(["unit", "min", "cap", "what", "track", "unexecuted"])} onAdd={() => undefined} />
           </PhoneFrame>
+        </State>
+      </Demo>
+      <Demo name="RemoveButton" use={g.uses.RemoveButton}>
+        <State label={`a bin alone, its words spoken and its tooltip; 44 px square on a phone, ${g.states.interactive}`}>
+          <RemoveButton label={dealWords.panel.remove} onRemove={() => undefined} />
+        </State>
+      </Demo>
+      <Demo name="DropZone, useDragSource" use={g.uses.DropZone}>
+        <State label={`on a computer, ${g.states.interactive}: drag a part from the toolbox; the first case is outlined and takes it, the second shows nothing`} wide>
+          <DragDemo today={today} />
         </State>
       </Demo>
       <Demo name="AskValues" use={g.uses.AskValues}>

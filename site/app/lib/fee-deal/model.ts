@@ -453,16 +453,16 @@ const figureOf = (key: "rate" | "amount", n: Num | null): Rec | null => (n ? { [
 const withMain = (main: Rec | null, more: Rec): Rec | null => (main ? { ...main, ...more } : null);
 
 /**
- * The fields a price of a form was read with before its fee's capacity was the reader's limit, beyond what the capacity lists: bounds and a
- * currency on a share of an action or a sum per unit, bounds on a share of what is held. A deal saved with them (a spread's minimum, a
- * held insurance premium's) still opens as it was; nothing puts them on a fee whose capacity does not list them now.
+ * The fields a saved price of a form is read with beyond what its fee's capacity lists: bounds and a currency on a share of an action or a
+ * sum per unit, bounds on a share of what is held. A saved deal that holds them (a spread's minimum, a held insurance premium's) opens with
+ * them; no edit puts them on a fee whose capacity does not list them.
  */
 const READ_BEYOND: Partial<Record<FormId, readonly FieldId[]>> = { action: ["min", "max", "currency"], perUnit: ["min", "max", "currency"], held: ["min", "max"] };
 
 /**
  * A price of a fee of `kind`, read against its kind's capacity, which no product narrows: its form's own figure and periods, then each key
  * that has a place in its form (`KEY_FORMS`), read as `READ_KEY` says. A key with a place in the form whose field the fee's form does not
- * list (`fieldsOf`, or `READ_BEYOND`) is not one of its prices; a key with no place in the form is left out, as it always was.
+ * list (`fieldsOf`, or `READ_BEYOND`) is not one of its prices; a key with no place in the form is left out.
  */
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;

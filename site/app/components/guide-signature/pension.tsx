@@ -8,13 +8,13 @@
 // at the ceiling, and where nothing is above it, says so instead of a balance (method F-67, "The general fund"). The assumptions line
 // says what the balance assumes: deposits flat in shekels, and no insurance until it is entered.
 import { useMemo, useState } from "react";
-import { guideSignature as copy } from "../../copy";
+import { flags as flagLines, guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { asField, type SiteValue } from "../../lib/value";
+import { asField, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
 import { IdRef, Num, ReadingTag, RulesLine, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
@@ -92,16 +92,21 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   };
   const rules = rulesOfBundle(bundle);
   const m = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-67", inputs, today, about, rules);
+  // the credit is capped at a tax without credit points (TXP OQ20, G-23): its flag's line says both; G-23's own line speaks of a tax figure
+  const reliefFlags = model.relief.flags.filter((code) => code !== "G-23");
+  const reliefFigure = (value: number, about: string) => computed(value, "nis", model.relief.formula, reliefIn, { today, about, rules, flags: reliefFlags });
   const v = {
     you: m(model.you, copy.pension.about.you, youIn),
     employer: m(model.employer, copy.pension.about.employer, employerIn),
     severance: m(model.severance, copy.pension.about.severance, severanceIn),
     total: m(model.total, copy.pension.about.total, base),
-    relief: figure(model.relief.monthly, "nis", model.relief.formula, reliefIn, today, copy.pension.about.relief, rules),
-    net: figure(model.netYou, "nis", model.relief.formula, reliefIn, today, copy.pension.about.net, rules),
+    relief: reliefFigure(model.relief.monthly, copy.pension.about.relief),
+    net: reliefFigure(model.netYou, copy.pension.about.net),
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
-    balance: model.balance ? m(model.balance.real, copy.pension.about.balance, balanceIn) : null,
+    // the balance carries its runs' flags that the site has a line for; the others (G-03 and PEN OQ7, the annuity the fund turns it into) would
+    // show as a bare code, and the card's own words already say the balance is before that annuity
+    balance: model.balance ? computed(model.balance.real, "nis", "F-67", balanceIn, { today, about: copy.pension.about.balance, rules, flags: model.balance.flags.filter((code) => code in flagLines), labels: model.balance.labels }) : null,
     toGeneral: model.general && ceiling ? figure(model.general.toGeneral, "nis", "F-67", { ...base, [copy.pension.general.below.term]: ceiling }, today, copy.pension.general.toGeneral, rules) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
@@ -259,6 +264,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
                 </>
               ),
               copy.pension.assume.flat,
+              copy.pension.assume.grossRises,
               hasInsurance && insurancePct === null && copy.pension.assume.noInsurance,
               copy.pension.todayMoney,
             ]}
