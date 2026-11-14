@@ -113,8 +113,8 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.markedTie(2)), f.rec.id).toBe(tied.includes(f.rec.id));
   });
   it("the fund list counts tied funds, not pairs: one fund tied at two houses is one (independent check of pass 5)", () => {
-    // MSCI World, 10,000 now, nothing a month, one year: five pairs within the threshold, three funds (scanned over 4 x 3 x 4 plans on every index)
-    const one: WorkbenchInputs = { ...base, amountNow: 10000, monthly: 0, years: 1, values: { ...base.values, amount: entered(10000, "nis", t), monthly: entered(0, "nis_per_month", t), years: entered(1, "years", t) } };
+    // MSCI World, 50,000 now, nothing a month, one year: five pairs within the threshold, three funds (scanned over 4 x 3 x 5 plans on every index)
+    const one: WorkbenchInputs = { ...base, amountNow: 50000, monthly: 0, years: 1, values: { ...base.values, amount: entered(50000, "nis", t), monthly: entered(0, "nis_per_month", t), years: entered(1, "years", t) } };
     const w = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan: one });
     const h = pickOfHeadline(w)!;
     expect(tieCount(w, h, theta)).toBe(5);

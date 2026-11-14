@@ -35,6 +35,27 @@
     "state": "sourced",
     "notes": "Printed as 'פיקדון לשנה', model 5421/4 'פק\"מ קבוע 365 יום'; recorded as 12 months, the period of a one-year deposit (directive 447 Annex A, BANK-14)."
   },
+  "term_days": {
+    "value": 365,
+    "unit": "days",
+    "source": {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון', 'הנתונים נכונים ליום: 09.11.2026', 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פיקדון לשנה' (דגם: 5421/4, טווח סכום 1,000 - 99,999, עמ' 13), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "Bank Leumi le-Israel B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14",
+      "BANK-50"
+    ],
+    "state": "sourced",
+    "notes": "Printed פק\"מ קבוע 365 יום beside the term; the term's days as the bank prints them (F-21)."
+  },
   "rate_type": "fixed",
   "anchor": null,
   "spread": null,

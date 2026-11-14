@@ -83,15 +83,16 @@ describe("the index page's sections render", () => {
     expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.costN!)).toEqual(costs);
   });
   it("a custom index's account that prices no kind of fund says why in the pair page's words, which open the reason: no tag, no \"no data\", no separate source link (D105)", () => {
-    // no house prices nothing on a custom index today (every kind exists there): a planted one, Interactive Israel with its foreign
-    // securities not sold either, stands for it, its entries and rule as the record writes them
+    // on a custom index abroad (every kind exists there) One Zero prices nothing: its Israeli funds are unknown (BRK-38) and it trades
+    // only US securities. A planted one, Interactive Israel with its foreign securities not sold either, stands for a house its documents
+    // shut out, its entries and rule as the record writes them
     const ii = bundle.snapshots.find((s) => s.id === "interactive-israel")!;
     const no = ii.availability!.find((a) => a.available === false)!;
     const planted = { ...bundle, snapshots: bundle.snapshots.map((s) => (s === ii ? { ...s, availability: [...s.availability!, { ...no, applies_to: ["foreign_securities"] }] } : s)) } as typeof bundle;
     const v = buildInvest({ bundle: planted, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
     const out = html(createElement(NoFundAccountColumn, { view: v, bundle: planted, years: 20, chosen: null, onPick: () => undefined }));
     const missing = v.houses.filter((h) => !h.generic && !h.provider.id.startsWith("custom-broker-group"));
-    expect(missing.map((h) => h.provider.id)).toEqual(["interactive-israel"]);
+    expect(missing.map((h) => h.provider.id)).toEqual(["one-zero", "interactive-israel"]);
     const from = out.indexOf('data-pick-key="interactive-israel"');
     const next = out.indexOf("data-pick-key=", from + 1);
     const row = out.slice(from, next < 0 ? undefined : next);
@@ -594,8 +595,14 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
   });
-  it("One Zero prices tracking funds, not ETFs, and no fund traded outside the US", () => {
-    for (const x of at("il-tracking", "one-zero")) expect("valueN" in x).toBe(true);
+  it("One Zero prices no Israeli fund, since it sells only those whose managers signed a distribution agreement with it, not read (BRK-38); no ETF; and no fund traded outside the US", () => {
+    const funds = at("il-tracking", "one-zero");
+    expect(funds.length).toBeGreaterThan(0);
+    for (const x of funds) expect("valueN" in x).toBe(false);
+    // the row says why in the record's words, which name the site's rule: no price for a fund the account may not sell
+    const reason = doubtOf(bundle.snapshots.find((s) => s.id === "one-zero"), "il-tracking");
+    expect(reason).toContain("הסכם הפצה");
+    expect(reason).toContain("האתר לא מחשב מחיר");
     for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
     const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
     if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);

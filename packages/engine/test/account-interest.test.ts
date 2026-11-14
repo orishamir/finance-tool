@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { DepositTerms } from "@finance-tool/schema";
-import { type BreakRecord, type BreakTerm, type OfferRecord, type PlainDepositRecord, amountOpens, amountUnknown, bestOpenOffer, breakCount, breakTermOf, currentAccountYearlyInterest, formulas, listFeeRange, mostCommonRate, oneYearDeposits, plainOneYearDeposits, rateRange, middleIndex } from "../src/index.ts";
+import { type BreakRecord, type BreakTerm, type OfferRecord, type PlainDepositRecord, amountOpens, amountUnknown, bestOpenOffer, breakCount, brokenBalanceCondition, breakTermOf, currentAccountYearlyInterest, formulas, listFeeRange, mostCommonRate, oneYearDeposits, plainOneYearDeposits, rateRange, middleIndex } from "../src/index.ts";
 
 /** Every collected deposit record, the latest snapshot of each id, as the site reads them (`loadDepositTerms`): a record re-read on a later day is one record, not two. */
 function collectedDeposits(): DepositTerms[] {
@@ -89,6 +89,28 @@ describe("F-26 the most a current account pays in a year", () => {
     expect(currentAccountYearlyInterest(10_000, 3, 10_000, 15)).toBeCloseTo(255, 9);
     expect(currentAccountYearlyInterest(50_000, 3, 10_000, 15)).toBeCloseTo(255, 9);
     expect(currentAccountYearlyInterest(4_000, 2, 10_000, 15)).toBeCloseTo(68, 9);
+  });
+
+  it("names the bank's condition on the balance that the balance itself breaks", () => {
+    const c = (measure: "daily_balance" | "average_balance" | "total_assets", bound: "min" | "max", inclusive: boolean, value: number | null) => ({ measure, bound, inclusive, value: { value } });
+    // Discount: all the customer's assets in the account not above 30,000 NIS; a balance above it alone breaks it
+    const discount = [c("total_assets", "max", true, 30_000)];
+    expect(brokenBalanceCondition(50_000, discount)).toBe(discount[0]);
+    expect(brokenBalanceCondition(30_001, discount)).toBe(discount[0]);
+    expect(brokenBalanceCondition(30_000, discount)).toBeNull();
+    // Yahav: only while the monthly average balance is below 10,000 NIS
+    const yahav = [c("average_balance", "max", false, 10_000)];
+    expect(brokenBalanceCondition(10_000, yahav)).toBe(yahav[0]);
+    expect(brokenBalanceCondition(9_999, yahav)).toBeNull();
+    // First International: assets not above 50,000 NIS, and 10,000 NIS or more on every day
+    const fibi = [c("total_assets", "max", true, 50_000), c("daily_balance", "min", true, 10_000)];
+    expect(brokenBalanceCondition(9_999, fibi)).toBe(fibi[1]);
+    expect(brokenBalanceCondition(10_000, fibi)).toBeNull();
+    expect(brokenBalanceCondition(50_001, fibi)).toBe(fibi[0]);
+    // a minimum on all the assets is not decided by the balance alone, and a figure that is not a number decides nothing
+    expect(brokenBalanceCondition(100, [c("total_assets", "min", true, 1_000)])).toBeNull();
+    expect(brokenBalanceCondition(100_000, [c("total_assets", "max", true, null)])).toBeNull();
+    expect(brokenBalanceCondition(100_000, undefined)).toBeNull();
   });
 
   it("pays nothing at a rate of 0 or on a balance of 0, and takes the whole balance when the record prints no ceiling", () => {
@@ -234,6 +256,34 @@ describe("F-108 the best offer an amount opens", () => {
     expect(amountUnknown(offer("a", 1, 1_000, 99_999), 100_000)).toBe(false);
     expect(amountUnknown(offer("a", 1, 1_000, 99_999), 500)).toBe(false);
     expect(amountUnknown(offer("a", 1, 1_000), 5_000)).toBe(false);
+  });
+
+  it("reads a bound the table prints as not included as outside, and a bound two tiers both print as unknown", () => {
+    const edged = (id: string, rate: number, min: number, max: number | null, edges: { min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" }): OfferRecord =>
+      ({ id, rate_offered: { value: rate } as never, amount_range: { min: { value: min } as never, max: max === null ? null : ({ value: max } as never), ...edges } }) as OfferRecord;
+    // Mizrahi-Tefahot's 261, "טווח סכום להפקדה (לא כולל)": 30,000 up to 100,000 not included at 1.72%, from 100,000 at 1.97%
+    const low = edged("261", 1.72, 30_000, 100_000, { max_edge: "excluded" });
+    const high = offer("261-from-100000", 1.97, 100_000);
+    expect(amountOpens(low, 99_999)).toBe(true);
+    expect(amountOpens(low, 100_000)).toBe(false);
+    expect(amountUnknown(low, 100_000)).toBe(false);
+    expect(bestOpenOffer([low, high], 100_000)?.id).toBe("261-from-100000");
+    // Yahav's "1,000 עד 50,000" at 1.95% and "50,000 עד 100,000" at 2.15%: 50,000 is in neither, and unknown at both
+    const a = edged("y-a", 1.95, 1_000, 50_000, { max_edge: "unknown" });
+    const b = edged("y-b", 2.15, 50_000, 100_000, { min_edge: "unknown", max_edge: "unknown" });
+    expect(amountOpens(a, 50_000)).toBe(false);
+    expect(amountOpens(b, 50_000)).toBe(false);
+    expect(amountUnknown(a, 50_000)).toBe(true);
+    expect(amountUnknown(b, 50_000)).toBe(true);
+    expect(bestOpenOffer([a, b], 50_000)).toBeNull();
+    expect(bestOpenOffer([a, b], 49_999)?.id).toBe("y-a");
+    expect(bestOpenOffer([a, b], 50_001)?.id).toBe("y-b");
+    expect(amountUnknown(b, 100_000)).toBe(true);
+    // Yahav's "1,000 עד 25,000" and "מעל 25,000": 25,000 is the lower tier's
+    const above = edged("y-c", 2, 25_000, null, { min_edge: "excluded" });
+    expect(amountOpens(above, 25_000)).toBe(false);
+    expect(amountUnknown(above, 25_000)).toBe(false);
+    expect(amountOpens(above, 25_001)).toBe(true);
   });
 
   it("takes the highest rate the amount opens, then the smaller id, whatever the order", () => {

@@ -80,6 +80,28 @@
     "state": "sourced",
     "notes": "Printed '0.05%' as both 'תעריפית' and 'מתואמת' in the column 'מ-28 יום', amount 'מ-200 ש\"ח' (-4.70% from prime 4.75%). The page: 'בריבית דריבית חודשית'. Neither the board nor the page says what 'מ-28 יום' refers to, or whether the plan renews. Rate board 'מחליף לוח קודם מיום 03/09/2026'. Rate board read 2026-11-07 (library 124adbb22147699a, checked against the rendered page 2). The deposits page fetched by curl 2026-11-07 (library 322d2fa5d65f10a0); it is undated. The 447 table 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' and 'נוספים' (https://www.bank-yahav.co.il/all-savings/deposit-table/, a PDF created 05.10.2026) lists no standing-order plan."
   },
+  "interest_calc": {
+    "periods_per_year": {
+      "value": 12,
+      "unit": "count",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, ריבית ב\"י 3.25%, פריים 4.75%, 'לוח שיעורי ריבית על פקדונות בריבית משתנה', 'סוג פיקדון - חסכון גמיש חדש', 'ריבית שנתית' (עמ' 2), 'בריבית דריבית חודשית'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50"
+      ],
+      "state": "sourced",
+      "notes": "The product page prints 'פיקדון שקלי בריבית משתנה, הנגזרת מריבית הפריים, בריבית דריבית חודשית' (rate_offered's notes): interest calculated twelve times a year, Schedule A's m (BANK-50)."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",

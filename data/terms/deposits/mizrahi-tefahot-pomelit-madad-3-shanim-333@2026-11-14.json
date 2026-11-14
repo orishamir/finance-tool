@@ -56,6 +56,29 @@
     "state": "sourced",
     "notes": "Nominal annual rate before tax printed '1.16%'. Row '333 - פומלית - מדד 3 ש'': period '3 שנים', rate type 'קבועה', linkage 'מדד מחירים לצרכן', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'אין' 'אין', anchor 'לא רלוונטי', deposit options 'כיצד להפקיד'. Amount tiers merged into this record (each as printed): '100000' / 'לא רלוונטי' / '1.16%' / common '' / effective '1.16%'; '250000' / 'לא רלוונטי' / '1.16%' / common '' / effective '1.16%'; '1000000' / 'לא רלוונטי' / '1.16%' / common '' / effective '1.16%'; '1000000<' / 'לא רלוונטי' / '1.16%' / common '' / effective '1.16%'. Read 2026-11-14 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 13/11/2026 08:30:53; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'. The read of 2026-11-09 printed '1.10%' on every tier."
   },
+  "interest_calc": {
+    "effective_annual": {
+      "value": 1.16,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+        "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '333 - פומלית - מדד 3 ש'', 'שיעור הריבית המוצע (נומינלי שנתי)', 'ריבית אפקטיבית'",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-13",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50",
+        "BANK-04"
+      ],
+      "state": "sourced",
+      "notes": "Printed effective '1.16%' beside the offered rate in every amount tier of the row (rate_offered's notes); the bank's own effective annual rate, read under BANK-50's Schedule A."
+    }
+  },
   "linkage": "cpi",
   "tax_bucket": {
     "value": "linked_25",

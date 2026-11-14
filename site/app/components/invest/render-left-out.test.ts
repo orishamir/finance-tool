@@ -12,7 +12,7 @@ import { brokeragePart } from "../../lib/institutions.server";
 import { leftOutOf } from "../../lib/left-out";
 import { ProvenanceProvider } from "../provenance";
 import { BrokerageGroupCard } from "../decoder/institutions/brokerage-card";
-import { pickOfHeadline } from "./pair";
+import { allFunds, pickOfHeadline } from "./pair";
 import { PairReceipt } from "./receipt";
 import { bundle, html, lists, plan, shown } from "./render-fixtures";
 
@@ -55,9 +55,11 @@ describe("the indices page", () => {
     const out = lists(view, b, plan, { house: "leumi", fund }, { chosen: true });
     const row = out.slice(out.indexOf('data-pick-key="interactive-brokers"'));
     expect(row.slice(0, row.indexOf("data-pick-key=", 10))).toContain(markLabel);
-    // one mark for each account in the list whose record marks something, and none on the others
+    // one mark for each account in the list that prices a fund on the index and whose record marks something, and none on the others:
+    // a row with no price has no price to change (One Zero, whose Israeli funds are unknown, BRK-38)
     const rows = [...new Set([...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!))];
-    const warned = rows.filter((k) => (leftOutOf(b.snapshots.find((s) => s.id === k))?.warn ?? 0) > 0);
+    const pricesAny = (k: string) => allFunds(view).some((f) => "valueN" in (f.byHouse[k] ?? {}));
+    const warned = rows.filter((k) => pricesAny(k) && (leftOutOf(b.snapshots.find((s) => s.id === k))?.warn ?? 0) > 0);
     expect(warned).toContain("interactive-brokers");
     expect(out.split(markLabel).length - 1).toBe(warned.length);
     expect(shown(out)).toContain(c.markKey);

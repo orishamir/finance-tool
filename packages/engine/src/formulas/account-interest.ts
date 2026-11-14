@@ -90,6 +90,27 @@ export function currentAccountYearlyInterest(balance: number, ratePct: number, c
   return earning * (ratePct / 100) * (1 - taxPct / 100);
 }
 
+/** A current account's printed condition on a balance (`balance_conditions`, F-26), as far as F-26 reads it: the figure's value alone. */
+export type BalanceCondition = Pick<NonNullable<DepositTerms["balance_conditions"]>[number], "measure" | "bound" | "inclusive"> & { value: { value: unknown } };
+
+/**
+ * F-26 (the current-account page): the first of the bank's printed conditions on the balance that `balance` itself breaks, the balance
+ * flat over the year. A bound on the daily or the monthly average balance is a bound on `balance`. A maximum on all the customer's assets
+ * in the account is broken when `balance` alone passes it; otherwise it, and a minimum on those assets, stays undecided, since the other
+ * assets are not entered. Null when the balance breaks none. A condition whose figure is not a number decides nothing.
+ */
+export function brokenBalanceCondition<C extends BalanceCondition>(balance: number, conditions: readonly C[] | undefined): C | null {
+  for (const c of conditions ?? []) {
+    const v = c.value.value;
+    if (typeof v !== "number") continue;
+    const above = c.inclusive ? balance > v : balance >= v;
+    const below = c.inclusive ? balance < v : balance <= v;
+    if (c.bound === "max" && above) return c;
+    if (c.bound === "min" && c.measure !== "total_assets" && below) return c;
+  }
+  return null;
+}
+
 /** A deposit's break column (directive 447): it cannot be broken, it can be broken with a penalty, or without one. */
 export type BreakTerm = "not_allowed" | "with_penalty" | "none";
 
@@ -105,28 +126,37 @@ export type OfferRecord = Pick<DepositTerms, "id" | "rate_offered" | "amount_ran
 /**
  * F-108's test of one offer: an amount opens it when it is at or above the offer's minimum and at or below its maximum. No maximum
  * (`max` null) is no upper limit. A bound that is recorded but not a number is unknown, not open: an unknown minimum opens no amount,
- * and an unknown maximum opens only the minimum itself, the one amount the bank's row surely covers (Yahav's one-year fixed deposit
- * from 50,000 ₪, whose table prints its maximum short of a digit).
+ * and an unknown maximum opens only the minimum itself, the one amount the bank's row surely covers, unless that minimum's own edge is
+ * unknown. The amount at a bound the table prints as not included (`min_edge` or `max_edge` `excluded`: Mizrahi-Tefahot's "טווח סכום
+ * להפקדה (לא כולל)") is outside, and at a bound two tiers of one product both print (`unknown`) it is not opened, since the table does not
+ * say which tier takes it: Yahav's one-year fixed deposit from 50,000 ₪ ("50,000 עד 100,00", its maximum short of a digit) opens no
+ * amount at all, 50,000 ₪ being also the top of "1,000 עד 50,000" and every amount above it under its unreadable maximum; and 100,000 ₪,
+ * where that misprinted top meets "100,000 עד 200,000", is unknown at both tiers.
  */
 export function amountOpens(r: Pick<DepositTerms, "amount_range">, amount: number): boolean {
-  const min = r.amount_range.min.value;
-  const max = r.amount_range.max;
+  const { min: minV, max, min_edge, max_edge } = r.amount_range;
+  const min = minV.value;
   if (typeof min !== "number" || amount < min) return false;
+  if (amount === min && min_edge !== undefined) return false;
   if (max === null) return true;
-  return typeof max.value === "number" ? amount <= max.value : amount === min;
+  if (typeof max.value !== "number") return amount === min;
+  return amount < max.value || (amount === max.value && max_edge === undefined);
 }
 
 /**
  * F-108: an amount the offer's unknown bound leaves undecided, which is unknown at the offer and never closed: above the minimum where the
- * maximum is recorded with no number (Yahav's one-year fixed deposit from 50,000 ₪ at 60,000 ₪), and at or below a known maximum (any
- * amount where there is none) where the minimum is so recorded. False where the amount opens the offer or the known bounds shut it.
+ * maximum is recorded with no number (Yahav's one-year fixed deposit from 50,000 ₪, at 60,000 ₪ and at 100,000 ₪), at or below a known
+ * maximum (any amount where there is none) where the minimum is so recorded, and the amount at a bound whose edge is `unknown` (Yahav's
+ * 50,000 ₪ and 100,000 ₪, each printed by two tiers). False where the amount opens the offer or the known bounds shut it.
  */
 export function amountUnknown(r: Pick<DepositTerms, "amount_range">, amount: number): boolean {
   if (amountOpens(r, amount)) return false;
-  const min = r.amount_range.min.value;
-  const max = r.amount_range.max;
+  const { min: minV, max, min_edge, max_edge } = r.amount_range;
+  const min = minV.value;
   const maxKnown = max === null || typeof max.value === "number";
   if (typeof min !== "number") return max === null || typeof max.value !== "number" || amount <= max.value;
+  if (amount === min && min_edge === "unknown") return true;
+  if (max !== null && amount === max.value && max_edge === "unknown") return true;
   return amount > min && !maxKnown;
 }
 

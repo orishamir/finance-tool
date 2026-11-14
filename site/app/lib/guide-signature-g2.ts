@@ -155,6 +155,17 @@ export function studyYear(study: Bundle, lockYears: number, c: StudyStoryCase, y
 }
 
 /** Every year of the drawing's strip, from the first to `years`. */
+/**
+ * F-96, waiting for the lock's end: from a withdrawal at the year picked (`at`) to one at the lock year (`lock`), what is left above what was
+ * paid in grows by `more`, and the income tax paid at the withdrawal falls by `saved`. The deposits of the years between and the tax the salary
+ * pays on the employer's money above the limit (TXH-03, `taxFromSalary`) are paid either way, so neither counts.
+ */
+export function waitFigures(at: MoneyStory, lock: MoneyStory): { more: number; saved: number } {
+  const above = (s: MoneyStory) => s.net + s.taxFromSalary - s.own - s.extra;
+  const atWithdrawal = (s: MoneyStory) => s.tax - s.taxFromSalary;
+  return { more: above(lock) - above(at), saved: atWithdrawal(at) - atWithdrawal(lock) };
+}
+
 export function studyYears(d: SignatureData, c: StudyStoryCase, years: number): StudyYear[] {
   const study = d.bundles["keren-hishtalmut"];
   const lockYears = factNumber(d, "lockYears");
@@ -290,7 +301,8 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
     else {
       const terms: InstrumentTerms = {
         ...bundle.terms,
-        pension: { employment: "employee", monthlySalary: c.salary, existingEmployeeRate: 0, employer: { pensionRate: rates.employer * (wage / c.salary), severanceRate: rates.severance * (wage / c.salary) } },
+        // the employer deposits PEN-03's rates on the insured wage, which is TXP-10's "salary"; the person's income stays the whole salary
+        pension: { employment: "employee", monthlySalary: c.salary, existingEmployeeRate: 0, employer: { pensionRate: rates.employer, severanceRate: rates.severance, salary: wage } },
         ...(hasInsurance ? { insurance: { rate: (c.insurancePct ?? 0) / 100 } } : {}),
       };
       try {
@@ -307,7 +319,8 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
           const own = runPlanned(plan, ctx);
           const line = employerLinePension(plan.input, ctx);
           const index = own.series[own.series.length - 1]!.index;
-          balance = { real: (own.nominal + line.nominal) / index, years: c.years };
+          // what is in the fund: the employer line's balance before the salary tax on any TXP-10 excess, which the salary pays (F-52)
+          balance = { real: (own.nominal + (line.detail.grossBalance ?? line.nominal)) / index, years: c.years };
           for (const u of [...own.rules, ...line.rules]) used.add(u.id);
         }
       } catch {

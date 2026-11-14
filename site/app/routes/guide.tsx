@@ -13,7 +13,7 @@ import { Timeline } from "../components/timeline/Timeline";
 import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds, lumpSumIds } from "../lib/guide-signature";
-import { gershayim, Sentence, TextLink } from "../components/kit";
+import { gershayim, Sentence, TextLink, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, withdrawalRules } from "../lib/guide-nav";
@@ -158,7 +158,7 @@ export default function GuidePage() {
   if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</>, rules: ["PF-45"] });
   const lowOne = withdrawalRules(record.id).includes("TXP-18") ? figure("TXP-18", "low_income_one") : null;
   const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
-  if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after}</>, rules: ["TXP-18"] });
+  if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after} {blocks.withdrawal.lowIncome.wageBefore}{lowOne.effective_from ? <> <When iso={lowOne.effective_from.slice(0, 7)} lead={blocks.withdrawal.lowIncome.wageFrom} /></> : null}{blocks.withdrawal.lowIncome.wageAfter}</>, rules: ["TXP-18"] });
   if (content?.switchLine && record.switch_is_tax_event.value === false) {
     inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: typeof content.switchLine === "function" ? content.switchLine(cp) : content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...(content.switchRules ?? []).filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
@@ -192,7 +192,8 @@ export default function GuidePage() {
       </>
     );
   };
-  const listRangeNote = (): ReactNode => {
+  // `last`: the note ends the fee table's line; before the members' averages, their sentence says where each company's are
+  const listRangeNote = (last = true): ReactNode => {
     const n = copy.listRange.note;
     const both = data.listRange?.balance;
     const lows = (["balance", "deposit"] as const).flatMap((base) => {
@@ -230,8 +231,8 @@ export default function GuidePage() {
               </>
             )}
           </>
-        )}{" "}
-        {copy.feeNote}
+        )}
+        {last && <> {copy.feeNote}</>}
       </>
     );
   };
@@ -516,7 +517,9 @@ export default function GuidePage() {
               note={
                 data.feeRange ? (
                   <>
-                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks}
+                    {/* the documents' rates first, where they were collected, then what members paid on average (F-105, F-64) */}
+                    {data.listRange && <>{listRangeNote(false)} </>}
+                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.of} <Num value={data.feeRange.of} /> {copy.feeRange.tracks}
                     {/* the regulator's averages are a calendar year's: the year is said, as the fee table's own rows say it */}
                     {feeYear(data.feeRange.low) ? <> {copy.feeRange.inYear} <bdi>{feeYear(data.feeRange.low)}</bdi></> : null} {copy.feeRange.average} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
                   </>

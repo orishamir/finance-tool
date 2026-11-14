@@ -140,7 +140,8 @@
       ],
       "state": "sourced",
       "notes": "Printed tier bound '100000' under 'טווח סכום להפקדה (לא כולל)'."
-    }
+    },
+    "max_edge": "excluded"
   },
   "break": {
     "allowed": false,

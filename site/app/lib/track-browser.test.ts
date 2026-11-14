@@ -11,15 +11,19 @@ const view = (id: string): ProductView => buildProductView(data, id)!;
 const gemel = view("kupat-gemel-lehashkaa");
 
 describe("the data the loader ships", () => {
-  it("has the six products, the default among them, and every company's name", () => {
+  it("has the eight products, the default among them, and every company's name", () => {
     expect(data.products.map((p) => p.id)).toEqual([...trackProductIds]);
     expect(trackProductIds).toContain(defaultProduct);
     expect(gemel.tracks).toHaveLength(133);
     expect(gemel.companies).toHaveLength(12);
-    expect(view("provident-for-annuity").tracks).toHaveLength(172);
+    // a self-directed fund is a product of its own (IRA-03): 8 provident and 7 study funds, out of their regulator types' lists
+    expect(view("provident-for-annuity").tracks).toHaveLength(164);
+    expect(view("ira-provident").tracks).toHaveLength(8);
+    expect(view("ira-hishtalmut").tracks).toHaveLength(7);
     expect(view("child-savings-provident").tracks).toHaveLength(30);
-    expect(view("pension-comprehensive").tracks).toHaveLength(125);
-    expect(view("pension-general").tracks).toHaveLength(119);
+    // the pension funds' general tracks are closed to new joiners and left out (CAT-19, D51): five comprehensive, three general
+    expect(view("pension-comprehensive").tracks).toHaveLength(120);
+    expect(view("pension-general").tracks).toHaveLength(116);
   });
 
   it("the pension products have no kinds, and say so", () => {
@@ -204,12 +208,13 @@ describe("rows", () => {
   });
 
   it("a self-managed fund shows no yield, and says why (the file reports 0 there; IRA-01: each member directs the money)", () => {
-    const ira = view("keren-hishtalmut").tracks.find((x) => x.id === 1487)!;
+    const ira = view("ira-hishtalmut").tracks.find((x) => x.id === 1487)!;
     expect(ira.selfManaged).toBe(true);
     expect(ira.y3).toBeNull();
     expect(ira.y5).toBeNull();
     expect(missingYield(ira, 3)).toBe(missingYield(ira, 5));
     expect(gemel.tracks.every((x) => !x.selfManaged)).toBe(true);
+    expect(view("keren-hishtalmut").tracks.every((x) => !x.selfManaged)).toBe(true);
   });
 
   it("one kind written two ways is one group (עוקב מדדים - גמיש and עוקב מדדים גמיש)", () => {

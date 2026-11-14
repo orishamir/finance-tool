@@ -14,7 +14,7 @@ import type { ListSort } from "./list-sort";
 import { computed, depositFeeNoneByRule, expandFee, numberOf, type CompactFee, type SiteValue } from "./value";
 
 /** The six products with tracks of the regulator's, in the order of the chips; the first one the page opens with is `defaultProduct`. */
-export const trackProductIds: readonly string[] = ["provident-for-annuity", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "child-savings-provident"];
+export const trackProductIds: readonly string[] = ["provident-for-annuity", "ira-provident", "keren-hishtalmut", "ira-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "child-savings-provident"];
 export const defaultProduct: string = "kupat-gemel-lehashkaa";
 
 // ---------------------------------------------------------------- what the loader ships

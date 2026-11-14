@@ -2,7 +2,7 @@
 // a chip counts the offers the chosen amount opens, as the count line does.
 import { describe, expect, it } from "vitest";
 import { buildDepositBrowser } from "./deposit-browser.server";
-import { TERMS, accessOf, interestOn, isLinked, offersOf, periodBest, rowSplit, rowsOf, sortRows, type DbData, type DbOffer } from "./deposit-browser";
+import { TERMS, accessOf, interestOn, interestUnknown, isLinked, offersOf, periodBest, rowSplit, rowsOf, sortRows, type DbData, type DbOffer } from "./deposit-browser";
 import { depositName, shownName } from "./deposit-kind";
 import { entered } from "./value";
 import type { SiteValue } from "./value";
@@ -113,13 +113,23 @@ describe("an offer's words and interest", () => {
     expect(accessOf(offer("d", { rate: 1, exits: { exists: true, everyMonths: null, firstMonths: null } }))[0]!.words).toBe("יש תחנות יציאה");
   });
 
-  it("computes the interest over the term by F-21, a year's at the rate and less over a shorter term", () => {
+  it("computes the interest over the term by F-21: a year's at the rate, a shorter term's at the rate × its share of the year (BANK-50), a longer one yearly", () => {
     const amount = entered(10000, "nis", "2026-11-10");
     const real = buildDepositBrowser().offers.find((o) => typeof o.rate_offered.value === "number")!;
-    const at = (rate: number, term: DbOffer["term"]) => interestOn({ ...real, term, rate_offered: { ...real.rate_offered, value: rate } }, 10000, amount, "2026-11-10")!.value as number;
+    const plain = { ...real, termDays: undefined, calc: undefined, paidOut: undefined };
+    const at = (rate: number, term: DbOffer["term"], more: Partial<DbOffer> = {}) => interestOn({ ...plain, ...more, term, rate_offered: { ...real.rate_offered, value: rate } }, 10000, amount, "2026-11-10")?.value as number | undefined;
     expect(at(3.25, "y1")).toBeCloseTo(325, 6);
-    expect(at(2.2, "m3")).toBeCloseTo(10000 * (Math.pow(1.022, 0.25) - 1), 6);
-    expect(at(3.5, "y2")).toBeCloseTo(10000 * (1.035 * 1.035 - 1), 6);
+    // three months paid at maturity: 10,000 × 2.2% × 3/12 = 55
+    expect(at(2.2, "m3")).toBeCloseTo(55, 6);
+    // a day: 10,000 × 3.65% / 365 = 1
+    expect(at(3.65, "day")).toBeCloseTo(1, 6);
+    // Yahav's "(90 יום)": 10,000 × 2.2% × 90/365
+    expect(at(2.2, "m3", { termDays: 90 })).toBeCloseTo(10000 * 0.022 * 90 / 365, 6);
+    // two years: only at the effective rate the record prints (Mizrahi-Tefahot 166: 2.00%, effective 2.02%), else unknown (BANK OQ21)
+    expect(at(2, "y2", { calc: { effectiveAnnual: { ...real.rate_offered, value: 2.02 } } })).toBeCloseTo(10000 * (1.0202 * 1.0202 - 1), 6);
+    expect(at(3.5, "y2")).toBeUndefined();
+    expect(interestUnknown({ ...plain, term: "y2" })).toBe(true);
+    expect(interestUnknown({ ...plain, term: "y1" })).toBe(false);
   });
 
   it("puts back a parenthesis a table read in visual order left at the name's start", () => {

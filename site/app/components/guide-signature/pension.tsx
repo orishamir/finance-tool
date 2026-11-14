@@ -16,7 +16,7 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
-import { IdRef, Num, RulesLine, Term } from "../provenance";
+import { IdRef, Num, ReadingTag, RulesLine, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
@@ -168,7 +168,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         <div className="flex flex-col">
           <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-[var(--duration-chart)]" style={{ width: share(model.you) }} />
           <span className="block text-sm text-muted-foreground mt-0.5">
-            {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after} {copy.pension.returns.when} <IdRef id="TXP OQ6" end="." />
+            {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after} {copy.pension.returns.when} <IdRef id="TXP OQ6" end="." /> {copy.pension.returns.otherwise} <ReadingTag />
           </span>
         </div>
       </div>

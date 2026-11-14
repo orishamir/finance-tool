@@ -59,6 +59,29 @@
     "state": "sourced",
     "notes": "Printed '1.00 %'; nominal annual before tax as the table heads the column, rate type 'קבועה', linkage 'צמוד למדד המחירים לצרכן' (whether a linked rate in the 447 table is real or nominal is BANK open question 17); the row also prints 'ריבית מתואמת: 1.00 %'; exit points 'קיימת', 'בתום 12 ו- 13 שנים'; renewal 'לא קיימת'. Read 2026-11-07 from the PDF the page prints (70 pages, created 06.11.2026; library 874e6b9ae059d361), which states 'הנתונים נכונים ליום 08.11.2026', a day after the read. The page also says 'שיעור הריבית המוצעת הינו לתום תקופת ההפקדה'. Each row adds 'המוצר ניתן להפקדה באמצעות בנקאי, האתר המאובטח, אפליקציה'; digital benefit column '-'."
   },
+  "interest_calc": {
+    "effective_annual": {
+      "value": 1.0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+        "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון', 'הנתונים נכונים ליום: 08.11.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון ל-15 שנים, דגם: 508/2', 'שיעור הריבית המוצעת (נומינלי שנתי)' (עמ' 35), 'ריבית מתואמת'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-08",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50",
+        "BANK-04"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'ריבית מתואמת: 1.00 %' in the row beside the offered rate; the bank's own effective annual rate (BANK-04, BANK-50)."
+    }
+  },
   "linkage": "cpi",
   "tax_bucket": {
     "value": "linked_25",

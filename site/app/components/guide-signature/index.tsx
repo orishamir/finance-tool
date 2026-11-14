@@ -56,7 +56,7 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
           </TextLink>
         </p>
       ) : (
-        // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line; none on the study fund
+        // a product the visual sets against nothing outside pensions (pension saving is required of the salaried and the self-employed, PEN-01, PEN-07): only the page's own line; none on the study fund
         page.altLine && <p className="text-sm max-w-measure">{page.altLine}</p>
       )}
       {timeline && !NO_TIMELINE.has(id) && (

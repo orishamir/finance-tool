@@ -87,13 +87,18 @@ def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, 
     return (gross - sell - fx - tax) / I[T]
 
 
-def one_zero_on_tracking_fund():
-    """One Zero's list line for a tracking fund, from its latest record: no custody, no fixed fee on the standard plan."""
-    path = sorted(glob.glob(os.path.join(ROOT, "data", "fees", "one-zero@*.json")))[-1]
+def ibi_on_tracking_fund():
+    """IBI's list lines for a tracking fund, from its latest record: the trade line, no custody, and the account fee a month."""
+    path = sorted(glob.glob(os.path.join(ROOT, "data", "fees", "ibi@*.json")))[-1]
     with open(path, encoding="utf8") as f:
         snap = json.load(f)
     line = next(x for x in snap["lines"] if x["base"] == "trade" and x["band"] is None and "mutual_fund_units" in x["applies_to"])
-    return line["rate"]["value"] / 100, line["min"]["value"], line["max"]["value"]
+    custody = next(x for x in snap["lines"] if x["base"] == "custody" and "mutual_fund_units" in x["applies_to"])
+    assert custody["rate"]["value"] == 0 and custody["min"] is None
+    fee = next(x for x in snap["lines"] if x["base"] == "fixed_period")
+    assert fee["rate"]["unit"] == "nis_per_month"
+    maximum = line["max"]["value"] if line["max"] else None
+    return line["rate"]["value"] / 100, line["min"]["value"], maximum, fee["rate"]["value"]
 
 
 FUND_IL = 0.2 + 0.05 + 0.02  # fixed, variable and trustee, percent a year
@@ -102,9 +107,9 @@ FUND_FOREIGN = 0.1
 CHEAP = dict(trade_rate=0.0005, trade_min=1.0, custody_year=0.0002, custody_min=0.0, fx_rate=0.002, monthly_fee=0.0)
 DEAR = dict(trade_rate=0.005, trade_min=30.0, custody_year=0.004, custody_min=10.0, fx_rate=0.01, monthly_fee=20.0)
 
-rate, minimum, maximum = one_zero_on_tracking_fund()
+rate, minimum, maximum, account_fee = ibi_on_tracking_fund()
 print("cheap broker, Israeli fund:", f"{run(**CHEAP, fund_fee_pct=FUND_IL, tax_rate=TXS_09, foreign=False):.2f}")
 print("dear broker, Israeli fund:", f"{run(**DEAR, fund_fee_pct=FUND_IL, tax_rate=TXS_09, foreign=False):.2f}")
 print("cheap broker, fund abroad:", f"{run(**CHEAP, fund_fee_pct=FUND_FOREIGN, tax_rate=TXF_02, foreign=True):.2f}")
-print("One Zero, the same Israeli fund:", f"{run(rate, minimum, 0.0, 0.0, 0.0, 0.0, FUND_IL, TXS_09, False, maximum):.2f}")
+print("IBI, the same Israeli fund:", f"{run(rate, minimum, 0.0, 0.0, 0.0, account_fee, FUND_IL, TXS_09, False, maximum):.2f}")
 print("a broker of zeros, the same Israeli fund:", f"{run(0.0, None, 0.0, 0.0, 0.0, 0.0, FUND_IL, TXS_09, False):.2f}")

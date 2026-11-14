@@ -291,5 +291,7 @@ export function buildPension(c: SignatureCtx): SignatureData {
   // G-03 / PEN-OQ7: the pension a balance buys needs conversion factors; G-12: the insurance cost is entered by the person
   d.gaps.push("annuityFactors");
   if (c.id !== "provident-for-annuity") d.gaps.push("insuranceTables");
-  return withRules(d, "PEN-03", "PEN-04", "PEN-26", "TXP-01", "TXP-02", "TXP-03", "TXP-04", "TXP-10", "PEN-15", ...(c.id === "provident-for-annuity" ? ["PEN-35"] : c.id === "pension-general" ? ["PEN-08", "PEN-10"] : ["PEN-08"]));
+  // the line under the visual: pension saving is required of the salaried (PEN-01) and the self-employed (PEN-07), and the salaried choose a
+  // comprehensive fund or a provident fund for annuity with cover (PEN-05)
+  return withRules(d, "PEN-01", "PEN-05", "PEN-07", "PEN-03", "PEN-04", "PEN-26", "TXP-01", "TXP-02", "TXP-03", "TXP-04", "TXP-10", "PEN-15", ...(c.id === "provident-for-annuity" ? ["PEN-35"] : c.id === "pension-general" ? ["PEN-08", "PEN-10"] : ["PEN-08"]));
 }

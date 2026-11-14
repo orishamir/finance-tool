@@ -35,6 +35,27 @@
     "state": "sourced",
     "notes": "Printed as 'פיקדון לשנה' with the model name '365 יום'; recorded as 12 months."
   },
+  "term_days": {
+    "value": 365,
+    "unit": "days",
+    "source": {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון לשנה, דגם: 5421/4 פק\"מ קבוע 365 יום' (עמ' 13)",
+      "publisher": "Bank Leumi le-Israel B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14",
+      "BANK-50"
+    ],
+    "state": "sourced",
+    "notes": "Printed '365 יום' beside the term; the term's days as the bank prints them (F-21)."
+  },
   "rate_type": "fixed",
   "anchor": null,
   "spread": null,
