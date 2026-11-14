@@ -1811,7 +1811,7 @@ export const feeDeal = {
     until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
-    /** The line the prices after one leave, taken away by "כל הזמן" on it. */
+    /** The line the prices after one leave, taken away by the bin of its month. */
     laterRemoved: "המחירים שאחריו הוסרו.",
     salePrices: "המחיר במכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,

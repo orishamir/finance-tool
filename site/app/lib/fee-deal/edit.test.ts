@@ -81,7 +81,7 @@ describe("the fee page's edits", () => {
     expect(moved.stages.map((s) => s.until)).toEqual(["2028-06", "2030-01", undefined]);
     expect(moved.stages).toHaveLength(3);
   });
-  it("\"כל הזמן\" on a price takes away the prices after it; they go without an undo only where they hold nothing the person gave", () => {
+  it("the bin of a price's month takes away the prices after it; they go without an undo only where they hold nothing the person gave", () => {
     const fee: Fee = { ...newFee("custody"), stages: [{ price: { form: "free" } }] };
     const two = setLimited(fee, "buy", 0, "2028-03", "held");
     expect(laterUntouched(two, "buy", 0, "held")).toBe(true);

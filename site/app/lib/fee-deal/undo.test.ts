@@ -81,7 +81,7 @@ describe("one undo for a change that loses something", () => {
     expect(back.fees[1]).toEqual(d.fees[1]);
     expect(back.fees[0]!.stages![0]!.price).toMatchObject({ rate: { v: 0.1 } });
   });
-  it("puts back the prices \"כל הזמן\" took away after a price, with its end, while it is still the last", () => {
+  it("puts back the prices the bin of a price's month took away after it, with its end, while it is still the last", () => {
     const d = account();
     const r = holdOnKept(d, "fee-custody", "buy", 0, null, "held")!;
     expect(r.deal.fees[1]!.stages!).toEqual([{ price: { form: "free" } }]);

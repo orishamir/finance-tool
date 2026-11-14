@@ -47,7 +47,7 @@ export function setUntil<F extends Fee>(fee: F, side: Side, k: number, month: Mo
 }
 
 // A fee's prices on a side are a chain, each made by "עד מתי" on the one before it: "לזמן מוגבל" with a month ends a price at that month
-// and adds the next one, which asks for its price; "כל הזמן" makes a price the last, taking away the prices after it.
+// and adds the next one, which asks for its price; the bin of a price's month makes it the last, taking away the prices after it.
 
 /**
  * A fee whose last price on a side ends at the start of `until`, with one more price after it: of the form the last had, or after a free

@@ -1,6 +1,6 @@
 // The fee page's one undo: a change that loses something the person typed or chose (a fee taken away, a fee filled from a price list over
-// its own prices, a later price taken away, the prices after one taken away by "כל הזמן") keeps what it took, for a moment, so one action
-// puts it back. Only the last such change is kept. It stands while the part it would put back into is as the change left it: for a fee
+// its own prices, a later price taken away, the prices after one taken away by the bin of its month) keeps what it took, for a moment, so
+// one action puts it back. Only the last such change is kept. It stands while the part it would put back into is as the change left it: for a fee
 // taken away, the deal has no fee of its kind (of the person's own: no fee with its id); for the others, the fee is unchanged since. A
 // change of the deal's kind that takes fees away (`setKindKept`) is kept the same way, and puts the kind and the fees back together. Edits
 // elsewhere in the deal keep it standing and stay when it is used; once its part changes, it goes. A case taken away, and a thing a fee's
