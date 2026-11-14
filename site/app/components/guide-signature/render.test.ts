@@ -122,7 +122,7 @@ describe("the pension visuals", () => {
       const text = textOf(id);
       expect(text, id).toContain("רק אם רשות המסים הורתה כך למעסיק לבקשתכם");
       expect(text, id).toContain("אם יש הודעה כזו, עוד לא ידוע");
-      expect(text, id).toContain("בלי אחת מהשתיים, הוא מגיע כשמחושב המס של השנה");
+      expect(text, id).toContain("בלי אחת מהשתיים, הוא מגיע כשמחושב מס ההכנסה של השנה");
       expect(text, id).toContain("קריאה של האתר");
       expect(text, id).not.toContain("שמחושב בדוח השנתי");
     }
