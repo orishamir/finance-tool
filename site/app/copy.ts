@@ -4108,7 +4108,7 @@ export const invest = {
     /** The line over the funds the picked account gives no price, by why, naming the account; the words open why, as an account's row
      *  does (D105). Same order as `whyNoPrice`: a doubt in the record, a price list not collected, a kind the house does not sell. */
     noPriceAt: {
-      doubt: (house: string) => `המחיר ${inName(house)} לא ברור בתעריפון`,
+      doubt: (house: string) => `לא ברור אם נקנית ${inName(house)} ובאיזה מחיר`,
       missing: (house: string) => `התעריפון של ${house} עוד לא נאסף`,
       notSold: (house: string) => `לא נקנית ${inName(house)}`,
       other: (house: string) => `אין מחיר ${inName(house)}`,
