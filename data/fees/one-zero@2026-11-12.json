@@ -14,7 +14,7 @@
   "tariff": {
     "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
     "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים",
-    "notes": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026 (33 עמ'): חלק 4 - ניירות ערך (עמ' 9-12), חלק 5 - מטבע חוץ (עמ' 13-14), חלק 1 מסלולים (עמ' 5), נספח ו' - הטבות למסלולים מסוג מורחב פלוס (מסלול ONE עמ' 20-25, ONE PLUS עמ' 26-33). Linked as 'תעריפון עמלות מלא' from https://www.onezerobank.com/company/information/2250 (BRK-34), which also states: 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב'. The host returns HTTP 403 to curl, so the PDF was fetched inside the founder's Chrome tab and its text extracted there with pdf.js on 2026-10-24; the PDF's text layer places each letter as a separate glyph, so names were re-joined by hand against the page. Re-read 2026-11-04 (D56) in the founder's Chrome with pdf.js, the PDF fetched same-origin from the tariff page https://www.onezerobank.com/company/information/2250, which still links this same file (no newer price list): 33 pages, PDF CreationDate 2026-07-22 12:17Z, ModDate 2026-07-22 13:01Z, no Last-Modified header, sha256 prefix da27f2ed5a6171bf. Header: 'תאריך פרסום: 24/6/2026'; the effective date is 26.7.2026 by the file name and the 'עיקרי העמלות' sheet, while the change notice of 25.6.26 says 16.7.2026. Newest notice on https://www.onezerobank.com/company/information/2265 is that 24.6.26 notice (PDF created 2026-06-30); none since, so this is the newest binding price list. Read with it: 'תנאים משפטיים - עמלות ומסלולים' (no plan is required: 'שלא לשייך את החשבון למסלול עמלות ... (ZERO)'; 'הבנק יכול לשנות בכל עת את תעריפון הבנק'), the 'עיקרי העמלות' sheet ('מסחר בני\"ע – דמי ניהול חשבון ני\"ע | אין | אין | אין', subject to 'הוצאות צד ג׳ ולמגבלות השימוש הסביר'), the general terms edition 07/25 (110 pp., ModDate 2026-07-12; 'שער הבנק הדיגיטלי' is set by the bank), the securities standing-order terms (information/5751) and the bank's comparative disclosure for 1.1-30.6.2026. The host refuses scripts (Cloudflare 403), so no copy is in the library.",
+    "notes": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026 (33 עמ'): חלק 4 - ניירות ערך (עמ' 9-12), חלק 5 - מטבע חוץ (עמ' 13-14), חלק 1 מסלולים (עמ' 5), נספח ו' - הטבות למסלולים מסוג מורחב פלוס (מסלול ONE עמ' 20-25, ONE PLUS עמ' 26-33). Linked as 'תעריפון עמלות מלא' from https://www.onezerobank.com/company/information/2250 (BRK-34), which also states: 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב'. The host returns HTTP 403 to curl, so the PDF was fetched inside the founder's Chrome tab and its text extracted there with pdf.js on 2026-10-24; the PDF's text layer places each letter as a separate glyph, so names were re-joined by hand against the page. Re-read 2026-11-04 (D56) in the founder's Chrome with pdf.js, the PDF fetched same-origin from the tariff page https://www.onezerobank.com/company/information/2250, which still links this same file (no newer price list): 33 pages, PDF CreationDate 2026-07-22 12:17Z, ModDate 2026-07-22 13:01Z, no Last-Modified header, sha256 prefix da27f2ed5a6171bf. Header: 'תאריך פרסום: 24/6/2026'; the effective date is 26.7.2026 by the file name and the 'עיקרי העמלות' sheet, while the change notice of 25.6.26 says 16.7.2026. Newest notice on https://www.onezerobank.com/company/information/2265 is that 24.6.26 notice (PDF created 2026-06-30); none since, so this is the newest binding price list. Read with it: 'תנאים משפטיים - עמלות ומסלולים' (no plan is required: 'שלא לשייך את החשבון למסלול עמלות ... (ZERO)'; 'הבנק יכול לשנות בכל עת את תעריפון הבנק'), the 'עיקרי העמלות' sheet ('מסחר בני\"ע – דמי ניהול חשבון ני\"ע | אין | אין | אין', subject to 'הוצאות צד ג׳ ולמגבלות השימוש הסביר'), the general terms edition 07/25 (110 pp., ModDate 2026-07-12; 'שער הבנק הדיגיטלי' is set by the bank), the securities standing-order terms (information/5751) and the bank's comparative disclosure for 1.1-30.6.2026. The host refuses scripts (Cloudflare 403), so no copy is in the library. 2026-11-14: fetched by script through FlareSolverr's cookies (the tariff page https://www.onezerobank.com/company/information/2250 still links this file; the notices page information/2265 still has the 24.6.26 notice as its newest), 33 pages, sha256 prefix da27f2ed5a6171bf, the same file as read on 2026-11-04, now filed in the library (da27f2ed5a6171bf); every value below was checked again in the copy's text and, for the custody row, on the page image of p.11.",
     "published": "2026-06-24",
     "format": "pdf"
   },
@@ -42,7 +42,7 @@
           "strength": "institution",
           "page": 9
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -65,7 +65,7 @@
           "strength": "institution",
           "page": 9
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -86,7 +86,7 @@
           "strength": "institution",
           "page": 9
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -126,7 +126,7 @@
           "page": 10,
           "quote": "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ (כולל קניה או מכירה שלא בוצעה) מניות, אגרות חוב וקרנות נאמנות"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -148,7 +148,7 @@
           "page": 10,
           "quote": "מינימום 24 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -170,7 +170,7 @@
           "page": 10,
           "quote": "מקסימום 1,500 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -220,7 +220,7 @@
           "page": 11,
           "quote": "הנסחרים בארץ 0 אחוז"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -263,7 +263,7 @@
           "page": 11,
           "quote": "הנסחרים בחוץ לארץ 0 אחוז"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -305,7 +305,7 @@
           "page": 17,
           "quote": "בעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה"
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -350,7 +350,7 @@
           "page": 11,
           "quote": "5 ש\"ח (להעברה) (בפיקוח)"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -393,7 +393,7 @@
           "page": 13,
           "quote": "מט״י למט\"ח 0.15 אחוז, מינימום 5 דולר ארה״ב, מקסימום 3,000 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -415,7 +415,7 @@
           "page": 13,
           "quote": "מינימום 5 דולר ארה״ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -437,7 +437,7 @@
           "page": 13,
           "quote": "מקסימום 3,000 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -498,7 +498,7 @@
           "page": 13,
           "quote": "מט״ח למט״ח 0.3 אחוז, מינימום 10 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -520,7 +520,7 @@
           "page": 13,
           "quote": "מינימום 10 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -542,7 +542,7 @@
           "page": 13,
           "quote": "מקסימום 3,000 דולר ארה\"ב"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-07-26",
         "effective_to": null,
         "tax_year": null,
@@ -600,13 +600,13 @@
         "publisher": "One Zero Digital Bank Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-04",
+      "checked": "2026-11-14",
       "effective_from": "2026-07-26",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
       "state": "sourced",
-      "notes": "The price list prints 'פעולה על ידי פקיד' and 'פעולה בערוץ ישיר' at 0 NIS, and the basic and extended plans at 0 NIS, so the current account costs an ordinary customer (ZERO, no plan) nothing a month. Read in the founder's Chrome on 2026-11-04 (research/2026-11-04-binding-prices/one-zero.md, section 3); the host refuses scripts, so the page and the words were not re-read here."
+      "notes": "The price list prints 'פעולה על ידי פקיד' and 'פעולה בערוץ ישיר' at 0 NIS, and the basic and extended plans at 0 NIS, so the current account costs an ordinary customer (ZERO, no plan) nothing a month. Read in the founder's Chrome on 2026-11-04 (research/2026-11-04-binding-prices/one-zero.md, section 3); re-read 2026-11-14 in a copy fetched by script (library da27f2ed5a6171bf), p.1 'פעולה על ידי פקיד' and 'פעולה בערוץ ישיר' at '0 ש\"ח', p.5 'מסלול מורחב' '0 ש\"ח'."
     }
   },
   "notice_rule_ids": [
@@ -625,7 +625,7 @@
         "checked": "2026-11-12",
         "quote": "בקרנות נאמנות, הנסחרות בתום יום המסחר (שלא במסגרת המסחר הרציף), בבורסה בתל אביב אשר הבנק התקשר בהסכמי הפצה בגינם. ניתן לעיין בהתקשרויות הבנק בדיווחי מנהל הקרן באתר המאיה."
       },
-      "note": "The bank's general execution instructions (information/5683, library 753ef4f007e0fe76, read 2026-11-12; re-read 2026-11-14 in the library copy, the live page answered 403 to a script) limit the Israeli funds it trades to those 'אשר הבנק התקשר בהסכמי הפצה בגינם' and point to the managers' reports on Maya for which they are. Maya refuses scripts, so no fund on the site was checked there. The tariff page's shorter sentence (information/2250, library 1694b41498246f1c), 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב', names the class without the condition; the instructions are the narrower, binding text. Until 2026-11-14 this entry was 'true' on the tariff page's sentence, which priced One Zero for every Israeli mutual fund. Footnote 9 of the tariff (PDF p.10) takes a tracking fund into the TASE line, which says what a trade would cost, not which funds the bank distributes. A person can check on Maya, for each fund the indices pages show, whether its manager reports a distribution agreement with One Zero; the entry returns to 'true' for the funds that do only if the schema gains a way to name them.",
+      "note": "The bank's general execution instructions (information/5683, library 753ef4f007e0fe76, read 2026-11-12; re-read 2026-11-14 in the library copy, the live page answered 403 to a script) limit the Israeli funds it trades to those 'אשר הבנק התקשר בהסכמי הפצה בגינם' and point to the managers' reports on Maya for which they are. Maya refuses scripts, so no fund on the site was checked there. The tariff page's shorter sentence (information/2250, library 1694b41498246f1c), 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב', names the class without the condition; the instructions are the narrower, binding text. Until 2026-11-14 this entry was 'true' on the tariff page's sentence, which priced One Zero for every Israeli mutual fund. Footnote 9 of the tariff (PDF p.10) takes a tracking fund into the TASE line, which says what a trade would cost, not which funds the bank distributes. A person can check on Maya, for each fund the indices pages show, whether its manager reports a distribution agreement with One Zero; the entry returns to 'true' for the funds that do only if the schema gains a way to name them. 2026-11-14: Maya's fund-report search for event 5307 'התקשרות בהסכם הפצה' and 5308 'סיום התקשרות מנהל עם מפיץ' with the words 'וואן זירו' from 2019 (https://maya.tase.co.il/he/reports/funds?eventsIds=5307,5308&fromDate=2019-01-01&freeText=!%D7%95%D7%95%D7%90%D7%9F%20%D7%96%D7%99%D7%A8%D7%95) lists 13 agreements (19.12.2024 to 22.3.2026) and no ending; each report lists its funds by number. Of the Israeli funds under data/funds, 12 end-of-day funds are named (5112628, 5122569, 5124482, 5127527, 5128905, 5129275, 5129283, 5130638, 5130661, 5138763, 5139100, 5139696) and 3 are not (5124573, 5139282, 5140165). The entry stays 'unknown' until the schema can name the funds (data-schema §3.6, proposed 'distribution_agreements').",
       "reason_he": "הבנק כותב שאפשר לקנות דרכו קרנות נאמנות שנסחרות בסוף יום המסחר רק אם חתם על הסכם הפצה עם מנהל הקרן, ושאת ההסכמים שלו אפשר למצוא בדיווחים של מנהלי הקרנות באתר מאיה. לכן לא ידוע אם קרן מסוימת נמכרת דרכו, והאתר לא מחשב מחיר לקרן שייתכן שאי אפשר לקנות בחשבון."
     },
     {
