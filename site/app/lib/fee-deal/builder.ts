@@ -7,16 +7,16 @@ import type { ChangeKind } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
-import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
+import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
 import { hasFlat } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
-import { offerFor } from "./offers/offer";
+import { feeOffered, offerFor } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
-import { BY_MAX, CONDITIONS, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type ListKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, isRangeKind, type ByKind, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -45,6 +45,8 @@ export interface BuilderRow extends FeeRef {
   priced: boolean;
   /** Whether the picks give the fee no case (F-114): it is not read, and its card says so rather than that a price is missing. */
   unmatched: boolean;
+  /** The rules that ban the fee here (`DealRead.banned`): it is read as nothing charged, and its card says it is banned by law. */
+  banned?: readonly string[];
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
   sale?: StageView[];
   /** The fee's next change, and whether it is a start from free. */
@@ -257,8 +259,9 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const caseId = firstCase(fee);
   const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
   const priced = pricedOf(fee, caseId);
-  // a fee the picks give no case is not read, whatever its first case states: its card says so (`unmatched`)
-  const given = i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from)));
+  // a fee the picks give no case, or the law bans here, is not read, whatever its first case states: its card says so
+  const banned = r.banned.find((b) => b.fee === fee.id)?.rules;
+  const given = !banned && (i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from))));
   const fees = i >= 0 ? r.fees : [fee];
   const at = Math.max(i, 0);
   const stages = readStages(r, stageViews(r, fees, at, priced.stages));
@@ -272,6 +275,7 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     stages: stages.length ? stages : [now],
     priced: given,
     unmatched: r.unmatched.includes(fee.id),
+    ...(banned ? { banned } : {}),
     ...(sale ? { sale } : {}),
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
     bounds: { min: has("min"), max: has("max") },
@@ -281,19 +285,23 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   };
 }
 
-const offered = (s: Builder["suggestions"], barred: readonly FeeKindId[]): Builder["suggestions"] => ({ usual: s.usual.filter((k) => !barred.includes(k)), rarer: s.rarer.filter((k) => !barred.includes(k)) });
+/** The suggestions the deal's product is offered (`feeOffered`, the rule table) and may charge (`barred`). */
+const offered = (s: Builder["suggestions"], product: DealRead["kind"], barred: readonly FeeKindId[]): Builder["suggestions"] => {
+  const ok = (k: FeeKindId) => !barred.includes(k) && feeOffered(product, k);
+  return { usual: s.usual.filter(ok), rarer: s.rarer.filter(ok) };
+};
 
 /**
  * The builder column of a deal, from the deal read once (`readDealFor`): a row per fee, the read ones and those not read for a price not
  * given or for no case for the picks, each with its block; a fee whose prices are out of order has none (the glance names it, `unread`).
- * `barred`: fees the deal's product may not charge by rule, never offered. `open`: the fee open in place, and its case (the first where
- * none is named).
+ * `barred`: fees the deal's product may not charge by rule, never offered, nor is a fee its product is not offered (`feeOffered`). `open`:
+ * the fee open in place, and its case (the first where none is named).
  */
 export function builder(r: DealRead, barred: readonly FeeKindId[] = [], open: { fee: string; case: string | null } | null = null): Builder {
   const deal = r.deal;
   return {
     rows: deal.fees.filter((fee) => !r.unread.includes(fee.id)).map((fee) => rowOf(r, fee, open)),
-    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), undefined), barred) : { usual: [], rarer: ["own"] },
+    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), undefined), r.kind, barred) : { usual: [], rarer: ["own"] },
   };
 }
 
@@ -545,18 +553,26 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
   const w = c.when[t]!;
   const any = { words: copy.cases.any[b.kind]!, ticked: w === "any" };
   const thing = thingName(fee.kind, b);
-  if (isRange(b)) {
-    const step = typeof w === "number" ? w : null;
-    const before = step !== null && step > 0 ? whenWords(fee, step - 1, t, r.today) : null;
-    return { kind: "range", title: copy.cases.slot.range.replace("{thing}", thing), upTo: step !== null && step < b.tops.length ? b.tops[step]!.v : null, any, unit: b.unit, units: RANGE_UNITS[b.kind].map((u) => ({ unit: u, words: unitWords(u) })), before };
-  }
   const named = Array.isArray(w) ? w : [];
-  if (b.kind === "track") return { kind: "track", title: copy.cases.slot.trackName, name: named[0] ?? null, any, mine: !!c.mine, myTrack: copy.cases.slot.myTrack };
-  if (b.kind === "own") return { kind: "own", title: thing, name: named[0] ?? null, any };
-  const ids = [...LIST_IDS[b.kind as ListKind], ...((b.kind === "what" || b.kind === "held") && b.own ? b.own.map((o) => o.name) : [])];
-  // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
-  for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
-  return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+  const values = CONDITIONS[b.kind].values;
+  switch (values.kind) {
+    case "range": {
+      if (!isRange(b)) return null;
+      const step = typeof w === "number" ? w : null;
+      const before = step !== null && step > 0 ? whenWords(fee, step - 1, t, r.today) : null;
+      return { kind: "range", title: copy.cases.slot.range.replace("{thing}", thing), upTo: step !== null && step < b.tops.length ? b.tops[step]!.v : null, any, unit: b.unit, units: values.units.map((u) => ({ unit: u, words: unitWords(u) })), before };
+    }
+    case "track":
+      return { kind: "track", title: copy.cases.slot.trackName, name: named[0] ?? null, any, mine: !!c.mine, myTrack: copy.cases.slot.myTrack };
+    case "own":
+      return { kind: "own", title: thing, name: named[0] ?? null, any };
+    case "list": {
+      const ids = [...values.ids, ...(namesPlaces(b) && b.own ? b.own.map((o) => o.name) : [])];
+      // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
+      for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
+      return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+    }
+  }
 }
 
 // ---------------------------------------------------------------- a thing of the band's head, opened

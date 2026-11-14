@@ -77,6 +77,20 @@ function Head({ item, figure, help, itemHelp }: { item: string; figure: string; 
   );
 }
 
+/** One figure column's name in a list head of several, on the list's grid: the computed mark, and its "?" bound to the name's last word, so a
+ *  long name wraps on a phone and the mark never stands alone on a line. */
+function HeadFigure({ figure, help }: { figure: string; help: string }) {
+  const cut = figure.lastIndexOf(" ") + 1;
+  return (
+    <span className="text-end">
+      {cut > 0 && <span className="num num-computed num-sample">{figure.slice(0, cut)}</span>}
+      <span className="whitespace-nowrap">
+        <span className="num num-computed num-sample">{figure.slice(cut)}</span> <HelpMark about={figure} text={help} />
+      </span>
+    </span>
+  );
+}
+
 /** A side's heading: its title with its colour and count, what the side sets with a "?" beside it where the rows carry a small bar, and one quiet line. */
 function SideHead({ swatch, title, count, lead, what, help, line }: { swatch: string; title: string; count: number; lead: string; what: string; help?: ReactNode; line: ReactNode }) {
   return (
@@ -330,7 +344,10 @@ export function PairLists(props: ListsProps) {
     const fs = pricedAt(h);
     return { keys: fs.map((f) => f.rec.id), headings: new Set(groupStarts(fs, h).keys()), choosable: new Set(fs.map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
   });
-  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house])).sort((a, b) => kindRank(a) - kindRank(b));
+  // F-118 (D84): a fund whose tax rests on an open rule, priced before tax at the chosen account, stands in its own list under the funds
+  const beforeTaxAt = (f: FundWay) => (priced(f.byHouse[pick.house]) ? undefined : f.beforeTax?.byHouse[pick.house]);
+  const beforeTaxFunds = funds.filter((f) => beforeTaxAt(f));
+  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !beforeTaxAt(f)).sort((a, b) => kindRank(a) - kindRank(b));
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const hedgedHeading = (
@@ -467,6 +484,74 @@ export function PairLists(props: ListsProps) {
     };
   });
 
+  // the funds on an open rule with their figures before tax at the chosen account (F-118, D84): never chosen, never set against the pair,
+  // in the order of the fund list's records (no order by value: they are not ranked)
+  const beforeTaxRows: PickRow[] = beforeTaxFunds.map((f) => {
+    const at = beforeTaxAt(f)!;
+    const typed = isCustomFund(f.rec);
+    return {
+      key: f.rec.id,
+      ...(typed ? { keep: true } : {}),
+      selected: false,
+      disabled: true,
+      onSelect: () => {},
+      cells: (
+        <>
+          {fundName(f, false)}
+          <span className="text-end text-sm tabular-nums whitespace-nowrap">
+            <Num value={at.accountCost} />
+          </span>
+          <span className="text-end text-sm font-semibold tabular-nums whitespace-nowrap">
+            <Num value={at.left} />
+          </span>
+          {typed && underRow(<FundTerms id={f.rec.id} />)}
+        </>
+      ),
+    };
+  });
+  const beforeTaxRules = [...new Set(beforeTaxFunds.map((f) => f.beforeTax!.ruleId))];
+  const beforeTaxList =
+    beforeTaxRows.length > 0 ? (
+      <section className="flex flex-col gap-1.5">
+        <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
+          <IconLock size={14} />
+          {c.beforeTax.heading}
+        </h4>
+        <p className="max-w-measure text-xs text-muted-foreground">
+          {beforeTaxRules.map((id) => (
+            <Tpl
+              key={id}
+              t={c.beforeTax.note[id] ?? c.beforeTax.noteOther}
+              vars={{
+                term: (
+                  <Term id={[]} name={c.beforeTax.heading} rules={[id]}>
+                    {c.beforeTax.noteTerm}
+                  </Term>
+                ),
+              }}
+            />
+          ))}{" "}
+          {c.beforeTax.noteTail}
+        </p>
+        <div className="nums-plain">
+          <PickList
+            look="line"
+            tone="fund"
+            label={c.beforeTax.label(short)}
+            columns="minmax(0,1fr) auto auto"
+            head={
+              <>
+                <span>{c.pair.colFund}</span>
+                <HeadFigure figure={c.beforeTax.colCharges} help={c.beforeTax.colChargesHelp} />
+                <HeadFigure figure={c.beforeTax.colLeft} help={c.beforeTax.colLeftHelp} />
+              </>
+            }
+            rows={beforeTaxRows}
+          />
+        </div>
+      </section>
+    ) : null;
+
   // ---------------------------------------------------------------- what the page says of the chosen rows, under both lists
   const at = selAt;
   const snap = snapOf(baseHouse);
@@ -576,6 +661,7 @@ export function PairLists(props: ListsProps) {
   );
   const fundsFoot = (
     <div className="flex flex-col gap-3">
+      {beforeTaxList}
       {greyRows.length > 0 && (
         <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">
           <div className="nums-plain pt-1">

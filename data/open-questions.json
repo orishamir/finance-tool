@@ -589,6 +589,10 @@
     "blocks_he": "מעבר של כסף מקרן פנסיה לקופה בניהול אישי"
   },
   {
+    "id": "IRA OQ17",
+    "status": "open"
+  },
+  {
     "id": "KH OQ3",
     "status": "open",
     "title_he": "האם צו הרחבה כללי מחייב קרן השתלמות"
@@ -776,6 +780,10 @@
     "status": "open"
   },
   {
+    "id": "MF OQ23",
+    "status": "open"
+  },
+  {
     "id": "PEN OQ2",
     "status": "open"
   },
@@ -845,10 +853,6 @@
     "status": "open"
   },
   {
-    "id": "PEN OQ28",
-    "status": "open"
-  },
-  {
     "id": "PEN OQ29",
     "status": "narrowed"
   },
@@ -910,6 +914,10 @@
     "id": "PF OQ18",
     "status": "open",
     "title_he": "האם מותר לחברה לסיים הנחה בדמי הניהול חצי שנה אחרי הפקדה אחת, כשלא מפקידים שוב"
+  },
+  {
+    "id": "PF OQ19",
+    "status": "open"
   },
   {
     "id": "REG OQ2",

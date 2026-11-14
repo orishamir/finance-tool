@@ -276,7 +276,8 @@ export type NotComparable =
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
   /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
   | { code: "other-venue"; venue: "us" | "europe" }
-  /** the run would rest on a rule that is open (F-04: a TASE foreign fund's tax index, TXF-04): nothing is computed or ranked. */
+  /** the run would rest on a rule that is open (F-04: a TASE foreign fund's tax index, TXF-04): nothing is computed after tax or ranked; the
+   *  indices page shows such a fund's figures before tax beside it (F-118). */
   | { code: "rule-open"; ruleId: string };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */

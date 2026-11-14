@@ -5,7 +5,7 @@ import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/builder";
 import { addBy, type NewBy } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
-import { isRangeKind, type ByKind, type RangeUnit } from "../../lib/fee-deal/offers/conditions";
+import { isPlaceKind, isRangeKind, type ByKind, type RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, Button, FigureField, InlineSelect, TextField } from "../kit";
 import { bringIntoView } from "./in-view";
 
@@ -42,7 +42,7 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   const [top, setTop] = useState<number | null>(null);
   const [unit, setUnit] = useState<RangeUnit | null>(q.units?.[0]?.unit ?? null);
   const toggle = (id: string) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]));
-  const place = kind === "what" || kind === "held";
+  const place = isPlaceKind(kind);
   const typed = () => {
     const name = typing?.name.trim();
     if (!typing || !name) return;
