@@ -1750,8 +1750,6 @@ export const feeDeal = {
     trackPick: "לבחור מסלול",
     /** The step that fills the deal from a price list, and its button opens the price lists. */
     fill: "מילוי מתעריפון",
-    start: "תאריך התחלה",
-    optional: "לא חובה",
     fees: "העמלות בעסקה",
     /** After a bound in a row's box. */
     minWord: "מינימום",

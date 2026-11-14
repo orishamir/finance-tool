@@ -471,10 +471,10 @@ describe("a deal the views cannot read whole", () => {
 describe("a track picked in the builder, on the deal on screen", () => {
   const both = data.tracks.filter((x) => x.wrapperId === "kupat-gemel-lehashkaa" && typeof x.b.value === "number" && x.b.value > 0 && typeof x.d.value === "number" && x.d.value > 0);
   const [a, b] = [both[0]!, both.find((x) => x.b.value !== both[0]!.b.value)!];
-  const kept = (d: FeeDeal) => ({ id: d.id, start: d.start, saved: d.saved });
+  const kept = (d: FeeDeal) => ({ id: d.id, saved: d.saved });
 
   it("keeps a typed name and typed fees, and records the track", () => {
-    const deal: FeeDeal = { ...provident(), name: "ההצעה של הסוכן", start: "2026-01", saved: "2026-11-10" };
+    const deal: FeeDeal = { ...provident(), name: "ההצעה של הסוכן", saved: "2026-11-10" };
     const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
     expect(kept(next)).toEqual(kept(deal));
     expect(next.name).toBe("ההצעה של הסוכן");
@@ -668,8 +668,6 @@ describe("a fee with a price not given yet", () => {
     const later = withPrices(typed(0.5), "2027-06", blank);
     expect(read(later).fees).toEqual([]);
     expect(read(later).unpriced).toEqual(["fee-m"]);
-    // a deal that starts after today is read from its start, so a blank price before it holds nothing back either
-    expect(read({ ...withPrices(blank, "2027-02", typed(0.5)), start: "2027-03" }).unpriced).toEqual([]);
     expect(read(withPrices(blank, "2027-02", typed(0.5))).unpriced).toEqual(["fee-m"]);
   });
 });

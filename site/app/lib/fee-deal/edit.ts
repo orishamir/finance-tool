@@ -68,10 +68,6 @@ export function setKind(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindI
 
 export const setName = (deal: FeeDeal, name: string): FeeDeal => ({ ...deal, name });
 
-export function setStart(deal: FeeDeal, start: MonthKey | null): FeeDeal {
-  const { start: _start, ...rest } = deal;
-  return start === null ? rest : { ...rest, start };
-}
 
 // ---------------------------------------------------------------- the reading's picks (F-114)
 

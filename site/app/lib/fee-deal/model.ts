@@ -262,8 +262,6 @@ export interface FeeDeal {
   name: string;
   /** The product the deal is: a record of the kinds (a wrapper or a security); null before one is chosen. */
   kind: ProductId | null;
-  /** The month the deal started or starts, where the person gave one. */
-  start?: MonthKey;
   provider?: ProviderKind;
   fees: Fee[];
   /** The reading's picks (F-114): what the deal is read for, one value per thing its fees change by; a thing not picked starts as F-114 says. */
@@ -868,10 +866,7 @@ export function readDeal(raw: unknown): FeeDeal | null {
     if (!picks) return null;
     if (picks.length) deal.readFor = picks;
   }
-  if (raw.start !== undefined) {
-    if (typeof raw.start !== "string" || !MONTH.test(raw.start)) return null;
-    deal.start = raw.start;
-  }
+  // a deal saved with a start month (the field was removed on 2026-11-14) opens without it: the reading is for the device's month
   if (raw.provider !== undefined) {
     if (raw.provider !== "bank" && raw.provider !== "non-bank") return null;
     deal.provider = raw.provider;

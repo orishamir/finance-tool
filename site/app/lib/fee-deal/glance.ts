@@ -38,7 +38,7 @@ export interface GlanceChange extends FeeRef {
 
 /**
  * A date something changes at: the months from the device's month to it (on the nearest date only; F-110 counts the time to a change from
- * now, not from a later start), the changes, and each group a changed fee is in from then.
+ * now), the changes, and each group a changed fee is in from then.
  */
 export interface GlanceDate {
   at: MonthKey;
@@ -48,7 +48,7 @@ export interface GlanceDate {
 }
 
 export interface Glance {
-  /** The month the deal is read from (F-110: the device's month, or the deal's start where it is later). */
+  /** The month the deal is read from (F-110: the device's month). */
   from: MonthKey;
   throughout: GlanceGroup[];
   changing: GlanceGroup[];

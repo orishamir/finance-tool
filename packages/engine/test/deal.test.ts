@@ -72,28 +72,6 @@ describe("F-110 a deal's periods", () => {
     expect(atToday.fees[0]!.holds).toBe(true);
   });
 
-  it("reads the deal from its start where the start is later than today", () => {
-    const deal: Deal = {
-      foreign: false,
-      start: { y: 2027, m: 1 },
-      fees: [
-        // ends after today but before the start: passed by the start
-        { base: { key: "custody" }, stages: [{ price: free, until: { y: 2026, m: 12 } }, { price: custodyYear }] },
-        { base: { key: "trade" }, stages: [{ price: commission, until: { y: 2027, m: 7 } }, { price: { kind: "action", rate: 0.001, min: 15 } }] },
-      ],
-    };
-    const r = dealPeriods(deal, today);
-    expect(r.from).toEqual({ y: 2027, m: 1 });
-    expect(r.periods.map((p) => [p.from, p.to])).toEqual([
-      [{ y: 2027, m: 1 }, { y: 2027, m: 7 }],
-      [{ y: 2027, m: 7 }, null],
-    ]);
-    expect(r.periods[0]!.prices[0]!.price).toEqual(custodyYear);
-    expect(r.fees[1]!.changes[0]!.kind).toBe("falls");
-    // a start earlier than today does not move the reading
-    expect(dealPeriods({ ...deal, start: { y: 2025, m: 1 } }, today).from).toEqual(today);
-  });
-
   it("reads a sale's own prices as their own side", () => {
     const deal: Deal = {
       foreign: false,
