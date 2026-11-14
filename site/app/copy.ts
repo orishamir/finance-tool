@@ -1761,7 +1761,7 @@ export const feeDeal = {
     kindsAria: "סוגי המוצרים",
     close: "סגירה",
     track: "החברה והמסלול",
-    trackNone: "לא נבחרו · לא חובה",
+    trackNone: "לא נבחרו (לא חובה)",
     trackPick: "לבחור מסלול",
     /** The step that fills the deal from a price list, and its button opens the price lists. */
     fill: "מילוי מתעריפון",
@@ -1875,12 +1875,13 @@ export const feeDeal = {
     caseRemoved: "המקרה הוסר.",
     /**
      * The line a thing taken away leaves (undo.ts), naming it as the menu did: how many cases merged into how many, that none merged, or
-     * that the fee kept its first case's price.
+     * that the fee kept one case's price, the person's track's where a case is theirs (`slimOwn`), else the first case's.
      */
     byRemoved: {
       merged: "המחיר כבר לא משתנה לפי {thing}: {from} מקרים הם עכשיו {to}.",
       kept: "המחיר כבר לא משתנה לפי {thing}. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.",
       slim: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המקרה הראשון.",
+      slimOwn: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המסלול שלכם.",
     },
     /**
      * The line a price put in another form leaves (undo.ts): that it changed, and what it left behind by name ("המחיר הוחלף, והמינימום
@@ -1894,13 +1895,18 @@ export const feeDeal = {
       and: "ו",
       parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", maxPerSecurity: "המקסימום לכל נייר ערך" },
     },
-    /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
+    /**
+     * A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. The
+     * cases that merge keep the person's track's price where one of them is theirs (`mergeOwn`, `slimOwn`), else the first one's.
+     */
     thingMenu: {
       title: "המקרים מבחינים בין:",
       stop: "להפסיק להבחין לפי {thing}",
       merge: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של הראשון מהם.",
+      mergeOwn: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של המסלול שלכם אם הוא ביניהם, ואחרת במחיר של הראשון מהם.",
       kept: "המקרים יישארו כמו שהם, כי הם שונים גם בדבר אחר.",
       slim: "לעמלה יישאר מחיר אחד: המחיר של המקרה הראשון.",
+      slimOwn: "לעמלה יישאר מחיר אחד: המחיר של המסלול שלכם.",
     },
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
@@ -4867,6 +4873,7 @@ export const kit = {
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
+      StepStrip: "השלבים אחרי שנעשו, בשורה אחת מעל מה שנבנה בהם, כשכמעט לא חוזרים לשנות אותם: השם של כל שלב ומה נבחר, נקודה, והדרך לשנות. בסוף השורה הפעולה שלה, ומתחתיה מה ששלב פותח כדי לשנות אותו או מה שנאמר על הבחירה. כשאין מקום, השורה נשברת.",
       AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. כשאין מקום לשמות בסוף, הם עוברים למקרא מעל הגרף.",
       AddLine: "שורה שקטה מתחת לרשימה שהאדם בונה: מסגרת מקווקוות, פלוס ושבב קטן לכל דבר שאפשר להוסיף. הרגילים קודם בדיו מלאה, הנדירים אחריהם בדיו מעומעמת. המקום היחיד בעמוד שמדבר על מה שחסר.",
       PeriodStrip: "שנות התוכנית ברצועה אחת, לכל תקופה גוון משלה ומה שמחזיק בה כתוב עליה: שנים במחיר של קבוצה, ואז שנים בתעריפון. הזמן רץ משמאל לימין והקצוות כתובים מתחת. רצועה לקריאה בלבד, לא כפתור.",
