@@ -4,7 +4,7 @@ import type { DealKind } from "./kinds";
 import { blankPrice, feeInOrder, feePriced, newDeal, newFee, typed, untouched, type Fee, type Num, type Price } from "./model";
 import { addFee, setKind, setPick } from "./edits/deal";
 import { addLater, editPrice, holdOn, laterUntouched, removeStage, setLimited, setSaleApart, setUntil } from "./edits/stage";
-import { figureBack, figureOf, withCurrency, withFigure, withMonths } from "./edits/price";
+import { setFigure, figureOf, withCurrency, withFigure, withMonths } from "./edits/price";
 import { withForm } from "./offers/parts";
 
 /** A kind with the bases its record lists, for the edits that read them. */
@@ -144,9 +144,9 @@ describe("the fee page's edits", () => {
     const src = { url: "https://www.example.org/t.pdf", title: "t", publisher: "p", strength: "institution" as const, checked: "2026-10-01" };
     const p: Price = { form: "action", rate: { v: 0.25, src }, min: typed(15) };
     const typedOver = withFigure(p, "rate", 0.3);
-    expect(figureBack(typedOver, "rate", figureOf(p, "rate"))).toEqual(p);
-    expect(figureBack(p, "min", undefined)).toEqual({ form: "action", rate: { v: 0.25, src } });
-    expect(figureBack(p, "rate", undefined)).toEqual({ ...p, rate: { v: 0, blank: true } });
+    expect(setFigure(typedOver, "rate", figureOf(p, "rate"))).toEqual(p);
+    expect(setFigure(p, "min", undefined)).toEqual({ form: "action", rate: { v: 0.25, src } });
+    expect(setFigure(p, "rate", undefined)).toEqual({ ...p, rate: { v: 0, blank: true } });
     expect(figureOf({ form: "free" }, "rate")).toBeUndefined();
   });
   it("a sale priced apart starts as a copy of the purchase, and edits only itself", () => {

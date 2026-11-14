@@ -113,9 +113,10 @@ const has = (v: ValueObject | null | undefined): v is ValueObject & { value: num
 /**
  * A price on each action from a line: a share of the action (its rate in percent of the trade), or a sum per unit (F-12's price per share,
  * in `usd_per_share`); with its bounds, its cap as a share of the trade (`cap`, F-12) and its flat price for a small action (`flat_up_to`,
- * F-12, F-13), every sum in one currency (a line whose sums are in two is left, F-13). `cap` is read only where `withCap`: the trade fee's.
+ * F-12, F-13), every sum in one currency (a line whose sums are in two is left, F-13). A part the fee cannot hold (a conversion's percent
+ * maximum) is dropped where the price is built (`buildPrice`).
  */
-function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): { spec: PriceSpec } | { left: LeftWhy } {
+function actionPrice(l: Line, num: (v: ValueObject) => Num): { spec: PriceSpec } | { left: LeftWhy } {
   if (!has(l.rate)) return { left: "no-value" };
   const perUnit = l.rate.unit === "usd_per_share";
   const flat = l.flat_up_to && has(l.flat_up_to.amount) && has(l.flat_up_to.up_to) ? { amount: l.flat_up_to.amount, upTo: l.flat_up_to.up_to } : null;
@@ -127,7 +128,7 @@ function actionPrice(l: Line, num: (v: ValueObject) => Num, withCap: boolean): {
     ...(perUnit ? { amount: num(l.rate) } : { rate: num(l.rate) }),
     ...(has(l.min) ? { min: num(l.min) } : {}),
     ...(has(l.max) ? { max: num(l.max) } : {}),
-    ...(withCap && has(l.cap) ? { cap: num(l.cap) } : {}),
+    ...(has(l.cap) ? { cap: num(l.cap) } : {}),
     ...(flat ? { flat: num(flat.amount), upTo: num(flat.upTo) } : {}),
   };
   return { spec: { form: perUnit ? "perUnit" : "action", figures, ...(currency && currency !== "ILS" ? { currency } : {}) } };
@@ -187,6 +188,20 @@ export const MAX_PER_SECURITY: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * Why a line no fee reads fills nothing: a bank's yearly distribution share, a redemption at maturity, a line of no list or of another base,
+ * one set aside from ranking, a plan's line, or another line of the same base.
+ */
+function unreadWhy(l: Line): LeftWhy {
+  const houseBase = (HOUSE_BASES as readonly string[]).includes(l.base);
+  if (l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period") return "distribution-yearly";
+  if (l.band === REDEMPTION_BAND) return "redemption";
+  if (l.level !== "list") return "other-base";
+  if (l.not_ranked !== undefined) return "set-aside";
+  if (!houseBase) return "other-base";
+  return l.band !== null ? "plan" : "another-line";
+}
+
+/**
  * The record's quote of a maximum on the whole deposit, from its maximum's note, where it prints one beside a maximum on each security: the
  * note's first passage in single quotes that names the deposit ("לפקדון", "לפיקדון"); null where none does.
  */
@@ -230,7 +245,7 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       const fixed = fixedSum(l);
       if (fixed) return { fees: [fee("trade", perAction(num(fixed.sum), has(l.cap) ? { cap: num(l.cap) } : {}, fixed.currency))], left: [] };
       if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
-      const p = actionPrice(l, num, true);
+      const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
       // a minimum in the trade's own currency is no sum in the currency its record gives it (BRK-48)
       const { currency: _c, ...inTrade } = p.spec;
@@ -238,7 +253,7 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
     }
     case "fx": {
       if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
-      const p = actionPrice(l, num, false);
+      const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
@@ -545,7 +560,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   // every other line is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
-    leave(l, l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.band === REDEMPTION_BAND ? "redemption" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base");
+    leave(l, unreadWhy(l));
   }
   return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap) };
 }

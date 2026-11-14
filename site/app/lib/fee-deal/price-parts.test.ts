@@ -6,7 +6,7 @@ import { actionCost, dealMarks, dealPeriods } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
 import type { SiteValue } from "../value";
-import { withCurrency, withFigure, withFlat, figureOf, figureBack } from "./edits/price";
+import { withCurrency, withFigure, withFlat, figureOf, setFigure } from "./edits/price";
 import { setPart, withForm } from "./offers/parts";
 import { glance } from "./glance";
 import { inCapUnit, standingOf } from "./kinds";
@@ -151,7 +151,7 @@ describe("the price parts as the screen edits them", () => {
     expect(typedIn).toEqual({ ...p, flat: { amount: { v: 2.85 }, upTo: { v: 50 } } });
     expect(withFigure(typedIn, "upTo", null)).toEqual({ ...p, flat: { amount: { v: 2.85 }, upTo: { v: 0, blank: true } } });
     expect(figureOf(typedIn, "flat")).toEqual({ v: 2.85 });
-    expect(figureBack(typedIn, "cap", undefined)).toEqual({ form: "action", rate: { v: 0.3, src }, flat: { amount: { v: 2.85 }, upTo: { v: 50 } } });
+    expect(setFigure(typedIn, "cap", undefined)).toEqual({ form: "action", rate: { v: 0.3, src }, flat: { amount: { v: 2.85 }, upTo: { v: 50 } } });
     expect(withFlat(typedIn, false)).toEqual(p);
     // a flat price's figure on a price with none, and a cap on a sum per period, change nothing
     expect(withFigure(p, "flat", 3)).toEqual(p);
