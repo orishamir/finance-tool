@@ -8,7 +8,7 @@
 // at the ceiling, and where nothing is above it, says so instead of a balance (method F-67, "The general fund"). The assumptions line
 // says what the balance assumes: deposits flat in shekels, and no insurance until it is entered.
 import { useMemo, useState } from "react";
-import { guideSignature as copy } from "../../copy";
+import { flags as flagLines, guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { pensionModel } from "../../lib/guide-signature-g2";
@@ -104,7 +104,9 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
     net: reliefFigure(model.netYou, copy.pension.about.net),
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
-    balance: model.balance ? computed(model.balance.real, "nis", "F-67", balanceIn, { today, about: copy.pension.about.balance, rules, flags: model.balance.flags, labels: model.balance.labels }) : null,
+    // the balance carries its runs' flags that the site has a line for; the others (G-03 and PEN OQ7, the annuity the fund turns it into) would
+    // show as a bare code, and the card's own words already say the balance is before that annuity
+    balance: model.balance ? computed(model.balance.real, "nis", "F-67", balanceIn, { today, about: copy.pension.about.balance, rules, flags: model.balance.flags.filter((code) => code in flagLines), labels: model.balance.labels }) : null,
     toGeneral: model.general && ceiling ? figure(model.general.toGeneral, "nis", "F-67", { ...base, [copy.pension.general.below.term]: ceiling }, today, copy.pension.general.toGeneral, rules) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
