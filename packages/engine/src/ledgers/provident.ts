@@ -8,7 +8,7 @@ import { bracketTaxOnTopSlice, hishtalmutExitTax, kglExitTax } from "../formulas
 import { annualToMonthly, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { BlockedError, RecordInputError, ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
-import type { Outcome, RunContext, RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type ResultFields, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, otherIncomeOf, reachesAgeInYear, surtaxOn, Tally, unlessBlocked, type Profile } from "./common.ts";
 
 export interface ProvidentInput {
@@ -85,6 +85,9 @@ interface Pot {
 
 export type ProvidentResult = RunResult & { routed: { month: number; amount: number }[] };
 
+/** The fields of a provident run's result (`ResultFields`): what was routed past the ceiling is an output. */
+export const PROVIDENT_RESULT_FIELDS: ResultFields<ProvidentResult> = { ...RUN_RESULT_FIELDS, routed: "output" };
+
 /**
  * F-27 Provident family: no tax while invested (TXK-03, TXH-18). Each month the deposit, less the deposit
  * fee, is added; the balance grows at r_g; the balance fee and the direct expenses are a twelfth of their
@@ -95,7 +98,7 @@ export type ProvidentResult = RunResult & { routed: { month: number; amount: num
  * F-33 Everything else: the deposit is the net outlay, `D_m = C_m` (TXK-01, TXH-04); no deduction or credit.
  */
 export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentResult {
-  return acrossReadings(ctx, (c) => runProvidentUnder(input, c));
+  return acrossReadings(ctx, (c) => runProvidentUnder(input, c), PROVIDENT_RESULT_FIELDS);
 }
 
 /** `runProvident` under the readings `ctx` holds (method §13). */

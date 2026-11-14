@@ -5,7 +5,7 @@ import { makamPrice } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
-import type { Outcome, RunContext, RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 
 export interface MakamInput {
@@ -45,7 +45,7 @@ const DAYS = 365;
  * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
  */
 export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
-  return acrossReadings(ctx, (c) => runMakamUnder(input, c));
+  return acrossReadings(ctx, (c) => runMakamUnder(input, c), RUN_RESULT_FIELDS);
 }
 
 /** `runMakam` under the readings `ctx` holds (method §13). */

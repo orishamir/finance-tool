@@ -8,6 +8,9 @@ import { runProvident } from "../src/ledgers/provident.ts";
 import { runPension } from "../src/ledgers/pension.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
 import { runChildSavings } from "../src/ledgers/child-savings.ts";
+import { PROVIDENT_RESULT_FIELDS } from "../src/ledgers/provident.ts";
+import { EMPLOYER_LINE_FIELDS, PENSION_RESULT_FIELDS } from "../src/ledgers/pension.ts";
+import { RUN_RESULT_FIELDS, type ResultFields } from "../src/result.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context(); // run date 2026-10-23: grid year 1 is 2026
@@ -148,14 +151,36 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     );
     expect(stoppedOnQuestion(r)).toBeNull();
     expect(r.flags.map((f) => f.code)).toContain("TXG-OQ17");
-    expect(r.years.every((y) => !y.working.creditCap.binds)).toBe(true);
+    expect(r.working.years.every((y) => !y.creditCap.binds)).toBe(true);
     expect(r.nominal).toBeGreaterThan(0);
   });
 
-  it("keeps two runs that agree number for number, and tells apart two that do not", () => {
-    expect(sameResult({ a: 1, b: [2, 3], flags: [{ code: "x" }] }, { a: 1, b: [2, 3], flags: [] })).toBe(true);
-    expect(sameResult({ a: 1, b: [2, 3] }, { a: 1, b: [2, 3.01] })).toBe(false);
-    expect(sameResult({ outcome: { code: "eligible" } }, { outcome: { code: "listed-not-ranked" } })).toBe(false);
+  it("keeps two runs that agree number for number on the outputs their type declares, and tells apart two that do not", () => {
+    type R = { a: number; b: number[]; outcome?: { code: string }; flags: { code: string }[]; working?: { tax: number } };
+    const fields: ResultFields<R> = { a: "output", b: "output", outcome: "output", flags: "trail", working: "working" };
+    expect(sameResult<R>({ a: 1, b: [2, 3], flags: [{ code: "x" }] }, { a: 1, b: [2, 3], flags: [] }, fields)).toBe(true);
+    expect(sameResult<R>({ a: 1, b: [2, 3], flags: [] }, { a: 1, b: [2, 3.01], flags: [] }, fields)).toBe(false);
+    expect(sameResult<R>({ a: 1, b: [], flags: [], outcome: { code: "eligible" } }, { a: 1, b: [], flags: [], outcome: { code: "listed-not-ranked" } }, fields)).toBe(false);
+    // the working is left out, by its declaration, not by its name: a field named so inside an output is compared
+    expect(sameResult<R>({ a: 1, b: [], flags: [], working: { tax: 1 } }, { a: 1, b: [], flags: [], working: { tax: 2 } }, fields)).toBe(true);
+    expect(sameResult({ a: { working: 1 } }, { a: { working: 2 } }, { a: "output" })).toBe(false);
+  });
+
+  it("compares a field a result gains unless its type declares it working: a new output counts until it is declared otherwise", () => {
+    // a field the declaration does not name, as a run's result would carry before its type's declaration lists it, is compared
+    const a = { ...({ nominal: 100, flags: [] } as const), gained: 1 };
+    const b = { ...({ nominal: 100, flags: [] } as const), gained: 2 };
+    const declared = { nominal: "output", flags: "trail" } as const;
+    expect(sameResult(a, b, declared as ResultFields<typeof a>)).toBe(false);
+    expect(sameResult(a, b, { ...declared, gained: "working" })).toBe(true);
+    // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise)
+    for (const fields of [RUN_RESULT_FIELDS, PROVIDENT_RESULT_FIELDS, PENSION_RESULT_FIELDS, EMPLOYER_LINE_FIELDS]) {
+      for (const role of Object.values(fields)) expect(["output", "trail", "working"]).toContain(role);
+    }
+    expect(Object.entries(PENSION_RESULT_FIELDS).filter(([, role]) => role === "working").map(([k]) => k)).toEqual(["working"]);
+    expect(Object.keys(RUN_RESULT_FIELDS).sort()).toEqual(
+      ["detail", "exitMonth", "fees", "feesCarried", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "taxAtExit", "taxDuring", "waitingCarried"],
+    );
   });
 });
 

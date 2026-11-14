@@ -95,7 +95,7 @@ describe("F-30 follows the capped credit", () => {
     expect(y.net).toBeCloseTo(3_000, 9);
     expect(y.gross).toBeCloseTo(3_600, 6);
     expect(y.credit).toBeCloseTo(600, 6);
-    expect(y.working.creditCap.binds).toBe(true);
+    expect(r.working.years[0]!.creditCap.binds).toBe(true);
     const flags = r.flags.map((f) => f.code);
     expect(flags).toContain("G-23");
     expect(flags).toContain("TXP-OQ20");
@@ -107,7 +107,7 @@ describe("F-30 follows the capped credit", () => {
     const y = r.years[0]!;
     expect(y.gross).toBeCloseTo(3_600 / 0.65, 6);
     expect(y.credit).toBeCloseTo(0.35 * (3_600 / 0.65), 6);
-    expect(y.working.creditCap.binds).toBe(false);
+    expect(r.working.years[0]!.creditCap.binds).toBe(false);
     expect(r.flags.map((f) => f.code)).toEqual(expect.arrayContaining(["G-23", "TXP-OQ20"]));
   });
 });

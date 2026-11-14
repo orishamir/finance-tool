@@ -118,6 +118,39 @@ export interface RunResult {
   waitingCarried?: number;
 }
 
+/**
+ * What a field of a result is to the comparison of readings (method §13, `sameResult`): an `output`, compared number for number; its
+ * `trail`, what the run read and raised (flags, labels, rules, formulas); or its `working`, a figure the run computes on the way to an output
+ * and shows nowhere, which can differ by reading while every output agrees.
+ */
+export type FieldRole = "output" | "trail" | "working";
+
+/**
+ * Every field of a result type `R` with its role: the type names each key of `R`, so a field added to a result does not compile until it is
+ * declared; the comparison compares a field unless it is declared trail or working.
+ */
+export type ResultFields<R> = { readonly [K in keyof Required<R>]: FieldRole };
+
+/** The fields of every run's result (`RunResult`). */
+export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
+  exitMonth: "output",
+  nominal: "output",
+  real: "output",
+  paidIn: "output",
+  fees: "output",
+  taxDuring: "output",
+  taxAtExit: "output",
+  series: "output",
+  detail: "output",
+  outcome: "output",
+  feesCarried: "output",
+  waitingCarried: "output",
+  flags: "trail",
+  labels: "trail",
+  formulas: "trail",
+  rules: "trail",
+};
+
 export function emptyFees(): Record<FeeType, number> {
   return { deposit: 0, balance: 0, direct: 0, trade: 0, spread: 0, custody: 0, fixed: 0, account: 0, fund: 0, fx: 0, manager: 0 };
 }

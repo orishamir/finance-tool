@@ -5,7 +5,7 @@ import { bondCoupon } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
-import type { RunContext, RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, maxRateTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, type Lot } from "./lots.ts";
 
@@ -33,7 +33,7 @@ export interface BondInput {
  * bond is sold at par (indexed for a linked series) plus A-27.
  */
 export function runBond(input: BondInput, ctx: RunContext): RunResult {
-  return acrossReadings(ctx, (c) => runBondUnder(input, c));
+  return acrossReadings(ctx, (c) => runBondUnder(input, c), RUN_RESULT_FIELDS);
 }
 
 /** `runBond` under the readings `ctx` holds (method §13). */
