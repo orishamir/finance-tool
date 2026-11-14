@@ -158,8 +158,8 @@ export interface KindUndo {
   chosenAfter: string | null;
 }
 
-/** A fee as the builder adds it, nothing typed or filled in it: one price of its usual form, its figure blank. */
-const blankFee = (f: Fee): boolean => f.name === undefined && !f.sale && sameContent(f.stages, newFee(f.kind).stages);
+/** A fee as the builder adds it, nothing typed or filled in it: one price of the form it was added in, its figure blank. */
+const blankFee = (f: Fee): boolean => f.name === undefined && !f.sale && sameContent(f.stages, newFee(f.kind, undefined, f.stages?.[0]?.price.form).stages);
 
 /**
  * The deal of another kind (`setKind`), kept for the undo where a fee it takes away holds anything typed or filled; silent where every fee

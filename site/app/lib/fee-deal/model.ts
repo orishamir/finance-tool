@@ -408,9 +408,9 @@ const canonical = (v: unknown): string =>
 
 export const newCaseId = () => newId("case-");
 
-/** A new fee of a kind: one price of its usual form that holds throughout. */
-export function newFee(kind: FeeKindId, name?: string): SlimFee {
-  return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(capacity(kind).usual) }] };
+/** A new fee of a kind: one price that holds throughout, of the form given (the first its product's fee is offered in), else its kind's usual one. */
+export function newFee(kind: FeeKindId, name?: string, form: FormId = capacity(kind).usual): SlimFee {
+  return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(form) }] };
 }
 
 /** A typed percent as the engine's fraction: the one place the two meet (to-engine.ts uses it). */

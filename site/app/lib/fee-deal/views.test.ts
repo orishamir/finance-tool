@@ -5,14 +5,15 @@ import { feesData } from "../fees.server";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import { builder, panel } from "./builder";
 import { glance } from "./glance";
-import { capLine, standingOf } from "./kinds";
+import { capLine, kindById, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal, packDeal, unpackDeal } from "./link";
 import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./parts";
 import { readingOf } from "./reading";
 import { barredFees, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
-import { updateFee, withFigure, editPrice } from "./edit";
+import { addFee, updateFee, withFigure, editPrice } from "./edit";
+import { offerFor } from "./offers/offer";
 import { latestSnapshots } from "../providers.server";
 import { loadTerms } from "../data.server";
 import { termKey, trackFees } from "../fee-page-data";
@@ -440,6 +441,35 @@ describe("the provident fund of the picture, on 11.2026", () => {
     ]);
     expect(r.law.find((l) => l.kind === "deposit")!.prices).toHaveLength(1);
     expect(r.curves).toEqual([]);
+  });
+});
+
+describe("a fee its product is not offered (the rule table)", () => {
+  const of = (kind: FeeDeal["kind"], fees: SlimFee[] = []): FeeDeal => ({ ...newDeal(kind), id: "deal-o", fees });
+  it("is not suggested: a study fund's deposit fee (KH-22), a fee of the person's own on a provident fund (PF-01), a bank deposit's fees", () => {
+    const study = builder(read(of("keren-hishtalmut"))).suggestions;
+    expect([...study.usual, ...study.rarer]).toEqual(["balance", "direct_expenses"]);
+    const gemel = builder(read(of("kupat-gemel-lehashkaa"))).suggestions;
+    expect([...gemel.usual, ...gemel.rarer]).not.toContain("own");
+    const deposit = builder(read(of("bank-deposit"))).suggestions;
+    expect([...deposit.usual, ...deposit.rarer]).toEqual([]);
+    // a product outside them keeps the person's own
+    expect(builder(read(of("makam"))).suggestions.rarer).toContain("own");
+  });
+  it("adds a fee in the first form its product's fee is offered: a pension's insurance premium as a share of each deposit (PEN-15)", () => {
+    const pension = of("pension-comprehensive");
+    const { fee } = addFee(pension, "insurance_premium", offerFor(kindById(kinds, "pension-comprehensive"), "insurance_premium").usual ?? undefined);
+    expect(fee.stages?.[0]?.price.form).toBe("action");
+    expect(addFee(pension, "insurance_premium").fee.stages?.[0]?.price.form).toBe("sum");
+  });
+  it("still opens and reads in a saved deal that holds one, through the device and a link", () => {
+    const deal = of("keren-hishtalmut", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))).toEqual(deal);
+    expect(decodeDeal(encodeDeal(deal))?.fees[0]?.kind).toBe("deposit");
+    const b = builder(read(deal));
+    expect(b.rows.map((r) => r.fee)).toEqual(["fee-dep"]);
+    expect(b.rows[0]!.priced).toBe(true);
+    expect(read(deal).fees.map((f) => f.kind)).toEqual(["deposit"]);
   });
 });
 
