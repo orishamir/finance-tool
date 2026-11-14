@@ -10,7 +10,7 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { useAskThing } from "./ask-thing";
 import { bringIntoView } from "./in-view";
 import type { FeeLinks } from "./links";
-import type { Pending } from "./part-edit";
+import { pendingAfter, pendingFresh, type Pending } from "./part-edit";
 
 /** A fee's card in the fees' column, by its id. */
 const feeCard = (feeId: string) => document.querySelector(`li[data-fee="${CSS.escape(feeId)}"]`);
@@ -25,8 +25,8 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
   const [thingOpen, setThingOpen] = useState<{ fee: string; t: number; at: HTMLElement } | null>(null);
   const [pending, setPending] = useState<Pending | null>(null);
-  // the part asking for what it needs whose box has had the focus: drawn again (left waiting while the fee changed by something), it
-  // takes it no more
+  // the part asking for what it needs whose box has had the focus: drawn again (left waiting while the fee changed by something, or its
+  // card tapped or dropped again, which keeps it as it is: `pendingAfter`), it takes it no more
   const pendingShown = useRef<Pending | null>(null);
   // whether a phone's toolbox sheet is folded to its groups' names: folded as the page loads, so nothing covers it, and unfolded when a
   // fee or a case is opened, or at its handle
@@ -133,9 +133,9 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     /** A part the toolbox added that asks for what it needs, on the case open (`here`, where it stands); null when given or dropped. */
     pending: {
       here: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null,
-      set: setPending,
+      set: (next: Pending | null) => setPending((now) => pendingAfter(now, next)),
       /** Whether the part asking is drawn for the first time, so its box takes the focus; `onShown` once it is. */
-      fresh: () => pending !== null && pendingShown.current !== pending,
+      fresh: () => pendingFresh(pending, pendingShown.current),
       onShown: () => {
         pendingShown.current = pending;
       },

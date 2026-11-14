@@ -22,12 +22,25 @@ const cp = copy.cases.parts;
 /** The icon before a part's first word: a minimum's, a maximum's (a percent maximum's too), a link's. */
 export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
 
-/** Where a pending part stands: its fee, its case (null for a slim fee), and the part. */
+/**
+ * Where a pending part stands: its fee, its case (null for a slim fee), and the part. These three are the whole of what it is: the price it
+ * asks on is the toolbox's, read when it is drawn (`OpenPending.k`).
+ */
 export interface Pending {
   fee: string;
   case: string | null;
   part: PendingPart;
 }
+
+/**
+ * The pending part once `next` is set over `now`: `now` itself where `next` is the same part in the same place (a second tap or drop of
+ * its card), so the part already drawn stays the one drawn, and its box, which took the focus once, takes it no more.
+ */
+export const pendingAfter = (now: Pending | null, next: Pending | null): Pending | null =>
+  now && next && now.fee === next.fee && now.case === next.case && now.part === next.part ? now : next;
+
+/** Whether the pending part `now` is drawn for the first time, so its box takes the focus: it is not the one `shown` was, whose box had it. */
+export const pendingFresh = (now: Pending | null, shown: Pending | null): boolean => now !== null && now !== shown;
 
 /** A word of a part trimmed of the spaces it carries to stand in a sentence. */
 export const bare = (s: string | undefined) => s?.trim();
