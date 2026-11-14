@@ -6,7 +6,8 @@
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib/fee-deal/builder";
-import { FORM_OF, setFeeName, setPart, type PartId } from "../../lib/fee-deal/edit";
+import { setFeeName } from "../../lib/fee-deal/edit";
+import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
 import { ONE_SIDE, type ByKind } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
@@ -67,9 +68,6 @@ function kitGroups(view: ToolboxView): ToolGroup[] {
   });
 }
 
-/** The parts the toolbox adds only once they have their figure, month or fee: they ask for it in the open case. */
-const PENDING: readonly string[] = ["min", "max", "cap", "until", "offset"];
-
 /** The houses whose price list has a line for the fee, and what filling the fee from one does. */
 export interface PanelFill {
   houses: readonly { id: string; name: string }[];
@@ -128,11 +126,13 @@ export function ToolboxColumn({
   onClose: () => void;
 }) {
   const terms = useProvenanceData()?.terms;
+  // a part that asks for its figure, month or fee first asks for it in the open case; a form of the price goes through the page
   const onAdd = (_group: string, part: string) => {
     if (part.startsWith("by:")) return onAsk(part.slice(3) as ByKind);
-    if (PENDING.includes(part)) return onPending(part as PendingPart);
-    if (FORM_OF[part as PartId]) return onForm(part as PartId);
-    onFee(setPart(fee, part as Parameters<typeof setPart>[1], true, caseId ? { caseId } : {}));
+    const id = part as PartId;
+    if (PARTS[id].ask) return onPending(id as PendingPart);
+    if (PARTS[id].form) return onForm(id);
+    onFee(setPart(fee, id, true, caseId ? { caseId } : {}));
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
   const foot = (

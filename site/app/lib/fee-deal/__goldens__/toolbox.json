@@ -1,0 +1,1172 @@
+{
+ "bank-deposit · exit · action · plain": [
+  "price: share✓ perAction discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "bank-deposit · exit · action · full": [
+  "price: share✓ perAction discount✓ third✓ until",
+  "bound: min✓ max✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "bank-deposit · exit · perAction · plain": [
+  "price: share perAction✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "bank-deposit · exit · perAction · full": [
+  "price: share perAction✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "brokerage-account · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "brokerage-account · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "brokerage-account · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "brokerage-account · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "brokerage-account · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "brokerage-account · fx · action · plain": [
+  "price: share✓ discount third flat until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · fx · action · full": [
+  "price: share✓ discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · fx_spread · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · fx_spread · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · distribution_handling · action · plain": [
+  "price: share✓ perAction discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · distribution_handling · action · full": [
+  "price: share✓ perAction discount✓ third✓ until",
+  "bound: min✓ max✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · distribution_handling · perAction · plain": [
+  "price: share perAction✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · distribution_handling · perAction · full": [
+  "price: share perAction✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · corporate_event · perAction · plain": [
+  "price: perAction✓ discount third until",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · corporate_event · perAction · full": [
+  "price: perAction✓ discount✓ third✓ until",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · transfer_out · perAction · plain": [
+  "price: share perAction✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · transfer_out · perAction · full": [
+  "price: share perAction✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · transfer_out · action · plain": [
+  "price: share✓ perAction discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "brokerage-account · transfer_out · action · full": [
+  "price: share✓ perAction discount✓ third✓ until",
+  "bound: min✓ max✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "brokerage-account · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "brokerage-account · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "brokerage-account · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "brokerage-account · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "brokerage-account · fund_management · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "brokerage-account · fund_management · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "brokerage-account · fixed_period · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "brokerage-account · fixed_period · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "brokerage-account · current_account · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "brokerage-account · current_account · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "child-savings-bank · exit · action · plain": [
+  "price: share✓ perAction discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "child-savings-bank · exit · action · full": [
+  "price: share✓ perAction discount✓ third✓ until",
+  "bound: min✓ max✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "child-savings-bank · exit · perAction · plain": [
+  "price: share perAction✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "child-savings-bank · exit · perAction · full": [
+  "price: share perAction✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "child-savings-provident · deposit · action · plain": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "child-savings-provident · deposit · action · full": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "child-savings-provident · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "child-savings-provident · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "current-account · fixed_period · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "current-account · fixed_period · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-hishtalmut · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "ira-hishtalmut · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "ira-hishtalmut · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "ira-hishtalmut · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "ira-hishtalmut · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "ira-hishtalmut · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "ira-hishtalmut · fx · action · plain": [
+  "price: share✓ discount third flat until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "ira-hishtalmut · fx · action · full": [
+  "price: share✓ discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "ira-hishtalmut · fx_spread · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "ira-hishtalmut · fx_spread · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "ira-hishtalmut · corporate_event · perAction · plain": [
+  "price: perAction✓ discount third until",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "ira-hishtalmut · corporate_event · perAction · full": [
+  "price: perAction✓ discount✓ third✓ until",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "ira-hishtalmut · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "ira-hishtalmut · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "ira-hishtalmut · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-hishtalmut · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-hishtalmut · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-hishtalmut · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-hishtalmut · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-hishtalmut · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-hishtalmut · fund_management · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-hishtalmut · fund_management · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-hishtalmut · current_account · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-hishtalmut · current_account · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-provident · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "ira-provident · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "ira-provident · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "ira-provident · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "ira-provident · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "ira-provident · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "ira-provident · fx · action · plain": [
+  "price: share✓ discount third flat until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "ira-provident · fx · action · full": [
+  "price: share✓ discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "ira-provident · fx_spread · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "ira-provident · fx_spread · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "ira-provident · corporate_event · perAction · plain": [
+  "price: perAction✓ discount third until",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "ira-provident · corporate_event · perAction · full": [
+  "price: perAction✓ discount✓ third✓ until",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "ira-provident · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "ira-provident · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "ira-provident · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-provident · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-provident · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-provident · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-provident · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-provident · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-provident · fund_management · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-provident · fund_management · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "ira-provident · current_account · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "ira-provident · current_account · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "keren-hishtalmut · deposit · action · plain": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "keren-hishtalmut · deposit · action · full": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "keren-hishtalmut · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "keren-hishtalmut · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "keren-hishtalmut · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "keren-hishtalmut · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "kupat-gemel-lehashkaa · deposit · action · plain": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "kupat-gemel-lehashkaa · deposit · action · full": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "kupat-gemel-lehashkaa · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "kupat-gemel-lehashkaa · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "kupat-gemel-lehashkaa · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "kupat-gemel-lehashkaa · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "pension-comprehensive · deposit · action · plain": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "pension-comprehensive · deposit · action · full": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "pension-comprehensive · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "pension-comprehensive · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "pension-comprehensive · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "pension-comprehensive · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "pension-comprehensive · insurance_premium · sum · plain": [
+  "price: share held sum✓ discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "pension-comprehensive · insurance_premium · sum · full": [
+  "price: share held sum✓ discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled partial"
+ ],
+ "pension-comprehensive · insurance_premium · held · plain": [
+  "price: share held✓ sum discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "pension-comprehensive · insurance_premium · held · full": [
+  "price: share held✓ sum discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled partial"
+ ],
+ "pension-comprehensive · insurance_premium · action · plain": [
+  "price: share✓ held sum discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "pension-comprehensive · insurance_premium · action · full": [
+  "price: share✓ held sum discount✓ third✓ until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "pension-general · deposit · action · plain": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "pension-general · deposit · action · full": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "pension-general · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "pension-general · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "pension-general · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "pension-general · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "pension-general · insurance_premium · sum · plain": [
+  "price: share held sum✓ discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "pension-general · insurance_premium · sum · full": [
+  "price: share held sum✓ discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled partial"
+ ],
+ "pension-general · insurance_premium · held · plain": [
+  "price: share held✓ sum discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "pension-general · insurance_premium · held · full": [
+  "price: share held✓ sum discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled partial"
+ ],
+ "pension-general · insurance_premium · action · plain": [
+  "price: share✓ held sum discount third until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "pension-general · insurance_premium · action · full": [
+  "price: share✓ held sum discount✓ third✓ until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "provident-for-annuity · deposit · action · plain": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "provident-for-annuity · deposit · action · full": [
+  "price: share✓ until",
+  "by: by:own"
+ ],
+ "provident-for-annuity · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "provident-for-annuity · balance · held · full": [
+  "price: held✓ until",
+  "by: by:own"
+ ],
+ "provident-for-annuity · direct_expenses · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "provident-for-annuity · direct_expenses · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "savings-plan · exit · action · plain": [
+  "price: share✓ perAction discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "savings-plan · exit · action · full": [
+  "price: share✓ perAction discount✓ third✓ until",
+  "bound: min✓ max✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "savings-plan · exit · perAction · plain": [
+  "price: share perAction✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "savings-plan · exit · perAction · full": [
+  "price: share perAction✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "government-bond · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "government-bond · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "government-bond · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "government-bond · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "government-bond · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "government-bond · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "government-bond · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "government-bond · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "government-bond · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "government-bond · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "government-bond · fixed_period · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "government-bond · fixed_period · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "makam · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "makam · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "makam · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "makam · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "makam · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "makam · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "makam · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "makam · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "makam · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "makam · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "makam · fixed_period · sum · plain": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "makam · fixed_period · sum · full": [
+  "price: sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-daily · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "money-market-fund-daily · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "money-market-fund-daily · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "money-market-fund-daily · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "money-market-fund-daily · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "money-market-fund-daily · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "money-market-fund-daily · load · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "money-market-fund-daily · load · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "money-market-fund-daily · redemption_deduction · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "money-market-fund-daily · redemption_deduction · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "money-market-fund-daily · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-daily · balance · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-daily · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-daily · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-daily · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-daily · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-daily · trustee · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-daily · trustee · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-renewable · trade · action · plain": [
+  "price: share✓ perUnit perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "money-market-fund-renewable · trade · action · full": [
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "money-market-fund-renewable · trade · perUnit · plain": [
+  "price: share perUnit✓ perAction discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "money-market-fund-renewable · trade · perUnit · full": [
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "bound: min✓ max✓ cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "money-market-fund-renewable · trade · perAction · plain": [
+  "price: share perUnit perAction✓ discount third flat until",
+  "bound: min max cap",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial sale"
+ ],
+ "money-market-fund-renewable · trade · perAction · full": [
+  "price: share perUnit perAction✓ discount✓ third✓ flat until",
+  "bound: min max cap✓",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓ sale"
+ ],
+ "money-market-fund-renewable · load · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "money-market-fund-renewable · load · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "money-market-fund-renewable · redemption_deduction · action · plain": [
+  "price: share✓ discount third until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset refund",
+  "more: unfilled partial"
+ ],
+ "money-market-fund-renewable · redemption_deduction · action · full": [
+  "price: share✓ discount✓ third✓ until",
+  "bound: min max",
+  "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓",
+  "more: unfilled✓ partial✓"
+ ],
+ "money-market-fund-renewable · balance · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-renewable · balance · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-renewable · custody · held · plain": [
+  "price: held✓ sum until",
+  "bound: min max",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-renewable · custody · held · full": [
+  "price: held✓ sum until",
+  "bound: min✓ max✓",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-renewable · custody · sum · plain": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-renewable · custody · sum · full": [
+  "price: held sum✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ],
+ "money-market-fund-renewable · trustee · held · plain": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset refund"
+ ],
+ "money-market-fund-renewable · trustee · held · full": [
+  "price: held✓ until",
+  "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
+  "link: offset✓ refund✓"
+ ]
+}

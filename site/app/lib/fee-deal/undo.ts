@@ -9,7 +9,8 @@
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { thingName } from "./builder";
-import { FORM_OF, holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, setPart, updateFee, type PartId, type Side } from "./edit";
+import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
+import { lostParts, PARTS, setPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { FeeKindId } from "./shapes";
@@ -118,7 +119,7 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
  */
 export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
-  const form = FORM_OF[part];
+  const form = PARTS[part].form;
   if (!fee || !form) return null;
   const was = pricesOn(fee, "buy", caseId)[0]!.price;
   if (was.form === form) return null;
@@ -273,10 +274,9 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
 function formWords(u: Undo): string {
   const w = copy.cases.formChanged;
   const caseId = u.what.kind === "form" ? u.what.caseId : undefined;
-  const before = pricesOn(u.before, "buy", caseId)[0]!.price;
+  const before = pricedOf(u.before, caseId);
   const after = u.after ? pricesOn(u.after, "buy", caseId)[0]!.price : null;
-  const has = (p: typeof before | null, k: "min" | "max" | "cap" | "flat") => !!p && k in p && (p as Record<string, unknown>)[k] !== undefined;
-  const lost = (["min", "max", "cap", "flat"] as const).filter((k) => has(before, k) && !has(after, k)).map((k) => w.parts[k]!);
+  const lost = lostParts(before.stages[0]!.price, after, before).map((id) => w.parts[id]!);
   if (lost.length === 0) return w.plain;
   const list = lost.length === 1 ? lost[0]! : `${lost.slice(0, -1).join(", ")} ${w.and}${lost.at(-1)!}`;
   return w.lost.replace("{parts}", list).replace("{verb}", lost.length === 1 ? w.one : w.many);

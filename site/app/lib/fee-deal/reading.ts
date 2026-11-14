@@ -8,7 +8,8 @@ import { entered, type SiteValue } from "../value";
 import { feeNameOf, thingName, whenWords, type PartWords, type WhenWords } from "./builder";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
-import { hasCases, isRange, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
+import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
+import { charged, hasBounds, onAction } from "./offers/capabilities";
 import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
 import { holdsFunds, ONE_SIDE } from "./shapes";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
@@ -101,10 +102,9 @@ function statementsOf(r: DealRead, rates: Readonly<Record<string, number>> | nul
       const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
         if (price.form === "held" && price.every < 12 && price.rate.v > 0) add(`every:${fee.id}:${price.every}`, at, () => ({ kind: "every", fee: refOf(fee, r.today), every: price.every, periods: [at] }));
-        const main = price.form === "action" || price.form === "held" ? price.rate.v : price.form === "perUnit" ? price.amount.v : 0;
         // a step with a top grows no further than its top (F-115): only the last step, or a fee read whole, grows without end
         const topped = !!fee.read?.step?.to;
-        if ((price.form === "action" || price.form === "perUnit" || price.form === "held") && main > 0 && price.min && !price.max && !topped) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee, r.today), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
+        if (hasBounds(price) && mainFigure(price)!.v > 0 && price.min && !price.max && !topped) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee, r.today), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
       }
     });
   }
@@ -536,14 +536,14 @@ function statedOf(r: DealRead): StatedPart[] {
     };
     for (const s of [...pricesFrom(fee.stages, from), ...(fee.sale ? pricesFrom(fee.sale, from) : [])]) {
       const p = s.price;
-      if (p.form === "free") continue;
-      if ((p.form === "action" || p.form === "perUnit" || p.form === "perAction") && p.third && !p.third.price) add("third", p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third });
+      if (!charged(p)) continue;
+      if (onAction(p) && p.third && !p.third.price) add("third", p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third });
       if (p.offset) add("offset", { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail });
       if (p.refund && !p.refund.blank) {
         const f = priceFigures(fee, p, r.today).refund;
         add("refund", { lead: st.refund.lead, ...(f ? { figure: f } : {}), tail: st.refund.tail });
       }
-      if (p.form === "action" || p.form === "perUnit" || p.form === "perAction") for (const n of p.notes ?? []) add(n, { lead: st[n] });
+      if (onAction(p)) for (const n of p.notes ?? []) add(n, { lead: st[n] });
     }
   });
   return out;
