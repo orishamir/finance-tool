@@ -15,7 +15,8 @@
 // price while it is pulled, a cell over its whole row saying so. Under a grid's row, or a table's last row, a strip drawn while the
 // pointer is there adds a part to every case of it as one stretched cell (`partAcross`), as its head's menu does. A toolbox part dragged
 // here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head, splits that case alone.
-import { useMemo, useRef, useState, type ReactNode } from "react";
+// Ctrl+C copies a cell and Ctrl+V pastes it on another cell, a head or the fee's head (paste.ts).
+import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
@@ -38,6 +39,8 @@ import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
 import { PARTS, setPart } from "../../lib/fee-deal/offers/parts";
+import { pasteOn, type PastePlace } from "../../lib/fee-deal/paste";
+import { clipboard } from "./clipboard";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import { EditHere, PartFig } from "./edit-here";
 import type { BlockActions, HeadApply, OpenHere, ZoneOf } from "./fee-block";
@@ -401,6 +404,44 @@ export function FeeCases({
     };
   };
 
+  // ---------------------------------------------------------------- copy and paste (Ctrl+C on a cell, Ctrl+V on a cell or a head)
+  /** The cells of a table or a grid, by their copy keys: what each lifts as its grip does, and the place a paste on it goes into. */
+  const cellsByKey = new Map<string, { l: Extract<Lifted, { k: "cell" }>; place: PastePlace }>();
+  /** A cell registered by its key (`copyKey`): it can be copied and pasted on. */
+  const copyable = (key: string, l: Extract<Lifted, { k: "cell" }>) => {
+    // a cell of one case is named by the case's values, so the undo line says where it replaced
+    const one = l.cases.length === 1 ? byCase.get(l.cases[0]!) : undefined;
+    const place = (one ? { ...headCases(l.cases, l.along), names: { [l.cases[0]!]: caseText(one.when) } } : headCases(l.cases, l.along)) as PastePlace;
+    cellsByKey.set(key, { l, place });
+    return { copyKey: key };
+  };
+  // the head a paste on lands in, by the head pressed (a table's column, a grid's row or column, the fee's own head); set by the layout drawn
+  let headPlace: (el: HTMLElement) => PastePlace | null = () => null;
+  /**
+   * The keys of copy and paste, outside a field: Ctrl+C copies the cell that has the focus; Ctrl+V pastes the copy on the cell or the head
+   * that has it, as one change with its undo line.
+   */
+  const onKeys = (e: KeyboardEvent<HTMLDivElement>) => {
+    const t = e.target as HTMLElement;
+    if (t.closest("input, textarea, select, [contenteditable]:not([contenteditable=false])")) return;
+    if (!(e.ctrlKey || e.metaKey) || e.altKey || e.shiftKey) return;
+    const cellKey = t.closest<HTMLElement>("[data-copy-key]")?.dataset.copyKey;
+    const here = cellKey !== undefined ? cellsByKey.get(cellKey) : undefined;
+    if (e.code === "KeyC" || e.key.toLowerCase() === "c") {
+      if (!here) return;
+      e.preventDefault();
+      clipboard.set(here.l);
+      return;
+    }
+    if (e.code === "KeyV" || e.key.toLowerCase() === "v") {
+      const clip = clipboard.get();
+      const place = here?.place ?? headPlace(t);
+      if (!clip || !place) return;
+      e.preventDefault();
+      lift.onResult((d) => pasteOn(d, clip, place));
+    }
+  };
+
   // ---------------------------------------------------------------- knobs: a cell stretched over its neighbours, or back
   const plural = (t: number) => lw.things[fee.by[t]!.kind] ?? lw.things.own!;
   /**
@@ -567,12 +608,21 @@ export function FeeCases({
       return { key: valueKey(col.when), bounds: r.bounds[t] ?? null, words: layout.ladder ? stepName(r, t) : caseText(r.when) };
     });
     const inserts = listThing || layout.ladder;
+    // a paste on a column's head goes into its case; on a part row's head or the fee's own head, into every case
+    headPlace = (el) => {
+      const col = el.closest<HTMLElement>("[role=columnheader]");
+      const x = col ? layout.columns[Number(col.dataset.col)] : undefined;
+      if (x) return headCases([x.case], t) as PastePlace;
+      return el.closest("[role=rowheader], [data-paste-head]") ? (everyCase as PastePlace) : null;
+    };
     /** What a column's grip lifts: a ladder's step (to its bin), a value of the table's thing where it is not the fee's first, else its case. */
     const colLifted = (col: (typeof layout.columns)[number], words: string): Lifted | null =>
       layout.ladder ? (typeof col.when === "number" ? { k: "step", fee: fee.id, t, step: col.when, name: words } : null) : t !== 0 ? { k: "value", fee: fee.id, t, key: valueKey(col.when), name: words } : { k: "col", fee: fee.id, case: col.case };
     body = (
       <>
-        <ConditionHead bare {...head} />
+        <div data-paste-head="" className="contents">
+          <ConditionHead bare {...head} />
+        </div>
         <CaseTable
           label={name}
           ladder={layout.ladder}
@@ -609,7 +659,8 @@ export function FeeCases({
               cells: row.cells.map((cell) => {
                 const target: LiftTarget = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t };
                 const cellZone = (el: ReactNode) => zone([target, caseTarget(cell.cases[0]!)], `${row.row}:${cell.from}`, el);
-                if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...fillAt(row.row, cell.from, cell.span) };
+                const sk = copyable(`${row.row}:${cell.from}`, { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t });
+                if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...sk, ...fillAt(row.row, cell.from, cell.span) };
                 const ww = wholeWords(cell.span, n, t);
                 const shownHere = mergedParts(cell.cases, (id) => partsOf(id, pr));
                 // a cell stretched over several cases is taken away whole, by its bin: a ✕ only in a cell of one case
@@ -629,6 +680,7 @@ export function FeeCases({
                   ...fillAt(row.row, cell.from, cell.span),
                   ...(ww ? { whole: ww } : {}),
                   zone: cellZone,
+                  ...sk,
                 };
               }),
             };
@@ -669,6 +721,7 @@ export function FeeCases({
               ...fillAt(lineKey, cell.from, cell.span),
               ...(ww ? { whole: ww } : {}),
               zone: (el: ReactNode) => zone([l as LiftTarget, caseTarget(cell.cases[0]!)], `${lineKey}:${cell.from}`, el),
+              ...copyable(`${lineKey}:${cell.from}`, l as Extract<Lifted, { k: "cell" }>),
             };
           }),
         };
@@ -679,9 +732,21 @@ export function FeeCases({
     const headsOf = (hs: readonly Head[], t: number) => hs.map((h) => ({ key: h.key, bounds: byCase.get(h.cases[0]!)!.bounds[t] ?? null, words: stepName(byCase.get(h.cases[0]!)!, t) }));
     const colHeads = headsOf(g.columns, 1);
     const rowHeads = headsOf(g.rows, 0);
+    // a paste on a column's or a row's head goes into the cases it covers; on the fee's own head, into every case
+    headPlace = (el) => {
+      const col = el.closest<HTMLElement>("[role=columnheader]");
+      const row = el.closest<HTMLElement>("[role=rowheader]");
+      const x = col ? g.columns[Number(col.dataset.col)] : undefined;
+      const y = row ? g.rows[Number(row.dataset.rowpos)] : undefined;
+      if (x) return headCases(x.cases, 0) as PastePlace;
+      if (y) return headCases(y.cases, 1) as PastePlace;
+      return el.closest("[data-paste-head]") ? (everyCase as PastePlace) : null;
+    };
     body = (
       <>
-        <ConditionHead bare {...head} />
+        <div data-paste-head="" className="contents">
+          <ConditionHead bare {...head} />
+        </div>
         <CaseGrid
           label={name}
           steps={g.across.range}
@@ -759,6 +824,7 @@ export function FeeCases({
                   ...(lift.binTakes(cl) ? { onRemove: () => lift.onBin(cl), removeLabel: binWords(caseText(r.when)) } : {}),
                   ...(ww ? { whole: ww } : {}),
                   zone: (el: ReactNode) => zone([target, caseTarget(cell.case!)], cell.case!, el),
+                  ...copyable(`case:${cell.case}`, cl as Extract<Lifted, { k: "cell" }>),
                 };
               }),
             };
@@ -850,7 +916,7 @@ export function FeeCases({
     );
   }
   return (
-    <div ref={box} className="flex flex-col gap-2">
+    <div ref={box} className="flex flex-col gap-2" onKeyDown={onKeys}>
       {body}
       {question}
       {rowMenuView}

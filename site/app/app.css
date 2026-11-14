@@ -802,13 +802,17 @@
       visibility: visible;
     }
   }
+  /* (by visibility, not display: the strip's own utilities set its display) */
   @media (pointer: coarse) {
-    [data-between-add] {
-      display: none;
+    [data-between-add],
+    [data-between-add] > button {
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
   }
-  :root:has([data-lift-ghost], [data-reach-frame]) [data-between-add] {
-    display: none;
+  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-between-add], [data-between-add] > button) {
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
   /* The ✕ at the end of one part line in a cell (fee-deal/fee-cases.tsx, `Joined`): drawn, and taking a press, only after a fine pointer
      has rested on that line for 1.5 s, so it never stands in the way of reading or a quick pass; gone at once when the pointer leaves.
@@ -827,11 +831,11 @@
   }
   @media (pointer: coarse) {
     [data-part-off] {
-      display: none;
+      visibility: hidden !important;
     }
   }
   :root:has([data-lift-ghost], [data-reach-frame]) [data-part-off] {
-    display: none;
+    visibility: hidden !important;
   }
   /* A closed fee card's corner actions (kit/fee-block.tsx): drawn, and taking a press, only once a fine pointer has rested on the card
      `--hover-rest`; touch
@@ -849,11 +853,11 @@
   }
   @media (pointer: coarse) {
     [data-fee-corner] {
-      display: none;
+      visibility: hidden !important;
     }
   }
   :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-corner] {
-    display: none;
+    visibility: hidden !important;
   }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */

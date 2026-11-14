@@ -10,7 +10,7 @@
 // there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
 // wider than its block scrolls inside itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
-// table, its column or cell outlined in the action colour.
+// table, its column or cell outlined in the action colour. A cell with a `copyKey` is one the page copies and pastes on.
 import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER, onSurface } from "./choice";
@@ -236,6 +236,8 @@ export interface CellExtras {
   onStretchDown?: (by: 1 | -1) => void;
   /** Wraps the cell (a `DropZone` for its case). */
   zone?: (cell: ReactNode) => ReactNode;
+  /** Its key for the page's copy and paste (`data-copy-key`): Ctrl+C copies it where it has the focus, Ctrl+V pastes on it. */
+  copyKey?: string;
 }
 
 /**
@@ -257,6 +259,9 @@ const binOf = (cell: CellExtras) => (cell.onRemove && cell.removeLabel ? <CellBi
 /** A cell with a bin keeps its top end corner free for it: its lines end 30 px from its end edge, clear of the bin (6 px in, 20 px wide). */
 const BIN_ROOM = "pe-[1.875rem]";
 const binRoom = (cell: CellExtras) => (cell.onRemove && cell.removeLabel ? BIN_ROOM : undefined);
+
+/** What a cell the page copies and pastes on spreads: its key. */
+const copyAttr = (key: string | undefined) => (key !== undefined ? { "data-copy-key": key } : {});
 
 /** A knob's stretch reaching a cell: the action colour's outline, the cell taking the price it would cover. */
 const LIT = "outline-2 -outline-offset-2 outline-primary bg-accent";
@@ -366,7 +371,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
                 // a case with no such part: an empty place, no cell drawn; it still takes a part dropped on it, and shows the price a
                 // knob's stretch would give it
                 const empty = (
-                  <span {...cp} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-md", CELL_FOCUS, cell.lit && cx(CELL, LIT))}>
+                  <span {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-md", CELL_FOCUS, cell.lit && cx(CELL, LIT))}>
                     <span id={keys.wordsId(j, cell.from)} className="contents">
                       {cell.lit && cell.fill !== undefined && <CellBody content={null} fill={cell.fill} lit />}
                     </span>
@@ -379,7 +384,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
                 );
               }
               const el = (
-                <div {...cp} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
                     <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
@@ -533,7 +538,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   );
                 }
                 const el = (
-                  <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
+                  <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
                     <div className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
@@ -557,7 +562,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
