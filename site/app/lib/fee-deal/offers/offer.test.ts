@@ -13,8 +13,8 @@ import type { ByKind } from "./conditions";
 import { banFor, capacityOffer, feeOffered, kindHas, offerFor, productOffered } from "./offer";
 import { newDeal, readDeal, typed, type FeeDeal } from "../model";
 import { readDealFor } from "../deal-read";
-import { setPart, type PartId } from "./parts";
-import { panel } from "../panel";
+import { PARTS, setPart, type PartId } from "./parts";
+import { toolbox } from "../toolbox";
 import { providentFamily, RULES } from "./rules";
 
 const data = feesData();
@@ -299,14 +299,17 @@ describe("a channel or a plan the records do not provide", () => {
 });
 
 describe("a price after a free one", () => {
-  it("takes the first form its product's fee is offered in, not its kind's usual form", () => {
+  it("starts as the free price's copy, and takes a form the product's fee is offered in from the toolbox", () => {
     // a pension fund's insurance premium is offered free or as a share of each deposit; its kind's usual form is a sum per period
-    expect(capacity("insurance_premium").usual).toBe("sum");
     const deal: FeeDeal = { ...newDeal("pension-general"), fees: [{ id: "fee-i", kind: "insurance_premium", stages: [{ price: { form: "free" } }] }] };
-    const open = panel(readDealFor(deal, data.kinds, "2026-11-14"), "fee-i")!.open;
-    expect(open.later).toBe(offerFor(kind("pension-general"), "insurance_premium").usual);
-    const fee = setPart(deal.fees[0]!, "until", true, { month: "2028-01", after: open.later });
-    expect(fee.stages!.map((s) => s.price.form)).toEqual(["free", open.later]);
-    expect(open.later).not.toBe("sum");
+    const fee = setPart(deal.fees[0]!, "until", true, { month: "2028-01" });
+    expect(fee.stages!.map((s) => s.price.form)).toEqual(["free", "free"]);
+    // the toolbox acts on the last price, and offers only the forms the product's fee is offered in
+    const t = toolbox(readDealFor({ ...deal, fees: [fee] }, data.kinds, "2026-11-14"), "fee-i")!;
+    const forms = t.groups.find((g) => g.group === "price")!.parts.map((x) => x.id);
+    const usual = offerFor(kind("pension-general"), "insurance_premium").usual;
+    expect(forms.some((id) => PARTS[id as PartId].form === usual)).toBe(true);
+    expect(forms).not.toContain("sum");
   });
 });
+

@@ -271,6 +271,12 @@
     padding-inline: 0.15em;
     text-decoration: none;
   }
+  /* figures the person typed, in the fee page's workbench, where nearly every figure is theirs: the entered ink alone, no highlight
+     behind each one */
+  .nums-entered-bare .num-entered {
+    background: none;
+    padding-inline: 0;
+  }
   /* figures the person typed, inside a block that sums up the boxes they typed them in (the kit's TypedPlain): plain words, each still
      opening its sheet */
   .nums-typed-plain .num-entered {

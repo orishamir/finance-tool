@@ -231,6 +231,7 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,
     max: l.max ? site(l.max, t, snapshot, owner) : null,
+    ...(l.open_questions ? { questions: [...l.open_questions] } : {}),
     where: whereOf(l.rate),
     // a flat price for a small order or conversion (F-12, F-13) stands on its own place in the documents
     flat: l.flat_up_to ? { amount: site(l.flat_up_to.amount, t, snapshot, owner), upTo: site(l.flat_up_to.up_to, t, snapshot, owner), where: whereOf(l.flat_up_to.amount) } : null,

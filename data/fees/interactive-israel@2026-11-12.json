@@ -147,7 +147,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "'עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה'. The table rows agree for EUR and GBP (0.15, minimum 2.5 EUR / 2.5 GBP). This line covers a UCITS ETF on the LSE such as CSPX, which trades in USD there (ETF-27/28)."
+        "notes": "'עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה'. The table rows agree for EUR, GBP and CHF (0.15, minimum 2.5 of each). This line covers a UCITS ETF on the LSE such as CSPX, which trades in USD there (ETF-27/28)."
       },
       "min": {
         "value": 2.5,
@@ -170,7 +170,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): 2.5 units of the currency the trade is in. The per-currency table on the same page prints 0.15% with a minimum of 2.5 for EUR, GBP and CHF, so `trade_currencies` holds those three; it prints other figures for the other European currencies (150 DKK, 75 NOK, 20 SEK, 20 PLN) and, for USD, only the per-share line of US shares. The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך' (BRK-40), so a fund traded in dollars on a European exchange pays in that exchange's currency and the list prints no minimum for a dollar trade there: the cautious reading gives such a trade no bound from this line, and the run does not price it (F-12). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
+        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1), read plainly: 2.5 in the trade's own currency (BRK-40). The share table prints it for each currency it lists, 'EUR (%) 0.15 2.5 EUR', 'GBP (%) 0.15 2.5 GBP', and its one USD row 'USD (Shares) 0.01 2.5 USD'; so a listing traded in USD on the LSE, such as CSPX, pays at least 2.5 USD, and one traded in EUR, GBP or CHF 2.5 in its own currency. The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; what that sentence means for a minimum set in the trade's currency is open (BRK OQ25, on the line's open_questions). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
       },
       "max": null,
       "period": null,
@@ -183,10 +183,8 @@
           "מניות/תעודות סל הנסחרות באירופה"
         ]
       },
-      "trade_currencies": [
-        "EUR",
-        "GBP",
-        "CHF"
+      "open_questions": [
+        "BRK-OQ25"
       ]
     },
     {
@@ -597,8 +595,8 @@
     {
       "what": "מינימום העמלה על קרן שנסחרת באירופה: 'מינימום 2.5 בהתאם למטבע העסקה' מול 'עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך'",
       "page": 1,
-      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). For a USD-quoted fund on the LSE such as CSPX the record reads the minimum as 2.5 USD (the first sentence); if the second governs, it is 2.5 GBP, the table's GBP row ('GBP (%) 0.15 2.5 GBP'), and every small European purchase costs more. Not settled by any page of the company.",
-      "why_he": "התעריפון לא אומר אם עמלת המינימום על קרן שנסחרת בדולרים בבורסת לונדון היא 2.5 דולר או 2.5 ליש״ט. האתר מחשב 2.5 דולר; אם הכוונה לליש״ט, כל קנייה קטנה באירופה עולה בפועל יותר.",
+      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). The record reads the minimum as its own words say, 2.5 in the trade's currency: 2.5 USD for a USD-quoted fund on the LSE such as CSPX. The collection sentence does not say how a fee collected in the exchange's main currency relates to that minimum (BRK OQ25), so the fee actually charged can differ. Not settled by any page of the company.",
+      "why_he": "עמלת המינימום מחושבת כלשון התעריפון, 2.5 במטבע העסקה: 2.5 דולר על קרן שנסחרת בדולרים בבורסת לונדון. התעריפון אומר גם שהעמלה נגבית במטבע הראשי של הבורסה, ולא אומר איך זה מתיישב עם המינימום, ולכן העמלה בפועל יכולה להיות שונה.",
       "could_change_price": true
     },
     {

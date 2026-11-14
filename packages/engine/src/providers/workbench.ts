@@ -406,6 +406,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     out.linesUsed.push(l.id);
     out.lineSources.push({ lineId: l.id, level: rate === l.rate ? l.level : (averageLevel ?? l.level), url: rate.source.url, publisher: rate.source.publisher, strength: rate.source.strength });
     for (const vo of [rate, ...vos]) if (vo) out.strengths.push(vo.source.strength);
+    // the open questions the line's price rests on (data-schema §3.6), flagged on the run that reads it
+    for (const q of l.open_questions ?? []) if (!out.flags.includes(q)) out.flags.push(q);
   };
 
   const level = p.level;

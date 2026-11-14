@@ -21,12 +21,10 @@ export function loadFundLists(): FundListFile[] {
   return [...latest.values()];
 }
 
-/** The links the two pages give: the Bank of Israel's fee dashboard (BRK-26), TASE's fee calculator (BRK-37), Maya's fund list (CAT-34) and TASE's foreign-fund list (ETF-32). */
+/** The links the indices page gives: TASE's fee calculator (BRK-37) on the own-account panel and Maya's fund list (CAT-34) beside the funds without a record. */
 export function workbenchLinks() {
   return {
-    boi: refLink("brokerage-account.md", "BRK-26", /FEES_DASH/),
     tase: refLink("brokerage-account.md", "BRK-37", /market\.tase\.co\.il|trading_fees/),
     maya: refLink("tracks-catalogue-and-decoder.md", "CAT-34", /maya\.tase\.co\.il/),
-    taseForeign: refLink("etfs-and-index-funds.md", "ETF-32", /f-etfs/),
   };
 }

@@ -2,11 +2,11 @@
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { addFee, setName, updateFee } from "./edits/deal";
-import { editPrice, setLimited, setSaleApart, setUntil } from "./edits/stage";
+import { editPrice, setSaleApart, setUntil, splitAt } from "./edits/stage";
 import { withFigure } from "./edits/price";
 import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
 import { dataBar, feePriceLists, pickTrack } from "./templates";
-import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
+import { changeFormKept, deleteDealKept, fillFeeKept, removeChangeKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
 import { kindById } from "./kinds";
 import { feeDeal as copy } from "../../copy";
 
@@ -73,26 +73,26 @@ describe("one undo for a change that loses something", () => {
     expect(back.fees[0]).toEqual(d.fees[0]);
     expect(back.fees[2]!.stages![0]!.price).toMatchObject({ rate: { v: 0.5 } });
   });
-  it("puts the prices after a price back into the fee as it is now, keeping the other fees' later edits", () => {
+  it("puts a change of price taken away back into the fee as it is now, keeping the other fees' later edits", () => {
     const d = account();
-    const r = holdOnKept(d, "fee-custody", "buy", 0, null, "held")!;
+    const r = removeChangeKept(d, "fee-custody", "buy", 0, null)!;
     const edited = updateFee(r.deal, "fee-trade", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0.1)));
     const back = undo(edited, r.undo!, null)!.deal;
     expect(back.fees[1]).toEqual(d.fees[1]);
     expect(back.fees[0]!.stages![0]!.price).toMatchObject({ rate: { v: 0.1 } });
   });
-  it("puts back the prices the bin of a price's month took away after it, with its end, while it is still the last", () => {
+  it("puts back the change a divider's bin took away, the later price and its month, while the prices are as it left them", () => {
     const d = account();
-    const r = holdOnKept(d, "fee-custody", "buy", 0, null, "held")!;
+    const r = removeChangeKept(d, "fee-custody", "buy", 0, null)!;
     expect(r.deal.fees[1]!.stages!).toEqual([{ price: { form: "free" } }]);
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
-    // a chain built again since has the prices' place: the undo no longer stands
-    const again = updateFee(r.deal, "fee-custody", (f) => setLimited(f, "buy", 0, "2029-01", "held"));
+    // a change added again since has the prices' place: the undo no longer stands
+    const again = updateFee(r.deal, "fee-custody", (f) => splitAt(f, "buy", "2029-01"));
     expect(standing(r.undo, again)).toBe(false);
-    expect(holdOnKept(d, "fee-custody", "buy", 1, null, "held")).toBeNull();
-    // prices after it as "לזמן מוגבל" left them go silently, with no undo
-    const fresh = updateFee(d, "fee-fx", (f) => setLimited(f, "buy", 0, "2028-01", "action"));
-    const silent = holdOnKept(fresh, "fee-fx", "buy", 0, null, "action")!;
+    expect(removeChangeKept(d, "fee-custody", "buy", 1, null)).toBeNull();
+    // a later price still the earlier's copy goes silently, with no undo
+    const fresh = updateFee(d, "fee-fx", (f) => splitAt(f, "buy", "2028-01"));
+    const silent = removeChangeKept(fresh, "fee-fx", "buy", 0, null)!;
     expect(silent.undo).toBeNull();
     expect(silent.deal.fees[2]).toEqual(d.fees[2]);
   });
@@ -101,9 +101,9 @@ describe("one undo for a change that loses something", () => {
     const removed = removeFeeKept(d, "fee-fx", null)!;
     expect(standing(removed.undo, { ...removed.deal, id: "deal-b" })).toBe(false);
     expect(standing(removed.undo, d)).toBe(false);
-    const chain = holdOnKept(d, "fee-custody", "buy", 0, null, "held")!;
+    const chain = removeChangeKept(d, "fee-custody", "buy", 0, null)!;
     expect(standing(chain.undo!, removeFeeKept(chain.deal, "fee-custody", null)!.deal)).toBe(false);
-    const sale = holdOnKept({ ...d, fees: [{ ...(d.fees[0] as SlimFee), sale: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "action", rate: typed(0.3) } }] }] }, "fee-trade", "sell", 0, null, "action")!;
+    const sale = removeChangeKept({ ...d, fees: [{ ...(d.fees[0] as SlimFee), sale: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "action", rate: typed(0.3) } }] }] }, "fee-trade", "sell", 0, null)!;
     expect(standing(sale.undo!, updateFee(sale.deal, "fee-trade", (f) => setSaleApart(f, false)))).toBe(false);
   });
 });
@@ -129,10 +129,10 @@ describe("an undo stands while the part it puts back into is as its change left 
     const ownGone = removeFeeKept(own, "fee-own", null)!;
     expect(standing(ownGone.undo, addFee(ownGone.deal, "own").deal)).toBe(true);
   });
-  it("the prices after a price taken away: not once its fee's chain has changed since, a month among them", () => {
+  it("a change of price taken away: not once its fee's prices have changed in time since, a month among them", () => {
     const d = account();
-    const three = updateFee(d, "fee-custody", (f) => setLimited(f, "buy", 1, "2030-01", "held"));
-    const cut = holdOnKept(three, "fee-custody", "buy", 0, null, "held")!;
+    const three = updateFee(d, "fee-custody", (f) => splitAt(f, "buy", "2030-01"));
+    const cut = removeChangeKept(three, "fee-custody", "buy", 0, null)!;
     const moved = updateFee(cut.deal, "fee-custody", (f) => setUntil(f, "buy", 0, "2029-06"));
     expect(standing(cut.undo!, moved)).toBe(false);
     expect(undo(moved, cut.undo!, null)).toBeNull();
@@ -151,7 +151,7 @@ describe("an undo stands while the part it puts back into is as its change left 
     const house = feePriceLists(d, "trade", data)[0]!.id;
     const fill = fillFeeKept(d, "fee-trade", house, data, null)!;
     expect(standing(fill.undo, elsewhere(fill.deal))).toBe(true);
-    const chain = holdOnKept(d, "fee-custody", "buy", 0, null, "held")!;
+    const chain = removeChangeKept(d, "fee-custody", "buy", 0, null)!;
     expect(standing(chain.undo!, elsewhere(chain.deal))).toBe(true);
     const removed = removeFeeKept(d, "fee-custody", null)!;
     expect(standing(removed.undo, elsewhere(removed.deal))).toBe(true);
@@ -160,7 +160,7 @@ describe("an undo stands while the part it puts back into is as its change left 
     const d = account();
     const name = () => "שם";
     expect(undoWords(removeFeeKept(d, "fee-fx", null)!.undo, name, data)).toBe(`${copy.builder.removed}שם.`);
-    expect(undoWords(holdOnKept(d, "fee-custody", "buy", 0, null, "held")!.undo!, name, data)).toBe(copy.panel.laterRemoved);
+    expect(undoWords(removeChangeKept(d, "fee-custody", "buy", 0, null)!.undo!, name, data)).toBe(copy.panel.change.removed);
   });
 });
 

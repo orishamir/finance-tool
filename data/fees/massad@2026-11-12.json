@@ -1368,7 +1368,7 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "'מקס' לנייר/פעולה 10,000' (per security or transaction) and 'מקס' לפיקדון 10,000' (per deposit, the whole account), per quarter. Recorded value: the per-security maximum."
+        "notes": "'מקס' לנייר/פעולה 10,000' (per security or transaction) and 'מקס' לפיקדון 10,000' (per deposit, the whole account), per quarter. The two are the same figure, so the record holds it as the maximum on the whole deposit (`max_per: deposit`), which binds first."
       },
       "period": "quarter",
       "channel": null,

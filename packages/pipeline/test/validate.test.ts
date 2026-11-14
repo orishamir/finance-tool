@@ -451,8 +451,9 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // bill's explanatory notes say the 2028 indexation adds only the 2027 CPI rise (TXG-06), and which Israeli funds One Zero has
     // distribution agreements for (BRK OQ24); 2026-11-14 two more, which fund the fee regulations' "ישיר ביטחון" is and whether the
     // guaranteed-yield exclusion takes a named fund whole (CAT OQ36), and what a fall of the CPI does to the s.120ב amounts after
-    // the freeze (TXG OQ17), and what a fall of the CPI does to the gemel lehashkaa deposit ceiling (KGL OQ15)
-    expect(items.length).toBe(432);
+    // the freeze (TXG OQ17), and what a fall of the CPI does to the gemel lehashkaa deposit ceiling (KGL OQ15); later that day one more,
+    // which currency's 2.5 minimum Interactive Israel charges on a USD-traded listing on the LSE (BRK OQ25)
+    expect(items.length).toBe(433);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);

@@ -216,7 +216,8 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       const note = unfilledNote(l, bank);
       const read = capRead && has(l.cap) && (has(l.min) || !!fixedSum(l)) ? (["capRead"] as const) : [];
       const all: Note[] = [...(note ? [note] : []), ...read];
-      const notes = all.length ? { notes: all } : {};
+      // the line's notes, and the open questions its price rests on (data-schema §3.6), which the price says beside it
+      const notes = { ...(all.length ? { notes: all } : {}), ...(l.open_questions ? { questions: [...l.open_questions] } : {}) };
       const perAction = (amount: Num, more: Partial<PriceSpec["figures"]> = {}, currency?: BoundCurrency): PriceSpec => ({ form: "perAction", figures: { amount, ...more }, ...(currency && currency !== "ILS" ? { currency } : {}), ...notes });
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
       if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", perAction(num(l.rate)))], left: [] } : { fees: [], left: ["no-value"] };

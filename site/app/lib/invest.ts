@@ -578,7 +578,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
       } catch (e) {
         const base = { id: x.s.id, name: x.s.provider.name_he, providerClass: x.s.provider.class, level: "list" as const, snapshot: x.s.snapshot, tariffSource: x.s.tariff, protectionRuleIds: x.s.provider.protection_rule_ids, minimums: x.s.minimums };
         // a run stopped on an open rule before its exit (an open question whose readings split a yearly tax) is that rule's, not the record's
-        if (e instanceof BlockedError) return { ...base, kind: "not-comparable" as const, reason: { code: "rule-open" as const, ruleId: e.ruleId, question: e.question ?? e.ruleId } };
+        if (e instanceof BlockedError) return { ...base, kind: "not-comparable" as const, reason: blockedReason(e) };
         return { ...base, kind: "not-comparable" as const, reason: { code: "record-error" as const, detail: e instanceof Error ? e.message : String(e) } };
       }
     });
@@ -613,6 +613,14 @@ export function listReading(bundle: IndicesBundle, s: FeesSnapshot, option: Opti
   const won = builds.length > 1 ? priceMany(ctx, spec, option, [s], null).get(s.id) : undefined;
   const { built } = (won?.kind === "ok" && builds.find((b) => sameCand(b.cand, won.cand))) || builds[0]!;
   return { built, run: { fx: ctx.fx, instrumentClass: spec.cls, currency: spec.currency, sharePrice: undefined }, line: (id) => scopedSnap.lines.find((l) => l.id === id) };
+}
+
+/**
+ * The reason of a provider row whose run stopped on its rule (`BlockedError`): the rule, with the open question whose readings split the
+ * run where there is one, and the method gap where no reading of the case exists (G-38); never the rule's id in place of a question.
+ */
+export function blockedReason(e: BlockedError): { code: "rule-open"; ruleId: string; question?: string; gap?: string } {
+  return { code: "rule-open", ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}), ...(e.gap ? { gap: e.gap } : {}) };
 }
 
 function ambiguity(message: string, s: FeesSnapshot): NotComparable | null {
@@ -984,6 +992,9 @@ function fundInputs(rec: FundRecord, list: GapList, today: string): Record<strin
  */
 const COST_FLAGS: readonly string[] = ["BANK-35"];
 
+/** The open questions the house's price list leaves the run resting on (a line's `open_questions`, data-schema §3.6): said on what is left. */
+const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f) => /^[A-Z0-9]+-OQ\d+$/.test(f));
+
 /** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
 function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
@@ -992,7 +1003,7 @@ function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, w
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
 function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, reads), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, reads), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {

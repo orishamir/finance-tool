@@ -257,10 +257,11 @@ export function pricedOf(fee: Fee, caseId?: string): Priced {
 }
 
 /**
- * The price of a case's prices the toolbox acts on, by its place among the purchase's: the last, the one that runs on with no end, which a
- * later price follows. The toolbox offers what it can hold, and adds a part, asks for a pending part and changes the form there.
+ * The price of a case's prices the toolbox acts on, by its place among the purchase's: the one the person is editing (`at`, where the
+ * prices have it), else the last, the one that runs on with no end. The toolbox offers what it can hold, and adds a part, asks for a
+ * pending part and changes the form there.
  */
-export const toolPrice = (x: Priced): number => x.stages.length - 1;
+export const toolPrice = (x: Priced, at?: number): number => (at !== undefined && at >= 0 && at < x.stages.length ? at : x.stages.length - 1);
 
 /** A fee's prices on a side (of a case, where `caseId` names one): the sale's where it is priced apart, else the fee's own. */
 export const pricesOn = (fee: Fee, side: Side, caseId?: string): Stage[] => {
@@ -417,7 +418,7 @@ function readDiscount(raw: unknown): Discount | null {
  * shekel; months a bound is printed per where the price has no bound), null where it is there and is not what it holds. Typed by the
  * parts' keys (capabilities.ts), so a new part's key cannot go unread.
  */
-const READ_KEY: Readonly<Record<PartKey | "currency" | "boundsEvery", (raw: unknown, read: Readonly<Record<string, unknown>>) => unknown>> = {
+const READ_KEY: Readonly<Record<PartKey | "currency" | "boundsEvery" | "questions", (raw: unknown, read: Readonly<Record<string, unknown>>) => unknown>> = {
   min: given(SUM_MAX),
   max: given(SUM_MAX),
   cap: given(PCT_MAX),
@@ -429,6 +430,8 @@ const READ_KEY: Readonly<Record<PartKey | "currency" | "boundsEvery", (raw: unkn
   },
   // bounds printed per month (F-14) are the only period a bound is printed in, and say nothing on a price with no bound
   boundsEvery: (raw, read) => (raw !== 1 ? null : read.min || read.max || read.perSecurity ? 1 : undefined),
+  // the open questions a template's price rests on (data-schema §3.6): question ids, none twice
+  questions: (q) => (Array.isArray(q) && q.length > 0 && q.every((x) => typeof x === "string" && /^[A-Z0-9]+-OQ\d+$/.test(x)) && new Set(q).size === q.length ? q : null),
   offset: (o) => (isRec(o) && isFeeKindId(o.kind) && Object.keys(o).length === 1 ? { kind: o.kind } : null),
   refund: (n) => readNum(n, SUM_MAX),
   discount: readDiscount,
@@ -438,8 +441,8 @@ const READ_KEY: Readonly<Record<PartKey | "currency" | "boundsEvery", (raw: unkn
 };
 
 /** Where the currency and the months a bound is printed per have a place: a price on an action's sums, a share of what is held's bounds. */
-const OWN_KEY_FORMS: Readonly<Record<"currency" | "boundsEvery", (form: FormId) => boolean>> = { currency: formOnAction, boundsEvery: (form) => form === "held" };
-const keyPlaced = (key: keyof typeof READ_KEY, form: FormId): boolean => (key === "currency" || key === "boundsEvery" ? OWN_KEY_FORMS[key](form) : KEY_FORMS[key](form));
+const OWN_KEY_FORMS: Readonly<Record<"currency" | "boundsEvery" | "questions", (form: FormId) => boolean>> = { currency: formOnAction, boundsEvery: (form) => form === "held", questions: formOnAction };
+const keyPlaced = (key: keyof typeof READ_KEY, form: FormId): boolean => (key === "currency" || key === "boundsEvery" || key === "questions" ? OWN_KEY_FORMS[key](form) : KEY_FORMS[key](form));
 
 /** Each form's own figure and periods: a share's rate, a sum's amount, a held share's months; null where they are not given. */
 const READ_FORM: Readonly<Record<ChargedForm, (raw: Rec) => Rec | null>> = {

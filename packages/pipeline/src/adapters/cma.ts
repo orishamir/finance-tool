@@ -191,15 +191,23 @@ export const GUARANTEED_YIELD_SPECIALIZATION = "מבטיח תשואה";
 const isGuaranteedYield = (row: TrackRow): boolean => row.specialization.trim() === GUARANTEED_YIELD_SPECIALIZATION;
 
 /**
- * A track of a guaranteed-yield fund: a guaranteed-yield track, or any track of the fund one belongs to by its parent fund (CAT-53: 119 is
- * the parent of 530 to 532, 120 of 529 and 923). Where the refresh read no parents, each track is its own fund, so only the guaranteed
- * tracks themselves are held.
+ * The guaranteed-yield funds the management-fee regulations name, by their Gemel-Net fund number (CAT-53): "מנורה מבטחים יתר" 119,
+ * "אקסלנס גמולה" 123, "מנורה מבטחים אמיר" 260 and "בר קרן גמולים" 263; and 120 for "ישיר ביטחון", which CAT-53's evidence points to and no
+ * official text read names (CAT OQ36 (a)).
+ */
+export const NAMED_GUARANTEED_YIELD_FUNDS: ReadonlySet<number> = new Set([119, 120, 123, 260, 263]);
+
+/**
+ * A track of a guaranteed-yield fund: a guaranteed-yield track; any track whose fund (its parent fund, or itself) is one the regulations name
+ * (`NAMED_GUARANTEED_YIELD_FUNDS`, CAT-53); or any track of the fund a guaranteed-yield track belongs to by its parent fund (119 is the
+ * parent of 530 to 532, 120 of 529 and 923). Where the refresh read no parents, each track is its own fund.
  */
 const inGuaranteedYieldFund = (row: TrackRow, rows: readonly TrackRow[]): boolean =>
-  isGuaranteedYield(row) || rows.some((other) => isGuaranteedYield(other) && fundOf(other) === fundOf(row));
+  isGuaranteedYield(row) || NAMED_GUARANTEED_YIELD_FUNDS.has(fundOf(row)) || rows.some((other) => isGuaranteedYield(other) && fundOf(other) === fundOf(row));
 
 const ASK_CIRCULAR = "say whether CAT-19 closes it to joiners";
-const ASK_COMPANY = "say whether its company's own terms close it to new members, as CAT-55 reads the nine known";
+const ASK_COMPANY =
+  "say whether its company's own terms close it to new members (CAT-55 for the nine guaranteed-yield tracks, CAT-54 for the funds' general tracks), and whether the regulations' exclusion of its fund (CAT-53) takes the fund whole, the question CAT OQ36 (b) holds open";
 
 /**
  * The track readings of each dataset, each read in the regulator's 202609 file. Every track of a family has one (`TrackFamily`):
@@ -208,7 +216,8 @@ const ASK_COMPANY = "say whether its company's own terms close it to new members
  *   sense. In Gemel-Net the circular's general tracks are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים",
  *   specialization "כללי"; the study funds and the provident funds for investing it does not cover.
  * - the tracks of Gemel-Net's guaranteed-yield funds: the guaranteed-yield tracks, specialization "מבטיח תשואה", which their companies
- *   close (CAT-55), and every other track of a fund one of them belongs to by its parent fund (CAT-53), in any classification.
+ *   close (CAT-55); every track of a fund the regulations name (CAT-53, by fund number); and every other track of a fund a guaranteed-yield
+ *   track belongs to by its parent fund, in any classification.
  * A refresh reports a track of a family with no reading (`unreadTracks`), so none is dropped or kept without one. `closedTrack` leaves out
  * the circular's closed ones; an unsettled one stays until it is read; a company-closed one stays in the data with its reading
  * (`closedToJoiners`).

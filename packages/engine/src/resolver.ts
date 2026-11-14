@@ -5,7 +5,7 @@
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
 import { OpenReadingError, openReadingOf } from "./open-readings.ts";
-import type { Label, RunContext } from "./result.ts";
+import { labelWeight, type Label, type RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
 
@@ -59,13 +59,6 @@ const percentUnits = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_t
 const labelFor: Partial<Record<Strength, Label["code"]>> = {
   secondary: "secondary-source",
   institution: "institution-source",
-};
-const labelWeight: Record<Label["code"], number> = {
-  "secondary-source": 3,
-  "institution-source": 2,
-  reading: 4,
-  derived: 4,
-  proxy: 4,
 };
 
 export interface RuleBook {

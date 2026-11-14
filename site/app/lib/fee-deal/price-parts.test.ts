@@ -139,26 +139,51 @@ describe("sums in the trade's currency", () => {
   });
 });
 
-describe("sums in the trade's currency printed for some currencies only (trade_currencies, §10.6)", () => {
+describe("sums in the trade's currency printed for some currencies only (trade_currencies, F-114, §10.6)", () => {
   /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-48). */
   const printed: Price = { form: "action", rate: typed(0.4), min: typed(35), inTrade: ["ILS", "USD", "EUR"] };
   const own = (currency: string): FeeDeal => ({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "mine", place: "abroad", currency }], fees: [trade(printed)] } as FeeDeal);
   it("reads the minimum in a currency the list prints it for", () => {
     expect(read(own("EUR")).fees[0]!.stages[0]!.price).toMatchObject({ min: { v: 35 }, currency: "EUR" });
   });
-  it("gives a trade in another currency no bound: the list prints none for it", () => {
-    const p = read(own("GBP")).fees[0]!.stages[0]!.price;
-    expect(p).toMatchObject({ rate: { v: 0.4 }, currency: "GBP" });
-    expect(p).not.toHaveProperty("min");
-    expect(p).not.toHaveProperty("inTrade");
+  it("does not read the fee for a trade in another currency, and says why: the list prints no bound for it (F-114)", () => {
+    const r = read(own("GBP"));
+    expect(r.fees).toHaveLength(0);
+    expect(r.unmatched).toEqual(["fee-trade"]);
+    expect(r.notPrinted).toEqual(["fee-trade"]);
+    expect(r.noCurrency).toEqual([]);
+    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", notPrinted: true });
+    expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, notPrinted: true });
   });
   it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
     const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
     expect(tradeOf("excellence")).toContain('"inTrade":["ILS","USD","EUR"]');
-    // Interactive Israel's European minimum: 2.5 for euros, pounds and Swiss francs; the deal's currencies hold the first two
-    expect(tradeOf("interactive-israel")).toContain('"inTrade":["EUR","GBP"]');
+    // Interactive Israel's European minimum is 2.5 in any trade's currency: no list of currencies
+    expect(tradeOf("interactive-israel")).toContain('"inTrade":true');
     const deal = account([trade(printed)]);
     expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
+  });
+});
+
+describe("a line's open questions on the price a template fills (data-schema §3.6)", () => {
+  const tradeOf = () => data.houses.find((h) => h.id === "interactive-israel")!.fees.find((f) => f.kind === "trade")!;
+  it("Interactive Israel's trade price carries BRK OQ25 beside its minimum in the trade's own currency", () => {
+    const t = JSON.stringify(tradeOf());
+    expect(t).toContain('"questions":["BRK-OQ25"]');
+    expect(t).toContain('"inTrade":true');
+  });
+  it("a pick in euros reads 2.5 euros, with the question in the price's words", () => {
+    const deal = { ...fillDeal(newDeal("brokerage-account"), "house:interactive-israel", data, TODAY)!, readFor: [{ by: "what", is: "europe" }] };
+    const r = read(deal);
+    expect(r.fees.find((f) => f.kind === "trade")!.stages[0]!.price).toMatchObject({ min: { v: 2.5 }, currency: "EUR", questions: ["BRK-OQ25"] });
+    const row = builder(r).rows.find((x) => x.kind === "trade")!;
+    expect(JSON.stringify(row.block)).toContain('"questions":["BRK-OQ25"]');
+  });
+  it("keeps the questions through the device and a link", () => {
+    const p: Price = { form: "action", rate: typed(0.15), min: typed(2.5), inTrade: true, questions: ["BRK-OQ25"] };
+    const deal = account([trade(p)]);
+    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(p);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
   });
 });
@@ -240,17 +265,18 @@ describe("the templates", () => {
     expect(tase.fees.some((f) => f.kind === "corporate_event")).toBe(false);
     expect(tase.unmatched).toEqual([tase.deal.fees.find((f) => f.kind === "corporate_event")!.id]);
   });
-  it("name a case of every value abroad but another case's as outside that value, and a lead its values share once", () => {
+  it("name a case of every value abroad but another case's as outside that value, and one of every value abroad as abroad", () => {
     const texts = (id: string) => {
       const deal = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
       const row = builder(read(deal)).rows.find((r) => deal.fees.find((f) => f.id === r.fee)!.kind === "trade")!;
-      return row.block.kind === "band" ? [...row.block.rows, ...(row.block.folded?.rows ?? [])].map((r) => r.when[0]!.text ?? "") : [];
+      return row.block.kind === "band" ? row.block.rows.map((r) => r.when[0]!.text ?? "") : [];
     };
     // Excellence: the US's two tracks, and Europe with the rest of the world: "בחו״ל, מחוץ לארה״ב", as drawn
     expect(texts("excellence")).toContain("בחו״ל, מחוץ לארה״ב");
     expect(texts("excellence")).not.toContain("בחו״ל, באירופה, בחו״ל, בשאר העולם");
-    // Hapoalim: one case for every value abroad, its lead said once
-    expect(texts("hapoalim")).toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
+    // Hapoalim: one case for every value abroad and nothing else, said as abroad alone
+    expect(texts("hapoalim")).toContain("בחו״ל");
+    expect(texts("hapoalim")).not.toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
   it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>

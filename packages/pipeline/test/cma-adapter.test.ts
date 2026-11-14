@@ -31,6 +31,7 @@ import {
   renormaliseFees,
   parseCsv,
   parentFundsUrl,
+  NAMED_GUARANTEED_YIELD_FUNDS,
   parseParentFunds,
   readsParentFunds,
   unreadTrack,
@@ -318,6 +319,20 @@ describe("normalise", () => {
     // with no parents read every track is its own fund, so only a guaranteed-yield specialization is held
     expect(normalise(csv, ctx).problems.join(" ")).not.toContain("fund 99995");
     expect(unreadTrack(TRACK_READINGS.gemelnet, { fundId: 99995, name: "x", classification: "קרנות השתלמות", specialization: "מניות", parentFund: 120 }, [{ fundId: 529, name: "y", classification: "", specialization: "מבטיח תשואה", parentFund: 120 }])).toContain("guaranteed-yield");
+  });
+
+  it("reports a track of a fund the fee regulations name by its number (CAT-53), whatever its specialization, and asks what CAT-53 to CAT-55 and CAT OQ36 (b) settle", () => {
+    const head = "FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,TARGET_POPULATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n";
+    const row = (id: number, name: string, spec: string) =>
+      `"${id}","${name}","תגמולים ואישית לפיצויים","בקרה","מנהלת","202609","2015-12-31T00:00:00","כלל האוכלוסיה","${spec}","${spec}","0.5","0.1","512065202"\n`;
+    // a new equity track under 123 (Excellence Gemula's fund, the parent of 528), with no guaranteed-yield track of that fund in the file
+    const csv = head + row(99993, "גמולה מסלול מניות", "מניות") + row(99992, "גמל אחרת מניות", "מניות");
+    const parents = new Map<number, number | null>([[99993, 123], [99992, null]]);
+    const said = normalise(csv, { ...ctx, parents }).problems.join(" ");
+    expect(said).toContain('fund 99993: "גמולה מסלול מניות" is a guaranteed-yield track with no reading in TRACK_READINGS');
+    for (const id of ["CAT-53", "CAT-54", "CAT-55", "CAT OQ36 (b)"]) expect(said).toContain(id);
+    expect(said).not.toContain("fund 99992");
+    expect([...NAMED_GUARANTEED_YIELD_FUNDS].sort((a, b) => a - b)).toEqual([119, 120, 123, 260, 263]);
   });
 
   it("reads each track's parent fund from Gemel-Net's XML, a fund of its own as null, and a refresh that cannot read them says so", async () => {

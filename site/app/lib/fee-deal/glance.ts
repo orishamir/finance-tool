@@ -59,7 +59,7 @@ export interface Glance {
   /** Fees left out because a price of theirs from the reading's month on is not given yet: the glance names them, so none vanishes. */
   unpriced: FeeRef[];
   /** Fees left out because the picks give them no case (F-114): the price list prints no price for what is picked. */
-  unmatched: (FeeRef & { noCurrency?: true })[];
+  unmatched: (FeeRef & { noCurrency?: true; notPrinted?: true })[];
   /** Fees the law bans here, read as nothing charged, with the rules that ban them (`DealRead.banned`). */
   banned: (FeeRef & { ban: BanSaid })[];
 }
@@ -155,5 +155,5 @@ export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
   const refs = (ids: readonly string[]) => r.deal.fees.filter((f) => ids.includes(f.id)).map((f): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) }));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched).map((f) => (r.noCurrency.includes(f.fee) ? { ...f, noCurrency: true as const } : f)), banned: r.banned.map(({ fee, ...ban }) => ({ ...refs([fee])[0]!, ban })) };
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched).map((f) => (r.noCurrency.includes(f.fee) ? { ...f, noCurrency: true as const } : r.notPrinted.includes(f.fee) ? { ...f, notPrinted: true as const } : f)), banned: r.banned.map(({ fee, ...ban }) => ({ ...refs([fee])[0]!, ban })) };
 }

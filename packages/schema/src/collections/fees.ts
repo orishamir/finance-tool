@@ -101,6 +101,11 @@ export const feeLine = z.strictObject({
    */
   trade_currencies: z.array(z.string().regex(/^[A-Z]{3}$/)).min(1).optional(),
   /**
+   * data-schema §3.6: the open questions of the rule base a line's price rests on, where its words leave a part of it open (Interactive
+   * Israel's European minimum, BRK OQ25): shown beside the line on every page that shows it, and flagged on every run that reads it.
+   */
+  open_questions: z.array(z.string().regex(/^[A-Z0-9]+-OQ\d+$/)).min(1).optional(),
+  /**
    * data-schema §3.6a item 2: what a custody line's `max` bounds: each security (`security`), the whole securities deposit (`deposit`), or the
    * list prints the figure with no scope (`unstated`). Required on a custody line with a maximum (the data check, on a house's latest record).
    */

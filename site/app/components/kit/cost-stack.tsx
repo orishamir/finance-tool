@@ -63,15 +63,6 @@ function wholesOf(parts: readonly CostPart[], total: number, written: readonly b
   share(rest, total - named.reduce((a, g) => a + groups![g]!, 0));
   return out;
 }
-/**
- * The whole-shekel amount a bar writes for each part, as CostStack writes it, adding up to `total` (else the parts' rounded sum); 0 for a
- * part it does not write. Figures beside the bars that speak of their parts (a difference between two bars) are made from these, so they
- * agree with what the bars write ("החשבון: 1 ₪ יותר" beside two bars whose account parts both came to 1,057).
- */
-export function writtenAmounts(parts: readonly CostPart[], total?: number, groups?: Readonly<Record<string, number>>): number[] {
-  const w = writesOf(parts);
-  return wholesOf(parts, total ?? Math.round(parts.reduce((a, p) => a + p.value, 0)), w, groups).map((x, i) => (w[i] ? x : 0));
-}
 
 /** The px an amount written under the bar takes: its colour mark, its 13 px figures (measured, chart-text.ts), and a little air (`air`). */
 const labelPx = (text: string, air = 8) => 8 + 4 + Math.ceil(chartTextWidth(text, CHART_TEXT_PX)) + air;

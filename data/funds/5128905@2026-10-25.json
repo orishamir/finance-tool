@@ -113,7 +113,7 @@
         "ETF-10"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 5.85% against 5.52% (NASDAQ 100 NTR 100%, US dollar 100%); 2024 25.86% against 25.86%; 2023 60.12% against 59.81%; 2022 -23.93% against -23.91%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=5 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 5.85% against 5.52% (NASDAQ 100 NTR 100%, US dollar 100%); 2024 25.86% against 25.86%; 2023 60.12% against 59.81%; 2022 -23.93% against -23.91%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=5 for it. That page (Funds Center by Guideline, run for the managers) publishes it; the figure is not collected."
     },
     "median_spread": {
       "value": null,

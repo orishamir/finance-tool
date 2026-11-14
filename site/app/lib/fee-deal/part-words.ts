@@ -2,6 +2,7 @@
 // the open case say a part the price has, and as the toolbox's card offers a part to add. Every word is from the copy; the views
 // (case-words.ts, panel.ts, toolbox.ts) only arrange them, and a component only lays them out.
 import { feeDeal as copy, guideBlocks } from "../../copy";
+import { fmt, joinLead } from "../format";
 import type { SiteValue } from "../value";
 import type { MonthKey, Note, Price } from "./model";
 import { charged, onAction } from "./offers/capabilities";
@@ -26,6 +27,8 @@ export interface PartWords {
   month?: MonthKey;
   tail?: string;
   quiet?: string;
+  /** Open questions the part rests on, each a chip after its words (a reading the site took where the list leaves it open, D56). */
+  questions?: readonly string[];
 }
 
 /** A fee's name as the page writes it: the guide's for a base the records list, else the page's own, or the person's for their own. */
@@ -38,10 +41,17 @@ export const signOf = (currency: string | undefined): string => copy.panel.signs
 export const signOfUnit = (u: FigureUnit): "pct" | string => ("pct" in u ? "pct" : signOf(u.currency));
 
 const pp = copy.cases.parts;
+/** The month a later price starts, in words, with "ומ־" held to it: "ומינואר 2027". */
+const fromMonth = (m: MonthKey): string => {
+  const words = fmt.date(m);
+  return `${joinLead(pp.from, words)}${words}`;
+};
 const perAction = (kind: FeeKindId): string => copy.price.perAction[kind] ?? copy.price.perAction.default!;
 const shareOf = (kind: FeeKindId): string => copy.price.of[kind] ?? copy.price.of.default!;
 const boundPer = (kind: FeeKindId): string => pp.boundPer[kind] ?? pp.boundPer.default!;
 const fig = (v: SiteValue | undefined) => (v ? { figure: v } : {});
+/** The open questions a price on an action rests on (data-schema §3.6), said after its main figure with their chips. */
+const questionsOf = (p: Price): Pick<PartWords, "questions"> => (onAction(p) && p.questions?.length ? { questions: p.questions } : {});
 
 /** What a part's words are made from: the fee's kind, the price and its view, and the month the price ends, where it ends. */
 export interface PartContext {
@@ -89,9 +99,9 @@ const note = (id: Note) => (): PartWords => ({ lead: pp.notes[id]! });
 export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>> = {
   // a free price a template filled is its sourced value, which says it and opens its source; one the person made is the word alone
   free: ({ view }) => (view.free ? { figure: view.free } : { lead: copy.price.free }),
-  share: ({ kind, view }) => ({ ...fig(view.figures.rate), tail: ` ${perAction(kind)}` }),
-  perUnit: ({ view }) => ({ ...fig(view.figures.amount), tail: ` ${pp.perUnit}` }),
-  perAction: ({ kind, view }) => ({ ...fig(view.figures.amount), tail: ` ${perAction(kind)}` }),
+  share: ({ kind, p, view }) => ({ ...fig(view.figures.rate), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
+  perUnit: ({ p, view }) => ({ ...fig(view.figures.amount), tail: ` ${pp.perUnit}`, ...questionsOf(p) }),
+  perAction: ({ kind, p, view }) => ({ ...fig(view.figures.amount), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
   held: ({ p, view }) => (p.form === "held" ? { ...fig(view.figures.rate), tail: ` ${copy.price.per[p.per]}` } : null),
   sum: ({ p, view }) => (p.form === "sum" ? { ...fig(view.figures.amount), tail: ` ${copy.price.per[p.every]}` } : null),
   discount: ({ p, view }) => (onAction(p) && p.discount ? { lead: pp.discount.lead, ...fig(view.figures.discount), tail: `${pp.discount.tail}${p.discount.alsoMin ? pp.discount.alsoMin : ""}` } : null),
@@ -100,7 +110,8 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
     const lead = p.third.who ? `${pp.thirdOf}${p.third.who}` : pp.third;
     return p.third.price ? { lead: `${lead} `, ...fig(view.figures.third) } : { lead, quiet: ` ${pp.thirdNone}` };
   },
-  until: ({ until }) => (until ? { lead: pp.until, month: until } : null),
+  // the month the next price starts, said as the closed line says it before that price: "ומינואר 2027"
+  until: ({ until }) => (until ? { lead: fromMonth(until) } : null),
   min: ({ kind, view }) => (view.figures.min ? { lead: pp.min, figure: view.figures.min, tail: boundTail({ kind, p: view }) } : null),
   max: ({ kind, view }) => (view.figures.max ? { lead: pp.max, figure: view.figures.max, tail: boundTail({ kind, p: view }) } : null),
   cap: ({ kind, view }) => (view.figures.cap ? { lead: pp.max, figure: view.figures.cap, tail: ` ${shareOf(kind)}` } : null),
@@ -113,7 +124,7 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
   unfilledClerkAbroad: note("unfilledClerkAbroad"),
   capRead: note("capRead"),
   partial: note("partial"),
-  inTrade: ({ p }) => ({ lead: onAction(p) && Array.isArray(p.inTrade) ? pp.inTradeFor(p.inTrade.map((c) => copy.panel.currencies[c] ?? c)) : pp.notes.inTrade! }),
+  inTrade: ({ p }) => ({ lead: onAction(p) && Array.isArray(p.inTrade) ? pp.inTradeFor((p.inTrade as readonly string[]).map((c) => copy.panel.currencies[c] ?? c)) : pp.notes.inTrade! }),
   sale: () => ({ lead: pp.notes.sale! }),
 };
 
@@ -144,8 +155,8 @@ export const STATED: Readonly<Record<StatedPartId, (c: StatedContext) => PartWor
 /** A flat price nobody has typed yet, as the open case shows it while it stands empty. */
 export const FLAT_BLANK: PartWords = { lead: pp.flat.lead, mid: pp.flat.tail };
 
-/** The box a toolbox card shows: a percent, a sum in a currency (its sign), a month, or none. */
-export type ToolBox = "pct" | "month" | { sign: string };
+/** The box a toolbox card shows: a percent, a sum in a currency (its sign), or none. */
+export type ToolBox = "pct" | { sign: string };
 
 /** A toolbox card's words for the fee's kind, around the box it asks for. */
 export interface ToolWords {
@@ -173,7 +184,6 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   third: () => ({ words: { lead: pp.third } }),
   // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)
   flat: (c) => ({ words: { lead: pp.flatSmall[c.kind] ?? pp.flatSmall.default! }, box: inPrice(c) }),
-  until: () => ({ words: { lead: pp.until }, box: "month" }),
   min: (c) => ({ words: { lead: pp.min }, box: inPrice(c) }),
   max: (c) => ({ words: { lead: pp.max }, box: inPrice(c) }),
   cap: ({ kind }) => ({ words: { lead: pp.max, tail: ` ${shareOf(kind)}` }, box: "pct" }),
@@ -202,7 +212,6 @@ const sumSign = ({ kind, p }: ToolContext): string => signOf(sumCurrency(kind, p
 
 /** Each pending part's words, its box's spoken name and its sign, as the open case asks for it on the price `p`. */
 export const PENDING: Readonly<Record<PendingPart, (c: ToolContext) => PendingWords>> = {
-  until: () => ({ words: { lead: pp.until }, field: copy.panel.until }),
   offset: () => ({ words: { lead: pp.offsetOf.lead, tail: pp.offsetOf.tail }, field: pp.offset }),
   min: (c) => ({ words: { lead: pp.min, tail: boundTail(c) }, field: SPOKEN.min, sign: sumSign(c) }),
   max: (c) => ({ words: { lead: pp.max, tail: boundTail(c) }, field: SPOKEN.max, sign: sumSign(c) }),

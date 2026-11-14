@@ -105,3 +105,11 @@ describe("the words around an average and the custody row's rules", async () => 
     expect(RULES.find((r) => r.id === "securities-custody")!.cite).toEqual(["BRK-16", "BRK-24"]);
   });
 });
+
+describe("a line's open question on the company page (data-schema §3.6)", () => {
+  it("Interactive Israel's European line: its minimum as printed, the house's own, and BRK OQ25 beside it", () => {
+    const line = brokeragePart("interactive-israel")!.tariff.lines.find((l) => l.id === "interactive-israel-buy-sell-europe")!;
+    expect(line.min).toMatchObject({ unit: "trade_ccy_per_trade", value: 2.5 });
+    expect(line.questions).toEqual(["BRK-OQ25"]);
+  });
+});

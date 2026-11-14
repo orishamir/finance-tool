@@ -13,11 +13,11 @@ import { engineDeal, engineFee } from "./to-engine";
 import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
 
 /**
- * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, no case for the picks,
- * or a price not given yet. Its card and its line in the glance both say this one reason.
+ * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, its sums printed for
+ * other currencies than the trade's, no case for the picks, or a price not given yet. Its card and its line in the glance both say this one reason.
  */
-export const unreadReason = (x: { banned?: BanSaid | undefined; noCurrency?: boolean; unmatched?: boolean }): "banned" | "noCurrency" | "unmatched" | "noPrice" =>
-  x.banned ? "banned" : x.noCurrency ? "noCurrency" : x.unmatched ? "unmatched" : "noPrice";
+export const unreadReason = (x: { banned?: BanSaid | undefined; noCurrency?: boolean; notPrinted?: boolean; unmatched?: boolean }): "banned" | "noCurrency" | "notPrinted" | "unmatched" | "noPrice" =>
+  x.banned ? "banned" : x.noCurrency ? "noCurrency" : x.notPrinted ? "notPrinted" : x.unmatched ? "unmatched" : "noPrice";
 
 export const banSaid = (b: Ban): BanSaid => ({ rules: b.cite, ...(b.reading ? { reading: true as const } : {}), ...(b.distribution ? { distribution: true as const } : {}) });
 
@@ -37,6 +37,8 @@ export interface DealRead {
   unmatched: string[];
   /** Of `unmatched`, the fees read in a case whose sums are in the action's currency, which the deal does not know for the picks (`inTrade`). */
   noCurrency: string[];
+  /** Of `unmatched`, the fees read in a case whose sums in the action's currency the list prints for other currencies only (F-114). */
+  notPrinted: string[];
   /**
    * The deal's fees the law bans here (the rule table's `ban`, `banFor`), with the rules that ban them: read as nothing charged, so left out
    * of the reading whatever their prices, and said as banned.
@@ -70,7 +72,7 @@ export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: st
   const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))].filter(kept);
   const unread = ids(read.fees.filter((f) => !feeInOrder(f)));
   const unpriced = ids(read.fees.filter((f) => feeInOrder(f) && !feePriced(f, from))).filter((id) => !unread.includes(id));
-  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month };
+  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month };
 }
 
 /** The read deal restricted to some of its fees (by index), for a reading of those alone (what holds throughout, F-111 on them). */

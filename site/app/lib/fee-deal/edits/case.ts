@@ -217,10 +217,36 @@ export function setRangeUnit(fee: Fee, t: number, unit: RangeUnit): Fee {
 }
 
 /**
+ * A fee whose range `t` has one more top, `top`, splitting the step it falls in: every case on that step is copied to both halves with its
+ * prices (the case itself on the lower half, its copy on the upper), so no size is left without a case and both halves keep the step's
+ * price until it is changed; the cases on later steps move up one. A top above the last splits the last step ("מעל"). The new top's place
+ * among the tops (`split`); null where the fee has no such range or the top is no figure above zero or one the range has already.
+ */
+function splitStep(fee: Fee, t: number, top: number): { fee: CasesFee; split: number } | null {
+  const b = fee.by?.[t];
+  if (!hasCases(fee) || !b || !isRange(b) || !(top > 0) || b.tops.some((n) => n.v === top)) return null;
+  const j = b.tops.findIndex((n) => n.v > top);
+  const split = j < 0 ? b.tops.length : j;
+  const tops = [...b.tops.slice(0, split), typed(top), ...b.tops.slice(split)];
+  const cases = fee.cases.flatMap((c): Case[] => {
+    const w = c.when[t]!;
+    const shift = (s: number) => c.when.map((x, k) => (k === t ? s : x));
+    if (typeof w !== "number" || w < split) return [c];
+    if (w > split) return [{ ...c, when: shift(w + 1) }];
+    return [{ ...c, when: shift(split) }, { ...copyOf(c, shift(split + 1)), ...(c.mine ? { mine: true as const } : {}) }];
+  });
+  return { fee: { ...fee, by: fee.by.map((x, k) => (k === t ? { ...b, tops } : x)), cases }, split };
+}
+
+/**
+ * A ladder's step added by its boundary alone ("+ מדרגה", F-114): the step the boundary falls in splits in two at it, both halves keeping
+ * its price (`splitStep`). A boundary the range has already, or none above zero, leaves the fee as it is.
+ */
+export const addStep = (fee: Fee, t: number, top: number): Fee => splitStep(fee, t, top)?.fee ?? fee;
+
+/**
  * A fee whose case `caseId` is up to `upTo` on range `t` ("עד", F-114), or above its last top (`upTo` null: "מעל"). A top the range has
- * already is that step; a new one splits the step it falls in, and every case on that step is copied to both halves with its prices, so
- * no size is left without a case; the case named takes the lower half. A top above the last makes a new last step, which the cases on the
- * last step are copied to the same way.
+ * already is that step; a new one splits the step it falls in (`splitStep`), and the case named takes the lower half.
  */
 export function setStep(fee: Fee, caseId: string, t: number, upTo: number | null): Fee {
   const b = fee.by?.[t];
@@ -230,19 +256,39 @@ export function setStep(fee: Fee, caseId: string, t: number, upTo: number | null
   if (!(upTo > 0)) return fee;
   const at = tops.indexOf(upTo);
   if (at >= 0) return setWhen(fee, caseId, t, at);
-  const j = tops.findIndex((x) => x > upTo);
-  const split = j < 0 ? tops.length : j;
-  const newTops = [...b.tops.slice(0, split), typed(upTo), ...b.tops.slice(split)];
-  const cases = fee.cases.flatMap((c): Case[] => {
-    const w = c.when[t]!;
-    const shift = (s: number) => c.when.map((x, k) => (k === t ? s : x));
-    if (typeof w !== "number" || w < split) return [c];
-    if (w > split) return [{ ...c, when: shift(w + 1) }];
-    // the step split in two: the case on its lower half, and a copy of it on the upper
-    return [{ ...c, when: shift(split) }, { ...copyOf(c, shift(split + 1)), ...(c.mine ? { mine: true as const } : {}) }];
-  });
-  // the case named takes the lower half; a copy of it on the upper half, where it was on the step split, stays for the other sizes
-  return setWhen({ ...fee, by: fee.by.map((x, k) => (k === t ? { ...b, tops: newTops } : x)), cases }, caseId, t, split);
+  const made = splitStep(fee, t, upTo)!;
+  return setWhen(made.fee, caseId, t, made.split);
+}
+
+/**
+ * A case added where a grid has a place no case holds (F-114): a copy of case `fromId` with its prices, its value of thing `t` set to
+ * `when`, at the fee's end. A value that does not fit the thing, or a case the fee does not have, leaves it as it is.
+ */
+export function addCaseAt(fee: Fee, fromId: string, t: number, when: When): Fee {
+  if (!hasCases(fee) || !fee.by[t] || !fits(fee.by[t]!, when)) return fee;
+  const from = fee.cases.find((c) => c.id === fromId);
+  if (!from) return fee;
+  return { ...fee, cases: [...fee.cases, copyOf(from, from.when.map((w, k) => (k === t ? when : w)))] };
+}
+
+/**
+ * New values of thing `t` (a grid's row or column, F-114), each named alone: for each, every case on the thing's last value (the one the
+ * cases name last for the first time) is copied with its prices, its value of `t` set to the new one, so the new row or column starts with the last one's prices. A
+ * value the cases name already, or one that does not fit the thing, is left out; values of the person's own for what is bought or held
+ * come with where they are bought and their currency (`own`).
+ */
+export function addValues(fee: Fee, t: number, values: readonly string[], own: readonly OwnPlace[] = []): Fee {
+  const b = fee.by?.[t];
+  if (!hasCases(fee) || !b || isRange(b)) return fee;
+  let next: Fee = fee;
+  for (const o of own) if (values.includes(o.name)) next = addOwnPlace(next, t, o);
+  const named = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) ? (c.when[t] as string[]) : [])));
+  // the value the cases name last for the first time: the last row or column as the grid orders a list's values
+  const lastKey = [...new Set(fee.cases.map((c) => JSON.stringify(c.when[t])))].at(-1)!;
+  const from = fee.cases.filter((c) => JSON.stringify(c.when[t]) === lastKey);
+  const fresh = [...new Set(values.map((v) => v.trim()).filter((v) => v && !named.has(v)))].filter((v) => fits((next as CasesFee).by[t]!, [v]));
+  if (fresh.length === 0 || !hasCases(next)) return fee;
+  return { ...next, cases: [...next.cases, ...fresh.flatMap((v) => from.map((c) => copyOf(c, c.when.map((w, k) => (k === t ? [v] : w)))))] };
 }
 
 /** A range's top `k` typed again (its unit kept): refused where it would not stay above the top before it and below the one after. */

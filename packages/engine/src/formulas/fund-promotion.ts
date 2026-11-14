@@ -1,5 +1,5 @@
 // F-121 (a fund fee lowered for a stated period) and F-122 (the range of a house's averages charged, shown for reference only). Pure.
-import { dayAfter, monthOfDate } from "./time.ts";
+import { dayAfter, dayBefore, monthOfDate } from "./time.ts";
 
 /** A promotion as a run reads it: how much it lowers the drag, as a fraction a year, and its first and last days. */
 export interface Promotion {
@@ -10,12 +10,12 @@ export interface Promotion {
 
 /**
  * F-121 A fund fee lowered for a stated period. The drag of month `m` (month 1 starting on `runDate`, each month starting on the same day of
- * the next calendar month, `monthOfDate`): `delta` less each promotion's cut from the month after the one its first day falls in (month 1
- * where it started by the run date) to the month before the one the day after its last day falls in. So a month the promotion covers in
- * part pays the fee's own rate, and so does the month it starts in, even where it starts on that month's first day: the cautious reading.
+ * the next calendar month, `monthOfDate`): `delta` less each promotion's cut in the months it covers whole, from the month after the one the
+ * day before its first day falls in (month 1 where it started by the run date) to the month before the one the day after its last day falls
+ * in: the start read as the end is. A month the promotion covers in part pays the fee's own rate, the cautious reading.
  */
 export function promotedDrag(delta: number, promotions: readonly Promotion[], runDate: string): { at: (m: number) => number; applies: boolean } {
-  const spans = promotions.map((p) => ({ cut: p.cut, from: p.from <= runDate ? 1 : monthOfDate(runDate, p.from) + 1, until: monthOfDate(runDate, dayAfter(p.to)) }));
+  const spans = promotions.map((p) => ({ cut: p.cut, from: p.from <= runDate ? 1 : monthOfDate(runDate, dayBefore(p.from)) + 1, until: monthOfDate(runDate, dayAfter(p.to)) }));
   return { at: (m) => spans.reduce((x, p) => (m >= p.from && m < p.until ? x - p.cut : x), delta), applies: spans.some((p) => p.until > p.from) };
 }
 

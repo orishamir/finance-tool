@@ -1,10 +1,13 @@
 // The one question a thing to change by asks before it is added to a fee (method §10.6, F-114; `byQuestion`), in place: in the fee's block
-// in the fees' column, where the thing's band will stand, not in the toolbox, which only lists the parts.
-import { useEffect, useRef, useState } from "react";
+// in the fees' column, where the thing's band will stand, not in the toolbox, which only lists the parts. The questions of a fee's add
+// slots stand in its block too, under its cases: a ladder's new boundary (`AskStep`), and a grid's new values (`AskValuesOf`).
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
-import { addBy, newBy } from "../../lib/fee-deal/edits/case";
-import { NAME_MAX, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
+import { addBy, addStep, addValues, newBy } from "../../lib/fee-deal/edits/case";
+import { isRange, NAME_MAX, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
+import { lastValueWords, rangeSign } from "../../lib/fee-deal/band-layout";
+import { thingName } from "../../lib/fee-deal/case-words";
 import type { ByKind, RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, FigureField, InlineSelect, TextField } from "../kit";
 import { bringIntoView } from "./in-view";
@@ -127,4 +130,98 @@ export function useAskThing(chosen: string | null, phone: boolean, fold: (folded
     });
   };
   return { asking, onAsk, onAskDone, drop: () => setAsking(null) };
+}
+
+/** The question opens with the focus in its first field or value, brought into view; Escape closes it as "ביטול" does. */
+function useAskFocus() {
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = root.current;
+    el?.querySelector<HTMLElement>("input, button")?.focus({ preventScroll: true });
+    bringIntoView(el);
+  }, []);
+  return root;
+}
+const escapeCloses = (onDone: (added: boolean) => void) => (e: KeyboardEvent) => {
+  if (e.key !== "Escape" || e.defaultPrevented) return;
+  e.preventDefault();
+  e.stopPropagation();
+  onDone(false);
+};
+
+/**
+ * A ladder's "+ מדרגה": the new boundary alone, in the range's unit. The step it falls in splits in two at it, both halves keeping its
+ * price (`addStep`); a boundary the range has already is refused.
+ */
+export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
+  const root = useAskFocus();
+  const c = copy.cases;
+  const b = fee.by[t]!;
+  const [top, setTop] = useState<number | null>(null);
+  if (!isRange(b)) return null;
+  const sign = rangeSign(b.unit);
+  const taken = (n: number) => b.tops.some((x) => x.v === n);
+  return (
+    <div ref={root} data-ask-thing="" onKeyDown={escapeCloses(onDone)}>
+      <AskValues
+        question={c.addStep.ask.replace("{thing}", thingName(fee.kind, b))}
+        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight validate={(n) => (taken(n) ? c.addStep.taken : null)} onCommit={setTop} onClear={() => setTop(null)} />}
+        options={[]}
+        chosen={[]}
+        onToggle={() => undefined}
+        note={c.addStep.note}
+        ready={top !== null && top > 0 && !taken(top)}
+        onAdd={() => {
+          if (top === null) return;
+          onFee(addStep(fee, t, top));
+          onDone(true);
+        }}
+        onCancel={() => onDone(false)}
+      />
+    </div>
+  );
+}
+
+/**
+ * A grid's new row or column: the values of thing `t` the cases name not yet, to tick, and one of the person's own; each new value starts
+ * with the prices of the value the cases name last (`addValues`), as the line under them says.
+ */
+export function AskValuesOf({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
+  const root = useAskFocus();
+  const c = copy.cases;
+  const b = fee.by[t]!;
+  const q = byQuestion(fee, b.kind);
+  const named = new Set(fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : [])));
+  const [chosen, setChosen] = useState<string[]>([]);
+  const [extra, setExtra] = useState<string[]>([]);
+  const [own, setOwn] = useState<OwnPlace[]>([]);
+  const [typing, setTyping] = useState<OwnTyped | null>(q.typed?.open ? NEW_OWN : null);
+  const place = !!q.typed?.place;
+  const typed = () => {
+    const name = typing?.name.trim();
+    if (!typing || !name || named.has(name)) return;
+    if (!extra.includes(name) && !q.values?.some((v) => v.id === name)) setExtra((x) => [...x, name]);
+    if (place) setOwn((x) => [...x.filter((o) => o.name !== name), { name, place: typing.place, currency: typing.currency }]);
+    setChosen((x) => (x.includes(name) ? x : [...x, name]));
+    setTyping(q.typed?.open ? { ...typing, name: "" } : null);
+  };
+  return (
+    <div ref={root} data-ask-thing="" onKeyDown={escapeCloses(onDone)}>
+      <AskValues
+        question={q.ask}
+        options={[...(q.values ?? []).filter((v) => !named.has(v.id)).map((v) => ({ id: v.id, label: v.words })), ...extra.map((v) => ({ id: v, label: v }))]}
+        chosen={chosen}
+        onToggle={(id) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]))}
+        {...(q.other ? { other: { label: q.other, open: !!typing, onClick: () => setTyping(typing ? null : NEW_OWN) } } : {})}
+        otherField={typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} />}
+        note={c.addValues.replace("{last}", lastValueWords(fee, t))}
+        onAdd={() => {
+          if (chosen.length === 0) return;
+          onFee(addValues(fee, t, chosen, own));
+          onDone(true);
+        }}
+        onCancel={() => onDone(false)}
+      />
+    </div>
+  );
 }

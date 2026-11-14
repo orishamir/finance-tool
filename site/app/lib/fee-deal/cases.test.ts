@@ -238,7 +238,7 @@ describe("the reading's first line", () => {
 describe("the builder's blocks", () => {
   const r = read(deal([{ by: "what", is: "us" }]));
   const b = builder(r, null, { fee: "fee-trade", case: "c3" });
-  it("shows a fee with cases as its band, the other tracks folded, the open case marked", () => {
+  it("shows a fee with cases as its band, every case in the fee's order, the person's track marked and the open case marked", () => {
     const block = b.rows[0]!.block;
     if (block.kind !== "band") throw new Error("a band");
     expect(block.things.map((t) => [t.kind, t.words, t.picked])).toEqual([
@@ -249,14 +249,15 @@ describe("the builder's blocks", () => {
       ["c1", false, false],
       ["c2", false, false],
       ["c3", true, true],
+      ["c4", false, false],
       ["c5", false, false],
     ]);
     expect(block.rows[0]!.when).toEqual([
       { thing: 0, any: false, text: copy.cases.values.what.tase },
       { thing: 1, any: true, text: copy.cases.any.track },
     ]);
-    expect(block.folded).toMatchObject({ tracks: 1, words: copy.cases.folded.one });
-    expect(block.folded!.rows.map((x) => x.case)).toEqual(["c4"]);
+    // no case is set apart for not being the person's
+    expect(Object.keys(block)).not.toContain("folded");
     // parts by kind, with their words
     expect(block.rows[2]!.parts.map((p) => [p.id, p.kind])).toEqual([
       ["perUnit", "price"],
@@ -264,7 +265,7 @@ describe("the builder's blocks", () => {
       ["cap", "bound"],
       ["unfilled", "note"],
     ]);
-    expect(block.rows[3]!.parts.find((p) => p.id === "third")!.words).toEqual({ lead: `${copy.cases.parts.thirdOf}הברוקר`, quiet: ` ${copy.cases.parts.thirdNone}` });
+    expect(block.rows[4]!.parts.find((p) => p.id === "third")!.words).toEqual({ lead: `${copy.cases.parts.thirdOf}הברוקר`, quiet: ` ${copy.cases.parts.thirdNone}` });
     // a fee read across sizes names its range's steps in its rows
     const fxBlock = b.rows[1]!.block;
     expect(fxBlock.kind === "band" && fxBlock.rows.map((x) => [x.when[0]!.lead, x.when[0]!.figure?.value])).toEqual([
@@ -410,10 +411,12 @@ describe("the edits that make cases", () => {
     expect((setPart(trade(), "cap", true, { caseId: "c1", value: 30 }) as CasesFee).cases[0]!.stages[0]!.price).toMatchObject({ cap: { v: 30 } });
     expect(setPart(trade(), "offset", true, { caseId: "c1" })).toEqual(trade());
     expect((setPart(trade(), "sale", true, { caseId: "c3" }) as CasesFee).cases[2]!.sale).toEqual(trade().cases[2]!.stages);
-    expect((setPart(trade(), "until", true, { caseId: "c1", month: "2027-06", after: "action" }) as CasesFee).cases[0]!.stages.map((s) => s.until)).toEqual(["2027-06", undefined]);
-    // a later price takes its form from the offer: without it, or without its month, nothing is added
+    // a change of price with time splits the case's price at its month, the later a copy; without a month nothing is added
+    const changed = setPart(trade(), "until", true, { caseId: "c1", month: "2027-06" }) as CasesFee;
+    expect(changed.cases[0]!.stages.map((s) => s.until)).toEqual(["2027-06", undefined]);
+    expect(changed.cases[0]!.stages[1]!.price).toEqual(trade().cases[0]!.stages[0]!.price);
     const t = trade();
-    expect(setPart(t, "until", true, { caseId: "c1", month: "2027-06" })).toBe(t);
+    expect(setPart(t, "until", true, { caseId: "c1" })).toBe(t);
     expect((setPart(trade(), "share", true, { caseId: "c2" }) as CasesFee).cases[1]!.stages[0]!.price).toEqual({ form: "action", rate: { v: 0, blank: true } });
   });
   it("keeps a case or a thing taken away for the undo", () => {
@@ -735,11 +738,11 @@ describe("a provident-family product's management fees", () => {
       { id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-dep")).toEqual([["price", ["share", "until"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "until"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-dep")).toEqual([["price", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["price", ["held"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
     // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
     expect(data.kinds.filter(providentFamily).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
-    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share", "until"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
   });
   it("leave an IRA's brokerage fees the parts its annexes print, and its management fee no track: an IRA is a fund of its own (IRA-17)", () => {
     const deal = of("ira-provident", [
@@ -747,7 +750,7 @@ describe("a provident-family product's management fees", () => {
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 1 } }] },
     ]);
     expect(ids(deal, "fee-trade")).toEqual([["price", ["share", "perUnit", "perAction", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["more", ["unfilled", "partial"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "until"]], ["by", ["by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["price", ["held"]], ["by", ["by:portfolioSize", "by:own"]]]);
     // a brokerage account's custody keeps its bounds and its conditions
     const custody = of("brokerage-account", [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }]);
     expect(ids(custody, "fee-c").map(([g]) => g)).toContain("bound");

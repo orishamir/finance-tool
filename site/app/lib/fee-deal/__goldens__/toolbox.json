@@ -4,42 +4,42 @@
  "bank-deposit · exit · perAction · plain": [],
  "bank-deposit · exit · perAction · full": [],
  "brokerage-account · trade · action · plain": [
-  "price: share✓ perUnit perAction discount third flat until",
+  "price: share✓ perUnit perAction discount third flat",
   "bound: min max cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund",
   "more: unfilled partial inTrade sale"
  ],
  "brokerage-account · trade · action · full": [
-  "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
+  "price: share✓ perUnit perAction discount✓ third✓ flat✓",
   "bound: min✓ max✓ cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund✓",
   "more: unfilled✓ partial✓ inTrade✓ sale"
  ],
  "brokerage-account · trade · perUnit · plain": [
-  "price: share perUnit✓ perAction discount third flat until",
+  "price: share perUnit✓ perAction discount third flat",
   "bound: min max cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund",
   "more: unfilled partial inTrade sale"
  ],
  "brokerage-account · trade · perUnit · full": [
-  "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
+  "price: share perUnit✓ perAction discount✓ third✓ flat✓",
   "bound: min✓ max✓ cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund✓",
   "more: unfilled✓ partial✓ inTrade✓ sale"
  ],
  "brokerage-account · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third until",
+  "price: share perUnit perAction✓ discount third",
   "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund",
   "more: unfilled partial inTrade sale"
  ],
  "brokerage-account · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "price: share perUnit perAction✓ discount✓ third✓",
   "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund✓",
@@ -108,46 +108,46 @@
   "by: by:what by:own"
  ],
  "brokerage-account · custody · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "bound: min max maxPerSecurity",
   "by: by:held by:track by:channel by:portfolioSize by:own"
  ],
  "brokerage-account · custody · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "bound: min✓ max✓ maxPerSecurity✓",
   "by: by:held by:track by:channel by:portfolioSize by:own"
  ],
  "brokerage-account · custody · sum · plain": [
-  "price: held until",
+  "price: held",
   "by: by:held by:track by:channel by:portfolioSize by:own"
  ],
  "brokerage-account · custody · sum · full": [
-  "price: held until",
+  "price: held",
   "by: by:held by:track by:channel by:portfolioSize by:own"
  ],
  "brokerage-account · fund_management · held · plain": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "brokerage-account · fund_management · held · full": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "brokerage-account · fixed_period · sum · plain": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:own",
   "link: offset"
  ],
  "brokerage-account · fixed_period · sum · full": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:own",
   "link: offset✓"
  ],
  "brokerage-account · current_account · sum · plain": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:channel by:count by:own",
   "link: refund"
  ],
  "brokerage-account · current_account · sum · full": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:channel by:count by:own",
   "link: refund✓"
  ],
@@ -158,20 +158,20 @@
  "child-savings-provident · deposit · action · plain": [],
  "child-savings-provident · deposit · action · full": [],
  "child-savings-provident · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "child-savings-provident · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "current-account · fixed_period · sum · plain": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:channel by:count by:own",
   "link: refund"
  ],
  "current-account · fixed_period · sum · full": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:channel by:count by:own",
   "link: refund✓"
  ],
@@ -232,11 +232,11 @@
   "price: perAction✓"
  ],
  "ira-hishtalmut · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:portfolioSize by:own"
  ],
  "ira-hishtalmut · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:portfolioSize by:own"
  ],
  "ira-hishtalmut · custody · held · plain": [
@@ -264,10 +264,10 @@
   "price: held✓"
  ],
  "ira-hishtalmut · fund_management · held · plain": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "ira-hishtalmut · fund_management · held · full": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "ira-hishtalmut · current_account · sum · plain": [],
  "ira-hishtalmut · current_account · sum · full": [],
@@ -328,11 +328,11 @@
   "price: perAction✓"
  ],
  "ira-provident · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:portfolioSize by:own"
  ],
  "ira-provident · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:portfolioSize by:own"
  ],
  "ira-provident · custody · held · plain": [
@@ -360,19 +360,19 @@
   "price: held✓"
  ],
  "ira-provident · fund_management · held · plain": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "ira-provident · fund_management · held · full": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "ira-provident · current_account · sum · plain": [],
  "ira-provident · current_account · sum · full": [],
  "keren-hishtalmut · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "keren-hishtalmut · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "keren-hishtalmut · direct_expenses · held · plain": [
@@ -384,19 +384,19 @@
   "by: by:track"
  ],
  "kupat-gemel-lehashkaa · deposit · action · plain": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "kupat-gemel-lehashkaa · deposit · action · full": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "kupat-gemel-lehashkaa · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "kupat-gemel-lehashkaa · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "kupat-gemel-lehashkaa · direct_expenses · held · plain": [
@@ -408,19 +408,19 @@
   "by: by:track"
  ],
  "pension-comprehensive · deposit · action · plain": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "pension-comprehensive · deposit · action · full": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "pension-comprehensive · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "pension-comprehensive · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "pension-comprehensive · direct_expenses · held · plain": [
@@ -432,43 +432,43 @@
   "by: by:track"
  ],
  "pension-comprehensive · insurance_premium · sum · plain": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-comprehensive · insurance_premium · sum · full": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-comprehensive · insurance_premium · held · plain": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-comprehensive · insurance_premium · held · full": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-comprehensive · insurance_premium · action · plain": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:own"
  ],
  "pension-comprehensive · insurance_premium · action · full": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:own"
  ],
  "pension-general · deposit · action · plain": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "pension-general · deposit · action · full": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "pension-general · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "pension-general · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "pension-general · direct_expenses · held · plain": [
@@ -480,43 +480,43 @@
   "by: by:track"
  ],
  "pension-general · insurance_premium · sum · plain": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-general · insurance_premium · sum · full": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-general · insurance_premium · held · plain": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-general · insurance_premium · held · full": [
-  "price: share until",
+  "price: share",
   "by: by:track by:own"
  ],
  "pension-general · insurance_premium · action · plain": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:own"
  ],
  "pension-general · insurance_premium · action · full": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:own"
  ],
  "provident-for-annuity · deposit · action · plain": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "provident-for-annuity · deposit · action · full": [
-  "price: share✓ until",
+  "price: share✓",
   "by: by:track by:actionSize by:portfolioSize by:own"
  ],
  "provident-for-annuity · balance · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "provident-for-annuity · balance · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "by: by:track by:portfolioSize by:own"
  ],
  "provident-for-annuity · direct_expenses · held · plain": [
@@ -532,66 +532,66 @@
  "savings-plan · exit · perAction · plain": [],
  "savings-plan · exit · perAction · full": [],
  "government-bond · trade · action · plain": [
-  "price: share✓ third flat until",
+  "price: share✓ third flat",
   "bound: min max cap",
   "by: by:channel by:actionSize by:portfolioSize by:count by:own",
   "more: unfilled partial"
  ],
  "government-bond · trade · action · full": [
-  "price: share✓ third✓ flat✓ until",
+  "price: share✓ third✓ flat✓",
   "bound: min✓ max✓ cap✓",
   "by: by:channel by:actionSize by:portfolioSize by:count by:own",
   "more: unfilled✓ partial✓"
  ],
  "government-bond · trade · perUnit · plain": [
-  "price: share third flat until",
+  "price: share third flat",
   "bound: min max cap",
   "by: by:channel by:actionSize by:portfolioSize by:count by:own",
   "more: unfilled partial"
  ],
  "government-bond · trade · perUnit · full": [
-  "price: share third✓ flat✓ until",
+  "price: share third✓ flat✓",
   "bound: min✓ max✓ cap✓",
   "by: by:channel by:actionSize by:portfolioSize by:count by:own",
   "more: unfilled✓ partial✓"
  ],
  "government-bond · trade · perAction · plain": [
-  "price: share third until",
+  "price: share third",
   "bound: cap",
   "by: by:channel by:actionSize by:portfolioSize by:count by:own",
   "more: unfilled partial"
  ],
  "government-bond · trade · perAction · full": [
-  "price: share third✓ until",
+  "price: share third✓",
   "bound: cap✓",
   "by: by:channel by:actionSize by:portfolioSize by:count by:own",
   "more: unfilled✓ partial✓"
  ],
  "government-bond · custody · held · plain": [
-  "price: held✓ until",
+  "price: held✓",
   "bound: min max",
   "by: by:track by:channel by:portfolioSize by:own"
  ],
  "government-bond · custody · held · full": [
-  "price: held✓ until",
+  "price: held✓",
   "bound: min✓ max✓",
   "by: by:track by:channel by:portfolioSize by:own"
  ],
  "government-bond · custody · sum · plain": [
-  "price: held until",
+  "price: held",
   "by: by:track by:channel by:portfolioSize by:own"
  ],
  "government-bond · custody · sum · full": [
-  "price: held until",
+  "price: held",
   "by: by:track by:channel by:portfolioSize by:own"
  ],
  "government-bond · fixed_period · sum · plain": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:own",
   "link: offset"
  ],
  "government-bond · fixed_period · sum · full": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:own",
   "link: offset✓"
  ],
@@ -650,12 +650,12 @@
   "by: by:own"
  ],
  "makam · fixed_period · sum · plain": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:own",
   "link: offset"
  ],
  "makam · fixed_period · sum · full": [
-  "price: sum✓ until",
+  "price: sum✓",
   "by: by:track by:own",
   "link: offset✓"
  ],
@@ -688,11 +688,11 @@
   "by: by:own"
  ],
  "money-market-fund-daily · load · action · plain": [
-  "price: share✓ discount until",
+  "price: share✓ discount",
   "by: by:actionSize by:own"
  ],
  "money-market-fund-daily · load · action · full": [
-  "price: share✓ discount✓ until",
+  "price: share✓ discount✓",
   "by: by:actionSize by:own"
  ],
  "money-market-fund-daily · redemption_deduction · action · plain": [
@@ -704,10 +704,10 @@
   "by: by:own"
  ],
  "money-market-fund-daily · balance · held · plain": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "money-market-fund-daily · balance · held · full": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "money-market-fund-daily · custody · held · plain": [
   "price: held✓",
@@ -762,11 +762,11 @@
   "by: by:own"
  ],
  "money-market-fund-renewable · load · action · plain": [
-  "price: share✓ discount until",
+  "price: share✓ discount",
   "by: by:actionSize by:own"
  ],
  "money-market-fund-renewable · load · action · full": [
-  "price: share✓ discount✓ until",
+  "price: share✓ discount✓",
   "by: by:actionSize by:own"
  ],
  "money-market-fund-renewable · redemption_deduction · action · plain": [
@@ -778,10 +778,10 @@
   "by: by:own"
  ],
  "money-market-fund-renewable · balance · held · plain": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "money-market-fund-renewable · balance · held · full": [
-  "price: held✓ until"
+  "price: held✓"
  ],
  "money-market-fund-renewable · custody · held · plain": [
   "price: held✓",

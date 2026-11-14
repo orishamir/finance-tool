@@ -44,6 +44,15 @@ export interface Label {
   ruleId: string;
 }
 
+/** How much a label says, so a rule keeps its strongest one: a reading, derivation or proxy over a source's strength. */
+export const labelWeight: Record<Label["code"], number> = {
+  "secondary-source": 3,
+  "institution-source": 2,
+  reading: 4,
+  derived: 4,
+  proxy: 4,
+};
+
 /**
  * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
  * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
@@ -58,7 +67,7 @@ export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11",
  */
 export const RUN_FLAG_CODES: readonly string[] = [
   "A-30", "BANK-35", "CS-18", "CS-23", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
-  "G-34", "G-36", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-36", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
+  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-36", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
   "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18",
 ];
 

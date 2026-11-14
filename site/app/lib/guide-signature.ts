@@ -334,7 +334,7 @@ export interface MakamModel {
    * What the tax is the rate of, from the run (so a reader can redo it): on a sale, the capital gain (the sale's and the slices sold to pay
    * custody) less the year's custody and account fees (TXS-06); at redemption, the discount (TXI-11). `taxedFees` is what those fees took
    * off the capital gains (at redemption, the slices' own gain, which they cover), so `taxedBase + taxedFees` is `gain`. Commissions reduce
-   * neither (G-20).
+   * neither: a sale's gain (G-20) nor the discount at redemption (G-39).
    */
   taxedBase: number;
   taxedFees: number;
