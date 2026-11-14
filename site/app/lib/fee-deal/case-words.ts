@@ -11,11 +11,12 @@ import { WHAT_VALUES, type FeeKindId } from "./shapes";
 import { pickKind, type ByKind } from "./offers/conditions";
 import { figure, sumUnit } from "./values";
 
-/** A part as a slim line shows it: its id, its kind and its words. */
+/** A part as a slim line shows it: its id, its kind and its words; `stage`, its price's place among the prices where it is a later one. */
 export interface SlimPart {
   id: PartId;
   kind: PartKind;
   words: PartWords;
+  stage?: number;
 }
 
 /**
@@ -38,10 +39,17 @@ export interface WhenWords {
  */
 export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }): string =>
   b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
-/** A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its end, its bounds, its links and its notes. */
+/**
+ * A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its end, its bounds, its links and its notes; where it ends,
+ * each later price's after it, the first of them led by "ואחר כך" (`stage`, its place among the prices), so a closed fee says what its
+ * price changes to.
+ */
 export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
-  const stage = priced.stages[0]!;
-  return saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, !!priced.sale);
+  return priced.stages.flatMap((stage, k) => {
+    const parts = saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
+    if (k === 0) return parts;
+    return parts.map((x, j) => ({ ...x, stage: k, ...(j === 0 ? { words: { ...x.words, lead: `${copy.cases.parts.then}${x.words.lead ?? ""}` } } : {}) }));
+  });
 }
 
 /** The parts a price says, each with its words, and a sale priced apart where the line has one; a part with nothing to say yet is left out. */
@@ -81,14 +89,17 @@ function sharedLead(words: readonly string[]): string {
 }
 
 /**
- * A case's values of a list thing in words. Where the case names every value abroad but those the fee's other cases name, it says "מחוץ ל"
- * theirs after the lead they share ("בחו״ל, מחוץ לארה״ב"); else its values, a lead they share said once (`sharedLead`).
+ * A case's values of a list thing in words. Where the case names every value abroad and nothing else, the lead they share alone
+ * ("בחו״ל"); where it names every value abroad but those the fee's other cases name, "מחוץ ל" theirs after that lead ("בחו״ל, מחוץ
+ * לארה״ב"); else its values, a lead they share said once (`sharedLead`).
  */
 function listWords(fee: CasesFee, t: number, values: readonly string[]): string {
   const b = fee.by[t]!;
   const words = values.map((v) => valueWords(b.kind, v));
   if (!namesPlaces(b)) return sharedLead(words);
   const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
+  // every value abroad and nothing else: the lead they share alone ("בחו״ל")
+  if (values.length > 1 && values.length === abroad.length && abroad.every((v) => values.includes(v))) return valueWords(b.kind, abroad[0]!).split(", ")[0]!;
   const others = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) && c.when[t] !== values ? (c.when[t] as string[]).filter((v) => abroad.includes(v) && !values.includes(v)) : [])));
   const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
   if (!all) return sharedLead(words);

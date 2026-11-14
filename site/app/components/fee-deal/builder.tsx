@@ -12,7 +12,8 @@ import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder } from "../../lib/fee-deal/rows";
 import type { DealKind } from "../../lib/fee-deal/kinds";
-import { pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { newFee, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { offerFor } from "../../lib/fee-deal/offers/offer";
 import { groupKey, groupOn, type DealRead } from "../../lib/fee-deal/deal-read";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { LeftOutView } from "../../lib/left-out";
@@ -20,14 +21,14 @@ import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, StepStrip, focusPartEdit, type AddItem } from "../kit";
+import { AddLine, Button, ChoiceChips, DropZone, FeePalette, GroupHead, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type PaletteItem } from "../kit";
 import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
 import { FeeBlockView, type BlockActions, type OpenHere } from "./fee-block";
 import { TemplateNote } from "./picker";
 import { UndoLine } from "./undo-line";
-import { feeName } from "./words";
+import { feeColour, feeName } from "./words";
 
 const b = copy.builder;
 
@@ -222,6 +223,33 @@ function groupsOf(fees: readonly Fee[], groupOf: (fee: Fee) => string, line: Fee
   return [...byGroup].sort(([a], [b2]) => groupRank(a) - groupRank(b2));
 }
 
+/** The item a fee of the palette is dragged as, and the fee kind a dragged item names (null: no fee of the palette). */
+export const paletteDrag = (kind: FeeKindId): string => `fee:${kind}`;
+const draggedFee = (item: string): FeeKindId | null => (item.startsWith("fee:") ? (item.slice(4) as FeeKindId) : null);
+
+/**
+ * The fees the deal can still take, as the palette shows them: the kind's usual ones it lacks, then the rarer ones and a fee of the
+ * person's own, each with the heading of what it is charged on (`feeGroup`, of the fee as the deal would add it, in the first form its
+ * product is offered it in).
+ */
+export function paletteItems(view: Builder, read: Pick<DealRead, "engine">, product: DealKind | null, saves: boolean): PaletteItem[] {
+  const item = (kind: FeeKindId, rare: boolean): PaletteItem => ({
+    id: kind,
+    dot: feeColour(kind).bg,
+    name: feeName(kind),
+    line: copy.on[feeGroup(read, newFee(kind, undefined, offerFor(product, kind).usual ?? undefined), saves)] ?? "",
+    rare,
+    drag: paletteDrag(kind),
+  });
+  return [...view.suggestions.usual.map((k) => item(k, false)), ...view.suggestions.rarer.map((k) => item(k, true))];
+}
+
+/** The palette (`paletteItems`): its heading, how a fee is added, and a card per fee; a tap adds the fee. */
+export function Palette({ items, onAdd, heading }: { items: PaletteItem[]; onAdd: (kind: FeeKindId) => void; heading?: "h2" | "h3" }) {
+  const drag = useCanDrag();
+  return <FeePalette title={b.palette} hint={drag ? b.paletteHint : b.paletteHintTap} items={items} heading={heading} onAdd={(id) => onAdd(id as FeeKindId)} />;
+}
+
 export function FeesColumn({
   deal,
   view,
@@ -236,6 +264,7 @@ export function FeesColumn({
   onAdd,
   actions,
   ask,
+  adding,
 }: {
   deal: FeeDeal;
   view: Builder;
@@ -257,10 +286,15 @@ export function FeesColumn({
   actions: BlockActions;
   /** The thing to change by whose question stands in the open fee's block, in place, where its band will stand; null where none is asked. */
   ask: ByKind | null;
+  /**
+   * How the fees the deal can still take show after the fees: the palette (`palette`, where the page has no column for it), the quiet add
+   * line (`line`, while a fee is open in a page whose column holds the palette otherwise), or nothing (the column shows the palette).
+   */
+  adding: { palette: PaletteItem[] } | "line" | null;
 }) {
   // each block's height as last drawn, so the line a removed fee leaves is as tall as its block was
   const root = useRef<HTMLDivElement>(null);
-  const adding = useRef<HTMLDivElement>(null);
+  const addAt = useRef<HTMLDivElement>(null);
   const heights = useRef(new Map<string, number>());
   // where the top of a fee pressed away by its bin was in the window, for its undo line to stand there as it appears (`UndoLine.standAt`);
   // read once, by the line drawn in the same pass
@@ -313,7 +347,7 @@ export function FeesColumn({
   };
   const afterRemoved = () => {
     const id = near(lineAt + 1) ?? near(lineAt - 1);
-    return (id ? feeFocus(blockOf(id)) : null) ?? adding.current?.querySelector("button");
+    return (id ? feeFocus(blockOf(id)) : null) ?? addAt.current?.querySelector("button");
   };
   const undoLine = (l: FeeUndoLine) => (
     <UndoLine
@@ -350,6 +384,7 @@ export function FeesColumn({
 
   return (
     <Section title={b.fees} level="kick" heading="h2">
+      <DropZone accepts={(it) => draggedFee(it) !== null} onDrop={(it) => onAdd(draggedFee(it)!)}>
       <div ref={root} className="flex flex-col gap-6">
         {groups.map(([key, items]) => (
           <div key={key} className="flex flex-col gap-3">
@@ -376,10 +411,12 @@ export function FeesColumn({
             </ul>
           </div>
         ))}
-        <div ref={adding} data-fees-add="" className="contents">
-          <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />
+        <div ref={addAt} data-fees-add="" className="contents">
+          {adding === "line" && <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />}
+          {adding && adding !== "line" && <Palette items={adding.palette} onAdd={onAdd} heading="h3" />}
         </div>
       </div>
+      </DropZone>
     </Section>
   );
 }

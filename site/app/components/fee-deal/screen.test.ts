@@ -108,6 +108,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onAdd: () => {},
     actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {} }, onHoldOn: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {} },
     ask,
+    adding: "line",
   });
 };
 const drawBuilder = (deal: FeeDeal, chosen: string | null) => markup(builderOf(deal, chosen));
@@ -276,7 +277,7 @@ describe("the fees' column", () => {
     for (const key of ["action:conversion", "action:transfer_out", "action:none"]) expect(shown).not.toContain(feeDeal.on[key]!);
     expect(shown.indexOf(feeDeal.on.held!)).toBeLessThan(shown.indexOf(feeDeal.on.account!));
   });
-  it("draws a fee whose price changes as one band, a row per case, the person's own track open and the others folded", () => {
+  it("draws a fee whose price changes by two things, read as rows where it has no room, the person's own track open and the others folded", () => {
     const d = account();
     d.fees = [
       {
@@ -291,8 +292,10 @@ describe("the fees' column", () => {
       },
     ];
     const shown = text(builderOf(d, "fee-trade"));
-    for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!, dealCases.addCase, feeDeal.cases.folded.one])
+    for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!, feeDeal.cases.folded.one])
       expect(shown).toContain(w);
+    // two things: a value of each is added where its row or column will stand, the fee's head holds no add of its own
+    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(2);
     // the open case's actions, the open fee's bin and each thing's bin are icons, named by what they do
     const html = drawBuilder(d, "fee-trade");
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove, feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.what!), feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!)])

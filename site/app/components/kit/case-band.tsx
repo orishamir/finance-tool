@@ -1,10 +1,11 @@
-// A fee whose price changes by one to three things (what is bought, the channel, the track, a range): one band in the cases' blue, its head
-// naming the things, then one flat row per case (design-system 11, "Cases and parts"). Never a band inside a band. A case's condition is
+// A fee whose price changes by one to three things (what is bought, the channel, the track, a range): its head in the cases' blue naming the
+// things (`ConditionHead`), over a table or a grid of its cases (case-table.tsx), or, read as rows, one band in that blue, its head then one
+// flat row per case (design-system 11, "Cases and parts"). Never a band inside a band. A case's condition is
 // words in the band at the row's start (a fixed column where the band is wide, above the parts where it is narrow, by the band's own
 // width: from 25 rem, a computer's column), its parts in the dark cell beside them. One case may be open, in place: its condition's values as slots, its parts with their
 // boxes, and the actions on the case as icons in its head.
 import { useId, type ReactNode } from "react";
-import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Plus, Split } from "lucide-react";
+import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Split } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Button } from "./button";
 import { LIFT_INNER } from "./choice";
@@ -27,51 +28,70 @@ const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shr
 /** A value whose menu is open: a ring in the action colour around its pill. */
 const OPEN_RING = "outline-2 outline-offset-2 outline-primary";
 
+/** A thing of the band's head: its id, its name, and its bin's spoken name (a bin stands beside it where the head takes `onRemoveThing`). */
+export interface HeadThing {
+  id: string;
+  name: string;
+  removeLabel?: string;
+}
+
 /**
- * The band: its head (the cases' icon, `label`, one pill per thing, and at its end the action that adds a case, `addCase`, "+ עוד מקרה")
- * and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`), 4 px apart. With `onThing` the pills are slots, buttons with a chevron
- * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open, ringed;
- * without `onThing` they are words at rest. With `onRemoveThing` a bin beside each pill, a slot or words, drops its thing at once
- * (`removeLabel` its spoken name), so a thing can be taken away with its fee closed too. Each pill and its bin stand in one element marked
- * `data-thing-place` with the thing's id, where the page gives the focus back to the first control after an undo.
+ * The condition's head alone, in the cases' blue: the cases' icon, `label` ("המחיר משתנה לפי") and one pill per thing, nothing else. With
+ * `onThing` the pills are slots, buttons with a chevron whose menu the page opens (`ThingMenu`: the thing's values, and the action that
+ * drops it), `openThing` the one whose menu is open, ringed; without `onThing` they are words at rest. With `onRemoveThing` a bin beside
+ * each pill, a slot or words, drops its thing at once (`removeLabel` its spoken name), so a thing can be taken away with its fee closed
+ * too. Each pill and its bin stand in one element marked `data-thing-place` with the thing's id, where the page gives the focus back to
+ * the first control after an undo. `bare`: the head stands alone over a table or a grid, rounded; else it heads a band's rows.
  */
-export function ConditionBand({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, addCase, children }: {
-  things: { id: string; name: string; removeLabel?: string }[];
-  onThing?: (id: string, at: HTMLElement) => void;
-  openThing?: string | null;
-  onRemoveThing?: (id: string) => void;
-  label?: ReactNode;
-  addCase?: { onAdd: () => void; label?: string };
-  children: ReactNode;
-}) {
+export function ConditionHead({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, bare }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; bare?: boolean }) {
+  return (
+    // 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
+    // wrapped lines, so two bins' areas never meet
+    <div className={cx("flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink", bare && "rounded-lg border border-when-edge bg-when-fill")}>
+      <Split {...icon} />
+      <span className="font-medium">{label}</span>
+      {things.map((t) => (
+        <span key={t.id} data-thing-place={t.id} className="inline-flex items-center gap-0.5">
+          {onThing ? (
+            <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
+              {t.name}
+              <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
+            </button>
+          ) : (
+            <span className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">{t.name}</span>
+          )}
+          {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The band, for cases read as rows (a phone, or more cases than a table holds): its head (`ConditionHead`) and its rows as `children`
+ * (`CaseRow`, `CaseGroup`, `CaseFold`, `OpenCase`, an `AddSlot` row), 4 px apart, in the cases' blue.
+ */
+export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; children: ReactNode }) {
   return (
     <div className="@container overflow-hidden rounded-lg border border-when-edge bg-when-fill pb-1">
-      {/* 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
-          wrapped lines, so a bin's area and "עוד מקרה"'s under it never meet */}
-      <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink">
-        <Split {...icon} />
-        <span className="font-medium">{label}</span>
-        {things.map((t) => (
-          <span key={t.id} data-thing-place={t.id} className="inline-flex items-center gap-0.5">
-            {onThing ? (
-              <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
-                {t.name}
-                <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
-              </button>
-            ) : (
-              <span className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">{t.name}</span>
-            )}
-            {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
-          </span>
-        ))}
-        {addCase && (
-          <Button variant="quiet" size="compact" gap="sm" onClick={addCase.onAdd} className="ms-auto">
-            <Plus {...icon} />
-            {addCase.label ?? copy.addCase}
-          </Button>
-        )}
-      </div>
+      <ConditionHead {...head} />
       <div className="flex flex-col gap-1">{children}</div>
+    </div>
+  );
+}
+
+/**
+ * A group of a band's rows under one value of the first thing (a grid read as rows): the value's words, the parts said once for the group
+ * under them (`shared`), then its rows.
+ */
+export function CaseGroup({ head, shared, children }: { head: ReactNode; shared?: ReactNode; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-0.5 px-3 pt-2 text-sm">
+        <span className="font-medium text-when-words">{head}</span>
+        {shared && <div className="text-when-any">{shared}</div>}
+      </div>
+      {children}
     </div>
   );
 }

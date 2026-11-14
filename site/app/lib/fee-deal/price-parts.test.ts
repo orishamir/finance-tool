@@ -217,7 +217,7 @@ describe("the templates", () => {
     expect(tase.fees.some((f) => f.kind === "corporate_event")).toBe(false);
     expect(tase.unmatched).toEqual([tase.deal.fees.find((f) => f.kind === "corporate_event")!.id]);
   });
-  it("name a case of every value abroad but another case's as outside that value, and a lead its values share once", () => {
+  it("name a case of every value abroad but another case's as outside that value, and one of every value abroad as abroad", () => {
     const texts = (id: string) => {
       const deal = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
       const row = builder(read(deal)).rows.find((r) => deal.fees.find((f) => f.id === r.fee)!.kind === "trade")!;
@@ -226,8 +226,9 @@ describe("the templates", () => {
     // Excellence: the US's two tracks, and Europe with the rest of the world: "בחו״ל, מחוץ לארה״ב", as drawn
     expect(texts("excellence")).toContain("בחו״ל, מחוץ לארה״ב");
     expect(texts("excellence")).not.toContain("בחו״ל, באירופה, בחו״ל, בשאר העולם");
-    // Hapoalim: one case for every value abroad, its lead said once
-    expect(texts("hapoalim")).toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
+    // Hapoalim: one case for every value abroad and nothing else, said as abroad alone
+    expect(texts("hapoalim")).toContain("בחו״ל");
+    expect(texts("hapoalim")).not.toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
   it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>

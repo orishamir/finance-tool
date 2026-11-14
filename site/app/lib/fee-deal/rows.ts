@@ -12,6 +12,7 @@ import { type FeeKindId } from "./shapes";
 import { BY_MAX, type ByKind } from "./offers/conditions";
 import { insideFund } from "./values";
 import type { SiteValue } from "../value";
+import { stepBounds, type StepBounds } from "./band-layout";
 import { firstCase, slimParts, thingName, whenWords, type SlimPart, type WhenWords } from "./case-words";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -68,6 +69,8 @@ export interface CaseRow {
   /** Whether its prices are given and in order: a case still asking for a figure is read nowhere until it is. */
   priced: boolean;
   parts: SlimPart[];
+  /** For each thing, where it is a range and the case is on one of its steps, the step's bounds (`stepBounds`): a ladder's head says them. */
+  bounds: (StepBounds | null)[];
   /**
    * Its price now against the cap (F-113), as a slim fee's row says it: the price charged, after its discount and without a third party's
    * fee, whichever case the reading reads.
@@ -143,7 +146,7 @@ const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t
 /** A case as its band row (`open`: the case open in place). */
 function caseRow(r: DealRead, fee: CasesFee, c: Case, open: string | null): CaseRow {
   const from = monthKey(r.reading.from);
-  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: lineParts(r, fee, c, c.id), standing: standingNow(r, fee, c, c.id) };
+  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: lineParts(r, fee, c, c.id), bounds: c.when.map((w, t) => stepBounds(fee, w, t, r.today)), standing: standingNow(r, fee, c, c.id) };
 }
 
 /** The count of a number of tracks in words. */

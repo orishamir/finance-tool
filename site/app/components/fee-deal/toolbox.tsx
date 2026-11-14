@@ -18,7 +18,7 @@ import { IconClose, IconPencil } from "../icons";
 import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
 import { useProvenanceData } from "../provenance";
 import { UndoLine } from "./undo-line";
-import { caseText } from "./fee-block";
+import { caseText } from "./fee-cases";
 import { FeeName, feeColour, feeName } from "./words";
 
 const p = copy.panel;

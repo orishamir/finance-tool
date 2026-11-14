@@ -44,10 +44,10 @@ import { fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, s
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useMedia } from "../../lib/hooks";
-import { Callout, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
+import { Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
-import { FeesColumn, SetupStrip, feeGroup } from "./builder";
+import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems } from "./builder";
 import { DealColumns } from "./deal-columns";
 import { DealNotices, useSaid } from "./deal-notices";
 import { FeeLinksProvider } from "./links";
@@ -290,6 +290,15 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         {toolboxView}
       </ToolboxCard>
     ) : null;
+  // the fees the deal can still take: in the toolbox's column while no fee is open there, else after the fees (on a computer, while a
+  // fee is open, the quiet add line)
+  const palette = useMemo(() => paletteItems(builderView, read, kind, saves), [builderView, read, kind, saves]);
+  const adding = panelColumn ? (panelView ? ("line" as const) : null) : { palette };
+  const paletteColumn = panelColumn && !panelView && kind && palette.length > 0 ? (
+    <Card className="min-[80rem]:sticky min-[80rem]:top-20">
+      <Palette items={palette} onAdd={onAdd} />
+    </Card>
+  ) : null;
   // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
   const picks = views?.reading.picks;
 
@@ -362,10 +371,11 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onAskDone: oc.ask.onAskDone,
               }}
               ask={oc.ask.asking && oc.ask.asking.fee === chosen ? oc.ask.asking.kind : null}
+              adding={adding}
             />
           )
         }
-        toolbox={panelColumn ? panelView : null}
+        toolbox={panelColumn ? (panelView ?? paletteColumn) : null}
       />
       {/* the open slot's menu: beside its pill on a computer, a sheet on a phone */}
       <ValueMenuSheet open={!!slot} onClose={oc.menus.closeSlot} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
