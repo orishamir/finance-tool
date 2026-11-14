@@ -57,10 +57,6 @@ const inControl = (target: EventTarget, row: HTMLElement) => {
   return !!hit && hit !== row && row.contains(hit);
 };
 
-// A pick made outside the list (a name in a "not priced" line under it) that brings a row into the list: that row takes the place on the
-// screen of what was tapped. One pending hold for the page; the list that has the row takes it.
-let pending: Hold | null = null;
-
 /**
  * A tapped row is held where it was for a moment, over every render in it, not only the first: a pick renders more than once (a note
  * on the row before the address changes, the sorted lists after it), and the first render used the hold up while the rows moved on the
@@ -69,11 +65,6 @@ let pending: Hold | null = null;
 const HOLD_MS = 1200;
 interface Hold { key: string; top: number; until: number }
 const holdOf = (key: string, el: HTMLElement): Hold => ({ key, top: el.getBoundingClientRect().top, until: performance.now() + HOLD_MS });
-
-/** Call before a pick made outside the list (or by a control inside a row): the list row `key` will appear where `el` is now. */
-export function holdOnPick(key: string, el: HTMLElement) {
-  pending = holdOf(key, el);
-}
 
 /**
  * `look`: `tinted` (the chosen row tinted, with a bar at its start) or `line` (one-line rows of a list set beside a ruler,
@@ -89,12 +80,11 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   // when the order changes the rows slide to their new places, and the tapped row is the one that stands still
   // only a hold still running: a stale one made the row picked seconds before jump to its new place while the others slid (a bank marked as the person's own re-sorted the account list)
   const live = (h: Hold | null) => (h && performance.now() <= h.until ? h.key : undefined);
-  const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => live(anchor.current) ?? live(pending));
+  const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => live(anchor.current));
   // the person's own scroll ends a hold: a render after it must not take the page back (a key is not watched: Enter on a row starts one)
   useEffect(() => {
     const end = () => {
       anchor.current = null;
-      pending = null;
     };
     const opts = { passive: true } as const;
     window.addEventListener("wheel", end, opts);
@@ -107,9 +97,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   useLayoutEffect(() => {
     const now = performance.now();
     if (anchor.current && now > anchor.current.until) anchor.current = null;
-    if (pending && now > pending.until) pending = null;
-    const outside = pending && rows.some((r) => r.key === pending!.key) ? pending : null;
-    const a = anchor.current ?? outside;
+    const a = anchor.current;
     if (!a || !root.current) return;
     const list = root.current;
     const hold = () => {
