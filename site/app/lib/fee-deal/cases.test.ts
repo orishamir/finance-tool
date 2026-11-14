@@ -650,14 +650,16 @@ describe("a thing of the band's head, opened", () => {
     const apart: CasesFee = { ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") };
     expect(thingMenu(read({ ...deal(), fees: [apart] }), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.kept);
   });
-  it("leaves an undo line that says what the change did", () => {
+  it("leaves an undo line that names the thing and says what the change did, with the count of cases as its menu did", () => {
     const words = (d: FeeDeal, t: number) => {
       const r = removeByKept(d, "fee-trade", t, null)!;
       return undoWords(r.undo, () => "", data);
     };
-    expect(words(deal(), 1)).toBe(copy.cases.byRemoved.merged);
-    expect(words({ ...deal(), fees: [{ ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") }] }, 1)).toBe(copy.cases.byRemoved.kept);
-    expect(words({ ...deal(), fees: [removeBy(trade(), 1)] }, 0)).toBe(copy.cases.byRemoved.slim);
+    // the two US tracks merge: 5 cases are 4
+    expect(words(deal(), 1)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם: 5 מקרים הם עכשיו 4.");
+    expect(thingMenu(read(deal()), "fee-trade", 1)!.after).toContain("5 מקרים יהיו 4");
+    expect(words({ ...deal(), fees: [{ ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") }] }, 1)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.");
+    expect(words({ ...deal(), fees: [removeBy(trade(), 1)] }, 0)).toBe("המחיר כבר לא משתנה לפי מה קונים. נשאר המחיר של המקרה הראשון.");
   });
 });
 
