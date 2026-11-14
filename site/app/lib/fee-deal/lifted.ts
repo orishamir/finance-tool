@@ -10,7 +10,7 @@ import { hasCases, sameContent, type Fee, type FeeDeal, type When } from "./mode
 import { WHOLE } from "./layout";
 import { isPartRow, type PartRow } from "./part-rows";
 import { moveCase, moveValue, orderFees, removeStep, removeValue, swapThings } from "./edits/arrange";
-import { cellHolds, cellMovesTo, clearCells, moveCell, moveCellTo, moveNoteTo, noteToCases, partAcross, partToCases, pricesOf, withPrices, withoutCell, withoutNote, type CellRow } from "./edits/cells";
+import { cellHolds, cellMovesTo, clearCells, currencyClash, type CurrencyClash, type SumsIn, moveCell, moveCellTo, moveNoteTo, noteToCases, partAcross, partToCases, pricesOf, withPrices, withoutCell, withoutNote, type CellRow } from "./edits/cells";
 import type { Note } from "./core";
 import { removeCase, setWhen } from "./edits/case";
 import { updateFee } from "./edits/deal";
@@ -183,13 +183,33 @@ function partOut(fee: Fee, ids: readonly (string | null)[], row: PartRow): Fee {
   return ids.includes(null) && x && cellHolds(x, row) ? withPrices(fee, null, withoutCell(x, row, fee.kind)) : fee;
 }
 
+/** Why a sum cannot go onto a price in its currency, in words with no full stop: "המקסימום בשקלים והמינימום כאן בדולרים". */
+export function clashWords(c: CurrencyClash): string {
+  const w = copy.cases.lifted.currency;
+  const inWords = (x: SumsIn) => (x.inTrade ? w.sumIn.trade! : w.sumIn[x.currency]!);
+  const sub = (t: string) => t.replace("{moved}", w.sumOf[c.moved] ?? "").replace("{from}", inWords(c.from)).replace("{other}", w.sumOf[c.other] ?? "").replace("{here}", inWords(c.here));
+  return sub(c.other === c.moved ? w.shekelsOnly : w.clash);
+}
+
+/** Why each of cases `ids` of fee `to` cannot take part row `row` of prices `src` in its currency, by case; a case that can, or cannot for another reason, is not named. */
+function clashesIn(to: Fee, src: Parameters<typeof currencyClash>[1], row: PartRow, ids: readonly string[]): Map<string, CurrencyClash> {
+  const out = new Map<string, CurrencyClash>();
+  for (const id of ids) {
+    const c = caseIn(to, id);
+    const clash = c && currencyClash(to.kind, src, c, row);
+    if (clash) out.set(id, clash);
+  }
+  return out;
+}
+
 /**
  * A part row (of the open case, or a cell over cases `from`) dropped on a head: every case the head covers takes it (`partToCases`),
  * replacing what it held there; the source keeps it where the head covers it, else it leaves the cases it stood in unless copied, as a part
- * dropped on another case does. The undo line names the cases whose own part was replaced; a drop onto another fee's head keeps one only
- * where it leaves the source as it was (the undo puts back one fee).
+ * dropped on another case does. A case that cannot take its sums in their currency (`currencyClash`) is left as it is and named, with why.
+ * The undo line names the cases whose own part was replaced and those left out; a drop onto another fee's head keeps one only where it
+ * leaves the source as it was (the undo puts back one fee), so one that leaves a case out keeps the part where it was too, for its line.
  */
-function headDrop(deal: FeeDeal, fee: Fee, from: readonly (string | null)[], row: PartRow, on: Extract<LiftTarget, { k: "cases" }>, keep: boolean): LiftResult | null {
+function headDrop(deal: FeeDeal, fee: Fee, from: readonly (string | null)[], row: PartRow, on: Extract<LiftTarget, { k: "cases" }>, keepAsked: boolean): LiftResult | null {
   const to = feeOf(deal, on.fee);
   const src = pricesOf(fee, from[0] ?? null);
   if (!to || !hasCases(to) || !src) return null;
@@ -197,13 +217,19 @@ function headDrop(deal: FeeDeal, fee: Fee, from: readonly (string | null)[], row
   const own = same ? (from[0] ?? undefined) : undefined;
   const put = partToCases(to, src, row, on.cases, on.along, own);
   if (put === to) return null;
+  const out = clashesIn(to, src, row, on.cases.filter((id) => id !== own));
+  const keep = keepAsked || (!same && out.size > 0);
   const replaced = on.cases.filter((id) => {
     if (id === own) return false;
     const was = caseIn(to, id), now = caseIn(put, id);
     return !!was && !!now && cellHolds(was, row) && !sameContent(was.stages, now.stages);
   });
   const w = copy.cases.lifted;
-  const words = replaced.length ? w.replacedIn.replace("{where}", replaced.map((id) => on.names[id] ?? "").join(", ")).replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined;
+  const said = [
+    ...(replaced.length ? [w.replacedIn.replace("{where}", replaced.map((id) => on.names[id] ?? "").join(", ")).replace("{what}", copy.cases.rowHeads[row] ?? "")] : []),
+    ...[...out].map(([id, c]) => w.currency.leftOut.replace("{where}", on.names[id] ?? "").replace("{why}", clashWords(c))),
+  ];
+  const words = said.length ? said.join(" ") : undefined;
   const gone = leaves(from, same, on, keep);
   if (same) return oneFee(deal, fee, partOut(put, gone, row), words);
   const left = partOut(fee, gone, row);
@@ -231,13 +257,18 @@ export const liftTakes = (deal: FeeDeal, l: Lifted, on: LiftTarget, shown?: read
  * the place is not another fee's.
  */
 export function liftWhy(deal: FeeDeal, l: Lifted, on: LiftTarget): string | null {
-  if ((l.k !== "part" && l.k !== "cell") || (on.k !== "case" && on.k !== "cell" && on.k !== "cases") || on.fee === l.fee) return null;
+  if ((l.k !== "part" && l.k !== "cell") || (on.k !== "case" && on.k !== "cell" && on.k !== "cases")) return null;
   const from = feeOf(deal, l.fee), to = feeOf(deal, on.fee);
   const row = l.row;
-  if (!from || !to || !isPartRow(row)) return null;
+  if (!from || !to || !isPartRow(row) || liftTakes(deal, l, on)) return null;
   const fromCase = l.k === "part" ? l.case : l.cases[0]!;
-  // a head: the fee does not take it in any case the head covers
   const targets = on.k === "case" ? [on.case] : on.k === "cell" ? [on.cases[0]!] : on.cases;
+  // its sums in a currency the place does not count them in: of a head, the first case the head covers
+  const src = pricesOf(from, fromCase);
+  const clash = src && targets.map((id) => (id === fromCase && from.id === to.id ? null : currencyClash(to.kind, src, pricesOf(to, id) ?? src, row))).find((c) => c);
+  if (clash) return `${clashWords(clash)}.`;
+  // another fee whose kind does not take it in any case the head covers
+  if (on.fee === l.fee) return null;
   return targets.some((id) => cellMovesTo(from, fromCase, to, id, row)) ? null : copy.cases.lifted.notHere;
 }
 

@@ -147,3 +147,55 @@ describe("a part dropped on a head", () => {
     expect(liftWhy(deal(), rate, on)).toBe(copy.cases.lifted.notHere);
   });
 });
+
+describe("a sum carries its own currency wherever it goes", () => {
+  /** The trade fee with a row abroad priced in dollars: on the web with a minimum in dollars, at the branch with no other sum. */
+  const abroad = (): FeeDeal => {
+    const t = trade();
+    const usd = (rate: number, min?: number): Price => ({ form: "action", rate: listed(rate), ...(min !== undefined ? { min: listed(min) } : {}), currency: "USD" });
+    t.cases.push({ id: "fw", when: [["abroad"], ["direct"]], stages: [{ price: usd(0.25, 39) }] }, { id: "fb", when: [["abroad"], ["branch"]], stages: [{ price: usd(0.85) }] });
+    return { ...deal(), fees: [t, custody()] };
+  };
+  const priceOf = (d: FeeDeal, id: string) => caseOf(feeOf(d), id).stages[0]!.price as { max?: Num; min?: Num; currency?: string };
+  const onto = (id: string): LiftTarget => ({ k: "case", fee: "fee-t", case: id });
+  const abroadRow: LiftTarget = { k: "cases", fee: "fee-t", cases: ["fw", "fb"], along: 1, names: { fw: "באינטרנט", fb: "בסניף" } };
+
+  it("a ₪ maximum onto a ₪ case stays in shekels", () => {
+    const r = liftDrop(abroad(), lifted, onto("mw"))!;
+    expect(priceOf(r.deal, "mw").max?.v).toBe(7000);
+    expect(priceOf(r.deal, "mw").currency).toBeUndefined();
+  });
+
+  it("a ₪ maximum onto a $ case that keeps no other sum stays in shekels, the case's sums now counted in them", () => {
+    const r = liftDrop(abroad(), lifted, onto("fb"))!;
+    expect(priceOf(r.deal, "fb").max?.v).toBe(7000);
+    expect(priceOf(r.deal, "fb").currency).toBeUndefined();
+  });
+
+  it("a ₪ maximum onto a $ case whose minimum is in dollars is refused, and the place says why", () => {
+    expect(liftTakes(abroad(), lifted, onto("fw"))).toBe(false);
+    const w = copy.cases.lifted.currency;
+    expect(liftWhy(abroad(), lifted, onto("fw"))).toBe(`${w.clash.replace("{moved}", w.sumOf.max!).replace("{from}", w.sumIn.ILS!).replace("{other}", w.sumOf.min!).replace("{here}", w.sumIn.USD!)}.`);
+    // a copy is refused alike, and the price there is as it was
+    expect(liftDrop(abroad(), lifted, onto("fw"), { copy: true })).toBeNull();
+  });
+
+  it("a head over both kinds takes it where it can and names the case it left out, with why", () => {
+    const r = liftDrop(abroad(), lifted, abroadRow, { copy: true })!;
+    expect(priceOf(r.deal, "fb").max?.v).toBe(7000);
+    expect(priceOf(r.deal, "fw")).toEqual(priceOf(abroad(), "fw"));
+    expect(priceOf(r.deal, "fw").currency).toBe("USD");
+    const w = copy.cases.lifted.currency;
+    expect(r.kept!.words).toBe(w.leftOut.replace("{where}", "באינטרנט").replace("{why}", "המקסימום בשקלים והמינימום כאן בדולרים"));
+    // where every case of the head is left out, it takes nothing and says why
+    const fwOnly: LiftTarget = { ...abroadRow, cases: ["fw"] };
+    expect(liftTakes(abroad(), lifted, fwOnly)).toBe(false);
+    expect(liftWhy(abroad(), lifted, fwOnly)).toBe("המקסימום בשקלים והמינימום כאן בדולרים.");
+  });
+
+  it("a $ minimum stretched over a ₪ case that keeps a ₪ maximum is refused there too", () => {
+    const min: Lifted = { k: "part", fee: "fee-t", case: "fw", row: "min" };
+    expect(liftTakes(abroad(), min, onto("mb"))).toBe(false);
+    expect(liftWhy(abroad(), min, onto("mb"))).toBe("המינימום בדולרים והמקסימום כאן בשקלים.");
+  });
+});

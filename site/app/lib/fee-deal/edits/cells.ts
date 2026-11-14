@@ -5,12 +5,12 @@
 // taken away. What a part row holds follows the part registry: each part's key, and the row the part stands in (part-rows.ts).
 import { blankFigure, blankPrice, copiedPrice, copiedPriced, copiedStages, hasCases, pricesOn, sameContent, type Case, type Fee, type Priced, type Span, type Stage, type When } from "../model";
 import { capacity } from "../offers/capacity";
-import { byRate } from "../offers/capabilities";
+import { byRate, onAction } from "../offers/capabilities";
 import { editPrice } from "./stage";
 import { heldAlike } from "../alike";
 import { figureOf, setFigure, withFigure } from "./price";
-import type { Figure } from "../offers/figures";
-import type { Note, Price } from "../core";
+import { FIGURES, type Figure } from "../offers/figures";
+import type { BoundCurrency, Note, Price } from "../core";
 import { WHOLE } from "../layout";
 import { addCaseAt, removeCase } from "./case";
 import { PART_ROWS, ROW_OF, isPartRow, type PartRow } from "../part-rows";
@@ -52,12 +52,83 @@ export function cellFits(kind: FeeKindId, from: Priced, to: Priced, row: CellRow
   return partsIn(src, from, row).every((id) => (row === "price" || id === "sale" ? PARTS[id].holds(kind, target) : !!PARTS[id].field && KEY_FORMS[PARTS[id].field!](target.form) && PARTS[id].holds(kind, target)));
 }
 
+/** The currency a price's sums are counted in: a named one (the shekel where none is), or the action's own (`inTrade`, with the currencies it is for). */
+export interface SumsIn {
+  currency: BoundCurrency;
+  inTrade?: true | readonly BoundCurrency[];
+}
+
+/** The figures of a price counted in its own currency (figures.ts's `inPrice`): its sum, its bounds, its flat price's two, its refund. */
+const SUM_FIGURES: readonly Figure[] = ["amount", "min", "max", "flat", "upTo", "refund"];
+
+/** The figures of `SUM_FIGURES` each part row holds: the price row its sum, a bound its own, the flat price its two, the refund its own. */
+const ROW_SUMS: Partial<Record<PartRow, readonly Figure[]>> = { price: ["amount"], min: ["min"], max: ["max"], flat: ["flat", "upTo"], refund: ["refund"] };
+
+/** What a price's sums are counted in: a price on an action names it (the shekel where it does not); any other price's sums are shekels. */
+export const sumsIn = (p: Price): SumsIn => (onAction(p) ? { currency: p.currency ?? "ILS", ...(p.inTrade ? { inTrade: p.inTrade } : {}) } : { currency: "ILS" });
+
+/** A price whose sums are counted in `c` (a price on an action; any other is left as it is, its sums shekels). */
+function countedIn(p: Price, c: SumsIn): Price {
+  if (!onAction(p)) return p;
+  const { currency: _c, inTrade: _t, ...rest } = p as Price & { currency?: BoundCurrency; inTrade?: unknown };
+  return { ...rest, ...(c.currency !== "ILS" ? { currency: c.currency } : {}), ...(c.inTrade ? { inTrade: c.inTrade } : {}) } as Price;
+}
+
+/**
+ * Why a part row cannot be put on a price in its currency: the figure it carries (`moved`) and what it is counted in (`from`), and a figure
+ * the price keeps that is counted in another (`other`, `here`). One currency serves all of a price's sums.
+ */
+export interface CurrencyClash {
+  moved: Figure;
+  from: SumsIn;
+  other: Figure;
+  here: SumsIn;
+}
+
+/** The given figures of `figs` a price has (a figure not typed yet is counted in nothing). */
+const givenOf = (p: Price, figs: readonly Figure[]): Figure[] => figs.filter((f) => {
+  const n = FIGURES[f].get(p);
+  return !!n && !n.blank;
+});
+
+/**
+ * A price built from target `target` with part row `row` of source price `src` put on it (`price`), its sums counted as each figure was:
+ * a figure carries its own currency, never re-labelled nor converted. Where the row carries a sum in a currency other than the target's,
+ * the price takes that currency when it keeps no other sum of its own, else the row does not go there (a clash).
+ */
+function sumsCarried(src: Price, target: Price, price: Price, row: PartRow): Price | CurrencyClash {
+  const from = sumsIn(src), here = sumsIn(target);
+  const moved = givenOf(price, ROW_SUMS[row] ?? []);
+  // the price row is built from the source's price, the target's other parts kept: they keep the target's currency; another row is built
+  // on the target's price, so it keeps its own (the notes row's "in the trade's currency" goes with the notes)
+  if (moved.length === 0) return row === "price" ? countedIn(price, here) : price;
+  if (sameContent(from, here)) return countedIn(price, here);
+  const other = givenOf(price, SUM_FIGURES.filter((f) => !(ROW_SUMS[row] ?? []).includes(f)));
+  if (other.length > 0) return { moved: moved[0]!, from, other: other[0]!, here };
+  // a price that names no currency counts its sums in shekels: it cannot take one in another
+  if (!onAction(price) && from.currency !== "ILS") return { moved: moved[0]!, from, other: moved[0]!, here };
+  return countedIn(price, from);
+}
+
+/** Why case prices `to` of a fee of `kind` cannot take cell `row` of `from` in its currency (`sumsCarried`); null where they can, or cannot for another reason. */
+export function currencyClash(kind: FeeKindId, from: Priced, to: Priced, row: CellRow): CurrencyClash | null {
+  const r = cellBuilt(kind, from, to, row);
+  return r && "moved" in r ? r : null;
+}
+
 /**
  * Case prices `to` holding what cell `row` of `from` holds, for a fee of `kind`: the whole case's prices; the later prices (the month the
  * first ends and what follows); the first price's form and figure, its other parts kept where the form has a place for them; or the keys
- * of a part row (the notes with a sale priced apart). Null where `to` cannot hold it (`cellFits`).
+ * of a part row (the notes with a sale priced apart), each sum in the currency it was counted in (`sumsCarried`). Null where `to` cannot
+ * hold it (`cellFits`), or not in that currency (`currencyClash`).
  */
 export function withCell(kind: FeeKindId, from: Priced, to: Priced, row: CellRow): Priced | null {
+  const r = cellBuilt(kind, from, to, row);
+  return r && !("moved" in r) ? r : null;
+}
+
+/** `withCell`'s case prices, or why its currency keeps the row off them. */
+function cellBuilt(kind: FeeKindId, from: Priced, to: Priced, row: CellRow): Priced | CurrencyClash | null {
   if (!cellFits(kind, from, to, row)) return null;
   // a figure copied keeps its source only where the target held it so (`copiedPriced`): the list prints it for the case it came from
   if (row === WHOLE) return copiedPriced(clone({ stages: from.stages, ...(from.sale ? { sale: from.sale } : {}) }), to);
@@ -81,7 +152,9 @@ export function withCell(kind: FeeKindId, from: Priced, to: Priced, row: CellRow
     const given = Object.fromEntries(keys.flatMap((k) => ((src as Record<string, unknown>)[k] !== undefined ? [[k, clone((src as Record<string, unknown>)[k])]] : [])));
     price = { ...withoutKeys(target, keys), ...given } as Price;
   }
-  const stages = [{ ...first, price: copiedPrice(fitted(kind, price), target) }, ...later];
+  const carried = sumsCarried(src, target, price, row);
+  if ("moved" in carried) return carried;
+  const stages = [{ ...first, price: copiedPrice(fitted(kind, carried), target) }, ...later];
   if (row !== "notes") return { stages, ...sale };
   return { stages, ...(from.sale ? { sale: copiedStages(clone(from.sale), to.sale ?? to.stages) } : {}) };
 }
@@ -248,7 +321,7 @@ export function withPrices(fee: Fee, caseId: string | null, x: Priced): Fee {
  */
 export function cellMovesTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, row: PartRow): boolean {
   const a = pricesOf(from, fromCase), b = pricesOf(to, toCase);
-  return !!a && !!b && from.id !== to.id && cellHolds(a, row) && cellFits(to.kind, a, b, row);
+  return !!a && !!b && from.id !== to.id && cellHolds(a, row) && withCell(to.kind, a, b, row) !== null;
 }
 
 /**

@@ -21,10 +21,10 @@ import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
 import { thingName } from "../../lib/fee-deal/case-words";
 import { addCase, addCaseAt, copyCase, setTop } from "../../lib/fee-deal/edits/case";
 import { duplicateValue, moveCase, moveValue, swapThings } from "../../lib/fee-deal/edits/arrange";
-import { partAcross, shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
+import { currencyClash, partAcross, shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
 import { bandLayout, headSaysLead, laterChanges, mergedParts, partsByRow, rangeSign, rowHead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
 import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
-import { liftId, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
+import { clashWords, liftId, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { isRange, NAME_MAX, type CasesFee, type Fee } from "../../lib/fee-deal/model";
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, tableSlots, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
@@ -347,7 +347,7 @@ export function FeeCases({
       const { over, places, off } = reachEdits(cases, from, to, a, b);
       // down a grid's column only a named span merges (layout.ts): the stretch names one
       if (places.length) lift.onStretch(stretchOver(fee, own, over, places, t, axis === "y"), lw.stretched);
-      else if (over.length) lift.onStretch(stretch(fee, own, over, row, t, axis === "y"), lw.stretched);
+      else if (over.length) lift.onStretch(stretch(fee, own, over, row, t, axis === "y"), [lw.stretched, ...leftOut(own, over, row)].join(" "));
       else if (off.length && shrinkEmpties(layout.shape === "grid", row)) lift.onStretch(shrinkAway(fee, off, row), shrunk(off, row));
       else if (off.length) onFee(shrink(fee, off, row, t));
     };
@@ -367,6 +367,15 @@ export function FeeCases({
         if (b !== to) onReach(from, b, true);
       },
     };
+  };
+  /** The cases a part cell stretched over leaves as they are, since they count their sums in another currency, each named with why. */
+  const leftOut = (own: string, over: readonly string[], row: PartRow | typeof WHOLE): string[] => {
+    const src = fee.cases.find((x) => x.id === own);
+    if (!src || row === WHOLE) return [];
+    return over.flatMap((id) => {
+      const clash = currencyClash(fee.kind, src, fee.cases.find((x) => x.id === id)!, row);
+      return clash ? [lw.currency.leftOut.replace("{where}", namedAmong([own, ...over])(id)).replace("{why}", clashWords(clash))] : [];
+    });
   };
   /** The undo line of a cell stretched back: where it left, and what it took there ("מניות בלונדון · בסניף: המקרה הוסר."). */
   const shrunk = (off: readonly string[], row: PartRow | typeof WHOLE) =>
