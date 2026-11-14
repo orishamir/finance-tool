@@ -97,22 +97,51 @@ export function addBy(fee: Fee, n: NewBy): Fee {
 }
 
 /**
- * A fee without thing `t`: the cases that differ only in it become one, the first of them in order, so no price is read twice; a fee left
- * with no thing changes by nothing again, priced as its first case. The undo keeps what this takes (undo.ts).
+ * The case whose prices hold when cases become one: the person's own (the case marked as their track), else the first in order. The
+ * reading starts on the person's own track (F-114), so the price it read before the thing went is the price kept.
+ */
+export const keptOf = (cases: readonly Case[]): Case => cases.find((c) => c.mine) ?? cases[0]!;
+
+/**
+ * The cases of a fee once thing `t` is taken away, grouped: the cases that differ only in it are one group, in the order of each group's
+ * first case.
+ */
+export function mergedWithout(fee: CasesFee, t: number): Case[][] {
+  const groups: { when: When[]; cases: Case[] }[] = [];
+  for (const c of fee.cases) {
+    const when = c.when.filter((_, j) => j !== t);
+    const g = groups.find((x) => sameContent(x.when, when));
+    if (g) g.cases.push(c);
+    else groups.push({ when, cases: [c] });
+  }
+  return groups.map((g) => g.cases);
+}
+
+/**
+ * Whether taking thing `t` away keeps the person's own case's prices where the first case's would differ from them: the case kept of a group
+ * that becomes one is theirs and not its first, or, the fee left with no thing, the case kept of them all is theirs.
+ */
+export function ownKept(fee: CasesFee, t: number): boolean {
+  if (fee.by.length === 1) return !!keptOf(fee.cases).mine;
+  return mergedWithout(fee, t).some((g) => keptOf(g) !== g[0]);
+}
+
+/**
+ * A fee without thing `t`: the cases that differ only in it become one, at the first one's place, priced as the one `keptOf` keeps, so
+ * no price is read twice; a fee left with no thing changes by nothing again, priced as the case `keptOf` keeps of them all. The undo keeps
+ * what this takes (undo.ts).
  */
 export function removeBy(fee: Fee, t: number): Fee {
   if (!hasCases(fee) || !fee.by[t]) return fee;
   if (fee.by.length === 1) {
-    const first = fee.cases[0]!;
+    const one = keptOf(fee.cases);
     const { by: _b, cases: _c, ...head } = fee;
-    return { ...head, stages: first.stages, ...(first.sale ? { sale: first.sale } : {}) } as SlimFee;
+    return { ...head, stages: one.stages, ...(one.sale ? { sale: one.sale } : {}) } as SlimFee;
   }
-  const kept: Case[] = [];
-  for (const c of fee.cases) {
-    const when = c.when.filter((_, j) => j !== t);
-    if (kept.some((k) => sameContent(k.when, when))) continue;
-    kept.push({ ...c, when });
-  }
+  const kept = mergedWithout(fee, t).map((g) => {
+    const c = keptOf(g);
+    return { ...c, when: c.when.filter((_, j) => j !== t) };
+  });
   const by = fee.by.filter((_, j) => j !== t);
   const track = by.some((b) => b.kind === "track");
   return { ...fee, by, cases: track ? kept : kept.map(({ mine: _m, ...c }) => c) };

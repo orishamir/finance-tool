@@ -1851,13 +1851,13 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="InlineSelect" use={g.uses.InlineSelect}>
-        <State label="a choice in a line of other controls: the label and the chosen name, no field box" wide>
+        <State label="a choice in a line of other controls: the label and the chosen name, no field box; a press, ArrowDown or a letter opens the kit's own list (a check on the chosen option, the lit one tinted), Escape closes it" wide>
           <InlineSelectDemo />
         </State>
         <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
           <InlineSelectHiddenDemo />
         </State>
-        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron; nothing chosen yet shows `all` in the muted ink" wide>
+        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron, as wide as its longest option whichever is chosen; nothing chosen yet shows `all` in the muted ink" wide>
           <InlineSelectChipDemo />
         </State>
       </Demo>

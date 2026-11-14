@@ -30,9 +30,10 @@ const OPEN_RING = "outline-2 outline-offset-2 outline-primary";
 /**
  * The band: its head (the cases' icon, `label`, one pill per thing, and at its end the action that adds a case, `addCase`, "+ עוד מקרה")
  * and its rows as `children` (`CaseRow`, `CaseFold`, `OpenCase`), 4 px apart. With `onThing` the pills are slots, buttons with a chevron
- * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open, ringed,
- * and with `onRemoveThing` a bin beside each pill drops its thing at once (`removeLabel` its spoken name); without `onThing` they are words
- * at rest.
+ * whose menu the page opens (`ThingMenu`: the thing's values, and the action that drops it), `openThing` the one whose menu is open, ringed;
+ * without `onThing` they are words at rest. With `onRemoveThing` a bin beside each pill, a slot or words, drops its thing at once
+ * (`removeLabel` its spoken name), so a thing can be taken away with its fee closed too. Each pill and its bin stand in one element marked
+ * `data-thing-place` with the thing's id, where the page gives the focus back to the first control after an undo.
  */
 export function ConditionBand({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, addCase, children }: {
   things: { id: string; name: string; removeLabel?: string }[];
@@ -50,21 +51,19 @@ export function ConditionBand({ things, onThing, openThing, onRemoveThing, label
       <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink">
         <Split {...icon} />
         <span className="font-medium">{label}</span>
-        {things.map((t) =>
-          onThing ? (
-            <span key={t.id} className="inline-flex items-center gap-0.5">
+        {things.map((t) => (
+          <span key={t.id} data-thing-place={t.id} className="inline-flex items-center gap-0.5">
+            {onThing ? (
               <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
                 {t.name}
                 <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
               </button>
-              {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
-            </span>
-          ) : (
-            <span key={t.id} className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">
-              {t.name}
-            </span>
-          ),
-        )}
+            ) : (
+              <span className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">{t.name}</span>
+            )}
+            {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
+          </span>
+        ))}
         {addCase && (
           <Button variant="quiet" size="compact" gap="sm" onClick={addCase.onAdd} className="ms-auto">
             <Plus {...icon} />

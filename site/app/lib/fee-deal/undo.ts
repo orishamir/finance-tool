@@ -10,7 +10,7 @@ import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { thingName } from "./case-words";
 import { holdOn, laterUntouched } from "./edits/stage";
-import { removeBy, removeCase } from "./edits/case";
+import { ownKept, removeBy, removeCase } from "./edits/case";
 import { setKind, updateFee } from "./edits/deal";
 import { type Side } from "./model";
 import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
@@ -240,13 +240,13 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
       return formWords(u);
     case "by": {
       // what the line says follows what the change did, naming the thing as its menu did: the cases merged (from how many to how many),
-      // none merged, or the fee left with its first case's price
+      // none merged, or the fee left with one case's price, the person's track's or the first case's
       const after = u.after;
       const words = copy.cases.byRemoved;
       const b = hasCases(u.before) ? u.before.by[u.what.t] : undefined;
       const thing = b ? thingName(u.before.kind, b) : "";
       const fill = (s: string) => s.replace("{thing}", thing);
-      if (!after || !hasCases(after)) return fill(words.slim);
+      if (!after || !hasCases(after)) return fill(hasCases(u.before) && ownKept(u.before, u.what.t) ? words.slimOwn : words.slim);
       const from = hasCases(u.before) ? u.before.cases.length : 1;
       return from > after.cases.length ? fill(words.merged).replace("{from}", String(from)).replace("{to}", String(after.cases.length)) : fill(words.kept);
     }

@@ -1861,12 +1861,13 @@ export const feeDeal = {
     caseRemoved: "המקרה הוסר.",
     /**
      * The line a thing taken away leaves (undo.ts), naming it as the menu did: how many cases merged into how many, that none merged, or
-     * that the fee kept its first case's price.
+     * that the fee kept one case's price, the person's track's where a case is theirs (`slimOwn`), else the first case's.
      */
     byRemoved: {
       merged: "המחיר כבר לא משתנה לפי {thing}: {from} מקרים הם עכשיו {to}.",
       kept: "המחיר כבר לא משתנה לפי {thing}. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.",
       slim: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המקרה הראשון.",
+      slimOwn: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המסלול שלכם.",
     },
     /**
      * The line a price put in another form leaves (undo.ts): that it changed, and what it left behind by name ("המחיר הוחלף, והמינימום
@@ -1880,13 +1881,18 @@ export const feeDeal = {
       and: "ו",
       parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", maxPerSecurity: "המקסימום לכל נייר ערך" },
     },
-    /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
+    /**
+     * A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. The
+     * cases that merge keep the person's track's price where one of them is theirs (`mergeOwn`, `slimOwn`), else the first one's.
+     */
     thingMenu: {
       title: "המקרים מבחינים בין:",
       stop: "להפסיק להבחין לפי {thing}",
       merge: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של הראשון מהם.",
+      mergeOwn: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של המסלול שלכם אם הוא ביניהם, ואחרת במחיר של הראשון מהם.",
       kept: "המקרים יישארו כמו שהם, כי הם שונים גם בדבר אחר.",
       slim: "לעמלה יישאר מחיר אחד: המחיר של המקרה הראשון.",
+      slimOwn: "לעמלה יישאר מחיר אחד: המחיר של המסלול שלכם.",
     },
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",

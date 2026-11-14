@@ -2,7 +2,7 @@
 // after its name; a fee whose price changes holds one band, a row per case, the tracks that are not the person's folded into one line,
 // each case's standing against the cap after its parts. The fee or case open in place shows its slots, its parts with their boxes
 // (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name, and the things of its band's head open
-// their values, each with a bin beside it. The question of a thing being added stands in the open fee's block, above its cases or its
+// their values. Each thing of a band's head has a bin beside it, the fee open or not. The question of a thing being added stands in the open fee's block, above its cases or its
 // price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee, and a thing to change by on the open
 // fee's block (`ToolDrop`).
 import type { ReactNode } from "react";
@@ -52,7 +52,7 @@ export interface BlockActions {
   onRemoveCase: (feeId: string, caseId: string) => void;
   /** The open fee's bin: the fee taken away, kept for the undo. */
   onRemoveFee: (feeId: string) => void;
-  /** A thing's bin in the open fee's band head: the price stops changing by it, kept for the undo. */
+  /** A thing's bin in a fee's band head: the price stops changing by it, kept for the undo. */
   onRemoveBy: (feeId: string, t: number) => void;
   /** Where a part or a thing dragged from the toolbox drops. */
   drop: ToolDrop;
@@ -267,7 +267,8 @@ export function FeeBlockView({
         {question}
         <ConditionBand
           things={things}
-          {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing), onRemoveThing: (id: string) => onRemoveBy(fee.id, Number(id)) } : {})}
+          {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {})}
+          onRemoveThing={(id: string) => onRemoveBy(fee.id, Number(id))}
           addCase={{ onAdd: addOne }}
         >
           {items}
