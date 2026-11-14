@@ -11,7 +11,7 @@ import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
-import { Num } from "../provenance";
+import { Num, RulesChip } from "../provenance";
 
 /** A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's. */
 export function feeName(kind: FeeKindId, own?: string): string {
@@ -250,12 +250,31 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
 }
 
 /**
- * The cap's line: its figure with its caveat, or that the law sets none (F-113); nothing where the kind has no line for the fee. The figure,
- * or the words "אין תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so the line carries no rules
- * chip of its own. `fee`: the fee's name, which the control's spoken name says with what it opens.
+ * That the law bans a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: what a fee's card, its line in
+ * the glance and the law card say in place of "no price".
+ */
+export function BannedWords({ rules, fee }: { rules: readonly string[]; fee?: string }) {
+  return (
+    <>
+      {copy.cases.banned} <RulesChip ids={rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
+    </>
+  );
+}
+
+/**
+ * The cap's line: its figure with its caveat, that the law sets none (F-113), or that it bans the fee here; nothing where the kind has no
+ * line for the fee. The figure, or the words "אין תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so
+ * the line carries no rules chip of its own; a ban's words carry one. `fee`: the fee's name, which the control's spoken name says with what
+ * it opens.
  */
 export function CapRules({ cap, fee }: { cap: CapLine; fee: string }) {
   if (cap.state === "absent") return null;
+  if (cap.state === "banned")
+    return (
+      <p className="text-xs text-muted-foreground">
+        <BannedWords rules={cap.ruleIds} fee={fee} />
+      </p>
+    );
   return (
     <p className="text-xs text-muted-foreground">
       {cap.state === "none" ? (

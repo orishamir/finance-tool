@@ -86,7 +86,7 @@ export const RULES: readonly RuleRow[] = [
     cite: ["PF-01", "PF-02", "PF-03", "PF-04", "PF-05", "PF-06", "KGL-14", "PEN-21", "PEN-22", "CS-18", "KH-22", "IRA-17", "PF-08", "PF-13", "PF-21"],
     records: true,
   },
-  // set per track and graded by the balance; the size of a deposit and an arrangement of the person's own are open (PF-14 s.3(ב)(4))
+  // set per track and graded by the balance; the size of a deposit and an arrangement of the person's own are open (PF open question 19)
   {
     id: "provident-management-by",
     when: { products: providentFamily, fees: ["deposit", "balance"] },
@@ -116,7 +116,8 @@ export const RULES: readonly RuleRow[] = [
   // a load on purchase, a deduction on redemption: shares of the unit price, units created and redeemed at one price a day
   { id: "money-market-load", when: { products: MONEY_MARKET, fees: ["load"] }, verdict: { kind: "only", forms: ["action"], parts: ["discount", "until"], conditions: ["actionSize", "own"] }, cite: ["MF-21", "MF-10"], records: true },
   { id: "money-market-redemption", when: { products: MONEY_MARKET, fees: ["redemption_deduction"] }, verdict: { kind: "only", forms: ["action"], parts: [], conditions: ["own"] }, cite: ["MF-22", "MF-10"], records: true },
-  // a fund order is executed at its day's price; no collected line names money-market units, so a sum per order and a minimum are open
+  // a fund order is executed at its day's price; no collected line names money-market units, so at a non-bank a sum per order and a minimum
+  // are open (a bank charges none, the bans below)
   { id: "money-market-trade", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["min"], conditions: ["own"] }, cite: ["MF-10", "MF-26", "BRK-64", "BRK-65"], records: true },
   { id: "money-market-own", when: { products: MONEY_MARKET, fees: ["own"] }, verdict: { kind: "only", forms: ["held"], parts: [], conditions: ["own"] }, records: true, cite: [] },
 
@@ -126,7 +127,8 @@ export const RULES: readonly RuleRow[] = [
   // a deal of one security holds one kind of it
   { id: "one-security", when: { products: is("government-bond", "makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["trade", "custody"] }, verdict: { kind: "deny", conditions: ["what", "held"] }, cite: [], records: true },
   { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: [], records: true },
-  // custody on units: a share of what is held with a minimum; a bank charges none (the ban below), and a non-bank prints no maximum
+  // custody on units: a share of what is held with a minimum where a non-bank charges it, which prints no maximum; a bank charges none (the
+  // bans below)
   { id: "units-custody", when: { products: is("makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["min"], conditions: ["own"] }, cite: ["BRK-17"], records: true },
   { id: "account-fee", when: { products: is("brokerage-account", "makam", "government-bond"), fees: ["fixed_period"] }, verdict: { kind: "only", forms: ["sum"], parts: ["until", "offset"], conditions: ["track", "own"] }, cite: [], records: true },
   { id: "current-account", when: { fees: ["current_account"] }, verdict: CURRENT_ACCOUNT, cite: [], records: true },
@@ -144,6 +146,9 @@ export const RULES: readonly RuleRow[] = [
 
   // ---- fees the law bans at a bank
   // a bank may not charge custody on makam or on money-market units
-  { id: "bank-custody-units", when: { products: is("brokerage-account"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank", values: ["makam", "moneyMarket"] }, cite: ["BRK-17", "BANK-18"] },
-  { id: "bank-custody-unit-deal", when: { products: is("makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-18"] },
+  { id: "bank-custody-units", when: { products: is("brokerage-account"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank", values: ["makam", "moneyMarket"] }, cite: ["BRK-17", "BANK-18", "MF-71"] },
+  { id: "bank-custody-makam", when: { products: is("makam"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-18"] },
+  // nor buy, sell or redeem money-market units on a line of its tariff: their only charge there is the distribution fee
+  { id: "bank-trade-money-market", when: { products: is("brokerage-account"), fees: ["trade"] }, verdict: { kind: "ban", provider: "bank", values: ["moneyMarket"] }, cite: ["MF-71", "BRK-16"] },
+  { id: "bank-money-market-deal", when: { products: MONEY_MARKET, fees: ["trade", "custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["MF-71", "BRK-17"] },
 ];

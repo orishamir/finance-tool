@@ -473,6 +473,43 @@ describe("a fee its product is not offered (the rule table)", () => {
   });
 });
 
+describe("a fee the law bans at a bank (BRK-17, MF-71)", () => {
+  const held = (rate: number) => ({ form: "held" as const, rate: typed(rate), per: 12 as const, every: 3 as const });
+  const at = (provider: FeeDeal["provider"], is: string, fees: SlimFee[]): FeeDeal => ({ ...newDeal("brokerage-account"), id: "deal-ban", ...(provider ? { provider } : {}), readFor: [{ by: "what", is }], fees });
+  it("reads a bank's custody on makam as nothing charged, says it is banned by law with its rules, and keeps the other fees", () => {
+    // Discount's price list, read for makam: its custody prices no makam, and the law bans a bank's custody there
+    const d = dealFromTemplate({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "makam" }] }, "house:discount", data, TODAY)!;
+    expect(d.provider).toBe("bank");
+    const r = read(d);
+    const custody = d.fees.find((f) => f.kind === "custody")!;
+    expect(r.banned).toEqual([{ fee: custody.id, rules: ["BRK-17", "BANK-18", "MF-71"] }]);
+    expect(r.unmatched).not.toContain(custody.id);
+    expect(r.fees.some((f) => f.kind === "custody")).toBe(false);
+    expect(r.fees.some((f) => f.kind === "trade")).toBe(true);
+    const row = builder(r).rows.find((x) => x.fee === custody.id)!;
+    expect(row.banned).toEqual(["BRK-17", "BANK-18", "MF-71"]);
+    expect(row.priced).toBe(false);
+    expect(glance(r).banned.map((f) => f.fee)).toEqual([custody.id]);
+    const law = readingOf(r, data.fx).law.find((x) => x.fee === custody.id)!;
+    expect(law.cap).toEqual({ state: "banned", ruleIds: ["BRK-17", "BANK-18", "MF-71"] });
+    expect(law.prices).toEqual([]);
+  });
+  it("bans a typed price too, a bank's trade on money-market units (MF-71), and nothing at a non-bank or for another pick", () => {
+    const fees: SlimFee[] = [
+      { id: "fee-c", kind: "custody", stages: [{ price: held(0.1) }] },
+      { id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+    ];
+    expect(read(at("bank", "makam", fees)).banned.map((b) => b.fee)).toEqual(["fee-c"]);
+    expect(read(at("bank", "moneyMarket", fees)).banned.map((b) => b.fee)).toEqual(["fee-c", "fee-t"]);
+    expect(read(at("non-bank", "makam", fees)).banned).toEqual([]);
+    expect(read(at(undefined, "makam", fees)).banned).toEqual([]);
+    expect(read(at("bank", "tase", fees)).banned).toEqual([]);
+    // a makam deal at a bank: its custody, whatever is picked
+    const makam: FeeDeal = { ...newDeal("makam"), id: "deal-m", provider: "bank", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: held(0.1) }] }] };
+    expect(read(makam).banned).toEqual([{ fee: "fee-c", rules: ["BRK-17", "BANK-18"] }]);
+  });
+});
+
 describe("a deal the views cannot read whole", () => {
   it("leaves a fee whose prices are out of order out, and names it", () => {
     const d = account();

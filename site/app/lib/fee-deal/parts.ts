@@ -7,6 +7,7 @@ import { feeOf, readFees, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
 import { feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
 import { charged, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
+import { banFor } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
 import { figure, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
@@ -25,6 +26,11 @@ export interface DealRead {
   unpriced: string[];
   /** The ids of the deal's fees the picks give no case (F-114): the price list prints no price for what is picked. */
   unmatched: string[];
+  /**
+   * The deal's fees the law bans here (the rule table's `ban`, `banFor`), with the rules that ban them: read as nothing charged, so left out
+   * of the reading whatever their prices, and said as banned.
+   */
+  banned: { fee: string; rules: readonly string[] }[];
   engine: Deal;
   reading: DealReading;
   /** The device's day, YYYY-MM-DD, and its month. */
@@ -33,20 +39,27 @@ export interface DealRead {
 }
 
 /**
- * Reads a deal for the views, each fee in the case the picks give it (F-114, F-115). Never throws: a fee whose prices are not in order is
- * listed in `unread`, one with a price not given yet in `unpriced`, one the picks give no case in `unmatched`, and all are left out.
+ * Reads a deal for the views, each fee in the case the picks give it (F-114, F-115). Never throws: a fee the law bans here is listed in
+ * `banned`, one whose prices are not in order in `unread`, one with a price not given yet in `unpriced`, one the picks give no case in
+ * `unmatched`, and all are left out.
  */
 export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string): DealRead {
   const month = monthOfDate(today);
   // the reading's first month (F-110: the device's): a price given or not before it is past
   const from = monthKey(month);
+  const kind = kindById(kinds, deal.kind);
   const read = readFees(deal);
-  const fees = read.fees.filter((f) => feeInOrder(f) && feePriced(f, from));
+  const banned = deal.fees.flatMap((f) => {
+    const ban = banFor(kind, f.kind, deal.provider, read.picks);
+    return ban ? [{ fee: f.id, rules: ban.cite }] : [];
+  });
+  const kept = (id: string) => !banned.some((b) => b.fee === id);
+  const fees = read.fees.filter((f) => kept(feeOf(f)) && feeInOrder(f) && feePriced(f, from));
   const engine = engineDeal(deal, fees, read.picks);
-  const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))];
+  const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))].filter(kept);
   const unread = ids(read.fees.filter((f) => !feeInOrder(f)));
   const unpriced = ids(read.fees.filter((f) => feeInOrder(f) && !feePriced(f, from))).filter((id) => !unread.includes(id));
-  return { deal, kind: kindById(kinds, deal.kind), fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched, engine, reading: dealPeriods(engine, month), today, month };
+  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month };
 }
 
 /** The read deal restricted to some of its fees (by index), for a reading of those alone (what holds throughout, F-111 on them). */

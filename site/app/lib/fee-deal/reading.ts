@@ -408,7 +408,8 @@ export interface LawPrice {
 
 /**
  * A fee of the deal whose kind has a line in the record's caps: the line and each of the fee's prices read against it (F-113), and what
- * its tag shows: the standing of its first price that is judged.
+ * its tag shows: the standing of its first price that is judged. A fee the law bans here is a row of its own, its line `banned`, with no
+ * price, after the rest.
  */
 export interface LawRow extends FeeRef {
   cap: CapLine;
@@ -441,7 +442,12 @@ function lawOf(r: DealRead): LawRow[] {
     const judged = prices.filter((x) => x.standing.standing.judged);
     const now = judged[0];
     return [{ ...refOf(fee, r.today), cap, prices, ...(now ? { now: now.standing } : {}) }];
-  });
+  }).concat(
+    r.banned.map(({ fee: id, rules }) => {
+      const f = r.deal.fees.find((x) => x.id === id)!;
+      return { fee: id, kind: f.kind, ...(f.name ? { name: f.name } : {}), cap: { state: "banned", ruleIds: rules }, prices: [] };
+    }),
+  );
 }
 
 // ---------------------------------------------------------------- the reading

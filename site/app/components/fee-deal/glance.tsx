@@ -13,7 +13,7 @@ import type { SiteValue } from "../../lib/value";
 import { GroupHead, Section, Tag, TypedPlain, When, cx } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
-import { CapBlock, PriceWords, StandingWords } from "./words";
+import { BannedWords, CapBlock, PriceWords, StandingWords, refName } from "./words";
 
 /** The id of the reading's section under the columns. */
 export const READING_ID = "deal-reading";
@@ -146,16 +146,16 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
 }
 
 /**
- * A fee not read: a price of it not given yet, its price still to come; or no case of it for what the reading is read for (F-114), which
- * the line says (`unmatched`).
+ * A fee not read: a price of it not given yet, its price still to come; no case of it for what the reading is read for (F-114), which
+ * the line says (`unmatched`); or banned by law here, which the line says with its rules (`banned`).
  */
-function UnpricedLine({ fee, unmatched }: { fee: FeeRef; unmatched?: boolean }) {
+function UnpricedLine({ fee, unmatched, banned }: { fee: FeeRef; unmatched?: boolean; banned?: readonly string[] }) {
   const { marked, handlers } = useFeeMark(fee.fee);
   const onClick = useLineOpen(fee.fee);
   return (
     <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-glance-fee={fee.fee}>
       <FeeOpen fee={fee} after={copy.price.sep} />
-      <span className="text-muted-foreground">{unmatched ? copy.cases.unmatched : copy.builder.facts.noPrice}</span>
+      <span className="text-muted-foreground">{banned ? <BannedWords rules={banned} fee={refName(fee)} /> : unmatched ? copy.cases.unmatched : copy.builder.facts.noPrice}</span>
     </li>
   );
 }
@@ -172,7 +172,7 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
   return (
     <Section title={copy.glance.title} level="kick" heading="h3" as="div">
       <TypedPlain className="flex flex-col gap-4">
-        {empty && glance.unpriced.length === 0 && glance.unmatched.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
+        {empty && glance.unpriced.length === 0 && glance.unmatched.length === 0 && glance.banned.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.noneRead}</p>}
         {!empty && glance.throughout.length > 0 && (
           <Section title={copy.glance.throughout} level="card" heading="h3" gap="snug">
             {glance.throughout.map((g) => (
@@ -214,13 +214,16 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
             ))}
           </Section>
         )}
-        {glance.unpriced.length + glance.unmatched.length > 0 && (
+        {glance.unpriced.length + glance.unmatched.length + glance.banned.length > 0 && (
           <ul className="flex flex-col gap-1 text-sm">
             {glance.unpriced.map((f) => (
               <UnpricedLine key={f.fee} fee={f} />
             ))}
             {glance.unmatched.map((f) => (
               <UnpricedLine key={f.fee} fee={f} unmatched />
+            ))}
+            {glance.banned.map((f) => (
+              <UnpricedLine key={f.fee} fee={f} banned={f.rules} />
             ))}
           </ul>
         )}
