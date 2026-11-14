@@ -3,7 +3,9 @@
 // opened, renamed and deleted, and the one undo line of the last change that lost something (lib/fee-deal/undo.ts, use-undo.ts), its
 // words and the place each kind of change puts it. A change that would pass what a deal may hold (lib/fee-deal/limits.ts) is refused,
 // and the refusal says why. The deal on screen follows the saved deals as another tab changes them, and a tab saves only its own deal:
-// one deleted in another tab is not saved again until the person keeps it.
+// one deleted in another tab is not saved again until the person keeps it. Each deal keeps its history for the session (lib/fee-deal/
+// history.ts): Ctrl+Z steps back through its changes and Ctrl+Shift+Z (or Ctrl+Y) forward again, outside a text field, whose own undo
+// those keys keep; the undo line is the shortcut to the last step, so while its change is the last one made, "ביטול" is that step back.
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
@@ -20,6 +22,7 @@ import type { FeesData } from "../../lib/fee-page-data";
 import { dealLabel } from "./bar-end";
 import type { FeeFocus } from "./builder";
 import { undoLines, useUndo, type AnyUndo } from "./use-undo";
+import { emptyHistory, historyKey, recorded, stepAhead, stepBack, type History, type Step } from "../../lib/fee-deal/history";
 import { feeName } from "./words";
 
 /** A change that may keep what it took for the undo: the deal after it, the fee chosen after it, and what it took (null for none). */
@@ -87,6 +90,23 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
   const wasSaved = useRef<string | null>(null);
   // the last change that lost something, while it can be undone (use-undo.ts)
   const { undoing, setUndoing, made, take, setHolding } = useUndo();
+  // each deal's history for the session, by its id, and the deal right after the change the undo line stands for: while the deal on
+  // screen is still that one, the line's change is the last step
+  const histories = useRef(new Map<string, History>());
+  const lineAfter = useRef<{ u: AnyUndo; deal: FeeDeal } | null>(null);
+  const historyOf = (id: string) => histories.current.get(id) ?? emptyHistory;
+  // each focus of a field is one run of typing: what it changes while it keeps the focus is one step
+  const focusRun = useRef(0);
+  useEffect(() => {
+    const onFocus = () => void focusRun.current++;
+    window.addEventListener("focusin", onFocus);
+    return () => window.removeEventListener("focusin", onFocus);
+  }, []);
+  /** The field a change is typed into now, as one focus of it; null where the focus is in none. */
+  const typingIn = (): string | null => {
+    const el = document.activeElement;
+    return el instanceof HTMLTextAreaElement || (el instanceof HTMLInputElement && !["checkbox", "radio", "button"].includes(el.type)) ? `field:${focusRun.current}` : null;
+  };
 
   // the deal on screen is the one a reload opens
   useEffect(() => rememberOpen(deal.id), [deal.id]);
@@ -97,6 +117,8 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
       wasSaved.current = deal.id;
       if (deletedElsewhere) setDeletedElsewhere(false);
       if (!sameDeal(stored, deal)) {
+        // another tab changed it: the steps this tab kept would put back over that change
+        histories.current.delete(deal.id);
         setDeal(stored);
         if (chosen !== null && !stored.fees.some((f) => f.id === chosen)) setChosen(stored.fees[0]?.id ?? null);
       }
@@ -107,14 +129,18 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saved]);
 
-  /** Puts `next` on screen and saves it where it is worth saving; false, with the refusal said, where it passes a limit. */
-  const keep = (next: FeeDeal): boolean => {
+  /**
+   * Puts `next` on screen and saves it where it is worth saving, the deal before it kept as a step of its history (`record` false: a step
+   * back or ahead itself); false, with the refusal said, where it passes a limit.
+   */
+  const keep = (next: FeeDeal, record = true): boolean => {
     const no = refusalOf(deal, next);
     if (no) {
       setRefusal(no);
       return false;
     }
     setRefusal(null);
+    if (record && next.id === deal.id) histories.current.set(deal.id, recorded(historyOf(deal.id), { deal, chosen }, next, typingIn()));
     setDeal(next);
     if (!deletedElsewhere && worthSaving(next, saved)) {
       wasSaved.current = next.id;
@@ -132,6 +158,7 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     if (!keep(r.deal)) return;
     setChosen(r.chosen);
     made(r.undo);
+    lineAfter.current = { u: r.undo, deal: r.deal };
   };
   const show = (next: FeeDeal) => {
     setDeal(next);
@@ -173,6 +200,7 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     if (r.undo) {
       if (!keep(r.deal)) return false;
       setUndoing(r.undo);
+      lineAfter.current = { u: r.undo, deal: r.deal };
     } else change(r.deal);
     if (part !== "free") setFocus({ fee: feeId, on: "box" });
     return true;
@@ -182,6 +210,11 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
   const onUndo = () => {
     if (!undoing) return;
     const u = undoing;
+    // the line's change is the last one made: "ביטול" is the history's step back, so a step ahead makes it again
+    if (lineAfter.current?.u === u && lineAfter.current.deal === deal) {
+      if (historyMove("back") && "dealId" in u && u.what.kind === "remove") setFocus({ fee: u.what.feeId, on: "card" });
+      return;
+    }
     setUndoing(null);
     if (!("dealId" in u)) {
       const back = undoDelete(saved, u);
@@ -195,6 +228,40 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     setChosen(back.chosen);
     if (u.what.kind === "remove") setFocus({ fee: u.what.feeId, on: "card" });
   };
+  /**
+   * One step back or ahead in the deal's history: the deal as it stood then, with the fee chosen then where it still has it. The undo line
+   * of the change stepped back over goes; any other stays while what it would put back still has its place. False where there is no step.
+   */
+  const historyMove = (way: "back" | "ahead"): boolean => {
+    const h = historyOf(deal.id);
+    const now: Step = { deal, chosen };
+    const r = way === "back" ? stepBack(h, now) : stepAhead(h, now);
+    if (!r || !keep(r.to.deal, false)) return false;
+    histories.current.set(deal.id, r.h);
+    setChosen(r.to.chosen !== null && r.to.deal.fees.some((f) => f.id === r.to.chosen) ? r.to.chosen : (r.to.deal.fees[0]?.id ?? null));
+    if (undoing && "dealId" in undoing && (lineAfter.current?.deal === deal || !standing(undoing, r.to.deal))) setUndoing(null);
+    lineAfter.current = null;
+    return true;
+  };
+  // the history's keys, outside a text field (whose own undo they keep) and while no menu, sheet or carried thing is open; while a saved
+  // deal's deletion has its undo line, Ctrl+Z is that line's "ביטול"
+  const latest = useRef({ historyMove, onUndo, undoing });
+  latest.current = { historyMove, onUndo, undoing };
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const way = historyKey(e);
+      if (!way || e.defaultPrevented) return;
+      const t = e.target as HTMLElement | null;
+      if (t?.closest("input, textarea, select, [contenteditable]:not([contenteditable=false])")) return;
+      if (document.querySelector("dialog[open], [data-lift-ghost], [data-reach-frame]")) return;
+      const l = latest.current;
+      e.preventDefault();
+      if (way === "back" && l.undoing && !("dealId" in l.undoing)) return l.onUndo();
+      l.historyMove(way);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
   // a name no longer than a deal's name may be (`NAME_MAX`), so the deal opens again
   const rename = (id: string, typed: string) => {
     const name = typed.slice(0, NAME_MAX);
@@ -235,6 +302,7 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     keepAnyway,
     changeForm,
     onUndo,
+    historyMove,
     rename,
     remove,
     /** The undo line on screen, its words, and each place's line (`undoLines`, `chosen` the fee the toolbox shows). */
