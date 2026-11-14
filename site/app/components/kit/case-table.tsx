@@ -2,7 +2,7 @@
 // condition's head, a table for a fee that changes by one thing (its cases as columns, its parts as rows, a range's steps ascending as a
 // ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it), the parts said once
 // for every case on a line above them, and the place a new case, step, row or column will stand as a dashed slot that adds it. Narrower
-// than a table needs, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`). The cells are dark cells on the fee's
+// than a table needs, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table squeezed anyway scrolls inside itself, never widening the page. The cells are dark cells on the fee's
 // card, outside the cases' blue; the case open stands under the table, its column or cell outlined in the action colour.
 import type { MouseEvent, ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
@@ -103,7 +103,7 @@ export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[
   const n = columns.length;
   const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(7.5rem, 1fr))${add ? " 7rem" : ""}`;
   return (
-    <div data-case-table="" className="grid items-stretch gap-x-2 gap-y-1.5" style={{ gridTemplateColumns: template }}>
+    <div data-case-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto p-0.5" style={{ gridTemplateColumns: template }}>
       <span aria-hidden />
       {columns.map((c, k) => {
         const head = (
@@ -188,7 +188,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above }: { columns:
   return (
     <div className="flex flex-col gap-2">
       {above}
-      <div data-case-grid="" className="grid items-stretch gap-x-2 gap-y-1.5" style={{ gridTemplateColumns: template }}>
+      <div data-case-grid="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto p-0.5" style={{ gridTemplateColumns: template }}>
         <span aria-hidden />
         {columns.map((c, k) => (
           <div key={c.id} style={{ gridColumn: k + 2, gridRow: 1 }} className="flex items-end">
