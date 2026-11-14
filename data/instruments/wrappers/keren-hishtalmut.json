@@ -36,7 +36,6 @@
   },
   "fee_bases_allowed": [
     "balance",
-    "deposit",
     "direct_expenses"
   ],
   "fee_caps": {

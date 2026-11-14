@@ -76,7 +76,7 @@
         "BANK-04"
       ],
       "state": "sourced",
-      "notes": "Printed effective '2.02%' beside the offered rate in every amount tier of the row (rate_offered's notes); the bank's own effective annual rate, read under BANK-50's Schedule A."
+      "notes": "Printed effective '2.02%' beside the offered rate in every amount tier of the row (rate_offered's notes); the bank's own effective annual rate, read under BANK-50's Schedule A. The terms document pays this deposit's interest monthly (variant interest_during_term, amount_range.min's notes, read 2026-11-14), so it does not compound inside the deposit, and F-21 does not read this rate for it (BANK-50)."
     }
   },
   "linkage": "none",
@@ -112,7 +112,7 @@
         "publisher": "Mizrahi Tefahot Bank Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
+      "checked": "2026-11-14",
       "effective_from": "2026-11-09",
       "effective_to": null,
       "tax_year": null,
@@ -121,7 +121,7 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "Terms document: 'סכום הפקדה מזערי ₪ 30,000'; the 447 table prints tier upper bounds only."
+      "notes": "Terms document: 'סכום הפקדה מזערי ₪ 30,000'; the 447 table prints tier upper bounds only. The same document, 'תיאור הפיקדון' (p.1), reads 'פיקדון שקלי בריבית קבועה לתקופה של שנתיים (בשנים שלמות) המשלם ריבית חודשית (בניכוי מס) ממשפחת דובדבן', and 'פירעון קרן הפיקדון לעו\"ש': 'במועד הפירעון, הקרן והריבית לתקופת הריבית האחרונה בניכוי מס כחוק יועברו לחשבון העו\"ש': interest is paid out monthly during the term, so the record carries variant 'interest_during_term' (read 2026-11-14)."
     },
     "max": {
       "value": 10000000.0,
@@ -132,7 +132,7 @@
         "publisher": "Mizrahi Tefahot Bank Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
+      "checked": "2026-11-14",
       "effective_from": "2026-11-09",
       "effective_to": null,
       "tax_year": null,
@@ -141,7 +141,7 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "Terms document: 'סכום הפקדה מקסימלי ₪ 10,000,000'; the 447 table's last tier is open ('<')."
+      "notes": "Terms document: 'סכום הפקדה מקסימלי ₪ 10,000,000'; the 447 table's last tier is open ('<'). The same document, 'תיאור הפיקדון' (p.1), reads 'פיקדון שקלי בריבית קבועה לתקופה של שנתיים (בשנים שלמות) המשלם ריבית חודשית (בניכוי מס) ממשפחת דובדבן', and 'פירעון קרן הפיקדון לעו\"ש': 'במועד הפירעון, הקרן והריבית לתקופת הריבית האחרונה בניכוי מס כחוק יועברו לחשבון העו\"ש': interest is paid out monthly during the term, so the record carries variant 'interest_during_term' (read 2026-11-14)."
     }
   },
   "break": {
@@ -161,6 +161,10 @@
     "value": false,
     "max_renewals": null
   },
+  "conditions_he": "הריבית משולמת בכל חודש.",
+  "variant": [
+    "interest_during_term"
+  ],
   "snapshot": "2026-11-09",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
