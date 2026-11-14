@@ -3239,6 +3239,8 @@ function LiftDemo({ today }: { today: string }) {
   const [reach, setReach] = useState<{ row: number; from: number } | null>(null);
   const [rate, setRate] = useState(0.0875);
   const [gone, setGone] = useState<string | null>(null);
+  // the rows are a sortable list: a row's head carried among them opens the gap where the pointer stands
+  const [order, setOrder] = useState([0, 1]);
   const n = cols.length;
   const lw = dealWords.cases.lifted;
   const priced = (
@@ -3253,7 +3255,8 @@ function LiftDemo({ today }: { today: string }) {
         steps
         label={sc.fx}
         columns={cols.map((c, k) => ({ id: String(c), head: steps[c]!, grip: <Grip item={`kit:col:${k}`} label={`${lw.grip.step}${steps[c]}`} /> }))}
-        rows={[sc.channels.web, sc.channels.branch].map((head, j) => {
+        rows={order.map((j) => {
+          const head = [sc.channels.web, sc.channels.branch][j]!;
           const from = Math.min(starts[j]!, n - 1);
           const shown = reach && reach.row === j ? reach.from : from;
           const knob = (
@@ -3273,10 +3276,19 @@ function LiftDemo({ today }: { today: string }) {
             />
           );
           const pricedCell = { from, span: n - from, label: sc.open(head), content: <span>{priced}% {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
+          const item = `kit:row:${j}`;
           return {
             id: head,
             head,
-            cells: [...Array.from({ length: from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from })), pricedCell],
+            grip: <Grip item={item} label={`${lw.grip.row}${head}`} name={lw.name.row.replace("{name}", head)} />,
+            liftItem: item,
+            zone: (h: ReactNode) => (
+              <DropZone sort={{ list: "kit:rows", axis: "y" }} accepts={(it) => it.startsWith("kit:row:") && it !== item} onDrop={(it) => setOrder((o) => { const from = o.indexOf(Number(it.split(":")[2])); const to = o.indexOf(j); const next = o.filter((_, i) => i !== from); next.splice(to, 0, o[from]!); return next; })}>
+                {h}
+              </DropZone>
+            ),
+            addPart: { label: dealWords.cases.rowAdd.strip, onAdd: () => undefined },
+            cells: [...Array.from({ length: from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from, fill: <span>{priced}% {sc.liftPer}</span> })), pricedCell],
           };
         })}
         addColumn={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}

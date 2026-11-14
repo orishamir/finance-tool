@@ -1,4 +1,4 @@
-// A fee's cases laid out by its shape (layout.ts), on every shape: one thing as a table (and as rows past five cases), a range as a ladder,
+// A fee's cases laid out by its shape (layout.ts), on every shape: one thing as a table, a range as a ladder, a one-row grid as a table along its second thing,
 // two things as a grid, three with a switch, and a grid whose cases do not fall one to a place, read as rows. The cases are bare: rows,
 // keys and currencies, with no fee, thing or product behind them.
 import { readFileSync } from "node:fs";
