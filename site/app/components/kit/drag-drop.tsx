@@ -1,162 +1,124 @@
-// Carrying a thing onto a place that takes it (design-system 11, "Cases and parts"). Two ways carry: a chip that a tap already acts with
-// (`useDragSource`), by the browser's own drag, with a fine pointer only; and a thing lifted by its grip (lift.tsx), with any pointer, a
-// long press on a phone. Either way, dropping it on a place (`DropZone`) does what that place does with it. While a thing is carried, every
-// place that takes it is outlined in the action colour, solid under the pointer; a place that would not take it shows nothing, or, where
-// it says why (`why`), says so under the pointer. One thing is carried at a time on the whole page, so it is held once, here, for every place
-// to read, with the place a lifted thing is over.
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type DragEvent, type ReactNode } from "react";
-import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
+// The places a carried thing can be dropped on (design-system 11, `DropZone`), and the one thing carried on the whole page. Two kinds of
+// thing are carried, both by the pointer through lift.tsx, which draws the thing's picture under the pointer and finds the place it is
+// over: a thing lifted by its grip (with any pointer, a long press on a phone) and a chip whose tap already acts, dragged where the pointer
+// is fine (`useDragSource`). A place either takes the thing dropped onto it (a plain zone, outlined while something it takes is carried)
+// or is one member of a sortable list (`sort`): the members of a list are not targets to hit, the pointer's place among them picks where
+// the thing lands, and the others open its gap there. A place may show what a drop there would do while the thing is over it
+// (`onPreview`). The carried thing, the place it is over and the thing's words are held once, here, for every place to read.
+import { useId, useRef, useSyncExternalStore, type ReactNode } from "react";
+import { useIsoLayoutEffect } from "../../lib/hooks";
+import type { Axis } from "./sortable";
 import { cx } from "./cx";
 
 let carried: string | null = null;
-/** The place a lifted thing is over, by its key (`DropZone`), where that place takes it. */
+/** The place the carried thing is over now, by its key (`DropZone`), where that place takes it. */
 let overKey: string | null = null;
+/** The carried thing's own words, for the bin to say what goes ("המקרה בסניף"). */
+let carriedName: string | null = null;
+/** The places that are members of a list the carried thing lands in by the pointer's place (lift.tsx finds them): they draw no frame. */
+let members: ReadonlySet<string> = new Set();
 const listeners = new Set<() => void>();
 const tell = () => {
   for (const on of listeners) on();
 };
-/** Sets the thing carried (null: none), and the place a lifted one is over. */
-export const carry = (item: string | null, over: string | null = null) => {
+/** Sets the thing carried (null: none), the place it is over, and its words. */
+export const carry = (item: string | null, over: string | null = null, name: string | null = carriedName) => {
   carried = item;
   overKey = item === null ? null : over;
+  carriedName = item === null ? null : name;
+  if (item === null) members = new Set();
   tell();
 };
+
+/** Marks the places that are members of a list the carried thing lands in (`DropZone` then draws no frame on them). */
+export const listMembers = (keys: Iterable<string>) => {
+  members = new Set(keys);
+  tell();
+};
+const useMember = (key: string): boolean => useSyncExternalStore(subscribe, () => members.has(key), () => false);
 
 /** How a thing was dropped: with the modifier key held (`copy`: the thing stays where it was too). */
 export interface DropHow {
   copy: boolean;
 }
 
-/** A place that takes carried things, as a lifted thing finds it under the pointer (`zoneAt`). */
-interface Zone {
+/** A sortable list a place is one member of: its name, unique on the page, and the axis its members stand along. */
+export interface SortOf {
+  list: string;
+  axis: Axis;
+}
+
+/** A place, as lift.tsx reads it while a thing is carried. */
+export interface Zone {
   accepts: (item: string) => boolean;
   onDrop: (item: string, how: DropHow) => void;
+  /** What a drop here would do, shown while the thing is over this place (null: shown no more). */
+  onPreview?: (item: string | null, how: DropHow) => void;
+  sort?: SortOf;
 }
-const zones = new Map<string, Zone>();
+const zones = new Map<string, { current: Zone }>();
 
-/** The place under a point that takes `item`, by its key; null where none does. */
-export function zoneAt(x: number, y: number, item: string): string | null {
-  let el = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-drop-key]") ?? null;
-  while (el) {
-    const key = el.dataset.dropKey!;
-    if (zones.get(key)?.accepts(item)) return key;
-    el = el.parentElement?.closest<HTMLElement>("[data-drop-key]") ?? null;
-  }
-  return null;
-}
+/**
+ * Every place on the page, by its key, with its hands as the last drawing left them: a copy, so a drop made later does what the page
+ * showed then, whatever a preview has drawn since.
+ */
+export const allZones = (): Map<string, Zone> => new Map([...zones].map(([k, h]) => [k, { ...h.current }]));
 
-/** Drops `item` on the place `key`, as a lifted thing does on release. */
-export function dropOn(key: string, item: string, how: DropHow): void {
-  const z = zones.get(key);
-  carry(null);
-  if (z?.accepts(item)) z.onDrop(item, how);
-}
+/** The element of the place `key`. */
+export const zoneElement = (key: string): HTMLElement | null => document.querySelector<HTMLElement>(`[data-drop-key="${CSS.escape(key)}"]`);
 
-const useOverKey = (): string | null => useSyncExternalStore(subscribe, () => overKey, () => null);
 const subscribe = (on: () => void) => {
   listeners.add(on);
   return () => void listeners.delete(on);
 };
+const useOverKey = (): string | null => useSyncExternalStore(subscribe, () => overKey, () => null);
 
-/** The chip being carried, by the id its source gave it, or null. */
+/** The thing being carried, by the id its source gave it, or null. */
 export function useCarried(): string | null {
   return useSyncExternalStore(subscribe, () => carried, () => null);
 }
 
-/** What a chip that can be carried spreads on its element: nothing where the pointer is coarse or `item` is null (a chip that can't be). */
-export type DragSourceProps = { draggable?: true; onDragStart?: (e: DragEvent<HTMLElement>) => void; onDragEnd?: () => void };
-
-/**
- * The type a carried chip's id travels under: the site's own, never a text type, so a text field it is dropped on (or another program)
- * takes nothing from it.
- */
-export const CHIP_TYPE = "application/x-mekor-chip";
-
-/** Puts a carried chip's id on a drag's data, under `CHIP_TYPE` alone. */
-export function putChip(data: Pick<DataTransfer, "setData" | "effectAllowed">, item: string): void {
-  data.setData(CHIP_TYPE, item);
-  data.effectAllowed = "copy";
+/** The words of the thing being carried, or null. */
+export function useCarriedName(): string | null {
+  return useSyncExternalStore(subscribe, () => carriedName, () => null);
 }
 
-/** What a chip carriable as `item` spreads on its element: its id put on the drag's data (`putChip`) and held as the carried chip until it ends. */
-export function dragSource(item: string): Required<DragSourceProps> {
-  return {
-    draggable: true,
-    onDragStart: (e) => {
-      putChip(e.dataTransfer, item);
-      carry(item);
-    },
-    onDragEnd: () => carry(null),
-  };
+/** Whether the carried thing is over the place `key` now. */
+export function useOver(key: string): boolean {
+  return useOverKey() === key;
 }
-
-/** Makes a chip carriable as `item` where the pointer is fine (`dragSource`); null leaves it a tap alone. */
-export function useDragSource(item: string | null): DragSourceProps {
-  const fine = useMedia("(pointer: fine)");
-  return !fine || item === null ? {} : dragSource(item);
-}
-
-/** Whether chips can be carried here: the pointer is fine. */
-export const useCanDrag = (): boolean => useMedia("(pointer: fine)");
 
 /**
  * A place a carried thing can be dropped on: `accepts` says whether it takes it (asked only while one is carried), `onDrop` does what the
- * thing's tap does, here (`how.copy`: dropped with the modifier key held). A zone inside another takes the drop alone. `why`, where it
- * does not take the thing, says why, under the pointer. `className` is the zone's own layout, `rounded` its rounding. While it takes the
- * thing, its frame is drawn on what it wraps, on that element's own edge and rounding, over its border: one frame, dashed, solid and filled
- * while the thing is over it. `tone="danger"`: a bin, in the danger colour.
+ * thing does here (`how.copy`: dropped with the modifier key held), `onPreview` shows that while the thing is over it. A zone inside another
+ * takes the drop alone. `why`, where it does not take the thing, says why, under the pointer. `sort`: the place is a member of a sortable
+ * list, which shows no frame (the gap the others open is what shows where the thing lands). A plain place that takes the thing draws its
+ * frame on what it wraps, on that element's own edge and rounding, over its border: one frame, dashed, solid and filled while the thing is
+ * over it. `tone="danger"`: a bin, in the danger colour. `className` is the zone's own layout, `rounded` its rounding.
  */
-export function DropZone({ accepts, onDrop, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
+export function DropZone({ accepts, onDrop, onPreview, sort, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; onPreview?: (item: string | null, how: DropHow) => void; sort?: SortOf; why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
   const item = useCarried();
   const key = useId();
   const hands = useRef<Zone>({ accepts, onDrop });
-  hands.current = { accepts, onDrop };
+  hands.current = { accepts, onDrop, ...(onPreview ? { onPreview } : {}), ...(sort ? { sort } : {}) };
   useIsoLayoutEffect(() => {
-    zones.set(key, { accepts: (it) => hands.current.accepts(it), onDrop: (it, how) => hands.current.onDrop(it, how) });
+    zones.set(key, hands);
     return () => void zones.delete(key);
   }, [key]);
-  const liftedOver = useOverKey() === key;
+  const over = useOver(key);
   const takes = item !== null && accepts(item);
   const refused = item !== null && !takes && why ? why(item) : null;
-  // enter and leave fire for each element inside, so the pointer is over the zone while more enters than leaves have been seen
-  const [over, setOver] = useState(0);
-  useEffect(() => {
-    if (!takes) setOver(0);
-  }, [takes]);
-  const handlers = takes
-    ? {
-        onDragEnter: (e: DragEvent) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOver((n) => n + 1);
-        },
-        onDragOver: (e: DragEvent) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.dataTransfer.dropEffect = "copy";
-        },
-        onDragLeave: (e: DragEvent) => {
-          e.stopPropagation();
-          setOver((n) => Math.max(0, n - 1));
-        },
-        onDrop: (e: DragEvent) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOver(0);
-          carry(null);
-          onDrop(item, { copy: false });
-        },
-      }
-    : {};
   const ink = tone === "danger" ? "*:outline-destructive" : "*:outline-primary";
+  const member = useMember(key);
+  const framed = takes && !sort && !member;
   return (
     <div
       data-drop-key={key}
-      data-drop-zone={takes ? "" : undefined}
+      data-drop-zone={framed ? "" : undefined}
+      data-sort-list={sort?.list}
       title={refused ?? undefined}
       data-drop-why={refused ?? undefined}
-      className={cx(rounded, takes && cx("*:outline-2 *:-outline-offset-2", ink), takes && (over > 0 || liftedOver ? "*:bg-accent *:outline-solid" : "*:outline-dashed"), className)}
-      {...handlers}
+      className={cx(rounded, framed && cx("*:outline-2 *:-outline-offset-2 *:transition-[background-color] *:duration-[var(--duration-fast)]", ink, over ? "*:bg-accent *:outline-solid" : "*:outline-dashed"), className)}
     >
       {children}
     </div>

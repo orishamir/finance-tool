@@ -24,11 +24,11 @@ export interface FeeRemove {
   onRemove: () => void;
 }
 
-/** A fee whose price changes: its dot and name (and the bin `remove`, where given), then its band (`ConditionBand`) as `children`. */
-export function FeeBlock({ dot, name, remove, grip, children }: { dot: string; name: ReactNode; remove?: FeeRemove | undefined; /** A grip before its name that lifts the fee (lift.tsx). */ grip?: ReactNode; children: ReactNode }) {
+/** A fee whose price changes: its dot and name (and the bin `remove`, where given), then its band (`ConditionBand`) as `children`; carried by its head. */
+export function FeeBlock({ dot, name, remove, open, grip, children }: { dot: string; name: ReactNode; remove?: FeeRemove | undefined; /** The fee is open: on touch its grips are drawn. */ open?: boolean; /** A grip before its name that lifts the fee (lift.tsx); its head is what is carried. */ grip?: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-2 rounded-lg border border-border bg-card px-4 pt-1 pb-4">
-      <span className="flex flex-wrap items-center gap-2">
+    <div data-open-fee={open ? "" : undefined} className="flex flex-col gap-2 rounded-lg border border-border bg-card px-4 pt-1 pb-4">
+      <span data-fee-head="" data-lift-head="" className="flex flex-wrap items-center gap-2">
         {grip}
         <FeeName dot={dot} name={name} />
         {remove && <RemoveButton {...remove} />}
@@ -48,8 +48,8 @@ export function SlimFee({ dot, name, label, onOpen, open, remove, actions, grip,
   return (
     <PickCard label={label} onPick={onOpen} chosen={open} className={cx("bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1")}>
       {open ? (
-        <>
-          <span className="flex flex-wrap items-center gap-2">
+        <div data-open-fee="" className="contents">
+          <span data-fee-head="" data-lift-head="" className="flex flex-wrap items-center gap-2">
             {grip}
             <FeeName dot={dot} name={name} />
             {remove && <RemoveButton {...remove} />}
@@ -61,7 +61,7 @@ export function SlimFee({ dot, name, label, onOpen, open, remove, actions, grip,
             {children}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-x-5">{actions}</div>}
-        </>
+        </div>
       ) : (
         <>
           {grip}

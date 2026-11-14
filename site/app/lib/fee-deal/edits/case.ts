@@ -375,3 +375,9 @@ export function splitCase(fee: Fee, caseId: string, n: NewBy): Fee {
   if (!canAddBy(fee, n.kind, "label" in n ? n.label : undefined)) return fee;
   return placed([...fee.by, made.by], rest.map((x) => ({ ...x, when: [...x.when, "any"] })), copies((v) => [...c.when, v]), fee.by.length, true);
 }
+
+/**
+ * Whether a value of the person's own typed as `name` is one a list has already: `known`, the list's values by their ids and their words,
+ * each compared with its spaces trimmed ("בסניף" typed beside the site's "בסניף", or " בסניף ").
+ */
+export const nameTaken = (known: readonly string[], name: string): boolean => !!name.trim() && known.some((k) => k.trim() === name.trim());

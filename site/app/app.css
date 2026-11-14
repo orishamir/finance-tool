@@ -649,27 +649,64 @@
       transform: translateY(100%);
     }
   }
-  /* Grips and knobs at rest (kit/lift.tsx): drawn only while what they belong to (their nearest `data-liftable`: a head, a row, a cell, a
-     part, a fee) is under a fine pointer or has the keyboard's focus itself, or the grip or knob has it, so a table reads as its figures
-     first. A field typed in inside a fee shows none: the fee is a thing that lifts too, and a field's focus is not its own. Hidden is
-     see-through, its press kept, so a drag still starts where the grip stands. On touch no grip is drawn (a long press on the thing lifts
-     it), and a cell's knobs show while the cell has the focus a tap gives it. */
+  /* Grips (kit/lift.tsx) take no room of their own: each stands over the start of what it lifts, in its middle (`inside`), or just before
+     it, over the room between it and its neighbour (`outside`: a table's cell or column head, a fee's name), so a cell's lines, a row
+     head's title and its note, and every fee's name start at one inset whether a grip is there or not. What holds a grip is what it
+     stands over. */
+  [data-grip-box] {
+    position: absolute;
+    z-index: 11;
+    top: 50%;
+    inset-inline-start: 0.125rem;
+    translate: 0 -50%;
+    display: flex;
+  }
+  [data-grip-box="outside"] {
+    inset-inline-start: -1.375rem;
+  }
+  /* a fee's grip hangs in its card's padding, before its name */
+  [data-fee-head] > [data-grip-box] {
+    inset-inline-start: -1.125rem;
+  }
+  :has(> [data-grip-box]) {
+    position: relative;
+  }
+  /* Grips and knobs at rest: drawn only while what they belong to (their nearest `data-liftable`: a head, a row, a cell, a part, a fee) is
+     under a fine pointer or has the keyboard's focus itself, or the grip or knob has it, so a table reads as its figures first. A field
+     typed in inside a fee shows none: the fee is a thing that lifts too, and a field's focus is not its own. Hidden is see-through, its
+     press kept, so a drag still starts where the grip stands. On touch a grip is drawn only inside the open fee, where what it stands over
+     makes room for it; elsewhere a long press on the thing lifts it, and a hidden grip takes no tap. A cell's knobs show while the cell has
+     the focus a tap gives it. */
   [data-grip],
   [data-span-knob] {
     opacity: 0;
   }
   @media (pointer: fine) {
     [data-liftable]:is(:hover, :focus-visible) :is([data-grip], [data-span-knob]),
-    :is([data-grip], [data-span-knob]):is(:focus-visible, :active) {
+    :is([data-grip], [data-span-knob]):is(:focus-visible, :active),
+    [data-grip][aria-expanded="true"] {
       opacity: 1;
     }
     /* what lifts inside a thing under the pointer, or a thing with the keyboard's focus, keeps its own grips hidden until it is under the
        pointer or has that focus itself */
-    [data-liftable]:is(:hover, :focus-visible) [data-liftable]:not(:hover, :focus-visible) :is([data-grip], [data-span-knob]):not(:focus-visible) {
+    [data-liftable]:is(:hover, :focus-visible) [data-liftable]:not(:hover, :focus-visible) :is([data-grip], [data-span-knob]):not(:focus-visible, [aria-expanded="true"]) {
       opacity: 0;
     }
   }
   @media (pointer: coarse) {
+    [data-grip-box] {
+      display: none;
+    }
+    [data-open-fee] [data-grip-box] {
+      display: flex;
+      inset-inline-start: 0.125rem;
+    }
+    [data-open-fee] [data-grip] {
+      opacity: 1;
+    }
+    [data-open-fee] :has(> [data-grip-box]) {
+      padding-inline-start: 1.625rem;
+    }
     [data-liftable]:focus-within [data-span-knob],
     [data-span-knob]:active {
       opacity: 1;
@@ -686,22 +723,41 @@
       user-select: text;
     }
   }
-  /* While something is carried, a place that takes it shows only the frame `DropZone` draws: not its own grips and knobs, even under the
-     pointer, so it reads as a target and not as a thing to lift (the rules above would show them on hover) */
-  [data-drop-zone] :is([data-grip], [data-span-knob]) {
+  /* While something is carried, no grip, knob or row strip is drawn, under the pointer or anywhere: what is under it reads as where the
+     thing would go, not as a thing to lift */
+  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-grip], [data-span-knob]:not(:active), [data-row-add]) {
     opacity: 0 !important;
+    pointer-events: none;
   }
-  /* A thing lifted by its grip (kit/lift.tsx): its place keeps an empty dashed slot of its size while it is away, and its picture follows
-     the pointer on the card's surface, a little raised */
+  /* The strip under a grid's row (or a table's last row) that adds a part to every case of it (kit/case-table.tsx): drawn only while the
+     pointer is over the row or the focus is in it, on a fine pointer; touch and the keyboard reach it in the row head's menu */
+  [data-row-add] {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) linear 80ms;
+  }
+  @media (pointer: fine) {
+    [data-grid-row]:is(:hover, :focus-within) [data-row-add],
+    [data-case-table]:is(:hover, :focus-within) [data-row-add],
+    [data-row-add][aria-expanded="true"] {
+      opacity: 1;
+      pointer-events: auto;
+      transition-delay: 0ms;
+    }
+  }
+  /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
+     nothing in it */
   [data-lifted] {
-    outline: 2px dashed var(--border);
-    outline-offset: -2px;
+    background: color-mix(in oklab, var(--accent) 70%, transparent);
+    border-color: transparent;
+    outline: 1px dashed color-mix(in oklab, var(--border) 80%, transparent);
+    outline-offset: -1px;
     border-radius: var(--radius-md);
   }
   [data-lifted] > * {
     visibility: hidden;
   }
-  /* why a place does not take the thing lifted, under the pointer */
+  /* why a place does not take the thing carried, under the pointer */
   [data-lift-why] {
     position: fixed;
     left: 0;
@@ -717,9 +773,43 @@
     font-size: var(--text-sm);
     box-shadow: var(--shadow-md);
   }
+  /* The carried thing's picture: a clean copy of it, upright, on the card's surface and raised off the page. Over the bin it dims behind
+     a red edge; with the modifier key held (a copy) a plus stands at its corner. */
   [data-lift-ghost] {
+    z-index: 60;
     border-radius: var(--radius-md);
+    background: var(--card);
     box-shadow: var(--shadow-lg);
+    transition: opacity var(--duration-fast) linear;
+  }
+  [data-lift-ghost][data-over-bin] {
+    opacity: 0.55;
+    outline: 2px solid var(--destructive);
+    outline-offset: -2px;
+  }
+  [data-lift-ghost][data-copy]::after {
+    content: "+";
+    position: absolute;
+    top: -0.5rem;
+    inset-inline-end: -0.5rem;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: var(--text-sm);
+    line-height: 1;
+  }
+  /* A knob's pull (kit/lift.tsx `SpanKnob`): the cell's edge follows the pointer as a frame in the action colour */
+  [data-reach-frame] {
+    position: fixed;
+    z-index: 59;
+    pointer-events: none;
+    border-radius: var(--radius-md);
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
   }
   /* A piece that comes onto the page where it was not (the fee page's card, panel and undo line): the short pop of a popover, at the base
      duration, which a device that asks for less motion sets to nothing (theme.css) */

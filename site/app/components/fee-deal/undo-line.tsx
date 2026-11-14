@@ -3,12 +3,17 @@
 // just made (`take`), brought into view, not when it is drawn again for one made before (a panel opened again on its fee). Its time to
 // go stops while the focus is in it or the pointer is over it (`onHold`); when it goes while it holds the focus, the focus moves to what
 // took its place (`refocus`), never to the page's body. The line of something taken away by a press can stand where that thing stood on
-// the screen (`standAt`), whatever grew above it, so a second press of a double-click lands on the line.
-import { useRef, type ReactNode } from "react";
+// the screen (`standAt`), whatever grew above it, so a second press of a double-click lands on the line. The line is one strip; where it
+// stands in for a card taken away (`height`), the card's room stays a moment, for that second press, then closes up to the strip, gliding
+// unless the device asks for less motion.
+import { useEffect, useRef, useState, type FocusEvent, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Button, Card, cx } from "../kit";
 import { bringIntoView } from "./in-view";
+
+/** How long a card's room stays under its line before it closes: longer than the gap between a double-click's two presses. */
+const HOLD_MS = 500;
 
 export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUndo, height, standAt, as = "li", className }: {
   /** What happened, in words. */
@@ -22,7 +27,7 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
   refocus: () => HTMLElement | null | undefined;
   /** The focus goes to `refocus` after "ביטול" too (the page gives it nowhere else). */
   refocusOnUndo?: boolean;
-  /** The height of what the line stands in for (a card taken away), so nothing under it moves until it goes. */
+  /** The height of what the line stands in for (a card taken away): its room stays for a moment (`HOLD_MS`), then closes up to the line. */
   height?: number;
   /**
    * Where the top of what the line stands in for was in the window as it was pressed away: as the line appears, the page scrolls at once by
@@ -33,6 +38,15 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
   className?: string;
 }) {
   const line = useRef<HTMLElement>(null);
+  const strip = useRef<HTMLElement>(null);
+  // the room of the card taken away, until it closes
+  const [room, setRoom] = useState(height);
+  useEffect(() => {
+    if (!room) return;
+    const t = window.setTimeout(() => setRoom(undefined), HOLD_MS);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const focus = useRef(false);
   const pointer = useRef(false);
   const undone = useRef(false);
@@ -49,7 +63,7 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
     // the line just made takes the focus where the reader can see it, above a phone's pinned sheet too
     if (take()) {
       el?.querySelector("button")?.focus({ preventScroll: true });
-      bringIntoView(el);
+      bringIntoView(strip.current);
     }
     return () => {
       const l = latest.current;
@@ -58,18 +72,18 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
       if (held && (!undone.current || l.refocusOnUndo)) requestAnimationFrame(() => l.refocus()?.focus({ preventScroll: true }));
     };
   }, []);
+  const As = as;
   return (
-    <Card
-      ref={line}
-      as={as}
-      pad="tight"
-      className={cx("flex flex-wrap items-center gap-x-3 gap-y-1 border-dashed", className)}
-      style={height ? { minHeight: height } : undefined}
+    <As
+      ref={line as never}
+      data-undo-line=""
+      className={cx("block transition-[min-height] duration-[var(--duration-fold)] ease-[var(--ease-standard)]", className)}
+      style={{ minHeight: room ?? 0 }}
       onFocus={() => {
         focus.current = true;
         report();
       }}
-      onBlur={(e) => {
+      onBlur={(e: FocusEvent) => {
         if (line.current?.contains(e.relatedTarget as Node | null)) return;
         focus.current = false;
         report();
@@ -83,18 +97,20 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
         report();
       }}
     >
-      <span className="text-sm text-muted-foreground">{children}</span>
-      <Button
-        variant="quiet"
-        flush
-        wide
-        onClick={() => {
-          undone.current = true;
-          onUndo();
-        }}
-      >
-        {copy.builder.undo}
-      </Button>
-    </Card>
+      <Card ref={strip} pad="tight" className="flex flex-wrap items-center gap-x-3 gap-y-1 border-dashed">
+        <span className="text-sm text-muted-foreground">{children}</span>
+        <Button
+          variant="quiet"
+          size="sm"
+          wide
+          onClick={() => {
+            undone.current = true;
+            onUndo();
+          }}
+        >
+          {copy.builder.undo}
+        </Button>
+      </Card>
+    </As>
   );
 }

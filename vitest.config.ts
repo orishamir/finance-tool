@@ -11,5 +11,8 @@ export default defineConfig({
     // Several tests sweep every index, fund or guide: about 0.5 s alone, ten times that when builds run beside them (2026-11-07,
     // pair.test.ts took 5.2 s with four builds and failed vitest's 5 s default). One limit for the whole suite instead of one per test.
     testTimeout: 30_000,
+    // At most eight workers (2026-11-14): with one per core (31 here) and every worker holding the data, a check beside a
+    // build used most of this machine's 20 GB, and two at once ran it out of memory.
+    maxWorkers: 8,
   },
 });

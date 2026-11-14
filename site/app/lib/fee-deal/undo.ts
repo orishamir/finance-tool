@@ -3,7 +3,8 @@
 // one action puts it back. Only the last such change is kept. It stands while the part it would put back into is as the change left it: for a fee
 // taken away, the deal has no fee of its kind (of the person's own: no fee with its id); for the others, the fee is unchanged since. A
 // change of the deal's kind that takes fees away (`setKindKept`) is kept the same way, and puts the kind and the fees back together. Edits
-// elsewhere in the deal keep it standing and stay when it is used; once its part changes, it goes. A case taken away, and a thing a fee's
+// elsewhere in the deal keep it standing and stay when it is used, and so does a move of its own fee (only the order the page shows it
+// and its cases in), which the undo keeps; once its part changes, it goes. A case taken away, and a thing a fee's
 // price changes by taken away with the cases it merged (F-114), are kept the same way, as a change of their fee. The words of its line are
 // here too.
 import { feeDeal as copy } from "../../copy";
@@ -12,6 +13,7 @@ import { thingName } from "./case-words";
 import { changeUntouched, removeChange } from "./edits/stage";
 import { ownKept, removeBy, removeCase } from "./edits/case";
 import { setKind, updateFee } from "./edits/deal";
+import { inOrderOf, sameButOrder } from "./edits/arrange";
 import { type Side } from "./model";
 import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
@@ -233,8 +235,9 @@ function feeStanding(u: Undo, deal: FeeDeal): boolean {
     const gone = u.before;
     return !deal.fees.some((f) => f.id === gone.id || (gone.kind !== "own" && f.kind === gone.kind));
   }
+  // a move since (a column, a row, the fee among its group) changes only the order the page shows things in: the undo still stands
   const now = deal.fees.find((f) => f.id === u.before.id);
-  return !!now && !!u.after && sameContent(now, u.after);
+  return !!now && !!u.after && sameButOrder(now, u.after);
 }
 
 /**
@@ -250,7 +253,7 @@ export function undo(deal: FeeDeal, u: Undo | KindUndo, chosen: string | null): 
     const at = Math.min(f.what.at, deal.fees.length);
     back = { ...deal, fees: [...deal.fees.slice(0, at), f.before, ...deal.fees.slice(at)] };
   } else {
-    back = updateFee(deal, f.before.id, () => f.before);
+    back = updateFee(deal, f.before.id, (now) => inOrderOf(f.before, now));
     if (f.provider && !back.provider) back = { ...back, provider: f.provider };
   }
   return { deal: back, chosen: chosen === f.chosenAfter ? f.chosenBefore : chosen };
