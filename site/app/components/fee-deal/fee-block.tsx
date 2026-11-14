@@ -19,10 +19,9 @@ import { CaseFold, CaseRow, CaseSlot, ConditionBand, FeeBlock, OpenCase, PartChi
 import { Num } from "../provenance";
 import { AskThing } from "./ask-thing";
 import { LawTag } from "./links";
-import { OpenParts, WhenText, numText } from "./open-case";
+import { OpenParts, WhenText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
-import type { PendingPart } from "../../lib/fee-deal/offers/parts";
-import { BannedWords, Fig, feeColour, feeName } from "./words";
+import { Fig, UnreadWords, feeColour, feeName } from "./words";
 
 const b = copy.builder;
 
@@ -33,8 +32,6 @@ export interface OpenHere {
   case: string | null;
   /** The open case as the panel builds it (`panel(...).open`). */
   view: OpenCaseView | null;
-  /** A part the toolbox added that asks for its figure, month or fee in the open case. */
-  pending: PendingPart | null;
   /** The slot whose menu is open: its thing's place among the fee's things. */
   menu: number | null;
   /** The thing of the band's head whose menu is open: its place among the fee's things. */
@@ -57,7 +54,7 @@ export interface BlockActions {
 }
 
 /** A case's value for each thing in plain words, joined, for its spoken name and the toolbox's line ("בחו״ל, בארה״ב · מסלול 1"). */
-export const caseText = (when: readonly WhenWords[]): string => when.map((w) => (w.figure ? `${w.lead ?? ""}${numText(w.figure)}` : (w.text ?? ""))).join(copy.cases.sep);
+export const caseText = (when: readonly WhenWords[]): string => when.map(whenText).join(copy.cases.sep);
 
 /** A case's value for each thing as a band row says it: the person's track marked "שלכם", a range's step with the range's icon. */
 const caseWords = (when: readonly WhenWords[], mine: boolean, things: readonly { kind: string }[]): CaseWord[] =>
@@ -98,8 +95,7 @@ function RestPart({ part }: { part: SlimPart }) {
 /** The facts a slim line says at its end: that its price is not given yet or not read, its next change, where it is charged, its bounds. */
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
-  if (row.banned) notes.push(<BannedWords key="banned" ban={row.banned} />);
-  else if (!row.priced) notes.push(row.noCurrency ? copy.cases.noCurrency : row.unmatched ? copy.cases.unmatched : b.facts.noPrice);
+  if (row.banned || !row.priced) notes.push(<UnreadWords key="unread" banned={row.banned} noCurrency={row.noCurrency} unmatched={row.unmatched} />);
   if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
   if (row.priced && row.stages[0]!.price.form === "action" && keeps(fee.kind, "action", "min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
@@ -150,7 +146,7 @@ export function FeeBlockView({
   const openParts = (spoken: string) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} pending={open.pending} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} onPendingDone={onPendingDone} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} onPendingDone={onPendingDone} />
         {formLine}
       </>
     );

@@ -22,6 +22,13 @@ export interface BanSaid {
   distribution?: true;
 }
 
+/**
+ * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, no case for the picks,
+ * or a price not given yet. Its card and its line in the glance both say this one reason.
+ */
+export const unreadReason = (x: { banned?: BanSaid | undefined; noCurrency?: boolean; unmatched?: boolean }): "banned" | "noCurrency" | "unmatched" | "noPrice" =>
+  x.banned ? "banned" : x.noCurrency ? "noCurrency" : x.unmatched ? "unmatched" : "noPrice";
+
 export const banSaid = (b: Ban): BanSaid => ({ rules: b.cite, ...(b.reading ? { reading: true as const } : {}), ...(b.distribution ? { distribution: true as const } : {}) });
 
 /** A deal read once: the fees F-110 can read (in order), the engine's deal over them, its reading, and the day and month it is for. */

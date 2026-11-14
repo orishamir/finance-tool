@@ -256,6 +256,12 @@ export function pricedOf(fee: Fee, caseId?: string): Priced {
   return fee.cases.find((c) => c.id === caseId) ?? fee.cases[0]!;
 }
 
+/**
+ * The price of a case's prices the toolbox acts on, by its place among the purchase's: the last, the one that runs on with no end, which a
+ * later price follows. The toolbox offers what it can hold, and adds a part, asks for a pending part and changes the form there.
+ */
+export const toolPrice = (x: Priced): number => x.stages.length - 1;
+
 /** A fee's prices on a side (of a case, where `caseId` names one): the sale's where it is priced apart, else the fee's own. */
 export const pricesOn = (fee: Fee, side: Side, caseId?: string): Stage[] => {
   const x = pricedOf(fee, caseId);

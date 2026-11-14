@@ -15,7 +15,7 @@ import { setKind, updateFee } from "./edits/deal";
 import { type Side } from "./model";
 import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
-import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, toolPrice, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { DataBar } from "./offers/offer";
 import type { ChargedForm } from "./offers/capacity";
 import { fillFee, houseName } from "./templates";
@@ -23,7 +23,7 @@ import type { FeesData } from "../fee-page-data";
 
 /**
  * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
- * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, thing `t` taken away (`by`), or the price put
+ * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, thing `t` taken away (`by`), or price `k` put
  * in another form by the toolbox (`form`).
  */
 export type UndoWhat =
@@ -33,7 +33,7 @@ export type UndoWhat =
   | { kind: "chain"; feeId: string; side: Side; k: number; caseId?: string }
   | { kind: "case"; feeId: string; caseId: string }
   | { kind: "by"; feeId: string; t: number }
-  | { kind: "form"; feeId: string; caseId?: string };
+  | { kind: "form"; feeId: string; k: number; caseId?: string };
 
 export interface Undo {
   what: UndoWhat;
@@ -117,7 +117,7 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
 }
 
 /**
- * The deal with the open case's first price put in the form a toolbox part sets (`setPart`; in case `caseId` where the fee has cases):
+ * The deal with the price the toolbox acts on (`toolPrice`) put in the form a toolbox part sets (`setPart`; in case `caseId` where the fee has cases):
  * what carries over carries (`withForm`), and the price as it stood is kept for the undo where it held anything given, typed or filled;
  * a price still blank, as the builder added it, changes silently. Null where the part sets no form, or the price is in it already.
  */
@@ -125,12 +125,13 @@ export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chose
   const fee = deal.fees.find((f) => f.id === feeId);
   const form = PARTS[part].form;
   if (!fee || !form) return null;
-  const was = pricesOn(fee, "buy", caseId)[0]!.price;
+  const k = toolPrice(pricedOf(fee, caseId));
+  const was = pricesOn(fee, "buy", caseId)[k]!.price;
   if (was.form === form) return null;
-  const changed = setPart(fee, part, true, caseId ? { caseId } : {});
+  const changed = setPart(fee, part, true, { k, ...(caseId ? { caseId } : {}) });
   if (changed === fee || sameContent(changed, fee)) return null;
   if (was.form === "free" || sameContent(was, blankPrice(was.form))) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
-  return feeChange(deal, fee, changed, { kind: "form", feeId, ...(caseId ? { caseId } : {}) }, chosen);
+  return feeChange(deal, fee, changed, { kind: "form", feeId, k, ...(caseId ? { caseId } : {}) }, chosen);
 }
 
 /**
@@ -280,10 +281,10 @@ const LOST_WORDS: Readonly<Record<LostPart, string>> = copy.cases.formChanged.pa
  */
 function formWords(u: Undo): string {
   const w = copy.cases.formChanged;
-  const caseId = u.what.kind === "form" ? u.what.caseId : undefined;
+  const { caseId, k } = u.what.kind === "form" ? u.what : { caseId: undefined, k: 0 };
   const before = pricedOf(u.before, caseId);
-  const after = u.after ? pricesOn(u.after, "buy", caseId)[0]!.price : null;
-  const lost = lostParts(before.stages[0]!.price, after, before).map((id) => LOST_WORDS[id]);
+  const after = u.after ? pricesOn(u.after, "buy", caseId)[k]!.price : null;
+  const lost = lostParts(before.stages[k]!.price, after, before).map((id) => LOST_WORDS[id]);
   if (lost.length === 0) return w.plain;
   const list = lost.length === 1 ? lost[0]! : `${lost.slice(0, -1).join(", ")} ${w.and}${lost.at(-1)!}`;
   return w.lost.replace("{parts}", list).replace("{verb}", lost.length === 1 ? w.one : w.many);

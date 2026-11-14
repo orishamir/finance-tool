@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { BanSaid, FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/deal-read";
+import { unreadReason, type BanSaid, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -260,6 +260,13 @@ export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
       {ban.distribution && <> {w.distribution}</>} <RulesChip ids={ban.rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
     </>
   );
+}
+
+/** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, for the ban's rules chip. */
+export function UnreadWords({ banned, noCurrency, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; unmatched?: boolean; fee?: string }) {
+  const why = unreadReason({ banned, noCurrency, unmatched });
+  if (why === "banned") return <BannedWords ban={banned!} {...(fee ? { fee } : {})} />;
+  return <>{why === "noCurrency" ? copy.cases.noCurrency : why === "unmatched" ? copy.cases.unmatched : copy.builder.facts.noPrice}</>;
 }
 
 /**

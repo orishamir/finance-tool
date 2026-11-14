@@ -3,13 +3,13 @@
 // asking for it by what it asks (`PendingEdit`, the part registry's `ask`).
 import { useEffect, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
-import type { OpenPart, PartField } from "../../lib/fee-deal/panel";
+import type { OpenPart, OpenPending, PartField } from "../../lib/fee-deal/panel";
 import { setUntil } from "../../lib/fee-deal/edits/stage";
 import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho } from "../../lib/fee-deal/edits/price";
 import { type Side } from "../../lib/fee-deal/model";
 import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
-import { sumCurrency, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
+import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
@@ -37,27 +37,10 @@ const quiet = (t: ReactNode) => (t ? <span className="text-muted-foreground">{t}
 
 const monthOptions = (words: Record<number, string>) => MONTHS.map((m) => ({ id: String(m), name: words[m]! }));
 
-/** Each figure's name in its box's spoken name. */
-export const SPOKEN: Readonly<Record<PartField["figure"], string>> = {
-  rate: copy.panel.howMuch,
-  amount: copy.panel.howMuch,
-  min: copy.panel.min,
-  max: copy.panel.max,
-  cap: copy.panel.cap,
-  flat: copy.panel.parts.flat,
-  upTo: copy.panel.parts.upTo,
-  discount: copy.panel.parts.discount,
-  third: copy.panel.parts.third,
-  thirdMin: copy.panel.parts.thirdMin,
-  thirdMax: copy.panel.parts.thirdMax,
-  refund: copy.panel.parts.refund,
-  perSecurity: copy.panel.parts.perSecurity,
-};
-
 /**
  * Where a part's body stands, and what it can do there: the fee, its case and the price (price `k` on `side`, ending at `until`, among
  * `stages`), the deal (an offset names its fees), a field's spoken name (`label`), an edit of the price (`edit`) or of the fee (`onFee`),
- * a figure's box (`box`), and the price's currency chooser with the part it stands beside (`chooserOn`).
+ * a figure's box (`box`), and the price's currency chooser, which the part it stands beside draws (`OpenPart.chooser`).
  */
 export interface PartPlace {
   fee: Fee;
@@ -73,7 +56,6 @@ export interface PartPlace {
   onFee: (f: Fee) => void;
   box: (part: PartId, f: PartField, opts?: { optional?: boolean }) => ReactNode;
   chooser: ReactNode;
-  chooserOn: PartId | null;
 }
 
 interface BodyProps {
@@ -85,7 +67,7 @@ interface BodyProps {
 const MainBody = ({ part, at }: BodyProps) => (
   <>
     {at.box(part.id, part.fields[0]!)}
-    {at.chooserOn === part.id && at.chooser}
+    {part.chooser && at.chooser}
     {quiet(bare(part.words.tail))}
   </>
 );
@@ -158,7 +140,7 @@ const UntilBody = ({ at }: BodyProps) => <MonthField value={at.until ?? null} la
 const BoundBody = ({ part, at }: BodyProps) => (
   <>
     {at.box(part.id, part.fields[0]!, { optional: true })}
-    {at.chooserOn === part.id && at.chooser}
+    {part.chooser && at.chooser}
     {quiet(bare(part.words.tail))}
   </>
 );
@@ -244,23 +226,23 @@ function OffsetChoice({ deal, fee, value, label, onChange }: { deal: FeeDeal; fe
 }
 
 /**
- * A part the toolbox added that asks, where it will stand, for what it needs (`PARTS[part].ask`): a later price its month, an offset its
- * fee, a bound or a percent maximum its figure, whose box takes the focus as it appears.
+ * A part the toolbox added that asks, where it will stand, for what it needs (`pending`, as the panel gives it: what it asks, the price it
+ * goes on, its words, its box's spoken name and sign): a later price its month, an offset its fee, a bound or a percent maximum its figure,
+ * whose box takes the focus as it appears.
  */
-export function PendingEdit({ fee, caseId, side, k, part, deal, name, later, onFee, onDone }: { fee: Fee; caseId?: string; side: Side; k: number; part: PendingPart; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; onDone: () => void }) {
-  const at = { side, k, ...(caseId ? { caseId } : {}) };
-  const label = (field: string) => copy.builder.fieldName(name, field);
-  const price = pricesOn(fee, side, caseId)[k]!.price;
-  const ask = PARTS[part].ask;
-  const figure = ask === "sum" || ask === "pct";
+export function PendingEdit({ fee, caseId, pending, deal, name, later, onFee, onDone }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; onDone: () => void }) {
+  const { part, ask, k, words, field, sign, figure } = pending;
+  const side = "buy";
+  const at = { side, k, ...(caseId ? { caseId } : {}) } as const;
+  const label = copy.builder.fieldName(name, field);
+  const asksFigure = figure !== undefined;
   // the part asks where it stands: its box takes the focus as it appears (a month's box takes it itself), above a phone's pinned sheet
   useEffect(() => {
-    if (!figure) return;
+    if (!asksFigure) return;
     const box = document.getElementById(partFieldId(fee.id, `${part}-pending`));
     box?.focus({ preventScroll: true });
     bringIntoView(box?.closest("[data-lift]"));
-  }, [fee.id, part, figure]);
-  const cur = sumCurrency(fee.kind, price);
+  }, [fee.id, part, asksFigure]);
   // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
   const done = (next: Fee, box?: string) => {
     onFee(next);
@@ -272,40 +254,34 @@ export function PendingEdit({ fee, caseId, side, k, part, deal, name, later, onF
         el?.setSelectionRange(el.value.length, el.value.length);
       });
   };
+  const tail = bare(words.tail);
   let body: ReactNode;
-  let lead: string | undefined;
   if (ask === "month") {
-    lead = bare(cp.until);
-    body = <MonthField value={null} label={label(copy.panel.until)} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
+    body = <MonthField value={null} label={label} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
   } else if (ask === "fee") {
-    lead = bare(cp.offsetOf.lead);
     body = (
       <>
-        <OffsetChoice deal={deal} fee={fee} value={null} label={label(cp.offset)} onChange={(kind) => done(setPart(fee, part, true, { ...at, against: kind }))} />
-        <span className="text-muted-foreground">{bare(cp.offsetOf.tail)}</span>
+        <OffsetChoice deal={deal} fee={fee} value={null} label={label} onChange={(kind) => done(setPart(fee, part, true, { ...at, against: kind }))} />
+        <span className="text-muted-foreground">{tail}</span>
       </>
     );
   } else {
-    lead = part === "min" ? bare(cp.min) : bare(cp.max);
-    const pct = ask === "pct";
-    const period = price.form === "held" ? (price.boundsEvery ? copy.price.per[price.boundsEvery]! : copy.panel.perCharge) : (cp.boundPer[fee.kind] ?? cp.boundPer.default);
-    // a maximum on each security says so before its period
-    const tail = pct ? (copy.price.of[fee.kind] ?? copy.price.of.default) : part === "maxPerSecurity" ? `${bare(cp.perSecurity.each)} ${period}` : period;
+    const shown = signText(sign ?? "pct");
     body = (
       <FigureField
         value={null}
-        label={label(pct ? copy.panel.cap : part === "min" ? copy.panel.min : part === "maxPerSecurity" ? copy.panel.parts.perSecurity : copy.panel.max)}
-        unit={pct ? "%" : signText(copy.panel.signs[price.form === "held" ? "ILS" : cur] ?? "₪")}
-        sign={pct ? "%" : (copy.panel.signs[cur] ?? "₪")}
+        label={label}
+        unit={shown}
+        sign={shown}
         tight
         id={partFieldId(fee.id, `${part}-pending`)}
         words={<span className="text-muted-foreground">{tail}</span>}
-        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${PARTS[part].figures[0]}`)}
+        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${figure}`)}
       />
     );
   }
   return (
-    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={lead} onRemove={onDone} removeLabel={label(dealCases.removePart)}>
+    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDone} removeLabel={copy.builder.fieldName(name, dealCases.removePart)}>
       {body}
     </PartEdit>
   );

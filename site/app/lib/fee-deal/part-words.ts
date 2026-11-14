@@ -6,7 +6,8 @@ import type { SiteValue } from "../value";
 import type { MonthKey, Note, Price } from "./model";
 import { charged, onAction } from "./offers/capabilities";
 import type { FigureUnit } from "./offers/figures";
-import type { PartId, StatedPartId, ToolPartId } from "./offers/parts";
+import type { Figure } from "./offers/figures";
+import type { PartId, PendingPart, StatedPartId, ToolPartId } from "./offers/parts";
 import type { PriceFigures } from "./values";
 import type { PriceView } from "./deal-read";
 import { type FeeKindId, type FormId } from "./shapes";
@@ -50,11 +51,34 @@ export interface PartContext {
   until?: MonthKey;
 }
 
+/** What a bound's period follows: the fee's kind, the price's form, and the months its bounds are printed for (a held share's, F-14). */
+interface BoundContext {
+  kind: FeeKindId;
+  p: { form: FormId; boundsEvery?: number };
+}
+
 /** A bound's period: per action (or per the fee's own unit), per charge for a share of what is held, or as the price list prints it. */
-const boundTail = ({ kind, view }: PartContext): string => ` ${view.form === "held" ? (view.boundsEvery ? copy.price.per[view.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
+const boundTail = ({ kind, p }: BoundContext): string => ` ${p.form === "held" ? (p.boundsEvery ? copy.price.per[p.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
 
 /** A maximum on each security's period: the price list's where it prints the bounds per month, else each charge. */
-const perSecurityTail = ({ view }: PartContext): string => `${pp.perSecurity.each}${view.form === "held" && view.boundsEvery ? ` ${copy.price.per[view.boundsEvery]}` : pp.perSecurity.charge}`;
+const perSecurityTail = ({ p }: BoundContext): string => `${pp.perSecurity.each}${p.form === "held" && p.boundsEvery ? ` ${copy.price.per[p.boundsEvery]}` : pp.perSecurity.charge}`;
+
+/** Each figure's name in its box's spoken name ("{fee}, {figure}"). */
+export const SPOKEN: Readonly<Record<Figure, string>> = {
+  rate: copy.panel.howMuch,
+  amount: copy.panel.howMuch,
+  min: copy.panel.min,
+  max: copy.panel.max,
+  cap: copy.panel.cap,
+  flat: copy.panel.parts.flat,
+  upTo: copy.panel.parts.upTo,
+  discount: copy.panel.parts.discount,
+  third: copy.panel.parts.third,
+  thirdMin: copy.panel.parts.thirdMin,
+  thirdMax: copy.panel.parts.thirdMax,
+  refund: copy.panel.parts.refund,
+  perSecurity: copy.panel.parts.perSecurity,
+};
 
 const note = (id: Note) => (): PartWords => ({ lead: pp.notes[id]! });
 
@@ -76,11 +100,11 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
     return p.third.price ? { lead: `${lead} `, ...fig(view.figures.third) } : { lead, quiet: ` ${pp.thirdNone}` };
   },
   until: ({ until }) => (until ? { lead: pp.until, month: until } : null),
-  min: (c) => (c.view.figures.min ? { lead: pp.min, figure: c.view.figures.min, tail: boundTail(c) } : null),
-  max: (c) => (c.view.figures.max ? { lead: pp.max, figure: c.view.figures.max, tail: boundTail(c) } : null),
+  min: ({ kind, view }) => (view.figures.min ? { lead: pp.min, figure: view.figures.min, tail: boundTail({ kind, p: view }) } : null),
+  max: ({ kind, view }) => (view.figures.max ? { lead: pp.max, figure: view.figures.max, tail: boundTail({ kind, p: view }) } : null),
   cap: ({ kind, view }) => (view.figures.cap ? { lead: pp.max, figure: view.figures.cap, tail: ` ${shareOf(kind)}` } : null),
   flat: ({ view }) => (view.figures.flat ? { lead: pp.flat.lead, figure: view.figures.flat, mid: pp.flat.tail, ...(view.figures.upTo ? { second: view.figures.upTo } : {}) } : null),
-  maxPerSecurity: (c) => (c.view.figures.perSecurity ? { lead: pp.max, figure: c.view.figures.perSecurity, tail: perSecurityTail(c) } : null),
+  maxPerSecurity: ({ kind, view }) => (view.figures.perSecurity ? { lead: pp.max, figure: view.figures.perSecurity, tail: perSecurityTail({ kind, p: view }) } : null),
   offset: ({ p }) => (charged(p) && p.offset ? { lead: `${pp.offsetOf.lead}${feeNameOf(p.offset.kind)}${pp.offsetOf.tail}` } : null),
   refund: ({ view }) => ({ lead: pp.refund, ...fig(view.figures.refund) }),
   unfilled: note("unfilled"),
@@ -159,4 +183,28 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   partial: () => ({ words: { lead: pp.notes.partial! } }),
   inTrade: () => ({ words: { lead: pp.notes.inTrade! } }),
   sale: () => ({ words: { lead: pp.notes.sale! } }),
+};
+
+/**
+ * A part the toolbox added that asks for what it needs, as the open case asks it: its words around the box or the choice (`words`: its
+ * lead, and the words after it), its box's spoken name (`field`), and for a figure its box's sign (a percent, or the sign of the currency
+ * the price keeps its sums in).
+ */
+export interface PendingWords {
+  words: PartWords;
+  field: string;
+  sign?: "pct" | string;
+}
+
+/** A pending sum's sign: the currency the price keeps its sums in (`sumCurrency`). */
+const sumSign = ({ kind, p }: ToolContext): string => signOf(sumCurrency(kind, p));
+
+/** Each pending part's words, its box's spoken name and its sign, as the open case asks for it on the price `p`. */
+export const PENDING: Readonly<Record<PendingPart, (c: ToolContext) => PendingWords>> = {
+  until: () => ({ words: { lead: pp.until }, field: copy.panel.until }),
+  offset: () => ({ words: { lead: pp.offsetOf.lead, tail: pp.offsetOf.tail }, field: pp.offset }),
+  min: (c) => ({ words: { lead: pp.min, tail: boundTail(c) }, field: SPOKEN.min, sign: sumSign(c) }),
+  max: (c) => ({ words: { lead: pp.max, tail: boundTail(c) }, field: SPOKEN.max, sign: sumSign(c) }),
+  cap: ({ kind }) => ({ words: { lead: pp.max, tail: ` ${shareOf(kind)}` }, field: SPOKEN.cap, sign: "pct" }),
+  maxPerSecurity: (c) => ({ words: { lead: pp.max, tail: perSecurityTail(c) }, field: SPOKEN.perSecurity, sign: sumSign(c) }),
 };

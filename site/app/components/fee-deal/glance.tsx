@@ -13,7 +13,7 @@ import type { SiteValue } from "../../lib/value";
 import { GroupHead, Section, Tag, TypedPlain, When, cx } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
-import { BannedWords, CapBlock, PriceWords, StandingWords, refName } from "./words";
+import { CapBlock, UnreadWords, PriceWords, StandingWords, refName } from "./words";
 
 /** The id of the reading's section under the columns. */
 export const READING_ID = "deal-reading";
@@ -155,7 +155,7 @@ function UnpricedLine({ fee, unmatched, noCurrency, banned }: { fee: FeeRef; unm
   return (
     <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-glance-fee={fee.fee}>
       <FeeOpen fee={fee} after={copy.price.sep} />
-      <span className="text-muted-foreground">{banned ? <BannedWords ban={banned} fee={refName(fee)} /> : noCurrency ? copy.cases.noCurrency : unmatched ? copy.cases.unmatched : copy.builder.facts.noPrice}</span>
+      <span className="text-muted-foreground"><UnreadWords banned={banned} noCurrency={noCurrency} unmatched={unmatched} fee={refName(fee)} /></span>
     </li>
   );
 }
