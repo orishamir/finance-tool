@@ -479,6 +479,10 @@ AFTER = {
 }
 
 
+# The date each scenario's independent check was last recomputed; the rest stand from 2026-10-22.
+CHECKED = {sid: '2026-11-14' for sid in ('S10', 'S25', 'S27', 'S29', 'S30', 'S34', 'S36', 'S53')}
+
+
 def section(sid, title, status, body, expected):
     SECTIONS[:] = [x for x in SECTIONS if x[0] != sid]
     SECTIONS.append((sid, title, status, body))
@@ -797,7 +801,7 @@ def s08_s09_s10():
         + f'\n\nResult: V_T = {f2(r10["V"])}; real {f2(r10["real_V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}.'
     )
     section('S10', 'CPI-linked bond under deflation', 'computed', body,
-            f'Real V_T/I_T = {f2(r10["real_V"])}; nominal V_T = {f2(r10["V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}; tax during {f2(r10["tax_during"])} (25% of the reduced coupons, TXI-25); tax at exit {f2(r10["tax_exit"])}; flag "real loss not carried, G-07".')
+            f'Real V_T/I_T = {f2(r10["real_V"])}; nominal V_T = {f2(r10["V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}; tax during {f2(r10["tax_during"])} (25% of the reduced coupons, TXI-25); tax at exit {f2(r10["tax_exit"])}; flag "real loss not carried, G-07". On the rule base the run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119), so the engine blocks it on TXG-09 and lists it, not ranked; these figures are its arithmetic with the s.120ב amounts held at 2026, which the income in the scenario never reaches.')
     return r8
 
 
@@ -1154,7 +1158,7 @@ def s27_s28_s30():
         f'| 3 | New deposits a year (≥ {f2(yr1_C)}) exceed the headroom, so the credit cap binds: credit = 35% × {f2(headroom)} | {L("TXP-01", "TXP-02")} | {f2(credit)} a year |\n'
         f'| 4 | Equal net outlay: gross deposit D_m = 300 × I_m + credit/12 (credit spread evenly; whether payroll gives it monthly is open, TXP OQ6) | method F-30 (B1); {L("TXP-02")} | D_1 = {f2(300 * path.I(1) + credit / 12)} |\n'
         f'| 4a | From 2028 the cap 116,400 grows by π each year (frozen to 2027, then the CPI rise of each year before); from 2029 it passes the salary, so the cap is 7% × 120,000 = 8,400 and the credit {f2(credit_last)} a year | {L("TXP-02", "TXG-09", "TXG-06")} | year 3 (2028): {f2(credit_k(3))}; from year 4 (2029): {f2(credit_last)} |\n'
-        f'| 5 | Beneficiary-member test (16% of average wage = 26,436, employer money counted): year 1 total {f2(tot_y1)}; year 4 with its own credit, {f2(tot_y4)}, crosses it (year 5 with the year-1 credit: {f2(tot_y5)}) — no effect: all salary is insured income, so the s.45A(e) cap is the same 8,148 and the s.47(b1) tiers are 0 | {L("TXP-03", "TXP-04", "TXP-06")} | no change |\n'
+        f'| 5 | Beneficiary-member test (16% of average wage = 26,436, employer money counted): year 1 total {f2(tot_y1)}; year 4 with its own credit, {f2(tot_y4)}, crosses it (year 5 with the year-1 credit: {f2(tot_y5)}) — no effect: all salary is insured income, so the s.45A(e) cap is the one of step 4a in each year (8,148 through 2027, {f2(0.07 * indexed(116400.0, 3, 0.02))} in 2028, 8,400 from 2029) and the s.47(b1) tiers are 0 | {L("TXP-03", "TXP-04", "TXP-06")} | no change |\n'
         f'| 6 | Selected fund fees 1% of deposits + 0.22% of balance (caps 6%, 0.5%); insurance 1.5% of deposits (entered, A-17) | {L("PEN-23", "PF-04", "PEN-15")} | — |\n'
         f'| 7 | Employer 6.5% + 6% severance = 1,250 a month, within the 7.5% and severance ceilings: not taxed at deposit | {L("PEN-03", "TXP-10", "TXP-11")} | — |\n'
         f'| 8 | No tax during; exit at 60 is an annuity whose value needs conversion factors: blocked | {L("TXP-13", "TXP-14")} (PEN OQ7) | blocked (G-03) |\n'
@@ -2175,7 +2179,7 @@ def s53():
         + f'(b) gross {f2(res["B"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; fees: balance {f2(res["fees"]["balance"])}, direct {f2(res["fees"]["direct"])}.'
     )
     section('S53', 'Israeli ETF and kupat gemel lehashkaa under CPI deflation', 'computed', body,
-            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07.')
+            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07. On the rule base the run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119), so the engine blocks it on TXG-09 and lists it, not ranked; these figures are its arithmetic with the s.120ב amounts held at 2026, which the income in the scenario never reaches.')
 
 
 def s54():
@@ -2373,7 +2377,7 @@ def main():
             continue
         new.append(line)
         if sid and line.startswith('- Expected:') and sid in RESULTS:
-            new.append(f'  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section {sid}): '
+            new.append(f'  - Independent check, {CHECKED.get(sid, "2026-10-22")} (steps in [workings.md](workings.md), section {sid}): '
                        + RESULTS[sid]['expected'])
     with open(spath, 'w', encoding='utf-8') as fh:
         fh.write('\n'.join(new))

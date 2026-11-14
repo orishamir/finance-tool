@@ -233,7 +233,8 @@ describe("invest page computation", () => {
     const f = v.options.find((o) => o.id === "tase-foreign")!.funds.find((x) => x.rec.id === "1159250")!;
     const at = f.beforeTax!.byHouse.psagot!;
     expect(Math.round(at.leftN)).toBe(165_137);
-    expect(at.accountCost.value).toBe(6_859);
+    // the account's fees: its whole part (F-91, 6,859) less what the cash waiting for a whole unit did (F-109), as the receipt writes them
+    expect(at.accountCost.value).toBe(2_750);
     // what it rests on: the fund's US tax (TXF-16) and that nothing is taxed before the sale (TXF-11, the fund's own ruling); never TXF-04
     const used = at.left.rulesUsed!.map((r) => r.id);
     expect(used).toEqual(expect.arrayContaining(["TXF-16", "TXF-11"]));
@@ -353,8 +354,11 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
       const sums = ways.map(({ fund, house, at }) => {
         const p = pairCosts({ bundle, index: ix, plan: plan({}, ret), fundId: fund, providerId: house })!;
         const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + p.waitingN + num(p.fund) + num(p.tax);
-        // the account's part is the figure a way's cost shows for the same way: its fees and, in whole units, the waiting cash (F-109)
-        expect(p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + p.waitingN).toBeCloseTo(at.accountCost, 6);
+        // a way's cost is the receipt's fees for the same way: the lines and the remainder, without the waiting cash (F-109), which the
+        // account's part holds beside them
+        expect(p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction).toBeCloseTo(at.accountCost, 6);
+        expect(p.accountFees).toBeCloseTo(at.accountCost, 6);
+        expect(p.accountFees + p.waitingN).toBeCloseTo(p.accountCost, 6);
         expect(num(p.left) + cost).toBeCloseTo(p.base, 6);
         return p.base;
       });

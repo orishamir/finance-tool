@@ -4,7 +4,7 @@
 // check's (tests/golden/expected_calc.py), never the engine's; golden() confirms each one is printed in its scenario.
 import { describe, expect, it } from "vitest";
 import { BlockedError, memberKindOf, runChildSavings, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
-import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
+import { context, golden, loadRules, withS120bAmountsHeld, withTxf04AsTheLetterCopy } from "./harness.ts";
 
 const ctx = context();
 const flagCodes = (r: RunResult) => r.flags.map((f) => f.code);
@@ -104,11 +104,18 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     expect(flagCodes(r)).toContain("G-07");
   });
 
+  // S53 reads 2028 to 2030 at a falling CPI: on the data the exit's surtax threshold is open (TXG OQ17, F-119) and the run is listed, not
+  // ranked; its arithmetic is checked with the s.120ב amounts held, which the scenario's income never reaches
+  const held = context(withS120bAmountsHeld(loadRules()));
+  const s53a = { goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fund: s14Fund, tariff: s14Tariff, profile: {} };
+  it("S53 on the data: the exit after 2027 at a falling CPI is blocked on TXG-09 (TXG OQ17), listed with its value before the exit tax", () => {
+    const r = runSecurities(s53a, ctx);
+    expect(r.outcome).toEqual({ code: "listed-not-ranked", reason: "TXG-09" });
+    expect(r.taxAtExit).toBe(0);
+    expect(() => runProvident({ wrapper: "kupat-gemel-lehashkaa", goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fees: kglFees, profile: {} }, ctx)).toThrow(BlockedError);
+  });
   it("S53 (a) Israeli ETF under CPI deflation: the inflationary amount is zero", () => {
-    const r = runSecurities(
-      { goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fund: s14Fund, tariff: s14Tariff, profile: {} },
-      ctx,
-    );
+    const r = runSecurities(s53a, held);
     const g = golden("S53");
     g.value("nominal gain", r.detail.nominalGain, 19_717.36);
     g.value("real gain", r.detail.realGain, 18_862.65);
@@ -121,7 +128,7 @@ describe("Part E: follow-ups of 2026-10-26", () => {
   it("S53 (b) kupat gemel lehashkaa under CPI deflation: the base is the nominal gain, labelled a reading", () => {
     const r = runProvident(
       { wrapper: "kupat-gemel-lehashkaa", goal: { amountNow: 20_000, monthly: 2_000, months: 60 }, market: { grossReturn: 0.06, inflation: -0.01 }, fees: kglFees, profile: {} },
-      ctx,
+      held,
     );
     const g = golden("S53");
     g.value("real gain", r.detail.realGain, 21_663.9);

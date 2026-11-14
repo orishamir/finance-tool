@@ -1,7 +1,7 @@
 // D29, second wave: the study fund, the provident fund for investing and the pensions. Every figure equals an engine run; the holding
 // on each side is the same index; a gap is a gap, never a number.
 import { describe, expect, it } from "vitest";
-import { ruleBook, runInputs, runPlanned } from "@finance-tool/engine";
+import { calendarMonthOf, ruleBook, runInputs, runPlanned, taxYearOf } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { entered as enteredValue } from "./value";
@@ -206,16 +206,24 @@ describe("pensions", () => {
       b.record,
       [b.p05],
       { ...b.terms, pension: { employment: "employee", monthlySalary: 12000, existingEmployeeRate: 0, employer: { pensionRate: 0.065, severanceRate: 0.06 } } },
-      { entered: { amount_now: enteredValue(0, "nis", b.runDate), monthly_deposit: enteredValue(m.netYou, "nis_per_month", b.runDate) }, profile: { annualIncome: 144000 }, scenarioIncome: true },
+      { entered: { amount_now: enteredValue(0, "nis", b.runDate), monthly_deposit: enteredValue(m.netYou, "nis_per_month", b.runDate) }, profile: { annualIncome: 144000 }, scenarioIncome: true, firstMonth: calendarMonthOf(b.runDate) },
     );
     expect(plan.run).toBe("runPension");
     if (plan.run !== "runPension") return;
     plan.input.goal.contributions = "nominal";
     const run = runPlanned(plan, { rules: b.rules, runDate: b.runDate }) as ReturnType<typeof runPlanned> & { deposits: number[] };
     // the same gross deposit while the caps are frozen (2026 and 2027); from 2028 the eligible-income cap grows with the CPI (F-119),
-    // so the same net outlay earns more credit and buys a larger gross deposit, up to the salary's 7%
-    for (let m0 = 1; m0 <= 24; m0++) expect(run.deposits[m0]).toBeCloseTo(m.you, 6);
-    for (let m0 = 25; m0 <= 120; m0++) expect(run.deposits[m0]).toBeGreaterThan(m.you);
+    // so the same net outlay earns more credit and buys a larger gross deposit, up to the salary's 7%. Month 1 is the run date's month, so
+    // 2028 starts on the calendar's 1 January, not 24 months after the run date
+    const yearOf = (m0: number) => Number(b.runDate.slice(0, 4)) + taxYearOf(m0, calendarMonthOf(b.runDate)) - 1;
+    const first2028 = Array.from({ length: 120 }, (_, i) => i + 1).find((m0) => yearOf(m0) === 2028)!;
+    expect(first2028).toBe(26 - calendarMonthOf(b.runDate) - 12 * (Number(b.runDate.slice(0, 4)) - 2026));
+    // the run date's own tax year holds only the months from the run date, and the year's cap is the whole year's (F-31), so its few
+    // deposits are credited in full and the same net outlay buys a larger gross deposit there; a whole frozen year buys the drawing's
+    const first2027 = Array.from({ length: 120 }, (_, i) => i + 1).find((m0) => yearOf(m0) === 2027)!;
+    for (let m0 = 1; m0 < first2027; m0++) expect(run.deposits[m0]).toBeGreaterThanOrEqual(m.you - 1e-6);
+    for (let m0 = first2027; m0 < first2028; m0++) expect(run.deposits[m0]).toBeCloseTo(m.you, 6);
+    for (let m0 = first2028; m0 <= 120; m0++) expect(run.deposits[m0]).toBeGreaterThan(m.you);
     expect(run.detail.grossDeposits).toBeGreaterThan(m.you * 12 * 10);
     expect(m.balance!.real).toBeGreaterThan(0);
     expect(m.general).toBeNull();

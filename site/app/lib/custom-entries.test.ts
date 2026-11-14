@@ -5,6 +5,7 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { beforeEach, describe, expect, it } from "vitest";
+import { calendarMonthOf } from "@finance-tool/engine";
 import { allFunds, pickOfHeadline, whyNoPrice } from "../components/invest/pair";
 import { PairLists } from "../components/invest/lists";
 import { EditorsContext, type Editors } from "../components/invest/editors";
@@ -49,8 +50,23 @@ const said = (kind: Parameters<typeof fundDraftOf>[1]) => ({ ...fundDraftOf(null
 const fund = fundFromDraft({ ...said("il-tracking"), name: "קרן שלי", fixed: 0.2, variable: 0.05, trustee: 0.02 }, "custom-fund-mine", "index-ta125", t);
 const abroad = fundFromDraft({ ...said("abroad"), name: "קרן בחו״ל שלי", fixed: 0.1 }, "custom-fund-abroad", "index-sp500", t);
 
-/** Printed by the script. */
-const EXPECTED = { cheapIl: 153279.0, dearIl: 132143.22, cheapAbroad: 150677.85, ibiIl: 148189.56, zerosIl: 154017.67 };
+type Expected = { cheapIl: number; dearIl: number; cheapAbroad: number; ibiIl: number; zerosIl: number };
+/** Printed by the script, by the calendar month of month 1: the run starts in its run date's month (F-01). */
+const EXPECTED_BY_MONTH: Record<number, Expected> = {
+  1: { cheapIl: 153279.00, dearIl: 132143.22, cheapAbroad: 150677.85, ibiIl: 148189.56, zerosIl: 154017.67 },
+  2: { cheapIl: 153271.54, dearIl: 131977.52, cheapAbroad: 150670.25, ibiIl: 148161.80, zerosIl: 154017.67 },
+  3: { cheapIl: 153272.24, dearIl: 131993.03, cheapAbroad: 150670.96, ibiIl: 148164.33, zerosIl: 154017.67 },
+  4: { cheapIl: 153272.94, dearIl: 132008.46, cheapAbroad: 150671.68, ibiIl: 148166.85, zerosIl: 154017.67 },
+  5: { cheapIl: 153273.64, dearIl: 132023.79, cheapAbroad: 150672.38, ibiIl: 148169.37, zerosIl: 154017.67 },
+  6: { cheapIl: 153274.33, dearIl: 132039.03, cheapAbroad: 150673.09, ibiIl: 148171.90, zerosIl: 154017.67 },
+  7: { cheapIl: 153275.01, dearIl: 132054.18, cheapAbroad: 150673.78, ibiIl: 148174.42, zerosIl: 154017.67 },
+  8: { cheapIl: 153275.69, dearIl: 132069.25, cheapAbroad: 150674.47, ibiIl: 148176.94, zerosIl: 154017.67 },
+  9: { cheapIl: 153276.36, dearIl: 132084.22, cheapAbroad: 150675.16, ibiIl: 148179.47, zerosIl: 154017.67 },
+  10: { cheapIl: 153277.03, dearIl: 132099.10, cheapAbroad: 150675.84, ibiIl: 148181.99, zerosIl: 154017.67 },
+  11: { cheapIl: 153277.69, dearIl: 132113.89, cheapAbroad: 150676.51, ibiIl: 148184.52, zerosIl: 154017.67 },
+  12: { cheapIl: 153278.35, dearIl: 132128.60, cheapAbroad: 150677.18, ibiIl: 148187.04, zerosIl: 154017.67 },
+};
+const EXPECTED = EXPECTED_BY_MONTH[calendarMonthOf(t)]!;
 
 const ta125 = indexById(bundle, "index-ta125")!;
 const sp = indexById(bundle, "index-sp500")!;

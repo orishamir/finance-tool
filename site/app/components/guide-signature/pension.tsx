@@ -259,6 +259,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
                 </>
               ),
               copy.pension.assume.flat,
+              copy.pension.assume.grossRises,
               hasInsurance && insurancePct === null && copy.pension.assume.noInsurance,
               copy.pension.todayMoney,
             ]}

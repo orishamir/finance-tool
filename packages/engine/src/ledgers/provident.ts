@@ -45,8 +45,8 @@ export interface ProvidentInput {
      * The salary rises with prices, as the deposits do (A-04), so each month's benefited limit is the rule's share of that
      * month's salary. The determining salary's ceiling is held at today's amount: it is not linked to the index and moves
      * only with its agreement (TXH-02). The run's deposits are then limited as a payslip's are; without this the limit stands
-     * at today's salary and a deposit exactly at the limit crosses it in the first month that prices rise (F-96). Only the
-     * limit moves: the brackets, the income they are read at and the nominal amounts read against them stay as they are.
+     * at today's salary and a deposit exactly at the limit crosses it in the first month that prices rise (F-96). The salary the
+     * brackets are read at stays as entered; the brackets themselves are each tax year's (F-119).
      * An employee's run of one kind of money with real contributions only: a split (`employerMonthly`) or flat deposits
      * would limit the deposits by a salary that does not match them.
      */
@@ -179,7 +179,8 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     book.cite("KGL-04");
     formulas.push("F-05", "F-44");
   }
-  const ceiling = kgl ? book.amount("KGL-03", "ceiling") : Infinity;
+  // F-120: KGL-03's yearly ceiling is linked to the CPI every 1 January (Provident Funds Law s.22(א)), so each tax year reads its own
+  let ceiling = kgl ? book.amount("KGL-03", "ceiling") : Infinity;
 
   const T = exitMonth;
   const first = goal.firstMonth ?? 1;
@@ -320,7 +321,8 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   for (let m = 1; m <= T; m++) {
     if (m > 1 && taxYearOf(m, first) !== taxYearOf(m - 1, first)) {
       yearTotal = 0;
-      // F-119: the self-employed benefited amount of the new tax year (as read where its figure is not frozen)
+      if (kgl) ceiling = book.inYear(taxYearOf(m, first)).amount("KGL-03", "ceiling");
+      // F-119: the self-employed benefited amount of the new tax year
       benefitedLeft = hish?.employment === "self-employed" ? book.inYear(taxYearOf(m, first)).amount("TXH-08", "self_employed_benefited") : benefitedYearly;
     }
     if (m === 1) deposit(grossDeposits[0]!, 0, C[0]!);

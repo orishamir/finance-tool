@@ -3,6 +3,7 @@
 // formula (F-31, F-32, F-53) over a sourced figure, never a number typed here. The components wrap the results in `computed(...)` value objects.
 import {
   beneficiaryRelief,
+  calendarMonthOf,
   employeeCredit,
   employerLinePension,
   withFee,
@@ -41,7 +42,7 @@ export function runWithResult(bundle: Bundle, entered: Partial<Record<P05Input, 
   try {
     const e: Partial<Record<P05Input, ValueObject>> = {};
     for (const [key, value] of Object.entries(entered) as [P05Input, number][]) if (Number.isFinite(value)) e[key] = enteredValue(value, p05Units[key], bundle.runDate);
-    const plan = runInputs(bundle.record, [bundle.p05], over.terms ?? bundle.terms, { entered: e, profile: over.profile ?? {}, scenarioIncome: true });
+    const plan = runInputs(bundle.record, [bundle.p05], over.terms ?? bundle.terms, { entered: e, profile: over.profile ?? {}, scenarioIncome: true, firstMonth: calendarMonthOf(bundle.runDate) });
     const stepped = { ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months } } } as typeof plan;
     return { run: runPlanned(stepped, { rules: bundle.rules, runDate: bundle.runDate }) };
   } catch (e) {
@@ -310,6 +311,7 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
           entered: { amount_now: enteredValue(0, "nis", bundle.runDate), monthly_deposit: enteredValue(you - relief.monthly, "nis_per_month", bundle.runDate), horizon_years: enteredValue(c.years, "years", bundle.runDate) },
           profile: { annualIncome: income },
           scenarioIncome: true,
+          firstMonth: calendarMonthOf(bundle.runDate),
         });
         if (plan.run !== "runPension") balanceGap = "no-run";
         else {

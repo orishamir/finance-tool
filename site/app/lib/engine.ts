@@ -4,6 +4,8 @@
 // with the horizon set to that year, so "what is left" at year n is what a withdrawal at year n would give.
 import {
   BlockedError,
+  calendarMonthOf,
+  s120bFallBlockedBy,
   FigureNotUpdatedError,
   MissingRuleError,
   NotEvaluatedError,
@@ -122,8 +124,12 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
       if (value !== undefined && Number.isFinite(value)) entered[key] = enteredValue(value, p05Units[key], bundle.runDate);
     }
     const profile = inputs.age === null ? {} : { ageAtStart: inputs.age };
-    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true });
+    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true, firstMonth: calendarMonthOf(bundle.runDate) });
     const ctx = { rules: bundle.rules, runDate: bundle.runDate };
+    // at a falling CPI, a withdrawal after 2027 reads that year's s.120ב amounts, which TXG OQ17 leaves open (F-119): no year is drawn, as for
+    // any open rule, rather than some years at their value before the exit tax
+    const fall = s120bFallBlockedBy(plan.input.goal, plan.input.market.inflation, ctx);
+    if (fall) return { kind: "blocked", ruleId: fall, messageHe: blockedHe };
     const horizon = plan.input.goal.months / 12;
     const years: YearPoint[] = [];
     const flags = new Set<string>();

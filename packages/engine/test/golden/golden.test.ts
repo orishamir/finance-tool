@@ -13,7 +13,7 @@ import {
   type RunResult,
   type SecuritiesInput,
 } from "../../src/index.ts";
-import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
+import { context, golden, loadRules, withS120bAmountsHeld, withTxf04AsTheLetterCopy } from "./harness.ts";
 
 const ctx = context();
 const flagCodes = (r: RunResult) => r.flags.map((f) => f.code);
@@ -232,17 +232,13 @@ describe("Part A: the ledger on single instruments", () => {
     g.done();
   });
 
+  const s10 = { goal: { amountNow: 100_000, monthly: 0, months: 36 }, market: { inflation: -0.01 }, bond: { coupon: 0.019, linkage: "cpi" as const, couponEveryMonths: 12 }, tariff: s08Tariff, profile: {} };
+  it("S10 on the data: the 2028 coupon's surtax threshold at a falling CPI is open (TXG-09, TXG OQ17), so the run does not compute", () => {
+    expect(() => runBond(s10, ctx)).toThrow(BlockedError);
+  });
   it("S10 CPI-linked bond under deflation, no floor", () => {
-    const r = runBond(
-      {
-        goal: { amountNow: 100_000, monthly: 0, months: 36 },
-        market: { inflation: -0.01 },
-        bond: { coupon: 0.019, linkage: "cpi", couponEveryMonths: 12 },
-        tariff: s08Tariff,
-        profile: {},
-      },
-      ctx,
-    );
+    // its arithmetic with the s.120ב amounts held, which the scenario's income never reaches
+    const r = runBond(s10, context(withS120bAmountsHeld(loadRules())));
     const g = golden("S10");
     // 2026-10-26: the CPI fell, so each lot's inflationary amount is zero and the nominal loss counts only beyond the fall (TXS-02).
     g.value("gain at exit", r.detail.gain, -395.95);

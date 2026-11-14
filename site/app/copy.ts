@@ -957,7 +957,8 @@ export const flags: Record<string, string> = {
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
-  "G-36": "מ־2028 מדרגות המס, הסף של המס הנוסף ותקרות ההטבות במס עולים כל שנה לפי האינפלציה שבחישוב. לא ידוע איך רשות המסים תעגל אותם ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט.",
+  // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17
+  "G-36": "מ־2028 החישוב מעלה כל שנה, לפי האינפלציה שבחישוב, את מדרגות המס, את הסף של המס הנוסף ואת הסכומים שהחוק הקפיא עד 2027 בהטבות על ההפקדות. ההכנסה שלכם נשארת בחישוב כפי שהזנתם, ולכן עם השנים חלק גדול יותר ממנה נופל במדרגות הנמוכות. סכומים שצמודים לשכר הממוצע נשארים כמו ב־2026, כי האתר לא מניח איך השכר הממוצע ישתנה. לא ידוע איך רשות המסים תעגל את הסכומים ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט. גם לא ידוע אם הסכומים יורדים כשהמדד יורד, ולכן באינפלציה שלילית אין חישוב לשנים שאחרי 2027.",
   "G-16": "בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; an unlinked piece at an exit point takes G-34 instead (method G-16)
   "G-34": "הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים, והחישוב מניח שמושכים אותו אז בתחנת יציאה עם כל הריבית שנצברה. תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון, אבל מה משלמים בה, ואם צריך להודיע מראש, קובע כל בנק בתנאי הפיקדון.", // F-41: an unlinked piece at an exit point on the last day is priced with interest to date; it can be withdrawn there without a break (BANK-27); what an exit point pays and the notice it needs are each product's terms, not in the records, and a product may pay less or more (BANK OQ20, method G-34)
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
@@ -3223,7 +3224,8 @@ export const guideSignature = {
           employeeThen: "בשנה, ולכן החל מהשנה ה־",
           self: "הפטור עוצר ב־",
           selfRise: "בשנה, והחישוב מעלה את ההפקדות",
-          selfThen: "בשנה ומשאיר את הסכום הזה כמו היום, ולכן החל מהשנה ה־",
+          // TXH-08's amount is frozen by s.120ב through 2027 and grows with prices from 2028 (F-119, F-97)
+          selfThen: "בשנה. החוק מקפיא את הסכום הזה עד 2027, והוא עולה עם המחירים רק מ־2028, ולכן החל מהשנה ה־",
           part: "חלק מההפקדות לא מקבל פטור",
           taxed: ", ויש עליו מס.",
           ifNot: "אם השכר לא עולה, זה לא קורה.",
@@ -3316,7 +3318,8 @@ export const guideSignature = {
       toGeneral: "מה שמופקד בחודש מעל התקרה של הקרן המקיפה, ועובר לקרן הכללית",
     },
     // what the balance assumes, beside the return and inflation (method F-67, "What the visual assumes")
-    assume: { flat: "ההפקדות באותו סכום בשקלים בכל השנים, בלי עליית שכר", noInsurance: "בלי דמי הביטוח, כי לא הוזנו" },
+    // the run holds the net outlay fixed in shekels; from 2028 the credit's caps grow (F-119), so the same outlay can buy a larger gross deposit
+    assume: { flat: "מה שיוצא מהכיס שלכם, אחרי הזיכוי, באותו סכום בשקלים בכל השנים, בלי עליית שכר", grossRises: "מ־2028 תקרות הזיכוי עולות עם המחירים, ולכן ההפקדה עצמה יכולה לגדול מעל הסכום החודשי שלמעלה", noInsurance: "בלי דמי הביטוח, כי לא הוזנו" },
     figures: { net: "בפועל יוצא מהכיס שלכם, אחרי הזיכוי", insurance: "דמי הביטוח בקרן הפנסיה", depositFee: "דמי ניהול מההפקדה", balance: "מה שנצבר בקרן אחרי" },
     balanceGap: { "no-fees": "אין חישוב; הסיבה למטה", "no-run": "החישוב לא הצליח עם הערכים האלה" } as Record<string, string>,
     ratesLine: { before: "ההפקדות הן המינימום לפי צו ההרחבה:", middle: "מכם,", severance: "מהמעסיק לתגמולים, ועוד", wage: "מהמעסיק לפיצויים, על שכר של עד", after: "בחודש (השכר הממוצע במשק). בהסכם העבודה שיעורי ההפקדה יכולים להיות גבוהים יותר." },
@@ -3337,7 +3340,7 @@ export const guideSignature = {
       net: "ההפקדה של העובד פחות הזיכוי ממס",
       depositFee: "דמי הניהול מההפקדה, באחוז הממוצע שדווח, מסך ההפקדות החודשי",
       insurance: "דמי הביטוח בקרן הפנסיה: האחוז שהזנתם מסך ההפקדות החודשי",
-      balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח, בכסף של היום ולפני שהקרן הופכת אותו לקצבה",
+      balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח, בכסף של היום ולפני שהקרן הופכת אותו לקצבה. מה שיוצא מהכיס שלכם אחרי הזיכוי נשאר באותו סכום בכל השנים, ולכן מ־2028, כשתקרות הזיכוי עולות, ההפקדה של העובד יכולה לגדול",
     },
   },
 } as const;
@@ -4416,7 +4419,8 @@ export const invest = {
     },
     noOtherFund: "אין קרן אחרת מהסוג הזה.",
     /** `notSplit`: a step whose cost could not be split by who takes it says so, in place of a figure (no 0 that reads as a cost of nothing). */
-    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עלות החשבון", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
+    // the account's fees, and apart from them what the cash waiting for a whole unit did (F-91, F-109), as the receipt writes them
+    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עמלות החשבון", waiting: "כסף שחיכה ליחידה שלמה", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
     hereExample: "נקודת התחלה לדוגמה:",
@@ -4549,6 +4553,8 @@ export const invest = {
      *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
     ruleOpen: {
       "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
+      // F-119 at a falling CPI (TXG OQ17)
+      "TXG-09": "אי אפשר לחשב את המס במכירה אחרי 2027 כשהאינפלציה שלילית: החוק מעדכן את מדרגות המס ואת הסף של המס הנוסף לפי עליית המדד, ולא אומר מה קורה כשהמדד יורד. זו שאלה פתוחה, ולכן אין כאן חישוב ודירוג.",
     } as Record<string, string>,
     ruleOpenOther: "אי אפשר לחשב: המס על הקרן תלוי בכלל שעוד לא ידוע, ולכן הקרן לא מדורגת.",
   },

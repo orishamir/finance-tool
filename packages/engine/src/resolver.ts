@@ -2,7 +2,7 @@
 // (rule ID, figure name) in the run's tax year. An open rule never computes; a figure past its
 // effective_to, or for another tax year, stops the run; every rule served is recorded.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
-import { freezeEnd, indexedAmount } from "./formulas/indexation.ts";
+import { amountInYear, movesBy, s120bFall, yearlyMoveOf } from "./formulas/indexation.ts";
 import type { Label, RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
@@ -25,10 +25,13 @@ export interface Bracket {
 /** A record, a parameter or an input does not make a run; the message names the field (" is missing" marks a missing input, F-83). */
 export class RecordInputError extends Error {}
 
-/** A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). */
+/**
+ * A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). `question` names the open question
+ * when the rule is settled but the case at hand is not (an s.120ב amount after its freeze while the CPI falls: TXG-09, "TXG OQ17").
+ */
 export class BlockedError extends Error {
-  constructor(readonly ruleId: string) {
-    super(`${ruleId} is open in il-finance; it does not compute (D10)`);
+  constructor(readonly ruleId: string, readonly question?: string) {
+    super(`${ruleId}${question ? ` (${question})` : ""} is open in il-finance; it does not compute (D10)`);
   }
 }
 
@@ -78,16 +81,17 @@ export interface RuleBook {
   used(): UsedRule[];
   labels(): Label[];
   /**
-   * F-119: the same rules read in the run's tax year `year` on its grid (1 = the run's own, `taxYearOf`): a money figure or a band's bound
-   * that s.120ב freezes (`update_rule` "frozen YYYY-YYYY") is indexed past its freeze by the run's inflation (`RunYears`); every other
-   * figure is as read. What the view reads is recorded with the book's.
+   * F-119, F-120: the same rules read in the run's tax year `year` on its grid (1 = the run's own, `taxYearOf`): a money figure or a band's
+   * bound that s.120ב freezes (`update_rule` "frozen YYYY-YYYY") is indexed past its freeze, and one linked to the CPI every 1 January
+   * ("cpi-linked 1 jan") past the year read, by the run's inflation (`RunYears`); every other figure is as read. What the view reads is
+   * recorded with the book's.
    */
   inYear(year: number): RuleBook;
   /** F-119: the calendar years after a freeze in which an indexed figure was read (method G-36), in order. */
   indexedYears(): number[];
 }
 
-/** F-119: what a ledger tells its book so a figure can be read in a later tax year: the run's CPI assumption (A-02, F-03). */
+/** F-119, F-120: what a ledger tells its book so a figure can be read in a later tax year: the run's CPI assumption (A-02, F-03). */
 export interface RunYears {
   /** A-02, a fraction a year. */
   inflation: number;
@@ -143,13 +147,20 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     return percentUnits.has(v.unit) ? v.value / 100 : v.value;
   }
 
-  /** F-119: a money figure as it stands in calendar year `year`; the run's own year reads it as it is. */
+  /**
+   * A money figure as it stands in calendar year `year`, by the update its record names: F-119 for an amount s.120ב freezes, F-120 for one
+   * linked to the CPI every 1 January; any other kind, and the run's own year, read it as it is. An s.120ב amount past its freeze at a
+   * falling CPI is open (TXG OQ17) and does not compute.
+   */
   function inYearOf(id: string, name: string, v: ValueObject, amount: number, year: number): number {
-    const frozenTo = freezeEnd(v.update_rule);
-    if (year === runYear || frozenTo === null || year <= Math.max(runYear, frozenTo)) return amount;
-    if (!years) throw new Error(`F-119: ${id} ${name} is read for ${year}, after its freeze, and the run gave its book no inflation (RunYears)`);
-    indexed.add(year);
-    return indexedAmount(amount, runYear, frozenTo, year, years.inflation);
+    const move = yearlyMoveOf(v.update_rule);
+    if (move === null || !movesBy(move, runYear, year)) return amount;
+    if (!years) throw new Error(`F-119/F-120: ${id} ${name} is read for ${year}, after the year it was read for, and the run gave its book no inflation (RunYears)`);
+    if (move.kind === "frozen") {
+      if (years.inflation < 0) throw new BlockedError(s120bFall.ruleId, s120bFall.question);
+      indexed.add(year);
+    }
+    return amountInYear(move, amount, runYear, year, years.inflation);
   }
 
   function bookFor(taxYear: number): RuleBook {
