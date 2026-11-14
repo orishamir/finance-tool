@@ -129,7 +129,7 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
           <MixedName>{x.short}</MixedName>
         </TextLink>
         <span className="flex flex-wrap gap-1.5 empty:hidden">
-          <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+          <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod, joiningOpen: x.joiningOpen }} />
           {showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
         </span>
       </span>
@@ -154,7 +154,7 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
         </TextLink>
       )}
       <span className="flex flex-wrap gap-1.5 empty:hidden">
-        <TrackLabels track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+        <TrackLabels track={{ inception: x.inception, reportPeriod: x.reportPeriod, joiningOpen: x.joiningOpen }} />
       </span>
     </span>
   );
@@ -171,7 +171,7 @@ function CompactName({ x, notes }: { x: TbTrack; notes: RowNotes }) {
       </TextLink>
       {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
       <span className="flex flex-wrap gap-1.5 empty:hidden pt-0.5">
-        <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+        <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod, joiningOpen: x.joiningOpen }} />
       </span>
     </span>
   );
@@ -209,7 +209,7 @@ function FoldedPhoneRow({ x, notes }: { x: TbTrack; notes: RowNotes }) {
   return (
     <ProductPhoneFold name={<MixedName>{x.short}</MixedName>} figure={<TrackFeeLines fee={x.fee} inline />} label={gershayim(x.fullName)}>
       <span className="flex flex-wrap gap-1.5 empty:hidden">
-        <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+        <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod, joiningOpen: x.joiningOpen }} />
         {showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
       </span>
       <TrackFeeLines deposit={x.deposit} inline />
@@ -244,7 +244,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
             </>
           )}
           <span className="flex flex-wrap gap-1.5 empty:hidden">
-            <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+            <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod, joiningOpen: x.joiningOpen }} />
             {by === "company" && showsKindChip(x) && <Tag>{gershayim(x.sub)}</Tag>}
           </span>
         </span>

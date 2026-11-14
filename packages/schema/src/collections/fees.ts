@@ -105,9 +105,14 @@ export const feeLine = z.strictObject({
    * list prints the figure with no scope (`unstated`). Required on a custody line with a maximum (the data check, on a house's latest record).
    */
   max_per: z.enum(["security", "deposit", "unstated"]).optional(),
+  /**
+   * data-schema §3.6a item 2: where the scope is read from another document of the house than the one `max` quotes (the house's own sheet in
+   * TASE's fee calculator, which the house fills, BRK-24), that document's place, the house's own words and the day it was read.
+   */
+  max_per_source: source.extend({ ...place, quote: z.string().min(1).max(240), checked: isoDate }).optional(),
   /** data-schema §3.6a item 2: a second maximum on the whole deposit, printed beside a `max` on each security (unit `nis`, with its quote). */
   max_deposit: feeValue.optional(),
-  /** data-schema §3.6a item 3: a conversion priced by its size, step by step from the smallest (`fx` lines). */
+  /** data-schema §3.6a item 3: a conversion priced by its size, step by step from the smallest (`fx` lines); no page reads the steps yet. */
   size_tiers: z.array(sizeTier).min(1).optional(),
   /**
    * data-schema §3.6a item 4: a fixed fee that the trade fees charged in the same month reduce, never below zero (`fixed_period` lines), with the
@@ -301,7 +306,7 @@ export const advertisingEntry = z.strictObject({
 /**
  * data-schema §3.6a item 5: a place where the house's document says a third party's fee may be charged on top of its own. `fee` names the kind
  * of fee, `venues` the markets where the words name them, `ceiling` the most the document prints it may be (a value object) or `null` where it
- * prints none ("לפי הגביה בפועל"). `words_he` is the document's words. Read by no price: the page states it beside the house.
+ * prints none ("לפי הגביה בפועל"). `words_he` is the document's words. Read by no price and shown by no page yet (no record carries one).
  */
 export const thirdPartyEntry = z.strictObject({
   fee: z.enum(["trade", "custody", "conversion", "transfer", "corporate_event", "other"]),
@@ -313,10 +318,10 @@ export const thirdPartyEntry = z.strictObject({
 
 /**
  * data-schema §3.6 (BRK-38): the funds a house sells fund by fund, under the distribution agreements their managers report. `applies_to`: the
- * classes whose availability the agreements decide for each fund. `searched` is the search that found the reports, so "no report names
- * the fund" is a sourced statement. Each report names, as strings, every fund number it lists (the products defined by religious law left
- * out); `ends` is the report that ends the agreement, where one was found. A fund a report that has not ended names is sold there; any other
- * fund of the class is not, as of `searched.checked`.
+ * classes whose availability the agreements decide for each fund. `searched` is the search that found the reports. Each report names, as
+ * strings, every fund number it lists (the products defined by religious law left out); `ends` is the report that ends the agreement, where
+ * one was found. A fund a report that has not ended names is sold there. Whether any other fund of the class is sold there stays open: the
+ * search is a lead, not the house's list, and `unnamed` holds what a page says of such a fund (its reason, its rules and open questions).
  */
 export const distributionReport = z.strictObject({
   url: z.string().min(1),
@@ -334,6 +339,7 @@ export const distributionAgreements = z.strictObject({
   distributor_he: z.string().min(1),
   searched: z.strictObject({ url: z.string().min(1), words: z.string().min(1), checked: isoDate, result: z.string().min(1) }),
   reports: z.array(distributionReport),
+  unnamed: z.strictObject({ reason_he: z.string().min(1), rule_ids: ruleIds.min(1), open_questions: z.array(z.string().regex(/^[A-Z0-9]+-OQ\d+$/)).min(1) }),
 });
 
 export const feesSnapshot = z.strictObject({
@@ -416,7 +422,7 @@ export const feesSnapshot = z.strictObject({
   groups: feeGroups.optional(),
   /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */
   advertising: z.array(advertisingEntry).optional(),
-  /** data-schema §3.6a item 5: where the house's document says third parties' fees may be added to its own; read by no price. */
+  /** data-schema §3.6a item 5: where the house's document says third parties' fees may be added to its own; read by no price, shown by no page yet. */
   third_party: z.array(thirdPartyEntry).optional(),
   /** data-schema §3.6 (BRK-38): the funds the house sells fund by fund, under its distribution agreements. */
   distribution_agreements: distributionAgreements.optional(),

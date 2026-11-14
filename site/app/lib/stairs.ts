@@ -58,6 +58,8 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
       const w = byFund.get(f);
       const at = w?.byHouse[a];
       if (at && "availability" in at && at.availability) return "u";
+      // open for this fund (a house that sells the kind fund by fund, and no report names it): a doubt, never "not sold"
+      if (at && "doubt" in at && at.doubt) return "d";
       // a conversion the person left empty is a price not known, not a doubt of the documents
       const s = snap.get(a), o = optionOf.get(f)!;
       return w && doubtOf(s, o) && !leftEmpty(s, o) ? "d" : "n";

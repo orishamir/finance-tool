@@ -1,9 +1,9 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
-import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
+import { currentAccountInterest, currentAccountMonthlyRate, depositGrowth, interestOver, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
-import type { RunContext, RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type RunContext, type RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
 import { NotEvaluatedError } from "./securities.ts";
 
@@ -108,7 +108,7 @@ export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<De
  * and at one of its exit points (what an exit point pays is not in the records). Neither flag changes an amount.
  */
 export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
-  return acrossReadings(ctx, (c) => runDepositUnder(input, c));
+  return acrossReadings(ctx, (c) => runDepositUnder(input, c), RUN_RESULT_FIELDS);
 }
 
 /** `runDeposit` under the readings `ctx` holds (method §13). */
@@ -127,14 +127,15 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   const facts = { basis: deposit.rateBasis, termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
   // interest paid out at a rate quoted as effective is not in the method (F-21, G-37)
   if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("G-37");
-  // F-21: a term of a year or more compounds at a rate only the product's own terms give (BANK-50's m); where the record gives none, or
-  // its printed pair leaves the run's rate open, the run stops
-  if (!isCurrentAccount && depositInterest(1, deposit.rate, n, n, facts) === null) throw new NotEvaluatedError("BANK-OQ21");
+  // F-21: how the term's interest grows, worked out once for the run; a term over a year compounds at a rate only the product's own terms
+  // give (BANK-50's m), and where the record gives none, or its printed pair leaves the run's rate open, the run stops
+  const growth = isCurrentAccount ? null : depositGrowth(deposit.rate, n, facts);
+  if (!isCurrentAccount && growth === null) throw new NotEvaluatedError("BANK-OQ21");
   // F-21: interest paid out during the term is paid every month and taxed in the month it is paid (TXI-07, TXI-08)
   const paysMonthly = !isCurrentAccount && deposit.interestPaidOut === true;
   // F-26: the current account's month at the rate its crediting gives, or F-07's convention; F-07's month itself at an effective rate
   const accountMonth = effective ? annualToMonthly(deposit.rate) : currentAccountMonthlyRate(deposit.rate, deposit.interestCalc);
-  const termInterest = (principal: number, months: number) => (isCurrentAccount ? currentAccountInterest(principal, Math.pow(1 + accountMonth, months) - 1) : depositInterest(principal, deposit.rate, months, n, facts)!);
+  const termInterest = (principal: number, months: number) => (growth === null ? currentAccountInterest(principal, Math.pow(1 + accountMonth, months) - 1) : interestOver(growth, principal, months));
 
   // The bank withholds when it pays the interest, at maturity or, for interest paid out, each month (TXI-07, TXI-08): 25% of the real
   // interest on a fully linked deposit with linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03).
@@ -176,7 +177,7 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
     if (paysMonthly) {
       for (const d of open) {
         const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
-        const interest = depositInterest(indexed, deposit.rate, 1, n, facts)!;
+        const interest = termInterest(indexed, 1);
         const tax = rate * interest;
         totalInterest += interest;
         yearTaxable += interest;

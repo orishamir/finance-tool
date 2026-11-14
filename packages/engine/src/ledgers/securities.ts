@@ -4,10 +4,11 @@
 import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, dayAfter, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
+import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
-import type { Outcome, RunContext, RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, totalUnits, type Lot } from "./lots.ts";
 
@@ -275,7 +276,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
     throw new Error("F-118: the run's exit tax is not blocked by an open rule; its value is runSecurities's");
   }
   if (input.wrapper || input.carriedLoss) throw new Error("F-118 reads a securities account alone, with no wrapper and no carried loss");
-  const r = acrossReadings(ctx, (c) => securitiesLedger(input, c, rule));
+  const r = acrossReadings(ctx, (c) => securitiesLedger(input, c, rule), RUN_RESULT_FIELDS);
   return {
     exitMonth: r.exitMonth,
     paidIn: r.paidIn,
@@ -307,7 +308,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
-  return acrossReadings(ctx, (c) => securitiesLedger(input, c, null));
+  return acrossReadings(ctx, (c) => securitiesLedger(input, c, null), RUN_RESULT_FIELDS);
 }
 
 /**
@@ -378,11 +379,11 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     tally.flag("TXF-OQ7");
   }
   const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
-  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate: from the first month that starts on or after
-  // its first day to the month before the one the day after its last day falls in, so a month it covers in part pays the fee's own rate
-  const lowered = (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: d[p.part]! - p.rate, from: p.from <= ctx.runDate ? 1 : monthOfDate(ctx.runDate, p.from) + 1, until: monthOfDate(ctx.runDate, dayAfter(p.to)) }));
-  if (lowered.some((p) => p.until > p.from)) formulas.push("F-121");
-  const deltaAt = (m: number) => lowered.reduce((x, p) => (m >= p.from && m < p.until ? x - p.cut : x), delta);
+  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate; a part already at or below that rate (a variable
+  // fee priced at what the fund charged, F-92 (b)) stays as it is, so a promotion never raises the drag
+  const promoted = promotedDrag(delta, (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: Math.max(0, d[p.part]! - p.rate), from: p.from, to: p.to })), ctx.runDate);
+  if (promoted.applies) formulas.push("F-121");
+  const deltaAt = promoted.at;
   const spread = fund.halfSpread ?? 0;
   if (spread > 0) book.cite("ETF-06");
 
@@ -509,6 +510,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
         // domicile before the run (instruments.server.ts, fund-variants.ts), so reaching here is a caller's error.
         throw new Error("F-20: a distributing foreign fund needs its domicile (us or ireland) for the foreign withholding");
       }
+      // A distribution at a foreign broker is not withheld in Israel: its advance is due by 30 April of the next year (TXF-21).
       if (atForeignBroker) tally.flag("TXF-21");
     } else {
       israeliDistRate = book.rate("TXS-10", "rate");
@@ -723,7 +725,8 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (realGain < 0) tally.flag("G-07");
     tally.flag("G-20");
     if (isForeign && !fund.distribution && !fund.saleOnlyRuling && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
-    if (atForeignBroker) tally.flag("TXF-21");
+    // A sale at a foreign broker is not withheld in Israel: the gain is reported, and its advance paid, by 31 July and 31 January (TXF-22).
+    if (atForeignBroker) tally.flag("TXF-22");
   }
 
   return tally.result(book, {

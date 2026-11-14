@@ -571,7 +571,7 @@ describe("F-65 fund variants on a five-row fixture list", () => {
     snapshot: "2026-10-23",
     source: { url: "https://example.test/list", title: "fixture list", publisher: "fixture", strength: "primary" as const },
     checked: "2026-10-23",
-    terms_of_use: { status: "confirmed" as const, fallback: "n/a" },
+    terms_of_use: { terms_url: "https://example.test/terms", read_on: "2026-10-23", attribution: "fixture" },
     raw: { archive_key: "fixture", sha256: "0".repeat(64) },
   };
   const israeliList: FundListFile = fundListFile.parse({

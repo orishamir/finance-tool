@@ -4,20 +4,15 @@
 // state. Pure: no storage; the bundle is fetched once.
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { flags as flagCopy, formulaNames } from "../copy";
+import { formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
 
-// Names the number sheet shows for the formulas and gaps of this release (copy.md 3.8 style: the code stays beside the words).
+// Names the number sheet shows for the formulas of this release (copy.md 3.8 style: the code stays beside the words).
 Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
-Object.assign(flagCopy, {
-  "G-18": "קרן זרה שאינה מחלקת: רשות המסים לא אישרה שהיא ממוסה רק במכירה. האתר מחשב לפי מקור משני ולא מדרג.",
-  "G-29": "לקרנות זרות הנסחרות בחו״ל אין רשימה מלאה: האתר משווה את אלה שאסף אחת־אחת, והשאר הן שורה אחת.",
-  "F-18": "העמלה על חלוקת רווחים עוד לא מחושבת, ולכן התוצאה חלקית.",
-});
 
 // ---------------------------------------------------------------- the data (providers.server.ts)
 
@@ -41,23 +36,60 @@ export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
 }
 
 /**
- * The same, for the indices page, which asks each fund of a house's distribution agreements (BRK-38, `agreementOf`): the lines of the classes
- * the agreements decide fund by fund stay, and a fund no report names is not sold there (invest.ts).
+ * The same, for the indices page, which asks each fund of a house's distribution agreements (BRK-38, `fundByFundOf`): the lines of the classes
+ * the agreements decide fund by fund stay, so a fund a report names is priced there (invest.ts).
  */
 export function onlyWhatCanBeDoneFundByFund<S extends FeesSnapshot>(s: S): S {
-  return keepLines(s, agreedClasses(s));
+  return keepLines(s, s.distribution_agreements?.applies_to ?? []);
 }
 
-/** The classes a house sells fund by fund, under the distribution agreements its record holds (data-schema §3.6). */
-export const agreedClasses = (s: Pick<FeesSnapshot, "distribution_agreements">): readonly string[] => s.distribution_agreements?.applies_to ?? [];
+/**
+ * What the indices page reads of a house's distribution agreements (BRK-38, data-schema §3.6), built at build time from the record
+ * (`fundByFundOf`), the reports themselves staying on the server: the classes they decide fund by fund, the site's own fund numbers a report
+ * of an agreement in force names (`named`), the search that found the reports, and what the page says of a fund none names (`unnamed`).
+ */
+export interface FundByFund {
+  applies_to: string[];
+  named: string[];
+  search: { url: string; title: string; checked: string };
+  unnamed: { reason_he: string; rule_ids: string[]; open_questions: string[] };
+}
+
+/** A house's snapshot as the indices bundle ships it: the record with only what the page reads (`shippedSnapshot`). */
+export type BundleSnapshot = Omit<FeesSnapshot, "distribution_agreements"> & { fundByFund?: FundByFund };
+
+/** The classes a house sells fund by fund, under the distribution agreements its record holds. */
+export const agreedClasses = (s: Pick<BundleSnapshot, "fundByFund">): readonly string[] => s.fundByFund?.applies_to ?? [];
 
 /**
- * Whether a house sells a fund of a class it sells fund by fund: the report of an agreement that has not ended naming the fund's number, or
- * null where none does; undefined where the house does not decide the class fund by fund.
+ * `FundByFund` from a record: the fund numbers of `siteFunds` that a report of an agreement that has not ended names, the search titled by
+ * `searchTitle`. Null where the record holds no agreements.
  */
-export function agreementOf(s: Pick<FeesSnapshot, "distribution_agreements">, cls: string, fundNumber: string): NonNullable<FeesSnapshot["distribution_agreements"]>["reports"][number] | null | undefined {
-  if (!agreedClasses(s).includes(cls)) return undefined;
-  return s.distribution_agreements!.reports.find((r) => !r.ends && r.funds.includes(fundNumber)) ?? null;
+export function fundByFundOf(s: Pick<FeesSnapshot, "distribution_agreements">, siteFunds: ReadonlySet<string>, searchTitle: (distributor: string) => string): FundByFund | null {
+  const da = s.distribution_agreements;
+  if (!da) return null;
+  const inForce = new Set(da.reports.filter((r) => !r.ends).flatMap((r) => r.funds));
+  return {
+    applies_to: [...da.applies_to],
+    named: [...siteFunds].filter((n) => inForce.has(n)).sort(),
+    search: { url: da.searched.url, title: searchTitle(da.distributor_he), checked: da.searched.checked },
+    unnamed: { reason_he: da.unnamed.reason_he, rule_ids: [...da.unnamed.rule_ids], open_questions: [...da.unnamed.open_questions] },
+  };
+}
+
+/** The line fields no calculation or line of the indices page reads (data-schema §3.6a): the record keeps them for the pages that show them. */
+const NOT_SHIPPED = ["size_tiers", "max_per", "max_per_source", "max_deposit", "offset", "collection"] as const;
+
+/** A snapshot as the indices bundle ships it: its agreements read for the site's funds (`fundByFundOf`), and its lines without `NOT_SHIPPED`. */
+export function shippedSnapshot(s: FeesSnapshot, siteFunds: ReadonlySet<string>, searchTitle: (distributor: string) => string): BundleSnapshot {
+  const { distribution_agreements: _da, ...rest } = s;
+  const byFund = fundByFundOf(s, siteFunds, searchTitle);
+  const lines = s.lines.map((l) => {
+    const kept = { ...l };
+    for (const k of NOT_SHIPPED) delete kept[k];
+    return kept;
+  });
+  return { ...rest, lines, ...(byFund ? { fundByFund: byFund } : {}) };
 }
 
 function keepLines<S extends FeesSnapshot>(s: S, fundByFund: readonly string[]): S {
@@ -74,8 +106,8 @@ function keepLines<S extends FeesSnapshot>(s: S, fundByFund: readonly string[]):
 
 export interface IndicesBundle {
   today: string;
-  /** The latest snapshot of each provider in `data/fees/`. */
-  snapshots: FeesSnapshot[];
+  /** The latest snapshot of each bank and broker in `data/fees/`, with only what the page reads (`shippedSnapshot`). */
+  snapshots: BundleSnapshot[];
   funds: FundRecord[];
   exposures: ExposureRecord[];
   /** The latest saved file of each fund list in `data/fund-lists/` (none until the lists are collected and cleared for use). */
@@ -295,14 +327,18 @@ export type NotComparable =
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
   | { code: "line-without-value"; detail: string; lineName: string | null }
+  /** F-12: the line prints its bound in the trade's currency for other currencies only (`trade_currencies`): its name, the trade's currency, its list. */
+  | { code: "not-printed-for-currency"; detail: string; lineName: string | null; currency: string; printed: string[] }
   /** E2, E5: a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
   /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
   | { code: "other-venue"; venue: "us" | "europe" }
   /** the run would rest on a rule that is open (F-04: a TASE foreign fund's tax index, TXF-04): nothing is computed after tax or ranked; the
-   *  indices page shows such a fund's figures before tax beside it (F-118). */
-  | { code: "rule-open"; ruleId: string };
+   *  indices page shows such a fund's figures before tax beside it (F-118). `question`: the open question that stopped the run, its
+   *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of
+   *  the case exists (G-38). */
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {

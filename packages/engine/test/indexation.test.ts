@@ -5,7 +5,12 @@ import { cpiLinkedAmount, freezeEnd, indexedAmount, yearlyMoveOf } from "../src/
 import { BlockedError, ruleBook } from "../src/resolver.ts";
 import { fallReadings, OpenReadingError, openReadingOf, sameResult, stoppedOnQuestion } from "../src/open-readings.ts";
 import { runProvident } from "../src/ledgers/provident.ts";
+import { runPension } from "../src/ledgers/pension.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
+import { runChildSavings } from "../src/ledgers/child-savings.ts";
+import { PROVIDENT_RESULT_FIELDS } from "../src/ledgers/provident.ts";
+import { EMPLOYER_LINE_FIELDS, PENSION_RESULT_FIELDS } from "../src/ledgers/pension.ts";
+import { RUN_RESULT_FIELDS, type ResultFields } from "../src/result.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context(); // run date 2026-10-23: grid year 1 is 2026
@@ -129,10 +134,53 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(kgl(20_000).flags.map((f) => f.code)).toContain("KGL-OQ15");
   });
 
-  it("keeps two runs that agree number for number, and tells apart two that do not", () => {
-    expect(sameResult({ a: 1, b: [2, 3], flags: [{ code: "x" }] }, { a: 1, b: [2, 3], flags: [] })).toBe(true);
-    expect(sameResult({ a: 1, b: [2, 3] }, { a: 1, b: [2, 3.01] })).toBe(false);
-    expect(sameResult({ outcome: { code: "eligible" } }, { outcome: { code: "listed-not-ranked" } })).toBe(false);
+  it("compares the readings on a run's outputs, not its working: a pension whose capping tax differs by reading but whose relief does not", () => {
+    // salary 8,000, 6% of it (480 a month) for 10 years at −1%: from 2028 the brackets differ by reading, so the year's tax the credit is
+    // capped at differs, but the credit stays under it in every reading, so the balances, the relief and the tax paid are the same
+    const r = runPension(
+      {
+        wrapper: "provident-for-annuity",
+        goal: { amountNow: 0, monthly: 480, months: 120, contributions: "nominal", firstMonth: 1 },
+        market: { grossReturn: 0.05, inflation: -0.01 },
+        fees: { deposit: 0, balance: 0, direct: 0.001 },
+        insurance: { rate: 0 },
+        pension: { employment: "employee", monthlySalary: 8_000, existingEmployeeRate: 0 },
+        profile: {},
+      },
+      ctx,
+    );
+    expect(stoppedOnQuestion(r)).toBeNull();
+    expect(r.flags.map((f) => f.code)).toContain("TXG-OQ17");
+    expect(r.working.years.every((y) => !y.creditCap.binds)).toBe(true);
+    expect(r.nominal).toBeGreaterThan(0);
+  });
+
+  it("keeps two runs that agree number for number on the outputs their type declares, and tells apart two that do not", () => {
+    type R = { a: number; b: number[]; outcome?: { code: string }; flags: { code: string }[]; working?: { tax: number } };
+    const fields: ResultFields<R> = { a: "output", b: "output", outcome: "output", flags: "trail", working: "working" };
+    expect(sameResult<R>({ a: 1, b: [2, 3], flags: [{ code: "x" }] }, { a: 1, b: [2, 3], flags: [] }, fields)).toBe(true);
+    expect(sameResult<R>({ a: 1, b: [2, 3], flags: [] }, { a: 1, b: [2, 3.01], flags: [] }, fields)).toBe(false);
+    expect(sameResult<R>({ a: 1, b: [], flags: [], outcome: { code: "eligible" } }, { a: 1, b: [], flags: [], outcome: { code: "listed-not-ranked" } }, fields)).toBe(false);
+    // the working is left out, by its declaration, not by its name: a field named so inside an output is compared
+    expect(sameResult<R>({ a: 1, b: [], flags: [], working: { tax: 1 } }, { a: 1, b: [], flags: [], working: { tax: 2 } }, fields)).toBe(true);
+    expect(sameResult({ a: { working: 1 } }, { a: { working: 2 } }, { a: "output" })).toBe(false);
+  });
+
+  it("compares a field a result gains unless its type declares it working: a new output counts until it is declared otherwise", () => {
+    // a field the declaration does not name, as a run's result would carry before its type's declaration lists it, is compared
+    const a = { ...({ nominal: 100, flags: [] } as const), gained: 1 };
+    const b = { ...({ nominal: 100, flags: [] } as const), gained: 2 };
+    const declared = { nominal: "output", flags: "trail" } as const;
+    expect(sameResult(a, b, declared as ResultFields<typeof a>)).toBe(false);
+    expect(sameResult(a, b, { ...declared, gained: "working" })).toBe(true);
+    // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise)
+    for (const fields of [RUN_RESULT_FIELDS, PROVIDENT_RESULT_FIELDS, PENSION_RESULT_FIELDS, EMPLOYER_LINE_FIELDS]) {
+      for (const role of Object.values(fields)) expect(["output", "trail", "working"]).toContain(role);
+    }
+    expect(Object.entries(PENSION_RESULT_FIELDS).filter(([, role]) => role === "working").map(([k]) => k)).toEqual(["working"]);
+    expect(Object.keys(RUN_RESULT_FIELDS).sort()).toEqual(
+      ["detail", "exitMonth", "fees", "feesCarried", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "taxAtExit", "taxDuring", "waitingCarried"],
+    );
   });
 });
 
@@ -150,6 +198,35 @@ describe("F-120 an amount linked to the CPI every 1 January", () => {
     expect(() => ruleBook(ctx, { inflation: -0.01 }).inYear(3).amount("KGL-03", "ceiling")).toThrow(OpenReadingError);
     expect(ruleBook({ ...ctx, readings: { "KGL OQ15": "lower" } }, { inflation: -0.01 }).inYear(3).amount("KGL-03", "ceiling")).toBeCloseTo(83_641 * 0.99 ** 2, 6);
     expect(ruleBook({ ...ctx, readings: { "KGL OQ15": "hold" } }, { inflation: -0.01 }).inYear(3).amount("KGL-03", "ceiling")).toBe(83_641);
+  });
+  it("stops a figure linked to the CPI every 1 January of a rule no open reading covers, at a falling CPI, on its rule with the method gap (G-38)", () => {
+    // CS-04's monthly addition is linked every 1 January; no open question names a fall for it, and the method has no reading
+    expect(ruleBook(ctx, { inflation: 0.02 }).inYear(2).amount("CS-04", "monthly_addition")).toBeCloseTo(58 * 1.02, 9);
+    try {
+      ruleBook(ctx, { inflation: -0.01 }).inYear(2).amount("CS-04", "monthly_addition");
+      expect.unreachable();
+    } catch (e) {
+      expect(e).toBeInstanceOf(BlockedError);
+      expect(e).toMatchObject({ ruleId: "CS-04", gap: "G-38" });
+      expect((e as Error).message).toContain("G-38");
+    }
+  });
+  it("reads child savings' deposits and grants for later years through the rule book, so a falling CPI stops the run on G-38 (F-54)", () => {
+    const input = { route: "provident" as const, doubling: true, sex: "girl" as const, months: 36, market: { grossReturn: 0, inflation: 0.02 } };
+    // at no return and 2% a year: 116 a month in 2026, 116 × 1.02 in 2027 and 116 × 1.02² in 2028, and the age-3 grant on the birthday
+    // that opens 2029, 291 × 1.02³
+    const r = runChildSavings(input, ctx);
+    expect(r.grants).toEqual([{ month: 36, amount: expect.closeTo(291 * 1.02 ** 3, 9) }]);
+    expect(r.detail.grossBalance).toBeCloseTo(12 * 116 * (1 + 1.02 + 1.02 ** 2) + 291 * 1.02 ** 3, 6);
+    // the first year reads the amounts as they are at any CPI; from the second, a fall has no reading: the run stops on CS-03 naming G-38
+    expect(runChildSavings({ ...input, months: 12, market: { grossReturn: 0, inflation: -0.01 } }, ctx).detail.grossBalance).toBeCloseTo(12 * 116, 9);
+    try {
+      runChildSavings({ ...input, market: { grossReturn: 0, inflation: -0.01 } }, ctx);
+      expect.unreachable();
+    } catch (e) {
+      expect(e).toBeInstanceOf(BlockedError);
+      expect(e).toMatchObject({ ruleId: "CS-03", gap: "G-38" });
+    }
   });
   it("lets a kupat gemel lehashkaa take the year's ceiling: a deposit of the 2027 ceiling in 2027 is all accepted", () => {
     // 85,000 a year in January of each year (2026 grid, run date 2026-10-23, month 1 = January): 2026's ceiling is 83,641, so 1,359 is

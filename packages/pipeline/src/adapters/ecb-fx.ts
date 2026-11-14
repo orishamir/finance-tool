@@ -54,8 +54,6 @@ export function buildSeries(day: EcbDay, ctx: BuildCtx): SeriesRecord {
     cadence: "daily",
     stale_after_days: 5,
     terms_of_use: {
-      status: "confirmed",
-      fallback: "none needed",
       terms_url: TERMS_URL,
       read_on: "2026-10-25",
       attribution: "הבנק המרכזי האירופי (ECB), שערי הייחוס היומיים של האירו. הנתונים מועתקים כפי שפורסמו; החישובים באתר (שער בשקלים ליחידת מטבע) הם חישוב של האתר ולא של הבנק המרכזי האירופי.",
@@ -126,8 +124,6 @@ export function buildMonthSeries(rates: MonthRate[], ctx: BuildCtx): SeriesRecor
     cadence: "monthly",
     stale_after_days: 45,
     terms_of_use: {
-      status: "confirmed",
-      fallback: "none needed",
       terms_url: TERMS_URL,
       read_on: "2026-10-25",
       attribution: "הבנק המרכזי האירופי (ECB), שערי הייחוס של האירו בסוף כל חודש. הנתונים מועתקים כפי שפורסמו; השינוי של הדולר מול השקל הוא חישוב של האתר ולא של הבנק המרכזי האירופי.",

@@ -7,6 +7,7 @@ import {
   type AbroadRecord,
   cmaPeriodFile,
   takesNewMembers,
+  joiningQuestion,
   israelToday,
   dimensionId,
   dimensionRecord,
@@ -157,6 +158,8 @@ export interface Track {
   subSpecialization: string;
   inception: string | null;
   reportPeriod: string;
+  /** The open question that holds whether new members may join the track (`joining_open`), or null where the readings settle it. */
+  joiningOpen: string | null;
   wrapperId: WrapperId | null;
   /** A self-directed (IRA) fund: the site's product for it, which has its own guide, cap and checks (lib/self-directed.ts); else null. */
   selfDirected: SelfDirectedProduct | null;
@@ -248,6 +251,7 @@ export function loadCma(): CmaData {
         subSpecialization: siteTrackName(fund.sub_specialization.trim()),
         inception: fund.inception_date,
         reportPeriod: f.report_period,
+        joiningOpen: joiningQuestion(fund),
         wrapperId,
         selfDirected: selfDirectedProduct(wrapperId, name),
       });

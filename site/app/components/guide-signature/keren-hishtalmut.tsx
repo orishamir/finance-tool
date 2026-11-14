@@ -228,12 +228,14 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const limitEntry: Record<string, SiteValue> = isEmployee ? (cap && income > Number(cap.value) ? capEntry : {}) : selfBenefited ? { [copy.hishtalmut.inputNames.selfBenefited]: selfBenefited } : {};
   const standingIn: Record<string, SiteValue> = { ...deposits, ...limitEntry };
   const crossIn: Record<string, SiteValue> = { ...deposits, ...(isEmployee ? capEntry : limitEntry), ...inflationEntry };
-  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn) => figure(value, unit, "F-97", inputs, today, about, rules);
+  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn, flags: string[] = []) => figure(value, unit, "F-97", inputs, today, about, rules, flags);
   const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
   const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
     const words = copy.hishtalmut.story.standing;
-    const whole = (value: number, about: string) => <Num value={standingNum(value, about)} display={fmt.nisWhole(value)} />;
+    // the room and what is above the limit carry what they rest on: a self-employed person's year grossed up for the tax back at the
+    // brackets (G-23, `limitStanding`)
+    const whole = (value: number, about: string) => <Num value={standingNum(value, about, "nis", standingIn, st.flags)} display={fmt.nisWhole(value)} />;
     const [own = 0, employer = 0] = st.over.map(Math.round);
     const over = own + employer;
     const per = st.per === "year" ? "year" : "month";
@@ -380,7 +382,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     </div>
   );
   // the notes follow one another and only the card keeps its size: its room is the longest notes of either kind of work, so what is under the card stays where it is
-  const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: over.map(() => 0), per: employee ? "month" : "year", firstOverYear, grows: employee });
+  const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: over.map(() => 0), per: employee ? "month" : "year", firstOverYear, grows: employee, flags: [] });
   // the height the notes hold while the year is dragged: only the employment shown, so an employee's card keeps no room for a self-employed line
   const notesCases = [isEmployee].flatMap((employee) =>
     [longest(employee, employee ? [99_999, 99_999] : [99_999], 1), longest(employee, employee ? [0, 0] : [0], 12)].map((st) =>

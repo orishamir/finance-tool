@@ -2,7 +2,7 @@
 // assumption chips (phone), readout, table, rules used; the values sheet (phone) or panel (PC) beside it.
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
-import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
+import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
@@ -12,7 +12,7 @@ import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear
 import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
-import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
+import { IdRef, Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
 
@@ -342,7 +342,16 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           </>
         ) : timeline.kind === "blocked" ? (
           <Callout tone="blocked">
-            {copy.blockedBand} <RuleRef id={timeline.ruleId} />
+            {timeline.gap ? (
+              <>
+                {copy.blockedGapBand} <RuleRef id={timeline.ruleId} /> {flags[timeline.gap] ?? ""}
+              </>
+            ) : (
+              <>
+                {copy.blockedBand} <RuleRef id={timeline.ruleId} />
+                {timeline.question && <> <IdRef id={timeline.question} /></>}
+              </>
+            )}
           </Callout>
         ) : timeline.kind === "figure-not-updated" ? (
           <Callout tone="caution">

@@ -8,6 +8,7 @@ import { buildInvest, indexById, pairCosts, type WayPrice } from "../../lib/inve
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
 import { ChosenPair } from "./chosen";
 import { unitsLine } from "./pair";
+import { anyTradeCurrency } from "../../lib/test-bundles";
 import { bundle, plan, html, lists, shown } from "./render-fixtures";
 
 type Funds = typeof bundle.funds;
@@ -62,7 +63,8 @@ describe("whole units on the indices page (F-109, D94)", () => {
     if ("valueN" in ex) expect(ex.units).not.toBeNull();
   });
   it("a recurring plan buys the monthly purchases by amount and the amount now in whole units", () => {
-    const plan = withUnits({ ...noPrices(bundle), ie00b5bmr087: 814.9 }, { ...noEntries, "interactive-israel": [{ venue: "europe", orders: "recurring_plan", list_only: false, source }] });
+    // Interactive Israel's European line read as printed for any currency (test-bundles.ts): the records give a dollar fund there no price
+    const plan = anyTradeCurrency(withUnits({ ...noPrices(bundle), ie00b5bmr087: 814.9 }, { ...noEntries, "interactive-israel": [{ venue: "europe", orders: "recurring_plan", list_only: false, source }] }));
     const w = at(plan, "ie00b5bmr087", "interactive-israel");
     expect(w.units?.monthly).toBe(240);
     expect(w.units?.skipped).toBe(0);

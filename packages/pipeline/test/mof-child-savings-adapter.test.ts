@@ -92,7 +92,7 @@ describe("normalise", () => {
       cadence: "daily",
       stale_after_days: 7,
       rule_ids: ["CS-10", "CS-22", "CS-23"],
-      terms_of_use: { status: "confirmed", terms_url: "https://data.gov.il/he/terms-of-use" },
+      terms_of_use: { terms_url: "https://data.gov.il/he/terms-of-use" },
     });
     expect(f.terms_of_use.attribution).toContain("משרד האוצר");
     const o = f.observations.find((x) => x.key === LEUMI && x.date === "2026-10-22")!;

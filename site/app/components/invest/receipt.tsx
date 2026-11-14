@@ -91,7 +91,7 @@ export function verdictOf(v: ReturnType<typeof pairVerdict>, chosen: boolean): {
  * place of a rate are said in a "?" beside the first of them (wording.md: a note beside what it qualifies).
  */
 function feeRows(rec: FundRecord, bundle: IndicesBundle, today: string) {
-  const items = fundFeeItems(rec, { inline: true, priced: pricedVariable(rec, gapListFor(bundle, rec), today) });
+  const items = fundFeeItems(rec, { inline: true, priced: pricedVariable(rec, gapListFor(bundle, rec), today), today });
   const noted = rec.domicile !== "IL" && !isCustomFund(rec) ? items.find((it) => it.missing)?.id : undefined;
   return items.map((it) => (
     <ReceiptLine

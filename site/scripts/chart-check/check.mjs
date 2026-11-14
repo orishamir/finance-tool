@@ -5,6 +5,7 @@
 // Without paths: every guide page, every index page and the kit page of the build. Needs a build (npm run build). Exits 1 when a chart fails.
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { cpus } from "node:os";
 import { randomBytes } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,7 +19,8 @@ if (!existsSync(join(build, "index.html"))) { console.error(`no build at ${build
 
 const WIDTHS = [1440, 390, 320];
 const MIN_TEXT_PX = 13; // the site's smallest text (text-xs)
-const TABS = Number(process.env.CHART_CHECK_TABS) || 3; // tabs open at once at each width (checkWidth)
+// tabs open at once at each width (checkWidth): a quarter of the cores, 3 to 8 (3 on GitHub's four-core runners)
+const TABS = Number(process.env.CHART_CHECK_TABS) || Math.max(3, Math.min(8, Math.floor(cpus().length / 4)));
 const MAX_COLOURS = 6; // charts.md: at most six colours in one chart; greys (the neutral contributions, a remainder) aren't counted
 // evident-charts' severities, except: text under 13 px fails (charts.md), and contrast only warns (a light edge line on its own area, as on
 // the guide chart's value line, is measured against the fill under it and reads fine against the page)

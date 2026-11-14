@@ -35,6 +35,8 @@ import { heCollator } from "./format";
 import { daysBetween } from "./dates";
 import { leftOutOf } from "./left-out";
 import { latestSnapshots } from "./providers.server";
+import { averageOf, columnOf, houseAverages, type AverageColumn } from "./house-averages";
+import { loadHouseAverages } from "./house-averages.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -253,7 +255,15 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   const dated = tariffDated(s.tariff, s.snapshot);
   const day = datedDay(dated);
   // every line of the price list, in its own order; the card groups them by kind
-  const lines: TariffLineRow[] = s.lines.filter((l) => l.level === "list").map((l) => lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url));
+  const listed = s.lines.filter((l) => l.level === "list");
+  // F-122: what the house charged on average for each line's kind, for reference only, and only the columns its lines show
+  const rec = loadHouseAverages().get(s.id);
+  const averages = rec ? houseAverages(rec, listed.map(columnOf).filter((c): c is AverageColumn => c !== null)) : null;
+  const lines: TariffLineRow[] = listed.map((l) => {
+    const row = lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url);
+    const average = averageOf(averages, columnOf(l));
+    return average ? { ...row, average } : row;
+  });
   const min = s.minimums.account_opening;
   return {
     missing: s.missing,
@@ -276,6 +286,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     priceFor: s.price_for_he ?? null,
     availability: availabilityRows(s),
     leftOut: leftOutOf(s),
+    ...(averages && lines.some((l) => l.average) ? { averages: { from: averages.from, to: averages.to, page: averages.page } } : {}),
   };
 }
 

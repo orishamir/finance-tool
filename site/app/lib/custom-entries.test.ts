@@ -219,7 +219,13 @@ describe("a fund the person types is priced at the collected houses under its ki
     const collected = view.options.find((o) => o.id === "il-tracking")!.funds.find((f) => f.rec.id !== fund.id)!;
     for (const p of view.providers.filter((x) => !x.custom)) {
       expect(mine.byHouse[p.id], p.id).toBeTruthy();
-      expect(priced(mine.byHouse[p.id]), p.id).toBe(priced(collected.byHouse[p.id]));
+      // a house that sells the kind fund by fund (One Zero, BRK-38) cannot say whether it sells a fund the person typed: no price there
+      const at = mine.byHouse[p.id]!;
+      if (bundle.snapshots.find((s) => s.id === p.id)?.fundByFund) {
+        expect(priced(at), p.id).toBe(false);
+        expect("reason" in at && at.reason, p.id).toEqual({ code: "sold-fund-by-fund" });
+      }
+      else expect(priced(mine.byHouse[p.id]), p.id).toBe(priced(collected.byHouse[p.id]));
     }
   });
 

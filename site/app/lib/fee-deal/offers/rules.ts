@@ -124,7 +124,7 @@ export const RULES: readonly RuleRow[] = [
   // a deal of one security holds one kind of it, and its maximum on each security is its maximum
   { id: "one-security", when: { products: is("government-bond", "makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["trade", "custody"] }, verdict: { kind: "deny", parts: ["maxPerSecurity"], conditions: ["what", "held"] }, cite: [], records: true },
   // a maximum on each security and one on the whole deposit, as Leumi's list prints both
-  { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max", "maxPerSecurity"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: ["BRK-69"], records: true },
+  { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max", "maxPerSecurity"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: ["BRK-16", "BRK-24"], records: true },
   // custody on units: a share of what is held with a minimum where a non-bank charges it, which prints no maximum; a bank charges none (the
   // bans below)
   { id: "units-custody", when: { products: is("makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["min"], conditions: ["own"] }, cite: ["BRK-17", "BRK-52"], records: true },

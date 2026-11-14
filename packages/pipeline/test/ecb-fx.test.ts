@@ -27,9 +27,9 @@ describe("ECB reference rates", () => {
     expect(() => parseEcbXml(xml.replace("1.1193", "0"))).toThrow(/bad rate/);
     expect(() => parseEcbXml(xml.replace(/<Cube currency='ILS'[^>]*>/, ""))).toThrow(/no ILS/);
   });
-  it("builds a confirmed-terms series, one sorted observation per currency keyed by ISO code", () => {
+  it("builds a series with the ECB's licence page and attribution, one sorted observation per currency keyed by ISO code", () => {
     const s = buildSeries(parseEcbXml(xml), ctx);
-    expect(s.terms_of_use.status).toBe("confirmed");
+    expect(s.terms_of_use.read_on).toBe("2026-10-25");
     expect(s.terms_of_use.attribution).toContain("הבנק המרכזי האירופי (ECB)");
     expect(s.observations.map((o) => o.key)).toEqual(["ILS", "JPY", "USD"]);
     expect(s.observations[2]).toMatchObject({ value: 1.1193, date: "2026-10-23", checked: "2026-10-25", state: "sourced" });

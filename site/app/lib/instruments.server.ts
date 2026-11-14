@@ -24,7 +24,11 @@ import {
 import { loadSecurities, readDirFiles } from "./data.server";
 import { latestOf } from "./providers.server";
 import { exposureFoldedInto } from "./guide-nav";
+import { fundPromotions } from "./fund-promotions";
 import { cmaFeeValue, computed, depositFeeNoneByRule, ownBy, ruleFigure, type SiteValue } from "./value";
+
+/** The figure each fee a promotion lowers is listed under among a guide run's figures (F-121). */
+const PROMOTION_LABEL = { fixed_management: "fundManagement", variable_management: "fundVariable", trustee: "fundTrustee" } as const;
 
 /** Of several dated files of one record id (`<id>@<date>.json`), the one with the latest date in its name. */
 function latestPerId<T extends { id: string }>(rows: { file: string; record: T }[]): T[] {
@@ -418,6 +422,8 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     // F-121: a fee the record lowers for a stated period, read as the indices page reads it (fundOf)
     const promotions = fundOf(rec, kind, undefined, undefined).fund.drag?.promotions;
     if (promotions) drag.promotions = promotions;
+    // each in force on the page's day shown among the run's figures beside the fee it lowers, with its last day
+    for (const p of fundPromotions(rec, src.today)) feeValues[`${PROMOTION_LABEL[p.fee]}Promotion`] = p.value;
     if (Object.keys(drag).length > 0) fund.drag = drag;
     if (notCollected.length > 0) console.log(`[guide] ${wrapperId}: fund "${rec.id}" fees not collected (run uses 0): ${notCollected.join(", ")}`);
   }

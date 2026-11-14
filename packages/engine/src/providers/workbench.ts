@@ -12,7 +12,7 @@ import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
-import { stoppedOnQuestion } from "../open-readings.ts";
+import { stoppedOnGap, stoppedOnQuestion } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -170,14 +170,19 @@ export type NotComparableReason =
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
   | { code: "line-without-value"; detail: string }
+  /** a bound printed in the trade's currency for other currencies only (`NotPrintedForCurrency`): the line's id, the trade's currency, the line's list. */
+  | { code: "not-printed-for-currency"; detail: string; line: string; currency: string; printed: string[] }
   /** a per-share line and the fund record has no `share_price`. */
   | { code: "needs-share-price"; detail: string }
   /** a line in a foreign currency and `fx` holds no rate for it. */
   | { code: "needs-fx-rate"; detail: string }
   /** the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string }
-  /** a run of the row stopped on an open question whose readings gave it different results (`acrossReadings`): nothing is ranked on one. */
-  | { code: "rule-open"; ruleId: string; question: string };
+  /**
+   * a run of the row stopped on its rule: on an open question whose readings gave it different results (`question`, `acrossReadings`), or on
+   * a method gap where no reading of the case exists (`gap`, G-38). Nothing is ranked on one: its value after tax is not known.
+   */
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
 
 export interface ProviderBase {
   id: string;
@@ -263,9 +268,28 @@ export interface ProviderWorkbench {
 
 /** A value the snapshot holds as null: the provider's data is incomplete, so its row is "not comparable". */
 export class Unusable extends Error {
-  constructor(readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate", message: string) {
+  constructor(readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate" | "not-printed-for-currency", message: string) {
     super(message);
   }
+}
+
+/**
+ * F-12: a bound printed in the trade's currency for some currencies only (the line's `trade_currencies`), and the trade is in another: the list
+ * prints no bound for this trade, so the run does not price it. `line` is the line's id, `currency` the trade's, `printed` the line's list.
+ */
+export class NotPrintedForCurrency extends Unusable {
+  constructor(readonly line: string, readonly currency: string, readonly printed: readonly string[]) {
+    super("not-printed-for-currency", `${line}: a bound is printed in the trade's currency for ${printed.join(", ")}, and the trade is in ${currency}`);
+  }
+}
+
+/** The row of a provider a run could not use, from what stopped it (`Unusable`, with what a bound not printed for the trade's currency names). */
+function unusableRow(e: Unusable): NotComparableReason {
+  if (e instanceof NotPrintedForCurrency) return { code: "not-printed-for-currency", detail: e.message, line: e.line, currency: e.currency, printed: [...e.printed] };
+  const code = e.code;
+  // only `NotPrintedForCurrency` carries this code, with what it names
+  if (code === "not-printed-for-currency") return { code: "record-error", detail: e.message };
+  return { code, detail: e.message };
 }
 
 const NIS_UNITS = new Set(["nis", "nis_per_trade", "nis_per_month"]);
@@ -446,7 +470,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           // currencies it is printed for and that one is not among them, the list gives no bound for the trade
           if (vo.unit === "trade_ccy_per_trade") {
             const trade = input.currency?.code ?? "ILS";
-            if (l.line.trade_currencies && !l.line.trade_currencies.includes(trade)) throw new Unusable("line-without-value", `${what} is printed for ${l.line.trade_currencies.join(", ")}, and the trade is in ${trade}`);
+            if (l.line.trade_currencies && !l.line.trade_currencies.includes(trade)) throw new NotPrintedForCurrency(l.line.id, trade, l.line.trade_currencies);
             if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
             return trade === "ILS" ? vo.value : vo.value * rateOf(input.fx, trade, what);
           }
@@ -825,7 +849,7 @@ function prepareProvider(input: WorkbenchInput, given: ProviderInput): ReadyProv
     }
     built = buildTariff(input, p, forBuild);
   } catch (e) {
-    if (e instanceof Unusable) return notComparable({ code: e.code, detail: e.message });
+    if (e instanceof Unusable) return notComparable(unusableRow(e));
     // E5: one provider's unreadable record is that provider's row, not a failure of the whole run.
     if (e instanceof RecordInputError) return notComparable({ code: "record-error", detail: e.message });
     throw e;
@@ -842,7 +866,7 @@ function prepareProvider(input: WorkbenchInput, given: ProviderInput): ReadyProv
   try {
     return { kind: "ready", base, p, built, memberKind, ways: unitWaysAt(input, s, built.tariff) };
   } catch (e) {
-    if (e instanceof Unusable) return notComparable({ code: e.code, detail: e.message });
+    if (e instanceof Unusable) return notComparable(unusableRow(e));
     throw e;
   }
 }
@@ -965,8 +989,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w), ctx);
       if (other.real > run.real) [units, run] = [w, other];
     }
-    // a run the readings of an open question split (TXG OQ17 at a falling CPI) has no value after tax to compare, with or without the fees
-    const stopped = stoppedOnQuestion(noneT) ?? stoppedOnQuestion(run);
+    // a run the readings of an open question split (TXG OQ17 at a falling CPI), or one its ledger listed on a method gap (G-38), has no value
+    // after tax to compare, with or without the fees: its exit tax was never charged
+    const stopped = stoppedOnQuestion(noneT) ?? stoppedOnGap(noneT) ?? stoppedOnQuestion(run) ?? stoppedOnGap(run);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
@@ -1082,7 +1107,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
 
   const reasonOf = (r: NotComparableProvider): Reason =>
     r.reason.code === "rule-open"
-      ? { code: "rule-open", ruleIds: [r.reason.ruleId], gapIds: [], detail: r.reason.question }
+      ? { code: "rule-open", ruleIds: [r.reason.ruleId], gapIds: r.reason.gap ? [r.reason.gap] : [], ...(r.reason.question ? { detail: r.reason.question } : {}) }
       : {
           code: r.reason.code === "data-missing" || r.reason.code === "record-error" ? "missing-record" : "missing-input",
           ruleIds: [],

@@ -19,7 +19,7 @@
     "layout-check": "node site/scripts/layout-check.mjs",
     "rank-scan": "bash tools/rank-scan.sh",
     "dev": "npm run dev -w site",
-    "check": "npm run typecheck && npm test && npm run validate && npm run build && npm run chart-check && npm run layout-check",
+    "check": "node tools/check.mjs",
     "gen:terms": "python3 packages/pipeline/scripts/merge_terms.py && python3 packages/pipeline/scripts/gen_glossary.py && tsx packages/pipeline/scripts/gen-terms.ts"
   },
   "devDependencies": {

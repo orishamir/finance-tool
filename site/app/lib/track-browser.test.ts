@@ -21,6 +21,12 @@ describe("the data the loader ships", () => {
     expect(view("provident-for-annuity").tracks).toHaveLength(154);
     for (const id of [120, 528, 529, 530, 531, 532, 533, 536, 539, 923]) expect(data.products.flatMap((p) => p.rows).some((r) => r.f === id), `${id}`).toBe(false);
     for (const id of [119, 260, 263]) expect(view("provident-for-annuity").tracks.some((t) => t.id === id), `${id}`).toBe(true);
+    // their joining is open (CAT OQ36): each carries the question, from its reading, for the note beside its name; no other track does
+    expect(data.products.flatMap((p) => buildProductView(data, p.id)!.tracks).filter((t) => t.joiningOpen).map((t) => [t.id, t.joiningOpen])).toEqual([
+      [119, "CAT-OQ36"],
+      [260, "CAT-OQ36"],
+      [263, "CAT-OQ36"],
+    ]);
     expect(view("ira-provident").tracks).toHaveLength(8);
     expect(view("ira-hishtalmut").tracks).toHaveLength(7);
     expect(view("child-savings-provident").tracks).toHaveLength(30);

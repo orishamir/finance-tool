@@ -4,10 +4,13 @@
 import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
+import { fmt } from "../../lib/format";
 import { IconDrillIn } from "../icons";
 import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, MixedName, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, TextLink, type ProductColumn } from "../kit";
 
 const c = copy.funds;
+/** The row's fee each promotion lowers. */
+const PROMOTED = { fixed_management: "fixed", variable_management: "variable", trustee: "trustee" } as const;
 
 /** The three fees, each with its word: in the table one under the other, on the phone in one line; one the fund does not have, or one not collected, says so. */
 function Fees({ f, inline }: { f: BrandFundRow; inline?: boolean }) {
@@ -16,7 +19,11 @@ function Fees({ f, inline }: { f: BrandFundRow; inline?: boolean }) {
     { id: "variable", v: f.variable, absent: f.noVariable, word: c.feeWords.variable },
     { id: "trustee", v: f.trustee, absent: f.noTrustee, word: f.noTrustee ? invest.funds.noTrusteeWord : c.feeWords.trustee },
   ];
-  const items = lines.map((l) => ({ id: l.id, word: l.word, figure: <FeeFigure value={l.v} absent={l.absent} inline={inline} /> }));
+  const items = lines.flatMap((l) => [
+    { id: l.id, word: l.word, figure: <FeeFigure value={l.v} absent={l.absent} inline={inline} /> },
+    // a fee lowered for a stated period, after the fee it lowers (F-121)
+    ...f.promotions.filter((p) => PROMOTED[p.fee] === l.id).map((p) => ({ id: `${l.id}-promotion`, word: invest.funds.promotionWord(fmt.date(p.until)), figure: <FeeFigure value={p.value} inline={inline} /> })),
+  ]);
   return <ProductFigures items={items} inline={inline} />;
 }
 

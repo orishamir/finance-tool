@@ -170,7 +170,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): 2.5 units of the currency the trade is in; the per-currency table on the same page prints 2.5 for EUR, GBP, CHF and USD and other figures for other currencies (150 DKK, 75 NOK, 12 AUD). Doubt: the page also says the commission is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; it does not say which currency a USD line on a GBP exchange pays in."
+        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): 2.5 units of the currency the trade is in. The per-currency table on the same page prints 0.15% with a minimum of 2.5 for EUR, GBP and CHF, so `trade_currencies` holds those three; it prints other figures for the other European currencies (150 DKK, 75 NOK, 20 SEK, 20 PLN) and, for USD, only the per-share line of US shares. The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך' (BRK-40), so a fund traded in dollars on a European exchange pays in that exchange's currency and the list prints no minimum for a dollar trade there: the cautious reading gives such a trade no bound from this line, and the run does not price it (F-12). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
       },
       "max": null,
       "period": null,
@@ -182,7 +182,12 @@
           "תעריף עמלות מסחר",
           "מניות/תעודות סל הנסחרות באירופה"
         ]
-      }
+      },
+      "trade_currencies": [
+        "EUR",
+        "GBP",
+        "CHF"
+      ]
     },
     {
       "id": "interactive-israel-custody-foreign",
