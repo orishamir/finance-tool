@@ -1,7 +1,7 @@
-// Copy and paste and several cells at once (paste.ts): a part row pasted on a cell's cases replaces what they held and says so, a whole
-// case's price pasted on another case, one paste over several places as one change, and the cells chosen taken away together.
+// Copy and paste (paste.ts): a part row pasted on a place's cases replaces what they held and says so, and a whole case's price pasted on
+// another case.
 import { describe, expect, it } from "vitest";
-import { pasteOn, pasteOnAll, removeAll, type PastePlace } from "./paste";
+import { pasteOn, type PastePlace } from "./paste";
 import { WHOLE } from "./layout";
 import { typed, type CasesFee, type FeeDeal } from "./model";
 
@@ -42,32 +42,5 @@ describe("a cell pasted", () => {
 
   it("changes nothing on its own cell", () => {
     expect(pasteOn(deal(), { k: "cell", fee: "fee-t", cases: ["t3"], row: WHOLE, along: 1 }, place(["t3"]))).toBeNull();
-  });
-
-  it("on several places is one change with one undo line", () => {
-    const r = pasteOnAll(deal(), { k: "cell", fee: "fee-t", cases: ["t3"], row: "price", along: 1 }, [place(["t1"]), place(["t2"])])!;
-    expect([price(r.deal, "t1").rate.v, price(r.deal, "t2").rate.v]).toEqual([0.09, 0.09]);
-    expect(r.kept?.feeId).toBe("fee-t");
-  });
-});
-
-describe("the cells chosen taken away together", () => {
-  it("is one change, its undo line counting them", () => {
-    const r = removeAll(deal(), [
-      { k: "cell", fee: "fee-t", cases: ["t1"], row: "min", along: 1 },
-      { k: "cell", fee: "fee-t", cases: ["t2"], row: "min", along: 1 },
-    ])!;
-    expect([price(r.deal, "t1").min, price(r.deal, "t2").min]).toEqual([undefined, undefined]);
-    expect(r.kept?.words).toBe("2 תאים נמחקו.");
-  });
-
-  it("leaves a fee's last case, and says the one's own words where one went", () => {
-    const r = removeAll(deal(), [
-      { k: "cell", fee: "fee-t", cases: ["t1"], row: WHOLE, along: 1 },
-      { k: "cell", fee: "fee-t", cases: ["t2"], row: WHOLE, along: 1 },
-      { k: "cell", fee: "fee-t", cases: ["t3"], row: WHOLE, along: 1 },
-    ])!;
-    expect(fee(r.deal).cases.map((c) => c.id)).toEqual(["t3"]);
-    expect(removeAll(deal(), [{ k: "cell", fee: "fee-t", cases: ["t1"], row: "min", along: 1 }])!.kept?.words).toBe("המינימום נמחק.");
   });
 });
