@@ -1941,8 +1941,9 @@ export const feeDeal = {
     copies: { lead: "כל מקרה יועתק לכל ", tail: " שסימנתם, עם המחיר שלו.", range: "כל מקרה יועתק ל״עד״ ול״מעל״, עם המחיר שלו.", count: "{from} מקרים יהיו {to}." },
     /** The noun a copy is made for, by the thing. */
     copyNoun: { what: "סוג", held: "סוג", channel: "ערוץ", currency: "מטבע", track: "מסלול", own: "ערך" } as Record<string, string>,
+    /** The line for a value in the person's own words under a list's values, by the thing where it has its own, else the general one. */
     otherValue: "משהו אחר, בשם משלכם",
-    otherChannel: "ערוץ אחר",
+    otherBy: { channel: "ערוץ אחר" } as Partial<Record<string, string>>,
     /** Adds a value typed in the person's words to the values asked, ticked. */
     addValue: "להוסיף לרשימה",
     /** A condition of the person's own, its name asked first. */
@@ -1958,6 +1959,8 @@ export const feeDeal = {
       before: "המקרה שלפניו: ",
       /** A value of the person's own, typed under a list: its name, and for what is bought or held, where it is bought and its currency. */
       ownName: "השם, כמו שהוא כתוב אצלכם",
+      /** A typed value's name, by the thing where it has its own words (a track's). */
+      nameBy: { track: "שם המסלול, כמו שהוא כתוב אצלכם" } as Partial<Record<string, string>>,
       ownPlace: "איפה זה נקנה",
       israel: "בארץ",
       abroad: "בחו״ל",

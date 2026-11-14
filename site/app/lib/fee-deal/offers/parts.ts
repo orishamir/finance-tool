@@ -7,7 +7,8 @@
 // are derived from it. Adding a part is adding an entry here and its words (part-words.ts and the copy); a table keyed by a derived type
 // fails to compile until it has the part. Pure; no Hebrew.
 import { blankPrice, mainFigure, typed, type Fee, type MonthKey, type Note, type Price, type Priced, type Side } from "../model";
-import { editPrice, holdOn, setLimited, setSaleApart, withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edit";
+import { editPrice, holdOn, setLimited, setSaleApart } from "../edits/stage";
+import { withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edits/price";
 import { type FeeKindId, type FormId } from "../shapes";
 import { keeps, PART_FIELDS, pricesSaleApart, takes, type ChargedForm, type PartFieldId } from "./capacity";
 import { boundsAction, byRate, charged, formBoundsAction, KEY_FORMS, onAction, pricedCurrency, sameFigureKind, type PartKey } from "./capabilities";

@@ -3,161 +3,17 @@
 // reading's picks. Rates are typed in percent; `engineDeal` (to-engine.ts) is the one place they become the engine's fractions. `readDeal`
 // checks every field of a deal from the device, a file or a link, and drops whatever is not a deal. No engine at run time: the side
 // stores read this file on every page.
-import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
+import { productIds, type ProductId } from "@finance-tool/schema";
 import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
 import { byAmount, byRate, formOnAction, KEY_FORMS, type PartKey } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES } from "./offers/figures";
 import { holdsFunds, isFeeKindId, WHAT_VALUES, type FeeKindId, type FormId, type Place } from "./shapes";
 import { capacity, fieldsOf, PART_FIELDS, pricesSaleApart, type ChargedForm, type FieldId, type PartFieldId } from "./offers/capacity";
-import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, PICK_KEYS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeKind, type RangeUnit, type ValuesOf } from "./offers/conditions";
 
-export type Strength = ValueObject["source"]["strength"];
-
-/** Where a figure a template filled comes from: the record's source and dates, kept until the person changes the figure. */
-export interface Sourced {
-  url: string;
-  title: string;
-  publisher: string;
-  strength: Strength;
-  /** When the record was read, YYYY-MM-DD. */
-  checked: string;
-  /** The page of the document the figure stands on, where the record gives it (a PDF's own page count). */
-  page?: number;
-  effectiveFrom?: string;
-  effectiveTo?: string;
-  ruleIds?: string[];
-  /** D31: the company whose own product the figure prices, where the deal is that company's product. */
-  own?: string;
-}
-
-/**
- * A figure of a deal: entered by the person where it has no `src`, sourced where a template filled it and the person left it. `blank`: a
- * rate or a sum nobody typed and no template filled (a new fee's, a later price just added); its box is empty and its `v` (0) means
- * nothing. A price with a blank figure states no price, so its fee is not read until the figure is typed or the price is made free.
- */
-export interface Num {
-  v: number;
-  src?: Sourced;
-  blank?: true;
-}
-
-/** Months a rate is for or between charges: a month, a quarter, half a year, a year. */
-export type Months = 1 | 3 | 6 | 12;
-export const MONTHS: readonly Months[] = [1, 3, 6, 12];
-
-/**
- * A flat price for a small action (F-12, F-13): an action of at most `upTo` pays `amount`, both in the price's currency. Its figures are
- * blank until typed (a switch to a flat price starts it empty), and a price whose flat price is not given states no price yet.
- */
-export interface Flat {
-  amount: Num;
-  upTo: Num;
-}
-
-/** A share off a price (F-116): `pct` percent off its rate or sum, and off its minimum too where the list says so (`alsoMin`). */
-export interface Discount {
-  pct: Num;
-  alsoMin?: true;
-}
-
-/**
- * A third party's fee with its figure (F-117): a share of the action (`rate` percent), a sum for each unit, or a sum on each action, with
- * its own bounds, each sum in `currency` (the shekel where absent).
- */
-export type ThirdPrice =
-  | { form: "action"; rate: Num; min?: Num; max?: Num; currency?: BoundCurrency }
-  | { form: "perUnit"; amount: Num; min?: Num; max?: Num; currency?: BoundCurrency }
-  | { form: "perAction"; amount: Num; currency?: BoundCurrency };
-
-/**
- * A third party's fee printed with a price: whose it is, in the list's words where it names one (`who`: "הברוקר", "הבורסה והסליקה"), and
- * its figure (`price`, F-117), or none where the list gives none ("בלי סכום בתעריפון", §10.6's stated parts).
- */
-export interface Third {
-  who?: string;
-  price?: ThirdPrice;
-}
-
-/** A fee a price is offset against: that month's charges of the deal's fee of this kind, up to the price's own sum (§10.6's stated parts). */
-export interface Offset {
-  kind: FeeKindId;
-}
-
-/**
- * What a price list says of an order, beside its price (§10.6's stated parts): charged on an order not carried out too; at a bank, an order
- * through a clerk not carried out for a reason on the client's side charged its minimum, on the Tel Aviv exchange (`unfilledClerk`, BRK-16,
- * notes to part 4(א)(1)) and abroad (`unfilledClerkAbroad`, BRK-16, part 4(א)(4) note 1); each partial fill charged apart; and, where the
- * list prints a percent maximum beside a minimum and does not say which wins on a small action, that the page reads the maximum as
- * winning (`capRead`, F-12: the site's reading, not the list's words).
- */
-export type Note = "unfilled" | "unfilledClerk" | "unfilledClerkAbroad" | "capRead" | "partial";
-export const NOTES: readonly Note[] = ["unfilled", "unfilledClerk", "unfilledClerkAbroad", "capRead", "partial"];
-
-/** The parts of a price beside its figures that tie it to another fee (§10.6's stated parts): an offset, and a refund in the price's currency. */
-interface Linked {
-  offset?: Offset;
-  refund?: Num;
-}
-
-/**
- * The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), notes on an order (§10.6's stated
- * parts), and that its sums are in the currency the action is made in (`inTrade`: "מינימום 30 במטבע העסקה"), which a reading takes from
- * what is bought where the deal knows its currency (its `currency` is then that one) and otherwise does not read the fee.
- */
-interface OnAction extends Linked {
-  discount?: Discount;
-  third?: Third;
-  notes?: Note[];
-  inTrade?: true;
-}
-
-/**
- * A price as typed (F-110). Rates and caps are percent; bounds, flat prices and sums are shekels unless the price's `currency` names
- * their currency.
- */
-export type Price =
-  | { form: "free" }
-  /**
-   * A share of each action, `rate` percent, with a minimum and a maximum per action, a cap as a percent of the action (`cap`, the percent
-   * maximum) and a flat price for a small action, each sum in `currency` (the shekel where absent).
-   */
-  | ({ form: "action"; rate: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
-  /** A sum for each unit traded, `amount` in `currency`, with the same minimum, maximum, cap and flat price as a share of an action. */
-  | ({ form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
-  /**
-   * A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge, or per
-   * month where the price list prints them so (`boundsEvery: 1`, "מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds; F-14
-   * names no other period a bound is printed in. `perSecurity` is a maximum in shekels on each security held, in the bounds' period
-   * ("₪ 7,500 לני״ע לרבעון"): §10.6 states it and never computes it, since the charge it bounds depends on how many securities are held.
-   */
-  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; perSecurity?: Num; boundsEvery?: 1 } & Linked)
-  /** A sum in shekels every `every` months, whatever the account holds. */
-  | ({ form: "sum"; amount: Num; every: Months } & Linked)
-  /**
-   * A sum on each action, in `currency` (the shekel where absent), held to a percent of the action (`cap`, the percent maximum) where the
-   * list prints one over it ("11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
-   */
-  | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & OnAction);
-
-/** The currencies a bound, a flat price, a sum per unit or a sum per action may be typed in: the ones the price lists print (F-12, F-13, F-103). */
-export type BoundCurrency = "ILS" | "USD" | "EUR" | "GBP";
-export const BOUND_CURRENCIES: readonly BoundCurrency[] = ["ILS", "USD", "EUR", "GBP"];
-
-/** A calendar month, `YYYY-MM`. */
-export type MonthKey = string;
-
-/** A price, and the month at whose start it ends; the last price of a fee has no end (F-110). */
-export interface Stage {
-  price: Price;
-  until?: MonthKey;
-}
-
-/** Prices over time: a fee's whose price changes by nothing, or one case's; a sale's own where a sale is priced apart. */
-export interface Priced {
-  stages: Stage[];
-  sale?: Stage[];
-}
+export * from "./core";
+import { BOUND_CURRENCIES, MONTHS, NOTES, type BoundCurrency, type Discount, type Flat, type MonthKey, type Months, type Note, type Num, type Price, type Priced, type Side, type Sourced, type Stage, type Strength, type Third } from "./core";
 
 /** A value of what is bought or held that the person named, with where it is bought and its currency (null: a foreign one not named). */
 export interface OwnPlace {
@@ -170,13 +26,15 @@ export interface OwnPlace {
  * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency) names its values in the
  * cases, as the site's ids or in the person's words; what is bought or held keeps where each value of the person's own is bought and its
  * currency (`own`). A track's and a condition's values are the person's words; a condition has a name (`label`). A range has its tops
- * (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps.
+ * (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps. Each thing's shape follows how the conditions
+ * registry names its values (`ValuesOf`), so a new thing has one.
  */
-export type By =
-  | { kind: "what" | "held"; own?: OwnPlace[] }
-  | { kind: "channel" | "currency" | "track" }
-  | { kind: "own"; label: string }
-  | { kind: RangeKind; unit: RangeUnit; tops: Num[] };
+export type By = { [K in ByKind]: ByOf<K> }[ByKind];
+type ByOf<K extends ByKind> =
+  ValuesOf<K> extends { kind: "range" } ? { kind: K; unit: RangeUnit; tops: Num[] }
+  : ValuesOf<K> extends { kind: "own" } ? { kind: K; label: string }
+  : ValuesOf<K> extends { places: true } ? { kind: K; own?: OwnPlace[] }
+  : { kind: K };
 
 /** A range thing of a fee. */
 export type RangeBy = Extract<By, { tops: Num[] }>;
@@ -227,11 +85,8 @@ export type Fee = SlimFee | CasesFee;
 
 export const hasCases = (f: Fee): f is CasesFee => f.cases !== undefined;
 
-/**
- * The key a thing is picked by in the reading: its kind (what is bought and what is held share one, `what`), or a condition's name after
- * `own:`.
- */
-export const pickKey = (b: By): string => (b.kind === "own" ? `own:${b.label}` : b.kind === "held" ? "what" : b.kind);
+/** The key a thing is picked by in the reading (`thingKey`): what it is picked as (what is held as what is bought), or a condition's name after `own:`. */
+export const pickKey = (b: By): string => thingKey(b.kind, "label" in b ? b.label : undefined);
 
 /**
  * The reading's pick for one thing (F-114), by its key (`pickKey`): a named value (the site's id, or the person's words), or a step of a
@@ -389,8 +244,6 @@ export const feePriced = (f: Fee | Priced, from: MonthKey): boolean => ("cases" 
 
 const stagesPriced = (x: Priced, from: MonthKey): boolean => [x.stages, ...(x.sale ? [x.sale] : [])].every((st) => pricesFrom(st, from).every((s) => pricePriced(s.price)));
 
-/** Which prices of a fee: its purchase's (or its only ones), or a sale's priced apart. */
-export type Side = "buy" | "sell";
 
 /**
  * The prices a fee's card edits: a fee's whose price changes by nothing, or one case's (`caseId`; the first case where it names none or
@@ -809,7 +662,8 @@ function readPicks(raw: unknown): ReadPick[] | null {
   const out: ReadPick[] = [];
   for (const p of raw) {
     if (!isRec(p) || !str(p.by, NAME_MAX + 4) || !str(p.is, NAME_MAX + 4) || p.is.trim() === "" || out.some((x) => x.by === p.by)) return null;
-    if (!PICK_KEYS.includes(p.by) && !(p.by.startsWith("own:") && p.by.length > 4)) return null;
+    // a pick of a thing the page no longer has, or not yet, is left out: the deal opens without it
+    if (!PICK_KEYS.includes(p.by) && !(p.by.startsWith("own:") && p.by.length > 4)) continue;
     if (p.place === undefined && p.currency === undefined) {
       out.push({ by: p.by, is: p.is });
       continue;
@@ -820,7 +674,6 @@ function readPicks(raw: unknown): ReadPick[] | null {
   return out;
 }
 
-const PICK_KEYS: readonly string[] = ["what", "channel", "track", "currency", "portfolioSize", "volume", "count"];
 
 /**
  * What a deal saved before cases said it held, as the reading's pick of what is bought (F-114): a fund on the Tel Aviv exchange is a

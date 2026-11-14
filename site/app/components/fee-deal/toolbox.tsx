@@ -6,7 +6,7 @@
 import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib/fee-deal/builder";
-import { setFeeName } from "../../lib/fee-deal/edit";
+import { setFeeName } from "../../lib/fee-deal/edits/deal";
 import { isFormPart, isPending, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
 import { CAPACITY } from "../../lib/fee-deal/offers/capacity";

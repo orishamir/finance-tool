@@ -1,7 +1,6 @@
 // What a price's form can hold (method §10.6, F-110): narrow questions on a price or a form, each answered from one list of forms. This is
 // the only place a list of forms appears; everything else asks these. Pure; no Hebrew.
-import type { BoundCurrency, Price } from "../model";
-import type { FormId } from "../shapes";
+import type { BoundCurrency, FormId, Price } from "../core";
 
 /** A price on an action: a share of each action, a sum for each unit, a sum on each action. */
 export type OnActionPrice = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;

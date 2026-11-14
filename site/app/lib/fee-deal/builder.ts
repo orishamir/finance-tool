@@ -7,8 +7,8 @@ import type { ChangeKind } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
-import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
-import { canAddBy, removeBy } from "./edit";
+import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Price, type Priced, type Stage, type When } from "./model";
+import { canAddBy, removeBy } from "./edits/case";
 import { boundsAction } from "./offers/capabilities";
 import { capacity, type ChargedForm } from "./offers/capacity";
 import { FIGURES, type Figure } from "./offers/figures";
@@ -16,8 +16,8 @@ import { feesOffered, offerFor, type DataBar } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { isConversion, onHolding, WHAT_VALUES, type FeeKindId } from "./shapes";
-import { BY_MAX, CONDITIONS, isRangeKind, type ByKind, type RangeUnit } from "./offers/conditions";
+import { WHAT_VALUES, type FeeKindId } from "./shapes";
+import { BY_MAX, CONDITIONS, isOwnKind, isPlaceKind, isRangeKind, isWordsKind, pickKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -160,7 +160,7 @@ function saidParts(c: PartContext, sale: boolean): SlimPart[] {
 
 /** The words of one value the site names, or the person's own words. */
 function valueWords(kind: ByKind, v: string): string {
-  const list = kind === "held" ? copy.cases.values.what : (copy.cases.values as Record<string, Record<string, string>>)[kind];
+  const list = (copy.cases.values as Record<string, Record<string, string>>)[pickKind(kind)];
   return list?.[v] ?? v;
 }
 
@@ -191,7 +191,7 @@ function sharedLead(words: readonly string[]): string {
 function listWords(fee: CasesFee, t: number, values: readonly string[]): string {
   const b = fee.by[t]!;
   const words = values.map((v) => valueWords(b.kind, v));
-  if (b.kind !== "what" && b.kind !== "held") return sharedLead(words);
+  if (!namesPlaces(b)) return sharedLead(words);
   const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
   const others = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) && c.when[t] !== values ? (c.when[t] as string[]).filter((v) => abroad.includes(v) && !values.includes(v)) : [])));
   const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
@@ -240,7 +240,7 @@ function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null
 
 // ---------------------------------------------------------------- the rows
 
-/** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edit.ts). */
+/** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edits/stage.ts). */
 const firstCase = (fee: Fee): string | undefined => (hasCases(fee) ? fee.cases[0]!.id : undefined);
 
 /**
@@ -311,7 +311,7 @@ export interface Panel extends FeeRef {
 }
 
 /**
- * A field of a part in the open case: the figure it edits (`edit.ts`, `Figure`), its value (null while it is blank or absent), and the sign
+ * A field of a part in the open case: the figure it edits (`Figure`, offers/figures.ts), its value (null while it is blank or absent), and the sign
  * after its box (a percent, or a currency's sign; none for a sum per period, whose period is said after it).
  */
 export interface PartField {
@@ -480,25 +480,13 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
 
 /** The things a fee is offered to change by, as the toolbox's cards: one it changes by already is used, and none more can be added past three. */
 function byParts(fee: Fee, offered: readonly ByKind[]): ToolPart[] {
-  const have = new Set((fee.by ?? []).map((b) => (b.kind === "held" ? "what" : b.kind)));
+  const have = new Set((fee.by ?? []).map((b) => pickKind(b.kind)));
   const full = (fee.by?.length ?? 0) >= BY_MAX;
   return offered.map((k) => {
-    const used = k !== "own" && have.has(k === "held" ? "what" : k);
+    const used = !isOwnKind(k) && have.has(pickKind(k));
     return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });
 }
-
-/** Whether a fee is a conversion or charged on what is held, which words of what it changes by follow (the toolbox's first thing). */
-export const firstThing = (kind: FeeKindId): ByKind => (isConversion(kind) ? "currency" : onHolding(kind) ? "held" : "what");
-
-/** The key the reading picks a thing of a fee by (`pickKey`), for a pill that opens the reading's pick. */
-export const thingKey = (fee: CasesFee, t: number): string => pickKey(fee.by[t]!);
-
-/** A range's tops as plain numbers, for a slot's field. */
-export const topsOf = (fee: CasesFee, t: number): number[] => {
-  const b = fee.by[t]!;
-  return isRange(b) ? b.tops.map((n: Num) => n.v) : [];
-};
 
 // ---------------------------------------------------------------- adding a thing, and a case's slot opened
 
@@ -507,14 +495,18 @@ const unitWords = (u: RangeUnit): string => (u === "units" || u === "actions" ? 
 
 /**
  * The question a thing asks once when it is added to a fee: its words; for a list, the values the site names to tick, and the
- * line for a value in the person's own words; for a range, its units (the first its usual one); and why it cannot be added, where it
- * cannot (`off`: a fourth thing, or one the fee changes by already).
+ * line for a value in the person's own words; how such a value is typed (`typed`: its name's label, whether where it is bought and its
+ * currency are asked, and whether the question opens on typing one, for a thing whose values are the person's words alone); a condition's
+ * name (`label`); for a range, its units (the first its usual one); and why it cannot be added, where it cannot (`off`: a fourth thing, or
+ * one the fee changes by already).
  */
 export interface ByQuestion {
   kind: ByKind;
   ask: string;
   values?: { id: string; words: string }[];
   other?: string;
+  typed?: { name: string; place: boolean; open: boolean };
+  label?: string;
   units?: { unit: RangeUnit; words: string }[];
   add: string;
   cancel: string;
@@ -524,14 +516,17 @@ export interface ByQuestion {
 export function byQuestion(fee: Fee, kind: ByKind): ByQuestion {
   const c = copy.cases;
   const base = { kind, add: c.add, cancel: c.cancel, ...(canAddBy(fee, kind) || kind === "own" ? {} : { off: (fee.by?.length ?? 0) >= BY_MAX ? c.full : "" }) };
-  const values = CONDITIONS[kind].values;
+  const values: ConditionValues = CONDITIONS[kind].values;
+  const typed = { name: c.slot.nameBy[kind] ?? c.slot.ownName, place: isPlaceKind(kind), open: isWordsKind(kind) };
   switch (values.kind) {
     case "range":
       return { ...base, ask: c.ask.range!.replace("{thing}", thingName(fee.kind, { kind })), units: values.units.map((u) => ({ unit: u, words: unitWords(u) })) };
     case "list":
-      return { ...base, ask: c.ask[kind]!, values: values.ids.map((id) => ({ id, words: valueWords(kind, id) })), other: kind === "channel" ? c.otherChannel : c.otherValue };
-    default:
-      return { ...base, ask: c.ask[kind]! };
+      return { ...base, ask: c.ask[kind]!, values: values.ids.map((id) => ({ id, words: valueWords(kind, id) })), other: c.otherBy[kind] ?? c.otherValue, typed };
+    case "own":
+      return { ...base, ask: c.ask[kind]!, typed, label: c.ownLabel };
+    case "track":
+      return { ...base, ask: c.ask[kind]!, typed };
   }
 }
 
@@ -585,7 +580,7 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
       const ids = [...values.ids, ...(namesPlaces(b) && b.own ? b.own.map((o) => o.name) : [])];
       // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
       for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
-      return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: b.kind === "channel" ? copy.cases.otherChannel : copy.cases.otherValue };
+      return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: copy.cases.otherBy[b.kind] ?? copy.cases.otherValue };
     }
   }
 }

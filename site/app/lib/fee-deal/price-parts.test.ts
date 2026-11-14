@@ -6,7 +6,7 @@ import { actionCost, dealMarks, dealPeriods } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
 import type { SiteValue } from "../value";
-import { withCurrency, withFigure, withFlat, figureOf, figureBack } from "./edit";
+import { withCurrency, withFigure, withFlat, figureOf, figureBack } from "./edits/price";
 import { setPart, withForm } from "./offers/parts";
 import { glance } from "./glance";
 import { inCapUnit, standingOf } from "./kinds";

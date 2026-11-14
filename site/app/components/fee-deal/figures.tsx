@@ -1,7 +1,9 @@
 // One figure of a fee's price, typed where it stands in the case open in place.
 import { useRef, type ReactNode } from "react";
 import { feeDeal as copy, values as valuesCopy } from "../../copy";
-import { editPrice, figureBack, figureOf, withFigure, type Side } from "../../lib/fee-deal/edit";
+import { editPrice } from "../../lib/fee-deal/edits/stage";
+import { figureBack, figureOf, withFigure } from "../../lib/fee-deal/edits/price";
+import { type Side } from "../../lib/fee-deal/model";
 import type { Figure } from "../../lib/fee-deal/offers/figures";
 import { pricesOn, SUM_MAX, type Fee, type Num } from "../../lib/fee-deal/model";
 import type { CitedPlace } from "../../lib/sources";

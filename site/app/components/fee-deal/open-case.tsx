@@ -4,8 +4,10 @@
 import { useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, SlotEdit } from "../../lib/fee-deal/builder";
-import { addOwnPlace, editPrice, setMine, setRangeUnit, setStep, setTop, setWhen, withCurrency, type Side } from "../../lib/fee-deal/edit";
-import { anySourced, BOUND_CURRENCIES, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Price } from "../../lib/fee-deal/model";
+import { addOwnPlace, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
+import { editPrice } from "../../lib/fee-deal/edits/stage";
+import { withCurrency } from "../../lib/fee-deal/edits/price";
+import { anySourced, BOUND_CURRENCIES, namesPlaces, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Price, type Side } from "../../lib/fee-deal/model";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { keeps, sumCurrency } from "../../lib/fee-deal/offers/capacity";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
@@ -205,7 +207,7 @@ export function SlotMenu({ edit, fee, caseId, t, top, onFee }: { edit: SlotEdit;
       if (next.length) onFee(setWhen(fee, caseId, t, next));
     };
     const b = fee.by?.[t];
-    const place = b?.kind === "what" || b?.kind === "held";
+    const place = !!b && namesPlaces(b);
     const add = () => {
       const name = typing?.name.trim();
       if (!typing || !name) return;

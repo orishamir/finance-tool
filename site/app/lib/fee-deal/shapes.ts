@@ -2,25 +2,13 @@
 // the values a price may change by. What each kind's price can hold is in offers/capacity.ts, the things it may change by in
 // offers/conditions.ts. The ids are stable: the copy names each fee by its id. Pure data and small functions; no Hebrew (the names are in
 // copy.ts, under the guide's fee names and the fee page's own keys).
-import type { DealBase, DealPrice } from "@finance-tool/engine";
-import type { FeeBase, ProductId } from "@finance-tool/schema";
+import type { DealBase } from "@finance-tool/engine";
+import type { ProductId } from "@finance-tool/schema";
 import { formOnHolding } from "./offers/capabilities";
 import { CAPACITY } from "./offers/capacity";
 
-/**
- * A fee a deal can hold: a fee base of the records (`feeBase` in packages/schema), or one of the four the records do not list:
- * `fund_management`, the management fee inside a fund that is held (F-10, F-111); `fx_spread`, the spread a price list limits on a
- * conversion, priced at its ceiling beside the conversion fee (F-13); `current_account`, the monthly minimum of a current account at a
- * bank (F-102); and `own`, a fee the person names.
- */
-export type FeeKindId = FeeBase | "fund_management" | "fx_spread" | "current_account" | "own";
-
-/**
- * A price's form (F-110): `free` (nothing charged), `action` (a share of each action, with a minimum and a maximum), `perUnit` (a sum for
- * each unit traded, with the same bounds), `held` (a share of what is held, charged every few months), `sum` (a sum every few months,
- * whatever the account holds), `perAction` (a sum on each action).
- */
-export type FormId = DealPrice["kind"];
+export type { FeeKindId, FormId } from "./core";
+import type { FeeKindId } from "./core";
 
 /** Every fee kind, in the order the page lists fees (`CAPACITY`'s). */
 export const FEE_KIND_IDS = Object.keys(CAPACITY) as FeeKindId[];

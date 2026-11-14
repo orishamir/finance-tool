@@ -4,7 +4,9 @@
 import { useEffect, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenPart, PartField } from "../../lib/fee-deal/builder";
-import { setUntil, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
+import { setUntil } from "../../lib/fee-deal/edits/stage";
+import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho } from "../../lib/fee-deal/edits/price";
+import { type Side } from "../../lib/fee-deal/model";
 import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
 import { sumCurrency, type ChargedForm } from "../../lib/fee-deal/offers/capacity";

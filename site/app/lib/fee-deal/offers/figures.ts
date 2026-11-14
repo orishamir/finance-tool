@@ -1,7 +1,7 @@
 // Where each figure of a price sits (method §10.6, F-110, F-116, F-117): its rate or sum, its bounds, its percent maximum, its flat price's
 // two figures, a discount's share, a third party's figure and bounds, a refund. Reading, setting and owning a figure, and listing a price's
 // figures, all go through this table. Pure; it imports no code of the model, so the model can list a price's figures through it.
-import type { BoundCurrency, Num, Price, ThirdPrice } from "../model";
+import type { BoundCurrency, Num, Price, ThirdPrice } from "../core";
 import { boundsAction, byAmount, byRate, charged, hasBounds, onAction } from "./capabilities";
 
 /**

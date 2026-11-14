@@ -7,6 +7,7 @@ import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
 import { thingName, whenWords, type WhenWords } from "./builder";
 import { STATED, type PartWords } from "./part-words";
+import { isPicked, pickKind } from "./offers/conditions";
 import { PARTS, partsSaid, type PartId, type StatedPartId } from "./offers/parts";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
@@ -484,10 +485,10 @@ export function pickLine(r: DealRead): PickLine | null {
   for (const fee of r.deal.fees) {
     if (!hasCases(fee)) continue;
     fee.by.forEach((b, t) => {
-      // the currency is what is bought's, never a pick of its own (F-114)
-      if (!picked(fee, b) || b.kind === "currency") return;
+      // a thing the reading takes from another pick is never a pick of its own (the currency, from what is bought, F-114)
+      if (!picked(fee, b) || !isPicked(b.kind)) return;
       const key = pickKey(b);
-      const thing = things.get(key) ?? { by: key, words: b.kind === "held" ? copy.cases.things.what! : thingName(fee.kind, b), options: [], chosen: r.picks.find((p) => p.by === key)?.is ?? "" };
+      const thing = things.get(key) ?? { by: key, words: thingName(fee.kind, { ...b, kind: pickKind(b.kind) }), options: [], chosen: r.picks.find((p) => p.by === key)?.is ?? "" };
       things.set(key, thing);
       const add = (is: string, words: Omit<WhenWords, "thing">) => {
         if (!thing.options.some((o) => o.is === is)) thing.options.push({ is, words });

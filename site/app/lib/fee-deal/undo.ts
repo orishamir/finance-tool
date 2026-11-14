@@ -9,7 +9,10 @@
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { thingName } from "./builder";
-import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
+import { holdOn, laterUntouched, removeStage } from "./edits/stage";
+import { removeBy, removeCase } from "./edits/case";
+import { setKind, updateFee } from "./edits/deal";
+import { type Side } from "./model";
 import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
