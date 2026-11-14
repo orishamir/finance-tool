@@ -1,9 +1,9 @@
 // F-21: a bank deposit's interest over its term from the annual nominal rate the bank publishes (BANK-50, the disclosure rules'
-// Schedule A). A term under a year pays once, at maturity, rate × days/365: the days the table prints, or 365/12 a month (the method's
-// convention). A one-year term is Schedule A at n = 365, (1 + i/m)^m − 1, the rate itself where the record gives no m. A term over a year
-// compounds at the run's rate by the times a year the record gives, read from its printed nominal and effective pair at the decimals the
-// bank prints or from its words; where it gives neither, or the pair leaves the run's rate open, the figure is unknown (BANK OQ21). Interest paid
-// out during the term does not compound and is taxed in the month it is paid. Values worked by hand.
+// Schedule A). Where the record gives m, from its words or from its printed nominal and effective pair at the decimals the bank prints (every
+// whole m and, for a deposit paid at maturity, m = 365/d), any term compounds at the run's rate by it; where the pair leaves the run's rate
+// open, the figure is unknown (BANK OQ21). Where it gives none, the method reads a term under a year as paying once, at maturity,
+// rate × days/365 (the days the table prints, or 365/12 a month), and a one-year term as paying the rate itself; a term over a year is
+// unknown. Interest paid out during the term does not compound and is taxed in the month it is paid. Values worked by hand.
 import { describe, expect, it } from "vitest";
 import { currentAccountMonthlyRate, depositInterest, effectiveAnnualOf, NotEvaluatedError, periodsFromPrinted, runDeposit, type DepositInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
@@ -61,12 +61,41 @@ describe("F-21 a deposit's interest over its term", () => {
     expect(periodsFromPrinted(0.02, 0.0202, 2)).toEqual(Array.from({ length: 362 }, (_, k) => k + 4));
     // an equal pair at two decimals is m = 1 alone from about 1.42%; at 1.15% m = 1 to 4 all print 1.15%
     expect(periodsFromPrinted(0.0115, 0.0115, 2)).toEqual([1, 2, 3, 4]);
-    // printed to four decimals, 2.0000% beside 2.0184% is m = 12 alone, (1 + 0.02/12)^12 − 1 = 2.01844%
+    // an illustration, not a collected record (no record in data/ prints four decimals): 2.0000% beside 2.0184% is m = 12 alone,
+    // (1 + 0.02/12)^12 − 1 = 2.01844%
     expect(periodsFromPrinted(0.02, 0.020184, 4)).toEqual([12]);
-    // an effective rate under the nominal one, or above what any m up to 365 gives, reads no m
+    // an effective rate under the nominal one reads no whole m, nor does one above what any m up to 365 gives
     expect(periodsFromPrinted(0.015, 0.0148, 2)).toEqual([]);
     expect(periodsFromPrinted(0.02, 0.021, 2)).toEqual([]);
-    expect(depositInterest(10_000, 0.015, 36, 36, { calc: { printed: { nominal: 0.015, effective: 0.0148, decimals: 2 } } })).toBeNull();
+  });
+
+  it("reads BANK-50's m = 365/d, interest once at maturity, from a printed pair of a deposit that pays at maturity", () => {
+    // three years (1,095 days) at 1.50%: once at maturity, (1 + 0.015 × 3)^(1/3) − 1 = 1.4782%, which prints 1.48% (BANK-50's own
+    // example), so 1.50% beside 1.48% allows m = 365/1,095 alone, and 10,000 earns 10,000 × 0.015 × 3 = 450
+    const simple = { printed: { nominal: 0.015, effective: 0.0148, decimals: 2 } };
+    expect(periodsFromPrinted(0.015, 0.0148, 2, 1_095)).toEqual([365 / 1_095]);
+    expect(depositInterest(10_000, 0.015, 36, 36, { calc: simple })!).toBeCloseTo(450, 9);
+    const input: DepositInput = { goal: { amountNow: 10_000, monthly: 0, months: 36 }, market: { inflation: 0 }, deposit: { rate: 0.015, termMonths: 36, linkage: "unlinked", interestCalc: simple }, profile: {} };
+    expect(runDeposit(input, ctx).detail.interest).toBeCloseTo(450, 6);
+    // Leumi's equal pair 1.50% beside 1.50% does not allow it (1.48% again), so it stays m = 1
+    expect(periodsFromPrinted(0.015, 0.015, 2, 1_095)).toEqual([1]);
+    // an equal pair at a low rate allows it beside the whole m, and the run takes the fewest: Mizrahi-Tefahot's 332, two years at 1.00%
+    // beside 1.00%, allows m = 0.5 ((1.02)^(1/2) − 1 = 0.995%) to 302, all of which print 1.00% at its own rate, so 100,000 earns
+    // 100,000 × 0.01 × 2 = 2,000, the low end, where m = 1 gave 2,010
+    const low = { printed: { nominal: 0.01, effective: 0.01, decimals: 2 } };
+    expect(periodsFromPrinted(0.01, 0.01, 2, 730)[0]).toBe(0.5);
+    expect(depositInterest(100_000, 0.01, 24, 24, { calc: low })!).toBeCloseTo(2_000, 6);
+  });
+
+  it("applies the record's own m on a term under a year, the method's once-at-maturity reading only where it gives none", () => {
+    // three months of 90 printed days at 3.5%, interest calculated monthly: (1 + 0.035/12)^(12 × 90/365) − 1 (BANK-50), not 0.035 × 90/365
+    expect(depositInterest(100_000, 0.035, 3, 3, { termDays: 90, calc: { periodsPerYear: 12 } })!).toBeCloseTo(100_000 * (Math.pow(1 + 0.035 / 12, (12 * 90) / 365) - 1), 6);
+    expect(depositInterest(100_000, 0.035, 3, 3, { termDays: 90 })!).toBeCloseTo((100_000 * 0.035 * 90) / 365, 6);
+    // a printed pair on a six-month term that leaves the run's rate open leaves the figure unknown, as over a year
+    const open = { printed: { nominal: 0.0115, effective: 0.0115, decimals: 2 } };
+    expect(depositInterest(10_000, 0.045, 6, 6, { calc: open })).toBeNull();
+    const input: DepositInput = { goal: { amountNow: 100_000, monthly: 0, months: 3 }, market: { inflation: 0 }, deposit: { rate: 0.035, termMonths: 3, termDays: 90, linkage: "unlinked", interestCalc: { periodsPerYear: 12 } }, profile: {} };
+    expect(runDeposit(input, ctx).detail.interest).toBeCloseTo(100_000 * (Math.pow(1 + 0.035 / 12, (12 * 90) / 365) - 1), 6);
   });
 
   it("gives a figure only where every m the pair allows gives the run's rate the same effective rate at the printed decimals, at the fewest m", () => {
@@ -84,8 +113,8 @@ describe("F-21 a deposit's interest over its term", () => {
     const input: DepositInput = { goal: { amountNow: 100_000, monthly: 0, months: 24 }, market: { inflation: 0 }, deposit: { rate: 0.045, termMonths: 24, linkage: "unlinked", interestCalc: mizrahi259 }, profile: {} };
     expect(() => runDeposit(input, ctx)).toThrow(/BANK-OQ21/);
     expect(depositInterest(100_000, 0.0115, 24, 24, { calc: mizrahi259 })!).toBeCloseTo(100_000 * (1.0115 * 1.0115 - 1), 9);
-    // printed to four decimals, 2.0000% beside 2.0184% is m = 12, where two decimals' tolerance would have read m = 4: at an entered 3% the
-    // year pays (1 + 0.03/12)^12 − 1 = 3.0416%
+    // an illustration, not a collected record: printed to four decimals, 2.0000% beside 2.0184% is m = 12, where two decimals' tolerance
+    // would have read m = 4; at an entered 3% the year pays (1 + 0.03/12)^12 − 1 = 3.0416%
     const fourPlaces = { printed: { nominal: 0.02, effective: 0.020184, decimals: 4 } };
     expect(effectiveAnnualOf(0.03, fourPlaces)!).toBeCloseTo(Math.pow(1 + 0.03 / 12, 12) - 1, 12);
     expect(depositInterest(10_000, 0.02, 24, 24, { calc: fourPlaces })!).toBeCloseTo(10_000 * (Math.pow(1 + 0.02 / 12, 24) - 1), 9);
