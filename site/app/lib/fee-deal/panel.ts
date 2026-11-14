@@ -36,7 +36,11 @@ export interface OpenPart {
   kind: PartKind;
   words: PartWords;
   fields: PartField[];
-  removable: boolean;
+  /**
+   * What its ✕ does: takes the part away (a form of the price makes it free); holds the price on with no end, taking the prices after it
+   * away with an undo (a later price, `until`); or nothing, for a free price, which has no ✕.
+   */
+  remove: "part" | "hold" | null;
 }
 
 /** A slot of the open case: one thing, how the case names it now, and whether its track is the person's. */
@@ -77,7 +81,7 @@ function openParts(fee: Fee, p: Price, view: PriceView, line: { until?: MonthKey
     const at = said.findIndex((x) => PART_IDS.indexOf(x.id) > PART_IDS.indexOf("flat"));
     said.splice(at < 0 ? said.length : at, 0, { id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK });
   }
-  return said.map((x) => ({ ...x, fields: figureFields(x.id, p, view), removable: PARTS[x.id].form === undefined }));
+  return said.map((x) => ({ ...x, fields: figureFields(x.id, p, view), remove: x.id === "free" ? null : x.id === "until" ? "hold" : "part" }));
 }
 
 /** The case open in place: the fee's slots for the case, and its prices' parts. */

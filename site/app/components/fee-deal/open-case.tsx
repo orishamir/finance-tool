@@ -101,9 +101,9 @@ function PriceParts({
     ),
   };
   const remove = (p: OpenPart) => {
-    if (p.id === "free") return undefined;
-    if (p.id === "until") return () => onHoldOn(side, k);
-    return () => onFee(setPart(fee, p.id, false, { side, k, ...(caseId ? { caseId } : {}) }));
+    if (p.remove === "hold") return () => onHoldOn(side, k);
+    if (p.remove === "part") return () => onFee(setPart(fee, p.id, false, { side, k, ...(caseId ? { caseId } : {}) }));
+    return undefined;
   };
   return (
     <>

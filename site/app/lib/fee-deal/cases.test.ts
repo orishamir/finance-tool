@@ -291,11 +291,11 @@ describe("the builder's blocks", () => {
       ["what", copy.cases.values.what.us, undefined],
       ["track", "מסלול 1", true],
     ]);
-    expect(p.open!.buy[0]!.parts.map((x) => [x.id, x.fields.map((f) => f.figure), x.removable])).toEqual([
-      ["perUnit", ["amount"], false],
-      ["min", ["min"], true],
-      ["cap", ["cap"], true],
-      ["unfilled", [], true],
+    expect(p.open!.buy[0]!.parts.map((x) => [x.id, x.fields.map((f) => f.figure), x.remove])).toEqual([
+      ["perUnit", ["amount"], "part"],
+      ["min", ["min"], "part"],
+      ["cap", ["cap"], "part"],
+      ["unfilled", [], "part"],
     ]);
     expect(p.open).toMatchObject({ canCopy: true, canRemove: true });
   });
