@@ -19,7 +19,9 @@ describe("the providers the brokerage wrapper carries", () => {
     expect(ids).toContain("meitav-trade"); // priced at its price list since 2026-11-04 (D56): custody 0.15% a quarter, at least 270 NIS, and a handling fee up to 90 NIS a month
     // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26)
     expect(ids).not.toContain("interactive-brokers");
-    for (const id of ["one-zero", "leumi"]) expect(ids).toContain(id); // their TASE lines cover tracking funds by footnote (MF-27; snapshot)
+    expect(ids).toContain("leumi"); // its TASE line covers tracking funds by footnote (MF-27; snapshot)
+    // One Zero sells only the funds whose managers signed a distribution agreement with it, listed on Maya and not read: no price (BRK-38)
+    expect(ids).not.toContain("one-zero");
     for (const p of Object.values(wrapper.providers!)) {
       expect(p.name.length).toBeGreaterThan(2);
       expect(p.tariff.buy).toBeDefined();
@@ -98,11 +100,11 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
   it("prices the account on the collected tariff that leaves the goal the most, named as the site's pick", () => {
     const b = applyProviders(bundle, doron);
     const w = b.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "one-zero", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
+    expect(w.representative).toMatchObject({ providerId: "psagot", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
     expect(w.representative!.chosen).toBeUndefined();
     expect(w.feeValues.custodyRate).toMatchObject({ state: "sourced" });
     expect(real(b, BRK, doron)).toBeGreaterThan(real(bundle, BRK, doron) + 3_000);
-    expect(Math.round(real(b, BRK, doron))).toBe(89_759);
+    expect(Math.round(real(b, BRK, doron))).toBe(89_357);
   });
   it("never picks a provider whose tariff has no line for the fund's class: Interactive Brokers has no tracking-fund line and is not a candidate", () => {
     expect(Object.keys(wrapper.providers!)).not.toContain("interactive-brokers");

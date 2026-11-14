@@ -4,7 +4,7 @@
 import type { GuideContent } from "./types";
 import { YearOf } from "./year";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
-import { Callout, Sentence } from "../../components/kit";
+import { Callout, Sentence, When } from "../../components/kit";
 
 export const content: GuideContent = {
   what: () => (
@@ -57,14 +57,13 @@ export const content: GuideContent = {
   },
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
-    const proposed = figure("REG-05", "proposed_guarantee");
     return (
       <>
         <p className="max-w-measure">
           אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, אין חוק שמחזיר לכם את הכסף. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term> ולהעביר את הפיקדונות לבנק אחר, ובאישור הממשלה גם להכריז על ערבות לפיקדונות. אלה סמכויות שלו, לא זכויות שלכם.
         </p>
         <Sentence measure>
-          חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית מציעה ערבות {proposed ? <>של עד <Num value={proposed} /> </> : null}ללקוח בבנקים קטנים, אבל היא רק הצעה.
+          חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות פקעה כשהכנסת החדשה התכנסה <When iso="2026-11-10" lead="ב־" /> <RuleRef id="REG-05" end="." />
         </Sentence>
         <p className="max-w-measure">תוכנית בריבית משתנה זזה עם ריבית העוגן שלה לאורך כל השנים. תוכנית לא צמודה לא מגינה מפני עליית מחירים, ובתקופה ארוכה זה מורגש יותר.</p>
         <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-25", "BANK-26"]} />

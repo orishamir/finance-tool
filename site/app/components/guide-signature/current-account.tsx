@@ -8,7 +8,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { guideSignature as copy, kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
-import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
+import { accountAxis, accountFact, bankYearlyMax, brokenCondition, currentAccountModel, fact, payingBanks, silentBanks, type AccountCondition, type SignatureData } from "../../lib/guide-signature";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
@@ -34,6 +34,22 @@ const joinHe = (parts: string[]): string => (parts.length <= 1 ? (parts[0] ?? ""
 function openFold() {
   const el = document.getElementById(FOLD_ID);
   if (el instanceof HTMLDetailsElement) el.open = true;
+}
+
+/** The cell of a bank whose own condition on the balance the balance entered breaks: nothing, and the condition with the bank's figure. */
+function BrokenCondition({ c }: { c: AccountCondition }) {
+  const w = copy.account.fold.broken;
+  const t = w[c.measure][c.bound][c.inclusive ? "in" : "out"];
+  return (
+    <span className="flex flex-col gap-0.5">
+      <span>{w.word}</span>
+      <span className="text-xs text-muted-foreground">
+        {w.lead} {t.before}{" "}
+        <Num value={c.value} prefix={t.prefix || undefined} />
+        {t.after}.
+      </span>
+    </span>
+  );
 }
 
 export function CurrentAccountVisual({ data, today }: VisualProps) {
@@ -166,7 +182,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
               </thead>
               <tbody className="block md:table-row-group">
                 {paying.map((b, row) => {
-                  const yearly = tax ? figure(bankYearlyMax(b, inputs.amount, Number(tax.value)), "nis", "F-26", { [copy.account.inputs.rate]: b.rate, ...(b.ceiling ? { [copy.account.inputs.ceiling]: b.ceiling } : {}), [copy.account.balance]: balanceValue, [copy.account.inputs.tax]: tax }, today, copy.account.about.maxYear, rulesOfBundle(account)) : null;
+                  const broken = brokenCondition(b, inputs.amount);
+                  const yearly = tax && !broken ? figure(bankYearlyMax(b, inputs.amount, Number(tax.value)), "nis", "F-26", { [copy.account.inputs.rate]: b.rate, ...(b.ceiling ? { [copy.account.inputs.ceiling]: b.ceiling } : {}), [copy.account.balance]: balanceValue, [copy.account.inputs.tax]: tax }, today, copy.account.about.maxYear, rulesOfBundle(account)) : null;
                   return (
                     <tr key={b.id} className={cx("flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border py-3 md:table-row")}>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top flex-1 min-w-32">
@@ -188,7 +205,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                       </td>
                       <td className="md:table-cell md:py-3 md:align-top basis-full">
                         <span className="md:hidden text-xs text-muted-foreground">{maxHead}: </span>
-                        {yearly ? <Num value={yearly} /> : null}
+                        {broken ? <BrokenCondition c={broken} /> : yearly ? <Num value={yearly} /> : null}
                       </td>
                     </tr>
                   );

@@ -169,6 +169,13 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
       else missing.push(`${wrapperId}: "${rec.id}" is linked to ${rec.linkage}; the deposit run has no such linkage`);
       if (missing.length === 0 && linkage) {
         terms.deposit = { termMonths: noTerm ? 1 : (rec.term_months.value as number), linkage };
+        // F-21, F-26 (BANK-50): the days the table prints for the term, how the product calculates interest, and interest paid out
+        // during the term, each as the record prints it
+        if (!noTerm && rec.term_days && typeof rec.term_days.value === "number") terms.deposit.termDays = rec.term_days.value;
+        const eff = rec.interest_calc?.effective_annual?.value;
+        const m = rec.interest_calc?.periods_per_year?.value;
+        if (typeof eff === "number" || typeof m === "number") terms.deposit.interestCalc = { ...(typeof eff === "number" ? { effectiveAnnual: eff / 100 } : {}), ...(typeof m === "number" ? { periodsPerYear: m } : {}) };
+        if ((rec.variant ?? []).includes("interest_during_term")) terms.deposit.interestPaidOut = true;
         // F-41: a deposit's exit points reach the run as the months to the first one (`first_after_months`) and the interval after
         // it (`every_months`), each only as a positive whole number of months. Without a first the run knows no exit point: an
         // interval alone does not say when the first falls (a plan with yearly exit points may open its first after ten years).

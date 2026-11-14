@@ -41,8 +41,23 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
     rate_offered: d.doubt_he ? { ...rate, doubt: d.doubt_he } : rate,
     anchor: d.anchor ?? null,
     spread: d.spread ? shown(d.spread, t, d.snapshot, owner) : null,
-    amount_range: { min: shown(d.amount_range.min, t, d.snapshot, owner), max: d.amount_range.max ? maxOf(d.amount_range.max, d.doubt_he, t, d.snapshot, owner) : null },
+    amount_range: {
+      min: shown(d.amount_range.min, t, d.snapshot, owner),
+      max: d.amount_range.max ? maxOf(d.amount_range.max, d.doubt_he, t, d.snapshot, owner) : null,
+      ...(d.amount_range.min_edge ? { min_edge: d.amount_range.min_edge } : {}),
+      ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}),
+    },
     breakTerm: d.break.allowed ? d.break.penalty : "not_allowed",
+    ...(d.term_days && typeof d.term_days.value === "number" ? { termDays: d.term_days.value } : {}),
+    ...(d.interest_calc
+      ? {
+          calc: {
+            ...(d.interest_calc.effective_annual ? { effectiveAnnual: shown(d.interest_calc.effective_annual, t, d.snapshot, owner) } : {}),
+            ...(d.interest_calc.periods_per_year ? { periodsPerYear: shown(d.interest_calc.periods_per_year, t, d.snapshot, owner) } : {}),
+          },
+        }
+      : {}),
+    ...((d.variant ?? []).includes("interest_during_term") ? { paidOut: true } : {}),
     exits: exitPointsOf(d.exit_points),
   };
 }
@@ -67,5 +82,5 @@ export function buildDepositBrowser(): DbData {
 
 /** The rules the page's sheets cite: the deposits' kinds and the standard table. */
 export function depositBrowserRuleIds(data: DbData): string[] {
-  return [...new Set(["BANK-13", "BANK-14", "BANK-21", ...data.offers.flatMap((o) => o.labels.flatMap((l) => l.rules))])];
+  return [...new Set(["BANK-13", "BANK-14", "BANK-21", "BANK-50", ...data.offers.flatMap((o) => o.labels.flatMap((l) => l.rules))])];
 }

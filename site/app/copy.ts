@@ -340,7 +340,7 @@ export const values = {
   optional: "(לא חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
   units: { nis: "₪", pct: "%", years: "שנים", usd: "$", eur: "€", gbp: "£" },
-  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
+  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", cashRenews: { deposit: "אחרי התקופה הראשונה זו הנחה: בכל חידוש הפיקדון מקבל את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום.", "savings-plan": "אחרי התקופה הראשונה זו הנחה: תוכנית חדשה מקבלת את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום." }, asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
@@ -1511,7 +1511,9 @@ export const depositBrowser = {
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
   interest: {
-    inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים" },
+    inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים", effective: "הריבית האפקטיבית שהבנק מפרסם", periods: "כמה פעמים בשנה הבנק מחשב ריבית" },
+    /** A term over a year whose record says nothing of how the product calculates interest (BANK-50, BANK OQ21). */
+    unknown: "לא ידוע: הבנק לא מפרסם כמה פעמים בשנה הוא מחשב ריבית",
     about: "הריבית על הסכום, לפני המס על הריבית, ",
     about2: "כ־",
     underOne: "פחות מ־⁦1 ₪⁩",
@@ -2441,7 +2443,7 @@ export const r4catalogue = {
   linkage: { none: "לא צמוד", cpi: "צמוד למדד", fx: "צמוד למט״ח" },
   tax: { unlinked: "ריבית לא צמודה; השיעור בעמוד המדריך.", linked: "ריבית צמודה; השיעור בעמוד המדריך." },
   /** A deposit's amounts on every page (lib/deposit-kind.ts `amountRangeForm`): "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪", "ללא מינימום". */
-  amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום" },
+  amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום", above: "מעל", notIncluded: "(לא כולל)" },
   breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" },
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
@@ -2483,7 +2485,7 @@ export const r4catalogue = {
   },
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
-  notAnOffer: "הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
+  notAnOffer: "הריבית היא מה שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
   rowLinks: { whatIs: "מה זה" },
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
@@ -2977,6 +2979,27 @@ export const guideSignature = {
         nothing: "כלום",
         sentence: { one: "כתב בפרסום שלו", many: "כתבו בפרסום שלהם", rest: "את המשפט שבנק ישראל דורש מבנק שלא מציע ריבית:", quote: "״לא מוצעת ריבית על יתרת זכות״." },
         printedZero: { mid: "כתב בפרסום ריבית", end: "." },
+      },
+      /**
+       * A paying bank whose own condition on the balance the balance entered breaks (F-26, `balance_conditions`): nothing at that balance,
+       * and the condition in the bank's figure. By what the condition measures, its bound, and whether the figure itself is in: the words
+       * before the figure, the prefix joined to it, and the words after it.
+       */
+      broken: {
+        word: "כלום ביתרה הזו",
+        lead: "הבנק משלם רק",
+        daily_balance: {
+          min: { in: { before: "כשהיתרה בעו״ש היא", prefix: "", after: " ומעלה בכל יום" }, out: { before: "כשהיתרה בעו״ש גבוהה", prefix: "מ־", after: " בכל יום" } },
+          max: { in: { before: "כשהיתרה בעו״ש לא עולה על", prefix: "", after: " בכל יום" }, out: { before: "כשהיתרה בעו״ש נמוכה", prefix: "מ־", after: " בכל יום" } },
+        },
+        average_balance: {
+          min: { in: { before: "כשהיתרה החודשית הממוצעת היא", prefix: "", after: " ומעלה" }, out: { before: "כשהיתרה החודשית הממוצעת גבוהה", prefix: "מ־", after: "" } },
+          max: { in: { before: "כשהיתרה החודשית הממוצעת לא עולה על", prefix: "", after: "" }, out: { before: "כשהיתרה החודשית הממוצעת נמוכה", prefix: "מ־", after: "" } },
+        },
+        total_assets: {
+          min: { in: { before: "כשסך הנכסים בחשבון הוא", prefix: "", after: " ומעלה" }, out: { before: "כשסך הנכסים בחשבון גבוה", prefix: "מ־", after: "" } },
+          max: { in: { before: "כשסך הנכסים בחשבון לא עולה על", prefix: "", after: "" }, out: { before: "כשסך הנכסים בחשבון נמוך", prefix: "מ־", after: "" } },
+        },
       },
     },
     worth: {
@@ -4117,7 +4140,7 @@ export const invest = {
     /** The line over the funds the picked account gives no price, by why, naming the account; the words open why, as an account's row
      *  does (D105). Same order as `whyNoPrice`: a doubt in the record, a price list not collected, a kind the house does not sell. */
     noPriceAt: {
-      doubt: (house: string) => `המחיר ${inName(house)} לא ברור בתעריפון`,
+      doubt: (house: string) => `לא ברור אם נקנית ${inName(house)} ובאיזה מחיר`,
       missing: (house: string) => `התעריפון של ${house} עוד לא נאסף`,
       notSold: (house: string) => `לא נקנית ${inName(house)}`,
       other: (house: string) => `אין מחיר ${inName(house)}`,
