@@ -1,0 +1,69 @@
+{
+  "id": "BRK-69",
+  "title": "Bank Leumi: custody maximums per security and per deposit, and on the quarterly charge the lower of the two",
+  "title_he": "בנק לאומי: מקסימום לדמי המשמרת לכל נייר ולכל הפיקדון, ובחיוב הרבעוני הנמוך מביניהם",
+  "strength": "institution",
+  "dimensions": [
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-14",
+  "text_he": "בבנק לאומי דמי הניהול על פיקדון ניירות ערך הם 0.15% לרבעון על ניירות שנסחרים בארץ, עם מקסימום של 3,700 ₪ לכל נייר ו־11,500 ₪ לכל הפיקדון, ו־0.2% לרבעון על ניירות שנסחרים בחו״ל, עם מקסימום של 7,400 ₪ לנייר ו־23,000 ₪ לפיקדון. לפי הערה 5 בתעריפון, בחיוב הרבעוני נגבה המקסימום לנייר או לפיקדון, הנמוך מביניהם. כשמוכרים או מעבירים נייר באמצע הרבעון, העמלה נגבית ביום הפעולה, והמקסימום הוא לעסקה, בלי צבירה. התעריפון לא מפרט איך המקסימום לנייר מצטבר על כמה ניירות לפני שמשווים אותו למקסימום לפיקדון.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf#page=32",
+      "title": "בנק לאומי: תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (01/10/2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.32, part 4, note 5",
+      "locator_he": "עמוד 32, חלק 4, הערה 5",
+      "page": 32,
+      "quote": "תיגבה עמלת מקסימום לני״ע או לפיקדון הנמוכה מביניהן",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf#page=32",
+      "title": "בנק לאומי: תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (01/10/2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.32, note 4",
+      "locator_he": "עמוד 32, הערה 4",
+      "page": 32,
+      "quote": "תיגבה עמלת מקסימום לעסקה ללא צבירה",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf#page=11",
+      "title": "בנק לאומי: תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (01/10/2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "quote": "11,500 ש״ח לפיקדון",
+      "checked": "2026-11-14"
+    }
+  ],
+  "derived_from": [
+    "BRK-16",
+    "BRK-17"
+  ]
+}
