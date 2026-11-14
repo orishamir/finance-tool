@@ -63,6 +63,33 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2024.pdf#page=3",
+      "title": "לוח ניכויים חודשי 2024",
+      "title_he": "לוח ניכויים חודשי 2024",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "בשיעור עליית המדד 3.34%",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2024.pdf#page=9",
+      "title": "לוח ניכויים חודשי 2024",
+      "title_he": "לוח ניכויים חודשי 2024",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "checked": "2026-11-14"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
@@ -87,20 +114,6 @@
       "locator_he": "עמוד 201, סעיף 120ב(ד)",
       "page": 201,
       "quote": "שר האוצר רשאי לקבוע כללים לעיגול סכומים שתואמו לפי סעיף זה",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2024.pdf#page=3",
-      "title": "לוח ניכויים חודשי 2024",
-      "title_he": "לוח ניכויים חודשי 2024",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
-      "page": 3,
-      "quote": "בשיעור עליית המדד 3.34%",
       "checked": "2026-10-31"
     },
     {
@@ -172,17 +185,44 @@
       "checked": "2026-11-14"
     },
     {
-      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf#page=1",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf#page=2",
       "title": "ספר החוקים 3342",
       "title_he": "ספר החוקים 3342",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.1 (gazette p.150), s.1(1), s.120ב(ה)(1)-(2)",
-      "locator_he": "עמוד 1 (עמוד ספר החוקים 150), סעיף 1(1), סעיף 120ב(ה)(1)-(2)",
-      "page": 1,
+      "locator": "file p.2 (gazette p.150), s.1(1), s.120ב(ה)(1)-(2)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 150), סעיף 1(1), סעיף 120ב(ה)(1)-(2)",
+      "page": 2,
       "quote": "טרם עיגולם לפי סעיף קטן (ד)",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12846863.pdf#page=4",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2026), התשפ\"ו-2026, ספר החוקים 3511",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2026), התשפ\"ו-2026, ספר החוקים 3511",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.416), s.5",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 416), סעיף 5",
+      "page": 4,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12846863.pdf#page=4",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2026), התשפ\"ו-2026, ספר החוקים 3511",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2026), התשפ\"ו-2026, ספר החוקים 3511",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.416), s.7",
+      "locator_he": "עמוד הקובץ 4 (עמוד ספר החוקים 416), סעיף 7",
+      "page": 4,
+      "quote": "לעניין תיאום הסכומים הנקובים בפרק זה",
       "checked": "2026-11-14"
     },
     {

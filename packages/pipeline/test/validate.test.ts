@@ -455,10 +455,11 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // insurance-cover regulations now read in the gazette (PEN-15); later still, from the tax-questions pass, three more and one answered:
     // whether an unused s.45A credit is lost, refunded or carried (TXP OQ20), whether the 2003 regulations on a foreign-investment
     // fund's index still operate (TXS OQ26) and what keeps the 2028 indexation from being exact (TXG OQ16); TXG OQ8 deleted, the
-    // bill's explanatory notes say the 2028 indexation adds only the 2027 CPI rise (TXG-06); 2026-11-14 two more, which fund the fee
-    // regulations' "ישיר ביטחון" is and whether the guaranteed-yield exclusion takes a named fund whole (CAT OQ36), and what a fall
-    // of the CPI does to the s.120ב amounts after the freeze (TXG OQ17)
-    expect(items.length).toBe(430);
+    // bill's explanatory notes say the 2028 indexation adds only the 2027 CPI rise (TXG-06), and which Israeli funds One Zero has
+    // distribution agreements for (BRK OQ24); 2026-11-14 two more, which fund the fee regulations' "ישיר ביטחון" is and whether the
+    // guaranteed-yield exclusion takes a named fund whole (CAT OQ36), and what a fall of the CPI does to the s.120ב amounts after
+    // the freeze (TXG OQ17)
+    expect(items.length).toBe(431);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
