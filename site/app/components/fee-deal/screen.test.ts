@@ -82,7 +82,7 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     onFee: () => {},
     onForm: () => {},
     onPending: () => {},
-    onRemove: () => {},
+    onStopBy: () => {},
     onClose: () => {},
   });
 };
@@ -105,7 +105,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onHoldOn: () => {}, onPendingDone: () => {}, onAskDone: () => {} },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {} }, onHoldOn: () => {}, onPendingDone: () => {}, onAskDone: () => {} },
     ask,
   });
 };
@@ -189,11 +189,11 @@ describe("the case open in place", () => {
     expect(count(html, `>${feeDeal.builder.fieldName(name, feeDeal.panel.currency)}</label>`)).toBe(1);
     expect(text(builderOf(account(), "fee-trade"))).toContain(dealCases.chosen);
   });
-  it("heads a later price by its month, its month in a box, and draws a price not given yet as an empty box", () => {
+  it("says a later price's month once, in the box of the price before it, and draws a price not given yet as an empty box", () => {
     const d = provident();
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) }, until: "2027-06" }, { price: { form: "action", rate: { v: 0, blank: true } } }] }];
     const shown = text(builderOf(d, "fee-deposit"));
-    expect(shown).toContain("מיוני 2027");
+    expect(shown).not.toContain("מיוני 2027");
     const html = markup(builderOf(d, "fee-deposit"));
     expect(html).toContain(`aria-label="${feeDeal.builder.fieldName(feeName("deposit"), feeDeal.panel.until)}"`);
     expect(html).toMatch(/aria-label="[^"]*, 06\.2027[^"]*, כמה"[^>]*value=""|value=""[^>]*aria-label="[^"]*, כמה"/);
@@ -229,14 +229,22 @@ describe("the question that adds a thing to change by", () => {
 });
 
 describe("the toolbox", () => {
-  it("names the fee, offers the parts in their groups with the flat price among the price's, and ends with filling and taking the fee away", () => {
+  it("names the fee and offers the parts in their groups with the flat price among the price's; taking the fee away is not its", () => {
     const shown = drawToolbox(account(), "fee-trade");
     for (const g of ["price", "bound", "by", "link", "more"]) expect(shown).toContain(feeDeal.cases.groups[g]!);
     expect(shown).toContain(feeDeal.cases.parts.flatSmall.default!.trim());
     expect(shown).toContain(feeDeal.cases.actionSize.default!);
     expect(shown).toContain(feeDeal.cases.things.own!);
     expect(shown).toContain(dealCases.toolbox.hint);
-    expect(shown).toContain(feeDeal.panel.remove);
+    expect(shown).not.toContain(feeDeal.panel.remove);
+  });
+  it("takes a thing the fee changes by away on a second tap, named by what it does", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", by: [{ kind: "track" }], cases: [{ id: "c1", when: [["מסלול 1"]], stages: [{ price: { form: "action", rate: typed(0.4) } }] }] }];
+    const html = markup(toolboxOf(d, "fee-trade"));
+    const stop = feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!);
+    expect(html).toMatch(new RegExp(`<button[^>]*data-part="by:track"[^>]*aria-label="${stop}"`));
+    expect(html).not.toMatch(/<button[^>]*data-part="by:track"[^>]*disabled/);
   });
   it("words a conversion's parts and its size by the conversion, never by a purchase", () => {
     const shown = drawToolbox(account(), "fee-fx");
@@ -282,8 +290,13 @@ describe("the fees' column", () => {
       },
     ];
     const shown = text(builderOf(d, "fee-trade"));
-    for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!, dealCases.addCase, feeDeal.cases.folded.one, dealCases.copyCase, dealCases.removeCase])
+    for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!, dealCases.addCase, feeDeal.cases.folded.one])
       expect(shown).toContain(w);
+    // the open case's actions, the open fee's bin and each thing's bin are icons, named by what they do
+    const html = drawBuilder(d, "fee-trade");
+    for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove, feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.what!), feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!)])
+      expect(count(html, `aria-label="${w}"`), w).toBe(1);
+    for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(shown).not.toContain(w);
     // the person's track is the open case here, its rows' words said once in its slots
     expect(count(shown, "מסלול 1")).toBe(1);
     expect(shown).not.toContain("מסלול 2");

@@ -12,7 +12,8 @@
 // column of its own where the window has the room, under its fee in a middling window, and on a phone in a short sheet pinned to the
 // foot of the screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
 // when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer or
-// the focus in one is marked in the others, and a fee's name in the summary or the reading opens it (`FeeLinks`). A change that loses
+// the focus in one is marked in the others, and a fee's name in the summary or the reading opens it (`FeeLinks`). On a computer a card
+// dragged from the toolbox onto the open fee, or one of its cases, does there what its tap does (`ToolDrop`). A change that loses
 // something (a fee taken away, a fee filled from a price list, a price, a case or a thing taken away, a saved deal deleted) leaves one
 // undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and lives through edits elsewhere until it is
 // undone, a newer such change replaces it, another deal opens, the part it would put back into changes, or ten seconds pass while neither
@@ -26,7 +27,8 @@ import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
 import { slotEdit, thingMenu } from "../../lib/fee-deal/things";
 import { addOfferedFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
-import { newDeal, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
+import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
+import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
@@ -52,7 +54,8 @@ import { UndoLine } from "./undo-line";
 import { GlanceCard, READING_ID } from "./glance";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
-import { ToolboxCard, ToolboxColumn } from "./toolbox";
+import { ToolboxCard, ToolboxColumn, applyTool } from "./toolbox";
+import type { ToolDrop } from "./fee-block";
 import { ReadingCards } from "./reading";
 import { useUnitPrice } from "./use-unit-price";
 import { useDealDocument, useOpenedDeal, type AddressDeal } from "./use-deal-document";
@@ -170,7 +173,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     oc.unfold();
     doc.setFocus({ fee: fee.id, on: "box" });
   };
-  const onRemoveInPanel = (feeId: string) => {
+  // the open fee's bin, beside its name: the toolbox it was open in rests a moment, as the next fee's may stand where the pointer is
+  const onRemoveFee = (feeId: string) => {
     kept(removeFeeKept(deal, feeId, chosen));
     oc.rest();
   };
@@ -198,6 +202,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (menuOpen) menuOpen.addEventListener("close", () => kept(r), { once: true });
     else kept(r);
   };
+  // a thing the fee changes by, tapped again in the toolbox: as its bin in the band
+  const onStopBy = (feeId: string, kind: ByKind) => {
+    const fee = deal.fees.find((f) => f.id === feeId);
+    const t = fee && hasCases(fee) ? fee.by.findIndex((x) => pickKind(x.kind) === pickKind(kind)) : -1;
+    if (t >= 0) onRemoveBy(feeId, t);
+  };
   const onDelete = (id: string) => {
     if (doc.remove(id)) afterShow();
   };
@@ -215,6 +225,24 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const pending = oc.pendingHere;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);
   const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
+  // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
+  // own toolbox offers it and the case has it not yet; dropped on another case than the open one, that case opens first
+  const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : at === null || at === caseId ? tools : toolboxOf(read, feeId, at));
+  const drop: ToolDrop = {
+    accepts: (feeId, at, item) => !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off)),
+    onDrop: (feeId, at, item) => {
+      const fee = deal.fees.find((f) => f.id === feeId);
+      if (!fee) return;
+      const on = at ?? caseId;
+      if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
+      applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined)), {
+        onAsk: oc.onAsk,
+        onPending: (part) => oc.setPending({ fee: feeId, case: on, part }),
+        onForm: (part) => onForm(feeId, part, on),
+        onFee,
+      });
+    },
+  };
   const menu = oc.menu;
   const thingOpen = oc.thingOpen;
   const slot = menu && menu.fee === chosen && menu.case === caseId ? slotEdit(read, menu.fee, menu.case, menu.t) : null;
@@ -248,7 +276,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         onFee={onFee}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
         onPending={(part) => oc.setPending({ fee: chosenFee.id, case: caseId, part })}
-        onRemove={onRemoveInPanel}
+        onStopBy={(kind) => onStopBy(chosenFee.id, kind)}
         onClose={oc.onClosePanel}
       />
     ) : null;
@@ -322,6 +350,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onSlot: oc.onSlot,
                 onThing: oc.onThing,
                 onRemoveCase,
+                onRemoveFee,
+                onRemoveBy,
+                drop,
                 onHoldOn,
                 onPendingDone: () => oc.setPending(null),
                 onAskDone: oc.onAskDone,

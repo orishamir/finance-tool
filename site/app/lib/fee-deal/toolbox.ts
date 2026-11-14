@@ -24,6 +24,9 @@ export interface ToolPart {
   off?: string;
 }
 
+/** The thing to change by that a toolbox card adds (its id `by:<thing>`), or null where the card is a part. */
+export const cardThing = (id: string): ByKind | null => (id.startsWith("by:") ? (id.slice(3) as ByKind) : null);
+
 /** A toolbox group: its kind and head, and its parts in order. */
 export interface ToolGroup {
   group: "price" | "bound" | "by" | "link" | "more";

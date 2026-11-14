@@ -1,6 +1,7 @@
 // The parts that can be added to the open case (design-system 11, "Cases and parts"), in groups by kind, each group headed by its kind's
-// colour and icon. A tap on a part adds it; there is nothing to drag. A part the case already has shows a ✓ in the action colour and is
-// muted, and stays where it is. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
+// colour and icon. A tap on a part adds it; on a computer a part can also be dragged onto the place it goes (`useDragSource`, the page's
+// `DropZone`s), which does what its tap does there. A part the case already has shows a ✓ in the action colour and is muted, and stays
+// where it is; one the page lets a tap take away again (`removeLabel`) still takes a tap. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
 // at a time, its groups as a row of chips that scrolls sideways and fades at its end, always whole above the group's parts, which scroll
 // under it.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
@@ -8,6 +9,7 @@ import { ArrowDownToLine, Check, Link2, Plus, Split, type LucideIcon } from "luc
 import { dealCases as copy } from "../../copy";
 import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
+import { useCanDrag, useDragSource } from "./drag-drop";
 
 /** A group's kind: a price (neutral), a bound (green), what the price changes by (the cases' blue), a link (yellow), a note (dashed). */
 export type ToolKind = "price" | "bound" | "when" | "link" | "note";
@@ -18,8 +20,10 @@ export interface ToolPart {
   label: ReactNode;
   /** The spoken name, where the label's boxes leave its words unclear. */
   spoken?: string;
-  /** The case already has it: a ✓, muted, and no tap. */
+  /** The case already has it: a ✓, muted, and no tap unless a tap takes it away (`removeLabel`). */
   used?: boolean;
+  /** Where the case has it and a tap takes it away again: the spoken name of that tap ("להפסיק להבחין לפי המסלול שבחרתם"). */
+  removeLabel?: string;
   /** The case cannot take it (a fourth thing to change by): faint, no tap; the group says why (`offWhy`). */
   off?: boolean;
 }
@@ -48,28 +52,39 @@ export function ToolBlank({ wide }: { wide?: boolean }) {
   return <span aria-hidden className={cx("inline-block h-6 border border-dashed border-input bg-card", wide ? "w-11 rounded-full" : "w-6 rounded-sm")} />;
 }
 
-function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part: string) => void }) {
+/** One part's card: a tap adds it (or, where the case has it and `onRemove` is given, takes it away); one that can be added can be dragged. */
+function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: ToolPart; onAdd: () => void; onRemove?: (() => void) | undefined }) {
+  const removes = !!(p.used && p.removeLabel && onRemove);
+  const drag = useDragSource(p.used || p.off ? null : p.id);
+  return (
+    <button
+      type="button"
+      data-part={p.id}
+      disabled={(p.used && !removes) || p.off}
+      aria-label={removes ? p.removeLabel : p.spoken}
+      title={removes ? p.removeLabel : undefined}
+      onClick={removes ? onRemove : onAdd}
+      {...drag}
+      className={cx(
+        "inline-flex min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border px-3 py-1.5 text-start text-sm transition-[filter] duration-[var(--duration-fast)]",
+        p.used ? cx(USED_EDGE[kind], kind === "note" && "border-dashed", "text-muted-foreground", removes && "enabled:hover:brightness-125") : cx(CARD[kind], "enabled:hover:brightness-125"),
+        drag.draggable && "cursor-grab active:cursor-grabbing",
+        p.off && "opacity-45",
+      )}
+    >
+      {p.used ? <Check size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" /> : <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
+      {p.label}
+      {p.used && !removes && <span className="sr-only">{copy.toolbox.used}</span>}
+    </button>
+  );
+}
+
+function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: string, part: string) => void; onRemove?: ((group: string, part: string) => void) | undefined }) {
   return (
     <>
       <div className="flex flex-wrap gap-2">
         {group.parts.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            data-part={p.id}
-            disabled={p.used || p.off}
-            aria-label={p.spoken}
-            onClick={() => onAdd(group.id, p.id)}
-            className={cx(
-              "inline-flex min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border px-3 py-1.5 text-start text-sm transition-[filter] duration-[var(--duration-fast)]",
-              p.used ? cx(USED_EDGE[group.kind], group.kind === "note" && "border-dashed", "text-muted-foreground") : cx(CARD[group.kind], "enabled:hover:brightness-125"),
-              p.off && "opacity-45",
-            )}
-          >
-            {p.used ? <Check size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" /> : <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
-            {p.label}
-            {p.used && <span className="sr-only">{copy.toolbox.used}</span>}
-          </button>
+          <PartCard key={p.id} kind={group.kind} part={p} onAdd={() => onAdd(group.id, p.id)} onRemove={onRemove && (() => onRemove(group.id, p.id))} />
         ))}
       </div>
       {group.offWhy && group.parts.some((p) => p.off) && <p className="text-sm text-muted-foreground">{group.offWhy}</p>}
@@ -79,7 +94,7 @@ function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part
 
 /**
  * The toolbox for the open case: `target` names it after "להוסיף למקרה:" (its condition in words), a line says a tap adds a part, then
- * the groups. `onAdd` gets the group's and the part's ids (each part's button carries its id, `data-part`, so the page can give the focus
+ * the groups. `onAdd` gets the group's and the part's ids, and `onRemove` those of a part the case has whose tap takes it away (each part's button carries its id, `data-part`, so the page can give the focus
  * back to it); a question a part asks before it is added stands in the page, in place, not here. `foot`: the actions on the whole fee,
  * after the groups. `sheet`: a phone's short sheet, the
  * groups one at a time under a row of their names; `docked` pins it to the foot of the screen, at most 216 px tall as drawn, its case line
@@ -89,10 +104,11 @@ function Parts({ group, onAdd }: { group: ToolGroup; onAdd: (group: string, part
  * group. `folded` and `onFold` let the page hold whether it is folded (a phone's sheet starts folded, so nothing covers the page as it
  * loads, and unfolds when a case is opened); without them the sheet holds it, open at first.
  */
-export function Toolbox({ target, groups, onAdd, foot, sheet, docked, folded: heldFolded, onFold }: {
+export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold }: {
   target: ReactNode;
   groups: ToolGroup[];
   onAdd: (group: string, part: string) => void;
+  onRemove?: (group: string, part: string) => void;
   foot?: ReactNode;
   sheet?: boolean;
   docked?: boolean;
@@ -103,6 +119,7 @@ export function Toolbox({ target, groups, onAdd, foot, sheet, docked, folded: he
   const [shown, setShown] = useState(groups[0]?.id ?? "");
   const [ownFolded, setOwnFolded] = useState(false);
   const folded = heldFolded ?? ownFolded;
+  const canDrag = useCanDrag();
   const setFolded = (f: boolean) => (onFold ? onFold(f) : setOwnFolded(f));
   // the pinned sheet's height, kept as room at the end of the document (under the site's footer too), so nothing stays under it, and as
   // the window's scroll padding at its foot, so a box that takes the focus, or a part brought into view, stops above the sheet
@@ -174,7 +191,7 @@ export function Toolbox({ target, groups, onAdd, foot, sheet, docked, folded: he
         <div id={`${id}-parts`} hidden={folded} className={cx("flex flex-col gap-3", docked && "-mx-4 min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4")}>
           {group && (
             <div role="group" aria-label={group.name} className="flex flex-col gap-2">
-              <Parts group={group} onAdd={onAdd} />
+              <Parts group={group} onAdd={onAdd} onRemove={onRemove} />
             </div>
           )}
           {foot}
@@ -186,7 +203,7 @@ export function Toolbox({ target, groups, onAdd, foot, sheet, docked, folded: he
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         {lead}
-        <p className="text-sm text-muted-foreground">{copy.toolbox.hint}</p>
+        <p className="text-sm text-muted-foreground">{canDrag ? copy.toolbox.hintDrag : copy.toolbox.hint}</p>
       </div>
       {groups.map((g) => {
         const Icon = ICONS[g.kind];
@@ -196,7 +213,7 @@ export function Toolbox({ target, groups, onAdd, foot, sheet, docked, folded: he
               {Icon && <Icon size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
               {g.name}
             </p>
-            <Parts group={g} onAdd={onAdd} />
+            <Parts group={g} onAdd={onAdd} onRemove={onRemove} />
           </div>
         );
       })}

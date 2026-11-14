@@ -32,7 +32,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   const { asking, onAsk, onAskDone, drop: dropAsk } = useAskThing(chosen, phone, setSheetFolded);
   // the fee under the pointer or the focus in any column, which the others mark
   const [marked, setMarked] = useState<string | null>(null);
-  // for half a second after a fee is taken away from the panel, the panel takes no press: the next fee's panel stands where the pointer is
+  // for half a second after a fee is taken away, the panel takes no press: the next fee's panel may stand where the pointer is
   const [panelRest, setPanelRest] = useState(false);
   useEffect(() => {
     if (!panelRest) return;
@@ -140,7 +140,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     closeThing: () => setThingOpen(null),
     /** A fee just added: open, the sheet unfolded. */
     unfold: () => setSheetFolded(false),
-    /** A fee taken away from the panel: the panel rests for half a second. */
+    /** A fee taken away: the panel rests for half a second. */
     rest: () => setPanelRest(true),
     /** Another deal on screen: the sheet folded, no thing's menu open. */
     reset: () => {

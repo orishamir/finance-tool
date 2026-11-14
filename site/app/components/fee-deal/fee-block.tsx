@@ -1,12 +1,15 @@
 // One fee's block in the fees' column (method §10.6, `builder`'s `block`): a fee whose price changes by nothing is one slim line, its parts
 // after its name; a fee whose price changes holds one band, a row per case, the tracks that are not the person's folded into one line,
 // each case's standing against the cap after its parts. The fee or case open in place shows its slots, its parts with their boxes
-// (`OpenParts`) and the actions on the case; while a fee is open, the things of its band's head open their values. The question of a thing
-// being added stands in the open fee's block, above its cases or its price.
+// (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name, and the things of its band's head open
+// their values, each with a bin beside it. The question of a thing being added stands in the open fee's block, above its cases or its
+// price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee, and a thing to change by on the open
+// fee's block (`ToolDrop`).
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { BuilderRow, CaseRow as CaseRowView } from "../../lib/fee-deal/rows";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/panel";
+import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
 import { addCase, copyCase } from "../../lib/fee-deal/edits/case";
 import { type Side } from "../../lib/fee-deal/model";
@@ -15,7 +18,7 @@ import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { keeps, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { fmt } from "../../lib/format";
-import { CaseFold, CaseRow, CaseSlot, ConditionBand, FeeBlock, OpenCase, PartChip, SlimFee, When, monthText, type CaseWord } from "../kit";
+import { CaseFold, CaseRow, CaseSlot, ConditionBand, DropZone, FeeBlock, OpenCase, PartChip, SlimFee, When, monthText, type CaseWord } from "../kit";
 import { Num } from "../provenance";
 import { AskThing } from "./ask-thing";
 import { LawTag } from "./links";
@@ -47,11 +50,29 @@ export interface BlockActions {
   /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
   onThing: (t: number, at: HTMLElement) => void;
   onRemoveCase: (feeId: string, caseId: string) => void;
+  /** The open fee's bin: the fee taken away, kept for the undo. */
+  onRemoveFee: (feeId: string) => void;
+  /** A thing's bin in the open fee's band head: the price stops changing by it, kept for the undo. */
+  onRemoveBy: (feeId: string, t: number) => void;
+  /** Where a part or a thing dragged from the toolbox drops. */
+  drop: ToolDrop;
   onHoldOn: (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
   onPendingDone: () => void;
   /** The question closed: the thing added, or not. */
   onAskDone: (added: boolean) => void;
 }
+
+/**
+ * A toolbox card dropped in the fees' column (its id, `ToolPart.id`): whether the open fee's case `caseId` (null for a slim fee, or the fee
+ * as a whole) takes it, and what its tap does there.
+ */
+export interface ToolDrop {
+  accepts: (feeId: string, caseId: string | null, item: string) => boolean;
+  onDrop: (feeId: string, caseId: string | null, item: string) => void;
+}
+
+/** A thing to change by among the toolbox's cards (`cardThing`): it drops on the fee's block; a part drops on a slim fee or a case. */
+const isThing = (item: string): boolean => cardThing(item) !== null;
 
 /** A case's value for each thing in plain words, joined, for its spoken name and the toolbox's line ("בחו״ל, בארה״ב · מסלול 1"). */
 export const caseText = (when: readonly WhenWords[]): string => when.map(whenText).join(copy.cases.sep);
@@ -137,7 +158,7 @@ export function FeeBlockView({
   onUnfold: (on: boolean) => void;
   onFee: (f: Fee) => void;
 }) {
-  const { onOpen, onSlot, onThing, onRemoveCase, onHoldOn, onPendingDone, onAskDone } = actions;
+  const { onOpen, onSlot, onThing, onRemoveCase, onRemoveFee, onRemoveBy, onHoldOn, onPendingDone, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name);
   const isOpen = open.fee === fee.id;
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
@@ -164,29 +185,40 @@ export function FeeBlockView({
     onOpen(fee.id, next.cases[next.cases.findIndex((c) => c.id === caseId) + 1]!.id, "pointer");
   };
 
+  const remove = isOpen ? { label: copy.panel.remove, onRemove: () => onRemoveFee(fee.id) } : undefined;
+  // a case of the band takes a part; the slim fee takes a part or a thing; the band's block takes a thing, for the whole fee
+  const caseZone = (caseId: string, key: string, el: ReactNode) => (
+    <DropZone key={key} accepts={(it) => !isThing(it) && drop.accepts(fee.id, caseId, it)} onDrop={(it) => drop.onDrop(fee.id, caseId, it)}>
+      {el}
+    </DropZone>
+  );
+
   if (!row) return <p className="text-sm text-muted-foreground">{b.unread}</p>;
   if (row.block.kind === "slim")
     return (
       <div className="flex flex-col gap-1.5">
-        <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} onOpen={() => onOpen(fee.id, null, "pointer")}>
-          {question}
-          {isOpen ? openParts(name) : row.block.parts.map((p) => <RestPart key={p.id} part={p} />)}
-          {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
-        </SlimFee>
+        <DropZone accepts={(it) => drop.accepts(fee.id, null, it)} onDrop={(it) => drop.onDrop(fee.id, null, it)}>
+          <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} onOpen={() => onOpen(fee.id, null, "pointer")}>
+            {question}
+            {isOpen ? openParts(name) : row.block.parts.map((p) => <RestPart key={p.id} part={p} />)}
+            {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
+          </SlimFee>
+        </DropZone>
         {!isOpen && <RowNotes row={row} fee={fee} />}
       </div>
     );
   const band = row.block;
   if (!hasCases(fee)) return null;
-  const things = band.things.map((t) => ({ id: String(t.thing), name: t.words }));
+  const things = band.things.map((t) => ({ id: String(t.thing), name: t.words, removeLabel: copy.cases.thingMenu.stop.replace("{thing}", t.words) }));
   const byId = new Map([...band.rows, ...(band.folded?.rows ?? [])].map((r) => [r.case, r]));
   const folded = new Set(band.folded?.rows.map((r) => r.case));
   const caseRow = (r: CaseRowView) => {
     if (r.open && open.view) {
       const ov = open.view;
-      return (
+      return caseZone(
+        r.case,
+        r.case,
         <OpenCase
-          key={r.case}
           slots={ov.slots.map((sl) => (
             <CaseSlot key={sl.thing} range={!!sl.words.figure} open={open.menu === sl.thing} onOpen={(at) => onSlot(sl.thing, at)}>
               <WhenText words={sl.words} />
@@ -197,16 +229,18 @@ export function FeeBlockView({
           {...(ov.canRemove ? { onRemove: () => onRemoveCase(fee.id, r.case) } : {})}
         >
           {openParts(`${name}, ${caseText(r.when)}`)}
-        </OpenCase>
+        </OpenCase>,
       );
     }
-    return (
-      <CaseRow key={r.case} when={caseWords(r.when, r.mine, band.things)} label={`${copy.cases.openCase}${caseText(r.when)}`} onOpen={() => onOpen(fee.id, r.case, "pointer")}>
+    return caseZone(
+      r.case,
+      r.case,
+      <CaseRow when={caseWords(r.when, r.mine, band.things)} label={`${copy.cases.openCase}${caseText(r.when)}`} onOpen={() => onOpen(fee.id, r.case, "pointer")}>
         {r.parts.map((p) => (
           <RestPart key={p.id} part={p} />
         ))}
         <RowStanding fee={fee.id} priced={r.priced} standing={r.standing} />
-      </CaseRow>
+      </CaseRow>,
     );
   };
   // the band's rows in the fee's order of cases, the folded ones as one line where the first of them stands
@@ -227,11 +261,17 @@ export function FeeBlockView({
     );
   }
   return (
-    <FeeBlock dot={dot} name={name}>
-      {question}
-      <ConditionBand things={things} {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {})} addCase={{ onAdd: addOne }}>
-        {items}
-      </ConditionBand>
-    </FeeBlock>
+    <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
+      <FeeBlock dot={dot} name={name} remove={remove}>
+        {question}
+        <ConditionBand
+          things={things}
+          {...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing), onRemoveThing: (id: string) => onRemoveBy(fee.id, Number(id)) } : {})}
+          addCase={{ onAdd: addOne }}
+        >
+          {items}
+        </ConditionBand>
+      </FeeBlock>
+    </DropZone>
   );
 }
