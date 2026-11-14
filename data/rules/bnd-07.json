@@ -30,8 +30,9 @@
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
       "title": "Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
-      "publisher": "getsmarteraboutmoney.ca",
-      "kind": "other",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "If an issuer’s rating goes up, the price of its bonds will rise. If the rating goes down, the price will drop.",
       "checked": "2026-11-15",
@@ -40,8 +41,9 @@
     {
       "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
       "title": "Bonds (Moneysmart, Australian Securities and Investments Commission)",
-      "publisher": "moneysmart.gov.au",
-      "kind": "other",
+      "publisher": "Moneysmart (Australian Securities and Investments Commission)",
+      "publisher_he": "רשות ניירות הערך וההשקעות של אוסטרליה (ASIC), אתר Moneysmart",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "Credit risk – the risk that the issuer could default or go insolvent",
       "checked": "2026-11-15",

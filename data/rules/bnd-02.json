@@ -14,8 +14,9 @@
     {
       "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
       "title": "Bonds (Moneysmart, Australian Securities and Investments Commission)",
-      "publisher": "moneysmart.gov.au",
-      "kind": "other",
+      "publisher": "Moneysmart (Australian Securities and Investments Commission)",
+      "publisher_he": "רשות ניירות הערך וההשקעות של אוסטרליה (ASIC), אתר Moneysmart",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "If you sell a bond before maturity, you’ll get the market value. This could be lower than the face value.",
       "checked": "2026-11-15",
@@ -24,8 +25,9 @@
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/how-bonds-work/",
       "title": "How bonds work (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
-      "publisher": "getsmarteraboutmoney.ca",
-      "kind": "other",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "You can lose money on a bond if you sell it before the maturity date for less than you paid or if the issuer defaults on their payments.",
       "checked": "2026-11-15",

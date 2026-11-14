@@ -58,8 +58,9 @@
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
       "title": "Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
-      "publisher": "getsmarteraboutmoney.ca",
-      "kind": "other",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "a bond with a five-year duration will decrease 5% in price with each 1% increase in interest rates",
       "checked": "2026-11-15",
@@ -68,8 +69,9 @@
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/how-bonds-work/",
       "title": "How bonds work (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
-      "publisher": "getsmarteraboutmoney.ca",
-      "kind": "other",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "strip bonds also tend to be affected more by changes in interest rates than regular bonds",
       "checked": "2026-11-15",

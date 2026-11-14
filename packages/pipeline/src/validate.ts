@@ -953,7 +953,7 @@ export function isCopySource(url: string): boolean {
  * sites of Britain (GOV.UK) and France (Service-Public.fr, under both its hosts), Italy's tax authority, and Normattiva, the Italian
  * state's portal of the law in force. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
  */
-const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org", "gov.uk", "service-public.fr", "service-public.gouv.fr", "agenziaentrate.gov.it", "normattiva.it"];
+const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org", "gov.uk", "moneysmart.gov.au", "getsmarteraboutmoney.ca", "service-public.fr", "service-public.gouv.fr", "agenziaentrate.gov.it", "normattiva.it"];
 /**
  * A company's own document is marked `institution` (data-schema 3.1), never `primary`, so it is not caught here. The one kind kept
  * `primary` off those hosts is the defining text of a publisher's own index or numbering standard, cited for that index or standard:

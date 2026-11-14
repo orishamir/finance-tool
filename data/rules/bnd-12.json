@@ -29,8 +29,9 @@
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
       "title": "Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
-      "publisher": "getsmarteraboutmoney.ca",
-      "kind": "other",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
       "strength": "primary",
       "quote": "Laddering can help reduce the risk that all your bonds will mature at a time when interest rates are low.",
       "checked": "2026-11-15",
