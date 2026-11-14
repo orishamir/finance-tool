@@ -2,7 +2,7 @@
   "id": "TXP-18",
   "title": "Early or non-compliant withdrawal (`משיכה שלא כדין`)",
   "title_he": "משיכה שלא כדין: מוקדמת או בלי עמידה בתנאים",
-  "text_he": "משיכה שלא כדין היא כסף שקופת גמל משלמת לעמית בניגוד לכללי המשיכה של חוק קופות הגמל: סכום חד־פעמי מקופת גמל לקצבה שהחוק לא מתיר, או משיכה מקופת גמל לפני שמותר למשוך. קצבה, היוון קצבה ומשיכה של סכום צבירה מזערי לפי הכללים הם משיכה כדין, והם לא ממוסים כך. משיכה שלא כדין ממוסה על כל הסכום שמשולם, בגבוה מבין השיעור המזערי והמס השולי, והקופה מנכה במקור את השיעור המזערי. היא לא ממוסה כך, בתנאים, כשלבני הזוג הכנסה נמוכה, כשיש הוצאות רפואיות גבוהות או נכות קשה, ובמשיכת יורשים במות העמית.",
+  "text_he": "משיכה שלא כדין היא כסף שקופת גמל משלמת לעמית בניגוד לכללי המשיכה של חוק קופות הגמל: סכום חד־פעמי מקופת גמל לקצבה שהחוק לא מתיר, או משיכה מקופת גמל לפני שמותר למשוך. קצבה, היוון קצבה ומשיכה של סכום צבירה מזערי לפי הכללים הם משיכה כדין, והם לא ממוסים כך. משיכה שלא כדין ממוסה על כל הסכום שמשולם, בגבוה מבין השיעור המזערי והמס השולי, גם מקופת גמל לתגמולים וגם מקופת גמל לקצבה. מה שהקופה מנכה במקור שונה: מקופת גמל לתגמולים את השיעור המזערי, ומקופת גמל לקצבה את הגבוה מבין השיעור המזערי ושיעור המס. אם המס השולי גבוה ממה שנוכה, את ההפרש משלמים בדוח השנתי. היא לא ממוסה כך, בתנאים, כשלבני הזוג הכנסה נמוכה, כשיש הוצאות רפואיות גבוהות או נכות קשה, ובמשיכת יורשים במות העמית.",
   "figure_names_he": {
     "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין",
     "low_income_one": "הכנסה מזערית: יחיד, או זוג בלי ילדים מתחת לגיל 18",
@@ -36,7 +36,7 @@
         "TXP-18"
       ],
       "state": "sourced",
-      "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, and the fund withholds 35%. Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. The taxable base is the whole amount paid (reg. 3(1) of the 1962 regulations, \"על אותם כספים\"; s.87(ד) applies the ordinary tax where it is higher)."
+      "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, from a provident fund for benefits and from one for annuity alike (guide 2025 p.45 s.29; s.87(ד)). The fund withholds 35% from a fund for benefits and the higher of 35% and the tax rate from a fund for annuity (booklet 2026 p.19, a table of withholding rates). Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. The taxable base is the whole amount paid (reg. 3(1) of the 1962 regulations, \"על אותם כספים\"; s.87(ד) applies the ordinary tax where it is higher)."
     },
     "low_income_one": {
       "value": 6443.85,
@@ -103,6 +103,33 @@
   "checked": "2026-11-12",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.19",
+      "locator_he": "עמוד 19",
+      "page": 19,
+      "quote": "כאשר הניכוי הוא לפי השיעור שנקבע בתקנות, יש לנכות מס הכנסה בשיעורים הבאים",
+      "checked": "2026-11-14"
+    },
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
       "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
@@ -173,6 +200,20 @@
       "checked": "2026-11-12"
     },
     {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.45, s.29",
+      "locator_he": "עמוד 45, סעיף 29",
+      "page": 45,
+      "quote": "שיעור קבוע של 35% או מס שולי, הגבוה מביניהם",
+      "checked": "2026-10-31"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
       "title": "משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025",
       "title_he": "משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025",
@@ -200,6 +241,19 @@
       "qualifier": "(gazette; a scanned booklet of 1962 with poor text, it shows the enacted wording only)"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/~Yg+aDp+~ePh0JDdCeG7hBWqLMUkCuhSPoCwN1UKmyI=#page=3",
+      "title": "תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין), תשכ\"ב-1962, gazette ק\"ת 1317, p.2006",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.2007), reg. 4(1)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 2007), תקנה 4(1)",
+      "page": 3,
+      "checked": "2026-10-31",
+      "qualifier": "(gazette; a scanned booklet of 1962 with poor text, it shows the enacted wording only)"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
@@ -212,32 +266,6 @@
       "page": 145,
       "quote": "תקנות לפי סעיף קטן (א) לא יחולו על כספים שסכום המס החל עליהם לפי הוראות פקודה זו גבוה מסכום המס שיחול עליהם בשל החלת התקנות כאמור",
       "checked": "2026-10-26"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-      "title": "Guide 2025",
-      "title_he": "דע זכויותיך וחובותיך 2025",
-      "publisher": "gov.il",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.45 section 29",
-      "locator_he": "עמוד 45 סעיף 29",
-      "page": 45,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-      "title": "Booklet 2026",
-      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
-      "publisher": "gov.il",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.12, p.19",
-      "locator_he": "עמוד 12, עמוד 19",
-      "page": 12,
-      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%99%D7%A0%D7%99%D7%9E%D7%95%D7%9D.aspx",
