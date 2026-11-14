@@ -1,44 +1,24 @@
-// The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit, a later price headed by its first
-// month and a sale priced apart under its own head; a part the toolbox added that still needs its figure, its month or its fee, asking for
-// it where it will stand; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
-import { useEffect, useState, type ReactNode } from "react";
-import { dealCases, feeDeal as copy } from "../../copy";
-import type { OpenCase, OpenPart, PartField, SlotEdit } from "../../lib/fee-deal/builder";
-import { addOwnPlace, editPrice, setMine, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
+// The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit (part-edit.tsx), a later price
+// headed by its first month and a sale priced apart under its own head; a part the toolbox added that still needs its figure, its month or
+// its fee, asking for it where it will stand; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
+import { useState } from "react";
+import { feeDeal as copy } from "../../copy";
+import type { OpenCase, OpenPart, SlotEdit } from "../../lib/fee-deal/builder";
+import { addOwnPlace, editPrice, setMine, setRangeUnit, setStep, setTop, setWhen, withCurrency, type Side } from "../../lib/fee-deal/edit";
+import { anySourced, BOUND_CURRENCIES, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Price } from "../../lib/fee-deal/model";
+import { hasCurrency } from "../../lib/fee-deal/offers/capabilities";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
-import { anySourced, BOUND_CURRENCIES, MONTHS, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "../../lib/fee-deal/model";
-import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type RangeUnit } from "../../lib/fee-deal/shapes";
-import { charged, hasCurrency, onAction } from "../../lib/fee-deal/offers/capabilities";
+import { FEE_SHAPES, type RangeUnit } from "../../lib/fee-deal/shapes";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { Button, FigureField, InlineSelect, MonthField, PartEdit, RangeMenu, SegmentedControl, Switch, TextField, TickMenu, TrackMenu, When, monthText, type PartMark } from "../kit";
-import { PriceFigure, partFieldId, signText } from "./figures";
-import { bringIntoView } from "./in-view";
-import { feeName, perActionWord } from "./words";
-
-const cp = copy.cases.parts;
-
-/** The icon before a part's first word: a minimum's, a maximum's (a percent maximum's too), a link's. */
-export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", offset: "link", refund: "link" };
-
-/** A part the toolbox added that cannot stand until it has a figure (a bound), a month (a later price) or a fee (an offset). */
-export type PendingPart = "min" | "max" | "cap" | "until" | "offset";
-
-/** Where a pending part stands: its fee, its case (null for a slim fee), and the part. */
-export interface Pending {
-  fee: string;
-  case: string | null;
-  part: PendingPart;
-}
-
-const monthOptions = (words: Record<number, string>) => MONTHS.map((m) => ({ id: String(m), name: words[m]! }));
-
-/** A word of a part trimmed of the spaces it carries to stand in a sentence. */
-const bare = (s: string | undefined) => s?.trim();
+import { Button, FigureField, InlineSelect, RangeMenu, SegmentedControl, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
+import { PriceFigure, partFieldId } from "./figures";
+import { PartLine, PendingEdit, SPOKEN, type PartPlace, type PendingPart } from "./part-edit";
 
 /**
- * The parts of one price of the open case, in edit. Each part's figures are the existing boxes (`PriceFigure`); a part's ✕ takes it away
- * (`setPart`), the main price's makes the price free, and a later price's month taken away takes the prices after it with it (`onHoldOn`).
+ * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's ✕
+ * takes it away (`setPart`), the main price's makes the price free, and a later price's month taken away takes the prices after it with
+ * it (`onHoldOn`).
  */
 function PriceParts({
   fee,
@@ -68,228 +48,62 @@ function PriceParts({
   onHoldOn: (side: Side, k: number) => void;
   onPendingDone: () => void;
 }) {
-  const at = { side, k, ...(caseId ? { caseId } : {}) };
   const stages = pricesOn(fee, side, caseId);
   const price = stages[k]!.price;
   const label = (field: string) => copy.builder.fieldName(name, field);
   const edit = (fn: (p: Price) => Price) => onFee(editPrice(fee, side, k, fn, caseId));
-  const shape = FEE_SHAPES[fee.kind];
   // the price's currency, where the fee may take another, is chosen beside its first sum (a sum per unit's or per action's, else the
   // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign. The chip is plain
   // while the price still holds a figure a template filled (a change of currency makes the whole price the person's, `withCurrency`)
   const chooser =
-    hasCurrency(price) && (shape.fields[price.form] ?? []).includes("currency") ? (
+    hasCurrency(price) && (FEE_SHAPES[fee.kind].fields[price.form] ?? []).includes("currency") ? (
       <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
     ) : null;
   const chooserOn: PartId | null = chooser ? (price.form === "action" ? (parts.some((p) => p.id === "min") ? "min" : parts.some((p) => p.id === "max") ? "max" : null) : price.form) : null;
-  const box = (part: PartId, f: PartField, spoken: string, opts: { optional?: boolean } = {}) => (
-    <PriceFigure
-      key={f.figure}
-      fee={fee}
-      side={side}
-      k={k}
-      {...(caseId ? { caseId } : {})}
-      figure={f.figure}
-      value={f.value}
-      sign={f.sign}
-      {...(chooserOn === part && f.figure !== "rate" ? { unit: "" } : {})}
-      label={label(spoken)}
-      {...opts}
-      id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
-      onFee={onFee}
-    />
-  );
-  const quiet = (t: ReactNode) => (t ? <span className="text-muted-foreground">{t}</span> : null);
-  const spoken: Record<string, string> = {
-    rate: copy.panel.howMuch,
-    amount: copy.panel.howMuch,
-    min: copy.panel.min,
-    max: copy.panel.max,
-    cap: copy.panel.cap,
-    flat: copy.panel.parts.flat,
-    upTo: copy.panel.parts.upTo,
-    discount: copy.panel.parts.discount,
-    third: copy.panel.parts.third,
-    thirdMin: copy.panel.parts.thirdMin,
-    thirdMax: copy.panel.parts.thirdMax,
-    refund: copy.panel.parts.refund,
+  const at: PartPlace = {
+    fee,
+    ...(caseId ? { caseId } : {}),
+    side,
+    k,
+    ...(until ? { until } : {}),
+    stages,
+    price,
+    deal,
+    label,
+    edit,
+    onFee,
+    chooser,
+    chooserOn,
+    box: (part, f, opts = {}) => (
+      <PriceFigure
+        key={f.figure}
+        fee={fee}
+        side={side}
+        k={k}
+        {...(caseId ? { caseId } : {})}
+        figure={f.figure}
+        value={f.value}
+        sign={f.sign}
+        {...(chooserOn === part && f.figure !== "rate" ? { unit: "" } : {})}
+        label={label(SPOKEN[f.figure])}
+        {...opts}
+        id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
+        onFee={onFee}
+      />
+    ),
   };
-
-  const body = (p: OpenPart): ReactNode => {
-    const w = p.words;
-    switch (p.id) {
-      case "share":
-      case "perUnit":
-      case "perAction":
-        return (
-          <>
-            {box(p.id, p.fields[0]!, spoken[p.fields[0]!.figure]!)}
-            {chooserOn === p.id && chooser}
-            {quiet(bare(w.tail))}
-          </>
-        );
-      case "held":
-        return price.form === "held" ? (
-          <>
-            {box(p.id, p.fields[0]!, spoken.rate!)}
-            <InlineSelect chip label={label(copy.panel.per)} options={monthOptions(copy.panel.perOptions)} value={String(price.per)} onChange={(v) => v && edit((x) => withMonths(x, "per", Number(v) as Months))} />
-            <InlineSelect label={copy.panel.every} options={monthOptions(copy.panel.everyOptions)} value={String(price.every)} onChange={(v) => v && edit((x) => withMonths(x, "every", Number(v) as Months))} />
-          </>
-        ) : null;
-      case "sum":
-        return price.form === "sum" ? (
-          <>
-            {box(p.id, p.fields[0]!, spoken.amount!)}
-            <InlineSelect chip label={label(copy.panel.sumEvery)} options={monthOptions(copy.panel.sumEveryOptions)} value={String(price.every)} onChange={(v) => v && edit((x) => withMonths(x, "every", Number(v) as Months))} />
-          </>
-        ) : null;
-      case "discount":
-        return (
-          <>
-            {box(p.id, p.fields[0]!, spoken.discount!)}
-            {quiet(bare(cp.discount.tail))}
-            {onAction(price) && price.discount && <Switch label={cp.discountOnMin} checked={!!price.discount.alsoMin} onChange={(on) => edit((x) => withDiscountOnMin(x, on))} />}
-          </>
-        );
-      case "third":
-        return onAction(price) && price.third ? (
-          <>
-            <TextField inline labelHidden label={label(cp.thirdWho)} placeholder={cp.thirdWho} value={price.third.who ?? ""} onChange={(v) => edit((x) => withThirdWho(x, v))} />
-            <InlineSelect
-              chip
-              label={label(cp.thirdForm)}
-              options={[{ id: "none", name: cp.thirdNone }, ...(["action", "perUnit", "perAction"] as const).map((f) => ({ id: f, name: copy.panel.forms[f]! }))]}
-              value={price.third.price?.form ?? "none"}
-              onChange={(v) => v && edit((x) => withThirdForm(x, v === "none" ? null : (v as "action" | "perUnit" | "perAction")))}
-            />
-            {p.fields.map((f) => (
-              <span key={f.figure} className="inline-flex items-center gap-2">
-                {f.figure !== "third" && quiet(f.figure === "thirdMin" ? copy.panel.min : copy.panel.max)}
-                {box(p.id, f, spoken[f.figure]!, { optional: f.figure !== "third" })}
-              </span>
-            ))}
-          </>
-        ) : null;
-      case "until":
-        return <MonthField value={until ?? null} label={label(copy.panel.until)} tight {...untilRange(stages, k)} onCommit={(m) => onFee(setUntil(fee, side, k, m, caseId))} />;
-      case "min":
-      case "max":
-        return (
-          <>
-            {box(p.id, p.fields[0]!, spoken[p.id]!, { optional: true })}
-            {chooserOn === p.id && chooser}
-            {quiet(bare(w.tail))}
-          </>
-        );
-      case "cap":
-        return (
-          <>
-            {box(p.id, p.fields[0]!, spoken.cap!, { optional: true })}
-            {quiet(bare(w.tail))}
-          </>
-        );
-      case "flat":
-        return (
-          <>
-            {box(p.id, p.fields[0]!, spoken.flat!)}
-            {quiet(bare(perActionWord(fee.kind)))}
-            {quiet(copy.panel.upTo[fee.kind] ?? copy.panel.upTo.default)}
-            {box(p.id, p.fields[1]!, spoken.upTo!)}
-          </>
-        );
-      case "offset":
-        return charged(price) && price.offset ? <OffsetChoice deal={deal} fee={fee} value={price.offset.kind} label={label(cp.offset)} onChange={(kind) => edit((x) => withOffset(x, kind))} /> : null;
-      case "refund":
-        return box(p.id, p.fields[0]!, spoken.refund!);
-      default:
-        return w.quiet ? quiet(bare(w.quiet)) : null;
-    }
-  };
-  // the words a part leads with: an offset's are its choice of fee, said around it
-  const leadOf = (p: OpenPart): ReactNode => (p.id === "offset" ? bare(cp.offsetOf.lead) : p.id === "flat" ? bare(cp.flat.lead) : bare(p.words.lead));
   const remove = (p: OpenPart) => {
     if (p.id === "free") return undefined;
     if (p.id === "until") return () => onHoldOn(side, k);
-    return () => onFee(setPart(fee, p.id, false, at));
+    return () => onFee(setPart(fee, p.id, false, { side, k, ...(caseId ? { caseId } : {}) }));
   };
   return (
     <>
       {parts.map((p) => (
-        <PartEdit key={p.id} kind={p.kind} mark={PART_MARK[p.id]} lead={leadOf(p)} onRemove={remove(p)} removeLabel={label(dealCases.removePart)}>
-          {body(p)}
-          {p.id === "offset" && quiet(bare(cp.offsetOf.tail))}
-        </PartEdit>
+        <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
       ))}
       {pending && <PendingEdit fee={fee} caseId={caseId} side={side} k={k} part={pending} deal={deal} name={name} onFee={onFee} onDone={onPendingDone} />}
     </>
-  );
-}
-
-/** The fee an offset is against: the deal's other fees, else every fee the site names (the reading states it, as method §10.6 says under "What the page states and does not compute"; it reads no figure of it). */
-function OffsetChoice({ deal, fee, value, label, onChange }: { deal: FeeDeal; fee: Fee; value: FeeKindId | null; label: string; onChange: (kind: FeeKindId) => void }) {
-  const others = [...new Set(deal.fees.filter((f) => f.id !== fee.id).map((f) => f.kind))];
-  const kinds = others.length ? others : FEE_KIND_IDS.filter((k) => k !== "own");
-  return <InlineSelect chip label={label} all={value === null ? copy.cases.parts.offsetPick : undefined} options={kinds.map((k) => ({ id: k, name: feeName(k) }))} value={value} onChange={(v) => v && onChange(v as FeeKindId)} />;
-}
-
-/** A part the toolbox added that asks, where it will stand, for its figure (a bound), its month (a later price) or its fee (an offset). */
-function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: { fee: Fee; caseId?: string; side: Side; k: number; part: PendingPart; deal: FeeDeal; name: string; onFee: (f: Fee) => void; onDone: () => void }) {
-  const at = { side, k, ...(caseId ? { caseId } : {}) };
-  const label = (field: string) => copy.builder.fieldName(name, field);
-  const price = pricesOn(fee, side, caseId)[k]!.price;
-  // the part asks where it stands: its box takes the focus as it appears (a month's box takes it itself), above a phone's pinned sheet
-  useEffect(() => {
-    if (part !== "min" && part !== "max" && part !== "cap") return;
-    const box = document.getElementById(partFieldId(fee.id, `${part}-pending`));
-    box?.focus({ preventScroll: true });
-    bringIntoView(box?.closest("[data-lift]"));
-  }, [fee.id, part]);
-  const cur = hasCurrency(price) ? (price.currency ?? "ILS") : "ILS";
-  // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
-  const done = (next: Fee, box?: string) => {
-    onFee(next);
-    onDone();
-    if (box)
-      requestAnimationFrame(() => {
-        const el = document.getElementById(partFieldId(fee.id, box)) as HTMLInputElement | null;
-        el?.focus();
-        el?.setSelectionRange(el.value.length, el.value.length);
-      });
-  };
-  let body: ReactNode;
-  let lead: string | undefined;
-  if (part === "until") {
-    lead = bare(cp.until);
-    body = <MonthField value={null} label={label(copy.panel.until)} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, "until", true, { ...at, month: m }))} />;
-  } else if (part === "offset") {
-    lead = bare(cp.offsetOf.lead);
-    body = (
-      <>
-        <OffsetChoice deal={deal} fee={fee} value={null} label={label(cp.offset)} onChange={(kind) => done(setPart(fee, "offset", true, { ...at, against: kind }))} />
-        <span className="text-muted-foreground">{bare(cp.offsetOf.tail)}</span>
-      </>
-    );
-  } else {
-    lead = part === "min" ? bare(cp.min) : bare(cp.max);
-    const pct = part === "cap";
-    const tail = pct ? (copy.price.of[fee.kind] ?? copy.price.of.default) : price.form === "held" ? (price.boundsEvery ? copy.price.per[price.boundsEvery]! : copy.panel.perCharge) : (cp.boundPer[fee.kind] ?? cp.boundPer.default);
-    body = (
-      <FigureField
-        value={null}
-        label={label(part === "cap" ? copy.panel.cap : part === "min" ? copy.panel.min : copy.panel.max)}
-        unit={pct ? "%" : signText(copy.panel.signs[price.form === "held" ? "ILS" : cur] ?? "₪")}
-        sign={pct ? "%" : (copy.panel.signs[cur] ?? "₪")}
-        tight
-        id={partFieldId(fee.id, `${part}-pending`)}
-        words={<span className="text-muted-foreground">{tail}</span>}
-        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${part}`)}
-      />
-    );
-  }
-  return (
-    <PartEdit kind={part === "offset" ? "link" : part === "until" ? "price" : "bound"} mark={part === "offset" ? "link" : part === "until" ? undefined : PART_MARK[part]} lead={lead} onRemove={onDone} removeLabel={label(dealCases.removePart)}>
-      {body}
-    </PartEdit>
   );
 }
 

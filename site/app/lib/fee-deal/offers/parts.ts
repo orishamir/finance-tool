@@ -4,7 +4,7 @@
 // registry; adding a part is adding an entry here, its words (builder.ts) and its copy. Pure; no Hebrew.
 import { blankPrice, mainFigure, typed, type Fee, type MonthKey, type Note, type Price, type Priced, type Side } from "../model";
 import { editPrice, holdOn, setLimited, setSaleApart, withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edit";
-import { FEE_SHAPES, type FeeKindId, type FieldId, type FormId } from "../shapes";
+import { FEE_SHAPES, ONE_SIDE, type FeeKindId, type FieldId, type FormId } from "../shapes";
 import { byRate, charged, formBoundsAction, formCharged, formOnAction, hasCurrency, hasFlat, onAction, pricedCurrency, sameFigureKind } from "./capabilities";
 import { FIGURES, type Figure } from "./figures";
 
@@ -78,10 +78,15 @@ export interface PartDef {
   needsField?: FieldId;
   /** The figures it holds, in the order its boxes stand. */
   figures: readonly Figure[];
+  /**
+   * Whether a fee of `kind` can hold it on the price `p` (`FEE_SHAPES`): some parts stand on the forms the fee can take, some on the fields
+   * of the price's own form, some on the price itself (a discount on a price on an action).
+   */
+  holds: (kind: FeeKindId, p: Price) => boolean;
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
   ask: Ask;
-  /** Whether a case's price (`p`, the first of the prices `x`) has it. */
-  used: (p: Price, x: Priced) => boolean;
+  /** Whether a price has it; a part of the fee's prices (a later price, a sale) asks the case's prices `x`. */
+  used: (p: Price, x?: Priced) => boolean;
   /** The edit that adds it (`on`) or takes it away. */
   apply: PartEdit;
   /** Whether a change of form that leaves it behind says so by name (undo.ts). */
@@ -90,12 +95,26 @@ export interface PartDef {
 
 const onPrice = (edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price): PartEdit => ({ on: "price", edit });
 
+/** Whether a fee can take a form (every fee can be free). */
+const takes = (kind: FeeKindId, form: FormId): boolean => form === "free" || FEE_SHAPES[kind].forms.includes(form);
+/** Whether a fee can take a form that a capability holds of. */
+const takesAny = (kind: FeeKindId, of: (form: FormId) => boolean): boolean => FEE_SHAPES[kind].forms.some(of);
+/** Whether a fee's form `form` has a field, or (no form given) any of its forms has it. */
+const hasField = (kind: FeeKindId, field: FieldId, form?: FormId): boolean => {
+  const fields = FEE_SHAPES[kind].fields;
+  return form === undefined ? Object.values(fields).some((f) => f.includes(field)) : form !== "free" && (fields[form] ?? []).includes(field);
+};
+/** A part on an action: where the price is on one, or the fee can take a price that `of` holds of. */
+const onActionWhere = (of: (form: FormId) => boolean) => (kind: FeeKindId, p: Price) => onAction(p) || takesAny(kind, of);
+const always = () => true;
+
 /** A form of the price: on, the price in that form with what carries over (`withForm`), as the fee may hold it (`fitted`); off, free. */
 const formPart = (id: PartId, form: FormId, figures: readonly Figure[]): PartDef => ({
   id,
   kind: "price",
   form,
   figures,
+  holds: (kind) => takes(kind, form),
   ask: null,
   used: (p) => p.form === form,
   apply: onPrice((p, on, _at, kind) => (on ? fitted(kind, withForm(p, form)) : p.form === form ? { form: "free" } : p)),
@@ -109,6 +128,9 @@ const boundPart = (id: "min" | "max" | "cap", ask: Ask, carriesIn: (form: FormId
   carriesIn,
   ...(id === "cap" ? { needsField: "cap" as const } : {}),
   figures: [id],
+  // a minimum and a maximum where the price's form has them, and on any share of an action or sum per unit the fee can take; a percent
+  // maximum where a form of the fee has one
+  holds: id === "cap" ? (kind) => hasField(kind, "cap") : (kind, p) => hasField(kind, id, p.form) || takesAny(kind, formBoundsAction),
   ask,
   used: (p) => FIGURES[id].get(p) !== undefined,
   apply: onPrice((p, on, at) => withFigure(p, id, on ? at.value! : null)),
@@ -122,6 +144,8 @@ const notePart = (id: Note): PartDef => ({
   field: "notes",
   carriesIn: formOnAction,
   figures: [],
+  // an order is a share of an action or a sum per unit, so not a sum on each event alone (a corporate event's)
+  holds: onActionWhere(formBoundsAction),
   ask: null,
   used: (p) => onAction(p) && !!p.notes?.includes(id),
   apply: onPrice((p, on) => withNote(p, id, on)),
@@ -135,30 +159,49 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   held: formPart("held", "held", ["rate"]),
   sum: formPart("sum", "sum", ["amount"]),
   free: formPart("free", "free", []),
-  discount: { id: "discount", kind: "price", field: "discount", carriesIn: formOnAction, figures: ["discount"], ask: null, used: (p) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
-  third: { id: "third", kind: "price", field: "third", carriesIn: formOnAction, figures: ["third", "thirdMin", "thirdMax"], ask: null, used: (p) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
+  discount: { id: "discount", kind: "price", field: "discount", carriesIn: formOnAction, figures: ["discount"], holds: onActionWhere(formOnAction), ask: null, used: (p) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
+  third: { id: "third", kind: "price", field: "third", carriesIn: formOnAction, figures: ["third", "thirdMin", "thirdMax"], holds: onActionWhere(formOnAction), ask: null, used: (p) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
   until: {
     id: "until",
     kind: "price",
     figures: [],
+    holds: always,
     ask: "month",
-    used: (_p, x) => x.stages.length > 1,
+    used: (_p, x) => !!x && x.stages.length > 1,
     // on, the price ends at the month and a later one follows it; off, the prices after it go
     apply: { on: "fee", edit: (fee, on, at) => (on ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month!, at.caseId) : holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId)) },
   },
   min: boundPart("min", "sum", formBoundsAction),
   max: boundPart("max", "sum", formBoundsAction),
   cap: boundPart("cap", "pct", formOnAction),
-  flat: { id: "flat", kind: "bound", field: "flat", carriesIn: formBoundsAction, needsField: "flat", figures: ["flat", "upTo"], ask: null, used: (p) => hasFlat(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true },
-  offset: { id: "offset", kind: "link", field: "offset", carriesIn: formCharged, figures: [], ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
-  refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
+  flat: { id: "flat", kind: "bound", field: "flat", carriesIn: formBoundsAction, needsField: "flat", figures: ["flat", "upTo"], holds: (kind) => hasField(kind, "flat"), ask: null, used: (p) => hasFlat(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true },
+  offset: { id: "offset", kind: "link", field: "offset", carriesIn: formCharged, figures: [], holds: always, ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
+  refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], holds: always, ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
   unfilled: notePart("unfilled"),
   unfilledClerk: notePart("unfilledClerk"),
   partial: notePart("partial"),
-  sale: { id: "sale", kind: "note", figures: [], ask: null, used: (_p, x) => !!x.sale, apply: { on: "fee", edit: (fee, on, at) => setSaleApart(fee, on, at.caseId) } },
+  sale: { id: "sale", kind: "note", figures: [], holds: (kind) => FEE_SHAPES[kind].saleApart && !ONE_SIDE[kind], ask: null, used: (_p, x) => !!x?.sale, apply: { on: "fee", edit: (fee, on, at) => setSaleApart(fee, on, at.caseId) } },
 };
 
 export const PART_IDS = Object.keys(PARTS) as PartId[];
+
+/**
+ * The parts a price says, in the registry's order (its price, its end, its bounds, its links, its notes): the parts it has, its notes in
+ * the order they were added, its end where the line gives one (`until`), and a sale priced apart where the line has one (`sale`).
+ */
+export function partsSaid(p: Price, line: { until?: MonthKey; sale?: boolean }): PartId[] {
+  const out: PartId[] = [];
+  for (const id of PART_IDS) {
+    const def = PARTS[id];
+    if (id === "until" || id === "sale") {
+      if (id === "until" ? line.until : line.sale) out.push(id);
+    } else if (def.field === "notes") {
+      // the notes are one list: said once, where the first note stands, in the list's order
+      if (!out.some((x) => PARTS[x].field === "notes") && onAction(p)) out.push(...(p.notes ?? []));
+    } else if (def.used(p)) out.push(id);
+  }
+  return out;
+}
 
 /** Whether `at` gives what a part asks for: a percent's or a sum's figure, a month, a fee. */
 function gives(at: PartAt, ask: Ask): boolean {

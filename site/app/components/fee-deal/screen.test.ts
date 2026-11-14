@@ -102,15 +102,9 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     focus: null,
     onFocused: () => {},
     onDeal: () => {},
-    onOpen: () => {},
-    onSlot: () => {},
-    onThing: () => {},
     onAdd: () => {},
-    onRemoveCase: () => {},
-    onHoldOn: () => {},
-    onPendingDone: () => {},
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onHoldOn: () => {}, onPendingDone: () => {}, onAskDone: () => {} },
     ask,
-    onAskDone: () => {},
   });
 };
 const drawBuilder = (deal: FeeDeal, chosen: string | null) => markup(builderOf(deal, chosen));

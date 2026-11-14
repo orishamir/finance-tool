@@ -3,7 +3,7 @@
 // the same in the short sheet pinned to the foot of the screen. A thing to change by asks its question in the fee's block (`AskThing`).
 // A tap on a part adds it; a part that needs its figure, month or fee first asks for it in the open case (`onPending`), and a form of the
 // price puts the price in that form through the page (`onForm`), which keeps what it replaces for the undo.
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib/fee-deal/builder";
 import { setFeeName } from "../../lib/fee-deal/edit";
@@ -12,11 +12,11 @@ import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
 import { ONE_SIDE, type ByKind } from "../../lib/fee-deal/shapes";
 import { termKey } from "../../lib/fee-page-data";
 import { IconBin, IconClose, IconPencil } from "../icons";
-import { Button, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, type ToolGroup, type ToolKind } from "../kit";
+import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
 import { useProvenanceData } from "../provenance";
-import { type PendingPart } from "./open-case";
+import type { PendingPart } from "./part-edit";
 import { UndoLine } from "./undo-line";
-import { caseText } from "./builder";
+import { caseText } from "./fee-block";
 import { FeeName, feeColour, feeName } from "./words";
 
 const p = copy.panel;
@@ -196,5 +196,31 @@ export function ToolboxColumn({
       </div>
       {box}
     </Section>
+  );
+}
+
+/**
+ * The toolbox's card on a computer (`cardRef`, which the page brings into view and focuses in): in a column of its own where the window
+ * has the room (`column`), sticking under the header as the fees scroll by and never cut at the window's height (`useStickyColumn`), else
+ * under its fee. Escape closes it (`onClose`); while it rests (`rest`), just after its fee was taken away, it takes no press.
+ */
+export function ToolboxCard({ cardRef, column, rest, onClose, children }: { cardRef: RefObject<HTMLDivElement | null>; column: boolean; rest: boolean; onClose: () => void; children: ReactNode }) {
+  useStickyColumn(cardRef, column);
+  return (
+    <div
+      ref={cardRef}
+      className={cx("come-in", column && "col-start-3 row-start-1 sticky top-20 rounded-lg")}
+      {...(rest ? { inert: true } : {})}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && !e.defaultPrevented) {
+          e.preventDefault();
+          onClose();
+        }
+      }}
+    >
+      <Card edge="accent" className="flex flex-col gap-4">
+        {children}
+      </Card>
+    </div>
   );
 }

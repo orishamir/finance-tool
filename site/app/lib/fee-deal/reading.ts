@@ -5,7 +5,8 @@ import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, ho
 import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
-import { feeNameOf, thingName, whenWords, type PartWords, type WhenWords } from "./builder";
+import { thingName, whenWords, type WhenWords } from "./builder";
+import { feeNameOf, type PartWords } from "./part-words";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
 import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";

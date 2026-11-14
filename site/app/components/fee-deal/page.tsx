@@ -33,20 +33,22 @@ import { readDealFor } from "../../lib/fee-deal/parts";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { barredFees, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
-import type { ByKind, FeeKindId } from "../../lib/fee-deal/shapes";
+import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useIsoLayoutEffect, useMedia } from "../../lib/hooks";
-import { Button, Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet, cx, useStickyColumn } from "../kit";
+import { Button, Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, dealLabel, useCopyLink } from "./bar-end";
 import { FeesColumn, SetupColumn, bringIntoView, feeGroup, type CaseUndoLine, type FeeFocus, type FeeUndoLine, type KindUndoLine } from "./builder";
 import { FeeLinksProvider, type FeeLinks } from "./links";
 import { UndoLine } from "./undo-line";
 import { GlanceCard, READING_ID } from "./glance";
-import { SlotMenu, WhenText, numText, type PendingPart } from "./open-case";
+import { SlotMenu, WhenText, numText } from "./open-case";
+import type { Pending } from "./part-edit";
 import { TemplatePicker } from "./picker";
-import { ToolboxColumn, type FillUndoLine } from "./toolbox";
+import { ToolboxCard, ToolboxColumn, type FillUndoLine } from "./toolbox";
+import { useAskThing } from "./ask-thing";
 import { ReadingCards } from "./reading";
 import { feeName } from "./words";
 
@@ -125,11 +127,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const [caseOpen, setCaseOpen] = useState<{ fee: string; case: string } | null>(null);
   const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
   const [thingOpen, setThingOpen] = useState<{ fee: string; t: number; at: HTMLElement } | null>(null);
-  const [pending, setPending] = useState<{ fee: string; case: string | null; part: PendingPart } | null>(null);
-  const [asking, setAsking] = useState<{ fee: string; kind: ByKind } | null>(null);
+  const [pending, setPending] = useState<Pending | null>(null);
   // whether a phone's toolbox sheet is folded to its groups' names: folded as the page loads, so nothing covers it, and unfolded when a
   // fee or a case is opened, or at its handle
   const [sheetFolded, setSheetFolded] = useState(true);
+  const panelColumn = useMedia(PANEL_COLUMN);
+  const phone = useMedia(PHONE);
+  // a thing to change by asks its question in place, in the open fee's block
+  const { asking, onAsk, onAskDone, drop: dropAsk } = useAskThing(chosen, phone, setSheetFolded);
   // what the bar's end just did (a template opened a new deal), said for as long as an undo line stays, or until it is closed
   const [said, setSaid] = useState<string | null>(null);
   useEffect(() => {
@@ -292,26 +297,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   };
   // a case opened in place is brought into view once drawn: under the header, and above a phone's sheet, which unfolds with it
   const [caseShown, setCaseShown] = useState(0);
-  // a thing to change by asks its question in place, in the open fee's block; on a phone the sheet folds to its tabs while it is open.
-  // Closed, the focus goes to the new thing's pill where it was added, else back to the toolbox's part it was asked from.
-  const onAsk = (kind: ByKind) => {
-    if (!chosen) return;
-    setAsking({ fee: chosen, kind });
-    if (phone) setSheetFolded(true);
-  };
-  const onAskDone = (added: boolean) => {
-    const was = asking;
-    setAsking(null);
-    if (phone) setSheetFolded(false);
-    if (!was) return;
-    requestAnimationFrame(() => {
-      const li = document.querySelector(`li[data-fee="${CSS.escape(was.fee)}"]`);
-      const pills = li?.querySelectorAll<HTMLElement>("[data-thing]");
-      const el = added && pills?.length ? pills[pills.length - 1]! : document.querySelector<HTMLElement>(`[data-part="by:${was.kind}"]`);
-      el?.focus({ preventScroll: true });
-      bringIntoView(el);
-    });
-  };
   // a fee or one of its cases opened in place; from the keyboard, its first box takes the focus once drawn
   const onOpenCase = (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => {
     if (by === "keyboard") after.current = { fee: feeId, how: "panel" };
@@ -322,7 +307,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     setMenu(null);
     if (thingOpen && thingOpen.fee !== feeId) setThingOpen(null);
     if (pending && (pending.fee !== feeId || pending.case !== caseId)) setPending(null);
-    if (asking && asking.fee !== feeId) setAsking(null);
+    if (asking && asking.fee !== feeId) dropAsk();
   };
   // the toolbox closed: no fee open, and the focus back on the fee it was for
   const onClosePanel = () => {
@@ -331,7 +316,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     setMenu(null);
     setThingOpen(null);
     setPending(null);
-    setAsking(null);
+    dropAsk();
     if (was) requestAnimationFrame(() => document.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(was)}"] :is([data-pick-card], input)`)?.focus());
   };
   // a fee the reading names by the id it reads it under (a step of a fee read across sizes, `fee-x-s1`) is the deal's fee it is of
@@ -488,8 +473,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const groupOf = (fee: Fee) => feeGroup(read, fee, saves);
   // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
   // on a phone a short sheet pinned to the foot of the screen; else right under its fee
-  const panelColumn = useMedia(PANEL_COLUMN);
-  const phone = useMedia(PHONE);
   const toolboxView =
     views && panel && tools && chosenFee ? (
       <ToolboxColumn
@@ -513,24 +496,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     ) : null;
   const panelView =
     toolboxView && !phone ? (
-      <div
-        ref={panelCard}
-        className={cx("come-in", panelColumn && "col-start-3 row-start-1 sticky top-20 rounded-lg")}
-        {...(panelRest ? { inert: true } : {})}
-        onKeyDown={(e) => {
-          if (e.key === "Escape" && !e.defaultPrevented) {
-            e.preventDefault();
-            onClosePanel();
-          }
-        }}
-      >
-        <Card edge="accent" className="flex flex-col gap-4">
-          {toolboxView}
-        </Card>
-      </div>
+      <ToolboxCard cardRef={panelCard} column={panelColumn} rest={panelRest} onClose={onClosePanel}>
+        {toolboxView}
+      </ToolboxCard>
     ) : null;
-  // the toolbox's column is never cut at the window's height and never scrolls inside itself (`useStickyColumn`)
-  useStickyColumn(panelCard, panelColumn && !!panelView);
   // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
   const picks = views?.reading.picks;
   const pickWords = (w: Parameters<typeof WhenText>[0]["words"]) => (w.figure ? `${w.lead ?? ""}${numText(w.figure)}` : (w.text ?? ""));
@@ -615,15 +584,17 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               focus={focus}
               onFocused={() => setFocus(null)}
               onDeal={change}
-              onOpen={onOpenCase}
-              onSlot={(t, at) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null))}
-              onThing={(t, at) => setThingOpen((m) => (m && m.t === t && m.fee === chosen ? null : chosen ? { fee: chosen, t, at } : null))}
               onAdd={onAdd}
-              onRemoveCase={onRemoveCase}
-              onHoldOn={onHoldOn}
-              onPendingDone={() => setPending(null)}
+              actions={{
+                onOpen: onOpenCase,
+                onSlot: (t, at) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null)),
+                onThing: (t, at) => setThingOpen((m) => (m && m.t === t && m.fee === chosen ? null : chosen ? { fee: chosen, t, at } : null)),
+                onRemoveCase,
+                onHoldOn,
+                onPendingDone: () => setPending(null),
+                onAskDone,
+              }}
               ask={asking && asking.fee === chosen ? asking.kind : null}
-              onAskDone={onAskDone}
             />
           </Card>
         )}

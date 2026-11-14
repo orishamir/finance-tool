@@ -4,17 +4,18 @@
 // prices and its standing against the cap now and where it next changes (the prices against the cap are the reading's law row,
 // reading.ts). Every word a block shows is here, from the copy; a component only lays them out.
 import type { ChangeKind } from "@finance-tool/engine";
-import { feeDeal as copy, guideBlocks } from "../../copy";
+import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
 import { managementFee } from "./kinds";
-import { charged, hasBounds, hasCap, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
-import type { Figure } from "./offers/figures";
-import type { PartId, PartKind } from "./offers/parts";
+import { hasFlat } from "./offers/capabilities";
+import { FIGURES, type Figure } from "./offers/figures";
+import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
+import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
+import { BY_MAX, byKindsFor, isConversion, isRangeKind, LIST_IDS, onHolding, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -56,22 +57,6 @@ export interface BuilderRow extends FeeRef {
   /** The fee as a block: a slim price, or the band of its cases. */
   block: FeeBlock;
 }
-
-/**
- * The words of one part of a price, in order: `lead` before its figure, the figure (`figure`, in its number state), `mid` and a second
- * figure (`second`: a flat price's top), a month (`month`, said as the page says months), `tail` after them, and `quiet` said fainter at the
- * end ("בלי סכום בתעריפון"). Any of them may be absent.
- */
-export interface PartWords {
-  lead?: string;
-  figure?: SiteValue;
-  mid?: string;
-  second?: SiteValue;
-  month?: MonthKey;
-  tail?: string;
-  quiet?: string;
-}
-
 
 /** A part as a slim line shows it: its id, its kind and its words. */
 export interface SlimPart {
@@ -132,9 +117,6 @@ export interface Builder {
   suggestions: { usual: FeeKindId[]; rarer: FeeKindId[] };
 }
 
-/** A fee's name as the page writes it: the guide's for a base the records list, else the page's own, or the person's for their own. */
-export const feeNameOf = (kind: FeeKindId, own?: string): string => (kind === "own" && own ? own : ((guideBlocks.fees[kind] as { name?: string } | undefined)?.name ?? copy.names[kind] ?? kind));
-
 /** A fee's prices as stage views, the fee being `fees[i]`. */
 function stageViews(r: DealRead, fees: readonly Pick<Fee, "kind">[], i: number, stages: readonly Stage[]): StageView[] {
   return stages.map((s) => {
@@ -148,89 +130,24 @@ const readStages = (r: DealRead, views: StageView[]): StageView[] => views.filte
 
 // ---------------------------------------------------------------- the words of a price's parts
 
-const perAction = (kind: FeeKindId): string => copy.price.perAction[kind] ?? copy.price.perAction.default!;
 /**
  * A thing a fee's price changes by, in words that follow the fee: the size of its own action ("גודל ההמרה" on a conversion), a condition
  * of the person's own by its name, any other thing by its name.
  */
 export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }): string =>
   b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
-const shareOf = (kind: FeeKindId): string => copy.price.of[kind] ?? copy.price.of.default!;
-const boundPer = (kind: FeeKindId): string => copy.cases.parts.boundPer[kind] ?? copy.cases.parts.boundPer.default!;
-
-/** A price's parts as a slim line says them, in the toolbox's order of kinds: its price, its bounds, its links and its notes. */
+/** A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its end, its bounds, its links and its notes. */
 export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
   const stage = priced.stages[0]!;
-  const view = priceView([fee], 0, stage.price, r.today);
-  const out: SlimPart[] = [...priceParts(fee.kind, stage.price, view)];
-  // a later price, said by when this one ends
-  if (stage.until) out.push({ id: "until", kind: "price", words: { lead: copy.cases.parts.until, month: stage.until } });
-  out.push(...boundParts(fee.kind, view), ...linkParts(stage.price, view), ...noteParts(stage.price, !!priced.sale));
-  return out;
+  return saidParts({ kind: fee.kind, p: stage.price, view: priceView([fee], 0, stage.price, r.today), ...(stage.until ? { until: stage.until } : {}) }, !!priced.sale);
 }
 
-/** The words of a price's main figure, and of its discount and third party's fee. */
-function priceParts(kind: FeeKindId, p: Price, view: PriceView): SlimPart[] {
-  const f = view.figures;
-  const out: SlimPart[] = [];
-  switch (p.form) {
-    case "free":
-      return [{ id: "free", kind: "price", words: { lead: copy.price.free } }];
-    case "action":
-      out.push({ id: "share", kind: "price", words: { ...(f.rate ? { figure: f.rate } : {}), tail: ` ${perAction(kind)}` } });
-      break;
-    case "perUnit":
-      out.push({ id: "perUnit", kind: "price", words: { ...(f.amount ? { figure: f.amount } : {}), tail: ` ${copy.cases.parts.perUnit}` } });
-      break;
-    case "perAction":
-      out.push({ id: "perAction", kind: "price", words: { ...(f.amount ? { figure: f.amount } : {}), tail: ` ${perAction(kind)}` } });
-      break;
-    case "held":
-      out.push({ id: "held", kind: "price", words: { ...(f.rate ? { figure: f.rate } : {}), tail: ` ${copy.price.per[p.per]}` } });
-      break;
-    case "sum":
-      out.push({ id: "sum", kind: "price", words: { ...(f.amount ? { figure: f.amount } : {}), tail: ` ${copy.price.per[p.every]}` } });
-      break;
-  }
-  if (onAction(p)) {
-    const d = copy.cases.parts.discount;
-    if (p.discount) out.push({ id: "discount", kind: "price", words: { lead: d.lead, ...(f.discount ? { figure: f.discount } : {}), tail: `${d.tail}${p.discount.alsoMin ? d.alsoMin : ""}` } });
-    if (p.third) {
-      const lead = p.third.who ? `${copy.cases.parts.thirdOf}${p.third.who}` : copy.cases.parts.third;
-      out.push({ id: "third", kind: "price", words: p.third.price ? { lead: `${lead} `, ...(f.third ? { figure: f.third } : {}) } : { lead, quiet: ` ${copy.cases.parts.thirdNone}` } });
-    }
-  }
-  return out;
-}
-
-/** The words of a price's bounds: its minimum and maximum on each action (or charge), its percent maximum, its flat price. */
-function boundParts(kind: FeeKindId, view: PriceView): SlimPart[] {
-  const f = view.figures;
-  const pp = copy.cases.parts;
-  // a held share's bounds are per charge, or in the period the price list prints them ("מינימום 40 ₪ בחודש")
-  const per = view.form === "held" ? ` ${view.boundsEvery ? copy.price.per[view.boundsEvery] : copy.panel.perCharge}` : ` ${boundPer(kind)}`;
-  return [
-    ...(f.min ? [{ id: "min" as const, kind: "bound" as const, words: { lead: pp.min, figure: f.min, tail: per } }] : []),
-    ...(f.max ? [{ id: "max" as const, kind: "bound" as const, words: { lead: pp.max, figure: f.max, tail: per } }] : []),
-    ...(f.cap ? [{ id: "cap" as const, kind: "bound" as const, words: { lead: pp.max, figure: f.cap, tail: ` ${shareOf(kind)}` } }] : []),
-    ...(f.flat ? [{ id: "flat" as const, kind: "bound" as const, words: { lead: pp.flat.lead, figure: f.flat, mid: pp.flat.tail, ...(f.upTo ? { second: f.upTo } : {}) } }] : []),
-  ];
-}
-
-/** The words of a price's links: the fee it is offset against, and its refund. */
-function linkParts(p: Price, view: PriceView): SlimPart[] {
-  if (!charged(p)) return [];
-  const o = copy.cases.parts.offsetOf;
-  return [
-    ...(p.offset ? [{ id: "offset" as const, kind: "link" as const, words: { lead: `${o.lead}${feeNameOf(p.offset.kind)}${o.tail}` } }] : []),
-    ...(p.refund ? [{ id: "refund" as const, kind: "link" as const, words: { lead: copy.cases.parts.refund, ...(view.figures.refund ? { figure: view.figures.refund } : {}) } }] : []),
-  ];
-}
-
-/** The words of a price's notes on an order, and of a sale priced apart. */
-function noteParts(p: Price, saleApart: boolean): SlimPart[] {
-  const notes = onAction(p) ? (p.notes ?? []) : [];
-  return [...notes.map((n) => ({ id: n as PartId, kind: "note" as const, words: { lead: copy.cases.parts.notes[n]! } })), ...(saleApart ? [{ id: "sale" as const, kind: "note" as const, words: { lead: copy.cases.parts.notes.sale! } }] : [])];
+/** The parts a price says, each with its words, and a sale priced apart where the line has one; a part with nothing to say yet is left out. */
+function saidParts(c: PartContext, sale: boolean): SlimPart[] {
+  return partsSaid(c.p, { ...(c.until ? { until: c.until } : {}), sale }).flatMap((id) => {
+    const words = SAID[id](c);
+    return words ? [{ id, kind: PARTS[id].kind, words }] : [];
+  });
 }
 
 // ---------------------------------------------------------------- a fee's cases
@@ -426,62 +343,27 @@ export interface OpenCase {
   canRemove: boolean;
 }
 
-/** The sign after a sum's box: its currency's. */
-const signOf = (currency: string | undefined): string => copy.panel.signs[currency ?? "ILS"] ?? "₪";
+/** A part's fields: each figure it holds that the price has a place for, with its value and its box's sign. */
+const fieldsOf = (id: PartId, p: Price, view: PriceView): PartField[] =>
+  PARTS[id].figures.filter((f) => FIGURES[f].placed(p)).map((f) => ({ figure: f, value: view.figures[f] ?? null, sign: signOfUnit(FIGURES[f].unit(p)) }));
 
-/** A price's parts with the figures each edits, from its slim words. */
-function openParts(fee: Fee, p: Price, view: PriceView, saleApart: boolean): OpenPart[] {
-  const f = view.figures;
-  const value = (n: SiteValue | undefined) => n ?? null;
-  const cur = hasCurrency(p) ? p.currency : undefined;
-  const fieldsFor = (id: PartId): PartField[] => {
-    switch (id) {
-      case "share":
-      case "held":
-        return [{ figure: "rate", value: value(f.rate), sign: "pct" }];
-      case "perUnit":
-      case "perAction":
-        return [{ figure: "amount", value: value(f.amount), sign: signOf(cur) }];
-      case "sum":
-        return [{ figure: "amount", value: value(f.amount), sign: signOf("ILS") }];
-      case "discount":
-        return [{ figure: "discount", value: value(f.discount), sign: "pct" }];
-      case "third": {
-        const t = onAction(p) && p.third?.price;
-        if (!t) return [];
-        return [{ figure: "third", value: value(f.third), sign: t.form === "action" ? "pct" : signOf(t.currency) }, ...(t.form === "perAction" ? [] : [{ figure: "thirdMin" as const, value: value(f.thirdMin), sign: signOf(t.currency) }, { figure: "thirdMax" as const, value: value(f.thirdMax), sign: signOf(t.currency) }])];
-      }
-      case "min":
-      case "max":
-        return [{ figure: id, value: value(f[id]), sign: signOf(p.form === "held" ? "ILS" : cur) }];
-      case "cap":
-        return [{ figure: "cap", value: value(f.cap), sign: "pct" }];
-      case "flat":
-        return [{ figure: "flat", value: value(f.flat), sign: signOf(cur) }, { figure: "upTo", value: value(f.upTo), sign: signOf(cur) }];
-      case "refund":
-        return [{ figure: "refund", value: value(f.refund), sign: signOf(cur) }];
-      default:
-        return [];
-    }
-  };
-  const slim = [...priceParts(fee.kind, p, view), ...boundParts(fee.kind, view), ...linkParts(p, view), ...noteParts(p, saleApart)];
-  // a bound, a cap or a flat price nobody typed yet is in the price too: it shows as an empty part while it is
-  const flatBlank = hasFlat(p) && p.flat && !slim.some((x) => x.id === "flat") ? [{ id: "flat" as const, kind: "bound" as const, words: { lead: copy.cases.parts.flat.lead, mid: copy.cases.parts.flat.tail } }] : [];
-  return [...slim, ...flatBlank].map((x) => ({ ...x, fields: fieldsFor(x.id), removable: x.kind !== "price" || x.id === "discount" || x.id === "third" }));
+/**
+ * A price's parts with the figures each edits, in the order a line says them, its end among them where it ends (`until`) and a sale priced
+ * apart where the line has one. Every part can be taken away but the price's form.
+ */
+function openParts(fee: Fee, p: Price, view: PriceView, line: { until?: MonthKey; sale: boolean }): OpenPart[] {
+  const said = saidParts({ kind: fee.kind, p, view, ...(line.until ? { until: line.until } : {}) }, line.sale);
+  // a flat price nobody typed yet is in the price too: it shows as an empty part, last, while it is
+  const flatBlank: SlimPart[] = hasFlat(p) && p.flat && !said.some((x) => x.id === "flat") ? [{ id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK }] : [];
+  return [...said, ...flatBlank].map((x) => ({ ...x, fields: fieldsOf(x.id, p, view), removable: PARTS[x.id].form === undefined }));
 }
 
 /** The case open in place: the fee's slots for the case, and its prices' parts. */
 function openCase(r: DealRead, fee: Fee, caseId: string | undefined): OpenCase {
   const priced = pricedOf(fee, caseId);
   const c = hasCases(fee) ? (priced as Case) : null;
-  // a price that ends has its month as a part, after its price's own parts ("לזמן מוגבל, עד")
-  const withUntil = (parts: OpenPart[], until: MonthKey | undefined): OpenPart[] => {
-    if (!until) return parts;
-    const at = parts.findIndex((x) => x.kind !== "price");
-    const part: OpenPart = { id: "until", kind: "price", words: { lead: copy.cases.parts.until, month: until }, fields: [], removable: true };
-    return at < 0 ? [...parts, part] : [...parts.slice(0, at), part, ...parts.slice(at)];
-  };
-  const stagesOf = (stages: readonly Stage[], apart: boolean) => stages.map((s, k) => ({ k, ...(s.until ? { until: s.until } : {}), parts: withUntil(openParts(fee, s.price, priceView([fee], 0, s.price, r.today), apart && k === 0), s.until) }));
+  const stagesOf = (stages: readonly Stage[], apart: boolean) =>
+    stages.map((s, k) => ({ k, ...(s.until ? { until: s.until } : {}), parts: openParts(fee, s.price, priceView([fee], 0, s.price, r.today), { ...(s.until ? { until: s.until } : {}), sale: apart && k === 0 }) }));
   return {
     case: c?.id ?? null,
     slots: c && hasCases(fee) ? fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: whenWords(fee, c.when[t]!, t, r.today), ...(b.kind === "track" ? { mine: !!c.mine } : {}) })) : [],
@@ -515,7 +397,7 @@ export interface ToolPart {
   kind: PartKind | "by";
   words: PartWords;
   /** The box the card shows: a percent, a sum in a currency (its sign), a month, or none. */
-  box?: "pct" | "month" | { sign: string };
+  box?: ToolBox;
   /** The case has it already: a ✓, muted, not removed. */
   used: boolean;
   /** It cannot be added, with why (a fourth thing to change by). */
@@ -542,70 +424,44 @@ export interface Toolbox {
   groups: ToolGroup[];
 }
 
+/** The toolbox's groups in order, each with its parts in order; what the price changes by is the fee's things (`byKindsFor`). */
+const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
+  { group: "price", kind: "price", parts: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"] },
+  { group: "bound", kind: "bound", parts: ["min", "max", "cap"] },
+  { group: "by", kind: "by", parts: [] },
+  { group: "link", kind: "link", parts: ["offset", "refund"] },
+  { group: "more", kind: "note", parts: ["unfilled", "partial", "sale"] },
+];
+
+/** What a provident-family product's management fee is offered (`managementFee`): its share, a price for a period, a condition of its own. */
+const MANAGED: readonly string[] = ["share", "held", "until", "by:own"];
+
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
   const p = priced.stages[0]!.price;
-  const shape = FEE_SHAPES[fee.kind];
-  const can = (form: Exclude<Price["form"], "free">) => shape.forms.includes(form);
-  const fieldOk = (field: FieldId) => p.form !== "free" && (shape.fields[p.form] ?? []).includes(field);
-  const onAct = onAction(p);
-  const cur = hasCurrency(p) && p.currency ? p.currency : "ILS";
-  const pp = copy.cases.parts;
-  const price: ToolPart[] = [
-    ...(can("action") ? [{ id: "share" as const, kind: "price" as const, words: { tail: ` ${perAction(fee.kind)}` }, box: "pct" as const, used: p.form === "action" }] : []),
-    ...(can("perUnit") ? [{ id: "perUnit" as const, kind: "price" as const, words: { tail: ` ${pp.perUnit}` }, box: { sign: signOf(cur) }, used: p.form === "perUnit" }] : []),
-    // a sum per action keeps the price's currency only where the fee may hold one for it (`FEE_SHAPES`), else it is in shekels
-    ...(can("perAction") ? [{ id: "perAction" as const, kind: "price" as const, words: { tail: ` ${perAction(fee.kind)}` }, box: { sign: signOf((shape.fields.perAction ?? []).includes("currency") ? cur : "ILS") }, used: p.form === "perAction" }] : []),
-    ...(can("held") ? [{ id: "held" as const, kind: "price" as const, words: { tail: ` ${copy.price.per[12]}` }, box: "pct" as const, used: p.form === "held" }] : []),
-    ...(can("sum") ? [{ id: "sum" as const, kind: "price" as const, words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") }, used: p.form === "sum" }] : []),
-    ...(onAct || can("action") || can("perAction") ? [{ id: "discount" as const, kind: "price" as const, words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" as const, used: onAct && !!p.discount }] : []),
-    ...(onAct || can("action") || can("perAction") ? [{ id: "third" as const, kind: "price" as const, words: { lead: pp.third }, used: onAct && !!p.third }] : []),
-    // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)
-    ...((shape.fields.action ?? []).includes("flat") || (shape.fields.perUnit ?? []).includes("flat") ? [{ id: "flat" as const, kind: "price" as const, words: { lead: pp.flatSmall[fee.kind] ?? pp.flatSmall.default! }, box: { sign: signOf(cur) }, used: hasFlat(p) && !!p.flat }] : []),
-    { id: "until", kind: "price", words: { lead: pp.until }, box: "month", used: priced.stages.length > 1 },
-  ];
-  const bound: ToolPart[] = [
-    ...(fieldOk("min") || can("action") ? [{ id: "min" as const, kind: "bound" as const, words: { lead: pp.min }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: hasBounds(p) && !!p.min }] : []),
-    ...(fieldOk("max") || can("action") ? [{ id: "max" as const, kind: "bound" as const, words: { lead: pp.max }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: hasBounds(p) && !!p.max }] : []),
-    ...((shape.fields.action ?? []).includes("cap") ? [{ id: "cap" as const, kind: "bound" as const, words: { lead: pp.max, tail: ` ${shareOf(fee.kind)}` }, box: "pct" as const, used: hasCap(p) && !!p.cap }] : []),
-  ];
-  const kinds = byKindsFor(fee.kind);
+  const managed = managementFee(r.kind, fee.kind);
+  const offered = (id: ToolPart["id"]) => !managed || MANAGED.includes(id);
+  const parts = (g: (typeof TOOLBOX)[number]): ToolPart[] =>
+    g.group === "by"
+      ? byParts(fee).filter((x) => offered(x.id))
+      : g.parts.filter((id) => PARTS[id].holds(fee.kind, p) && offered(id)).map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced) }));
+  const c = hasCases(fee) ? (priced as Case) : null;
+  const addTo = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
+  const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g) }));
+  return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
+}
+
+/** The things a fee may change by, as the toolbox's cards: one it changes by already is used, and none more can be added past three. */
+function byParts(fee: Fee): ToolPart[] {
   const have = new Set((fee.by ?? []).map((b) => (b.kind === "held" ? "what" : b.kind)));
   const full = (fee.by?.length ?? 0) >= BY_MAX;
-  const by: ToolPart[] = kinds.map((k) => {
+  return byKindsFor(fee.kind).map((k) => {
     const used = k !== "own" && have.has(k === "held" ? "what" : k);
     return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });
-  const link: ToolPart[] = [
-    { id: "offset", kind: "link", words: { lead: pp.offset }, used: charged(p) && !!p.offset },
-    { id: "refund", kind: "link", words: { lead: pp.refund.trim() }, box: { sign: signOf(cur) }, used: charged(p) && !!p.refund },
-  ];
-  const notes = onAct ? (p.notes ?? []) : [];
-  const more: ToolPart[] = [
-    ...(onAct || can("action") ? (["unfilled", "partial"] as const).map((n) => ({ id: n, kind: "note" as const, words: { lead: pp.notes[n]! }, used: notes.includes(n) })) : []),
-    ...(shape.saleApart && !ONE_SIDE[fee.kind] ? [{ id: "sale" as const, kind: "note" as const, words: { lead: pp.notes.sale! }, used: !!priced.sale }] : []),
-  ];
-  const c = hasCases(fee) ? (priced as Case) : null;
-  // a provident-family product's management fee: its share, a price for a period, and a condition of the person's own, nothing else
-  // (PF-01, KGL-14, PF-13)
-  const managed = managementFee(r.kind, fee.kind);
-  const addTo = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
-  const groups: ToolGroup[] = managed
-    ? [
-        { group: "price", head: copy.cases.groups.price!, parts: price.filter((x) => x.id === "share" || x.id === "held" || x.id === "until") },
-        { group: "by", head: copy.cases.groups.by!, parts: by.filter((x) => x.id === "by:own") },
-      ]
-    : [
-        { group: "price", head: copy.cases.groups.price!, parts: price },
-        { group: "bound", head: copy.cases.groups.bound!, parts: bound },
-        { group: "by", head: copy.cases.groups.by!, parts: by },
-        { group: "link", head: copy.cases.groups.link!, parts: link },
-        { group: "more", head: copy.cases.groups.more!, parts: more },
-      ];
-  return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
 }
 
 /** Whether a fee is a conversion or charged on what is held, which words of what it changes by follow (the toolbox's first thing). */
