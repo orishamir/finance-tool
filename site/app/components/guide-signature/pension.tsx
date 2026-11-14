@@ -94,7 +94,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const m = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-67", inputs, today, about, rules);
   // the relief carries its open readings: the credit capped at the year's tax (TXP OQ20) and that tax, and any deduction, at the brackets
   // without credit points (G-23)
-  const reliefFigure = (value: number, about: string) => computed(value, "nis", model.relief.formula, reliefIn, { today, about, rules, flags: model.relief.flags });
+  const reliefFigure = (value: number, about: string) => computed(value, "nis", model.relief.formula, reliefIn, { today, about, rules, flags: model.relief.flags, labels: model.relief.labels });
   const v = {
     you: m(model.you, copy.pension.about.you, youIn),
     employer: m(model.employer, copy.pension.about.employer, employerIn),

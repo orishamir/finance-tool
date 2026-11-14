@@ -984,7 +984,7 @@ export const flags: Record<string, string> = {
   // A-17 entered, the tables not collected (method G-12)
   "G-12": "עלות הביטוח בקרן הפנסיה היא האחוז שהזנתם, כי טבלאות הביטוח של הקרנות עוד לא נאספו.",
   // F-32 leaves out TXP-07's extra credit and TXP-08's enlarged deduction (method G-13); flagged for a self-employed person and from 50
-  "G-13": "החישוב לא כולל שתי הטבות שעשויות לחול: זיכוי נוסף לעצמאי שלא מנכה הוצאה על ביטוח אובדן כושר עבודה, וניכוי מוגדל מגיל 50. אם אחת מהן חלה עליכם, ההטבה במס עשויה להיות גבוהה יותר.",
+  "G-13": "החישוב לא כולל שתי הטבות שעשויות לחול: זיכוי נוסף לעצמאי, שחל בתנאים מסוימים, וניכוי מוגדל מגיל 50. אם אחת מהן חלה עליכם, ההטבה במס עשויה להיות גבוהה יותר.",
   // F-24 charges the statute's 15% where the Tax Authority's guide writes 20% (TXI OQ3, method G-09)
   "G-09": "המס על הרווח במק״ם חושב לפי 15%, השיעור שבחוק. המדריך של רשות המסים כותב 20%, ועוד לא ברור איך שני המקורות מתיישבים.",
   // F-25 leaves out the accrued interest a purchase between coupon dates pays (TXI OQ5, method G-10)
