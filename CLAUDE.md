@@ -16,7 +16,10 @@ win and the other text is corrected. My newer words win over both.
   base, and if a rule is missing, say so and stop.
 - Every number on the site traces to a dated source in `data/`, a calculation
   in `docs/method.md`, or what the person entered.
-- Cite official texts, never copies. Unofficial sources are leads only.
+- Cite the source that owns the claim, never a copy: the Tax Authority for
+  tax, the official publication for a law, a company's own documents for its
+  terms, a proof for what math shows, the strongest research for how the
+  world behaves (`guidelines/research.md`). Anything else is a lead only.
 - The repository and the site are public: nothing private goes into them.
 - `npm run check` passes before anything goes live. Push to `main`; never open
   a pull request.
