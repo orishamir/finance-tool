@@ -763,7 +763,7 @@ function ThingSwitch({ fee, values, chosen, words, mine, onChange }: { fee: Case
 /**
  * A ladder's step as its head says it: "עד {top}", "{bottom} עד {top}", or "מעל {bottom}", on one line where its column has the room, else
  * wrapped inside it, each number held to its currency's sign and "עד" to the number before it, never past the column. The top is a box
- * typed in place, kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that
+ * typed in place, its sign inside it on the number's right, kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that
  * top moves it too and the steps keep no gap or overlap.
  */
 function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; onFee: (f: Fee) => void }) {
@@ -792,18 +792,16 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
           c.upTo
         )}
       </span>
-      <span data-lift="" className="inline-flex items-center gap-1 whitespace-nowrap">
-        <FigureField
-          value={bounds.to}
-          label={c.stepTop}
-          unit=""
-          sign={sign}
-          tight
-          validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
-          onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
-        />
-        <span>{sign}</span>
-      </span>
+      {/* the top's sign in its box, on the number's right, as every figure writes its unit (design-system 2.7) */}
+      <FigureField
+        value={bounds.to}
+        label={c.stepTop}
+        unit={sign}
+        sign={sign}
+        tight
+        validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
+        onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
+      />
     </div>
   );
 }

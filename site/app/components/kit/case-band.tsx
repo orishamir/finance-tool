@@ -25,8 +25,11 @@ export interface CaseWord {
 }
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
-/** A value whose menu is open: a ring in the action colour around its pill. */
-const OPEN_RING = "outline-2 outline-offset-2 outline-primary";
+/**
+ * A pill's edge: the cases' own at rest; while its menu is open, one frame in the action colour, its edge turned `primary` with a 1 px
+ * outline flush on it (design-system 2.6), never a ring standing off a grey edge.
+ */
+const pillEdge = (open: boolean) => (open ? "border-primary outline-1 outline-offset-0 outline-primary" : "border-when-pill");
 
 /** A thing of the band's head: its id, its name, and its bin's spoken name (a bin stands beside it where the head takes `onRemoveThing`). */
 export interface HeadThing {
@@ -58,7 +61,7 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
         <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-full">
           {t.grip}
           {onThing ? (
-            <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
+            <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", pillEdge(openThing === t.id))}>
               {t.name}
               <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
             </button>
@@ -136,8 +139,10 @@ export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWor
     <div data-liftable="" onClick={onOpen ? (e) => onSurface(e) && onOpen() : undefined} className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} />
-      {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge */}
-      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent")}>
+      {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge. Its
+          parts' lines stand 44 px apart (a 30 px part and 14 px between), so a figure on one line and a figure on the next each keep a
+          44 px press, the parts no bigger for it */}
+      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-x-1.5 gap-y-3.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent")}>
         {grip}
         {children}
       </div>
@@ -151,7 +156,7 @@ export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWor
  */
 export function CaseSlot({ children, range, open, onOpen }: { children: ReactNode; range?: boolean; /** Its menu is open. */ open?: boolean; onOpen: (at: HTMLElement) => void }) {
   return (
-    <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className={cx("inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3.5 pe-3 text-sm text-foreground hover:bg-accent", open && OPEN_RING)}>
+    <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className={cx("inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm text-foreground hover:bg-accent", pillEdge(!!open))}>
       {range && <ChartNoAxesColumnIncreasing {...icon} className="shrink-0 text-when-ink" />}
       <span className="min-w-0">{children}</span>
       <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-muted-foreground" />

@@ -11,7 +11,7 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { BOUND_CURRENCIES, hasCases, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
+import { BOUND_CURRENCIES, feeSources, hasCases, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 import { capLine, kindById } from "./kinds";
@@ -568,25 +568,43 @@ export type LeftOut = { line: string; base?: string; why: LeftWhy; name?: string
 /** The house a deal's fees came from where a house's whole price list filled it (`house:<id>`), else null. */
 const dealHouseOf = (deal: FeeDeal): string | null => (deal.template && !deal.template.feesKept && deal.template.id.startsWith(HOUSE) ? deal.template.id.split("/", 1)[0]! : null);
 
-/** The houses each kind of the deal's fees came from: each fee by its own list (`Fee.house`), a fee that names none by the deal's. */
-function housesByKind(deal: FeeDeal, dealHouse: string | null): Map<string, Set<string>> {
+/**
+ * The list a fee of the deal came from, as the template's house (`dealHouse`) reads it: the fee's own (`Fee.house`). A fee saved before
+ * fees named their list names none; it came from the template's list where a figure of it still carries a source of that house (its
+ * name as the list's own figures carry it, or one of the list's documents), since a template's figure keeps its source until the person
+ * types over it and no other list filled a fee then. Any other fee names none: the person typed it.
+ */
+function listOf(f: Fee, dealHouse: string | null, data: Pick<FeesData, "houses">): string | null {
+  if (f.house) return f.house;
+  const h = dealHouse ? houseOf(dealHouse, data) : null;
+  if (!h) return null;
+  const docs = new Set(h.fees.flatMap((x) => feeSources(x as Fee).map((src) => src.url)));
+  return feeSources(f).some((src) => src.own === h.name || docs.has(src.url)) ? dealHouse : null;
+}
+
+/** The lists each kind of the deal's fees came from (`listOf`); a fee the person typed counts for none. */
+function housesByKind(deal: FeeDeal, dealHouse: string | null, data: Pick<FeesData, "houses">): Map<string, Set<string>> {
   const kinds = new Map<string, Set<string>>();
   for (const f of deal.fees) {
-    const h = f.house ?? dealHouse;
+    const h = listOf(f, dealHouse, data);
     if (h) kinds.set(f.kind, (kinds.get(f.kind) ?? new Set()).add(h));
   }
   return kinds;
 }
 
 /**
- * What the deal's price lists left out (§10.6), each fee by its own list (`Fee.house`): the template's lines (`left`, of the list that
- * filled the deal), but for each kind of fee whose fees came from other lists, those lists' lines of that kind in place of the template's.
- * A fee that names no list stands for the template's. Lines of no fee kind the deal has stay the template's.
+ * What the deal's price lists left out (§10.6), each fee by its own list (`listOf`): of the template's lines (`left`, of the list that
+ * filled the deal), those of each kind of fee the deal still has from that list; for a kind the template filled and the deal no longer
+ * has from it (taken away, replaced from another list, or typed by the person), none. A kind the template never filled keeps its lines,
+ * which say why it did not, unless the deal has that kind from another list; a line of no kind of fee stays. Then, for each kind whose
+ * fees came from other lists, those lists' lines of that kind.
  */
 export function leftOfFees(deal: FeeDeal, left: readonly LeftOut[], data: Pick<FeesData, "houses">): LeftOut[] {
   const dealHouse = dealHouseOf(deal);
-  const kinds = housesByKind(deal, dealHouse);
-  const own = (x: LeftOut) => !("line" in x) || !x.base || !kinds.has(x.base) || (dealHouse !== null && kinds.get(x.base)!.has(dealHouse));
+  const kinds = housesByKind(deal, dealHouse, data);
+  const filled = new Set((dealHouse ? houseOf(dealHouse, data)?.fees : undefined)?.map((f) => f.kind) ?? []);
+  const fromTemplate = (kind: string) => dealHouse !== null && !!kinds.get(kind)?.has(dealHouse);
+  const own = (x: LeftOut) => !("line" in x) || !x.base || fromTemplate(x.base) || (!filled.has(x.base as FeeKindId) && !kinds.has(x.base));
   const others = [...kinds].flatMap(([kind, houses]) =>
     [...houses].filter((h) => h !== dealHouse).flatMap((h) => (houseOf(h, data)?.left ?? []).filter((l) => l.base === kind).map(({ lineId, ...rest }): LeftOut => ({ line: lineId, ...rest }))),
   );
@@ -594,15 +612,16 @@ export function leftOfFees(deal: FeeDeal, left: readonly LeftOut[], data: Pick<F
 }
 
 /**
- * What the house of the template that filled the deal charged on average (F-122), for the kinds of fee the template still filled: each
- * fee by its own list as `leftOfFees` reads it, so a column of a kind whose fees all came from other lists goes (F-122: a single fee filled
- * from a house's list shows none). Columns of no fee kind the deal has stay; none where no column is left.
+ * What the house of the template that filled the deal charged on average (F-122), for the kinds of fee the deal still has from that
+ * house's list (`listOf`): a column of a kind the deal no longer has from it (taken away, replaced from another list, or typed by the
+ * person) goes, as a single fee filled from a house's list shows none. None where no column is left.
  */
-export function averagesOfFees(deal: FeeDeal, averages: HouseAverages | undefined): HouseAverages | undefined {
+export function averagesOfFees(deal: FeeDeal, averages: HouseAverages | undefined, data: Pick<FeesData, "houses">): HouseAverages | undefined {
   if (!averages) return undefined;
   const dealHouse = dealHouseOf(deal);
-  const kinds = housesByKind(deal, dealHouse);
-  const columns = averages.columns.filter((c) => !kinds.has(c.column.fee) || (dealHouse !== null && kinds.get(c.column.fee)!.has(dealHouse)));
+  if (!dealHouse) return undefined;
+  const kinds = housesByKind(deal, dealHouse, data);
+  const columns = averages.columns.filter((c) => !!kinds.get(c.column.fee)?.has(dealHouse));
   return columns.length ? { ...averages, columns } : undefined;
 }
 
