@@ -7,7 +7,7 @@ import { Fragment, type ReactNode } from "react";
 import { isTie, type GapList } from "@finance-tool/engine";
 import { groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { chargesCurrentAccount, doubtAt, doubtOf, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { chargesCurrentAccount, doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
@@ -99,11 +99,15 @@ const kindAt = (fund: FundWay, houseId: string): KindAt => {
  */
 export interface KindAt {
   option: OptionId;
-  at?: { availability?: Availability | null; reason?: Reason } | undefined;
+  at?: { availability?: Availability | null; reason?: Reason; doubt?: Availability } | undefined;
 }
 
-/** `whyNoPrice` for one kind at a house: a doubt the record words, a price list not collected, a kind the house does not sell, the engine's reason. */
+/**
+ * `whyNoPrice` for one kind at a house: a doubt about this fund (`FundNotPriced.doubt`) or the record's about the kind, a price list not
+ * collected, a kind the house does not sell, the engine's reason.
+ */
 function whyOfKind(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, { option, at }: KindAt): string {
+  if (at?.doubt) return at.doubt.reason_he ?? c.reasons.noAgreementFound;
   const snap = bundle.snapshots.find((s) => s.id === houseId);
   const doubt = doubtOf(snap, option);
   if (doubt) return doubt;
@@ -115,6 +119,7 @@ function whyOfKind(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: s
 
 /** The record's entry behind `whyOfKind`'s words, in the same order: its doubt, nothing for a price list not collected, the kind it does not sell. */
 const entryOfWhy = (bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, { option, at }: KindAt) => {
+  if (at?.doubt) return at.doubt;
   const snap = bundle.snapshots.find((s) => s.id === houseId);
   if (doubtOf(snap, option)) return doubtAt(snap, option);
   if (snap?.missing && snap.missing_reason_he) return null;
@@ -147,10 +152,10 @@ export function whyNoKindAt(bundle: { snapshots: IndicesBundle["snapshots"] }, h
   const reasons = kinds.map((f) => ({ kind: c.stairs.kinds[f.option] ?? f.option, why: whyOfKind(bundle, houseId, f), at: entryOfWhy(bundle, houseId, f) }));
   const told = reasons.filter((r, i) => reasons.findIndex((x) => x.why === r.why) === i);
   const why = told.length === 1 ? told[0]!.why : told.map((r) => `${r.kind}: ${r.why}`).join(" ");
-  const state: "doubt" | "missing" | "notSold" | "other" = kinds.some((f) => doubtOf(snap, f.option)) ? "doubt" : snap?.missing ? "missing" : kinds.length > 0 && kinds.every((f) => !!f.at?.availability) ? "notSold" : "other";
+  const state: "doubt" | "missing" | "notSold" | "other" = kinds.some((f) => f.at?.doubt || doubtOf(snap, f.option)) ? "doubt" : snap?.missing ? "missing" : kinds.length > 0 && kinds.every((f) => !!f.at?.availability) ? "notSold" : "other";
   const parts = told.map((r) => ({ ...(told.length > 1 ? { head: r.kind } : {}), text: r.why, ...(r.at ? { doc: { href: sourceHref(r.at.source), title: withoutCodes(r.at.source.title) } } : {}) }));
   // a rule's card replaces the reasons, so it opens only where every reason has a rule behind it: a kind with none would lose its reason
-  const rules = told.every((r) => r.at?.rule_ids?.length) ? [...new Set(told.flatMap((r) => r.at!.rule_ids!))] : [];
+  const rules = told.every((r) => r.at?.rule_ids?.length) ? [...new Set(told.flatMap((r) => entryRules(r.at!)))] : [];
   return { state, why: why || c.funds.cannot, parts: parts.length ? parts : [{ text: c.funds.cannot }], rules };
 }
 
@@ -158,7 +163,7 @@ export function whyNoKindAt(bundle: { snapshots: IndicesBundle["snapshots"] }, h
 export function noPriceLine(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, fund: FundWay, house: string): string {
   const snap = bundle.snapshots.find((s) => s.id === houseId);
   const at = fund.byHouse[houseId];
-  if (doubtOf(snap, fund.option)) return c.pair.noPriceAt.doubt(house);
+  if ((at && "doubt" in at && at.doubt) || doubtOf(snap, fund.option)) return c.pair.noPriceAt.doubt(house);
   if (snap?.missing) return c.pair.noPriceAt.missing(house);
   if (at && "availability" in at && at.availability) return c.pair.noPriceAt.notSold(house);
   return c.pair.noPriceAt.other(house);

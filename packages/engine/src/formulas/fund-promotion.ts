@@ -9,9 +9,10 @@ export interface Promotion {
 }
 
 /**
- * F-121 A fund fee lowered for a stated period. The drag of month `m` (month 1 starting on `runDate`): `delta` less each promotion's cut in
- * the months it covers whole, from the first month that starts on or after its first day (month 1 where it started by the run date) to the
- * month before the one the day after its last day falls in. A month a promotion covers in part pays the fee's own rate.
+ * F-121 A fund fee lowered for a stated period. The drag of month `m` (month 1 starting on `runDate`, each month starting on the same day of
+ * the next calendar month, `monthOfDate`): `delta` less each promotion's cut from the month after the one its first day falls in (month 1
+ * where it started by the run date) to the month before the one the day after its last day falls in. So a month the promotion covers in
+ * part pays the fee's own rate, and so does the month it starts in, even where it starts on that month's first day: the cautious reading.
  */
 export function promotedDrag(delta: number, promotions: readonly Promotion[], runDate: string): { at: (m: number) => number; applies: boolean } {
   const spans = promotions.map((p) => ({ cut: p.cut, from: p.from <= runDate ? 1 : monthOfDate(runDate, p.from) + 1, until: monthOfDate(runDate, dayAfter(p.to)) }));

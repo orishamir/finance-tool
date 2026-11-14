@@ -9,7 +9,7 @@ import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
-import { agreedClasses, agreementOf, houseSnapshots, instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type WorkbenchInputs } from "./providers";
+import { agreedClasses, houseSnapshots, instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { computed, differenceOf, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
@@ -133,7 +133,22 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "fee-unknown" } | { code: "domicile-unknown" };
+export type Reason =
+  | NotComparable
+  | { code: "fund-type" }
+  | { code: "need-yield" }
+  | { code: "us-fund-open" }
+  | { code: "need-rate"; currency: string }
+  | { code: "no-fund-rate" }
+  | { code: "no-hedge-record" }
+  | { code: "no-hedge-entered" }
+  | { code: "payout-unknown" }
+  | { code: "fee-unknown" }
+  | { code: "domicile-unknown" }
+  /** The house sells this kind of fund fund by fund (its distribution agreements, BRK-38), and the run names no fund a report can name: the generic fund of the kind, or a fund the person typed. */
+  | { code: "sold-fund-by-fund" }
+  /** The house sells this kind fund by fund, and no report of an agreement found names this fund: whether it sells it stays open (`FundDoubt`). */
+  | { code: "no-agreement-found" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -142,6 +157,25 @@ export interface Availability {
   reason_he?: string | null;
   /** The rules that hold the fact (the record's `rule_ids`): the row's words open their cards. */
   rule_ids?: readonly string[];
+  /** The open questions that leave it open, where the entry says one does (`BRK-OQ24`): opened beside the rules. */
+  open_questions?: readonly string[];
+}
+
+/** The rules and open questions an entry names, in that order: what the row's words open. */
+export const entryRules = (a: Availability): string[] => [...(a.rule_ids ?? []), ...(a.open_questions ?? [])];
+
+/** A fund's entry at a house that does not price it, as `FundWay.byHouse` holds it. */
+export interface FundNotPriced {
+  providerId: string;
+  reason: Reason;
+  /** A sourced fact says the house does not sell this kind of fund ("not possible there"). */
+  availability?: Availability;
+  /**
+   * Whether the house sells this fund is open, for this fund and not for its whole kind: a house that sells the kind fund by fund, whose
+   * agreements no report found names the fund (`no-agreement-found`). Shown grey with its own words and source, as a doubt the house's record
+   * words for a whole kind is (`doubtOf`), never as "not sold".
+   */
+  doubt?: Availability;
 }
 
 export interface BrokerCell {
@@ -224,7 +258,7 @@ export interface FundWay {
   atYours?: WayPrice | { reason: Reason; providerId: string };
   /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
   /** `availability`: a sourced fact says the house does not sell this kind of fund ("not possible there"); any other reason is "no data". */
-  byHouse: Record<string, WayPrice | { reason: Reason; providerId: string; availability?: Availability }>;
+  byHouse: Record<string, WayPrice | FundNotPriced>;
   reason?: Reason;
   currencyMismatch: boolean;
   /** F-109: the fund is bought in whole units and its record holds no unit price, so it is priced by amount and its row says so. */
@@ -364,12 +398,16 @@ const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים
 /** The line is a conversion between two foreign currencies, by the price list's own words: the ranking leaves it out, a house's page names it. */
 export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names">) => l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "));
 
-const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
-/** The lines this page ranks: every line but a foreign-currency to foreign-currency conversion. */
-export function scoped(s: FeesSnapshot): FeesSnapshot {
+const scopedCache = new WeakMap<BundleSnapshot, FeesSnapshot>();
+/**
+ * The record the engine reads (it checks it against the schema): the lines this page ranks, every line but a foreign-currency to
+ * foreign-currency conversion, and none of what the page alone reads of the house (`fundByFund`).
+ */
+export function scoped(s: BundleSnapshot): FeesSnapshot {
   let out = scopedCache.get(s);
   if (!out) {
-    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l)) };
+    const { fundByFund: _f, ...record } = s;
+    out = { ...record, lines: s.lines.filter((l) => !isFxToFx(l)) };
     scopedCache.set(s, out);
   }
   return out;
@@ -432,7 +470,7 @@ interface Ctx {
   plan: WorkbenchInputs;
   fx: Record<string, number>;
   theta: number;
-  snaps: readonly FeesSnapshot[];
+  snaps: readonly BundleSnapshot[];
   assumptions: FundAssumptions;
 }
 
@@ -587,6 +625,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   const r = row.reason;
   if (r.code === "data-missing") return { code: "data-missing", recorded: r.detail };
   if (r.code === "line-without-value") return { code: "line-without-value", detail: r.detail, lineName: s.lines.find((l) => l.id === r.detail.split(" ")[0])?.names.tariff[0] ?? null };
+  if (r.code === "not-printed-for-currency") return { code: "not-printed-for-currency", detail: r.detail, lineName: s.lines.find((l) => l.id === r.line)?.names.tariff[0] ?? null, currency: r.currency, printed: r.printed };
   if (r.code === "record-error") return ambiguity(r.detail, s) ?? { code: "record-error", detail: r.detail };
   if (r.code === "rule-open") return { code: "rule-open", ruleId: r.ruleId };
   return { code: r.code, detail: r.detail };
@@ -696,26 +735,30 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
 type AvailabilityEntry = NonNullable<FeesSnapshot["availability"]>[number];
 const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.source, note: a.note ?? null, reason_he: a.reason_he ?? null, ...(a.rule_ids?.length ? { rule_ids: a.rule_ids } : {}) });
 
-/**
- * Why a house does not sell this kind of fund, or this fund: an entry saying the kind cannot be bought there; or, where the house sells the kind
- * fund by fund under its distribution agreements (BRK-38), no report of an agreement naming the fund, with the search as its source. Null where
- * it sells it, or where no fund is named and the agreements decide it (`byFund`: the kind's open entry speaks for a fund the site does not name).
- */
-function unavailable(s: FeesSnapshot, option: OptionId, rec?: FundRecord): Availability | null {
+/** Why a house does not sell this kind of fund: an entry saying the kind cannot be bought there; null where it sells it, or where it is open. */
+function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
   for (const a of s.availability ?? []) if (a.available === false && a.applies_to.some((c) => classesAt(s, option).includes(c))) return AVAILABLE_NOTE(a);
-  const da = s.distribution_agreements;
-  // a fund the person typed has no number the reports can name: whether the house sells it stays open (`openAt`)
-  if (!rec || !da || isCustomFund(rec)) return null;
-  const number = rec.identifiers.tase_number ?? rec.id;
-  const cls = classesAt(s, option).find((c) => agreedClasses(s).includes(c));
-  if (!cls || agreementOf(s, cls, number)) return null;
-  return { source: { url: da.searched.url, title: copy.agreements.searchTitle(da.distributor_he), checked: da.searched.checked }, note: null, reason_he: copy.agreements.noAgreement, rule_ids: ["BRK-38"] };
+  return null;
 }
 
-/** Whether a house sells this kind of fund fund by fund (`unavailable`): with no fund named, its price is not known there. */
-const byFund = (s: FeesSnapshot, option: OptionId): boolean => classesAt(s, option).some((c) => agreedClasses(s).includes(c));
-/** Whether the house sells this fund stays open: it sells the kind fund by fund, and the fund is one the person typed. */
-const openAt = (s: FeesSnapshot, option: OptionId, rec: FundRecord): boolean => byFund(s, option) && isCustomFund(rec);
+/** Whether a house sells this kind of fund fund by fund, under its distribution agreements (BRK-38): with no fund named, its price is not known there. */
+const byFund = (s: BundleSnapshot, option: OptionId): boolean => classesAt(s, option).some((c) => agreedClasses(s).includes(c));
+
+/**
+ * What a house that sells this kind fund by fund (`byFund`) says of this fund: `sells` where a report of an agreement in force names its
+ * number; `typed` for a fund the person typed, which no report can name; else open, with the record's words for a fund no report names
+ * (`FundByFund.unnamed`) and the search as its source, a lead and not the house's list. Null where the house does not sell the kind fund by fund.
+ */
+function agreementAt(s: BundleSnapshot, option: OptionId, rec: FundRecord): { at: "sells" } | { at: "typed" } | { at: "open"; doubt: Availability } | null {
+  const ff = s.fundByFund;
+  if (!ff || !byFund(s, option)) return null;
+  if (isCustomFund(rec)) return { at: "typed" };
+  if (ff.named.includes(rec.identifiers.tase_number ?? rec.id)) return { at: "sells" };
+  return { at: "open", doubt: { source: ff.search, note: null, reason_he: ff.unnamed.reason_he, rule_ids: ff.unnamed.rule_ids, open_questions: ff.unnamed.open_questions } };
+}
+
+/** Whether a house sells this fund: it sells the kind, and where it sells the kind fund by fund, a report names the fund (`agreementAt`). */
+const sellsFund = (s: BundleSnapshot, option: OptionId, rec: FundRecord): boolean => !unavailable(s, option) && (agreementAt(s, option, rec)?.at ?? "sells") === "sells";
 
 /**
  * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
@@ -1092,12 +1135,12 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
 
   // (b) the broker cost of the option: a generic fund with no fees of its own
   const priceable = ctx.snaps.filter((s) => !unavailable(s, option));
-  // a house that sells the kind fund by fund has no price for a fund the site does not name: its open entry says why (`doubtOf`)
+  // a house that sells the kind fund by fund has no price for a fund it does not name: its open entry says why (`doubtOf`)
   const priced = priceMany(ctx, spec, option, priceable.filter((s) => !byFund(s, option)), null);
   const cells: BrokerCell[] = ctx.snaps.map((s) => {
     const na = unavailable(s, option);
     if (na) return { providerId: s.id, kind: "unavailable", availability: na };
-    if (byFund(s, option)) return { providerId: s.id, kind: "no-line", reason: { code: "no-applicable-line", detail: "sold fund by fund under distribution agreements" } };
+    if (byFund(s, option)) return { providerId: s.id, kind: "not-comparable", reason: { code: "sold-fund-by-fund" } };
     const p = priced.get(s.id)!;
     if (p.kind === "ok") {
       const row = p.row;
@@ -1142,20 +1185,26 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const fs = fundSpec(ctx, rec);
     const venue = option === "abroad" ? venueOfFund(rec) : null;
     // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)
-    const sells = ctx.snaps.filter((s) => !unavailable(s, option, rec) && !openAt(s, option, rec));
+    const sells = ctx.snaps.filter((s) => sellsFund(s, option, rec));
     if ("reason" in fs) return { ...base, reason: fs.reason, ...(fs.beforeTax && sells.length ? { beforeTax: { ruleId: fs.beforeTax.ruleId, byHouse: beforeTaxPrices(ctx, rec, option, fs.beforeTax.spec, sells, venue) } } : {}) };
     // the fund at every house that sells it, the exchange it trades on for a fund abroad
     const got = sells.length ? priceMany(ctx, fs.spec, option, sells, venue) : new Map<string, Priced>();
     let best: WayPrice | undefined;
     let failure: Reason | undefined;
     for (const s of ctx.snaps) {
-      const na = unavailable(s, option, rec);
+      const na = unavailable(s, option);
       if (na) {
         base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" }, availability: na };
         continue;
       }
-      if (openAt(s, option, rec)) {
-        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "sold fund by fund under distribution agreements" } };
+      // sold fund by fund: a fund the person typed is not named by any report; a fund no report names is open, with its own words
+      const agreed = agreementAt(s, option, rec);
+      if (agreed?.at === "typed") {
+        base.byHouse[s.id] = { providerId: s.id, reason: { code: "sold-fund-by-fund" } };
+        continue;
+      }
+      if (agreed?.at === "open") {
+        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-agreement-found" }, doubt: agreed.doubt };
         continue;
       }
       const p = got.get(s.id)!;
@@ -1428,7 +1477,7 @@ function pairOf(ctx: Ctx, a: { index: IndexRef; fundId: string; providerId: stri
   const s = ctx.snaps.find((x) => x.id === a.providerId);
   if (!rec || !s) return null;
   const option = optionOfFund(rec, a.index.exposure ?? undefined);
-  if (unavailable(s, option, rec) || openAt(s, option, rec)) return null;
+  if (!sellsFund(s, option, rec)) return null;
   const fs = fundSpec(ctx, rec);
   if ("reason" in fs) return null;
   const venue = option === "abroad" ? venueOfFund(rec) : null;

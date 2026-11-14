@@ -52,7 +52,7 @@ function phoneSample(today: string): SiteValue {
   return { ...sourced, value: investWords.pair.phoneTag, unit: "text", effective_from: null, about: investWords.pair.phoneAbout("IBI"), lead: investWords.pair.phoneLead(g.sampleSource) };
 }
 
-/** An average a house charged, for HouseAverageLine's demo: the sample's source, a range over the bands. */
+/** An average a house charged, for HouseAverageLine's demo: the sample's source, a range over the bands (IBI's record of 01.01.2026 to 30.06.2026). */
 function averageSample(today: string, lo: number, hi: number, fee: "trade" | "custody") {
   const { rate } = samples(today);
   const unit = fee === "trade" ? "pct_of_trade" : "pct_per_year";
@@ -1769,10 +1769,10 @@ function Lists({ today }: { today: string }) {
       <Demo name="HouseAverageLine" use={g.uses.HouseAverageLine}>
         <Grid>
           <State label="under a price-list line (the company page): one column, its range over the portfolio bands">
-            <HouseAverageLine averages={[averageSample(today, 0.05, 0.1, "trade")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#", title: g.sampleSource }} />
+            <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
           </State>
-          <State label="beside a whole price list (the fee page): each column by its short name; one figure where the bands agree">
-            <HouseAverageLine averages={[averageSample(today, 0.05, 0.1, "trade"), averageSample(today, 0, 0, "custody")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#", title: g.sampleSource }} />
+          <State label="beside a whole price list (the fee page): each column by its short name; a small average keeps the digits that make it more than 0% (IBI's custody, 0.0012% to 0.0673% a year)">
+            <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade"), averageSample(today, 0.0012, 0.0673, "custody")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
           </State>
         </Grid>
       </Demo>

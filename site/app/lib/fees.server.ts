@@ -11,7 +11,7 @@ import { classificationToWrapper, loadProducts, loadRules, openTracksOf, pointed
 import { dealKindsOf } from "./fee-deal/kinds";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
 import { STATED_RULES } from "./fee-deal/reading";
-import { houseTemplate } from "./fee-deal/templates";
+import { houseTemplateRead } from "./fee-deal/templates";
 import { termKey, type FeesData, type TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
 import { BROKERAGE, onlyWhatCanBeDone, providersOf } from "./providers";
@@ -91,9 +91,9 @@ export function buildFeesData(): FeesData {
     .filter((s) => !s.missing)
     .map((s) => {
       // F-122: what the house charged on average for the kinds its read lines are of, for reference only (never a price of the deal)
-      const t = houseTemplate(s);
+      const { template: t, read } = houseTemplateRead(s);
       const rec = loadHouseAverages().get(s.id);
-      const columns = s.lines.filter((l) => t.read.includes(l.id)).map(columnOf).filter((c): c is AverageColumn => c !== null);
+      const columns = s.lines.filter((l) => read.includes(l.id)).map(columnOf).filter((c): c is AverageColumn => c !== null);
       const averages = rec ? houseAverages(rec, columns) : null;
       return averages && averages.columns.length ? { ...t, averages } : t;
     });

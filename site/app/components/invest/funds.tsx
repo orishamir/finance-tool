@@ -33,7 +33,7 @@ export interface FundFeeItem {
  * site prices where it is not the listed rate (F-92 (b)), named beside it with its years, so the card shows the figure the costs rest on
  * (Kesem 5139696 showed 0.3%, priced at −0.215%).
  */
-export function fundFeeItems(rec: FundRecord, { inline, priced, today }: { inline?: boolean; priced?: { value: SiteValue; years: number[] } | null; /** The page's day: a promotion that has not ended by it is shown after its fee (F-121). */ today?: string } = {}): FundFeeItem[] {
+export function fundFeeItems(rec: FundRecord, { inline, priced, today }: { inline?: boolean; priced?: { value: SiteValue; years: number[] } | null; /** The page's day: a promotion in force on it is shown after its fee (F-121). */ today?: string } = {}): FundFeeItem[] {
   // a foreign fund the person typed has one yearly charge, and nothing "not collected" beside it (D44)
   const yearlyOnly = isCustomFund(rec) && rec.domicile !== "IL";
   const names = c.receipt.fundFees;
@@ -54,7 +54,9 @@ export function fundFeeItems(rec: FundRecord, { inline, priced, today }: { inlin
   }
   if (priced && !yearlyOnly) {
     const word = c.kinds.variableChargedWord(priced.years);
-    items.splice(2, 0, { id: "variable_priced", word, name: names.charged(word), figure: <FeeFigure value={priced.value} inline={inline} />, missing: false });
+    // after the variable fee and its promotion, wherever the promotions above put them
+    const after = items.findLastIndex((x) => x.id === "variable_management" || x.id === "variable_management-promotion");
+    items.splice(after + 1, 0, { id: "variable_priced", word, name: names.charged(word), figure: <FeeFigure value={priced.value} inline={inline} />, missing: false });
   }
   return items;
 }

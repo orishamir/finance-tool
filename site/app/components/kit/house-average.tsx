@@ -9,17 +9,17 @@ import { Num } from "../provenance";
 import { DocLink } from "./doc-link";
 import { DotLine } from "./notes";
 
-/** A column's figures: the lowest and, where it differs, "עד" the highest, a custody average with "בשנה". */
+/** A column's figures: the lowest and, where it differs, "עד" the highest, a custody average with "בשנה"; a figure above zero never reads 0%. */
 function AverageFigures({ average, house }: { average: ColumnAverage; house: string }) {
   const said = (v: SiteValue): SiteValue => ({ ...v, about: copy.about(house), lead: copy.sheetLead });
   const same = average.lo.value === average.hi.value;
   return (
     <>
-      <Num value={said(average.lo)} />
+      <Num value={said(average.lo)} display={fmt.pctNonZero} />
       {!same && (
         <>
           {` ${copy.to} `}
-          <Num value={said(average.hi)} />
+          <Num value={said(average.hi)} display={fmt.pctNonZero} />
         </>
       )}
       {average.column.fee === "custody" && ` ${copy.perYear}`}
@@ -28,7 +28,7 @@ function AverageFigures({ average, house }: { average: ColumnAverage; house: str
 }
 
 /** The line: what the house charged on average (one column, or several each by its short name), by portfolio size, the period, the link. */
-export function HouseAverageLine({ averages, house, from, to, page, className }: { averages: readonly ColumnAverage[]; house: string; from: string; to: string; page: { url: string; title: string }; className?: string }) {
+export function HouseAverageLine({ averages, house, from, to, page, className }: { averages: readonly ColumnAverage[]; house: string; from: string; to: string; page: { url: string }; className?: string }) {
   if (averages.length === 0) return null;
   const one = averages.length === 1;
   return (

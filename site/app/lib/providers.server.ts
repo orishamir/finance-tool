@@ -5,7 +5,8 @@
 import type { FeesSnapshot, ParameterRecord, RuleRecord } from "@finance-tool/schema";
 import { collectRuleIds, loadCma, loadFees, loadParameters, loadRules, pointedRecords, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
-import { HOUSE_CLASSES, onlyWhatCanBeDoneFundByFund, type IndicesBundle } from "./providers";
+import { HOUSE_CLASSES, onlyWhatCanBeDoneFundByFund, shippedSnapshot, type IndicesBundle } from "./providers";
+import { invest as investCopy } from "../copy";
 import { loadFundLists, workbenchLinks } from "./variants.server";
 import { loadFx, loadFxHistory } from "./fx.server";
 
@@ -54,9 +55,11 @@ export function buildIndicesBundle(): IndicesBundle {
     return p;
   };
   const all = latestSnapshots().map(onlyWhatCanBeDoneFundByFund);
-  // the page prices accounts at banks and brokers; a provident fund manager's price list stays in data/fees/ for the pages that read it
-  const snapshots = all.filter((s) => HOUSE_CLASSES.includes(s.provider.class));
   const funds = loadFunds();
+  // the page prices accounts at banks and brokers; a provident fund manager's price list stays in data/fees/ for the pages that read it.
+  // Each ships what the page reads: of a house's distribution agreements, the site's own funds a report names (BRK-38)
+  const siteFunds = new Set(funds.map((f) => f.identifiers.tase_number ?? f.id));
+  const snapshots = all.filter((s) => HOUSE_CLASSES.includes(s.provider.class)).map((s) => shippedSnapshot(s, siteFunds, investCopy.agreements.searchTitle));
   const exposures = loadExposures();
   const fundLists = loadFundLists();
   const allRules = loadRules();

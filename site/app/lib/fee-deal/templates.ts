@@ -11,7 +11,7 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
+import { BOUND_CURRENCIES, isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 import { leftOutOf, type LeftOutView } from "../left-out";
@@ -64,7 +64,9 @@ export type LeftWhy =
   /** A line for redeeming a security when it falls due (band `REDEMPTION_BAND`: makam's at maturity), which no purchase or sale pays (F-63). */
   | "redemption"
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
-  | "distribution-yearly";
+  | "distribution-yearly"
+  /** A custody maximum the list prints with no scope (`max_per: unstated`): the price is filled without it, the cautious reading. */
+  | "max-scope-unstated";
 
 /** A line a template leaves out, with why, its name as the price list prints it and its channel where it has one, for the reader. */
 export interface LeftLine {
@@ -88,9 +90,7 @@ export interface HouseTemplate {
   fees: TemplateFee[];
   left: LeftLine[];
   leftOut: LeftOutView | null;
-  /** The ids of the lines the template filled a fee from. */
-  read: string[];
-  /** What the house charged on average for the kinds of those lines (F-122), shown beside the template's name for reference only. */
+  /** What the house charged on average for the kinds of the lines the template filled a fee from (F-122), for reference only. */
   averages?: HouseAverages;
 }
 
@@ -124,7 +124,13 @@ function actionPrice(l: Line, num: (v: ValueObject) => Num): { spec: PriceSpec }
   const currencies = new Set(sums.map((b) => (b.unit === "trade_ccy_per_trade" ? IN_TRADE : CURRENCY_OF_UNIT[b.unit])));
   if (currencies.has(undefined) || currencies.size > 1) return { left: "bound-currency" };
   const currency = [...currencies][0];
-  if (currency === IN_TRADE) return { spec: { form: perUnit ? "perUnit" : "action", figures: figuresOf(l, num, perUnit, flat), inTrade: true } };
+  if (currency === IN_TRADE) {
+    // where the list names the currencies those sums are printed for (`trade_currencies`), the price says which of the deal's currencies they are
+    if (!l.trade_currencies) return { spec: { form: perUnit ? "perUnit" : "action", figures: figuresOf(l, num, perUnit, flat), inTrade: true } };
+    const printed = BOUND_CURRENCIES.filter((c) => l.trade_currencies!.includes(c));
+    if (perUnit || printed.length === 0) return { left: "bound-currency" };
+    return { spec: { form: "action", figures: figuresOf(l, num, perUnit, flat), inTrade: printed } };
+  }
   return { spec: { form: perUnit ? "perUnit" : "action", figures: figuresOf(l, num, perUnit, flat), ...(currency && currency !== "ILS" ? { currency } : {}) } };
 }
 
@@ -248,11 +254,13 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
       const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
       const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      // a maximum on each security is said as one, never as the holding's; a maximum on the whole deposit printed beside it is the holding's
-      // (data-schema §3.6a item 2: the deal holds one deposit), and a maximum the list prints with no scope is read as the holding's
-      const maxAs = l.max_per === "security" ? "perSecurity" : "max";
-      const figures = { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { [maxAs]: bound(l.max) } : {}), ...(has(l.max_deposit) ? { max: bound(l.max_deposit) } : {}) };
-      return { fees: [fee("custody", { form: "held", figures, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
+      // a maximum on each security is said as one, never as the holding's; a maximum on the whole deposit, alone or printed beside it, is the
+      // holding's (data-schema §3.6a item 2: the deal holds one deposit); a maximum the list prints with no scope is left out, the cautious reading
+      const maxOf = { security: "perSecurity", deposit: "max", unstated: null } as const;
+      const maxAs = l.max_per ? maxOf[l.max_per] : "max";
+      const figures = { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) && maxAs ? { [maxAs]: bound(l.max) } : {}), ...(has(l.max_deposit) ? { max: bound(l.max_deposit) } : {}) };
+      const left: LeftWhy[] = has(l.max) && !maxAs ? ["max-scope-unstated"] : [];
+      return { fees: [fee("custody", { form: "held", figures, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left };
     }
     case "fixed_period": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
@@ -483,6 +491,11 @@ const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "
  * line's source and date. Every line that fills nothing is listed with why.
  */
 export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
+  return houseTemplateRead(snap).template;
+}
+
+/** `houseTemplate`, with the ids of the lines it filled a fee from (`read`), which the build reads and the page does not. */
+export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate; read: string[] } {
   const ownName = snap.provider.name_he;
   const bank = memberKindOf(snap.provider.class) === "bank";
   const left: LeftLine[] = [];
@@ -538,7 +551,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
     leave(l, unreadWhy(l));
   }
-  return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap), read: [...read] };
+  return { template: { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap) }, read: [...read] };
 }
 
 /**

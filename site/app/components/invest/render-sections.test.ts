@@ -568,8 +568,8 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
         for (const f of o.funds)
           for (const p of v.providers) {
             const snap = bundle.snapshots.find((s) => s.id === p.id);
-            // a house that sells the kind fund by fund answers for each fund it names (BRK-38): the doubt stands for a fund it does not name
-            if (!doubtOf(snap, o.id) || snap?.distribution_agreements?.reports.some((r) => r.funds.includes(f.rec.identifiers.tase_number ?? f.rec.id))) continue;
+            // a house that sells the kind fund by fund answers for each fund a report names (BRK-38): the doubt stands for a fund none names
+            if (!doubtOf(snap, o.id) || snap?.fundByFund?.named.includes(f.rec.identifiers.tase_number ?? f.rec.id)) continue;
             doubts++;
             expect("valueN" in (f.byHouse[p.id] ?? {}), `${i.id}: ${f.rec.id} at ${p.id}`).toBe(false);
           }
@@ -596,28 +596,54 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
   });
-  it("One Zero prices an Israeli fund only where a distribution agreement its manager reports names it, and no other (BRK-38); no ETF; and no fund traded outside the US", () => {
+  it("One Zero prices an Israeli fund where a distribution agreement its manager reports names it; any other is open, never \"not sold\" (BRK-38, BRK OQ24); no ETF; and no fund traded outside the US", () => {
     const snap = bundle.snapshots.find((s) => s.id === "one-zero")!;
-    const named = new Set(snap.distribution_agreements!.reports.flatMap((r) => r.funds));
+    const ff = snap.fundByFund!;
     const funds = view.options.find((o) => o.id === "il-tracking")!.funds;
     expect(funds.length).toBeGreaterThan(0);
     let priced = 0;
+    let open = 0;
     for (const f of funds) {
       const at = f.byHouse["one-zero"]!;
-      if (named.has(f.rec.id)) priced += "valueN" in at ? 1 : 0;
+      if (ff.named.includes(f.rec.id)) priced += "valueN" in at ? 1 : 0;
       else {
-        // a fund no report names is not sold there, with why and the search as its source
+        open++;
+        // open, with the record's words for a fund no report names and the search as its source; no "not sold" entry
         expect("valueN" in at, f.rec.id).toBe(false);
-        expect("availability" in at && at.availability?.reason_he, f.rec.id).toBe(invest.agreements.noAgreement);
-        expect("availability" in at && at.availability?.rule_ids).toEqual(["BRK-38"]);
+        expect("availability" in at && at.availability, f.rec.id).toBeFalsy();
+        expect("doubt" in at && at.doubt?.reason_he, f.rec.id).toBe(ff.unnamed.reason_he);
+        expect("doubt" in at && at.doubt?.source.url, f.rec.id).toBe(ff.search.url);
+        expect("reason" in at && at.reason, f.rec.id).toEqual({ code: "no-agreement-found" });
       }
     }
     expect(priced).toBeGreaterThan(0);
-    // a fund the site does not name keeps the open entry's words
-    expect(doubtOf(snap, "il-tracking")).toContain("הסכם הפצה");
+    expect(open).toBeGreaterThan(0);
     for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
     const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
     if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
+  });
+  it("on the S&P 500 page, One Zero's line for a fund no report names reads open with the search and the open question, and a named fund shows its price (rendered)", () => {
+    const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+    const funds = sp.options.find((o) => o.id === "il-tracking")!.funds;
+    const ff = bundle.snapshots.find((s) => s.id === "one-zero")!.fundByFund!;
+    const unnamed = funds.find((f) => f.rec.id === "5139282")!;
+    const [named, other] = funds.filter((f) => ff.named.includes(f.rec.id) && "valueN" in f.byHouse["one-zero"]!);
+    expect(ff.named).not.toContain("5139282");
+    const house = sp.providers.find((p) => p.id === "one-zero")!.short;
+    // what the row says and what its words open: the fund's own reason, the search as its document, BRK-38 and BRK OQ24
+    const why = whyNoFundAt(bundle, "one-zero", [unnamed]);
+    expect(why.state).toBe("doubt");
+    expect(why.why).toBe(ff.unnamed.reason_he);
+    expect(why.parts[0]?.doc?.href).toContain("maya.tase.co.il");
+    expect(why.rules).toEqual(["BRK-38", "BRK-OQ24"]);
+    // the list with One Zero picked: the unnamed fund under the grey line of a doubt, the named one priced
+    const out = lists(sp, bundle, plan, { house: "one-zero", fund: named!.rec.id });
+    // the grey line the unnamed fund's row stands under is the doubt's, not "not sold" (One Zero's ETFs stand under that one)
+    const before = shown(out.slice(0, out.indexOf('data-pick-key="5139282"')));
+    expect(before.lastIndexOf(invest.pair.noPriceAt.doubt(house))).toBeGreaterThan(before.lastIndexOf(invest.pair.noPriceAt.notSold(house)));
+    expect(fundRow(out, "5139282")).toBeTruthy();
+    // a named fund other than the picked one shows its figure against the pick
+    expect(fundRow(out, other!.rec.id)).toMatch(/₪/);
   });
 
 });

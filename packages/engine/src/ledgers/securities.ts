@@ -379,8 +379,9 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     tally.flag("TXF-OQ7");
   }
   const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
-  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate
-  const promoted = promotedDrag(delta, (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: d[p.part]! - p.rate, from: p.from, to: p.to })), ctx.runDate);
+  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate; a part already at or below that rate (a variable
+  // fee priced at what the fund charged, F-92 (b)) stays as it is, so a promotion never raises the drag
+  const promoted = promotedDrag(delta, (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: Math.max(0, d[p.part]! - p.rate), from: p.from, to: p.to })), ctx.runDate);
   if (promoted.applies) formulas.push("F-121");
   const deltaAt = promoted.at;
   const spread = fund.halfSpread ?? 0;

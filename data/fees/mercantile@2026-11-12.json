@@ -1109,7 +1109,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16"
+              "BRK-16",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -1142,7 +1143,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16"
+              "BRK-16",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -1165,7 +1167,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16"
+              "BRK-16",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "Off the line's own price."
@@ -1308,7 +1311,8 @@
             "update_rule": "provider-set",
             "rule_ids": [
               "BRK-16",
-              "BRK-19"
+              "BRK-19",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -1342,7 +1346,8 @@
             "update_rule": "provider-set",
             "rule_ids": [
               "BRK-16",
-              "BRK-19"
+              "BRK-19",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -1366,7 +1371,8 @@
             "update_rule": "provider-set",
             "rule_ids": [
               "BRK-16",
-              "BRK-19"
+              "BRK-19",
+              "BRK-68"
             ],
             "state": "sourced",
             "notes": "Off the line's own price."

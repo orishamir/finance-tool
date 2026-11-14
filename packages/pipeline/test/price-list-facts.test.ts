@@ -20,7 +20,12 @@ describe("a minimum in the trade's currency (§3.6a item 1)", () => {
     l.min!.source.quote = "0.3%, מינימום 30";
     expect(checkLineFacts(l, true).join()).toMatch(/מטבע העסקה/);
   });
-  it("fails on a line that is no trade line, and currencies with no such bound", () => {
+  it("fails on a bound in the trade's currency on a line that is no trade line", () => {
+    const trade = line(ibi, "ibi-buy-sell-foreign-other-markets");
+    const custody = line(ibi, "ibi-custody");
+    expect(checkLineFacts({ ...custody, min: trade.min }, true).join()).toMatch(/on a custody line; only a trade line takes one/);
+  });
+  it("fails on currencies with no bound in the trade's currency beside them", () => {
     const l = line(ibi, "ibi-custody");
     expect(checkLineFacts({ ...l, trade_currencies: ["USD"] }, true).join()).toMatch(/trade_currencies belongs/);
   });
@@ -33,6 +38,14 @@ describe("a custody maximum's scope (§3.6a item 2)", () => {
     const { max_per: _p, max_deposit: _d, ...l } = line(leumi, "leumi-custody-israel");
     expect(checkLineFacts(l, true).join()).toMatch(/max_per/);
     expect(checkLineFacts(l, false)).toEqual([]);
+  });
+  it("a scope read from the house's own sheet cites it, and an unstated scope cites nothing", () => {
+    const jerusalem = line(snap("jerusalem@2026-11-04"), "jerusalem-custody-israel");
+    expect(jerusalem.max_per).toBe("deposit");
+    expect(jerusalem.max_per_source?.strength).toBe("institution");
+    expect(checkLineFacts(jerusalem, true)).toEqual([]);
+    expect(checkLineFacts({ ...jerusalem, max_per: "unstated" }, true).join()).toMatch(/max_per_source cites/);
+    expect(checkLineFacts({ ...jerusalem, max_per_source: { ...jerusalem.max_per_source!, strength: "secondary" } }, true).join()).toMatch(/strength institution/);
   });
   it("a maximum on the deposit stands beside one on each security, and not below it", () => {
     const l = line(leumi, "leumi-custody-israel");
@@ -69,10 +82,14 @@ describe("an offset and when a fee is collected (§3.6a items 4 and 6)", () => {
 
 describe("distribution agreements (§3.6)", () => {
   const oneZero = snap("one-zero@2026-11-12");
-  it("the record passes, and holds only funds the site has records for", () => {
+  it("the record passes, and holds every report the search found with every fund number each lists", () => {
     expect(checkSnapshotFacts(oneZero)).toEqual([]);
-    const funds = new Set(readdirSync(join(data, "funds")).map((f) => f.split("@")[0]!));
-    for (const r of oneZero.distribution_agreements!.reports) for (const f of r.funds) expect(funds.has(f), f).toBe(true);
+    const da = oneZero.distribution_agreements!;
+    expect(da.reports).toHaveLength(13);
+    expect(da.reports.reduce((n, r) => n + r.funds.length, 0)).toBe(1767);
+    // what a page says of a fund no report names: open, with the rule and the open question
+    expect(da.unnamed.rule_ids).toEqual(["BRK-38"]);
+    expect(da.unnamed.open_questions).toEqual(["BRK-OQ24"]);
   });
   it("the class stays open for a fund no record names", () => {
     const s = structuredClone(oneZero);
@@ -112,5 +129,25 @@ describe("the averages a house charged (§3.9)", () => {
     const twice = structuredClone(r);
     twice.averages.rows.push(twice.averages.rows[0]!);
     expect(averagesRecord.safeParse(twice).success).toBe(false);
+  });
+  it("an empty cell without a note fails", () => {
+    const r = read<{ averages: { rows: { rate: { value: number | null; notes?: string } }[] } }>(`averages/${files[0]}`);
+    const empty = structuredClone(r);
+    empty.averages.rows[0]!.rate.value = null;
+    delete empty.averages.rows[0]!.rate.notes;
+    expect(averagesRecord.safeParse(empty).success).toBe(false);
+    empty.averages.rows[0]!.rate.notes = "The sheet leaves this cell empty.";
+    expect(averagesRecord.safeParse(empty).success).toBe(true);
+  });
+  it("two bands of one column that overlap fail", () => {
+    type Row = { fee: string; securities: string; band: { text_he: string; above_thousands_nis: number | null; up_to_thousands_nis: number | null } };
+    const r = read<{ averages: { rows: Row[] } }>(`averages/${files[0]}`);
+    const first = r.averages.rows[0]!;
+    const overlap = structuredClone(r);
+    const other = overlap.averages.rows.find((x) => x.fee === first.fee && x.securities === first.securities && x.band.text_he !== first.band.text_he)!;
+    other.band = { ...first.band, text_he: `${first.band.text_he} (planted)` };
+    const parsed = averagesRecord.safeParse(overlap);
+    expect(parsed.success).toBe(false);
+    expect(JSON.stringify(parsed.error?.issues)).toMatch(/overlaps/);
   });
 });
