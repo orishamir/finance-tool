@@ -449,8 +449,11 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // on 2026-11-14 five more and three answered ones deleted: whether a kupat gemel lehashkaa's deposit fee is part of the untaxed
     // principal (TXK OQ14), whether an employee's early study-fund withdrawal can reclaim the linkage part of its gains (TXH OQ18),
     // how often a deposit calculates interest (BANK OQ21), new and small banks (BANK OQ22) and the fee each child-savings manager bid
-    // in the 2016 tender (CS OQ18); BANK OQ7, KGL OQ12 and BRK OQ2 deleted, bills that lapsed with the 25th Knesset
-    expect(items.length).toBe(424);
+    // in the 2016 tender (CS OQ18); BANK OQ7, KGL OQ12 and BRK OQ2 deleted, bills that lapsed with the 25th Knesset; later that day
+    // three more from the combinations sweep, the Commissioner's approved fee variables (PF OQ19), what reg. 7 lets an IRA fund be
+    // charged (IRA OQ17) and the non-bank fund trade lines on money-market units (MF OQ23), and PEN OQ28 deleted, the 2013
+    // insurance-cover regulations now read in the gazette (PEN-15)
+    expect(items.length).toBe(426);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
