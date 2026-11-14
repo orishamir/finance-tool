@@ -22,7 +22,7 @@
       "effective_from": "2017-01-01",
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in document",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "CS-22"
       ],
