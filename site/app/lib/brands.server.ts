@@ -10,11 +10,12 @@ import { brands as brandsCopy } from "../copy";
 import { refOfExposure } from "./invest";
 import { feeAbsent } from "./providers";
 import { fundLabels, type Label } from "./labels";
-import { loadCma, root } from "./data.server";
+import { loadCma, root, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { ownBy, type SiteValue } from "./value";
 import { readParsedCached, readJsonCached } from "./read-cache.server";
 import { heCollator } from "./format";
+import { fundPromotions, type FundPromotionView } from "./fund-promotions";
 
 export interface Brand {
   id: string;
@@ -107,6 +108,8 @@ export interface BrandFundRow {
   /** A fee this fund does not have, not one left uncollected (a foreign fund's variable and trustee fee). */
   noVariable: boolean;
   noTrustee: boolean;
+  /** Its fees lowered for a stated period that has not ended (F-121), shown after the fee each lowers. */
+  promotions: FundPromotionView[];
 }
 
 export interface BrandFundGroup {
@@ -145,5 +148,5 @@ function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow
         : { kind: "money-market", name: brandsCopy.funds.moneyMarketKinds.daily, href: "/guide/money-market-fund-daily" }
       : null;
   const labels = index ? fundLabels(rec, refOfExposure(index), kind === "etf" ? "il-etf" : "il-tracking") : [];
-  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, follows, mayaHref, labels, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee"), noVariable: feeAbsent(rec, "variable_management"), noTrustee: feeAbsent(rec, "trustee") };
+  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, follows, mayaHref, labels, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee"), noVariable: feeAbsent(rec, "variable_management"), noTrustee: feeAbsent(rec, "trustee"), promotions: fundPromotions(rec, today()) };
 }

@@ -18,6 +18,7 @@ import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type T
 import { isPdfUrl, withoutCodes, type CitedPlace } from "../../../lib/sources";
 import { wholeSum } from "../../../lib/format";
 import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
+import { HouseAverageLine } from "../../house-average";
 
 /** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
 const baseDesc = (b: string) => (guideBlocks.fees as Record<string, { base?: string }>)[b]?.base ?? null;
@@ -186,7 +187,7 @@ export const pricedByChannel = (lines: readonly TariffLineRow[]): boolean => cha
  * grouped by kind under a strip with the fee's name, so a row says only what sets it apart: what it is charged on, the channel, the plan.
  * Where each line stands is its own short column ("עמוד 30 ↗"). On a phone the strips stay, each line is one row, and the link ends the price's line.
  */
-function FeeTable({ lines, channel, kind }: { lines: TariffLineRow[]; /** Where the order is given: a fee the price list prices by channel shows that channel's line. */ channel: Channel; kind: InstitutionKind }) {
+function FeeTable({ lines, channel, kind, average }: { lines: TariffLineRow[]; /** Where the order is given: a fee the price list prices by channel shows that channel's line. */ channel: Channel; kind: InstitutionKind; /** The line's average charged, with the house's name and the period (F-122). */ average: (l: TariffLineRow) => ReactNode }) {
   const columns: ProductColumn[] = [
     { id: "covers", head: copy.card.cols.covers },
     { id: "price", head: copy.card.cols.price, width: 8.5 },
@@ -206,22 +207,20 @@ function FeeTable({ lines, channel, kind }: { lines: TariffLineRow[]; /** Where 
           // a fee priced by channel shows the chosen channel's line, laid over the other's room: switching changes its numbers, never a height
           const held = (f: (l: TariffLineRow) => ReactNode) => (r.pair && !r.same ? <LongestCase cases={[f(r.pair.direct), f(r.pair.branch)]}>{f(r.pair[channel])}</LongestCase> : f(r.pair ? r.pair[channel] : r.line));
           const cells = [held((l) => <Covers l={l} noChannel={r.same} />), held((l) => figure("price", l.rate, priceWord(l))), held((l) => <Bound l={l} side="min" />), held((l) => <Bound l={l} side="max" />), held((l) => <WhereCell w={l.where} />)];
-          // a flat price for a small order or conversion is the row's second line: its price across the price and bound columns, its own place in the documents
+          // a flat price for a small order or conversion is the row's second line: its price across the price and bound columns, its own place in the documents;
+          // what the house charged on average for the kind (F-122) is a quiet line under them, across the same columns
           const flat = r.pair ? !!(r.pair.direct.flat || r.pair.branch.flat) : !!r.line.flat;
-          const lines = flat
-            ? {
-                columns: ["price", "min", "max", "where"],
-                rows: [
-                  { key: "rate", cells: cells.slice(1) },
-                  { key: "flat", cells: [held((l) => <FlatFigure l={l} />), null, null, held((l) => (l.flat ? <WhereCell w={l.flat.where} /> : null))], spans: [3, 1, 1, 1] },
-                ],
-              }
-            : undefined;
+          const averaged = (r.pair ? r.pair[channel] : r.line).average;
+          const extra = [
+            ...(flat ? [{ key: "flat", cells: [held((l) => <FlatFigure l={l} />), null, null, held((l) => (l.flat ? <WhereCell w={l.flat.where} /> : null))], spans: [3, 1, 1, 1] }] : []),
+            ...(averaged ? [{ key: "average", cells: [average(r.pair ? r.pair[channel] : r.line)], spans: [4] }] : []),
+          ];
+          const lines = extra.length ? { columns: ["price", "min", "max", "where"], rows: [{ key: "rate", cells: cells.slice(1) }, ...extra] } : undefined;
           return {
             key: r.key,
             cells,
             ...(lines ? { lines } : {}),
-            phone: <ProductPhoneRow stacked>{held((l) => <PhoneFee l={l} same={r.same} />)}</ProductPhoneRow>,
+            phone: <ProductPhoneRow stacked>{held((l) => <PhoneFee l={l} same={r.same} average={average} />)}</ProductPhoneRow>,
           };
         }),
       }))}
@@ -232,7 +231,7 @@ function FeeTable({ lines, channel, kind }: { lines: TariffLineRow[]; /** Where 
 /** A fee's lines on a phone: what it is charged on, the price with where it stands at the line's end, as the table's column ("עמוד 30 ↗"); the
  *  two bounds on the next line (each keeps its words whole, and no bound drops alone); a flat price for a small order or conversion with
  *  where it stands; a conversion's spread. */
-function PhoneFee({ l, same }: { l: TariffLineRow; same: boolean }) {
+function PhoneFee({ l, same, average }: { l: TariffLineRow; same: boolean; average: (l: TariffLineRow) => ReactNode }) {
   return (
     <span className="flex flex-col gap-1">
       <Covers l={l} phone noChannel={same} />
@@ -254,6 +253,7 @@ function PhoneFee({ l, same }: { l: TariffLineRow; same: boolean }) {
         </span>
       )}
       <Spread l={l} />
+      {average(l)}
     </span>
   );
 }
@@ -479,7 +479,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       {tariff.lines.length > 0 && (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} byChannel={byChannel} channel={channel} onChannel={setChannel} />
-          <FeeTable lines={tariff.lines} channel={channel} kind={kind} />
+          <FeeTable lines={tariff.lines} channel={channel} kind={kind} average={(l) => (l.average && tariff.averages ? <HouseAverageLine averages={[l.average]} house={gershayim(tariff.providerName)} from={tariff.averages.from} to={tariff.averages.to} page={tariff.averages.page} /> : null)} />
           {/* what the house's documents hold and these prices leave out (D106) */}
           <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
         </Section>

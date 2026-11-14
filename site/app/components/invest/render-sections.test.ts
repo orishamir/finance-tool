@@ -568,7 +568,8 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
         for (const f of o.funds)
           for (const p of v.providers) {
             const snap = bundle.snapshots.find((s) => s.id === p.id);
-            if (!doubtOf(snap, o.id)) continue;
+            // a house that sells the kind fund by fund answers for each fund it names (BRK-38): the doubt stands for a fund it does not name
+            if (!doubtOf(snap, o.id) || snap?.distribution_agreements?.reports.some((r) => r.funds.includes(f.rec.identifiers.tase_number ?? f.rec.id))) continue;
             doubts++;
             expect("valueN" in (f.byHouse[p.id] ?? {}), `${i.id}: ${f.rec.id} at ${p.id}`).toBe(false);
           }
@@ -595,18 +596,30 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
   });
-  it("One Zero prices no Israeli fund, since it sells only those whose managers signed a distribution agreement with it, not read (BRK-38); no ETF; and no fund traded outside the US", () => {
-    const funds = at("il-tracking", "one-zero");
+  it("One Zero prices an Israeli fund only where a distribution agreement its manager reports names it, and no other (BRK-38); no ETF; and no fund traded outside the US", () => {
+    const snap = bundle.snapshots.find((s) => s.id === "one-zero")!;
+    const named = new Set(snap.distribution_agreements!.reports.flatMap((r) => r.funds));
+    const funds = view.options.find((o) => o.id === "il-tracking")!.funds;
     expect(funds.length).toBeGreaterThan(0);
-    for (const x of funds) expect("valueN" in x).toBe(false);
-    // the row says why in the record's words, which name the site's rule: no price for a fund the account may not sell
-    const reason = doubtOf(bundle.snapshots.find((s) => s.id === "one-zero"), "il-tracking");
-    expect(reason).toContain("הסכם הפצה");
-    expect(reason).toContain("האתר לא מחשב מחיר");
+    let priced = 0;
+    for (const f of funds) {
+      const at = f.byHouse["one-zero"]!;
+      if (named.has(f.rec.id)) priced += "valueN" in at ? 1 : 0;
+      else {
+        // a fund no report names is not sold there, with why and the search as its source
+        expect("valueN" in at, f.rec.id).toBe(false);
+        expect("availability" in at && at.availability?.reason_he, f.rec.id).toBe(invest.agreements.noAgreement);
+        expect("availability" in at && at.availability?.rule_ids).toEqual(["BRK-38"]);
+      }
+    }
+    expect(priced).toBeGreaterThan(0);
+    // a fund the site does not name keeps the open entry's words
+    expect(doubtOf(snap, "il-tracking")).toContain("הסכם הפצה");
     for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
     const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
     if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
   });
+
 });
 
 describe("before deciding: the tab cards", () => {

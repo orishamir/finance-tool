@@ -22,6 +22,8 @@ import { buildProductView } from "./track-browser";
 import { buildTrackBrowser } from "./track-browser.server";
 import { selfDirectedProduct } from "./self-directed";
 import { siteTrackName } from "./track-names";
+import { columnOf, houseAverages, type AverageColumn } from "./house-averages";
+import { loadHouseAverages } from "./house-averages.server";
 
 /**
  * Each track's short name under its company, as the track browser works it out (D54: `shortTrackNames` over one company's tracks in one
@@ -87,7 +89,14 @@ export function buildFeesData(): FeesData {
   // the houses a securities account's deal can start from: the ones the comparison ranks, each read as it can be done (providers.ts)
   const houses = providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)
     .filter((s) => !s.missing)
-    .map(houseTemplate);
+    .map((s) => {
+      // F-122: what the house charged on average for the kinds its read lines are of, for reference only (never a price of the deal)
+      const t = houseTemplate(s);
+      const rec = loadHouseAverages().get(s.id);
+      const columns = s.lines.filter((l) => t.read.includes(l.id)).map(columnOf).filter((c): c is AverageColumn => c !== null);
+      const averages = rec ? houseAverages(rec, columns) : null;
+      return averages && averages.columns.length ? { ...t, averages } : t;
+    });
   const fx = loadFx();
   // each fee name's card, and where a product has a sense of the name that differs from it, that sense under the product's key
   const names = FEE_KIND_IDS.flatMap((k) => feeNameOf(k) ?? []);

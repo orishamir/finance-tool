@@ -50,7 +50,7 @@ function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs
       // the fund's cost is one figure: the calculation has no split by fee, so its line says the fees it rests on
       sub: fund ? (
         <span className="inline-flex flex-wrap gap-x-3 [&_.whitespace-nowrap]:whitespace-normal">
-          <Fees rec={fund.rec} inline priced={pricedVariable(fund.rec, gapListFor(bundle, fund.rec), bundle.today)} />
+          <Fees rec={fund.rec} inline priced={pricedVariable(fund.rec, gapListFor(bundle, fund.rec), bundle.today)} today={bundle.today} />
         </span>
       ) : null,
     },

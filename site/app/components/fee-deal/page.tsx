@@ -221,7 +221,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const { unitPrice, onUnitPrice } = useUnitPrice(read, deal.id);
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
-  // the fees whose price list prints a maximum on the whole deposit the reading does not apply, by what the deal's template left out
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;

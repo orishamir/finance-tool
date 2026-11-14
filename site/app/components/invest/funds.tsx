@@ -6,6 +6,8 @@ import { feeAbsent } from "../../lib/providers";
 import { FeeFigure, ProductFigures } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { ownBy, type SiteValue } from "../../lib/value";
+import { fundPromotions } from "../../lib/fund-promotions";
+import { fmt } from "../../lib/format";
 
 const b = brands.funds;
 
@@ -31,7 +33,7 @@ export interface FundFeeItem {
  * site prices where it is not the listed rate (F-92 (b)), named beside it with its years, so the card shows the figure the costs rest on
  * (Kesem 5139696 showed 0.3%, priced at −0.215%).
  */
-export function fundFeeItems(rec: FundRecord, { inline, priced }: { inline?: boolean; priced?: { value: SiteValue; years: number[] } | null } = {}): FundFeeItem[] {
+export function fundFeeItems(rec: FundRecord, { inline, priced, today }: { inline?: boolean; priced?: { value: SiteValue; years: number[] } | null; /** The page's day: a promotion that has not ended by it is shown after its fee (F-121). */ today?: string } = {}): FundFeeItem[] {
   // a foreign fund the person typed has one yearly charge, and nothing "not collected" beside it (D44)
   const yearlyOnly = isCustomFund(rec) && rec.domicile !== "IL";
   const names = c.receipt.fundFees;
@@ -43,6 +45,13 @@ export function fundFeeItems(rec: FundRecord, { inline, priced }: { inline?: boo
     const figure = !v && !absent && isCustomFund(rec) ? <span className="text-sm text-muted-foreground">{c.customEntries.notTyped}</span> : <FeeFigure value={v} absent={absent} inline={inline} />;
     return { id: key, word: absent && key === "trustee" ? c.funds.noTrusteeWord : word, name: yearlyOnly ? names.yearly : [names.fixed, names.variable, names.trustee][i]!, figure, missing: !v };
   });
+  // a fee lowered for a stated period, after the fee it lowers (F-121)
+  for (const p of today && !yearlyOnly ? fundPromotions(rec, today) : []) {
+    const at = items.findIndex((x) => x.id === p.fee);
+    const until = fmt.date(p.until);
+    const name = items[at]?.name ?? p.fee;
+    items.splice(at + 1, 0, { id: `${p.fee}-promotion`, word: c.funds.promotionWord(until), name: c.funds.promotionName(name, until), figure: <FeeFigure value={p.value} inline={inline} />, missing: false });
+  }
   if (priced && !yearlyOnly) {
     const word = c.kinds.variableChargedWord(priced.years);
     items.splice(2, 0, { id: "variable_priced", word, name: names.charged(word), figure: <FeeFigure value={priced.value} inline={inline} />, missing: false });
@@ -51,6 +60,6 @@ export function fundFeeItems(rec: FundRecord, { inline, priced }: { inline?: boo
 }
 
 /** The fees in a line, or one under the other in a table cell (also the index page's fund slot). */
-export function Fees({ rec, inline, priced }: { rec: FundRecord; inline?: boolean; priced?: { value: SiteValue; years: number[] } | null }) {
-  return <ProductFigures items={fundFeeItems(rec, { inline, priced })} inline={inline} />;
+export function Fees({ rec, inline, priced, today }: { rec: FundRecord; inline?: boolean; priced?: { value: SiteValue; years: number[] } | null; today?: string }) {
+  return <ProductFigures items={fundFeeItems(rec, { inline, priced, ...(today ? { today } : {}) })} inline={inline} />;
 }

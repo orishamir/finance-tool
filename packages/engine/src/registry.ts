@@ -6,6 +6,7 @@ import { balanceFee, corporateEventFee, currentAccountFee, custodyFee, depositFe
 import { earlySettlement, limitStanding, moneyStory } from "./formulas/study-story.ts";
 import { kindRecord, stretchRange, trackingBeyondFees } from "./formulas/fund-gap.ts";
 import { irishFundUsWithholding } from "./formulas/fund-withholding.ts";
+import { averageRange, promotedDrag } from "./formulas/fund-promotion.ts";
 import {
   bracketTaxOnTopSlice,
   capitalGainsTax,
@@ -156,6 +157,8 @@ export const formulas = {
   "F-118": runSecuritiesBeforeTax,
   "F-119": indexedAmount,
   "F-120": cpiLinkedAmount,
+  "F-121": promotedDrag,
+  "F-122": averageRange,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

@@ -36,11 +36,11 @@ export function useTemplatePicker({ deal, data, today, onTrack, onNew }: { deal:
     for (const o of options) if (o.source === "house") m.set(o.id, templateOf(probe, o.id, data, today)?.left ?? []);
     return m;
   }, [anchor, options, deal.kind, data, today]);
-  // what the template left out, and what a house's record says its price leaves out (D106), only where it filled the deal's fees: a track
-  // set on a deal whose fees it kept left nothing out of them
+  // what the template left out, what a house's record says its price leaves out (D106), and what the house charged on average (F-122),
+  // only where it filled the deal's fees: a track set on a deal whose fees it kept left nothing out of them
   const filled = useMemo(() => {
     const t = deal.template && !deal.template.feesKept ? templateOf(deal, deal.template.id, data, today) : null;
-    return t ? { left: t.left, leftOut: t.leftOut ?? null } : null;
+    return t ? { left: t.left, leftOut: t.leftOut ?? null, ...(t.averages ? { averages: t.averages } : {}) } : null;
   }, [deal, data, today]);
   return {
     anchor,

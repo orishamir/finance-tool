@@ -113,16 +113,16 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.markedTie(2)), f.rec.id).toBe(tied.includes(f.rec.id));
   });
   it("the fund list counts tied funds, not pairs: one fund tied at two houses is one (independent check of pass 5)", () => {
-    // MSCI World, 50,000 now, nothing a month, one year: five pairs within the threshold, three funds (scanned over 4 x 3 x 5 plans on every index)
+    // MSCI World, 50,000 now, nothing a month, one year: six pairs within the threshold, three funds (One Zero sells some of them, BRK-38)
     const one: WorkbenchInputs = { ...base, amountNow: 50000, monthly: 0, years: 1, values: { ...base.values, amount: entered(50000, "nis", t), monthly: entered(0, "nis_per_month", t), years: entered(1, "years", t) } };
     const w = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan: one });
     const h = pickOfHeadline(w)!;
-    expect(tieCount(w, h, theta)).toBe(5);
+    expect(tieCount(w, h, theta)).toBe(6);
     const tied = tieFunds(w, h, theta);
     expect(tied).toHaveLength(3);
     const out = lists(w, bundle, one, h);
     expect(shown(out)).toContain(invest.pair.markedTie(3));
-    expect(shown(out)).not.toContain(invest.pair.markedTie(5));
+    expect(shown(out)).not.toContain(invest.pair.markedTie(6));
     for (const id of tied) expect(fundRow(out, id), id).toContain(invest.pair.markedTie(3));
   });
   it("before any pick, the pair set beside the page's is the other of the tie, and no pair is called first or next", () => {

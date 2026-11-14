@@ -18,6 +18,8 @@ import { Disclosure, GroupHead, LeftOutLine, ListRow, RowList, SearchField, Tag,
 import type { LeftOutView } from "../../lib/left-out";
 import type { SiteValue } from "../../lib/value";
 import { feeName } from "./words";
+import type { HouseAverages } from "../../lib/house-averages";
+import { HouseAverageLine } from "../house-average";
 
 const w = copy.picker;
 const f = copy.filled;
@@ -112,13 +114,10 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   );
 }
 
-/**
- * A left line as the reader reads it: its name as the price list prints it, its channel where the list prices channels apart, and the
- * record's own words where the reason quotes them.
- */
-const lineText = (l: { line: string; name?: string; channel?: string; quote?: string }): string => {
+/** A left line as the reader reads it: its name as the price list prints it, and its channel where the list prices channels apart. */
+const lineText = (l: { line: string; name?: string; channel?: string }): string => {
   const channel = l.channel ? copy.cases.values.channel[l.channel] : undefined;
-  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}${l.quote ? `${copy.cases.sep}${gershayim(l.quote)}` : ""}`;
+  return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}`;
 };
 
 /**
@@ -132,7 +131,7 @@ const lineText = (l: { line: string; name?: string; channel?: string; quote?: st
  * under the other by default; `row` lays the three on one line where it has the room (under the builder's strip), each at the fold's
  * height, the fold opening under its own words.
  */
-export function TemplateNote({ template, left, leftOut = null, row = false }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null; row?: boolean }) {
+export function TemplateNote({ template, left, leftOut = null, averages, row = false }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null; /** What the house charged on average (F-122), for reference only. */ averages?: HouseAverages; row?: boolean }) {
   const lines = new Map<string, string[]>();
   const rest: { key: string; fee?: string; why: string }[] = [];
   for (const l of left) {
@@ -150,6 +149,11 @@ export function TemplateNote({ template, left, leftOut = null, row = false }: { 
       {leftOut && (
         <div className={cx(row && "flex min-h-target items-center")}>
           <LeftOutLine view={leftOut} house={gershayim(template.name)} className="text-sm" />
+        </div>
+      )}
+      {averages && (
+        <div className={cx(row && "flex min-h-target basis-full items-center")}>
+          <HouseAverageLine averages={averages.columns} house={gershayim(template.name)} from={averages.from} to={averages.to} page={averages.page} />
         </div>
       )}
       {left.length > 0 && (

@@ -28,6 +28,7 @@ import { FeeBlockView, type BlockActions, type OpenHere } from "./fee-block";
 import { TemplateNote } from "./picker";
 import { UndoLine } from "./undo-line";
 import { feeName } from "./words";
+import type { HouseAverages } from "../../lib/house-averages";
 
 const b = copy.builder;
 
@@ -65,7 +66,7 @@ export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, fil
   /** Opens the price lists' picker from the button tapped, whose choice fills a new deal, where the deal's kind has price lists; null elsewhere. */
   onTemplates: ((from: HTMLElement) => void) | null;
   /** What the template the deal was filled from left out, and what a house's record says its price leaves out (D106); null where no template filled it. */
-  filled: { left: readonly LeftOut[]; leftOut: LeftOutView | null } | null;
+  filled: { left: readonly LeftOut[]; leftOut: LeftOutView | null; averages?: HouseAverages } | null;
   /** The undo line of another kind just chosen that took fees away; null where none stands. */
   kindLine: KindUndoLine | null;
   /** Another kind chosen for the deal. */
@@ -161,7 +162,7 @@ export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, fil
             {kindLine.words}
           </UndoLine>
         )}
-        {template && filled && <TemplateNote template={template} left={filled.left} leftOut={house ? filled.leftOut : null} row />}
+        {template && filled && <TemplateNote template={template} left={filled.left} leftOut={house ? filled.leftOut : null} {...(house && filled.averages ? { averages: filled.averages } : {})} row />}
       </StepStrip>
     </div>
   );

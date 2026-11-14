@@ -7,6 +7,7 @@ import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
 import type { DepositVariant, ExitPoints } from "../../../lib/deposit-kind";
 import type { TermRow } from "../../../lib/data.server";
+import type { ColumnAverage } from "../../../lib/house-averages";
 
 export type InstitutionKind = "bank" | "broker";
 
@@ -101,6 +102,8 @@ export interface TariffLineRow {
   flat: { amount: SiteValue; upTo: SiteValue; where: TariffLineRow["where"] } | null;
   /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
   spread: SiteValue | "not_limited" | null;
+  /** What the house charged on average for the line's kind of fee (F-122), for reference only; absent where its sheet prints none. */
+  average?: ColumnAverage;
 }
 
 /** Whether a kind of holding can be bought at the house, from its own documents (S3), with the reason when the documents leave it open. */
@@ -138,6 +141,8 @@ export interface TariffCardData {
   /** Who pays the card's prices (a bank's or broker's record says so). */
   priceFor: string | null;
   availability: AvailabilityRow[];
+  /** The period and the page of the averages its lines show (F-122); absent where the house has none. */
+  averages?: { from: string; to: string; page: { url: string; title: string } };
   /** What the house's documents hold and its prices leave out (D106), or null where the record lists nothing. */
   leftOut?: LeftOutView | null;
 }

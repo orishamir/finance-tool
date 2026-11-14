@@ -4,7 +4,8 @@
 import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, dayAfter, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
+import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
@@ -378,11 +379,10 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     tally.flag("TXF-OQ7");
   }
   const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
-  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate: from the first month that starts on or after
-  // its first day to the month before the one the day after its last day falls in, so a month it covers in part pays the fee's own rate
-  const lowered = (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: d[p.part]! - p.rate, from: p.from <= ctx.runDate ? 1 : monthOfDate(ctx.runDate, p.from) + 1, until: monthOfDate(ctx.runDate, dayAfter(p.to)) }));
-  if (lowered.some((p) => p.until > p.from)) formulas.push("F-121");
-  const deltaAt = (m: number) => lowered.reduce((x, p) => (m >= p.from && m < p.until ? x - p.cut : x), delta);
+  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate
+  const promoted = promotedDrag(delta, (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: d[p.part]! - p.rate, from: p.from, to: p.to })), ctx.runDate);
+  if (promoted.applies) formulas.push("F-121");
+  const deltaAt = promoted.at;
   const spread = fund.halfSpread ?? 0;
   if (spread > 0) book.cite("ETF-06");
 

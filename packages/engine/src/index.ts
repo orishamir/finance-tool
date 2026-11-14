@@ -1,4 +1,5 @@
 export * from "./formulas/time.ts";
+export * from "./formulas/fund-promotion.ts";
 export * from "./formulas/account-interest.ts";
 export * from "./formulas/track-exposure.ts";
 export * from "./formulas/track-groups.ts";
