@@ -1,7 +1,7 @@
 // The changes the fee page makes to a deal as a whole, each a pure function from a deal to the next: a fee added, replaced or taken away,
-// the deal's product and name, and the reading's picks (F-114). These alone ask the offer (offers/offer.ts), for the fees a product is
+// the deal's product and name, a fee duplicated, and the reading's picks (F-114). These alone ask the offer (offers/offer.ts), for the fees a product is
 // offered; the edits of a fee's prices, stages and cases are in price.ts, stage.ts and case.ts.
-import { newFee, type Fee, type FeeDeal, type ReadPick } from "../model";
+import { newFee, newFeeId, type Fee, type FeeDeal, type ReadPick } from "../model";
 import type { DealKind } from "../kinds";
 import { feeRoom, PICKS_MAX } from "../limits";
 import { type FeeKindId, type FormId } from "../shapes";
@@ -9,6 +9,19 @@ import { feeOffered, offerFor, type DataBar } from "../offers/offer";
 
 /** The deal with one fee replaced by `fn` of it. */
 export const updateFee = (deal: FeeDeal, feeId: string, fn: (f: Fee) => Fee): FeeDeal => ({ ...deal, fees: deal.fees.map((f) => (f.id === feeId ? fn(f) : f)) });
+
+/**
+ * The deal with fee `feeId` duplicated: a copy with all it holds (its prices, cases, sources and the list it came from) under a new id,
+ * right after it in the deal and so beside it on the page (the same kind and group, and the same place among the person's own order,
+ * `Rank`). Null where the deal has no such fee or holds as many fees as a deal may (`FEES_MAX`); a kind that stands alone (`feeAlone`) is
+ * the page's to refuse.
+ */
+export function duplicateFee(deal: FeeDeal, feeId: string): { deal: FeeDeal; feeId: string } | null {
+  const at = deal.fees.findIndex((f) => f.id === feeId);
+  if (at < 0 || !feeRoom(deal)) return null;
+  const copy: Fee = { ...structuredClone(deal.fees[at]!), id: newFeeId() };
+  return { deal: { ...deal, fees: [...deal.fees.slice(0, at + 1), copy, ...deal.fees.slice(at + 1)] }, feeId: copy.id };
+}
 
 /**
  * The deal with a new fee of a kind at the end, its price in the form given (the first its product's fee is offered in, `Offer.usual`).

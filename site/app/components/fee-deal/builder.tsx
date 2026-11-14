@@ -5,7 +5,9 @@
 // the deal has a fee in it, each fee in its block (fee-block.tsx). A fee just taken away leaves the page's undo line (`UndoLine`) in its
 // place, in the block's room for a moment before it closes up to the line; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the
 // fees the deal could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own; a fee added lands in
-// its group, open, and takes the focus in its first box. A block under the pointer or the focus marks the fee in the summary.
+// its group, open, and takes the focus in its first box. A block under the pointer or the focus marks the fee in the summary. A closed
+// fee's card carries its bin and its duplicate in its corner under a fine pointer, and its grip's menu holds both for touch and the
+// keyboard; a duplicate stands right after its fee.
 import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
@@ -19,7 +21,8 @@ import type { LeftOutView } from "../../lib/left-out";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, DropZone, FeePalette, Grip, GroupHead, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type GripAction, type PaletteItem } from "../kit";
+import { Copy } from "lucide-react";
+import { AddLine, Button, ChoiceChips, DropZone, FeePalette, Grip, GroupHead, KnobButton, RemoveButton, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type GripAction, type PaletteItem } from "../kit";
 import { liftDrop, liftId, liftedOf, liftTakes, type Lifted } from "../../lib/fee-deal/lifted";
 import { keepPicks } from "../../lib/fee-deal/cases";
 import { partFieldId } from "./figures";
@@ -278,6 +281,7 @@ export function FeesColumn({
   ask,
   refusal,
   adding,
+  onDuplicate,
 }: {
   deal: FeeDeal;
   view: Builder;
@@ -304,6 +308,8 @@ export function FeesColumn({
    * line (`line`, while a fee is open in a page whose column holds the palette otherwise), or nothing (the column shows the palette).
    */
   adding: { palette: PaletteItem[]; copy?: CopyHands | null } | "line" | null;
+  /** A fee duplicated beside itself; null for a fee the page does not duplicate (a kind that stands alone). */
+  onDuplicate?: (fee: Fee) => (() => void) | null;
 }) {
   // each block's height as last drawn, the room the line a removed fee leaves holds for a moment
   const root = useRef<HTMLDivElement>(null);
@@ -363,8 +369,22 @@ export function FeesColumn({
     const menu: GripAction[] = [];
     if (k > 0) menu.push({ label: lw.menu.up, onPick: to(ids[k - 1]) });
     if (k < count - 1) menu.push({ label: lw.menu.down, onPick: to(ids[k + 1]) });
-    // named as its card names it: a fee copied from another house's list says the house after its name
-    return count > 1 ? <Grip item={liftId(l)} label={`${lw.grip.fee}${feeName(fee.kind, fee.name, rows.get(fee.id)?.house)}`} actions={menu} /> : undefined;
+    const dup = onDuplicate?.(fee) ?? null;
+    if (dup) menu.push({ label: copy.cases.feeCorner.menuDuplicate, onPick: dup });
+    menu.push({ label: lw.menu.remove, danger: true, onPick: () => blockActions.onRemoveFee(fee.id) });
+    // named as its card names it: a fee copied from another house's list says the house after its name; alone in its group, its menu only
+    const name = feeName(fee.kind, fee.name, rows.get(fee.id)?.house);
+    return <Grip item={liftId(l)} label={`${count > 1 ? lw.grip.fee : copy.cases.feeCorner.grip}${name}`} actions={menu} {...(count > 1 ? {} : { still: true })} />;
+  };
+  /** A closed card's corner: its duplicate, where the page duplicates it, and its bin, which takes it away with the undo line. */
+  const corner = (fee: Fee) => {
+    const dup = onDuplicate?.(fee) ?? null;
+    return (
+      <>
+        {dup && <KnobButton icon={Copy} label={copy.cases.feeCorner.duplicate} tabIndex={-1} onClick={dup} />}
+        <RemoveButton knob label={copy.panel.remove} tabIndex={-1} onRemove={() => blockActions.onRemoveFee(fee.id)} />
+      </>
+    );
   };
   const feeZone = (fee: Fee, group: string, el: ReactNode) => (
     <DropZone
@@ -441,7 +461,7 @@ export function FeesColumn({
                 const k = fees.indexOf(it);
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
-                    {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} grip={feeLift(it.fee, key, k, fees.length)} />)}
+                    {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} grip={feeLift(it.fee, key, k, fees.length)} corner={corner(it.fee)} />)}
                     {refusal?.feeId === it.fee.id && <RefusalLine refusal={refusal} />}
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>

@@ -546,7 +546,7 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
           if (actions.length) setMenu((m) => !m);
         }}
         onKeyDown={onKeyDown}
-        className={cx("tap-area inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm transition-opacity duration-[var(--duration-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
+        className={cx("tap-area inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
       >
         <GripVertical size={14} strokeWidth={1.75} aria-hidden />
       </button>
@@ -796,7 +796,7 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
           e.stopPropagation();
           flip(() => flushSync(() => step(edge === "after" ? by : -by)));
         }}
-        className={cx("group/knob flex size-full touch-none items-center justify-center transition-opacity duration-[var(--duration-fast)] focus-visible:outline-none", axis === "x" ? "cursor-ew-resize" : "cursor-ns-resize")}
+        className={cx("group/knob flex size-full touch-none items-center justify-center focus-visible:outline-none", axis === "x" ? "cursor-ew-resize" : "cursor-ns-resize")}
       >
         <span aria-hidden className={cx("tap-area flex shrink-0 items-center justify-center rounded-sm border border-border bg-popover text-muted-foreground group-hover/knob:text-foreground group-focus-visible/knob:outline-2 group-focus-visible/knob:outline-ring", axis === "x" ? "h-6 w-4" : "h-4 w-6")}>
           {axis === "x" ? <MoveHorizontal size={12} strokeWidth={2} /> : <MoveVertical size={12} strokeWidth={2} />}

@@ -367,6 +367,10 @@
   --duration-base: 200ms; /* sheets, popovers */
   --duration-fold: 280ms; /* a fold opening or closing, and what fades in with it */
   --duration-chart: 400ms; /* graphs and numbers moving to new values after an input changes */
+  /* How long a fine pointer rests on a cell, a row or a head before its hover controls (grips, stretch knobs, a cell's bin, the plus
+     under a row or between two heads, a closed fee card's corner) appear; they go at once when it leaves, and the keyboard's focus shows
+     them at once. A wait, not a motion: it stays when the device asks for less motion. */
+  --hover-rest: 650ms;
 
   /* Stacking (popovers and sheets use the top layer and need none) */
   --z-sticky: 20;

@@ -674,21 +674,28 @@
      typed in inside a fee shows none: the fee is a thing that lifts too, and a field's focus is not its own. Hidden is see-through, its
      press kept, so a drag still starts where the grip stands. On touch a grip is drawn only inside the open fee, where what it stands over
      makes room for it; elsewhere a long press on the thing lifts it, and a hidden grip takes no tap. A cell's knobs show while the cell has
-     the focus a tap gives it. */
+     the focus a tap gives it. Under the pointer they appear once it has rested `--hover-rest` (a pass over the table draws none); with the
+     keyboard's focus at once; they go at once. */
   [data-grip],
   [data-span-knob] {
     opacity: 0;
   }
   @media (pointer: fine) {
-    [data-liftable]:is(:hover, :focus-visible) :is([data-grip], [data-span-knob]),
+    [data-liftable]:hover :is([data-grip], [data-span-knob]) {
+      opacity: 1;
+      transition: opacity var(--duration-fast) linear var(--hover-rest);
+    }
+    [data-liftable]:focus-visible :is([data-grip], [data-span-knob]),
     :is([data-grip], [data-span-knob]):is(:focus-visible, :active),
     [data-grip][aria-expanded="true"] {
       opacity: 1;
+      transition: opacity var(--duration-fast) linear;
     }
     /* what lifts inside a thing under the pointer, or a thing with the keyboard's focus, keeps its own grips hidden until it is under the
        pointer or has that focus itself */
     [data-liftable]:is(:hover, :focus-visible) [data-liftable]:not(:hover, :focus-visible) :is([data-grip], [data-span-knob]):not(:focus-visible, [aria-expanded="true"]) {
       opacity: 0;
+      transition: none;
     }
   }
   @media (pointer: coarse) {
@@ -723,15 +730,22 @@
     }
   }
   /* A cell's own bin (kit/case-table.tsx, `CellBin`): drawn, and taking a press, only on a fine pointer while its cell is under it or has
-     the keyboard's focus, so an unseen corner never takes a cell away; touch has the grip's menu and the long press */
+     the keyboard's focus, so an unseen corner never takes a cell away (hidden, it takes no press); under the pointer once it has rested
+     `--hover-rest`, with the focus at once; touch has the grip's menu and the long press */
   [data-cell-bin] {
     opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
   }
   @media (pointer: fine) {
-    [data-liftable]:is(:hover, :focus-visible) > [data-cell-bin-box] > [data-cell-bin] {
+    [data-liftable]:hover > [data-cell-bin-box] > [data-cell-bin] {
       opacity: 1;
-      pointer-events: auto;
+      visibility: visible;
+      transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
+    }
+    [data-liftable]:focus-visible > [data-cell-bin-box] > [data-cell-bin] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--duration-fast) linear;
     }
   }
   @media (pointer: coarse) {
@@ -746,45 +760,59 @@
     pointer-events: none;
   }
   /* The strip under a grid's row (or a table's last row) that adds a part to every case of it (kit/case-table.tsx): drawn only while the
-     pointer is over the row or the focus is in it, on a fine pointer; touch and the keyboard reach it in the row head's menu */
+     pointer has rested on the row `--hover-rest` or the focus is in it, on a fine pointer (hidden, it takes no press); touch and the
+     keyboard reach it in the row head's menu */
   [data-row-add] {
     opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--duration-fast) linear 80ms;
+    visibility: hidden;
   }
   @media (pointer: fine) {
-    [data-grid-row]:is(:hover, :focus-within) [data-row-add],
-    [data-case-table]:is(:hover, :focus-within) [data-row-add],
+    [data-grid-row]:hover [data-row-add],
+    [data-case-table]:hover [data-row-add] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
+    }
+    [data-grid-row]:focus-within [data-row-add],
+    [data-case-table]:focus-within [data-row-add],
     [data-row-add][aria-expanded="true"] {
       opacity: 1;
-      pointer-events: auto;
-      transition-delay: 0ms;
+      visibility: visible;
+      transition: opacity var(--duration-fast) linear;
     }
   }
   /* The plus on the line between two heads (kit/case-table.tsx, `BetweenAdd`): its strip takes the pointer, and its knob is drawn only
-     while a fine pointer rests on the strip, or while the question it opened is open; on touch the strip is not there at all, so it
+     once a fine pointer has rested on the strip `--hover-rest`, or while the question it opened is open; on touch the strip is not there at all, so it
      takes no tap from the heads (their menus hold "הוספה לפני" and "הוספה אחרי"), nor while something is carried */
   [data-between-add] {
     pointer-events: auto;
   }
   [data-between-add] > button {
     opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
   }
   @media (pointer: fine) {
-    [data-between-add]:hover > button,
+    [data-between-add]:hover > button {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
+    }
     [data-between-add] > button[aria-expanded="true"] {
       opacity: 1;
-      pointer-events: auto;
+      visibility: visible;
     }
   }
+  /* (by visibility, not display: the strip's own utilities set its display) */
   @media (pointer: coarse) {
-    [data-between-add] {
-      display: none;
+    [data-between-add],
+    [data-between-add] > button {
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
   }
-  :root:has([data-lift-ghost], [data-reach-frame]) [data-between-add] {
-    display: none;
+  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-between-add], [data-between-add] > button) {
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
   /* The ✕ at the end of one part line in a cell (fee-deal/fee-cases.tsx, `Joined`): drawn, and taking a press, only after a fine pointer
      has rested on that line for 1.5 s, so it never stands in the way of reading or a quick pass; gone at once when the pointer leaves.
@@ -803,11 +831,33 @@
   }
   @media (pointer: coarse) {
     [data-part-off] {
-      display: none;
+      visibility: hidden !important;
     }
   }
   :root:has([data-lift-ghost], [data-reach-frame]) [data-part-off] {
-    display: none;
+    visibility: hidden !important;
+  }
+  /* A closed fee card's corner actions (kit/fee-block.tsx): drawn, and taking a press, only once a fine pointer has rested on the card
+     `--hover-rest`; touch
+     and the keyboard reach the same in the fee's grip menu; never while something is carried */
+  [data-fee-corner] {
+    opacity: 0;
+    visibility: hidden;
+  }
+  @media (pointer: fine) {
+    :has(> [data-fee-corner]):hover > [data-fee-corner] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
+    }
+  }
+  @media (pointer: coarse) {
+    [data-fee-corner] {
+      visibility: hidden !important;
+    }
+  }
+  :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-corner] {
+    visibility: hidden !important;
   }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */

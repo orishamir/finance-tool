@@ -27,7 +27,7 @@ import { builder } from "../../lib/fee-deal/rows";
 import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
 import { slotEdit, thingMenu } from "../../lib/fee-deal/things";
-import { addOfferedFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
+import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
 import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
@@ -266,6 +266,18 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const t = fee && hasCases(fee) ? fee.by.findIndex((x) => pickKind(x.kind) === pickKind(kind)) : -1;
     if (t >= 0) onRemoveBy(feeId, t);
   };
+  // a fee duplicated from its card's corner or its grip's menu stands right after it, chosen and focused on its card; a kind that stands
+  // alone (`feeAlone`: the method does not say how two such fees meet one cap, F-113) is not duplicated
+  const onDuplicate = (fee: Fee) =>
+    feeAlone(deal, fee.kind, data)
+      ? null
+      : () => {
+          const r = duplicateFee(deal, fee.id);
+          if (!r) return setRefusal({ feeId: null, words: refusalWords("fees") });
+          change(r.deal);
+          doc.setChosen(r.feeId);
+          doc.setFocus({ fee: r.feeId, on: "card" });
+        };
   const onDelete = doc.remove;
   // a pick of the reading, refused past the picks a deal may keep (limits.ts)
   const onPick = (by: string, is: string) => {
@@ -352,6 +364,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     onStretch: (next, words) => kept(liftKept(deal, { deal: updateFee(deal, next.id, () => next), ...(words ? { kept: { feeId: next.id, words } } : {}) }, chosen)),
     preview: (x) => setPreview(x ? (liftDrop(deal, x.l, x.on, { copy: x.how.copy })?.deal ?? null) : null),
     rowParts: (feeId, cases) => rowParts(read, feeId, cases),
+    onResult: (make) => {
+      const r = make(deal);
+      if (r) kept(liftKept(deal, r, chosen));
+    },
     phone,
   };
   const menu = oc.menus.slot;
@@ -519,6 +535,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               refusal={refusal}
               ask={oc.ask.asking && oc.ask.asking.fee === chosen ? { kind: oc.ask.asking.kind, ...(oc.ask.asking.split ? { split: oc.ask.asking.split } : {}) } : null}
               adding={adding}
+              onDuplicate={onDuplicate}
             />
           )
         }

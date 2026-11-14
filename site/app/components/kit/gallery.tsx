@@ -3474,7 +3474,7 @@ function CaseDemos({ today }: { today: string }) {
             <KnobButton icon={Plus} label={dealWords.cases.addKnob.case} wide onClick={() => undefined} />
             <KnobButton icon={Plus} label={dealWords.cases.addKnob.step} wide expanded onClick={() => undefined} />
             <KnobButton icon={X} label={dealWords.cases.partOff.replace("{part}", dealWords.cases.rowHeads.max!)} onClick={() => undefined} />
-            <RemoveButton knob label={dealWords.cases.feeCorner.remove} onRemove={() => undefined} />
+            <RemoveButton knob label={dealWords.panel.remove} onRemove={() => undefined} />
             <KnobButton icon={Copy} label={dealWords.cases.feeCorner.duplicate} onClick={() => undefined} />
           </div>
         </State>
