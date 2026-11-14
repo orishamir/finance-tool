@@ -4,23 +4,13 @@
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type ReadFee } from "./cases";
-import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
+import { capOf, kindById, standingOf, type BanSaid, type DealKind, type Standing } from "./kinds";
 import { feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
 import { boundsAction, charged, onAction } from "./offers/capabilities";
 import { banFor, type Ban } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
 import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
-
-/**
- * How a ban is said (offers/offer.ts, `Ban`): the rules that ban the fee, whether that is the site's reading of them, and whether a
- * distribution fee may still be charged on the units.
- */
-export interface BanSaid {
-  rules: readonly string[];
-  reading?: true;
-  distribution?: true;
-}
 
 /**
  * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, no case for the picks,

@@ -284,6 +284,29 @@ for (const { name, p, read } of runs) {
   });
 }
 
+// The bin (design-system 11, "Cases and parts"): taking something away is always the kit's RemoveButton, so a bin is drawn by
+// remove-button.tsx alone, which holds the icon (lucide's Trash2) and hands its face out as BinIcon. BinIcon is drawn elsewhere only
+// where the bin is pictured, not pressed: the pill ChipList draws under the pointer while a chip is dragged (chip-list.tsx), and the
+// gallery's sample of the ghost face the bin wears (gallery.tsx). Any other bin is a RemoveButton.
+describe("a bin is drawn only by RemoveButton", () => {
+  const BIN_PICTURES = new Set(["components/kit/chip-list.tsx", "components/kit/gallery.tsx"]);
+  const trashIcon = /\bTrash\d?(?:Icon)?\b|\bIconBin\b|🗑/;
+  const sources = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && rel(f) !== "components/kit/remove-button.tsx");
+  it("no other file draws a bin icon of its own", () => {
+    expect(sources.filter((f) => trashIcon.test(code(readFileSync(f, "utf8")))).map(rel)).toEqual([]);
+  });
+  it("BinIcon stands only in the drag picture and the gallery's ghost sample", () => {
+    const users = sources.filter((f) => /<BinIcon\b/.test(code(readFileSync(f, "utf8")))).map(rel);
+    expect(users.filter((f) => !BIN_PICTURES.has(f))).toEqual([]);
+    expect([...BIN_PICTURES].filter((f) => !users.includes(f))).toEqual([]);
+  });
+  it("sees a planted bin", () => {
+    expect(trashIcon.test('import { Trash2 } from "lucide-react"; <Trash2 size={16} />')).toBe(true);
+    expect(trashIcon.test("<TrashIcon />")).toBe(true);
+    expect(trashIcon.test("<RemoveButton label={x} onRemove={f} />")).toBe(false);
+  });
+});
+
 describe("no field painted in the edge colour", () => {
   // --input is the edge token (borders); a field's background is --card (.field-box). A field painted with bg-input renders light
   // grey, unlike every other field.
