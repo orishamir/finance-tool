@@ -84,7 +84,6 @@ export function engineDeal(deal: FeeDeal, fees?: readonly ReadFee[], picks?: rea
   return {
     fees: read.fees.map(engineFee),
     foreign: isForeign(deal, read.picks),
-    ...(deal.start ? { start: monthOf(deal.start) } : {}),
     ...(deal.provider ? { provider: deal.provider } : {}),
   };
 }

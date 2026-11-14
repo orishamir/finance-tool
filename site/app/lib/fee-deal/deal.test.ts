@@ -173,13 +173,17 @@ describe("new ids", () => {
 
 describe("the link", () => {
   it("carries a deal both ways, with new ids and each figure's source", () => {
-    const d = { ...account(), name: "חשבון", start: "2026-03", provider: "bank" as const, saved: "2026-11-01", template: { id: "house:leumi", name: "לאומי" } };
+    const d = { ...account(), name: "חשבון", provider: "bank" as const, saved: "2026-11-01", template: { id: "house:leumi", name: "לאומי" } };
     const back = decodeDeal(encodeDeal(d))!;
     expect(back.id).not.toBe(d.id);
     expect(back.saved).toBeUndefined();
     const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });
     expect(strip(back)).toEqual(strip(d));
     expect(back.fees[0]!.stages![0]!.price).toMatchObject({ rate: { v: 0.25, src } });
+  });
+  it("opens a deal saved with a start month, which the page no longer has, without it", () => {
+    const d = account();
+    expect(readDeal({ ...JSON.parse(JSON.stringify(d)), start: "2026-03" })).toEqual(d);
   });
   it("writes a source once however many figures carry it", () => {
     const d = account();

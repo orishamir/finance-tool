@@ -37,8 +37,8 @@ export interface DealRead {
  */
 export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string): DealRead {
   const month = monthOfDate(today);
-  // the reading's first month (F-110: the device's, or the deal's start where it is later): a price given or not before it is past
-  const from = deal.start && deal.start > monthKey(month) ? deal.start : monthKey(month);
+  // the reading's first month (F-110: the device's): a price given or not before it is past
+  const from = monthKey(month);
   const read = readFees(deal);
   const fees = read.fees.filter((f) => feeInOrder(f) && feePriced(f, from));
   const engine = engineDeal(deal, fees, read.picks);

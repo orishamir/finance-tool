@@ -87,8 +87,6 @@ export interface DealWithin {
 /** The fees of one product as the person typed them (§10.6). */
 export interface Deal {
   fees: DealFee[];
-  /** The month the deal starts, where the person gave one. */
-  start?: CalendarMonth;
   /** Whether what is held is in a currency other than the shekel: its purchase and sale then carry a conversion (F-111). */
   foreign: boolean;
   /** The kind of provider the deal names, where it names one: a cap that binds only some providers is judged by it (F-113). */
@@ -256,7 +254,7 @@ export function changeKind(from: DealPrice, to: DealPrice): ChangeKind | null {
 }
 
 /**
- * F-110 A deal's periods. The reading is made for month `t`: `today` (the device's month), or the deal's start where it is later. A
+ * F-110 A deal's periods. The reading is made for month `t`: `today`, the device's month. A
  * fee's `k`th price ends at the start of its month `e^k`; an end at or before `t` has passed and its price is not read. The distinct
  * ends after `t` over every fee whose two prices around it differ, in order, cut time from `t` into periods, and in each period every
  * fee has one price; an end whose two prices are equal is not a change point. A fee with no such end holds throughout; any other changes
@@ -270,7 +268,7 @@ export function dealPeriods(deal: Deal, today: CalendarMonth): DealReading {
       checkStages(f.sale);
     }
   }
-  const t = deal.start && index(deal.start) > index(today) ? index(deal.start) : index(today);
+  const t = index(today);
   const endsAfter = (stages: readonly DealStage[]) =>
     stages.flatMap((s) => (s.until !== undefined && index(s.until) > t && !samePrice(priceIn(stages, index(s.until) - 1), priceIn(stages, index(s.until))) ? [index(s.until)] : []));
   const lists = (f: DealFee): [DealSide, DealStage[]][] => (f.sale ? [["buy", f.stages], ["sell", f.sale]] : [[sideOf(f.base) ?? "all", f.stages]]);

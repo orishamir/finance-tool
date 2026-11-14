@@ -589,7 +589,7 @@ export function dealFromTemplate(from: FeeDeal, id: string, data: Pick<FeesData,
 }
 
 /**
- * The deal on screen with a track picked for it in the builder: the same deal (its id, start month and place in the saved list), naming
+ * The deal on screen with a track picked for it in the builder: the same deal (its id and place in the saved list), naming
  * the track. The track's fees replace the deal's where it has none or every fee in it holds nothing the person gave (`untouched`: as a
  * template filled it, or just added and still asking for its price, which stays where the track has no fee of its kind); a deal
  * with any fee the person typed or changed keeps every fee as it is, and its template says the track filled none (`feesKept`). The

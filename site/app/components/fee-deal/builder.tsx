@@ -14,7 +14,7 @@ import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import type { Builder, BuilderRow, CaseRow as CaseRowView, SlimPart, WhenWords } from "../../lib/fee-deal/builder";
-import { addCase, copyCase, setStart, type Side } from "../../lib/fee-deal/edit";
+import { addCase, copyCase, type Side } from "../../lib/fee-deal/edit";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { groupKey, groupOn, type DealRead, type StandingView } from "../../lib/fee-deal/parts";
@@ -23,7 +23,7 @@ import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { fmt } from "../../lib/format";
 import { FEE_KIND_IDS, FEE_SHAPES, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, CaseFold, CaseRow, CaseSlot, ChoiceChips, ConditionBand, FeeBlock, GroupHead, MonthField, OpenCase, PartChip, Section, SlimFee, Step, When, monthText, type AddItem, type CaseWord } from "../kit";
+import { AddLine, Button, CaseFold, CaseRow, CaseSlot, ChoiceChips, ConditionBand, FeeBlock, GroupHead, OpenCase, PartChip, Section, SlimFee, Step, When, monthText, type AddItem, type CaseWord } from "../kit";
 import { Num } from "../provenance";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/builder";
 import { bringIntoView } from "./in-view";
@@ -173,14 +173,6 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
               {copy.end.template}
             </Button>
           </Step>
-        )}
-        {/* the month the deal started: a plain line at the column's end under a rule, not a step, since nothing waits on it */}
-        {kind && (
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-4 text-sm">
-            <span className="text-muted-foreground">{b.start}</span>
-            <MonthField value={deal.start ?? null} label={b.start} onCommit={(m) => onDeal(setStart(deal, m))} onClear={() => onDeal(setStart(deal, null))} />
-            <span className="text-muted-foreground">{b.optional}</span>
-          </div>
         )}
       </div>
     </Section>

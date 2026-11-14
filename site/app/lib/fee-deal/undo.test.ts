@@ -1,7 +1,7 @@
 // The fee page's one undo, on the site's own price lists: a fee taken away, a fee filled from a price list, a stage taken away.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
-import { addFee, editPrice, setLimited, setName, setSaleApart, setStart, setUntil, updateFee, withFigure } from "./edit";
+import { addFee, editPrice, setLimited, setName, setSaleApart, setUntil, updateFee, withFigure } from "./edit";
 import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
 import { barredFees, feePriceLists, pickTrack } from "./templates";
 import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeFeeKept, removeStageKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
@@ -63,12 +63,11 @@ describe("one undo for a change that loses something", () => {
   it("lives through other edits, and puts back only what its change took into the deal as it is now", () => {
     const d = account();
     const r = removeFeeKept(d, "fee-custody", null)!;
-    const edited = setName(setStart(r.deal, "2027-01"), "x");
+    const edited = setName(r.deal, "x");
     expect(standing(r.undo, edited)).toBe(true);
     const back = undo(edited, r.undo, null)!.deal;
     expect(back.fees.map((f) => f.id)).toEqual(["fee-trade", "fee-custody", "fee-fx"]);
     expect(back.name).toBe("x");
-    expect(back.start).toBe("2027-01");
   });
   it("puts a fee's prices back over a fill, keeping the other fees' later edits", () => {
     const d = account();

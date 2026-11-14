@@ -1665,7 +1665,6 @@ export const feeDeal = {
     title: "העסקה במבט אחד",
     throughout: "לאורך כל העסקה",
     changes: "מה משתנה ומתי",
-    still: "אף עמלה בעסקה לא משתנה עם הזמן.",
     /** Before the months to the nearest change (a computed figure). */
     inMonths: "בעוד ",
     /** Before the rate a group's fees add to (F-111). */
@@ -1750,8 +1749,6 @@ export const feeDeal = {
     trackPick: "לבחור מסלול",
     /** The step that fills the deal from a price list, and its button opens the price lists. */
     fill: "מילוי מתעריפון",
-    start: "תאריך התחלה",
-    optional: "לא חובה",
     fees: "העמלות בעסקה",
     /** After a bound in a row's box. */
     minWord: "מינימום",
