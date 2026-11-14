@@ -63,9 +63,11 @@ describe("a fee's table and grid", () => {
     const out = html(h(CaseTable, { columns: [{ id: "a", head: "א", label: "א", onOpen: () => undefined }, { id: "b", head: "ב", label: "ב", onOpen: () => undefined }], rows: [{ id: "max", head: "מקסימום", cells: [{ from: 0, span: 1, content: "10" }, { from: 1, span: 1, content: null }] }] }));
     expect(out.match(/rounded-md border border-border bg-background/g)).toHaveLength(1);
   });
-  it("a grid's cell opens its case; a place no case holds is a slot that adds one there, named for the place", () => {
-    const out = html(h(CaseGrid, { columns: [{ id: "x", head: "x" }, { id: "y", head: "y" }], rows: [{ id: "r", head: "r", cells: [{ from: 0, span: 1, content: "1%", label: "לפתוח: r · x", onOpen: () => undefined }, { from: 1, span: 1, empty: { label: "מקרה", spoken: "להוסיף מקרה כאן: r · y", onAdd: () => undefined } }] }], addRow: add }));
-    expect(out).toMatch(/<button[^>]*aria-label="לפתוח: r · x"/);
+  it("a grid's cell opens its case from anywhere on it, named by its row and column; a place no case holds is a slot that adds one there, named for the place", () => {
+    const out = html(h(CaseGrid, { columns: [{ id: "x", head: "x" }, { id: "y", head: "y" }], rows: [{ id: "r", head: "r", cells: [{ from: 0, span: 1, content: "1%", onOpen: () => undefined }, { from: 1, span: 1, empty: { label: "מקרה", spoken: "להוסיף מקרה כאן: r · y", onAdd: () => undefined } }] }], addRow: add }));
+    // no button lies over the cell: a press on its padding is the cell's own, and the figures and grips in it keep theirs
+    expect(out).toMatch(/role="gridcell"[^>]*aria-labelledby="[^"]*-r0 [^"]*-c0 [^"]*"[^>]*class="[^"]*cursor-pointer/);
+    expect(out).not.toContain("data-pick-card");
     expect(out).toMatch(/aria-label="להוסיף מקרה כאן: r · y"/);
   });
   it("an add slot says whether its question is open", () => {

@@ -279,7 +279,7 @@ function ValueMenuCard({ anchor, labelledBy, onClose, children }: { anchor: HTML
         const to = e.relatedTarget as Node | null;
         if (to && !card.current?.contains(to) && !at.current?.contains(to)) close.current();
       }}
-      className="fixed inset-auto m-0 flex max-h-[min(32rem,70vh)] w-max max-w-[min(24rem,calc(100vw-1rem))] flex-col overflow-y-auto rounded-lg border border-border bg-popover p-3 text-base text-foreground shadow-lg"
+      className="come-in fixed inset-auto m-0 flex max-h-[min(32rem,70vh)] w-max max-w-[min(24rem,calc(100vw-1rem))] flex-col overflow-y-auto rounded-lg border border-border bg-popover p-3 text-base text-foreground shadow-lg"
     >
       {children}
     </div>

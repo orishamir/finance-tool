@@ -25,9 +25,13 @@ export interface PartField {
 export const figureFields = (id: PartId, p: Price, view: PriceView): PartField[] =>
   PARTS[id].figures.filter((f) => FIGURES[f].placed(p)).map((f) => ({ figure: f, value: view.figures[f] ?? null, sign: signOfUnit(FIGURES[f].unit(p)) }));
 
+/** Each case a cell covers and its value of one figure, where the cases hold that figure from more than one place (`mergedParts`). */
+export type FigureFroms = readonly { case: string; value: SiteValue }[];
+
 /**
  * A part as a slim line shows it: its id, its kind and its words; `stage`, its price's place among the prices where it is a later one;
- * and its figures as a box would edit them (`fields`), so a figure read on a closed fee is edited where it is read.
+ * and its figures as a box would edit them (`fields`), so a figure read on a closed fee is edited where it is read. `froms`, by figure
+ * (the first, then the second): where a cell covers several cases that hold the figure from different places, each case's.
  */
 export interface SlimPart {
   id: PartId;
@@ -35,6 +39,7 @@ export interface SlimPart {
   words: PartWords;
   stage?: number;
   fields?: PartField[];
+  froms?: readonly (FigureFroms | null)[];
 }
 
 /**

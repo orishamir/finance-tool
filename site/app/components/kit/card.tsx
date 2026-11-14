@@ -34,9 +34,12 @@ export function Card({ children, className, as = "div", pad = "default", edge, .
 export type SectionLevel = "page" | "card" | "form" | "kick";
 const HEADING: Record<SectionLevel, string> = { page: "text-xl lg:text-2xl font-semibold", card: "text-lg font-semibold", form: "text-xl font-semibold", kick: "text-sm font-medium text-primary" };
 
-/** The room between a section's parts (its heading, its lead and each part of its body): `default` 16 px, `snug` 12 px, `tight` 8 px. */
-export type SectionGap = "default" | "snug" | "tight";
-const GAP: Record<SectionGap, string> = { default: "gap-4", snug: "gap-3", tight: "gap-2" };
+/**
+ * The room between a section's parts (its heading, its lead and each part of its body): `default` 16 px, `snug` 12 px, `tight` 8 px,
+ * `close` 4 px (a small name over the card's first heading, as `PanelHead` sets a kicker over its title, so cards side by side align).
+ */
+export type SectionGap = "default" | "snug" | "tight" | "close";
+const GAP: Record<SectionGap, string> = { default: "gap-4", snug: "gap-3", tight: "gap-2", close: "gap-1" };
 
 /**
  * A heading with an optional lead and an optional action at the end of its row, then the body. Give `id` to make it a target of the

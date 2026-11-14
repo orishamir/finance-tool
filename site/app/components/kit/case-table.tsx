@@ -11,7 +11,7 @@
 // table, its column or cell outlined in the action colour.
 import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
-import { LIFT_INNER } from "./choice";
+import { LIFT_INNER, onSurface } from "./choice";
 import { useCarried } from "./drag-drop";
 import { cx } from "./cx";
 
@@ -24,8 +24,8 @@ const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap
 /** A row's head: its words from the top, on the line a cell's first line stands on (the cell's border and padding over a 20 px line). */
 const ROW_HEAD = "pt-3 leading-5";
 
-/** A click on a cell opens its case, unless it fell on a control of its own (a figure's source, a field). */
-const opener = (onOpen?: () => void) => (onOpen ? (e: MouseEvent) => !(e.target as Element).closest("button, a, input, [data-lift]") && onOpen() : undefined);
+/** A click on a cell opens its case, its padding too, unless it fell on something with a tap of its own (a figure, a field, a grip, a knob). */
+const opener = (onOpen?: () => void) => (onOpen ? (e: MouseEvent) => onSurface(e) && onOpen() : undefined);
 
 /**
  * The keys of a table's or a grid's cells, as a spreadsheet's: the arrows move between cells (right to left: the left arrow goes on to
@@ -235,7 +235,7 @@ export interface CaseTableRow {
   id: string;
   head: ReactNode;
   grip?: ReactNode;
-  cells: ({ id?: string; from: number; span: number; open?: boolean; onOpen?: () => void; content: ReactNode; label?: string } & CellExtras)[];
+  cells: ({ id?: string; from: number; span: number; open?: boolean; onOpen?: () => void; content: ReactNode } & CellExtras)[];
 }
 
 /** A cell's place in a table or a grid: its columns, after the heads' column, in its row. */
@@ -250,6 +250,8 @@ const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | nu
  * touch reach the same through the row head's menu.
  */
 function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
+  // in the controls' layer (app.css, "The tap area"): over the cells and the figures' areas, under every figure's own box, so where it
+  // reaches the next row's first line, a press on a figure there is still the figure's
   return (
     <div style={style} className="relative h-0 self-end">
       <button
@@ -259,7 +261,7 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
         aria-expanded={add.expanded}
         aria-label={add.spoken}
         onClick={(e) => add.onAdd(e.currentTarget)}
-        className="tap-area absolute inset-x-0 top-0.5 z-[5] inline-flex h-5 items-center justify-center gap-1 rounded-sm border border-dashed border-primary bg-card text-xs text-primary hover:bg-accent"
+        className="tap-area absolute inset-x-0 top-0.5 z-[1] inline-flex h-5 items-center justify-center gap-1 rounded-sm border border-dashed border-primary bg-card text-xs text-primary hover:bg-accent"
       >
         <Plus size={12} strokeWidth={2} aria-hidden />
         {add.label}
@@ -370,13 +372,12 @@ export interface PartCellView extends CellExtras {
   from: number;
   span: number;
   content: ReactNode;
-  label?: string;
   onOpen?: () => void;
   open?: boolean;
 }
 
 /**
- * A grid's cell: the columns it spans; its case's parts (`content`), its spoken name and tap, whether it is open, and the words of a case
+ * A grid's cell: the columns it spans; its case's parts (`content`), its tap, whether it is open, and the words of a case
  * on any value across ("בכל ערוץ") after its parts; or, for a place no case holds, `empty`, the dashed slot that adds a case there. Its `id`
  * keeps it the same cell when its row or column moves, so it slides there.
  */
@@ -387,7 +388,6 @@ export interface GridCellView extends CellExtras {
   /** The rows it spans down, where more than its own; the cells it covers in the rows under it are not given. */
   down?: number;
   content?: ReactNode;
-  label?: string;
   onOpen?: () => void;
   open?: boolean;
   across?: ReactNode;
@@ -412,7 +412,7 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
 
 /**
  * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`);
- * one cell per case (equal neighbours one cell), a button over the whole cell that opens it, a case on any value across spanning its row;
+ * one cell per case (equal neighbours one cell), a press anywhere on it opening it, a case on any value across spanning its row;
  * under a row's cells, its `lines`, one per part row, each a cell of the parts two or more of its cells hold alike over them; at the end of
  * the column heads the pill that adds a value across (`addColumn`), and under the row heads the pill that adds a value down (`addRow`).
  * A row's head is as tall as its cells and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
@@ -489,8 +489,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                   );
                 }
                 const el = (
-                  <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} className={cx("group group/cell relative h-full cursor-pointer rounded-md", CELL_FOCUS, LIFT_INNER)}>
-                    {cell.onOpen && <button type="button" tabIndex={-1} data-pick-card aria-label={cell.label} onClick={cell.onOpen} className="absolute inset-0 w-full rounded-md" />}
+                  <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
                     <div className={cx(CELL, "h-full group-hover:bg-accent", cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">

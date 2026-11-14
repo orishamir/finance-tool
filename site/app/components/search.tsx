@@ -177,7 +177,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
   const panelOpen = open && desktop;
   const resting = variant === "header" && !focused && !open && !text;
   return (
-    <div ref={wrap} data-search-active={(variant === "header" && !resting) || undefined} className={cx("relative", variant === "header" && "w-56 xl:absolute xl:end-0 xl:top-1/2 xl:-translate-y-1/2 xl:transition-[width] xl:duration-[var(--duration-fast)]", variant === "header" && (resting ? "xl:w-10" : "xl:w-64"))}>
+    <div ref={wrap} data-search-active={(variant === "header" && !resting) || undefined} className={cx("relative", variant === "header" && "w-72 xl:absolute xl:end-0 xl:top-1/2 xl:-translate-y-1/2 xl:transition-[width] xl:duration-[var(--duration-fast)]", variant === "header" && (resting ? "xl:w-10" : "xl:w-72"))}>
       <form
         role="search"
         onSubmit={(e) => {

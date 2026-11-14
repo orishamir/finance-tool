@@ -363,4 +363,19 @@ describe("AmountChart's mark labels", () => {
     // near the chart's top a label with its way blocked has nowhere to go
     expect(markLabels([{ cx: 200, cy: 24, half: 30 }, { cx: 205, cy: 24, half: 30 }], [], 600)[1]).toBeNull();
   });
+  it("never stand on a band's line or another mark's drop, nor left of the plot's start", () => {
+    // a line rising through the point, and a flat one just over it: neither runs through the label
+    const rising = { y: (x: number) => 200 - (x - 200) };
+    const flat = { y: () => 186 };
+    const [a] = markLabels([{ cx: 200, cy: 200, half: 30 }], [], 600, [rising, flat], 0);
+    expect(a).not.toBeNull();
+    const box = { left: a!.lx - 30, right: a!.lx + 30, top: a!.by - 11, bottom: a!.by + 3 };
+    for (let x = box.left; x <= box.right; x += 1) for (const l of [rising, flat]) expect(l.y(x) <= box.top - 2 || l.y(x) >= box.bottom + 2).toBe(true);
+    // a mark's drop beside it keeps the label off it; the plot's start holds it in
+    const [b] = markLabels([{ cx: 100, cy: 100, half: 20 }], [], 600, [{ x: 100, top: 100, bottom: 200 }, { x: 125, top: 50, bottom: 200 }]);
+    expect(b).not.toBeNull();
+    expect(b!.lx - 20 > 127 || b!.lx + 20 < 123).toBe(true);
+    const [c] = markLabels([{ cx: 10, cy: 100, half: 20 }], [], 600, [], 40);
+    expect(c!.lx - 20).toBeGreaterThanOrEqual(40);
+  });
 });

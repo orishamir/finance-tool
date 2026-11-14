@@ -1,5 +1,7 @@
 // A part of a fee's price (a price, a bound, a link to another fee, a note), at rest and in edit (design-system 11, "Cases and parts").
-// A part's kind is told three ways, never by colour alone: its fill and edge, the icon before its first word, and that word itself. Its
+// A part's kind is told by the icon before its first word and that word itself ("מינימום", "מתקזזת מול"); a note by its dashed edge. A
+// bound and a link take the price's neutral look, as a table's cell writes them in plain words: green and amber on this site mean a
+// state (a dimension considered, a figure used outside its context), never a kind of part (design.md, the number states). Its
 // figures keep their own number state (the sourced line, the entered blue), as everywhere on the site. Parts keep a fixed order: there is
 // no grip and nothing to drag.
 import type { ReactNode } from "react";
@@ -8,23 +10,23 @@ import { dealCases as copy } from "../../copy";
 import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 
-/** What a part is: a price (neutral), a minimum or a maximum (green), a link to another fee (yellow), a note (a dashed edge, no fill). */
+/** What a part is: a price, a minimum or a maximum, a link to another fee (each neutral, a bound's and a link's told by their icon), a note (a dashed edge, no fill). */
 export type PartKind = "price" | "bound" | "link" | "note";
 /** The icon before a part's first word: a minimum's, a maximum's, a link's. A price and a note have none. */
 export type PartMark = "min" | "max" | "link";
 
 const ICONS: Record<PartMark, LucideIcon> = { min: ArrowDownToLine, max: ArrowUpToLine, link: Link2 };
 
-/** A part's fill and edge by its kind: the kind's colour at 10% over the card, its edge at 45%. */
+/** A part's fill and edge by its kind: one neutral look for a price, a bound and a link; a note's dashed edge with no fill. */
 const PART_LOOK: Record<PartKind, string> = {
   price: "bg-secondary border-input",
-  bound: "bg-part-bound-fill border-part-bound-edge",
-  link: "bg-part-link-fill border-part-link-edge",
+  bound: "bg-secondary border-input",
+  link: "bg-secondary border-input",
   note: "border-dashed border-input",
 };
 
-/** The ink of a part's icon and first word: the kind's colour, or the muted ink where the kind has none ("ועוד", "הנחה"). */
-const LEAD_INK: Record<PartKind, string> = { price: "text-muted-foreground", bound: "text-part-bound-ink", link: "text-part-link-ink", note: "text-muted-foreground" };
+/** The ink of a part's icon and first word ("מינימום", "ועוד", "הנחה"): the muted ink, whatever the kind. */
+const LEAD_INK: Record<PartKind, string> = { price: "text-muted-foreground", bound: "text-muted-foreground", link: "text-muted-foreground", note: "text-muted-foreground" };
 
 /** The icon and the first word, in the kind's ink. */
 function Lead({ kind, mark, lead }: { kind: PartKind; mark?: PartMark; lead?: ReactNode }) {
@@ -49,7 +51,8 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
     <span className={cx("inline-flex min-h-[30px] max-w-full flex-wrap items-center gap-x-1 gap-y-0.5 rounded-md border px-2.5 py-0.5 text-sm", PART_LOOK[kind])}>
       <Lead kind={kind} mark={mark} lead={lead} />
       {(figure !== undefined || unit !== undefined) && (
-        <span className="inline-flex items-baseline gap-1 whitespace-nowrap text-[15px] tabular-nums">
+        // the figure and its unit as the page writes a figure, one left-to-right group with a sign on the number's right ("0.25%")
+        <span dir="ltr" className="inline-flex items-baseline gap-1 whitespace-nowrap text-[15px] tabular-nums">
           {figure}
           {unit}
         </span>

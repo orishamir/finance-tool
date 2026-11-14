@@ -307,12 +307,42 @@ export function figureToAll(fee: Fee, from: string | undefined, others: readonly
 }
 
 /**
- * A fee whose figure `figure` of price `k` in each of cases `cases` (none named: a fee whose price changes by nothing) is as it stood in
- * `was`, its source with it: a figure edited where it is read, put back by Esc.
+ * A fee whose figure `figure` of price `k` and of every later price, in each of cases `cases` (none named: a fee whose price changes by
+ * nothing), is as it stood in `was`, its source with it: a figure edited where it is read, put back by Esc, with the later prices it was
+ * carried to (`figureOnward`).
  */
 export function figuresBack(fee: Fee, was: Fee, cases: readonly string[] | null, k: number, figure: Figure): Fee {
-  const back = (x: Fee, c?: string) => editPrice(x, "buy", k, (p) => setFigure(p, figure, figureOf(pricesOn(was, "buy", c)[k]!.price, figure)), c);
+  const back = (x: Fee, c?: string) => {
+    const before = pricesOn(was, "buy", c);
+    return pricesOn(x, "buy", c).reduce((y, _, j) => (j < k || !before[j] ? y : editPrice(y, "buy", j, (p) => setFigure(p, figure, figureOf(before[j]!.price, figure)), c)), x);
+  };
   return cases ? cases.reduce((x, c) => back(x, c), fee) : back(fee);
+}
+
+/** Whether two prices hold part `part` alike: both have it, each of its figures the same number or both not given. */
+function samePart(a: Price, b: Price, part: PartId): boolean {
+  if (!partsSaid(a, {}).includes(part) || !partsSaid(b, {}).includes(part)) return false;
+  return PARTS[part].figures.every((f) => {
+    const x = figureOf(a, f), y = figureOf(b, f);
+    return !x || !y ? !x && !y : !!x.blank === !!y.blank && (x.blank || x.v === y.v);
+  });
+}
+
+/**
+ * A fee whose figure `figure` of price `k`, as it now stands in each of cases `cases` (none named: a fee whose price changes by nothing),
+ * is carried on to each later price that held part `part` as the price before it did in `was` (the fee before the edit), one after the
+ * other until a price held it otherwise. Where a fee's cases are laid out, a later price says only what it changes (`laterChanges`), so a
+ * part it held alike reads once, for every price; an edit of that part holds for every price it reads for, and it still reads once.
+ */
+export function figureOnward(fee: Fee, was: Fee, cases: readonly string[] | null, k: number, part: PartId, figure: Figure): Fee {
+  const on = (x: Fee, c?: string) => {
+    const before = pricesOn(was, "buy", c);
+    const n = figureOf(pricesOn(x, "buy", c)[k]!.price, figure);
+    let y = x;
+    for (let j = k + 1; j < before.length && samePart(before[j - 1]!.price, before[j]!.price, part); j++) y = editPrice(y, "buy", j, (p) => setFigure(p, figure, n), c);
+    return y;
+  };
+  return cases ? cases.reduce((x, c) => on(x, c), fee) : on(fee);
 }
 
 /**

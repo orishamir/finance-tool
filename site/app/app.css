@@ -265,17 +265,10 @@
   .nums-plain .num-computed:not(.num-sample) {
     text-decoration: none;
   }
+  /* a figure the person typed: the entered ink alone, no highlight behind it (design.md, the number states; the "entered" tag keeps its own) */
   .num-entered {
     color: var(--entered);
-    background: var(--entered-subtle);
-    padding-inline: 0.15em;
     text-decoration: none;
-  }
-  /* figures the person typed, in the fee page's workbench, where nearly every figure is theirs: the entered ink alone, no highlight
-     behind each one */
-  .nums-entered-bare .num-entered {
-    background: none;
-    padding-inline: 0;
   }
   /* figures the person typed, inside a block that sums up the boxes they typed them in (the kit's TypedPlain): plain words, each still
      opening its sheet */
@@ -283,6 +276,11 @@
     color: inherit;
     background: none;
     padding-inline: 0;
+  }
+  /* a figure a cell's cases hold from different places, one of them the person (the fee page's merged cells, `mergedParts`): the marks of
+     both, the source's line under it and the entered ink; its note names where each case's is from */
+  .num-sourced.num-mixed {
+    color: var(--entered);
   }
   .num-unknown {
     color: var(--muted-foreground);
@@ -967,6 +965,12 @@
     color: var(--muted-foreground);
     font-size: var(--text-sm);
     white-space: nowrap;
+  }
+  /* A unit that is a sign stands on the number's right, as the page writes a figure ("100,000 ₪", "4%"): the box runs left to right, its
+     number right-aligned against the sign. A unit in words ("שנים") stays after the number in reading order, at the box's end. */
+  .field-box-sign {
+    flex-direction: row-reverse;
+    gap: 4px;
   }
   /* Everything under the label (the box, then its error or hint, note and state), one child of the field so that a field in
      a row can be a two-row subgrid (2026-10-24 night). */

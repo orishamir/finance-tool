@@ -3,7 +3,7 @@
 // taken away or duplicated; a ladder's step taken away; two things swapped; the deal's fees put in order; one case split by a thing. Each is
 // read back through the layout where the layout is what the person sees.
 import { describe, expect, it } from "vitest";
-import { stretch, stretchOver, shrink, shrinkAway, shrinkEmpties, clearCells, moveCell, moveCellTo, cellMovesTo, figuresBack, figureToAll } from "./edits/cells";
+import { stretch, stretchOver, shrink, shrinkAway, shrinkEmpties, clearCells, moveCell, moveCellTo, cellMovesTo, figuresBack, figureOnward, figureToAll } from "./edits/cells";
 import { duplicateValue, moveCase, moveValue, orderFees, removeStep, removeValue, swapThings } from "./edits/arrange";
 import { removeBy, splitCase } from "./edits/case";
 import { editPrice } from "./edits/stage";
@@ -380,6 +380,18 @@ describe("sources on copies", () => {
     const joined = removeStep(ladder, 0, 2) as CasesFee;
     expect(joined.cases.find((c) => c.id === "s1")!.stages[0]!.price).toMatchObject({ rate: { v: 0.2 } });
     expect((joined.cases.find((c) => c.id === "s1")!.stages[0]!.price as { rate: { src?: unknown } }).rate.src).toBeUndefined();
+  });
+
+  it("carries a figure read once for every price on to the later prices that held it alike, and Esc puts them all back", () => {
+    const later = (min: number): Case["stages"][number] => ({ price: action(0.5, min) });
+    const was: CasesFee = { ...sourced(), cases: sourced().cases.map((c) => ({ ...c, stages: [{ ...c.stages[0]!, until: "2027-03" as const }, { ...later(15), until: "2027-09" as const }, later(40)] })) };
+    const typedIn = withFigureIn(was, "a", 20);
+    const f = figureOnward(typedIn, was, ["a"], 0, "min", "min") as CasesFee;
+    const mins = (x: CasesFee, id: string) => x.cases.find((c) => c.id === id)!.stages.map((s) => (s.price as { min?: { v: number } }).min?.v);
+    // the second price held the first's minimum and takes the new one; the third held its own and keeps it; the other case is not touched
+    expect(mins(f, "a")).toEqual([20, 20, 40]);
+    expect(mins(f, "b")).toEqual(mins(was, "b"));
+    expect(figuresBack(f, was, ["a"], 0, "min")).toEqual(was);
   });
 
   it("edits a figure said once for several cases in each case's own price, keeping their other parts", () => {
