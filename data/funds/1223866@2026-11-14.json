@@ -1,0 +1,221 @@
+{
+  "id": "1223866",
+  "names": {
+    "en": [],
+    "he": [
+      "אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/11/2026"
+    ],
+    "tase": [
+      "1223866"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0012238668",
+    "tase_number": "1223866",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "אלטשולר שחם",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה; קרן מועדים קבועים; סיווג: קרן כספית, כספית מתחדשת, חודשי (annual report as of 30.6.2026, p.1). Fixed dates: 'היום ה-16 של הקרן בכל חודש'; purchase and redemption only on that day (p.3). The fund keeps its TASE number: 'מנהל הקרן יעדכן את המועד הקבוע בשם הקרן בכל מועד קבוע' (p.1), so its name changes each month (note 5); the name above is Maya's on 2026-11-14 (MF-08, MF-35). Tax track 'פטורה'; distribution-fee type 4; units of 1 ₪ par value; trustee יובנק חברה לנאמנות בע\"מ (p.1). ISIN IL0012238668 from Maya's fund data (https://maya.tase.co.il/he/funds/mutual-funds/1223866).",
+  "exposure_id": "shekel-cash",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": null,
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.19,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf#page=1",
+        "title": "דוח שנתי, אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/10/2026 (מספר בורסה 1223866), ליום 30 ביוני 2026, אלטשולר – שחם ניהול קרנות נאמנות בע\"מ, עמ' 1 'שכר מנהל הקרן'",
+        "publisher": "אלטשולר – שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution",
+        "page": 1,
+        "quote": "שכר מנהל הקרן: 0.19% מהשווי הנקי השנתי הממוצע של נכסי הקרן"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16",
+        "MF-35"
+      ],
+      "state": "sourced",
+      "notes": "Manager's fee as printed on p.1. Note 6: the manager committed to the ISA outline and may raise its fee or the load only on 01/01/2027. Maya's fund data show managementFee 0.19 (https://maya.tase.co.il/he/funds/mutual-funds/1223866). The report is the fund's first annual report, for the period from 09/07/2025 to 30/06/2026; the information is as of 30/06/2026 unless stated (note 1)."
+    },
+    "trustee": {
+      "value": 0.01,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf#page=1",
+        "title": "דוח שנתי, אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/10/2026 (מספר בורסה 1223866), ליום 30 ביוני 2026, אלטשולר – שחם ניהול קרנות נאמנות בע\"מ, עמ' 1 הערה 7; עמ' 8",
+        "publisher": "אלטשולר – שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution",
+        "page": 1,
+        "quote": "נכון למועד דוח שנתי זה, צפוי שכר הנאמן להשתנות החל מיום 01/01/2027 לשיעור של 0.01% מהשווי הנקי השנתי הממוצע של נכסי הקרן"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee's fee, the rate outside the trustee's promotion. P.1 prints 'שכר הנאמן: 0.007% מהשווי הנקי השנתי הממוצע של נכסי הקרן' with note 7 (quoted). P.8: 'עד ליום 14/07/2025 (כולל) שכר הנאמן היה בשיעור של 0.01% ...; החל מיום 15/07/2025 שכר הנאמן בשיעור של 0.007%'. Note 7 cites the trustee's report of 28/06/2026, reference 2026-04-060457 (https://mayafiles.tase.co.il/rhtm/1752001-1753000/H1752198.htm): 'דיווח זה הינו דיווח על מבצע בשכר הנאמן בקרן. בתקופה שמיום 01/07/2026 ועד ליום 31/12/2026 שיעור שכר הנאמן בקרן יהיה 0.007% ... החל מיום 01/01/2027 שכר הנאמן בקרן יהיה בשיעור של 0.01%'. So 0.007% is charged until 31/12/2026 and 0.01% from 01/01/2027; the value is the rate after the promotion, since a time-limited discount is not the ranked price (guidelines/research.md, 'Price what an ordinary customer pays'). Maya's fund data show trusteeFee 0.007."
+    },
+    "variable_management": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf#page=1",
+        "title": "דוח שנתי, אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/10/2026 (מספר בורסה 1223866), ליום 30 ביוני 2026, אלטשולר – שחם ניהול קרנות נאמנות בע\"מ, עמ' 1",
+        "publisher": "אלטשולר – שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution",
+        "page": 1
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Not printed: p.1 lists the manager's and the trustee's fees and no variable management fee, and Maya's fund data leave variableFee empty. A variable fee belongs to tracking funds (ETF-14); left null rather than 0 because no document prints 0."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-07"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: not a tracking fund."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-35"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: open fund with liquidity only on the fixed date (MF-35), not exchange-traded."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-43",
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Shekel money-market fund (exposure code 00); no foreign withholding; no computation made here. Tax track not printed on the pages read and this series' presence in the 2026-10-22 Maya export behind TXS-24 is not certain, so il_fund_tax_track is left null."
+    },
+    "load": {
+      "value": 0,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf#page=1",
+        "title": "דוח שנתי, אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/10/2026 (מספר בורסה 1223866), ליום 30 ביוני 2026, אלטשולר – שחם ניהול קרנות נאמנות בע\"מ, עמ' 1 'שיעור ההוספה'",
+        "publisher": "אלטשולר – שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution",
+        "page": 1,
+        "quote": "שיעור ההוספה המשולמת בעת רכישת יחידות הקרן: 0% ממחיר היחידה"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Load as printed on p.1 (the reports state it as a share of the unit price)."
+    }
+  },
+  "dimensions": {
+    "liquidity-lockup": "covered:MF-35",
+    "fee-custody": "covered:BRK-17",
+    "fee-management-balance": "covered:MF-16",
+    "protection": "covered:MF-02",
+    "currency": "covered:MF-43"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf",
+    "date": "2026-07-29"
+  },
+  "exposure_code": "00",
+  "distribution_fee_type": "4",
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-11-14",
+  "promotions": [
+    {
+      "fee": "trustee",
+      "rate": {
+        "value": 0.007,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://mayafiles.tase.co.il/rhtm/1752001-1753000/H1752198.htm",
+          "title": "דוח על ירידת שכר הנאמן, אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/07/2026 (מספר קרן 1223866), יובנק חברה לנאמנות בע\"מ, 28/06/2026, אסמכתא 2026-04-060457",
+          "publisher": "יובנק חברה לנאמנות בע\"מ",
+          "strength": "institution",
+          "quote": "בתקופה שמיום 01/07/2026 ועד ליום 31/12/2026 שיעור שכר הנאמן בקרן יהיה 0.007% מהשווי הנקי השנתי הממוצע של נכסי הקרן"
+        },
+        "checked": "2026-11-14",
+        "effective_from": "2026-07-01",
+        "effective_to": "2026-12-31",
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-20"
+        ],
+        "state": "sourced",
+        "notes": "The trustee's report calls it 'מבצע בשכר הנאמן'; the annual report (P1772119, p.8) has 0.007% charged from 15/07/2025."
+      }
+    }
+  ]
+}
