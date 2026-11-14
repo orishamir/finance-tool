@@ -1808,7 +1808,15 @@ export const feeDeal = {
     folded: { one: "עוד מסלול אחד בתעריפון", two: "עוד שני מסלולים בתעריפון", many: "עוד {n} מסלולים בתעריפון" },
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
-    byRemoved: { merged: "התנאי הוסר, והמקרים שנבדלו רק בו אוחדו.", kept: "התנאי הוסר.", slim: "התנאי הוסר, ונשאר המחיר של המקרה הראשון." },
+    /**
+     * The line a thing taken away leaves (undo.ts), naming it as the menu did: how many cases merged into how many, that none merged, or
+     * that the fee kept its first case's price.
+     */
+    byRemoved: {
+      merged: "המחיר כבר לא משתנה לפי {thing}: {from} מקרים הם עכשיו {to}.",
+      kept: "המחיר כבר לא משתנה לפי {thing}. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.",
+      slim: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המקרה הראשון.",
+    },
     /**
      * The line a price put in another form leaves (undo.ts): that it changed, and what it left behind by name ("המחיר הוחלף, והמינימום
      * והמקסימום הוסרו.").

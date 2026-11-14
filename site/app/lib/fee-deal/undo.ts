@@ -8,6 +8,7 @@
 // here too.
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
+import { thingName } from "./builder";
 import { FORM_OF, holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, setPart, updateFee, type PartId, type Side } from "./edit";
 import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
@@ -247,11 +248,16 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
     case "form":
       return formWords(u);
     case "by": {
-      // what the line says follows what the change did: the cases merged, none merged, or the fee left with its first case's price
+      // what the line says follows what the change did, naming the thing as its menu did: the cases merged (from how many to how many),
+      // none merged, or the fee left with its first case's price
       const after = u.after;
       const words = copy.cases.byRemoved;
-      if (!after || !hasCases(after)) return words.slim;
-      return hasCases(u.before) && after.cases.length < u.before.cases.length ? words.merged : words.kept;
+      const b = hasCases(u.before) ? u.before.by[u.what.t] : undefined;
+      const thing = b ? thingName(u.before.kind, b) : "";
+      const fill = (s: string) => s.replace("{thing}", thing);
+      if (!after || !hasCases(after)) return fill(words.slim);
+      const from = hasCases(u.before) ? u.before.cases.length : 1;
+      return from > after.cases.length ? fill(words.merged).replace("{from}", String(from)).replace("{to}", String(after.cases.length)) : fill(words.kept);
     }
     case "fill":
       return `${copy.builder.filled(houseName(u.what.house, data) ?? "")}.`;

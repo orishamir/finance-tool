@@ -528,7 +528,8 @@ function StatedLine({ part }: { part: StatedPart }) {
     <li className="grid grid-cols-[0.75rem_minmax(0,1fr)] items-baseline gap-3 text-sm leading-relaxed">
       <Swatch shape="box" className={cx("translate-y-px", feeColour(part.fee.kind).bg)} />
       <p>
-        <FeeOpen fee={part.fee} after={copy.price.sep} />
+        {/* the space after the colon stands outside the name's button, whose own end would drop it */}
+        <FeeOpen fee={part.fee} after={copy.price.sep.trimEnd()} />{" "}
         {x.lead}
         {x.figure && <Fig value={x.figure} />}
         {x.tail}

@@ -158,7 +158,7 @@ const perAction = (kind: FeeKindId): string => copy.price.perAction[kind] ?? cop
  * of the person's own by its name, any other thing by its name.
  */
 export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }): string =>
-  b.kind === "own" ? (b.label ?? "") : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
+  b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
 const shareOf = (kind: FeeKindId): string => copy.price.of[kind] ?? copy.price.of.default!;
 const boundPer = (kind: FeeKindId): string => copy.cases.parts.boundPer[kind] ?? copy.cases.parts.boundPer.default!;
 
