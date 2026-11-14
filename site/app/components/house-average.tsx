@@ -43,7 +43,7 @@ export function HouseAverageLine({ averages, house, from, to, page, className }:
               <AverageFigures average={a} house={house} />
             </span>
           ))}
-          {`, ${copy.byPortfolio}`}
+          {averages.some((a) => a.lo.value !== a.hi.value) && `, ${copy.byPortfolio}`}
         </span>,
         copy.period(fmt.date(from), fmt.date(to)),
         <DocLink key="link" look="inline" source={{ url: page.url }}>
