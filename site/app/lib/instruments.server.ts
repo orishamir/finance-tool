@@ -373,7 +373,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (kind !== "money-market-renewable") {
     const drag: NonNullable<Fund["drag"]> = {};
     const notCollected: string[] = [];
-    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends">, label: string) => {
+    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends" | "promotions">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
         // a fee the record could not collect runs as 0; the terms block shows the manager's and the trustee's, which every fund charges,
@@ -415,6 +415,9 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
         feeValues.fundVariable = computed(forward * 100, "pct_per_year", "F-92", inputs, { today: src.today, about: investCopy.kinds.variablePricedAbout(years.map((y) => y.year)) });
       }
     }
+    // F-121: a fee the record lowers for a stated period, read as the indices page reads it (fundOf)
+    const promotions = fundOf(rec, kind, undefined, undefined).fund.drag?.promotions;
+    if (promotions) drag.promotions = promotions;
     if (Object.keys(drag).length > 0) fund.drag = drag;
     if (notCollected.length > 0) console.log(`[guide] ${wrapperId}: fund "${rec.id}" fees not collected (run uses 0): ${notCollected.join(", ")}`);
   }

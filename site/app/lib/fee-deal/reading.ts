@@ -14,7 +14,7 @@ import { capLine, type CapLine } from "./kinds";
 import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Stage } from "./model";
 import { charged, hasBounds } from "./offers/capabilities";
 import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./deal-read";
-import { holdsFunds, type FeeKindId } from "./shapes";
+import { holdsFunds } from "./shapes";
 import { capacity } from "./offers/capacity";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
 
@@ -153,12 +153,6 @@ export interface Curve {
    */
   rate?: SiteValue;
   inputs: Record<string, SiteValue>;
-  /**
-   * On a curve of holding, the fees on it whose price list prints a maximum on the whole deposit that no data field holds (`perDeposit`):
-   * the curve does not apply it, so from the holding where it starts to bind the fee charged is lower than the curve. That holding is not
-   * computed: the maximum is in the list's words alone.
-   */
-  unapplied?: FeeRef[];
 }
 
 /** The rate of F-84 a curve converts a bound in `currency` at. */
@@ -313,10 +307,9 @@ function heldRates(r: DealRead, fx: FxSnapshot | null): Record<string, number> |
 
 /**
  * The curve of holding a value in a period, where a mark falls on it. A step of the value held in another currency (F-115) is read at F-84's
- * rate, and its top falls at that many shekels; without the rate the curve is not drawn. The fees on it of a kind in `perDeposit` are named
- * as fees whose maximum on the whole deposit it does not apply (`Curve.unapplied`).
+ * rate, and its top falls at that many shekels; without the rate the curve is not drawn.
  */
-function heldCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], fx: FxSnapshot | null, perDeposit: readonly FeeKindId[]): Drawn | null {
+function heldCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], fx: FxSnapshot | null): Drawn | null {
   const on = marks.filter((m) => m.on === "held");
   if (!on.length) return null;
   const rates: Record<string, number> = {};
@@ -329,9 +322,7 @@ function heldCurve(r: DealRead, p: DealPeriod, marks: readonly DealMark[], fx: F
     rateValues.push({ currency: c, rate: v });
   }
   const shekels = (m: DealMark) => m.amount * (m.currency === "ILS" ? 1 : rates[m.currency]!);
-  const curve = drawn(r, p, "held", "all", on, shekels, (v) => holdingCost(r.engine, p, v, rates), rateValues, undefined, {}, rates);
-  const unapplied = curve.series.map((x) => x.fee).filter((f) => perDeposit.includes(f.kind));
-  return { curve: unapplied.length ? { ...curve, unapplied } : curve };
+  return { curve: drawn(r, p, "held", "all", on, shekels, (v) => holdingCost(r.engine, p, v, rates), rateValues, undefined, {}, rates) };
 }
 
 function drawn(
@@ -381,7 +372,7 @@ function drawn(
 const ACTIONS: readonly DealAction[] = ["trade", "conversion", "deposit", "distribution", "transfer_out"];
 
 /** The curves of every period, a curve whose series equal another period's of the same action and side merged into it. */
-function curvesOf(r: DealRead, fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }, perDeposit: readonly FeeKindId[]): { curves: Curve[]; undrawn: Undrawn[] } {
+function curvesOf(r: DealRead, fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }): { curves: Curve[]; undrawn: Undrawn[] } {
   const curves: Curve[] = [];
   const undrawn: Undrawn[] = [];
   const same = (a: Curve, b: Curve) =>
@@ -401,7 +392,7 @@ function curvesOf(r: DealRead, fx: FxSnapshot | null, unit: { price: number | nu
   for (const p of r.reading.periods) {
     const marks = dealMarks(r.engine, p);
     for (const action of ACTIONS) for (const side of sidesOn(r, p, action)) take(actionCurve(r, p, marks, action, side, fx, unit));
-    take(heldCurve(r, p, marks, fx, perDeposit));
+    take(heldCurve(r, p, marks, fx));
   }
   return { curves, undrawn };
 }
@@ -586,13 +577,12 @@ export interface Reading {
 /**
  * The reading of a deal, from the deal read once (`readDealFor`), with the site's exchange rates (F-84) for a sum in another currency, and
  * the unit's price the person gave beside the chart (`unitPrice`, a number in `Reading.unitPrice.currency`; absent, or not above nothing,
- * where none is given), and the fees whose price list prints a maximum on the whole deposit that no data field holds (`perDeposit`, by
- * kind: `perDepositFees` of what the deal's template left out), which a curve of holding names.
+ * where none is given).
  */
-export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number | null, perDeposit: readonly FeeKindId[] = []): Reading {
+export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number | null): Reading {
   const currency = unitCurrency(r);
   const price = unitPrice !== undefined && unitPrice !== null && Number.isFinite(unitPrice) && unitPrice > 0 ? unitPrice : null;
-  const { curves, undrawn } = curvesOf(r, fx, { price, currency }, perDeposit);
+  const { curves, undrawn } = curvesOf(r, fx, { price, currency });
   return {
     picks: pickLine(r),
     stated: statedOf(r),

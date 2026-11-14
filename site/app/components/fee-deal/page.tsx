@@ -39,7 +39,7 @@ import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith } from "../../lib/fee-deal/store";
-import { dataBar, feePriceLists, perDepositFees, templateSource } from "../../lib/fee-deal/templates";
+import { dataBar, feePriceLists, templateSource } from "../../lib/fee-deal/templates";
 import { fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -222,8 +222,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
   // the fees whose price list prints a maximum on the whole deposit the reading does not apply, by what the deal's template left out
-  const perDeposit = useMemo(() => perDepositFees(picker.filled?.left ?? []), [picker.filled]);
-  const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice, perDeposit) } : null), [summary, read, data.fx, unitPrice, perDeposit]);
+  const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);

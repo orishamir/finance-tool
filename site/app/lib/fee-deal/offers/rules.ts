@@ -94,7 +94,7 @@ export const RULES: readonly RuleRow[] = [
   // direct expenses come out of the fund's assets, disclosed as a yearly rate per track
   { id: "provident-direct-expenses", when: { products: providentFamily, fees: ["direct_expenses"] }, verdict: { kind: "only", forms: ["held"], parts: [], conditions: ["track"] }, cite: ["PF-10", "PF-11", "PF-12", "KH-22", "IRA-16"], records: true },
   // an IRA is a fund of its own, not a track, with each member's own agreed fee
-  { id: "ira-no-track", when: { products: selfDirected, fees: ["balance", "direct_expenses"] }, verdict: { kind: "deny", conditions: ["track"] }, cite: ["IRA-17"], records: true },
+  { id: "ira-no-track", when: { products: selfDirected, fees: ["balance", "direct_expenses"] }, verdict: { kind: "deny", conditions: ["track"] }, cite: ["IRA-04", "IRA-17"], records: true },
   // the premium follows the fund's tables, drawn from deposits; how its share of deposits is counted is open
   { id: "pension-insurance", when: { products: providentFamily, fees: ["insurance_premium"] }, verdict: { kind: "only", forms: ["action"], parts: ["until"], conditions: ["track", "own"] }, cite: ["PEN-15", "PF-01"], records: true },
 
@@ -106,16 +106,16 @@ export const RULES: readonly RuleRow[] = [
   { id: "ira-corporate-event", when: { products: selfDirected, fees: ["corporate_event"] }, verdict: { kind: "only", forms: ["perAction"], parts: [], conditions: [] }, cite: ["IRA-16", "IRA-22"], records: true },
   { id: "ira-own", when: { products: selfDirected, fees: ["own"] }, verdict: { kind: "only", parts: [], conditions: [] }, cite: ["IRA-16", "IRA-22"], records: true },
 
-  // ---- a fund's own fees: a yearly share of its assets inside the unit price, the same for every holder
-  { id: "fund-management", when: { fees: ["fund_management"] }, verdict: { kind: "only", forms: ["held"], parts: ["until"], conditions: [] }, cite: ["MF-16"], records: true },
-  { id: "money-market-management", when: { products: MONEY_MARKET, fees: ["balance"] }, verdict: { kind: "only", forms: ["held"], parts: ["until"], conditions: [] }, cite: ["MF-16", "MF-17"], records: true },
+  // ---- a fund's own fees: a yearly share of its assets inside the unit price, the same for every holder, since a fund has no share classes
+  { id: "fund-management", when: { fees: ["fund_management"] }, verdict: { kind: "only", forms: ["held"], parts: ["until"], conditions: [] }, cite: ["MF-16", "MF-48"], records: true },
+  { id: "money-market-management", when: { products: MONEY_MARKET, fees: ["balance"] }, verdict: { kind: "only", forms: ["held"], parts: ["until"], conditions: [] }, cite: ["MF-16", "MF-17", "MF-48"], records: true },
   { id: "money-market-trustee", when: { products: MONEY_MARKET, fees: ["trustee"] }, verdict: { kind: "only", forms: ["held"], parts: [], conditions: [] }, cite: ["MF-20"], records: true },
   // a load on purchase, a deduction on redemption: shares of the unit price, units created and redeemed at one price a day
   { id: "money-market-load", when: { products: MONEY_MARKET, fees: ["load"] }, verdict: { kind: "only", forms: ["action"], parts: ["discount", "until"], conditions: ["actionSize", "own"] }, cite: ["MF-21", "MF-10"], records: true },
   { id: "money-market-redemption", when: { products: MONEY_MARKET, fees: ["redemption_deduction"] }, verdict: { kind: "only", forms: ["action"], parts: [], conditions: ["own"] }, cite: ["MF-22", "MF-10"], records: true },
-  // a fund order is executed at its day's price; no collected line names money-market units, so at a non-bank a sum per order and a minimum
-  // are open (a bank charges none, the bans below)
-  { id: "money-market-trade", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["min"], conditions: ["own"] }, cite: ["MF-10", "MF-26", "BRK-64", "BRK-65"], records: true },
+  // a fund order is executed at its day's price, at the fund's own hour; no rule limits what a non-bank that markets investments charges on
+  // these units, and no collected line names them, so there a sum per order and a minimum are open (a bank charges none, the bans below)
+  { id: "money-market-trade", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["min"], conditions: ["own"] }, cite: ["MF-10", "MF-67", "MF-26", "BRK-52", "BRK-64", "BRK-65"], records: true },
   { id: "money-market-own", when: { products: MONEY_MARKET, fees: ["own"] }, verdict: { kind: "only", forms: ["held"], parts: [], conditions: ["own"] }, records: true, cite: [] },
 
   // ---- the securities account and what is bought in it, as the collected price lists print them
@@ -123,10 +123,11 @@ export const RULES: readonly RuleRow[] = [
   { id: "trade-offset", when: { fees: ["trade"] }, verdict: { kind: "deny", parts: ["offset"] }, cite: [], records: true },
   // a deal of one security holds one kind of it, and its maximum on each security is its maximum
   { id: "one-security", when: { products: is("government-bond", "makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["trade", "custody"] }, verdict: { kind: "deny", parts: ["maxPerSecurity"], conditions: ["what", "held"] }, cite: [], records: true },
-  { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max", "maxPerSecurity"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: [], records: true },
+  // a maximum on each security and one on the whole deposit, as Leumi's list prints both
+  { id: "securities-custody", when: { products: is("brokerage-account", "government-bond"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["until", "min", "max", "maxPerSecurity"], conditions: ["held", "track", "channel", "portfolioSize", "own"] }, cite: ["BRK-69"], records: true },
   // custody on units: a share of what is held with a minimum where a non-bank charges it, which prints no maximum; a bank charges none (the
   // bans below)
-  { id: "units-custody", when: { products: is("makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["min"], conditions: ["own"] }, cite: ["BRK-17"], records: true },
+  { id: "units-custody", when: { products: is("makam", "money-market-fund-daily", "money-market-fund-renewable"), fees: ["custody"] }, verdict: { kind: "only", forms: ["held"], parts: ["min"], conditions: ["own"] }, cite: ["BRK-17", "BRK-52"], records: true },
   { id: "account-fee", when: { products: is("brokerage-account", "makam", "government-bond"), fees: ["fixed_period"] }, verdict: { kind: "only", forms: ["sum"], parts: ["until", "offset"], conditions: ["track", "own"] }, cite: [], records: true },
   { id: "current-account", when: { fees: ["current_account"] }, verdict: CURRENT_ACCOUNT, cite: [], records: true },
   { id: "current-account-fee", when: { products: is("current-account"), fees: ["fixed_period"] }, verdict: CURRENT_ACCOUNT, cite: [], records: true },
