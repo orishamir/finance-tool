@@ -426,7 +426,7 @@ export default function GuidePage() {
   const abroad = data.abroad && content?.abroad ? <GuideAbroad view={data.abroad} words={content.abroad} cp={cp} /> : null;
   const timelineNode =
     data.bundle && data.initial ? (
-      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} />
+      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} lumpSum={lumpSumIds.includes(record.id) ? { note: content?.lumpNote ?? null } : null} note={content?.chartNote?.(cp) ?? null} />
     ) : null;
 
   // the header's card: when the money is free, the deposit ceiling, the tax on the way out and the first fee, each as its section states it
