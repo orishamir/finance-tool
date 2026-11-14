@@ -1,0 +1,1534 @@
+{
+ "house:excellence": {
+  "id": "",
+  "name": "",
+  "kind": "brokerage-account",
+  "fees": [
+   {
+    "id": "",
+    "kind": "trade",
+    "by": [
+     {
+      "kind": "what",
+      "own": [
+       {
+        "name": "קרנות נאמנות מסורתיות",
+        "place": "israel",
+        "currency": "ILS"
+       }
+      ]
+     },
+     {
+      "kind": "track"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "tase",
+        "makam",
+        "mutualFunds"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.4,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 3,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "min": {
+          "v": 10,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 3,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "notes": [
+          "unfilled"
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "id": "c2",
+      "when": [
+       [
+        "קרנות נאמנות מסורתיות"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perAction",
+         "amount": {
+          "v": 16,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב (עמ' 3)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 3,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         }
+        }
+       }
+      ]
+     },
+     {
+      "id": "c3",
+      "when": [
+       [
+        "us"
+       ],
+       [
+        "3 סנט למניה, מינימום 8$"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perUnit",
+         "amount": {
+          "v": 0.03,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "min": {
+          "v": 8,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, מינימום (עמ' 4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "cap": {
+          "v": 2,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "currency": "USD",
+         "notes": [
+          "unfilled"
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "id": "c4",
+      "when": [
+       [
+        "us"
+       ],
+       [
+        "11$ פיקס לעסקה"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perAction",
+         "amount": {
+          "v": 11,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "cap": {
+          "v": 2,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "currency": "USD",
+         "notes": [
+          "unfilled"
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "id": "c5",
+      "when": [
+       [
+        "europe",
+        "world"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.4,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב (עמ' 4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "min": {
+          "v": 35,
+          "src": {
+           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+           "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, מינימום (עמ' 4)",
+           "publisher": "Excellence Trade (Phoenix investment house)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 4,
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "אקסלנס טרייד"
+          }
+         },
+         "currency": "USD",
+         "notes": [
+          "unfilled"
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "custody",
+    "stages": [
+     {
+      "price": {
+       "form": "held",
+       "rate": {
+        "v": 0.6,
+        "src": {
+         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+         "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) (עמ' 4)",
+         "publisher": "Excellence Trade (Phoenix investment house)",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 4,
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "אקסלנס טרייד"
+        }
+       },
+       "per": 3,
+       "every": 3,
+       "min": {
+        "v": 40,
+        "src": {
+         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+         "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, מינימום (עמ' 4)",
+         "publisher": "Excellence Trade (Phoenix investment house)",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 4,
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "אקסלנס טרייד"
+        }
+       },
+       "boundsEvery": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fixed_period",
+    "stages": [
+     {
+      "price": {
+       "form": "sum",
+       "amount": {
+        "v": 99,
+        "src": {
+         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+         "title": "תעריפון מלא - אקסלנס טרייד, חלק 6 - שירותים ועמלות נוספים, (6א) סעיף 1, דמי טיפול (עמ' 5)",
+         "publisher": "Excellence Trade (Phoenix investment house)",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 5,
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "אקסלנס טרייד"
+        }
+       },
+       "every": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fx",
+    "stages": [
+     {
+      "price": {
+       "form": "action",
+       "rate": {
+        "v": 0.1,
+        "src": {
+         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+         "title": "תעריפון מלא - אקסלנס טרייד, חלק 5 - מט\"ח, (5א) שירותים נפוצים, סעיף 1, עמלת חליפין (עמ' 5)",
+         "publisher": "Excellence Trade (Phoenix investment house)",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 5,
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "אקסלנס טרייד"
+        }
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "provider": "non-bank",
+  "template": {
+   "id": "house:excellence",
+   "name": "אקסלנס טרייד"
+  }
+ },
+ "house:discount": null,
+ "house:ibi": {
+  "id": "",
+  "name": "",
+  "kind": "brokerage-account",
+  "fees": [
+   {
+    "id": "",
+    "kind": "trade",
+    "by": [
+     {
+      "kind": "what",
+      "own": [
+       {
+        "name": "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל",
+        "place": "abroad",
+        "currency": null
+       }
+      ]
+     },
+     {
+      "kind": "track"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "tase"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.08,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "min": {
+          "v": 2.35,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         }
+        }
+       }
+      ]
+     },
+     {
+      "id": "c2",
+      "when": [
+       [
+        "makam"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.06,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "min": {
+          "v": 2.35,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         }
+        }
+       }
+      ]
+     },
+     {
+      "id": "c3",
+      "when": [
+       [
+        "mutualFunds"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.08,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "min": {
+          "v": 5,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בישראל (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         }
+        }
+       }
+      ]
+     },
+     {
+      "id": "c4",
+      "when": [
+       [
+        "us"
+       ],
+       [
+        "סנט למניה, מינימום 7.5$ לעסקה"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perUnit",
+         "amount": {
+          "v": 0.01,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "min": {
+          "v": 7.5,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     },
+     {
+      "id": "c5",
+      "when": [
+       [
+        "us"
+       ],
+       [
+        "פיקס 12$ לעסקה"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perAction",
+         "amount": {
+          "v": 12,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בניירות ערך הנסחרים בארה\"ב (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     },
+     {
+      "id": "c6",
+      "when": [
+       [
+        "europe",
+        "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל"
+       ],
+       "any"
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.3,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה) (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "min": {
+          "v": 30,
+          "src": {
+           "url": "docs/company-answers.md#ibi-2026-11-08",
+           "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה) (עמ' 73); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 73,
+           "effectiveFrom": "2026-01-27",
+           "ruleIds": [
+            "BRK-24",
+            "BRK-15"
+           ],
+           "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "custody",
+    "stages": [
+     {
+      "price": {
+       "form": "held",
+       "rate": {
+        "v": 0,
+        "src": {
+         "url": "docs/company-answers.md#ibi-2026-11-08",
+         "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, עמלות כלליות (עמ' 74); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+         "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 74,
+         "effectiveFrom": "2026-01-27",
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+        }
+       },
+       "per": 1,
+       "every": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fixed_period",
+    "stages": [
+     {
+      "price": {
+       "form": "sum",
+       "amount": {
+        "v": 15,
+        "src": {
+         "url": "docs/company-answers.md#ibi-2026-11-08",
+         "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, דמי שימוש עבור מסלולי ציטוט (עמ' 72); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+         "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 72,
+         "effectiveFrom": "2026-01-27",
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+        }
+       },
+       "every": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fx",
+    "stages": [
+     {
+      "price": {
+       "form": "action",
+       "rate": {
+        "v": 0,
+        "src": {
+         "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+         "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 5 - מטבע חוץ, סעיף 1, מרווח המרה (עמ' 6)",
+         "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 6,
+         "effectiveFrom": "2026-07-01",
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-25"
+         ],
+         "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+        }
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fx_spread",
+    "stages": [
+     {
+      "price": {
+       "form": "action",
+       "rate": {
+        "v": 0.7,
+        "src": {
+         "url": "docs/company-answers.md#ibi-2026-11-08",
+         "title": "הסכם פתיחת חשבון יחיד (גרסה 27.01.2026), נספח ח' - נספח עמלות יחיד, סעיף ד (עמ' 75); נשלח על ידי IBI לפי בקשה, 8.11.2026",
+         "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 75,
+         "effectiveFrom": "2026-01-27",
+         "ruleIds": [
+          "BRK-24",
+          "BRK-15"
+         ],
+         "own": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+        }
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "provider": "non-bank",
+  "template": {
+   "id": "house:ibi",
+   "name": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ"
+  }
+ },
+ "house:interactive-israel": {
+  "id": "",
+  "name": "",
+  "kind": "brokerage-account",
+  "fees": [
+   {
+    "id": "",
+    "kind": "trade",
+    "by": [
+     {
+      "kind": "what"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "us"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perUnit",
+         "amount": {
+          "v": 0.01,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, טבלת 'מניות', שורת USD (Shares)",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 1,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "min": {
+          "v": 2.5,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, טבלת 'מניות', שורת USD (Shares), מינימום לעסקה",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 1,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "cap": {
+          "v": 2,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערה לטבלת 'מניות': עמלת מקסימום במניות ארה\"ב",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 1,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     },
+     {
+      "id": "c2",
+      "when": [
+       [
+        "europe"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.15,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מניות/תעודות סל הנסחרות באירופה",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 1,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "min": {
+          "v": 2.5,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מינימום 2.5 בהתאם למטבע העסקה",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 1,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "custody",
+    "by": [
+     {
+      "kind": "held"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "us",
+        "europe",
+        "world"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "held",
+         "rate": {
+          "v": 0,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': עמלת אחזקה לניירות ערך בתל אביב בלבד",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 1,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "per": 1,
+         "every": 1
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fixed_period",
+    "by": [
+     {
+      "kind": "held"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "us",
+        "europe",
+        "world"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "sum",
+         "amount": {
+          "v": 0,
+          "src": {
+           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 7: התעריף חל על כל לקוח",
+           "publisher": "Interactive Israel (MEXEM LTD)",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 7,
+           "effectiveFrom": "2026-09-23",
+           "ruleIds": [
+            "BRK-40",
+            "BRK-41"
+           ],
+           "own": "אינטראקטיב ישראל"
+          }
+         },
+         "every": 1
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "fx",
+    "stages": [
+     {
+      "price": {
+       "form": "action",
+       "rate": {
+        "v": 0.002,
+        "src": {
+         "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+         "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח', שורת ILS (%)",
+         "publisher": "Interactive Israel (MEXEM LTD)",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 6,
+         "effectiveFrom": "2026-09-23",
+         "ruleIds": [
+          "BRK-40",
+          "BRK-41"
+         ],
+         "own": "אינטראקטיב ישראל"
+        }
+       },
+       "min": {
+        "v": 10,
+        "src": {
+         "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+         "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח', שורת ILS (%), מינימום לעסקה",
+         "publisher": "Interactive Israel (MEXEM LTD)",
+         "strength": "institution",
+         "checked": "2026-11-12",
+         "page": 6,
+         "effectiveFrom": "2026-09-23",
+         "ruleIds": [
+          "BRK-40",
+          "BRK-41"
+         ],
+         "own": "אינטראקטיב ישראל"
+        }
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "provider": "non-bank",
+  "template": {
+   "id": "house:interactive-israel",
+   "name": "אינטראקטיב ישראל"
+  }
+ },
+ "house:one-zero": {
+  "id": "",
+  "name": "",
+  "kind": "brokerage-account",
+  "fees": [
+   {
+    "id": "",
+    "kind": "trade",
+    "by": [
+     {
+      "kind": "what"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "tase",
+        "mutualFunds"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.3,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 4 - ניירות ערך, 4 (א) (1), מניות ואגרות חוב (עמ' 9-10)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-04",
+           "page": 9,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16",
+            "BRK-19",
+            "MF-27"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "min": {
+          "v": 30,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (1), מניות ואגרות חוב, מינימום (עמ' 9)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-04",
+           "page": 9,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "max": {
+          "v": 6000,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (1), מניות ואגרות חוב, מקסימום (עמ' 9)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-04",
+           "page": 9,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         }
+        }
+       }
+      ]
+     },
+     {
+      "id": "c2",
+      "when": [
+       [
+        "us"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "action",
+         "rate": {
+          "v": 0.3,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (4), מניות, אגרות חוב וקרנות נאמנות (עמ' 10)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 10,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "min": {
+          "v": 24,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (4), מינימום (עמ' 10)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 10,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "max": {
+          "v": 1500,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (4), מקסימום (עמ' 10)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 10,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "custody",
+    "by": [
+     {
+      "kind": "held"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "tase",
+        "mutualFunds"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "held",
+         "rate": {
+          "v": 0,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (5) דמי ניהול פיקדון ניירות ערך, הנסחרים בארץ (עמ' 11)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 11,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16",
+            "BRK-17"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "per": 1,
+         "every": 1
+        }
+       }
+      ]
+     },
+     {
+      "id": "c2",
+      "when": [
+       [
+        "us",
+        "europe",
+        "world"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "held",
+         "rate": {
+          "v": 0,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (5) דמי ניהול פיקדון ניירות ערך, הנסחרים בחוץ לארץ (עמ' 11)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 11,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "per": 1,
+         "every": 1
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "transfer_out",
+    "by": [
+     {
+      "kind": "what"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "tase",
+        "mutualFunds",
+        "us",
+        "europe",
+        "world"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perAction",
+         "amount": {
+          "v": 5,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (6) העברת ניירות ערך, לחשבון אותו לקוח בגוף פיננסי אחר (עמ' 11)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-12",
+           "page": 11,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-18",
+            "SW-33"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         }
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "corporate_event",
+    "by": [
+     {
+      "kind": "what"
+     }
+    ],
+    "cases": [
+     {
+      "id": "c1",
+      "when": [
+       [
+        "us",
+        "europe",
+        "world"
+       ]
+      ],
+      "stages": [
+       {
+        "price": {
+         "form": "perAction",
+         "amount": {
+          "v": 50,
+          "src": {
+           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 11 הוצאות צד ג', הוצאות קסטודיאן בחו\"ל (עמ' 17)",
+           "publisher": "One Zero Digital Bank Ltd.",
+           "strength": "institution",
+           "checked": "2026-11-04",
+           "page": 17,
+           "effectiveFrom": "2026-07-26",
+           "ruleIds": [
+            "BRK-16",
+            "BRK-38"
+           ],
+           "own": "וואן זירו הבנק הדיגיטלי בע\"מ"
+          }
+         },
+         "currency": "USD"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "provider": "bank",
+  "template": {
+   "id": "house:one-zero",
+   "name": "וואן זירו הבנק הדיגיטלי בע\"מ"
+  }
+ },
+ "track:kgl": {
+  "id": "",
+  "name": "אלטשולר שחם חיסכון פלוס כללי (אלטשולר שחם גמל ופנסיה בע\"מ)",
+  "kind": "kupat-gemel-lehashkaa",
+  "fees": [
+   {
+    "id": "",
+    "kind": "balance",
+    "stages": [
+     {
+      "price": {
+       "form": "held",
+       "rate": {
+        "v": 0.63,
+        "src": {
+         "url": "https://data.gov.il/he/datasets/cma/gemelnet",
+         "title": "גמל נט, resource 2024-today, field AVG_ANNUAL_MANAGEMENT_FEE (\"שיעור דמי ניהול ממוצעת שנתי – נכסים\"), REPORT_PERIOD 202609",
+         "publisher": "Capital Market, Insurance and Savings Authority (data.gov.il)",
+         "strength": "primary",
+         "checked": "2026-10-26",
+         "effectiveFrom": "2025-01-01",
+         "effectiveTo": "2025-12-31",
+         "ruleIds": [
+          "CAT-35",
+          "CAT-36",
+          "CAT-37",
+          "CAT-06"
+         ]
+        }
+       },
+       "per": 12,
+       "every": 1
+      }
+     }
+    ]
+   }
+  ],
+  "template": {
+   "id": "track:7798",
+   "name": "אלטשולר שחם חיסכון פלוס כללי (אלטשולר שחם גמל ופנסיה בע\"מ)"
+  }
+ },
+ "own:custody-monthly-min": {
+  "id": "",
+  "name": "",
+  "kind": "brokerage-account",
+  "fees": [
+   {
+    "id": "",
+    "kind": "custody",
+    "stages": [
+     {
+      "price": {
+       "form": "held",
+       "rate": {
+        "v": 0.6
+       },
+       "per": 3,
+       "every": 3,
+       "min": {
+        "v": 40
+       },
+       "boundsEvery": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "",
+    "kind": "trade",
+    "stages": [
+     {
+      "price": {
+       "form": "perAction",
+       "amount": {
+        "v": 11
+       },
+       "cap": {
+        "v": 2
+       },
+       "currency": "USD",
+       "notes": [
+        "unfilledClerk"
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
