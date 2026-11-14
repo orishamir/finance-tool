@@ -265,17 +265,10 @@
   .nums-plain .num-computed:not(.num-sample) {
     text-decoration: none;
   }
+  /* a figure the person typed: the entered ink alone, no highlight behind it (design.md, the number states; the "entered" tag keeps its own) */
   .num-entered {
     color: var(--entered);
-    background: var(--entered-subtle);
-    padding-inline: 0.15em;
     text-decoration: none;
-  }
-  /* figures the person typed, in the fee page's workbench, where nearly every figure is theirs: the entered ink alone, no highlight
-     behind each one */
-  .nums-entered-bare .num-entered {
-    background: none;
-    padding-inline: 0;
   }
   /* figures the person typed, inside a block that sums up the boxes they typed them in (the kit's TypedPlain): plain words, each still
      opening its sheet */

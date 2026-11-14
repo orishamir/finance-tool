@@ -51,7 +51,8 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
     <span className={cx("inline-flex min-h-[30px] max-w-full flex-wrap items-center gap-x-1 gap-y-0.5 rounded-md border px-2.5 py-0.5 text-sm", PART_LOOK[kind])}>
       <Lead kind={kind} mark={mark} lead={lead} />
       {(figure !== undefined || unit !== undefined) && (
-        <span className="inline-flex items-baseline gap-1 whitespace-nowrap text-[15px] tabular-nums">
+        // the figure and its unit as the page writes a figure, one left-to-right group with a sign on the number's right ("0.25%")
+        <span dir="ltr" className="inline-flex items-baseline gap-1 whitespace-nowrap text-[15px] tabular-nums">
           {figure}
           {unit}
         </span>

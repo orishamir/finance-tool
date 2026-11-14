@@ -3044,7 +3044,7 @@ function DragDemo({ today }: { today: string }) {
             <SharedLine lead={dealWords.cases.onceLead.replace("{any}", dealWords.cases.any.what!)}>
               <span>
                 {dealWords.cases.parts.min}
-                {fig(20, "nis_per_trade", today)} ₪ {sc.toAction}
+                {fig(20, "nis_per_trade", today)} {sc.toAction}
               </span>
             </SharedLine>
           </div>
@@ -3077,7 +3077,8 @@ function PhoneFrame({ children }: { children: ReactNode }) {
 }
 
 /** A sample figure in the cases' tables: a price list's, sourced. */
-const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit, today)} display={fmt.number} />;
+/** A sample figure written whole, its unit with it as the page writes it ("0.15%", "20 ₪"): a rate with every decimal it has. */
+const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit, today)} {...(unit.startsWith("pct") ? { display: fmt.pctPrinted } : {})} />;
 const rh = dealWords.cases.rowHeads;
 
 /** Custody by what is held: two cases with one price, so each row is one merged cell; "+ מקרה" at the end. */
@@ -3093,8 +3094,8 @@ function CustodyTable({ today }: { today: string }) {
       <CaseTable
         columns={cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id }))}
         rows={[
-          { id: "price", head: rh.rate!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(0.15, "pct_of_balance_per_period", today)}% {dealWords.price.per[3]}</span> }] },
-          { id: "max", head: rh.max!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(10000, "nis", today)} ₪ {sc.perCharge}</span> }] },
+          { id: "price", head: rh.rate!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(0.15, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}</span> }] },
+          { id: "max", head: rh.max!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(10000, "nis", today)} {sc.perCharge}</span> }] },
         ]}
         add={{ label: dealWords.cases.addSlot.case, onAdd: () => undefined }}
       />
@@ -3128,7 +3129,7 @@ function LadderTable({ today }: { today: string }) {
     </div>,
     <div className={line}>
       <span className="whitespace-nowrap">{dealWords.cases.over.trim()}</span>
-      <bdi className="whitespace-nowrap">{fmt.number(tops[1]!)} ₪</bdi>
+      <bdi dir="ltr" className="whitespace-nowrap">{fmt.nisWhole(tops[1]!)}</bdi>
     </div>,
   ];
 
@@ -3139,7 +3140,7 @@ function LadderTable({ today }: { today: string }) {
       <CaseTable
         ladder
         columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => undefined }))}
-        rows={[{ id: "price", head: rh.rate!, cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)}% {dealWords.price.per[12]}</span> })) }]}
+        rows={[{ id: "price", head: rh.rate!, cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
         add={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}
       />
     </FeeBlock>
@@ -3153,7 +3154,7 @@ function LadderTable({ today }: { today: string }) {
 function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   const [open, setOpen] = useState<string | null>("ta-d");
   const [track, setTrack] = useState("1");
-  const cell = (id: string, rate: number, more?: ReactNode) => ({ label: sc.open(id), onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)}% {perAction}{more}</span> });
+  const cell = (id: string, rate: number, more?: ReactNode) => ({ label: sc.open(id), onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)} {perAction}{more}</span> });
   return (
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
       <ConditionHead bare things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />
@@ -3169,8 +3170,8 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
             head: sc.what.ta,
             cells: [{ from: 0, span: 1, ...cell("ta-d", track === "1" ? 0.5 : 0.45) }, { from: 1, span: 1, ...cell("ta-b", 0.55) }],
             lines: [
-              { id: "min", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.min}{fig(20, "nis_per_trade", today)} ₪ {sc.toAction}</span> }] },
-              { id: "max", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} ₪ {sc.toAction}</span> }] },
+              { id: "min", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.min}{fig(20, "nis_per_trade", today)} {sc.toAction}</span> }] },
+              { id: "max", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} {sc.toAction}</span> }] },
             ],
           },
           { id: "makam", head: sc.what.makam, cells: [{ from: 0, span: 1, ...cell("mk-d", 0.09) }, { from: 1, span: 1, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam} · ${sc.channels.branch}`, onAdd: () => undefined } }] },
@@ -3185,11 +3186,11 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
 
 /** The same grid read as rows, as a phone shows it: a group per value of what is bought, its channels as rows. */
 function TradeGroups({ today }: { today: string }) {
-  const part = (rate: number) => <PartChip kind="price" figure={fig(rate, "pct_of_trade", today)} unit="%" words={perAction} />;
+  const part = (rate: number) => <PartChip kind="price" figure={fig(rate, "pct_of_trade", today)} words={perAction} />;
   return (
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
       <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }]}>
-        <CaseGroup head={sc.what.ta} shared={<span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} ₪ {sc.toAction}</span>}>
+        <CaseGroup head={sc.what.ta} shared={<span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} {sc.toAction}</span>}>
           <CaseRow when={[{ text: sc.channels.web }]} label={sc.open(sc.channels.web)} onOpen={() => undefined}>{part(0.5)}</CaseRow>
           <CaseRow when={[{ text: sc.channels.branch }]} label={sc.open(sc.channels.branch)} onOpen={() => undefined}>{part(0.55)}</CaseRow>
         </CaseGroup>
@@ -3245,7 +3246,7 @@ function LiftDemo({ today }: { today: string }) {
   const lw = dealWords.cases.lifted;
   const priced = (
     <EditInPlace label={`${lw.edit}${sc.liftRate}`} field={() => <FigureField value={entered(rate, "pct_of_trade", today, g.sampleAbout)} label={sc.liftRate} unit="%" sign="%" tight onCommit={setRate} />}>
-      <Num value={entered(rate, "pct_of_trade", today, g.sampleAbout)} display={fmt.number} />
+      <Num value={entered(rate, "pct_of_trade", today, g.sampleAbout)} display={fmt.pctPrinted} />
     </EditInPlace>
   );
   return (
@@ -3275,7 +3276,7 @@ function LiftDemo({ today }: { today: string }) {
               }}
             />
           );
-          const pricedCell = { from, span: n - from, label: sc.open(head), content: <span>{priced}% {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
+          const pricedCell = { from, span: n - from, label: sc.open(head), content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
           const item = `kit:row:${j}`;
           return {
             id: head,
