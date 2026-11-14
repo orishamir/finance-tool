@@ -214,6 +214,7 @@ describe("the toolbox", () => {
     for (const g of ["price", "bound", "by", "link", "more"]) expect(shown).toContain(feeDeal.cases.groups[g]!);
     expect(shown).toContain(feeDeal.cases.parts.flatSmall.default!.trim());
     expect(shown).toContain(feeDeal.cases.actionSize.default!);
+    expect(shown).toContain(feeDeal.cases.things.own!);
     expect(shown).toContain(dealCases.toolbox.hint);
     expect(shown).toContain(feeDeal.panel.remove);
   });
