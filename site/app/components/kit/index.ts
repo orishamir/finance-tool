@@ -86,6 +86,7 @@ export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, t
 export { AddSlot, CaseGrid, CaseTable, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type GridCellView, type GridHead } from "./case-table";
 export { ActionMenu, DropBin, Grip, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
 export { flip } from "./flip";
+export { KnobButton } from "./knob-button";
 export { EditInPlace } from "./edit-in-place";
 export { FeePalette, type PaletteItem } from "./fee-palette";
 export { ChangeDivider } from "./change-divider";

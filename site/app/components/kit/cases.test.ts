@@ -52,11 +52,11 @@ describe("a fee's band", () => {
 });
 
 describe("a fee's table and grid", () => {
-  const add = { label: "מקרה", onAdd: () => undefined };
-  it("a table's column head opens its case, named for it; its add slot is a button that says what it adds", () => {
+  const add = { label: "הוספת מקרה", onAdd: () => undefined };
+  it("a table's column head opens its case, named for it; its add is a plus knob whose spoken name and title say what it adds", () => {
     const out = html(h(CaseTable, { columns: [{ id: "a", head: "ערך", label: "לפתוח את המקרה: ערך", onOpen: () => undefined }], rows: [{ id: "price", head: "שיעור", cells: [{ from: 0, span: 1, content: "1%" }] }], add }));
     expect(out).toMatch(/<button[^>]*aria-label="לפתוח את המקרה: ערך"/);
-    expect(out).toMatch(/data-add-slot="pill"[^>]*>.*מקרה/);
+    expect(out).toMatch(/<button[^>]*aria-label="הוספת מקרה"[^>]*title="הוספת מקרה"[^>]*data-head-add=""/);
     expect(out).toContain("שיעור");
   });
   it("a table's empty place draws no cell", () => {
@@ -71,7 +71,13 @@ describe("a fee's table and grid", () => {
     expect(out).toMatch(/aria-label="להוסיף מקרה כאן: r · y"/);
   });
   it("an add slot says whether its question is open", () => {
-    expect(bare(h(AddSlot, { add: { ...add, expanded: true }, shape: "row" }))).toContain('aria-expanded="true"');
+    expect(bare(h(AddSlot, { add: { ...add, expanded: true } }))).toContain('aria-expanded="true"');
+  });
+  it("between two columns a plus adds one there, named by the two; none where the place gives nothing", () => {
+    const cols = ["א", "ב", "ג"].map((x) => ({ id: x, head: x, label: x, onOpen: () => undefined }));
+    const out = html(h(CaseTable, { columns: cols, rows: [], insert: (k: number) => (k === 1 ? { label: "הוספת ערוץ", spoken: "הוספת ערוץ בין ״א״ ל״ב״", onAdd: () => undefined } : null) }));
+    expect(out.match(/data-between-add="x"/g)).toHaveLength(1);
+    expect(out).toMatch(/aria-label="הוספת ערוץ בין ״א״ ל״ב״"[^>]*tabindex="-1"|tabindex="-1"[^>]*aria-label="הוספת ערוץ בין ״א״ ל״ב״"/);
   });
 });
 
