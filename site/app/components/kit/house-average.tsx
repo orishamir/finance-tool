@@ -10,7 +10,7 @@ import { DocLink } from "./doc-link";
 import { DotLine } from "./notes";
 
 /** A column's figures: the lowest and, where it differs, "עד" the highest, a custody average with "בשנה". */
-export function AverageFigures({ average, house }: { average: ColumnAverage; house: string }) {
+function AverageFigures({ average, house }: { average: ColumnAverage; house: string }) {
   const said = (v: SiteValue): SiteValue => ({ ...v, about: copy.about(house), lead: copy.sheetLead });
   const same = average.lo.value === average.hi.value;
   return (
