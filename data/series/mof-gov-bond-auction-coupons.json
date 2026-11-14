@@ -13,8 +13,6 @@
   "cadence": "on change",
   "stale_after_days": 30,
   "terms_of_use": {
-    "status": "confirmed",
-    "fallback": "none needed",
     "terms_url": "https://data.gov.il/he/terms-of-use",
     "read_on": "2026-11-14",
     "attribution": "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"נתוני החוב הממשלתי המקומי\", data.gov.il (https://data.gov.il/dataset/goverment-domesticdebt), לפי רישיון השימוש במאגרי המידע הממשלתיים"

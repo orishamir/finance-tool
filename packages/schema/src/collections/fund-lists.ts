@@ -39,7 +39,7 @@ export const fundListFile = z.strictObject({
   snapshot: isoDate,
   source,
   checked: isoDate,
-  /** Republishing terms (architecture 3.3): the file ships only when `status` is `confirmed`. */
+  /** The publisher's licence as read: its page, the day it was read, and its attribution line. */
   terms_of_use: seriesTerms,
   raw: z.strictObject({ archive_key: z.string().min(1), sha256: z.string().regex(/^[0-9a-f]{64}$/) }),
   funds: z.array(fundListRow),

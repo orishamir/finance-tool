@@ -522,7 +522,7 @@ Called for by 3.9 of the product ("exportable and importable as a file so the fo
 
 ## 8. Banks and investment houses
 
-A bank's or an investment house's page (`components/decoder/institutions/`). Called for by 3.10 Out of the product ("for a product name (for example a bank's deposit name): the wrapper it is, with a link to its guide page"), its 3.10 Data ("bank deposit and savings-plan products … from tariff snapshots and product pages"), N6, D3, D22, data-schema §3.7, §3.14. No colour roles of their own. D22 applies to every average and list: a figure whose publisher forbids copying is a link, never a number.
+A bank's or an investment house's page (`components/decoder/institutions/`). Called for by 3.10 Out of the product ("for a product name (for example a bank's deposit name): the wrapper it is, with a link to its guide page"), its 3.10 Data ("bank deposit and savings-plan products … from tariff snapshots and product pages"), N6, D3, D22, data-schema §3.7, §3.14. No colour roles of their own.
 
 ### 8.7 Bank product row and brokerage group card
 
