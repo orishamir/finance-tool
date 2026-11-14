@@ -204,8 +204,9 @@ describe("normalise", () => {
     ]);
     // every track the circular's readings name is a general track of a provident fund for annuity in the stored file's terms
     const general = TRACK_READINGS.gemelnet.families.find((f) => f.id === "general")!;
-    for (const [, r] of gemel) if (r.reading !== "company-closed") expect(general.holds({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
-    expect(general.holds({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
+    const track = (fundId: number, name: string, classification: string) => ({ fundId, name, classification, specialization: "כללי", parentFund: null });
+    for (const [id, r] of gemel) if (r.reading !== "company-closed") expect(general.holds(track(id, r.name, "תגמולים ואישית לפיצויים"), [])).toBe(true);
+    expect(general.holds(track(880, "מיטב השתלמות כללי", "קרנות השתלמות"), [])).toBe(false);
     // a study fund's general track is open; a Gemel-Net id is read in Gemel-Net only
     expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet", 880)).toBe(false);
     expect(closedTrack("", "מיטב בטחון", "pensia-net", 923)).toBe(false);

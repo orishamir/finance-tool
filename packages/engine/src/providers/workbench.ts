@@ -12,7 +12,7 @@ import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
-import { stoppedOnQuestion } from "../open-readings.ts";
+import { stoppedOnGap, stoppedOnQuestion } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -176,8 +176,11 @@ export type NotComparableReason =
   | { code: "needs-fx-rate"; detail: string }
   /** the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string }
-  /** a run of the row stopped on an open question whose readings gave it different results (`acrossReadings`): nothing is ranked on one. */
-  | { code: "rule-open"; ruleId: string; question: string };
+  /**
+   * a run of the row stopped on its rule: on an open question whose readings gave it different results (`question`, `acrossReadings`), or on
+   * a method gap where no reading of the case exists (`gap`, G-38). Nothing is ranked on one: its value after tax is not known.
+   */
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
 
 export interface ProviderBase {
   id: string;
@@ -957,8 +960,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w), ctx);
       if (other.real > run.real) [units, run] = [w, other];
     }
-    // a run the readings of an open question split (TXG OQ17 at a falling CPI) has no value after tax to compare, with or without the fees
-    const stopped = stoppedOnQuestion(noneT) ?? stoppedOnQuestion(run);
+    // a run the readings of an open question split (TXG OQ17 at a falling CPI), or one its ledger listed on a method gap (G-38), has no value
+    // after tax to compare, with or without the fees: its exit tax was never charged
+    const stopped = stoppedOnQuestion(noneT) ?? stoppedOnGap(noneT) ?? stoppedOnQuestion(run) ?? stoppedOnGap(run);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
@@ -1074,7 +1078,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
 
   const reasonOf = (r: NotComparableProvider): Reason =>
     r.reason.code === "rule-open"
-      ? { code: "rule-open", ruleIds: [r.reason.ruleId], gapIds: [], detail: r.reason.question }
+      ? { code: "rule-open", ruleIds: [r.reason.ruleId], gapIds: r.reason.gap ? [r.reason.gap] : [], ...(r.reason.question ? { detail: r.reason.question } : {}) }
       : {
           code: r.reason.code === "data-missing" || r.reason.code === "record-error" ? "missing-record" : "missing-input",
           ruleIds: [],
