@@ -44,9 +44,9 @@ describe("the deposits page's offers", () => {
     expect(on("yahav-pikadon-leshana-kavua-from-200000", 200_000) as number).toBeCloseTo(5_600, 6);
   });
 
-  it("does not open Mizrahi-Tefahot's lower tier at the bound its table prints as not included, nor any Yahav tier at a bound two tiers print (F-108)", () => {
+  it("does not open Mizrahi-Tefahot's lower tier at the bound its table prints as not included, nor a tier at a bound two tiers print that no other table decides (F-108)", () => {
     const names = sheetNames(data);
-    const cell = (bank: string, term: "y1" | "y2" | "m6" | "week", kind: "fixed" | "variable", amount: number) => cellOf(data, bank, term, kind, amount, (o) => names.get(o.id)!);
+    const cell = (bank: string, term: "y1" | "y2" | "m6" | "week" | "m1" | "m3", kind: "fixed" | "variable", amount: number) => cellOf(data, bank, term, kind, amount, (o) => names.get(o.id)!);
     // 261, "טווח סכום להפקדה (לא כולל)": 100,000 ₪ is the upper tier's (1.97%), not 30,000 to 100,000 (1.72%)
     const low261 = offer("mizrahi-tefahot-duvdevan-hodshi-prime-shana-261")!;
     expect(opens(low261, 100_000)).toBe(false);
@@ -55,19 +55,23 @@ describe("the deposits page's offers", () => {
     // 259 at 50,000 ₪: the tier from 50,000 (2%), not the one up to it (1.15%)
     expect(opens(offer("mizrahi-tefahot-rimonim-rivoni-prime-2-shanim-259")!, 50_000)).toBe(false);
     expect(opens(offer("mizrahi-tefahot-rimonim-rivoni-prime-2-shanim-259-from-50000")!, 50_000)).toBe(true);
-    // Yahav's six-month fixed deposit at 50,000 and 100,000 ₪: printed by two tiers each, unknown, never both open
-    for (const amount of [50_000, 100_000]) {
-      const both = offersOf(data, "m6", "fixed").filter((o) => o.bank === "yahav");
-      expect(both.filter((o) => opens(o, amount))).toEqual([]);
-      expect(both.some((o) => unknownAt(o, amount))).toBe(true);
-      expect(cell("yahav", "m6", "fixed", amount)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
+    // Yahav's fixed deposits: the fixed-rate board on p.1 starts each tier at the amount the 447 table prints twice, at the same rates,
+    // so the amount opens the higher tier
+    for (const [term, amount, rate] of [["m6", 50_000, 2], ["m6", 100_000, 2.2], ["m6", 49_999, 1.8], ["week", 50_000, 0.1], ["week", 500_000, 0.2], ["m1", 500_000, 0.15], ["m3", 500_000, 0.6], ["m3", 499_999, 0.55]] as const) {
+      expect(cell("yahav", term, "fixed", amount).pick?.rate_offered.value, `${term} ${amount}`).toBe(rate);
+      expect(offersOf(data, term, "fixed").filter((o) => o.bank === "yahav" && unknownAt(o, amount)), `${term} ${amount}`).toEqual([]);
     }
+    // its prime-linked weekly deposit at 500,000 ₪: printed by two tiers, which no table the records read decides, unknown and never both open
+    const both = offersOf(data, "week", "variable").filter((o) => o.bank === "yahav");
+    expect(both.filter((o) => opens(o, 500_000))).toEqual([]);
+    expect(both.some((o) => unknownAt(o, 500_000))).toBe(true);
+    expect(cell("yahav", "week", "variable", 500_000)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
   });
 
   it("folds the offers the amount does not open under the list's own two chips, and says where it does not know (F-108)", () => {
     const y1 = offersOf(data, "y1", "fixed");
-    // Yahav's six-month fixed deposit: 50,000 ₪ is printed by two of its tiers; every one-year table decides 60,000 ₪
-    expect(foldedOffers(offersOf(data, "m6", "fixed"), 50_000, { conditional: false, linked: false }).unknown).toBe(true);
+    // Yahav's prime-linked weekly deposit: 500,000 ₪ is printed by two of its tiers; every one-year table decides 60,000 ₪
+    expect(foldedOffers(offersOf(data, "week", "variable"), 500_000, { conditional: false, linked: false }).unknown).toBe(true);
     expect(foldedOffers(y1, 60_000, { conditional: false, linked: false }).unknown).toBe(false);
     // 100 ₪ opens few: the fold holds linked offers and offers only some may open, and loses them with their chips off
     const all = foldedOffers(y1, 100, { conditional: true, linked: true });

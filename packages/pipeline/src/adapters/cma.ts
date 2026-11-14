@@ -53,33 +53,104 @@ export const USER_AGENT =
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
 /**
- * Pension-Net's general investment tracks, which the investment-tracks circular closes to members who were not in them on 1.1.2016
- * (CAT-19, circular 2022-9-30 s.3(ד)), by fund id, each read in Pension-Net 202609 and checked to be a general track in the circular's
- * sense. A name that merely ends in "כללי" is not enough: an age or specialised track can carry the word (CAT-19).
+ * A kind of fund the investment-tracks circular's "קופת גמל" leaves out (CAT-19, circular 2022-9-30 p.3 s.2), so a general track of it is
+ * not closed by the circular: a sick-pay fund, a self-directed fund, a guaranteed-yield fund ("קופת גמל מבטיחת תשואה", as the
+ * management-fee regulations define it), or the Leumi employees' provident funds the definition names.
  */
-export const PENSION_GENERAL_CLOSED: ReadonlyMap<number, string> = new Map([
-  [2002, "כלל פנסיה כללי"],
-  [2009, "מנורה מבטחים פנסיה - כללי"],
-  [2102, "מגדל מקפת אישית כללי"],
-  [2145, "מגדל מקפת משלימה כללי"],
-  [2164, "הראל פנסיה כללית - כללי"],
-  [2172, "הראל פנסיה - גילעד כללי"],
-  [2176, "כלל פנסיה משלימה - כללי"],
-  [2177, "הראל פנסיה - מנוף כללי"],
-]);
+export type FundOutsideCircular = "sick-pay" | "self-directed" | "guaranteed-yield" | "leumi-employees";
 
-/** A Pension-Net name whose last word is "כללי" ("פנסיה כללית", the general fund itself, is not): a refresh that meets one not in
- *  `PENSION_GENERAL_CLOSED` reports it, so it is neither dropped nor kept without a reading of CAT-19. */
+/**
+ * What the circular makes of a general investment track: closed to members who were not in it on its start date (s.3(ד)); not closed
+ * by it, its fund being of a kind s.2 leaves out; or unsettled, where the track may be in such a fund and that is not yet read. An
+ * unsettled track is kept, since only a reading drops one.
+ */
+export type GeneralTrackReading =
+  | { name: string; cat19: "closed" }
+  | { name: string; cat19: "outside"; fund: FundOutsideCircular }
+  | { name: string; cat19: "unsettled"; mayBe: FundOutsideCircular };
+
+/** The columns of a regulator row that say whether it is a general track. */
+export interface TrackRow {
+  name: string;
+  classification: string;
+  specialization: string;
+}
+
+/** A dataset's general tracks: which rows are general tracks, and the CAT-19 reading of each, by fund id. */
+export interface GeneralTracks {
+  isGeneral: (row: TrackRow) => boolean;
+  readings: ReadonlyMap<number, GeneralTrackReading>;
+}
+
+const closed = (name: string): GeneralTrackReading => ({ name, cat19: "closed" });
+const outside = (name: string, fund: FundOutsideCircular): GeneralTrackReading => ({ name, cat19: "outside", fund });
+const unsettled = (name: string, mayBe: FundOutsideCircular): GeneralTrackReading => ({ name, cat19: "unsettled", mayBe });
+
+/** Gemel-Net's classification for a provident fund for annuity, which has none of its own (PEN). */
+export const GEMEL_ANNUITY_CLASSIFICATION = "תגמולים ואישית לפיצויים";
+
+/** A Pension-Net name whose last word is "כללי" ("פנסיה כללית", the general fund itself, is not). */
 export const endsInGeneral = (name: string): boolean => /(?:^|[\s\-])כללי\s*$/.test(name);
+
+/**
+ * The general tracks of each dataset and their CAT-19 readings, each read in the regulator's 202609 file. Pension-Net has no
+ * specialization column, so a name ending in "כללי" marks a candidate; that is not enough by itself, since an age or specialised track can
+ * carry the word, and each listed one was checked to be a general track in the circular's sense. In Gemel-Net the circular's general tracks
+ * are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים", specialization "כללי"; the study funds and the
+ * provident funds for investing it does not cover. A refresh reports a general track with no reading, so none is dropped or kept without
+ * one. `closedTrack` leaves out the closed ones; an unsettled one stays until it is read.
+ */
+export const GENERAL_TRACKS: Readonly<Record<CmaDataset, GeneralTracks>> = {
+  "pensia-net": {
+    isGeneral: (r) => endsInGeneral(r.name),
+    readings: new Map([
+      [2002, closed("כלל פנסיה כללי")],
+      [2009, closed("מנורה מבטחים פנסיה - כללי")],
+      [2102, closed("מגדל מקפת אישית כללי")],
+      [2145, closed("מגדל מקפת משלימה כללי")],
+      [2164, closed("הראל פנסיה כללית - כללי")],
+      [2172, closed("הראל פנסיה - גילעד כללי")],
+      [2176, closed("כלל פנסיה משלימה - כללי")],
+      [2177, closed("הראל פנסיה - מנוף כללי")],
+    ]),
+  },
+  gemelnet: {
+    isGeneral: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי",
+    readings: new Map([
+      // each sits in a family of guaranteed-yield tracks (119 beside 530 to 532; 260 beside 533 and 536; 263 beside 539; 923 beside 120
+      // and 529), and whether its fund is a guaranteed-yield fund is not yet read
+      [119, unsettled("מנורה מבטחים יותר מסלול ד'", "guaranteed-yield")],
+      [260, unsettled("מנורה מבטחים אמיר כללי", "guaranteed-yield")],
+      [263, unsettled("בר קרן גמולים קופת גמל לתגמולים ופיצויים בניהול כלל גמל בע\"מ", "guaranteed-yield")],
+      [923, unsettled("מיטב בטחון", "guaranteed-yield")],
+      // named by the circular's definition; its company is also one EXCLUDED_COMPANIES leaves out (520005497)
+      [229, outside("קופת התגמולים של עובדי בנק לאומי", "leumi-employees")],
+      [857, outside("הראל - דקל קופת גמל לדמי מחלה", "sick-pay")],
+      [872, outside("אלטשולר שחם מרפא קופה מרכזית לדמי מחלה", "sick-pay")],
+      [1008, outside("הפניקס קופה לתשלום דמי מחלה", "sick-pay")],
+      [1161, outside("מקפת דמי מחלה", "sick-pay")],
+      [1486, outside("מיטב גמל בניהול אישי", "self-directed")],
+      [1514, outside("סלייס גמל בניהול אישי", "self-directed")],
+      [1541, outside("גלובל נט גמל IRA", "self-directed")],
+      [2023, outside("הפניקס גמל בניהול אישי", "self-directed")],
+      [2098, outside("גלובל נט גמל בניהול אישי", "self-directed")],
+      [8888, outside("מגדל לתגמולים בניהול אישי IRA", "self-directed")],
+      [14938, outside("אקטיון גמל  IRA", "self-directed")],
+      [15367, outside("מנורה מבטחים גמל בניהול אישי IRA", "self-directed")],
+    ]),
+  },
+};
 
 /**
  * A track closed to joiners, left out with those companies: the regulator marks it as for workers of
  * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
- * of investment tracks), or it is one of Pension-Net's general tracks listed in `PENSION_GENERAL_CLOSED` (CAT-19). Gemel-Net's general
- * tracks are not read by this rule: which of its "כללי" rows the same section closes in annuity funds was not checked one by one.
+ * of investment tracks), or it is a general track CAT-19 closes (`GENERAL_TRACKS`).
  */
 export const closedTrack = (population: string, name: string, dataset?: CmaDataset, fundId?: number): boolean =>
-  population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name) || (dataset === "pensia-net" && fundId !== undefined && PENSION_GENERAL_CLOSED.has(fundId));
+  population.trim().startsWith("עובדי ") ||
+  /קצבה קיימים|זכאים קיימים/.test(name) ||
+  (dataset !== undefined && fundId !== undefined && GENERAL_TRACKS[dataset].readings.get(fundId)?.cat19 === "closed");
+
 
 /**
  * Managing companies left out of the data, by legal id (43 companies): their funds serve one
@@ -522,7 +593,10 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
     if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();
     if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
-    if (ctx.config.dataset === "pensia-net" && endsInGeneral(get(r, "FUND_NAME"))) problems.push(`fund ${get(r, "FUND_ID")}: "${get(r, "FUND_NAME")}" ends in "כללי" and is not in PENSION_GENERAL_CLOSED; say whether it is a general track closed to joiners (CAT-19)`);
+    const general = GENERAL_TRACKS[ctx.config.dataset];
+    const row = { name: get(r, "FUND_NAME"), classification: get(r, "FUND_CLASSIFICATION"), specialization: get(r, "SPECIALIZATION") };
+    if (general.isGeneral(row) && !general.readings.has(Number(get(r, "FUND_ID").trim())))
+      problems.push(`fund ${get(r, "FUND_ID")}: "${row.name}" is a general track with no reading in GENERAL_TRACKS; say whether CAT-19 closes it to joiners`);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);
