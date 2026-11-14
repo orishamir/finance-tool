@@ -27,6 +27,8 @@ describe("F-97 a self-employed person's standing is a whole tax year's", () => {
       expect(s.per).toBe("year");
       expect(s.room[0]).toBeCloseTo(946, 6);
       expect(s.over[0]).toBe(0);
+      // the room holds the 1,620 back, valued at the brackets without the person's credit points
+      expect(s.flags).toEqual(["G-23"]);
     }
   });
   it("flags the deduction valued at the brackets (G-23)", () => {

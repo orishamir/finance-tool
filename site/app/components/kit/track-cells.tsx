@@ -6,7 +6,7 @@ import { shareFraction, shareText, type ExposureShares } from "../../lib/track-e
 import { trackLabels } from "../../lib/track-labels";
 import { depositFeeNoneByRule, type SiteValue } from "../../lib/value";
 import { IconAlert, IconExternal } from "../icons";
-import { Num } from "../provenance";
+import { IdRef, Num } from "../provenance";
 import { mostlyHebrew } from "../../lib/source-label";
 import { ProductFigures, ProductIdLink } from "./product-table";
 import { MeterBar } from "./meter-bar";
@@ -92,16 +92,26 @@ export function ExposureCell({ value, size = "inline" }: { value: ExposureShares
   );
 }
 
-/** The default track's tag, then the facts about this track (lib/track-labels.ts: "חדש" for a track opened in or after the fee year). Nothing when there is none. */
-export function TrackLabels({ isDefault, track }: { isDefault?: boolean; track: { inception: string | null; reportPeriod: string } }) {
+/**
+ * The default track's tag, then the facts about this track (lib/track-labels.ts: "חדש" for a track opened in or after the fee year), then,
+ * where the readings leave open whether new members may join (`joiningOpen`, the question that holds it), a caution tag that says so with
+ * the question's chip. Nothing when there is none.
+ */
+export function TrackLabels({ isDefault, track }: { isDefault?: boolean; track: { inception: string | null; reportPeriod: string; joiningOpen?: string | null } }) {
   const labels = trackLabels(track);
-  if (!isDefault && labels.length === 0) return null;
+  if (!isDefault && labels.length === 0 && !track.joiningOpen) return null;
   return (
-    <span className="inline-flex flex-wrap gap-1.5">
+    <span className="inline-flex flex-wrap items-center gap-1.5">
       {isDefault && <Tag tone="parameter">{copy.default}</Tag>}
       {labels.map((l) => (
         <Tag key={l}>{copy.labels[l]}</Tag>
       ))}
+      {track.joiningOpen && (
+        <span className="inline-flex items-center gap-1">
+          <Tag tone="caution">{copy.joiningOpen.tag}</Tag>
+          <IdRef id={track.joiningOpen} />
+        </span>
+      )}
     </span>
   );
 }

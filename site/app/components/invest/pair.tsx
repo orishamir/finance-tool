@@ -149,11 +149,13 @@ export type WhyNone = ReturnType<typeof whyNoKindAt>;
 export function whyNoKindAt(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, ways: readonly KindAt[]) {
   const snap = bundle.snapshots.find((s) => s.id === houseId);
   const kinds = ways.filter((f, i) => ways.findIndex((g) => g.option === f.option) === i);
-  const reasons = kinds.map((f) => ({ kind: c.stairs.kinds[f.option] ?? f.option, why: whyOfKind(bundle, houseId, f), at: entryOfWhy(bundle, houseId, f) }));
+  // a run its open question's readings stopped (method §13): the reason's sentence carries the question, whose card it opens
+  const questionOf = (f: KindAt) => (f.at?.reason?.code === "rule-open" ? f.at.reason.question : undefined);
+  const reasons = kinds.map((f) => ({ kind: c.stairs.kinds[f.option] ?? f.option, why: whyOfKind(bundle, houseId, f), at: entryOfWhy(bundle, houseId, f), question: questionOf(f) }));
   const told = reasons.filter((r, i) => reasons.findIndex((x) => x.why === r.why) === i);
   const why = told.length === 1 ? told[0]!.why : told.map((r) => `${r.kind}: ${r.why}`).join(" ");
   const state: "doubt" | "missing" | "notSold" | "other" = kinds.some((f) => f.at?.doubt || doubtOf(snap, f.option)) ? "doubt" : snap?.missing ? "missing" : kinds.length > 0 && kinds.every((f) => !!f.at?.availability) ? "notSold" : "other";
-  const parts = told.map((r) => ({ ...(told.length > 1 ? { head: r.kind } : {}), text: r.why, ...(r.at ? { doc: { href: sourceHref(r.at.source), title: withoutCodes(r.at.source.title) } } : {}) }));
+  const parts = told.map((r) => ({ ...(told.length > 1 ? { head: r.kind } : {}), text: r.why, ...(r.at ? { doc: { href: sourceHref(r.at.source), title: withoutCodes(r.at.source.title) } } : {}), ...(r.question ? { question: r.question } : {}) }));
   // a rule's card replaces the reasons, so it opens only where every reason has a rule behind it: a kind with none would lose its reason
   const rules = told.every((r) => r.at?.rule_ids?.length) ? [...new Set(told.flatMap((r) => entryRules(r.at!)))] : [];
   return { state, why: why || c.funds.cannot, parts: parts.length ? parts : [{ text: c.funds.cannot }], rules };

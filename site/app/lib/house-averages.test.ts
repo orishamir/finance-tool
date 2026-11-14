@@ -51,3 +51,57 @@ describe("a house's average charged (F-122)", () => {
     expect(data.houses.find((h) => h.id === "pepper")?.averages).toBeUndefined();
   });
 });
+
+describe("an average that is not nothing never reads 0% (F-122, rendered)", async () => {
+  const { renderToString } = await import("react-dom/server");
+  const { createElement } = await import("react");
+  const { HouseAverageLine } = await import("../components/kit/house-average");
+  const { fmt } = await import("./format");
+  it("IBI's custody, 0.0012% to 0.0673% a year, shows both figures with their digits", () => {
+    const h = houseAverages(loadHouseAverages().get("ibi")!, [{ fee: "custody", securities: "il" }]);
+    const out = renderToString(createElement(HouseAverageLine, { averages: h.columns, house: "IBI", from: h.from, to: h.to, page: h.page })).replace(/<[^>]+>/g, "").replace(/[⁦-⁩]/g, "");
+    expect(out).toContain("0.0012%");
+    expect(out).toContain(fmt.pct(0.0673));
+    expect(out).not.toMatch(/(^|[^\d.])0%/);
+  });
+  it("the figure keeps two decimals where it has them, and the first two significant digits below them", () => {
+    expect(fmt.pctNonZero(0.0955)).toBe(fmt.pct(0.0955));
+    expect(fmt.pctNonZero(0.0005)).toBe("0.0005%");
+    expect(fmt.pctNonZero(0)).toBe("0%");
+  });
+});
+
+describe("what the browser gets of the price-list facts (data-schema §3.6, §3.6a)", async () => {
+  const { buildIndicesBundle } = await import("./providers.server");
+  const bundle = buildIndicesBundle();
+  it("the indices bundle ships no line field the page does not read, and of the agreements only the site's named fund numbers", () => {
+    const shipped = JSON.stringify(bundle.snapshots);
+    for (const key of ["size_tiers", "max_per", "max_per_source", "max_deposit", "offset", "collection", "distribution_agreements"]) expect(shipped, key).not.toContain(`"${key}"`);
+    const ff = bundle.snapshots.find((s) => s.id === "one-zero")!.fundByFund!;
+    const site = new Set(bundle.funds.map((f) => f.identifiers.tase_number ?? f.id));
+    expect(ff.named.length).toBeGreaterThan(0);
+    for (const n of ff.named) expect(site.has(n), n).toBe(true);
+    // the record keeps them all
+    expect(latestSnapshots().find((s) => s.id === "one-zero")!.distribution_agreements!.reports.reduce((n, r) => n + r.funds.length, 0)).toBe(1767);
+  });
+  it("the deal's house templates ship no list of the lines they read, and the averages only the calculator's link", () => {
+    for (const h of feesData().houses) {
+      expect(h, h.id).not.toHaveProperty("read");
+      if (h.averages) expect(Object.keys(h.averages.page)).toEqual(["url"]);
+    }
+  });
+});
+
+describe("the words around an average and the custody row's rules", async () => {
+  const { houseAverage } = await import("../copy");
+  const { RULES } = await import("./fee-deal/offers/rules");
+  it("the figure's sheet says what BRK-33 says the average is over: individuals and small businesses, orders carried out, no derivatives", () => {
+    expect(houseAverage.sheetLead).toContain("יחידים ועסקים קטנים");
+    expect(houseAverage.sheetLead).toContain("שבוצעו");
+    expect(houseAverage.sheetLead).toContain("נגזרים");
+    expect(houseAverage.sheetLead).not.toContain("בכל הערוצים");
+  });
+  it("the general custody row cites the general rules, not one bank's", () => {
+    expect(RULES.find((r) => r.id === "securities-custody")!.cite).toEqual(["BRK-16", "BRK-24"]);
+  });
+});

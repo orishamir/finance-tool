@@ -1,5 +1,5 @@
 // CBS adapter: the general consumer price index (code 120010) from the CBS price-index API.
-// Terms: CBS open licence v2.1, status confirmed (data/series/cbs-cpi.json carries the attribution line).
+// Licence: CBS open licence v2.1 (data/series/cbs-cpi.json carries the attribution line).
 // Pure functions (normalise, mergeObservations, sanityCheck, diffSeries) do no I/O.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, type Downloaded } from "./cma.ts";
@@ -118,11 +118,9 @@ export function normalise(
     cadence: "monthly",
     stale_after_days: 45,
     terms_of_use: {
-      status: "confirmed",
       terms_url: LICENCE_URL,
       read_on: "2026-10-23",
       attribution: `הלשכה המרכזית לסטטיסטיקה (הלמ"ס), מדד המחירים לצרכן - כללי (קוד ${CPI_CODE}), (${ctx.runDate}), ניתן לצפייה באתר: ${API_URL} מועתק ומופץ כמות שהוא – as is – על פי רישיון שימוש של הלמ"ס בכתובת אתר האינטרנט ${LICENCE_URL}`,
-      fallback: "none needed",
     },
     rule_ids: [],
     notes: `General CPI as the CBS prints it, base ${EXPECTED_BASE} = 100, from ${START_PERIOD.slice(3)}-01. The CBS publishes a month's index on the 15th of the next month. Months before 2025-01 are printed in the 2022 base and are not stored; chaining coefficients are at https://api.cbs.gov.il/index/data/price_selected?id=${CPI_CODE}. date is the index month (first day); effective_to is its last day. This series is the history deflator, not an inflation expectation.`,

@@ -225,8 +225,10 @@ describe("Part E: follow-ups of 2026-10-26", () => {
   });
 
   it("a CPI-linked child-savings bank deposit with a falling CPI keeps the plain indexation, labelled a reading of TXI-25 (F-50)", () => {
-    const run = (inflation: number) => runChildSavings({ route: "bank", bankLinkage: "cpi", doubling: false, sex: "girl", months: 216, market: { rate: 0.01, inflation } }, ctx);
+    // a year: from the second, CS-03's amount at a falling CPI has no reading and the run stops on G-38 (F-54, F-120)
+    const run = (inflation: number, months = 12) => runChildSavings({ route: "bank", bankLinkage: "cpi", doubling: false, sex: "girl", months, market: { rate: 0.01, inflation } }, ctx);
     const falling = run(-0.01);
+    expect(() => run(-0.01, 216)).toThrow(/G-38/);
     // The Supreme Court held it for a deposit linked to a foreign currency; for a CPI-linked deposit it is an inference (TXI-25).
     expect(labelOf(falling, "TXI-25")).toBe("reading");
     expect(falling.detail.realGain!).toBeGreaterThan(falling.detail.gain!);

@@ -73,4 +73,3 @@ The page shows which of the three it is.
 - A company's written answer or document sent to the founder may be cited as
   the company's own, with its name and date, never with the founder's name,
   address or anything about his own money.
-- No data whose terms forbid republishing (so no TASE fund list).

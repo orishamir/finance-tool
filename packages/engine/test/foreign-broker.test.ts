@@ -115,6 +115,21 @@ describe("F-63 on the foreign brokers' tariffs (E1, E2, E3)", () => {
   });
 });
 
+describe("F-12 a minimum in the trade's currency printed for some currencies only (trade_currencies)", () => {
+  const current = read("fees/interactive-israel@2026-11-12.json");
+  const europe = "מניות ותעודות סל הנסחרות באירופה";
+  it("a trade in a currency the line names is bounded by the minimum in that currency", () => {
+    const wb = providerWorkbench(input({ currency: { code: "GBP", startRate: 4.6 }, providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
+    const r = row(wb.rows, "interactive-israel");
+    if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
+    expect(r.tariff.buy?.min).toBeCloseTo(2.5 * 4.6, 12);
+  });
+  it("a trade in another currency is not priced, with its own reason naming the line, the currency and the line's list", () => {
+    const wb = providerWorkbench(input({ providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
+    expect(notComparable(row(wb.rows, "interactive-israel")).reason).toMatchObject({ code: "not-printed-for-currency", line: "interactive-israel-buy-sell-europe", currency: "USD", printed: ["EUR", "GBP", "CHF"] });
+  });
+});
+
 describe("F-65 a fund in another currency than its exposure (E4)", () => {
   const exposureRecord = { ...read("instruments/exposures/index-sp500.json"), currency: "EUR" };
   const record = read("funds/ie00b5bmr087@2026-10-24.json"); // USD fund of the S&P 500

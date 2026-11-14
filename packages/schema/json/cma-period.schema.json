@@ -1574,6 +1574,19 @@
               "rule_ids"
             ],
             "additionalProperties": false
+          },
+          "joining_open": {
+            "type": "object",
+            "properties": {
+              "open_question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "open_question"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [

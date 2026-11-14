@@ -87,7 +87,7 @@ What the guideline's voice, sentence and word-choice rules don't already say:
 - **"מנהל הקרן"**, not "יצרן הקרן"; **"דמי ניהול של החברה המנהלת"** for an IRA manager's fee, not "של המסגרת"; **"עלויות הקרן"**, not "דמי הקרן"; **"דמי הביטוח בקרן הפנסיה"**, not "עלות ביטוח" (PEN-15), and the hint says what the cover is before it says why the site asks.
 - **"הפרש עקיבה"** is the glossary's term for the gap between a fund and its index.
 - **The three fee levels** (D4) are **"תעריפון · ממוצע שפורסם · ההצעה שלכם"**: "ממוצע שפורסם" covers the Bank of Israel's and TASE's averages without naming a regulator that TASE is not; "ההצעה שלכם" says whose number it is.
-- **"אין ממוצע שנאסף"** rather than "אין נתון" where the averages exist, are free to read on the publishers' pages and the site may not copy them (D20, D22): a number exists somewhere, and the line says where.
+- **"אין ממוצע שנאסף"** rather than "אין נתון" where the averages exist, are free to read on the publishers' pages and are not collected (D20): a number exists somewhere, and the line says where.
 - **"תוספת משילוב עמלות החשבון"** for the interaction remainder on the indices page, **"שילוב העמלות"** where a line has no room (founder, 2026-11-08: readers could not read "העמלות זו על זו"): the name says what the part is, an addition, and where it comes from, the account's fees together; "שארית אינטראקציה" would be opaque and "השפעת השורות יחד" meant nothing beside a bar.
 
 ## 6. Comparisons and results

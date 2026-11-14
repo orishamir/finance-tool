@@ -106,7 +106,7 @@ export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined
   try {
     return { value: step() };
   } catch (e) {
-    if (e instanceof BlockedError) return { blocked: e.ruleId, outcome: { code: "listed-not-ranked", reason: e.ruleId, ...(e.question ? { question: e.question } : {}) } };
+    if (e instanceof BlockedError) return { blocked: e.ruleId, outcome: { code: "listed-not-ranked", reason: e.ruleId, ...(e.question ? { question: e.question } : {}), ...(e.gap ? { gap: e.gap } : {}) } };
     throw e;
   }
 }

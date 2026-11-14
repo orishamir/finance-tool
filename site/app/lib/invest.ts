@@ -627,7 +627,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   if (r.code === "line-without-value") return { code: "line-without-value", detail: r.detail, lineName: s.lines.find((l) => l.id === r.detail.split(" ")[0])?.names.tariff[0] ?? null };
   if (r.code === "not-printed-for-currency") return { code: "not-printed-for-currency", detail: r.detail, lineName: s.lines.find((l) => l.id === r.line)?.names.tariff[0] ?? null, currency: r.currency, printed: r.printed };
   if (r.code === "record-error") return ambiguity(r.detail, s) ?? { code: "record-error", detail: r.detail };
-  if (r.code === "rule-open") return { code: "rule-open", ruleId: r.ruleId };
+  if (r.code === "rule-open") return { code: "rule-open", ruleId: r.ruleId, ...(r.question ? { question: r.question } : {}), ...(r.gap ? { gap: r.gap } : {}) };
   return { code: r.code, detail: r.detail };
 }
 

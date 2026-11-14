@@ -20,6 +20,7 @@
 // layout-check-leftovers.json lists what was there when the check came in (2026-11-08), each with why: a listed finding is reported, not
 // failed; a new one fails. A listed one no longer found is said, so the list can shrink.
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { cpus } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
@@ -38,7 +39,8 @@ const SIDE_WIDTHS = [1440, 1425, 1280, 1024]; // a company page's side list, at 
 const HEIGHT = { 1440: 900, 390: 844, 320: 568 }; // 320 × 568: the smallest phone the site supports
 const SHEET_WIDTH = 320; // where the sheets with a warning are opened
 const SHEET_FIGURES = 3; // figures with a warning opened on each page
-const TABS = Number(process.env.LAYOUT_CHECK_TABS) || 4; // tabs open at once at each width (checkWidth)
+// tabs open at once at each width (checkWidth): a third of the cores, 4 to 10 (4 on GitHub's four-core runners)
+const TABS = Number(process.env.LAYOUT_CHECK_TABS) || Math.max(4, Math.min(10, Math.floor(cpus().length / 3)));
 const leftovers = JSON.parse(readFileSync(join(here, "layout-check-leftovers.json"), "utf8")).leftovers;
 const listed = (path, width, f) => leftovers.find((l) => path.startsWith(l.pages) && l.width === width && l.check === f.check && l.id === f.id);
 const named = process.argv.slice(2);
