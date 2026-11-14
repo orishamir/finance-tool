@@ -206,7 +206,8 @@ function unreadWhy(l: Line): LeftWhy {
  * note's first passage in single quotes that names the deposit ("לפקדון", "לפיקדון"); null where none does.
  */
 export function perDepositQuote(l: Line): string | null {
-  const quoted = [...(l.max?.notes ?? "").matchAll(/'([^']+)'/g)].map((m) => m[1]!);
+  // a passage closes at a quote followed by the end, punctuation or a non-Hebrew word, so a geresh inside it ("מקס'") does not cut it
+  const quoted = [...(l.max?.notes ?? "").matchAll(/(?:^|[\s(])'(.+?)'(?=\s*(?:$|[^\u0590-\u05FF\s]))/g)].map((m) => m[1]!);
   return quoted.find((q) => /לפקדון|לפיקדון/.test(q)) ?? null;
 }
 
@@ -222,7 +223,7 @@ export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive
  * currency (`inTrade`), which a reading takes from what is bought and, where that is not known, does not read the fee. The records give the
  * minimum a dollar unit and no field for this, so the list is kept here, each id checked against its record's quote by a test.
  */
-export const IN_TRADE: ReadonlySet<string> = new Set(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets"]);
+export const IN_TRADE: ReadonlySet<string> = new Set(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "meitav-trade-buy-sell-foreign-world", "interactive-israel-buy-sell-europe"]);
 
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
 export function lineFees(l: Line, own: string, bank = false, capRead = false): Mapped {
