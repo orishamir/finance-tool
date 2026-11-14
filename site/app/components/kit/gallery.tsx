@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { DropZone, RemoveButton, AskValues, AddSlot, CaseFold, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -2763,7 +2763,7 @@ const TRADE: Case[] = [
     parts: [{ id: "unit", kind: "price", n: 0.03, unit: "usd_per_share", sign: "$", words: dealWords.price.perUnit }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 8, ...usd, words: sc.toAction }, { id: "cap", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 2, ...pct, words: sc.capWords }, unexecuted],
   },
 ];
-/** The tracks that are not the person's, folded. */
+/** The tracks that are not the person's: cases like any other. */
 const OTHER_TRACKS: Case[] = [1, 2].map((k) => ({
   id: `us${k + 1}`,
   when: [{ text: sc.what.us }, { text: sc.tracks[k]! }],
@@ -2838,10 +2838,9 @@ function MenuBody({ kind }: { kind: "what" | "track" | "range" | "thing" }) {
   );
 }
 
-/** The trade fee of the picture, live: a tap on a row opens its case, a slot opens its menu, a part's bin removes it, the fold opens. */
+/** The trade fee of the picture, live, every case shown: a tap on a row opens its case, a slot opens its menu, a part's bin removes it. */
 function TradeFee({ today }: { today: string }) {
   const [open, setOpen] = useState("us1");
-  const [folded, setFolded] = useState(true);
   const [gone, setGone] = useState<string[]>([]);
   const [menu, setMenu] = useState<Menu>(null);
   const row = (c: Case) => {
@@ -2885,9 +2884,7 @@ function TradeFee({ today }: { today: string }) {
           openThing={menu?.kind === "thing" ? "track" : null}
         >
           {TRADE.map(row)}
-          <CaseFold label={sc.more} open={!folded} onToggle={() => setFolded((f) => !f)}>
-            {OTHER_TRACKS.map(row)}
-          </CaseFold>
+          {OTHER_TRACKS.map(row)}
           {row(LAST)}
         </ConditionBand>
       </FeeBlock>
@@ -3204,7 +3201,7 @@ function CaseDemos({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
-      <Demo name="ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseFold, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
+      <Demo name="ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
         <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name, a bin beside each thing; ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
           <div className="max-w-xl">
             <TradeFee today={today} />

@@ -4,7 +4,8 @@
 // past five cases, the same cases as rows in the cases' band, a grid's in one group per value of its first thing. Each add slot stands
 // where the new case, step, row or column will: "+ מקרה" copies the open case (else the last) and opens the copy; "+ מדרגה" asks only the
 // new boundary (`AskStep`); a grid's row and column ask their new values (`AskValuesOf`), and a place of a grid no case holds takes a copy
-// of its row's case. A toolbox part dragged here drops on a case's head, cell or row, or on the open case.
+// of its row's case. Every case shows, in the fee's order, the person's own marked "שלכם" and none set apart for not being theirs. A
+// toolbox part dragged here drops on a case's head, cell or row, or on the open case.
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
@@ -16,7 +17,7 @@ import { valueKey, type FeeLayout, type Head, type Shared } from "../../lib/fee-
 import { isRange, type CasesFee, type Fee } from "../../lib/fee-deal/model";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { AddSlot, CaseFold, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FigureField, OpenCase, PartChip, SegmentedControl, SharedLine, Tag, monthText, useWidth, type AddSpec, type CaseWord } from "../kit";
+import { AddSlot, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FigureField, OpenCase, PartChip, SegmentedControl, SharedLine, Tag, monthText, useWidth, type AddSpec, type CaseWord } from "../kit";
 import { Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
@@ -110,8 +111,6 @@ export function FeeCases({
   band,
   open,
   name,
-  unfolded,
-  onUnfold,
   onFee,
   actions,
   caseZone,
@@ -121,8 +120,6 @@ export function FeeCases({
   band: Extract<BlockView, { kind: "band" }>;
   open: OpenHere;
   name: string;
-  unfolded: boolean;
-  onUnfold: (on: boolean) => void;
   onFee: (f: Fee) => void;
   actions: BlockActions;
   /** A case's drop zone around `el`: it takes a toolbox part. */
@@ -139,15 +136,8 @@ export function FeeCases({
   const [asking, setAsking] = useState<Asking>(null);
   const slot = useRef<HTMLElement | null>(null);
   const [box, width] = useWidth(326);
-  // a fee that changes by three things shows one value of the third at a time, on its switch: the tracks that are not the person's are
-  // values of a switch then, never folded
-  const foldable = band.folded && fee.by.length < 3 ? band.folded : null;
-  const folded = new Set(foldable?.rows.map((r) => r.case));
-  // the cases shown, in the fee's order: the folded tracks once they are opened
-  const rows = useMemo(() => {
-    const byId = new Map([...band.rows, ...(!foldable || unfolded ? (band.folded?.rows ?? []) : [])].map((r) => [r.case, r]));
-    return fee.cases.flatMap((c) => byId.get(c.id) ?? []);
-  }, [band, unfolded, fee.cases, foldable]);
+  // every case, in the fee's order: none is set apart for not being the person's
+  const rows = band.rows;
   const byCase = new Map(rows.map((r) => [r.case, r]));
   const layout = useMemo(() => bandLayout(fee, rows, switchTo), [fee, rows, switchTo]);
   const wide = fits(layout, width);
@@ -239,7 +229,6 @@ export function FeeCases({
         );
 
   const question = asking ? (asking.range ? <AskStep key={`step:${asking.thing}`} fee={fee} t={asking.thing} onFee={addAndOpen} onDone={asked} /> : <AskValuesOf key={`values:${asking.thing}`} fee={fee} t={asking.thing} onFee={addAndOpen} onDone={asked} />) : null;
-  const fold = foldable && <CaseFold label={foldable.words} open={unfolded} onToggle={() => onUnfold(!unfolded)}>{null}</CaseFold>;
 
   let body: ReactNode;
   if (wide && layout.shape === "table") {
@@ -253,7 +242,7 @@ export function FeeCases({
           ladder={layout.ladder}
           columns={layout.columns.map((col) => {
             const r = byCase.get(col.case)!;
-            return { id: col.case, head: headOf(r, t, true), label: label(r), onOpen: openIt(col.case), open: col.case === openCase, dim: folded.has(col.case), zone: (h: ReactNode) => caseZone(col.case, col.case, h) };
+            return { id: col.case, head: headOf(r, t, true), label: label(r), onOpen: openIt(col.case), open: col.case === openCase, zone: (h: ReactNode) => caseZone(col.case, col.case, h) };
           })}
           rows={layout.rows.map((row) => ({
             id: row.row,
@@ -268,7 +257,6 @@ export function FeeCases({
           }))}
           add={layout.ladder ? stepSlot(t) : addOne}
         />
-        {fold}
       </>
     );
   } else if (wide && layout.shape === "grid") {
@@ -311,7 +299,6 @@ export function FeeCases({
           addRow={slotOf(g.down.thing, g.down.range)}
           addColumn={slotOf(g.across.thing, g.across.range)}
         />
-        {fold}
       </>
     );
   } else if (layout.shape === "grid") {
@@ -342,7 +329,6 @@ export function FeeCases({
             })}
           </CaseGroup>
         ))}
-        {fold}
         <div className="flex flex-col gap-1.5 px-3 pt-1 pb-1">
           <AddSlot shape="row" add={slotOf(g.down.thing, g.down.range)} />
           <AddSlot shape="row" add={slotOf(g.across.thing, g.across.range)} />
@@ -360,7 +346,6 @@ export function FeeCases({
           const r = byCase.get(id)!;
           return <div key={id}>{bandRow(r, caseWords(r.when, r.mine, band.things))}</div>;
         })}
-        {fold}
         <div className="px-3 pt-1 pb-1">
           <AddSlot shape="row" add={add} />
         </div>

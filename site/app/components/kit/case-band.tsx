@@ -4,7 +4,7 @@
 // words in the band at the row's start (a fixed column where the band is wide, above the parts where it is narrow, by the band's own
 // width: from 25 rem, a computer's column), its parts in the dark cell beside them. One case may be open, in place: its condition's values as slots, its parts with their
 // boxes, and the actions on the case as icons in its head.
-import { useId, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Split } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Button } from "./button";
@@ -69,7 +69,7 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
 
 /**
  * The band, for cases read as rows (a phone, or more cases than a table holds): its head (`ConditionHead`) and its rows as `children`
- * (`CaseRow`, `CaseGroup`, `CaseFold`, `OpenCase`, an `AddSlot` row), 4 px apart, in the cases' blue.
+ * (`CaseRow`, `CaseGroup`, `OpenCase`, an `AddSlot` row), 4 px apart, in the cases' blue.
  */
 export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; children: ReactNode }) {
   return (
@@ -124,25 +124,6 @@ export function CaseRow({ when, label, onOpen, children }: { when: CaseWord[]; l
       <CaseWords when={when} />
       <div className={cx("ms-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-s-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0", onOpen && "group-hover:bg-accent")}>{children}</div>
     </div>
-  );
-}
-
-/**
- * Cases folded into one row ("עוד 2 מסלולים בתעריפון", tracks that are not the person's), with a chevron; a tap opens them under it, dimmed,
- * and they stay rows that open like any other.
- */
-export function CaseFold({ label, open, onToggle, children }: { label: ReactNode; open: boolean; onToggle: () => void; children: ReactNode }) {
-  const id = useId();
-  return (
-    <>
-      <button type="button" aria-expanded={open} aria-controls={id} onClick={onToggle} className="flex min-h-target w-full items-center justify-center gap-1.5 px-3 text-sm text-when-any hover:text-when-ink">
-        {label}
-        <ChevronDown size={16} strokeWidth={1.75} aria-hidden className={cx("shrink-0 transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
-      </button>
-      <div id={id} hidden={!open} className="flex flex-col gap-1 opacity-60">
-        {open && children}
-      </div>
-    </>
   );
 }
 

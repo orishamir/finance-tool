@@ -238,7 +238,7 @@ describe("the reading's first line", () => {
 describe("the builder's blocks", () => {
   const r = read(deal([{ by: "what", is: "us" }]));
   const b = builder(r, null, { fee: "fee-trade", case: "c3" });
-  it("shows a fee with cases as its band, the other tracks folded, the open case marked", () => {
+  it("shows a fee with cases as its band, every case in the fee's order, the person's track marked and the open case marked", () => {
     const block = b.rows[0]!.block;
     if (block.kind !== "band") throw new Error("a band");
     expect(block.things.map((t) => [t.kind, t.words, t.picked])).toEqual([
@@ -249,14 +249,15 @@ describe("the builder's blocks", () => {
       ["c1", false, false],
       ["c2", false, false],
       ["c3", true, true],
+      ["c4", false, false],
       ["c5", false, false],
     ]);
     expect(block.rows[0]!.when).toEqual([
       { thing: 0, any: false, text: copy.cases.values.what.tase },
       { thing: 1, any: true, text: copy.cases.any.track },
     ]);
-    expect(block.folded).toMatchObject({ tracks: 1, words: copy.cases.folded.one });
-    expect(block.folded!.rows.map((x) => x.case)).toEqual(["c4"]);
+    // no case is set apart for not being the person's
+    expect(Object.keys(block)).not.toContain("folded");
     // parts by kind, with their words
     expect(block.rows[2]!.parts.map((p) => [p.id, p.kind])).toEqual([
       ["perUnit", "price"],
@@ -264,7 +265,7 @@ describe("the builder's blocks", () => {
       ["cap", "bound"],
       ["unfilled", "note"],
     ]);
-    expect(block.rows[3]!.parts.find((p) => p.id === "third")!.words).toEqual({ lead: `${copy.cases.parts.thirdOf}הברוקר`, quiet: ` ${copy.cases.parts.thirdNone}` });
+    expect(block.rows[4]!.parts.find((p) => p.id === "third")!.words).toEqual({ lead: `${copy.cases.parts.thirdOf}הברוקר`, quiet: ` ${copy.cases.parts.thirdNone}` });
     // a fee read across sizes names its range's steps in its rows
     const fxBlock = b.rows[1]!.block;
     expect(fxBlock.kind === "band" && fxBlock.rows.map((x) => [x.when[0]!.lead, x.when[0]!.figure?.value])).toEqual([

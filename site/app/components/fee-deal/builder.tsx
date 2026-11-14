@@ -307,8 +307,6 @@ export function FeesColumn({
       actions.onRemoveFee(feeId);
     },
   };
-  // the fees whose folded tracks are open
-  const [unfolded, setUnfolded] = useState<ReadonlySet<string>>(new Set());
   const blockOf = (feeId: string) => root.current?.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(feeId)}"]`);
   useIsoLayoutEffect(() => {
     pressedAway.current = null;
@@ -380,7 +378,6 @@ export function FeesColumn({
       </UndoLine>
     ) : null;
   };
-  const unfold = (feeId: string) => (on: boolean) => setUnfolded((u) => (on ? new Set([...u, feeId]) : new Set([...u].filter((x) => x !== feeId))));
 
   return (
     <Section title={b.fees} level="kick" heading="h2">
@@ -398,7 +395,7 @@ export function FeesColumn({
                 const cl = caseLine?.feeId === it.fee.id && !caseLine.inCase ? caseLine : null;
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
-                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} unfolded={unfolded.has(it.fee.id)} formLine={formLine(it.fee)} actions={blockActions} onUnfold={unfold(it.fee.id)} onFee={onFee} />
+                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} />
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}

@@ -1894,8 +1894,6 @@ export const feeDeal = {
     addValues: "כל ערך שתסמנו יקבל את המחירים של {last}, עד שתשנו אותם.",
     /** The switch above a grid of a fee that changes by three things, spoken. */
     switchLabel: "המקרים של",
-    /** The tracks that are not the person's, folded into one line. */
-    folded: { one: "עוד מסלול אחד בתעריפון", two: "עוד שני מסלולים בתעריפון", many: "עוד {n} מסלולים בתעריפון" },
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
     /**
@@ -4943,7 +4941,6 @@ export const kit = {
         anyTrack: "בכל מסלול",
         anyChannel: "בכל ערוץ",
         channels: { branch: "בסניף", phone: "בטלפון", web: "באינטרנט ובאפליקציה", other: "ערוץ אחר" },
-        more: "עוד 2 מסלולים בתעריפון",
         /** A case row's spoken name: what a tap on it does. */
         open: (words: string) => `לפתוח את המקרה: ${words}`,
         openFee: (name: string) => `לפתוח את ${name}`,

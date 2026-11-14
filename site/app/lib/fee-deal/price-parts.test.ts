@@ -221,7 +221,7 @@ describe("the templates", () => {
     const texts = (id: string) => {
       const deal = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
       const row = builder(read(deal)).rows.find((r) => deal.fees.find((f) => f.id === r.fee)!.kind === "trade")!;
-      return row.block.kind === "band" ? [...row.block.rows, ...(row.block.folded?.rows ?? [])].map((r) => r.when[0]!.text ?? "") : [];
+      return row.block.kind === "band" ? row.block.rows.map((r) => r.when[0]!.text ?? "") : [];
     };
     // Excellence: the US's two tracks, and Europe with the rest of the world: "בחו״ל, מחוץ לארה״ב", as drawn
     expect(texts("excellence")).toContain("בחו״ל, מחוץ לארה״ב");

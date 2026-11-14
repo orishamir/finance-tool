@@ -1,6 +1,6 @@
 // One fee's block in the fees' column (method §10.6, `builder`'s `block`): a fee whose price changes by nothing is one slim line, its parts
 // after its name, a later price's after the month the first ends; a fee whose price changes holds its cases laid out by its shape
-// (fee-cases.tsx), the tracks that are not the person's folded into one line. The fee or case open shows its slots, its parts with their
+// (fee-cases.tsx), every case shown. The fee or case open shows its slots, its parts with their
 // boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name, and the things of its head open
 // their values. Each thing of the head has a bin beside it, the fee open or not. The question of a thing being added stands in the open
 // fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee,
@@ -70,7 +70,7 @@ export interface ToolDrop {
 /** A thing to change by among the toolbox's cards (`cardThing`): it drops on the fee's block; a part drops on a slim fee or a case. */
 const isThing = (item: string): boolean => cardThing(item) !== null;
 
-/** The facts a slim line says at its end: that its price is not given yet or not read, its next change, where it is charged, its bounds. */
+/** The facts a slim line says at its end, in its card on a line of their own: that its price is not given yet or not read, its next change, where it is charged, its bounds. */
 function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   const notes: ReactNode[] = [];
   if (row.banned || !row.priced) notes.push(<UnreadWords key="unread" banned={row.banned} noCurrency={row.noCurrency} unmatched={row.unmatched} />);
@@ -79,7 +79,7 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   if (row.priced && row.stages[0]!.price.form === "action" && keeps(fee.kind, "action", "min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
   return (
-    <ul className="flex flex-col items-start gap-1 text-sm text-muted-foreground">
+    <ul className="flex basis-full flex-col items-start gap-1 pb-1 text-sm text-muted-foreground">
       {notes.map((n, k) => (
         <li key={k}>{n}</li>
       ))}
@@ -90,7 +90,6 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
 /**
  * One fee's block (`row`, its view; none for a fee whose prices are out of order): its slim line or its band, the case open in place with
  * its parts and `formLine` (the undo line of its price put in another form) under them, and the question `ask` of a thing being added.
- * `unfolded`: whether its folded tracks are open (the column holds it, `onUnfold`).
  */
 export function FeeBlockView({
   fee,
@@ -98,10 +97,8 @@ export function FeeBlockView({
   deal,
   open,
   ask,
-  unfolded,
   formLine,
   actions,
-  onUnfold,
   onFee,
 }: {
   fee: Fee;
@@ -109,10 +106,8 @@ export function FeeBlockView({
   deal: FeeDeal;
   open: OpenHere;
   ask: ByKind | null;
-  unfolded: boolean;
   formLine: ReactNode;
   actions: BlockActions;
-  onUnfold: (on: boolean) => void;
   onFee: (f: Fee) => void;
 }) {
   const { onOpen, onRemoveFee, onHoldOn, pendingHands, onAskDone, drop } = actions;
@@ -143,11 +138,12 @@ export function FeeBlockView({
         <DropZone accepts={(it) => drop.accepts(fee.id, null, it)} onDrop={(it) => drop.onDrop(fee.id, null, it)}>
           <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} onOpen={() => onOpen(fee.id, null, "pointer")}>
             {question}
-            {isOpen ? openParts(name) : row.block.parts.map((p) => <RestPart key={p.id} part={p} />)}
+            {isOpen ? openParts(name) : row.block.parts.map((p) => <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />)}
             {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
+            {/* the line's notes stand in its card, under its prices, never between two cards */}
+            {!isOpen && <RowNotes row={row} fee={fee} />}
           </SlimFee>
         </DropZone>
-        {!isOpen && <RowNotes row={row} fee={fee} />}
       </div>
     );
   const band = row.block;
@@ -156,7 +152,7 @@ export function FeeBlockView({
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
       <FeeBlock dot={dot} name={name} remove={remove}>
         {question}
-        <FeeCases fee={fee} band={band} open={open} name={name} unfolded={unfolded} onUnfold={onUnfold} onFee={onFee} actions={actions} caseZone={caseZone} openParts={(spoken) => openParts(spoken)} />
+        <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} caseZone={caseZone} openParts={(spoken) => openParts(spoken)} />
       </FeeBlock>
     </DropZone>
   );

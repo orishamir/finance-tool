@@ -1,7 +1,6 @@
 // The builder column (method §10.6): a block per fee, either a slim price or the band of its cases (F-114) with each case's value per thing
 // and its parts in short; the fees to suggest; and each fee's facts beside its prices and its standing against the cap now and where it
 // next changes (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
-import { feeDeal as copy } from "../../copy";
 import type { ChangeKind } from "@finance-tool/engine";
 import { feeOf, inCurrency, picked, tradeCurrency } from "./cases";
 import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type BoundCurrency, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
@@ -88,13 +87,12 @@ export interface ThingPill {
 }
 
 /**
- * A fee as a block: `slim`, a fee whose price changes by nothing, its parts in one line; `band`, the head's things and one row per case,
- * the cases on tracks that are not the person's folded into one line (`folded`: how many tracks, and their rows), where the person has
- * marked a track as theirs.
+ * A fee as a block: `slim`, a fee whose price changes by nothing, its parts in one line; `band`, the head's things and every case's row, in
+ * the fee's order, the person's own track marked and none set apart for not being theirs.
  */
 export type FeeBlock =
   | { kind: "slim"; parts: SlimPart[]; open: boolean }
-  | { kind: "band"; things: ThingPill[]; rows: CaseRow[]; folded?: { tracks: number; words: string; rows: CaseRow[] }; canAdd: boolean };
+  | { kind: "band"; things: ThingPill[]; rows: CaseRow[]; canAdd: boolean };
 
 export interface Builder {
   rows: BuilderRow[];
@@ -149,30 +147,12 @@ function caseRow(r: DealRead, fee: CasesFee, c: Case, open: string | null): Case
   return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: lineParts(r, fee, c, c.id), bounds: c.when.map((w, t) => stepBounds(fee, w, t, r.today)), standing: standingNow(r, fee, c, c.id) };
 }
 
-/** The count of a number of tracks in words. */
-const tracksWords = (n: number): string => (n === 1 ? copy.cases.folded.one : n === 2 ? copy.cases.folded.two : copy.cases.folded.many.replace("{n}", String(n)));
-
-/**
- * A fee's block: slim, or its band. Where the person marked a track as theirs, the cases of the other tracks fold into one line, with how
- * many tracks they are; a case on any track stays in the band, and so does the open case.
- */
+/** A fee's block: slim, or its band of every case, in the fee's order. */
 function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null } | null): FeeBlock {
   const isOpen = open?.fee === fee.id;
   if (!hasCases(fee)) return { kind: "slim", parts: lineParts(r, fee, fee, undefined), open: isOpen };
   const openCase = isOpen ? (open!.case ?? fee.cases[0]!.id) : null;
-  const t = fee.by.findIndex((b) => b.kind === "track");
-  const marked = t >= 0 && fee.cases.some((c) => c.mine);
-  const foldedCase = (c: Case) => marked && !c.mine && c.when[t] !== "any" && c.id !== openCase;
-  const rows = fee.cases.filter((c) => !foldedCase(c)).map((c) => caseRow(r, fee, c, openCase));
-  const other = fee.cases.filter(foldedCase);
-  const tracks = new Set(other.flatMap((c) => c.when[t] as string[])).size;
-  return {
-    kind: "band",
-    things: pillsOf(fee),
-    rows,
-    ...(other.length ? { folded: { tracks, words: tracksWords(tracks), rows: other.map((c) => caseRow(r, fee, c, openCase)) } } : {}),
-    canAdd: fee.by.length < BY_MAX,
-  };
+  return { kind: "band", things: pillsOf(fee), rows: fee.cases.map((c) => caseRow(r, fee, c, openCase)), canAdd: fee.by.length < BY_MAX };
 }
 
 

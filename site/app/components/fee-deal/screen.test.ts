@@ -277,7 +277,7 @@ describe("the fees' column", () => {
     for (const key of ["action:conversion", "action:transfer_out", "action:none"]) expect(shown).not.toContain(feeDeal.on[key]!);
     expect(shown.indexOf(feeDeal.on.held!)).toBeLessThan(shown.indexOf(feeDeal.on.account!));
   });
-  it("draws a fee whose price changes by two things, read as rows where it has no room, the person's own track open and the others folded", () => {
+  it("draws a fee whose price changes by two things, read as rows where it has no room, the person's own track open and every other case shown", () => {
     const d = account();
     d.fees = [
       {
@@ -292,7 +292,7 @@ describe("the fees' column", () => {
       },
     ];
     const shown = text(builderOf(d, "fee-trade"));
-    for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!, feeDeal.cases.folded.one])
+    for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!])
       expect(shown).toContain(w);
     // two things: a value of each is added where its row or column will stand, the fee's head holds no add of its own
     expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(2);
@@ -301,9 +301,10 @@ describe("the fees' column", () => {
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove, feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.what!), feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!)])
       expect(count(html, `aria-label="${w}"`), w).toBe(1);
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(shown).not.toContain(w);
-    // the person's track is the open case here, its rows' words said once in its slots
+    // the person's track is the open case here, its rows' words said once in its slots; the other track is a case like any other, never
+    // folded away for not being theirs
     expect(count(shown, "מסלול 1")).toBe(1);
-    expect(shown).not.toContain("מסלול 2");
+    expect(count(shown, "מסלול 2")).toBe(1);
     // the fee open, each thing of its band's head is a slot that opens its menu; closed, the things are words
     const pills = (html: string) => count(html, 'aria-haspopup="dialog" aria-expanded="false"');
     const open = drawBuilder(d, "fee-trade");

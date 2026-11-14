@@ -65,9 +65,9 @@ export function AddSlot({ add, shape, className }: { add: AddSpec; shape: "colum
  * A column's head that opens its case: one button over the whole head (`label`, its spoken name), the words drawn on it; a control inside
  * (a step's top typed in place, marked `data-lift`) keeps its own tap.
  */
-function OpenHead({ label, onOpen, open, dim, range, children }: { label: string; onOpen: () => void; open?: boolean; dim?: boolean; range?: boolean; children: ReactNode }) {
+function OpenHead({ label, onOpen, open, range, children }: { label: string; onOpen: () => void; open?: boolean; range?: boolean; children: ReactNode }) {
   return (
-    <div className={cx("group relative flex min-h-target items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN, dim && "opacity-60")}>
+    <div className={cx("group relative flex min-h-target items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN)}>
       <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
       <div className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto">{children}</div>
@@ -75,14 +75,13 @@ function OpenHead({ label, onOpen, open, dim, range, children }: { label: string
   );
 }
 
-/** A table's column: its case's id, its head's words, the head's spoken name and tap, whether its case is open, and whether it is dimmed (a folded track). */
+/** A table's column: its case's id, its head's words, the head's spoken name and tap, and whether its case is open. */
 export interface CaseColumn {
   id: string;
   head: ReactNode;
   label: string;
   onOpen: () => void;
   open?: boolean;
-  dim?: boolean;
   /** Wraps the head (a `DropZone` for its case). */
   zone?: (head: ReactNode) => ReactNode;
 }
@@ -107,7 +106,7 @@ export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[
       <span aria-hidden />
       {columns.map((c, k) => {
         const head = (
-          <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} open={c.open} dim={c.dim} range={ladder}>
+          <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} open={c.open} range={ladder}>
             {c.head}
           </OpenHead>
         );
@@ -132,7 +131,7 @@ export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[
               // a case with no such part: an empty place, no cell drawn
               <span key={cell.from} aria-hidden style={{ gridColumn: `${cell.from + 2} / span ${cell.span}`, gridRow: j + 2 }} />
             ) : (
-            <div key={cell.from} onClick={opener(cell.onOpen)} className={cx(CELL, cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", columns[cell.from]?.dim && "opacity-60")} style={{ gridColumn: `${cell.from + 2} / span ${cell.span}`, gridRow: j + 2 }}>
+            <div key={cell.from} onClick={opener(cell.onOpen)} className={cx(CELL, cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary")} style={{ gridColumn: `${cell.from + 2} / span ${cell.span}`, gridRow: j + 2 }}>
               {cell.content}
             </div>
             ),

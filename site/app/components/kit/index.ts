@@ -81,7 +81,7 @@ export { TypedPlain } from "./typed-plain";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";
 export { PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
-export { CaseFold, CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
+export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
 export { AddSlot, CaseGrid, CaseTable, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type GridCellView, type GridHead } from "./case-table";
 export { FeePalette, type PaletteItem } from "./fee-palette";
 export { FeeBlock, SlimFee, type FeeRemove } from "./fee-block";
