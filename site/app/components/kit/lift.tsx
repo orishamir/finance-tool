@@ -12,7 +12,7 @@
 // way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its edge following the
 // pointer. Every grip and knob takes a 44 px press and no room of its own: it stands over the start of what it lifts.
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
-import { flushSync } from "react-dom";
+import { createPortal, flushSync } from "react-dom";
 import { GripVertical, MoveHorizontal, MoveVertical } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { useMedia } from "../../lib/hooks";
@@ -376,7 +376,6 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
   window.addEventListener("keyup", onModifier, true);
   window.addEventListener("touchmove", noScroll, { passive: false });
   lifting.frame = requestAnimationFrame(edgeScroll);
-  (window as unknown as { __lifting?: unknown }).__lifting = lifting;
 }
 
 /** The click a carry ends in, swallowed, so a thing let go does not open, nor a chip add itself too. */
@@ -566,7 +565,11 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
 export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; onClose: () => void; back: RefObject<HTMLElement | null> }) {
   const box = useRef<HTMLDivElement>(null);
   const [items, setItems] = useState(actions);
-  const [at, setAt] = useState<{ top: number; right: number } | null>(null);
+  // under the control at first; placed again once its height is known (over the control where the screen has no room under it)
+  const [at, setAt] = useState<{ top: number; right: number } | null>(() => {
+    const g = back.current?.getBoundingClientRect();
+    return g ? { top: g.bottom + 4, right: Math.max(8, window.innerWidth - g.right) } : null;
+  });
   const close = (focus = true) => {
     onClose();
     if (focus) back.current?.focus({ preventScroll: true });
@@ -584,7 +587,7 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
   };
   useLayoutEffect(() => {
     place();
-    box.current?.querySelector<HTMLElement>("[role=menuitem]")?.focus({ preventScroll: true });
+    requestAnimationFrame(() => box.current?.querySelector<HTMLElement>("[role=menuitem]")?.focus({ preventScroll: true }));
     const away = (e: globalThis.PointerEvent) => !box.current?.contains(e.target as Node) && !back.current?.contains(e.target as Node) && closeRef.current(box.current?.contains(document.activeElement) ?? false);
     const moved = () => place();
     window.addEventListener("pointerdown", away);
@@ -597,7 +600,8 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return (
+  // drawn on the page's body: what holds its control may be moved (a grip stands translated over its thing), which would carry a fixed menu
+  return createPortal(
     <div
       ref={box}
       role="menu"
@@ -638,7 +642,8 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
           {a.label}
         </button>
       ))}
-    </div>
+    </div>,
+    document.body,
   );
 }
 

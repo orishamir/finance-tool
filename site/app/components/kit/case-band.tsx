@@ -135,7 +135,8 @@ export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWor
     <div data-liftable="" className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} />
-      <div className={cx("ms-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-s-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0", onOpen && "group-hover:bg-accent")}>
+      {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge */}
+      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent")}>
         {grip}
         {children}
       </div>
