@@ -4,6 +4,7 @@ import { byRank, copiedPriced, hasCases, isRange, namesPlaces, newCaseId, pickKe
 import { WHAT_VALUES } from "../shapes";
 import { caseFor } from "@finance-tool/engine";
 import { condsOf } from "../cases";
+import { held } from "../limits";
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeUnit, type ValuesOf } from "../offers/conditions";
 
 // ---------------------------------------------------------------- what a fee's price changes by (F-114)
@@ -104,7 +105,7 @@ export function addBy(fee: Fee, n: NewBy): Fee {
     }),
   );
   const { stages: _s, sale: _sale, ...head } = fee;
-  return { ...head, by: [...(fee.by ?? []), made.by], cases } as CasesFee;
+  return held(fee, { ...head, by: [...(fee.by ?? []), made.by], cases } as CasesFee);
 }
 
 /**
@@ -164,7 +165,7 @@ export function removeBy(fee: Fee, t: number): Fee {
 export function addCase(fee: Fee, fromId?: string): Fee {
   if (!hasCases(fee)) return fee;
   const from = fee.cases.find((c) => c.id === fromId) ?? fee.cases.at(-1)!;
-  return { ...fee, cases: [...fee.cases, copyOf(from, [...from.when])] };
+  return held(fee, { ...fee, cases: [...fee.cases, copyOf(from, [...from.when])] });
 }
 
 /** A fee with case `caseId` copied right after it, with its prices ("להעתיק את המקרה"). */
@@ -173,7 +174,7 @@ export function copyCase(fee: Fee, caseId: string): Fee {
   const at = fee.cases.findIndex((c) => c.id === caseId);
   if (at < 0) return fee;
   const from = fee.cases[at]!;
-  return { ...fee, cases: [...fee.cases.slice(0, at + 1), copyOf(from, [...from.when]), ...fee.cases.slice(at + 1)] };
+  return held(fee, { ...fee, cases: [...fee.cases.slice(0, at + 1), copyOf(from, [...from.when]), ...fee.cases.slice(at + 1)] });
 }
 
 /** A fee without case `caseId`. The only case is never removed: a fee needs a price. The undo keeps what this takes (undo.ts). */
@@ -195,7 +196,7 @@ function fits(b: By, w: When): boolean {
 export function setWhen(fee: Fee, caseId: string, t: number, when: When): Fee {
   if (!hasCases(fee) || !fee.by[t] || !fits(fee.by[t]!, when)) return fee;
   // the case's prices now hold for another value, which the list may price otherwise: its figures become the person's
-  return { ...fee, cases: fee.cases.map((c) => (c.id === caseId && !sameContent(c.when[t], when) ? asNew({ ...c, when: c.when.map((w, j) => (j === t ? when : w)) }) : c)) };
+  return held(fee, { ...fee, cases: fee.cases.map((c) => (c.id === caseId && !sameContent(c.when[t], when) ? asNew({ ...c, when: c.when.map((w, j) => (j === t ? when : w)) }) : c)) });
 }
 
 /**
@@ -206,7 +207,7 @@ export function addOwnPlace(fee: Fee, t: number, own: OwnPlace): Fee {
   const b = fee.by?.[t];
   const name = own.name.trim();
   if (!hasCases(fee) || !b || !namesPlaces(b) || !name || Object.hasOwn(WHAT_VALUES, name) || b.own?.some((o) => o.name === name)) return fee;
-  return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, own: [...(b.own ?? []), { ...own, name }] } : x)) };
+  return held(fee, { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, own: [...(b.own ?? []), { ...own, name }] } : x)) });
 }
 
 /**
@@ -256,7 +257,7 @@ function splitStep(fee: Fee, t: number, top: number): { fee: CasesFee; split: nu
  * A ladder's step added by its boundary alone ("+ מדרגה", F-114): the step the boundary falls in splits in two at it, both halves keeping
  * its price (`splitStep`). A boundary the range has already, or none above zero, leaves the fee as it is.
  */
-export const addStep = (fee: Fee, t: number, top: number): Fee => splitStep(fee, t, top)?.fee ?? fee;
+export const addStep = (fee: Fee, t: number, top: number): Fee => held(fee, splitStep(fee, t, top)?.fee ?? fee);
 
 /**
  * A fee whose case `caseId` is up to `upTo` on range `t` ("עד", F-114), or above its last top (`upTo` null: "מעל"). A top the range has
@@ -271,7 +272,7 @@ export function setStep(fee: Fee, caseId: string, t: number, upTo: number | null
   const at = tops.indexOf(upTo);
   if (at >= 0) return setWhen(fee, caseId, t, at);
   const made = splitStep(fee, t, upTo)!;
-  return setWhen(made.fee, caseId, t, made.split);
+  return held(fee, setWhen(made.fee, caseId, t, made.split));
 }
 
 /**
@@ -284,7 +285,7 @@ export function addCaseAt(fee: Fee, fromId: string, t: number, when: When): Fee 
   const from = fee.cases.find((c) => c.id === fromId);
   if (!from) return fee;
   const { rank: _r, ...made } = asNew(copyOf(from, from.when.map((w, k) => (k === t ? when : w))));
-  return { ...fee, cases: [...fee.cases, made] };
+  return held(fee, { ...fee, cases: [...fee.cases, made] });
 }
 
 /**
@@ -304,7 +305,7 @@ export function addValues(fee: Fee, t: number, values: readonly string[], own: r
   const from = fee.cases.filter((c) => JSON.stringify(c.when[t]) === lastKey);
   const fresh = [...new Set(values.map((v) => v.trim()).filter((v) => v && !named.has(v)))].filter((v) => fits((next as CasesFee).by[t]!, [v]));
   if (fresh.length === 0 || !hasCases(next)) return fee;
-  return { ...next, cases: [...next.cases, ...fresh.flatMap((v) => from.map((c) => asNew(copyOf(c, c.when.map((w, k) => (k === t ? [v] : w))))))] };
+  return held(fee, { ...next, cases: [...next.cases, ...fresh.flatMap((v) => from.map((c) => asNew(copyOf(c, c.when.map((w, k) => (k === t ? [v] : w))))))] });
 }
 
 /** A range's top `k` typed again (its unit kept): refused where it would not stay above the top before it and below the one after. */
@@ -362,9 +363,9 @@ export function splitCase(fee: Fee, caseId: string, n: NewBy): Fee {
   };
   const placed = (by: By[], others: Case[], made: Case[], tAt: number, added: boolean): Fee => {
     const inPlace: CasesFee = { ...fee, by, cases: [...others.slice(0, at), ...made, ...others.slice(at)] };
-    if (readsAlike(fee, inPlace, c.id, tAt, added)) return ranked(inPlace, made);
+    if (readsAlike(fee, inPlace, c.id, tAt, added)) return held(fee, ranked(inPlace, made));
     const last: CasesFee = { ...fee, by, cases: [...others, ...made] };
-    return readsAlike(fee, last, c.id, tAt, added) ? ranked(last, made) : fee;
+    return readsAlike(fee, last, c.id, tAt, added) ? held(fee, ranked(last, made)) : fee;
   };
   const rest = fee.cases.filter((x) => x.id !== caseId);
   if (t >= 0) {

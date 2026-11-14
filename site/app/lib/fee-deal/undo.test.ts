@@ -112,10 +112,10 @@ describe("an undo stands while the part it puts back into is as its change left 
   it("a fee taken away: not once a fee of its kind is in the deal again, added or set by a track; a fee of the person's own by its id", () => {
     const d = account();
     const r = removeFeeKept(d, "fee-custody", null)!;
-    const readded = addFee(r.deal, "custody").deal;
+    const readded = addFee(r.deal, "custody")!.deal;
     expect(standing(r.undo, readded)).toBe(false);
     expect(undo(readded, r.undo, null)).toBeNull();
-    expect(standing(r.undo, addFee(r.deal, "own").deal)).toBe(true);
+    expect(standing(r.undo, addFee(r.deal, "own")!.deal)).toBe(true);
     // a track picked since fills a fee of that kind again
     const t = data.tracks.find((x) => x.wrapperId === "kupat-gemel-lehashkaa")!;
     const filled = pickTrack(newDeal("kupat-gemel-lehashkaa"), `track:${t.id}`, data, "2026-11-12")!;
@@ -127,7 +127,7 @@ describe("an undo stands while the part it puts back into is as its change left 
     expect(standing(gone.undo, picked)).toBe(false);
     const own: FeeDeal = { ...d, fees: [...d.fees, { id: "fee-own", kind: "own", name: "x", stages: [{ price: { form: "free" } }] }] };
     const ownGone = removeFeeKept(own, "fee-own", null)!;
-    expect(standing(ownGone.undo, addFee(ownGone.deal, "own").deal)).toBe(true);
+    expect(standing(ownGone.undo, addFee(ownGone.deal, "own")!.deal)).toBe(true);
   });
   it("a change of price taken away: not once its fee's prices have changed in time since, a month among them", () => {
     const d = account();
@@ -228,7 +228,7 @@ describe("another kind of product for the deal", () => {
   it("keeps a fee typed since when undone, and stands no more once the deal has a fee of a kind it took away or another kind", () => {
     const d = provident();
     const r = setKindKept(d, kind("brokerage-account"), null, null);
-    const { deal: more } = addFee(r.deal, "trade");
+    const { deal: more } = addFee(r.deal, "trade")!;
     expect(standing(r.undo, more)).toBe(true);
     expect(undo(more, r.undo!, null)!.deal.fees.map((f) => f.kind)).toEqual(["balance", "own", "deposit", "trade"]);
     const own = { ...r.deal, fees: [...r.deal.fees, { id: "fee-x", kind: "balance" as const, stages: [{ price: { form: "free" as const } }] }] };
@@ -250,7 +250,7 @@ describe("another kind of product for the deal", () => {
   });
   it("takes away fees with nothing typed in them silently", () => {
     let d: FeeDeal = { ...newDeal("kupat-gemel-lehashkaa"), id: "deal-q" };
-    d = addFee(addFee(d, "balance").deal, "deposit").deal;
+    d = addFee(addFee(d, "balance")!.deal, "deposit")!.deal;
     const r = setKindKept(d, kind("brokerage-account"), null, null);
     expect(r.deal.fees).toEqual([]);
     expect(r.undo).toBeNull();
@@ -315,7 +315,7 @@ describe("a price put in another form from the toolbox", () => {
     expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c1")).toBe(false);
   });
   it("changes a price nobody gave yet silently, and a price already in the form not at all", () => {
-    const blank = addFee(newDeal("brokerage-account"), "trade");
+    const blank = addFee(newDeal("brokerage-account"), "trade")!;
     const r = changeFormKept(blank.deal, blank.fee.id, "perUnit", null)!;
     expect(r.undo).toBeNull();
     expect(r.deal.fees[0]!.stages![0]!.price.form).toBe("perUnit");

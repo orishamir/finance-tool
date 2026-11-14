@@ -2309,7 +2309,41 @@ export const feeDeal = {
     opened: { house: (name: string) => `נפתחה עסקה חדשה מהתעריפון של ${name}.`, track: (name: string) => `נפתחה עסקה חדשה מהמסלול ${name}.` },
     /** After it, where the device keeps deals. */
     kept: " העסקה הקודמת שמורה ב״העסקאות שלי״.",
+    /** The deal is too big for a link that opens again, so the button copied nothing. */
+    tooLong: "הקישור לא הועתק: העסקה גדולה מדי לקישור שאפשר לפתוח.",
+    /** A link that did not open, above the kind chooser: `failed` before why (lib/fee-deal/link.ts, `LinkFailure`). */
+    failed: "הקישור לעסקה לא נפתח: ",
+    failedWhy: {
+      empty: "אין בו עסקה.",
+      broken: "חסר בו חלק, או שהשתנה בו תו.",
+      version: "הוא נכתב בגרסה של האתר שהעמוד לא קורא.",
+      wrapper: "סוג המוצר שבו לא קיים באתר.",
+      track: "המסלול שבו לא נמצא בנתונים של האתר.",
+    } as Record<string, string>,
+    /** Fees of a link's deal that did not open, each named with why (`FeeLeftOut`); the rest of the deal opened. */
+    left: {
+      one: (what: string) => `עמלה אחת מהקישור לא נכנסה לעסקה: ${what}. שאר העסקה נפתחה.`,
+      many: (n: number, what: string) => `${n} עמלות מהקישור לא נכנסו לעסקה: ${what}. שאר העסקה נפתחה.`,
+      /** A fee of a kind the site does not know. */
+      kind: "עמלה מסוג שהאתר לא מכיר",
+      /** A fee whose prices in the link are not prices, after its name. */
+      prices: " (המחירים שלה בקישור פגומים)",
+    },
+    /** Stored deals the page could not open, which stay stored as they are (lib/fee-deal/store.ts). */
+    unread: (n: number) => (n === 1 ? "עסקה אחת ששמורה במכשיר לא נפתחה. היא נשארת שמורה כמו שהיא." : `${n} עסקאות ששמורות במכשיר לא נפתחו. הן נשארות שמורות כמו שהן.`),
+    /** The deal on screen was deleted in another tab: it is no longer saved until kept again. */
+    deletedElsewhere: "העסקה הזו נמחקה בלשונית אחרת, והשינויים בה לא נשמרים.",
+    keepAnyway: "לשמור בכל זאת",
   },
+  /** A change refused because the deal would pass what one deal may hold (lib/fee-deal/limits.ts), said at the fee, with the limit's number. */
+  limits: {
+    stages: (n: number) => `לא נוסף: אפשר עד ${n - 1} שינויים במחיר.`,
+    cases: (n: number) => `לא נוסף: בעמלה אחת אפשר עד ${n} מקרים.`,
+    tops: (n: number) => `לא נוספה מדרגה: אפשר עד ${n + 1} מדרגות.`,
+    values: (n: number) => `לא נוסף: אפשר עד ${n} ערכים במה שהמחיר משתנה לפיו.`,
+    fees: (n: number) => `לא נוספה: בעסקה אחת אפשר עד ${n} עמלות.`,
+    picks: (n: number) => `לא נבחר: אפשר עד ${n} בחירות לקריאת העסקה.`,
+  } as Record<string, (n: number) => string>,
   /** The template picker (a sheet). */
   picker: {
     house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית.", group: "בתי השקעות ובנקים" },

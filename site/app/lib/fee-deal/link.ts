@@ -1,11 +1,12 @@
 // The fee page's address: `/deal#d=…` carries a whole deal, compressed, in the address's fragment, which the browser never sends to the
 // server (GitHub Pages refuses a query of more than about 8,000 characters, and a house's whole price list is longer); `/deal?d=…`, the
 // deal uncompressed in the query as the site wrote it before, still opens. `/deal?wrapper=<id>` opens a new deal of that kind and
-// `/deal?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readDeal`): a
-// broken or hostile value opens an empty deal and never throws.
+// `/deal?track=<fundId>` a new deal of the track's kind filled from the track. A link is read with every field checked (`readLinkedDeal`):
+// a broken or hostile value opens an empty deal with the reason it failed, and never throws; a fee in it that does not open is left out
+// and named, and the rest of the deal opens.
 import type { FeesData } from "../fee-page-data";
 import { dealPagePath } from "../site-paths";
-import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
+import { isProductId, newDeal, newDealId, newFeeId, readLinkedDeal, type FeeDeal, type FeeLeftOut, type Sourced } from "./model";
 import type { PartKey } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES, type FigureKey } from "./offers/figures";
 import { dealFromTrack } from "./templates";
@@ -38,8 +39,19 @@ const QUERY_MAX = 12_000;
  * house's whole price list with its cases and each figure's source comes to about 21,000 characters, and about 2,200 compressed (FIBI's,
  * the longest).
  */
-const PACKED_MAX = 12_000;
+export const PACKED_MAX = 12_000;
 const TEXT_MAX = 200_000;
+
+/**
+ * Why a link's deal did not open: `empty` (its `d` holds nothing), `broken` (cut short or changed: it does not decode, or what it holds
+ * is not a deal), `version` (written in a version of the link this page does not read), `wrapper` (a kind the data does not have),
+ * `track` (a track the data does not have).
+ */
+export type LinkFailure = "empty" | "broken" | "version" | "wrapper" | "track";
+
+/** A deal a link carried, with the fees in it that did not open (`readLinkedDeal`); or why the link did not open. */
+type Unpacked = { deal: FeeDeal; left: FeeLeftOut[] } | { failed: LinkFailure };
+const failed = (why: LinkFailure): Unpacked => ({ failed: why });
 
 /**
  * The short name in a link of each key a price's parts are kept in (capabilities.ts) and of each key a figure is kept under (figures.ts):
@@ -117,15 +129,17 @@ function dealText(deal: FeeDeal): string {
   return JSON.stringify([LINK_VERSION, short, table]);
 }
 
-/** A deal from the text of a link, every field checked, with new ids; null where it is not a deal the site wrote. */
-function dealOfText(text: string): FeeDeal | null {
+/** A deal from the text of a link, every field checked, with new ids, and the fees in it that did not open; or why it is not a deal the site wrote. */
+function dealOfText(text: string): Unpacked {
   let raw: unknown;
   try {
     raw = JSON.parse(text);
   } catch {
-    return null;
+    return failed("broken");
   }
-  if (!Array.isArray(raw) || raw.length !== 3 || !READ_VERSIONS.includes(raw[0] as number) || !isObj(raw[1]) || !Array.isArray(raw[2])) return null;
+  if (!Array.isArray(raw) || raw.length !== 3) return failed("broken");
+  if (!READ_VERSIONS.includes(raw[0] as number)) return failed(typeof raw[0] === "number" ? "version" : "broken");
+  if (!isObj(raw[1]) || !Array.isArray(raw[2])) return failed("broken");
   const table = raw[2].map((s) => renamed(s, LONG, (_k, x) => x));
   const figure = (_k: string, x: unknown): unknown => {
     if (typeof x === "number") return { v: x };
@@ -135,7 +149,9 @@ function dealOfText(text: string): FeeDeal | null {
   };
   const long = renamed(raw[1], LONG, figure) as Record<string, unknown>;
   const fees = Array.isArray(long.fees) ? long.fees.map((f) => (isObj(f) ? { ...f, id: newFeeId() } : f)) : long.fees;
-  return readDeal({ ...long, id: newDealId(), fees });
+  const r = readLinkedDeal({ ...long, id: newDealId(), fees });
+  // a link none of whose fees open is a broken one, not an empty deal
+  return r && !(r.left.length > 0 && r.deal.fees.length === 0) ? r : failed("broken");
 }
 
 /** A deal as the `d` of a link in the query, as the site wrote links before they moved to the fragment: its text, base64url. */
@@ -143,11 +159,17 @@ export const encodeDeal = (deal: FeeDeal): string => bytesToBase64Url(new TextEn
 
 /** A deal from the `d` of a link in the query (`encodeDeal`); null where `d` is not a deal the site wrote. */
 export function decodeDeal(d: string): FeeDeal | null {
-  if (d.length === 0 || d.length > QUERY_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return null;
+  const r = decodedDeal(d);
+  return "deal" in r ? r.deal : null;
+}
+
+function decodedDeal(d: string): Unpacked {
+  if (d.length === 0) return failed("empty");
+  if (d.length > QUERY_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return failed("broken");
   try {
     return dealOfText(utf8(base64UrlToBytes(d)));
   } catch {
-    return null;
+    return failed("broken");
   }
 }
 
@@ -179,47 +201,75 @@ async function through(bytes: Uint8Array, stream: CompressionStream | Decompress
   }
 }
 
-/** A deal as the `d` of its link in the fragment: its text, compressed (deflate-raw), base64url. */
-export async function packDeal(deal: FeeDeal): Promise<string> {
-  const packed = await through(new TextEncoder().encode(dealText(deal)), new CompressionStream("deflate-raw"));
-  return bytesToBase64Url(packed!);
+/**
+ * A deal as the `d` of its link in the fragment: its text, compressed (deflate-raw), base64url. Null where the link could not open again:
+ * its `d` longer than `PACKED_MAX`, or its text longer than the reader takes.
+ */
+export async function packDeal(deal: FeeDeal): Promise<string | null> {
+  const text = new TextEncoder().encode(dealText(deal));
+  if (text.length > TEXT_MAX) return null;
+  const packed = await through(text, new CompressionStream("deflate-raw"));
+  const d = packed && bytesToBase64Url(packed);
+  return d && d.length <= PACKED_MAX ? d : null;
 }
 
 /** A deal from the `d` of a link in the fragment (`packDeal`); null where `d` is not a deal the site wrote. */
 export async function unpackDeal(d: string): Promise<FeeDeal | null> {
-  if (d.length === 0 || d.length > PACKED_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return null;
+  const r = await unpackedDeal(d);
+  return "deal" in r ? r.deal : null;
+}
+
+async function unpackedDeal(d: string): Promise<Unpacked> {
+  if (d.length === 0) return failed("empty");
+  if (d.length > PACKED_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return failed("broken");
   let bytes: Uint8Array;
   try {
     bytes = base64UrlToBytes(d);
   } catch {
-    return null;
+    return failed("broken");
   }
   const text = await through(bytes, new DecompressionStream("deflate-raw"), TEXT_MAX);
-  if (!text) return null;
+  if (!text) return failed("broken");
   try {
     return dealOfText(utf8(text));
   } catch {
-    return null;
+    return failed("broken");
   }
 }
 
-/** The address of a deal: the fee page with the deal in the fragment's `d` (site-paths.ts). */
-export const encodedDealPath = async (deal: FeeDeal): Promise<string> => dealPagePath({ deal: await packDeal(deal) });
+/** The address of a deal: the fee page with the deal in the fragment's `d` (site-paths.ts); null where the link would be too long to open. */
+export async function encodedDealPath(deal: FeeDeal): Promise<string | null> {
+  const d = await packDeal(deal);
+  return d === null ? null : dealPagePath({ deal: d });
+}
+
+/**
+ * What an address gave the fee page: the deal it opens, and whether it was given as a deal (`given`: a link's, rather than a kind's or a
+ * track's); the fees of a link's deal left out (`left`, each with why); and where the address failed, why (`failed`: the deal is then an
+ * empty one, and not given).
+ */
+export interface AddressDeal {
+  deal: FeeDeal;
+  given: boolean;
+  left: FeeLeftOut[];
+  failed: LinkFailure | null;
+}
 
 /**
  * The deal the address opens (`search` its query, `hash` its fragment): a deal in the fragment's `d`, or in the query's `d` as the site wrote
  * links before; a new deal of the kind `wrapper` names, where it names a kind of the data; a new deal filled from the track `track` names.
- * `given` says the address gave that deal; where `d` is broken or the kind or the track is unknown, an empty deal opens and `given` is
- * false, so the page keeps nothing of it. Null where the address names none of them, and the page opens what the device holds.
+ * Where `d` is broken or the kind or the track is unknown, an empty deal opens, not given, so the page keeps nothing of it, and `failed`
+ * says why (`AddressDeal`). Null where the address names none of them, and the page opens what the device holds.
  */
-export async function dealOfAddress(search: string, hash: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): Promise<{ deal: FeeDeal; given: boolean } | null> {
-  const opened = (deal: FeeDeal | null) => (deal ? { deal, given: true } : { deal: newDeal(null), given: false });
+export async function dealOfAddress(search: string, hash: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): Promise<AddressDeal | null> {
+  const opened = (r: Unpacked): AddressDeal => ("deal" in r ? { deal: r.deal, given: true, left: r.left, failed: null } : { deal: newDeal(null), given: false, left: [], failed: r.failed });
+  const made = (deal: FeeDeal | null, why: LinkFailure) => opened(deal ? { deal, left: [] } : failed(why));
   const packed = new URLSearchParams(hash.replace(/^#/, "")).get("d");
-  if (packed !== null) return opened(await unpackDeal(packed));
+  if (packed !== null) return opened(await unpackedDeal(packed));
   const d = new URLSearchParams(search).get("d");
-  if (d !== null) return opened(decodeDeal(d));
+  if (d !== null) return opened(decodedDeal(d));
   const subject = parseSubject(search);
   if (!subject) return null;
-  if (subject.kind === "wrapper") return opened(isProductId(subject.wrapperId) && data.kinds.some((k) => k.id === subject.wrapperId) ? newDeal(subject.wrapperId) : null);
-  return opened(dealFromTrack(subject.trackId, data, today));
+  if (subject.kind === "wrapper") return made(isProductId(subject.wrapperId) && data.kinds.some((k) => k.id === subject.wrapperId) ? newDeal(subject.wrapperId) : null, "wrapper");
+  return made(dealFromTrack(subject.trackId, data, today), "track");
 }

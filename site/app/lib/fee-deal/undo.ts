@@ -66,14 +66,17 @@ function feeChange(deal: FeeDeal, fee: Fee, changed: Fee, what: UndoWhat, chosen
 }
 
 /**
- * The deal without a fee. A removed chosen fee hands the choice to its neighbour (the next card, else the one before), so the panel never
- * stands empty; another chosen fee stays chosen. Null where the deal has no such fee.
+ * The deal without a fee. A removed chosen fee hands the choice to its neighbour on the page (`shown`, the fees' ids in the order they
+ * stand there; the deal's own order where none is given): the card under it, else the one above, so the panel never stands empty; another
+ * chosen fee stays chosen. Null where the deal has no such fee.
  */
-export function removeFeeKept(deal: FeeDeal, feeId: string, chosen: string | null): Undoable | null {
+export function removeFeeKept(deal: FeeDeal, feeId: string, chosen: string | null, shown: readonly string[] = deal.fees.map((f) => f.id)): Undoable | null {
   const at = deal.fees.findIndex((f) => f.id === feeId);
   if (at < 0) return null;
   const after: FeeDeal = { ...deal, fees: deal.fees.filter((f) => f.id !== feeId) };
-  const next = chosen === feeId ? (after.fees[at] ?? after.fees[at - 1])?.id ?? null : chosen;
+  const order = shown.filter((id) => id === feeId || after.fees.some((f) => f.id === id));
+  const k = order.indexOf(feeId);
+  const next = chosen === feeId ? (k < 0 ? after.fees[0]?.id : (order[k + 1] ?? order[k - 1])) ?? null : chosen;
   return { deal: after, chosen: next, undo: { what: { kind: "remove", feeId, at }, dealId: deal.id, before: deal.fees[at]!, chosenBefore: chosen, chosenAfter: next } };
 }
 

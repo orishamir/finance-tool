@@ -3,7 +3,7 @@
 // and at its end the button that fills a new deal from a price list, with the price list it was filled from under the line.
 // "העמלות בעסקה" (`FeesColumn`): its fees, grouped by what each is charged on under the summary's group headings, a group shown only while
 // the deal has a fee in it, each fee in its block (fee-block.tsx). A fee just taken away leaves the page's undo line (`UndoLine`) in its
-// place, as tall as its block was; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the
+// place, in the block's room for a moment before it closes up to the line; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the
 // fees the deal could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own; a fee added lands in
 // its group, open, and takes the focus in its first box. Where the page has no column for the toolbox and no sheet for it, the toolbox
 // stands under its fee. A block under the pointer or the focus marks the fee in the summary.
@@ -32,6 +32,7 @@ import { CopyFee } from "./copy-fee";
 import { UndoLine } from "./undo-line";
 import { feeColour, feeName } from "./words";
 import type { HouseAverages } from "../../lib/house-averages";
+import type { Refusal } from "./use-deal-document";
 
 const b = copy.builder;
 const lw = copy.cases.lifted;
@@ -51,6 +52,9 @@ export interface FeeUndoLine {
 
 /** The page's undo line of another kind of product that took fees away: it stands under the kind. */
 export type KindUndoLine = Omit<FeeUndoLine, "what" | "fee">;
+
+/** The deal's fees in the order they stand on the page (`groupsOf`): a fee taken away hands the toolbox to the one under it there. */
+export const shownFeeOrder = (fees: readonly Fee[], groupOf: (fee: Fee) => string): string[] => groupsOf(fees, groupOf, null).flatMap(([, items]) => items.flatMap((it) => (it === "line" ? [] : [it.fee.id])));
 
 /**
  * What in a fee takes the focus once drawn: its card (a fee put back by the undo), its first box (a fee just added, a price put in another
@@ -274,6 +278,7 @@ export function FeesColumn({
   onAdd,
   actions,
   ask,
+  refusal,
   adding,
 }: {
   deal: FeeDeal;
@@ -296,13 +301,15 @@ export function FeesColumn({
   actions: BlockActions;
   /** The thing to change by whose question stands in the open fee's block, in place, where its band will stand; null where none is asked. */
   ask: AskOf;
+  /** A change just refused because it would pass a limit: said under its fee's block, or by the fees' add line where it names no fee. */
+  refusal?: Refusal | null;
   /**
    * How the fees the deal can still take show after the fees: the palette (`palette`, where the page has no column for it), the quiet add
    * line (`line`, while a fee is open in a page whose column holds the palette otherwise), or nothing (the column shows the palette).
    */
   adding: { palette: PaletteItem[]; copy?: CopyHands | null } | "line" | null;
 }) {
-  // each block's height as last drawn, so the line a removed fee leaves is as tall as its block was
+  // each block's height as last drawn, the room the line a removed fee leaves holds for a moment
   const root = useRef<HTMLDivElement>(null);
   const addAt = useRef<HTMLDivElement>(null);
   const heights = useRef(new Map<string, number>());
@@ -438,6 +445,7 @@ export function FeesColumn({
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
                     {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} grip={feeLift(it.fee, key, k, fees.length)} />)}
+                    {refusal?.feeId === it.fee.id && <RefusalLine refusal={refusal} />}
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}
@@ -451,6 +459,7 @@ export function FeesColumn({
           </div>
           );
         })}
+        {refusal && refusal.feeId === null && <RefusalLine refusal={refusal} />}
         <div ref={addAt} data-fees-add="" className="contents">
           {adding === "line" && <AddLine lead={b.add} items={adds} onAdd={(id) => onAdd(id as FeeKindId)} />}
           {adding && adding !== "line" && <Palette items={adding.palette} onAdd={onAdd} heading="h3" copy={adding.copy ?? null} />}
@@ -458,6 +467,17 @@ export function FeesColumn({
       </div>
       </DropZone>
     </Section>
+  );
+}
+
+/** Why a change was refused (lib/fee-deal/limits.ts), where it was made, brought into view as it appears; the live region says it too. */
+function RefusalLine({ refusal }: { refusal: Refusal }) {
+  const line = useRef<HTMLParagraphElement>(null);
+  useIsoLayoutEffect(() => bringIntoView(line.current), [refusal]);
+  return (
+    <p ref={line} data-refusal="" className="come-in mt-2 text-sm">
+      {refusal.words}
+    </p>
   );
 }
 

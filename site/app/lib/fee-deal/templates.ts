@@ -20,6 +20,7 @@ import type { DataBar } from "./offers/offer";
 import { buildPrice, type PriceSpec } from "./offers/build";
 import { withOffset } from "./edits/price";
 import type { HouseAverages } from "../house-averages";
+import { feeRoom } from "./limits";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
 export type SlimTemplateFee = Omit<SlimFee, "id">;
@@ -837,7 +838,8 @@ export const feeAlone = (deal: FeeDeal, kind: FeeKindId, data: Pick<FeesData, "k
  * The deal with a fee copied from a house's price list, as the list prints it, with its sources: beside the deal's fees (`beside`), even
  * where the deal has a fee of that kind already, so the two stand side by side and are read as two fees (values.ts names their figures
  * apart), except a kind that stands alone (`feeAlone`); or in place of the deal's fee of that kind (`fillFee`, kept for the undo by the
- * page). The new fee's id, where one was added. Null where the house prints no such fee, or a second fee of a kind that stands alone.
+ * page). The new fee's id, where one was added. Null where the house prints no such fee, a second fee of a kind that stands alone, or
+ * a fee beside where the deal holds as many as a deal may (`FEES_MAX`).
  */
 export function copyHouseFee(deal: FeeDeal, houseIdOf: string, kind: FeeKindId, how: "beside" | "replace", data: Pick<FeesData, "houses" | "kinds">): { deal: FeeDeal; feeId: string } | null {
   const h = data.houses.find((x) => houseId(x) === houseIdOf);
@@ -849,6 +851,7 @@ export function copyHouseFee(deal: FeeDeal, houseIdOf: string, kind: FeeKindId, 
     const filled = fillFee(deal, have.id, houseIdOf, data);
     return filled && { deal: filled, feeId: have.id };
   }
+  if (!feeRoom(deal)) return null;
   const fee: Fee = { ...asFee(t, newFeeId()), house: houseIdOf };
   const next: FeeDeal = { ...deal, fees: [...deal.fees, fee] };
   if (!deal.provider || deal.provider === h.provider) return { deal: next, feeId: fee.id };

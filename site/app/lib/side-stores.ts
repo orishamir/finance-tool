@@ -13,7 +13,7 @@
 // Keys of the stores are kept verbatim (a tick key is a product id, or an old `wrapper|from|to` key, folded on import).
 import { valueObject } from "@finance-tool/schema";
 import { readDeal, type FeeDeal } from "./fee-deal/model";
-import { DEALS_KEY, dealsDoc, parseDeals } from "./fee-deal/store";
+import { DEALS_KEY, dealsDoc, parseDeals, readDealsDoc } from "./fee-deal/store";
 import { OWN_RATES_KEY, parseOwnRates, type OwnRates } from "./own-rate";
 
 export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: OWN_RATES_KEY, deals: DEALS_KEY } as const;
@@ -327,6 +327,15 @@ export function mergeSide(device: SideStores, file: SideStores | null, mode: "ad
   }
   return { merged: { offers, variantAssumptions, playbookTicks, ownRates, deals }, added, skipped, addedItems };
 }
+/** The stored deals the device holds that the page cannot open (fee-deal/store.ts): kept as stored when the deals are written. */
+function unreadDealsOn(s: Storage): unknown[] {
+  try {
+    const raw = s.getItem(SIDE_KEYS.deals);
+    return raw ? readDealsDoc(JSON.parse(raw)).unread : [];
+  } catch {
+    return [];
+  }
+}
 
 /** Writes the side keys and tells the stores of this page (a `storage` event reaches only other tabs on its own). Returns whether the device kept them. */
 export function writeSideStores(s: Storage | null, side: SideStores): boolean {
@@ -336,7 +345,7 @@ export function writeSideStores(s: Storage | null, side: SideStores): boolean {
     [SIDE_KEYS.variants, { version: 1, byExposure: side.variantAssumptions }],
     [SIDE_KEYS.ticks, { version: 1, byKey: side.playbookTicks }],
     [SIDE_KEYS.ownRates, side.ownRates],
-    [SIDE_KEYS.deals, dealsDoc(side.deals)],
+    [SIDE_KEYS.deals, dealsDoc(side.deals, unreadDealsOn(s))],
   ];
   let ok = true;
   for (const [key, doc] of docs) {
