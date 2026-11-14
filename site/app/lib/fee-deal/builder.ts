@@ -10,7 +10,7 @@ import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy, type Figure, type PartId } from "./edit";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
+import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -254,7 +254,34 @@ export function whenWords(fee: CasesFee, w: When, t: number, today: string): Whe
     const at = w < b.tops.length ? b.tops[w]! : b.tops.at(-1)!;
     return { thing: t, any: false, lead: w < b.tops.length ? copy.cases.upTo : copy.cases.over, figure: figure(at, unit, today) };
   }
-  return { thing: t, any: false, text: (w as string[]).map((v) => valueWords(b.kind, v)).join(", ") };
+  return { thing: t, any: false, text: listWords(fee, t, w as string[]) };
+}
+
+/** Words that share a lead ending in ", " say it once: "בחו״ל, באירופה, בשאר העולם". */
+function sharedLead(words: readonly string[]): string {
+  const cut = words[0]?.indexOf(", ") ?? -1;
+  const lead = cut > 0 ? words[0]!.slice(0, cut + 2) : "";
+  if (words.length < 2 || !lead || !words.every((x) => x.startsWith(lead) && x.length > lead.length)) return words.join(", ");
+  return lead + words.map((x) => x.slice(lead.length)).join(", ");
+}
+
+/**
+ * A case's values of a list thing in words. Where the case names every value abroad but those the fee's other cases name, it says "מחוץ ל"
+ * theirs after the lead they share ("בחו״ל, מחוץ לארה״ב"); else its values, a lead they share said once (`sharedLead`).
+ */
+function listWords(fee: CasesFee, t: number, values: readonly string[]): string {
+  const b = fee.by[t]!;
+  const words = values.map((v) => valueWords(b.kind, v));
+  if (b.kind !== "what" && b.kind !== "held") return sharedLead(words);
+  const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
+  const others = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) && c.when[t] !== values ? (c.when[t] as string[]).filter((v) => abroad.includes(v) && !values.includes(v)) : [])));
+  const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
+  if (!all) return sharedLead(words);
+  const o = copy.cases.outside;
+  // the lead the values abroad share ("בחו״ל")
+  const lead = valueWords(b.kind, abroad[0]!).split(", ")[0]!;
+  const names = abroad.filter((v) => others.has(v)).map((v) => o.names[v] ?? valueWords(b.kind, v));
+  return `${lead}, ${o.lead}${names.join(o.and)}`;
 }
 
 /** A fee's things as the band's pills. */

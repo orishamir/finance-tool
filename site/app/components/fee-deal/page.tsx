@@ -460,7 +460,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const fillLine: FillUndoLine | null = shown && words && "dealId" in shown && shown.what.kind === "fill" && shown.what.feeId === chosen ? { words, onUndo, onHold: setHolding, take: take(shown) } : null;
   const caseLine: CaseUndoLine | null =
     shown && words && "dealId" in shown && (shown.what.kind === "stage" || shown.what.kind === "chain" || shown.what.kind === "case" || shown.what.kind === "by" || shown.what.kind === "form")
-      ? { feeId: shown.what.feeId, words, onUndo, onHold: setHolding, take: take(shown), ...(shown.what.kind === "form" ? { inCase: { caseId: shown.what.caseId ?? null } } : {}) }
+      ? { feeId: shown.what.feeId, words, onUndo, onHold: setHolding, take: take(shown), ...(shown.what.kind === "form" ? { inCase: { caseId: shown.what.caseId ?? null } } : {}), ...(shown.what.kind === "by" ? { thing: shown.what.t } : {}) }
       : null;
   const dealLine = shown && words && !("dealId" in shown) ? words : null;
   const readSome = read.fees.length > 0;

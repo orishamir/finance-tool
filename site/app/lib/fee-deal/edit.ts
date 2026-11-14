@@ -219,7 +219,9 @@ function partsInto(p: Price, next: Price): Price {
 
 /**
  * A price in another form: the rate or the sum typed so far carries over where the new form has the same kind of figure (a share to a
- * share, a sum per period or per action to the other), as the person's own figure (`owned`); between a share of an action and a sum per
+ * share, a sum per period or per action to the other), as the person's own figure, since the same number in another form is a price the
+ * source does not give; every other figure that carries over keeps its source, as the list printed it (a list's 2% maximum stays the
+ * list's). Between a share of an action and a sum per
  * unit, whose figures differ in kind, the bounds, the cap, the flat price and their currency carry over instead, since they price the
  * action the same way in both. Between any two forms on an action the currency that priced something carries over (a sum per unit in
  * dollars becomes a sum per action in dollars; a share's currency only where a bound or a flat price was typed in it), and so do the percent
@@ -232,13 +234,14 @@ export function withForm(p: Price, form: FormId): Price {
   if (isBounded(p) && isBounded(next)) {
     const { form: _f, rate: _r, amount: _a, currency: _c, ...parts } = p as Bounded & { rate?: Num; amount?: Num };
     const currency = pricedCurrency(p);
-    return owned({ ...next, ...parts, ...(currency ? { currency } : {}) } as Price);
+    return { ...next, ...parts, ...(currency ? { currency } : {}) } as Price;
   }
+  const own = (n: Num): Num => (n.blank ? n : typed(n.v));
   const rate = p.form === "action" || p.form === "held" ? p.rate : null;
   const amount = p.form === "sum" || p.form === "perAction" ? p.amount : null;
-  if ((next.form === "action" || next.form === "held") && rate) return owned(partsInto(p, { ...next, rate }));
-  if ((next.form === "sum" || next.form === "perAction") && amount) return owned(partsInto(p, { ...next, amount }));
-  return owned(partsInto(p, next));
+  if ((next.form === "action" || next.form === "held") && rate) return partsInto(p, { ...next, rate: own(rate) });
+  if ((next.form === "sum" || next.form === "perAction") && amount) return partsInto(p, { ...next, amount: own(amount) });
+  return partsInto(p, next);
 }
 
 /**

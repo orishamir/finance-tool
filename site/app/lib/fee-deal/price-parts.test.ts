@@ -106,9 +106,14 @@ describe("the price parts as the screen edits them", () => {
     expect(withFigure(p, "flat", 3)).toEqual(p);
     expect(withFigure({ form: "sum", amount: typed(10), every: 1 }, "cap", 3)).toEqual({ form: "sum", amount: typed(10), every: 1 });
   });
-  it("keeps the bounds, the percent maximum, the flat price and their currency between a share of an action and a sum per unit, as the person's", () => {
+  it("keeps the bounds, the percent maximum, the flat price and their currency between a share of an action and a sum per unit, each with its source", () => {
+    // a figure carried over is still the list's (a list's 2% maximum stays the list's); only a rate or a sum carried into another form,
+    // a price the list does not give, becomes the person's
     const filled: Price = { form: "action", rate: { v: 0.3, src }, min: { v: 1, src }, cap: { v: 1, src }, currency: "USD" };
-    expect(withForm(filled, "perUnit")).toEqual({ form: "perUnit", amount: { v: 0, blank: true }, min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
+    expect(withForm(filled, "perUnit")).toEqual({ form: "perUnit", amount: { v: 0, blank: true }, min: { v: 1, src }, cap: { v: 1, src }, currency: "USD" });
+    expect(withForm({ form: "perUnit", amount: { v: 0.03, src }, min: { v: 8, src }, cap: { v: 2, src }, currency: "USD" }, "perAction")).toEqual({ form: "perAction", amount: { v: 0, blank: true }, cap: { v: 2, src }, currency: "USD" });
+    expect(withForm({ form: "action", rate: { v: 0.4, src } }, "held")).toMatchObject({ form: "held", rate: { v: 0.4 } });
+    expect(withForm({ form: "action", rate: { v: 0.4, src } }, "held")).not.toHaveProperty("rate.src");
     expect(withForm(ibFixed, "action")).toEqual({ form: "action", rate: { v: 0, blank: true }, min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
     // a sum per action keeps the currency and the percent maximum, a trade's as a sum per unit's does; a fee whose sum per action is in
     // shekels with no percent maximum by its shape (a payout's handling) loses them
@@ -158,6 +163,18 @@ describe("the templates", () => {
     const tase = read({ ...fillDeal(newDeal("brokerage-account"), "house:one-zero", data, TODAY)!, readFor: [{ by: "what", is: "tase" }] });
     expect(tase.fees.some((f) => f.kind === "corporate_event")).toBe(false);
     expect(tase.unmatched).toEqual([tase.deal.fees.find((f) => f.kind === "corporate_event")!.id]);
+  });
+  it("name a case of every value abroad but another case's as outside that value, and a lead its values share once", () => {
+    const texts = (id: string) => {
+      const deal = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
+      const row = builder(read(deal)).rows.find((r) => deal.fees.find((f) => f.id === r.fee)!.kind === "trade")!;
+      return row.block.kind === "band" ? [...row.block.rows, ...(row.block.folded?.rows ?? [])].map((r) => r.when[0]!.text ?? "") : [];
+    };
+    // Excellence: the US's two tracks, and Europe with the rest of the world: "בחו״ל, מחוץ לארה״ב", as drawn
+    expect(texts("excellence")).toContain("בחו״ל, מחוץ לארה״ב");
+    expect(texts("excellence")).not.toContain("בחו״ל, באירופה, בחו״ל, בשאר העולם");
+    // Hapoalim: one case for every value abroad, its lead said once
+    expect(texts("hapoalim")).toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
   it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>

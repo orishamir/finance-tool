@@ -1843,6 +1843,11 @@ export const feeDeal = {
       channel: { branch: "בסניף", phone: "בטלפון", direct: "באינטרנט ובאפליקציה" } as Record<string, string>,
       currency: { USD: "מדולר או לדולר", EUR: "מאירו או לאירו", GBP: "מלירה שטרלינג או ללירה שטרלינג", other: "ממטבע אחר או למטבע אחר" } as Record<string, string>,
     },
+    /**
+     * A case naming every value abroad but those another case names: "מחוץ ל" and theirs ("בחו״ל, מחוץ לארה״ב"); several joined by "ול"
+     * ("מחוץ לארה״ב ולאירופה").
+     */
+    outside: { lead: "מחוץ ל", and: " ול", names: { us: "ארה״ב", europe: "אירופה", world: "שאר העולם" } as Record<string, string> },
     /** A case's value that is any value of its thing, said fainter than a named one. */
     any: { what: "בכל מה שקונים", held: "בכל מה שמוחזק", channel: "בכל ערוץ", track: "בכל מסלול", currency: "בכל מטבע", actionSize: "בכל גודל", portfolioSize: "בכל גודל תיק", volume: "בכל היקף", count: "בכל מספר", own: "בכל ערך" } as Record<string, string>,
     /** A range's step: up to its top, or above the last top; the unit after a count of units or of actions. */

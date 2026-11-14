@@ -349,9 +349,12 @@ const figuresOf = (p: Price): (Num | undefined)[] => {
     case "sum":
       return [p.amount, p.refund];
     case "perAction":
-      return [p.amount, ...parts(p)];
+      return [p.amount, p.cap, ...parts(p)];
   }
 };
+
+/** Whether any figure of a price still carries a template's source: what the template filled in it stands as filled. */
+export const anySourced = (p: Price): boolean => figuresOf(p).some((n) => !!n?.src);
 
 /**
  * Whether a fee holds nothing the person gave: one price with no end, no sale priced apart and no name of its own, and either every figure

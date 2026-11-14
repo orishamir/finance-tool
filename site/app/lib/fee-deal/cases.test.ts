@@ -634,7 +634,8 @@ describe("a thing of the band's head, opened", () => {
     // five cases, two of them on what is bought in the US: they merge into one
     expect(track.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "4"));
     const what = thingMenu(r, "fee-trade", 0)!;
-    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, `${copy.cases.values.what.europe}, ${copy.cases.values.what.world}`]);
+    // the case of Europe and the rest of the world names every value abroad but the US case's: "outside the US", the lead said once
+    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, "בחו״ל, מחוץ לארה״ב"]);
     expect(what.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "3"));
     const size = thingMenu(r, "fee-fx", 0)!;
     expect(size.values.map((w) => [w.lead, w.figure?.value])).toEqual([
