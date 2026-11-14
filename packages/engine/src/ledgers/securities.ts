@@ -498,6 +498,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
         // domicile before the run (instruments.server.ts, fund-variants.ts), so reaching here is a caller's error.
         throw new Error("F-20: a distributing foreign fund needs its domicile (us or ireland) for the foreign withholding");
       }
+      // A distribution at a foreign broker is not withheld in Israel: its advance is due by 30 April of the next year (TXF-21).
       if (atForeignBroker) tally.flag("TXF-21");
     } else {
       israeliDistRate = book.rate("TXS-10", "rate");
@@ -711,7 +712,8 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (realGain < 0) tally.flag("G-07");
     tally.flag("G-20");
     if (isForeign && !fund.distribution && !fund.saleOnlyRuling && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
-    if (atForeignBroker) tally.flag("TXF-21");
+    // A sale at a foreign broker is not withheld in Israel: the gain is reported, and its advance paid, by 31 July and 31 January (TXF-22).
+    if (atForeignBroker) tally.flag("TXF-22");
   }
 
   return tally.result(book, {

@@ -967,8 +967,8 @@ export const flags: Record<string, string> = {
   "PF-13": "בחישוב, ההנחה בדמי הניהול נמשכת {PF-13:min_discount_years}, התקופה הקצרה ביותר שחוזר רשות שוק ההון מתיר, גם אם החברה כתבה תקופה קצרה יותר.",
   // D87, now the cautious reading (guidelines/research.md step 6): one deposit and no more, the run ends the discount after six months (PF OQ18)
   "PF-OQ18": "בחישוב, ההנחה בדמי הניהול מסתיימת {PF-14:months_after_deposits_stop} אחרי ההפקדה, ומשם דמי הניהול הם בלי ההנחה. חוזר של רשות שוק ההון מתיר להעלות דמי ניהול {PF-14:months_after_deposits_stop} אחרי שההפקדות נפסקות, ועוד לא נמצא אם זה חל על מי שהפקיד פעם אחת בלבד. אם לא, ההנחה תימשך, והתוצאה תהיה גבוהה יותר.",
-  // any figure valued at the brackets (a tax, a relief, a room, a line of the timeline): TXG-05; method G-23 names the input it would need
-  "G-23": "נקודות הזיכוי שלכם לא נלקחו בחשבון בחישוב המס כאן, כי האתר לא יודע כמה יש לכם. נקודות זיכוי מקטינות את כל המס של השנה, גם את המס על רווחים ועל ריבית. לכן בשנה שבה המס שלכם נמוך, למשל בשנה בלי משכורת, הסכום כאן יכול להיות שונה.",
+  // any figure valued at the brackets (a tax, a relief, a room, a line of the timeline): TXG-05, with the cases it names where credit points are limited; method G-23 names the input it would need
+  "G-23": "נקודות הזיכוי שלכם לא נלקחו בחשבון בחישוב המס כאן, כי האתר לא יודע כמה יש לכם. נקודות זיכוי מקטינות את כל המס של השנה, גם את המס על רווחים ועל ריבית, חוץ מכמה מקרים שרשות המסים מונה שבהם הן מוגבלות. לכן בשנה שבה המס שלכם נמוך, למשל בשנה בלי משכורת, הסכום כאן יכול להיות שונה.",
   // F-31, F-32: the s.45A credit is capped at the year's tax, the rest lost on the cautious reading (TXP-01, TXP OQ20); that tax leaves out
   // credit points, which G-23's line beside it says (method G-23)
   "TXP-OQ20": "הזיכוי כאן הוא עד גובה מס ההכנסה שלכם באותה שנה. לא נמצא חוק שמחזיר את החלק שמעל המס או מעביר אותו לשנים הבאות, ולכן החישוב מניח שהחלק הזה הולך לאיבוד. אם המס שאתם משלמים נמוך מהזיכוי, תקבלו פחות מהסכום כאן.",
@@ -977,28 +977,30 @@ export const flags: Record<string, string> = {
   "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם, ועל חלק הרווח שהמדרגה שלו נמוכה מזה מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
   "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש, ובחשבון עם עד שתי פעולות בחודש התקרה נמוכה מדמי הניהול שנספרו כאן. עוד לא ידוע איך הכללים החדשים סופרים פעולה, ולכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // D64: F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
   "G-32": "הסכום שנגבה על כל דיבידנד בשביל הגוף ששומר את ניירות הערך בחו״ל לא הופחת מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה, ועוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // D67: F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
-  // F-49 (method G-03): the pension's exit is an annuity, whose value needs each fund's conversion factors (PEN OQ7) and whose exemption needs them (TXP-14 to TXP-17)
-  "G-03": "זה הסכום בקופה לפני הקצבה. מה שמקבלים בפועל הוא קצבה חודשית, והאתר עוד לא מחשב אותה: היא תלויה במקדמי ההמרה של כל קרן, שעוד לא נאספו, וגם הפטור ממס על הקצבה תלוי בהם.",
+  // F-49 (method G-03): the pension's exit is an annuity, whose part above the minimum annuity may be commuted (PEN-28, TXA-20); its value needs each fund's conversion factors (PEN OQ7) and its exemption needs them (TXP-14 to TXP-17)
+  "G-03": "זה הסכום בקופה לפני הקצבה. מה שמקבלים בפועל הוא קצבה חודשית, ואת החלק שלה שמעל סכום הקצבה המזערי אפשר גם להוון לסכום חד־פעמי. האתר עוד לא מחשב את הקצבה: היא תלויה במקדמי ההמרה של כל קרן, שעוד לא נאספו, וגם הפטור ממס על הקצבה תלוי בהם.",
   // PEN OQ7: the funds' conversion and insurance tables are not collected as data
   "PEN-OQ7": "טבלאות מקדמי ההמרה ועלות הביטוח של קרנות הפנסיה עוד לא נאספו, ולכן האתר לא מחשב קצבה ולא משווה את עלות הביטוח בין הקרנות.",
   // A-17 entered, the tables not collected (method G-12)
   "G-12": "עלות הביטוח בקרן הפנסיה היא האחוז שהזנתם, כי טבלאות הביטוח של הקרנות עוד לא נאספו.",
   // F-32 leaves out TXP-07's extra credit and TXP-08's enlarged deduction (method G-13); flagged for a self-employed person and from 50
   "G-13": "החישוב לא כולל שתי הטבות שעשויות לחול: זיכוי נוסף לעצמאי, שחל בתנאים מסוימים, וניכוי מוגדל מגיל 50. אם אחת מהן חלה עליכם, ההטבה במס עשויה להיות גבוהה יותר.",
-  // F-24 charges the statute's 15% where the Tax Authority's guide writes 20% (TXI OQ3, method G-09)
-  "G-09": "המס על הרווח במק״ם חושב לפי 15%, השיעור שבחוק. המדריך של רשות המסים כותב 20%, ועוד לא ברור איך שני המקורות מתיישבים.",
-  // F-25 leaves out the accrued interest a purchase between coupon dates pays (TXI OQ5, method G-10)
-  "G-10": "כשקונים אג״ח בין שני מועדי תשלום של ריבית, משלמים למוכר גם את הריבית שהצטברה מאז התשלום הקודם. החישוב לא כולל את הסכום הזה.",
+  // F-24 charges TXI-11's 15% on the makam discount, interest on an unlinked asset (method G-09)
+  "G-09": "המס על דמי הניכיון במק״ם חושב לפי 15%, השיעור שבחוק על ריבית מנכס לא צמוד.",
+  // F-25 leaves out the accrued interest a purchase between coupon dates pays, a payment the method assumes; its tax is open (TXI OQ5, method G-10)
+  "G-10": "כשקונים אג״ח בין שני מועדי תשלום של ריבית, האתר מניח שמשלמים למוכר גם את הריבית שהצטברה מאז התשלום הקודם. החישוב לא כולל את הסכום הזה, ואיך הוא ממוסה עוד לא ברור.",
   // F-40 takes the real gain at no less than zero and carries no loss (method G-07)
   "G-07": "הרווח הריאלי כאן שלילי. החישוב לא מקזז הפסדים מרווחים אחרים ולא מעביר אותם לשנים הבאות, ולכן אם יש כאן הפסד שאפשר לקזז, הוא לא מופיע בחישוב.",
   // a loss carried from an earlier leg offset the gain (TXS-18; circular 10/2025 s.4.3: a return for both years)
   "TXS-18": "הפסד משנים קודמות קוזז כאן מהרווח. הפסד כזה עובר לשנים הבאות רק אם הגשתם דוח שנתי לשנה שבה היה ההפסד, וגם לשנה שבה מקזזים אותו.",
-  // F-08 and F-09 leave commissions and conversion fees out of the tax basis, unsourced either way (TXS-06, method G-20)
-  "G-20": "עמלות הקנייה והמכירה ועמלות המרת המטבע לא הופחתו מהרווח בחישוב המס, כי לא נמצא מקור שמתיר להפחית אותן. אם מותר, המס כאן מעט גבוה מדי.",
-  // F-20: at a foreign broker nothing is withheld in Israel; the advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
-  "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל מס הכנסה ומס רווחי הון. משלמים אותם בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי, והחישוב מחשיב אותם כאילו שולמו כבר באותו חודש.",
-  // F-107: US-situs holdings above TXF-27's filing threshold; Israel has no estate tax treaty with the United States
-  "TXF-27": "ההחזקה בקרן אמריקנית עוברת כאן את הסף שמעליו עיזבון של מי שאינו אזרח ארצות הברית ואינו תושב בה חייב בדיווח לרשויות המס האמריקניות, ועשוי לשלם מס עיזבון. לישראל אין אמנה עם ארצות הברית על מס עיזבון, והחישוב לא כולל את המס הזה.",
+  // F-08 and F-09 leave commissions and conversion fees out of the gain, the method's choice; form 1325 puts transaction commissions into cost and proceeds (TXS-06, method G-20)
+  "G-20": "עמלות הקנייה והמכירה ועמלות המרת המטבע לא הופחתו מהרווח בחישוב המס, וזו בחירה של האתר. בטופס הדוח על רווח הון מניירות ערך (טופס 1325) רשות המסים מכניסה את עמלות הקנייה והמכירה לעלות ולתמורה, ולכן המס כאן יכול להיות מעט גבוה מדי.",
+  // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
+  "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי, והחישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
+  // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
+  "TXF-22": "בבית השקעות בחו״ל לא מנכים בישראל מס רווחי הון במכירה. מדווחים על הרווח ומשלמים מקדמה בעצמכם: עד 31 ביולי על מכירות של ינואר עד יוני, ועד 31 בינואר על מכירות של יולי עד דצמבר. חייבים גם להגיש דוח שנתי. החישוב מחשיב את המס כאילו שולם כבר בחודש המכירה.",
+  // F-107: US-situs holdings above TXF-27's filing threshold; for a fund organised as a trust, US situs is TXF-27's reading with its gaps stated; Israel has no estate tax treaty with the United States
+  "TXF-27": "ההחזקה בקרן אמריקנית עוברת כאן את הסף שמעליו עיזבון של מי שאינו אזרח ארצות הברית ואינו תושב בה חייב בדיווח לרשויות המס האמריקניות, ועשוי לשלם מס עיזבון. בקרן שהתאגדה כנאמנות (trust) ולא כחברה, זו קריאה של האתר שיש בה פערים: לא נמצא טקסט שקובע שקרן כזו נחשבת חברה אמריקנית לעניין מס העיזבון. לישראל אין אמנה עם ארצות הברית על מס עיזבון, והחישוב לא כולל את המס הזה.",
   // F-44: a kupat gemel lehashkaa balance already held whose gain is not known; the annual report states no tax a withdrawal would bear (PF-36)
   "PF-36": "המס במשיכה לא חושב: בכסף שכבר נמצא בקופה צריך לדעת כמה ממנו הוא רווח, והאתר לא יודע את זה. גם הדוח השנתי של הקופה לא מראה את המס שיחול במשיכה.",
   // F-30 between the two sides of TXP-03's threshold: the run deposits up to it as a beneficiary member
