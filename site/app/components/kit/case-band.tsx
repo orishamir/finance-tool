@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Split } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { Button } from "./button";
-import { LIFT_INNER } from "./choice";
+import { LIFT_INNER, onSurface } from "./choice";
 import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 import { Tag } from "./tag";
@@ -132,7 +132,8 @@ function CaseWords({ when }: { when: CaseWord[] }) {
  */
 export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-liftable="" className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
+    // a press on the parts' cell, which stands over the row's button where it holds a grip, opens the case too
+    <div data-liftable="" onClick={onOpen ? (e) => onSurface(e) && onOpen() : undefined} className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} />
       {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge */}

@@ -277,6 +277,11 @@
     background: none;
     padding-inline: 0;
   }
+  /* a figure a cell's cases hold from different places, one of them the person (the fee page's merged cells, `mergedParts`): the marks of
+     both, the source's line under it and the entered ink; its note names where each case's is from */
+  .num-sourced.num-mixed {
+    color: var(--entered);
+  }
   .num-unknown {
     color: var(--muted-foreground);
   }

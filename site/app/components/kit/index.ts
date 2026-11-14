@@ -13,7 +13,7 @@ export { Card, Section, type CardPad, type SectionGap, type SectionLevel } from 
 export { PageHead } from "./page-head";
 export { Disclosure, FoldGroup, type DisclosureProps, type FoldGroupProps } from "./disclosure";
 export { PhoneFold } from "./phone-fold";
-export { ChoiceChips, ChoicePair, ChoiceTray, OtherChip, PickCard, SegmentedControl, TileChoice, type SegmentOption, type Tile } from "./choice";
+export { ChoiceChips, ChoicePair, ChoiceTray, OtherChip, onSurface, PickCard, SegmentedControl, TileChoice, type SegmentOption, type Tile } from "./choice";
 export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { MenuPicker, type MenuItem } from "./menu-picker";
 export { KnobStrip, type Knob } from "./knobs";

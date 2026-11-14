@@ -30,19 +30,75 @@ export const headSaysLead = (row: PartRow): boolean => HEAD_SAYS_LEAD.has(row);
 /**
  * A figure's content: equal for the same number in the same unit, whatever its state. Two cases that print the same figure read the same
  * to the person and share one cell, also where one holds it from the price list and the other as the person's own (a copy the list does
- * not print there); the cell then shows it as the person's (`weakestOf`), so no figure is shown with a source it lacks somewhere.
+ * not print there); the cell then names where each case holds it from (`mergedParts`).
  */
 const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit] : null);
 
-/** Of cases that share one cell, the one whose parts there it shows: the first whose figure is the person's, else the first. */
-export function weakestOf(cases: readonly string[], parts: (caseId: string) => readonly SlimPart[]): string {
-  return cases.find((id) => parts(id).some((p) => p.words.figure?.state === "entered" || p.words.second?.state === "entered")) ?? cases[0]!;
+/** Where a figure is from, equal for two figures from the same place: the person, or one source (a house's list and its page). */
+export const fromKey = (v: SiteValue): string =>
+  v.state === "entered" ? "entered" : JSON.stringify([v.state, v.own ?? null, v.source.url, (v.source as { page?: unknown }).page ?? null]);
+
+/**
+ * The parts a cell over several cases shows (cases whose parts there read the same, `partKey`): the first case's, and where the cases
+ * hold a figure from more than one place (a list's figure and the person's copy of it, or two lines of lists), each case's value of it
+ * (`froms`), the figure itself as a case holds it from a source where one does. So no case's list figure is ever shown as the person's,
+ * and the cell can say where each case's is from.
+ */
+export function mergedParts(cases: readonly string[], parts: (caseId: string) => readonly SlimPart[]): SlimPart[] {
+  const first = parts(cases[0]!);
+  if (cases.length < 2) return [...first];
+  return first.map((p) => {
+    const alike = cases.map((id) => ({ id, part: parts(id).find((x) => x.id === p.id && (x.stage ?? 0) === (p.stage ?? 0)) }));
+    const froms = [0, 1].map((n) => {
+      const each = alike.flatMap(({ id, part }) => {
+        const v = n ? part?.words.second : part?.words.figure;
+        return v ? [{ case: id, value: v }] : [];
+      });
+      return new Set(each.map((x) => fromKey(x.value))).size > 1 ? each : null;
+    });
+    if (!froms[0] && !froms[1]) return p;
+    // the figure as the first case that holds it from a source holds it: its words and its box
+    const listed = (n: number) => alike.find(({ part }) => (n ? part?.words.second : part?.words.figure)?.state === "sourced")?.part;
+    const at = [froms[0] ? listed(0) : undefined, froms[1] ? listed(1) : undefined];
+    return {
+      ...p,
+      words: { ...p.words, ...(at[0]?.words.figure ? { figure: at[0].words.figure } : {}), ...(at[1]?.words.second ? { second: at[1].words.second } : {}) },
+      ...(p.fields ? { fields: p.fields.map((f, n) => ({ ...f, value: at[n]?.fields?.[n]?.value ?? f.value })) } : {}),
+      froms,
+    };
+  });
 }
 
 /** A part's content, equal for two parts that read the same: its id and every word and figure of it. */
 export function partKey(p: SlimPart): string {
   const w = p.words;
   return JSON.stringify([p.id, p.stage ?? 0, w.lead ?? null, figureKey(w.figure), w.mid ?? null, figureKey(w.second), w.month ?? null, w.tail ?? null, w.quiet ?? null]);
+}
+
+/** A part's words, equal for two parts that read the same whichever price they belong to. */
+const wordsKey = (p: SlimPart): string => {
+  const w = p.words;
+  return JSON.stringify([p.id, w.lead ?? null, figureKey(w.figure), w.mid ?? null, figureKey(w.second), w.month ?? null, w.tail ?? null, w.quiet ?? null]);
+};
+
+/**
+ * A case's parts as a table, a grid or its rows say them (`slimParts`' order: the first price's parts, then for each later price the month
+ * it starts and its parts): a later price says only what it changes. Each part it holds exactly as the price before it is left out, since
+ * that part, said once with the first price (in its own row, its own part cell, or before the change), reads for every price after it;
+ * so a part shared over a grid's row, said once under its cells, is not said again inside a cell for a later period. A later price that
+ * lacks a part the price before it holds is said whole, so nothing reads as going on that does not.
+ */
+export function laterChanges(parts: readonly SlimPart[]): SlimPart[] {
+  const at = (k: number) => parts.filter((p) => (p.stage ?? 0) === k && p.id !== "until");
+  const left = new Set<SlimPart>();
+  const last = Math.max(0, ...parts.map((p) => p.stage ?? 0));
+  for (let k = 1; k <= last; k++) {
+    const before = new Map(at(k - 1).map((p) => [p.id, wordsKey(p)]));
+    const now = at(k);
+    if (![...before.keys()].every((id) => now.some((p) => p.id === id))) continue;
+    for (const p of now) if (before.get(p.id) === wordsKey(p)) left.add(p);
+  }
+  return left.size ? parts.filter((p) => !left.has(p)) : [...parts];
 }
 
 /**

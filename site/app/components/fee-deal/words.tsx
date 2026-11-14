@@ -98,7 +98,7 @@ export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | 
   v.state === "computed" ? (n) => computedSum(n, v.unit) : v.unit.startsWith("pct") ? fmt.pctPrinted : v.state === "entered" ? (n) => typedSum(n, v.unit) : undefined;
 
 /** A figure on the page: a sum as `sumDisplay` shows it. */
-export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;
+export const Fig = ({ value, prefix, className }: { value: SiteValue; prefix?: string; className?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} {...(className ? { className } : {})} />;
 
 /** How the page shows the sum a flat price holds up to: whole, as the price list prints it ("50 $"), else as any sum (`sumDisplay`). */
 export const upToDisplay = (v: SiteValue) => (n: number): string | undefined => wholeSum(v.unit)(n) ?? sumDisplay(v)?.(n);

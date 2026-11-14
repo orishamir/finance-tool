@@ -1729,9 +1729,17 @@ export const feeDeal = {
   },
   /**
    * Where a figure a template filled is from, in the note a press on its box opens: a house's price list, with the page of the document
-   * where the record names one, or the regulator's data on a track.
+   * where the record names one, or the regulator's data on a track; for a cell whose cases hold a figure from different places, each
+   * case's (the person's own is `numbers.legend.entered`).
    */
-  figureFrom: { list: "מהתעריפון של ", page: ", עמ׳ ", cma: "מנתוני רשות שוק ההון." },
+  figureFrom: {
+    list: "מהתעריפון של ",
+    page: ", עמ׳ ",
+    cma: "מנתוני רשות שוק ההון",
+    /** A figure the cases of one cell hold from different places: each case's value, then where it is from ("בסניף: הזנתם"). */
+    at: ": ",
+    each: " · ",
+  },
   /** The deal at a glance (F-110 to F-113). */
   glance: {
     title: "העסקה במבט אחד",

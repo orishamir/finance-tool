@@ -247,9 +247,27 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
 /**
  * Links, buttons, fields and source taps inside a card whose whole face is one button (`PickCard`, a case's row) lie above that button, so
  * they keep working; a field's whole box (`data-lift`, FigureField's) lies above it too, so a press anywhere in the box goes to the field
- * and not to the card. The card's own button carries `data-pick-card`.
+ * and not to the card. The card's own button carries `data-pick-card`. A figure (`.num`) and what holds it in place (`data-lift`) are
+ * positioned but take no layer of their own: they stand over the card's button by coming after it, and their tap areas stay in the page's
+ * one set of layers (app.css, "The tap area"), where every figure's own box lies over every figure's area. A layer per figure would let
+ * a later figure's area cover an earlier figure's own box (a press on "39 $" opened the "6,900 $" under it).
  */
-export const LIFT_INNER = "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:relative [&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:z-10";
+export const LIFT_INNER =
+  "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:relative [&_:is(a,button,[role=button],input,select):not([data-pick-card],.num)]:z-10";
+
+/** What a press on a card's or a cell's surface may never be taken as: a control, a field, a figure, a grip, a knob, or a sheet opened from it. */
+const OWN_TAP = "a, button, input, select, textarea, label, summary, [role=button], [role=slider], [data-lift], [data-grip-box], [data-knob-strip], dialog, [popover]";
+
+/**
+ * Whether a click fell on the surface of the card or cell that handles it (`e.currentTarget`), and not on something inside with a tap of
+ * its own: what opens the card on a press anywhere else on it. A part of the card that stands in a layer over its button (a block that
+ * holds a grip is positioned for it) still opens the card this way. A sheet rendered elsewhere by React, whose clicks bubble to the card
+ * through React's tree, is not on the card.
+ */
+export function onSurface(e: { target: EventTarget; currentTarget: EventTarget }): boolean {
+  const t = e.target as Element;
+  return (e.currentTarget as Node).contains(t) && !t.closest(OWN_TAP);
+}
 
 /**
  * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by
@@ -281,6 +299,8 @@ export function PickCard({ label, onPick, pad = "none", chosen, marked, classNam
         LIFT_INNER,
         className,
       )}
+      // a press on a part of the card that stands over its button (a block positioned for a grip) still chooses it
+      onClick={(e) => onSurface(e) && onPick("pointer")}
     >
       <button
         type="button"

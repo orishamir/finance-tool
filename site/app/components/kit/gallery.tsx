@@ -3154,7 +3154,7 @@ function LadderTable({ today }: { today: string }) {
 function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   const [open, setOpen] = useState<string | null>("ta-d");
   const [track, setTrack] = useState("1");
-  const cell = (id: string, rate: number, more?: ReactNode) => ({ label: sc.open(id), onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)} {perAction}{more}</span> });
+  const cell = (id: string, rate: number, more?: ReactNode) => ({ onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)} {perAction}{more}</span> });
   return (
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
       <ConditionHead bare things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />
@@ -3170,8 +3170,8 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
             head: sc.what.ta,
             cells: [{ from: 0, span: 1, ...cell("ta-d", track === "1" ? 0.5 : 0.45) }, { from: 1, span: 1, ...cell("ta-b", 0.55) }],
             lines: [
-              { id: "min", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.min}{fig(20, "nis_per_trade", today)} {sc.toAction}</span> }] },
-              { id: "max", cells: [{ from: 0, span: 2, label: sc.open("ta-d"), onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} {sc.toAction}</span> }] },
+              { id: "min", cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.min}{fig(20, "nis_per_trade", today)} {sc.toAction}</span> }] },
+              { id: "max", cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta-d"), whole: sc.anyChannel, content: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} {sc.toAction}</span> }] },
             ],
           },
           { id: "makam", head: sc.what.makam, cells: [{ from: 0, span: 1, ...cell("mk-d", 0.09) }, { from: 1, span: 1, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam} · ${sc.channels.branch}`, onAdd: () => undefined } }] },
@@ -3276,7 +3276,7 @@ function LiftDemo({ today }: { today: string }) {
               }}
             />
           );
-          const pricedCell = { from, span: n - from, label: sc.open(head), content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
+          const pricedCell = { from, span: n - from, content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
           const item = `kit:row:${j}`;
           return {
             id: head,
