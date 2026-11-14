@@ -5,12 +5,15 @@ import { actionCost, changeKind, curveEnd, dealMarks, groupAction, groupRate, ho
 import { feeDeal as copy } from "../../copy";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
-import { feeNameOf, thingName, whenWords, type PartWords, type WhenWords } from "./builder";
+import { thingName, whenWords, type WhenWords } from "./builder";
+import { feeNameOf, type PartWords } from "./part-words";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
-import { hasCases, isRange, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
+import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
+import { charged, hasBounds, onAction } from "./offers/capabilities";
 import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
-import { holdsFunds, ONE_SIDE } from "./shapes";
+import { holdsFunds } from "./shapes";
+import { CAPACITY } from "./offers/capacity";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
 
 // ---------------------------------------------------------------- the periods
@@ -98,13 +101,12 @@ function statementsOf(r: DealRead, rates: Readonly<Record<string, number>> | nul
     const at = monthKey(p.from);
     for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today, m.kind === "meet" && rates !== null && sumsLargest(r.engine, p, m, rates)), periods: [at] }));
     r.fees.forEach((fee, i) => {
-      const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
+      const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[CAPACITY[fee.kind].oneSide ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
         if (price.form === "held" && price.every < 12 && price.rate.v > 0) add(`every:${fee.id}:${price.every}`, at, () => ({ kind: "every", fee: refOf(fee, r.today), every: price.every, periods: [at] }));
-        const main = price.form === "action" || price.form === "held" ? price.rate.v : price.form === "perUnit" ? price.amount.v : 0;
         // a step with a top grows no further than its top (F-115): only the last step, or a fee read whole, grows without end
         const topped = !!fee.read?.step?.to;
-        if ((price.form === "action" || price.form === "perUnit" || price.form === "held") && main > 0 && price.min && !price.max && !topped) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee, r.today), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
+        if (hasBounds(price) && mainFigure(price)!.v > 0 && price.min && !price.max && !topped) add(`no-max:${fee.id}:${side}`, at, () => ({ kind: "no-max", fee: refOf(fee, r.today), side, on: price.form === "held" ? "held" : "action", periods: [at] }));
       }
     });
   }
@@ -211,7 +213,7 @@ function sidesOn(r: DealRead, p: DealPeriod, action: DealAction): DealSide[] {
     const at = p.prices[i]!;
     return groupAction(r.engine, e.base, at.price) === action || (at.sale && groupAction(r.engine, e.base, at.sale) === action) ? [fee] : [];
   });
-  return fees.some((f) => f.sale || ONE_SIDE[f.kind]) ? ["buy", "sell"] : ["all"];
+  return fees.some((f) => f.sale || CAPACITY[f.kind].oneSide) ? ["buy", "sell"] : ["all"];
 }
 
 /** Whether a mark falls on the curve of `action` on `side` in a period. */
@@ -419,7 +421,7 @@ function lawOf(r: DealRead): LawRow[] {
     const cap = capLine(r.kind, fee.kind);
     if (cap.state === "absent") return [];
     const prices: LawPrice[] = [];
-    const sides: { side: DealSide; sale: boolean }[] = fee.sale ? [{ side: "buy", sale: false }, { side: "sell", sale: true }] : [{ side: ONE_SIDE[fee.kind] ?? "all", sale: false }];
+    const sides: { side: DealSide; sale: boolean }[] = fee.sale ? [{ side: "buy", sale: false }, { side: "sell", sale: true }] : [{ side: CAPACITY[fee.kind].oneSide ?? "all", sale: false }];
     for (const { side, sale } of sides) {
       // a stage held over several periods is one row, from its first period to the end of its last
       let last = null as { stage: Stage; row: LawPrice } | null;
@@ -536,14 +538,14 @@ function statedOf(r: DealRead): StatedPart[] {
     };
     for (const s of [...pricesFrom(fee.stages, from), ...(fee.sale ? pricesFrom(fee.sale, from) : [])]) {
       const p = s.price;
-      if (p.form === "free") continue;
-      if ((p.form === "action" || p.form === "perUnit" || p.form === "perAction") && p.third && !p.third.price) add("third", p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third });
+      if (!charged(p)) continue;
+      if (onAction(p) && p.third && !p.third.price) add("third", p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third });
       if (p.offset) add("offset", { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail });
       if (p.refund && !p.refund.blank) {
         const f = priceFigures(fee, p, r.today).refund;
         add("refund", { lead: st.refund.lead, ...(f ? { figure: f } : {}), tail: st.refund.tail });
       }
-      if (p.form === "action" || p.form === "perUnit" || p.form === "perAction") for (const n of p.notes ?? []) add(n, { lead: st[n] });
+      if (onAction(p)) for (const n of p.notes ?? []) add(n, { lead: st[n] });
     }
   });
   return out;

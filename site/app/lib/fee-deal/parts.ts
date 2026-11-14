@@ -6,6 +6,7 @@ import type { SiteValue } from "../value";
 import { feeOf, readFees, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
 import { feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
+import { charged, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
 import { figure, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
@@ -92,10 +93,10 @@ export interface PartsView {
 }
 
 function partsView(p: Price): PartsView | undefined {
-  if (p.form === "free") return undefined;
+  if (!charged(p)) return undefined;
   const linked = { ...(p.offset ? { offset: p.offset.kind } : {}), ...(p.refund ? { refund: true as const } : {}) };
   const own =
-    p.form === "action" || p.form === "perUnit" || p.form === "perAction"
+    onAction(p)
       ? {
           ...(p.discount ? { discount: { alsoMin: !!p.discount.alsoMin } } : {}),
           ...(p.third ? { third: { ...(p.third.who ? { who: p.third.who } : {}), ...(p.third.price ? { form: p.third.price.form, currency: p.third.price.currency ?? "ILS" } : {}) } } : {}),
@@ -109,7 +110,7 @@ function partsView(p: Price): PartsView | undefined {
 export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: Price, today: string): PriceView {
   const fee = fees[i]!;
   const figures = priceFigures(fee, p, today);
-  const currency = p.form === "action" || p.form === "perUnit" || p.form === "perAction" ? { currency: p.currency ?? "ILS" } : {};
+  const currency = hasCurrency(p) ? { currency: p.currency ?? "ILS" } : {};
   const pv = partsView(p);
   const parts = pv ? { parts: pv } : {};
   if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : currency), ...parts };
@@ -271,7 +272,7 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
   const key = (field: "min" | "max" | "cap" | "flat" | "upTo") => inputKey(fees, m.fee, field);
   if (m.kind === "flat") return { kind: "flat", ...head, bound: figures.flat!, amount: figures.upTo! };
   // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
-  const from = m.from === undefined ? {} : { from: price.form !== "free" && "flat" in price && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
+  const from = m.from === undefined ? {} : { from: hasFlat(price) && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
   // a sum per action's percent maximum decides up to where it meets the sum the engine charges, after a discount off it (F-116):
   // `(1 − d) × amount / cap`, in the sum's currency
   if (m.kind === "cap" && price.form === "perAction") {
@@ -286,7 +287,7 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
     const charged = m.side === "sell" ? (period.prices[m.fee]!.sale ?? period.prices[m.fee]!.price) : period.prices[m.fee]!.price;
     const min = "min" in charged ? charged.min : undefined;
     const meets = figures.min && min !== undefined && near(m.amount * fraction(figures.cap!.value as number), min) ? { field: "min" as const, v: figures.min } : { field: "max" as const, v: figures.max ?? figures.min! };
-    const discount = meets.field === "min" && figures.discount && price.form !== "free" && "discount" in price && price.discount?.alsoMin ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {};
+    const discount = meets.field === "min" && figures.discount && onAction(price) && price.discount?.alsoMin ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {};
     return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap!, ...discount }, today), ...from };
   }
   const bound = chargeBound(price, (m.kind === "min" ? figures.min : figures.max)!, key(m.kind), today);

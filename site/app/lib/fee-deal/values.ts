@@ -4,7 +4,8 @@
 import type { ValueObject } from "@finance-tool/schema";
 import { computed, entered, type SiteValue } from "../value";
 import type { Fee, Num, Price, Sourced, ThirdPrice } from "./model";
-import { FEE_SHAPES } from "./shapes";
+import type { OnActionPrice } from "./offers/capabilities";
+import { CAPACITY } from "./offers/capacity";
 
 export type Unit = ValueObject["unit"];
 
@@ -174,7 +175,7 @@ function thirdFigures(fee: Pick<Fee, "kind">, t: ThirdPrice, today: string): Pri
 export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): PriceFigures {
   const of = (key: "rate" | "amount" | "discount" | "refund", n: Num | undefined, unit: Unit) => (!n || n.blank ? {} : { [key]: figure(n, unit, today) });
   const opt = (key: "min" | "max" | "cap", n: Num | undefined, unit: Unit) => (n ? { [key]: figure(n, unit, today) } : {});
-  const parts = (x: Extract<Price, { form: "action" | "perUnit" | "perAction" }>) => ({
+  const parts = (x: OnActionPrice) => ({
     ...of("discount", x.discount?.pct, "pct"),
     ...(x.third?.price ? thirdFigures(fee, x.third.price, today) : {}),
     ...of("refund", x.refund, sumUnit(x.currency)),
@@ -198,4 +199,4 @@ export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): P
 }
 
 /** Whether a fee is charged inside a fund (its management fee), which the page says beside it. */
-export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || FEE_SHAPES[fee.kind].base === "trustee" || FEE_SHAPES[fee.kind].base === "variable_management";
+export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || CAPACITY[fee.kind].base === "trustee" || CAPACITY[fee.kind].base === "variable_management";

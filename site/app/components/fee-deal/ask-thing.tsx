@@ -5,7 +5,7 @@ import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/builder";
 import { addBy, type NewBy } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
-import { isRangeKind, type ByKind, type RangeUnit } from "../../lib/fee-deal/shapes";
+import { isRangeKind, type ByKind, type RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, Button, FigureField, InlineSelect, TextField } from "../kit";
 import { bringIntoView } from "./in-view";
 
@@ -129,3 +129,30 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   );
 }
 
+/**
+ * The page's question of a thing to change by (`asking`, its fee and thing): asked in the open fee's block (`onAsk`), the phone's sheet
+ * folding to its tabs while it is open (`fold`). Closed (`onAskDone`), the focus goes to the new thing's pill where it was added, else back
+ * to the toolbox's part it was asked from. `drop` closes it without a word, as another fee or the toolbox closing does.
+ */
+export function useAskThing(chosen: string | null, phone: boolean, fold: (folded: boolean) => void) {
+  const [asking, setAsking] = useState<{ fee: string; kind: ByKind } | null>(null);
+  const onAsk = (kind: ByKind) => {
+    if (!chosen) return;
+    setAsking({ fee: chosen, kind });
+    if (phone) fold(true);
+  };
+  const onAskDone = (added: boolean) => {
+    const was = asking;
+    setAsking(null);
+    if (phone) fold(false);
+    if (!was) return;
+    requestAnimationFrame(() => {
+      const li = document.querySelector(`li[data-fee="${CSS.escape(was.fee)}"]`);
+      const pills = li?.querySelectorAll<HTMLElement>("[data-thing]");
+      const el = added && pills?.length ? pills[pills.length - 1]! : document.querySelector<HTMLElement>(`[data-part="by:${was.kind}"]`);
+      el?.focus({ preventScroll: true });
+      bringIntoView(el);
+    });
+  };
+  return { asking, onAsk, onAskDone, drop: () => setAsking(null) };
+}

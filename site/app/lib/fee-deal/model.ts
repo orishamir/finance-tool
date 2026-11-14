@@ -6,25 +6,11 @@
 import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
 import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
-import {
-  BY_MAX,
-  byKindsFor,
-  FEE_SHAPES,
-  holdsFunds,
-  isFeeKindId,
-  isRangeKind,
-  LIST_IDS,
-  ONE_SIDE,
-  RANGE_UNITS,
-  WHAT_VALUES,
-  type ByKind,
-  type FeeKindId,
-  type FieldId,
-  type FormId,
-  type Place,
-  type RangeKind,
-  type RangeUnit,
-} from "./shapes";
+import { byAmount, byRate } from "./offers/capabilities";
+import { FIGURE_IDS, FIGURES } from "./offers/figures";
+import { holdsFunds, isFeeKindId, WHAT_VALUES, type FeeKindId, type FormId, type Place } from "./shapes";
+import { capacity, fieldsOf, pricesSaleApart, type FieldId } from "./offers/capacity";
+import { BY_MAX, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type RangeKind, type RangeUnit } from "./offers/conditions";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -145,12 +131,6 @@ export type Price =
    * list prints one over it ("11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
    */
   | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & OnAction);
-
-/** Whether a price is on an action, and so may carry a discount, a third party's fee and notes on an order. */
-export const onAction = (p: Price): p is PricedIn => p.form === "action" || p.form === "perUnit" || p.form === "perAction";
-
-/** A price whose sums may be in a currency other than the shekel: a share of an action, a sum per unit, a sum per action. */
-export type PricedIn = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
 
 /** The currencies a bound, a flat price, a sum per unit or a sum per action may be typed in: the ones the price lists print (F-12, F-13, F-103). */
 export type BoundCurrency = "ILS" | "USD" | "EUR" | "GBP";
@@ -330,26 +310,8 @@ export const blankFigure = (): Num => ({ v: 0, blank: true });
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
 
-/** A third party's figures: its rate or sum and its bounds. */
-const thirdFigures = (t: ThirdPrice | undefined): (Num | undefined)[] => (!t ? [] : t.form === "perAction" ? [t.amount] : [t.form === "action" ? t.rate : t.amount, t.min, t.max]);
-
 /** The figures of a price (`Num`s): its rate or sum, its bounds, its cap, its flat price, and its parts' figures (a discount, a third party's, a refund). */
-const figuresOf = (p: Price): (Num | undefined)[] => {
-  const parts = (x: Partial<OnAction>) => [x.discount?.pct, ...thirdFigures(x.third?.price), x.refund];
-  switch (p.form) {
-    case "free":
-      return [];
-    case "action":
-    case "perUnit":
-      return [mainFigure(p)!, p.min, p.max, p.cap, p.flat?.amount, p.flat?.upTo, ...parts(p)];
-    case "held":
-      return [p.rate, p.min, p.max, p.refund];
-    case "sum":
-      return [p.amount, p.refund];
-    case "perAction":
-      return [p.amount, p.cap, ...parts(p)];
-  }
-};
+const figuresOf = (p: Price): (Num | undefined)[] => FIGURE_IDS.map((f) => FIGURES[f].get(p));
 
 /** Whether any figure of a price still carries a template's source: what the template filled in it stands as filled. */
 export const anySourced = (p: Price): boolean => figuresOf(p).some((n) => !!n?.src);
@@ -396,7 +358,7 @@ export function blankPrice(form: FormId): Price {
 }
 
 /** The figure that states a price: its rate, or its sum (a sum per unit's among them); none for a free price. */
-export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.form === "held" ? p.rate : p.form === "free" ? null : p.amount);
+export const mainFigure = (p: Price): Num | null => (byRate(p) ? p.rate : byAmount(p) ? p.amount : null);
 
 /**
  * Whether a price states a price: free, or its rate or sum typed or filled (not blank), and its flat price's two figures where it has one,
@@ -444,7 +406,7 @@ export const newCaseId = () => newId("case-");
 
 /** A new fee of a kind: one price of its usual form that holds throughout. */
 export function newFee(kind: FeeKindId, name?: string): SlimFee {
-  return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(FEE_SHAPES[kind].usual) }] };
+  return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(capacity(kind).usual) }] };
 }
 
 /** A typed percent as the engine's fraction: the one place the two meet (to-engine.ts uses it). */
@@ -607,10 +569,10 @@ function readOnAction(raw: Rec): OnAction | null {
 
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
-  const shape = FEE_SHAPES[kind];
+  // a price is read against its fee kind's capacity, which no product narrows: whatever a deal of the kind could hold still opens
   if (raw.form === "free") return { form: "free" };
-  if (!shape.forms.includes(raw.form as never)) return null;
-  const fields = shape.fields[raw.form as Exclude<FormId, "free">] ?? [];
+  if (!capacity(kind).forms.includes(raw.form as never)) return null;
+  const fields = fieldsOf(kind, raw.form as FormId);
   switch (raw.form) {
     case "action": {
       const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
@@ -703,7 +665,7 @@ function readPriced(raw: Rec, kind: FeeKindId): Priced | null {
   if (!stages) return null;
   if (raw.sale === undefined) return { stages };
   // a fee charged on one side alone has no separate sale price, and a fee whose shape prices no sale apart has none either
-  if (ONE_SIDE[kind] || !FEE_SHAPES[kind].saleApart) return null;
+  if (!pricesSaleApart(kind)) return null;
   const sale = readStages(raw.sale, kind);
   return sale ? { stages, sale } : null;
 }
@@ -720,9 +682,9 @@ function readOwnPlace(raw: unknown): OwnPlace | null {
   return { name: raw.name, place: raw.place, currency: raw.currency };
 }
 
-/** A thing a fee of `kind` may change by (`byKindsFor`), with its own fields; null where it is anything else. */
+/** A thing a fee of `kind` may change by (`conditionsFor`), with its own fields; null where it is anything else. */
 function readBy(raw: unknown, kind: FeeKindId): By | null {
-  if (!isRec(raw) || typeof raw.kind !== "string" || !byKindsFor(kind).includes(raw.kind as ByKind)) return null;
+  if (!isRec(raw) || typeof raw.kind !== "string" || !conditionsFor(kind).includes(raw.kind as ByKind)) return null;
   const k = raw.kind as ByKind;
   if (isRangeKind(k)) {
     if (!RANGE_UNITS[k].includes(raw.unit as RangeUnit) || !Array.isArray(raw.tops) || raw.tops.length === 0 || raw.tops.length > TOPS_MAX) return null;
