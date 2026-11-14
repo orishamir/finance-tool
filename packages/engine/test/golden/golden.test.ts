@@ -58,15 +58,15 @@ describe("Part A: the ledger on single instruments", () => {
       ctx,
     );
     const g = golden("S01");
-    g.value("real", r.real, 86_024.8);
-    g.value("nominal", r.nominal, 94_001.62);
+    g.value("real", r.real, 86_120.54);
+    g.value("nominal", r.nominal, 94_106.24);
     g.value("paid in", r.paidIn, 87_690.8);
-    g.value("interest", r.detail.interest, 7_424.49);
-    g.value("tax during", r.taxDuring, 1_113.67);
+    g.value("interest", r.detail.interest, 7_547.57);
+    g.value("tax during", r.taxDuring, 1_132.14);
     g.value("tax at exit", r.taxAtExit, 0);
     g.value("TXI-20 deduction", r.detail.txi20Deduction, 0);
-    g.value("year 1 balance", yearEnd(r, 1).balance, 63_872.36);
-    g.value("year 2 tax to date", yearEnd(r, 2).taxDuring, 666.01);
+    g.value("year 1 balance", yearEnd(r, 1).balance, 63_899.47);
+    g.value("year 2 tax to date", yearEnd(r, 2).taxDuring, 676.91);
     g.done();
   });
 
@@ -81,10 +81,10 @@ describe("Part A: the ledger on single instruments", () => {
       ctx,
     );
     const g = golden("S02");
-    g.value("real", r.real, 84_428.96);
-    g.value("nominal", r.nominal, 92_257.81);
+    g.value("real", r.real, 84_523.92);
+    g.value("nominal", r.nominal, 92_361.56);
     g.value("paid in", r.paidIn, 86_000);
-    g.value("tax during", r.taxDuring, 1_104.32);
+    g.value("tax during", r.taxDuring, 1_122.63);
     g.value("tax at exit", r.taxAtExit, 0);
     g.done();
   });
@@ -119,9 +119,9 @@ describe("Part A: the ledger on single instruments", () => {
       ctx,
     );
     const g = golden("S04");
-    g.value("real", r.real, 85_771.83);
-    g.value("nominal", r.nominal, 93_725.19);
-    g.value("tax during", r.taxDuring, 1_064.89);
+    g.value("real", r.real, 85_859.33);
+    g.value("nominal", r.nominal, 93_820.81);
+    g.value("tax during", r.taxDuring, 1_081.77);
     g.value("tax at exit", r.taxAtExit, 0);
     g.done();
     // since 2026-10-26 TXI-04 states the prime case (the statutory index is the CPI or an exchange rate), so it is cited, not labelled a reading
@@ -782,11 +782,11 @@ describe("Part D: capability outputs (release 1 part)", () => {
         ),
     });
     const g = golden("S47");
-    g.value("deposit exit", runs.deposit.exitReal, 74_044.07);
+    g.value("deposit exit", runs.deposit.exitReal, 74_245.96);
     g.value("MMF exit", runs.mmf.exitReal, 73_339.31);
     g.value("ETF exit", runs.etf.exitReal, 70_220.43);
     g.value("KGL exit", runs.kgl.exitReal, 76_594.44);
-    g.value("deposit year 1", runs.deposit.years[0]!.real, 16_135.65);
+    g.value("deposit year 1", runs.deposit.years[0]!.real, 16_141.88);
     g.value("MMF year 5", runs.mmf.years[4]!.real, 41_389.71);
     g.value("ETF year 7", runs.etf.years[6]!.real, 52_640.88);
     g.value("ETF year 10", runs.etf.years[9]!.real, 72_132.71);

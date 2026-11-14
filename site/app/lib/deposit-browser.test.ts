@@ -113,12 +113,15 @@ describe("an offer's words and interest", () => {
     expect(accessOf(offer("d", { rate: 1, exits: { exists: true, everyMonths: null, firstMonths: null } }))[0]!.words).toBe("יש תחנות יציאה");
   });
 
-  it("computes the interest over the term by F-21, a year's at the rate and less over a shorter term", () => {
+  it("computes the interest over the term by F-21: a year's at the rate, a shorter term's at the rate × its share of the year (BANK-50), a longer one yearly", () => {
     const amount = entered(10000, "nis", "2026-11-10");
     const real = buildDepositBrowser().offers.find((o) => typeof o.rate_offered.value === "number")!;
     const at = (rate: number, term: DbOffer["term"]) => interestOn({ ...real, term, rate_offered: { ...real.rate_offered, value: rate } }, 10000, amount, "2026-11-10")!.value as number;
     expect(at(3.25, "y1")).toBeCloseTo(325, 6);
-    expect(at(2.2, "m3")).toBeCloseTo(10000 * (Math.pow(1.022, 0.25) - 1), 6);
+    // three months paid at maturity: 10,000 × 2.2% × 3/12 = 55
+    expect(at(2.2, "m3")).toBeCloseTo(55, 6);
+    // a day: 10,000 × 3.65% / 365 = 1
+    expect(at(3.65, "day")).toBeCloseTo(1, 6);
     expect(at(3.5, "y2")).toBeCloseTo(10000 * (1.035 * 1.035 - 1), 6);
   });
 

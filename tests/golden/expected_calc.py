@@ -132,6 +132,13 @@ def mrate(r):
     return (1.0 + r) ** (1.0 / 12.0) - 1.0
 
 
+def term_rate(r, months):
+    """A bank deposit's interest over its term, per unit, from the annual nominal rate the bank publishes (BANK-50, the disclosure
+    rules' Schedule A): a term under a year pays once, at maturity, r × days/365, a month counted as 365/12 days; a term of a year
+    or more is calculated once a year, (1 + r)^(months/12) − 1."""
+    return r * months / 12.0 if months < 12 else (1.0 + r) ** (months / 12.0) - 1.0
+
+
 def f2(x):
     return f'{(x if abs(x) >= 0.005 else 0.0):,.2f}'
 
@@ -488,15 +495,15 @@ def deposit_ladder(T, now, monthly, path, real, g_month, tax=0.15):
 def s01_s02_s04():
     path = Path(0.03)
     T = 36
-    g = mrate(0.035)
+    g = term_rate(0.035, 1)
     r1 = deposit_ladder(T, 50000, 1000, path, True, g)
     r2 = deposit_ladder(T, 50000, 1000, path, False, g)
     # S04: prime 4.75% - 1.4% = 3.35%
-    r4e = deposit_ladder(T, 50000, 1000, path, True, mrate(0.0335))
+    r4e = deposit_ladder(T, 50000, 1000, path, True, term_rate(0.0335, 1))
     income = 12000 * 12
     txi20 = max(0.0, 10920 - max(0.0, income - 69840))
     common = (
-        f'| 1 | Monthly rate from the quoted effective annual rate: g = 1.035^(1/12) − 1 | {L("BANK-04")} (effective annual rate is the compounding convention for unlinked shekel deposits); scenario says "effective annual" | g = {f6(g)} |\n'
+        f'| 1 | A one-month deposit\'s interest from the bank\'s annual nominal rate, paid once at maturity: g = 3.5% × 1/12 (Schedule A, interest at maturity: i × n/365, a month counted as 365/12 days) | {L("BANK-50")} | g = {f6(g)} |\n'
         f'| 2 | CPI path I_m = 1.03^(m/12) | scenario convention (F-03); no rule | I_36 = {f6(path.I(36))} |\n'
         f'| 4 | Each month the one-month deposit matures: interest = balance × g; 15% withheld; principal plus net interest rolls into a new deposit with the new contribution | {L("TXI-03", "TXI-08", "TXI-07", "BANK-14")} | see table |\n'
         f'| 5 | Low-income deduction from deposit interest: income {f2(income)} exceeds 69,840 by more than 10,920, so the deduction is max(0, 10,920 − (income − 69,840)) | {L("TXI-20")} | {f2(txi20)} |\n'
@@ -520,7 +527,7 @@ def s01_s02_s04():
     body4 = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Rate = prime − 1.4% = 4.75% − 1.40% = 3.35%, constant (scenario) | {L("BANK-25")} (prime as the anchor) | 3.35% |\n'
-        f'| 2 | Read as an effective annual rate, as in S01: g = 1.0335^(1/12) − 1 (D2 closed: reading it as r/12 changes the result by under 0.1%) | {L("BANK-04")} | g = {f6(mrate(0.0335))} |\n'
+        f'| 2 | Read as the annual nominal rate, as in S01: g = 3.35% × 1/12 for a one-month deposit paid at maturity | {L("BANK-50")} | g = {f6(term_rate(0.0335, 1))} |\n'
         f'| 3 | Tax bucket: prime is neither CPI nor an exchange rate, so the deposit is "not linked": 15% of all interest. This is the rule file\'s own reading, not a published statement | {L("TXI-04", "TXI-03")} | 15% |\n'
         f'| 4 | Ledger as S01 (contributions constant real, monthly maturity, 15% withheld) | {L("TXI-08")} | see below |\n\n'
         f'Result: V_T = {f2(r4e["V"])}; real {f2(r4e["real_V"])}; tax during {f2(r4e["tax"])}.'
@@ -1742,9 +1749,11 @@ def s41_fill():
     pi = 0.03
     cc = 0.85 * 0.005
     rows = []
+    # a one-month deposit pays its month's interest at the annual nominal rate, once at maturity (BANK-50); the makam's yield is effective
     for name, r in (('one-month deposit, bank average 3.2% ("average paid at this bank last month")', 0.032),
-                    ('one-month deposit, own offer 3.6% ("entered by you")', 0.036),
-                    ('makam 3.9% (no commission given)', 0.039)):
+                    ('one-month deposit, own offer 3.6% ("entered by you")', 0.036)):
+        rows.append([name, f2(B * ((1 + 0.85 * term_rate(r, 1)) - (1 + cc) ** (1 / 12)))])
+    for name, r in (('makam 3.9% (no commission given)', 0.039),):
         rows.append([name, f2(B * ((1 + 0.85 * r) ** (1 / 12) - (1 + cc) ** (1 / 12)))])
     n = (1 + mrate(0.0325) - 0.0018 / 12) ** 12 - 1
     net = n - 0.25 * max(0.0, n - pi)
@@ -1769,9 +1778,9 @@ def s41_fill():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 0 | Filled-in inputs | — | {filled("π 3% (as the daily money-market fund example)")} |\n'
         f'| 1 | Amount considered: 80,000 − 20,000 that must stay available = 60,000 | product D13 | 60,000 |\n'
-        f'| 2 | Current account 0.5%, 15% withheld; deposits and makam 85% of the rate after tax | {L("TXI-08", "TXI-03", "TXI-11")} | — |\n'
+        f'| 2 | Current account 0.5%, 15% withheld; deposits and makam 85% of the rate after tax; a one-month deposit pays its rate × 1/12 at maturity, the annual nominal rate (BANK-50) | {L("TXI-08", "TXI-03", "TXI-11", "BANK-50")} | — |\n'
         f'| 3 | Daily money-market fund: one-year return {pct(n, 3)}, tax 25% of the part above inflation → {pct(net, 3)} after tax | {L("MF-34", "TXS-12")} | — |\n'
-        f'| 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)] | method F-60 | see table |\n'
+        f'| 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)], where a one-month deposit\'s (1 + r_alt after tax)^(1/12) is its month, 1 + 0.85 × r/12 | method F-60 | see table |\n'
         f'| 5 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once; the preset runs only the cash options with a sourced or entered rate | method F-60, F-83, G-28; product D17 | see second table |\n\n'
         + table(['Alternative', 'Monthly cost of leaving 60,000 in the current account'], rows)
         + '\n\n' + table(['Candidate', 'Outcome', 'Reason'], [[c, o, r] for c, o, r in cov])
@@ -1815,7 +1824,7 @@ def s46_fill():
 def s47_fill():
     T = 120
     path = Path(0.02)
-    dep = deposit_ladder(T, 10000.0, 500.0, path, True, mrate(0.035))
+    dep = deposit_ladder(T, 10000.0, 500.0, path, True, term_rate(0.035, 1))
     sec11, sn11, o11 = mmf_daily(T, 10000.0, 500.0, path, 0.0325, 0.0018)
     sec14, sn14, o14, _ = run_etf(T, 10000.0, 500.0, 0.05, 0.02)
     sched = kgl_schedule(T, 10000.0, 500.0, path)
@@ -1957,7 +1966,7 @@ def s40_fill():
     sched = contrib_schedule(T, 100000.0, 4000.0, path, True)
     paid = sum(c for lst in sched.values() for c, _ in lst)
     rows = []
-    dep = deposit_ladder(T, 100000.0, 4000.0, path, True, mrate(0.035))
+    dep = deposit_ladder(T, 100000.0, 4000.0, path, True, term_rate(0.035, 1))
     rows.append(('bank deposits, one-month ladder at 3.5%', dep['V'], f'tax {f2(dep["tax"])}'))
     _, _, o11 = mmf_daily(T, 100000.0, 4000.0, path, 0.0325, 0.0018)
     rows.append(('daily money-market fund (BoI 3.25%, δ 0.18%)', o11['V'], f'exit tax {f2(o11["tax"])}'))

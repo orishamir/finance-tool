@@ -9,7 +9,7 @@ import type { Label } from "./labels";
 import type { ListSort } from "./list-sort";
 import { computed, numberOf, type SiteValue } from "./value";
 
-/** Each term's length in years, for the interest it pays (F-21): a day and a week on a 365-day year (BANK-04), the rest in months. */
+/** Each term's length in years, for the interest it pays (F-21): a day and a week on a 365-day year (Schedule A, BANK-50), the rest in months. */
 export const TERM_YEARS: Record<string, number> = { day: 1 / 365, week: 7 / 365, m1: 1 / 12, m3: 3 / 12, m6: 6 / 12, y1: 1, y2: 2, y3: 3 };
 
 /** The eight terms of the banks' standard table (directive 447 Annex A, BANK-14), shortest first. */
@@ -131,8 +131,9 @@ export function periodBest(data: DbData, term: TermId, kind: RateKind, amount: n
 export const startBest = (data: DbData): DbOffer | null => periodBest(data, START_TERM, START_KIND, data.start).pick;
 
 /**
- * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21: `A × ((1 + r)^(years) − 1)`, the
- * term's years from `TERM_YEARS`), as a computed value over the rate and the amount. A variable rate is taken as it stands today.
+ * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21, BANK-50: `A × r × years` under a
+ * year, `A × ((1 + r)^(years) − 1)` from a year on, the term's years from `TERM_YEARS`), as a computed value over the rate and the amount.
+ * A variable rate is taken as it stands today.
  */
 export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, today: string): SiteValue | null {
   const r = numberOf(o.rate_offered);

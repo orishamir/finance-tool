@@ -14,12 +14,15 @@ export function distributionTax(dist: number, israeliRate: number, foreignWithho
 }
 
 /**
- * F-21 Bank deposit, laddered. At maturity `interest = principal × ((1 + r)^(n/12) − 1)`, n months at the
- * effective annual rate r. Unlinked or partly linked: `rate × max(0, interest − deduction)`, the deduction
- * being what is left of TXI-20 for the year. Fully CPI-linked: linkage exempt (TXI-05), the tax is
- * `rate × real interest`, where the real interest is the quoted real rate on the indexed principal.
+ * F-21 Bank deposit, laddered. The interest on `principal` over `months` of a deposit whose term is `termMonths`, at `annualRate`, the
+ * bank's annual nominal rate (BANK-50), by the disclosure rules' Schedule A. A term of a year or more is calculated once a year (m = 1):
+ * `principal × ((1 + r)^(months/12) − 1)`. A term under a year pays its interest once, at maturity (m = 365/n): `principal × r × d/365`,
+ * `d` the days, which is `principal × r × months/12` with a month of 365/12 days (a day is 12/365 of a month). Unlinked or partly
+ * linked: `rate × max(0, interest − deduction)`, the deduction being what is left of TXI-20 for the year. Fully CPI-linked: linkage
+ * exempt (TXI-05), the tax is `rate × real interest`, where the real interest is the quoted real rate on the indexed principal.
  */
-export function depositInterest(principal: number, annualRate: number, months: number): number {
+export function depositInterest(principal: number, annualRate: number, months: number, termMonths: number = months): number {
+  if (termMonths < 12) return principal * annualRate * (months / 12);
   return principal * (Math.pow(1 + annualRate, months / 12) - 1);
 }
 

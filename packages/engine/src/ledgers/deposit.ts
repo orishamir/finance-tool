@@ -1,6 +1,6 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
-import { depositInterest, lowIncomeDeduction } from "../formulas/holding-tax.ts";
-import { closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
+import { currentAccountInterest, depositInterest, lowIncomeDeduction } from "../formulas/holding-tax.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
@@ -167,7 +167,9 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       // an exit point (TXI OQ14), so the run reads no exit point for it and says only that it priced the piece as matured.
       if (months < n) tally.flag(!linked && pieceAtExitPoint(m, d.startMonth, deposit) ? "G-34" : "G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
-      const interest = depositInterest(indexed * earning, deposit.rate, months);
+      // F-26: the current account's month at F-07's monthly rate; F-21: a deposit's interest by its term (a year or more yearly, under a
+      // year once at maturity, BANK-50)
+      const interest = isCurrentAccount ? currentAccountInterest(indexed * earning, Math.pow(1 + annualToMonthly(deposit.rate), months) - 1) : depositInterest(indexed * earning, deposit.rate, months, n);
       const tax = rate * interest;
       totalInterest += interest;
       yearTaxable += interest;
@@ -196,10 +198,12 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     } else {
       finalValue = rolled;
     }
-    const accrued = open.reduce(
-      (s, d) => s + d.principal * (linked ? I[m]! / d.baseIndex : 1) * Math.pow(1 + deposit.rate, (m - d.startMonth + 1) / 12),
-      0,
-    );
+    // the value of the pieces still open: each principal with its interest to date, by the same formula as at maturity
+    const accrued = open.reduce((s, d) => {
+      const principal = d.principal * (linked ? I[m]! / d.baseIndex : 1);
+      const age = m - d.startMonth + 1;
+      return s + principal + (isCurrentAccount ? principal * (Math.pow(1 + deposit.rate, age / 12) - 1) : depositInterest(principal, deposit.rate, age, n));
+    }, 0);
     tally.point(m, I[m]!, m < T ? accrued : finalValue);
   }
 
