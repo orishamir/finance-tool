@@ -232,17 +232,11 @@ describe("Part A: the ledger on single instruments", () => {
     g.done();
   });
 
+  const s10 = { goal: { amountNow: 100_000, monthly: 0, months: 36 }, market: { inflation: -0.01 }, bond: { coupon: 0.019, linkage: "cpi" as const, couponEveryMonths: 12 }, tariff: s08Tariff, profile: {} };
   it("S10 CPI-linked bond under deflation, no floor", () => {
-    const r = runBond(
-      {
-        goal: { amountNow: 100_000, monthly: 0, months: 36 },
-        market: { inflation: -0.01 },
-        bond: { coupon: 0.019, linkage: "cpi", couponEveryMonths: 12 },
-        tariff: s08Tariff,
-        profile: {},
-      },
-      ctx,
-    );
+    // the 2028 coupon reads that year's surtax threshold at a falling CPI, which TXG OQ17 holds open; every reading it allows gives the same
+    // run, since the scenario's income never reaches the threshold, so the figures stand and carry the question (method §13)
+    const r = runBond(s10, ctx);
     const g = golden("S10");
     // 2026-10-26: the CPI fell, so each lot's inflationary amount is zero and the nominal loss counts only beyond the fall (TXS-02).
     g.value("gain at exit", r.detail.gain, -395.95);
@@ -254,6 +248,8 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax at exit", r.taxAtExit, 0);
     g.done();
     expect(flagCodes(r)).toContain("G-07");
+    expect(flagCodes(r)).toContain("TXG-OQ17");
+    expect(r.outcome).toEqual({ code: "eligible" });
   });
 
   it("S11 daily money-market fund at a bank", () => {
@@ -677,11 +673,11 @@ describe("Part C: exit-year tax features", () => {
     );
     const g = golden("S34");
     g.value("real gain", r.detail.realGain, 36_635.17);
-    g.value("tax at the brackets", r.taxAtExit, 4_164.12);
+    g.value("tax at the brackets", r.taxAtExit, 3_905.4);
     g.value("withheld", r.detail.withheld, 9_158.79);
-    g.value("refund", r.detail.refund, 4_994.67);
-    g.value("nominal after refund", r.nominal, 361_941.76);
-    g.value("real", r.real, 319_903.77);
+    g.value("refund", r.detail.refund, 5_253.39);
+    g.value("nominal after refund", r.nominal, 362_200.48);
+    g.value("real", r.real, 320_132.45);
     g.value("trade", r.fees.trade, 1_998.93);
     g.value("spread", r.fees.spread, 333.17);
     g.value("custody", r.fees.custody, 10_026.38);
@@ -725,10 +721,10 @@ describe("Part C: exit-year tax features", () => {
     const g = golden("S36");
     g.value("real gain", r.detail.realGain, 292_128.7);
     g.value("capital-gains tax", r.detail.capitalGainsTax, 73_032.17);
-    g.value("surtax 3%", r.detail.surtax, 5_117.06);
+    g.value("surtax 3%", r.detail.surtax, 4_684.12);
     g.value("surtax 2%", r.detail.capitalSurtax, 0);
-    g.value("nominal", r.nominal, 2_299_136.04);
-    g.value("real", r.real, 2_166_527.24);
+    g.value("nominal", r.nominal, 2_299_568.97);
+    g.value("real", r.real, 2_166_935.2);
     g.value("trade", r.fees.trade, 13_135.37);
     g.value("spread", r.fees.spread, 2_189.33);
     g.value("custody", r.fees.custody, 39_656.72);

@@ -2,7 +2,7 @@
 // Everything here is a pure function over the data the page loader ships (`SignatureData`): each figure is an engine run on a
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
-import { bondPrice, brokenBalanceCondition, cashRateIn, currentAccountYearlyInterest, makamPrice, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult } from "@finance-tool/engine";
+import { bondPrice, brokenBalanceCondition, calendarMonthOf, cashRateIn, currentAccountYearlyInterest, makamPrice, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { p05Value, runTimeline, type Bundle } from "./engine";
 import { p05Units, entered as enteredValue, type SiteValue } from "./value";
@@ -45,7 +45,7 @@ export function runAtMonths(bundle: Bundle, entered: Partial<Record<P05Input, nu
   try {
     const e: Partial<Record<P05Input, ValueObject>> = {};
     for (const [key, value] of Object.entries(entered) as [P05Input, number][]) if (Number.isFinite(value)) e[key] = enteredValue(value, p05Units[key], bundle.runDate);
-    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered: e, profile: {}, scenarioIncome: true });
+    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered: e, profile: {}, scenarioIncome: true, firstMonth: calendarMonthOf(bundle.runDate) });
     const stepped = { ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months } } } as typeof plan;
     return runPlanned(stepped, { rules: bundle.rules, runDate: bundle.runDate });
   } catch {

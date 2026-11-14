@@ -72,6 +72,8 @@ export interface RunInputOptions {
   profile?: Profile;
   /** Take P-05's illustrative `annual_income` as the profile's income when the profile has none. Only the guide page's illustrative run sets it; a comparison never invents an income for the person. */
   scenarioIncome?: boolean;
+  /** The calendar month of the grid's month 1 (`Goal.firstMonth`): a run on the site gives its run date's (`calendarMonthOf`). */
+  firstMonth?: number;
 }
 
 export type RunPlan =
@@ -174,7 +176,7 @@ export function runInputs(
   const p05 = scenario(parameters, options.entered ?? {});
   const months = 12 * p05.horizon_years;
   if (!Number.isInteger(months)) throw new RecordInputError(`P-05 horizon_years: ${p05.horizon_years} years is not a whole number of months`);
-  const goal = { amountNow: p05.amount_now, monthly: p05.monthly_deposit, months };
+  const goal = { amountNow: p05.amount_now, monthly: p05.monthly_deposit, months, ...(options.firstMonth ? { firstMonth: options.firstMonth } : {}) };
   const inflation = p05["A-02"] / 100;
   // P-05's cash rate is the default for a cash-like product; a comparison replaces it per candidate with the
   // product's sourced or entered rate (A-20 to A-25, `withCashRate`). Its unit says how it is quoted: a bank's own rate is nominal

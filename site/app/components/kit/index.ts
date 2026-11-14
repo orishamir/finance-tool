@@ -76,7 +76,7 @@ export { MeterBar } from "./meter-bar";
 export { PeriodBars, type PeriodBar } from "./period-bars";
 export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
 export { MonthPicker, type MonthBounds } from "./month-picker";
-export { Step } from "./steps";
+export { Step, StepStrip, type StripStep } from "./steps";
 export { TypedPlain } from "./typed-plain";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";

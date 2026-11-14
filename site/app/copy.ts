@@ -776,6 +776,7 @@ export const formulaNames: Record<string, string> = {
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
   "F-107": "מס אמריקני על דיבידנדים בתוך קרן אירית",
+  "F-109": "קנייה ביחידות שלמות, והכסף שמחכה ליחידה",
   "F-110": "התקופות של העסקה: מתי כל עמלה משתנה",
   "F-111": "על מה כל עמלה נגבית, ומה מצטבר יחד",
   "F-112": "הסכומים שהמחירים בעסקה מסמנים",
@@ -947,6 +948,16 @@ export const flags: Record<string, string> = {
   // F-107 at TXF-16's rate, which a fund obtains only if it passes the treaty's limitation-on-benefits article (TXF OQ7, method G-33)
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
+  // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
+  // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,
+  // run under each of its readings (method §13)
+  "G-36": "מ־2028 החישוב מעלה כל שנה, לפי האינפלציה שבחישוב, את מדרגות המס, את הסף של המס הנוסף ואת הסכומים שהחוק הקפיא עד 2027 בהטבות על ההפקדות. ההכנסה שלכם נשארת בחישוב כפי שהזנתם, ולכן עם השנים חלק גדול יותר ממנה נופל במדרגות הנמוכות. סכומים שצמודים לשכר הממוצע נשארים כמו ב־2026, כי האתר לא מניח איך השכר הממוצע ישתנה. לא ידוע איך רשות המסים תעגל את הסכומים ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט. גם לא ידוע אם הסכומים יורדים כשהמדד יורד. באינפלציה שלילית החישוב נעשה בכל אחת מהאפשרויות, ואם התוצאות שונות, אין חישוב לשנים שאחרי 2027.",
+  // an open reading every reading of which gave the same run (method §13, `acrossReadings`): F-119 at a falling CPI (TXG OQ17)
+  "TXG-OQ17": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה, והחוק לא אומר מה ירידה כזו עושה מ־2028 למדרגות המס ולסכומים שהוקפאו עד 2027: אם הם יורדים, נשארים כמו שהיו, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
+  // the same for F-120 at a falling CPI: KGL-03's yearly ceiling (KGL OQ15, proposed to the rule base)
+  "KGL-OQ15": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה, והחוק לא אומר מה ירידה כזו עושה לתקרת ההפקדה השנתית לקופת גמל להשקעה: אם היא יורדת, נשארת כמו שהייתה, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
+  // A-30: a yearly cap on deposits reached in the run date's tax year, which the run starts with nothing deposited (method F-01)
+  "A-30": "החישוב מניח שלא הפקדתם עוד מתחילת השנה, ולכן התקרה השנתית של השנה הזו נשארת כולה להפקדות מהיום ועד סוף השנה. הפקדות שכבר עשיתם השנה נספרות באותה תקרה ומקטינות אותה.",
   "G-16": "בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; an unlinked piece at an exit point takes G-34 instead (method G-16)
   "G-34": "הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים, והחישוב מניח שמושכים אותו אז בתחנת יציאה עם כל הריבית שנצברה. תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון, אבל מה משלמים בה, ואם צריך להודיע מראש, קובע כל בנק בתנאי הפיקדון.", // F-41: an unlinked piece at an exit point on the last day is priced with interest to date; it can be withdrawn there without a break (BANK-27); what an exit point pays and the notice it needs are each product's terms, not in the records, and a product may pay less or more (BANK OQ20, method G-34)
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
@@ -954,6 +965,9 @@ export const flags: Record<string, string> = {
   // D87, now the cautious reading (guidelines/research.md step 6): one deposit and no more, the run ends the discount after six months (PF OQ18)
   "PF-OQ18": "בחישוב, ההנחה בדמי הניהול מסתיימת {PF-14:months_after_deposits_stop} אחרי ההפקדה, ומשם דמי הניהול הם בלי ההנחה. חוזר של רשות שוק ההון מתיר להעלות דמי ניהול {PF-14:months_after_deposits_stop} אחרי שההפקדות נפסקות, ועוד לא נמצא אם זה חל על מי שהפקיד פעם אחת בלבד. אם לא, ההנחה תימשך, והתוצאה תהיה גבוהה יותר.",
   "G-23": "נקודות הזיכוי לא הופחתו מהמס הזה. נקודות זיכוי מקטינות את כל המס המחושב בשנה, גם את המס על רווחים ועל ריבית בשיעור מיוחד, ולכן הן משנות את התוצאה רק כשהן גדולות מהמס על שאר ההכנסה שלכם באותה שנה, למשל בשנה בלי משכורת. מס שכבר נוכה במקור חוזר רק דרך דוח שנתי או בקשת החזר מס. האתר לא יודע כמה נקודות זיכוי יש לכם.", // TXG-05; the refund of tax withheld is TXG-25; method G-23 names the input it would need
+  // F-31, F-32: the s.45A credit is capped at the year's tax, the rest lost on the cautious reading (TXP-01, TXP OQ20); that tax leaves out
+  // credit points, which the engine has no input for (method G-23), so this line carries what G-23 means for the credit
+  "TXP-OQ20": "הזיכוי כאן הוא עד גובה מס ההכנסה שלכם באותה שנה. לא נמצא חוק שמחזיר את החלק שמעל המס או מעביר אותו לשנים הבאות, ולכן החישוב מניח שהחלק הזה הולך לאיבוד. המס שחושב הוא בלי נקודות הזיכוי שלכם, כי האתר לא יודע כמה יש לכם. אם המס שאתם משלמים נמוך מהזיכוי, תקבלו פחות מהסכום כאן.",
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
   "TXK-06": "בחישוב הזה לא מגישים דוח שנתי או בקשת החזר מס, ולכן המס הוא מה שהחברה המנהלת מנכה במקור: {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם על הרווח, ומי שמגיש דוח או בקשת החזר יכול לקבל חלק מהמס בחזרה.", // F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off). The manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld, not an upper bound
   "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם, ועל חלק הרווח שהמדרגה שלו נמוכה מזה מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
@@ -1747,7 +1761,7 @@ export const feeDeal = {
     kindsAria: "סוגי המוצרים",
     close: "סגירה",
     track: "החברה והמסלול",
-    trackNone: "לא נבחרו · לא חובה",
+    trackNone: "לא נבחרו (לא חובה)",
     trackPick: "לבחור מסלול",
     /** The step that fills the deal from a price list, and its button opens the price lists. */
     fill: "מילוי מתעריפון",
@@ -1861,12 +1875,13 @@ export const feeDeal = {
     caseRemoved: "המקרה הוסר.",
     /**
      * The line a thing taken away leaves (undo.ts), naming it as the menu did: how many cases merged into how many, that none merged, or
-     * that the fee kept its first case's price.
+     * that the fee kept one case's price, the person's track's where a case is theirs (`slimOwn`), else the first case's.
      */
     byRemoved: {
       merged: "המחיר כבר לא משתנה לפי {thing}: {from} מקרים הם עכשיו {to}.",
       kept: "המחיר כבר לא משתנה לפי {thing}. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.",
       slim: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המקרה הראשון.",
+      slimOwn: "המחיר כבר לא משתנה לפי {thing}. נשאר המחיר של המסלול שלכם.",
     },
     /**
      * The line a price put in another form leaves (undo.ts): that it changed, and what it left behind by name ("המחיר הוחלף, והמינימום
@@ -1880,13 +1895,18 @@ export const feeDeal = {
       and: "ו",
       parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", maxPerSecurity: "המקסימום לכל נייר ערך" },
     },
-    /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
+    /**
+     * A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. The
+     * cases that merge keep the person's track's price where one of them is theirs (`mergeOwn`, `slimOwn`), else the first one's.
+     */
     thingMenu: {
       title: "המקרים מבחינים בין:",
       stop: "להפסיק להבחין לפי {thing}",
       merge: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של הראשון מהם.",
+      mergeOwn: "{from} מקרים יהיו {to}: מקרים שנבדלים רק בזה יאוחדו, במחיר של המסלול שלכם אם הוא ביניהם, ואחרת במחיר של הראשון מהם.",
       kept: "המקרים יישארו כמו שהם, כי הם שונים גם בדבר אחר.",
       slim: "לעמלה יישאר מחיר אחד: המחיר של המקרה הראשון.",
+      slimOwn: "לעמלה יישאר מחיר אחד: המחיר של המסלול שלכם.",
     },
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
@@ -3213,7 +3233,8 @@ export const guideSignature = {
           employeeThen: "בשנה, ולכן החל מהשנה ה־",
           self: "הפטור עוצר ב־",
           selfRise: "בשנה, והחישוב מעלה את ההפקדות",
-          selfThen: "בשנה ומשאיר את הסכום הזה כמו היום, ולכן החל מהשנה ה־",
+          // TXH-08's amount is frozen by s.120ב through 2027 and grows with prices from 2028 (F-119, F-97)
+          selfThen: "בשנה. החוק מקפיא את הסכום הזה עד 2027, והוא עולה עם המחירים רק מ־2028, ולכן החל מהשנה ה־",
           part: "חלק מההפקדות לא מקבל פטור",
           taxed: ", ויש עליו מס.",
           ifNot: "אם השכר לא עולה, זה לא קורה.",
@@ -3257,11 +3278,11 @@ export const guideSignature = {
         ownMonthly: "ההפקדה החודשית שלכם: האחוז שבשדה כפול השכר",
         employerMonthly: "ההפקדה החודשית של המעסיק: האחוז שבשדה כפול השכר",
         over: "מה שמופקד מעל התקרה של הפטור בסכומים של היום",
-        overSelf: "מה שמופקד בשנה הראשונה מעל התקרה של הפטור, לפני החזר המס",
+        overSelf: "מה שמופקד בשנה מלאה מעל התקרה של הפטור, לפי ההפקדה החודשית שהזנתם, לפני החזר המס",
         overOwn: "מה שאתם מפקידים בחודש מעל התקרה של הפטור",
         overEmployer: "מה שהמעסיק מפקיד בחודש מעל התקרה של הפטור",
         room: "כמה עוד אפשר להפקיד בחודש עם פטור, בסכומים של היום",
-        roomSelf: "כמה עוד אפשר להפקיד בשנה הראשונה עד התקרה של הפטור, לפני החזר המס",
+        roomSelf: "כמה עוד אפשר להפקיד בשנה מלאה עד התקרה של הפטור, לפי ההפקדה החודשית שהזנתם, לפני החזר המס",
         crossYear: "השנה הראשונה שבה הפקדה עוברת את התקרה של הפטור",
         first: "מה שנכנס לחשבון במשיכה בשנה שנבחרה, לפני דוח שנתי או בקשת החזר: מה שנשאר אחרי המס, ועוד מה שנוכה מעבר למס, בכסף של היום",
         owed: "מה שנשאר לשלם בדוח השנתי: המס על המשיכה פחות מה שנוכה, בכסף של היום",
@@ -3306,11 +3327,12 @@ export const guideSignature = {
       toGeneral: "מה שמופקד בחודש מעל התקרה של הקרן המקיפה, ועובר לקרן הכללית",
     },
     // what the balance assumes, beside the return and inflation (method F-67, "What the visual assumes")
-    assume: { flat: "ההפקדות באותו סכום בשקלים בכל השנים, בלי עליית שכר", noInsurance: "בלי דמי הביטוח, כי לא הוזנו" },
+    // the run holds the net outlay fixed in shekels; from 2028 the credit's caps grow (F-119), so the same outlay can buy a larger gross deposit
+    assume: { flat: "מה שיוצא מהכיס שלכם, אחרי הזיכוי, באותו סכום בשקלים בכל השנים, בלי עליית שכר", grossRises: "מ־2028 תקרות הזיכוי עולות עם המחירים, ולכן ההפקדה עצמה יכולה לגדול מעל הסכום החודשי שלמעלה", noInsurance: "בלי דמי הביטוח, כי לא הוזנו" },
     figures: { net: "בפועל יוצא מהכיס שלכם, אחרי הזיכוי", insurance: "דמי הביטוח בקרן הפנסיה", depositFee: "דמי ניהול מההפקדה", balance: "מה שנצבר בקרן אחרי" },
     balanceGap: { "no-fees": "אין חישוב; הסיבה למטה", "no-run": "החישוב לא הצליח עם הערכים האלה" } as Record<string, string>,
     ratesLine: { before: "ההפקדות הן המינימום לפי צו ההרחבה:", middle: "מכם,", severance: "מהמעסיק לתגמולים, ועוד", wage: "מהמעסיק לפיצויים, על שכר של עד", after: "בחודש (השכר הממוצע במשק). בהסכם העבודה שיעורי ההפקדה יכולים להיות גבוהים יותר." },
-    creditLine: { before: "על ההפקדה שלכם מגיע", term: "זיכוי ממס", middle: "של", after: "מהסכום המזכה, עד תקרה שנגזרת מההכנסה." },
+    creditLine: { before: "על ההפקדה שלכם מגיע", term: "זיכוי ממס", middle: "של", after: "מהסכום המזכה, עד תקרה שנגזרת מההכנסה ועד גובה המס שאתם משלמים באותה שנה." },
     beneficiary: { before: "אתם נחשבים", term: "עמית מוטב", middle: "ההפקדות שלכם ושל המעסיק יחד עוברות את הסף של", after: "בשנה, ולכן הזיכוי מחושב לפי הכללים לעמית מוטב." },
     insuranceNote: "בקרן פנסיה חלק מההפקדה משלם ביטוח למקרה מוות או נכות. דמי הביטוח תלויים בגיל ובכיסוי.",
     noInsurance: "בתגמולים ואישית לפיצויים אין ביטוח משותף: ההפקדה, אחרי דמי הניהול, נכנסת כולה לחיסכון.",
@@ -3327,7 +3349,7 @@ export const guideSignature = {
       net: "ההפקדה של העובד פחות הזיכוי ממס",
       depositFee: "דמי הניהול מההפקדה, באחוז הממוצע שדווח, מסך ההפקדות החודשי",
       insurance: "דמי הביטוח בקרן הפנסיה: האחוז שהזנתם מסך ההפקדות החודשי",
-      balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח, בכסף של היום ולפני שהקרן הופכת אותו לקצבה",
+      balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח, בכסף של היום ולפני שהקרן הופכת אותו לקצבה. מה שיוצא מהכיס שלכם אחרי הזיכוי נשאר באותו סכום בכל השנים, ולכן מ־2028, כשתקרות הזיכוי עולות, ההפקדה של העובד יכולה לגדול",
     },
   },
 } as const;
@@ -4099,10 +4121,11 @@ export const invest = {
     /** The part of the account's cost no single fee line explains (F-91), named by what it adds and where it comes from. */
     remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: בלי אחת מעמלות החשבון הוא עדיין היה נגבה, כי שאר עמלות החשבון היו גובות אותו מהכסף שהיא כבר לא הייתה לוקחת ומהצמיחה שלו.",
-    /** F-109, F-91 (D94): the same part where the house buys the fund in whole units. Each line there is what was paid on it, carried to the
-     *  sale, so this part holds what the cash waiting for a unit did not earn, the sale's costs and the tax on the carried money; it can be a plus */
-    remainderUnits: "כסף שמחכה ליחידה ועלויות המכירה",
-    remainderUnitsAbout: "בחלק הזה נמצא מה שהכסף שמחכה ליחידה שלמה לא הרוויח: בחשבון הזה קונים רק יחידות שלמות, והשאר מחכה בחשבון בלי ריבית. כל עמלה בשורה שלה נספרת עם מה שהכסף שלקחה היה מרוויח עד המכירה, ולכן יש כאן גם את עמלות המכירה והמס על הרווח הזה. בגלל זה החלק הזה יכול לצאת גם בפלוס.",
+    /** F-109, F-91 (D94): where the house buys the fund in whole units, what the cash waiting for a unit did against the fund. Not a fee: its
+     *  own line beside the account's fees, a minus where the fund rose while the cash waited and a plus where it fell; `why` under it by its sign */
+    waiting: "כסף שחיכה ליחידה שלמה",
+    waitingAbout: "ההפרש בין הכסף שחיכה ליחידה שלמה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בכסף של היום",
+    waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },
     /** F-109 (D94): one line on a row whose house buys the fund in whole units, where a monthly deposit buys no unit in most months, or in some */
     unitsEvery: "יחידה עולה יותר מההפקדה החודשית: קונים פעם בכמה חודשים, ובינתיים הכסף מחכה בחשבון בלי ריבית.",
     unitsSome: "קונים רק יחידות שלמות: בחודש שההפקדה לא מגיעה ליחידה, הכסף מחכה בחשבון בלי ריבית.",
@@ -4425,7 +4448,8 @@ export const invest = {
     },
     noOtherFund: "אין קרן אחרת מהסוג הזה.",
     /** `notSplit`: a step whose cost could not be split by who takes it says so, in place of a figure (no 0 that reads as a cost of nothing). */
-    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עלות החשבון", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
+    // the account's fees, and apart from them what the cash waiting for a whole unit did (F-91, F-109), as the receipt writes them
+    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עמלות החשבון", waiting: "כסף שחיכה ליחידה שלמה", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
     hereExample: "נקודת התחלה לדוגמה:",
@@ -4558,6 +4582,8 @@ export const invest = {
      *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
     ruleOpen: {
       "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
+      // F-119 at a falling CPI (TXG OQ17), its readings giving the run different results (method §13)
+      "TXG-09": "אי אפשר לחשב את המס במכירה אחרי 2027 כשהאינפלציה שלילית: החוק מעדכן את מדרגות המס ואת הסף של המס הנוסף לפי עליית המדד, ולא אומר מה קורה כשהמדד יורד. כאן כל אחת מהאפשרויות נותנת מס אחר, ולכן אין כאן חישוב ודירוג.",
     } as Record<string, string>,
     ruleOpenOther: "אי אפשר לחשב: המס על הקרן תלוי בכלל שעוד לא ידוע, ולכן הקרן לא מדורגת.",
   },
@@ -4847,6 +4873,7 @@ export const kit = {
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
+      StepStrip: "השלבים אחרי שנעשו, בשורה אחת מעל מה שנבנה בהם, כשכמעט לא חוזרים לשנות אותם: השם של כל שלב ומה נבחר, נקודה, והדרך לשנות. בסוף השורה הפעולה שלה, ומתחתיה מה ששלב פותח כדי לשנות אותו או מה שנאמר על הבחירה. כשאין מקום, השורה נשברת.",
       AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. כשאין מקום לשמות בסוף, הם עוברים למקרא מעל הגרף.",
       AddLine: "שורה שקטה מתחת לרשימה שהאדם בונה: מסגרת מקווקוות, פלוס ושבב קטן לכל דבר שאפשר להוסיף. הרגילים קודם בדיו מלאה, הנדירים אחריהם בדיו מעומעמת. המקום היחיד בעמוד שמדבר על מה שחסר.",
       PeriodStrip: "שנות התוכנית ברצועה אחת, לכל תקופה גוון משלה ומה שמחזיק בה כתוב עליה: שנים במחיר של קבוצה, ואז שנים בתעריפון. הזמן רץ משמאל לימין והקצוות כתובים מתחת. רצועה לקריאה בלבד, לא כפתור.",

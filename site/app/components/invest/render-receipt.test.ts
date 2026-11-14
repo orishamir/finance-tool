@@ -11,6 +11,7 @@ import { ChosenPair } from "./chosen";
 import { allFunds, pickOfHeadline, pairVerdict } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
+import { planOf } from "../../lib/receipt-fixtures";
 
 const w = invest;
 /** The figures the receipt writes, in its order, by their labels: the whole shekels a reader adds up. */
@@ -37,7 +38,7 @@ describe("the receipt", () => {
     expect(l[w.receipt.left]).toBe(r.left);
     expect(l[w.receipt.gain]).toBe(r.gain);
     expect(l[w.receipt.lost]).toBe(r.lost);
-    expect(r.paidIn + r.added - r.tax - r.account - r.fund).toBe(r.left);
+    expect(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting).toBe(r.left);
     // the closing bar is a chart the chart check finds, its parts from the start
     expect(out).toContain('data-chart="share-bar"');
     // the account's lines carry their rate as the price list prints it
@@ -96,6 +97,37 @@ describe("the chosen pair's card", () => {
     expect(out).toContain(w.chosen.kind);
     expect(out).toContain(w.chosen.together.after);
   });
+});
+
+describe("in whole units, the fees charged and the waiting cash apart (F-91, F-109)", () => {
+  // the S&P 500 page's plan at a fall and at a rise; Interactive Brokers with the Irish fund buys whole units while its record is silent
+  const pick = { house: "interactive-brokers", fund: "ie00b5bmr087" };
+  for (const returnPct of [-5, 7]) {
+    it(`at ${returnPct}%: the receipt writes the account's fees with a minus, the waiting cash on its own line, and the card's fees are the two fees`, () => {
+      const p = planOf(t, { years: 10, monthly: 500, returnPct });
+      const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: p });
+      const pc = pairCostsKept({ bundle, index: view.index, plan: p, fundId: pick.fund, providerId: pick.house });
+      // in whole units while the house's record says nothing of selling that listing by amount (F-109); a record that does moves the case
+      expect(pc?.units, "the pair is no longer bought in whole units: pick another").toBeTruthy();
+      const r = receiptAmounts(pc!);
+      const bare = (x: string) => x.replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
+      for (const layout of ["paper", "ticket"] as const) {
+        const out = bare(shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: true, layout }))));
+        // the account's fees are taken: a minus, never the plus the waiting cash's gain made of them
+        expect(r.account).toBeGreaterThan(0);
+        expect(out).toContain(`−${r.account.toLocaleString("en-US")} ₪`);
+        // the waiting cash: its own words and its own sign, a plus where the fund fell, a minus where it rose
+        const at = out.indexOf(w.pair.waiting);
+        expect(at).toBeGreaterThan(0);
+        const sign = returnPct < 0 ? "+" : "−";
+        expect(out.slice(at, at + 60)).toContain(`${sign}${Math.abs(r.waiting).toLocaleString("en-US")} ₪`);
+        expect(out).toContain(returnPct < 0 ? w.pair.waitingWhy.fell : w.pair.waitingWhy.rose);
+        expect(lines(out)[w.receipt.lost]).toBe(r.tax + r.account + r.fund);
+      }
+      const card = bare(shown(html(createElement(ChosenPair, { view, bundle, plan: p, pick, chosen: true }))));
+      expect(card).toContain(`${w.chosen.together.before} ${(r.account + r.fund).toLocaleString("en-US")} ₪ ${w.chosen.together.after}`);
+    });
+  }
 });
 
 describe("a customer group picked in the account tile (D43, F-101)", () => {

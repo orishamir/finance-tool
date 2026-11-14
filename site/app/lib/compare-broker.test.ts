@@ -68,11 +68,14 @@ describe("the 20-year case on the cheapest collected broker", () => {
     // twenty years at 1,041,892; the 4% on fifteen years of 3,000 deposits and the higher balance fee bring it below Leumi's default
     expect(dflt).toBeGreaterThan(kgl);
     expect(cheapest).toBeGreaterThan(kgl);
-    expect(Math.round(kgl)).toBe(985_597);
-    expect(cheapest).toBeCloseTo(1_104_645, -2); // at IBI since 2026-11-08; at One Zero it was 1,098,743
+    // no exit after 20 years owes surtax: salary 264,000 and each real gain pass 721,560 but not the exit year's threshold, grown by 2.5%
+    // a year from 2028 (F-119) to over 1,125,000 nominal. At 721,560 the gemel paid 2,578.78 at exit (985,597), IBI 10,616.85 with the 2% on capital
+    // income (1,104,645), Leumi 6,788.19 (1,030,053)
+    expect(Math.round(kgl)).toBe(987_170);
+    expect(cheapest).toBeCloseTo(1_111_124, -2); // at IBI since 2026-11-08
     // 240 purchases of 3,000 on the regular line, each at its minimum of 26: Leumi's standing-order price (0.225%, 6.75) is not ranked,
     // because the bank opens it only to a list of funds it does not publish (D41, D56)
-    expect(Math.abs(dflt - 1_030_053)).toBeLessThan(100);
+    expect(Math.abs(dflt - 1_034_196)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker
     const ev = evaluate(chosen, goal);
     expect(ev.ranking.entries[0]!.id).toBe(BRK);

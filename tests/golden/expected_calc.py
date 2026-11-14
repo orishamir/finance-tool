@@ -205,6 +205,23 @@ def lot_real(cons, cost, j_buy, j_sale):
 BRK60 = [(84120, .10), (120720, .14), (228000, .20), (301200, .31), (560280, .35), (math.inf, .47)]
 
 
+# s.120ב amounts in a later tax year (TXG-09's formula, TXG-06): the brackets, the surtax threshold and the reliefs s.120א lists
+# stay at their 2026 amounts through 2027, the freeze's last year (s.120ב(ה)(1)); on 1.1.2028 they grow by the CPI rise of 2027
+# alone, and each year after by the rise of the year before (s.120ב(ה)(2), (א)). A year to come rises by π, the scenario's
+# inflation. Not rounded (TXG OQ16). Grid year k (months 12(k−1)+1 to 12k, the scenarios' January grid) is calendar 2025 + k.
+RUN_YEAR, FREEZE_END = 2026, 2027
+
+
+def indexed(amount, k, pi):
+    """An s.120ב amount read for 2026, in grid tax year k."""
+    return amount * (1.0 + pi) ** max(0, RUN_YEAR + k - 1 - FREEZE_END)
+
+
+def sched_in(k, pi, sched=BRK60):
+    """A bracket schedule's bounds in grid tax year k."""
+    return [(hi if hi == math.inf else indexed(hi, k, pi), r) for hi, r in sched]
+
+
 def bracket_tax(x, sched=BRK60):
     tax, lo = 0.0, 0.0
     for hi, r in sched:
@@ -460,6 +477,10 @@ def year_table(snaps, extra_cols=None):
 AFTER = {
     'S40': "Note, 2026-10-23: the independent check above priced accrued interest on the bond (291,761.83) while the method does not model it (G-10, TXI OQ5), so the engine lists the bond as not ranked (B3, reason G-10) and the ETF ranks fourth; the engine's counts are ranked 5, listed, not ranked 8, not eligible 2, excluded 0, not evaluated 11. The numbers above are kept as the independent check produced them.",
 }
+
+
+# The date each scenario's independent check was last recomputed; the rest stand from 2026-10-22.
+CHECKED = {sid: '2026-11-14' for sid in ('S10', 'S25', 'S27', 'S29', 'S30', 'S34', 'S36', 'S53')}
 
 
 def section(sid, title, status, body, expected):
@@ -780,7 +801,7 @@ def s08_s09_s10():
         + f'\n\nResult: V_T = {f2(r10["V"])}; real {f2(r10["real_V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}.'
     )
     section('S10', 'CPI-linked bond under deflation', 'computed', body,
-            f'Real V_T/I_T = {f2(r10["real_V"])}; nominal V_T = {f2(r10["V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}; tax during {f2(r10["tax_during"])} (25% of the reduced coupons, TXI-25); tax at exit {f2(r10["tax_exit"])}; flag "real loss not carried, G-07".')
+            f'Real V_T/I_T = {f2(r10["real_V"])}; nominal V_T = {f2(r10["V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}; tax during {f2(r10["tax_during"])} (25% of the reduced coupons, TXI-25); tax at exit {f2(r10["tax_exit"])}; flag "real loss not carried, G-07". The run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119) between three readings (lowered, held, carried); the income in the scenario never reaches the amounts under any of them, so every reading gives these figures and the run carries the flag TXG-OQ17.')
     return r8
 
 
@@ -1068,7 +1089,6 @@ def s23_s24_s25_s26():
     emp_excess = 0.075 * 20000 - emp_benef
     own_benef = 0.025 * cap_sal
     own_excess = 0.025 * 20000 - own_benef
-    tau = marginal_rate(240000 + 12 * emp_excess)
     own_b = hish_run(84, own_benef, path)
     own_x = hish_run(84, own_excess, path)
     ex_own = kgl_exit(own_x, path, 84)
@@ -1076,7 +1096,8 @@ def s23_s24_s25_s26():
     empb = hish_run(84, emp_benef, path)
     empx = hish_run(84, emp_excess, path)
     ex_emp = kgl_exit(empx, path, 84)
-    dep_tax = tau * emp_excess * 84
+    # the excess is salary in the year it is paid, taxed at that year's brackets (grown by π from 2028, TXG-09): 31% to 2029, 20% after
+    dep_tax = sum(bracket_tax(240000 + 12 * emp_excess, sched_in(k, 0.025)) - bracket_tax(240000, sched_in(k, 0.025)) for k in range(1, 8))
     ni_health = 0.1217 * emp_excess * 84
     emp_net = empb['B'] + empx['B'] - ex_emp['tax25real'] - dep_tax - ni_health
     body = (
@@ -1085,21 +1106,24 @@ def s23_s24_s25_s26():
         f'| 2 | Own deposit 2.5% × 20,000 = 500: benefited part {f2(own_benef)} (2.5% of 15,712), excess {f2(own_excess)} | {L("TXH-08")} | — |\n'
         f'| 3 | Gains on the excess own deposits: 25% of the real gain at withdrawal (two managers state this; institution) | {L("TXH-11")} | tax {f2(ex_own["tax25real"])} |\n'
         f'| 4 | Employer 7.5% × 20,000 = 1,500: benefited {f2(emp_benef)}; excess {f2(emp_excess)} is salary when paid | {L("TXH-01", "TXH-03")} | — |\n'
-        f'| 5 | Income tax on the excess at the marginal rate: salary 240,000 + {f2(12 * emp_excess)} a year is in the 31% band | {L("TXG-02", "TXH-03")} | {f2(dep_tax)} over 84 months |\n'
+        f'| 5 | Income tax on the excess at the brackets of the year it is paid: salary 240,000 + {f2(12 * emp_excess)} a year is in the 31% band through 2029; from 2030 the 20% band\'s top, 228,000 grown by 2.5% a year from 2028 (frozen to 2027), passes it | {L("TXG-02", "TXH-03", "TXG-09", "TXG-06")} | {f2(dep_tax)} over 84 months |\n'
         f'| 6 | Employee NI and health on the excess at the full salary rate 12.17% (salary is above 7,703 a month); National Insurance\'s circular 1473 puts the excess in the base, so no label since 2026-11-07 (that it falls in the month paid is the rule base\'s inference, which does not move this figure: salary plus excess stays inside the full-rate band) | {L("TXG-35", "TXH-26", "TXH-01")} | {f2(ni_health)} over 84 months |\n'
         f'| 7 | Gains on the employer excess: 25% of the real gain at withdrawal (institution) | {L("TXH-11")} | tax {f2(ex_emp["tax25real"])} |\n'
         f'| 8 | Benefited parts exempt after 6 years | {L("TXH-09")} | 0 |\n'
     )
     section('S25', 'Keren hishtalmut, salary above the determining-salary cap', 'computed', body,
-            f'Own money (500/month): real V_T/I_T = {f2(own_V / path.I(84))}, nominal {f2(own_V)}; benefited {f2(own_benef)}/month exempt, excess {f2(own_excess)}/month taxed 25% of its real gain at exit ({f2(ex_own["tax25real"])}, institution source). Employer line: gross {f2(empb["B"] + empx["B"])}; less tax on the excess at deposit {f2(dep_tax)} (31%) and NI and health {f2(ni_health)} (12.17%), and 25% real on the excess gains at exit {f2(ex_emp["tax25real"])}: net {f2(emp_net)} nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.')
+            f'Own money (500/month): real V_T/I_T = {f2(own_V / path.I(84))}, nominal {f2(own_V)}; benefited {f2(own_benef)}/month exempt, excess {f2(own_excess)}/month taxed 25% of its real gain at exit ({f2(ex_own["tax25real"])}, institution source). Employer line: gross {f2(empb["B"] + empx["B"])}; less tax on the excess at deposit {f2(dep_tax)} (31% to 2029, 20% after) and NI and health {f2(ni_health)} (12.17%), and 25% real on the excess gains at exit {f2(ex_emp["tax25real"])}: net {f2(emp_net)} nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.')
 
 
 
 def pension_run(T, path, r, C, credit_year, depfee, ins, bal, employer_month=0.0):
+    """`credit_year`: the credit of grid year k, a function of k (the caps move from 2028, TXG-09), or one figure for every year."""
     s_own = defaultdict(list)
     s_emp = defaultdict(list)
     for m in range(1, T + 1):
-        s_own[m].append((C * path.I(m) + credit_year / 12.0, m))
+        k = (m - 1) // 12 + 1
+        cy = credit_year(k) if callable(credit_year) else credit_year
+        s_own[m].append((C * path.I(m) + cy / 12.0, m))
         if employer_month:
             s_emp[m].append((employer_month, m))
     own = run_provident(T, s_own, r, path, balfee=lambda m: bal, depfee=depfee, ins=ins)
@@ -1114,35 +1138,49 @@ def s27_s28_s30():
     cap = 0.07 * E
     existing = 0.06 * 12 * salary
     headroom = max(0.0, cap - max(existing, 0.0))
-    credit = 0.35 * headroom  # new deposits per year exceed the headroom
+    # the credit is worth at most the year's tax before it, the existing deposits' credit taking it first (TXP-01, TXP OQ20);
+    # the tax is at the brackets with no credit points (G-23)
+    tax27 = bracket_tax(12 * salary)
+    credit = min(0.35 * cap, tax27) - min(0.35 * existing, tax27)  # new deposits per year exceed the headroom
+
+    def credit_k(k):
+        """Grid year k's credit: the eligible-income cap 116,400 and the floor 2,268 are s.120ב amounts (TXP-02), indexed from 2028 at π,
+        as are the brackets of the tax that caps it."""
+        cap_k = max(indexed(2268.0, k, 0.02), 0.07 * min(12 * salary, indexed(116400.0, k, 0.02)))
+        t = bracket_tax(12 * salary, sched_in(k, 0.02))
+        return max(0.0, min(0.35 * cap_k, t) - min(0.35 * existing, t))
+    credit_last = credit_k(30)
     yr1_C = sum(300.0 * path.I(m) for m in range(1, 13))
-    own, emp = pension_run(360, path, 0.05, 300.0, credit, 0.01, 0.015, 0.0022, employer_month=0.125 * salary)
-    own_noins, emp_noins = pension_run(360, path, 0.05, 300.0, credit, 0.01, 0.0, 0.0022, employer_month=0.125 * salary)
+    own, emp = pension_run(360, path, 0.05, 300.0, credit_k, 0.01, 0.015, 0.0022, employer_month=0.125 * salary)
+    own_noins, emp_noins = pension_run(360, path, 0.05, 300.0, credit_k, 0.01, 0.0, 0.0022, employer_month=0.125 * salary)
     tot_y1 = 0.185 * 12 * salary + yr1_C + credit
     tot_y5 = 0.185 * 12 * salary + sum(300.0 * path.I(m) for m in range(49, 61)) + credit
+    tot_y4 = 0.185 * 12 * salary + sum(300.0 * path.I(m) for m in range(37, 49)) + credit_k(4)
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Credit 35% on employee deposits up to 7% of eligible income, eligible income capped at 116,400 a year | {L("TXP-01", "TXP-02", "TXP-27")} | cap {f2(cap)} |\n'
         f'| 2 | Existing employee deposits 6% × 120,000 = {f2(existing)} use the cap first | {L("TXP-02")} | headroom {f2(headroom)} |\n'
         f'| 3 | New deposits a year (≥ {f2(yr1_C)}) exceed the headroom, so the credit cap binds: credit = 35% × {f2(headroom)} | {L("TXP-01", "TXP-02")} | {f2(credit)} a year |\n'
+        f'| 3a | The credit is worth at most the year\'s tax before it (TXP OQ20): the tax at the brackets on 120,000, without credit points (G-23), is {f2(tax27)}, above 35% of the whole cap, {f2(0.35 * cap)}, so the cap on the credit does not bind | {L("TXP-01", "TXG-02")} | no change |\n'
         f'| 4 | Equal net outlay: gross deposit D_m = 300 × I_m + credit/12 (credit spread evenly; whether payroll gives it monthly is open, TXP OQ6) | method F-30 (B1); {L("TXP-02")} | D_1 = {f2(300 * path.I(1) + credit / 12)} |\n'
-        f'| 5 | Beneficiary-member test (16% of average wage = 26,436, employer money counted): year 1 total {f2(tot_y1)}; year 5 {f2(tot_y5)} crosses it with 2026 figures held fixed — no effect: all salary is insured income, so the s.45A(e) cap is the same 8,148 and the s.47(b1) tiers are 0 | {L("TXP-03", "TXP-04", "TXP-06")} | no change |\n'
+        f'| 4a | From 2028 the cap 116,400 grows by π each year (frozen to 2027, then the CPI rise of each year before); from 2029 it passes the salary, so the cap is 7% × 120,000 = 8,400 and the credit {f2(credit_last)} a year | {L("TXP-02", "TXG-09", "TXG-06")} | year 3 (2028): {f2(credit_k(3))}; from year 4 (2029): {f2(credit_last)} |\n'
+        f'| 5 | Beneficiary-member test (16% of average wage = 26,436, employer money counted): year 1 total {f2(tot_y1)}; year 4 with its own credit, {f2(tot_y4)}, crosses it (year 5 with the year-1 credit: {f2(tot_y5)}) — no effect: all salary is insured income, so the s.45A(e) cap is the one of step 4a in each year (8,148 through 2027, {f2(0.07 * indexed(116400.0, 3, 0.02))} in 2028, 8,400 from 2029) and the s.47(b1) tiers are 0 | {L("TXP-03", "TXP-04", "TXP-06")} | no change |\n'
         f'| 6 | Selected fund fees 1% of deposits + 0.22% of balance (caps 6%, 0.5%); insurance 1.5% of deposits (entered, A-17) | {L("PEN-23", "PF-04", "PEN-15")} | — |\n'
         f'| 7 | Employer 6.5% + 6% severance = 1,250 a month, within the 7.5% and severance ceilings: not taxed at deposit | {L("PEN-03", "TXP-10", "TXP-11")} | — |\n'
         f'| 8 | No tax during; exit at 60 is an annuity whose value needs conversion factors: blocked | {L("TXP-13", "TXP-14")} (PEN OQ7) | blocked (G-03) |\n'
     )
     section('S27', 'Pension deposit by an employee', 'computed', body,
-            f'Gross deposit D_m = 300 × I_m + {f2(credit / 12)} (credit {f2(credit)} a year; the 7% cap binds — the scenario title says it does not, see Q18); month-1 gross deposit {f2(300 * path.I(1) + credit / 12)}. Gross balance at 60 (month 360): {f2(own["B"])} nominal, {f2(own["B"] / path.I(360))} real; fees: deposit {f2(own["fees"]["deposit"])}, insurance {f2(own["fees"]["insurance"])}, balance {f2(own["fees"]["balance"])}. Flag "exit: annuity rules, blocked (G-03)"; listed, not ranked. Employer line (1,250/month, same fees and insurance): {f2(emp["B"])} nominal, {f2(emp["B"] / path.I(360))} real ({f2(emp_noins["B"])} if insurance is not charged on employer money, Q18). Subject to Q1, Q18.')
+            f'Gross deposit D_m = 300 × I_m + {f2(credit / 12)} in 2026 and 2027 (credit {f2(credit)} a year; the 7% cap binds — the scenario title says it does not, see Q18), + {f2(credit_k(3) / 12)} in 2028 (credit {f2(credit_k(3))}) and + {f2(credit_last / 12)} from 2029 (credit {f2(credit_last)}); month-1 gross deposit {f2(300 * path.I(1) + credit / 12)}. Gross balance at 60 (month 360): {f2(own["B"])} nominal, {f2(own["B"] / path.I(360))} real; fees: deposit {f2(own["fees"]["deposit"])}, insurance {f2(own["fees"]["insurance"])}, balance {f2(own["fees"]["balance"])}. Flags "exit: annuity rules, blocked (G-03)", G-23 and TXP-OQ20 (the credit is worth at most the year\'s tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119); listed, not ranked. Employer line (1,250/month, same fees and insurance): {f2(emp["B"])} nominal, {f2(emp["B"] / path.I(360))} real ({f2(emp_noins["B"])} if insurance is not charged on employer money, Q18). Subject to Q1, Q18.')
 
-    own30, emp30 = pension_run(360, path, 0.05, 300.0, credit, 0.0, 0.0, 0.005, employer_month=0.125 * salary)
+    own30, emp30 = pension_run(360, path, 0.05, 300.0, credit_k, 0.0, 0.0, 0.005, employer_month=0.125 * salary)
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 1 | Same tax category as a pension fund: same deposit-side credit as S27 | {L("TXP-24", "TXP-02")} | credit {f2(credit)} a year |\n'
+        f'| 1 | Same tax category as a pension fund: same deposit-side credit as S27, year by year | {L("TXP-24", "TXP-02")} | credit {f2(credit)} a year in 2026 and 2027, {f2(credit_k(3))} in 2028, {f2(credit_last)} from 2029 |\n'
         f'| 2 | Fees 0.5% of balance, 0% of deposits (caps 1.05% / 4%); no pooled insurance | {L("PEN-22", "PEN-35")} | — |\n'
         f'| 3 | Exit blocked as S27 | {L("TXP-14")} (PEN OQ7) | G-03 |\n'
     )
     section('S30', 'Provident fund for annuity vs pension, same money', 'computed', body,
-            f'Gross deposit as S27 (300 × I_m + {f2(credit / 12)}). Gross balance at 60: {f2(own30["B"])} nominal, {f2(own30["B"] / path.I(360))} real; balance fees {f2(own30["fees"]["balance"])}; no deposit fee, no insurance. Employer line: {f2(emp30["B"])} nominal, {f2(emp30["B"] / path.I(360))} real. Exit blocked (G-03), listed. Subject to Q1, Q18.')
+            f'Gross deposit as S27 (300 × I_m + {f2(credit / 12)} in 2026 and 2027, + {f2(credit_k(3) / 12)} in 2028, + {f2(credit_last / 12)} from 2029). Gross balance at 60: {f2(own30["B"])} nominal, {f2(own30["B"] / path.I(360))} real; balance fees {f2(own30["fees"]["balance"])}; no deposit fee, no insurance. Employer line: {f2(emp30["B"])} nominal, {f2(emp30["B"] / path.I(360))} real. Exit blocked (G-03), listed; flags G-23 and TXP-OQ20 (the credit is worth at most the year\'s tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119). Subject to Q1, Q18.')
 
 
 
@@ -1232,7 +1270,8 @@ def s34_s35_s36_s38():
     sec, snaps, out, _ = run_etf(60, 300000.0, 0.0, 0.06, 0.025)
     Y = 60000.0
     r = max(0.0, out['real_gain'])
-    ts = slice_tax_capped(Y, r, 0.25)
+    # exit in grid year 5 (2030): the brackets grown by 2.5% for 2028, 2029 and 2030
+    ts = slice_tax_capped(Y, r, 0.25, sched_in(5, 0.025))
     w = 0.25 * r
     V = out['V'] + out['tax'] - ts
     body = (
@@ -1240,7 +1279,7 @@ def s34_s35_s36_s38():
         f'| 1 | Ledger as S14 with 300,000 now, no monthly | as S14 | real gain {f2(r)} |\n'
         f'| 2 | Person reaches 60 in the exit tax year: the 10/14/20/31% brackets apply to all taxable income | {L("TXG-04", "TXS-23")} | — |\n'
         f'| 3 | Real capital gain is taxed at a maximum rate of 25% as the top slice; lower brackets apply first | {L("TXG-07", "TXG-08", "TXS-01")} | — |\n'
-        f'| 4 | Tax = Σ over the slice from Y = 60,000 to Y + real of min(bracket rate, 25%) | {L("TXG-07")} | {f2(ts)} |\n'
+        f'| 4 | Tax = Σ over the slice from Y = 60,000 to Y + real of min(bracket rate, 25%), the brackets of the exit year 2030: the 2026 bounds × 1.025³ (frozen to 2027, then the CPI rise of each year before; π = 2.5%) | {L("TXG-07", "TXG-09", "TXG-06")} | {f2(ts)} |\n'
         f'| 5 | Bank withholds 25% regardless; difference refunded through a return or form 0135 (A-14 on) | {L("TXS-23", "TXS-05", "TXG-25")} | withheld {f2(w)}, refund {f2(w - ts)} |\n'
         f'| 6 | Credit points come off the whole computed tax, special-rate income included; the person\'s points are not an input, so none are applied (flag G-23) | {L("TXG-05")} | — |\n'
     )
@@ -1260,22 +1299,25 @@ def s34_s35_s36_s38():
     p36 = Path(0.02)
     s36, _, o36, _ = run_etf(36, 2000000.0, 0.0, 0.08, 0.02)
 
+    # exit in grid year 3 (2028): the threshold grown by the 2027 rise, 2%
+    thr = indexed(721560.0, 3, 0.02)
+
     def surtax(Y, real):
-        a = 0.03 * max(0.0, Y + real - 721560) - 0.03 * max(0.0, Y - 721560)
-        b = 0.02 * max(0.0, real - 721560)
+        a = 0.03 * max(0.0, Y + real - thr) - 0.03 * max(0.0, Y - thr)
+        b = 0.02 * max(0.0, real - thr)
         return a, b
     a3, b2 = surtax(600000.0, max(0.0, o36['real_gain']))
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Ledger as S14 with 2,000,000 now, r_g 8%, π 2%, 36 months | as S14 | real gain {f2(o36["real_gain"])} |\n'
         f'| 2 | Capital-gains tax 25% of real gain (under 60) | {L("TXS-13", "TXS-09")} | {f2(o36["tax"])} |\n'
-        f'| 3 | Surtax 3% on taxable income above 721,560; taxable income excludes the inflationary amount: Z = 600,000 + real gain | {L("TXG-09")} | {f2(a3)} |\n'
-        f'| 4 | Extra 2% on capital-source income above 721,560, tested on capital income alone (real gain {f2(o36["real_gain"])} < 721,560) | {L("TXG-10")} | {f2(b2)} |\n'
+        f'| 3 | Surtax 3% on taxable income above the exit year\'s threshold, 721,560 × 1.02 = {f2(thr)} in 2028 (frozen to 2027, then the 2027 CPI rise); taxable income excludes the inflationary amount: Z = 600,000 + real gain | {L("TXG-09", "TXG-06")} | {f2(a3)} |\n'
+        f'| 4 | Extra 2% on capital-source income above the same threshold, tested on capital income alone (real gain {f2(o36["real_gain"])} < {f2(thr)}) | {L("TXG-10")} | {f2(b2)} |\n'
         f'| 5 | Settled through the annual return | {L("TXG-11")} | — |\n'
     )
     V36 = o36['V'] - a3 - b2
     section('S36', 'Surtax year', 'computed', body,
-            f'Real gain {f2(o36["real_gain"])}; capital-gains tax {f2(o36["tax"])}; surtax 3% {f2(a3)} on {f2(600000 + o36["real_gain"] - 721560)} above 721,560; 2% capital-source surtax {f2(b2)} (capital income below the threshold); V_T {f2(V36)}, real {f2(V36 / p36.I(36))}; fees: {fees_line(s36, o36)}.')
+            f'Real gain {f2(o36["real_gain"])}; capital-gains tax {f2(o36["tax"])}; surtax 3% {f2(a3)} on {f2(600000 + o36["real_gain"] - thr)} above {f2(thr)}; 2% capital-source surtax {f2(b2)} (capital income below the threshold); V_T {f2(V36)}, real {f2(V36 / p36.I(36))}; fees: {fees_line(s36, o36)}.')
 
     # S38 switching
     def run_switch(switch):
@@ -1693,11 +1735,39 @@ def s28_s29_fill():
     ded29 = tier1 + tier2
     rest = dep - ded29
     credited = max(min(rest, 2268.0), min(rest, 0.05 * min(inc, 2 * cap)))
-    credit29 = 0.35 * credited
+    # the credit is worth at most the tax left after the deduction, at the brackets with no credit points (TXP-01, TXP OQ20, G-23)
+    tax_left29 = bracket_tax(inc - ded29)
+    credit29 = min(0.35 * credited, tax_left29)
     ded_value = bracket_tax(inc) - bracket_tax(inc - ded29)
+    net29 = dep - ded_value - credit29
+
+    def relief29(G, k):
+        """Grid year k's relief on a gross deposit G: the caps 116,400, 291,000 and 232,800 and the floor 2,268 are s.120ב amounts
+        (TXP-06, TXP-04, TXP-02), as are the brackets; from 2028 each grows by π (TXG-09). The 26,436 test follows the average wage."""
+        c, a_cap, i_cap, fl = (indexed(x, k, 0.02) for x in (116400.0, 291000.0, 232800.0, 2268.0))
+        t1 = min(G, 0.11 * min(inc, c))
+        add = min(min(inc, c), max(0.0, min(inc, a_cap) - c))
+        b = max(0.0, G - thr)
+        t2 = min(b, 0.07 * add) + min(0.04 * add, max(0.0, b - 0.12 * add))
+        d = min(G, t1 + t2)
+        sched = sched_in(k, 0.02)
+        left = bracket_tax(inc - d, sched)
+        return bracket_tax(inc, sched) - left + min(0.35 * min(G - d, max(fl, 0.05 * min(inc, i_cap))), left)
+
+    def gross29(k):
+        """Equal net outlay (F-30): the gross deposit of grid year k whose net cost is the year-1 net, by bisection."""
+        lo, hi = net29, 3 * net29
+        for _ in range(200):
+            mid = (lo + hi) / 2
+            if mid - relief29(mid, k) < net29:
+                lo = mid
+            else:
+                hi = mid
+        return (lo + hi) / 2
+    g29 = {k: gross29(k) for k in range(1, 21)}
     s29 = defaultdict(list)
     for m in range(1, 241):
-        s29[m].append((dep / 12.0, m))
+        s29[m].append((g29[(m - 1) // 12 + 1] / 12.0, m))
     r29 = run_provident(240, s29, 0.05, path, balfee=lambda m: 0.0022, depfee=0.01, ins=0.015)
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
@@ -1707,10 +1777,12 @@ def s28_s29_fill():
         f'| 3 | Second tier on the base 40,000 − 26,436 with additional income {f2(ai)}: min(base, 7% × AI) + min(4% × AI, base − 12% × AI if positive) | {L("TXP-31")} | {f2(tier2)} |\n'
         f'| 4 | Deduction worth its marginal tax: 240,000 → {f2(inc - ded29)} | {L("TXG-02")} | {f2(ded_value)} |\n'
         f'| 5 | Rest {f2(rest)} to the s.45A(e) credit, cap 5% × min(240,000, 232,800) | {L("TXP-04")} | credited {f2(credited)}, credit {f2(credit29)} |\n'
+        f'| 5b | The credit is worth at most the tax left after the deduction (TXP OQ20): the tax at the brackets on {f2(inc - ded29)}, without credit points (G-23), is {f2(tax_left29)}, so the cap on the credit does not bind | {L("TXP-01", "TXG-02")} | no change |\n'
+        f'| 5a | From 2028 the caps, the floor and the brackets grow by π each year (frozen to 2027, then the CPI rise of each year before); the same net outlay {f2(net29)} then buys gross deposits of {f2(g29[3])} in 2028, {f2(g29[10])} in 2035 and {f2(g29[20])} in 2045 (F-30 solved each year) | {L("TXG-09", "TXG-06", "TXP-06", "TXP-04")} | — |\n'
         f'| 6 | Exit blocked (annuity), listed with the gross balance at the horizon | {L("TXP-14")} (PEN OQ7) | G-03 |\n'
     )
     section('S29', 'Beneficiary member, self-employed', 'computed', body,
-            f'Deposit side: deduction {f2(ded29)} (first tier {f2(tier1)}, second tier {f2(tier2)}) worth {f2(ded_value)}; credit 35% × {f2(credited)} = {f2(credit29)}; total relief {f2(ded_value + credit29)} a year, so 40,000 deposited costs {f2(dep - ded_value - credit29)} net. Gross balance at 20 years: {f2(r29["B"])} nominal, {f2(r29["B"] / path.I(240))} real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.')
+            f'Deposit side: deduction {f2(ded29)} (first tier {f2(tier1)}, second tier {f2(tier2)}) worth {f2(ded_value)}; credit 35% × {f2(credited)} = {f2(credit29)}; total relief {f2(ded_value + credit29)} a year, so 40,000 deposited costs {f2(dep - ded_value - credit29)} net. Gross balance at 20 years: {f2(r29["B"])} nominal, {f2(r29["B"] / path.I(240))} real; flag "exit: annuity rules, blocked"; 0.5% credit and age-50 enlargement blocked (G-13); G-23 and TXP-OQ20 (the credit is worth at most the year\'s tax, a tax at the brackets without credit points), G-36 (the caps and brackets read from 2028 grow by F-119). Filled in: r_g 5%, π 2%, fees and insurance as the 300 NIS pension example.')
 
 
 def s32_fill():
@@ -2118,7 +2190,7 @@ def s53():
         + f'(b) gross {f2(res["B"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; fees: balance {f2(res["fees"]["balance"])}, direct {f2(res["fees"]["direct"])}.'
     )
     section('S53', 'Israeli ETF and kupat gemel lehashkaa under CPI deflation', 'computed', body,
-            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07.')
+            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07. The run reads a year after 2027 at a falling CPI, and what a fall does to the s.120ב amounts is open (TXG OQ17, method F-119) between three readings (lowered, held, carried); the income in the scenario never reaches the amounts under any of them, so every reading gives these figures and the run carries the flag TXG-OQ17; the deposits to the kupat gemel lehashkaa never reach its yearly ceiling, whose fall is open too (KGL OQ15, proposed), so (b) carries KGL-OQ15 as well.')
 
 
 def s54():
@@ -2316,7 +2388,7 @@ def main():
             continue
         new.append(line)
         if sid and line.startswith('- Expected:') and sid in RESULTS:
-            new.append(f'  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section {sid}): '
+            new.append(f'  - Independent check, {CHECKED.get(sid, "2026-10-22")} (steps in [workings.md](workings.md), section {sid}): '
                        + RESULTS[sid]['expected'])
     with open(spath, 'w', encoding='utf-8') as fh:
         fh.write('\n'.join(new))

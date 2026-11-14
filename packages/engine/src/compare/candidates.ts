@@ -110,10 +110,11 @@ export function executeCandidate(
   entered: Partial<Record<P05Input, ValueObject>>,
   profile: Profile,
   ctx: RunContext,
+  firstMonth?: number,
 ): Executed {
   const params = c.cashRate ? withCashRate(parameters, c.cashRate) : parameters;
   try {
-    const plan = runInputs(c.record, params, c.terms ?? {}, { entered, profile });
+    const plan = runInputs(c.record, params, c.terms ?? {}, { entered, profile, ...(firstMonth ? { firstMonth } : {}) });
     return { ok: true, plan, run: runPlanned(plan, ctx) };
   } catch (e) {
     const reason = reasonFromError(e);
@@ -126,7 +127,7 @@ export function reasonFromError(e: unknown): Reason | undefined {
   if (e instanceof NotEvaluatedError) return { code: "gap", ruleIds: [], gapIds: [e.gap] };
   if (e instanceof MissingRuleError) return { code: "rule-missing", ruleIds: [e.ruleId], gapIds: [], ...(e.figure ? { detail: e.figure } : {}) };
   if (e instanceof FigureNotUpdatedError) return { code: "figure-not-updated", ruleIds: [e.ruleId], gapIds: [], detail: e.figure };
-  if (e instanceof BlockedError) return { code: "rule-open", ruleIds: [e.ruleId], gapIds: [] };
+  if (e instanceof BlockedError) return { code: "rule-open", ruleIds: [e.ruleId], gapIds: [], ...(e.question ? { detail: e.question } : {}) };
   if (e instanceof RecordInputError) {
     // runInputs stops with the field named: a missing term is a missing input; a run the engine does not have yet is "no run".
     if (/ is missing/.test(e.message)) return { code: "missing-input", ruleIds: [], gapIds: [], detail: e.message };
@@ -189,7 +190,7 @@ export function buildCandidateSet(input: CandidateSetInput, ctx: RunContext): Ca
     const kept: KeptAvailable = { wrapper: where, amount: keep };
     if (!c) kept.reason = { code: "missing-record", ruleIds: [], gapIds: [], detail: where };
     else {
-      const ex = executeCandidate(c, parameters, enteredGoal(goal, keep, 0, ctx.runDate), profile, ctx);
+      const ex = executeCandidate(c, parameters, enteredGoal(goal, keep, 0, ctx.runDate), profile, ctx, goal.firstMonth);
       if (ex.ok) Object.assign(kept, { plan: ex.plan, run: ex.run });
       else kept.reason = ex.reason;
     }
@@ -232,7 +233,7 @@ export function evaluate(
     return { ...base, kind: "not-evaluated", reasons: [{ code: "missing-input", ruleIds: [], gapIds: [], detail: "profile.ageAtStart" }] };
   }
 
-  const exec = executeCandidate(c, parameters, entered, profile, ctx);
+  const exec = executeCandidate(c, parameters, entered, profile, ctx, goal.firstMonth);
 
   // 3 comes before 4 (F-83): a run that lacks an input or that the method has no run for is "not evaluated",
   // even for a wrapper locked by age. A rule that is open inside the run is B3, below.
@@ -242,7 +243,8 @@ export function evaluate(
   // run is open; the run's value at the first exit is attached when it exists.
   if (age) return listed([age, ...blockedExit(w)], exec.ok ? { plan: exec.plan, run: exec.run } : undefined);
 
-  if (!exec.ok) return { ...base, kind: exec.kind, reasons: [exec.reason] };
+  // A rule open inside the run (D10) is B3: listed with its reason, not ranked, and with no value, since the run did not compute.
+  if (!exec.ok) return exec.reason.code === "rule-open" ? listed([exec.reason]) : { ...base, kind: exec.kind, reasons: [exec.reason] };
 
   const reasons: Reason[] = [];
   const d15 = employeeStudyFund(w, c.terms);

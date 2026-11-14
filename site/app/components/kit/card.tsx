@@ -29,7 +29,7 @@ export function Card({ children, className, as = "div", pad = "default", edge, .
 
 /**
  * Heading sizes: `page` for a section of a page, `card` for the title of a card, `form` for a card of a form, `kick` for the small name in
- * the action colour over a column of a tool, whose parts carry their own headings under it (the fee page's three columns).
+ * the action colour over a column of a tool, whose parts carry their own headings under it (the fee page's fees and toolbox).
  */
 export type SectionLevel = "page" | "card" | "form" | "kick";
 const HEADING: Record<SectionLevel, string> = { page: "text-xl lg:text-2xl font-semibold", card: "text-lg font-semibold", form: "text-xl font-semibold", kick: "text-sm font-medium text-primary" };

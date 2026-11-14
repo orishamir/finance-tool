@@ -10,6 +10,7 @@ import {
   rankCandidates,
   runPension,
   runPlanned,
+  taxAtBrackets,
   withoutFees,
   type Candidate,
   type PensionInput,
@@ -312,7 +313,7 @@ describe("M1: a self-employed person below the beneficiary threshold gets TXP-05
   const book = ruleBook(ctx);
   const flat = [{ upTo: null, rate: 0.3 }];
   const business: PensionRelief = { taxableIncome: 100_000, insuredIncome: 0, existingOwn: 0, employer: 0, businessIncome: true };
-  const relief = (p: PensionRelief, gross: number) => beneficiaryRelief(book, p, gross, flat, false);
+  const relief = (p: PensionRelief, gross: number) => beneficiaryRelief(book, p, gross, taxAtBrackets(flat), false);
 
   it("under the 12% line: 7% of the income is deducted, the rest earns the 35% credit", () => {
     // Deposit 10,000: deduction min(10,000, 7,000) + min(4,000, max(0, 10,000 - 12,000)) = 7,000 (value 30% = 2,100).

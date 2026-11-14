@@ -7,6 +7,7 @@ import { studyFundEarlyWithdrawal } from "../formulas/early-withdrawal.ts";
 import { bracketTaxOnTopSlice, hishtalmutExitTax, kglExitTax } from "../formulas/exit-tax.ts";
 import { annualToMonthly, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { BlockedError, RecordInputError, ruleBook } from "../resolver.ts";
+import { acrossReadings } from "../open-readings.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, otherIncomeOf, reachesAgeInYear, surtaxOn, Tally, unlessBlocked, type Profile } from "./common.ts";
 
@@ -45,8 +46,8 @@ export interface ProvidentInput {
      * The salary rises with prices, as the deposits do (A-04), so each month's benefited limit is the rule's share of that
      * month's salary. The determining salary's ceiling is held at today's amount: it is not linked to the index and moves
      * only with its agreement (TXH-02). The run's deposits are then limited as a payslip's are; without this the limit stands
-     * at today's salary and a deposit exactly at the limit crosses it in the first month that prices rise (F-96). Only the
-     * limit moves: the brackets, the income they are read at and the nominal amounts read against them stay as they are.
+     * at today's salary and a deposit exactly at the limit crosses it in the first month that prices rise (F-96). The salary the
+     * brackets are read at stays as entered; the brackets themselves are each tax year's (F-119).
      * An employee's run of one kind of money with real contributions only: a split (`employerMonthly`) or flat deposits
      * would limit the deposits by a salary that does not match them.
      */
@@ -94,7 +95,12 @@ export type ProvidentResult = RunResult & { routed: { month: number; amount: num
  * F-33 Everything else: the deposit is the net outlay, `D_m = C_m` (TXK-01, TXH-04); no deduction or credit.
  */
 export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentResult {
-  const book = ruleBook(ctx);
+  return acrossReadings(ctx, (c) => runProvidentUnder(input, c));
+}
+
+/** `runProvident` under the readings `ctx` holds (method §13). */
+function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentResult {
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, fees, profile } = input;
   const kgl = input.wrapper === "kupat-gemel-lehashkaa";
   const tally = new Tally();
@@ -179,7 +185,8 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     book.cite("KGL-04");
     formulas.push("F-05", "F-44");
   }
-  const ceiling = kgl ? book.amount("KGL-03", "ceiling") : Infinity;
+  // F-120: KGL-03's yearly ceiling is linked to the CPI every 1 January (Provident Funds Law s.22(א)), so each tax year reads its own
+  let ceiling = kgl ? book.amount("KGL-03", "ceiling") : Infinity;
 
   const T = exitMonth;
   const first = goal.firstMonth ?? 1;
@@ -204,6 +211,12 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   // the tax it saves at the person's brackets (TXG-02); the gross deposit is the one whose net cost is the
   // outlay. Without the person's income there is no run: "missing input" (F-83).
   let grossDeposits = [...C];
+  // F-97: a self-employed person's whole tax year of deposits at the entered amounts, before the tax back (the amount now and the deposits
+  // due in twelve months of the grid), so the standing is the same whatever month the run starts in; A-30: a yearly cap reached in the first
+  // tax year
+  const fullYearNet = goal.amountNow + goal.monthly * Array.from({ length: 12 }, (_, i) => i + 1).filter(due).length;
+  let fullYearGross = fullYearNet;
+  let firstYearCapBinds = false;
   let reliefTotal = 0;
   let reliefToday = 0;
   let deductionCap = 0;
@@ -211,13 +224,24 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     if (profile.annualIncome === undefined) {
       throw new RecordInputError("profile.annualIncome is missing: a self-employed study fund's deduction (TXH-05, F-30) needs the person's income");
     } else {
-      const brackets = book.brackets("TXG-02", "brackets");
       const income = profile.annualIncome;
       deductionCap = book.rate("TXH-05", "deduction_pct") * Math.min(income, book.amount("TXH-05", "income_ceiling"));
       const outlay = C.map((c, m) => (m === 0 || (m <= goal.months && due(m)) ? c : 0));
-      grossDeposits = spreadReliefByYear(outlay, first, taxYearOf, (_y, netYear) =>
-        equalNetOutlay(netYear, (d) => deductionValue(brackets, income, Math.min(d, deductionCap))),
-      );
+      // F-119: each tax year's ceiling and brackets
+      const grossOfYear = (y: number, netYear: number) => {
+        const ofYear = book.inYear(y);
+        const cap = ofYear.rate("TXH-05", "deduction_pct") * Math.min(income, ofYear.amount("TXH-05", "income_ceiling"));
+        const brackets = ofYear.brackets("TXG-02", "brackets");
+        const gross = equalNetOutlay(netYear, (d) => deductionValue(brackets, income, Math.min(d, cap)));
+        // A-30: the deduction's yearly cap reached in the run date's tax year, which the run starts with nothing deposited in
+        if (y === 1 && gross > cap + 1e-6) firstYearCapBinds = true;
+        return gross;
+      };
+      grossDeposits = spreadReliefByYear(outlay, first, taxYearOf, grossOfYear);
+      // F-97: that whole year grossed up for the tax back at the run date's year's cap and brackets
+      fullYearGross = equalNetOutlay(fullYearNet, (d) => deductionValue(book.brackets("TXG-02", "brackets"), income, Math.min(d, deductionCap)));
+      // G-23: the deduction is valued at the brackets, which leave out the person's credit points
+      if (grossDeposits.some((d, m) => d > C[m]! + 1e-9)) tally.flag("G-23");
       formulas.push("F-30");
     }
   }
@@ -233,8 +257,6 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let employerSocial = 0;
   // F-97: where the deposits stand against the limit
   let firstExcessMonth: number | null = null;
-  let excessFirstYear = 0;
-  let benefitedFirstYear = 0;
   const salary = hish?.monthlySalary ?? 0;
   const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
   const social = employerMoney || employerOverActive
@@ -259,7 +281,10 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     if (kgl) {
       accepted = Math.min(amount, Math.max(0, ceiling - yearTotal));
       yearTotal += accepted;
-      if (accepted < amount) routed.push({ month: eventMonth, amount: amount - accepted });
+      if (accepted < amount) {
+        routed.push({ month: eventMonth, amount: amount - accepted });
+        if (taxYearOf(eventMonth, first) === 1) firstYearCapBinds = true;
+      }
     }
     const share = accepted / amount;
     tally.paidIn += outlay * share;
@@ -279,10 +304,10 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const employerOver = net * empOverFrac;
     const inBenefit = employerPart + Math.min(net - employerPart - employerOver, limitOfMonth(eventMonth), benefitedLeft);
     benefitedLeft -= inBenefit - employerPart;
-    if (net - inBenefit > 1e-6) firstExcessMonth ??= eventMonth;
-    if (taxYearOf(eventMonth, first) === taxYearOf(1, first)) {
-      excessFirstYear += net - inBenefit;
-      benefitedFirstYear += inBenefit;
+    if (net - inBenefit > 1e-6) {
+      firstExcessMonth ??= eventMonth;
+      // A-30: the self-employed benefited amount is yearly (TXH-08); an employee's limit is the month's
+      if (Number.isFinite(benefitedYearly) && taxYearOf(eventMonth, first) === 1) firstYearCapBinds = true;
     }
     const over = employerMoney ? net - inBenefit : employerOver;
     if (social && over > 0) {
@@ -317,7 +342,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   for (let m = 1; m <= T; m++) {
     if (m > 1 && taxYearOf(m, first) !== taxYearOf(m - 1, first)) {
       yearTotal = 0;
-      benefitedLeft = benefitedYearly;
+      if (kgl) ceiling = book.inYear(taxYearOf(m, first)).amount("KGL-03", "ceiling");
+      // F-119: the self-employed benefited amount of the new tax year
+      benefitedLeft = hish?.employment === "self-employed" ? book.inYear(taxYearOf(m, first)).amount("TXH-08", "self_employed_benefited") : benefitedYearly;
     }
     if (m === 1) deposit(grossDeposits[0]!, 0, C[0]!);
     if (m <= goal.months && due(m)) deposit(grossDeposits[m]!, m, C[m]!);
@@ -336,6 +363,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   }
   if (discountExtended) tally.flag("PF-13");
   if (oneDeposit) tally.flag("PF-OQ18");
+  // A-30: the run's first tax year holds only the months from the run date, and a yearly cap reached in it assumes nothing was deposited
+  // earlier that year
+  if (firstYearCapBinds && first > 1) tally.flag("A-30", 1);
 
   const gross = benefited.balance + excess.balance;
   // The real gain: each deposit indexed by I_T / I_deposit. When the CPI fell over a deposit's life its linkage is not a
@@ -371,7 +401,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       formulas.push("F-42");
       if (profile.refundClaimed === false) tally.flag("TXK-06");
       else {
-        incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), book.brackets("TXG-04", "brackets"), realRate);
+        incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), book.inYear(taxYearOf(T, first)).brackets("TXG-04", "brackets"), realRate);
         if (!exitTaxUnknown) {
           book.cite("TXK-26");
           tally.flag("TXK-26");
@@ -379,7 +409,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       }
       detail.fullRateTax = flatTax;
     }
-    const s = surtaxOn(book, profile, real);
+    const s = surtaxOn(book, profile, real, 0, taxYearOf(T, first));
     taxAtExit = exitTaxUnknown ? 0 : incomeTax + s.general + s.onCapital;
     detail.realGain = real;
     // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum).
@@ -400,16 +430,18 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       const sixty = reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first);
       const gains = nominalGain(benefited) + nominalGain(excess);
       const employerDeposits = employerMoney ? benefited.deposits.reduce((a, d) => a + d.amount, 0) : 0;
-      const t = studyFundEarlyWithdrawal(book, {
+      // F-119: the brackets and the threshold of the exit's tax year
+      const exitYear = taxYearOf(T, first);
+      const t = studyFundEarlyWithdrawal(book.inYear(exitYear), {
         gains,
         employerDeposits,
         otherIncome: y,
         sixtyOrOver: sixty,
         refundClaimed: profile.refundClaimed !== false,
-        workBrackets: book.brackets(sixty ? "TXG-04" : "TXG-02", "brackets"),
+        workBrackets: book.inYear(exitYear).brackets(sixty ? "TXG-04" : "TXG-02", "brackets"),
       });
       const withIncome = { ...profile, otherIncome: y };
-      const surtax = surtaxOn(book, withIncome, gains + employerDeposits).general + surtaxOn(book, withIncome, gains).onCapital;
+      const surtax = surtaxOn(book, withIncome, gains + employerDeposits, 0, exitYear).general + surtaxOn(book, withIncome, gains, 0, exitYear).onCapital;
       taxAtExit = t.tax + surtax;
       detail.earlyGains = gains;
       detail.earlyEmployerDeposits = employerDeposits;
@@ -431,7 +463,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
         taxAtExit = step.value.full.tax;
         detail.flatExcessTax = step.value.flat;
         if (step.value.full.settledByReturn) tally.flag("G-21");
-      } else outcome = { code: "listed-not-ranked", reason: step.blocked };
+      } else outcome = step.outcome;
     }
     detail.excessRealGain = excessReal;
     // With an employer split (S42) the own part is benefited up to TXH-08's share and the employer's up to TXH-01's limit.
@@ -443,8 +475,8 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     // F-97
     if (firstExcessMonth !== null) detail.firstExcessMonth = firstExcessMonth;
     if (Number.isFinite(benefitedYearly)) {
-      detail.excessFirstYear = excessFirstYear;
-      detail.roomFirstYear = Math.max(0, benefitedYearly - benefitedFirstYear);
+      detail.excessYear = Math.max(0, fullYearGross - benefitedYearly);
+      detail.roomYear = Math.max(0, benefitedYearly - fullYearGross);
     } else if (split === undefined) detail.roomMonthly = Math.max(0, benefitedMonthly - goal.monthly);
   }
 
@@ -452,9 +484,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   // employer's excess cost at deposit, both at face value (the method subtracts them at the amounts paid).
   let employerDepositTax = 0;
   if (employerMoney || employerOverActive) {
-    const brackets = book.brackets("TXG-02", "brackets");
     for (const [y, x] of employerExcessByYear) {
-      const paid = deductionValue(brackets, 12 * salary + x, x);
+      // F-119: the brackets of the year the excess was paid
+      const paid = deductionValue(book.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
       employerDepositTax += paid;
       // F-96: each year's tax at the index of the deposits it is on, as F-06 has an amount of month m
       employerPaidToday += (paid * employerExcessTodayByYear.get(y)!) / x;

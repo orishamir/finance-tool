@@ -48,12 +48,12 @@
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": 2026,
-      "update_rule": "fixed in law",
+      "update_rule": "frozen 2025-2027",
       "rule_ids": [
         "TXH-08"
       ],
       "state": "sourced",
-      "notes": "NIS per year, self-employed benefited deposit (s.9(16B)). The law lists 19,920 (2023), 20,520 (2024) and 20,566 (2025 and 2026); no 2027 figure is listed. The Tax Authority's notice of 30.4.2025 (in its 2024 and 2025 deductions booklets) updated the amount to 20,566 a year, and the s.120ב(ה) freeze keeps it for 2025 to 2027; the Chief Economist's 'about 20,538' is superseded (open question 3 closed 2026-10-25); update_rule 'fixed in law' is the nearest value in the schema list. Deposits between the deduction ceiling (13,203) and this amount are not deductible but their gains are exempt."
+      "notes": "NIS per year, self-employed benefited deposit (s.9(16B)). The Ordinance names 14,140; it is one of the s.120א social reliefs, updated each 1 January by the CPI (s.120ב(א)) and frozen on 1 January of 2025 to 2027 (s.120ב(ה); TXH-08, TXG-09). The Tax Authority's notice of 30.4.2025 (in its 2024 and 2025 deductions booklets) set the amount at 20,566 a year, and the 2026 booklet gives the same; the freeze keeps it for 2027. The Chief Economist's 'about 20,538' is superseded (open question 3 closed 2026-10-25). Deposits between the deduction ceiling (13,203) and this amount are not deductible but their gains are exempt."
     }
   },
   "il_finance_file": "tax-hishtalmut.md",

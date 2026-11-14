@@ -4,7 +4,8 @@ import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, ty
 import { makamPrice } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
-import type { RunContext, RunResult } from "../result.ts";
+import { acrossReadings } from "../open-readings.ts";
+import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 
 export interface MakamInput {
@@ -44,7 +45,12 @@ const DAYS = 365;
  * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
  */
 export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
-  const book = ruleBook(ctx);
+  return acrossReadings(ctx, (c) => runMakamUnder(input, c));
+}
+
+/** `runMakam` under the readings `ctx` holds (method §13). */
+function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const { goal, makam, tariff } = input;
   const profile = input.profile ?? {};
   const term = makam.termMonths ?? 12;
@@ -82,7 +88,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   const sliceGainByYear = new Map<number, number>();
   const feesByYear = new Map<number, number>();
   const add = (m: Map<number, number>, year: number, v: number) => m.set(year, (m.get(year) ?? 0) + v);
-  let blocked: string | undefined;
+  let blocked: Outcome | undefined;
   tally.point(0, 1, 0);
 
   for (let m = 1; m <= T; m++) {
@@ -130,7 +136,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
       if (year === taxYearOf(T, first)) exitYearFees += fee + fixed;
     }
     if (closesTaxYear(m, T, first)) {
-      tally.taxDuring += yearlySurtax(book, profile, interestThisYear);
+      tally.taxDuring += yearlySurtax(book, profile, interestThisYear, taxYearOf(m, first));
       if (m === T) exitYearInterest = interestThisYear;
       interestThisYear = 0;
     }
@@ -148,7 +154,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
         taxedGain = saleGain + (sliceGainByYear.get(taxYearOf(T, first)) ?? 0) - exitYearFees;
         const exit = unlessBlocked(() => exitTax(book, profile, T, taxedGain, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
         taxAtExit = exit.value?.tax ?? 0;
-        blocked = exit.blocked;
+        blocked = exit.outcome;
       }
     }
     const value = held.reduce((v, s) => v + (s.face * price(Math.max(0, s.maturity - m))) / 100, 0);
@@ -175,7 +181,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
     nominal: cashAtExit - taxAtExit,
     index: I,
     taxAtExit,
-    outcome: blocked ? { code: "listed-not-ranked", reason: blocked } : undefined,
+    outcome: blocked,
     // what a reader needs to redo the tax: the sale's gain and the exit year's slice gains less that year's custody and account fees (TXS-06),
     // and every discount taxed at a redemption (TXI-11); commissions reduce neither (G-20)
     detail: { saleGain, sliceGain, exitYearSliceGain: sliceGainByYear.get(exitYear) ?? 0, exitYearFees: held.length > 0 ? exitYearFees : 0, deductedFees, taxedGain, taxedDiscount },

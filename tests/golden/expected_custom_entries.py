@@ -2,7 +2,9 @@
 """Expected figures of site/app/lib/custom-entries.test.ts (D44), computed from the formulas alone (F-05 to F-14, F-40, F-63).
 
 A broker and a fund the person types, on a plain plan: one order a month, no spread, no tracking gap, no surtax. The tax rates and the
-collected tariff come from the data files, the terms from the test. Run it and copy nothing by hand:
+collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
+exit's tax year, whose fees are deducted from the gain (F-09), holds the months since the last January: the figures are printed for each
+calendar month of month 1, and the test reads the one of its run date. Run it and copy nothing by hand:
 `python3 tests/golden/expected_custom_entries.py`.
 """
 import glob
@@ -34,7 +36,7 @@ def commission(amount, rate, minimum, maximum=None):
     return fee
 
 
-def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None):
+def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None, first_month=1):
     """F-08 month by month, F-09 at exit. Custody is typed as a percent a year: a twelfth a month, with the monthly minimum (F-14, D44)."""
     I = [(1 + INFLATION) ** (m / 12) for m in range(T + 1)]
     # F-03 and F-04: a foreign security is indexed on the exchange rate, flat here (A-03 = 0); an Israeli fund on the CPI
@@ -75,7 +77,8 @@ def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, 
                 out.append([lot[0] - units_left, lot[1] * share, lot[2]])
                 units_left = 0
         lots = out
-        if m > T - 12:
+        # F-01: month m is in the exit's tax year when it is in the calendar year of month T
+        if (m - 1 + first_month - 1) // 12 == (T - 1 + first_month - 1) // 12:
             exit_year_fees += custody + fixed
 
     gross = sum(lot[0] for lot in lots) * nav
@@ -108,8 +111,15 @@ CHEAP = dict(trade_rate=0.0005, trade_min=1.0, custody_year=0.0002, custody_min=
 DEAR = dict(trade_rate=0.005, trade_min=30.0, custody_year=0.004, custody_min=10.0, fx_rate=0.01, monthly_fee=20.0)
 
 rate, minimum, maximum, account_fee = ibi_on_tracking_fund()
-print("cheap broker, Israeli fund:", f"{run(**CHEAP, fund_fee_pct=FUND_IL, tax_rate=TXS_09, foreign=False):.2f}")
-print("dear broker, Israeli fund:", f"{run(**DEAR, fund_fee_pct=FUND_IL, tax_rate=TXS_09, foreign=False):.2f}")
-print("cheap broker, fund abroad:", f"{run(**CHEAP, fund_fee_pct=FUND_FOREIGN, tax_rate=TXF_02, foreign=True):.2f}")
-print("IBI, the same Israeli fund:", f"{run(rate, minimum, 0.0, 0.0, 0.0, account_fee, FUND_IL, TXS_09, False, maximum):.2f}")
-print("a broker of zeros, the same Israeli fund:", f"{run(0.0, None, 0.0, 0.0, 0.0, 0.0, FUND_IL, TXS_09, False):.2f}")
+# the test's EXPECTED, by the calendar month of month 1
+print("const EXPECTED_BY_MONTH: Record<number, Expected> = {")
+for f in range(1, 13):
+    row = {
+        "cheapIl": run(**CHEAP, fund_fee_pct=FUND_IL, tax_rate=TXS_09, foreign=False, first_month=f),
+        "dearIl": run(**DEAR, fund_fee_pct=FUND_IL, tax_rate=TXS_09, foreign=False, first_month=f),
+        "cheapAbroad": run(**CHEAP, fund_fee_pct=FUND_FOREIGN, tax_rate=TXF_02, foreign=True, first_month=f),
+        "ibiIl": run(rate, minimum, 0.0, 0.0, 0.0, account_fee, FUND_IL, TXS_09, False, maximum, first_month=f),
+        "zerosIl": run(0.0, None, 0.0, 0.0, 0.0, 0.0, FUND_IL, TXS_09, False, first_month=f),
+    }
+    print(f"  {f}: {{ " + ", ".join(f"{k}: {v:.2f}" for k, v in row.items()) + " },")
+print("};")

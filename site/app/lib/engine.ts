@@ -4,6 +4,8 @@
 // with the horizon set to that year, so "what is left" at year n is what a withdrawal at year n would give.
 import {
   BlockedError,
+  calendarMonthOf,
+  stoppedOnQuestion,
   FigureNotUpdatedError,
   MissingRuleError,
   NotEvaluatedError,
@@ -122,7 +124,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
       if (value !== undefined && Number.isFinite(value)) entered[key] = enteredValue(value, p05Units[key], bundle.runDate);
     }
     const profile = inputs.age === null ? {} : { ageAtStart: inputs.age };
-    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true });
+    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true, firstMonth: calendarMonthOf(bundle.runDate) });
     const ctx = { rules: bundle.rules, runDate: bundle.runDate };
     const horizon = plan.input.goal.months / 12;
     const years: YearPoint[] = [];
@@ -131,6 +133,10 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     for (let n = 1; n <= horizon; n++) {
       const yearPlan = { ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months: 12 * n } } } as typeof plan;
       const run = runPlanned(yearPlan, ctx);
+      // a year whose open question's readings give different results (TXG OQ17 at a falling CPI, method §13) stops the drawing: no year is
+      // drawn, as for any open rule, rather than some years at their value before the exit tax
+      const stopped = stoppedOnQuestion(run);
+      if (stopped) return { kind: "blocked", ruleId: stopped.ruleId, messageHe: blockedHe };
       const last = run.series[run.series.length - 1]!;
       years.push({
         year: n,

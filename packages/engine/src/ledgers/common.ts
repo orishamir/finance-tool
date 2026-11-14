@@ -1,7 +1,7 @@
 // Pieces every ledger shares: the taxpayer profile, the exit-year tax on "maximum rate" income (F-40 with
 // F-42 and F-43), and assembling the result.
 import { bracketTaxOnTopSlice, surtax } from "../formulas/exit-tax.ts";
-import { lastMonthOfTaxYear } from "../formulas/time.ts";
+import { lastMonthOfTaxYear, taxYearOf } from "../formulas/time.ts";
 import { BlockedError, type RuleBook } from "../resolver.ts";
 import { emptyFees, type FeeType, type Flag, type MonthPoint, type Outcome, type RunResult } from "../result.ts";
 
@@ -38,22 +38,24 @@ export function maxRateTax(book: RuleBook, profile: Profile, month: number, inco
   if (!reachesAgeInYear(profile, month, book.amount("TXG-04", "age"), firstMonth)) return { tax: withheld, withheld, atBrackets: false };
   book.cite("TXS-23");
   book.cite("TXG-07");
-  const brackets = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, income), book.brackets("TXG-04", "brackets"), rate);
+  // F-119: the brackets of the tax year the income falls in
+  const brackets = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, income), book.inYear(taxYearOf(month, firstMonth)).brackets("TXG-04", "brackets"), rate);
   return { tax: profile.refundClaimed === false ? withheld : brackets, withheld, atBrackets: true };
 }
 
 /**
- * F-43 Surtax owed because of `income` in a tax year in which `alreadyThisYear` of special-rate income
- * from the same run has been received: the surtax on the total less the surtax on what came before.
+ * F-43 Surtax owed because of `income` in tax year `year` of the run's grid (`taxYearOf`), in which `alreadyThisYear` of special-rate
+ * income from the same run has been received: the surtax on the total less the surtax on what came before, at that year's threshold (F-119).
  */
-export function surtaxOn(book: RuleBook, profile: Profile, income: number, alreadyThisYear = 0) {
+export function surtaxOn(book: RuleBook, profile: Profile, income: number, alreadyThisYear: number, year: number) {
+  const ofYear = book.inYear(year);
   const at = (x: number) =>
     surtax(
       otherIncomeOf(profile),
       x,
       profile.otherCapitalIncome ?? 0,
-      { rate: book.rate("TXG-09", "rate"), threshold: book.amount("TXG-09", "threshold") },
-      { rate: book.rate("TXG-10", "rate"), threshold: book.amount("TXG-10", "threshold") },
+      { rate: ofYear.rate("TXG-09", "rate"), threshold: ofYear.amount("TXG-09", "threshold") },
+      { rate: ofYear.rate("TXG-10", "rate"), threshold: ofYear.amount("TXG-10", "threshold") },
     );
   const before = at(Math.max(0, alreadyThisYear));
   const after = at(Math.max(0, alreadyThisYear) + Math.max(0, income));
@@ -78,7 +80,7 @@ export function exitTax(
 ) {
   const flat = rate * Math.max(0, taxableGain);
   const m = fixedRate ? { tax: flat, withheld: flat, atBrackets: false } : maxRateTax(book, profile, exitMonth, taxableGain, rate, firstMonth);
-  const s = surtaxOn(book, profile, taxableGain, specialIncomeThisYear);
+  const s = surtaxOn(book, profile, taxableGain, specialIncomeThisYear, taxYearOf(exitMonth, firstMonth));
   return {
     tax: m.tax + s.general + s.onCapital,
     withheld: m.withheld,
@@ -90,21 +92,21 @@ export function exitTax(
   };
 }
 
-/** Surtax on special-rate income that falls during the holding period (F-43), one tax year at a time. */
-export function yearlySurtax(book: RuleBook, profile: Profile, incomeInYear: number): number {
-  const s = surtaxOn(book, profile, incomeInYear);
+/** Surtax on special-rate income that falls during the holding period (F-43), one tax year at a time: `year` on the run's grid. */
+export function yearlySurtax(book: RuleBook, profile: Profile, incomeInYear: number, year: number): number {
+  const s = surtaxOn(book, profile, incomeInYear, 0, year);
   return s.general + s.onCapital;
 }
 
 /**
  * Runs the exit-tax step; if a rule it needs is open, the wrapper is listed with its pre-tax value and
- * the rule as the reason, not ranked (B3).
+ * the rule as the reason, not ranked (B3); `outcome` is that listing, with the open question where one stopped it.
  */
-export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined } | { value?: undefined; blocked: string } {
+export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined; outcome?: undefined } | { value?: undefined; blocked: string; outcome: Outcome } {
   try {
     return { value: step() };
   } catch (e) {
-    if (e instanceof BlockedError) return { blocked: e.ruleId };
+    if (e instanceof BlockedError) return { blocked: e.ruleId, outcome: { code: "listed-not-ranked", reason: e.ruleId, ...(e.question ? { question: e.question } : {}) } };
     throw e;
   }
 }
@@ -121,6 +123,9 @@ export class Tally {
   private carried = emptyFees();
   private growth = 1;
   private grows = false;
+  /** F-109 on a run in whole units: the waiting cash in units of the same index, entered at a month's start and left at its end (`waitFrom`, `waitTo`). */
+  private waited = 0;
+  private waits = false;
 
   fee(type: FeeType, amount: number) {
     this.fees[type] += amount;
@@ -131,6 +136,17 @@ export class Tally {
   grow(factor: number) {
     this.growth *= factor;
     this.grows = true;
+  }
+
+  /** F-109: the cash waiting for a whole unit at a month's start, before the month's growth: what it would have become in the fund. */
+  waitFrom(cash: number) {
+    this.waited += cash / this.growth;
+    this.waits = true;
+  }
+
+  /** F-109: the same cash at the month's end, after every share of the month (`grow`), as it joins the next order. */
+  waitTo(cash: number) {
+    this.waited -= cash / this.growth;
   }
 
   flag(code: string, month?: number) {
@@ -160,6 +176,8 @@ export class Tally {
     // engine has no input for the person's credit points (who gets how many is out of the rule base's scope). So a run that
     // charges Israeli tax says that no credit was applied, rather than assume silently that none is left over.
     if (this.taxDuring + r.taxAtExit - (r.detail?.foreignTax ?? 0) > 0) this.flag("G-23");
+    // G-36: an amount s.120ב moves was read for a year after its freeze (F-119), which TXG open question 16 keeps from being exact
+    if (book.indexedYears().length > 0) this.flag("G-36");
     return {
       exitMonth: r.exitMonth,
       nominal: r.nominal,
@@ -176,6 +194,7 @@ export class Tally {
       formulas: r.formulas,
       rules: book.used(),
       ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
+      ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth } : {}),
     };
   }
 }
