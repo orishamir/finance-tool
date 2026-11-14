@@ -1,12 +1,12 @@
-// The fee page (method §10.6): the head, the bar of the deal, three columns for entering it (what the deal is, its fees, the toolbox for
-// the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
+// The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about as a line over
+// its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
 // on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal in `#d=`, or in `?d=` as links
 // were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
 // pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end opens another saved deal
-// or a new one, and copies the deal's link. The first column's price list step opens the template picker, where a price list opens a new
-// deal beside this one; its track step opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
-// kind shows the first column alone, a deal with a kind its fees' column beside it, each in the place it keeps, so the first fee moves
+// or a new one, and copies the deal's link. The line's "לבחור תבנית" opens the template picker, where a price list opens a new deal
+// beside this one; its track's button opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
+// kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first fee moves
 // nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
 // a slim fee or a case's row opens it in place, a tap on its slot, or on a thing of its band's head, opens that one's menu, which the page holds. The toolbox stands in a
 // column of its own where the window has the room, under its fee in a middling window, and on a phone in a short sheet pinned to the
@@ -47,7 +47,7 @@ import { useMedia } from "../../lib/hooks";
 import { Callout, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
-import { FeesColumn, SetupColumn, feeGroup } from "./builder";
+import { FeesColumn, SetupStrip, feeGroup } from "./builder";
 import { DealColumns } from "./deal-columns";
 import { DealNotices, useSaid } from "./deal-notices";
 import { FeeLinksProvider } from "./links";
@@ -66,8 +66,8 @@ import { useTemplatePicker } from "./use-template-picker";
 import { feeName } from "./words";
 
 /**
- * Where the window is wide enough for the toolbox to have a column of its own, beside the fees' column (the fees' the wider, 1.25 to 1);
- * narrower, it stands under its fee, and on a phone it is a short sheet at the foot of the screen.
+ * Where the window is wide enough for the toolbox to have a column of its own (28rem), beside the fees, which take the rest; narrower, it
+ * stands under its fee, and on a phone it is a short sheet at the foot of the screen.
  */
 const PANEL_COLUMN = "(min-width: 80rem)";
 const PHONE = "(max-width: 47.99rem)";
@@ -334,7 +334,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       />
       <TemplatePicker open={picker.anchor !== null} onClose={picker.onClose} anchor={picker.anchor} options={picker.options} left={picker.left} newDeal={picker.newDeal} product={kind?.name ?? null} onPick={picker.onPick} />
       <DealColumns
-        setup={<SetupColumn deal={deal} view={builderView} kinds={data.kinds} offered={offeredKinds} onPickTrack={picker.onPickTrack} onTemplates={picker.onTemplates} filled={picker.filled} kindLine={lines.kind} onDeal={change} onKind={onKind} />}
+        setup={<SetupStrip deal={deal} kinds={data.kinds} offered={offeredKinds} onPickTrack={picker.onPickTrack} onTemplates={picker.onTemplates} filled={picker.filled} kindLine={lines.kind} onKind={onKind} />}
         fees={
           kind && (
             <FeesColumn
