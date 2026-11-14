@@ -18,6 +18,7 @@ import { leftOutOf, type LeftOutView } from "../left-out";
 import type { DataBar } from "./offers/offer";
 import { buildPrice, type PriceSpec } from "./offers/build";
 import { withOffset } from "./edits/price";
+import type { HouseAverages } from "../house-averages";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
 export type SlimTemplateFee = Omit<SlimFee, "id">;
@@ -87,6 +88,10 @@ export interface HouseTemplate {
   fees: TemplateFee[];
   left: LeftLine[];
   leftOut: LeftOutView | null;
+  /** The ids of the lines the template filled a fee from. */
+  read: string[];
+  /** What the house charged on average for the kinds of those lines (F-122), shown beside the template's name for reference only. */
+  averages?: HouseAverages;
 }
 
 /** A line's name as the price list prints it: its first name, with its band where the name does not hold it. */
@@ -533,7 +538,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
     leave(l, unreadWhy(l));
   }
-  return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap) };
+  return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap), read: [...read] };
 }
 
 /**
@@ -624,6 +629,8 @@ export interface Template {
   left: LeftOut[];
   provider?: ProviderKind;
   leftOut?: LeftOutView | null;
+  /** A house's averages charged (F-122), for reference only. */
+  averages?: HouseAverages;
 }
 
 /** The template `id` for a deal of `deal`'s kind: a house's whole price list, a track's two fees. Null where the id names no template of the deal's kind. */
@@ -631,7 +638,7 @@ export function templateOf(deal: FeeDeal, id: string, data: Pick<FeesData, "hous
   if (id.startsWith(HOUSE) && deal.kind === "brokerage-account") {
     const h = houseOf(id, data);
     if (!h) return null;
-    return { name: h.name, fees: h.fees, left: h.left.map(({ lineId, ...rest }) => ({ line: lineId, ...rest })), provider: h.provider, leftOut: h.leftOut };
+    return { name: h.name, fees: h.fees, left: h.left.map(({ lineId, ...rest }) => ({ line: lineId, ...rest })), provider: h.provider, leftOut: h.leftOut, ...(h.averages ? { averages: h.averages } : {}) };
   }
   if (id.startsWith(TRACK)) {
     const t = data.tracks.find((x) => trackId(x) === id);

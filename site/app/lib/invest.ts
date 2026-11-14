@@ -704,7 +704,8 @@ const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.sour
 function unavailable(s: FeesSnapshot, option: OptionId, rec?: FundRecord): Availability | null {
   for (const a of s.availability ?? []) if (a.available === false && a.applies_to.some((c) => classesAt(s, option).includes(c))) return AVAILABLE_NOTE(a);
   const da = s.distribution_agreements;
-  if (!rec || !da) return null;
+  // a fund the person typed has no number the reports can name: whether the house sells it stays open (`openAt`)
+  if (!rec || !da || isCustomFund(rec)) return null;
   const number = rec.identifiers.tase_number ?? rec.id;
   const cls = classesAt(s, option).find((c) => agreedClasses(s).includes(c));
   if (!cls || agreementOf(s, cls, number)) return null;
@@ -713,6 +714,8 @@ function unavailable(s: FeesSnapshot, option: OptionId, rec?: FundRecord): Avail
 
 /** Whether a house sells this kind of fund fund by fund (`unavailable`): with no fund named, its price is not known there. */
 const byFund = (s: FeesSnapshot, option: OptionId): boolean => classesAt(s, option).some((c) => agreedClasses(s).includes(c));
+/** Whether the house sells this fund stays open: it sells the kind fund by fund, and the fund is one the person typed. */
+const openAt = (s: FeesSnapshot, option: OptionId, rec: FundRecord): boolean => byFund(s, option) && isCustomFund(rec);
 
 /**
  * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
@@ -1139,7 +1142,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const fs = fundSpec(ctx, rec);
     const venue = option === "abroad" ? venueOfFund(rec) : null;
     // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)
-    const sells = ctx.snaps.filter((s) => !unavailable(s, option, rec));
+    const sells = ctx.snaps.filter((s) => !unavailable(s, option, rec) && !openAt(s, option, rec));
     if ("reason" in fs) return { ...base, reason: fs.reason, ...(fs.beforeTax && sells.length ? { beforeTax: { ruleId: fs.beforeTax.ruleId, byHouse: beforeTaxPrices(ctx, rec, option, fs.beforeTax.spec, sells, venue) } } : {}) };
     // the fund at every house that sells it, the exchange it trades on for a fund abroad
     const got = sells.length ? priceMany(ctx, fs.spec, option, sells, venue) : new Map<string, Priced>();
@@ -1149,6 +1152,10 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
       const na = unavailable(s, option, rec);
       if (na) {
         base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" }, availability: na };
+        continue;
+      }
+      if (openAt(s, option, rec)) {
+        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "sold fund by fund under distribution agreements" } };
         continue;
       }
       const p = got.get(s.id)!;
@@ -1421,7 +1428,7 @@ function pairOf(ctx: Ctx, a: { index: IndexRef; fundId: string; providerId: stri
   const s = ctx.snaps.find((x) => x.id === a.providerId);
   if (!rec || !s) return null;
   const option = optionOfFund(rec, a.index.exposure ?? undefined);
-  if (unavailable(s, option, rec)) return null;
+  if (unavailable(s, option, rec) || openAt(s, option, rec)) return null;
   const fs = fundSpec(ctx, rec);
   if ("reason" in fs) return null;
   const venue = option === "abroad" ? venueOfFund(rec) : null;

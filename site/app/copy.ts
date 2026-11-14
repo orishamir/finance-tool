@@ -1280,6 +1280,9 @@ export const guideBlocks = {
       fundManagement: "דמי ניהול של הקרן",
       fundVariable: "דמי ניהול משתנים של הקרן",
       fundTrustee: "שכר הנאמן של הקרן",
+      fundManagementPromotion: "דמי ניהול של הקרן במבצע, עד סוף המבצע",
+      fundVariablePromotion: "דמי ניהול משתנים של הקרן במבצע, עד סוף המבצע",
+      fundTrusteePromotion: "שכר הנאמן של הקרן במבצע, עד סוף המבצע",
       fundTracking: "הפרש העקיבה של הקרן",
       fundWithholding: "מס זר שנגבה בתוך הקרן",
       fundHalfSpread: "חצי ממרווח הקנייה והמכירה",
@@ -3460,6 +3463,23 @@ const shownPair = (chosen: boolean) => {
   };
 };
 
+/** What a house charged on average for a kind of fee, beside its list price (method F-122): one quiet line, for reference only. */
+export const houseAverage = {
+  /** "נגבה בפועל בממוצע 0.07% עד 0.12%": the figures follow. */
+  lead: "נגבה בפועל בממוצע",
+  to: "עד",
+  /** After a custody average: the calculator prints a yearly rate whatever the period of the house's own line. */
+  perYear: "בשנה",
+  byPortfolio: "לפי גודל התיק",
+  period: (from: string, to: string) => `${from} עד ${to}`,
+  link: "למחשבון העמלות של הבורסה",
+  /** The sheet's head line for the figure, and what it is and is not. */
+  about: (house: string) => `העמלה ש${house} גבה בפועל בממוצע, לפי מחשבון העמלות של הבורסה`,
+  sheetLead: "ממוצע על כל הלקוחות של בית ההשקעות, בכל הערוצים, בתקופה שבמחשבון. זה לא המחיר שתשלמו: האתר מציג אותו לידיעה בלבד, ומחשב תמיד לפי המחירון.",
+  /** On /deal, where the line names the house's whole price list: each column's short name before its figures. */
+  columns: { trade_il_shares_bonds: "מניות ואג״ח בבורסה", trade_il_makam: "מק״מ", trade_foreign: "קנייה ומכירה בחו״ל", custody_il: "דמי משמרת בארץ", custody_foreign: "דמי משמרת בחו״ל" } as Record<string, string>,
+};
+
 export const invest = {
   /** A house that sells a fund only where the fund's manager signed a distribution agreement with it (BRK-38). */
   agreements: {
@@ -4329,6 +4349,9 @@ export const invest = {
     feeWordsNote: "״אין״ ליד דמי ניהול משתנים או שכר נאמן: אלה שורות של החוק הישראלי לקרנות, והוא לא חל על קרן זרה. ״לא נאסף״: לקרן יש שורה כזאת, והאתר עוד לא אסף את המספר שלה.",
     /** After "אין": "אין נאמן" alone could read as a fund with no custodian, which is not what the site knows. */
     noTrusteeWord: "שכר נאמן",
+    /** A fee lowered for a stated period (F-121), after its rate: "0.0085% במבצע עד 31.12.2026". */
+    promotionWord: (until: string) => `במבצע עד ${until}`,
+    promotionName: (fee: string, until: string) => `${fee} במבצע עד ${until}`,
     cannot: "אי אפשר לחשב",
     currencyMismatch: (fund: string, index: string) => `הקרן נקובה ב${fund} והמדד ב${index}; האתר לא מחשב את ההפרש ביניהם.`,
     mismatchTag: "מטבע שונה ממטבע המדד",
@@ -4851,6 +4874,7 @@ export const kit = {
       ProductPhoneFold: "מוצר ברשימה ארוכה בטלפון (מסלולים תחת חברה): שורה אחת עם השם ומספר אחד עם המילה שלו. הקשה על השורה פותחת במקום את כל השאר, והשורה גדלה בהדרגה, כך שמה שמתחתיה זז בעדינות ומה שמעליה לא זז. המספר שבשורה שומר על ההקשה שלו ופותח את המקור.",
       SortHead: "כותרת עמודה שממיינת את הטבלה בלחיצה: מודגשת עם ▲ או ▼ כשהיא פעילה, ⇅ חלש כשלא. לחיצה ראשונה נותנת את הסדר הטבעי של העמודה והשנייה הופכת אותו. החץ במקום קבוע ורוחב המודגש נשמר, ולכן לחיצה לא מזיזה דבר.",
       MarkHold: "סימן קטן לפני מילים או אחריהן (אזהרה, מנעול, חץ של קישור, סימן שאלה) נצמד למילה שלידו, כדי שלא יעמוד לבד בשורה.",
+      HouseAverageLine: "שורה שקטה מתחת למחיר מהמחירון: מה שבית ההשקעות גבה בפועל בממוצע על סוג העמלה, מהנמוך לגבוה לפי גודל התיק, התקופה וקישור למחשבון העמלות של הבורסה. לידיעה בלבד: שום חישוב לא קורא אותה.",
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",
