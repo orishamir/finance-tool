@@ -1,12 +1,13 @@
 // What a house charged on average for a kind of fee, beside its list price (method F-122): one quiet line of the kit's `DotLine`, its figures
 // sourced numbers that open the calculator's sheet, the reporting period, and a link to the calculator's page. For reference only: no
 // calculation reads it, and its sheet says so.
-import { houseAverage as copy } from "../copy";
-import type { ColumnAverage } from "../lib/house-averages";
-import { fmt } from "../lib/format";
-import type { SiteValue } from "../lib/value";
-import { Num } from "./provenance";
-import { DocLink, DotLine } from "./kit";
+import { houseAverage as copy } from "../../copy";
+import type { ColumnAverage } from "../../lib/house-averages";
+import { fmt } from "../../lib/format";
+import type { SiteValue } from "../../lib/value";
+import { Num } from "../provenance";
+import { DocLink } from "./doc-link";
+import { DotLine } from "./notes";
 
 /** A column's figures: the lowest and, where it differs, "עד" the highest, a custody average with "בשנה". */
 export function AverageFigures({ average, house }: { average: ColumnAverage; house: string }) {

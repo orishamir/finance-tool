@@ -14,12 +14,11 @@ import { feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, LeftOutLine, ListRow, RowList, SearchField, Tag, cx, gershayim } from "../kit";
+import { Disclosure, GroupHead, HouseAverageLine, LeftOutLine, ListRow, RowList, SearchField, Tag, cx, gershayim } from "../kit";
 import type { LeftOutView } from "../../lib/left-out";
 import type { SiteValue } from "../../lib/value";
 import { feeName } from "./words";
 import type { HouseAverages } from "../../lib/house-averages";
-import { HouseAverageLine } from "../house-average";
 
 const w = copy.picker;
 const f = copy.filled;

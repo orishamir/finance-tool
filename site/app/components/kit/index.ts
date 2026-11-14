@@ -58,6 +58,7 @@ export { AmountRange, AnchorSpread } from "./deposit-words";
 export { ExposureCell, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
 export { HelpMark } from "./help-mark";
 export { SourcedTag } from "./sourced-tag";
+export { AverageFigures, HouseAverageLine } from "./house-average";
 export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBlock, type GroupChoice, type GroupEntry, type GroupLink } from "./group-prices";
 export { ClaimCheck, ClaimList } from "./claim-check";
 export { DocLink } from "./doc-link";

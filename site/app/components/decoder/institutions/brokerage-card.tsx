@@ -12,13 +12,12 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 import { groupPath, housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
 import { Num, NumAfter, RuleRef, RulesLine, Term } from "../../provenance";
-import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
+import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, withoutCodes, type CitedPlace } from "../../../lib/sources";
 import { wholeSum } from "../../../lib/format";
 import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
-import { HouseAverageLine } from "../../house-average";
 
 /** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
 const baseDesc = (b: string) => (guideBlocks.fees as Record<string, { base?: string }>)[b]?.base ?? null;
