@@ -100,7 +100,8 @@ export interface CaseTableRow {
  */
 export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; ladder?: boolean }) {
   const n = columns.length;
-  const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(7.5rem, 1fr))${add ? " 7rem" : ""}`;
+  // a ladder's head holds a step's two bounds and its top's box on one line
+  const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "12rem" : "7.5rem"}, 1fr))${add ? " 7rem" : ""}`;
   return (
     <div data-case-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto p-0.5" style={{ gridTemplateColumns: template }}>
       <span aria-hidden />
@@ -111,7 +112,8 @@ export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[
           </OpenHead>
         );
         return (
-          <div key={c.id} className="min-w-0" style={{ gridColumn: k + 2, gridRow: 1 }}>
+          // every head fills the row's height, its words at its foot: the heads stand on one line, a head that wraps growing the row
+          <div key={c.id} className="flex min-w-0 *:w-full" style={{ gridColumn: k + 2, gridRow: 1 }}>
             {c.zone ? c.zone(head) : head}
           </div>
         );
@@ -166,10 +168,11 @@ export interface GridCellView {
   zone?: (cell: ReactNode) => ReactNode;
 }
 
+/** A grid's head: its words and its shared parts; a column's (`end`) at the foot of its row, over a hairline, so the heads stand on one line. */
 function HeadWords({ head, shared, end }: { head: ReactNode; shared?: ReactNode; end?: boolean }) {
   return (
-    <div className={cx("flex min-w-0 flex-col justify-center gap-0.5 text-sm", end && "border-b border-border pb-1.5")}>
-      <span className="font-medium">{head}</span>
+    <div className={cx("flex min-w-0 flex-col gap-0.5 text-sm", end ? "justify-end border-b border-border pb-1.5" : "justify-center")}>
+      <div className="font-medium">{head}</div>
       {shared && <div className="text-muted-foreground">{shared}</div>}
     </div>
   );
@@ -179,18 +182,19 @@ function HeadWords({ head, shared, end }: { head: ReactNode; shared?: ReactNode;
  * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`),
  * each head with the parts said once for its row or column under it; one cell per case, a button over the whole cell that opens it, a case
  * on any value across spanning its row; at the side the dashed column that adds a value across (`addColumn`) and under the rows the dashed
- * row that adds a value down (`addRow`). `above`: the switch of a third thing.
+ * row that adds a value down (`addRow`). `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads
+ * hold a box each, and take the room for it.
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, above }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[] })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode }) {
+export function CaseGrid({ columns, rows, addRow, addColumn, above, steps }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[] })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean }) {
   const n = columns.length;
-  const template = `minmax(6rem, max-content) repeat(${n}, minmax(8rem, 1fr))${addColumn ? " 6.5rem" : ""}`;
+  const template = `minmax(6rem, max-content) repeat(${n}, minmax(${steps ? "12rem" : "8rem"}, 1fr))${addColumn ? " 6.5rem" : ""}`;
   return (
     <div className="flex flex-col gap-2">
       {above}
       <div data-case-grid="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto p-0.5" style={{ gridTemplateColumns: template }}>
         <span aria-hidden />
         {columns.map((c, k) => (
-          <div key={c.id} style={{ gridColumn: k + 2, gridRow: 1 }} className="flex items-end">
+          <div key={c.id} style={{ gridColumn: k + 2, gridRow: 1 }} className="flex *:w-full">
             <HeadWords head={c.head} shared={c.shared} end />
           </div>
         ))}

@@ -5,7 +5,7 @@
 // at a time, its groups as a row of chips that scrolls sideways and fades at its end, always whole above the group's parts, which scroll
 // under it.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { ArrowDownToLine, Check, Link2, Plus, Split, type LucideIcon } from "lucide-react";
+import { ArrowDownToLine, Check, Link2, Plus, Split, X, type LucideIcon } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
@@ -102,9 +102,11 @@ function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: st
  * document, so nothing on the page stays under it (without it the sheet is drawn where it stands, as the gallery shows it). The
  * sheet's handle folds it to its row of names and opens it again, so the page can be read under it; a tap on a name opens it on that
  * group. `folded` and `onFold` let the page hold whether it is folded (a phone's sheet starts folded, so nothing covers the page as it
- * loads, and unfolds when a case is opened); without them the sheet holds it, open at first.
+ * loads, and unfolds when a case is opened); without them the sheet holds it, open at first. `onClose`: the sheet's ✕ at the end of its
+ * handle's row ("סגירת העמלה"), which closes the open fee and the sheet with it. The row of names scrolls sideways where it is longer
+ * than the sheet, a fade at its cut edge saying so.
  */
-export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold }: {
+export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold, onClose }: {
   target: ReactNode;
   groups: ToolGroup[];
   onAdd: (group: string, part: string) => void;
@@ -114,6 +116,7 @@ export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, 
   docked?: boolean;
   folded?: boolean;
   onFold?: (folded: boolean) => void;
+  onClose?: () => void;
 }) {
   const id = useId();
   const [shown, setShown] = useState(groups[0]?.id ?? "");
@@ -124,6 +127,22 @@ export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, 
   // the pinned sheet's height, kept as room at the end of the document (under the site's footer too), so nothing stays under it, and as
   // the window's scroll padding at its foot, so a box that takes the focus, or a part brought into view, stops above the sheet
   const pinned = useRef<HTMLDivElement>(null);
+  // whether the row of names runs past the sheet's end and is not scrolled to it: a fade then stands at the cut edge
+  const names = useRef<HTMLDivElement>(null);
+  const [cut, setCut] = useState(false);
+  useEffect(() => {
+    const row = names.current?.firstElementChild as HTMLElement | null;
+    if (!sheet || !row) return;
+    const measure = () => setCut(row.scrollWidth - Math.abs(row.scrollLeft) - row.clientWidth > 1);
+    measure();
+    row.addEventListener("scroll", measure, { passive: true });
+    const ro = new ResizeObserver(measure);
+    ro.observe(row);
+    return () => {
+      row.removeEventListener("scroll", measure);
+      ro.disconnect();
+    };
+  }, [sheet, groups.length]);
   useEffect(() => {
     const el = pinned.current;
     if (!sheet || !docked || !el) return;
@@ -154,19 +173,26 @@ export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, 
         {...(docked ? { "data-docked": "", "data-keep-clear": "" } : {})}
         className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[13.5rem]", folded && "pb-4") : "pb-4")}
       >
-        <button
-          type="button"
-          aria-expanded={!folded}
-          aria-controls={`${id}-parts`}
-          aria-label={folded ? copy.toolbox.unfold : copy.toolbox.fold}
-          onClick={() => setFolded(!folded)}
-          className="tap-wide mx-auto flex h-5 w-16 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
-        >
-          <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />
-        </button>
+        <div className="relative flex shrink-0 justify-center">
+          <button
+            type="button"
+            aria-expanded={!folded}
+            aria-controls={`${id}-parts`}
+            aria-label={folded ? copy.toolbox.unfold : copy.toolbox.fold}
+            onClick={() => setFolded(!folded)}
+            className="tap-wide flex h-5 w-16 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <span aria-hidden className="h-1 w-10 rounded-full bg-muted-foreground/50" />
+          </button>
+          {onClose && (
+            <button type="button" data-sheet-close="" aria-label={copy.toolbox.close} title={copy.toolbox.close} onClick={onClose} className="absolute -end-2 top-1/2 flex size-target -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
+              <X size={18} strokeWidth={1.75} aria-hidden />
+            </button>
+          )}
+        </div>
         {/* one line in the sheet, so the parts keep their room; the open case above says its values whole */}
         {!folded && <div className="shrink-0 truncate [&>p]:truncate">{lead}</div>}
-        <div className="shrink-0">
+        <div ref={names} className="relative shrink-0">
           <ChoiceChips
             line
             bleed="-mx-4 px-4"
@@ -187,6 +213,7 @@ export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, 
               setFolded(false);
             }}
           />
+          {cut && <span aria-hidden data-names-fade="" className="pointer-events-none absolute inset-y-0 -end-4 w-10 bg-gradient-to-r from-popover to-transparent" />}
         </div>
         <div id={`${id}-parts`} hidden={folded} className={cx("flex flex-col gap-3", docked && "-mx-4 min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4")}>
           {group && (

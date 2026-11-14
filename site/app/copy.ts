@@ -4700,6 +4700,8 @@ export const dealCases = {
     /** The phone sheet's handle, spoken: it folds the sheet to its row of groups, and opens it again. */
     fold: "לקפל את החלקים",
     unfold: "לפתוח את החלקים",
+    /** The phone sheet's ✕, spoken: it closes the open fee, and the sheet with it. */
+    close: "סגירת העמלה",
   },
   ask: { add: "להוסיף", cancel: "ביטול" },
   menus: {

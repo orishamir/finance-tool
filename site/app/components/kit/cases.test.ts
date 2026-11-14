@@ -106,6 +106,11 @@ describe("the toolbox", () => {
     expect(out).toContain(`aria-label="${words.toolbox.groups}"`);
     expect(out).not.toContain("הערה");
   });
+  it("on a phone, with `onClose`, has a ✕ that closes the open fee, named by what it does", () => {
+    const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, onClose: () => undefined }));
+    expect(out).toMatch(new RegExp(`data-sheet-close=""[^>]*aria-label="${words.toolbox.close}"`));
+    expect(html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true }))).not.toContain("data-sheet-close");
+  });
   it("on a phone, held folded by the page, shows its row of groups and hides its parts and the case it adds to", () => {
     const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, folded: true, onFold: () => undefined }));
     expect(out).toContain(`aria-label="${words.toolbox.unfold}"`);

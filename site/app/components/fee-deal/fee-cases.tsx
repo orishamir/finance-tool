@@ -21,7 +21,7 @@ import { AddSlot, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBa
 import { Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
-import { WhenText, whenText } from "./open-case";
+import { WhenText, numText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
 import { Fig } from "./words";
 import type { BlockActions, OpenHere } from "./fee-block";
@@ -98,10 +98,13 @@ function Joined({ parts, bare }: { parts: readonly SlimPart[]; bare?: boolean })
 
 /** The room a table or a grid needs, in px: a head column, each case's or value's, and the add column; less than that reads as rows. */
 function fits(layout: FeeLayout, width: number): boolean {
-  if (layout.shape === "table") return layout.fit === "columns" && width >= 96 + layout.columns.length * 128 + 120;
-  if (layout.shape === "grid") return width >= 112 + layout.columns.length * 140 + 112;
+  if (layout.shape === "table") return layout.fit === "columns" && width >= 96 + layout.columns.length * (layout.ladder ? STEP_COLUMN : 128) + 120;
+  if (layout.shape === "grid") return width >= 112 + layout.columns.length * (layout.across.range ? STEP_COLUMN : 140) + 112;
   return false;
 }
+
+/** A ladder's column, in px: room for its head on one line, "100,000 עד" and its top's box (`CaseTable`'s and `CaseGrid`'s `steps`). */
+const STEP_COLUMN = 200;
 
 /** The question of an add slot open: the thing it adds a value of, and whether it adds a step. */
 type Asking = { thing: number; range: boolean } | null;
@@ -167,10 +170,10 @@ export function FeeCases({
   const valuesSlot = (t: number): AddSpec => ({ label: thingName(fee.kind, fee.by[t]!), onAdd: ask(t, false), expanded: asking?.thing === t });
   const slotOf = (t: number, range: boolean) => (range ? stepSlot(t) : valuesSlot(t));
 
-  /** A value's words in a head: a range's step as its bounds, its top typed in place (`editable`); any other value as its words. */
-  const headOf = (r: CaseRowView, t: number, editable: boolean): ReactNode => {
+  /** A value's words in a head: a range's step as its bounds, its top typed in place; any other value as its words. */
+  const headOf = (r: CaseRowView, t: number): ReactNode => {
     const b = r.bounds[t];
-    if (b) return <StepHead fee={fee} t={t} bounds={b} editable={editable} onFee={onFee} />;
+    if (b) return <StepHead fee={fee} t={t} bounds={b} onFee={onFee} />;
     return (
       <>
         <WhenText words={r.when[t]!} />
@@ -178,7 +181,7 @@ export function FeeCases({
       </>
     );
   };
-  const headOfValue = (h: Head, t: number) => headOf(byCase.get(h.cases[0]!)!, t, true);
+  const headOfValue = (h: Head, t: number) => headOf(byCase.get(h.cases[0]!)!, t);
 
   const head = { things: band.things.map((t) => ({ id: String(t.thing), name: t.words, removeLabel: copy.cases.thingMenu.stop.replace("{thing}", t.words) })), ...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {}), onRemoveThing: (id: string) => onRemoveBy(fee.id, Number(id)) };
 
@@ -242,7 +245,7 @@ export function FeeCases({
           ladder={layout.ladder}
           columns={layout.columns.map((col) => {
             const r = byCase.get(col.case)!;
-            return { id: col.case, head: headOf(r, t, true), label: label(r), onOpen: openIt(col.case), open: col.case === openCase, zone: (h: ReactNode) => caseZone(col.case, col.case, h) };
+            return { id: col.case, head: headOf(r, t), label: label(r), onOpen: openIt(col.case), open: col.case === openCase, zone: (h: ReactNode) => caseZone(col.case, col.case, h) };
           })}
           rows={layout.rows.map((row) => ({
             id: row.row,
@@ -266,6 +269,7 @@ export function FeeCases({
         <ConditionHead bare {...head} />
         {sharedLines(g.shared)}
         <CaseGrid
+          steps={g.across.range}
           above={g.switch && <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} mine={(h) => byCase.get(h.cases[0]!)!.mine} onChange={setSwitchTo} />}
           columns={g.columns.map((col) => ({ id: col.key, head: headOfValue(col, 1), ...(col.shared.length ? { shared: <Joined parts={saidParts(col.shared)} /> } : {}) }))}
           rows={g.rows.map((row) => ({
@@ -367,50 +371,46 @@ function ThingSwitch({ fee, values, chosen, words, mine, onChange }: { fee: Case
 }
 
 /**
- * A ladder's step as its head says it: "עד {top}", "{from} עד {top}", or "מעל {from}"; its top typed in place where `editable`, kept above
- * the top before it and below the one after, so moving it moves the next step's bottom with it and the steps keep no gap or overlap.
+ * A ladder's step as its head says it, on one line: "עד {top}", "{bottom} עד {top}", or "מעל {bottom}". The top is a box typed in place,
+ * kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that top moves it too
+ * and the steps keep no gap or overlap.
  */
-function StepHead({ fee, t, bounds, editable, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; editable: boolean; onFee: (f: Fee) => void }) {
+function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; onFee: (f: Fee) => void }) {
   const b = fee.by[t]!;
   const c = copy.cases;
   if (!isRange(b)) return null;
   const sign = rangeSign(b.unit);
   if (!bounds.to)
     return (
-      <span>
+      <div className="flex flex-nowrap items-center whitespace-nowrap">
         {c.over}
-        <Fig value={bounds.from!} />
-      </span>
+        <bdi dir="ltr">{numText(bounds.from!)}</bdi>
+      </div>
     );
   const next = b.tops[bounds.step + 1]?.v ?? null;
   const low = (bounds.from?.value as number | undefined) ?? 0;
-  const top = editable ? (
-    <span data-lift="" className="inline-block">
-      <FigureField
-        value={bounds.to}
-        label={c.stepTop}
-        unit={sign}
-        sign={sign}
-        tight
-        validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
-        onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
-      />
-    </span>
-  ) : (
-    <Fig value={bounds.to} />
-  );
   return (
-    <>
+    <div className="flex flex-nowrap items-center gap-1 whitespace-nowrap">
       {bounds.from ? (
         <span>
-          <Fig value={bounds.from} />
+          <bdi dir="ltr">{fmt.number(low)}</bdi>
           {c.stepBetween}
         </span>
       ) : (
         <span>{c.upTo}</span>
       )}
-      {top}
-    </>
+      <span data-lift="" className="inline-block">
+        <FigureField
+          value={bounds.to}
+          label={c.stepTop}
+          unit={sign}
+          sign={sign}
+          tight
+          validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
+          onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
+        />
+      </span>
+    </div>
   );
 }
 

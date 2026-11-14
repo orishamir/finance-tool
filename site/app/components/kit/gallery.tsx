@@ -3080,23 +3080,26 @@ function LadderTable({ today }: { today: string }) {
       <FigureField value={entered(tops[k]!, "nis", today, g.sampleAbout)} label={dealWords.cases.stepTop} unit="₪" sign="₪" tight onCommit={(n) => setTops((t) => t.map((x, j) => (j === k ? n : x)))} />
     </span>
   );
+  // each head on one line: "עד", the step before's top as plain words, and the step's own top in its box
+  const line = "flex flex-nowrap items-center gap-1 whitespace-nowrap";
   const heads = [
-    <>
+    <div className={line}>
       <span>{dealWords.cases.upTo}</span>
       {top(0)}
-    </>,
-    <>
+    </div>,
+    <div className={line}>
       <span>
-        {fmt.number(tops[0]!)}
+        <bdi dir="ltr">{fmt.number(tops[0]!)}</bdi>
         {dealWords.cases.stepBetween}
       </span>
       {top(1)}
-    </>,
-    <span>
+    </div>,
+    <div className={line}>
       {dealWords.cases.over}
-      {fmt.number(tops[1]!)} ₪
-    </span>,
+      <bdi dir="ltr">{fmt.number(tops[1]!)} ₪</bdi>
+    </div>,
   ];
+
   return (
     <FeeBlock dot="bg-fee-custody" name={sc.custody}>
       <ConditionHead bare things={[{ id: "size", name: sc.things.portfolio }]} />

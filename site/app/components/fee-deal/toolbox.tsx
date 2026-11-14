@@ -188,7 +188,7 @@ export function ToolboxColumn({
       )}
     </div>
   ) : null;
-  const box = <Toolbox key={fee.id} target={target} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold } : {})} />;
+  const box = <Toolbox key={fee.id} target={target} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
   if (sheet) return box;
   // the site's own explanation of the fee: its glossary card by the fee's name, in the deal's product's sense where the glossary gives
   // that product one of its own
