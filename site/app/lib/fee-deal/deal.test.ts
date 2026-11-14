@@ -231,7 +231,7 @@ describe("the link", () => {
     expect(Object.keys(d).sort()).toEqual(["fees", "id", "kind", "name"]);
   });
   it("opens a new deal of the kind ?wrapper= names, and an empty one the address did not give for a kind or a track that is none", async () => {
-    const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
+    const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {}, regulator: "" }], houses: [], tracks: [], templates: {} };
     expect(await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
     expect(await dealOfAddress("?wrapper=nothing", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
     expect(await dealOfAddress("?track=999", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
@@ -266,7 +266,7 @@ describe("the saved deals", () => {
     expect(worthSaving(fresh, [fresh])).toBe(true);
   });
   it("saves a deal an address opened by the same rule: a kind alone waits, a deal with a fee is saved", async () => {
-    const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {} }], houses: [], tracks: [], templates: {} };
+    const data = { kinds: [{ id: "brokerage-account" as const, name: "", bases: [], caps: {}, regulator: "" }], houses: [], tracks: [], templates: {} };
     const kindAlone = (await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12"))!;
     expect(kindAlone.given).toBe(true);
     expect(savedIfWorth([], kindAlone.deal, "2026-11-12")).toBeNull();

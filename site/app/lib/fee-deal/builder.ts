@@ -9,14 +9,14 @@ import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
-import { managementFee } from "./kinds";
 import { hasFlat } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
+import { offerFor } from "./offers/offer";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
-import { BY_MAX, CONDITIONS, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type ListKind, type RangeUnit } from "./offers/conditions";
+import { BY_MAX, CONDITIONS, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type ListKind, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -415,9 +415,9 @@ export interface ToolGroup {
 /**
  * The toolbox for the case open in place: the line naming what it adds to (the case's values, joined; a slim fee's own name), and its
  * groups in order: the price, minimum and maximum, what the price changes by, a link to another fee, and more on the price;
- * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`. A provident-family
- * product's management fee (`managementFee`) is offered only what its rules allow: its share, a price for a period, and a condition of the
- * person's own (PF-01, KGL-14, PF-13); what a deal already holds beyond that still opens and reads.
+ * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`. A group shows what the
+ * product's fee is offered (`offerFor`, narrowed by the rule table) that its price can hold now; what a deal already holds beyond the offer
+ * still opens and reads.
  */
 export interface Toolbox {
   /** "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`). */
@@ -434,32 +434,29 @@ const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; par
   { group: "more", kind: "note", parts: ["unfilled", "partial", "sale"] },
 ];
 
-/** What a provident-family product's management fee is offered (`managementFee`): its share, a price for a period, a condition of its own. */
-const MANAGED: readonly string[] = ["share", "held", "until", "by:own"];
-
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
   const p = priced.stages[0]!.price;
-  const managed = managementFee(r.kind, fee.kind);
-  const offered = (id: ToolPart["id"]) => !managed || MANAGED.includes(id);
+  // what the product's fee is offered (the rule table narrows it), of which the parts its price can hold now
+  const offer = offerFor(r.kind, fee.kind);
   const parts = (g: (typeof TOOLBOX)[number]): ToolPart[] =>
     g.group === "by"
-      ? byParts(fee).filter((x) => offered(x.id))
-      : g.parts.filter((id) => PARTS[id].holds(fee.kind, p) && offered(id)).map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced) }));
+      ? byParts(fee, offer.conditions)
+      : g.parts.filter((id) => offer.parts.includes(id) && PARTS[id].holds(fee.kind, p)).map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced) }));
   const c = hasCases(fee) ? (priced as Case) : null;
   const addTo = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
   const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g) }));
   return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
 }
 
-/** The things a fee may change by, as the toolbox's cards: one it changes by already is used, and none more can be added past three. */
-function byParts(fee: Fee): ToolPart[] {
+/** The things a fee is offered to change by, as the toolbox's cards: one it changes by already is used, and none more can be added past three. */
+function byParts(fee: Fee, offered: readonly ByKind[]): ToolPart[] {
   const have = new Set((fee.by ?? []).map((b) => (b.kind === "held" ? "what" : b.kind)));
   const full = (fee.by?.length ?? 0) >= BY_MAX;
-  return conditionsFor(fee.kind).map((k) => {
+  return offered.map((k) => {
     const used = k !== "own" && have.has(k === "held" ? "what" : k);
     return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });

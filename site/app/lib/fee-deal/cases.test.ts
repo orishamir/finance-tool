@@ -10,6 +10,7 @@ import { builder, byQuestion, copiesWords, panel, slotEdit, thingMenu, toolbox }
 import { picksOf, readFee, readFees } from "./cases";
 import { addBy, addCase, canAddBy, copyCase, editPrice, removeBy, removeCase, removeTop, setMine, setStep, setTop, setWhen, withFigure } from "./edit";
 import { setPart } from "./offers/parts";
+import { providentFamily } from "./offers/rules";
 import { glance } from "./glance";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
@@ -694,7 +695,7 @@ describe("a provident-family product's management fees", () => {
     expect(ids(deal, "fee-dep")).toEqual([["price", ["share", "until"]], ["by", ["by:own"]]]);
     expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "until"]], ["by", ["by:own"]]]);
     // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
-    expect(data.kinds.filter((k) => k.provident).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
+    expect(data.kinds.filter(providentFamily).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
     expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share", "until"]], ["by", ["by:own"]]]);
   });
   it("leave an IRA's brokerage fees their parts, and narrow only its management fee", () => {
