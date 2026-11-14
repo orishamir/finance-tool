@@ -151,16 +151,16 @@
       },
       "min": {
         "value": 2.5,
-        "unit": "usd_per_trade",
+        "unit": "trade_ccy_per_trade",
         "source": {
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מינימום 2.5 בהתאם למטבע העסקה",
           "publisher": "Interactive Israel (MEXEM LTD)",
           "strength": "institution",
           "page": 1,
-          "quote": "עבור מניות/תעודות סל הנסחרות באירופה 0.15% משווי העסקה מינימום 2.5"
+          "quote": "מינימום 2.5 בהתאם למטבע העסקה"
         },
-        "checked": "2026-11-12",
+        "checked": "2026-11-14",
         "effective_from": "2026-09-23",
         "effective_to": null,
         "tax_year": null,
@@ -170,7 +170,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "Recorded in USD for a USD-quoted European listing (CSPX on the LSE), on the note's own words 'מינימום 2.5 בהתאם למטבע העסקה'. Doubt: the same page also says the commission is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך', which for the LSE would be GBP (2.5 GBP); the tariff does not say which applies to a USD line on a GBP exchange. For GBP trades the minimum is 2.5 GBP (unit gbp_per_trade exists since 2026-10-25); the USD reading is kept because the note says 'בהתאם למטבע העסקה' and the CSPX line trades in USD. A second reading, 2.5 GBP, is the open doubt."
+        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): 2.5 units of the currency the trade is in; the per-currency table on the same page prints 2.5 for EUR, GBP, CHF and USD and other figures for other currencies (150 DKK, 75 NOK, 12 AUD). Doubt: the page also says the commission is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; it does not say which currency a USD line on a GBP exchange pays in."
       },
       "max": null,
       "period": null,

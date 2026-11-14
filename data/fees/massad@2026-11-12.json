@@ -1379,7 +1379,8 @@
           "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בארץ"
         ]
-      }
+      },
+      "max_per": "deposit"
     },
     {
       "id": "massad-custody-foreign",
@@ -1463,7 +1464,8 @@
           "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בחוץ לארץ"
         ]
-      }
+      },
+      "max_per": "deposit"
     },
     {
       "id": "massad-distribution-fee-type-1",
@@ -1699,6 +1701,97 @@
           "מט\"י-מט\"ח"
         ]
       },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
+              "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 20)",
+              "publisher": "Bank Massad Ltd.",
+              "strength": "institution",
+              "page": 1,
+              "quote": "עסקות המרה/רכישת מט\"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-09-06",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
+            "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 20)",
+            "checked": "2026-11-14",
+            "page": 1,
+            "quote": "עסקות המרה/רכישת מט\"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה."
+          }
+        },
+        {
+          "up_to": {
+            "value": 100,
+            "unit": "usd",
+            "source": {
+              "publisher": "Bank Massad Ltd.",
+              "strength": "institution",
+              "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
+              "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 20)",
+              "page": 1,
+              "quote": "המרות בחשבון - עד 3.0$ - 100$"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-09-06",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Part 5, note 2.3: 'עד 100$'."
+          },
+          "on": "fee",
+          "flat": {
+            "value": 3,
+            "unit": "usd",
+            "source": {
+              "publisher": "Bank Massad Ltd.",
+              "strength": "institution",
+              "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
+              "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 20)",
+              "page": 1,
+              "quote": "המרות בחשבון - עד 3.0$ - 100$"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-09-06",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Part 5, printed page 20, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (0d2d6203cebe2ca5), identical to the file fetched 2026-11-12."
+          },
+          "source": {
+            "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
+            "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 20)",
+            "checked": "2026-11-14",
+            "page": 1,
+            "quote": "המרות בחשבון - עד 3.0$ - 100$"
+          }
+        }
+      ],
       "flat_up_to": {
         "amount": {
           "value": 3,

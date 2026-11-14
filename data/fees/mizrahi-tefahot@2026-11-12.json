@@ -879,7 +879,8 @@
           "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בארץ"
         ]
-      }
+      },
+      "max_per": "unstated"
     },
     {
       "id": "mizrahi-custody-foreign",
@@ -963,7 +964,8 @@
           "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בחוץ לארץ"
         ]
-      }
+      },
+      "max_per": "unstated"
     },
     {
       "id": "mizrahi-distribution-fee-type-1",
@@ -1242,6 +1244,97 @@
           "ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)"
         ]
       },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1.1 עמלת חליפין ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)",
+              "publisher": "Mizrahi Tefahot Bank Ltd.",
+              "strength": "institution",
+              "page": 14,
+              "quote": "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00"
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2025-07-11",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1.1 עמלת חליפין ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)",
+            "checked": "2026-11-14",
+            "page": 14,
+            "quote": "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00"
+          }
+        },
+        {
+          "up_to": {
+            "value": 50,
+            "unit": "usd",
+            "source": {
+              "publisher": "Mizrahi Tefahot Bank Ltd.",
+              "strength": "institution",
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), הערה (6) רכישה/מכירה בסכומים קטנים",
+              "page": 14,
+              "quote": "עד $3.00 -$50.00"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2025-07-11",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Part 5 note (6), p.14: 'עד $50.00'."
+          },
+          "on": "fee",
+          "flat": {
+            "value": 3,
+            "unit": "usd",
+            "source": {
+              "publisher": "Mizrahi Tefahot Bank Ltd.",
+              "strength": "institution",
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), הערה (6) רכישה/מכירה בסכומים קטנים",
+              "page": 14,
+              "quote": "עד $3.00 -$50.00"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2025-07-11",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+          },
+          "source": {
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), הערה (6) רכישה/מכירה בסכומים קטנים",
+            "checked": "2026-11-14",
+            "page": 14,
+            "quote": "עד $3.00 -$50.00"
+          }
+        }
+      ],
       "flat_up_to": {
         "amount": {
           "value": 3,
@@ -1397,6 +1490,100 @@
           "שירות האינטרנט"
         ]
       },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מחיר לפי ערוצים ישירים - שירות האינטרנט",
+              "publisher": "Mizrahi Tefahot Bank Ltd.",
+              "strength": "institution",
+              "page": 14,
+              "quote": "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00"
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2025-08-12",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מחיר לפי ערוצים ישירים - שירות האינטרנט",
+            "checked": "2026-11-14",
+            "page": 14,
+            "quote": "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00"
+          }
+        },
+        {
+          "up_to": {
+            "value": 50,
+            "unit": "usd",
+            "source": {
+              "publisher": "Mizrahi Tefahot Bank Ltd.",
+              "strength": "institution",
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע, רכישה/מכירה בסכום עד 50 $, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+              "page": 48,
+              "quote": "רכישה/מכירה בסכום עד $ 2.85 :$ 50"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2025-08-12",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "Annex E, p.48: 'בסכום עד 50 $'."
+          },
+          "on": "fee",
+          "flat": {
+            "value": 2.85,
+            "unit": "usd",
+            "source": {
+              "publisher": "Mizrahi Tefahot Bank Ltd.",
+              "strength": "institution",
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע, רכישה/מכירה בסכום עד 50 $, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+              "page": 48,
+              "quote": "רכישה/מכירה בסכום עד $ 2.85 :$ 50"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2025-08-12",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+          },
+          "source": {
+            "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע, רכישה/מכירה בסכום עד 50 $, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+            "checked": "2026-11-14",
+            "page": 48,
+            "quote": "רכישה/מכירה בסכום עד $ 2.85 :$ 50"
+          }
+        }
+      ],
       "flat_up_to": {
         "amount": {
           "value": 2.85,

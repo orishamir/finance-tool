@@ -721,7 +721,8 @@
           "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בארץ"
         ]
-      }
+      },
+      "max_per": "security"
     },
     {
       "id": "discount-custody-foreign",
@@ -805,7 +806,8 @@
           "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בחוץ לארץ (לרבות מתכות)"
         ]
-      }
+      },
+      "max_per": "security"
     },
     {
       "id": "discount-transfer-out-same-client",
@@ -1087,7 +1089,97 @@
         "tariff": [
           "עמלת חליפין מט\"י-מט\"ח"
         ]
-      }
+      },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26)",
+              "publisher": "Israel Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 18,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-05-25",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26)",
+            "checked": "2026-11-14",
+            "page": 18,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        },
+        {
+          "up_to": {
+            "value": 100,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26)",
+              "publisher": "Israel Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 18,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-05-25",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "discount_pct": {
+            "value": 50,
+            "unit": "pct",
+            "source": {
+              "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26)",
+              "publisher": "Israel Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 18,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-05-25",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Off the line's own price."
+          },
+          "minimum_included": true,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26)",
+            "checked": "2026-11-14",
+            "page": 18,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        }
+      ]
     },
     {
       "id": "discount-fx-conversion-direct",
@@ -1195,7 +1287,100 @@
           "בערוץ ישיר",
           "באינטרנט"
         ]
-      }
+      },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 47)",
+              "publisher": "Israel Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 18,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-05-25",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 47)",
+            "checked": "2026-11-14",
+            "page": 18,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        },
+        {
+          "up_to": {
+            "value": 100,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 47)",
+              "publisher": "Israel Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 18,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-05-25",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "discount_pct": {
+            "value": 50,
+            "unit": "pct",
+            "source": {
+              "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+              "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 47)",
+              "publisher": "Israel Discount Bank Ltd.",
+              "strength": "institution",
+              "page": 18,
+              "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-05-25",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "Off the line's own price."
+          },
+          "minimum_included": true,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/xq0bggwd/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%99%D7%97%D7%99%D7%93-%D7%A2%D7%A1%D7%A7-%D7%A7%D7%98%D7%9F-%D7%9E%D7%90%D7%95%D7%92%D7%93-12102026.pdf",
+            "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 12/11/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 12/11/26), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 47)",
+            "checked": "2026-11-14",
+            "page": 18,
+            "quote": "בעסקאות מט\"ח שסכומן עד 10 $-פטור.עד 100$- 50% הנחה ,לרבות על המינימום."
+          }
+        }
+      ]
     }
   ],
   "averages": [],

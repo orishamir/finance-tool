@@ -19,8 +19,7 @@ import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
 import { builder } from "./rows";
 import { panel } from "./panel";
-import { chargesUnfilled, fillDeal, houseName, IN_TRADE, MAX_PER_SECURITY, perDepositFees, templateOf, templateOptions } from "./templates";
-import type { FeeKindId } from "./shapes";
+import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
 import { latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
@@ -307,7 +306,8 @@ describe("the templates", () => {
     // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit
     expect(custodyOf("discount", "tase")).toMatchObject({ form: "held", rate: { v: 0.2 }, perSecurity: { v: 7500 } });
     expect(custodyOf("discount", "tase")).not.toHaveProperty("max");
-    expect(custodyOf("leumi", "tase")).toMatchObject({ perSecurity: { v: 3700 } });
+    // Leumi: 3,700 ₪ on each security, stated, and 11,500 ₪ on the whole deposit, the holding's maximum (data-schema §3.6a item 2)
+    expect(custodyOf("leumi", "tase")).toMatchObject({ perSecurity: { v: 3700 }, max: { v: 11500 } });
     // Hapoalim's maximum is the same on each security and on the deposit: the holding's maximum, which it then is
     expect(custodyOf("hapoalim", "tase")).toMatchObject({ max: { v: 10600 } });
     // the reading states it, and marks no maximum on the holding
@@ -317,37 +317,22 @@ describe("the templates", () => {
     expect(stated.words.figure?.value).toBe(7500);
     expect(stated.words.tail).toBe(copy.cases.stated.maxPerSecurity.tail);
     expect(reading.statements.some((x) => x.kind === "mark" && x.mark.kind === "max" && x.mark.on === "held")).toBe(false);
-    // each line kept as one on each security says so in its record's note
+    // each line whose maximum is on each security says so in its record (max_per), and its maximum on the deposit quotes the list
     const lines = latestSnapshots().flatMap((x) => x.lines);
-    for (const id of MAX_PER_SECURITY) expect(lines.find((l) => l.id === id)?.max?.notes, id).toMatch(/לני"ע|לנייר/);
+    for (const l of lines.filter((x) => x.max_per === "security")) expect(`${l.max?.notes} ${l.max_deposit?.source.quote ?? ""}`, l.id).toMatch(/לני"ע|לנייר/);
+    // a maximum the list prints with no scope is read as the holding's, as before
+    expect(custodyOf("jerusalem", "tase")).toMatchObject({ max: { v: 10000 } });
   });
-  it("fill Leumi's custody abroad as its own case: 0.2% a quarter, a maximum of 7,400 ₪ on each security, and its maximum per deposit listed", () => {
+  it("fill Leumi's custody abroad as its own case: 0.2% a quarter, a maximum of 7,400 ₪ on each security and 23,000 ₪ on the deposit", () => {
     const abroad = filledFor("leumi", [{ by: "what", is: "us" }, { by: "held", is: "us" }])("custody");
-    expect(abroad).toEqual({ form: "held", rate: expect.objectContaining({ v: 0.2 }), per: 3, every: 3, perSecurity: expect.objectContaining({ v: 7400 }) });
+    expect(abroad).toEqual({ form: "held", rate: expect.objectContaining({ v: 0.2 }), per: 3, every: 3, perSecurity: expect.objectContaining({ v: 7400 }), max: expect.objectContaining({ v: 23000 }) });
     const home = filledFor("leumi", [{ by: "what", is: "tase" }, { by: "held", is: "tase" }])("custody");
     expect(home).toMatchObject({ rate: { v: 0.15 }, perSecurity: { v: 3700 } });
   });
-  it("list a maximum per deposit printed beside the one on each security, in the record's words, and never imply there is none", () => {
-    const perDeposit = (id: string) => house(id).left.filter((l) => l.why === "per-deposit").map((l) => [l.lineId, l.quote]);
-    expect(perDeposit("leumi")).toEqual([["leumi-custody-israel", 'מכסימום 3700 ש"ח לני"ע, 11500 לפקדון'], ["leumi-custody-foreign", 'מכסימום 7400 ש"ח לני"ע, 23000 לפקדון']]);
-    expect(perDeposit("fibi")).toEqual([["fibi-custody-israel", "מקס' לפיקדון 10,000"], ["fibi-custody-foreign", "מקס' לפיקדון 10,000"]]);
-    expect(perDeposit("discount")).toEqual([]);
-    expect(copy.cases.stated.maxPerSecurity.tail).not.toMatch(/כל מה שמוחזק/);
-  });
-  it("say under a curve of holding that it does not apply a custody maximum per deposit its list prints, with no holding where it binds", () => {
-    const left = (id: string) => {
-      const d = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
-      return templateOf(d, d.template!.id, data, TODAY)!.left;
-    };
-    expect(perDepositFees(left("leumi"))).toEqual(["custody"]);
-    expect(perDepositFees(left("excellence"))).toEqual([]);
-    // a curve of holding is drawn where a mark falls on it: a custody price with a minimum
-    const deal: FeeDeal = { id: "d", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 3, every: 3, min: typed(50) } }] }] };
-    const held = (kinds: FeeKindId[]) => readingOf(read(deal), data.fx, null, kinds).curves.find((c) => c.on === "held")!;
-    expect(held(["custody"]).unapplied?.map((f) => f.fee)).toEqual(["fee-c"]);
-    expect(held([]).unapplied).toBeUndefined();
-    // no figure is invented for where it binds: the record gives the maximum in words alone
-    expect(copy.read.curves.perDeposit("x")).not.toMatch(/\d/);
+  it("fill IBI's account fee with the offset its annex prints against the month's trade fees (data-schema §3.6a item 4), and no other house's", () => {
+    expect(filledFor("ibi", [])("fixed_period")).toMatchObject({ form: "sum", amount: { v: 15 }, offset: { kind: "trade" } });
+    const others = data.houses.filter((h) => h.id !== "ibi").flatMap((h) => h.fees.filter((f) => f.kind === "fixed_period"));
+    for (const f of others) expect(JSON.stringify(f)).not.toContain("offset");
   });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;
@@ -493,12 +478,9 @@ describe("the templates", () => {
     expect(europe).toMatchObject({ rate: { v: 0.4 }, min: { v: 35 }, currency: "EUR" });
     const world = { ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is: "world" }] };
     expect(read(world).noCurrency.length).toBeGreaterThan(0);
-    // each line so filled says so in its record's quote or note
-    const lines = latestSnapshots().flatMap((x) => x.lines);
-    for (const id of IN_TRADE) {
-      const min = lines.find((l) => l.id === id)?.min;
-      expect(`${min?.source.quote} ${min?.notes}`, id).toMatch(/מטבע העסקה/);
-    }
+    // the lines so filled are those whose record prints a bound in the trade's currency (data-schema §3.6a item 1)
+    const lines = latestSnapshots().flatMap((x) => x.lines).filter((l) => l.min?.unit === "trade_ccy_per_trade");
+    expect(lines.map((l) => l.id).sort()).toEqual(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "interactive-israel-buy-sell-europe", "meitav-trade-buy-sell-foreign-world"]);
   });
   it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
     const minOf = (is: string) => {

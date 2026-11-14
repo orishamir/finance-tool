@@ -442,6 +442,14 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         // E2: minimums and maximums in a foreign currency are converted at the run's rate.
         const bound = (vo: ValueObject, what: string): number => {
           if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
+          // F-12: a bound printed in the trade's currency is in the currency the run trades the fund in; where the line names the
+          // currencies it is printed for and that one is not among them, the list gives no bound for the trade
+          if (vo.unit === "trade_ccy_per_trade") {
+            const trade = input.currency?.code ?? "ILS";
+            if (l.line.trade_currencies && !l.line.trade_currencies.includes(trade)) throw new Unusable("line-without-value", `${what} is printed for ${l.line.trade_currencies.join(", ")}, and the trade is in ${trade}`);
+            if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+            return trade === "ILS" ? vo.value : vo.value * rateOf(input.fx, trade, what);
+          }
           const code = CURRENCY_OF_UNIT[vo.unit];
           if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);
           if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);

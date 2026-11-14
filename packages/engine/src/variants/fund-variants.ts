@@ -132,6 +132,9 @@ function matchRow(row: Row, record: FundRecord | undefined, exposure: VariantExp
   return row.reference_asset != null && refs.has(norm(row.reference_asset));
 }
 
+/** The drag part each fee a promotion may lower is charged in (F-10, F-121). */
+const PROMOTED_PART = { fixed_management: "management", variable_management: "variable", trustee: "trustee" } as const;
+
 /** The fund's listed fixed, variable and trustee fees together, as an annual fraction (0 for a fee not collected). */
 export function sumFees(rec: FundRecord): number {
   const v = (x: FundRecord["fees"]["trustee"]) => (x && typeof x.value === "number" ? x.value / 100 : 0);
@@ -191,6 +194,12 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   if (variable !== undefined) drag.variable = variable;
   if (tracking !== undefined) drag.tracking = tracking;
   if (withholding !== undefined) drag.foreignWithholding = withholding;
+  // F-121: a fee lowered for a stated period, charged at the promotion's rate in the months it covers
+  const promotions = (rec.promotions ?? []).flatMap((p) => {
+    const rate = fraction(p.rate, "pct_per_year", `fund ${rec.id} promotions.${p.fee}`);
+    return rate === undefined || !p.rate.effective_from || !p.rate.effective_to ? [] : [{ part: PROMOTED_PART[p.fee], rate, from: p.rate.effective_from, to: p.rate.effective_to }];
+  });
+  if (promotions.length) drag.promotions = promotions;
   // A-11 by F-107: an Irish fund that holds the shares, with no figure of its own and no published 12-month gap (which could hold the tax
   // already); an A-07 from its years stands against a net index (F-92 (d)), where its own withholding does not show as a shortfall
   const usWithholding = withholding === undefined && published === undefined && rec.domicile === "IE" && rec.replication?.method === "physical" && usDividends !== undefined;

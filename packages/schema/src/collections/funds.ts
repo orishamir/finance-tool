@@ -5,6 +5,17 @@ import { isoDate, source, valueObject } from "../value.ts";
 
 const fee = valueObject.nullable().optional();
 
+/**
+ * data-schema §3.5: a fee lowered for a stated period, as the manager or the trustee reports it ("מבצע"). `fee` names the key of `fees` it
+ * lowers; `rate` is the rate charged during the promotion, in the fee's unit, its `effective_from` and `effective_to` the promotion's first and
+ * last days as the report prints them, its source the report. The fee's own value holds the rate outside the promotion; F-121 charges the
+ * promotion's rate in a run's months before it ends and the fee's own rate after.
+ */
+export const fundPromotion = z.strictObject({
+  fee: z.enum(["fixed_management", "variable_management", "trustee"]),
+  rate: valueObject,
+});
+
 export const fundRecord = z.strictObject({
   /** Lowercase ASCII, digits and hyphens, e.g. "ie00b5bmr087"; an exposure's variants name it as `fund:<id>`. */
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
@@ -149,7 +160,10 @@ export const fundRecord = z.strictObject({
    * document names; never a price from TASE or Maya, whose terms forbid republishing it (the data check refuses one).
    */
   share_price: valueObject.optional(),
+  /** data-schema §3.5: the fund's fees lowered for a stated period (F-121); the data check holds each to its fee. */
+  promotions: z.array(fundPromotion).min(1).optional(),
   snapshot: isoDate,
 });
 
 export type FundRecord = z.infer<typeof fundRecord>;
+export type FundPromotion = z.infer<typeof fundPromotion>;

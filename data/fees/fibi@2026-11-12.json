@@ -1379,6 +1379,29 @@
           "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בארץ"
         ]
+      },
+      "max_per": "security",
+      "max_deposit": {
+        "value": 10000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1, מקס' לפיקדון (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מקס' לנייר/פעולה 4,000 מקס' לפיקדון 10,000"
+        },
+        "checked": "2026-11-14",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "The maximum on the whole securities deposit, printed beside the maximum on each security (data-schema §3.6a item 2), read 2026-11-14."
       }
     },
     {
@@ -1463,6 +1486,29 @@
           "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
           "הנסחרים בחוץ לארץ"
         ]
+      },
+      "max_per": "security",
+      "max_deposit": {
+        "value": 10000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2, מקס' לפיקדון (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מקס' לנייר/פעולה 4,000 מקס' לפיקדון 10,000"
+        },
+        "checked": "2026-11-14",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "The maximum on the whole securities deposit, printed beside the maximum on each security (data-schema §3.6a item 2), read 2026-11-14."
       }
     },
     {
@@ -1699,6 +1745,97 @@
           "מט\"י-מט\"ח"
         ]
       },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 10,
+            "unit": "usd",
+            "source": {
+              "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+              "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22)",
+              "publisher": "First International Bank of Israel Ltd.",
+              "strength": "institution",
+              "page": 1,
+              "quote": "עסקות המרה/רכישת מט\"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה."
+            },
+            "checked": "2026-11-14",
+            "effective_from": "2026-09-06",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "The step's top, in dollars, as the list prints it."
+          },
+          "on": "fee",
+          "exempt": true,
+          "source": {
+            "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+            "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22)",
+            "checked": "2026-11-14",
+            "page": 1,
+            "quote": "עסקות המרה/רכישת מט\"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה."
+          }
+        },
+        {
+          "up_to": {
+            "value": 100,
+            "unit": "usd",
+            "source": {
+              "publisher": "First International Bank of Israel Ltd.",
+              "strength": "institution",
+              "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+              "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 22)",
+              "page": 1,
+              "quote": "המרות בחשבון - עד 3.0$ - 100$"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-09-06",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Part 5, note 2.3: 'עד 100$'."
+          },
+          "on": "fee",
+          "flat": {
+            "value": 3,
+            "unit": "usd",
+            "source": {
+              "publisher": "First International Bank of Israel Ltd.",
+              "strength": "institution",
+              "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+              "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 22)",
+              "page": 1,
+              "quote": "המרות בחשבון - עד 3.0$ - 100$"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-09-06",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Part 5, printed page 22, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (f780bbff5d87c1c2), identical to the file fetched 2026-11-12."
+          },
+          "source": {
+            "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+            "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, הערה 2.3 המרות בחשבון (עמוד מס' 22)",
+            "checked": "2026-11-14",
+            "page": 1,
+            "quote": "המרות בחשבון - עד 3.0$ - 100$"
+          }
+        }
+      ],
       "flat_up_to": {
         "amount": {
           "value": 3,

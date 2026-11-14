@@ -1,10 +1,12 @@
 // The validator: docs/data-schema.md §4 and docs/architecture.md 3.2. A problem fails the run; a warning (rule sources, dates) is printed in
 // one line per category and does not.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join, relative, sep } from "node:path";
 import type { z } from "zod";
 import {
   abroadRecord,
+  averagesRecord,
+  type AveragesRecord,
   catalogEntry,
   cmaPeriodFile,
   depositTerms,
@@ -17,6 +19,7 @@ import {
   type AbroadSource,
   type FundRecord,
   type FundListFile,
+  type FeesSnapshot,
   openQuestionsFile,
   type OpenQuestionEntry,
   parameterRecord,
@@ -34,6 +37,7 @@ import {
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
+import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
  * Collection folder → schema. A file in a folder with no schema yet is an error: schema first, then data.
@@ -57,6 +61,7 @@ const collections: Record<string, z.ZodType> = {
   sources: sourcesFile,
   "open-questions.json": openQuestionsFile,
   abroad: abroadRecord,
+  averages: averagesRecord,
 };
 
 export interface ValidationContext {
@@ -194,6 +199,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
       for (const message of checkTrackingRecord(parsed.value as Pick<FundRecord, "exposure_id" | "tracking_record" | "domicile" | "fees">)) report(file, message);
       for (const message of checkSharePrice(parsed.value as Pick<FundRecord, "share_price">)) report(file, message);
+      for (const message of checkFundPromotions(parsed.value as Pick<FundRecord, "fees" | "promotions">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
@@ -230,6 +236,14 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkByAmount(parsed.value as ByAmountSnapshot)) report(file, message);
       if (isLatest) for (const message of checkTariffDate(parsed.value as TariffDateSnapshot)) report(file, message);
       if (isLatest) for (const message of checkCutSourceTitles(parsed.value)) report(file, message);
+      for (const line of (parsed.value as FeesSnapshot).lines) for (const message of checkLineFacts(line, isLatest)) report(file, message);
+      for (const message of checkSnapshotFacts(parsed.value as FeesSnapshot)) report(file, message);
+    }
+    if (collection === "averages" && result.success) {
+      // data-schema §3.9: one record per house that has a price list here, named by its id and snapshot
+      const rec = parsed.value as AveragesRecord;
+      if (parts[parts.length - 1] !== `${rec.id}@${rec.snapshot}.json`) report(file, `the file is named ${rec.id}@${rec.snapshot}.json, by the record's id and snapshot`);
+      if (!files.some((f) => relative(ctx.dataDir, f).startsWith(`fees${sep}${rec.provider_id}@`))) report(file, `provider_id: ${rec.provider_id} has no record under data/fees/`);
     }
     if (collection === "instruments/exposures" && result.success && fundIds) {
       for (const v of (parsed.value as { variants: string[] }).variants) {
