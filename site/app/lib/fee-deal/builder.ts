@@ -12,7 +12,7 @@ import { canAddBy, removeBy } from "./edit";
 import { hasFlat } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
 import { offerFor } from "./offers/offer";
-import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
+import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
@@ -354,9 +354,12 @@ const fieldsOf = (id: PartId, p: Price, view: PriceView): PartField[] =>
  */
 function openParts(fee: Fee, p: Price, view: PriceView, line: { until?: MonthKey; sale: boolean }): OpenPart[] {
   const said = saidParts({ kind: fee.kind, p, view, ...(line.until ? { until: line.until } : {}) }, line.sale);
-  // a flat price nobody typed yet is in the price too: it shows as an empty part, last, while it is
-  const flatBlank: SlimPart[] = hasFlat(p) && p.flat && !said.some((x) => x.id === "flat") ? [{ id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK }] : [];
-  return [...said, ...flatBlank].map((x) => ({ ...x, fields: fieldsOf(x.id, p, view), removable: PARTS[x.id].form === undefined }));
+  // a flat price nobody typed yet is in the price too: it shows as an empty part where a typed one stands, after the bounds
+  if (hasFlat(p) && p.flat && !said.some((x) => x.id === "flat")) {
+    const at = said.findIndex((x) => PART_IDS.indexOf(x.id) > PART_IDS.indexOf("flat"));
+    said.splice(at < 0 ? said.length : at, 0, { id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK });
+  }
+  return said.map((x) => ({ ...x, fields: fieldsOf(x.id, p, view), removable: PARTS[x.id].form === undefined }));
 }
 
 /** The case open in place: the fee's slots for the case, and its prices' parts. */
