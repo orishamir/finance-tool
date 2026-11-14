@@ -2478,7 +2478,7 @@ export const r4catalogue = {
   },
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
-  notAnOffer: "הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
+  notAnOffer: "הריבית היא מה שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
   rowLinks: { whatIs: "מה זה" },
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
