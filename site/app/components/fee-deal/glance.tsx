@@ -147,15 +147,15 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
 
 /**
  * A fee not read: a price of it not given yet, its price still to come; no case of it for what the reading is read for (F-114), which
- * the line says (`unmatched`); or banned by law here, which the line says with its rules (`banned`).
+ * the line says (`unmatched`), or a case whose sums are in a currency the deal does not know (`noCurrency`); or banned by law here, which the line says with its rules (`banned`).
  */
-function UnpricedLine({ fee, unmatched, banned }: { fee: FeeRef; unmatched?: boolean; banned?: readonly string[] }) {
+function UnpricedLine({ fee, unmatched, noCurrency, banned }: { fee: FeeRef; unmatched?: boolean; noCurrency?: boolean; banned?: readonly string[] }) {
   const { marked, handlers } = useFeeMark(fee.fee);
   const onClick = useLineOpen(fee.fee);
   return (
     <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-glance-fee={fee.fee}>
       <FeeOpen fee={fee} after={copy.price.sep} />
-      <span className="text-muted-foreground">{banned ? <BannedWords rules={banned} fee={refName(fee)} /> : unmatched ? copy.cases.unmatched : copy.builder.facts.noPrice}</span>
+      <span className="text-muted-foreground">{banned ? <BannedWords rules={banned} fee={refName(fee)} /> : noCurrency ? copy.cases.noCurrency : unmatched ? copy.cases.unmatched : copy.builder.facts.noPrice}</span>
     </li>
   );
 }
@@ -220,7 +220,7 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
               <UnpricedLine key={f.fee} fee={f} />
             ))}
             {glance.unmatched.map((f) => (
-              <UnpricedLine key={f.fee} fee={f} unmatched />
+              <UnpricedLine key={f.fee} fee={f} unmatched noCurrency={!!f.noCurrency} />
             ))}
             {glance.banned.map((f) => (
               <UnpricedLine key={f.fee} fee={f} banned={f.rules} />

@@ -220,6 +220,7 @@ const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: s
   unfilled: { Body: QuietBody },
   unfilledClerk: { Body: QuietBody },
   partial: { Body: QuietBody },
+  inTrade: { Body: QuietBody },
   sale: { Body: QuietBody },
 };
 

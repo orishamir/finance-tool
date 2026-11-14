@@ -45,6 +45,8 @@ export interface BuilderRow extends FeeRef {
   priced: boolean;
   /** Whether the picks give the fee no case (F-114): it is not read, and its card says so rather than that a price is missing. */
   unmatched: boolean;
+  /** Whether its case's sums are in the action's currency, which the deal does not know for the picks: its card says so. */
+  noCurrency: boolean;
   /** The rules that ban the fee here (`DealRead.banned`): it is read as nothing charged, and its card says it is banned by law. */
   banned?: readonly string[];
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
@@ -275,6 +277,7 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     stages: stages.length ? stages : [now],
     priced: given,
     unmatched: r.unmatched.includes(fee.id),
+    noCurrency: r.noCurrency.includes(fee.id),
     ...(banned ? { banned } : {}),
     ...(sale ? { sale } : {}),
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),
@@ -442,7 +445,7 @@ const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; par
   { group: "bound", kind: "bound", parts: ["min", "max", "cap", "maxPerSecurity"] },
   { group: "by", kind: "by", parts: [] },
   { group: "link", kind: "link", parts: ["offset", "refund"] },
-  { group: "more", kind: "note", parts: ["unfilled", "partial", "sale"] },
+  { group: "more", kind: "note", parts: ["unfilled", "partial", "inTrade", "sale"] },
 ];
 
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {

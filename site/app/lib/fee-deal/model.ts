@@ -98,11 +98,16 @@ interface Linked {
   refund?: Num;
 }
 
-/** The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), and notes on an order (§10.6's stated parts). */
+/**
+ * The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), notes on an order (§10.6's stated
+ * parts), and that its sums are in the currency the action is made in (`inTrade`: "מינימום 30 במטבע העסקה"), which a reading takes from
+ * what is bought where the deal knows its currency (its `currency` is then that one) and otherwise does not read the fee.
+ */
 interface OnAction extends Linked {
   discount?: Discount;
   third?: Third;
   notes?: Note[];
+  inTrade?: true;
 }
 
 /**
@@ -492,6 +497,12 @@ function readCurrency(raw: unknown): { currency?: BoundCurrency } | false {
   return raw === "ILS" ? {} : { currency: raw as BoundCurrency };
 }
 
+/** Whether a price's sums are in the action's currency: absent, or true where its form keeps a currency; null where it is anything else. */
+function readInTrade(raw: unknown, fields: readonly FieldId[]): { inTrade?: true } | null {
+  if (raw === undefined) return {};
+  return raw === true && fields.includes("currency") ? { inTrade: true } : null;
+}
+
 /** A flat price: absent, or its two figures (each may still be blank); null where it is anything else. */
 function readFlat(raw: unknown): { ok: true; flat?: Flat } | { ok: false } {
   if (raw === undefined) return { ok: true };
@@ -580,12 +591,12 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   const fields = fieldsOf(kind, raw.form as FormId);
   switch (raw.form) {
     case "action": {
-      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
-      return rate && parts && more ? { form: "action", rate, ...parts, ...more } : null;
+      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      return rate && parts && more && inTrade ? { form: "action", rate, ...parts, ...more, ...inTrade } : null;
     }
     case "perUnit": {
-      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
-      return amount && parts && more ? { form: "perUnit", amount, ...parts, ...more } : null;
+      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      return amount && parts && more && inTrade ? { form: "perUnit", amount, ...parts, ...more, ...inTrade } : null;
     }
     case "held": {
       const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), perSecurity = optNum(raw.perSecurity, SUM_MAX), more = readLinked(raw);
@@ -599,9 +610,9 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
       return amount && more && isMonths(raw.every) ? { form: "sum", amount, every: raw.every, ...more } : null;
     }
     case "perAction": {
-      const amount = readNum(raw.amount, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw);
-      if (!amount || !cap.ok || !currency || !more || (currency.currency && !fields.includes("currency")) || (cap.n && !fields.includes("cap"))) return null;
-      return { form: "perAction", amount, ...(cap.n ? { cap: cap.n } : {}), ...currency, ...more };
+      const amount = readNum(raw.amount, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      if (!amount || !cap.ok || !currency || !more || !inTrade || (currency.currency && !fields.includes("currency")) || (cap.n && !fields.includes("cap"))) return null;
+      return { form: "perAction", amount, ...(cap.n ? { cap: cap.n } : {}), ...currency, ...more, ...inTrade };
     }
     default:
       return null;

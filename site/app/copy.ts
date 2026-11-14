@@ -1913,7 +1913,7 @@ export const feeDeal = {
       /** An offset against a named fee: "מתקזזת מול {fee} של אותו חודש". */
       offsetOf: { lead: "מתקזזת מול ", tail: " של אותו חודש" },
       refund: "החזר ",
-      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
+      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", partial: "כל ביצוע חלקי בנפרד", inTrade: "הסכומים במטבע של העסקה", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
       /** The toolbox's card of a flat price for a small action, by the fee: "מחיר קבוע לפעולה קטנה, עד ☐", a conversion's "להמרה קטנה". */
       flatSmall: { default: "מחיר קבוע לפעולה קטנה, עד ", fx: "מחיר קבוע להמרה קטנה, עד ", fx_spread: "מחיר קבוע להמרה קטנה, עד " } as Record<string, string>,
@@ -1970,6 +1970,8 @@ export const feeDeal = {
     readForLine: "כל עמלה נקראת במקרה שבחרתם כאן. עמלה שמשתנה לפי גודל הפעולה נקראת בכל הגדלים, בגרף שלמטה.",
     /** A fee the picks give no case (F-114), as its line in the glance and its slim line say it. */
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
+    /** A fee whose sums are in the action's currency, read for something bought in a currency the deal does not know. */
+    noCurrency: "הסכומים שלה במטבע של העסקה, ובמה שבחרתם המטבע לא ידוע, ולכן העמלה לא נקראת.",
     /** A fee the law bans here (the rule table's ban), as its card, its line in the glance and the law card say it, before its rules. */
     banned: "החוק אוסר על בנק לגבות אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
     /** What the reading states without computing (§10.6), after the fee's name and ": ". */

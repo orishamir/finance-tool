@@ -14,7 +14,7 @@ import { FIGURES, type Figure } from "./figures";
  * a sum for each unit (`perUnit`), a sum on each action (`perAction`), a share of what is held (`held`), a sum per period (`sum`), free
  * (`free`), a discount, a third party's fee, a later price (`until`); a minimum, a maximum, a percent maximum (`cap`), a flat price for a
  * small action (`flat`), a held share's maximum on each security (`maxPerSecurity`); an offset, a refund; notes on an order (`unfilled`,
- * `unfilledClerk`, `partial`) and a sale priced apart (`sale`).
+ * `unfilledClerk`, `partial`), sums in the action's currency (`inTrade`) and a sale priced apart (`sale`).
  */
 export type PartId =
   | "share"
@@ -36,6 +36,7 @@ export type PartId =
   | "unfilled"
   | "unfilledClerk"
   | "partial"
+  | "inTrade"
   | "sale";
 
 /**
@@ -63,7 +64,7 @@ export interface PartAt {
 }
 
 /** The field of a price a part is kept in: a note's is the price's list of notes, which every note shares. */
-type PartField = "min" | "max" | "cap" | "flat" | "perSecurity" | "discount" | "third" | "notes" | "offset" | "refund";
+type PartField = "min" | "max" | "cap" | "flat" | "perSecurity" | "discount" | "third" | "notes" | "inTrade" | "offset" | "refund";
 
 /** A part's edit: of the one price it is on (with the fee's kind, which a form's fields follow), or of the fee's prices (a later price, a sale). */
 type PartEdit = { on: "price"; edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price } | { on: "fee"; edit: <F extends Fee>(fee: F, on: boolean, at: PartAt) => F };
@@ -193,6 +194,20 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   unfilled: notePart("unfilled"),
   unfilledClerk: notePart("unfilledClerk"),
   partial: notePart("partial"),
+  // sums in the currency the trade is made in ("מינימום 30 במטבע העסקה"), on a trade price whose form keeps a currency: a reading takes
+  // it from what is bought
+  inTrade: {
+    id: "inTrade",
+    kind: "note",
+    field: "inTrade",
+    carriesIn: (form) => formOnAction(form) && form !== "free",
+    needsField: "currency",
+    figures: [],
+    holds: (kind, p) => kind === "trade" && onAction(p) && withField("currency")(kind, p),
+    ask: null,
+    used: (p) => onAction(p) && !!p.inTrade,
+    apply: onPrice((p, on, _at, kind) => (!onAction(p) || on === !!p.inTrade || (on && kind !== "trade") ? p : on ? { ...p, inTrade: true } : (({ inTrade: _t, ...rest }) => rest as Price)(p))),
+  },
   sale: { id: "sale", kind: "note", figures: [], holds: pricesSaleApart, ask: null, used: (_p, x) => !!x?.sale, apply: { on: "fee", edit: (fee, on, at) => setSaleApart(fee, on, at.caseId) } },
 };
 

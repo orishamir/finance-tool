@@ -85,6 +85,7 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
   unfilled: note("unfilled"),
   unfilledClerk: note("unfilledClerk"),
   partial: note("partial"),
+  inTrade: () => ({ lead: pp.notes.inTrade! }),
   sale: () => ({ lead: pp.notes.sale! }),
 };
 
@@ -134,5 +135,6 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   refund: (c) => ({ words: { lead: pp.refund.trim() }, box: inPrice(c) }),
   unfilled: () => ({ words: { lead: pp.notes.unfilled! } }),
   partial: () => ({ words: { lead: pp.notes.partial! } }),
+  inTrade: () => ({ words: { lead: pp.notes.inTrade! } }),
   sale: () => ({ words: { lead: pp.notes.sale! } }),
 };

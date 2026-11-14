@@ -34,6 +34,7 @@ function fullPrice(fee: FeeKindId, form: FormId): Price {
     p.discount = { pct: typed(10), alsoMin: true };
     p.third = { who: "הברוקר" };
     p.notes = ["unfilled", "partial"];
+    if (fee === "trade") p.inTrade = true;
   }
   if (form !== "free") {
     p.refund = typed(1);

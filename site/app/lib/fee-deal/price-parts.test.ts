@@ -90,6 +90,34 @@ describe("the price parts as the device keeps them", () => {
   });
 });
 
+describe("sums in the trade's currency", () => {
+  /** IBI's line abroad outside the United States: 0.3%, at least 30 in the trade's currency (BRK-48), typed here. */
+  const inTrade: Price = { form: "action", rate: typed(0.3), min: typed(30), currency: "USD", inTrade: true };
+  const priceFor = (what: string) => read(account([trade(inTrade)], what));
+  it("reads the minimum in the currency of what is bought, where the deal knows it", () => {
+    expect(priceFor("europe").fees[0]!.stages[0]!.price).toMatchObject({ min: { v: 30 }, currency: "EUR" });
+    expect(priceFor("us").fees[0]!.stages[0]!.price).toMatchObject({ currency: "USD" });
+    const home = priceFor("tase").fees[0]!.stages[0]!.price;
+    expect(home).not.toHaveProperty("currency");
+    expect(home).not.toHaveProperty("inTrade");
+  });
+  it("does not read the fee where the currency of what is bought is not known, and says so", () => {
+    const r = priceFor("world");
+    expect(r.fees).toHaveLength(0);
+    expect(r.unmatched).toEqual(["fee-trade"]);
+    expect(r.noCurrency).toEqual(["fee-trade"]);
+    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
+    expect(builder(r, [], null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
+  });
+  it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", () => {
+    const deal = account([trade(inTrade)]);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
+    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(inTrade);
+    expect(setPart(fx({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).not.toHaveProperty("inTrade");
+    expect(setPart(trade({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).toMatchObject({ inTrade: true });
+  });
+});
+
 describe("the price parts as the screen edits them", () => {
   it("types, empties and puts back a percent maximum and a flat price's figures", () => {
     const p: Price = { form: "action", rate: { v: 0.3, src }, cap: { v: 25, src } };

@@ -26,6 +26,8 @@ export interface DealRead {
   unpriced: string[];
   /** The ids of the deal's fees the picks give no case (F-114): the price list prints no price for what is picked. */
   unmatched: string[];
+  /** Of `unmatched`, the fees read in a case whose sums are in the action's currency, which the deal does not know for the picks (`inTrade`). */
+  noCurrency: string[];
   /**
    * The deal's fees the law bans here (the rule table's `ban`, `banFor`), with the rules that ban them: read as nothing charged, so left out
    * of the reading whatever their prices, and said as banned.
@@ -59,7 +61,7 @@ export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: st
   const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))].filter(kept);
   const unread = ids(read.fees.filter((f) => !feeInOrder(f)));
   const unpriced = ids(read.fees.filter((f) => feeInOrder(f) && !feePriced(f, from))).filter((id) => !unread.includes(id));
-  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month };
+  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month };
 }
 
 /** The read deal restricted to some of its fees (by index), for a reading of those alone (what holds throughout, F-111 on them). */

@@ -8,42 +8,42 @@
   "bound: min max cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund",
-  "more: unfilled partial sale"
+  "more: unfilled partial inTrade sale"
  ],
  "brokerage-account · trade · action · full": [
   "price: share✓ perUnit perAction discount✓ third✓ flat✓ until",
   "bound: min✓ max✓ cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund✓",
-  "more: unfilled✓ partial✓ sale"
+  "more: unfilled✓ partial✓ inTrade✓ sale"
  ],
  "brokerage-account · trade · perUnit · plain": [
   "price: share perUnit✓ perAction discount third flat until",
   "bound: min max cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund",
-  "more: unfilled partial sale"
+  "more: unfilled partial inTrade sale"
  ],
  "brokerage-account · trade · perUnit · full": [
   "price: share perUnit✓ perAction discount✓ third✓ flat✓ until",
   "bound: min✓ max✓ cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund✓",
-  "more: unfilled✓ partial✓ sale"
+  "more: unfilled✓ partial✓ inTrade✓ sale"
  ],
  "brokerage-account · trade · perAction · plain": [
   "price: share perUnit perAction✓ discount third until",
   "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund",
-  "more: unfilled partial sale"
+  "more: unfilled partial inTrade sale"
  ],
  "brokerage-account · trade · perAction · full": [
   "price: share perUnit perAction✓ discount✓ third✓ until",
   "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: refund✓",
-  "more: unfilled✓ partial✓ sale"
+  "more: unfilled✓ partial✓ inTrade✓ sale"
  ],
  "brokerage-account · fx · action · plain": [
   "price: share✓ discount flat",
