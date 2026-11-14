@@ -790,6 +790,7 @@ export const formulaNames: Record<string, string> = {
   "F-115": "מחיר שמשתנה לפי הגודל, בכל גודל",
   "F-116": "הנחה מהמחיר",
   "F-117": "עמלה של צד שלישי",
+  "F-118": "מה שנשאר לפני מס רווחי הון, כשהמס תלוי בשאלה פתוחה",
   "F-08": "חשבון הכסף חודש אחרי חודש",
   "F-09": "השווי במשיכה",
   "F-10": "העלות בתוך הקרן",
@@ -3532,6 +3533,31 @@ export const invest = {
     otherPrice: (house: string, card: string) => `${inName(house)} יש גם מחיר אחר, לחלק מהלקוחות. הוא לא נכנס לחישוב, ולמי הוא מיועד כתוב ב״${card}״.`,
   },
 
+  /**
+   * F-118 (D84): the funds whose tax rests on an open rule, listed under the funds with their figures before tax at the chosen account, never
+   * ranked and never chosen as the pair.
+   */
+  beforeTax: {
+    /** The heading over them, in the blocked colours with the lock. */
+    heading: "לפני מס רווחי הון, בלי דירוג",
+    /** The plain note under the heading, by the rule: `{term}` is `noteTerm`, the words that open the rule's card. */
+    note: {
+      "TXF-04": "מס רווחי הון על הקרנות האלה {term}: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
+    } as Record<string, string>,
+    noteOther: "המס על הקרנות האלה {term}: הוא תלוי בכלל שעוד לא נקבע.",
+    noteTerm: "עוד לא ידוע",
+    /** The note's last sentence: what the figures are and what is not done with them. */
+    noteTail: "לכן הסכומים כאן לפני מס רווחי הון, ואי אפשר להשוות אותם לקרנות שלמעלה או לבחור בהן.",
+    /** The list's name, for a screen reader. */
+    label: (house: string) => `קרנות לפני מס רווחי הון ${inName(house)}`,
+    colCharges: "החשבון גובה",
+    colChargesHelp: "מה החשבון גובה בכל התקופה, לפני המס שהעמלות חוסכות, בכסף של היום.",
+    colLeft: "נשאר לפני מס רווחי הון",
+    colLeftHelp: "מה שנשאר בסוף אחרי דמי הניהול והעמלות, לפני מס רווחי הון במכירה, בכסף של היום. המס לא ידוע, ולכן אין כאן סכום אחרי מס רווחי הון.",
+    leftAbout: (fund: string, house: string) => `נשאר לפני מס רווחי הון: ${fund}, ${inName(house)}`,
+    costAbout: (house: string) => `מה החשבון גובה: ${house}`,
+  },
+
   /** "לפני שמחליטים" under the lists: a few questions about the chosen pair, a card each with its answer, one panel open at a time. */
   before: {
     title: "לפני שמחליטים",
@@ -4448,9 +4474,11 @@ export const invest = {
     /** A fund the person typed with a fee left empty (D56). */
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
-    /** A fund whose tax rests on an open rule (F-04, G-35): by the rule, said plainly; nothing is ranked, and no figure is shown until D84's pre-tax figures are built. */
+    /** A fund whose tax rests on an open rule (F-04, G-35), where no figure before tax is shown for it (an account that does not price it, a
+     *  kind with no fund record, a fund that pays out, the preview of a fund being typed): by the rule, said plainly; nothing is ranked. Where
+     *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
     ruleOpen: {
-      "TXF-04": "אי אפשר לחשב: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
+      "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
     } as Record<string, string>,
     ruleOpenOther: "אי אפשר לחשב: המס על הקרן תלוי בכלל שעוד לא ידוע, ולכן הקרן לא מדורגת.",
   },

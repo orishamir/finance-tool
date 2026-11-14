@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
+import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
@@ -390,12 +391,25 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a foreign fund in Tel Aviv stands among the funds with no price, under the plain words of why: its tax rests on an open rule (F-04, D84)", () => {
+  it("a foreign fund in Tel Aviv stands in its own list under the funds, before tax, under the plain note that its tax is not known (F-118, D84)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
-    const raw = lists(sp, bundle, plan, pickOfHeadline(sp)!);
-    expect(shown(raw)).toContain(invest.reasons.ruleOpen["TXF-04"]);
-    // each row is there, with no figure of its own
-    for (const id of ["1159250", "1183441"]) expect(fundRow(raw, id)).toContain("—");
+    const pick = pickOfHeadline(sp)!;
+    const raw = lists(sp, bundle, plan, pick);
+    const text = shown(raw);
+    expect(text).toContain(invest.beforeTax.heading);
+    expect(text).toContain(invest.beforeTax.note["TXF-04"]!.replace("{term}", invest.beforeTax.noteTerm));
+    expect(text).toContain(invest.beforeTax.colLeft);
+    for (const id of ["1159250", "1183441"]) {
+      const f = allFunds(sp).find((x) => x.rec.id === id)!;
+      const at = f.beforeTax!.byHouse[pick.house]!;
+      const row = fundRow(raw, id);
+      // its two figures before tax at the chosen account, in place of a difference set against the pair
+      expect(row).toContain(`${fmt.nisWhole(at.accountCost.value as number)}${fmt.nisWhole(at.leftN)}`);
+      // never chosen
+      expect(raw).toMatch(new RegExp(`aria-disabled="true"[^>]*data-pick-key="${id}"`));
+    }
+    // the plain words of why stand only over a fund the chosen account gives no figure
+    expect(text).not.toContain(invest.reasons.ruleOpen["TXF-04"]);
   });
   it("a fund in Tel Aviv and abroad: the chosen fund's tile names its other listing", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });

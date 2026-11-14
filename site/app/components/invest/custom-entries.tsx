@@ -406,7 +406,8 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
 function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
   const cls = optionClass[draft.kind];
   const gap = customFundGap(draftRecord(draft, index));
-  // a kind whose tax rests on an open rule is never priced, whatever is typed (F-04)
+  // a kind whose tax rests on an open rule is never ranked or priced after tax, whatever is typed (F-04); once added, an accumulating one with
+  // its fees typed shows its figures before tax in its own list (F-118)
   const bundle = useEditors()?.world?.bundle;
   const open = bundle ? optionOpenRule(bundle, draft.kind) : null;
   const openLine = open ? reasonText({ code: "rule-open", ruleId: open }, cls) : null;
