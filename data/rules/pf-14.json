@@ -36,9 +36,23 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-14",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf#page=2",
+      "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.2, s.3(ב)(4)",
+      "locator_he": "עמוד 2, סעיף 3(ב)(4)",
+      "page": 2,
+      "quote": "משתנה אחר אשר אושר על ידי הממונה",
+      "checked": "2026-11-14"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
       "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
