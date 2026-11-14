@@ -335,7 +335,7 @@ describe("the reading on screen", () => {
     expect(shown).toContain(r.points.title);
     // the sums on the account meet custody from 03.2028
     expect(shown).toContain(feeDeal.marks.meet.before);
-    expect(shown).toContain("לעמלות שבעסקה אין תקרה בחוק");
+    expect(shown).toContain("לעמלות שבעסקה לא נמצאה תקרה בחוק");
     // past the minimum, a trade costs the group's rate: the trade fee's 0.25% and the conversion's 0.2%
     expect(shown).toContain(`${feeDeal.read.curves.head.minRate.lead}${feeDeal.read.curves.head.minRate.above.trade}${feeDeal.read.curves.head.minRate.cost}0.45%`);
     // one fee on the account is a sum per period: the headline names it

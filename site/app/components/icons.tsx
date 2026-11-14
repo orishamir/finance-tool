@@ -13,6 +13,7 @@ import {
   ChevronUp,
   CircleAlert,
   Clock,
+  Coins,
   Copy,
   Download,
   ExternalLink,
@@ -72,3 +73,5 @@ export const IconCopy = base(Copy);
 export const IconDownload = base(Download);
 export const IconShare = base(Share2);
 export const IconFileUp = base(FileUp);
+/** Money to put in: an empty state that asks for an amount. */
+export const IconCoins = base(Coins);
