@@ -2082,6 +2082,8 @@ export const feeDeal = {
       rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
       /** A curve the site cannot draw: a bound in a currency it has no rate for. */
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
+      /** Under a curve of holding with a fee whose price list prints a maximum on the whole deposit, which no data field holds and the curve does not apply. */
+      perDeposit: (fee: string) => `במחירון יש ל${fee} גם מקסימום לכל הפיקדון, והגרף לא מחיל אותו. מהשווי שבו המקסימום הזה מתחיל לחול, העמלה בפועל נמוכה ממה שהגרף מראה. האתר לא מחשב מאיזה שווי זה קורה, כי המקסימום הזה כתוב במחירון רק במילים.`,
       /** A curve with a price per unit (F-112): the unit's price, a chart's field, and beside it why the chart needs it. */
       unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",

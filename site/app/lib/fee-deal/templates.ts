@@ -572,6 +572,12 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
 export type LeftOut = { line: string; why: LeftWhy; name?: string; channel?: string; quote?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
 
 /**
+ * The fees whose price list prints a maximum on the whole deposit that no field of the record holds, by what a template left out: the
+ * custody fee, where a custody line's note quotes one (`per-deposit`, given only on the custody lines of `MAX_PER_SECURITY`).
+ */
+export const perDepositFees = (left: readonly LeftOut[]): FeeKindId[] => (left.some((x) => "line" in x && x.why === "per-deposit") ? ["custody"] : []);
+
+/**
  * A regulated track as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its fee on
  * each deposit. A fee the data gives as exactly zero fills nothing and is not left out: a price of zero charges nothing (F-110), so the
  * deal without it is the same deal. A deposit fee the product may not charge (PF-06) and a fee the regulator's data has no figure for

@@ -19,7 +19,8 @@ import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
 import { builder } from "./rows";
 import { panel } from "./panel";
-import { chargesUnfilled, fillDeal, houseName, IN_TRADE, MAX_PER_SECURITY, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, IN_TRADE, MAX_PER_SECURITY, perDepositFees, templateOf, templateOptions } from "./templates";
+import type { FeeKindId } from "./shapes";
 import { latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
@@ -313,6 +314,21 @@ describe("the templates", () => {
     expect(perDeposit("fibi").map(([id]) => id)).toEqual(["fibi-custody-israel", "fibi-custody-foreign"]);
     expect(perDeposit("discount")).toEqual([]);
     expect(copy.cases.stated.maxPerSecurity.tail).not.toMatch(/כל מה שמוחזק/);
+  });
+  it("say under a curve of holding that it does not apply a custody maximum per deposit its list prints, with no holding where it binds", () => {
+    const left = (id: string) => {
+      const d = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
+      return templateOf(d, d.template!.id, data, TODAY)!.left;
+    };
+    expect(perDepositFees(left("leumi"))).toEqual(["custody"]);
+    expect(perDepositFees(left("excellence"))).toEqual([]);
+    // a curve of holding is drawn where a mark falls on it: a custody price with a minimum
+    const deal: FeeDeal = { id: "d", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 3, every: 3, min: typed(50) } }] }] };
+    const held = (kinds: FeeKindId[]) => readingOf(read(deal), data.fx, null, kinds).curves.find((c) => c.on === "held")!;
+    expect(held(["custody"]).unapplied?.map((f) => f.fee)).toEqual(["fee-c"]);
+    expect(held([]).unapplied).toBeUndefined();
+    // no figure is invented for where it binds: the record gives the maximum in words alone
+    expect(copy.read.curves.perDeposit("x")).not.toMatch(/\d/);
   });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;
