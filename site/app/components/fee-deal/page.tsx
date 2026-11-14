@@ -30,7 +30,6 @@ import { addOfferedFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal
 import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
-import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
@@ -40,14 +39,14 @@ import { dealOfAddress } from "../../lib/fee-deal/link";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith } from "../../lib/fee-deal/store";
 import { dataBar, feePriceLists, perDepositFees, templateSource } from "../../lib/fee-deal/templates";
-import { fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
+import { fillFeeKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
 import { useMedia } from "../../lib/hooks";
-import { Callout, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
+import { Callout, Card, PageHead, ReadForBand, Section, ThingMenu, ValueMenuSheet } from "../kit";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
-import { FeesColumn, SetupStrip, feeGroup } from "./builder";
+import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems } from "./builder";
 import { DealColumns } from "./deal-columns";
 import { DealNotices, useSaid } from "./deal-notices";
 import { FeeLinksProvider } from "./links";
@@ -186,9 +185,13 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     const to = kindById(data.kinds, id);
     if (to) kept(setKindKept(deal, to, dataBar(id, data, today), chosen));
   };
-  const onHoldOn = (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => kept(holdOnKept(deal, feeId, side, k, chosen, after, caseId));
+  const onRemoveChange = (feeId: string, side: Side, k: number, caseId: string | undefined) => kept(removeChangeKept(deal, feeId, side, k, chosen, caseId));
+  // the price of the open case the person is in, where the case has several over time: the toolbox adds to it, the panel's question asks
+  // on it, a form changes it; it belongs to the fee and case it was set in, and any other open goes back to the last price
+  const [editing, setEditing] = useState<{ fee: string; case: string | null; k: number } | null>(null);
+  const editingK = editing && editing.fee === chosen && editing.case === caseId ? editing.k : undefined;
   const onForm = (feeId: string, part: PartId, caseId: string | null) => {
-    if (doc.changeForm(feeId, part, caseId)) oc.pending.set(null);
+    if (doc.changeForm(feeId, part, caseId, feeId === chosen && caseId === oc.caseId ? editingK : undefined)) oc.pending.set(null);
   };
   const onRemoveCase = (feeId: string, caseId: string) => {
     oc.menus.closeSlot();
@@ -226,8 +229,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice, perDeposit) } : null), [summary, read, data.fx, unitPrice, perDeposit]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
-  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);
-  const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
+  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending, editingK) : null), [read, chosen, caseId, pending, editingK]);
+  const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined, editingK) : null), [read, chosen, caseId, editingK]);
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
   // own toolbox offers it and the case has it not yet; dropped on another case than the open one, that case opens first
   const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : at === null || at === caseId ? tools : toolboxOf(read, feeId, at));
@@ -238,7 +241,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       if (!fee) return;
       const on = at ?? caseId;
       if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
-      applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined)), {
+      applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined), on === caseId ? editingK : undefined), {
         onAsk: oc.ask.onAsk,
         onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
         onForm: (part) => onForm(feeId, part, on),
@@ -290,6 +293,15 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         {toolboxView}
       </ToolboxCard>
     ) : null;
+  // the fees the deal can still take: in the toolbox's column while no fee is open there, else after the fees (on a computer, while a
+  // fee is open, the quiet add line)
+  const palette = useMemo(() => paletteItems(builderView, read, kind, saves), [builderView, read, kind, saves]);
+  const adding = panelColumn ? (panelView ? ("line" as const) : null) : { palette };
+  const paletteColumn = panelColumn && !panelView && kind && palette.length > 0 ? (
+    <Card className="min-[80rem]:sticky min-[80rem]:top-20">
+      <Palette items={palette} onAdd={onAdd} />
+    </Card>
+  ) : null;
   // the reading's picks: one for each thing the deal's fees change by that it picks, each changed on the deal (its link carries them)
   const picks = views?.reading.picks;
 
@@ -357,15 +369,17 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onRemoveFee,
                 onRemoveBy,
                 drop,
-                onHoldOn,
+                onRemoveChange,
+                onEditPrice: (feeId, caseId, k) => setEditing({ fee: feeId, case: caseId ?? null, k }),
                 pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
               }}
               ask={oc.ask.asking && oc.ask.asking.fee === chosen ? oc.ask.asking.kind : null}
+              adding={adding}
             />
           )
         }
-        toolbox={panelColumn ? panelView : null}
+        toolbox={panelColumn ? (panelView ?? paletteColumn) : null}
       />
       {/* the open slot's menu: beside its pill on a computer, a sheet on a phone */}
       <ValueMenuSheet open={!!slot} onClose={oc.menus.closeSlot} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>

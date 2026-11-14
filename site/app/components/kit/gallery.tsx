@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { DropZone, RemoveButton, AskValues, CaseFold, CaseRow, CaseSlot, ConditionBand, OpenCase, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
+import { DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -2571,7 +2571,7 @@ function DealDemos({ today }: { today: string }) {
     <>
       <Demo name="FigureField" use={g.uses.FigureField}>
         <Grid>
-          <State label={`entered: typed by the person, ${g.states.interactive}`}>
+          <State label={`entered: typed by the person, the entered ink and edge on the card's fill, no highlight behind it, ${g.states.interactive}`}>
             <FigureField value={mine} label={g.sample.percent} unit="%" words={dealWords.price.perAction.default} onCommit={(n) => setMine(entered(n, "pct_of_trade", today, g.sampleAbout))} validate={percentCheck()} />
           </State>
           <State label={`sourced: filled from a price list and left as it was, the grey line under the digits; a press on the box opens a note under it of where it is from, with the link to its source, ${g.states.interactive}`}>
@@ -2766,7 +2766,7 @@ const TRADE: Case[] = [
     parts: [{ id: "unit", kind: "price", n: 0.03, unit: "usd_per_share", sign: "$", words: dealWords.price.perUnit }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 8, ...usd, words: sc.toAction }, { id: "cap", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 2, ...pct, words: sc.capWords }, unexecuted],
   },
 ];
-/** The tracks that are not the person's, folded. */
+/** The tracks that are not the person's: cases like any other. */
 const OTHER_TRACKS: Case[] = [1, 2].map((k) => ({
   id: `us${k + 1}`,
   when: [{ text: sc.what.us }, { text: sc.tracks[k]! }],
@@ -2841,10 +2841,9 @@ function MenuBody({ kind }: { kind: "what" | "track" | "range" | "thing" }) {
   );
 }
 
-/** The trade fee of the picture, live: a tap on a row opens its case, a slot opens its menu, a part's bin removes it, the fold opens. */
+/** The trade fee of the picture, live, every case shown: a tap on a row opens its case, a slot opens its menu, a part's bin removes it. */
 function TradeFee({ today }: { today: string }) {
   const [open, setOpen] = useState("us1");
-  const [folded, setFolded] = useState(true);
   const [gone, setGone] = useState<string[]>([]);
   const [menu, setMenu] = useState<Menu>(null);
   const row = (c: Case) => {
@@ -2886,12 +2885,9 @@ function TradeFee({ today }: { today: string }) {
           onThing={(_id, at) => setMenu({ kind: "thing", at })}
           onRemoveThing={() => undefined}
           openThing={menu?.kind === "thing" ? "track" : null}
-          addCase={{ onAdd: () => undefined }}
         >
           {TRADE.map(row)}
-          <CaseFold label={sc.more} open={!folded} onToggle={() => setFolded((f) => !f)}>
-            {OTHER_TRACKS.map(row)}
-          </CaseFold>
+          {OTHER_TRACKS.map(row)}
           {row(LAST)}
         </ConditionBand>
       </FeeBlock>
@@ -2920,7 +2916,7 @@ function Conversion({ today }: { today: string }) {
   ];
   return (
     <FeeBlock dot="bg-fee-fx" name={sc.fx}>
-      <ConditionBand things={[{ id: "size", name: sc.things.size }, { id: "channel", name: sc.things.channel }]} onThing={() => undefined} addCase={{ onAdd: () => undefined }}>
+      <ConditionBand things={[{ id: "size", name: sc.things.size }, { id: "channel", name: sc.things.channel }]} onThing={() => undefined}>
         {cases.map((c) => (
           <CaseRow key={c.id} when={c.when} label={c.say} onOpen={() => undefined}>
             {c.parts.map((p) => (
@@ -2967,7 +2963,6 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
         { id: "sum", label: <><ToolBlank /> $ {w(perAction)}</>, spoken: `$ ${perAction}`, used: u("sum") },
         { id: "discount", label: <>{w(sc.discount)} <ToolBlank /> % {w(sc.ofPrice.split(",")[0]!)}</>, spoken: sc.discount, used: u("discount") },
         { id: "third", label: sc.thirdPartyPart, used: u("third") },
-        { id: "until", label: <>{sc.limited} <ToolBlank wide /></>, spoken: sc.limited, used: u("until") },
       ],
     },
     {
@@ -3052,6 +3047,161 @@ function PhoneFrame({ children }: { children: ReactNode }) {
   return <div className="w-full max-w-[390px] overflow-hidden rounded-lg border border-border">{children}</div>;
 }
 
+/** A sample figure in the cases' tables: a price list's, sourced. */
+const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit, today)} display={fmt.number} />;
+const rh = dealWords.cases.rowHeads;
+
+/** Custody by what is held: two cases with one price, so each row is one merged cell; "+ מקרה" at the end. */
+function CustodyTable({ today }: { today: string }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const cols = [
+    { id: "ta", head: sc.heldValues.ta },
+    { id: "abroad", head: sc.heldValues.abroad },
+  ];
+  return (
+    <FeeBlock dot="bg-fee-custody" name={sc.custody}>
+      <ConditionHead bare things={[{ id: "held", name: sc.things.held }]} />
+      <CaseTable
+        columns={cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id }))}
+        rows={[
+          { id: "price", head: rh.rate!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(0.15, "pct_of_balance_per_period", today)}% {dealWords.price.per[3]}</span> }] },
+          { id: "max", head: rh.max!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(10000, "nis", today)} ₪ {sc.perCharge}</span> }] },
+        ]}
+        add={{ label: dealWords.cases.addSlot.case, onAdd: () => undefined }}
+      />
+    </FeeBlock>
+  );
+}
+
+/** Custody by the size of the portfolio, as a ladder: three steps, each top typed in place, the steps meeting at it; "+ מדרגה" at the end. */
+function LadderTable({ today }: { today: string }) {
+  const [tops, setTops] = useState([100_000, 500_000]);
+  const rates = [0.2, 0.15, 0.1];
+  const top = (k: number) => (
+    <span data-lift="" className="inline-block">
+      <FigureField value={entered(tops[k]!, "nis", today, g.sampleAbout)} label={dealWords.cases.stepTop} unit="₪" sign="₪" tight onCommit={(n) => setTops((t) => t.map((x, j) => (j === k ? n : x)))} />
+    </span>
+  );
+  // each head on one line where its column has the room, else wrapped inside it: "עד" with the step before's top as plain words, and the
+  // step's own top in its box with its sign
+  const line = "flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1";
+  const heads = [
+    <div className={line}>
+      <span className="whitespace-nowrap">{dealWords.cases.upTo}</span>
+      {top(0)}
+    </div>,
+    <div className={line}>
+      <span className="whitespace-nowrap">
+        <bdi dir="ltr">{fmt.number(tops[0]!)}</bdi>
+        {dealWords.cases.stepBetween}
+      </span>
+      {top(1)}
+    </div>,
+    <div className={line}>
+      <span className="whitespace-nowrap">{dealWords.cases.over.trim()}</span>
+      <bdi className="whitespace-nowrap">{fmt.number(tops[1]!)} ₪</bdi>
+    </div>,
+  ];
+
+
+  return (
+    <FeeBlock dot="bg-fee-custody" name={sc.custody}>
+      <ConditionHead bare things={[{ id: "size", name: sc.things.portfolio }]} />
+      <CaseTable
+        ladder
+        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => undefined }))}
+        rows={[{ id: "price", head: rh.rate!, cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)}% {dealWords.price.per[12]}</span> })) }]}
+        add={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}
+      />
+    </FeeBlock>
+  );
+}
+
+/** The trade fee by what is bought and the channel, as a grid: the shekel minimum said once, a row's maximum on its line, abroad spanning its row, a place no case holds. */
+function TradeGrid({ today, three }: { today: string; three?: boolean }) {
+  const [open, setOpen] = useState<string | null>("ta-d");
+  const [track, setTrack] = useState("1");
+  const cell = (id: string, rate: number, more?: ReactNode) => ({ label: sc.open(id), onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)}% {perAction}{more}</span> });
+  return (
+    <FeeBlock dot="bg-fee-trade" name={sc.trade}>
+      <ConditionHead bare things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />
+      <SharedLine lead={dealWords.cases.shared.in.ILS}>
+        <span>
+          {dealWords.cases.parts.min}
+          {fig(20, "nis_per_trade", today)} ₪ {sc.toAction}
+        </span>
+      </SharedLine>
+      <CaseGrid
+        above={three && <SegmentedControl fit label={sc.things.track} options={sc.tracks.slice(0, 2).map((t, k) => ({ value: String(k + 1), label: t }))} value={track} onChange={setTrack} />}
+        columns={[
+          { id: "web", head: sc.channels.web },
+          { id: "branch", head: sc.channels.branch },
+        ]}
+        rows={[
+          { id: "ta", head: sc.what.ta, shared: <span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} ₪ {sc.toAction}</span>, cells: [{ from: 0, span: 1, ...cell("ta-d", track === "1" ? 0.5 : 0.45) }, { from: 1, span: 1, ...cell("ta-b", 0.55) }] },
+          { id: "makam", head: sc.what.makam, cells: [{ from: 0, span: 1, ...cell("mk-d", 0.09) }, { from: 1, span: 1, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam} · ${sc.channels.branch}`, onAdd: () => undefined } }] },
+          { id: "abroad", head: sc.heldValues.abroad, cells: [{ from: 0, span: 2, ...cell("ab", 0.6), across: sc.anyChannel }] },
+        ]}
+        addRow={{ label: sc.things.what, onAdd: () => undefined }}
+        addColumn={{ label: sc.things.channel, onAdd: () => undefined }}
+      />
+    </FeeBlock>
+  );
+}
+
+/** The same grid read as rows, as a phone shows it: a group per value of what is bought, its channels as rows. */
+function TradeGroups({ today }: { today: string }) {
+  const part = (rate: number) => <PartChip kind="price" figure={fig(rate, "pct_of_trade", today)} unit="%" words={perAction} />;
+  return (
+    <FeeBlock dot="bg-fee-trade" name={sc.trade}>
+      <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }]}>
+        <CaseGroup head={sc.what.ta} shared={<span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} ₪ {sc.toAction}</span>}>
+          <CaseRow when={[{ text: sc.channels.web }]} label={sc.open(sc.channels.web)} onOpen={() => undefined}>{part(0.5)}</CaseRow>
+          <CaseRow when={[{ text: sc.channels.branch }]} label={sc.open(sc.channels.branch)} onOpen={() => undefined}>{part(0.55)}</CaseRow>
+        </CaseGroup>
+        <CaseGroup head={sc.heldValues.abroad}>
+          <CaseRow when={[{ text: sc.anyChannel, any: true }]} label={sc.open(sc.anyChannel)} onOpen={() => undefined}>{part(0.6)}</CaseRow>
+        </CaseGroup>
+        <div className="flex flex-col gap-1.5 px-3 pt-1 pb-1">
+          <AddSlot shape="row" add={{ label: sc.things.what, onAdd: () => undefined }} />
+          <AddSlot shape="row" add={{ label: sc.things.channel, onAdd: () => undefined }} />
+        </div>
+      </ConditionBand>
+    </FeeBlock>
+  );
+}
+
+/** A fee open whose price changes with time: free, then from a month a sum, the divider between them, and the slot that adds a change. */
+function ChangeDemo({ today }: { today: string }) {
+  const [month, setMonth] = useState("2027-01");
+  const [gone, setGone] = useState(false);
+  return (
+    <SlimFee dot="bg-fee-fixed" name={sc.fixed} label={sc.openFee(sc.fixed)} open onOpen={() => undefined}>
+      <PartEdit kind="price">
+        <span>{dealWords.price.free}</span>
+      </PartEdit>
+      {!gone && (
+        <>
+          <ChangeDivider lead={dealWords.panel.change.from} month={<MonthField value={month} label={dealWords.panel.change.month} tight onCommit={setMonth} />} removeLabel={dealWords.panel.change.remove} onRemove={() => setGone(true)} />
+          <Edit part={{ id: "sum", kind: "price", n: 20, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }} today={today} onRemove={() => undefined} />
+        </>
+      )}
+      <AddSlot shape="row" add={{ label: dealWords.panel.change.add, onAdd: () => setGone(false) }} />
+    </SlimFee>
+  );
+}
+
+/** The fees a deal can still take, while none is open. */
+function PaletteDemo() {
+  const [added, setAdded] = useState<string[]>([]);
+  const items = [
+    { id: "fx", dot: "bg-fee-fx", name: sc.fx, line: dealWords.on["action:conversion"]! },
+    { id: "custody", dot: "bg-fee-custody", name: sc.custody, line: dealWords.on.held! },
+    { id: "fixed", dot: "bg-fee-fixed", name: sc.fixed, line: dealWords.on.account!, rare: true },
+  ].filter((it) => !added.includes(it.id));
+  return <FeePalette title={dealWords.builder.palette} hint={dealWords.builder.paletteHint} items={items.map((it) => ({ ...it, drag: null }))} onAdd={(id) => setAdded((a) => [...a, id])} />;
+}
+
 function CaseDemos({ today }: { today: string }) {
   const [channels, setChannels] = useState(["branch", "web"]);
   const [mine, setMine] = useState(true);
@@ -3078,8 +3228,8 @@ function CaseDemos({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
-      <Demo name="ConditionBand, CaseRow, CaseFold, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
-        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name, a bin beside each thing, "עוד מקרה" at the head's end; ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
+      <Demo name="ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
+        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name, a bin beside each thing; ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
           <div className="max-w-xl">
             <TradeFee today={today} />
           </div>
@@ -3092,6 +3242,47 @@ function CaseDemos({ today }: { today: string }) {
         <State label="a range's cases, each with the range's icon; the things in the head editable (a pill with a chevron)" wide>
           <div className="max-w-xl">
             <Conversion today={today} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="CaseTable, CaseGrid, SharedLine, AddSlot" use={g.uses.CaseTable}>
+        <State label={`one thing: the cases as columns, the parts as rows, equal neighbours one cell; "+ מקרה" where the new case will stand; ${g.states.interactive}: a column's head opens its case`} wide>
+          <div className="max-w-2xl">
+            <CustodyTable today={today} />
+          </div>
+        </State>
+        <State label={`a range as a ladder: the steps ascending, each top typed in place and the next step starting at it; "+ מדרגה" asks only for a boundary; ${g.states.interactive}`} wide>
+          <div className="max-w-2xl">
+            <LadderTable today={today} />
+          </div>
+        </State>
+        <State label={`two things: a grid, the shekel minimum said once above it, a row's common maximum under its head, abroad on any channel spanning its row, a place no case holds as a slot; "+" a row and a column; ${g.states.interactive}: a cell opens its case`} wide>
+          <div className="max-w-2xl">
+            <TradeGrid today={today} />
+          </div>
+        </State>
+        <State label={`three things: the third a switch above the grid; ${g.states.interactive}`} wide>
+          <div className="max-w-2xl">
+            <TradeGrid today={today} three />
+          </div>
+        </State>
+        <State label="the grid read as rows in a phone's width: a group per value of the first thing, its cases' rows naming the second alone" wide>
+          <PhoneFrame>
+            <TradeGroups today={today} />
+          </PhoneFrame>
+        </State>
+      </Demo>
+      <Demo name="ChangeDivider" use={g.uses.ChangeDivider}>
+        <State label={`a price that changes with time, open: its prices in time order, the divider with the month the later starts and its bin, "+ המחיר משתנה מתאריך" at the end; ${g.states.interactive}`} wide>
+          <div className="max-w-xl">
+            <ChangeDemo today={today} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="FeePalette" use={g.uses.FeePalette}>
+        <State label={`the fees a deal can still take, each with its line; ${g.states.interactive}: a tap adds one`}>
+          <div className="max-w-sm">
+            <PaletteDemo />
           </div>
         </State>
       </Demo>

@@ -25,6 +25,8 @@ const eurosFine = new Intl.NumberFormat(he, { style: "currency", currency: "EUR"
 const poundsFine = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
+/** A percent with every decimal a price list prints, up to six (`0.0875%`), none added. */
+const percentPrinted = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 6 });
 /** An ECB reference rate, to the four decimals the ECB publishes it with. */
 const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
@@ -112,6 +114,8 @@ export const fmt = {
     const thousandths = v * 1000;
     return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? withMinus(percent3.format(v / 100)) : withMinus(percent.format(v / 100));
   },
+  /** A percent as its source prints it or the person typed it, with all its decimals (`0.0875%`, `0.5%`): a sourced or typed rate is never rounded. */
+  pctPrinted: (v: number) => withMinus(percentPrinted.format(v / 100)),
   /** The number `pct` shows, as a number: what a field prefilled from a displayed percentage holds (0.4293 reads 0.43). */
   pctShown: (v: number) => {
     const thousandths = v * 1000;
@@ -227,7 +231,7 @@ export const joinLead = (lead: string, next: string): string => (lead.endsWith("
 
 const typedForms = new Map<string, { whole: Intl.NumberFormat; cents: Intl.NumberFormat }>();
 /** The currency of a unit that is a sum of money; none for a price per unit, a fraction of a cent that keeps its own decimals (`formatValue`). */
-const currencyOfUnit = (unit: string): string | null =>
+export const currencyOfUnit = (unit: string): string | null =>
   unit.endsWith("_per_share") ? null : /^nis/.test(unit) ? "ILS" : /^usd/.test(unit) ? "USD" : /^eur/.test(unit) ? "EUR" : /^gbp/.test(unit) ? "GBP" : null;
 
 /**

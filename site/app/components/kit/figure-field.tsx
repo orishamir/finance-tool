@@ -16,8 +16,9 @@ import { cx } from "./cx";
 import { MonthPicker, pickCommit } from "./month-picker";
 
 /**
- * The box of a typed figure or month: its edge, fill and ink say whose the value is. A box whose text is not a value takes the error look
- * alone (the danger edge on the card's fill), never the entered blue: what it holds is not what the page reads. The whole box takes the
+ * The box of a typed figure or month: its edge and ink say whose the value is, on the card's fill (an entered figure has the entered
+ * edge and ink, no fill of its own: a page of typed figures is not a page of blue boxes). A box whose text is not a value takes the error
+ * look alone (the danger edge), never the entered ink: what it holds is not what the page reads. The whole box takes the
  * pointer as its field (`focusInBox`), and is a 44 px target both ways whatever its figure.
  */
 function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?: boolean): string {
@@ -25,7 +26,7 @@ function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?:
     "inline-flex items-center justify-center min-h-target min-w-target rounded-md border tabular-nums cursor-text focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
     tight ? "gap-0.5 px-1.5 text-[15px]" : "gap-1 px-2.5",
     error && "bg-card text-foreground border-destructive",
-    !error && state === "entered" && "bg-entered-subtle text-entered border-entered/50",
+    !error && state === "entered" && "bg-card text-entered border-entered/50",
     !error && state === "sourced" && "bg-card text-foreground border-input",
     !error && state === "empty" && "bg-card text-foreground border-input border-dashed",
   );

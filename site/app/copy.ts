@@ -1822,6 +1822,10 @@ export const feeDeal = {
     /** The spoken name of the button that opens a fee in its panel. */
     open: (name: string) => `לפתוח את ${name}`,
     add: "אפשר להוסיף:",
+    /** The fees a deal can still take, in the toolbox's column while no fee is open, each with the group heading of what it charges on. */
+    palette: "אפשר להוסיף",
+    paletteHint: "מקישים על עמלה, או גוררים אותה אל העסקה.",
+    paletteHintTap: "מקישים על עמלה כדי להוסיף אותה.",
     unread: "התאריכים של המחירים לא מסודרים, ולכן העמלה לא נקראת.",
     /** The line a fee just taken away leaves in its place, before its name. */
     removed: "הוסרה מהעסקה: ",
@@ -1839,8 +1843,6 @@ export const feeDeal = {
       /** A fee whose rate or sum nobody typed yet: it is not read until it is. */
       noPrice: "עוד לא הוזן מחיר",
       insideFund: "נגבים בתוך הקרן",
-      /** The fee's next change (F-110), before its month in words. */
-      next: { starts: "מתחיל ב־", ends: "נגמר ב־", rises: "עולה ב־", falls: "יורד ב־", changes: "משתנה ב־" } as Record<string, string>,
     },
   },
   /** The left column: every field of the chosen fee. */
@@ -1872,11 +1874,23 @@ export const feeDeal = {
     cap: "מקסימום באחוזים",
     /** Before the sum the flat price holds up to, by the fee: "[2.85 $] לכל המרה, עד המרה של [50 $]". */
     upTo: { default: "עד פעולה של", fx: "עד המרה של" } as Record<string, string>,
-    until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
-    /** The line the prices after one leave, taken away by the bin of its month. */
-    laterRemoved: "המחירים שאחריו הוסרו.",
+    /**
+     * A price that changes with time (F-110): the divider between two prices ("מ־" and the month the later starts, its box's spoken name,
+     * its bin), the dashed slot at the end that adds a change by its month alone, its question and what it does, the month refused where
+     * the prices change already, and the line a change taken away leaves.
+     */
+    change: {
+      from: "מ־",
+      month: "החודש שהמחיר משתנה בו",
+      remove: "להסיר את השינוי במחיר",
+      add: "המחיר משתנה מתאריך",
+      ask: "מאיזה חודש המחיר משתנה?",
+      note: "המחיר שחל אז יתפצל לשניים: החדש מתחיל כהעתק שלו, עד שתשנו אותו.",
+      taken: "המחיר כבר משתנה בחודש הזה.",
+      removed: "השינוי במחיר הוסר: המחיר שאחריו חזר להיות המחיר שלפניו.",
+    },
     salePrices: "המחיר במכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
     remove: "להסיר את העמלה",
@@ -1919,8 +1933,27 @@ export const feeDeal = {
     sep: " · ",
     /** A case's row, spoken: the button that opens it, before its values. */
     openCase: "לפתוח את המקרה: ",
-    /** The tracks that are not the person's, folded into one line. */
-    folded: { one: "עוד מסלול אחד בתעריפון", two: "עוד שני מסלולים בתעריפון", many: "עוד {n} מסלולים בתעריפון" },
+    /**
+     * The workbench's table of a fee's cases (band-layout.ts): each part row's head, the price's by what every case's price is (a share, a
+     * sum, else a price); the line a part said once for every case stands under, or for the cases of one currency; a ladder's step between
+     * two tops ("100,000 עד 500,000 ₪"); a step's top typed in place, spoken; and the place of a grid no case holds, spoken.
+     */
+    rowHeads: { rate: "שיעור", sum: "סכום", price: "מחיר", min: "מינימום", max: "מקסימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע לפעולה קטנה", maxPerSecurity: "מקסימום לכל נייר ערך", discount: "הנחה", third: "צד שלישי", until: "שינוי במחיר", offset: "קיזוז", refund: "החזר", notes: "עוד על המחיר" } as Record<string, string>,
+    shared: { all: "בכל המקרים:", in: { ILS: "בכל המקרים בשקלים:", USD: "בכל המקרים בדולרים:", EUR: "בכל המקרים באירו:", GBP: "בכל המקרים בלירות שטרלינג:" } as Record<string, string> },
+    stepBetween: " עד ",
+    stepTop: "הגבול העליון של המדרגה",
+    /** A top typed in place that would not stay between its neighbours: "בין 100,000 ל־500,000". */
+    stepTopRange: (from: string, to: string | null) => (to === null ? `מעל ${from}` : `בין ${from} ל־${to}`),
+    emptyPlace: "להוסיף מקרה כאן: ",
+    /**
+     * The add slots of a fee's table: a case ("+ מקרה"), a ladder's step ("+ מדרגה"), a grid's row or column by its thing's name; the
+     * question a step asks (its boundary alone, and what it does), and the line under a grid's new values.
+     */
+    addSlot: { case: "מקרה", step: "מדרגה" },
+    addStep: { ask: "{thing}: איפה הגבול של המדרגה החדשה?", note: "המדרגה שהגבול נופל בה תתפצל לשתיים, ושתיהן יישארו במחיר שלה עד שתשנו אותו.", field: "הגבול החדש", taken: "יש כבר מדרגה שמתחילה כאן." },
+    addValues: "כל ערך שתסמנו יקבל את המחירים של {last}, עד שתשנו אותם.",
+    /** The switch above a grid of a fee that changes by three things, spoken. */
+    switchLabel: "המקרים של",
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
     /**
@@ -1960,6 +1993,8 @@ export const feeDeal = {
     },
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
+    /** Which of a fee's prices over time the toolbox adds to: "להוסיף למחיר ממינואר 2027", "להוסיף למחיר עד דצמבר 2026". */
+    toolPrice: { lead: "להוסיף למחיר", from: "מ־", until: "עד " },
     groups: { price: "המחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", more: "עוד על המחיר" } as Record<string, string>,
     /** A part of a price, as a toolbox card and as the open case's line; `perAction` and `of` follow the fee (`price.perAction`, `price.of`). */
     parts: {
@@ -1969,7 +2004,8 @@ export const feeDeal = {
       /** A third party's fee named in the list's words: "ועוד עמלת הברוקר". */
       thirdOf: "ועוד עמלת ",
       thirdNone: "בלי סכום בתעריפון",
-      until: "לזמן מוגבל, עד ",
+      /** Before the month a later price starts, on a closed line: "ומינואר 2027". */
+      from: "ומ־",
       min: "מינימום ",
       max: "מקסימום ",
       /** A held share's maximum on each security, after its sum: "מקסימום 7,500 ₪ לכל נייר ערך בכל חיוב" (§10.6's stated parts). */
@@ -4702,8 +4738,6 @@ export const leftOut = {
 export const dealCases = {
   /** The head of a fee's band, before the things its price changes by. */
   changesBy: "המחיר משתנה לפי",
-  /** The action at the band's end that adds a case. */
-  addCase: "עוד מקרה",
   /** The tag of the open case and of an open fee; the outline says it too. */
   chosen: "נבחר",
   /** The tag beside the person's own track. */
@@ -4725,6 +4759,8 @@ export const dealCases = {
     /** The phone sheet's handle, spoken: it folds the sheet to its row of groups, and opens it again. */
     fold: "לקפל את החלקים",
     unfold: "לפתוח את החלקים",
+    /** The phone sheet's ✕, spoken: it closes the open fee, and the sheet with it. */
+    close: "סגירת העמלה",
   },
   ask: { add: "להוסיף", cancel: "ביטול" },
   menus: {
@@ -4917,7 +4953,7 @@ export const kit = {
       CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
       PeriodBars: "בחירה של תקופה אחת, מצוירת כתרשים עמודות: כל עמודה כולה כפתור אחד, ובה המספר, העמודה, שם התקופה ומי משלם. כל העמודות על סולם אחד מאפס, בלי קווי רשת ובלי ציר, כי כל עמודה נושאת את המספר שלה. הנבחרת במסגרת וברקע, השם שלה במילוי. עמודה בלי מספר כותבת ״אין״ ואפשר לבחור גם אותה. בטלפון השמות מתקצרים ושם הבנק יורד.",
       MeterBar: "פס דק של חלק מ־0 עד 100% ליד המספר שלו בשורת טבלה: החשיפה של מסלול למניות ולמט״ח, בצבע של כל אחת. כל הפסים ברשימה באותו אורך, כך שהעין עוברת לאורך העמודה. ריק ב־0, מלא מעל 100%. המספר נושא את המשמעות, והפס רק לעין.",
-      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בכחול, מה שמולא מתעריפון או ממסלול עם קו אפור, ולחיצה עליו פותחת מתחתיו הערה מאיפה הוא, עם קישור למקור. שדה רשות שלא מולא עם מסגרת מקווקוות.",
+      FigureField: "מספר שמקלידים במקום שבו הוא עומד, כמו אחוז של עמלה בשורה שלה. התיבה במצב של המספר: מה שהאדם הקליד בדיו ובמסגרת כחולות, בלי רקע כחול, מה שמולא מתעריפון או ממסלול עם קו אפור, ולחיצה עליו פותחת מתחתיו הערה מאיפה הוא, עם קישור למקור. שדה רשות שלא מולא עם מסגרת מקווקוות.",
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
@@ -4938,7 +4974,10 @@ export const kit = {
       DocLink: "קישור החוצה למסמך שבו כתובים מילה או מספר: עמוד בתעריפון, תקנון של מבצע, הדף שבו נראה פרסום. נפתח בלשונית חדשה ומסתיים בחץ החוצה.",
       When: "תאריך בתוך טקסט: יום משמאל לימין, וחודש שמסמך מדפיס לבד במילים, בלי יום שהאתר המציא. המילים שלפניו נשארות איתו בשורה, ו״מ־״ או ״ב־״ לפני שם של חודש נכתבים צמודים: ״מנובמבר 2025״.",
       TariffDate: "שורת התאריך של תעריפון: מה שהמסמך עצמו מדפיס, בצבע רגיל. תאריך אחד לכל המסמך, תאריך של החלק שהאתר קורא, גרסה, תאריך שהודפס בטעות כמו שהוא, או שאין תאריך מודפס ומתי האתר בדק. מתחת לכותרת שכבר אומרת ״תעריפון״ המילה לא חוזרת.",
-      ConditionBand: "עמלה שהמחיר שלה משתנה לפי דבר אחד עד שלושה (מה קונים, הערוץ, המסלול, גודל הפעולה): פס כחול אחד, בראשו ״המחיר משתנה לפי״ והדברים, ומתחתיו שורה לכל מקרה. התנאי במילים בפס, בעמודה קבועה במחשב ומעל החלקים בטלפון, ״בכל …״ חלש יותר, ״שלכם״ ליד המסלול של האדם. מקרים שאינם שלו מקופלים לשורה אחת. מקרה אחד פתוח במקומו: מסגרת, ״נבחר״, הערכים שלו כמקומות לבחירה והחלקים עם התיבות שלהם.",
+      ConditionBand: "הראש של עמלה שהמחיר שלה משתנה לפי דבר אחד עד שלושה (מה קונים, הערוץ, המסלול, גודל הפעולה): ״המחיר משתנה לפי״ והדברים בפס כחול, ופח ליד כל דבר. כשהמקרים נקראים כשורות (בטלפון, או יותר מחמישה מקרים) הם בפס עצמו: שורה לכל מקרה, התנאי במילים מעל החלקים, ״בכל …״ חלש יותר, ״שלכם״ ליד המסלול של האדם. טבלה של שני דברים נקראת בקבוצה לכל ערך של הדבר הראשון. מקרים שאינם של האדם מקופלים לשורה אחת. מקרה אחד פתוח: מסגרת, ״נבחר״, הערכים שלו כמקומות לבחירה והחלקים עם התיבות שלהם.",
+      CaseTable: "המקרים של עמלה לפי הצורה שלה. דבר אחד: המקרים בעמודות והחלקים בשורות, רק השורות שיש למקרה כלשהו, ותא אחד לשכנים שווים. טווח הוא סולם עולה, והגבול של כל מדרגה נכתב במקומו. שני דברים: טבלה, הראשון בצד והשני למעלה, ומקרה שחל בכל ערך של השני תופס את כל השורה. דבר שלישי הוא מתג מעל הטבלה. מה שזהה בכל המקרים נאמר פעם אחת מעליהם, ומה שזהה בשורה או בעמודה נאמר בראש שלה. ההוספה עומדת איפה שהדבר החדש יופיע: עמודה, מדרגה, שורה או מקום ריק בקו מקווקו.",
+      ChangeDivider: "מחיר שמשתנה עם הזמן: המחירים של העמלה זה מתחת לזה לפי הזמן, ובין שניים קו לכל הרוחב עם ״מ־״ והחודש שהמחיר הבא מתחיל בו, שאפשר לשנות במקום, ופח שמוריד את השינוי. בסוף, בקו מקווקו, ״+ המחיר משתנה מתאריך״, ששואל רק על החודש.",
+      FeePalette: "העמלות שאפשר עוד להוסיף לעסקה, כשאף עמלה לא פתוחה: כרטיס לכל עמלה, הנקודה שלה, השם ושורה אחת על מה היא נגבית. הקשה מוסיפה אותה ופותחת אותה, ובמחשב אפשר גם לגרור אותה אל העסקה.",
       PartChip: "חלק של מחיר: מחיר, מינימום או מקסימום, קשר לעמלה אחרת, או הערה. במנוחה דק, והסמל והמילה הראשונה בצבע של הסוג; המספרים במצב שלהם, כמו בכל מקום. PartEdit: אותו חלק בעריכה, על כל הרוחב, עם התיבות והבחירות שלו ופח להסרה. סדר החלקים קבוע.",
       SlimFee: "עמלה שיש לה מחיר אחד: שורה אחת, נקודת הצבע שלה, השם והחלקים. הקשה פותחת אותה במקומה, כמו מקרה. FeeBlock: עמלה שהמחיר שלה משתנה, השם ומתחתיו הפס.",
       RemoveButton: "הפקד שמוריד משהו: פח, הסמל לבדו בעיגול, המילים שלו נאמרות ומופיעות כשמצביעים עליו. בטלפון 44 פיקסלים מכל צד. ✕ רק סוגר (חלונית, גיליון, תפריט); מה שמוריד חלק, מקרה, דבר שהמחיר משתנה לפיו או עמלה הוא תמיד הפח.",
@@ -4956,13 +4995,14 @@ export const kit = {
         fx: "המרת מטבע",
         custody: "דמי ניהול פיקדון ניירות ערך",
         fixed: "דמי חשבון קבועים",
-        things: { what: "מה קונים", track: "המסלול שבחרתם", channel: "הערוץ", size: "גודל ההמרה" },
+        things: { what: "מה קונים", track: "המסלול שבחרתם", channel: "הערוץ", size: "גודל ההמרה", held: "מה מחזיקים", portfolio: "גודל התיק" },
+        heldValues: { ta: "ניירות ערך בתל אביב, קרנות נאמנות", abroad: "בחו״ל" },
+        perCharge: "לכל חיוב",
         what: { ta: "ניירות ערך בתל אביב", mutual: "קרנות נאמנות מסורתיות", money: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם", notUs: "בחו״ל, מחוץ לארה״ב" },
         tracks: ["מסלול 1", "מסלול 2", "מסלול 3"],
         anyTrack: "בכל מסלול",
         anyChannel: "בכל ערוץ",
         channels: { branch: "בסניף", phone: "בטלפון", web: "באינטרנט ובאפליקציה", other: "ערוץ אחר" },
-        more: "עוד 2 מסלולים בתעריפון",
         /** A case row's spoken name: what a tap on it does. */
         open: (words: string) => `לפתוח את המקרה: ${words}`,
         openFee: (name: string) => `לפתוח את ${name}`,
@@ -4981,7 +5021,6 @@ export const kit = {
         saleApart: "מכירה במחיר אחר",
         offset: "מתקזזת מול עמלה אחרת",
         refund: "החזר",
-        limited: "לזמן מוגבל, עד",
         thirdPartyPart: "ועוד עמלה של צד שלישי",
         capWords: "מהפעולה",
         groups: { price: "המחיר", bound: "מינימום ומקסימום", when: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", note: "עוד על המחיר" },
