@@ -16,6 +16,7 @@
 // pointer is there adds a part to every case of it as one stretched cell (`partAcross`), as its head's menu does. A toolbox part dragged
 // here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head, splits that case alone.
 import { useMemo, useRef, useState, type ReactNode } from "react";
+import { X } from "lucide-react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
 import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
@@ -30,12 +31,14 @@ import { isRange, NAME_MAX, type CasesFee, type Fee } from "../../lib/fee-deal/m
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, tableSlots, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { ActionMenu, AddSlot, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
+import { ActionMenu, AddSlot, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
+import { PARTS, setPart } from "../../lib/fee-deal/offers/parts";
+import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import { EditHere, PartFig } from "./edit-here";
 import type { BlockActions, HeadApply, OpenHere, ZoneOf } from "./fee-block";
 
@@ -107,16 +110,33 @@ function PartText({ part, bare }: { part: SlimPart; bare?: boolean }) {
   );
 }
 
-/** Parts as words, one after the other with " · " between them. */
-function Joined({ parts, bare }: { parts: readonly SlimPart[]; bare?: boolean }) {
+/** What the ✕ at a part line's end does: its spoken name and title, and the part taken away. */
+type PartOff = { label: string; onOff: () => void };
+
+/**
+ * Parts as words, one after the other with " · " between them. `off`: each part that can be taken away alone carries a ✕ at its line's
+ * end, drawn only after a fine pointer has rested on that line a while and gone at once when it leaves (app.css, `data-part-line`), on
+ * a zero-wide place after its words, so it moves nothing and takes no room.
+ */
+function Joined({ parts, bare, off }: { parts: readonly SlimPart[]; bare?: boolean; off?: (p: SlimPart) => PartOff | null }) {
   return (
     <>
-      {parts.map((p, k) => (
-        <span key={`${p.stage ?? 0}:${p.id}`}>
-          {k > 0 && <span className="text-muted-foreground">{sep}</span>}
-          <PartText part={p} bare={bare} />
-        </span>
-      ))}
+      {parts.map((p, k) => {
+        const x = off?.(p) ?? null;
+        return (
+          <span key={`${p.stage ?? 0}:${p.id}`} {...(x ? { "data-part-line": "" } : {})}>
+            {k > 0 && <span className="text-muted-foreground">{sep}</span>}
+            <PartText part={p} bare={bare} />
+            {x && (
+              <span data-part-off="" className="relative inline-block h-[1lh] w-0 align-top">
+                <span className="absolute start-1 top-1/2 z-[1] -translate-y-1/2">
+                  <KnobButton icon={X} label={x.label} tabIndex={-1} onClick={x.onOff} />
+                </span>
+              </span>
+            )}
+          </span>
+        );
+      })}
     </>
   );
 }
@@ -365,6 +385,22 @@ export function FeeCases({
   /** A part cell's grip's menu: its part applied to each head over the cell that takes it. */
   const applyActions = (l: Lifted, heads: readonly HeadApply[]): GripAction[] => heads.filter((h) => lift.takes(l, h.on)).map((h) => ({ label: h.label, onPick: () => lift.onDrop(l, h.on, { copy: false }) }));
 
+  // ---------------------------------------------------------------- one part line taken out of a cell (its ✕)
+  /**
+   * The ✕ of a part line in a cell over cases `cases` that shows more than one part: the part taken out of each of them as the open case's
+   * bin does (`setPart`), kept for the undo with its line. None for a free price, a part of a later price or of the fee's prices as a
+   * whole (a sale priced apart), nor where the cell shows one part (its bin does it).
+   */
+  const partOff = (cases: readonly string[], shown: number) => (p: SlimPart): PartOff | null => {
+    if (shown < 2 || p.id === "free" || p.stage || PARTS[p.id].apply.on === "fee") return null;
+    const row = ROW_OF[p.id];
+    const name = row === "notes" ? [p.words.lead, p.words.tail].filter(Boolean).join("").trim() : (c.rowHeads[row] ?? p.id);
+    return {
+      label: c.partOff.replace("{part}", name),
+      onOff: () => lift.onStretch(cases.reduce<Fee>((f, id) => setPart(f, p.id, false, { side: "buy", k: 0, caseId: id }), fee), row === "notes" ? lw.noteRemoved : (lw.part[row] ?? null)),
+    };
+  };
+
   // ---------------------------------------------------------------- knobs: a cell stretched over its neighbours, or back
   const plural = (t: number) => lw.things[fee.by[t]!.kind] ?? lw.things.own!;
   /**
@@ -575,7 +611,9 @@ export function FeeCases({
                 const cellZone = (el: ReactNode) => zone([target, caseTarget(cell.cases[0]!)], `${row.row}:${cell.from}`, el);
                 if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...fillAt(row.row, cell.from, cell.span) };
                 const ww = wholeWords(cell.span, n, t);
-                const content = here(cell.cases, <Joined parts={mergedParts(cell.cases, (id) => partsOf(id, pr))} bare={headSaysLead(pr)} />);
+                const shownHere = mergedParts(cell.cases, (id) => partsOf(id, pr));
+                // a cell stretched over several cases is taken away whole, by its bin: a ✕ only in a cell of one case
+                const content = here(cell.cases, <Joined parts={shownHere} bare={headSaysLead(pr)} {...(cell.cases.length === 1 ? { off: partOff(cell.cases, shownHere.length) } : {})} />);
                 const cl: Lifted = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t };
                 return {
                   id: cell.cases.join("+"),
@@ -685,7 +723,7 @@ export function FeeCases({
                 const ww = cell.whole ? null : (wholeWords(cell.span, n, 1) ?? wholeWords(down, g.rows.length, 0));
                 const content = (
                   <>
-                    {here(cell.cases, <Joined parts={mergedParts(cell.cases, cellParts)} />)}
+                    {here(cell.cases, <Joined parts={mergedParts(cell.cases, cellParts)} off={partOff(cell.cases, mergedParts(cell.cases, cellParts).length)} />)}
                     <RowStanding fee={fee.id} priced={r.priced} standing={r.standing} />
                   </>
                 );
