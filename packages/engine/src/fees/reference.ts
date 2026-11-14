@@ -35,13 +35,17 @@ export interface RegulatorReference {
   label: typeof regulatorReferenceLabel;
 }
 
-/** A provider class with no collected reference (funds and banks: product D20, ISA averages unconfirmed). */
-export interface NoReference {
-  reference: null;
-  reason: "none-available";
-  decision: "D20";
-  notes: string;
-}
+/**
+ * A provider class with no collected reference, with the reason for that kind of provider: banks (product D20), funds
+ * (the ISA's category averages are not confirmed as a given fund's reference, glossary section 4) and brokers (none collected).
+ */
+export type NoReference =
+  | { reference: null; reason: "none-available"; decision: "D20"; notes: string }
+  | { reference: null; reason: "none-available"; open: "isa-averages-unconfirmed"; notes: string }
+  | { reference: null; reason: "none-available"; open: "none-collected"; notes: string };
+
+/** Wrappers held at a bank: the Bank of Israel's fee averages are a link, not a number (product D20). */
+const bankWrappers: ReadonlySet<WrapperId> = new Set<WrapperId>(["current-account", "bank-deposit", "savings-plan", "child-savings-bank"]);
 
 /** What the mean is (method F-68): says it on every value, so a page cannot read it as an asset-weighted average. */
 const meanNote = "a simple mean of the per-track averages, one track one vote, not asset-weighted (CAT OQ2)";
@@ -107,7 +111,7 @@ export function regulatorReference(tracks: readonly CmaTrack[], classificationKe
 /**
  * The reference for a wrapper's fees. A wrapper whose tracks the CMA reports (`cmaWrappers`, the targets of the
  * caller's classification-to-wrapper map) gets the F-68 class reference; funds, banks and brokers get "none
- * available" with the reason (product D20; ISA averages unconfirmed), as null, never a guess.
+ * available" with the reason for their kind, as null, never a guess.
  */
 export function referenceForWrapper(
   wrapper: WrapperId,
@@ -116,5 +120,16 @@ export function referenceForWrapper(
   classificationKey: ClassificationKey,
 ): RegulatorReference | NoReference {
   if (cmaWrappers.has(wrapper)) return regulatorReference(tracks, classificationKey);
-  return { reference: null, reason: "none-available", decision: "D20", notes: "no collected regulator reference for this class of provider (product D20: ISA averages unconfirmed)" };
+  if (bankWrappers.has(wrapper)) {
+    return { reference: null, reason: "none-available", decision: "D20", notes: "no collected regulator reference for banks (product D20)" };
+  }
+  if (wrapper === "brokerage-account") {
+    return { reference: null, reason: "none-available", open: "none-collected", notes: "no collected reference for brokers" };
+  }
+  return {
+    reference: null,
+    reason: "none-available",
+    open: "isa-averages-unconfirmed",
+    notes: "the ISA's category averages are not confirmed as a given fund's reference (glossary section 4)",
+  };
 }

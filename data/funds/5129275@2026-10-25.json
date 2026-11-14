@@ -113,7 +113,7 @@
         "ETF-10"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. Chapter ג' prints for 2025 the fund's redemption-price return 3.04% (standard deviation 18.85) against 'מדד S&P500 שקלי' 2.61% (standard deviation 20.56); earlier years: 2024 25.48% against 24.96%; 2023 30.88% against 29.43%; 2022 -7.35% against -7.55%. The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+      "notes": "Not printed as one number. Chapter ג' prints for 2025 the fund's redemption-price return 3.04% (standard deviation 18.85) against 'מדד S&P500 שקלי' 2.61% (standard deviation 20.56); earlier years: 2024 25.48% against 24.96%; 2023 30.88% against 29.43%; 2022 -7.35% against -7.55%. The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
       "value": null,
