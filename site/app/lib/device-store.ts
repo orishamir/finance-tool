@@ -22,6 +22,15 @@ export interface DeviceStore<T> {
   reset(): void;
 }
 
+/** A stored text read as JSON, or the text itself where it is not JSON, so a store that keeps what it cannot read keeps it as it was. */
+function jsonOr(raw: string): unknown {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return raw;
+  }
+}
+
 export function deviceStore<T>(key: string, empty: T, parse: (raw: unknown) => T, serialize: (v: T) => unknown): DeviceStore<T> {
   const none: DeviceSnapshot<T> = { value: empty, ready: false, writable: true };
   let current = none;
@@ -34,7 +43,7 @@ export function deviceStore<T>(key: string, empty: T, parse: (raw: unknown) => T
   const read = (): DeviceSnapshot<T> => {
     try {
       const raw = window.localStorage.getItem(key);
-      return { value: raw ? parse(JSON.parse(raw)) : empty, ready: true, writable: true };
+      return { value: raw ? parse(jsonOr(raw)) : empty, ready: true, writable: true };
     } catch {
       return { value: empty, ready: true, writable: false };
     }

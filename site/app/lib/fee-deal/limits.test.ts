@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { addBy, addCase, addCaseAt, addOwnPlace, addStep, addValues, copyCase, setStep, splitCase } from "./edits/case";
 import { splitAt } from "./edits/stage";
 import { addFee, setPick } from "./edits/deal";
-import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX, dealBreach, feeBreach, held, takeRefusal } from "./limits";
+import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX, dealBreach, feeBreach, held, metLimit, takeRefusal } from "./limits";
 import { packDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type Case, type CasesFee, type Fee, type FeeDeal, type SlimFee, type Stage } from "./model";
 
@@ -40,6 +40,7 @@ const roundTrip = (d: FeeDeal) => readDeal(JSON.parse(JSON.stringify(d)));
 /** That an edit left `fee` as it was and met `limit`; the mark is said once. */
 function refused(fee: Fee, after: Fee, limit: string) {
   expect(after).toBe(fee);
+  expect(metLimit(fee)).toBe(limit);
   expect(takeRefusal(fee)).toBe(limit);
   expect(takeRefusal(fee)).toBeNull();
 }

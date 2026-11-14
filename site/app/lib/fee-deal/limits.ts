@@ -75,6 +75,9 @@ export function takeRefusal(fee: Fee): Limit | null {
   return limit;
 }
 
+/** The limit an edit just met on `fee`, handed back unchanged, or null, leaving the mark for the page to say (`takeRefusal`). */
+export const metLimit = (fee: Fee): Limit | null => marks.get(fee) ?? null;
+
 /** An edit's result where it passes no limit `before` did not; else `before` itself, marked with the limit (`refuse`). */
 export function held<F extends Fee>(before: F, after: F): F {
   if (after === before) return after;

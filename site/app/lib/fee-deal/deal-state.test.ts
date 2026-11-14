@@ -52,6 +52,12 @@ describe("a stored deal the page cannot open", () => {
     dealStore.update((ds) => ds.filter((d) => d.id !== "deal-a"));
     expect(JSON.parse(dev.kept.get(DEALS_KEY)!).deals.map((d: FeeDeal) => d.id)).toEqual(["deal-b", "deal-later"]);
   });
+  it("is kept as stored where the stored text is not even JSON", () => {
+    dev.kept.set(DEALS_KEY, "{cut sh");
+    dealStore.update((ds) => savedWith(ds, deal("deal-b"), "2026-11-14"));
+    expect(unreadDeals()).toBe(1);
+    expect(JSON.parse(dev.kept.get(DEALS_KEY)!).deals.at(-1)).toBe("{cut sh");
+  });
   it("survives an import that writes the deals", () => {
     dev.kept.set(DEALS_KEY, JSON.stringify({ version: 1, deals: [later] }));
     expect(writeSideStores(dev.storage, { ...emptySide(), deals: [deal("deal-a")] })).toBe(true);
