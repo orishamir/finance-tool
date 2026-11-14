@@ -117,6 +117,20 @@ export function amountOpens(r: Pick<DepositTerms, "amount_range">, amount: numbe
 }
 
 /**
+ * F-108: an amount the offer's unknown bound leaves undecided, which is unknown at the offer and never closed: above the minimum where the
+ * maximum is recorded with no number (Yahav's one-year fixed deposit from 50,000 ₪ at 60,000 ₪), and at or below a known maximum (any
+ * amount where there is none) where the minimum is so recorded. False where the amount opens the offer or the known bounds shut it.
+ */
+export function amountUnknown(r: Pick<DepositTerms, "amount_range">, amount: number): boolean {
+  if (amountOpens(r, amount)) return false;
+  const min = r.amount_range.min.value;
+  const max = r.amount_range.max;
+  const maxKnown = max === null || typeof max.value === "number";
+  if (typeof min !== "number") return max === null || typeof max.value !== "number" || amount <= max.value;
+  return amount > min && !maxKnown;
+}
+
+/**
  * F-108 The best offer an amount opens. Among the offers given (the caller's set: one bank's deposits of one term and kind of rate),
  * those the amount opens (`amountOpens`) whose printed rate is a number; of them the highest rate, and of two at that rate the smaller
  * `id`, so the pick never rests on the order the files are read in. Null when the amount opens none.

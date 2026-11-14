@@ -1,0 +1,130 @@
+{
+  "id": "hapoalim-pikadon-3-shanim-kavua",
+  "bank": "hapoalim",
+  "names": {
+    "447": [
+      "פיקדון ל 3 שנים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון ל 3 שנים",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 36,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'המידע נכון ל-15.11.2026 ולפני חישוב מס במקור', שורת 'פיקדון ל 3 שנים' (קבועה, ללא הצמדה), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-14",
+    "effective_from": "2026-11-15",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14"
+    ],
+    "state": "sourced",
+    "notes": "Printed as 'פיקדון ל 3 שנים'; recorded as 36 months, the period of a three-year deposit (directive 447 Annex A, BANK-14)."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2.5,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'המידע נכון ל-15.11.2026 ולפני חישוב מס במקור', שורת 'פיקדון ל 3 שנים' (קבועה, ללא הצמדה), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-14",
+    "effective_from": "2026-11-15",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax as printed ('2.5%'). Row 'פיקדון ל 3 שנים': rate type 'קבועה', linkage 'ללא הצמדה', amount 'החל מ-1000 ₪', break 'אין אפשרות לשבירת הפיקדון', renewal '-' / '-', exit points 'קיימת' 'מ 25 חודש ובכל יום בהמשך לפי תנאי העסקה', common-deposit rate '-', remark '-', deposit method '-'. The table prints no deposit channel. This row as printed: 'החל מ-1000 ₪': '2.5%'. Read 2026-11-14 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), whose message reads 'המידע נכון ל-15.11.2026 ולפני חישוב מס במקור', the next business day after the read (a Saturday). The read of 2026-11-09 printed '2.55%' on this row; every other value of the row is unchanged."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 1000.0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+        "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'המידע נכון ל-15.11.2026 ולפני חישוב מס במקור', שורת 'פיקדון ל 3 שנים' (קבועה, ללא הצמדה), 'טווח סכום להפקדה'",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-15",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-1000 ₪'."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירת הפיקדון' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": null,
+    "first_after_months": 25
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "אפשר למשוך את הכסף מהחודש ה-25 ובכל יום אחריו, לפי תנאי העסקה.",
+  "snapshot": "2026-11-14",
+  "source": {
+    "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+    "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', 'המידע נכון ל-15.11.2026 ולפני חישוב מס במקור', טבלת הפיקדונות המקובלים",
+    "publisher": "Bank Hapoalim B.M.",
+    "strength": "institution"
+  }
+}

@@ -127,11 +127,13 @@ function setFigure(p: Price, figure: Figure, n: Num | undefined): Price {
     if (n === undefined) delete next[figure];
     return next;
   }
-  if (!isBounded(p)) return p;
   if (figure === "cap") {
+    // a share's, a sum per unit's or a sum per action's percent maximum
+    if (!isBounded(p) && p.form !== "perAction") return p;
     const { cap: _c, ...rest } = p;
-    return n === undefined ? rest : { ...rest, cap: n };
+    return (n === undefined ? rest : { ...rest, cap: n }) as Price;
   }
+  if (!isBounded(p)) return p;
   if (!p.flat) return p;
   return { ...p, flat: { ...p.flat, [figure === "flat" ? "amount" : "upTo"]: n ?? blankFigure() } };
 }
@@ -154,8 +156,8 @@ export function figureOf(p: Price, figure: Figure): Num | undefined {
     return t.form === "perAction" ? undefined : figure === "thirdMin" ? t.min : t.max;
   }
   if (figure === "min" || figure === "max") return isBounded(p) || p.form === "held" ? p[figure] : undefined;
+  if (figure === "cap") return isBounded(p) || p.form === "perAction" ? p.cap : undefined;
   if (!isBounded(p)) return undefined;
-  if (figure === "cap") return p.cap;
   return figure === "flat" ? p.flat?.amount : p.flat?.upTo;
 }
 
@@ -188,7 +190,7 @@ function owned(p: Price): Price {
     case "sum":
       return { ...p, amount: own(p.amount), ...refund };
     case "perAction":
-      return { ...p, amount: own(p.amount), ...parts(p), ...refund };
+      return { ...p, amount: own(p.amount), ...opt("cap", p.cap), ...parts(p), ...refund };
     default:
       return p;
   }
@@ -201,7 +203,7 @@ const ownThird = (t: ThirdPrice, own: (n: Num) => Num): ThirdPrice =>
 function partsInto(p: Price, next: Price): Price {
   if (p.form === "free" || next.form === "free") return next;
   const linked = { ...(p.offset ? { offset: p.offset } : {}), ...(p.refund ? { refund: p.refund } : {}) };
-  const onAction = isOnAction(p) && isOnAction(next) ? { ...(p.discount ? { discount: p.discount } : {}), ...(p.third ? { third: p.third } : {}), ...(p.notes ? { notes: p.notes } : {}) } : {};
+  const onAction = isOnAction(p) && isOnAction(next) ? { ...(p.currency ? { currency: p.currency } : {}), ...(p.cap ? { cap: p.cap } : {}), ...(p.discount ? { discount: p.discount } : {}), ...(p.third ? { third: p.third } : {}), ...(p.notes ? { notes: p.notes } : {}) } : {};
   return { ...next, ...linked, ...onAction } as Price;
 }
 
@@ -209,8 +211,10 @@ function partsInto(p: Price, next: Price): Price {
  * A price in another form: the rate or the sum typed so far carries over where the new form has the same kind of figure (a share to a
  * share, a sum per period or per action to the other), as the person's own figure (`owned`); between a share of an action and a sum per
  * unit, whose figures differ in kind, the bounds, the cap, the flat price and their currency carry over instead, since they price the
- * action the same way in both. A discount, a third party's fee and notes carry over between the forms on an action, and an offset and a
- * refund between any two. The rest starts empty.
+ * action the same way in both. Between any two forms on an action the currency of the sums and the percent maximum carry over (a sum per
+ * unit in dollars under 2% becomes a sum per action in dollars under 2%), and so do a discount, a third party's fee and notes; an offset and
+ * a refund carry over between any two.
+ * The rest starts empty.
  */
 export function withForm(p: Price, form: FormId): Price {
   if (p.form === form) return p;
@@ -696,7 +700,18 @@ export type PartId =
   | "sale";
 
 /** The form a price part sets: the main figure's parts are forms of the price. */
-const FORM_OF: Partial<Record<PartId, FormId>> = { share: "action", perUnit: "perUnit", perAction: "perAction", held: "held", sum: "sum", free: "free" };
+export const FORM_OF: Partial<Record<PartId, FormId>> = { share: "action", perUnit: "perUnit", perAction: "perAction", held: "held", sum: "sum", free: "free" };
+
+/**
+ * A price as a fee of `kind` may hold it (`FEE_SHAPES`): a currency carried into a form whose sums the fee keeps in shekels is dropped, and
+ * so is a percent maximum carried into a form that has none.
+ */
+function inShape(kind: FeeKindId, p: Price): Price {
+  if (p.form === "free") return p;
+  const fields = FEE_SHAPES[kind].fields[p.form] ?? [];
+  const { currency, cap, ...rest } = p as Price & { currency?: BoundCurrency; cap?: Num };
+  return { ...rest, ...(currency !== undefined && fields.includes("currency") ? { currency } : {}), ...(cap !== undefined && fields.includes("cap") ? { cap } : {}) } as Price;
+}
 
 /**
  * Where a part goes, and what it needs: the case (`caseId`; a fee with cases is edited in its first where none is named), the side and the
@@ -713,8 +728,8 @@ export interface PartAt {
 }
 
 /**
- * A fee with a part added (`on`) or taken away, as the toolbox and the open case's ✕ do: a form of the price (its figure carried where it
- * can, `withForm`; taking one away makes the price free), a discount, a third party's fee, a later price (from `month`; taken away, the
+ * A fee with a part added (`on`) or taken away, as the toolbox and the open case's ✕ do: a form of the price (what it can carries over,
+ * `withForm`, but a currency the fee keeps in shekels for that form; taking one away makes the price free), a discount, a third party's fee, a later price (from `month`; taken away, the
  * prices after the one named go, `holdOn`), a bound or a percent maximum (with its figure), a flat price, an offset (against `against`), a
  * refund, a note, or a sale priced apart. A part that needs what `at` does not give, or a price that cannot take it, leaves the fee as it
  * is.
@@ -723,7 +738,7 @@ export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: Pa
   const { caseId, side = "buy", k = 0 } = at;
   const edit = (fn: (p: Price) => Price) => editPrice(fee, side, k, fn, caseId);
   const form = FORM_OF[part];
-  if (form) return edit((p) => (on ? withForm(p, form) : p.form === form ? { form: "free" } : p));
+  if (form) return edit((p) => (on ? inShape(fee.kind, withForm(p, form)) : p.form === form ? { form: "free" } : p));
   switch (part) {
     case "discount":
       return edit((p) => withDiscount(p, on));

@@ -6,19 +6,18 @@
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
 import { guidePath, trackBrowserPath } from "../../lib/site-paths";
 import { company as companyCopy, trackBrowser as t } from "../../copy";
-import type { SiteValue } from "../../lib/value";
 import { useAddressParams } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
-import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortInForce, sortTracks, sortableIn, tracksPhrase, type SortId, type TbData, type TbGroup } from "../../lib/track-browser";
+import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortInForce, sortTracks, sortableIn, trackProductIds, tracksPhrase, type SortId, type TbData, type TbGroup } from "../../lib/track-browser";
 import { GoLink, SelectField, cx, useFlip } from "../kit";
 import { Num, Term } from "../provenance";
 import { fmt } from "../../lib/format";
-import { CompanySize, TrackList } from "./list";
+import { CapLead, CompanySize, TrackList, type ProductCaps } from "./list";
 
 /** As on the tracks page: the first rows at once, the rest the moment after. */
 const FIRST_ROWS = 12;
 
-export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: { balance: SiteValue | null; deposit: SiteValue | null } | null; /** The lines under the list on a phone, whose rows have no heads (the caps, the direct expenses); told whether the line above the list
+export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: ProductCaps | null; /** The lines under the list on a phone, whose rows have no heads (the caps, the direct expenses); told whether the line above the list
    *  already says the deposit fee's cap, so the foot leaves it out. */ foot: (depositCapAbove: boolean) => ReactNode }) {
   const view = useMemo(() => buildProductView(data, product) ?? null, [data, product]);
   const { hydrated } = useAddressParams();
@@ -61,7 +60,7 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
         {/* the year and the date stand on a phone only: from md the fee heads and the caption over the columns say them */}
         <p className={cx("text-sm text-muted-foreground", !depositFigure && !capAbove && "md:hidden")}>
           <span className="md:hidden">
-            {feeYear && t.feeAverage(feeYear)}
+            {feeYear && t.feeAverage(feeYear, view.dataset === "pensia-net")}
             {t.dates(fmt.period(data.reportPeriod))}{" "}
           </span>
           {depositFigure ? (
@@ -70,7 +69,7 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
               {capAbove && (
                 <>
                   {"; "}
-                  {companyCopy.fees.cap} <Num value={capAbove} />
+                  <CapLead from={caps?.from} /> <Num value={capAbove} />
                 </>
               )}
               .
@@ -78,7 +77,7 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
           ) : (
             capAbove && (
               <>
-                {companyCopy.fees.cap} <Num value={capAbove} /> {companyCopy.fees.capDeposits}.
+                <CapLead from={caps?.from} /> <Num value={capAbove} /> {companyCopy.fees.capDeposits}.
               </>
             )
           )}
@@ -107,7 +106,8 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
       </div>
       {!view.noPage && (
         <p className="flex flex-wrap gap-x-6">
-          <GoLink to={trackBrowserPath(view.id)}>{t.inAll(view.name)}</GoLink>
+          {/* a self-directed (IRA) fund has a guide but no tracks page: the tracks page lists it under its regulator type */}
+          {trackProductIds.includes(view.id) && <GoLink to={trackBrowserPath(view.id)}>{t.inAll(view.name)}</GoLink>}
           <GoLink to={guidePath(view.id)}>
             {t.count.whatIs} {view.name}
           </GoLink>

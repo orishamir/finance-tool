@@ -1,12 +1,13 @@
 // The line a change that lost something leaves where it happened (a fee taken away, a fee filled from a price list, a stage taken away):
 // what happened, and "ביטול", which puts the deal back as it was (lib/fee-deal/undo.ts). It takes the focus when it appears for the change
-// just made (`take`), not when it is drawn again for one made before (a panel opened again on its fee). Its time to
+// just made (`take`), brought into view, not when it is drawn again for one made before (a panel opened again on its fee). Its time to
 // go stops while the focus is in it or the pointer is over it (`onHold`); when it goes while it holds the focus, the focus moves to what
 // took its place (`refocus`), never to the page's body.
 import { useRef, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Button, Card, cx } from "../kit";
+import { bringIntoView } from "./in-view";
 
 export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUndo, height, as = "li", className }: {
   /** What happened, in words. */
@@ -35,7 +36,11 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
   // a layout effect: its cleanup runs before the line leaves the page, while the focus is still in it
   useIsoLayoutEffect(() => {
     const el = line.current;
-    if (take()) el?.querySelector("button")?.focus({ preventScroll: true });
+    // the line just made takes the focus where the reader can see it, above a phone's pinned sheet too
+    if (take()) {
+      el?.querySelector("button")?.focus({ preventScroll: true });
+      bringIntoView(el);
+    }
     return () => {
       const l = latest.current;
       const held = !!el && el.contains(document.activeElement);

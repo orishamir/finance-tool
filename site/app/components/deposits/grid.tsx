@@ -18,7 +18,7 @@ const DARK_TEXT_FROM = 0.58;
 function Cell({ cell, kind, top, best, bankName, canGo, onGo }: { cell: DbCell; kind: RateKind; top: number; best: boolean; bankName: string; canGo: boolean; onGo: () => void }) {
   const frame = cx("relative w-full min-h-12 rounded-md flex flex-col items-center justify-center text-center px-0.5 py-1", best && "ring-2 ring-foreground ring-inset");
   const rate = cell.rate ? Number(cell.rate.value) : null;
-  const words = rate === null ? (cell.gap === "none" ? t.grid.gap.none : cell.gap === "otherKind" ? t.grid.gap.otherKind[kind] : cell.gap === "notAtAmount" ? t.grid.gap.notAtAmount : t.grid.gap.otherOffers) : null;
+  const words = rate === null ? (cell.gap === "none" ? t.grid.gap.none : cell.gap === "otherKind" ? t.grid.gap.otherKind[kind] : cell.gap === "otherOffers" ? t.grid.gap.otherOffers : t.grid.gap[cell.gap!]) : null;
   const a = rate !== null ? strength(rate, top) : 0;
   const dark = a >= DARK_TEXT_FROM;
   const body = (

@@ -247,3 +247,16 @@ describe("billions", () => {
     expect(fmt.nisBillions(-2_300_000_000)).toBe("\u200e\u22122.30 מיליארד ₪");
   });
 });
+
+describe("a dollar, euro or pound amount", () => {
+  it("shows no cents when whole, and keeps the cents a price list prints", () => {
+    expect(fmt.usd(60000)).toBe("60,000 $");
+    expect(fmt.usd(0.35)).toBe("0.35 $");
+    expect(fmt.eur(25)).toBe("25 €");
+    expect(fmt.gbp(5.5)).toBe("5.50 £");
+  });
+  it("a law's amount in dollars reads whole, and a billion or more reads short", () => {
+    expect(formatValue(60000, "usd")).toBe("60,000 $");
+    expect(formatValue(22_700_000_000, "usd")).toBe("22.70 מיליארד $");
+  });
+});

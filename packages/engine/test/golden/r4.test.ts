@@ -642,16 +642,12 @@ describe("F-65 fund variants on a five-row fixture list", () => {
     expect(r.run).toBeUndefined();
   });
 
-  it("an accumulating foreign-domiciled fund is computed, labelled a reading, listed and not ranked (G-18)", () => {
+  it("a foreign fund traded on TASE is not evaluated, its reason the open rule its tax index rests on (F-04, TXF-04, G-35)", () => {
     const r = get("tase:9000004");
-    expect(r.kind).toBe("listed-not-ranked");
-    expect(r.reasons[0]).toMatchObject({ code: "gap", gapIds: ["G-18"] });
-    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
-    expect(r.run!.real).toBeGreaterThan(0);
+    expect(r.kind).toBe("not-evaluated");
+    expect(r.reasons).toEqual([{ code: "rule-open", ruleIds: ["TXF-04"], gapIds: [] }]);
+    expect(r.run).toBeUndefined();
     expect(r.rank).toBeUndefined();
-    // Bought in shekels on TASE: no FX conversion line.
-    expect((r.plan as { input: SecuritiesInput }).input.tariff.currency).toBeUndefined();
-    expect(r.run!.fees.fx).toBe(0);
   });
 
   it("a foreign fund traded abroad runs in its currency with the FX start rate, its distributions and W-8BEN-based withholding", () => {
@@ -679,7 +675,7 @@ describe("F-65 fund variants on a five-row fixture list", () => {
   it("coverage line (F-83): every candidate once, the not-held-abroad group as one line (G-29)", () => {
     const c = result.coverage;
     expect(c.considered).toBe(6);
-    expect(c.counts).toEqual({ "not-eligible": 0, excluded: 0, "not-evaluated": 2, "listed-not-ranked": 1, ranked: 3 });
+    expect(c.counts).toEqual({ "not-eligible": 0, excluded: 0, "not-evaluated": 3, "listed-not-ranked": 0, ranked: 3 });
     expect(c.invariant.ok).toBe(true);
     const group = c.notRanked.find((n) => n.id === "group:foreign-traded-abroad")!;
     expect(group.reasons[0]).toMatchObject({ code: "gap", gapIds: ["G-29"] });

@@ -29,12 +29,14 @@ describe("current account page", () => {
   const html = renderToString(inProviders(p, createElement(SignatureFrame, { id: "current-account", data: p.signature!, today: p.today, timeline: null })));
   const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
 
-  it("leads with the loss: idle money is worth less in today's money, and most banks pay nothing", () => {
+  it("leads with the loss: idle money is worth less in today's money, and the most common rate is nothing", () => {
     expect(text).toContain("בעו״ש שווים");
     expect(text).toContain("8,203");
     expect(text).toContain("1,797");
-    expect(text).toContain("רוב הבנקים לא משלמים ריבית על עו״ש");
-    expect(text).toContain("רוב הבנקים משלמים בעו״ש");
+    // 4 of the 8 banks print 0%: half, so "most" is not said (F-85 is the most common rate)
+    expect(text).toContain("הריבית הנפוצה ביותר על עו״ש היא אפס");
+    expect(text).toContain("הריבית הנפוצה ביותר בעו״ש היא");
+    expect(text).not.toContain("רוב הבנקים");
   });
 
   it("no longer names Leumi or the conditions switch", () => {
@@ -64,8 +66,8 @@ describe("current account page", () => {
 
   it("says how many banks pay nothing inside the banks' table, not under the headline (founder, 2026-11-08)", () => {
     const fold = html.slice(html.search(/<details[^>]*id="current-account-banks"/));
-    expect(fold.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ")).toMatch(/רוב הבנקים משלמים בעו״ש/);
-    expect(html.slice(0, html.search(/<details[^>]*id="current-account-banks"/)).replace(/<[^>]+>/g, " ")).not.toMatch(/רוב הבנקים משלמים בעו״ש/);
+    expect(fold.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ")).toMatch(/הריבית הנפוצה ביותר בעו״ש היא/);
+    expect(html.slice(0, html.search(/<details[^>]*id="current-account-banks"/)).replace(/<[^>]+>/g, " ")).not.toMatch(/הריבית הנפוצה ביותר בעו״ש היא/);
   });
 });
 
@@ -88,5 +90,34 @@ describe("the worth-knowing row of the current account", () => {
   });
   it("is absent for a page with no bank records", () => {
     expect(accountWorthRow({ ...p.signature!, banks: [] })).toBeNull();
+  });
+});
+
+describe("the pension visuals", () => {
+  const textOf = (id: string) => {
+    const p = buildGuidePage(id)!;
+    const html = renderToString(inProviders(p, createElement(SignatureFrame, { id, data: p.signature!, today: p.today, timeline: null })));
+    return html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
+  };
+  it("says on the general fund's page that none of the minimum deposit reaches it, with the comprehensive fund's ceiling, and shows no balance", () => {
+    const text = textOf("pension-general");
+    expect(text).toContain("לקרן הכללית לא מגיע מההפקדה הזו כלום");
+    expect(text).toContain("5,645.29");
+    expect(text).not.toContain("מה שנצבר בקרן אחרי");
+    expect(text).not.toContain("דמי הביטוח בקרן הפנסיה");
+  });
+  it("says what the balance assumes: deposits flat in shekels, and no insurance until it is entered", () => {
+    const text = textOf("provident-for-annuity");
+    expect(text).toContain("ההפקדות באותו סכום בשקלים בכל השנים");
+    expect(text).not.toContain("בשתי הדרכים");
+    // a provident fund for annuity has no insurance, so the line does not say it is left out
+    expect(text).not.toContain("בלי דמי ביטוח");
+  });
+  it("does not say when the credit arrives: payroll or the annual return is an open question (TXP OQ6)", () => {
+    for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
+      const text = textOf(id);
+      expect(text, id).toContain("עוד לא ידוע");
+      expect(text, id).not.toContain("שמחושב בדוח השנתי");
+    }
   });
 });

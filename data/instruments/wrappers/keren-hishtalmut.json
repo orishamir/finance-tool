@@ -113,7 +113,7 @@
     "blocked_by": [],
     "labels": [
       "institution source: real base of the 25% on gains from deposits above the benefited amount (TXH-11)",
-      "early withdrawal (F-47) pending R2: taxed at marginal rates, 47% withheld (TXH-13, TXH-15)"
+      "early withdrawal (F-47), which the person opts into (B3): taxed at marginal rates, 47% withheld (TXH-13, TXH-15); the linkage part of the gains taxed is a reading for an employee (TXH-13)"
     ]
   },
   "lawful_exit": {
@@ -161,7 +161,7 @@
       "state": "sourced",
       "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The documents and channel each manager asks for are its own (Altshuler Shaham's: KH-27)."
     },
-    "text": "the money becomes free 6 years after the first payment date (3 years at retirement age, or for the member's study); withdrawing earlier is allowed but taxed as work income on the employer's benefited deposits and at the rates for income not from personal effort on the gains, with 47% withheld (TXH-13, TXH-15; method F-47, pending R2, so the site does not compute it yet); the 2025 to 2027 proposals to narrow the exemption are not law (TXH-22)"
+    "text": "the money becomes free 6 years after the first payment date (3 years at retirement age, or for the member's study); withdrawing earlier is allowed but taxed as work income on the employer's benefited deposits and at the rates for income not from personal effort on the gains, with 47% withheld (TXH-13, TXH-15; method F-47, which the study fund visual computes when the year picked is before the lock ends); the 2025 to 2027 proposals to narrow the exemption are not law (TXH-22)"
   },
   "switch_is_tax_event": {
     "value": false,

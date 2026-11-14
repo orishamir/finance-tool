@@ -130,12 +130,15 @@ export interface VisualProps {
   today: string;
 }
 
+/** More than half: "רוב הבנקים" is said only then (4 of 8 is half, not most). */
+export const isMajority = (count: SiteValue, of: SiteValue) => Number(count.value) * 2 > Number(of.value);
+
 /** The rate most of the collected banks pay on a current account (F-85), in one sentence: the current-account page and the notes under the
  *  daily money-market fund's table say it in the same words. */
 export function CommonRateLine({ rate, count, of }: { rate: SiteValue; count: SiteValue; of: SiteValue }) {
   return (
     <>
-      {copy.common.commonRate.before} <Num value={rate} />: <Num value={count} /> {copy.common.commonRate.of} <Num value={of} /> {copy.common.commonRate.after}
+      {isMajority(count, of) ? copy.common.commonRate.before : copy.common.commonRate.beforeMode} <Num value={rate} />: <Num value={count} /> {copy.common.commonRate.of} <Num value={of} /> {copy.common.commonRate.after}
     </>
   );
 }

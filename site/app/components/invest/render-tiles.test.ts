@@ -88,16 +88,16 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(crowned(sp3, head3, theta)).toBe(false);
   });
   it("the tied pair neither chosen nor set beside it is named in the fees panel, with its number where another fund has its name (fourth pass)", () => {
-    // MSCI ACWI, 100,000 now, 5,000 a month, ten years: three pairs within the threshold, the third iShares in Tel Aviv, whose name the
-    // same fund abroad has too (scanned over 6 x 5 x 7 plans on every index, with whole units, F-109)
-    const short: WorkbenchInputs = { ...base, amountNow: 100000, monthly: 5000, years: 10, values: { ...base.values, amount: entered(100000, "nis", t), monthly: entered(5000, "nis_per_month", t), years: entered(10, "years", t) } };
+    // MSCI ACWI, 50,000 now, 5,000 a month, three years: three pairs within the threshold, the third iShares abroad, whose name the
+    // same fund in Tel Aviv has too (scanned over 5 x 4 x 6 plans on the four foreign indices, with whole units, F-109)
+    const short: WorkbenchInputs = { ...base, amountNow: 50000, monthly: 5000, years: 3, values: { ...base.values, amount: entered(50000, "nis", t), monthly: entered(5000, "nis_per_month", t), years: entered(3, "years", t) } };
     const nq = buildInvest({ bundle, index: indexById(bundle, "index-msci-acwi")!, plan: short });
     const h = pickOfHeadline(nq)!;
     expect(tieCount(nq, h, theta)).toBe(3);
     const out = shown(html(createElement(ReceiptAndFees, { view: nq, bundle, plan: short, pick: h, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
     const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
-    expect(line).toContain(`${invest.pair.tieThird} פסגות ${invest.pair.tieWith} iShares MSCI ACWI UCITS ETF USD (Acc)`);
-    expect(line).toContain("1159235");
+    expect(line).toContain(`${invest.pair.tieThird} Interactive Brokers ${invest.pair.tieWith} iShares MSCI ACWI UCITS ETF USD (Acc)`);
+    expect(line).toContain("IE00B6R52259");
     // what makes a tie is said where the tie is named, with P-01 read from data/parameters
     const rule = line.slice(line.indexOf(invest.pair.tieRule.before.trim()));
     expect(rule.replace(/[\u2066-\u2069\u200e\u200f]/g, "")).toContain(`${invest.pair.tieRule.before.trim()}${fmt.pct((bundle.p01.value as { value: number }).value)}${invest.pair.tieRule.after}`);

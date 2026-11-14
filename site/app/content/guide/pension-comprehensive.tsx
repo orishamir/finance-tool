@@ -1,11 +1,11 @@
 // Guide prose for קרן חדשה מקיפה (new comprehensive pension fund). Same shape and register as
 // kupat-gemel-lehashkaa.tsx; checked against the rule base (PEN, TXP, PF, REG); each block ends with the
 // rules it rests on. NEW copy for the founder to review.
-import { Fragment } from "react";
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, When } from "../../components/kit";
+import { disabilityRetirement, ExemptShare } from "./pension-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -19,7 +19,7 @@ export const content: GuideContent = {
         ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, ומהמעסיק <N v={figure("PEN-03", "employer_pct")} /> ועוד <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, מהשכר עד <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
       </p>
       <p className="max-w-measure">
-        הכסף נחסך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן כוללת גם ביטוח נכות וביטוח <Term id="שאירים">שאירים</Term>, ודמי הביטוח יורדים מהחשבון. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה.
+        הכסף נחסך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן כוללת גם ביטוח נכות וביטוח <Term id="שאירים">שאירים</Term>, ודמי הביטוח יורדים מהחשבון. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה, ולמי שהיה זכאי לפני המועד שבחוק החלק גדול יותר.
       </p>
       <RulesLine ids={["PEN-01", "PEN-03", "PEN-04", "PEN-05", "PEN-11", "PEN-15", "PEN-18", "PEN-26", "PEN-27"]} />
     </>
@@ -37,11 +37,8 @@ export const content: GuideContent = {
   ),
   switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. במעבר חודשי הביטוח נספרים, חוץ מחריגים.",
   switchRules: ["PEN-17", "PF-23", "SW-22", "SW-12", "PF-28"],
-  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה", "קרן פנסיה", "צמוד למדד המחירים לצרכן", "עמית", "גיל הפרישה", "הליך תחרותי", "דמי ניהול", "רשות שוק ההון ביטוח וחיסכון", "חברה מנהלת", "משיכה", "הפקדות המעסיק", "השלמת תשואה", "קצבה", "השכר הממוצע במשק", "אינפלציה"],
+  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה", "קרן פנסיה", "צמוד למדד המחירים לצרכן", "עמית", "גיל הפרישה", "הליך תחרותי", "דמי ניהול", "רשות שוק ההון ביטוח וחיסכון", "חברה מנהלת", "משיכה", "הפקדות המעסיק", "השלמת תשואה", "קצבה", "השכר הממוצע במשק", "אינפלציה", "תקרת הפקדה"],
   afterTax: ({ figure }) => {
-    // the exempt share the law already sets for the years after this one (TXP-14's figure by tax year), each with its source
-    const share = figure("TXP-14", "exempt_share");
-    const later = share?.tax_year ? Array.from({ length: 10 }, (_, i) => String(share.tax_year! + 1 + i)).flatMap((y) => { const v = figure("TXP-14", `exempt_share@${y}`); return v ? [{ y, v }] : []; }) : [];
     return (
     <>
       <p className="max-w-measure">
@@ -55,23 +52,9 @@ export const content: GuideContent = {
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>.</span> שאלה פתוחה <IdRef id="PEN OQ7" end="." />
       </Callout>
       <p className="max-w-measure">
-        קצבה אפשר לקבל מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל הפטור ממס מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל מדורג לפי שנת הלידה.
+        קצבה אפשר לקבל מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל הפטור ממס מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל מדורג לפי שנת הלידה. {disabilityRetirement}
       </p>
-      <p className="max-w-measure">
-        הפטור הוא סכום, זהה לכל מי שזכאי, ולא חלק מהקצבה של כל אדם: <N v={share} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש על <Term id="קצבה מזכה">קצבה מזכה</Term>.
-        {later.length > 0 && (
-          <>
-            {" "}השיעור עולה בחוק:{" "}
-            {later.map(({ y, v }, i) => (
-              <Fragment key={y}>
-                {i > 0 && (i === later.length - 1 ? " ו־" : ", ")}
-                <N v={v} /> ב־<bdi>{y}</bdi>
-              </Fragment>
-            ))}
-            .
-          </>
-        )}
-      </p>
+      <ExemptShare figure={figure} />
       <p className="max-w-measure">
         משיכה שלא כקצבה אפשרית רק במקרים מסוימים. החוק קורא לה <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" end="." /> יש חריגים, כמו הוצאות רפואיות גבוהות.
       </p>
@@ -86,7 +69,7 @@ export const content: GuideContent = {
         היתרה שלכם משתנה גם בלי קשר להשקעות. כל רבעון הקרן מעדכנת את כל החשבונות לפי איזון אקטוארי: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם דמי הביטוח יורדים מהחיסכון כל חודש.
       </p>
       <p className="max-w-measure">
-        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים המדינה משלימה <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>, והיעד נבדק כל חמש שנים <RuleRef id="PEN-18" end="." /> השאר עולה ויורד עם המסלול.
+        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, המדינה משלימה <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>, והיעד נבדק כל חמש שנים <RuleRef id="PEN-18" end="." /> השאר עולה ויורד עם המסלול.
       </p>
       <RulesLine ids={["PF-29", "REG-18", "REG-19", "REG-21", "PEN-18", "PEN-19", "PEN-15"]} />
     </>

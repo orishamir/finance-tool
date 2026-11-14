@@ -10,7 +10,25 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, feeMarkTerms, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { Num, useProvenanceData } from "../provenance";
-import { ExposureCell, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, SortNote, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, FeeNum, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, SortNote, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+
+/** A product's legal fee caps on a company's page (its record's `fee_caps`), and the age from which they bind its member where they bind
+ *  only from one (lib/company-page.ts `CAPS_FROM_AGE`). */
+export interface ProductCaps {
+  balance: SiteValue | null;
+  deposit: SiteValue | null;
+  from?: SiteValue | null;
+}
+
+/** The words before a cap's figure: "התקרה בתקנות:", or with the age it binds from ("התקרה בתקנות אחרי גיל 21:"). */
+export function CapLead({ from }: { from?: SiteValue | null }) {
+  if (!from) return <>{companyCopy.fees.cap}</>;
+  return (
+    <>
+      {companyCopy.fees.capAfterAge} <Num value={from} display={String(from.value)} />:
+    </>
+  );
+}
 
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
@@ -232,7 +250,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
  *  row of the group. `fold`: the page holds which groups are open (the track browser's companies, folded but the first); without it every
  *  group starts open. `foldRows`: on a phone a row is one line that opens in place (a long list under the companies).
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, caps, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; /** A company page's shorter table: the product's legal caps (its record's `fee_caps`), each the caption over the fee head it limits. */ caps?: { balance: SiteValue | null; deposit: SiteValue | null } | null; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, caps, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; /** A company page's shorter table: the product's legal caps (its record's `fee_caps`), each the caption over the fee head it limits. */ caps?: ProductCaps | null; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[], note?: string, raised?: boolean) =>
     sortable.has(id) ? (
@@ -247,7 +265,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   // what the column leaves out (the direct expenses, with their card and its rules)
   const provenance = useProvenanceData();
   const wrappers = (term: string) => provenance?.terms[term]?.wrapperIds;
-  const average = feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear;
+  // a pension track's fees are its fund's, the same on every track of the fund (CAT-39): the note under the fee head says so
+  const average = (feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear) + (view.dataset === "pensia-net" ? `, ${trackCopy.feeWhole}` : "");
   const feeHead = (id: SortId, label: string, side: "savings" | "deposit") => {
     const terms = side === "savings" ? [...feeMarkTerms(side, view.id, wrappers), HELP_TERMS.direct] : feeMarkTerms(side, view.id, wrappers);
     return (
@@ -266,7 +285,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   // a cap over the fee head it limits, its figure opening its source (the regulations)
   const capHead = (cap: SiteValue) => (
     <span className="whitespace-nowrap">
-      {companyCopy.fees.cap} <Num value={cap} />
+      <CapLead from={caps?.from} /> <Num value={cap} />
     </span>
   );
   // one date over the five columns whose figures share it (the exposure, the yields, the assets)
@@ -375,8 +394,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
             cells: compact ? [
               <CompactName x={x} notes={notes} />,
               <TrackFundId fundId={x.id} dataset={x.dataset} />,
-              <span className="font-semibold"><Num value={x.fee} size="cell" /></span>,
-              ...(compact === "with-deposit" ? [<Num value={x.deposit} size="cell" />] : []),
+              <span className="font-semibold"><FeeNum value={x.fee} size="cell" /></span>,
+              ...(compact === "with-deposit" ? [<FeeNum value={x.deposit} size="cell" />] : []),
               x.exposure?.stock ? <ShareNum value={x.exposure.stock} size="cell" wrap /> : <span className={mutedWord}>—</span>,
               x.exposure?.currency ? <ShareNum value={x.exposure.currency} size="cell" wrap /> : <span className={mutedWord}>—</span>,
               x.selfManaged ? <span className={mutedWord}>—</span> : <YieldFigure value={x.y3} track={x} years={3} size="cell" />,

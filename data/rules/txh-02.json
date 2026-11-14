@@ -23,15 +23,15 @@
         "strength": "primary"
       },
       "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31",
       "tax_year": 2026,
-      "update_rule": "fixed in law",
+      "update_rule": "set yearly",
       "rule_ids": [
         "TXH-02"
       ],
       "state": "sourced",
-      "notes": "Determining salary (\"משכורת קובעת\") cap: twice the cost-of-living-allowance ceiling as set from time to time in the coordination bureau-Histadrut agreement (Ordinance s.3(ה), p.19, no amount in the text). Not CPI-linked: s.3(ה) is not among the s.120א amounts. Value from the 2026 booklet (188,544 per year = 15,712 x 12). effective_from cleared 2026-10-25: the March 2004 date came from a Wikisource editor note, not an official text. update_rule \"fixed in law\" is the nearest value in the schema list."
+      "notes": "Determining salary (\"משכורת קובעת\") cap: twice the cost-of-living-allowance ceiling \"כפי שהוא נקבע מעת לעת\" in the coordination bureau-Histadrut agreement (Ordinance s.3(ה), p.19, no amount in the text). Not CPI-linked: s.3(ה) is not among the s.120א amounts. The amount is the one the Tax Authority's 2026 booklet gives for tax year 2026 (188,544 per year = 15,712 x 12); it changes only when the agreement's ceiling changes, and since when the current amount stands is not stated in an official text read. update_rule \"set yearly\": the site follows no rule for it and takes the Tax Authority's figure for each year; it is not fixed in the law."
     }
   },
   "il_finance_file": "tax-hishtalmut.md",

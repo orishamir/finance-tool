@@ -193,7 +193,7 @@ export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): P
     case "sum":
       return { ...of("amount", p.amount, periodSumUnit(p.every)), ...of("refund", p.refund, "nis") };
     case "perAction":
-      return { ...of("amount", p.amount, perActionUnit(fee, p.currency)), ...parts(p) };
+      return { ...of("amount", p.amount, perActionUnit(fee, p.currency)), ...opt("cap", p.cap, "pct_of_trade"), ...parts(p) };
   }
 }
 

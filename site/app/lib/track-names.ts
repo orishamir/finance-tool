@@ -15,6 +15,9 @@ const words = (s: string): string[] =>
 const SP_WRITTEN = /(?<![A-Za-z])[sS](?:1;|&)[pP](?![A-Za-z])/g;
 const mendSP = (s: string): string => s.replace(SP_WRITTEN, "S&P");
 
+/** A name, a kind or a type of the regulator's files as the site writes it, on every page that shows one (lib/data.server.ts `loadCma`). */
+export const siteTrackName = mendSP;
+
 /** Hebrew's one-letter prefixes: "לחוסכים" is "חוסכים" with a "to". */
 const PREFIXES = "לבהוכמש";
 

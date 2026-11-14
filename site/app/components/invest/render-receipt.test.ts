@@ -180,10 +180,15 @@ describe("the lists beside the receipt", () => {
     expect(out).toContain(`aria-label="${help.markLabel.replace("{about}", w.lists.accounts.sets.what)}"`);
   });
   it("a fund on an open rule is shown, not ranked: after the ranked funds of its kind, under one heading, with no spot and no tag on its row (G-18)", () => {
+    // an account that prices a fund on an open rule (an accumulating Irish fund bought abroad): the headline's house sells none abroad
+    const isOpen = (f: ReturnType<typeof allFunds>[number], house: string) => { const a = f.byHouse[house]; return !!a && "valueN" in a && a.open; };
+    const house = view.providers.find((p) => allFunds(view).some((f) => isOpen(f, p.id)))!.id;
+    const ranked = allFunds(view).find((f) => { const a = f.byHouse[house]; return !!a && "valueN" in a && !a.open; })!;
+    const pick = { house, fund: ranked.rec.id };
     const at = (f: ReturnType<typeof allFunds>[number]) => f.byHouse[pick.house];
-    const open = allFunds(view).filter((f) => { const a = at(f); return !!a && "valueN" in a && a.open; });
+    const open = allFunds(view).filter((f) => isOpen(f, house));
     expect(open.length).toBeGreaterThan(0);
-    const out = html(createElement(PairLists, { ...props, ruler: true }));
+    const out = html(createElement(PairLists, { ...props, pick, ruler: true }));
     for (const f of open) {
       const row = fundRow(out, f.rec.id);
       expect(row, f.rec.id).not.toContain(w.lists.openRow);

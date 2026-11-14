@@ -4,6 +4,9 @@
 // (F-31, or F-32 for a beneficiary member), what the fund takes from each deposit (its fee, and for the pensions an insurance cost the
 // person enters, A-17), and what the deposits grow to (the engine's pension ledger). The pension itself needs conversion factors the site
 // does not hold (PEN OQ7, G-03): "not computed yet", never a number. There is no nearest alternative: it is required for salaried people.
+// A general fund receives only the deposit above the comprehensive fund's monthly ceiling (PEN-10, PEN-08): its page splits the deposit
+// at the ceiling, and where nothing is above it, says so instead of a balance (method F-67, "The general fund"). The assumptions line
+// says what the balance assumes: deposits flat in shekels, and no insurance until it is entered.
 import { useMemo, useState } from "react";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -13,7 +16,7 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
-import { Num, RulesLine, Term } from "../provenance";
+import { IdRef, Num, RulesLine, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
@@ -32,7 +35,9 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const p05Salary = p05Number(bundle.p05, "annual_income") / 12;
   const salary = salaryPick ?? p05Salary;
   const salarySource = salaryPick !== null ? "guide" : "p05";
-  const hasInsurance = id !== "provident-for-annuity";
+  // the general fund's page: no balance, insurance or fee of its own while nothing of the deposit reaches it
+  const generalOnly = id === "pension-general";
+  const hasInsurance = id !== "provident-for-annuity" && !generalOnly;
   const [insurancePick, setInsurancePick] = useState<number | null>(null);
   const insurancePct = insurancePick;
   const yr = yearsRange(bundle);
@@ -66,6 +71,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const returnPct = fact(data, "returnPct");
   const inflationPct = fact(data, "inflationPct");
   const earlyAge = fact(data, "earlyAge");
+  const ceiling = fact(data, "comprehensiveCeiling");
   // each part of the deposit is its own legal rate on min(salary, average wage) (F-67, PEN-03, PEN-04): its sheet names that rate, not the other two
   const wageIn: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...(avgWage ? { [copy.pension.inputNames.avgWage]: avgWage } : {}) };
   const youIn: Record<string, SiteValue> = { ...wageIn, ...(employeePct ? { [copy.pension.inputNames.employee]: employeePct } : {}) };
@@ -96,6 +102,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
     balance: model.balance ? m(model.balance.real, copy.pension.about.balance, balanceIn) : null,
+    toGeneral: model.general && ceiling ? figure(model.general.toGeneral, "nis", "F-67", { ...base, [copy.pension.general.below.term]: ceiling }, today, copy.pension.general.toGeneral, rules) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
   const parts = [
@@ -133,7 +140,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             hint={copy.pension.insuranceHint}
           />
         )}
-        <SigYearsField inputs={inputs} bundle={bundle} value={years} />
+        {!model.general && <SigYearsField inputs={inputs} bundle={bundle} value={years} />}
       </div>
 
       {/* an HTML chart: the chart check (site/scripts/chart-check) finds it by data-chart, and reads the bar's start and parts */}
@@ -161,10 +168,24 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         <div className="flex flex-col">
           <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-[var(--duration-chart)]" style={{ width: share(model.you) }} />
           <span className="block text-sm text-muted-foreground mt-0.5">
-            {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after}
+            {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after} {copy.pension.returns.when} <IdRef id="TXP OQ6" end="." />
           </span>
         </div>
       </div>
+
+      {model.general && ceiling && (
+        <Sentence measure>
+          {model.general.toGeneral > 0 && v.toGeneral ? (
+            <>
+              {copy.pension.general.split.before} <Num value={ceiling} /> {copy.pension.general.split.middle} <Num value={v.toGeneral} /> {copy.pension.general.split.after}
+            </>
+          ) : (
+            <>
+              {copy.pension.general.below.before}<Term id="תקרת הפקדה">{copy.pension.general.below.term}</Term> {copy.pension.general.below.middle} <Num value={ceiling} /> {copy.pension.general.below.after}
+            </>
+          )}
+        </Sentence>
+      )}
 
       <StatRow cols={2}>
         <Stat label={copy.pension.figures.net}>
@@ -173,14 +194,16 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         {hasInsurance && (
           <Stat label={copy.pension.figures.insurance}>{v.insurance ? <Num value={v.insurance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.insuranceNeeded}</span>}</Stat>
         )}
-        {v.depositFee && (
+        {v.depositFee && !model.general && (
           <Stat label={copy.pension.figures.depositFee}>
             <Num value={v.depositFee} />
           </Stat>
         )}
-        <Stat label={`${copy.pension.figures.balance} ${fmt.years(years)}`} tone="value">
-          {v.balance ? <Num value={v.balance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.balanceGap[model.balanceGap ?? "no-run"]}</span>}
-        </Stat>
+        {!model.general && (
+          <Stat label={`${copy.pension.figures.balance} ${fmt.years(years)}`} tone="value">
+            {v.balance ? <Num value={v.balance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.balanceGap[model.balanceGap ?? "no-run"]}</span>}
+          </Stat>
+        )}
       </StatRow>
       <Gap id="annuityFactors" from="g2" />
 
@@ -201,7 +224,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             ) : null}
           </p>
         )}
-        {hasInsurance ? <p className="text-muted-foreground">{copy.pension.insuranceNote}</p> : <p className="text-muted-foreground">{copy.pension.noInsurance}</p>}
+        {hasInsurance ? <p className="text-muted-foreground">{copy.pension.insuranceNote}</p> : !generalOnly && <p className="text-muted-foreground">{copy.pension.noInsurance}</p>}
         {trackName && trackFee ? (
           <Sentence tone="muted">
             {copy.pension.feesLine.before} ״<bdi>{String(trackName.value)}</bdi>״: <Num value={trackFee} /> {copy.pension.feesLine.balance}
@@ -221,22 +244,26 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             <Term id="קצבת זקנה">{copy.pension.none.pension}</Term> <Term prefix="מ" id="קרן פנסיה">{copy.pension.none.fund}</Term> {copy.pension.none.after} <Num value={earlyAge} display={String(earlyAge.value)} />.
           </Sentence>
         )}
-        <DotLine
-          items={[
-            copy.hishtalmut.assumption.site,
-            returnPct && (
-              <>
-                <Term id="תשואה">{copy.hishtalmut.assumption.ret}</Term> <Num value={returnPct} /> {copy.hishtalmut.assumption.both}
-              </>
-            ),
-            inflationPct && (
-              <>
-                <Term id="אינפלציה">{copy.hishtalmut.assumption.inflation}</Term> <Num value={inflationPct} /> {copy.hishtalmut.assumption.perYear}
-              </>
-            ),
-            copy.pension.todayMoney,
-          ]}
-        />
+        {model.balance && (
+          <DotLine
+            items={[
+              copy.hishtalmut.assumption.site,
+              returnPct && (
+                <>
+                  <Term id="תשואה">{copy.hishtalmut.assumption.ret}</Term> <Num value={returnPct} /> {copy.hishtalmut.assumption.perYear}
+                </>
+              ),
+              inflationPct && (
+                <>
+                  <Term id="אינפלציה">{copy.hishtalmut.assumption.inflation}</Term> <Num value={inflationPct} /> {copy.hishtalmut.assumption.perYear}
+                </>
+              ),
+              copy.pension.assume.flat,
+              hasInsurance && insurancePct === null && copy.pension.assume.noInsurance,
+              copy.pension.todayMoney,
+            ]}
+          />
+        )}
       </div>
       <RulesLine ids={[...data.ruleIds, ...model.rules.filter((r) => /^(PEN|TXP)-/.test(r))].filter((r, i, a) => a.indexOf(r) === i)} />
     </div>

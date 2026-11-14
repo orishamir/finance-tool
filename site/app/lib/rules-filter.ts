@@ -17,6 +17,8 @@ export interface LightRule {
   products: string[];
   /** The first sentence of the rule's text (`firstSentence`). */
   lead: string;
+  /** The text has an open question past that sentence (`openPart`): the row says so. */
+  openPart?: boolean;
   /** Its own numbers (`rowPills`). */
   pills: RowPill[];
   /** Who published its first source, and how many sources it cites (`rowSource`). */

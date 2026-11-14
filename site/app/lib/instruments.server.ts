@@ -92,7 +92,7 @@ export function seenValue(c: CatalogEntry): SiteValue {
   return {
     value: c.seen_on,
     unit: "text",
-    source: { url, title: c.where_seen, publisher: c.institution, strength: "institution" },
+    source: { url, title: seenWhere(c), publisher: c.institution, strength: "institution" },
     checked: c.seen_on,
     effective_from: c.seen_on,
     effective_to: null,
@@ -104,7 +104,11 @@ export function seenValue(c: CatalogEntry): SiteValue {
 
 /** Where a name was seen, without the URL (the URL is behind the number). */
 export function seenWhere(c: CatalogEntry): string {
-  return c.where_seen.replace(/,?\s*https?:\/\/\S+/g, "").replace(/;\s*$/, "").trim();
+  return c.where_seen
+    .split(/;\s*/)
+    .map((part) => part.replace(/,?\s*https?:\/\/\S+/g, "").trim())
+    .filter(Boolean)
+    .join("; ");
 }
 
 /** How a near-duplicate's resolution reads (data-schema 3.10: free text; the first words say which). */
@@ -361,7 +365,12 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
-        if (!feeAbsent(rec, field)) notCollected.push(field);
+        // a fee the record could not collect runs as 0; the terms block shows the manager's and the trustee's, which every fund charges,
+        // as not collected, with the record's reason in its sheet (a variable fee, a tracking gap or a foreign withholding may not apply)
+        if (!feeAbsent(rec, field)) {
+          notCollected.push(field);
+          if (v && (field === "fixed_management" || field === "trustee")) feeValues[label] = { ...v };
+        }
         return;
       }
       if (!isNum(v) || (v.unit !== "pct_per_year" && v.unit !== "pct")) return void missing.push(`${wrapperId}: fund "${rec.id}" fees.${field} is not a percent a year`);

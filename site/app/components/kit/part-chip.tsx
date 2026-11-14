@@ -46,7 +46,7 @@ function Lead({ kind, mark, lead }: { kind: PartKind; mark?: PartMark; lead?: Re
  */
 export function PartChip({ kind, mark, lead, figure, unit, words, children }: { kind: PartKind; mark?: PartMark; lead?: ReactNode; figure?: ReactNode; unit?: ReactNode; words?: ReactNode; children?: ReactNode }) {
   return (
-    <span className={cx("inline-flex min-h-[30px] max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-md border px-2.5 py-0.5 text-sm", PART_LOOK[kind])}>
+    <span className={cx("inline-flex min-h-[30px] max-w-full flex-wrap items-center gap-x-1 gap-y-0.5 rounded-md border px-2.5 py-0.5 text-sm", PART_LOOK[kind])}>
       <Lead kind={kind} mark={mark} lead={lead} />
       {(figure !== undefined || unit !== undefined) && (
         <span className="inline-flex items-baseline gap-1 whitespace-nowrap text-[15px] tabular-nums">

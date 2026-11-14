@@ -42,12 +42,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-38"
       ],
       "state": "sourced",
-      "notes": "The security's float-adjusted market capitalisation must be at least 50% of the index's minimum total market capitalisation threshold (p.8)."
+      "notes": "The security's float-adjusted market capitalisation must be at least 50% of the index's minimum total market capitalisation threshold (p.8). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "min_investable_weight_factor": {
       "value": 0.1,
@@ -62,12 +62,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-38"
       ],
       "state": "sourced",
-      "notes": "S&P Composite 1500 constituents need an investable weight factor (float share) of at least 0.1 (p.9)."
+      "notes": "S&P Composite 1500 constituents need an investable weight factor (float share) of at least 0.1 (p.9). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "min_monthly_shares_traded": {
       "value": 250000,
@@ -82,12 +82,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-38"
       ],
       "state": "sourced",
-      "notes": "\"The stock should trade a minimum of 250,000 shares in each of the six months leading up to the evaluation date\" (p.9)."
+      "notes": "\"The stock should trade a minimum of 250,000 shares in each of the six months leading up to the evaluation date\" (p.9). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "min_liquidity_ratio_at_addition": {
       "value": 0.75,
@@ -102,12 +102,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-38"
       ],
       "state": "sourced",
-      "notes": "Float-adjusted liquidity ratio (annual dollar value traded divided by float-adjusted market capitalisation) at least 0.75 at the time of addition; current constituents have no minimum (p.9)."
+      "notes": "Float-adjusted liquidity ratio (annual dollar value traded divided by float-adjusted market capitalisation) at least 0.75 at the time of addition; current constituents have no minimum (p.9). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "ipo_seasoning_months": {
       "value": 12,
@@ -122,12 +122,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-38"
       ],
       "state": "sourced",
-      "notes": "\"IPOs should be traded on an eligible exchange for at least 12 months before being considered for addition\"; no fast track for Composite 1500 candidates (p.10)."
+      "notes": "\"IPOs should be traded on an eligible exchange for at least 12 months before being considered for addition\"; no fast track for Composite 1500 candidates (p.10). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "wait_after_removal_years": {
       "value": 1,
@@ -142,12 +142,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-38"
       ],
       "state": "sourced",
-      "notes": "A company removed from a Composite 1500 index must wait a minimum of one year before being screened again (p.18)."
+      "notes": "A company removed from a Composite 1500 index must wait a minimum of one year before being screened again (p.18). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     }
   },
   "text_he": "לפי המתודולוגיה של עורך המדד, למדד נכנסות רק חברות אמריקאיות שנסחרות בבורסה אמריקאית, עם שווי שוק כולל מעל סף שנבדק כל רבעון, מסחר סדיר במניה ורווח חשבונאי חיובי ברבעון האחרון ובארבעת הרבעונים האחרונים יחד. חברה חדשה בבורסה ממתינה שנה לפני שהיא נשקלת. את ההרכב קובעת ועדת מדדים לפי התנאים האלה ולפי איזון בין ענפים, ומספר החברות קבוע: חמש מאות.",

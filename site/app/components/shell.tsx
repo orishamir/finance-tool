@@ -210,8 +210,9 @@ function Footer({ width }: { width: string }) {
 
 /**
  * A small "back to the top" after a screen or so of scrolling, at the left: in right-to-left pages the names a row starts with sit at the right,
- * and the button covered them. It steps aside while it would cover a block marked `data-keep-clear` (the deposits grid's cells on a phone),
- * and stands above the receipt's stub while the stub shows (`clearOfReceiptStub`).
+ * and the button covered them. It steps aside while it would cover a block marked `data-keep-clear` (the deposits grid's cells on a phone,
+ * the fee page's toolbox sheet pinned to the foot of a phone's screen), looked at again as the page scrolls and as the page's size changes
+ * (a pinned sheet keeps its room at the page's end), and stands above the receipt's stub while the stub shows (`clearOfReceiptStub`).
  */
 function ToTop() {
   const [show, setShow] = useState(false);
@@ -228,7 +229,12 @@ function ToTop() {
     };
     on();
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+    const sized = new ResizeObserver(on);
+    sized.observe(document.body, { box: "border-box" });
+    return () => {
+      window.removeEventListener("scroll", on);
+      sized.disconnect();
+    };
   }, []);
   if (!show) return null;
   return (

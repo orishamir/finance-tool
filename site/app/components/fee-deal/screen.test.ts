@@ -74,8 +74,11 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     product: deal.kind,
     fill: null,
     line: null,
+    folded: false,
+    onFold: () => {},
     onAsk: () => {},
     onFee: () => {},
+    onForm: () => {},
     onPending: () => {},
     onRemove: () => {},
     onClose: () => {},
@@ -92,7 +95,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null) => {
     deal,
     view: builder(r, [], chosen ? { fee: chosen, case: caseId } : null),
     groupOf: (f) => feeGroup(r, f, saves(deal)),
-    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, pending: null, menu: null },
+    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, pending: null, menu: null, thing: null },
     toolbox: null,
     line: null,
     caseLine: null,
@@ -101,6 +104,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null) => {
     onDeal: () => {},
     onOpen: () => {},
     onSlot: () => {},
+    onThing: () => {},
     onAdd: () => {},
     onRemoveCase: () => {},
     onHoldOn: () => {},
@@ -208,9 +212,18 @@ describe("the toolbox", () => {
   it("names the fee, offers the parts in their groups with the flat price among the price's, and ends with filling and taking the fee away", () => {
     const shown = drawToolbox(account(), "fee-trade");
     for (const g of ["price", "bound", "by", "link", "more"]) expect(shown).toContain(feeDeal.cases.groups[g]!);
-    expect(shown).toContain(feeDeal.cases.parts.flatSmall.trim());
+    expect(shown).toContain(feeDeal.cases.parts.flatSmall.default!.trim());
+    expect(shown).toContain(feeDeal.cases.actionSize.default!);
+    expect(shown).toContain(feeDeal.cases.things.own!);
     expect(shown).toContain(dealCases.toolbox.hint);
     expect(shown).toContain(feeDeal.panel.remove);
+  });
+  it("words a conversion's parts and its size by the conversion, never by a purchase", () => {
+    const shown = drawToolbox(account(), "fee-fx");
+    expect(shown).toContain("מחיר קבוע להמרה קטנה, עד");
+    expect(shown).toContain("גודל ההמרה");
+    expect(shown).not.toContain("גודל הפעולה");
+    expect(shown).not.toContain("לפעולה קטנה");
   });
   it("names a fee of the person's own once, in the heading typed in place, with its spoken name", () => {
     const d = account();
@@ -254,6 +267,30 @@ describe("the fees' column", () => {
     // the person's track is the open case here, its rows' words said once in its slots
     expect(count(shown, "מסלול 1")).toBe(1);
     expect(shown).not.toContain("מסלול 2");
+    // the fee open, each thing of its band's head is a slot that opens its menu; closed, the things are words
+    const pills = (html: string) => count(html, 'aria-haspopup="dialog" aria-expanded="false"');
+    const open = drawBuilder(d, "fee-trade");
+    const closed = drawBuilder(d, null);
+    expect(pills(open) - pills(closed)).toBe(2 + 2);
+    expect(count(closed, `>${feeDeal.cases.things.what}</span>`)).toBe(1);
+  });
+  it("says each case's standing against the cap beside it, as a slim line's", () => {
+    const d = provident();
+    d.readFor = [{ by: "channel", is: "branch" }];
+    d.fees = [
+      {
+        id: "fee-deposit",
+        kind: "deposit",
+        by: [{ kind: "channel" }],
+        cases: [
+          { id: "d1", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(1) } }] },
+          { id: "d2", when: [["direct"]], stages: [{ price: { form: "action", rate: typed(9) } }] },
+        ],
+      },
+    ];
+    const shown = text(builderOf(d, null));
+    expect(count(shown, feeDeal.standing.shareShort.trim())).toBe(1);
+    expect(shown).toContain(feeDeal.standing.tag.above);
   });
 });
 
@@ -337,5 +374,42 @@ describe("a sum on the page", () => {
     expect(markLabel(at(200, "count", "computed", "min", true))).toBe("200 יחידות");
     expect(markLabel(at(1, "count", "computed", "max", true))).toBe("יחידה אחת");
     expect(markLabel(at(50, "usd", "entered", "flat"))).toBe("50 $");
+  });
+  it("a whole sum a price list prints shows without cents, as the list writes it", () => {
+    expect(markLabel(at(8, "usd", "sourced" as "entered"))).toBe("8 $");
+    expect(markLabel(at(35, "usd", "sourced" as "entered"))).toBe("35 $");
+    expect(markLabel(at(9.9, "nis", "sourced" as "entered"))).toBe("9.90 ₪");
+  });
+});
+
+describe("a sum per action under a percent maximum", () => {
+  it("says where the maximum gives way to the sum, in the words of a point where the price changes", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "perAction", amount: typed(11), cap: typed(2), currency: "USD" } }] }];
+    expect(drawReading(d)).toContain(`ב־550 $ משתנה המחיר של ${feeName("trade")}.`);
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "perAction", amount: typed(11), currency: "USD" } }] }];
+    expect(drawReading(d)).not.toContain("משתנה המחיר של");
+  });
+});
+
+describe("a fee read across sizes", () => {
+  it("names each step by its stretch in the glance, so its two prices never read alike, and says where the price changes", () => {
+    const d = account();
+    d.fees = [
+      {
+        id: "fee-fx",
+        kind: "fx",
+        by: [{ kind: "actionSize", unit: "ILS", tops: [typed(100)] }],
+        cases: [
+          { id: "c1", when: [0], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+          { id: "c2", when: [1], stages: [{ price: { form: "action", rate: typed(0.2) } }] },
+        ],
+      },
+    ];
+    const name = feeName("fx");
+    const shown = drawGlance(d);
+    expect(shown).toContain(`${name}, עד 100 ₪`);
+    expect(shown).toContain(`${name}, מעל 100 ₪`);
+    expect(drawReading(d)).toContain(`ב־100 ₪ משתנה המחיר של ${name}.`);
   });
 });

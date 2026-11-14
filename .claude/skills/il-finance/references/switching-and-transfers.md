@@ -439,20 +439,20 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Rule: Section 5ב2, headed "הפקדת כספים במערכת סגורה - ניוד פיקדונות", is in force from 1 December 2025. Every bank other than a small one must let an individual deposit shekels "באמצעות חשבון במערכת סגורה באופן פשוט ונוח, ובין השאר באופן מקוון" (s.5ב2(ב)(1)). The money must come from the same individual's account at another bank or at the Postal Bank and is "מושבים רק לחשבון שממנו הועברו" (s.5ב2(א)). The customer may authorise the receiving bank in writing to handle every step (s.5ב2(ג)). No bank may exert unfair influence on a customer about depositing through a closed-system account at another bank (s.5ב2(ד)). Details are in BANK-21.
 - Conditions / exceptions:
   - Existing deposits: no law lets a running deposit move to another bank on its terms. It moves at maturity or at an exit point, or by breaking it on the bank's terms (BANK-06). Under the account-switching service it stays at the old bank until maturity (SW-29).
-  - Pending bill: private bill P/5281/25 (MK Ahmad Tibi), tabled 30.12.2024, would:
+  - Lapsed bill: private bill P/5281/25 (MK Ahmad Tibi), tabled 30.12.2024, would have:
     - add a s.5ב2 "ניוד פיקדונות לקוחות ללא העברת חשבון בנק";
     - require the receiving bank to accept a ported deposit or savings plan at no less than its average rate for similar products;
     - not treat the move as early withdrawal;
     - bar the originating bank from charging or restricting it;
     - keep the original terms other than the rate.
 
-    On 2026-10-22 its Knesset status is "הונחה על שולחן הכנסת לדיון מוקדם" (last updated 2024-12-29). The identical bill it names, P/4960/25, became Amendment 38, the closed-system law above, in a different form ("התקבלה בקריאה שלישית").
+    Its last status in the 25th Knesset is "הונחה על שולחן הכנסת לדיון מוקדם". The 26th Knesset convened on 10.11.2026; the Continuity of Debate on Bills Law lets only a bill the outgoing Knesset passed after a first reading continue (ss.1-2), so this bill lapsed with the 25th Knesset and would have to be tabled again (BANK-29). The identical bill it names, P/4960/25, became Amendment 38, the closed-system law above, in a different form ("התקבלה בקריאה שלישית").
   - Competition Authority: the deposit-portability directive is in BANK-24 (secondary content, under appeal).
 - Figures: in force 1.12.2025.
 - Source: [חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ"ה-2025 (ספר החוקים 3413)](https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf) pp.2-3, s.5ב2 on p.2, s.5 on p.3 "מושבים רק לחשבון שממנו הועברו" · checked 2026-10-25 · primary; [הצעת חוק הבנקאות (שירות ללקוח) (תיקון – ניוד פקדונות ללקוחות הבנקים ללא העברת חשבון), פ/5281/25](https://fs.knesset.gov.il/25/law/25_lst_5380049.pdf) p.1 · checked 2026-10-25 · primary; [הכנסת – מאגר המידע הפרלמנטרי: הצעת חוק 2226120 (פ/5281/25)](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%205281%20and%20KnessetNum%20eq%2025&$format=json) · checked 2026-10-25 · primary; [הכנסת – מאגר המידע הפרלמנטרי: הצעת חוק 2222052 (פ/4960/25)](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%204960%20and%20KnessetNum%20eq%2025&$format=json) · checked 2026-10-25 · primary; [הכנסת – מאגר המידע הפרלמנטרי: סטטוס 104](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20104&$format=json) "הונחה על שולחן הכנסת לדיון מוקדם" · checked 2026-10-25 · primary; [הכנסת – מאגר המידע הפרלמנטרי: סטטוס 118](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20118&$format=json) "התקבלה בקריאה שלישית" · checked 2026-10-25 · primary; [הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)](https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf) p.9, s.29(ב) · checked 2026-10-25 · primary
 - Scope: general
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`, `fee-exit`
-- Likely to change: yes (bill; Competition Tribunal outcome, BANK-24).
+- Likely to change: yes (Competition Tribunal outcome, BANK-24; the lapsed bill may be tabled again).
 
 ### Brokerage account
 

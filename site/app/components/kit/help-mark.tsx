@@ -14,7 +14,7 @@ import { cx } from "./cx";
 export function HelpMark({ term, about, lead, text, rules, words, className }: { /** The glossary term's Hebrew name, as the page's provenance data keys it; several terms open one sheet of them all, titled `about` (a column of three fees). Leave it out for a text of its own (`text`). */ term?: string | readonly string[]; /** With no term: the explanation the sheet shows under `about`. */ text?: string; /** The rules behind the text (or the line under the terms): one chip at its end. */ rules?: readonly string[]; /** What the mark explains, in the reader's words ("כסף מנוהל"): the button's spoken name. */ about: string; /** With several terms, the line under the sheet's title. */ lead?: string; /** Words shown before the mark, in the link colour; the spoken name starts with them. */ words?: string; className?: string }) {
   const open = useOpen();
   const mark = (
-    <span aria-hidden="true" className="inline-flex items-center justify-center size-4 rounded-full border border-current text-[11px] font-semibold leading-none">
+    <span aria-hidden="true" className="inline-flex items-center justify-center size-[1.125rem] rounded-full border border-current text-[13px] font-semibold leading-none">
       ?
     </span>
   );

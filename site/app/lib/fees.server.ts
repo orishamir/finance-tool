@@ -19,6 +19,8 @@ import { compactFee } from "./value";
 import { readParsedCached } from "./read-cache.server";
 import { buildProductView } from "./track-browser";
 import { buildTrackBrowser } from "./track-browser.server";
+import { selfDirectedProduct } from "./self-directed";
+import { siteTrackName } from "./track-names";
 
 /**
  * Each track's short name under its company, as the track browser works it out (D54: `shortTrackNames` over one company's tracks in one
@@ -64,7 +66,8 @@ export function buildFeesData(): FeesData {
   const shorts = shortNames();
   for (const x of mapped) {
     const tpl = (templates[x.dataset] ??= { balance: { ...x.fees.avg_annual_management_fee } as ValueObject, deposit: { ...x.fees.avg_deposit_fee } as ValueObject });
-    const name = x.names.cma[0]!.trim();
+    const name = siteTrackName(x.names.cma[0]!.trim());
+    const regulatorProduct = classificationToWrapper[x.fund_classification.trim()] ?? null;
     const cut = shorts.get(x.fund_id);
     tracks.push({
       id: x.fund_id,
@@ -72,7 +75,8 @@ export function buildFeesData(): FeesData {
       // only where the browser lists this very name and cut it: one short name for one track on both pages
       ...(cut && cut.name === name && cut.short !== name ? { short: cut.short } : {}),
       company: x.managing_corporation.name.trim(),
-      wrapperId: classificationToWrapper[x.fund_classification.trim()] ?? null,
+      // a self-directed (IRA) fund fills a deal of its own product, which has the trading and custody fees beside the manager's
+      wrapperId: selfDirectedProduct(regulatorProduct, name) ?? regulatorProduct,
       dataset: x.dataset,
       b: compactFee(x.fees.avg_annual_management_fee, tpl.balance),
       d: compactFee(x.fees.avg_deposit_fee, tpl.deposit),

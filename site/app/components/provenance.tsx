@@ -488,6 +488,12 @@ export function StrengthLabel({ strength }: { strength: Strength }) {
   return <Tag tone="neutral">{label}</Tag>;
 }
 
+/** The strength tag of a rule the page holds, where the rule is weaker than primary (secondary, institution), for the rules line under prose that rests on it; nothing otherwise. */
+export function RuleStrengthTag({ id }: { id: string }) {
+  const s = ruleOf(useContext(DataCtx), id)?.strength;
+  return s === "secondary" || s === "institution" ? <StrengthLabel strength={s} /> : null;
+}
+
 /**
  * A figure or rate that rests on the site's own reading of official texts (the engine's "reading" label): never "מקור משני".
  * `held`: a row that may come to rest on a reading as the person types keeps the tag's place, empty while `shown` is false, on a

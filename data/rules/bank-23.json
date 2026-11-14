@@ -2,7 +2,7 @@
   "id": "BANK-23",
   "title": "No deposit insurance; status of the 2026 bill",
   "title_he": "אין ביטוח פיקדונות; מעמד הצעת החוק",
-  "text_he": "אין בישראל חוק שמקים ביטוח פיקדונות או ערבות מדינה לפיקדונות בבנקים. חוק משנת 2026 לקידום התחרות בשוק הבנקאות מטיל על שר האוצר ועל נגיד בנק ישראל לבחון תוך שנה אם יש צורך בביטוח פיקדונות ואיך הוא צריך לפעול; זו חובת בדיקה, לא הסדר ביטוח. הצעת חוק פרטית לביטוח פיקדונות הונחה על שולחן הכנסת לדיון מוקדם ונכון למועד הבדיקה לא התקדמה; היא מציעה ערבות מדינה עד סכום לכל לקוח, רק על חיסכון בבנקים קטנים, ולא על יתרות עובר ושב. הצעת חוק לא מחייבת, והצעות קודמות באותו שם לא עברו. בנק ישראל מתאר את מטרת הפיקוח כהגנה על כספי המפקידים, אבל אף מסמך שנקרא לא מגדיר ערבות למפקידים.",
+  "text_he": "אין בישראל חוק שמקים ביטוח פיקדונות או ערבות מדינה לפיקדונות בבנקים. חוק משנת 2026 לקידום התחרות בשוק הבנקאות מטיל על שר האוצר ועל נגיד בנק ישראל לבחון תוך שנה אם יש צורך בביטוח פיקדונות ואיך הוא צריך לפעול; זו חובת בדיקה, לא הסדר ביטוח. הצעת חוק פרטית לביטוח פיקדונות מ־2026, שהציעה ערבות מדינה עד סכום לכל לקוח רק על חיסכון בבנקים קטנים ולא על יתרות עובר ושב, לא עברה אפילו דיון מוקדם, ופקעה כשהכנסת החדשה התכנסה ב־10.11.2026; כדי שתחזור, חבר כנסת צריך להגיש אותה מחדש. גם הצעות קודמות באותו שם לא עברו. בנק ישראל מתאר את מטרת הפיקוח כהגנה על כספי המפקידים, אבל אף מסמך שנקרא לא מגדיר ערבות למפקידים.",
   "strength": "primary",
   "dimensions": [
     "protection",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-02-02",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-14",
   "scope": "general",
   "sources": [
     {
@@ -42,6 +42,40 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%206522%20and%20KnessetNum%20eq%2025&$format=json",
+      "title": "Knesset OData KNS_Bill record",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "StatusID 104",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_KnessetDates()?$filter=KnessetNum%20ge%2025&$format=json",
+      "title": "Knesset OData KNS_KnessetDates",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "the 26th Knesset's",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/13/law/13_lsr_210960.pdf",
+      "title": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993",
+      "title_he": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, ss.1-3",
+      "locator_he": "עמוד 1, סעיפים 1-3",
+      "page": 1,
+      "quote": "הצעת חוק שהציעה ועדה של הכנסת או שהציע חבר הכנסת, ושכנסת יוצאת העבירה לאחר קריאה ראשונה לאחת מועדותיה",
+      "checked": "2026-11-14"
+    },
+    {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
       "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25)",
       "title_he": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ״ו-2026 (פ/6522/25)",
@@ -56,13 +90,13 @@
       "qualifier": "(a bill, not binding)"
     },
     {
-      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%206522%20and%20KnessetNum%20eq%2025&$format=json",
-      "title": "Knesset OData KNS_Bill record",
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2026&$format=json",
+      "title": "Knesset OData, bills of the 26th Knesset",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-11-14"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20104&$format=json",

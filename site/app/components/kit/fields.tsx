@@ -522,7 +522,8 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
         <label htmlFor={id} className="sr-only">
           {label}
         </label>
-        <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-full opacity-0">
+        {/* over the chip's edge too, so the select's own target is the chip's whole 44 px */}
+        <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="absolute -inset-px cursor-pointer appearance-none rounded-full opacity-0">
           {all !== undefined && (
             <option value="" disabled>
               {all}

@@ -25,7 +25,7 @@
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",
-      "effective_to": null,
+      "effective_to": "2026-12-31",
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "rule_ids": [

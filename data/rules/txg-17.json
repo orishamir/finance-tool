@@ -197,6 +197,16 @@
       "page": 2,
       "quote": "והכנסה מדמי מילואים ודמי לידה של בעל עסק זעיר",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/he/Departments/Guides/tax-return-application-guide",
+      "title": "מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (רשות המסים, updated 20.4.2026)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "מי הם החייבים להגיש דוח שנתי למס הכנסה",
+      "checked": "2026-10-26"
     }
   ]
 }

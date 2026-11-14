@@ -198,12 +198,13 @@ describe("pensions", () => {
     expect(mid.netYou).toBeCloseTo(mid.you - mid.relief.monthly, 9);
   });
   it("lets the engine's F-30 find the same gross deposit, so the balance is the ledger's", () => {
-    const b = general.bundles["pension-general"]!;
-    const m = pensionModel(general, "pension-general", { salary: 12000, years: 10, insurancePct: 0.3 })!;
+    const annuity = page("provident-for-annuity").signature!;
+    const b = annuity.bundles["provident-for-annuity"]!;
+    const m = pensionModel(annuity, "provident-for-annuity", { salary: 12000, years: 10, insurancePct: null })!;
     const plan = runInputs(
       b.record,
       [b.p05],
-      { ...b.terms, pension: { employment: "employee", monthlySalary: 12000, existingEmployeeRate: 0, employer: { pensionRate: 0.065, severanceRate: 0.06 } }, insurance: { rate: 0.003 } },
+      { ...b.terms, pension: { employment: "employee", monthlySalary: 12000, existingEmployeeRate: 0, employer: { pensionRate: 0.065, severanceRate: 0.06 } } },
       { entered: { amount_now: enteredValue(0, "nis", b.runDate), monthly_deposit: enteredValue(m.netYou, "nis_per_month", b.runDate) }, profile: { annualIncome: 144000 }, scenarioIncome: true },
     );
     expect(plan.run).toBe("runPension");
@@ -211,8 +212,8 @@ describe("pensions", () => {
     plan.input.goal.contributions = "nominal";
     const run = runPlanned(plan, { rules: b.rules, runDate: b.runDate });
     expect(run.detail.grossDeposits).toBeCloseTo(m.you * 12 * 10, 4);
-    expect(m.insuranceMonthly).toBeCloseTo(0.003 * m.total, 9);
     expect(m.balance!.real).toBeGreaterThan(0);
+    expect(m.general).toBeNull();
   });
   it("has no insurance for a provident fund for annuity (PEN-35), and no balance where no track is named", () => {
     const annuity = page("provident-for-annuity").signature!;
@@ -226,5 +227,32 @@ describe("pensions", () => {
     expect(c.you).toBeCloseTo(720, 9); // the deposit split needs no track
     expect(comp.gaps).toContain("pensionTrack");
     expect(general.gaps).toContain("annuityFactors");
+    // the insurance is F-53 on the whole deposit, in a pension fund
+    expect(pensionModel(comp, "pension-comprehensive", { salary: 12000, years: 10, insurancePct: 0.3 })!.insuranceMonthly).toBeCloseTo(0.003 * c.total, 9);
+  });
+  it("sends the general fund only the deposit above the comprehensive fund's ceiling, which the minimum rates never reach (PEN-10, PEN-08)", () => {
+    const ceiling = Number(fact(general, "comprehensiveCeiling")!.value);
+    expect(ceiling).toBeCloseTo(5645.29, 2);
+    for (const salary of [4000, 12000, 30000, 60000]) {
+      const m = pensionModel(general, "pension-general", { salary, years: 10, insurancePct: 0.5 })!;
+      expect(m.total).toBeLessThan(ceiling);
+      expect(m.general).toEqual({ ceiling, toGeneral: 0 });
+      expect(m.balance).toBeNull();
+      expect(m.balanceGap).toBe("below-ceiling");
+      expect(m.insuranceMonthly).toBeNull();
+      expect(m.rules).toContain("PEN-08");
+    }
+    expect(general.ruleIds).toEqual(expect.arrayContaining(["PEN-08", "PEN-10"]));
+  });
+  it("gives no general-fund balance for an excess, since the rule base does not divide it between the parts", () => {
+    const b = general.bundles["pension-general"]!;
+    // a ceiling under the deposit, as a change in the ceiling or the rates would bring
+    const lower = b.rules.map((r) => (r.id === "PEN-08" ? { ...r, figures: { ...r.figures, monthly_deposit_ceiling: { ...(r.figures?.monthly_deposit_ceiling as object), value: 2000 } } } : r)) as typeof b.rules;
+    const d = { ...general, bundles: { ...general.bundles, "pension-general": { ...b, rules: lower } } };
+    const m = pensionModel(d, "pension-general", { salary: 12000, years: 10, insurancePct: null })!;
+    expect(m.general!.ceiling).toBe(2000);
+    expect(m.general!.toGeneral).toBeCloseTo(m.total - 2000, 9);
+    expect(m.balance).toBeNull();
+    expect(m.balanceGap).toBe("general-split");
   });
 });

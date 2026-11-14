@@ -1,7 +1,7 @@
 // The deposits page (D92, `/deposits`): every bank's standard shekel deposits side by side. Pure: the shapes the loader sends, the term
 // of a record, which offers the reader's amount opens, the period chart's bars and the grid's cell (F-108), the interest an offer pays on
 // the amount (F-21), the list's order and its words. No React, no I/O.
-import { amountOpens, bestOpenOffer, depositInterest } from "@finance-tool/engine";
+import { amountOpens, amountUnknown, bestOpenOffer, depositInterest } from "@finance-tool/engine";
 import { depositBrowser as t } from "../copy";
 import { breakText, exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
 import { countPhrase, fmt } from "./format";
@@ -82,6 +82,9 @@ export const KIND_TERMS = ["ריבית קבועה", "ריבית משתנה"] as 
 /** Whether the amount opens the offer (F-108, `amountOpens`): at or above its minimum, at or below its maximum; an unknown bound opens nothing past the minimum. */
 export const opens = (o: DbOffer, amount: number): boolean => amountOpens(o, amount);
 
+/** Whether the offer's table leaves the amount undecided (F-108, `amountUnknown`): above a minimum whose maximum is printed unreadably, say. */
+export const unknownAt = (o: DbOffer, amount: number): boolean => amountUnknown(o, amount);
+
 /** The offers of one term (or every term) and one kind of rate: what the list shows, opened or folded. */
 export function offersOf(data: DbData, term: TermId | null, kind: RateKind): DbOffer[] {
   return data.offers.filter((o) => o.kind === kind && (term === null || o.term === term));
@@ -91,11 +94,24 @@ export function offersOf(data: DbData, term: TermId | null, kind: RateKind): DbO
 /** Linked to the index: its rate is paid on top of the index, another kind of figure than an unlinked rate, so the two never rank together. */
 export const isLinked = (o: DbOffer): boolean => o.linkage !== "none";
 
+/**
+ * The folded group under the list (F-108): the offers the amount does not open, under the same two "show also" chips as the list (an offer
+ * only some may open, a linked one), and whether the table of one of them does not say whether it takes the amount.
+ */
+export function foldedOffers(offers: readonly DbOffer[], amount: number, show: { conditional: boolean; linked: boolean }): { offers: DbOffer[]; unknown: boolean } {
+  const out = offers.filter((o) => !opens(o, amount) && (show.conditional || !o.limited) && (show.linked || !isLinked(o)));
+  return { offers: out, unknown: out.some((o) => unknownAt(o, amount)) };
+}
+
 /** Whether a cell or a bar may pick the offer: unlinked and open to every customer (F-108). */
 export const forCell = (o: DbOffer) => o.linkage === "none" && !o.limited;
 
-/** Why a period's bar has no rate: no offer of the kind is open to everyone at this amount, but some of the other kind is ("רק משתנה"); some of the kind are, at other amounts ("לא בסכום הזה"); or none of either. */
-export type BarGap = "otherKind" | "notAtAmount" | "none";
+/**
+ * Why a period's bar has no rate: no offer of the kind is open to everyone at this amount, but some of the other kind is ("רק משתנה"); the
+ * table of one of the kind does not say whether it takes the amount ("לא ידוע בסכום הזה"); some of the kind are, at other amounts ("לא
+ * בסכום הזה"); or none of either.
+ */
+export type BarGap = "otherKind" | "unknownAtAmount" | "notAtAmount" | "none";
 
 /**
  * A period's bar in the chart over the list (F-108 over every bank at once): the highest rate of the kind among the offers of the term that
@@ -106,6 +122,7 @@ export function periodBest(data: DbData, term: TermId, kind: RateKind, amount: n
   const pick = amount === null ? null : bestOpenOffer(ofTerm.filter((o) => o.kind === kind), amount);
   if (pick) return { pick, gap: null };
   if (amount !== null && ofTerm.some((o) => o.kind !== kind && opens(o, amount))) return { pick: null, gap: "otherKind" };
+  if (amount !== null && ofTerm.some((o) => o.kind === kind && unknownAt(o, amount))) return { pick: null, gap: "unknownAtAmount" };
   return { pick: null, gap: ofTerm.some((o) => o.kind === kind) ? "notAtAmount" : "none" };
 }
 
@@ -157,7 +174,7 @@ export function variantWords(row: DbRow, o: DbOffer): string {
 
 
 /** Why a cell has no rate, in the order F-108 tests it. */
-export type CellGap = "none" | "notAtAmount" | "otherKind" | "otherOffers";
+export type CellGap = "none" | "unknownAtAmount" | "notAtAmount" | "conditionalOnly" | "otherKind" | "otherOffers";
 
 export interface DbCell {
   bank: string;
@@ -206,7 +223,13 @@ export function cellOf(data: DbData, bank: string, term: TermId, kind: RateKind,
     const rate = computed(pick.rate_offered.value as number, "pct_per_year", "F-108", inputs, { today: data.today, about: t.grid.about });
     return { bank, term, pick, rate, gap: null, more: all.length - 1 };
   }
-  const gap: CellGap = candidates.length > 0 ? "notAtAmount" : all.some((o) => o.kind !== kind && forCell(o)) ? "otherKind" : "otherOffers";
+  const ofKind = all.filter((o) => o.kind === kind);
+  const gap: CellGap =
+    candidates.length > 0
+      ? candidates.some((o) => unknownAt(o, amount)) ? "unknownAtAmount" : "notAtAmount"
+      : ofKind.length > 0
+        ? ofKind.some((o) => o.limited && !isLinked(o)) ? "conditionalOnly" : "otherOffers"
+        : all.some((o) => forCell(o)) ? "otherKind" : "otherOffers";
   return { bank, term, pick: null, rate: null, gap, more: all.length };
 }
 

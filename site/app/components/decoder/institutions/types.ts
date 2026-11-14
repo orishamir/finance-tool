@@ -71,6 +71,8 @@ export interface ProductGroup {
   wrapperId: string;
   wrapperName: string;
   products: ProductRowData[];
+  /** The latest "נכון ליום" of this product's records: each product's rates are as of their own records' date, not another product's. */
+  asOf: SiteValue | null;
 }
 
 export type LineBase = "trade" | "custody" | "fx" | "fixed_period";
@@ -147,8 +149,6 @@ export interface InstitutionPageData {
   tariff: TariffCardData | null;
   groups: ProductGroup[];
   hasDeposits: boolean;
-  /** The latest "נכון ליום" across the deposit records, for the lede. */
-  depositsAsOf: SiteValue | null;
   /** The bank's own 447 page, from the rule base. */
   rateTable: { href: string } | null;
   /** Names the catalogue records for this institution (data/catalog/), with where and when seen. */
