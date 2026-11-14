@@ -44,6 +44,7 @@ import { FIGURE_IDS, FIGURES, type Figure } from "./offers/figures";
 import { kindHas, WHAT_VALUES, type FeeKindId, type FormId } from "./shapes";
 import { capacity } from "./offers/capacity";
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
+import { feeOffered } from "./offers/offer";
 
 export type { Side } from "./model";
 
@@ -59,15 +60,16 @@ export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: F
 export const removeFee = (deal: FeeDeal, feeId: string): FeeDeal => ({ ...deal, fees: deal.fees.filter((f) => f.id !== feeId) });
 
 /**
- * A deal of another kind: a fee the new kind does not have (`kindHas`), or may not charge by rule (`barred`), leaves it, and the fees of
- * kinds both have stay as typed, a fee of the person's own among them. Its template goes, with the provider kind the template gave: a
+ * A deal of another kind: a fee the new kind does not have (`kindHas`), may not charge by rule (`barred`), or is not offered on it (the
+ * rule table's `feeOffered`: a provident account's deposit fee on a switch to a study fund) leaves it, and the fees of kinds both have
+ * and offer stay as typed, a fee of the person's own among them. Its template goes, with the provider kind the template gave: a
  * template belongs to one kind (a house's price list to the securities account, a track to its product). The reading's picks stay. The
  * same kind leaves the deal as it is.
  */
 export function setKind(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindId[] = []): FeeDeal {
   if (deal.kind === kind.id) return deal;
   const { template: _template, provider: _provider, ...rest } = deal;
-  const fees = deal.fees.filter((f) => kindHas(kind.id, kind.bases, f.kind) && !barred.includes(f.kind));
+  const fees = deal.fees.filter((f) => kindHas(kind.id, kind.bases, f.kind) && !barred.includes(f.kind) && feeOffered(kind, f.kind));
   return { ...rest, kind: kind.id, fees };
 }
 

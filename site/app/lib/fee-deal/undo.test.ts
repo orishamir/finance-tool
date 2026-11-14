@@ -252,16 +252,18 @@ describe("another kind of product for the deal", () => {
     expect(standing(r.undo, own)).toBe(false);
     expect(standing(r.undo, { ...r.deal, kind: "ira-provident" })).toBe(false);
   });
-  it("keeps a fee both kinds have as typed", () => {
+  it("keeps a fee both kinds have and offer as typed, and takes away one the new kind has by record but does not offer, which the undo puts back", () => {
     const d = provident();
     const r = setKindKept(d, kind("keren-hishtalmut"), [], null);
-    expect(r.deal.fees).toEqual(d.fees);
-    expect(r.undo).toBeNull();
+    // a study fund's fee is from the balance alone, and a provident account takes no fee of the person's own (the rule table)
+    expect(r.deal.fees).toEqual(d.fees.filter((f) => f.kind === "balance"));
+    expect(r.undo).not.toBeNull();
+    expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
     expect(setKindKept(account(), kind("ira-provident"), [], null).deal.fees.map((f) => f.id)).toEqual(["fee-trade", "fee-custody", "fee-fx"]);
   });
   it("takes away a fee the new kind may not charge by rule", () => {
     const d = provident();
-    expect(setKindKept(d, kind("keren-hishtalmut"), ["deposit"], null).deal.fees.map((f) => f.id)).toEqual(["fee-balance", "fee-own"]);
+    expect(setKindKept(d, kind("keren-hishtalmut"), ["deposit"], null).deal.fees.map((f) => f.id)).toEqual(["fee-balance"]);
   });
   it("takes away fees with nothing typed in them silently", () => {
     let d: FeeDeal = { ...newDeal("kupat-gemel-lehashkaa"), id: "deal-q" };
