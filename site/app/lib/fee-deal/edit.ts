@@ -50,9 +50,9 @@ export type { Side } from "./model";
 /** The deal with one fee replaced by `fn` of it. */
 export const updateFee = (deal: FeeDeal, feeId: string, fn: (f: Fee) => Fee): FeeDeal => ({ ...deal, fees: deal.fees.map((f) => (f.id === feeId ? fn(f) : f)) });
 
-/** The deal with a new fee of a kind at the end. */
-export function addFee(deal: FeeDeal, kind: FeeKindId): { deal: FeeDeal; fee: Fee } {
-  const fee = newFee(kind);
+/** The deal with a new fee of a kind at the end, its price in the form given (the first its product's fee is offered in, `Offer.usual`). */
+export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: FeeDeal; fee: Fee } {
+  const fee = newFee(kind, undefined, form);
   return { deal: { ...deal, fees: [...deal.fees, fee] }, fee };
 }
 

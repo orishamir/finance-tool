@@ -17,6 +17,7 @@ import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
+import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, type AddItem } from "../kit";
 import { bringIntoView } from "./in-view";
@@ -69,6 +70,8 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
   onKind: (kind: ProductId) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
+  // the products the picker offers (`productOffered`); a saved deal of another still opens with its own
+  const offered = kinds.filter(productOffered);
   // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with it closed. The column
   // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
   const [pickingIn, setPickingIn] = useState<string | null>(null);
@@ -108,8 +111,8 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
             <ChoiceChips
               wrap
               bleed=""
-              ids={kinds.map((k) => k.id)}
-              labels={Object.fromEntries(kinds.map((k) => [k.id, k.name]))}
+              ids={offered.map((k) => k.id)}
+              labels={Object.fromEntries(offered.map((k) => [k.id, k.name]))}
               value={deal.kind}
               ariaLabel={b.kindsAria}
               onChange={(id: ProductId) => {

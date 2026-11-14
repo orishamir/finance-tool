@@ -11,7 +11,7 @@ import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKe
 import { canAddBy, removeBy } from "./edit";
 import { hasFlat } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
-import { offerFor } from "./offers/offer";
+import { feeOffered, offerFor } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
@@ -281,19 +281,23 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   };
 }
 
-const offered = (s: Builder["suggestions"], barred: readonly FeeKindId[]): Builder["suggestions"] => ({ usual: s.usual.filter((k) => !barred.includes(k)), rarer: s.rarer.filter((k) => !barred.includes(k)) });
+/** The suggestions the deal's product is offered (`feeOffered`, the rule table) and may charge (`barred`). */
+const offered = (s: Builder["suggestions"], product: DealRead["kind"], barred: readonly FeeKindId[]): Builder["suggestions"] => {
+  const ok = (k: FeeKindId) => !barred.includes(k) && feeOffered(product, k);
+  return { usual: s.usual.filter(ok), rarer: s.rarer.filter(ok) };
+};
 
 /**
  * The builder column of a deal, from the deal read once (`readDealFor`): a row per fee, the read ones and those not read for a price not
  * given or for no case for the picks, each with its block; a fee whose prices are out of order has none (the glance names it, `unread`).
- * `barred`: fees the deal's product may not charge by rule, never offered. `open`: the fee open in place, and its case (the first where
- * none is named).
+ * `barred`: fees the deal's product may not charge by rule, never offered, nor is a fee its product is not offered (`feeOffered`). `open`:
+ * the fee open in place, and its case (the first where none is named).
  */
 export function builder(r: DealRead, barred: readonly FeeKindId[] = [], open: { fee: string; case: string | null } | null = null): Builder {
   const deal = r.deal;
   return {
     rows: deal.fees.filter((fee) => !r.unread.includes(fee.id)).map((fee) => rowOf(r, fee, open)),
-    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), undefined), barred) : { usual: [], rarer: ["own"] },
+    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), undefined), r.kind, barred) : { usual: [], rarer: ["own"] },
   };
 }
 

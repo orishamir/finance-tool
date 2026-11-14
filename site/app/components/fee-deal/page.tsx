@@ -23,6 +23,7 @@ import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import { builder, panel as panelOf, slotEdit, thingMenu, toolbox as toolboxOf } from "../../lib/fee-deal/builder";
 import { addFee, setPick, updateFee, type Side } from "../../lib/fee-deal/edit";
+import { offerFor } from "../../lib/fee-deal/offers/offer";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import { glance } from "../../lib/fee-deal/glance";
 import { readingOf } from "../../lib/fee-deal/reading";
@@ -207,7 +208,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   };
   const onFee = (f: Fee) => change(updateFee(deal, f.id, () => f));
   const onAdd = (kind: FeeKindId) => {
-    const { deal: next, fee } = addFee(deal, kind);
+    const { deal: next, fee } = addFee(deal, kind, offerFor(kindById(data.kinds, deal.kind), kind).usual ?? undefined);
     change(next);
     setChosen(fee.id);
     setSheetFolded(false);
