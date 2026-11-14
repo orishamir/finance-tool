@@ -47,10 +47,12 @@ export interface HeadThing {
  * drops it), `openThing` the one whose menu is open, ringed; without `onThing` they are words at rest. With `onRemoveThing` a bin beside
  * each pill, a slot or words, drops its thing at once (`removeLabel` its spoken name), so a thing can be taken away with its fee closed
  * too. Each pill and its bin stand in one element marked `data-thing-place` with the thing's id, where the page gives the focus back to
- * the first control after an undo. `bare`: the head stands alone over a table or a grid, rounded; else it heads a band's rows.
+ * the first control after an undo. `bare`: the head stands alone over a table or a grid, rounded; else it heads a band's rows. `zone` wraps
+ * the whole head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone inside it takes
+ * what the pill takes.
  */
-export function ConditionHead({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, bare }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; bare?: boolean }) {
-  return (
+export function ConditionHead({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, bare, zone }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; bare?: boolean; zone?: (head: ReactNode) => ReactNode }) {
+  const head = (
     // 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
     // wrapped lines, so two bins' areas never meet
     <div className={cx("flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink", bare && "rounded-lg border border-when-edge bg-when-fill")}>
@@ -75,13 +77,14 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
       })}
     </div>
   );
+  return zone ? zone(head) : head;
 }
 
 /**
  * The band, for cases read as rows (a phone, or a grid whose cases do not fall one to a place): its head (`ConditionHead`) and its rows as `children`
  * (`CaseRow`, `CaseGroup`, `OpenCase`, an `AddSlot` row), 4 px apart, in the cases' blue.
  */
-export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; children: ReactNode }) {
+export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; zone?: (head: ReactNode) => ReactNode; children: ReactNode }) {
   return (
     <div className="@container overflow-hidden rounded-lg border border-when-edge bg-when-fill pb-1">
       <ConditionHead {...head} />

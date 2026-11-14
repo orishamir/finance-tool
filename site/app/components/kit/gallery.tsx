@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router";
 import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
-import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
+import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
 import { IconAlert, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
 import { IconDrillIn } from "../icons";
@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -3097,7 +3097,8 @@ function CustodyTable({ today }: { today: string }) {
           { id: "price", head: rh.rate!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(0.15, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}</span> }] },
           { id: "max", head: rh.max!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(10000, "nis", today)} {sc.perCharge}</span> }] },
         ]}
-        add={{ label: dealWords.cases.addSlot.case, onAdd: () => undefined }}
+        add={{ label: dealWords.cases.addKnob.case, onAdd: () => undefined }}
+        insert={() => ({ label: dealWords.cases.addKnob.case, spoken: dealWords.cases.addKnob.between.replace("{add}", dealWords.cases.addKnob.value.held!).replace("{a}", sc.heldValues.ta).replace("{b}", sc.heldValues.abroad), onAdd: () => undefined })}
       />
     </FeeBlock>
   );
@@ -3141,7 +3142,7 @@ function LadderTable({ today }: { today: string }) {
         ladder
         columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => undefined }))}
         rows={[{ id: "price", head: rh.rate!, cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
-        add={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}
+        add={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
       />
     </FeeBlock>
   );
@@ -3177,8 +3178,8 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
           { id: "makam", head: sc.what.makam, cells: [{ from: 0, span: 1, ...cell("mk-d", 0.09) }, { from: 1, span: 1, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam} · ${sc.channels.branch}`, onAdd: () => undefined } }] },
           { id: "abroad", head: sc.heldValues.abroad, cells: [{ from: 0, span: 2, ...cell("ab", 0.6), across: sc.anyChannel }] },
         ]}
-        addRow={{ label: sc.things.what, onAdd: () => undefined }}
-        addColumn={{ label: sc.things.channel, onAdd: () => undefined }}
+        addRow={{ label: dealWords.cases.addKnob.value.what!, onAdd: () => undefined }}
+        addColumn={{ label: dealWords.cases.addKnob.value.channel!, onAdd: () => undefined }}
       />
     </FeeBlock>
   );
@@ -3197,9 +3198,9 @@ function TradeGroups({ today }: { today: string }) {
         <CaseGroup head={sc.heldValues.abroad}>
           <CaseRow when={[{ text: sc.anyChannel, any: true }]} label={sc.open(sc.anyChannel)} onOpen={() => undefined}>{part(0.6)}</CaseRow>
         </CaseGroup>
-        <div className="flex flex-wrap gap-2 px-3 pt-1 pb-1">
-          <AddSlot shape="pill" add={{ label: sc.things.what, onAdd: () => undefined }} />
-          <AddSlot shape="pill" add={{ label: sc.things.channel, onAdd: () => undefined }} />
+        <div className="flex flex-col gap-1 px-3 pt-1 pb-1">
+          <AddSlot add={{ label: sc.things.what, onAdd: () => undefined }} />
+          <AddSlot add={{ label: sc.things.channel, onAdd: () => undefined }} />
         </div>
       </ConditionBand>
     </FeeBlock>
@@ -3221,15 +3222,16 @@ function ChangeDemo({ today }: { today: string }) {
           <Edit part={{ id: "sum", kind: "price", n: 20, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }} today={today} onRemove={() => undefined} />
         </>
       )}
-      <AddSlot shape="row" add={{ label: dealWords.panel.change.add, onAdd: () => setGone(false) }} />
+      <AddSlot add={{ label: dealWords.panel.change.add, onAdd: () => setGone(false) }} />
     </SlimFee>
   );
 }
 
 /**
  * A conversion's grid with what lifts and stretches: a grip on each column's head and each cell, a grab strip along a cell's edge toward a
- * place no case holds (its knob in the middle), the bin while something is lifted, and a figure edited where it is read. One price above
- * 10 $ and above 100 $ in one cell, nothing up to 10 $ until it is stretched there.
+ * place no case holds (its knob in the middle), the bin while something is lifted, a cell's own bin in its corner, a row's head and the
+ * condition's head taking a cell for every case they cover, and a figure edited where it is read. One price above 10 $ and above 100 $ in
+ * one cell, nothing up to 10 $ until it is stretched there.
  */
 function LiftDemo({ today }: { today: string }) {
   const steps = [sc.liftSteps.small, sc.liftSteps.mid, sc.liftSteps.big];
@@ -3251,7 +3253,16 @@ function LiftDemo({ today }: { today: string }) {
   );
   return (
     <FeeBlock dot="bg-fee-fx" name={sc.fx}>
-      <ConditionHead bare things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]} />
+      {/* the condition's head takes a cell for every case: dropped there, each row's price covers its whole row */}
+      <ConditionHead
+        bare
+        things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
+        zone={(h) => (
+          <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
+            {h}
+          </DropZone>
+        )}
+      />
       <CaseGrid
         steps
         label={sc.fx}
@@ -3259,6 +3270,7 @@ function LiftDemo({ today }: { today: string }) {
         rows={order.map((j) => {
           const head = [sc.channels.web, sc.channels.branch][j]!;
           const from = Math.min(starts[j]!, n - 1);
+          const emptied = starts[j]! >= n;
           const shown = reach && reach.row === j ? reach.from : from;
           const knob = (
             <SpanKnob
@@ -3276,7 +3288,7 @@ function LiftDemo({ today }: { today: string }) {
               }}
             />
           );
-          const pricedCell = { from, span: n - from, content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
+          const pricedCell = { from, span: n - from, content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}), onRemove: () => setStarts((x) => x.map((v, i) => (i === j ? n : v))), removeLabel: lw.binCell.replace("{where}", head) };
           const item = `kit:row:${j}`;
           return {
             id: head,
@@ -3284,16 +3296,25 @@ function LiftDemo({ today }: { today: string }) {
             grip: <Grip item={item} label={`${lw.grip.row}${head}`} name={lw.name.row.replace("{name}", head)} />,
             liftItem: item,
             zone: (h: ReactNode) => (
-              <DropZone sort={{ list: "kit:rows", axis: "y" }} accepts={(it) => it.startsWith("kit:row:") && it !== item} onDrop={(it) => setOrder((o) => { const from = o.indexOf(Number(it.split(":")[2])); const to = o.indexOf(j); const next = o.filter((_, i) => i !== from); next.splice(to, 0, o[from]!); return next; })}>
+              // a row lands among the rows (a sortable list); a cell drops on the head as a plain place, its price covering the whole row
+              <DropZone
+                sort={(it) => (it.startsWith("kit:row:") ? { list: "kit:rows", axis: "y" } : null)}
+                accepts={(it) => (it.startsWith("kit:row:") && it !== item) || it.startsWith("kit:cell:")}
+                onDrop={(it) => {
+                  if (it.startsWith("kit:cell:")) return setStarts((x) => x.map((v, i) => (i === j ? 0 : v)));
+                  setOrder((o) => { const from = o.indexOf(Number(it.split(":")[2])); const to = o.indexOf(j); const next = o.filter((_, i) => i !== from); next.splice(to, 0, o[from]!); return next; });
+                }}
+              >
                 {h}
               </DropZone>
             ),
             addPart: { label: dealWords.cases.rowAdd.strip, onAdd: () => undefined },
-            cells: [...Array.from({ length: from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from, fill: <span>{priced}% {sc.liftPer}</span> })), pricedCell],
+            // a row whose cell its corner's bin took away: every place empty
+            cells: [...Array.from({ length: emptied ? n : from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from, fill: <span>{priced}% {sc.liftPer}</span> })), ...(emptied ? [] : [pricedCell])],
           };
         })}
-        addColumn={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}
-        addRow={{ label: sc.things.channel, onAdd: () => undefined }}
+        addColumn={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
+        addRow={{ label: dealWords.cases.addKnob.value.channel!, onAdd: () => undefined }}
         foot={
           <DropBin
             accepts={(it) => it.startsWith("kit:col:")}
@@ -3306,7 +3327,7 @@ function LiftDemo({ today }: { today: string }) {
         }
       />
       {/* a menu of actions from any control (the row strip's parts) */}
-      <AddSlot shape="pill" add={{ label: dealWords.cases.rowAdd.strip, expanded: !!menuAt, onAdd: (at) => setMenuAt((m) => (m ? null : at)) }} />
+      <AddSlot add={{ label: dealWords.cases.rowAdd.strip, expanded: !!menuAt, onAdd: (at) => setMenuAt((m) => (m ? null : at)) }} />
       {menuAt && <ActionMenu actions={["min", "max", "discount"].map((row) => ({ label: dealWords.cases.rowHeads[row]!, onPick: () => undefined }))} back={{ current: menuAt }} onClose={() => setMenuAt(null)} />}
       {gone && (
         <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground" role="status">
@@ -3441,9 +3462,25 @@ function CaseDemos({ today }: { today: string }) {
         <State label={`a bin alone, its words spoken and its tooltip; 44 px square on a phone, ${g.states.interactive}`}>
           <RemoveButton label={dealWords.panel.remove} onRemove={() => undefined} />
         </State>
+        <State label="knob: a cell's own bin, drawn like its stretch knob; on the page it shows only while its cell is under a fine pointer">
+          <span className="[&_[data-cell-bin]]:pointer-events-auto [&_[data-cell-bin]]:opacity-100">
+            <RemoveButton knob cell label={dealWords.cases.lifted.binCell.replace("{where}", dealWords.cases.rowHeads.max!)} onRemove={() => undefined} />
+          </span>
+        </State>
+      </Demo>
+      <Demo name="KnobButton" use={g.uses.KnobButton}>
+        <State label={`the plus that adds (wide: a 44 px press both ways), the ✕ at a part line's end, a closed fee card's bin and duplicate; expanded while its question is open; ${g.states.interactive}`}>
+          <div className="flex items-center gap-6">
+            <KnobButton icon={Plus} label={dealWords.cases.addKnob.case} wide onClick={() => undefined} />
+            <KnobButton icon={Plus} label={dealWords.cases.addKnob.step} wide expanded onClick={() => undefined} />
+            <KnobButton icon={X} label={dealWords.cases.partOff.replace("{part}", dealWords.cases.rowHeads.max!)} onClick={() => undefined} />
+            <RemoveButton knob label={dealWords.cases.feeCorner.remove} onRemove={() => undefined} />
+            <KnobButton icon={Copy} label={dealWords.cases.feeCorner.duplicate} onClick={() => undefined} />
+          </div>
+        </State>
       </Demo>
       <Demo name="Grip, DropBin, SpanKnob, EditInPlace" use={g.uses.Lift}>
-        <State label={`${g.states.interactive}: a step's grip lifts it (a long press on a phone) and the bin shows under the grid; a knob stretches the cell over the next step or back (the arrow keys too); a tap on the figure edits it in place; the cells walk by the arrow keys, Home, End and Tab`} wide>
+        <State label={`${g.states.interactive}: a step's grip lifts it (a long press on a phone) and the bin shows under the grid; a knob stretches the cell over the next step or back (the arrow keys too); a tap on the figure edits it in place; the cells walk by the arrow keys, Home, End and Tab; a cell dropped on its row's head covers the whole row, on the condition's head every row; the bin in a cell's corner, under a fine pointer, takes its row's price away`} wide>
           <div className="max-w-2xl">
             <LiftDemo today={today} />
           </div>

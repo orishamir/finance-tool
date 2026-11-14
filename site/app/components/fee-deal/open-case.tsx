@@ -214,7 +214,6 @@ function AddChange({ fee, side, caseId, name, onFee }: { fee: Fee; side: Side; c
     <>
       <div data-add-change={side} className="contents">
         <AddSlot
-          shape="row"
           add={{
             label: c.add,
             expanded: asking,

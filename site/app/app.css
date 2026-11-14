@@ -722,9 +722,26 @@
       user-select: text;
     }
   }
-  /* While something is carried, no grip, knob or row strip is drawn, under the pointer or anywhere: what is under it reads as where the
-     thing would go, not as a thing to lift */
-  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-grip], [data-span-knob]:not(:active), [data-row-add]) {
+  /* A cell's own bin (kit/case-table.tsx, `CellBin`): drawn, and taking a press, only on a fine pointer while its cell is under it or has
+     the keyboard's focus, so an unseen corner never takes a cell away; touch has the grip's menu and the long press */
+  [data-cell-bin] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (pointer: fine) {
+    [data-liftable]:is(:hover, :focus-visible) > [data-cell-bin-box] > [data-cell-bin] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  @media (pointer: coarse) {
+    [data-cell-bin-box] {
+      display: none;
+    }
+  }
+  /* While something is carried, no grip, knob, cell's bin or row strip is drawn, under the pointer or anywhere: what is under it reads as
+     where the thing would go, not as a thing to lift */
+  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-grip], [data-span-knob]:not(:active), [data-row-add], [data-cell-bin]) {
     opacity: 0 !important;
     pointer-events: none;
   }
@@ -743,6 +760,54 @@
       pointer-events: auto;
       transition-delay: 0ms;
     }
+  }
+  /* The plus on the line between two heads (kit/case-table.tsx, `BetweenAdd`): its strip takes the pointer, and its knob is drawn only
+     while a fine pointer rests on the strip, or while the question it opened is open; on touch the strip is not there at all, so it
+     takes no tap from the heads (their menus hold "הוספה לפני" and "הוספה אחרי"), nor while something is carried */
+  [data-between-add] {
+    pointer-events: auto;
+  }
+  [data-between-add] > button {
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (pointer: fine) {
+    [data-between-add]:hover > button,
+    [data-between-add] > button[aria-expanded="true"] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  @media (pointer: coarse) {
+    [data-between-add] {
+      display: none;
+    }
+  }
+  :root:has([data-lift-ghost], [data-reach-frame]) [data-between-add] {
+    display: none;
+  }
+  /* The ✕ at the end of one part line in a cell (fee-deal/fee-cases.tsx, `Joined`): drawn, and taking a press, only after a fine pointer
+     has rested on that line for 1.5 s, so it never stands in the way of reading or a quick pass; gone at once when the pointer leaves.
+     Never on touch, nor while something is carried */
+  [data-part-off] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0s, visibility 0s;
+  }
+  @media (pointer: fine) {
+    [data-part-line]:hover > [data-part-off] {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity var(--duration-fast) linear 1500ms, visibility 0s linear 1500ms;
+    }
+  }
+  @media (pointer: coarse) {
+    [data-part-off] {
+      display: none;
+    }
+  }
+  :root:has([data-lift-ghost], [data-reach-frame]) [data-part-off] {
+    display: none;
   }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */

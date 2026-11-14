@@ -5,6 +5,8 @@ import { WHAT_VALUES } from "../shapes";
 import { caseFor } from "@finance-tool/engine";
 import { condsOf } from "../cases";
 import { held } from "../limits";
+import { valueKey } from "../layout";
+import { moveValue } from "./arrange";
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeUnit, type ValuesOf } from "../offers/conditions";
 
 // ---------------------------------------------------------------- what a fee's price changes by (F-114)
@@ -306,6 +308,18 @@ export function addValues(fee: Fee, t: number, values: readonly string[], own: r
   const fresh = [...new Set(values.map((v) => v.trim()).filter((v) => v && !named.has(v)))].filter((v) => fits((next as CasesFee).by[t]!, [v]));
   if (fresh.length === 0 || !hasCases(next)) return fee;
   return held(fee, { ...next, cases: [...next.cases, ...fresh.flatMap((v) => from.map((c) => asNew(copyOf(c, c.when.map((w, k) => (k === t ? [v] : w))))))] });
+}
+
+/**
+ * New values of thing `t` (`addValues`) standing on the page right before its value `before` (`valueKey`), in the order given, rather than
+ * after the last: a column or a row added between two (`moveValue`). Without `before`, or where nothing was added, as `addValues`.
+ */
+export function addValuesAt(fee: Fee, t: number, values: readonly string[], own: readonly OwnPlace[] = [], before?: string): Fee {
+  const next = addValues(fee, t, values, own);
+  if (before === undefined || next === fee || !hasCases(fee) || !hasCases(next)) return next;
+  const had = new Set(fee.cases.map((c) => valueKey(c.when[t]!)));
+  const fresh = [...new Set(next.cases.map((c) => valueKey(c.when[t]!)))].filter((k) => !had.has(k));
+  return fresh.reduce<Fee>((x, k) => moveValue(x, t, k, before), next);
 }
 
 /** A range's top `k` typed again (its unit kept): refused where it would not stay above the top before it and below the one after. */
