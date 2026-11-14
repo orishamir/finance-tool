@@ -1,7 +1,7 @@
-// The toolbox for the case open in place (method §10.6): the parts the product's fee is offered that the case's price can hold now, in the
-// toolbox's groups and order, each with its words and its box, and the things the fee may change by.
+// The toolbox for the case open in place (method §10.6): the parts the product's fee is offered that the price it acts on can hold now (the
+// purchase's last, `toolPrice`), in the toolbox's groups and order, each with its words and its box, and the things the fee may change by.
 import { feeDeal as copy } from "../../copy";
-import { hasCases, pricedOf, type Case, type Fee } from "./model";
+import { hasCases, pricedOf, toolPrice, type Case, type Fee } from "./model";
 import { offerFor } from "./offers/offer";
 import { PARTS, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
 import { OFFERED, feeNameOf, type PartWords, type ToolBox } from "./part-words";
@@ -41,6 +41,8 @@ export interface ToolGroup {
 export interface Toolbox {
   /** "להוסיף למקרה: " and the open case's values (`when`), or a slim fee's name (`name`). */
   addTo: { lead: string; when?: WhenWords[]; name?: string };
+  /** The price it acts on, by its place among the purchase's prices (`toolPrice`): a part tapped goes on it, a form of the price changes it. */
+  k: number;
   groups: ToolGroup[];
 }
 
@@ -72,7 +74,8 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
-  const p = priced.stages[0]!.price;
+  const k = toolPrice(priced);
+  const p = priced.stages[k]!.price;
   // what the product's fee is offered (the rule table narrows it), of which the parts its price can hold now
   const offer = offerFor(r.kind, fee.kind);
   const parts = (g: (typeof TOOLBOX)[number]): ToolPart[] =>
@@ -82,7 +85,7 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   const c = hasCases(fee) ? (priced as Case) : null;
   const addTo = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
   const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g) }));
-  return { addTo, groups: groups.filter((g) => g.parts.length > 0) };
+  return { addTo, k, groups: groups.filter((g) => g.parts.length > 0) };
 }
 
 /** The things a fee is offered to change by, as the toolbox's cards: one it changes by already is used, and none more can be added past three. */

@@ -210,7 +210,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
-  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
+  const pending = oc.pendingHere;
+  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);
   const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined) : null), [read, chosen, caseId]);
   const menu = oc.menu;
   const thingOpen = oc.thingOpen;
@@ -306,7 +307,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               deal={deal}
               view={builderView}
               groupOf={(fee: Fee) => feeGroup(read, fee, saves)}
-              open={{ fee: chosen, case: caseId, view: panel?.open ?? null, pending: oc.pendingHere, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
+              open={{ fee: chosen, case: caseId, view: panel?.open ?? null, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
               toolbox={panelColumn || phone ? null : panelView}
               line={lines.fee}
               caseLine={lines.case}

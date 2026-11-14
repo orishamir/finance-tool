@@ -97,7 +97,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     deal,
     view: builder(r, null, chosen ? { fee: chosen, case: caseId } : null),
     groupOf: (f) => feeGroup(r, f, saves(deal)),
-    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, pending: null, menu: null, thing: null },
+    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, menu: null, thing: null },
     toolbox: null,
     line: null,
     caseLine: null,

@@ -1,37 +1,36 @@
 // The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit (part-edit.tsx), a later price
 // headed by its first month and a sale priced apart under its own head; a part the toolbox added that still needs its figure, its month or
-// its fee, asking for it where it will stand; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
+// its fee, asking for it on the price it goes on; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
 import { useState } from "react";
 import { feeDeal as copy } from "../../copy";
-import type { OpenCase, OpenPart } from "../../lib/fee-deal/panel";
+import type { OpenCase, OpenPart, OpenPending, OpenStage } from "../../lib/fee-deal/panel";
 import type { SlotEdit } from "../../lib/fee-deal/things";
 import { addOwnPlace, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
 import { editPrice } from "../../lib/fee-deal/edits/stage";
 import { withCurrency } from "../../lib/fee-deal/edits/price";
-import { anySourced, BOUND_CURRENCIES, namesPlaces, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Price, type Side } from "../../lib/fee-deal/model";
-import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
-import { keeps, sumCurrency } from "../../lib/fee-deal/offers/capacity";
+import { BOUND_CURRENCIES, namesPlaces, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
+import { setPart } from "../../lib/fee-deal/offers/parts";
+import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { Button, FigureField, InlineSelect, RangeMenu, SegmentedControl, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
+import { FigureField, InlineSelect, RangeMenu, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
 import { PriceFigure, partFieldId } from "./figures";
-import { PartLine, PendingEdit, SPOKEN, type PartPlace } from "./part-edit";
-import type { PendingPart } from "../../lib/fee-deal/offers/parts";
+import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
+import { PartLine, PendingEdit, type PartPlace } from "./part-edit";
 import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 
 /**
  * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's ✕
  * takes it away (`setPart`), the main price's makes the price free, and a later price's month taken away takes the prices after it with
- * it (`onHoldOn`).
+ * it (`onHoldOn`). The price's currency, where the fee may take another, is chosen beside the part the panel marks (`stage.chooser`),
+ * whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign.
  */
 function PriceParts({
   fee,
   caseId,
   side,
-  k,
-  until,
-  parts,
+  stage,
   name,
   deal,
   later,
@@ -43,31 +42,25 @@ function PriceParts({
   fee: Fee;
   caseId?: string;
   side: Side;
-  k: number;
-  until?: MonthKey;
-  parts: OpenPart[];
+  stage: OpenStage;
   name: string;
   deal: FeeDeal;
   /** The form a price added after a free one takes (`OpenCase.later`). */
   later: ChargedForm;
-  /** The part asking for its figure, month or fee here, where it asks on this price (the last price of the purchase). */
-  pending: PendingPart | null;
+  /** The part asking for its figure, month or fee here, where it asks on this price (the toolbox's). */
+  pending: OpenPending | null;
   onFee: (f: Fee) => void;
   onHoldOn: (side: Side, k: number) => void;
   onPendingDone: () => void;
 }) {
+  const { k, until, parts } = stage;
   const stages = pricesOn(fee, side, caseId);
   const price = stages[k]!.price;
   const label = (field: string) => copy.builder.fieldName(name, field);
   const edit = (fn: (p: Price) => Price) => onFee(editPrice(fee, side, k, fn, caseId));
-  // the price's currency, where the fee may take another, is chosen beside its first sum (a sum per unit's or per action's, else the
-  // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign. The chip is plain
-  // while the price still holds a figure a template filled (a change of currency makes the whole price the person's, `withCurrency`)
-  const chooser =
-    keeps(fee.kind, price.form, "currency") ? (
-      <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={sumCurrency(fee.kind, price)} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
-    ) : null;
-  const chooserOn: PartId | null = chooser ? (price.form === "action" ? (parts.some((p) => p.id === "min") ? "min" : parts.some((p) => p.id === "max") ? "max" : null) : price.form) : null;
+  const chooser = stage.chooser ? (
+    <InlineSelect chip plain={stage.chooser.plain} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={stage.chooser.currency} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
+  ) : null;
   const at: PartPlace = {
     fee,
     ...(caseId ? { caseId } : {}),
@@ -81,7 +74,6 @@ function PriceParts({
     edit,
     onFee,
     chooser,
-    chooserOn,
     box: (part, f, opts = {}) => (
       <PriceFigure
         key={f.figure}
@@ -92,7 +84,7 @@ function PriceParts({
         figure={f.figure}
         value={f.value}
         sign={f.sign}
-        {...(chooserOn === part && f.figure !== "rate" ? { unit: "" } : {})}
+        {...(f.bare ? { unit: "" } : {})}
         label={label(SPOKEN[f.figure])}
         {...opts}
         id={partFieldId(fee.id, `${side}${k}-${part}-${f.figure}`)}
@@ -110,21 +102,21 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
       ))}
-      {pending && <PendingEdit fee={fee} caseId={caseId} side={side} k={k} part={pending} deal={deal} name={name} later={later} onFee={onFee} onDone={onPendingDone} />}
+      {pending && <PendingEdit fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} later={later} onFee={onFee} onDone={onPendingDone} />}
     </>
   );
 }
 
 /**
  * The open case's prices in edit, each with its parts: the purchase's (or the only) prices, a later one headed by its first month; then a
- * sale priced apart under its head. `pending`: a part the toolbox added that asks for its figure, month or fee, on the last price.
+ * sale priced apart under its head. A part the toolbox added that asks for its figure, month or fee asks on the price it goes on
+ * (`open.pending`).
  */
 export function OpenParts({
   fee,
   open,
   deal,
   name,
-  pending,
   onFee,
   onHoldOn,
   onPendingDone,
@@ -134,13 +126,12 @@ export function OpenParts({
   deal: FeeDeal;
   /** The fee's name, in each box's spoken name. */
   name: string;
-  pending: PendingPart | null;
   onFee: (f: Fee) => void;
   onHoldOn: (side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
   onPendingDone: () => void;
 }) {
   const caseId = open.case ?? undefined;
-  const side = (s: Side, stages: OpenCase["buy"]) =>
+  const side = (s: Side, stages: readonly OpenStage[]) =>
     stages.map((st, j) => {
       const from = j > 0 ? stages[j - 1]!.until : undefined;
       const stageName = from ? `${name}, ${monthText(from)}` : name;
@@ -155,13 +146,11 @@ export function OpenParts({
             fee={fee}
             {...(caseId ? { caseId } : {})}
             side={s}
-            k={st.k}
-            {...(st.until ? { until: st.until } : {})}
-            parts={st.parts}
+            stage={st}
             name={stageName}
             deal={deal}
             later={open.later}
-            pending={s === "buy" && j === stages.length - 1 ? pending : null}
+            pending={s === "buy" && open.pending?.k === st.k ? open.pending : null}
             onFee={onFee}
             onHoldOn={(sd, k) => onHoldOn(sd, k, caseId, open.later)}
             onPendingDone={onPendingDone}
@@ -183,13 +172,6 @@ export function OpenParts({
 }
 
 // ---------------------------------------------------------------- a slot's menu
-
-/** A value of the person's own being typed in a list's menu: its name, and for what is bought or held, where it is bought and its currency. */
-interface OwnTyped {
-  name: string;
-  place: "israel" | "abroad";
-  currency: BoundCurrency;
-}
 
 /**
  * What a slot of the open case opens: a list to tick, "בכל …" one of its values, with a value of the person's own
@@ -224,29 +206,11 @@ export function SlotMenu({ edit, fee, caseId, t, top, onFee }: { edit: SlotEdit;
           options={[...edit.options.map((o) => ({ id: o.id, label: o.words })), { id: "any", label: edit.any.words }]}
           ticked={ticked}
           onToggle={toggle}
-          other={{ label: edit.other, onClick: () => setTyping(typing ? null : { name: "", place: "abroad", currency: "USD" }) }}
+          other={{ label: edit.other, onClick: () => setTyping(typing ? null : NEW_OWN) }}
         />
         {typing && (
-          <div className="flex flex-col gap-3 border-t border-border pt-3">
-            <TextField label={m.ownName} value={typing.name} onChange={(name) => setTyping({ ...typing, name })} />
-            {place && (
-              <>
-                <SegmentedControl
-                  label={m.ownPlace}
-                  fit
-                  options={[
-                    { value: "israel", label: m.israel },
-                    { value: "abroad", label: m.abroad },
-                  ]}
-                  value={typing.place}
-                  onChange={(v) => setTyping({ ...typing, place: v as "israel" | "abroad" })}
-                />
-                <InlineSelect label={m.ownCurrency} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.currencies[c]! }))} value={typing.currency} onChange={(v) => v && setTyping({ ...typing, currency: v as BoundCurrency })} />
-              </>
-            )}
-            <Button variant="outline" className="self-start" disabled={!typing.name.trim()} onClick={add}>
-              {copy.cases.add}
-            </Button>
+          <div className="border-t border-border pt-3">
+            <OwnValueForm value={typing} nameLabel={m.ownName} place={place} add={copy.cases.add} onChange={setTyping} onAdd={add} />
           </div>
         )}
       </div>

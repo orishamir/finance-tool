@@ -21,7 +21,6 @@ import { AskThing } from "./ask-thing";
 import { LawTag } from "./links";
 import { OpenParts, WhenText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
-import type { PendingPart } from "../../lib/fee-deal/offers/parts";
 import { Fig, UnreadWords, feeColour, feeName } from "./words";
 
 const b = copy.builder;
@@ -33,8 +32,6 @@ export interface OpenHere {
   case: string | null;
   /** The open case as the panel builds it (`panel(...).open`). */
   view: OpenCaseView | null;
-  /** A part the toolbox added that asks for its figure, month or fee in the open case. */
-  pending: PendingPart | null;
   /** The slot whose menu is open: its thing's place among the fee's things. */
   menu: number | null;
   /** The thing of the band's head whose menu is open: its place among the fee's things. */
@@ -149,7 +146,7 @@ export function FeeBlockView({
   const openParts = (spoken: string) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} pending={open.pending} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} onPendingDone={onPendingDone} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} onPendingDone={onPendingDone} />
         {formLine}
       </>
     );
