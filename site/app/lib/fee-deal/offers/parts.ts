@@ -14,7 +14,7 @@ import { FIGURES, type Figure } from "./figures";
  * a sum for each unit (`perUnit`), a sum on each action (`perAction`), a share of what is held (`held`), a sum per period (`sum`), free
  * (`free`), a discount, a third party's fee, a later price (`until`); a minimum, a maximum, a percent maximum (`cap`), a flat price for a
  * small action (`flat`), a held share's maximum on each security (`maxPerSecurity`); an offset, a refund; notes on an order (`unfilled`,
- * `unfilledClerk`, `partial`), sums in the action's currency (`inTrade`) and a sale priced apart (`sale`).
+ * `unfilledClerk`, `unfilledClerkAbroad`, `partial`), sums in the action's currency (`inTrade`) and a sale priced apart (`sale`).
  */
 export type PartId =
   | "share"
@@ -35,6 +35,7 @@ export type PartId =
   | "refund"
   | "unfilled"
   | "unfilledClerk"
+  | "unfilledClerkAbroad"
   | "partial"
   | "inTrade"
   | "sale";
@@ -193,6 +194,7 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], holds: chargedPrice, ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
   unfilled: notePart("unfilled"),
   unfilledClerk: notePart("unfilledClerk"),
+  unfilledClerkAbroad: notePart("unfilledClerkAbroad"),
   partial: notePart("partial"),
   // sums in the currency the trade is made in ("מינימום 30 במטבע העסקה"), on a trade price whose form keeps a currency: a reading takes
   // it from what is bought

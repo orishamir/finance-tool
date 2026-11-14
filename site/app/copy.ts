@@ -1913,7 +1913,7 @@ export const feeDeal = {
       /** An offset against a named fee: "מתקזזת מול {fee} של אותו חודש". */
       offsetOf: { lead: "מתקזזת מול ", tail: " של אותו חודש" },
       refund: "החזר ",
-      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", partial: "כל ביצוע חלקי בנפרד", inTrade: "הסכומים במטבע של העסקה", sale: "מכירה במחיר אחר" } as Record<string, string>,
+      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", unfilledClerkAbroad: "במינימום על הוראה דרך פקיד שלא בוצעה", partial: "כל ביצוע חלקי בנפרד", inTrade: "הסכומים במטבע של העסקה", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
       /** The toolbox's card of a flat price for a small action, by the fee: "מחיר קבוע לפעולה קטנה, עד ☐", a conversion's "להמרה קטנה". */
       flatSmall: { default: "מחיר קבוע לפעולה קטנה, עד ", fx: "מחיר קבוע להמרה קטנה, עד ", fx_spread: "מחיר קבוע להמרה קטנה, עד " } as Record<string, string>,
@@ -1985,6 +1985,8 @@ export const feeDeal = {
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)). */
       unfilledClerk: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
+      /** At a bank, abroad, in the terms of the fee rules' own line for securities abroad (BRK-16, part 4(א)(4) note 1). */
+      unfilledClerkAbroad: "בניירות ערך בחו״ל, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
       partial: "כל ביצוע חלקי נגבה בנפרד, ולכן הוראה שמתבצעת בחלקים יכולה לעלות את המינימום יותר מפעם אחת.",
     },
     /**

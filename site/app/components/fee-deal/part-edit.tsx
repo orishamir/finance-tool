@@ -219,6 +219,7 @@ const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: s
   refund: { Body: RefundBody },
   unfilled: { Body: QuietBody },
   unfilledClerk: { Body: QuietBody },
+  unfilledClerkAbroad: { Body: QuietBody },
   partial: { Body: QuietBody },
   inTrade: { Body: QuietBody },
   sale: { Body: QuietBody },

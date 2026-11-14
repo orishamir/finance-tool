@@ -217,8 +217,15 @@ describe("the templates", () => {
       expect(cases.some((c) => c.when.includes("branch") && c.when.includes("tase") && c.notes.includes("unfilledClerk"))).toBe(true);
       expect(cases.filter((c) => c.when.includes("direct") && !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
     }
-    // a foreign line at a bank is outside part 4(א)(1): no note
-    expect(notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase")).every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    // a foreign line at a bank is outside part 4(א)(1): not its note, but the foreign item's own, on the branch's case alone (part 4(א)(4), note 1)
+    const abroad = notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase"));
+    expect(abroad.every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    expect(abroad.some((c) => c.when.includes("branch") && c.notes.includes("unfilledClerkAbroad"))).toBe(true);
+    expect(abroad.filter((c) => !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
+    const foreign = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] };
+    const said = readingOf(read(foreign), data.fx).stated.find((x) => x.part === "unfilledClerkAbroad")!;
+    expect(said.words.lead).toBe(copy.cases.stated.unfilledClerkAbroad);
+    expect(said.rules).toEqual(["BRK-16"]);
     // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
     const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;

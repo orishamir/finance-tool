@@ -111,13 +111,13 @@ const ITEM_ONE = new Set(["tase_shares_bonds", "etf_units", "tase_bonds", "tase_
 
 /**
  * What a trade line notes of an order not carried out (§10.6's stated parts). At a bank the fee rules decide it whatever the line's heading
- * says (BRK-16, notes to part 4(א)(1)): an order through a clerk not carried out for a reason on the client's side pays the minimum, so a
- * line of the branch's channel that prices securities on the Tel Aviv exchange carries that note, whose words keep the item's own
- * exception of mutual funds (`bankTradeLeavesFunds`), and a direct line none. At a house that is no
- * bank, the line's own words say it (`chargesUnfilled`). None where neither does.
+ * says: an order through a clerk not carried out for a reason on the client's side pays the minimum, on the Tel Aviv exchange (BRK-16,
+ * notes to part 4(א)(1)) and abroad (part 4(א)(4), note 1). So a line of the branch's channel carries that note, in the words of its item:
+ * on the exchange the item's own exception of mutual funds (`bankTradeLeavesFunds`), abroad none; and a direct line none. At a house
+ * that is no bank, the line's own words say it (`chargesUnfilled`). None where neither does.
  */
 export function unfilledNote(l: Line, bank: boolean): Note | null {
-  if (bank) return l.channel === "branch" && l.applies_to.some((a) => ITEM_ONE.has(a)) ? "unfilledClerk" : null;
+  if (bank) return l.channel !== "branch" ? null : l.applies_to.some((a) => ITEM_ONE.has(a)) ? "unfilledClerk" : l.applies_to.includes("foreign_securities") ? "unfilledClerkAbroad" : null;
   return chargesUnfilled(l) ? "unfilled" : null;
 }
 

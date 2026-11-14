@@ -527,8 +527,8 @@ export interface StatedPart {
   rules?: readonly string[];
 }
 
-/** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out (BRK-16). */
-export const STATED_RULES: Partial<Record<StatedPart["part"], readonly string[]>> = { unfilledClerk: ["BRK-16"] };
+/** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out, at home and abroad (BRK-16). */
+export const STATED_RULES: Partial<Record<StatedPart["part"], readonly string[]>> = { unfilledClerk: ["BRK-16"], unfilledClerkAbroad: ["BRK-16"] };
 
 function statedOf(r: DealRead): StatedPart[] {
   const out: StatedPart[] = [];
