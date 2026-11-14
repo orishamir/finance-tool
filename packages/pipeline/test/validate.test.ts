@@ -704,9 +704,9 @@ describe("a deposit's first exit point (2026-11-12)", () => {
 
 describe("the unit of a rate quoted as effective (data-schema §2)", () => {
   const v = (unit: string) => ({ value: 3.2, unit });
-  it("stands only in P-05's cash_rate and a deposit record's rate_offered", () => {
+  it("stands only in P-05's cash_rate: a deposit record's rate_offered is a directive 447 rate, nominal (BANK-50)", () => {
     expect(checkEffectiveRateUnit("parameters", { method_id: "P-05", inputs: { cash_rate: v("pct_per_year_effective"), "A-01": v("pct_per_year") } })).toEqual([]);
-    expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year_effective") })).toEqual([]);
+    expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year_effective") })).toEqual([expect.stringContaining("rate_offered: unit pct_per_year_effective is read only in parameters inputs.cash_rate")]);
     // a bank's printed effective rate is effective by its field, and nothing reads the unit there
     expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year"), interest_calc: { effective_annual: v("pct_per_year_effective") } })).toEqual([
       expect.stringContaining("interest_calc.effective_annual: unit pct_per_year_effective is read only in"),

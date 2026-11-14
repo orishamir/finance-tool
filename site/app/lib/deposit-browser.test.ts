@@ -126,11 +126,13 @@ describe("an offer's words and interest", () => {
     // Yahav's "(90 יום)": 10,000 × 2.2% × 90/365
     expect(at(2.2, "m3", { termDays: 90 })).toBeCloseTo(10000 * 0.022 * 90 / 365, 6);
     // two years: only where the record gives how often interest is calculated, else unknown (BANK OQ21). Mizrahi-Tefahot's 132 prints
-    // 1.81% and an effective 1.81%, interest yearly: 10,000 × (1.0181² − 1)
-    expect(at(1.81, "y2", { calc: { effectiveAnnual: { ...real.rate_offered, value: 1.81 } } })).toBeCloseTo(10000 * (1.0181 * 1.0181 - 1), 6);
-    // a rate whose unit says it is quoted as effective compounds over the term: 10,000 × (1.032^(3/12) − 1), where 3.2% nominal pays 80
-    const effective = interestOn({ ...plain, term: "m3", rate_offered: { ...real.rate_offered, unit: "pct_per_year_effective", value: 3.2 } }, 10000, amount, "2026-11-10");
-    expect(effective?.value).toBeCloseTo(10000 * (Math.pow(1.032, 3 / 12) - 1), 6);
+    // 1.81% and an effective 1.81% printed to two decimals, interest yearly: 10,000 × (1.0181² − 1)
+    const twoPlaces = { ...real.rate_offered, unit: "count" as const, value: 2 };
+    expect(at(1.81, "y2", { calc: { effectiveAnnual: { ...real.rate_offered, value: 1.81 }, effectiveDecimals: twoPlaces } })).toBeCloseTo(10000 * (1.0181 * 1.0181 - 1), 6);
+    // Mizrahi-Tefahot's 259 prints 1.15% beside 1.15%, which m = 1 to 4 all give: at its own rate the figure stands at m = 1
+    const at259 = { calc: { effectiveAnnual: { ...real.rate_offered, value: 1.15 }, effectiveDecimals: twoPlaces } };
+    expect(at(1.15, "y2", at259)).toBeCloseTo(10000 * (1.0115 * 1.0115 - 1), 6);
+    expect(interestUnknown({ ...plain, ...at259, term: "y2", rate_offered: { ...real.rate_offered, value: 1.15 } })).toBe(false);
     expect(at(3.2, "m3")).toBeCloseTo(80, 6);
     expect(at(3.5, "y2")).toBeUndefined();
     expect(interestUnknown({ ...plain, term: "y2" })).toBe(true);
