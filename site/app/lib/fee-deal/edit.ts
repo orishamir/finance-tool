@@ -40,7 +40,9 @@ import {
 import type { DealKind } from "./kinds";
 import { charged, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES, type Figure } from "./offers/figures";
-import { BY_MAX, byKindsFor, FEE_SHAPES, isRangeKind, kindHas, LIST_IDS, RANGE_UNITS, WHAT_VALUES, type ByKind, type FeeKindId, type FormId, type RangeKind, type RangeUnit } from "./shapes";
+import { kindHas, WHAT_VALUES, type FeeKindId, type FormId } from "./shapes";
+import { capacity } from "./offers/capacity";
+import { BY_MAX, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type RangeKind, type RangeUnit } from "./offers/conditions";
 
 export type { Side } from "./model";
 
@@ -284,7 +286,7 @@ export function addLater<F extends Fee>(fee: F, side: Side, until: MonthKey, cas
 }
 
 /** The form of the price that follows `before`: the same form, or the fee's usual one after a free price. */
-const laterForm = (fee: Fee, before: Price): FormId => (before.form === "free" ? FEE_SHAPES[fee.kind].usual : before.form);
+const laterForm = (fee: Fee, before: Price): FormId => (before.form === "free" ? capacity(fee.kind).usual : before.form);
 
 /** Price `k` for a limited time, up to the start of `month`: the last price ends there and the next one follows it (`addLater`); another moves its end. */
 export function setLimited<F extends Fee>(fee: F, side: Side, k: number, month: MonthKey, caseId?: string): F {
@@ -371,11 +373,11 @@ function thingOf(n: NewBy): { by: By; values: When[] } | null {
 }
 
 /**
- * Whether a fee can take a thing of `kind` more: one its kind may change by (`byKindsFor`), not one it changes by already (what is bought
+ * Whether a fee can take a thing of `kind` more: one its kind may change by (`conditionsFor`), not one it changes by already (what is bought
  * and what is held count as one), and fewer than three things so far.
  */
 export function canAddBy(fee: Fee, kind: ByKind, label?: string): boolean {
-  if (!byKindsFor(fee.kind).includes(kind)) return false;
+  if (!conditionsFor(fee.kind).includes(kind)) return false;
   const by = fee.by ?? [];
   if (by.length >= BY_MAX) return false;
   const key = kind === "own" ? `own:${label?.trim() ?? ""}` : kind === "held" ? "what" : kind;

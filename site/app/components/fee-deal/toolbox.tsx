@@ -9,7 +9,8 @@ import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib
 import { setFeeName } from "../../lib/fee-deal/edit";
 import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
-import { ONE_SIDE, type ByKind } from "../../lib/fee-deal/shapes";
+import { CAPACITY } from "../../lib/fee-deal/offers/capacity";
+import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { termKey } from "../../lib/fee-page-data";
 import { IconBin, IconClose, IconPencil } from "../icons";
 import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
@@ -162,7 +163,7 @@ export function ToolboxColumn({
   const term = fee.kind === "own" ? null : feeName(fee.kind);
   const owned = term && product ? termKey(term, product) : null;
   const explained = owned && terms?.[owned] ? owned : term && terms?.[term] ? term : null;
-  const side = ONE_SIDE[fee.kind];
+  const side = CAPACITY[fee.kind].oneSide;
   return (
     <Section
       title={p.title}

@@ -16,7 +16,7 @@ import { engineDeal, enginePrice } from "./to-engine";
 import { readDealFor, type PartMark } from "./parts";
 import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
-import { FEE_SHAPES } from "./shapes";
+import { CAPACITY } from "./offers/capacity";
 import { builder } from "./builder";
 import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
 import { feeDeal as copy } from "../../copy";
@@ -40,12 +40,12 @@ const ibFixed: Price = { form: "perUnit", amount: typed(0.005), min: typed(1), c
 
 describe("the price parts as the device keeps them", () => {
   it("gives the trade fee a sum per unit, a percent maximum and a flat price, and the conversion a flat price but no percent maximum", () => {
-    expect(FEE_SHAPES.trade.forms).toContain("perUnit");
-    expect(FEE_SHAPES.trade.fields.action).toEqual(expect.arrayContaining(["cap", "flat"]));
-    expect(FEE_SHAPES.trade.fields.perUnit).toEqual(["amount", "min", "max", "cap", "flat", "currency"]);
-    expect(FEE_SHAPES.fx.fields.action).toContain("flat");
-    expect(FEE_SHAPES.fx.fields.action).not.toContain("cap");
-    expect(FEE_SHAPES.corporate_event.fields.perAction).toContain("currency");
+    expect(CAPACITY.trade.forms).toContain("perUnit");
+    expect(CAPACITY.trade.fields.action).toEqual(expect.arrayContaining(["cap", "flat"]));
+    expect(CAPACITY.trade.fields.perUnit).toEqual(["amount", "min", "max", "cap", "flat", "currency"]);
+    expect(CAPACITY.fx.fields.action).toContain("flat");
+    expect(CAPACITY.fx.fields.action).not.toContain("cap");
+    expect(CAPACITY.corporate_event.fields.perAction).toContain("currency");
   });
   it("reads them back as written, through the device and a link, and refuses a part the fee has no field for", () => {
     const d = account([trade(ibFixed), fx(mizrahiFx), { id: "fee-event", kind: "corporate_event", stages: [{ price: { form: "perAction", amount: { v: 50, src }, currency: "USD" } }] }]);

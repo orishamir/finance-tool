@@ -15,7 +15,8 @@ import { FIGURES, type Figure } from "./offers/figures";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { BY_MAX, byKindsFor, isConversion, isRangeKind, LIST_IDS, onHolding, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type ListKind, type RangeUnit } from "./shapes";
+import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
+import { BY_MAX, CONDITIONS, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type ListKind, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -424,7 +425,7 @@ export interface Toolbox {
   groups: ToolGroup[];
 }
 
-/** The toolbox's groups in order, each with its parts in order; what the price changes by is the fee's things (`byKindsFor`). */
+/** The toolbox's groups in order, each with its parts in order; what the price changes by is the fee's things (`conditionsFor`). */
 const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
   { group: "price", kind: "price", parts: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"] },
   { group: "bound", kind: "bound", parts: ["min", "max", "cap"] },
@@ -458,7 +459,7 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
 function byParts(fee: Fee): ToolPart[] {
   const have = new Set((fee.by ?? []).map((b) => (b.kind === "held" ? "what" : b.kind)));
   const full = (fee.by?.length ?? 0) >= BY_MAX;
-  return byKindsFor(fee.kind).map((k) => {
+  return conditionsFor(fee.kind).map((k) => {
     const used = k !== "own" && have.has(k === "held" ? "what" : k);
     return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });
@@ -500,10 +501,15 @@ export interface ByQuestion {
 export function byQuestion(fee: Fee, kind: ByKind): ByQuestion {
   const c = copy.cases;
   const base = { kind, add: c.add, cancel: c.cancel, ...(canAddBy(fee, kind) || kind === "own" ? {} : { off: (fee.by?.length ?? 0) >= BY_MAX ? c.full : "" }) };
-  if (isRangeKind(kind)) return { ...base, ask: c.ask.range!.replace("{thing}", thingName(fee.kind, { kind })), units: RANGE_UNITS[kind].map((u) => ({ unit: u, words: unitWords(u) })) };
-  if (kind === "track" || kind === "own") return { ...base, ask: c.ask[kind]! };
-  const ids = LIST_IDS[kind as ListKind];
-  return { ...base, ask: c.ask[kind]!, values: ids.map((id) => ({ id, words: valueWords(kind, id) })), other: kind === "channel" ? c.otherChannel : c.otherValue };
+  const values = CONDITIONS[kind].values;
+  switch (values.kind) {
+    case "range":
+      return { ...base, ask: c.ask.range!.replace("{thing}", thingName(fee.kind, { kind })), units: values.units.map((u) => ({ unit: u, words: unitWords(u) })) };
+    case "list":
+      return { ...base, ask: c.ask[kind]!, values: values.ids.map((id) => ({ id, words: valueWords(kind, id) })), other: kind === "channel" ? c.otherChannel : c.otherValue };
+    default:
+      return { ...base, ask: c.ask[kind]! };
+  }
 }
 
 /**

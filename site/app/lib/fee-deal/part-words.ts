@@ -8,7 +8,8 @@ import { charged, hasCurrency, onAction } from "./offers/capabilities";
 import type { FigureUnit } from "./offers/figures";
 import type { PartId } from "./offers/parts";
 import type { PriceView } from "./parts";
-import { FEE_SHAPES, type FeeKindId } from "./shapes";
+import { type FeeKindId } from "./shapes";
+import { fieldsOf } from "./offers/capacity";
 
 /**
  * The words of one part of a price, in order: `lead` before its figure, the figure (`figure`, in its number state), `mid` and a second
@@ -112,8 +113,8 @@ const inPrice = ({ p }: ToolContext): ToolBox => ({ sign: signOf(priceCurrency(p
 export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>> = {
   share: ({ kind }) => ({ words: { tail: ` ${perAction(kind)}` }, box: "pct" }),
   perUnit: (c) => ({ words: { tail: ` ${pp.perUnit}` }, box: inPrice(c) }),
-  // a sum per action keeps the price's currency only where the fee may hold one for it (`FEE_SHAPES`), else it is in shekels
-  perAction: ({ kind, p }) => ({ words: { tail: ` ${perAction(kind)}` }, box: { sign: signOf((FEE_SHAPES[kind].fields.perAction ?? []).includes("currency") ? priceCurrency(p) : "ILS") } }),
+  // a sum per action keeps the price's currency only where the fee may hold one for it (its capacity), else it is in shekels
+  perAction: ({ kind, p }) => ({ words: { tail: ` ${perAction(kind)}` }, box: { sign: signOf(fieldsOf(kind, "perAction").includes("currency") ? priceCurrency(p) : "ILS") } }),
   held: () => ({ words: { tail: ` ${copy.price.per[12]}` }, box: "pct" }),
   sum: () => ({ words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") } }),
   discount: () => ({ words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" }),

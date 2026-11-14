@@ -12,7 +12,8 @@ import { capLine, type CapLine } from "./kinds";
 import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Note, type Stage } from "./model";
 import { charged, hasBounds, onAction } from "./offers/capabilities";
 import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./parts";
-import { holdsFunds, ONE_SIDE } from "./shapes";
+import { holdsFunds } from "./shapes";
+import { CAPACITY } from "./offers/capacity";
 import { inputKey, priceFigures, reading as computedValue, sumUnit } from "./values";
 
 // ---------------------------------------------------------------- the periods
@@ -100,7 +101,7 @@ function statementsOf(r: DealRead, rates: Readonly<Record<string, number>> | nul
     const at = monthKey(p.from);
     for (const m of dealMarks(r.engine, p)) add(markKey(r, m), at, () => ({ kind: "mark", mark: markView(m, r.fees, p, r.today, m.kind === "meet" && rates !== null && sumsLargest(r.engine, p, m, rates)), periods: [at] }));
     r.fees.forEach((fee, i) => {
-      const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[ONE_SIDE[fee.kind] ?? "all", priceAt(fee, p.from)]];
+      const sides: [DealSide, ReturnType<typeof priceAt>][] = fee.sale ? [["buy", priceAt(fee, p.from)], ["sell", priceAt(fee, p.from, true)]] : [[CAPACITY[fee.kind].oneSide ?? "all", priceAt(fee, p.from)]];
       for (const [side, price] of sides) {
         if (price.form === "held" && price.every < 12 && price.rate.v > 0) add(`every:${fee.id}:${price.every}`, at, () => ({ kind: "every", fee: refOf(fee, r.today), every: price.every, periods: [at] }));
         // a step with a top grows no further than its top (F-115): only the last step, or a fee read whole, grows without end
@@ -212,7 +213,7 @@ function sidesOn(r: DealRead, p: DealPeriod, action: DealAction): DealSide[] {
     const at = p.prices[i]!;
     return groupAction(r.engine, e.base, at.price) === action || (at.sale && groupAction(r.engine, e.base, at.sale) === action) ? [fee] : [];
   });
-  return fees.some((f) => f.sale || ONE_SIDE[f.kind]) ? ["buy", "sell"] : ["all"];
+  return fees.some((f) => f.sale || CAPACITY[f.kind].oneSide) ? ["buy", "sell"] : ["all"];
 }
 
 /** Whether a mark falls on the curve of `action` on `side` in a period. */
@@ -420,7 +421,7 @@ function lawOf(r: DealRead): LawRow[] {
     const cap = capLine(r.kind, fee.kind);
     if (cap.state === "absent") return [];
     const prices: LawPrice[] = [];
-    const sides: { side: DealSide; sale: boolean }[] = fee.sale ? [{ side: "buy", sale: false }, { side: "sell", sale: true }] : [{ side: ONE_SIDE[fee.kind] ?? "all", sale: false }];
+    const sides: { side: DealSide; sale: boolean }[] = fee.sale ? [{ side: "buy", sale: false }, { side: "sell", sale: true }] : [{ side: CAPACITY[fee.kind].oneSide ?? "all", sale: false }];
     for (const { side, sale } of sides) {
       // a stage held over several periods is one row, from its first period to the end of its last
       let last = null as { stage: Stage; row: LawPrice } | null;

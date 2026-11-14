@@ -8,7 +8,8 @@ import { addOwnPlace, editPrice, setMine, setRangeUnit, setStep, setTop, setWhen
 import { anySourced, BOUND_CURRENCIES, pricesOn, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Price } from "../../lib/fee-deal/model";
 import { hasCurrency } from "../../lib/fee-deal/offers/capabilities";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
-import { FEE_SHAPES, type RangeUnit } from "../../lib/fee-deal/shapes";
+import { fieldsOf } from "../../lib/fee-deal/offers/capacity";
+import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Button, FigureField, InlineSelect, RangeMenu, SegmentedControl, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
@@ -56,7 +57,7 @@ function PriceParts({
   // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign. The chip is plain
   // while the price still holds a figure a template filled (a change of currency makes the whole price the person's, `withCurrency`)
   const chooser =
-    hasCurrency(price) && (FEE_SHAPES[fee.kind].fields[price.form] ?? []).includes("currency") ? (
+    hasCurrency(price) && fieldsOf(fee.kind, price.form).includes("currency") ? (
       <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
     ) : null;
   const chooserOn: PartId | null = chooser ? (price.form === "action" ? (parts.some((p) => p.id === "min") ? "min" : parts.some((p) => p.id === "max") ? "max" : null) : price.form) : null;

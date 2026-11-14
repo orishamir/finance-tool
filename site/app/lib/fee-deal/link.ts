@@ -6,6 +6,7 @@
 import type { FeesData } from "../fee-page-data";
 import { dealPagePath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
+import { FIGURE_IDS, FIGURES as FIGURE_DEFS } from "./offers/figures";
 import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
@@ -49,11 +50,11 @@ const SHORT: Record<string, string> = {
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
 /**
- * The fields of a price that hold a figure (`Num`), a flat price's two among them (`amount`, `upTo`), a discount's share (`pct`), a refund,
- * and a range's tops (`tops`, a list of figures): a link writes a figure as its number, `[number, source]` where it is sourced, or `null`
- * where it is not given yet (`Num.blank`).
+ * The keys that hold a figure (`Num`): every figure's key in a price or its part (offers/figures.ts: a flat price's two, a discount's
+ * share, a third party's figure and bounds, a refund), and a range's tops (`tops`, a list of figures). A link writes a figure as its
+ * number, `[number, source]` where it is sourced, or `null` where it is not given yet (`Num.blank`).
  */
-const FIGURES = new Set(["rate", "min", "max", "amount", "cap", "upTo", "pct", "refund", "tops"]);
+const FIGURES = new Set([...FIGURE_IDS.flatMap((f) => FIGURE_DEFS[f].keys), "tops"]);
 
 type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);

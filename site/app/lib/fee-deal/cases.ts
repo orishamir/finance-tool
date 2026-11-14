@@ -3,7 +3,8 @@
 // changes by nothing is read as it is. What the views read (parts.ts) is the result: plain fees with their prices over time.
 import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
 import { pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
-import { CURRENCY_IDS, holdsFunds, onHolding, readAcross } from "./shapes";
+import { CURRENCY_IDS, holdsFunds, onHolding } from "./shapes";
+import { readAcross } from "./offers/conditions";
 
 /**
  * Where a read fee comes from (F-114, F-115): the deal's fee (`of`), the case it is read in where the fee has cases, and, where its price

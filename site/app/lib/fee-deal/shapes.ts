@@ -1,8 +1,11 @@
-// The fee page's fee shapes (method §10.6): every fee a deal can hold, the price forms it can take, its usual form and the fields
-// each form has, and which suggestions fit what an account holds. The ids are stable: the copy names each fee by its id. Pure data and
-// small functions; no Hebrew (the names are in copy.ts, under the guide's fee names and the fee page's own keys).
+// The fee page's fee kinds (method §10.6): every fee a deal can hold, its engine base, which suggestions fit what an account holds, and
+// the values a price may change by. What each kind's price can hold is in offers/capacity.ts, the things it may change by in
+// offers/conditions.ts. The ids are stable: the copy names each fee by its id. Pure data and small functions; no Hebrew (the names are in
+// copy.ts, under the guide's fee names and the fee page's own keys).
 import type { DealBase, DealPrice } from "@finance-tool/engine";
 import type { FeeBase, ProductId } from "@finance-tool/schema";
+import { formOnHolding } from "./offers/capabilities";
+import { CAPACITY } from "./offers/capacity";
 
 /**
  * A fee a deal can hold: a fee base of the records (`feeBase` in packages/schema), or one of the four the records do not list:
@@ -19,76 +22,10 @@ export type FeeKindId = FeeBase | "fund_management" | "fx_spread" | "current_acc
  */
 export type FormId = DealPrice["kind"];
 
-/**
- * A field of a price: its rate, the months the rate is for, the months between charges, its bounds, the currency of its sums, a sum (a
- * sum per unit's among them), the percent maximum (`cap`, a share of the action that wins over the minimum, F-12) and the flat price for a
- * small action (`flat`, its price and the sum it holds up to, F-12, F-13).
- */
-export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount" | "cap" | "flat";
+/** Every fee kind, in the order the page lists fees (`CAPACITY`'s). */
+export const FEE_KIND_IDS = Object.keys(CAPACITY) as FeeKindId[];
 
-export interface FeeShape {
-  /** The record's fee base the fee is, which gives its cap (F-113); null for a fee no record names. */
-  base: FeeBase | null;
-  /** The forms it can take besides `free`, which every price can be. */
-  forms: readonly Exclude<FormId, "free">[];
-  /** The form a new price of it takes. */
-  usual: Exclude<FormId, "free">;
-  /** The fields of each form. */
-  fields: Partial<Record<Exclude<FormId, "free">, readonly FieldId[]>>;
-  /** Whether a sale may be priced apart from a purchase. */
-  saleApart: boolean;
-}
-
-const ACTION_ALL: readonly FieldId[] = ["rate", "min", "max", "currency"];
-/** The trade fee's share of an action: its bounds, the percent maximum and the flat price (F-12). */
-const TRADE: readonly FieldId[] = ["rate", "min", "max", "cap", "flat", "currency"];
-/** The trade fee's sum per unit (F-12's price per share), with the same parts. */
-const PER_UNIT: readonly FieldId[] = ["amount", "min", "max", "cap", "flat", "currency"];
-/** The conversion's share: its bounds and the flat price (F-13). */
-const FX: readonly FieldId[] = ["rate", "min", "max", "flat", "currency"];
-const RATE: readonly FieldId[] = ["rate"];
-const HELD: readonly FieldId[] = ["rate", "per", "every"];
-const HELD_BOUNDED: readonly FieldId[] = ["rate", "per", "every", "min", "max"];
-const SUM: readonly FieldId[] = ["amount", "every"];
-const AMOUNT: readonly FieldId[] = ["amount"];
-/** A sum per action in a currency of its own (F-103's charge in dollars for each corporate event). */
-const AMOUNT_IN: readonly FieldId[] = ["amount", "currency"];
-/** A trade's sum on each order, in its currency, under a percent ceiling where the list prints one (Excellence's US fixed track). */
-const AMOUNT_IN_CAP: readonly FieldId[] = ["amount", "currency", "cap"];
-
-const action = (fields: readonly FieldId[], saleApart = false): FeeShape => ({ base: null, forms: ["action"], usual: "action", fields: { action: fields }, saleApart });
-const held = (fields: readonly FieldId[] = HELD): FeeShape => ({ base: null, forms: ["held"], usual: "held", fields: { held: fields }, saleApart: false });
-const sum = (): FeeShape => ({ base: null, forms: ["sum"], usual: "sum", fields: { sum: SUM }, saleApart: false });
-
-/** Every fee's shape. A record base is its own `base`; the four the records do not list take the base whose cap would apply, or none. */
-export const FEE_SHAPES: Readonly<Record<FeeKindId, FeeShape>> = {
-  trade: { base: "trade", forms: ["action", "perUnit", "perAction"], usual: "action", fields: { action: TRADE, perUnit: PER_UNIT, perAction: AMOUNT_IN_CAP }, saleApart: true },
-  spread: { ...action(RATE), base: "spread" },
-  creation_redemption: { ...action(RATE, true), base: "creation_redemption" },
-  load: { ...action(RATE), base: "load" },
-  redemption_deduction: { ...action(RATE), base: "redemption_deduction" },
-  fx: { ...action(FX), base: "fx" },
-  fx_spread: { ...action(RATE), base: null },
-  deposit: { ...action(RATE), base: "deposit" },
-  distribution_handling: { base: "distribution_handling", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },
-  corporate_event: { base: "corporate_event", forms: ["perAction"], usual: "perAction", fields: { perAction: AMOUNT_IN }, saleApart: false },
-  transfer_out: { base: "transfer_out", forms: ["perAction", "action"], usual: "perAction", fields: { perAction: AMOUNT, action: ACTION_ALL }, saleApart: false },
-  exit: { base: "exit", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },
-  balance: { ...held(), base: "balance" },
-  custody: { base: "custody", forms: ["held", "sum"], usual: "held", fields: { held: HELD_BOUNDED, sum: SUM }, saleApart: false },
-  variable_management: { ...held(), base: "variable_management" },
-  trustee: { ...held(), base: "trustee" },
-  direct_expenses: { ...held(), base: "direct_expenses" },
-  fund_management: held(),
-  fixed_period: { ...sum(), base: "fixed_period" },
-  current_account: sum(),
-  insurance_premium: { base: "insurance_premium", forms: ["sum", "held", "action"], usual: "sum", fields: { sum: SUM, held: HELD, action: RATE }, saleApart: false },
-  own: { base: null, forms: ["action", "held", "sum", "perAction"], usual: "action", fields: { action: ACTION_ALL, held: HELD_BOUNDED, sum: SUM, perAction: AMOUNT }, saleApart: true },
-};
-
-export const FEE_KIND_IDS = Object.keys(FEE_SHAPES) as FeeKindId[];
-
-export const isFeeKindId = (x: unknown): x is FeeKindId => typeof x === "string" && Object.hasOwn(FEE_SHAPES, x);
+export const isFeeKindId = (x: unknown): x is FeeKindId => typeof x === "string" && Object.hasOwn(CAPACITY, x);
 
 /**
  * The engine's base of a fee (§10.6): a record base as itself; the spread of a conversion as a conversion (F-13: it is part of the
@@ -96,12 +33,9 @@ export const isFeeKindId = (x: unknown): x is FeeKindId => typeof x === "string"
  */
 export function engineBase(kind: FeeKindId): DealBase {
   if (kind === "fx_spread") return { key: "fx" };
-  const base = FEE_SHAPES[kind].base;
+  const base = CAPACITY[kind].base;
   return base ? { key: base } : { name: kind };
 }
-
-/** The side of a trade a fee is charged on alone (F-111): a load on a purchase, a redemption deduction on a sale. */
-export const ONE_SIDE: Partial<Record<FeeKindId, "buy" | "sell">> = { load: "buy", redemption_deduction: "sell" };
 
 // ---------------------------------------------------------------- what is held, and what fits it
 
@@ -168,37 +102,7 @@ export function suggestions(kind: ProductId, bases: readonly FeeBase[], present:
   return { usual, rarer: [...rarer, "own"] };
 }
 
-// ---------------------------------------------------------------- what a price may change by (F-114)
-
-/**
- * A thing a fee's price may change by (F-114): what is bought (`what`), what is held (`held`, the same values, for a fee on what is held),
- * the channel, the track the person chose, the currency (a conversion's), the size of the action, the size of the portfolio, the trading
- * in a month (`volume`), the number of actions in a month (`count`), or a condition in the person's own words (`own`).
- */
-export type ByKind = "what" | "held" | "channel" | "track" | "currency" | "actionSize" | "portfolioSize" | "volume" | "count" | "own";
-
-/** The things whose values are steps of a range, each with its tops (F-114). */
-export type RangeKind = "actionSize" | "portfolioSize" | "volume" | "count";
-export const RANGE_KINDS: readonly RangeKind[] = ["actionSize", "portfolioSize", "volume", "count"];
-export const isRangeKind = (k: ByKind): k is RangeKind => (RANGE_KINDS as readonly string[]).includes(k);
-
-/** The things whose values are named from a list the site knows, or in the person's words: what is bought or held, the channel, the currency. */
-export type ListKind = "what" | "held" | "channel" | "currency";
-export const isListKind = (k: ByKind): k is ListKind => k === "what" || k === "held" || k === "channel" || k === "currency";
-
-/**
- * What a range's tops count: a sum in a currency (the size of an action, of the portfolio, of a month's trading), units (a month's trading
- * in shares), or actions (the number of actions in a month).
- */
-export type RangeUnit = "ILS" | "USD" | "EUR" | "GBP" | "units" | "actions";
-
-/** The units each range may count in, the first its usual one. */
-export const RANGE_UNITS: Readonly<Record<RangeKind, readonly RangeUnit[]>> = {
-  actionSize: ["ILS", "USD", "EUR", "GBP"],
-  portfolioSize: ["ILS", "USD", "EUR", "GBP"],
-  volume: ["ILS", "USD", "EUR", "GBP", "units"],
-  count: ["actions"],
-};
+// ---------------------------------------------------------------- the values a price may change by (F-114)
 
 /**
  * What is bought or held, as the site names it (F-114): where it is bought and its currency (null: a currency other than the shekel that the
@@ -221,34 +125,11 @@ export const CHANNEL_IDS: readonly string[] = ["branch", "phone", "direct"];
 /** The currencies a conversion is priced by: from or to dollars, euros, pounds, or another currency (`other`). */
 export const CURRENCY_IDS: readonly string[] = ["USD", "EUR", "GBP", "other"];
 
-/** The values the site names for a list thing, in the order a list shows them. */
-export const LIST_IDS: Readonly<Record<ListKind, readonly string[]>> = { what: WHAT_IDS, held: WHAT_IDS, channel: CHANNEL_IDS, currency: CURRENCY_IDS };
-
 /**
  * Whether a fee of a kind is usually charged on what is held or on the account (its usual form is a share of what is held or a sum per
  * period): the things the toolbox offers it go by this. What a fee's own prices are charged on goes by their form (`chargedOnHolding`).
  */
-export const onHolding = (kind: FeeKindId): boolean => FEE_SHAPES[kind].usual === "held" || FEE_SHAPES[kind].usual === "sum";
+export const onHolding = (kind: FeeKindId): boolean => formOnHolding(CAPACITY[kind].usual);
 
 /** Whether a fee is a conversion, whose price changes by the currency rather than by what is bought. */
 export const isConversion = (kind: FeeKindId): boolean => kind === "fx" || kind === "fx_spread";
-
-/**
- * The things a fee may change by, in the toolbox's order: what is bought (what is held, for a fee on what is held or on the account; the
- * currency, for a conversion), the track, the channel, the size of the action (a fee on an action only), the size of the portfolio, the
- * trading in a month, the number of actions in a month, and a condition of the person's own.
- */
-export function byKindsFor(kind: FeeKindId): ByKind[] {
-  const first: ByKind = isConversion(kind) ? "currency" : onHolding(kind) ? "held" : "what";
-  return [first, "track", "channel", ...(onHolding(kind) ? [] : (["actionSize"] as const)), "portfolioSize", "volume", "count", "own"];
-}
-
-/**
- * Whether a range is read across sizes rather than picked (F-115): the size of the action always, and the size of the portfolio for a fee
- * charged on what is held or on the account (`onHoldingFee`: by its prices' form, a share of what is held or a sum per period). Every other
- * range is picked.
- */
-export const readAcross = (onHoldingFee: boolean, by: ByKind): boolean => by === "actionSize" || (by === "portfolioSize" && onHoldingFee);
-
-/** The most things one fee's price changes by. */
-export const BY_MAX = 3;

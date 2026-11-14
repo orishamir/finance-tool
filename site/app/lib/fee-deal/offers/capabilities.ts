@@ -33,6 +33,8 @@ export const formOnAction = (form: FormId): boolean => ON_ACTION.includes(form);
 export const formBoundsAction = (form: FormId): boolean => BOUNDS_ACTION.includes(form);
 /** Whether a form charges something. */
 export const formCharged = (form: FormId): boolean => form !== "free";
+/** Whether a form is charged on what is held or on the account: a share of what is held, a sum per period. */
+export const formOnHolding = (form: FormId): boolean => formCharged(form) && !formOnAction(form);
 /** Whether two forms' main figures are of the same kind (`FIGURE_KIND`). */
 export const sameFigureKind = (a: FormId, b: FormId): boolean => a !== "free" && b !== "free" && FIGURE_KIND[a] === FIGURE_KIND[b];
 
