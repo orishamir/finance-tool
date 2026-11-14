@@ -19,6 +19,7 @@ import {
   runPlanned,
   runProvident,
   studyFundEarlyWithdrawal,
+  taxAtBrackets,
   type PensionInput,
   type ProvidentInput,
   type RunResult,
@@ -301,7 +302,7 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
 
   it("S29 the formula alone: relief for a given gross deposit, then the outlay that buys it", () => {
     const book = ruleBook(ctx);
-    const brackets = book.brackets("TXG-02", "brackets");
+    const brackets = taxAtBrackets(book.brackets("TXG-02", "brackets"));
     const facts = { taxableIncome: 240_000, insuredIncome: 0, existingOwn: 0, employer: 0 };
     const rel = beneficiaryRelief(book, facts, 40_000, brackets);
     expect(rel.relief).toBeCloseTo(9_584.4, 6);
@@ -313,7 +314,7 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     // 5,000 x 14% = 700 (the 14% band is 84,120 to 120,720); the other 5,000 is under the credit cap of
     // 7% x 100,000 = 7,000, so the credit is 35% x 5,000 = 1,750.
     const book = ruleBook(ctx);
-    const brackets = book.brackets("TXG-02", "brackets");
+    const brackets = taxAtBrackets(book.brackets("TXG-02", "brackets"));
     const rel = beneficiaryRelief(book, { taxableIncome: 100_000, insuredIncome: 0, existingOwn: 0, employer: 0 }, 10_000, brackets);
     expect(rel.beneficiary).toBe(false);
     expect(rel.deduction).toBeCloseTo(5_000, 8);
@@ -325,8 +326,9 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     const book = ruleBook(ctx);
     const facts = { taxableIncome: 20_000, insuredIncome: 20_000, existingOwn: 0, employer: 0 };
     // cap 7% x 20,000 = 1,400, floor 2,268: a deposit of 1,000 is credited 1,000, not the floor.
-    expect(employeeCredit(book, facts, 1_000).credited).toBeCloseTo(1_000, 8);
-    expect(employeeCredit(book, facts, 5_000).credited).toBeCloseTo(2_268, 8);
+    const tax = taxAtBrackets(book.brackets("TXG-02", "brackets"));
+    expect(employeeCredit(book, facts, 1_000, tax).credited).toBeCloseTo(1_000, 8);
+    expect(employeeCredit(book, facts, 5_000, tax).credited).toBeCloseTo(2_268, 8);
   });
 
   it("F-53: insurance is a share of each deposit; a provident fund for annuity charges none (PEN-35)", () => {

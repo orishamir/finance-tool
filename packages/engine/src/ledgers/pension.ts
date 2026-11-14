@@ -2,7 +2,7 @@
 // F-32), the provident-family ledger (F-27, F-11, F-15, F-16), the insurance cost (F-53) and the exit, which
 // is blocked (F-49, G-03; F-48 is not built yet). The employer's deposits run through the same ledger as a separate
 // line (F-52, B2).
-import { deductionValue, grossForYear, spreadReliefByYear, type PensionRelief } from "../formulas/deposit-side.ts";
+import { creditFlags, deductionValue, grossForYear, spreadReliefByYear, taxAtBrackets, type PensionRelief, type ReliefResult } from "../formulas/deposit-side.ts";
 import { blockedWrapperExit, type BlockedExit } from "../formulas/blocked-exit.ts";
 import { balanceFee, depositFee, feeForMonth, type Discount } from "../formulas/fees.ts";
 import { insuranceCost } from "../formulas/insurance.ts";
@@ -59,6 +59,8 @@ export interface YearRelief {
   beneficiary: boolean;
   credited: number;
   credit: number;
+  /** The year's tax the credit is capped at, and whether it bound (TXP-01, TXP OQ20). */
+  creditCap: ReliefResult["creditCap"];
   tier1: number;
   tier2: number;
   deduction: number;
@@ -186,7 +188,8 @@ function commonFlags(book: RuleBook, tally: Tally, input: PensionInput) {
 /**
  * The pension and provident-for-annuity run, own money. F-30 turns the person's net outlay into the gross
  * deposit year by year, with the relief of F-31 (employee credit) or F-32 (beneficiary member, self-employed);
- * the ledger of F-27 with F-11, F-15, F-16 and F-53 gives the balance. The exit is an annuity whose value
+ * the credit is worth at most the year's tax (TXP-01, TXP OQ20), a tax without credit points (G-23), so a year with a credit
+ * flags both; the ledger of F-27 with F-11, F-15, F-16 and F-53 gives the balance. The exit is an annuity whose value
  * needs conversion factors, so it is blocked (F-49, G-03), or, if the person opts into early withdrawal,
  * blocked as well (F-48, G-06): the run returns the gross balance at the horizon, the flag and the rule IDs,
  * and the wrapper is listed, not ranked (B3). `paidIn` is the person's net outlay; the gross deposits and the
@@ -215,11 +218,12 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
   const years: YearRelief[] = [];
   const gross = spreadReliefByYear(C, first, taxYearOf, (year, netYear) => {
     const facts: PensionRelief = { taxableIncome: income, insuredIncome: insured, existingOwn, employer: employerMonth * (monthsInYear.get(year) ?? 0), businessIncome: !employee };
-    // F-119: each tax year's caps, floor and brackets
+    // F-119: each tax year's caps, floor and brackets; the credit is capped at the year's tax, which leaves out credit points (G-23)
     const ofYear = book.inYear(year);
-    const r = grossForYear(ofYear, facts, netYear, ofYear.brackets("TXG-02", "brackets"));
+    const r = grossForYear(ofYear, facts, netYear, taxAtBrackets(ofYear.brackets("TXG-02", "brackets")));
     if (r.gap) tally.flag("TXP-03");
-    years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
+    for (const code of creditFlags(r.relief)) tally.flag(code);
+    years.push({ year, net: netYear, gross: r.gross, formula: r.relief.formula, beneficiary: r.relief.beneficiary, credited: r.relief.credited, credit: r.relief.credit, creditCap: r.relief.creditCap, tier1: r.relief.tier1, tier2: r.relief.tier2, deduction: r.relief.deduction, deductionValue: r.relief.deductionValue, relief: r.relief.relief });
     return r.gross;
   });
   if (years.some((y) => y.formula === "F-32")) formulas.push("F-32");

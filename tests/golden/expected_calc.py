@@ -1138,12 +1138,17 @@ def s27_s28_s30():
     cap = 0.07 * E
     existing = 0.06 * 12 * salary
     headroom = max(0.0, cap - max(existing, 0.0))
-    credit = 0.35 * headroom  # new deposits per year exceed the headroom
+    # the credit is worth at most the year's tax before it, the existing deposits' credit taking it first (TXP-01, TXP OQ20);
+    # the tax is at the brackets with no credit points (G-23)
+    tax27 = bracket_tax(12 * salary)
+    credit = min(0.35 * cap, tax27) - min(0.35 * existing, tax27)  # new deposits per year exceed the headroom
 
     def credit_k(k):
-        """Grid year k's credit: the eligible-income cap 116,400 and the floor 2,268 are s.120ב amounts (TXP-02), indexed from 2028 at π."""
-        cap_k = 0.07 * min(12 * salary, indexed(116400.0, k, 0.02))
-        return 0.35 * max(0.0, max(indexed(2268.0, k, 0.02), cap_k) - existing)
+        """Grid year k's credit: the eligible-income cap 116,400 and the floor 2,268 are s.120ב amounts (TXP-02), indexed from 2028 at π,
+        as are the brackets of the tax that caps it."""
+        cap_k = max(indexed(2268.0, k, 0.02), 0.07 * min(12 * salary, indexed(116400.0, k, 0.02)))
+        t = bracket_tax(12 * salary, sched_in(k, 0.02))
+        return max(0.0, min(0.35 * cap_k, t) - min(0.35 * existing, t))
     credit_last = credit_k(30)
     yr1_C = sum(300.0 * path.I(m) for m in range(1, 13))
     own, emp = pension_run(360, path, 0.05, 300.0, credit_k, 0.01, 0.015, 0.0022, employer_month=0.125 * salary)
@@ -1156,6 +1161,7 @@ def s27_s28_s30():
         f'| 1 | Credit 35% on employee deposits up to 7% of eligible income, eligible income capped at 116,400 a year | {L("TXP-01", "TXP-02", "TXP-27")} | cap {f2(cap)} |\n'
         f'| 2 | Existing employee deposits 6% × 120,000 = {f2(existing)} use the cap first | {L("TXP-02")} | headroom {f2(headroom)} |\n'
         f'| 3 | New deposits a year (≥ {f2(yr1_C)}) exceed the headroom, so the credit cap binds: credit = 35% × {f2(headroom)} | {L("TXP-01", "TXP-02")} | {f2(credit)} a year |\n'
+        f'| 3a | The credit is worth at most the year\'s tax before it (TXP OQ20): the tax at the brackets on 120,000, without credit points (G-23), is {f2(tax27)}, above 35% of the whole cap, {f2(0.35 * cap)}, so the cap on the credit does not bind | {L("TXP-01", "TXG-02")} | no change |\n'
         f'| 4 | Equal net outlay: gross deposit D_m = 300 × I_m + credit/12 (credit spread evenly; whether payroll gives it monthly is open, TXP OQ6) | method F-30 (B1); {L("TXP-02")} | D_1 = {f2(300 * path.I(1) + credit / 12)} |\n'
         f'| 4a | From 2028 the cap 116,400 grows by π each year (frozen to 2027, then the CPI rise of each year before); from 2029 it passes the salary, so the cap is 7% × 120,000 = 8,400 and the credit {f2(credit_last)} a year | {L("TXP-02", "TXG-09", "TXG-06")} | year 3 (2028): {f2(credit_k(3))}; from year 4 (2029): {f2(credit_last)} |\n'
         f'| 5 | Beneficiary-member test (16% of average wage = 26,436, employer money counted): year 1 total {f2(tot_y1)}; year 4 with its own credit, {f2(tot_y4)}, crosses it (year 5 with the year-1 credit: {f2(tot_y5)}) — no effect: all salary is insured income, so the s.45A(e) cap is the one of step 4a in each year (8,148 through 2027, {f2(0.07 * indexed(116400.0, 3, 0.02))} in 2028, 8,400 from 2029) and the s.47(b1) tiers are 0 | {L("TXP-03", "TXP-04", "TXP-06")} | no change |\n'
@@ -1729,7 +1735,9 @@ def s28_s29_fill():
     ded29 = tier1 + tier2
     rest = dep - ded29
     credited = max(min(rest, 2268.0), min(rest, 0.05 * min(inc, 2 * cap)))
-    credit29 = 0.35 * credited
+    # the credit is worth at most the tax left after the deduction, at the brackets with no credit points (TXP-01, TXP OQ20, G-23)
+    tax_left29 = bracket_tax(inc - ded29)
+    credit29 = min(0.35 * credited, tax_left29)
     ded_value = bracket_tax(inc) - bracket_tax(inc - ded29)
     net29 = dep - ded_value - credit29
 
@@ -1743,7 +1751,8 @@ def s28_s29_fill():
         t2 = min(b, 0.07 * add) + min(0.04 * add, max(0.0, b - 0.12 * add))
         d = min(G, t1 + t2)
         sched = sched_in(k, 0.02)
-        return bracket_tax(inc, sched) - bracket_tax(inc - d, sched) + 0.35 * min(G - d, max(fl, 0.05 * min(inc, i_cap)))
+        left = bracket_tax(inc - d, sched)
+        return bracket_tax(inc, sched) - left + min(0.35 * min(G - d, max(fl, 0.05 * min(inc, i_cap))), left)
 
     def gross29(k):
         """Equal net outlay (F-30): the gross deposit of grid year k whose net cost is the year-1 net, by bisection."""
@@ -1768,6 +1777,7 @@ def s28_s29_fill():
         f'| 3 | Second tier on the base 40,000 − 26,436 with additional income {f2(ai)}: min(base, 7% × AI) + min(4% × AI, base − 12% × AI if positive) | {L("TXP-31")} | {f2(tier2)} |\n'
         f'| 4 | Deduction worth its marginal tax: 240,000 → {f2(inc - ded29)} | {L("TXG-02")} | {f2(ded_value)} |\n'
         f'| 5 | Rest {f2(rest)} to the s.45A(e) credit, cap 5% × min(240,000, 232,800) | {L("TXP-04")} | credited {f2(credited)}, credit {f2(credit29)} |\n'
+        f'| 5b | The credit is worth at most the tax left after the deduction (TXP OQ20): the tax at the brackets on {f2(inc - ded29)}, without credit points (G-23), is {f2(tax_left29)}, so the cap on the credit does not bind | {L("TXP-01", "TXG-02")} | no change |\n'
         f'| 5a | From 2028 the caps, the floor and the brackets grow by π each year (frozen to 2027, then the CPI rise of each year before); the same net outlay {f2(net29)} then buys gross deposits of {f2(g29[3])} in 2028, {f2(g29[10])} in 2035 and {f2(g29[20])} in 2045 (F-30 solved each year) | {L("TXG-09", "TXG-06", "TXP-06", "TXP-04")} | — |\n'
         f'| 6 | Exit blocked (annuity), listed with the gross balance at the horizon | {L("TXP-14")} (PEN OQ7) | G-03 |\n'
     )

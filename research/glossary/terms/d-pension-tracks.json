@@ -2023,7 +2023,7 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=74"
     },
     "variants_he": [],
-    "explain_he": "סכום שיורד ישירות מהמס שלכם, בגובה אחוז קבוע מההפקדה לפנסיה, בלי קשר לשיעור המס שלכם",
+    "explain_he": "סכום שיורד ישירות מהמס שלכם, בגובה אחוז קבוע מההפקדה לפנסיה, בלי קשר לשיעור המס שלכם ועד גובה המס שאתם משלמים באותה שנה",
     "rule_ids": [
       "TXP-01",
       "TXP-02",
@@ -2041,7 +2041,7 @@
       "guide:pension-general",
       "guide:provident-for-annuity"
     ],
-    "notes": "Starting term 'זיכוי ממס על הפקדה לפנסיה' is descriptive; the Tax Authority term is 'זיכוי ממס' (s.45A). Up to a ceiling of eligible income (TXP-02). Whether payroll grants it monthly is open (TXP OQ6).",
+    "notes": "Starting term 'זיכוי ממס על הפקדה לפנסיה' is descriptive; the Tax Authority term is 'זיכוי ממס' (s.45A). Up to a ceiling of eligible income (TXP-02). Whether payroll grants it monthly is open (TXP OQ6). Worth at most the year's tax, the rest lost on the cautious reading (TXP-01, TXP OQ20).",
     "id": "zykvy-mms"
   },
   {

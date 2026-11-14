@@ -198,6 +198,12 @@ describe("pensions", () => {
     expect(mid.relief.monthly).toBeCloseTo((0.35 * 0.07 * 116400) / 12, 6); // credited up to 7% of the eligible income (TXP-02)
     expect(mid.netYou).toBeCloseTo(mid.you - mid.relief.monthly, 9);
   });
+  it("caps the credit at the year's tax, a tax without credit points, and carries the flags that say so (TXP-01, TXP OQ20, G-23)", () => {
+    // the deposit is 6% of the salary, so 35% of it stays far below the 10% first band: the cap does not bind, the flags stand
+    const m = pensionModel(general, "pension-general", { salary: 4000, years: 10, insurancePct: null })!;
+    expect(m.relief.monthly).toBeCloseTo(0.35 * m.you, 9);
+    expect(m.relief.flags).toEqual(["G-23", "TXP-OQ20"]);
+  });
   it("lets the engine's F-30 find the same gross deposit, so the balance is the ledger's", () => {
     const annuity = page("provident-for-annuity").signature!;
     const b = annuity.bundles["provident-for-annuity"]!;

@@ -22,6 +22,23 @@ export function deductionValue(brackets: readonly Bracket[], income: number, ded
 }
 
 /**
+ * The person's income tax for one tax year before the s.45A credit. It is what a s.47 deduction saves and what the
+ * credit is worth at most: the credit takes the year's tax down to zero and no further, and the rest is lost (TXP-01,
+ * the cautious reading of TXP OQ20). `on(taxable)` is the tax on a taxable income. `gap` names what the figure leaves
+ * out: "G-23" when it is the tax at the brackets without the person's credit points, which the engine has no input
+ * for, so it is an upper bound on the tax and a credit capped at it may be larger than the credit the person gets.
+ */
+export interface YearTax {
+  on(taxable: number): number;
+  gap: "G-23" | null;
+}
+
+/** The year's tax at a schedule of brackets (TXG-02), with no credit points taken off (G-23). */
+export function taxAtBrackets(brackets: readonly Bracket[]): YearTax {
+  return { on: (taxable) => incomeTax(brackets, Math.max(0, taxable)), gap: "G-23" };
+}
+
+/**
  * F-30 Equal net outlay. `D = C + benefit(D)`: the gross deposit `D` whose net cost `D − benefit(D)` is the
  * outlay `C`. The benefit is piecewise linear in `D` with slopes below 1, so `D − benefit(D)` rises
  * steadily; the piece holding the answer is found by bisection down to a width of 1e-7 NIS and the answer
@@ -70,7 +87,10 @@ export interface ReliefResult {
   beneficiary: boolean;
   /** Amount the s.45A credit is counted on, for the new deposit only. */
   credited: number;
+  /** The credit for the new deposit, after the cap at the year's tax (`creditCap`). */
   credit: number;
+  /** The cap on the credit: the year's tax before the credit, after any deduction (TXP-01, TXP OQ20), and whether it bound. */
+  creditCap: { tax: number; binds: boolean; gap: YearTax["gap"] };
   /** s.47 deduction in two tiers (TXP-06) or the TXP-05 deduction (in `tier1`). */
   tier1: number;
   tier2: number;
@@ -85,24 +105,45 @@ export interface ReliefResult {
 const creditedUpTo = (paid: number, floor: number, cap: number) => Math.min(Math.max(0, paid), Math.max(floor, cap));
 
 /**
+ * The credit for the new deposit, worth at most the year's tax `tax` (TXP-01, TXP OQ20). Deposits already made through
+ * work take the tax first, as they take the credited amount first: `min(rate × credited(all), tax) − min(rate × credited(existing), tax)`.
+ */
+function cappedCredit(rate: number, creditedAll: number, creditedExisting: number, tax: number, gap: YearTax["gap"]) {
+  const credit = Math.min(rate * creditedAll, tax) - Math.min(rate * creditedExisting, tax);
+  const uncapped = rate * (creditedAll - creditedExisting);
+  return { credit, creditCap: { tax, binds: credit < uncapped - 1e-9, gap } };
+}
+
+/**
+ * The open readings a credit rests on, as the run flags them. TXP-OQ20 where the cap bound (the part above the tax is
+ * lost on the cautious reading), and G-23 with TXP-OQ20 wherever a credit is given against a tax that leaves out credit
+ * points: the person's tax may be lower than the tax counted, and the credit with it.
+ */
+export function creditFlags(r: Pick<ReliefResult, "credit" | "creditCap">): string[] {
+  const unsure = r.creditCap.gap !== null && r.credit > 0;
+  return [...(unsure ? [r.creditCap.gap!] : []), ...(unsure || r.creditCap.binds ? ["TXP-OQ20"] : [])];
+}
+
+/**
  * F-31 Pension and provident fund for annuity, employee who is not a beneficiary member. The credit is
  * `35% × credited`, `credited = min(paid, max(floor, 7% × E))`, `E = min(eligible income, 116,400)`
  * (TXP-01, TXP-02). Own deposits already made through work use the cap first: the credit for new money
- * is `credited(existing + new) − credited(existing)`.
+ * is `credited(existing + new) − credited(existing)`. The credit is worth at most the year's tax on the
+ * taxable income, `tax.on(income)` (TXP-01, TXP OQ20), which the existing deposits use first too.
  *
  * The method writes `max(floor, min(paid, 7% × E))`, which would credit the floor on money never paid;
  * the independent check and the guide ("a minimum deposit of 2,268 paid to the fund") read it as capped
  * by what was paid, and so does this function. The two agree whenever the deposit exceeds the floor.
  */
-export function employeeCredit(book: RuleBook, p: PensionRelief, gross: number): ReliefResult {
+export function employeeCredit(book: RuleBook, p: PensionRelief, gross: number, tax: YearTax): ReliefResult {
   const eligible = Math.min(p.taxableIncome, book.amount("TXP-02", "eligible_income_cap"));
   const cap = book.rate("TXP-02", "credited_pct_of_income") * eligible;
   const floor = book.amount("TXP-02", "credit_floor");
   const rate = book.rate("TXP-01", "credit_pct");
-  const credited =
-    creditedUpTo(p.existingOwn + gross, floor, cap) - creditedUpTo(p.existingOwn, floor, cap);
-  const credit = rate * credited;
-  return { formula: "F-31", beneficiary: false, credited, credit, tier1: 0, tier2: 0, deduction: 0, deductionValue: 0, relief: credit };
+  const all = creditedUpTo(p.existingOwn + gross, floor, cap);
+  const existing = creditedUpTo(p.existingOwn, floor, cap);
+  const { credit, creditCap } = cappedCredit(rate, all, existing, tax.on(p.taxableIncome), tax.gap);
+  return { formula: "F-31", beneficiary: false, credited: all - existing, credit, creditCap, tier1: 0, tier2: 0, deduction: 0, deductionValue: 0, relief: credit };
 }
 
 /**
@@ -118,6 +159,9 @@ export function employeeCredit(book: RuleBook, p: PensionRelief, gross: number):
  * Business income below the threshold gets TXP-05 limb (1) (7% of eligible non-work income, up to 164,400, plus
  * 4% above 12% of it) and the 5% credit rate; work income gets limb (2).
  *
+ * The deduction saves `tax.on(income) − tax.on(income − deduction)`, and the credit is worth at most the tax left,
+ * `tax.on(income − deduction)` (TXP-01, TXP OQ20), so the whole relief never passes the year's tax.
+ *
  * Not modelled (G-13): the extra 0.5% credit (TXP-07) and the enlarged deduction from age 50 (TXP-08,
  * 2026 amounts not found).
  * `forceBeneficiary` fixes the side of the beneficiary test, so that F-30 can solve each side on its own.
@@ -126,7 +170,7 @@ export function beneficiaryRelief(
   book: RuleBook,
   p: PensionRelief,
   gross: number,
-  taxBrackets: readonly Bracket[],
+  tax: YearTax,
   forceBeneficiary?: boolean,
 ): ReliefResult {
   const threshold = book.amount("TXP-03", "threshold");
@@ -186,11 +230,13 @@ export function beneficiaryRelief(
   }
 
   const deduction = Math.min(gross, tier1 + tier2);
-  const saved = deductionValue(taxBrackets, p.taxableIncome, deduction);
+  const taxLeft = tax.on(p.taxableIncome - deduction);
+  const saved = tax.on(p.taxableIncome) - taxLeft;
   const rest = gross - deduction;
-  const credited = creditedUpTo(p.existingOwn + rest, floor, creditCap) - creditedUpTo(p.existingOwn, floor, creditCap);
-  const credit = creditRate * credited;
-  return { formula: "F-32", beneficiary, credited, credit, tier1, tier2, deduction, deductionValue: saved, relief: saved + credit };
+  const all = creditedUpTo(p.existingOwn + rest, floor, creditCap);
+  const existing = creditedUpTo(p.existingOwn, floor, creditCap);
+  const capped = cappedCredit(creditRate, all, existing, taxLeft, tax.gap);
+  return { formula: "F-32", beneficiary, credited: all - existing, credit: capped.credit, creditCap: capped.creditCap, tier1, tier2, deduction, deductionValue: saved, relief: saved + capped.credit };
 }
 
 /**
@@ -199,12 +245,12 @@ export function beneficiaryRelief(
  * the threshold, else the other side. If the two sides leave the outlay between them, the beneficiary side
  * is returned and `gap` is true (the person would have to deposit exactly up to the threshold).
  */
-export function grossForYear(book: RuleBook, p: PensionRelief, netYear: number, taxBrackets: readonly Bracket[]) {
+export function grossForYear(book: RuleBook, p: PensionRelief, netYear: number, tax: YearTax) {
   const threshold = book.amount("TXP-03", "threshold");
   const solve = (beneficiary: boolean) => {
-    const f = (g: number) => (beneficiary ? beneficiaryRelief(book, p, g, taxBrackets, true) : employeeOrSelf(book, p, g, taxBrackets)).relief;
+    const f = (g: number) => (beneficiary ? beneficiaryRelief(book, p, g, tax, true) : employeeOrSelf(book, p, g, tax)).relief;
     const gross = equalNetOutlay(netYear, f);
-    return { gross, result: beneficiary ? beneficiaryRelief(book, p, gross, taxBrackets, true) : employeeOrSelf(book, p, gross, taxBrackets) };
+    return { gross, result: beneficiary ? beneficiaryRelief(book, p, gross, tax, true) : employeeOrSelf(book, p, gross, tax) };
   };
   const high = solve(true);
   if (p.existingOwn + high.gross + p.employer >= threshold) return { gross: high.gross, relief: high.result, gap: false };
@@ -214,10 +260,10 @@ export function grossForYear(book: RuleBook, p: PensionRelief, netYear: number, 
 }
 
 /** Below the beneficiary threshold: F-31 for a person with insured (employee) income, else the F-32 self-employed side. */
-function employeeOrSelf(book: RuleBook, p: PensionRelief, gross: number, taxBrackets: readonly Bracket[]): ReliefResult {
+function employeeOrSelf(book: RuleBook, p: PensionRelief, gross: number, tax: YearTax): ReliefResult {
   return p.insuredIncome > 0 && p.employer > 0
-    ? employeeCredit(book, p, gross)
-    : beneficiaryRelief(book, p, gross, taxBrackets, false);
+    ? employeeCredit(book, p, gross, tax)
+    : beneficiaryRelief(book, p, gross, tax, false);
 }
 
 /**

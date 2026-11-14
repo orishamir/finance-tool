@@ -4,6 +4,7 @@
 import {
   beneficiaryRelief,
   calendarMonthOf,
+  creditFlags,
   employeeCredit,
   employerLinePension,
   withFee,
@@ -13,6 +14,7 @@ import {
   ruleBook,
   runInputs,
   runPlanned,
+  taxAtBrackets,
   type InstrumentTerms,
   type LimitStanding,
   type MoneyStory,
@@ -239,8 +241,11 @@ export interface PensionModel {
   employer: number;
   severance: number;
   total: number;
-  /** The yearly relief on the person's own deposit (F-31 credit, or F-32 with a deduction for a beneficiary member), and per month. */
-  relief: { formula: "F-31" | "F-32"; beneficiary: boolean; yearly: number; monthly: number; credit: number; deductionValue: number };
+  /**
+   * The yearly relief on the person's own deposit (F-31 credit, or F-32 with a deduction for a beneficiary member), and per month. The
+   * credit is capped at the year's tax (TXP-01, TXP OQ20); `flags` are the open readings it rests on (`creditFlags`: G-23 and TXP-OQ20).
+   */
+  relief: { formula: "F-31" | "F-32"; beneficiary: boolean; yearly: number; monthly: number; credit: number; deductionValue: number; flags: string[] };
   /** What the person's own deposit costs after the relief, per month. */
   netYou: number;
   /** F-53: the insurance cost inside the fund per month at A-17, or null when A-17 is not entered (or the product has none). */
@@ -277,10 +282,11 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
     const severance = rates.severance * wage;
     const income = 12 * c.salary;
     const facts = { taxableIncome: income, insuredIncome: income, existingOwn: 0, employer: 12 * (employer + severance) };
-    const brackets = book.brackets("TXG-02", "brackets");
+    // the year's tax before the credit, which caps it, leaves out credit points (G-23)
+    const tax = taxAtBrackets(book.brackets("TXG-02", "brackets"));
     const beneficiary = 12 * you + facts.employer >= book.amount("TXP-03", "threshold");
-    const r = beneficiary ? beneficiaryRelief(book, facts, 12 * you, brackets, true) : employeeCredit(book, facts, 12 * you);
-    const relief = { formula: r.formula, beneficiary, yearly: r.relief, monthly: r.relief / 12, credit: r.credit / 12, deductionValue: r.deductionValue / 12 };
+    const r = beneficiary ? beneficiaryRelief(book, facts, 12 * you, tax, true) : employeeCredit(book, facts, 12 * you, tax);
+    const relief = { formula: r.formula, beneficiary, yearly: r.relief, monthly: r.relief / 12, credit: r.credit / 12, deductionValue: r.deductionValue / 12, flags: creditFlags(r) };
     const total = you + employer + severance;
     const hasInsurance = id !== "provident-for-annuity";
     const relieved = { wage, rates, you, employer, severance, total, relief, netYou: you - relief.monthly };
