@@ -1747,7 +1747,7 @@ export const feeDeal = {
     kindsAria: "סוגי המוצרים",
     close: "סגירה",
     track: "החברה והמסלול",
-    trackNone: "לא נבחרו · לא חובה",
+    trackNone: "לא נבחרו (לא חובה)",
     trackPick: "לבחור מסלול",
     /** The step that fills the deal from a price list, and its button opens the price lists. */
     fill: "מילוי מתעריפון",
