@@ -717,7 +717,8 @@
           "דמי ניהול פיקדון ני\"ע הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
           "דמי ניהול פקדון ני\"ע הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות) - מקסימום לפקדון"
         ]
-      }
+      },
+      "max_per": "deposit"
     },
     {
       "id": "hapoalim-custody-foreign",
@@ -795,7 +796,8 @@
           "דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
           "דמי ניהול פקדון ני\"ע הנסחרים בחו\"ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות) מקסימום לפקדון"
         ]
-      }
+      },
+      "max_per": "deposit"
     },
     {
       "id": "hapoalim-distribution-fee-type-1",
@@ -1016,6 +1018,61 @@
           "מעל 99 $"
         ]
       },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 99,
+            "unit": "usd",
+            "source": {
+              "publisher": "Bank Hapoalim B.M.",
+              "strength": "institution",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
+              "quote": "עד 99 $ | $5.50"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-10-05",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "'עד 99 $' (sheet row 1103), against 'מעל 99 $' (row 1104): a conversion of 99 dollars or less pays the flat price."
+          },
+          "on": "fee",
+          "flat": {
+            "value": 5.5,
+            "unit": "usd",
+            "source": {
+              "publisher": "Bank Hapoalim B.M.",
+              "strength": "institution",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
+              "quote": "עד 99 $ | $5.50"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-10-05",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16"
+            ],
+            "state": "sourced",
+            "notes": "Printed '$5.50' for a conversion 'עד 99 $' (sheet row 1103); the row 'מעל 99 $' is the line's 0.19%, minimum $6.70. Read in the library's copy of the sheet (e939af51e5b97376), identical to the file fetched 2026-11-12."
+          },
+          "source": {
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+            "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
+            "checked": "2026-11-14",
+            "quote": "עד 99 $ | $5.50"
+          }
+        }
+      ],
       "flat_up_to": {
         "amount": {
           "value": 5.5,
@@ -1164,6 +1221,63 @@
           "ערוץ ישיר"
         ]
       },
+      "size_tiers": [
+        {
+          "up_to": {
+            "value": 99,
+            "unit": "usd",
+            "source": {
+              "publisher": "Bank Hapoalim B.M.",
+              "strength": "institution",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
+              "quote": "עד 99 $"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-10-05",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "Annex E (sheet row 106): 'סכום עד 99 $', against 'מעל 99 $'."
+          },
+          "on": "fee",
+          "flat": {
+            "value": 3.3,
+            "unit": "usd",
+            "source": {
+              "publisher": "Bank Hapoalim B.M.",
+              "strength": "institution",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
+              "quote": "3.3 $"
+            },
+            "checked": "2026-11-12",
+            "effective_from": "2026-10-05",
+            "effective_to": null,
+            "tax_year": null,
+            "update_rule": "provider-set",
+            "rule_ids": [
+              "BRK-68",
+              "BRK-16",
+              "BRK-19"
+            ],
+            "state": "sourced",
+            "notes": "Annex E (sheet row 106): '3.3 $' in a direct channel for a conversion 'עד 99 $' (clerk 5.5 $); above 99 dollars the line's 0.17%, minimum 5.7 $. Read in the library's copy of the sheet (e939af51e5b97376), identical to the file fetched 2026-11-12."
+          },
+          "source": {
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+            "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
+            "checked": "2026-11-14",
+            "quote": "3.3 $"
+          }
+        }
+      ],
       "flat_up_to": {
         "amount": {
           "value": 3.3,
