@@ -154,6 +154,7 @@ export function FeeBlockView({
   onFee,
   onSplit,
   grip,
+  corner,
 }: {
   fee: Fee;
   row: BuilderRow | undefined;
@@ -167,6 +168,8 @@ export function FeeBlockView({
   onSplit: (f: Fee) => void;
   /** The fee's grip, which moves it within its group. */
   grip?: ReactNode;
+  /** Closed, the knobs in its card's corner (its bin, its duplicate). */
+  corner?: ReactNode;
 }) {
   const { onOpen, onRemoveFee, onRemoveChange, onEditPrice, pendingHands, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name, row?.house);
@@ -267,7 +270,7 @@ export function FeeBlockView({
             return l ? lift.why(l, slimTarget) : null;
           }}
         >
-          <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} onOpen={() => onOpen(fee.id, null, "pointer")}>
+          <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} corner={corner} onOpen={() => onOpen(fee.id, null, "pointer")}>
             {question}
             {isOpen ? (
               openParts(name)
@@ -296,7 +299,7 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeBlock dot={dot} name={name} remove={remove} open={isOpen} grip={grip}>
+      <FeeBlock dot={dot} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
         {question}
         <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)} />
       </FeeBlock>
