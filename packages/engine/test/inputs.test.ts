@@ -158,6 +158,32 @@ describe("a record's values reach the engine unchanged", () => {
     );
   });
 
+  describe("a cash rate quoted as effective reaches each run in the form its formula reads (F-60)", () => {
+    // 3.2% effective, as the Bank of Israel's averages are quoted (BANK-53)
+    const entered = { cash_rate: vo(3.2, "pct_per_year_effective", "entered") };
+    it("the deposit run: the rate with its basis, which F-21 reads", () => {
+      expect(runInputs(records.deposit, parameters, terms.deposit, { entered }).input).toMatchObject({ deposit: { rate: 0.032, rateBasis: "effective" } });
+      expect(runInputs(records.deposit, parameters, terms.deposit).input).not.toHaveProperty("deposit.rateBasis");
+    });
+    it("the money-market fund run: its return is an effective annual rate (F-23, F-07), so the rate as it is", () => {
+      expect(runInputs(records.mmf, parameters, terms.mmf, { entered }).input).toMatchObject({ market: { grossReturn: 0.032 } });
+    });
+    it("the makam run: its yield to redemption is an effective annual rate (F-24), so the rate as it is", () => {
+      expect(runInputs(records.makam, parameters, { tariff: {} }, { entered }).input).toMatchObject({ makam: { yield: 0.032 } });
+    });
+    it("the bond run: the coupon whose payments compound to the rate in the year (F-25)", () => {
+      const yearly = runInputs(records.bond, parameters, { bond: { linkage: "unlinked", couponEveryMonths: 12 }, tariff: {} }, { entered }).input as { bond: { coupon: number } };
+      expect(yearly.bond.coupon).toBeCloseTo(0.032, 12);
+      // twice a year: 2 × (1.032^(1/2) − 1) = 3.1748%, each half-year's 1.5874% compounding to 3.2%
+      const half = runInputs(records.bond, parameters, { bond: { linkage: "unlinked", couponEveryMonths: 6 }, tariff: {} }, { entered }).input as { bond: { coupon: number } };
+      expect(half.bond.coupon).toBeCloseTo(2 * (Math.sqrt(1.032) - 1), 12);
+      expect(Math.pow(1 + half.bond.coupon / 2, 2) - 1).toBeCloseTo(0.032, 12);
+      // a rate in pct_per_year is the coupon as it is
+      const nominal = runInputs(records.bond, parameters, { bond: { linkage: "unlinked", couponEveryMonths: 6 }, tariff: {} }, { entered: { cash_rate: vo(3.2, "pct_per_year", "entered") } }).input as { bond: { coupon: number } };
+      expect(nominal.bond.coupon).toBeCloseTo(0.032, 12);
+    });
+  });
+
   it("a value the person entered replaces its P-05 counterpart (F-67)", () => {
     const plan = runInputs(records.kgl, parameters, terms.kgl, {
       entered: { "A-01": vo(7.5, "pct_per_year", "entered"), horizon_years: vo(3, "years", "entered") },

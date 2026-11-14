@@ -53,6 +53,7 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
       ? {
           calc: {
             ...(d.interest_calc.effective_annual ? { effectiveAnnual: shown(d.interest_calc.effective_annual, t, d.snapshot, owner) } : {}),
+            ...(d.interest_calc.effective_decimals ? { effectiveDecimals: shown(d.interest_calc.effective_decimals, t, d.snapshot, owner) } : {}),
             ...(d.interest_calc.periods_per_year ? { periodsPerYear: shown(d.interest_calc.periods_per_year, t, d.snapshot, owner) } : {}),
           },
         }

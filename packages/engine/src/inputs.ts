@@ -7,7 +7,7 @@ import type { z } from "zod";
 import type { BondInput } from "./ledgers/bond.ts";
 import type { Profile } from "./ledgers/common.ts";
 import type { DepositInput } from "./ledgers/deposit.ts";
-import type { RateBasis } from "./formulas/holding-tax.ts";
+import { cashRateIn, rateBasisOf, type RateBasis } from "./formulas/holding-tax.ts";
 import type { MakamInput } from "./ledgers/makam.ts";
 import type { PensionInput } from "./ledgers/pension.ts";
 import type { ProvidentInput } from "./ledgers/provident.ts";
@@ -177,8 +177,10 @@ export function runInputs(
   const goal = { amountNow: p05.amount_now, monthly: p05.monthly_deposit, months };
   const inflation = p05["A-02"] / 100;
   // P-05's cash rate is the default for a cash-like product; a comparison replaces it per candidate with the
-  // product's sourced or entered rate (A-20 to A-25, `withCashRate`).
+  // product's sourced or entered rate (A-20 to A-25, `withCashRate`). Its unit says how it is quoted: a bank's own rate is nominal
+  // (BANK-50), the Bank of Israel's averages effective (A-21, BANK-53). Each run takes it in the form its formula reads (F-60, `cashRateIn`).
   const cashRate = p05.cash_rate / 100;
+  const rateBasis = p05.cash_rate_basis;
   // P-05's income is a default for the illustrative run only: the caller's own income (the person's entered income) wins.
   const profile: Profile = { ...(options.profile ?? {}) };
   if (options.scenarioIncome && profile.annualIncome === undefined && p05.annual_income !== undefined) profile.annualIncome = p05.annual_income;
@@ -211,15 +213,14 @@ export function runInputs(
     }
     case "deposit": {
       const kind = depositKind[w.id as keyof typeof depositKind];
-      // the cash rate's unit says how it is quoted: a bank's own rate is nominal (BANK-50), the Bank of Israel's averages effective (A-21,
-      // BANK-53)
-      const rateBasis = p05.cash_rate_basis;
+      // F-21 reads the basis itself
       return { run: "runDeposit", input: { goal, market: { inflation }, deposit: { kind, rate: cashRate, ...(rateBasis ? { rateBasis } : {}), ...t.deposit! }, profile } };
     }
     case "securities": {
       // F-23 G-30: which series a monthly deposit into a renewable fund buys is not set.
       if (t.fund!.kind === "money-market-renewable" && goal.monthly > 0) throw new NotEvaluatedError("G-30");
-      const grossReturn = fundsHeldAsSecurities.includes(t.fund!.kind) ? p05["A-01"] / 100 : cashRate;
+      // a money-market fund's return is an effective annual rate (F-23, F-07)
+      const grossReturn = fundsHeldAsSecurities.includes(t.fund!.kind) ? p05["A-01"] / 100 : cashRateIn(cashRate, rateBasis, { kind: "effective" });
       const input: SecuritiesInput = { goal, market: { grossReturn, inflation, ...t.currency }, fund: t.fund!, tariff: t.tariff!, profile };
       if (t.broker) input.broker = t.broker;
       if (t.memberKind) input.memberKind = t.memberKind;
@@ -227,9 +228,11 @@ export function runInputs(
       return { run: "runSecurities", input };
     }
     case "makam":
-      return { run: "runMakam", input: { goal, market: { inflation }, makam: { yield: cashRate, ...t.makam }, tariff: t.tariff!, ...(t.memberKind ? { memberKind: t.memberKind } : {}), profile } };
+      // the yield to redemption is an effective annual rate (F-24)
+      return { run: "runMakam", input: { goal, market: { inflation }, makam: { yield: cashRateIn(cashRate, rateBasis, { kind: "effective" }), ...t.makam }, tariff: t.tariff!, ...(t.memberKind ? { memberKind: t.memberKind } : {}), profile } };
     case "bond":
-      return { run: "runBond", input: { goal, market: { inflation }, bond: { coupon: cashRate, ...t.bond! }, tariff: t.tariff!, profile } };
+      // the coupon is paid every `couponEveryMonths` months at its share of the annual coupon (F-25)
+      return { run: "runBond", input: { goal, market: { inflation }, bond: { coupon: cashRateIn(cashRate, rateBasis, { kind: "coupon", perYear: 12 / t.bond!.couponEveryMonths }), ...t.bond! }, tariff: t.tariff!, profile } };
   }
 }
 
@@ -330,7 +333,7 @@ function scenario(parameters: readonly unknown[], entered: Partial<Record<string
     if (!units.includes(v.unit)) throw new RecordInputError(`${where}: unit is ${v.unit}, expected ${units.join(" or ")}`);
     if (typeof v.value !== "number" || !Number.isFinite(v.value)) throw new RecordInputError(`${where}: value ${JSON.stringify(v.value)} is not a number`);
     out[key] = v.value;
-    if (key === "cash_rate" && v.unit === "pct_per_year_effective") out.cash_rate_basis = "effective";
+    if (key === "cash_rate" && rateBasisOf(v.unit) === "effective") out.cash_rate_basis = "effective";
   }
   return out;
 }

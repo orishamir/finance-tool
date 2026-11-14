@@ -59,13 +59,18 @@ export const depositTerms = z.strictObject({
   /**
    * How the product calculates interest, where the bank prints it (BANK-50: the disclosure rules' Schedule A leaves `m`, the times a year
    * interest is calculated, to each product): `effective_annual`, the effective annual rate the bank prints beside the nominal one ("ריבית
-   * מתואמת", Mizrahi-Tefahot's "ריבית אפקטיבית"), in `pct_per_year`; `periods_per_year`, the times a year the bank's words say interest is
-   * calculated or credited ("בריבית דריבית חודשית" is 12, "בכל סוף רבעון" 4), in `count`. Each value's notes quote the record. F-21 reads it
-   * for a term over a year and F-26 for a current account. Absent where the bank prints neither.
+   * מתואמת", Mizrahi-Tefahot's "ריבית אפקטיבית"), in `pct_per_year`, with `effective_decimals`, the decimals of a percent it is printed to
+   * ("2.02%" is 2, "1.8500%" 4), in `count`, the precision F-21 reads `m` from the pair at; `periods_per_year`, the times a year the bank's
+   * words say interest is calculated or credited ("בריבית דריבית חודשית" is 12, "בכל סוף רבעון" 4), in `count`. Each value's notes quote the
+   * record. F-21 reads it for a term of a year or more and F-26 for a current account. Absent where the bank prints neither.
    */
   interest_calc: z
-    .strictObject({ effective_annual: valueObject.optional(), periods_per_year: valueObject.optional() })
+    .strictObject({ effective_annual: valueObject.optional(), effective_decimals: valueObject.optional(), periods_per_year: valueObject.optional() })
     .refine((c) => c.effective_annual !== undefined || c.periods_per_year !== undefined, { message: "interest_calc holds an effective annual rate or the times a year interest is calculated" })
+    .refine((c) => (c.effective_annual !== undefined) === (c.effective_decimals !== undefined), {
+      message: "interest_calc.effective_decimals stands with effective_annual: the precision the bank prints it to",
+      path: ["effective_decimals"],
+    })
     .optional(),
   linkage: z.enum(["none", "cpi", "fx"]),
   // null only with an open source: a null bucket at another strength would read "not found in the source", not the open question and its lock

@@ -80,6 +80,26 @@
       ],
       "state": "sourced",
       "notes": "Printed 'ריבית מתואמת: 1.00 %' in the row beside the offered rate; the bank's own effective annual rate (BANK-04, BANK-50)."
+    },
+    "effective_decimals": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+        "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון', 'הנתונים נכונים ליום: 08.11.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון ל-15 שנים, דגם: 508/2', 'שיעור הריבית המוצעת (נומינלי שנתי)' (עמ' 35), 'ריבית מתואמת'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": "2026-11-08",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50"
+      ],
+      "state": "sourced",
+      "notes": "The effective rate is printed to 2 decimals of a percent ('1.00%' in effective_annual's notes); F-21 reads every m the printed pair allows at that precision."
     }
   },
   "linkage": "cpi",

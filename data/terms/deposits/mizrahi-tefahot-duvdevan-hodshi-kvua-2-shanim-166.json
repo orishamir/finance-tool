@@ -77,6 +77,26 @@
       ],
       "state": "sourced",
       "notes": "Printed effective '2.02%' beside the offered rate in every amount tier of the row (rate_offered's notes); the bank's own effective annual rate, read under BANK-50's Schedule A. The terms document pays this deposit's interest monthly (variant interest_during_term, amount_range.min's notes, read 2026-11-14), so it does not compound inside the deposit, and F-21 does not read this rate for it (BANK-50)."
+    },
+    "effective_decimals": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+        "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '166 - דובדבן-חודשי קבועה 2 ש'', 'שיעור הריבית המוצע (נומינלי שנתי)', 'ריבית אפקטיבית'",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50"
+      ],
+      "state": "sourced",
+      "notes": "The effective rate is printed to 2 decimals of a percent ('2.02%' in effective_annual's notes); F-21 reads every m the printed pair allows at that precision."
     }
   },
   "linkage": "none",

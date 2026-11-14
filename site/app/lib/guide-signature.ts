@@ -2,9 +2,9 @@
 // Everything here is a pure function over the data the page loader ships (`SignatureData`): each figure is an engine run on a
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
-import { bondPrice, brokenBalanceCondition, currentAccountYearlyInterest, makamPrice, runInputs, runPlanned, type P05Input, type RunResult } from "@finance-tool/engine";
+import { bondPrice, brokenBalanceCondition, cashRateIn, currentAccountYearlyInterest, makamPrice, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
-import { p05Number, runTimeline, type Bundle } from "./engine";
+import { p05Value, runTimeline, type Bundle } from "./engine";
 import { p05Units, entered as enteredValue, type SiteValue } from "./value";
 import { heCollator } from "./format";
 
@@ -348,11 +348,18 @@ export interface MakamModel {
   blocked: string | null;
 }
 
+/** A bundle's cash rate (P-05 `cash_rate`) as a fraction in the form a formula reads it, by its unit (F-60, `cashRateIn`). */
+function cashRateOf(b: Bundle, form: AnnualRateForm): number {
+  const v = p05Value(b.p05, "cash_rate");
+  return cashRateIn((v.value as number) / 100, rateBasisOf(v.unit), form);
+}
+
 export function makamModel(d: SignatureData, c: { amount: number; month: number }): MakamModel | null {
   const b = d.bundles["makam"];
   if (!b) return null;
   const term = b.terms.makam?.termMonths ?? 12;
-  const y = p05Number(b.p05, "cash_rate") / 100;
+  // the yield to redemption is an effective annual rate (F-24)
+  const y = cashRateOf(b, { kind: "effective" });
   const prices = Array.from({ length: term + 1 }, (_, m) => makamPrice(y, (365 * (term - m)) / 12));
   const month = Math.min(Math.max(c.month, 1), term);
   const run = runAtMonths(b, { amount_now: c.amount, monthly_deposit: 0 }, month);
@@ -393,13 +400,15 @@ export function bondModel(d: SignatureData, c: { amount: number; years: number; 
   const b = d.bundles["government-bond"];
   const every = factNumber(d, "couponEvery");
   if (!b || every === null) return null;
-  const coupon = p05Number(b.p05, "cash_rate") / 100;
   const perYear = 12 / every;
-  const y = Math.max(0.0001, coupon + c.shiftPct / 100);
+  // the coupon paid `perYear` times a year (F-25), and the yield it is priced at before the shift, an effective annual rate
+  const coupon = cashRateOf(b, { kind: "coupon", perYear });
+  const yieldNow = cashRateOf(b, { kind: "effective" });
+  const y = Math.max(0.0001, yieldNow + c.shiftPct / 100);
   const price = bondPrice(coupon, y, c.years, perYear);
   const makamTerm = d.bundles["makam"]?.terms.makam?.termMonths ?? 12;
   const makamDays = (365 * makamTerm) / 12;
-  const makamChange = (makamPrice(y, makamDays) / makamPrice(coupon, makamDays) - 1) * 100;
+  const makamChange = (makamPrice(y, makamDays) / makamPrice(yieldNow, makamDays) - 1) * 100;
   return {
     couponPct: coupon * 100,
     perYear,

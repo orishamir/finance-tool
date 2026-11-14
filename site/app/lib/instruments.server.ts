@@ -4,7 +4,7 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
-import { fundOf, gapListOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import {
   catalogEntry,
@@ -172,12 +172,13 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
         // F-21, F-26 (BANK-50): the days the table prints for the term, how the product calculates interest, and interest paid out
         // during the term, each as the record prints it
         if (!noTerm && rec.term_days && typeof rec.term_days.value === "number") terms.deposit.termDays = rec.term_days.value;
-        // the printed effective rate is read with the nominal rate printed beside it, from which the run takes Schedule A's m
-        const eff = rec.interest_calc?.effective_annual?.value;
-        const nominal = rec.rate_offered.value;
-        const m = rec.interest_calc?.periods_per_year?.value;
-        const printed = typeof eff === "number" && typeof nominal === "number" ? { printed: { nominal: nominal / 100, effective: eff / 100 } } : {};
-        if (typeof eff === "number" || typeof m === "number") terms.deposit.interestCalc = { ...printed, ...(typeof m === "number" ? { periodsPerYear: m } : {}) };
+        // the printed effective rate is read with the nominal rate printed beside it and the decimals it is printed to, from which the run
+        // takes Schedule A's m
+        const num = (v: { value: unknown } | undefined): number | null => (typeof v?.value === "number" ? v.value : null);
+        const eff = num(rec.interest_calc?.effective_annual);
+        const decimals = num(rec.interest_calc?.effective_decimals);
+        const calc = interestCalcOf(num(rec.rate_offered), eff !== null && decimals !== null ? { pct: eff, decimals } : null, num(rec.interest_calc?.periods_per_year));
+        if (calc) terms.deposit.interestCalc = calc;
         if ((rec.variant ?? []).includes("interest_during_term")) terms.deposit.interestPaidOut = true;
         // F-41: a deposit's exit points reach the run as the months to the first one (`first_after_months`) and the interval after
         // it (`every_months`), each only as a positive whole number of months. Without a first the run knows no exit point: an
