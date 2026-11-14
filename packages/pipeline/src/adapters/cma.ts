@@ -52,18 +52,34 @@ export const USER_AGENT =
 // Pipeline configuration (not site parameters): the sanity thresholds.
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
-/** A pension fund's general investment track: the name's last word is "כללי" (CAT-19); "פנסיה כללית", the general fund itself, is not. */
-const PENSION_GENERAL_TRACK = /(?:^|[\s\-])כללי\s*$/;
+/**
+ * Pension-Net's general investment tracks, which the investment-tracks circular closes to members who were not in them on 1.1.2016
+ * (CAT-19, circular 2022-9-30 s.3(ד)), by fund id, each read in Pension-Net 202609 and checked to be a general track in the circular's
+ * sense. A name that merely ends in "כללי" is not enough: an age or specialised track can carry the word (CAT-19).
+ */
+export const PENSION_GENERAL_CLOSED: ReadonlyMap<number, string> = new Map([
+  [2002, "כלל פנסיה כללי"],
+  [2009, "מנורה מבטחים פנסיה - כללי"],
+  [2102, "מגדל מקפת אישית כללי"],
+  [2145, "מגדל מקפת משלימה כללי"],
+  [2164, "הראל פנסיה כללית - כללי"],
+  [2172, "הראל פנסיה - גילעד כללי"],
+  [2176, "כלל פנסיה משלימה - כללי"],
+  [2177, "הראל פנסיה - מנוף כללי"],
+]);
+
+/** A Pension-Net name whose last word is "כללי" ("פנסיה כללית", the general fund itself, is not): a refresh that meets one not in
+ *  `PENSION_GENERAL_CLOSED` reports it, so it is neither dropped nor kept without a reading of CAT-19. */
+export const endsInGeneral = (name: string): boolean => /(?:^|[\s\-])כללי\s*$/.test(name);
 
 /**
  * A track closed to joiners, left out with those companies: the regulator marks it as for workers of
  * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
- * of investment tracks), or it is a pension fund's general track ("כללי" as the track's last word, pensia-net only), which the
- * investment-tracks circular closes to members who were not in it on 1.1.2016 (CAT-19). Gemelnet's general tracks are not read by
- * this rule: which of its "כללי" rows the same section closes was not checked one by one.
+ * of investment tracks), or it is one of Pension-Net's general tracks listed in `PENSION_GENERAL_CLOSED` (CAT-19). Gemel-Net's general
+ * tracks are not read by this rule: which of its "כללי" rows the same section closes in annuity funds was not checked one by one.
  */
-export const closedTrack = (population: string, name: string, dataset?: CmaDataset): boolean =>
-  population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name) || (dataset === "pensia-net" && PENSION_GENERAL_TRACK.test(name));
+export const closedTrack = (population: string, name: string, dataset?: CmaDataset, fundId?: number): boolean =>
+  population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name) || (dataset === "pensia-net" && fundId !== undefined && PENSION_GENERAL_CLOSED.has(fundId));
 
 /**
  * Managing companies left out of the data, by legal id (43 companies): their funds serve one
@@ -501,11 +517,12 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
   for (const r of rows) {
-    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"), ctx.config.dataset)) continue;
+    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"), ctx.config.dataset, Number(get(r, "FUND_ID").trim()))) continue;
     // a Halacha or Sharia track: the regulator classes it "הלכתי" in gemelnet; pensia-net has no classification, so its name says it
     if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();
     if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
+    if (ctx.config.dataset === "pensia-net" && endsInGeneral(get(r, "FUND_NAME"))) problems.push(`fund ${get(r, "FUND_ID")}: "${get(r, "FUND_NAME")}" ends in "כללי" and is not in PENSION_GENERAL_CLOSED; say whether it is a general track closed to joiners (CAT-19)`);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);

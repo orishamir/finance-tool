@@ -82,7 +82,7 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
             )
           )}
         </p>
-        {view.id === CHILD_SAVINGS && <ChildFeeNote />}
+        {view.id === CHILD_SAVINGS && <ChildFeeNote age={caps?.from} />}
       </div>
       <SelectField
         className="md:hidden"

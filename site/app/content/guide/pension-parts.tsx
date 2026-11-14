@@ -60,3 +60,19 @@ export function LumpSums({ figure }: ContentProps) {
     </>
   );
 }
+
+/**
+ * What the employer deposits without income tax at deposit, each part by its own rule: the employer's contribution component up to TXP-10's
+ * rate of salary and salary ceiling, and severance up to TXP-11's ceiling, applied each month as the lower of the salary times the highest
+ * severance rate and a twelfth of the yearly figure (TXP-11's record says it so, with the yearly figure). Each page lists both rules.
+ */
+export function EmployerUntaxed({ figure }: ContentProps) {
+  const pct = figure("TXP-10", "employer_exempt_pct");
+  const ceiling = figure("TXP-10", "employer_ceiling");
+  const severance = figure("TXP-11", "severance_ceiling");
+  return (
+    <p className="max-w-measure">
+      <Term id="תגמולי מעסיק">תגמולי המעסיק</Term> לא ממוסים בהפקדה, עד {pct ? <Num value={pct} /> : null} מהשכר ועד שכר של {ceiling ? <Num value={ceiling} /> : null} בחודש <RuleRef id="TXP-10" end="." /> להפקדת המעסיק <Term prefix="ל" id="מרכיב הפיצויים">מרכיב הפיצויים</Term> יש תקרה משלה: בכל חודש, הנמוך מבין השכר כפול שיעור ההפקדה המרבי לפיצויים, לבין חלק אחד משנים עשר מ־{severance ? <Num value={severance} /> : null} בשנה <RuleRef id="TXP-11" end="." />
+    </p>
+  );
+}

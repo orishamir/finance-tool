@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
+import type { SiteValue } from "../../lib/value";
 import { useAddressSort } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
@@ -46,7 +47,8 @@ function CountLine({ view, shown, companies }: { view: ProductView; shown: numbe
   );
 }
 
-export function TrackBrowser({ data }: { data: TbData }) {
+/** `childAge`: CS-18's age until which National Insurance pays a child-savings fund's fee, for the note over that product's list. */
+export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge?: SiteValue | null }) {
   const params = useParams();
   const navigate = useNavigate();
   const productId = data.products.some((p) => p.id === params.product) ? params.product! : (data.products.find((p) => p.id === defaultProduct) ?? data.products[0]!).id;
@@ -148,7 +150,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
 
       {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
       {view.dataset === "pensia-net" && <p className="md:hidden text-sm text-muted-foreground">{t.wholeFund}</p>}
-      {view.id === CHILD_SAVINGS && <ChildFeeNote />}
+      {view.id === CHILD_SAVINGS && <ChildFeeNote age={childAge} />}
       <p className="md:hidden text-sm text-muted-foreground">
         {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
       </p>

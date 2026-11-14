@@ -33,12 +33,14 @@ export function CapLead({ from }: { from?: SiteValue | null }) {
 /** The product whose fee figure is what members over 21 paid, averaged over the whole track (CS OQ9). */
 export const CHILD_SAVINGS = "child-savings-provident";
 
-/** Over a child-savings list or track: the fee figure is what members over 21 paid, averaged over all the track's assets, not the fund's
- *  price; the rule base reads it so and keeps the question open (CS OQ9). */
-export function ChildFeeNote() {
+/** Over a child-savings list or track: the fee figure is what members past `age` (CS-18's `nii_pays_until_age`, until which National
+ *  Insurance pays the fee) paid, averaged over all the track's assets, not the fund's price; the rule base reads it so and keeps the
+ *  question open (CS OQ9). Nothing without the age. */
+export function ChildFeeNote({ age }: { age: SiteValue | null | undefined }) {
+  if (!age) return null;
   return (
     <p className="text-sm text-muted-foreground max-w-measure">
-      {t.childFee} <IdRef id="CS OQ9" end="." />
+      {t.childFee.before} <Num value={age} display={String(age.value)} /> {t.childFee.after} <IdRef id="CS OQ9" end="." />
     </p>
   );
 }

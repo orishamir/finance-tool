@@ -5,12 +5,13 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { help as helpCopy, track as trackCopy, trackBrowser as t } from "../../copy";
-import { loadTerms } from "../../lib/data.server";
+import { loadRules, loadTerms } from "../../lib/data.server";
+import type { SiteValue } from "../../lib/value";
 import { buildProductView, feeRangeOf, type SortId, type TbGroup } from "../../lib/track-browser";
 import { buildTrackBrowser } from "../../lib/track-browser.server";
 import { ProvenanceProvider } from "../provenance";
 import { FeeNum } from "../kit";
-import { TrackList } from "./list";
+import { ChildFeeNote, TrackList } from "./list";
 
 const data = buildTrackBrowser();
 const terms = Object.fromEntries(loadTerms().map((x) => [x.he, x]));
@@ -45,6 +46,16 @@ describe("a child-savings product's fees (CS OQ9)", () => {
   it("say under the fee head that they are what members over 21 paid, and another product's do not", () => {
     expect(draw("child-savings-provident")).toContain(`${t.columns.average.replace("{year}", "2025")}, ${trackCopy.feeOver21}`);
     expect(draw("kupat-gemel-lehashkaa")).not.toContain(trackCopy.feeOver21);
+  });
+});
+
+describe("the child-savings fee note (CS OQ9)", () => {
+  it("says the age from CS-18's figure, and says nothing without it", () => {
+    const age = loadRules()["CS-18"]!.figures!.nii_pays_until_age as unknown as SiteValue;
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms, dimensions: {}, today: data.today }, children: createElement(ChildFeeNote, { age }) })));
+    expect(html).toContain(`>${String(age.value)}<`);
+    expect(html).toContain(t.childFee.before);
+    expect(renderToStaticMarkup(createElement(ChildFeeNote, { age: null }))).toBe("");
   });
 });
 

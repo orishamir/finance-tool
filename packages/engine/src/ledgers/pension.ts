@@ -280,9 +280,10 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
  * (`detail.grossBalance`) holds the whole deposit and the line's value is that balance less the tax at face value.
  * National Insurance on it is not modelled. The exit is blocked as for the own money (F-49, G-03).
  *
- * The method says the employer rates apply to wages up to the average wage (PEN-04); the independent check
- * and this function apply the payslip rates to the salary as entered, since the payslip is what the
- * employer deposits (S28's 1,875 a month is 12.5% of a 15,000 salary, above the average wage).
+ * As F-52 reads: the payslip rates apply to the whole salary as entered, since PEN-04 caps only the mandatory
+ * minimum at the average wage and the payslip is what the employer deposits (S28's 1,875 a month is 12.5% of a
+ * 15,000 salary, above the average wage), unless `employer.salary` names a lower salary the employer deposits on,
+ * as F-67's pension visual does with `min(salary, average wage)`.
  */
 export function employerLinePension(input: PensionInput, ctx: RunContext): PensionEmployerLine {
   check(input);

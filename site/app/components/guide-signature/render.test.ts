@@ -145,6 +145,9 @@ describe("study fund page", () => {
     const more = Math.round(above(lock) - above(lock - 1));
     expect(more).toBeLessThan(Math.round(at(lock).net - at(lock - 1).net));
     expect(text).toContain(`${fmt.nisWhole(more)} מעבר להפקדות שבינתיים`);
+    // the tax saved is its own figure, not a part of what waiting adds, which can be smaller than it or below zero
+    expect(text).not.toContain("מתוכם");
+    expect(text).toContain("מס הכנסה שלא משלמים:");
     // the multiple is of everything deposited, the employer's money too, not of the person's own deposits alone
     expect(text).toContain("ממה שהופקד, מכם ומהמעסיק");
   });

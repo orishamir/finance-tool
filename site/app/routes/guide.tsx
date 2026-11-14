@@ -518,7 +518,7 @@ export default function GuidePage() {
                   <>
                     {/* the documents' rates first, where they were collected, then what members paid on average (F-105, F-64) */}
                     {data.listRange && <>{listRangeNote(false)} </>}
-                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks}
+                    {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.of} <Num value={data.feeRange.of} /> {copy.feeRange.tracks}
                     {/* the regulator's averages are a calendar year's: the year is said, as the fee table's own rows say it */}
                     {feeYear(data.feeRange.low) ? <> {copy.feeRange.inYear} <bdi>{feeYear(data.feeRange.low)}</bdi></> : null} {copy.feeRange.average} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
                   </>

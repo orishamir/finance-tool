@@ -5,7 +5,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, When } from "../../components/kit";
-import { disabilityRetirement, ExemptShare, LumpSums } from "./pension-parts";
+import { disabilityRetirement, EmployerUntaxed, ExemptShare, LumpSums } from "./pension-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -37,16 +37,14 @@ export const content: GuideContent = {
   ),
   switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. במעבר חודשי הביטוח נספרים, חוץ מחריגים.",
   switchRules: ["PEN-17", "PF-23", "SW-22", "SW-12", "PF-28"],
-  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה", "קרן פנסיה", "צמוד למדד המחירים לצרכן", "עמית", "גיל הפרישה", "הליך תחרותי", "דמי ניהול", "רשות שוק ההון ביטוח וחיסכון", "חברה מנהלת", "משיכה", "הפקדות המעסיק", "השלמת תשואה", "קצבה", "השכר הממוצע במשק", "אינפלציה", "תקרת הפקדה"],
+  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה", "קרן פנסיה", "צמוד למדד המחירים לצרכן", "עמית", "גיל הפרישה", "הליך תחרותי", "דמי ניהול", "רשות שוק ההון ביטוח וחיסכון", "חברה מנהלת", "משיכה", "תגמולי מעסיק", "מרכיב הפיצויים", "השלמת תשואה", "קצבה", "השכר הממוצע במשק", "אינפלציה", "תקרת הפקדה"],
   afterTax: ({ figure }) => {
     return (
     <>
       <p className="max-w-measure">
         ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
       </p>
-      <p className="max-w-measure">
-        הפקדות המעסיק לא ממוסות בהפקדה, עד <N v={figure("TXP-10", "employer_exempt_pct")} /> מהשכר ועד שכר של <N v={figure("TXP-10", "employer_ceiling")} /> בחודש.
-      </p>
+      <EmployerUntaxed figure={figure} />
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-11"]} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>.</span> שאלה פתוחה <IdRef id="PEN OQ7" end="." />
@@ -75,7 +73,7 @@ export const content: GuideContent = {
   use: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        הבסיס של החיסכון לפרישה של שכירים: <Term id="הפקדות המעסיק">הפקדות המעסיק</Term> לפנסיה מגיעות רק לכאן או לקופת גמל לקצבה, ההפקדה שלכם מורידה את מס ההכנסה, וחלק מהנכסים בהשלמת תשואה. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד אפשרית רק במקרים שבחוק <Term prefix="וב" id="תקנון">תקנון</Term>.
+        הבסיס של החיסכון לפרישה של שכירים: <Term id="תגמולי מעסיק">ההפקדות של המעסיק</Term> לפנסיה מגיעות רק לכאן או לקופת גמל לקצבה, ההפקדה שלכם מורידה את מס ההכנסה, וחלק מהנכסים בהשלמת תשואה. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד אפשרית רק במקרים שבחוק <Term prefix="וב" id="תקנון">תקנון</Term>.
       </p>
       <p className="max-w-measure">
         לעומת קופת גמל לקצבה יש כאן ביטוח <Term prefix="ו" id="איזון אקטוארי">איזון אקטוארי</Term>. תקרת דמי הניהול מהחיסכון נמוכה יותר, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.

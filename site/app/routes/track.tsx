@@ -78,7 +78,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   });
   // and the rule the stock and currency shares' sheets name, so their chip carries its title and source
   const { EXPOSURE_RULE_IDS } = await import("../lib/track-exposure");
-  const citedRules = Object.fromEntries([...cited, ...EXPOSURE_RULE_IDS.flatMap((id) => (rules[id] ? [rules[id]] : []))].map((r) => [r.id, r]));
+  // a child-savings track's note says the age until which National Insurance pays its fee (CS-18), as the company page reads it
+  const childAge = wrapper?.id === CHILD_SAVINGS ? ((rules["CS-18"]?.figures?.nii_pays_until_age ?? null) as SiteValue | null) : null;
+  const citedRules = Object.fromEntries([...cited, ...EXPOSURE_RULE_IDS.flatMap((id) => (rules[id] ? [rules[id]] : [])), ...(childAge && rules["CS-18"] ? [rules["CS-18"]] : [])].map((r) => [r.id, r]));
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
@@ -98,6 +100,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]! } : null,
     listedIn: listedIn ? { id: listedIn.id, name: listedIn.names.he[0]! } : null,
     checklist,
+    childAge,
     rules: citedRules,
     pointed: pointedRecords(citedRules, rules),
     dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
@@ -122,7 +125,7 @@ export default function TrackPage() {
   const data = useLoaderData<typeof loader>();
   const { track } = data;
   // pension fees belong to the fund, not to the track (CAT-39)
-  // a child-savings fee is what members over 21 paid, spread over the whole track (CS OQ9)
+  // a child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9)
   const child = data.wrapper?.id === CHILD_SAVINGS;
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : child ? `, ${copy.feeOver21}` : "");
   // a page about one company's track: its own figures carry no "לפי החברה"
@@ -200,7 +203,7 @@ export default function TrackPage() {
               { id: "period", label: copy.labels.period, value: <Num value={data.values.period} /> },
             ]}
           />
-          {child && <ChildFeeNote />}
+          {child && <ChildFeeNote age={data.childAge} />}
           {data.feePage && <div className="pt-1 border-t border-border">
             <TextLink look="line" to={dealPagePath({ track: track.fundId })}>
               {feePageLink}

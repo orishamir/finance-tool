@@ -319,7 +319,7 @@ export const guide = {
       discountEnd: "בתום ההנחה מותר לחברה להעלות את דמי הניהול עד התקרה.",
     },
   },
-  feeRange: { caps: "לפי רשות שוק ההון, ב־", tracks: "המסלולים העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול. כמה הם שילמו בכל חברה ובכל מסלול מופיע בעמוד של החברה." },
+  feeRange: { caps: "לפי רשות שוק ההון, ב־", of: "מתוך", tracks: "המסלולים, אלה שדיווחו על דמי ניהול, העמיתים שילמו", inYear: "בשנת", average: "בממוצע", to: "עד", reported: "בשנה, תלוי במסלול. כמה הם שילמו בכל חברה ובכל מסלול מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
@@ -670,8 +670,9 @@ export const track = {
   feeBalanceLabel: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year}",
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
-  /** A child-savings fee is what members over 21 paid, spread over the whole track (CS OQ9). */
-  feeOver21: "מעמיתים מעל גיל 21",
+  /** A child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9); the note over the
+   * list says the age, from CS-18's figure. */
+  feeOver21: "על כל המסלול",
   feeNotReported: "עוד לא דווח",
   /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
   feeNone: "אין",
@@ -1426,7 +1427,7 @@ export const trackBrowser = {
   /** On a phone, whose rows have no heads, over a pension product's list: whose the fees are (CAT-39). */
   wholeFund: "בקרן פנסיה דמי הניהול הם של הקרן כולה, לא של המסלול: כל המסלולים של קרן אחת מראים אותם דמי ניהול.",
   /** Over a child-savings list or track: what its fee figure is, as the rule base reads it (CS OQ9); the question's chip follows. */
-  childFee: "בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל 21 שילמו, בממוצע על כל הנכסים של המסלול. עד גיל 21 הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה",
+  childFee: { before: "בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל", after: "שילמו, בממוצע על כל הנכסים של המסלול. עד הגיל הזה הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה" },
   dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
@@ -3126,13 +3127,13 @@ export const guideSignature = {
         at: "אם מושכים אחרי",
         times: { before: "פי", after: "ממה שהפקדתם", afterBoth: "ממה שהופקד, מכם ומהמעסיק" },
         wait: "אם מחכים עד אחרי",
-        more: { before: "עוד", middle: " מעבר להפקדות שבינתיים, מתוכם", after: "מס הכנסה שלא משלמים" },
+        more: { before: "עוד", less: "פחות", middle: " מעבר להפקדות שבינתיים, בלי מה שכסף שנמשך קודם היה מרוויח במקום אחר. מס הכנסה שלא משלמים:", after: "." },
         taxAt: "המס אם מושכים אחרי",
         wasBefore: { before: "במשיכה אחרי", after: "המס היה" },
         taxStays: { before: "על הרווח ממה שהופקד מעל התקרה יש מס הכנסה גם אחרי", after: "." },
       },
       chartLine: "נטו בידיים, באלפי ₪",
-      note: { wait: "מחכים עוד", more: "יותר בידיים, מעבר להפקדות שבינתיים, שמגיעות בכל מקרה", saved: "מזה הם מס הכנסה שנחסך" },
+      note: { wait: "מחכים עוד", more: "יותר בידיים, מעבר להפקדות שבינתיים, שמגיעות בכל מקרה", less: "פחות בידיים, מעבר להפקדות שבינתיים, שמגיעות בכל מקרה", saved: "מס הכנסה שנחסך בהמתנה:" },
       bar: {
         own: "הפקדתם",
         employer: "המעסיק הוסיף",
@@ -4991,6 +4992,7 @@ export const signatureFacts = {
   cmaFile: "הקובץ החודשי של רשות שוק ההון",
   /** A guide's count of the regulator's tracks of the product, without self-directed tracks (F-64). */
   trackCount: "כמה מסלולים, בלי מסלולים בניהול אישי, דיווחה הרשות בתקופה האחרונה עם דמי ניהול",
+  trackCountAll: "כמה מסלולים, בלי מסלולים בניהול אישי, יש בקובץ של הרשות לתקופה האחרונה, עם דמי ניהול או בלי",
   /** A guide's count of the regulator's tracks that follow the index (F-67's rule 3). */
   indexTrackCount: "כמה מסלולים על המדד הזה דיווחה הרשות בתקופה האחרונה, עם דמי ניהול",
   /** An ECB reference rate among a cross rate's inputs (F-84): units of the currency, by its code, per one euro. */

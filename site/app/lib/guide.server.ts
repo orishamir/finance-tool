@@ -43,7 +43,8 @@ export interface GuidePageData {
   pendingFormulas: Record<string, string>;
   related: { href: string; label: string }[];
   /** What the regulator reports is charged on the tracks (F-64), on a guide whose cap alone would read as the price. Null elsewhere. */
-  feeRange: { low: SiteValue; high: SiteValue; tracks: SiteValue } | null;
+  /** `tracks`: the tracks that reported a balance fee; `of`: all the wrapper's tracks open to the public, self-directed ones left out (F-64). */
+  feeRange: { low: SiteValue; high: SiteValue; tracks: SiteValue; of: SiteValue } | null;
   /** What the collected deposits say about breaking them (F-104), on the bank-deposit guide. Null elsewhere. */
   breakTerms: BreakTerms | null;
   /**
@@ -200,8 +201,8 @@ function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): str
 /** The lowest and highest fee the regulator reports on the wrapper's tracks, without self-directed tracks, which have a guide of their own (F-64). */
 function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
   const fees = loadCmaFees();
-  const reported = loadCma()
-    .tracks.filter((x) => x.wrapperId === id && !x.selfDirected)
+  const open = loadCma().tracks.filter((x) => x.wrapperId === id && !x.selfDirected);
+  const reported = open
     .flatMap((x) => {
       const f = fees.get(x.fundId)?.balance;
       return f && typeof f.value === "number" ? [cmaFeeValue(f, t)] : [];
@@ -212,7 +213,12 @@ function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
   const cma = loadCma();
   const file = cma.files.find((f) => f.source.url === reported[0]!.source.url);
   const report: SiteValue = file ? { ...cma.periodValue, value: file.period, source: file.source, checked: file.checked, effective_from: null, stale: staleCma(file.period, t) } : cma.periodValue;
-  return { low: reported[0]!, high: reported.at(-1)!, tracks: computed(reported.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCount }) };
+  return {
+    low: reported[0]!,
+    high: reported.at(-1)!,
+    tracks: computed(reported.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCount }),
+    of: computed(open.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCountAll }),
+  };
 }
 
 export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {

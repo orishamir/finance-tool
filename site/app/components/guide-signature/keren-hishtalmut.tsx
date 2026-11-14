@@ -12,7 +12,7 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment,
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
-import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, percentCheck, type PileBarPart } from "../kit";
+import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
 import { Num, ReadingTag, RulesLine, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
@@ -167,13 +167,15 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           at: lockNet,
         }
       : null;
+  // what waiting adds can be below zero, when the return over the years waited is below rising prices and the fees: then it is "less"
+  const waitGains = !!waitWords && Number(waitWords.more.value) >= 0;
   const head = story.head;
   const lockYearsWords = <bdi>{fmt.years(lock)}</bdi>;
   const secondCard = !slice
     ? null
     : year < lock
       ? waitWords && (
-          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className="text-gain">{head.more.before} <Num value={waitWords.more} display={fmt.nisWhole} />{head.more.middle} <Num value={waitWords.saved} display={fmt.nisWhole} /> {head.more.after}</span>}>
+          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className={waitGains ? "text-gain" : undefined}>{waitGains ? head.more.before : head.more.less} <Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} />{head.more.middle} <Num value={waitWords.saved} display={fmt.nisWhole} />{head.more.after}</span>}>
             <Num value={waitWords.at} display={fmt.nisWhole} />
           </StatTile>
         )
@@ -191,10 +193,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const stripNote = waitWords && (
     <>
       <div>
-        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className="text-gain font-semibold"><Num value={waitWords.more} display={fmt.nisWhole} /></span> {story.note.more}
+        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} /></span> {waitGains ? story.note.more : story.note.less}
       </div>
       <div>
-        <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
+        {story.note.saved} <Num value={waitWords.saved} display={fmt.nisWhole} />
       </div>
     </>
   );
