@@ -14,6 +14,7 @@ import type { DealKind } from "../../lib/fee-deal/kinds";
 import { pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { groupKey, groupOn, type DealRead } from "../../lib/fee-deal/parts";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import type { LeftOutView } from "../../lib/left-out";
 import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
@@ -53,7 +54,7 @@ export interface FeeFocus {
 
 export { bringIntoView } from "./in-view";
 
-export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left, kindLine, onDeal, onKind }: {
+export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
   deal: FeeDeal;
   view: Builder;
   kinds: readonly DealKind[];
@@ -61,8 +62,8 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
   onPickTrack: ((from: HTMLElement) => void) | null;
   /** Opens the price lists' picker from the button tapped, whose choice fills a new deal, where the deal's kind has price lists; null elsewhere. */
   onTemplates: ((from: HTMLElement) => void) | null;
-  /** What the template the deal was filled from left out; null where no template filled it. */
-  left: readonly LeftOut[] | null;
+  /** What the template the deal was filled from left out, and what a house's record says its price leaves out (D106); null where no template filled it. */
+  filled: { left: readonly LeftOut[]; leftOut: LeftOutView | null } | null;
   /** The undo line of another kind just chosen that took fees away; null where none stands. */
   kindLine: KindUndoLine | null;
   onDeal: (deal: FeeDeal) => void;
@@ -140,12 +141,12 @@ export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, left,
               </Button>
             }
           >
-            {track && left && <TemplateNote template={track} left={left} />}
+            {track && filled && <TemplateNote template={track} left={filled.left} />}
           </Step>
         )}
         {kind && onTemplates && (
           <Step n={n++} done={!!house} title={b.fill}>
-            {house && left && <TemplateNote template={house} left={left} />}
+            {house && filled && <TemplateNote template={house} left={filled.left} leftOut={filled.leftOut} />}
             <Button variant="outline" className="self-start" onClick={(e) => onTemplates(e.currentTarget)}>
               {copy.end.template}
             </Button>

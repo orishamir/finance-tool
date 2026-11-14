@@ -18,7 +18,8 @@ import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
 import { builder, panel } from "./builder";
-import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, MAX_PER_SECURITY, templateOf, templateOptions } from "./templates";
+import { latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -89,6 +90,34 @@ describe("the price parts as the device keeps them", () => {
   });
 });
 
+describe("sums in the trade's currency", () => {
+  /** IBI's line abroad outside the United States: 0.3%, at least 30 in the trade's currency (BRK-48), typed here. */
+  const inTrade: Price = { form: "action", rate: typed(0.3), min: typed(30), currency: "USD", inTrade: true };
+  const priceFor = (what: string) => read(account([trade(inTrade)], what));
+  it("reads the minimum in the currency of what is bought, where the deal knows it", () => {
+    expect(priceFor("europe").fees[0]!.stages[0]!.price).toMatchObject({ min: { v: 30 }, currency: "EUR" });
+    expect(priceFor("us").fees[0]!.stages[0]!.price).toMatchObject({ currency: "USD" });
+    const home = priceFor("tase").fees[0]!.stages[0]!.price;
+    expect(home).not.toHaveProperty("currency");
+    expect(home).not.toHaveProperty("inTrade");
+  });
+  it("does not read the fee where the currency of what is bought is not known, and says so", () => {
+    const r = priceFor("world");
+    expect(r.fees).toHaveLength(0);
+    expect(r.unmatched).toEqual(["fee-trade"]);
+    expect(r.noCurrency).toEqual(["fee-trade"]);
+    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
+    expect(builder(r, [], null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
+  });
+  it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", () => {
+    const deal = account([trade(inTrade)]);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
+    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(inTrade);
+    expect(setPart(fx({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).not.toHaveProperty("inTrade");
+    expect(setPart(trade({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).toMatchObject({ inTrade: true });
+  });
+});
+
 describe("the price parts as the screen edits them", () => {
   it("types, empties and puts back a percent maximum and a flat price's figures", () => {
     const p: Price = { form: "action", rate: { v: 0.3, src }, cap: { v: 25, src } };
@@ -151,8 +180,9 @@ describe("the templates", () => {
     if (t.form === "action") expect(t.cap!.src).toBeDefined();
     expect(price("fx")).toMatchObject({ form: "action", flat: { amount: { v: 2.85 }, upTo: { v: 50 } }, currency: "USD" });
     expect(filledFor("mizrahi-tefahot", [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }])("trade")).toMatchObject({ rate: { v: 0.64 }, min: { v: 50 } });
-    // what stays out is a plan's own line (a redemption) and the fees a template does not fill
-    expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["plan", "other-base"]));
+    // what stays out is makam's redemption, mutual funds on the exchange's line, the spread its conversion does not limit, and the yearly
+    // distribution fees
+    expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["redemption", "bank-funds", "spread-on-top", "distribution-yearly"]));
   });
   it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars, on what is bought abroad alone", () => {
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
@@ -188,8 +218,15 @@ describe("the templates", () => {
       expect(cases.some((c) => c.when.includes("branch") && c.when.includes("tase") && c.notes.includes("unfilledClerk"))).toBe(true);
       expect(cases.filter((c) => c.when.includes("direct") && !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
     }
-    // a foreign line at a bank is outside part 4(א)(1): no note
-    expect(notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase")).every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    // a foreign line at a bank is outside part 4(א)(1): not its note, but the foreign item's own, on the branch's case alone (part 4(א)(4), note 1)
+    const abroad = notesOf("discount").filter((c) => c.when.includes("us") && !c.when.includes("tase"));
+    expect(abroad.every((c) => !c.notes.includes("unfilledClerk"))).toBe(true);
+    expect(abroad.some((c) => c.when.includes("branch") && c.notes.includes("unfilledClerkAbroad"))).toBe(true);
+    expect(abroad.filter((c) => !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
+    const foreign = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] };
+    const said = readingOf(read(foreign), data.fx).stated.find((x) => x.part === "unfilledClerkAbroad")!;
+    expect(said.words.lead).toBe(copy.cases.stated.unfilledClerkAbroad);
+    expect(said.rules).toEqual(["BRK-16"]);
     // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
     const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;
@@ -198,6 +235,43 @@ describe("the templates", () => {
     expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
     expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
+  });
+  it("say that a percent maximum winning over a minimum is the site's reading where the list does not say which wins (F-12)", () => {
+    const notesOf = (id: string) => house(id).fees.find((f) => f.kind === "trade")!.cases!.map((c) => c.stages[0]!.price).filter((p) => "cap" in p && p.cap).map((p) => ("notes" in p ? (p.notes ?? []) : []));
+    for (const id of ["excellence", "interactive-israel"]) {
+      expect(notesOf(id).length, id).toBeGreaterThan(0);
+      expect(notesOf(id).every((n) => n.includes("capRead")), id).toBe(true);
+    }
+    // Mizrahi-Tefahot's words put its ceiling on the minimum (BRK-67): its list says it, so no reading is noted
+    expect(notesOf("mizrahi-tefahot").some((n) => n.includes("capRead"))).toBe(false);
+    const d = { ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is: "us" }] };
+    expect(readingOf(read(d), data.fx).stated.find((x) => x.part === "capRead")?.words.lead).toBe(copy.cases.stated.capRead);
+  });
+  it("say a spread the list does not limit on top of a priced conversion, makam's redemption as a redemption, and a custody of nothing as free", () => {
+    expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-fx-conversion", why: "spread-on-top" }));
+    expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-redemption-makam", why: "redemption" }));
+    expect(house("excellence").left.some((l) => l.why === "plan")).toBe(false);
+    // IBI's "דמי משמרת: פטור" prints no period: free, not 0% a month
+    expect(filledFor("ibi", [{ by: "held", is: "tase" }])("custody")).toEqual({ form: "free" });
+  });
+  it("fill a custody maximum on each security as one, stated and never read as the holding's maximum (§10.6's stated parts)", () => {
+    const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
+    // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit
+    expect(custodyOf("discount", "tase")).toMatchObject({ form: "held", rate: { v: 0.2 }, perSecurity: { v: 7500 } });
+    expect(custodyOf("discount", "tase")).not.toHaveProperty("max");
+    expect(custodyOf("leumi", "tase")).toMatchObject({ perSecurity: { v: 3700 } });
+    // Hapoalim's maximum is the same on each security and on the deposit: the holding's maximum, which it then is
+    expect(custodyOf("hapoalim", "tase")).toMatchObject({ max: { v: 10600 } });
+    // the reading states it, and marks no maximum on the holding
+    const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "held", is: "tase" }] };
+    const reading = readingOf(read(d), data.fx);
+    const stated = reading.stated.find((x) => x.part === "maxPerSecurity")!;
+    expect(stated.words.figure?.value).toBe(7500);
+    expect(stated.words.tail).toBe(copy.cases.stated.maxPerSecurity.tail);
+    expect(reading.statements.some((x) => x.kind === "mark" && x.mark.kind === "max" && x.mark.on === "held")).toBe(false);
+    // each line kept as one on each security says so in its record's note
+    const lines = latestSnapshots().flatMap((x) => x.lines);
+    for (const id of MAX_PER_SECURITY) expect(lines.find((l) => l.id === id)?.max?.notes, id).toMatch(/לני"ע|לנייר/);
   });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;
@@ -219,7 +293,7 @@ describe("the templates", () => {
     expect(tracks("altshuler-trade").find((p) => p.form === "perAction" && p.currency === "USD")).not.toHaveProperty("cap");
     // Excellence's "11$ פיקס לעסקה" under the line's "עמלת מקסימום 2% משווי העסקה": the sum with its ceiling, each figure sourced
     const ex = tracks("excellence").find((p) => p.form === "perAction" && p.currency === "USD")!;
-    expect(ex).toMatchObject({ form: "perAction", amount: { v: 11 }, cap: { v: 2 }, currency: "USD", notes: ["unfilled"] });
+    expect(ex).toMatchObject({ form: "perAction", amount: { v: 11 }, cap: { v: 2 }, currency: "USD", notes: ["unfilled", "capRead"] });
     expect(ex.form === "perAction" && ex.amount.src && ex.cap?.src).toBeTruthy();
     expect(tracks("excellence").some((p) => p.form === "action" && p.rate.v === 0)).toBe(false);
   });
@@ -311,6 +385,19 @@ describe("the templates", () => {
     expect(filledFor("ibi", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ rate: { v: 0.08 }, min: { v: 5 } });
     expect(copy.cases.values.what.mutualFunds).toBe("קרנות נאמנות");
   });
+  it("price no mutual fund on a bank's line for the Tel Aviv exchange, which takes back only tracking and listed funds (BRK-16, MF-27), and say why", () => {
+    for (const id of ["discount", "leumi", "mizrahi-tefahot", "one-zero"]) {
+      const trade = house(id).fees.find((f) => f.kind === "trade")!;
+      const named = (trade.cases ?? []).flatMap((c) => (Array.isArray(c.when[0]) ? c.when[0] : []));
+      expect(named, id).toContain("tase");
+      expect(named, id).not.toContain("mutualFunds");
+      expect(filledFor(id, [{ by: "what", is: "mutualFunds" }])("trade"), id).toBeUndefined();
+    }
+    expect(house("discount").left.filter((l) => l.why === "bank-funds").map((l) => l.lineId).sort()).toEqual(["discount-buy-sell-tase-branch", "discount-buy-sell-tase-direct"]);
+    // a bank's yearly distribution fee on fund units is left out with a reason that names it
+    expect(house("discount").left).toContainEqual(expect.objectContaining({ lineId: "discount-distribution-fee-type-1", why: "distribution-yearly" }));
+    expect(copy.filled.why["distribution-yearly"]).toContain("עמלת הפצה");
+  });
   it("read IBI's line outside the United States, Canada and Israel for Europe and a value of its own, never for the rest of the world", () => {
     const band = "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל";
     const trade = house("ibi").fees.find((f) => f.kind === "trade")!;
@@ -338,8 +425,8 @@ describe("the templates", () => {
     expect(filledFor("interactive-brokers", [{ by: "what", is: "europe" }, { by: "track", is: "IBKR Pro - Tiered" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.05 }, min: { v: 1.7 }, max: { v: 39 } });
     // the automatic conversion's markup is not counted (D65), and the spot conversion stays out, since F-63 converts by the automatic one
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers", data, TODAY)!.left).toEqual([
-      { line: "interactive-brokers-fx-spot", why: "another-line" },
-      { line: "interactive-brokers-fx-auto-conversion", why: "spread-unpriced" },
+      expect.objectContaining({ line: "interactive-brokers-fx-spot", why: "another-line" }),
+      expect.objectContaining({ line: "interactive-brokers-fx-auto-conversion", why: "spread-unpriced" }),
     ]);
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers/no-such-line", data, TODAY)).toBeNull();
   });

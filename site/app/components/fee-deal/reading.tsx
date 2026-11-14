@@ -244,7 +244,8 @@ function CurveHeadline({ head, noun, above, of }: { head: CurveHead; noun: strin
  */
 export const markLabel = (mark: MarkView): string => {
   const v = mark.amount;
-  if ((mark.kind === "min" || mark.kind === "max") && mark.units) return countPhrase(v.value as number, copy.marks.units);
+  // whole units: a minimum decides up to the last whole unit under its sum, a maximum above it
+  if ((mark.kind === "min" || mark.kind === "max") && mark.units) return countPhrase(Math.floor(v.value as number), copy.marks.units);
   if (mark.kind === "flat") return upToDisplay(v)(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
   return sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
 };
@@ -372,7 +373,7 @@ const swatchOf = (s: Statement) => (s.kind === "mark" ? (s.mark.kind === "meet" 
 
 /** A mark's sum: a count of units for a price per unit's bound ("200 יחידות"), else a sum in its currency. */
 function MarkAmount({ mark, value }: { mark: MarkView; value: SiteValue }) {
-  if ((mark.kind === "min" || mark.kind === "max") && mark.units) return <Num value={value} display={(n) => countPhrase(n, copy.marks.units)} />;
+  if ((mark.kind === "min" || mark.kind === "max") && mark.units) return <Num value={value} display={(n) => countPhrase(Math.floor(n), copy.marks.units)} />;
   return <Fig value={value} />;
 }
 

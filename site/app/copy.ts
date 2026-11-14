@@ -1786,7 +1786,7 @@ export const feeDeal = {
     ownName: "שם העמלה",
     forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה" } as Record<string, string>,
     /** The price parts beyond a rate and its bounds, by the name the reading's sheets give them (values.ts `inputKey`; reading.ts `UNIT_PRICE_KEY`). */
-    parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", discount: "ההנחה", third: "העמלה של הצד השלישי", thirdMin: "המינימום של הצד השלישי", thirdMax: "המקסימום של הצד השלישי", refund: "ההחזר", unitPrice: "מחיר יחידה בקרן" },
+    parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", discount: "ההנחה", third: "העמלה של הצד השלישי", thirdMin: "המינימום של הצד השלישי", thirdMax: "המקסימום של הצד השלישי", refund: "ההחזר", perSecurity: "המקסימום לכל נייר ערך", unitPrice: "מחיר יחידה" },
     howMuch: "כמה",
     min: "מינימום",
     max: "מקסימום",
@@ -1905,13 +1905,15 @@ export const feeDeal = {
       until: "לזמן מוגבל, עד ",
       min: "מינימום ",
       max: "מקסימום ",
+      /** A held share's maximum on each security, after its sum: "מקסימום 7,500 ₪ לכל נייר ערך בכל חיוב" (§10.6's stated parts). */
+      perSecurity: { each: " לכל נייר ערך", charge: " בכל חיוב" },
       /** After a bound's sum: on each action, by the fee (`price.perAction` names the action). */
       boundPer: { default: "לפעולה", fx: "להמרה", fx_spread: "להמרה" } as Record<string, string>,
       offset: "מתקזזת מול עמלה אחרת",
       /** An offset against a named fee: "מתקזזת מול {fee} של אותו חודש". */
       offsetOf: { lead: "מתקזזת מול ", tail: " של אותו חודש" },
       refund: "החזר ",
-      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", partial: "כל ביצוע חלקי בנפרד", sale: "מכירה במחיר אחר" } as Record<string, string>,
+      notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", unfilledClerkAbroad: "במינימום על הוראה דרך פקיד שלא בוצעה", capRead: "המקסימום באחוזים גובר על המינימום, לפי קריאת האתר", partial: "כל ביצוע חלקי בנפרד", inTrade: "הסכומים במטבע של העסקה", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
       /** The toolbox's card of a flat price for a small action, by the fee: "מחיר קבוע לפעולה קטנה, עד ☐", a conversion's "להמרה קטנה". */
       flatSmall: { default: "מחיר קבוע לפעולה קטנה, עד ", fx: "מחיר קבוע להמרה קטנה, עד ", fx_spread: "מחיר קבוע להמרה קטנה, עד " } as Record<string, string>,
@@ -1968,6 +1970,8 @@ export const feeDeal = {
     readForLine: "כל עמלה נקראת במקרה שבחרתם כאן. עמלה שמשתנה לפי גודל הפעולה נקראת בכל הגדלים, בגרף שלמטה.",
     /** A fee the picks give no case (F-114), as its line in the glance and its slim line say it. */
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
+    /** A fee whose sums are in the action's currency, read for something bought in a currency the deal does not know. */
+    noCurrency: "הסכומים שלה במטבע של העסקה, ובמה שבחרתם המטבע לא ידוע, ולכן העמלה לא נקראת.",
     /** A fee the law bans here (the rule table's ban), as its card, its line in the glance and the law card say it, before its rules. */
     banned: "החוק אוסר על בנק לגבות אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
     /** What the reading states without computing (§10.6), after the fee's name and ": ". */
@@ -1976,9 +1980,15 @@ export const feeDeal = {
       thirdOf: { lead: "נוספת עמלת ", tail: " בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג." },
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
+      /** A maximum on each security held: it bounds each security's charge, never the whole holding's. */
+      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך ולא על כל מה שמוחזק, ולכן האתר לא מחשב אותו: הוא תלוי בכמה ניירות ערך מחזיקים ובשווי של כל אחד." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)). */
       unfilledClerk: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
+      /** At a bank, abroad, in the terms of the fee rules' own line for securities abroad (BRK-16, part 4(א)(4) note 1). */
+      unfilledClerkAbroad: "בניירות ערך בחו״ל, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
+      /** A list that prints a percent maximum beside a minimum and does not say which wins on a small action (F-12). */
+      capRead: "התעריפון מפרסם מינימום וגם מקסימום באחוזים, ולא אומר מה משלמים בפעולה קטנה. האתר מחשב לפי המקסימום באחוזים, ואם המינימום הוא שחל, פעולה קטנה עולה יותר.",
       partial: "כל ביצוע חלקי נגבה בנפרד, ולכן הוראה שמתבצעת בחלקים יכולה לעלות את המינימום יותר מפעם אחת.",
     },
     /**
@@ -2055,14 +2065,14 @@ export const feeDeal = {
         marks: { one: "העלות משנה התנהגות בסכום אחד", two: "העלות משנה התנהגות בשני סכומים", many: "העלות משנה התנהגות ב־{n} סכומים" },
       },
       /** Under a trade's curve that includes a conversion (F-111); the second where a sale costs the same. */
-      conversion: "קנייה של קרן שלא בשקלים כוללת המרת מטבע.",
+      conversion: "קנייה שלא בשקלים כוללת המרת מטבע.",
       sameSale: "מכירה עולה אותו דבר.",
       /** Beside a curve with a bound in another currency (F-112, F-84): "סכום בדולרים נכנס לגרף בשקלים: {rate} לדולר, לפי השער של {date}." */
       rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
       /** A curve the site cannot draw: a bound in a currency it has no rate for. */
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
       /** A curve with a price per unit (F-112): the unit's price, a chart's field, and beside it why the chart needs it. */
-      unitPrice: "מחיר יחידה בקרן",
+      unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
     },
     /** The statements of F-112 and the reading. */
@@ -2172,12 +2182,14 @@ export const feeDeal = {
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
       "spread-unpriced": "המרה בלי עמלה, אבל עם מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
+      "bank-funds": "בבנק השורה הזו לא חלה על קרן נאמנות שאינה קרן מחקה ואינה רשומה בבורסה, לפי כללי העמלות של בנק ישראל. לכן לקרן כזו אין בעסקה מחיר קנייה ומכירה.",
+      "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
+      redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
+      "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
     } as Record<string, string>,
-    /** A left line counted by its reason, where the reason does not name the fee: "{n} שורות: …". */
-    lines: { one: "שורה אחת", two: "שתי שורות", many: "{n} שורות" },
   },
 } as const;
 
@@ -2196,7 +2208,7 @@ function dealInputNames(): Record<string, string> {
     out[`deal:${k}.min`] = `${name}: המינימום`;
     out[`deal:${k}.max`] = `${name}: המקסימום`;
     out[`deal:${k}.yearly`] = `${name}, בשנה`;
-    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
+    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
   out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
   return out;
