@@ -1,15 +1,16 @@
 // The words of each part of a price (method §10.6), keyed by the part registry's ids (offers/parts.ts): as a slim line, a case's row and
 // the open case say a part the price has, and as the toolbox's card offers a part to add. Every word is from the copy; the views
-// (builder.ts) only arrange them, and a component only lays them out.
+// (case-words.ts, panel.ts, toolbox.ts) only arrange them, and a component only lays them out.
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { SiteValue } from "../value";
-import type { MonthKey, Price } from "./model";
-import { charged, hasCurrency, onAction } from "./offers/capabilities";
+import type { MonthKey, Note, Price } from "./model";
+import { charged, onAction } from "./offers/capabilities";
 import type { FigureUnit } from "./offers/figures";
-import type { PartId } from "./offers/parts";
-import type { PriceView } from "./parts";
-import { type FeeKindId } from "./shapes";
-import { fieldsOf } from "./offers/capacity";
+import type { PartId, StatedPartId, ToolPartId } from "./offers/parts";
+import type { PriceFigures } from "./values";
+import type { PriceView } from "./deal-read";
+import { type FeeKindId, type FormId } from "./shapes";
+import { sumCurrency } from "./offers/capacity";
 
 /**
  * The words of one part of a price, in order: `lead` before its figure, the figure (`figure`, in its number state), `mid` and a second
@@ -55,7 +56,7 @@ const boundTail = ({ kind, view }: PartContext): string => ` ${view.form === "he
 /** A maximum on each security's period: the price list's where it prints the bounds per month, else each charge. */
 const perSecurityTail = ({ view }: PartContext): string => `${pp.perSecurity.each}${view.form === "held" && view.boundsEvery ? ` ${copy.price.per[view.boundsEvery]}` : pp.perSecurity.charge}`;
 
-const note = (id: "unfilled" | "unfilledClerk" | "unfilledClerkAbroad" | "capRead" | "partial") => (): PartWords => ({ lead: pp.notes[id]! });
+const note = (id: Note) => (): PartWords => ({ lead: pp.notes[id]! });
 
 /**
  * Each part's words where the price has it, at rest and in the open case; null where it has nothing to say yet (a bound or a flat price
@@ -91,14 +92,32 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
   sale: () => ({ lead: pp.notes.sale! }),
 };
 
-/** A flat price nobody has typed yet, as the open case shows it while it stands empty. */
-export const FLAT_BLANK: PartWords = { lead: pp.flat.lead, mid: pp.flat.tail };
+/** What a stated part's sentence is made from: the price, and its figures as the reading shows them. */
+export interface StatedContext {
+  p: Price;
+  figures: PriceFigures;
+}
+
+const st = copy.cases.stated;
 
 /**
- * The parts the toolbox offers: every part but free (a price's ✕ makes it free), a bank clerk's notes (a bank's template fills them,
- * BRK-16) and the site's reading of a percent maximum over a minimum (a house's template fills it, F-12).
+ * Each stated part's sentence in the reading (§10.6, "What the page states and does not compute"), where the price has it; null where it
+ * has nothing to state (a third party's fee with its figure, which the reading computes; a refund not typed yet).
  */
-export type ToolPartId = Exclude<PartId, "free" | "unfilledClerk" | "unfilledClerkAbroad" | "capRead">;
+export const STATED: Readonly<Record<StatedPartId, (c: StatedContext) => PartWords | null>> = {
+  third: ({ p }) => (!onAction(p) || !p.third || p.third.price ? null : p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third }),
+  maxPerSecurity: ({ p, figures }) => (p.form === "held" && p.perSecurity ? { lead: st.maxPerSecurity.lead, ...fig(figures.perSecurity), tail: st.maxPerSecurity.tail } : null),
+  offset: ({ p }) => (charged(p) && p.offset ? { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail } : null),
+  refund: ({ p, figures }) => (charged(p) && p.refund && !p.refund.blank ? { lead: st.refund.lead, ...fig(figures.refund), tail: st.refund.tail } : null),
+  unfilled: () => ({ lead: st.unfilled }),
+  unfilledClerk: () => ({ lead: st.unfilledClerk }),
+  unfilledClerkAbroad: () => ({ lead: st.unfilledClerkAbroad }),
+  capRead: () => ({ lead: st.capRead }),
+  partial: () => ({ lead: st.partial }),
+};
+
+/** A flat price nobody has typed yet, as the open case shows it while it stands empty. */
+export const FLAT_BLANK: PartWords = { lead: pp.flat.lead, mid: pp.flat.tail };
 
 /** The box a toolbox card shows: a percent, a sum in a currency (its sign), a month, or none. */
 export type ToolBox = "pct" | "month" | { sign: string };
@@ -115,16 +134,14 @@ export interface ToolContext {
   p: Price;
 }
 
-/** The currency the open case's price keeps its sums in, a new sum's box drawn in it: the shekel where it names none. */
-const priceCurrency = (p: Price): string => (hasCurrency(p) && p.currency ? p.currency : "ILS");
-const inPrice = ({ p }: ToolContext): ToolBox => ({ sign: signOf(priceCurrency(p)) });
+/** A new sum's box, drawn in the currency the open case's price keeps its sums in (in its own form, or in `form`: `sumCurrency`). */
+const inPrice = ({ kind, p }: ToolContext, form: FormId = p.form): ToolBox => ({ sign: signOf(sumCurrency(kind, p, form)) });
 
 /** Each card's words and box, its words following the fee (a conversion's "לכל המרה", "מההמרה"). */
 export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>> = {
   share: ({ kind }) => ({ words: { tail: ` ${perAction(kind)}` }, box: "pct" }),
-  perUnit: (c) => ({ words: { tail: ` ${pp.perUnit}` }, box: inPrice(c) }),
-  // a sum per action keeps the price's currency only where the fee may hold one for it (its capacity), else it is in shekels
-  perAction: ({ kind, p }) => ({ words: { tail: ` ${perAction(kind)}` }, box: { sign: signOf(fieldsOf(kind, "perAction").includes("currency") ? priceCurrency(p) : "ILS") } }),
+  perUnit: (c) => ({ words: { tail: ` ${pp.perUnit}` }, box: inPrice(c, "perUnit") }),
+  perAction: (c) => ({ words: { tail: ` ${perAction(c.kind)}` }, box: inPrice(c, "perAction") }),
   held: () => ({ words: { tail: ` ${copy.price.per[12]}` }, box: "pct" }),
   sum: () => ({ words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") } }),
   discount: () => ({ words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" }),

@@ -52,9 +52,9 @@ describe("buildPrice", () => {
     expect(buildPrice("trade", { form: "action", figures: { rate: n(0.1), min: n(5), cap: n(2), flat: n(3), upTo: n(50) }, currency: "USD", notes: ["unfilled"] })).toEqual({
       form: "action", rate: n(0.1), min: n(5), cap: n(2), flat: { amount: n(3), upTo: n(50) }, currency: "USD", notes: ["unfilled"],
     });
-    // custody's held share has bounds and no percent maximum; a conversion's share no percent maximum; a deposit's sums no currency
+    // custody's held share has bounds and no percent maximum; a conversion's share no percent maximum; a deposit's share no bounds, no currency
     expect(buildPrice("custody", { form: "held", figures: { rate: n(0.2), max: n(7500), cap: n(2) }, per: 3, every: 3 })).toEqual({ form: "held", rate: n(0.2), max: n(7500), per: 3, every: 3 });
     expect(buildPrice("fx", { form: "action", figures: { rate: n(0.2), cap: n(1) } })).toEqual({ form: "action", rate: n(0.2) });
-    expect(buildPrice("deposit", { form: "action", figures: { rate: n(1), min: n(5) }, currency: "USD" })).toEqual({ form: "action", rate: n(1), min: n(5) });
+    expect(buildPrice("deposit", { form: "action", figures: { rate: n(1), min: n(5) }, currency: "USD" })).toEqual({ form: "action", rate: n(1) });
   });
 });

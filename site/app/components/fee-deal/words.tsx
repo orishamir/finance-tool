@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
+import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -94,9 +94,6 @@ export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) =>
 
 /** How the page shows the sum a flat price holds up to: whole, as the price list prints it ("50 $"), else as any sum (`sumDisplay`). */
 export const upToDisplay = (v: SiteValue) => (n: number): string | undefined => wholeSum(v.unit)(n) ?? sumDisplay(v)?.(n);
-
-/** The sum a flat price holds up to as plain text, for words inside a box ("לכל המרה עד 50 $"). */
-export const upToText = (v: SiteValue): string => upToDisplay(v)(v.value as number) ?? formatValue(v.value as number, v.unit);
 
 /** A figure with a lead held to it on one line (", מינימום 15 ₪"), and the period it is printed per where it has one (", מינימום 40 ₪ בחודש"). */
 const Bound = ({ lead, value, per }: { lead: string; value: SiteValue; per?: string }) => (

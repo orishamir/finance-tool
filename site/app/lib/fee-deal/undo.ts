@@ -8,12 +8,16 @@
 // here too.
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
-import { thingName } from "./builder";
-import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
-import { lostParts, PARTS, setPart, type PartId } from "./offers/parts";
+import { thingName } from "./case-words";
+import { holdOn, laterUntouched, removeStage } from "./edits/stage";
+import { removeBy, removeCase } from "./edits/case";
+import { setKind, updateFee } from "./edits/deal";
+import { type Side } from "./model";
+import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
-import type { FeeKindId } from "./shapes";
+import type { DataBar } from "./offers/offer";
+import type { ChargedForm } from "./offers/capacity";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
 
@@ -133,11 +137,11 @@ export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chose
  * The deal with price `k` of a fee's prices on `side` held on and the prices after it taken away (`holdOn`): kept for the undo where they
  * hold anything the person gave, gone silently where they are as "לזמן מוגבל" added them (`laterUntouched`). Null where none follows it.
  */
-export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null, caseId?: string): MaybeUndoable | null {
+export function holdOnKept(deal: FeeDeal, feeId: string, side: Side, k: number, chosen: string | null, caseId?: string, after?: ChargedForm): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   if (!fee || (side === "sell" && !pricedOf(fee, caseId).sale) || k >= pricesOn(fee, side, caseId).length - 1) return null;
   const changed = holdOn(fee, side, k, caseId);
-  if (laterUntouched(fee, side, k, caseId)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
+  if (laterUntouched(fee, side, k, caseId, after)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
   return feeChange(deal, fee, changed, { kind: "chain", feeId, side, k, ...(caseId ? { caseId } : {}) }, chosen);
 }
 
@@ -165,8 +169,8 @@ const blankFee = (f: Fee): boolean => f.name === undefined && !f.sale && sameCon
  * The deal of another kind (`setKind`), kept for the undo where a fee it takes away holds anything typed or filled; silent where every fee
  * it takes away is blank, or none is. A chosen fee taken away hands the choice to the first fee left.
  */
-export function setKindKept(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindId[], chosen: string | null): Omit<MaybeUndoable, "undo"> & { undo: KindUndo | null } {
-  const next = setKind(deal, kind, barred);
+export function setKindKept(deal: FeeDeal, kind: DealKind, bar: DataBar | null, chosen: string | null): Omit<MaybeUndoable, "undo"> & { undo: KindUndo | null } {
+  const next = setKind(deal, kind, bar);
   const gone = deal.fees.flatMap((fee, at) => (next.fees.some((f) => f.id === fee.id) ? [] : [{ fee, at }]));
   const chosenAfter = chosen !== null && !next.fees.some((f) => f.id === chosen) ? (next.fees[0]?.id ?? null) : chosen;
   if (gone.every((g) => blankFee(g.fee))) return { deal: next, chosen: chosenAfter, undo: null };
@@ -267,6 +271,9 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
   }
 }
 
+/** Each part a change of form names when it leaves it behind (`PARTS[id].lost`), by its words. */
+const LOST_WORDS: Readonly<Record<LostPart, string>> = copy.cases.formChanged.parts;
+
 /**
  * The words of a price put in another form: that it changed, and the bounds, the percent maximum and the flat price it left behind, by
  * name, where it left any.
@@ -276,7 +283,7 @@ function formWords(u: Undo): string {
   const caseId = u.what.kind === "form" ? u.what.caseId : undefined;
   const before = pricedOf(u.before, caseId);
   const after = u.after ? pricesOn(u.after, "buy", caseId)[0]!.price : null;
-  const lost = lostParts(before.stages[0]!.price, after, before).map((id) => w.parts[id]!);
+  const lost = lostParts(before.stages[0]!.price, after, before).map((id) => LOST_WORDS[id]);
   if (lost.length === 0) return w.plain;
   const list = lost.length === 1 ? lost[0]! : `${lost.slice(0, -1).join(", ")} ${w.and}${lost.at(-1)!}`;
   return w.lost.replace("{parts}", list).replace("{verb}", lost.length === 1 ? w.one : w.many);

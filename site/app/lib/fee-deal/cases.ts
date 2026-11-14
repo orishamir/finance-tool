@@ -1,10 +1,10 @@
 // A deal read for the reading's picks (method §10.6, F-114 and F-115): each fee whose price changes by things is read in the case the picks
 // give it, and a price that changes by a size read across sizes as one fee per step, charged on that step's sizes alone. A fee whose price
-// changes by nothing is read as it is. What the views read (parts.ts) is the result: plain fees with their prices over time.
+// changes by nothing is read as it is. What the views read (deal-read.ts) is the result: plain fees with their prices over time.
 import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
 import { BOUND_CURRENCIES, pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type Price, type Stage, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, holdsFunds, onHolding } from "./shapes";
-import { readAcross } from "./offers/conditions";
+import { isPicked, readAcross, TAKEN_KEYS } from "./offers/conditions";
 
 /**
  * Where a read fee comes from (F-114, F-115): the deal's fee (`of`), the case it is read in where the fee has cases, and, where its price
@@ -75,13 +75,13 @@ function conversionCurrency(fees: readonly Fee[], picks: readonly ReadPick[]): s
  * the fees name the things. The currency is never the deal's own pick nor a case's: it is what is bought's (`conversionCurrency`), last.
  */
 export function picksOf(deal: Pick<FeeDeal, "fees" | "readFor">): ReadPick[] {
-  const out: ReadPick[] = (deal.readFor ?? []).filter((p) => p.by !== "currency");
+  const out: ReadPick[] = (deal.readFor ?? []).filter((p) => !TAKEN_KEYS.includes(p.by));
   const has = (key: string) => out.some((p) => p.by === key);
   for (const fee of deal.fees) {
     if (!hasCases(fee)) continue;
     fee.by.forEach((b, t) => {
       const key = pickKey(b);
-      if (b.kind === "currency" || has(key) || !picked(fee, b)) return;
+      if (!isPicked(b.kind) || has(key) || !picked(fee, b)) return;
       let is: string | null = null;
       if (b.kind === "track") {
         const mine = fee.cases.find((c) => c.mine);

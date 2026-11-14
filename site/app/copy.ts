@@ -1827,7 +1827,7 @@ export const feeDeal = {
     close: "סגירה",
   },
   /**
-   * A fee whose price changes by things (F-114), its cases, the parts of a price and the toolbox that adds them (builder.ts), the
+   * A fee whose price changes by things (F-114), its cases, the parts of a price and the toolbox that adds them (rows.ts, panel.ts, toolbox.ts), the
    * reading's picks (reading.ts) and what the reading states without computing (method §10.6, "What the page states and does not compute").
    */
   cases: {
@@ -1881,7 +1881,7 @@ export const feeDeal = {
       one: "הוסר",
       many: "הוסרו",
       and: "ו",
-      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה" } as Record<string, string>,
+      parts: { min: "המינימום", max: "המקסימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", maxPerSecurity: "המקסימום לכל נייר ערך" },
     },
     /** A thing of the band's head, opened while its fee is open: its values in the cases, the action that drops it, and what that does. */
     thingMenu: {
@@ -1941,8 +1941,9 @@ export const feeDeal = {
     copies: { lead: "כל מקרה יועתק לכל ", tail: " שסימנתם, עם המחיר שלו.", range: "כל מקרה יועתק ל״עד״ ול״מעל״, עם המחיר שלו.", count: "{from} מקרים יהיו {to}." },
     /** The noun a copy is made for, by the thing. */
     copyNoun: { what: "סוג", held: "סוג", channel: "ערוץ", currency: "מטבע", track: "מסלול", own: "ערך" } as Record<string, string>,
+    /** The line for a value in the person's own words under a list's values, by the thing where it has its own, else the general one. */
     otherValue: "משהו אחר, בשם משלכם",
-    otherChannel: "ערוץ אחר",
+    otherBy: { channel: "ערוץ אחר" } as Partial<Record<string, string>>,
     /** Adds a value typed in the person's words to the values asked, ticked. */
     addValue: "להוסיף לרשימה",
     /** A condition of the person's own, its name asked first. */
@@ -1958,6 +1959,8 @@ export const feeDeal = {
       before: "המקרה שלפניו: ",
       /** A value of the person's own, typed under a list: its name, and for what is bought or held, where it is bought and its currency. */
       ownName: "השם, כמו שהוא כתוב אצלכם",
+      /** A typed value's name, by the thing where it has its own words (a track's). */
+      nameBy: { track: "שם המסלול, כמו שהוא כתוב אצלכם" } as Partial<Record<string, string>>,
       ownPlace: "איפה זה נקנה",
       israel: "בארץ",
       abroad: "בחו״ל",
@@ -2208,7 +2211,7 @@ function dealInputNames(): Record<string, string> {
     out[`deal:${k}.min`] = `${name}: המינימום`;
     out[`deal:${k}.max`] = `${name}: המקסימום`;
     out[`deal:${k}.yearly`] = `${name}, בשנה`;
-    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
+    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "refund", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
   out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
   return out;

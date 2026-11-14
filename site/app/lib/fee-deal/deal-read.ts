@@ -1,12 +1,12 @@
 // What every view of a deal is built from (method §10.6): the deal read once by the engine (F-110) for the reading's picks (F-114), each
 // price as the page shows it with its figures in their number states, each price's standing against the cap (F-113), the marks (F-112) and
-// what a fee is charged on (F-111). The views (glance.ts, builder.ts, reading.ts) only arrange these.
+// what a fee is charged on (F-111). The views (glance.ts, rows.ts, panel.ts, reading.ts) only arrange these.
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
 import { feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
-import { charged, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
+import { boundsAction, charged, onAction } from "./offers/capabilities";
 import { banFor } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
@@ -125,7 +125,7 @@ function partsView(p: Price): PartsView | undefined {
 export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: Price, today: string): PriceView {
   const fee = fees[i]!;
   const figures = priceFigures(fee, p, today);
-  const currency = hasCurrency(p) ? { currency: p.currency ?? "ILS" } : {};
+  const currency = onAction(p) ? { currency: p.currency ?? "ILS" } : {};
   const pv = partsView(p);
   const parts = pv ? { parts: pv } : {};
   if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : currency), ...parts };
@@ -246,7 +246,7 @@ export type MarkView =
   | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
 
 /** A mark that names one fee's part: a minimum, a maximum, a percent maximum or a flat price. */
-export type PartMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
+export type FeeMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
 
 /**
  * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says
@@ -287,7 +287,7 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
   const key = (field: "min" | "max" | "cap" | "flat" | "upTo") => inputKey(fees, m.fee, field);
   if (m.kind === "flat") return { kind: "flat", ...head, bound: figures.flat!, amount: figures.upTo! };
   // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
-  const from = m.from === undefined ? {} : { from: hasFlat(price) && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
+  const from = m.from === undefined ? {} : { from: boundsAction(price) && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
   // a sum per action's percent maximum decides up to where it meets the sum the engine charges, after a discount off it (F-116):
   // `(1 − d) × amount / cap`, in the sum's currency
   if (m.kind === "cap" && price.form === "perAction") {

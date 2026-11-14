@@ -5,7 +5,7 @@ import type { ValueObject } from "@finance-tool/schema";
 import { computed, entered, type SiteValue } from "../value";
 import type { Fee, Num, Price, Sourced, ThirdPrice } from "./model";
 import type { OnActionPrice } from "./offers/capabilities";
-import { CAPACITY } from "./offers/capacity";
+import { capacity } from "./offers/capacity";
 
 export type Unit = ValueObject["unit"];
 
@@ -137,7 +137,7 @@ export function inputKey(fees: readonly Pick<Fee, "kind">[], i: number, field?: 
 }
 
 /**
- * The figures of one price as value objects, each in its unit (a free price has none), keyed as the screen edits them (edit.ts,
+ * The figures of one price as value objects, each in its unit (a free price has none), keyed as the screen edits them (edits/price.ts,
  * `Figure`): its rate or its sum (`amount`, a sum per unit's among them), its bounds, its percent maximum (`cap`, a share of the action),
  * and its flat price (`flat`, the price per action) with the sum it holds up to (`upTo`); its sums in the price's currency.
  */
@@ -201,4 +201,4 @@ export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): P
 }
 
 /** Whether a fee is charged inside a fund (its management fee), which the page says beside it. */
-export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || CAPACITY[fee.kind].base === "trustee" || CAPACITY[fee.kind].base === "variable_management";
+export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || capacity(fee.kind).base === "trustee" || capacity(fee.kind).base === "variable_management";

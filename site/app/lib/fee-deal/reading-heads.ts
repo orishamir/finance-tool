@@ -4,7 +4,7 @@
 import type { ChangeKind, DealAction, DealSide } from "@finance-tool/engine";
 import type { Curve, LawRow, PeriodCard, Reading, Undrawn } from "./reading";
 import type { MonthKey } from "./model";
-import { refOf, type FeeRef, type MarkView } from "./parts";
+import { refOf, type FeeRef, type MarkView } from "./deal-read";
 import type { SiteValue } from "../value";
 
 // ---------------------------------------------------------------- the periods

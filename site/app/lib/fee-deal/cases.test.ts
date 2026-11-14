@@ -2,19 +2,25 @@
 // picks give each fee, a size read across sizes, a price's new parts, the views the page renders, and the edits that make cases.
 import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { PICK_KEYS } from "./offers/conditions";
 import { describe, expect, it } from "vitest";
 import { actionCost, dealMarks } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
-import { builder, byQuestion, copiesWords, panel, slotEdit, thingMenu, toolbox } from "./builder";
+import { builder } from "./rows";
+import { byQuestion, copiesWords, slotEdit, thingMenu } from "./things";
+import { panel } from "./panel";
+import { toolbox } from "./toolbox";
 import { picksOf, readFee, readFees } from "./cases";
-import { addBy, addCase, canAddBy, copyCase, editPrice, removeBy, removeCase, removeTop, setMine, setStep, setTop, setWhen, withFigure } from "./edit";
+import { addBy, addCase, canAddBy, copyCase, removeBy, removeCase, removeTop, setMine, setStep, setTop, setWhen } from "./edits/case";
+import { editPrice } from "./edits/stage";
+import { withFigure } from "./edits/price";
 import { setPart } from "./offers/parts";
 import { providentFamily } from "./offers/rules";
 import { glance } from "./glance";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
-import { readDealFor, sumsLargest } from "./parts";
+import { readDealFor, sumsLargest } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
 import { removeByKept, removeCaseKept, undo, undoWords } from "./undo";
@@ -91,12 +97,17 @@ describe("cases as the device and a link keep them", () => {
     ["a discount above a hundred percent", (d: any) => (d.fees[1].cases[1].stages[0].price.discount.pct.v = 120)],
     ["a third party's figure of no form", (d: any) => (d.fees[0].cases[4].stages[0].price.third.price = { form: "held", rate: { v: 1 } })],
     ["an offset against a fee no kind has", (d: any) => (d.fees[3].stages[0].price.offset = { kind: "bribe" })],
-    ["a pick of no thing", (d: any) => (d.readFor = [{ by: "colour", is: "red" }])],
     ["a thing picked twice", (d: any) => (d.readFor = [{ by: "what", is: "us" }, { by: "what", is: "tase" }])],
   ])("refuses %s", (_, spoil) => {
     const d = JSON.parse(JSON.stringify(deal()));
     spoil(d);
     expect(readDeal(d)).toBeNull();
+  });
+  it("opens a deal with a pick of no thing the page has, without the pick, and takes every thing's key from the registry", () => {
+    const d = JSON.parse(JSON.stringify(deal()));
+    d.readFor = [{ by: "colour", is: "red" }, { by: "channel", is: "direct" }];
+    expect(readDeal(d)!.readFor).toEqual([{ by: "channel", is: "direct" }]);
+    expect([...PICK_KEYS].sort()).toEqual(["channel", "count", "currency", "portfolioSize", "track", "volume", "what"]);
   });
   it("drops a part a price's form has no place for, as it drops any key it does not know", () => {
     const d = JSON.parse(JSON.stringify(deal()));
@@ -226,7 +237,7 @@ describe("the reading's first line", () => {
 
 describe("the builder's blocks", () => {
   const r = read(deal([{ by: "what", is: "us" }]));
-  const b = builder(r, [], { fee: "fee-trade", case: "c3" });
+  const b = builder(r, null, { fee: "fee-trade", case: "c3" });
   it("shows a fee with cases as its band, the other tracks folded, the open case marked", () => {
     const block = b.rows[0]!.block;
     if (block.kind !== "band") throw new Error("a band");
@@ -679,7 +690,7 @@ describe("the words of a size follow the fee's own action", () => {
     expect(byQuestion(fx, "actionSize").ask).toBe("גודל ההמרה: עד כמה חל המחיר הראשון?");
     expect(slotEdit(r, fx.id, fx.cases[1]!.id, 0)!.title).toBe("גודל ההמרה במקרה הזה");
     expect(thingMenu(r, fx.id, 0)!.stop).toBe("להפסיק להבחין לפי גודל ההמרה");
-    expect(builder(r, [], null).rows[0]!.block).toMatchObject({ kind: "band", things: [{ words: "גודל ההמרה" }] });
+    expect(builder(r, null, null).rows[0]!.block).toMatchObject({ kind: "band", things: [{ words: "גודל ההמרה" }] });
     expect(byQuestion(newFee("trade"), "actionSize").ask).toBe("גודל הפעולה: עד כמה חל המחיר הראשון?");
   });
 });

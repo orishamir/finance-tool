@@ -7,11 +7,13 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { dealCases, feeDeal } from "../../copy";
 import { feesData } from "../../lib/fees.server";
-import { builder, panel, toolbox } from "../../lib/fee-deal/builder";
+import { builder } from "../../lib/fee-deal/rows";
+import { panel } from "../../lib/fee-deal/panel";
+import { toolbox } from "../../lib/fee-deal/toolbox";
 import { glance } from "../../lib/fee-deal/glance";
 import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { readDealFor } from "../../lib/fee-deal/parts";
+import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
 import { FeesColumn, feeGroup } from "./builder";
@@ -93,7 +95,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
   const caseId = fee && hasCases(fee) ? fee.cases[0]!.id : null;
   return createElement(FeesColumn, {
     deal,
-    view: builder(r, [], chosen ? { fee: chosen, case: caseId } : null),
+    view: builder(r, null, chosen ? { fee: chosen, case: caseId } : null),
     groupOf: (f) => feeGroup(r, f, saves(deal)),
     open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, pending: null, menu: null, thing: null },
     toolbox: null,

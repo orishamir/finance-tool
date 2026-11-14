@@ -4,10 +4,10 @@ import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/eng
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
 import { fraction, mainFigure, type Price, type ProviderKind } from "./model";
-import { charged, hasBounds, hasFlat, onAction, type ChargedPrice } from "./offers/capabilities";
+import { boundsAction, charged, hasBounds, onAction, type ChargedPrice } from "./offers/capabilities";
 import { enginePrice } from "./to-engine";
 import { type FeeKindId } from "./shapes";
-import { CAPACITY } from "./offers/capacity";
+import { capacity } from "./offers/capacity";
 import { recordValue } from "./values";
 
 /**
@@ -40,7 +40,7 @@ export const kindById = (kinds: readonly DealKind[], id: ProductId | null): Deal
 
 /** The record's cap entry for a fee, where the fee is a record base the record caps. */
 export const capOf = (kind: DealKind | null, fee: FeeKindId): FeeCap | undefined => {
-  const base = CAPACITY[fee].base;
+  const base = capacity(fee).base;
   return base && kind ? kind.caps[base] : undefined;
 };
 
@@ -88,7 +88,7 @@ export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: num
   if (cap === 0) {
     if (chargesNothing(enginePrice(own))) return as(0);
     const main = mainFigure(own)!.v * (own.form === "held" ? 1 : left);
-    return as(main > 0 ? main : hasBounds(own) && own.min ? own.min.v * (own.form === "held" ? 1 : minLeft) : hasFlat(own) && own.flat ? own.flat.amount.v : 0);
+    return as(main > 0 ? main : hasBounds(own) && own.min ? own.min.v * (own.form === "held" ? 1 : minLeft) : boundsAction(own) && own.flat ? own.flat.amount.v : 0);
   }
   switch (unit) {
     case "pct_per_year":

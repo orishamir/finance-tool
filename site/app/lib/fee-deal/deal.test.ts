@@ -7,7 +7,9 @@ import { blankPrice, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId
 import { engineDeal } from "./to-engine";
 import { stageFault, untilRange } from "./model";
 import { DEALS_KEY, parseDeals, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "./store";
-import { engineBase, FEE_KIND_IDS, fitsHeld, suggestions } from "./shapes";
+import { engineBase, FEE_KIND_IDS } from "./shapes";
+import { feesOffered } from "./offers/offer";
+import type { ProductFacts } from "./offers/rules";
 import { CAPACITY } from "./offers/capacity";
 
 const src: Sourced = { url: "https://www.example.org/tariff.pdf", title: "Tariff", publisher: "Bank", strength: "institution", checked: "2026-10-01", effectiveFrom: "2026-01-01" };
@@ -43,19 +45,14 @@ describe("fee shapes", () => {
     expect(engineBase("trade")).toEqual({ key: "trade" });
     expect(engineBase("fx_spread")).toEqual({ key: "fx" });
   });
-  it("suggests a conversion only for a holding in another currency, and a distribution's fee only for one that distributes", () => {
-    const ils = { place: "israel", currency: "ILS", payout: "accumulating" } as const;
-    expect(fitsHeld("fx", ils)).toBe(false);
-    expect(fitsHeld("fx", { ...ils, place: "abroad", currency: "USD" })).toBe(true);
-    expect(fitsHeld("distribution_handling", ils)).toBe(false);
-    const s = suggestions("brokerage-account", ["trade", "custody", "fx", "fixed_period", "distribution_handling", "transfer_out"], ["trade"], ils);
-    expect(s.usual).toEqual(["custody", "fixed_period", "transfer_out", "fund_management"]);
-    expect(s.rarer).toContain("fx");
-    expect(s.rarer.at(-1)).toBe("own");
-    expect(s.rarer).not.toContain("distribution_handling");
-    // a deal says nothing of what it holds (its fees change by what is bought, F-114): a fee on a distribution is offered with the rest
-    const unsaid = suggestions("brokerage-account", ["trade", "distribution_handling"], [], undefined);
-    expect(unsaid.usual).toContain("distribution_handling");
+  it("suggests the record's fees a deal lacks and the fund's own fee, then the rarer fees and a fee of the person's own", () => {
+    const facts = { id: "brokerage-account", bases: ["trade", "custody", "fx", "fixed_period", "distribution_handling", "transfer_out"], regulator: "ISA" } as unknown as ProductFacts;
+    const s = feesOffered(facts, ["trade"]);
+    expect(s.usual).toEqual(["custody", "fx", "fixed_period", "distribution_handling", "transfer_out", "fund_management"]);
+    expect(s.rarer).toEqual(["fx_spread", "corporate_event", "current_account", "own"]);
+    // a fee the data bars is not offered; a deal with no product is offered a fee of the person's own alone
+    expect(feesOffered(facts, [], { fees: ["custody"], cite: ["PF-06"] }).usual).not.toContain("custody");
+    expect(feesOffered(null, [])).toEqual({ usual: [], rarer: ["own"] });
   });
 });
 
