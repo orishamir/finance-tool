@@ -40,8 +40,8 @@ export interface OpenPart {
   words: PartWords;
   fields: PartField[];
   /**
-   * What its ✕ does: takes the part away (a form of the price makes it free); holds the price on with no end, taking the prices after it
-   * away with an undo (a later price, `until`); or nothing, for a free price, which has no ✕.
+   * What its bin does: takes the part away (a form of the price makes it free); holds the price on with no end, taking the prices after it
+   * away with an undo (a later price, `until`); or nothing, for a free price, which has no bin.
    */
   remove: "part" | "hold" | null;
   /** The price's currency chooser stands beside it (`OpenStage.chooser`). */

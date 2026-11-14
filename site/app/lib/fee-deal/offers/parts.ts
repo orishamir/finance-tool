@@ -100,7 +100,7 @@ interface PartSpec {
   figures: readonly Figure[];
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
   ask: Ask;
-  /** The toolbox group it shows in; null where the toolbox does not offer it (free, which a price's ✕ makes; a note only a template fills). */
+  /** The toolbox group it shows in; null where the toolbox does not offer it (free, which a price's bin makes; a note only a template fills). */
   tool: ToolGroupId | null;
   /** Whether the reading states it without computing it (§10.6's stated parts), where the price has it. */
   stated?: true;
@@ -264,7 +264,7 @@ export function putPart(kind: FeeKindId, p: Price, part: PartId, on: boolean, at
 }
 
 /**
- * A fee with a part added (`on`) or taken away, as the toolbox and the open case's ✕ do (`PARTS[part].apply`), on the price `at` names. A
+ * A fee with a part added (`on`) or taken away, as the toolbox and the open case's bin do (`PARTS[part].apply`), on the price `at` names. A
  * part that asks for what `at` does not give, or a price that cannot hold it, leaves the fee as it is.
  */
 export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: PartAt = {}): F {

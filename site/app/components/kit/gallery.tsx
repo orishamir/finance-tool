@@ -120,13 +120,9 @@ function Basics() {
             </Button>
           </div>
         </State>
-        <State label={'ghost: a removal that can be undone at once, muted, the danger colour only under the pointer or the focus; size="sm" an icon alone, 36 px round with a 44 px tap area'}>
+        <State label="ghost: the bin's face (RemoveButton), an icon alone, 36 px round with a 44 px tap area, muted, the danger colour only under the pointer or the focus">
           <div className="flex flex-wrap items-center gap-2">
-            <Button variant="ghost">
-              <IconBin size={18} />
-              {dealWords.panel.remove}
-            </Button>
-            <Button variant="ghost" size="sm" aria-label={dealWords.panel.remove}>
+            <Button variant="ghost" aria-label={dealWords.panel.remove}>
               <IconBin size={18} />
             </Button>
           </div>
