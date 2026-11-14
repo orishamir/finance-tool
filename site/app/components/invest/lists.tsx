@@ -77,6 +77,20 @@ function Head({ item, figure, help, itemHelp }: { item: string; figure: string; 
   );
 }
 
+/** One figure column's name in a list head of several, on the list's grid: the computed mark, and its "?" bound to the name's last word, so a
+ *  long name wraps on a phone and the mark never stands alone on a line. */
+function HeadFigure({ figure, help }: { figure: string; help: string }) {
+  const cut = figure.lastIndexOf(" ") + 1;
+  return (
+    <span className="text-end">
+      {cut > 0 && <span className="num num-computed num-sample">{figure.slice(0, cut)}</span>}
+      <span className="whitespace-nowrap">
+        <span className="num num-computed num-sample">{figure.slice(cut)}</span> <HelpMark about={figure} text={help} />
+      </span>
+    </span>
+  );
+}
+
 /** A side's heading: its title with its colour and count, what the side sets with a "?" beside it where the rows carry a small bar, and one quiet line. */
 function SideHead({ swatch, title, count, lead, what, help, line }: { swatch: string; title: string; count: number; lead: string; what: string; help?: ReactNode; line: ReactNode }) {
   return (
@@ -528,12 +542,8 @@ export function PairLists(props: ListsProps) {
             head={
               <>
                 <span>{c.pair.colFund}</span>
-                <span className="text-end whitespace-nowrap">
-                  <span className="num num-computed num-sample">{c.beforeTax.colCharges}</span> <HelpMark about={c.beforeTax.colCharges} text={c.beforeTax.colChargesHelp} />
-                </span>
-                <span className="text-end whitespace-nowrap">
-                  <span className="num num-computed num-sample">{c.beforeTax.colLeft}</span> <HelpMark about={c.beforeTax.colLeft} text={c.beforeTax.colLeftHelp} />
-                </span>
+                <HeadFigure figure={c.beforeTax.colCharges} help={c.beforeTax.colChargesHelp} />
+                <HeadFigure figure={c.beforeTax.colLeft} help={c.beforeTax.colLeftHelp} />
               </>
             }
             rows={beforeTaxRows}
