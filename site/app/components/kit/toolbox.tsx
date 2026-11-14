@@ -106,8 +106,10 @@ function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: st
  * handle's row ("סגירת העמלה"), which closes the open fee and the sheet with it. The row of names scrolls sideways where it is longer
  * than the sheet, a fade at its cut edge saying so.
  */
-export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold, onClose }: {
+export function Toolbox({ target, targetLead = copy.toolbox.target, groups, onAdd, onRemove, foot, sheet, docked, folded: heldFolded, onFold, onClose }: {
   target: ReactNode;
+  /** The words before `target`: "להוסיף למקרה:", or what the page names in its stead (one price of several, "להוסיף למחיר ממינואר 2027"). */
+  targetLead?: ReactNode;
   groups: ToolGroup[];
   onAdd: (group: string, part: string) => void;
   onRemove?: (group: string, part: string) => void;
@@ -160,7 +162,7 @@ export function Toolbox({ target, groups, onAdd, onRemove, foot, sheet, docked, 
   }, [sheet, docked]);
   const lead = (
     <p className="text-base">
-      <span className="text-muted-foreground">{copy.toolbox.target}</span> {target}
+      <span className="text-muted-foreground">{targetLead}</span> {target}
     </p>
   );
   if (sheet) {

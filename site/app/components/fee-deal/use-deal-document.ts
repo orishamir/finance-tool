@@ -86,8 +86,8 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
    * under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there. False where nothing
    * changed.
    */
-  const changeForm = (feeId: string, part: PartId, caseId: string | null): boolean => {
-    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined);
+  const changeForm = (feeId: string, part: PartId, caseId: string | null, at?: number): boolean => {
+    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at);
     if (!r) return false;
     if (r.undo) {
       keep(r.deal);

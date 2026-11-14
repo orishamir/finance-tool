@@ -3079,25 +3079,27 @@ function LadderTable({ today }: { today: string }) {
       <FigureField value={entered(tops[k]!, "nis", today, g.sampleAbout)} label={dealWords.cases.stepTop} unit="₪" sign="₪" tight onCommit={(n) => setTops((t) => t.map((x, j) => (j === k ? n : x)))} />
     </span>
   );
-  // each head on one line: "עד", the step before's top as plain words, and the step's own top in its box
-  const line = "flex flex-nowrap items-center gap-1 whitespace-nowrap";
+  // each head on one line where its column has the room, else wrapped inside it: "עד" with the step before's top as plain words, and the
+  // step's own top in its box with its sign
+  const line = "flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1";
   const heads = [
     <div className={line}>
-      <span>{dealWords.cases.upTo}</span>
+      <span className="whitespace-nowrap">{dealWords.cases.upTo}</span>
       {top(0)}
     </div>,
     <div className={line}>
-      <span>
+      <span className="whitespace-nowrap">
         <bdi dir="ltr">{fmt.number(tops[0]!)}</bdi>
         {dealWords.cases.stepBetween}
       </span>
       {top(1)}
     </div>,
     <div className={line}>
-      {dealWords.cases.over}
-      <bdi dir="ltr">{fmt.number(tops[1]!)} ₪</bdi>
+      <span className="whitespace-nowrap">{dealWords.cases.over.trim()}</span>
+      <bdi className="whitespace-nowrap">{fmt.number(tops[1]!)} ₪</bdi>
     </div>,
   ];
+
 
   return (
     <FeeBlock dot="bg-fee-custody" name={sc.custody}>

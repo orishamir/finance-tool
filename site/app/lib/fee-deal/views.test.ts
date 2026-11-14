@@ -4,6 +4,9 @@ import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import { builder } from "./rows";
+import { toolbox } from "./toolbox";
+import { feeDeal as copy } from "../../copy";
+import { fmt } from "../format";
 import { panel } from "./panel";
 import { glance } from "./glance";
 import { capLine, kindById, standingOf } from "./kinds";
@@ -753,5 +756,24 @@ describe("a fee with a price not given yet", () => {
     expect(read(later).fees).toEqual([]);
     expect(read(later).unpriced).toEqual(["fee-m"]);
     expect(read(withPrices(blank, "2027-02", typed(0.5))).unpriced).toEqual(["fee-m"]);
+  });
+});
+
+describe("the toolbox follows the price being edited", () => {
+  it("acts on the price the person is in, and its heading names it; with one price, on that one, unnamed", () => {
+    const r = read(account());
+    // custody: free until 03.2028, then 0.4% a year
+    const later = toolbox(r, "fee-custody")!;
+    expect(later.k).toBe(1);
+    expect(later.addTo.price).toBe(`${copy.cases.toolPrice.lead} ${copy.cases.toolPrice.from.replace("־", "")}${fmt.date("2028-03")}`);
+    const first = toolbox(r, "fee-custody", undefined, 0)!;
+    expect(first.k).toBe(0);
+    expect(first.addTo.price).toBe(`${copy.cases.toolPrice.lead} ${copy.cases.toolPrice.until}${fmt.date("2028-02")}`);
+    // a fee with one price names none; a price the fee does not have falls back to the last
+    expect(toolbox(r, "fee-trade", undefined, 0)!.addTo.price).toBeUndefined();
+    expect(toolbox(r, "fee-custody", undefined, 7)!.k).toBe(1);
+    // the panel's question asks on it, and a form change changes it
+    const asked = panel(r, "fee-custody", undefined, "min", 0)!.open.pending;
+    expect(asked?.k).toBe(0);
   });
 });

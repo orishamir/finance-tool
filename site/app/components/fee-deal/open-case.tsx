@@ -104,8 +104,9 @@ function PriceParts({
 /**
  * The open case's prices in edit, each with its parts, in time order: between two prices a divider with the month the later starts, typed
  * in place and kept between its neighbours (`moveChange`), and its bin, which takes the change away (`onRemoveChange`, kept for the undo);
- * after them the dashed "+ המחיר משתנה מתאריך" (`AddChange`); then a sale priced apart under its head, the same way. A part the toolbox
- * added that asks for its figure or fee asks on the price it goes on (`open.pending`).
+ * after them the dashed "+ המחיר משתנה מתאריך" (`AddChange`); then a sale priced apart under its head, the same way. A press or the
+ * focus in one of the purchase's prices makes it the one the toolbox adds to (`onEditing`). A part the toolbox added that asks for its
+ * figure or fee asks on the price it goes on (`open.pending`).
  */
 export function OpenParts({
   fee,
@@ -114,6 +115,7 @@ export function OpenParts({
   name,
   onFee,
   onRemoveChange,
+  onEditing,
   pendingHands,
 }: {
   fee: Fee;
@@ -123,6 +125,8 @@ export function OpenParts({
   name: string;
   onFee: (f: Fee) => void;
   onRemoveChange: (side: Side, k: number, caseId: string | undefined) => void;
+  /** The person is in one of the purchase's prices (its parts took the focus or a press), where there are several: the toolbox adds to it. */
+  onEditing: (k: number, caseId: string | undefined) => void;
   pendingHands: PendingHands;
 }) {
   const caseId = open.case ?? undefined;
@@ -142,7 +146,9 @@ export function OpenParts({
                 onRemove={() => onRemoveChange(s, j - 1, caseId)}
               />
             )}
-            <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={s === "buy" && open.pending?.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} />
+            <div className="flex flex-col gap-2" {...(s === "buy" && stages.length > 1 ? { onFocusCapture: () => onEditing(st.k, caseId), onPointerDownCapture: () => onEditing(st.k, caseId) } : {})}>
+              <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={s === "buy" && open.pending?.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} />
+            </div>
           </div>
         );
       })}

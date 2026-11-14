@@ -1943,6 +1943,8 @@ export const feeDeal = {
     },
     /** The toolbox: what it adds to, how, and its groups' heads. */
     addTo: "להוסיף למקרה: ",
+    /** Which of a fee's prices over time the toolbox adds to: "להוסיף למחיר ממינואר 2027", "להוסיף למחיר עד דצמבר 2026". */
+    toolPrice: { lead: "להוסיף למחיר", from: "מ־", until: "עד " },
     groups: { price: "המחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", more: "עוד על המחיר" } as Record<string, string>,
     /** A part of a price, as a toolbox card and as the open case's line; `perAction` and `of` follow the fee (`price.perAction`, `price.of`). */
     parts: {

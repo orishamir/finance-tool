@@ -169,6 +169,8 @@ export function ToolboxColumn({
     if (thing) onStopBy(thing);
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
+  // one price of several over time: the heading names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee
+  const priceLead = view.addTo.price ? `${view.addTo.price}:` : undefined;
   // filling the fee from a price list, or the undo line of a fill just made; nothing, and no line above it, where neither stands
   const foot = line || (fill && fill.houses.length > 0) ? (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
@@ -186,7 +188,7 @@ export function ToolboxColumn({
       )}
     </div>
   ) : null;
-  const box = <Toolbox key={fee.id} target={target} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
+  const box = <Toolbox key={fee.id} target={target} {...(priceLead ? { targetLead: priceLead } : {})} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
   if (sheet) return box;
   // the site's own explanation of the fee: its glossary card by the fee's name, in the deal's product's sense where the glossary gives
   // that product one of its own

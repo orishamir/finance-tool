@@ -53,6 +53,8 @@ export interface BlockActions {
   drop: ToolDrop;
   /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
   onRemoveChange: (feeId: string, side: Side, k: number, caseId: string | undefined) => void;
+  /** The person is in price `k` of the open case's prices over time (its parts took the focus or a press): the toolbox adds to it. */
+  onEditPrice: (feeId: string, caseId: string | undefined, k: number) => void;
   /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
   pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
@@ -110,7 +112,7 @@ export function FeeBlockView({
   actions: BlockActions;
   onFee: (f: Fee) => void;
 }) {
-  const { onOpen, onRemoveFee, onRemoveChange, pendingHands, onAskDone, drop } = actions;
+  const { onOpen, onRemoveFee, onRemoveChange, onEditPrice, pendingHands, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name);
   const isOpen = open.fee === fee.id;
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
@@ -119,7 +121,7 @@ export function FeeBlockView({
   const openParts = (spoken: string) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} pendingHands={pendingHands} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId) => onEditPrice(fee.id, caseId, k)} pendingHands={pendingHands} />
         {formLine}
       </>
     );

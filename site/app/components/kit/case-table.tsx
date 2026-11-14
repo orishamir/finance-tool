@@ -67,7 +67,7 @@ export function AddSlot({ add, shape, className }: { add: AddSpec; shape: "colum
  */
 function OpenHead({ label, onOpen, open, range, children }: { label: string; onOpen: () => void; open?: boolean; range?: boolean; children: ReactNode }) {
   return (
-    <div className={cx("group relative flex min-h-target items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN)}>
+    <div data-case-head="" className={cx("group relative flex min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN)}>
       <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
       <div className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto">{children}</div>
@@ -100,7 +100,7 @@ export interface CaseTableRow {
  */
 export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; ladder?: boolean }) {
   const n = columns.length;
-  // a ladder's head holds a step's two bounds and its top's box on one line
+  // a ladder's head holds a step's two bounds and its top's box, on one line where they fit, else wrapped inside the column
   const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " 7rem" : ""}`;
   return (
     <div data-case-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto p-0.5" style={{ gridTemplateColumns: template }}>
@@ -171,7 +171,7 @@ export interface GridCellView {
 /** A grid's head: its words and its shared parts; a column's (`end`) at the foot of its row, over a hairline, so the heads stand on one line. */
 function HeadWords({ head, shared, end }: { head: ReactNode; shared?: ReactNode; end?: boolean }) {
   return (
-    <div className={cx("flex min-w-0 flex-col gap-0.5 text-sm", end ? "justify-end border-b border-border pb-1.5" : "justify-center")}>
+    <div data-case-head="" className={cx("flex min-w-0 flex-col gap-0.5 text-sm", end ? "justify-end border-b border-border pb-1.5" : "justify-center")}>
       <div className="font-medium">{head}</div>
       {shared && <div className="text-muted-foreground">{shared}</div>}
     </div>

@@ -140,8 +140,8 @@ function pendingOn(fee: Fee, stages: readonly Stage[], k: number, part: PendingP
   return { part, ask, k, ...PENDING[part]({ kind: fee.kind, p: stages[k]!.price }), ...(figure ? { figure } : {}) };
 }
 
-/** The case open in place: the fee's slots for the case, its prices' parts, and the part `pending` asking on the toolbox's price. */
-export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pending: PendingPart | null = null): OpenCase {
+/** The case open in place: the fee's slots for the case, its prices' parts, and the part `pending` asking on the toolbox's price (`at`, the price being edited, else the last). */
+export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pending: PendingPart | null = null, at?: number): OpenCase {
   const priced = pricedOf(fee, caseId);
   const c = hasCases(fee) ? (priced as Case) : null;
   const stagesOf = (stages: readonly Stage[], apart: boolean): OpenStage[] =>
@@ -151,7 +151,7 @@ export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pend
     slots: c && hasCases(fee) ? fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: whenWords(fee, c.when[t]!, t, r.today), ...(b.kind === "track" ? { mine: !!c.mine } : {}) })) : [],
     buy: stagesOf(priced.stages, !!priced.sale),
     ...(priced.sale ? { sell: stagesOf(priced.sale, false) } : {}),
-    pending: pending ? pendingOn(fee, priced.stages, toolPrice(priced), pending) : null,
+    pending: pending ? pendingOn(fee, priced.stages, toolPrice(priced, at), pending) : null,
     canCopy: !!c,
     canRemove: !!c && hasCases(fee) && fee.cases.length > 1,
   };
@@ -160,14 +160,15 @@ export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pend
 /**
  * One fee open in place, from the deal read once (`readDealFor`); null where the deal has no fee with that id. For a fee with cases, the
  * case open is `caseId`, else its first, which the edits edit where they name no case. Every price is there as typed, the passed ones too:
- * the open case edits them all. `pending`: a part the toolbox added that asks for what it needs in the case open.
+ * the open case edits them all. `pending`: a part the toolbox added that asks for what it needs in the case open, on the price being edited
+ * (`editing`, its place among the purchase's prices; the last where none is).
  */
-export function panel(r: DealRead, feeId: string, caseId?: string, pending: PendingPart | null = null): Panel | null {
+export function panel(r: DealRead, feeId: string, caseId?: string, pending: PendingPart | null = null, editing?: number): Panel | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
   // a fee not read (prices out of order, not given, no case for the picks) is named on its own
   const at = r.fees.findIndex((x) => feeOf(x) === fee.id && (!hasCases(fee) || x.read?.case === (priced as Case).id));
-  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown, pending) };
+  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown, pending, editing) };
 }

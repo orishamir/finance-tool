@@ -107,11 +107,11 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
  * what carries over carries (`withForm`), and the price as it stood is kept for the undo where it held anything given, typed or filled;
  * a price still blank, as the builder added it, changes silently. Null where the part sets no form, or the price is in it already.
  */
-export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string): MaybeUndoable | null {
+export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string, at?: number): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   const form = PARTS[part].form;
   if (!fee || !form) return null;
-  const k = toolPrice(pricedOf(fee, caseId));
+  const k = toolPrice(pricedOf(fee, caseId), at);
   const was = pricesOn(fee, "buy", caseId)[k]!.price;
   if (was.form === form) return null;
   const changed = setPart(fee, part, true, { k, ...(caseId ? { caseId } : {}) });

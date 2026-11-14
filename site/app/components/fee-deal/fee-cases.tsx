@@ -381,9 +381,10 @@ function ThingSwitch({ fee, values, chosen, words, mine, onChange }: { fee: Case
 }
 
 /**
- * A ladder's step as its head says it, on one line: "עד {top}", "{bottom} עד {top}", or "מעל {bottom}". The top is a box typed in place,
- * kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that top moves it too
- * and the steps keep no gap or overlap.
+ * A ladder's step as its head says it: "עד {top}", "{bottom} עד {top}", or "מעל {bottom}", on one line where its column has the room, else
+ * wrapped inside it, each number held to its currency's sign and "עד" to the number before it, never past the column. The top is a box
+ * typed in place, kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that
+ * top moves it too and the steps keep no gap or overlap.
  */
 function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; onFee: (f: Fee) => void }) {
   const b = fee.by[t]!;
@@ -392,24 +393,26 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
   const sign = rangeSign(b.unit);
   if (!bounds.to)
     return (
-      <div className="flex flex-nowrap items-center whitespace-nowrap">
-        {c.over}
-        <bdi dir="ltr">{numText(bounds.from!)}</bdi>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-1">
+        <span className="whitespace-nowrap">{c.over.trim()}</span>
+        <bdi className="whitespace-nowrap">{numText(bounds.from!)}</bdi>
       </div>
     );
   const next = b.tops[bounds.step + 1]?.v ?? null;
   const low = (bounds.from?.value as number | undefined) ?? 0;
   return (
-    <div className="flex flex-nowrap items-center gap-1 whitespace-nowrap">
-      {bounds.from ? (
-        <span>
-          <bdi dir="ltr">{fmt.number(low)}</bdi>
-          {c.stepBetween}
-        </span>
-      ) : (
-        <span>{c.upTo}</span>
-      )}
-      <span data-lift="" className="inline-block">
+    <div className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">
+      <span className="whitespace-nowrap">
+        {bounds.from ? (
+          <>
+            <bdi dir="ltr">{fmt.number(low)}</bdi>
+            {c.stepBetween}
+          </>
+        ) : (
+          c.upTo
+        )}
+      </span>
+      <span data-lift="" className="inline-flex items-center gap-1 whitespace-nowrap">
         <FigureField
           value={bounds.to}
           label={c.stepTop}
@@ -419,8 +422,8 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
           validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
           onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
         />
+        <span>{sign}</span>
       </span>
-      <span>{sign}</span>
     </div>
   );
 }
