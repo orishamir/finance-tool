@@ -44,8 +44,11 @@ export function figureFrom(value: SiteValue | null): ReactNode {
   return CMA_DATA.test(value.source.url) ? f.cma : undefined;
 }
 
-/** The id of the box of a part's first figure, which the page gives the focus to (a fee just added, a part just added). */
+/** The id of a part's box, or of the part itself (`partPlaceId`), in a fee, which the page gives the focus to (a fee just added, a part just added). */
 export const partFieldId = (feeId: string, part: string) => `part-${feeId}-${part}`;
+
+/** A part's place in a fee's open case: the side and the price it stands on, and the part. Its boxes add their figure to it. */
+export const partPlaceId = (side: Side, k: number, part: string) => `${side}${k}-${part}`;
 
 /** A field's sign as its box draws it: a percent, or a currency's sign. */
 export const signText = (sign: "pct" | string): string => (sign === "pct" ? "%" : sign);

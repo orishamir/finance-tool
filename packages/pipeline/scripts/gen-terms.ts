@@ -11,6 +11,10 @@
 // A research row that carries an `id` keeps it, so a record's file name does not change when another row with the same name
 // is added or removed; a new row gets the id below. The row's `source.publisher` and `seen_by` are written as they are.
 //
+// GLOSSARY_OUT=<dir> writes data/terms/ and data/dimensions/ under <dir> instead of the repository, and reads section 2
+// from <dir>/docs/glossary.md (write it there with `gen_glossary.py <dir>/docs/glossary.md`). The test
+// generated-glossary.test.ts runs all three that way and fails when the committed files differ from what they write.
+//
 // Mapping of the research `where` values:
 //  - `guide:<page>[:tax|:protection|:regulator]` is read as `guide:<page>`. A page name that is a wrapper id stays;
 //    older page names map to wrapper ids (PAGE_WRAPPERS below). `guide:index-sp500`, `guide:index-ta125` and
@@ -150,8 +154,9 @@ function publisherOf(url: string): string | null {
 }
 
 // ------------------------------------------------------------------ write terms
-const termsOut = join(root, "data/terms");
-const dimsOut = join(root, "data/dimensions");
+const outRoot = process.env.GLOSSARY_OUT ? resolve(process.env.GLOSSARY_OUT) : root;
+const termsOut = join(outRoot, "data/terms");
+const dimsOut = join(outRoot, "data/dimensions");
 mkdirSync(termsOut, { recursive: true });
 for (const f of readdirSync(termsOut)) if (f.endsWith(".json")) rmSync(join(termsOut, f));
 rmSync(dimsOut, { recursive: true, force: true });
@@ -236,7 +241,7 @@ for (const r of rows) {
 }
 
 // ------------------------------------------------------------------ dimensions
-const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+const doc = readFileSync(join(outRoot, "docs/glossary.md"), "utf8");
 const section = doc.slice(doc.indexOf("## 2. The checklist"), doc.indexOf("## 3. Not covered yet"));
 const dimRows = [...section.matchAll(/^\| `([a-z-]+)` \| \*\*(.+?)\*\* \| (.+?) \|$/gm)].map((m) => ({ id: m[1]!, he: m[2]!, one: m[3]!.trim() }));
 const rulesDir = join(root, "data/rules");

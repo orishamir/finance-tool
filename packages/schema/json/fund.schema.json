@@ -263,6 +263,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -474,6 +475,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -675,6 +677,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -876,6 +879,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -1077,6 +1081,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -1278,6 +1283,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -1479,6 +1485,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -1680,6 +1687,7 @@
                       "enum": [
                         "fixed in law",
                         "fixed in regulation",
+                        "fixed in document",
                         "cpi-linked 1 jan",
                         "average-wage-linked",
                         "provider-set",
@@ -2193,6 +2201,7 @@
                   "enum": [
                     "fixed in law",
                     "fixed in regulation",
+                    "fixed in document",
                     "cpi-linked 1 jan",
                     "average-wage-linked",
                     "provider-set",
@@ -2507,6 +2516,7 @@
               "enum": [
                 "fixed in law",
                 "fixed in regulation",
+                "fixed in document",
                 "cpi-linked 1 jan",
                 "average-wage-linked",
                 "provider-set",

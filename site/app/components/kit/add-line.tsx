@@ -23,7 +23,8 @@ export function chipAfterAdd(at: number | null, count: number, focusElsewhere: b
 
 /**
  * The chips are buttons that add their thing at once (the page then opens it). The usual ones come first in full ink, the rarer ones after
- * them in muted ink: the order and the ink set them apart, never colour alone. Each chip is 32 px tall with a 44 px tap area; rows of
+ * them in muted ink: the order and the ink set them apart, never colour alone. Each chip is 32 px tall with a 44 px tap area, which the
+ * frame's 6 px above and below just holds; rows of
  * chips stand 12 px apart, so two areas never meet. A chip that added its thing leaves the line; the focus goes to the chip now in its
  * place (or the last one), so the keyboard stays in the line.
  */
@@ -39,7 +40,7 @@ export function AddLine({ lead, items, onAdd, className }: { lead: ReactNode; it
   }, [items]);
   if (items.length === 0) return null;
   return (
-    <div ref={line} className={cx("flex flex-wrap items-center gap-x-2 gap-y-3 rounded-lg border border-dashed border-input px-3 py-3", className)}>
+    <div ref={line} className={cx("flex flex-wrap items-center gap-x-2 gap-y-3 rounded-lg border border-dashed border-input px-3 py-1.5", className)}>
       <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
         <Plus size={16} strokeWidth={1.75} aria-hidden className="text-primary" />
         {lead}

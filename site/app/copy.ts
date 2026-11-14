@@ -1818,9 +1818,7 @@ export const feeDeal = {
     until: "עד",
     /** The last price, which holds on with no end. */
     noEnd: "מכאן והלאה",
-    /** The line a later price just taken away leaves in its place. */
-    stageRemoved: "המחיר הוסר.",
-    /** The line the prices after one leave, taken away by "כל הזמן" on it. */
+    /** The line the prices after one leave, taken away by the bin of its month. */
     laterRemoved: "המחירים שאחריו הוסרו.",
     salePrices: "המחיר במכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
@@ -2748,8 +2746,9 @@ export const sourceBlock = {
 
 /**
  * Hebrew for the `update_rule` words the rule records carry (shown beside a figure with its tax year). "fixed in regulation" covers every
- * binding text below a law that the records cite with it (regulations, a regulator's circulars and directives, the exchange's rules), so
- * its word names none of them in particular.
+ * binding text below a law that the records cite with it (regulations, a regulator's circulars and directives, the exchange's rules and index rules), so
+ * its word names none of them in particular. "fixed in document" is a figure that the document the figure cites fixes without binding
+ * anyone at large (a tax ruling, a report, an index provider's own methodology): it says the figure is as that document, shown in the source line, has it.
  */
 export const updateRules = {
   "fixed in law": "קבוע בחוק",
@@ -2757,6 +2756,7 @@ export const updateRules = {
   "average-wage-linked": "מתעדכן לפי השכר הממוצע",
   "provider-set": "החברה קובעת",
   "fixed in regulation": "קבוע בכללים",
+  "fixed in document": "קבוע במסמך המקור",
   market: "לפי השוק",
   founder: "פרמטר של האתר",
   frozen: "מוקפא בשנים {years}",
@@ -4649,12 +4649,14 @@ export const dealCases = {
   mine: "שלכם",
   copyCase: "להעתיק את המקרה",
   removeCase: "להסיר את המקרה",
-  /** The ✕ of a part in an open case, spoken where the page gives no name of its own. */
+  /** The bin of a part in an open case, spoken where the page gives no name of its own. */
   removePart: "להסיר את החלק",
   toolbox: {
     /** Before the open case's condition in words: "להוסיף למקרה: בחו״ל, בארה״ב · מסלול 1". */
     target: "להוסיף למקרה:",
     hint: "מקישים על חלק כדי להוסיף אותו.",
+    /** The hint where a part can also be dragged (a computer's fine pointer). */
+    hintDrag: "מקישים על חלק, או גוררים אותו אל העמלה, כדי להוסיף אותו.",
     /** Said, not shown, of a part the case already has: its ✓ shows it. */
     used: "כבר במקרה",
     /** The phone's row of groups, spoken. */
@@ -4875,9 +4877,11 @@ export const kit = {
       When: "תאריך בתוך טקסט: יום משמאל לימין, וחודש שמסמך מדפיס לבד במילים, בלי יום שהאתר המציא. המילים שלפניו נשארות איתו בשורה, ו״מ־״ או ״ב־״ לפני שם של חודש נכתבים צמודים: ״מנובמבר 2025״.",
       TariffDate: "שורת התאריך של תעריפון: מה שהמסמך עצמו מדפיס, בצבע רגיל. תאריך אחד לכל המסמך, תאריך של החלק שהאתר קורא, גרסה, תאריך שהודפס בטעות כמו שהוא, או שאין תאריך מודפס ומתי האתר בדק. מתחת לכותרת שכבר אומרת ״תעריפון״ המילה לא חוזרת.",
       ConditionBand: "עמלה שהמחיר שלה משתנה לפי דבר אחד עד שלושה (מה קונים, הערוץ, המסלול, גודל הפעולה): פס כחול אחד, בראשו ״המחיר משתנה לפי״ והדברים, ומתחתיו שורה לכל מקרה. התנאי במילים בפס, בעמודה קבועה במחשב ומעל החלקים בטלפון, ״בכל …״ חלש יותר, ״שלכם״ ליד המסלול של האדם. מקרים שאינם שלו מקופלים לשורה אחת. מקרה אחד פתוח במקומו: מסגרת, ״נבחר״, הערכים שלו כמקומות לבחירה והחלקים עם התיבות שלהם.",
-      PartChip: "חלק של מחיר: מחיר, מינימום או מקסימום, קשר לעמלה אחרת, או הערה. במנוחה דק, והסמל והמילה הראשונה בצבע של הסוג; המספרים במצב שלהם, כמו בכל מקום. PartEdit: אותו חלק בעריכה, על כל הרוחב, עם התיבות והבחירות שלו ו־✕ להסרה. סדר החלקים קבוע.",
+      PartChip: "חלק של מחיר: מחיר, מינימום או מקסימום, קשר לעמלה אחרת, או הערה. במנוחה דק, והסמל והמילה הראשונה בצבע של הסוג; המספרים במצב שלהם, כמו בכל מקום. PartEdit: אותו חלק בעריכה, על כל הרוחב, עם התיבות והבחירות שלו ופח להסרה. סדר החלקים קבוע.",
       SlimFee: "עמלה שיש לה מחיר אחד: שורה אחת, נקודת הצבע שלה, השם והחלקים. הקשה פותחת אותה במקומה, כמו מקרה. FeeBlock: עמלה שהמחיר שלה משתנה, השם ומתחתיו הפס.",
-      Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי סוג, כל קבוצה עם הצבע והסמל שלה. הקשה על חלק מוסיפה אותו; חלק שכבר במקרה מסומן ב־✓ ומעומעם, ולא נעלם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים.",
+      RemoveButton: "הפקד שמוריד משהו: פח, הסמל לבדו בעיגול, המילים שלו נאמרות ומופיעות כשמצביעים עליו. בטלפון 44 פיקסלים מכל צד. ✕ רק סוגר (חלונית, גיליון, תפריט); מה שמוריד חלק, מקרה, דבר שהמחיר משתנה לפיו או עמלה הוא תמיד הפח.",
+      DropZone: "גרירה של שבב אל מקום שמקבל אותו, במחשב בלבד: שבב שהקשה עליו כבר עושה משהו נגרר גם אל מקום בעמוד, והשחרור שם עושה מה שההקשה עושה, באותו מקום. בזמן הגרירה כל מקום שמקבל את השבב מוקף בצבע הפעולה, ומקום שלא יקבל אותו לא מראה כלום. בטלפון נשארת ההקשה.",
+      Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי סוג, כל קבוצה עם הצבע והסמל שלה. הקשה על חלק מוסיפה אותו, ובמחשב אפשר גם לגרור אותו אל המקום שלו; חלק שכבר במקרה מסומן ב־✓ ומעומעם, ולא נעלם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים.",
       AskValues: "השאלה שעולה פעם אחת כשמוסיפים דבר שהמחיר משתנה לפיו: אילו ערכים יש בתעריפון, כבחירות שמסמנים, ״אחר״ בשם משלכם, משפט שאומר כמה מקרים יהיו, ו״להוסיף״ או ״ביטול״.",
       ValueMenus: "מה שנפתח כשמקישים על מקום של ערך במקרה הפתוח. TickMenu: רשימה לסימון, אפשר כמה, ושורה אחרונה לערך בשם משלכם. TrackMenu: שם המסלול כמו שהוא כתוב, ומתג ״זה המסלול שלי״. RangeMenu: ״עד״ או ״מעל״, המספר והיחידה, ושורה שאומרת מה המקרה שלפניו. ValueMenuSheet: הכרטיס שמחזיק אותם, ליד המקום במחשב ומלמטה בטלפון. ThingMenu: מה שנפתח כשמקישים על דבר בראש הפס בזמן שהעמלה פתוחה: הערכים שלו במקרים, ״להפסיק להבחין לפי …״, ושורה שאומרת מה יקרה למקרים.",
       ReadForBand: "השורה הראשונה של קריאת העסקה, בכחול של הפס: בשביל איזה מקרה קוראים, בחירה אחת לכל דבר שהעמלות משתנות לפיו, ושורה מתחת. עסקה בלי פס לא מראה אותה.",

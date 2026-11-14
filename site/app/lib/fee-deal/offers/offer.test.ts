@@ -150,7 +150,11 @@ describe("a ban the law sets", () => {
 describe("the product picker", () => {
   it("offers every product with a fee the page can price, so not a bank deposit, a savings plan or a bank child-savings plan (BANK-06, BANK-16, BANK-28)", () => {
     expect(data.kinds.filter((k) => !productOffered(k)).map((k) => k.id).sort()).toEqual(["bank-deposit", "child-savings-bank", "savings-plan"]);
-    expect(data.kinds.filter(productOffered).length).toBe(data.kinds.length - 3);
+    expect(data.kinds.filter((k) => productOffered(k)).length).toBe(data.kinds.length - 3);
+    // a product whose every fee the data bars is not offered either
+    const kgl = data.kinds.find((k) => k.id === "kupat-gemel-lehashkaa")!;
+    expect(productOffered(kgl, { fees: FEE_KIND_IDS, cite: ["PF-06"] })).toBe(false);
+    expect(productOffered(kgl, { fees: ["deposit"], cite: ["PF-06"] })).toBe(true);
   });
   it("still opens and reads a saved deal of one", () => {
     const deal: FeeDeal = { ...newDeal("bank-deposit"), id: "deal-b", fees: [{ id: "fee-exit", kind: "exit", stages: [{ price: { form: "action", rate: typed(1) } }] }] };

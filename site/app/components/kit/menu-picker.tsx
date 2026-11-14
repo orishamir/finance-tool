@@ -11,10 +11,11 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { IconCheck, IconChevronDown } from "../icons";
 import { Button } from "./button";
 import { RenameInput, type ChipListWords } from "./chip-list";
+import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 
 export interface MenuItem {
@@ -236,20 +237,15 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
                     </Button>
                   )}
                   {onDelete && (
-                    <Button
-                      variant="icon"
-                      className="size-9 tap-area rounded-full shrink-0"
-                      aria-label={`${words?.remove ?? ""}: ${item.label}`}
-                      title={words?.remove}
-                      aria-expanded={deleteAsks ? confirm === item.id : undefined}
-                      onClick={() => {
+                    <RemoveButton
+                      label={`${words?.remove ?? ""}: ${item.label}`}
+                      {...(deleteAsks ? { expanded: confirm === item.id } : {})}
+                      onRemove={() => {
                         if (deleteAsks) return setConfirm((c) => (c === item.id ? null : item.id));
                         close();
                         onDelete(item.id);
                       }}
-                    >
-                      <Trash2 size={16} {...ic} />
-                    </Button>
+                    />
                   )}
                 </>
               )}
