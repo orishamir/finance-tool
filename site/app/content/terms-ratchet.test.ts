@@ -374,7 +374,7 @@ const AMBIGUOUS: Record<string, string> = {
 };
 /** Phrases on a page where a row's spelling carries another sense, blanked before the scan, each checked to be on its page. */
 const OTHER_SENSE: Record<string, readonly string[]> = {
-  "guide/mutual-funds": ["הקרן מחקה מדד" /* "the fund tracks an index": a verb, not the row */, "מחיר קנייה ומחיר מכירה" /* a market maker's quotes */],
+  "guide/mutual-funds": ["הקרן מחקה מדד" /* "the fund tracks an index": a verb, not the row */, "מחיר קנייה ומחיר מכירה" /* a market maker's quotes */, "״דמי ניהול פיקדון״" /* the houses' price-list line, quoted by its printed name */],
   "guide/money-market-fund-renewable": ["המרווח בין מועדים" /* the interval between dates, not a rate's spread */],
   "guide/money-market-fund-daily": ["מהר הכסף" /* "how fast the money" (comes back), in the visual's caption, not the service הר הכסף */],
   "exposure/index-sp500": ["תשואה כוללת נטו" /* the name of one version of the index, beside its gross twin */],

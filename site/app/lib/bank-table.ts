@@ -81,6 +81,25 @@ export function sharedBands(rows: readonly TableRow[]): AmountBand[] | null {
   return rows[0]!.lines.map((p) => ({ key: rangeKey(p), min: p.amountMin, max: p.amountMax, edges: p.amountEdges }));
 }
 
+/**
+ * Whether one band's range runs straight into the next's, every whole shekel in exactly one of them: the next starts one shekel above
+ * this one's top with both bounds in, or at this one's top where one of the two leaves that amount out (F-108), the top "(לא כולל)" or
+ * the next minimum "מעל".
+ */
+function meets(band: AmountBand, next: AmountBand): boolean {
+  const top = numberOf(band.max);
+  const start = numberOf(next.min);
+  if (top === null || start === null) return false;
+  const topOut = band.edges.max_edge === "excluded";
+  const startOut = next.edges.min_edge === "excluded";
+  if (start === top + 1) return !topOut && !startOut;
+  return start === top && topOut !== startOut;
+}
+
+/** Whether the bands follow one another with no gap and the last runs on with no top: then each is said by where it starts ("מ־X", "מעל X"). */
+export const saidByStart = (bands: readonly AmountBand[]): boolean =>
+  bands.every((b, i) => (i === bands.length - 1 ? numberOf(b.max) === null : meets(b, bands[i + 1]!)));
+
 /** The record of a row at an amount range, if the row has it. */
 export const lineAt = (row: TableRow, band: string): ProductRowData | null => row.lines.find((p) => rangeKey(p) === band) ?? null;
 

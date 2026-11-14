@@ -2511,7 +2511,8 @@ export const r4catalogue = {
   },
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
-  notAnOffer: "הריבית היא מה שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
+  /** BANK-13 and BANK-14: a rate published under directive 447 is the minimum the bank pays for the deposit type. */
+  notAnOffer: "הריבית היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם.",
   rowLinks: { whatIs: "מה זה" },
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
@@ -3445,8 +3446,12 @@ export const invest = {
   sub: "בוחרים חשבון ניירות ערך וקרן, ורואים כמה יישאר לכם. לפי התעריפון של כל בנק ובית השקעות ולפי הדוח של כל קרן.",
   loading: "טוען את התעריפונים והקרנות…",
   failed: "האתר לא הצליח לטעון את התעריפונים והקרנות. נסו לרענן את העמוד.",
-  /** In place of the pair, its receipt and the lists, when the plan puts in nothing: no account or fund is crowned on 0 ₪. */
-  empty: { title: "אין מה להשקיע", body: "סכום היום וההפקדה החודשית הם 0, ולכן אין מה להשוות. הזינו סכום כדי לראות כמה יישאר לכם בכל חשבון ובכל קרן." },
+  /**
+   * In place of the pair, its receipt and the lists, when the plan puts in nothing: no account or fund is crowned on 0 ₪. The knobs beside
+   * it already show the two zeros, so the line says what the comparison needs. `action` is followed by the amount knob's own label
+   * (`plan.knobs.amount`), and moves the focus to that knob's box.
+   */
+  empty: { title: "אין מה להשקיע", body: "כדי להשוות חשבונות וקרנות צריך סכום להשקיע, היום או בכל חודש.", action: "להזין" },
   breadcrumbHome: "ראשי",
 
   chips: {
@@ -3895,14 +3900,14 @@ export const invest = {
       /** At the head of the assumptions: what the return is (A-01), what the results are, and A-04 "constant real" (F-05), since the
        *  results hold only with the deposit rising with prices. */
       assumptions: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס. מה שנשאר מחושב אחרי כל אלה, בכסף של היום. ההפקדה החודשית עולה עם האינפלציה, כך שבכסף של היום היא נשארת קבועה.",
-      /** Under them: the yearly income the runs assume (P-05 `annual_income`, or the one entered), which the surtax is tested on with the
-       *  real gain in the year of the sale (F-43, TXG-09, TXG-10), and that the receipt's capital gains tax line then holds it */
+      /** Under them: the yearly income the runs assume (P-05 `annual_income`, or the one entered), and that the receipt's capital gains tax
+       *  line holds the surtax too when that income with the real gain passes its threshold in the year of the sale (F-43, TXG-09, TXG-10) */
       income: {
         before: "החישוב מניח הכנסה של",
         after: "בשנה, מלבד הרווח.",
-        surtax: "בשנת המכירה, אם ההכנסה יחד עם הרווח עוברת את הסף שמעליו משלמים",
+        surtax: "השורה ״מס רווחי הון״ כוללת גם",
         term: "מס נוסף",
-        end: ", השורה ״מס רווחי הון״ כוללת גם אותו.",
+        end: ", אם בשנת המכירה ההכנסה יחד עם הרווח עוברת את הסף שלו.",
       },
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
@@ -4752,6 +4757,7 @@ export const kit = {
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
       Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info, ו־upcoming (כללים שעומדים להשתנות: הצבעים של info עם לוח שנה, והתאריך בתגית ליד הכותרת; מספר בתוכה בלי סימן \"נכנס לתוקף\"). לכולן אותה צורה: מסגרת דקה וקצה של 4 פיקסלים בצד שבו הטקסט מתחיל, בצבע של הסוג; הרקע המלא מבדיל אזהרה מהערה.",
+      EmptyState: "במקום התוצאה של בלוק, כשהמספרים של הקורא לא משאירים מה להראות: אייקון, כותרת של שורה אחת, הסבר של שורה אחת ופעולה אחת שמובילה למה שימלא את הבלוק. ההסבר אומר מה הבלוק צריך, ולא חוזר על מה שהשדות לידו מראים.",
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
       PageHead: "ראש העמוד: הכותרת, שורת הפתיחה מתחתיה, ומה שעומד מעליהן או לידן: לשוניות, הדרך חזרה, שדה. בכל עמוד אותו ריווח מלמעלה ואותם גדלים לכותרת ולשורת הפתיחה.",
       Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form, ו־kick לשם קטן בצבע ההדגשה מעל עמודה של כלי, שלחלקים שלה כותרות משלהם.",

@@ -8,6 +8,7 @@ export { HoldTallest } from "./hold-tallest";
 export { Button, LinkButton } from "./button";
 export { StepTag, Tag } from "./tag";
 export { Callout, useAheadSaid } from "./callout";
+export { EmptyState } from "./empty-state";
 export { Card, Section, type CardPad, type SectionGap, type SectionLevel } from "./card";
 export { PageHead } from "./page-head";
 export { Disclosure, FoldGroup, type DisclosureProps, type FoldGroupProps } from "./disclosure";

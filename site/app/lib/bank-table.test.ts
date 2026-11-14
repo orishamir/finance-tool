@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ProductRowData } from "../components/decoder/institutions/types";
 import type { SiteValue } from "./value";
-import { kindGroups, rangeLinkage, rateRange, sharedBands, sharedFacts, tableRows, taxPerLinkage, termRange } from "./bank-table";
+import { kindGroups, rangeLinkage, rateRange, saidByStart, sharedBands, sharedFacts, tableRows, taxPerLinkage, termRange } from "./bank-table";
 
 const v = (value: number | string | null, unit = "ils"): SiteValue => ({ value, unit, source: { url: "https://example.org", title: "t", publisher: "p", strength: "institution" }, checked: "2026-11-09", state: "sourced" }) as unknown as SiteValue;
 
@@ -69,6 +69,27 @@ describe("sharedBands", () => {
   });
   it("is null when the rows' ranges differ", () => {
     expect(sharedBands(tableRows([rec("a", { max: 99999 }), rec("b", { min: 100000 }), rec("c", { months: 3 })]))).toBeNull();
+  });
+});
+
+describe("saidByStart", () => {
+  const bands = (...recs: ProductRowData[]) => sharedBands(tableRows(recs))!;
+  it("says ranges by where each starts when the next starts a shekel above the top and the last has no top", () => {
+    expect(saidByStart(bands(rec("a", { max: 99999 }), rec("b", { min: 100000 })))).toBe(true);
+    expect(saidByStart(bands(rec("a", { max: 99999 }), rec("b", { min: 100000, max: 200000 })))).toBe(false);
+  });
+  it("also where the ranges meet at a top one of the two leaves out (F-108)", () => {
+    // "עד 100,000 ₪ (לא כולל)", then "מ־100,000 ₪"
+    expect(saidByStart(bands(rec("a", { max: 100000, amountEdges: { max_edge: "excluded" } }), rec("b", { min: 100000 })))).toBe(true);
+    // "עד 100,000 ₪", then "מעל 100,000 ₪"
+    expect(saidByStart(bands(rec("a", { max: 100000 }), rec("b", { min: 100000, amountEdges: { min_edge: "excluded" } })))).toBe(true);
+  });
+  it("not where the shared top is in both ranges, in neither, or unknown", () => {
+    expect(saidByStart(bands(rec("a", { max: 100000 }), rec("b", { min: 100000 })))).toBe(false);
+    expect(saidByStart(bands(rec("a", { max: 100000, amountEdges: { max_edge: "excluded" } }), rec("b", { min: 100000, amountEdges: { min_edge: "excluded" } })))).toBe(false);
+    expect(saidByStart(bands(rec("a", { max: 100000, amountEdges: { max_edge: "unknown" } }), rec("b", { min: 100000 })))).toBe(false);
+    // a shekel apart, with a bound left out: the amount between is in neither
+    expect(saidByStart(bands(rec("a", { max: 99999, amountEdges: { max_edge: "excluded" } }), rec("b", { min: 100000 })))).toBe(false);
   });
 });
 

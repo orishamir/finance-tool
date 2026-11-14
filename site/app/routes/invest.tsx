@@ -8,7 +8,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { brands, invest as c } from "../copy";
 import { pageMeta } from "../lib/page-meta";
-import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
+import { OtherAssumptions, PLAN_AMOUNT_FIELD, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
@@ -20,7 +20,8 @@ import { LabelSheetHost } from "../components/kit";
 import { returnHelpOf } from "../components/invest/foot";
 import { BeforeDeciding } from "../components/invest/before";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
-import { Callout, Card, useSwapGlide } from "../components/kit";
+import { Callout, EmptyState, useSwapGlide } from "../components/kit";
+import { IconCoins } from "../components/icons";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { Num, RulesLine, Term } from "../components/provenance";
@@ -362,10 +363,13 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
                 </div>
                 <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
                   {nothing ? (
-                    <Card pad="roomy" className="flex flex-col gap-2">
-                      <h3 className="font-semibold">{c.empty.title}</h3>
-                      <p className="text-sm text-muted-foreground max-w-measure">{c.empty.body}</p>
-                    </Card>
+                    <EmptyState
+                      icon={<IconCoins />}
+                      title={c.empty.title}
+                      action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_FIELD)?.focus() }}
+                    >
+                      {c.empty.body}
+                    </EmptyState>
                   ) : pick && shown && shownView ? (
                     <>
                       {railed && receipt}
