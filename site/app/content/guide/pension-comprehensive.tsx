@@ -5,7 +5,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, When } from "../../components/kit";
-import { disabilityRetirement, ExemptShare } from "./pension-parts";
+import { disabilityRetirement, ExemptShare, LumpSums } from "./pension-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -55,10 +55,8 @@ export const content: GuideContent = {
         קצבה אפשר לקבל מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל הפטור ממס מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל מדורג לפי שנת הלידה. {disabilityRetirement}
       </p>
       <ExemptShare figure={figure} />
-      <p className="max-w-measure">
-        משיכה שלא כקצבה אפשרית רק במקרים מסוימים. החוק קורא לה <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" end="." /> יש חריגים, כמו הוצאות רפואיות גבוהות.
-      </p>
-      <RulesLine ids={["TXP-14", "TXP-15", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
+      <LumpSums figure={figure} />
+      <RulesLine ids={["TXP-14", "TXP-15", "PEN-31", "TXP-19", "TXP-17", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
     </>
     );
   },

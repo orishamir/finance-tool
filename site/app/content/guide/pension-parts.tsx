@@ -1,9 +1,9 @@
 // Prose the guides for the comprehensive and the general pension fund and the provident fund for annuity share: the age-60
-// annuity exemption (TXP-14), its share as it stands this tax year and the shares the law already sets for the years after, and
-// who counts as having reached retirement age for it.
+// annuity exemption (TXP-14), its share as it stands this tax year and the shares the law already sets for the years after,
+// who counts as having reached retirement age for it, and which lump sums the law allows and how each is taxed.
 import { Fragment } from "react";
 import type { ContentProps } from "./types";
-import { Num, Term } from "../../components/provenance";
+import { Num, RuleRef, Term } from "../../components/provenance";
 
 /**
  * "The exemption is an amount": TXP-14's exempt share of the qualifying-annuity ceiling this tax year, then each later year's share the
@@ -39,3 +39,24 @@ export function ExemptShare({ figure }: ContentProps) {
 
 /** Who counts as having reached retirement age for the exemption besides the age itself (TXP-14, the Ordinance's s.1 definition). */
 export const disabilityRetirement = "מי שפרש בגלל נכות קבועה בדרגה גבוהה נחשב כמי שהגיע לגיל הפרישה.";
+
+/**
+ * Which lump sums the law allows from a pension fund or a provident fund for annuity and how each is taxed, then the one it does not:
+ * severance money when the job with that employer has ended (PEN-31), a retirement grant exempt per year of work (TXP-19) that lowers
+ * the later annuity exemption (TXP-15); a commutation (TXP-17) and the other cases of PEN-30; and only a payment against s.23 is
+ * "משיכה שלא כדין" (TXP-18). Each page lists these rules in the block's rules line, where the build finds them.
+ */
+export function LumpSums({ figure }: ContentProps) {
+  const perYear = figure("TXP-19", "exempt_grant_per_year_of_work");
+  const rate = figure("TXP-18", "minimum_rate");
+  return (
+    <>
+      <p className="max-w-measure">
+        בסכום אחד, ולא כקצבה, אפשר למשוך רק במקרים שהחוק מתיר. העיקרי שבהם: כספי הפיצויים שהמעסיק הפקיד, כשהעבודה אצלו נגמרה והחוק מזכה אתכם בהם <RuleRef id="PEN-31" end="." /> הם ממוסים כמענק פרישה: פטורים ממס עד משכורת חודשית אחרונה לכל שנת עבודה, ולא יותר מ־{perYear ? <Num value={perYear} /> : null} לשנת עבודה <RuleRef id="TXP-19" end="." /> מי שמושך אותם בפטור מקטין את הפטור על הקצבה בהמשך <RuleRef id="TXP-15" end="." /> גם היוון של הקצבה מותר, בתנאים שבחוק <RuleRef id="TXP-17" end="." />
+      </p>
+      <p className="max-w-measure">
+        משיכה שהחוק לא מתיר היא <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין {rate ? <Num value={rate} /> : null} והשיעור השולי <RuleRef id="TXP-18" end="." /> יש חריגים, כמו הוצאות רפואיות גבוהות.
+      </p>
+    </>
+  );
+}
