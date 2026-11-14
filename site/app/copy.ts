@@ -2141,7 +2141,7 @@ export const feeDeal = {
       noCap: { one: "לעמלה שבעסקה אין תקרה בחוק", several: "לעמלות שבעסקה אין תקרה בחוק" },
       notJudged: "אף מחיר בעסקה לא נבדק מול תקרה",
       /** A fee the law bans here, where no price is above or at its cap. */
-      banned: { one: "עמלה אחת בעסקה אסורה בחוק בבנק", several: "יש בעסקה עמלות שאסורות בחוק בבנק" },
+      banned: { one: "עמלה אחת בעסקה בנק לא גובה, לפי כללי הבנקאות", several: "יש בעסקה עמלות שבנק לא גובה, לפי כללי הבנקאות" },
       /** Before a price after the first: the month it starts. */
       from: "מ־",
     },

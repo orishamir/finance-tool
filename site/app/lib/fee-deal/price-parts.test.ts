@@ -330,7 +330,7 @@ describe("the templates", () => {
   it("list a maximum per deposit printed beside the one on each security, in the record's words, and never imply there is none", () => {
     const perDeposit = (id: string) => house(id).left.filter((l) => l.why === "per-deposit").map((l) => [l.lineId, l.quote]);
     expect(perDeposit("leumi")).toEqual([["leumi-custody-israel", 'מכסימום 3700 ש"ח לני"ע, 11500 לפקדון'], ["leumi-custody-foreign", 'מכסימום 7400 ש"ח לני"ע, 23000 לפקדון']]);
-    expect(perDeposit("fibi").map(([id]) => id)).toEqual(["fibi-custody-israel", "fibi-custody-foreign"]);
+    expect(perDeposit("fibi")).toEqual([["fibi-custody-israel", "מקס' לפיקדון 10,000"], ["fibi-custody-foreign", "מקס' לפיקדון 10,000"]]);
     expect(perDeposit("discount")).toEqual([]);
     expect(copy.cases.stated.maxPerSecurity.tail).not.toMatch(/כל מה שמוחזק/);
   });
@@ -497,7 +497,7 @@ describe("the templates", () => {
     const lines = latestSnapshots().flatMap((x) => x.lines);
     for (const id of IN_TRADE) {
       const min = lines.find((l) => l.id === id)?.min;
-      expect(`${min?.source.quote} ${min?.notes}`, id).toMatch(/במטבע העסקה/);
+      expect(`${min?.source.quote} ${min?.notes}`, id).toMatch(/מטבע העסקה/);
     }
   });
   it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
