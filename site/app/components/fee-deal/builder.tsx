@@ -263,9 +263,10 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
 /**
  * The page's undo line of a change to one fee's cases or prices (a case, a thing, a price taken away): it stands under the fee's block.
  * A price put in another form (`inCase`) leaves it in the open case, under its parts, where the change was made, while that case is open
- * (`caseId`, none for a fee whose price changes by nothing).
+ * (`caseId`, none for a fee whose price changes by nothing). A thing taken away (`thing`, its place) gives the focus back, on "ביטול", to
+ * its pill in the band's head, else to the open case, brought into view.
  */
-export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: string | null } };
+export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: string | null }; thing?: number };
 
 export function FeesColumn({
   deal,
@@ -378,6 +379,13 @@ export function FeesColumn({
     </UndoLine>
   );
 
+  // where the focus goes from a case's or a thing's undo line: a thing put back, its pill (else the open case); else the fee's first row
+  const backTo = (cl: CaseUndoLine): HTMLElement | null => {
+    const li = blockOf(cl.feeId);
+    const el = (cl.thing !== undefined ? (li?.querySelector<HTMLElement>(`[data-thing="${cl.thing}"]`) ?? li?.querySelector<HTMLElement>("[data-open-case] button")) : null) ?? feeFocus(li);
+    bringIntoView(el);
+    return el;
+  };
   // the undo line of a price put in another form, in the open case it was made in
   const formLine = (fee: Fee) => {
     const cl = caseLine?.feeId === fee.id && caseLine.inCase && caseLine.inCase.caseId === open.case && open.fee === fee.id ? caseLine : null;
@@ -503,7 +511,7 @@ export function FeesColumn({
                   <FeeItem key={it.fee.id} id={it.fee.id}>
                     {block(it.fee)}
                     {cl && (
-                      <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => feeFocus(blockOf(cl.feeId))}>
+                      <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}
                       </UndoLine>
                     )}

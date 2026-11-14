@@ -48,7 +48,7 @@ export function ConditionBand({ things, onThing, openThing, label = copy.changes
         <span className="font-medium">{label}</span>
         {things.map((t) =>
           onThing ? (
-            <button key={t.id} type="button" aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
+            <button key={t.id} type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
               {t.name}
               <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
             </button>

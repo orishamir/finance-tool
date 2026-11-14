@@ -12,7 +12,7 @@ import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
 import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type StatedPart, type Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";
-import { Num } from "../provenance";
+import { Num, RulesChip } from "../provenance";
 import { FeeOpen } from "./links";
 import { CapRules, Fig, LawBlock, MeetSentence, PriceWords, StandingTag, custodyName, feeColour, feeName, refName, sumDisplay, upToDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
@@ -529,11 +529,18 @@ function StatedLine({ part }: { part: StatedPart }) {
     <li className="grid grid-cols-[0.75rem_minmax(0,1fr)] items-baseline gap-3 text-sm leading-relaxed">
       <Swatch shape="box" className={cx("translate-y-px", feeColour(part.fee.kind).bg)} />
       <p>
-        {/* the space after the colon stands outside the name's button, whose own end would drop it */}
-        <FeeOpen fee={part.fee} after={copy.price.sep.trimEnd()} />{" "}
+        {/* the fee's name in words, as every point says it: the line's own swatch is its one dot */}
+        {refName(part.fee)}
+        {copy.price.sep}
         {x.lead}
         {x.figure && <Fig value={x.figure} />}
         {x.tail}
+        {part.rules && (
+          <>
+            {" "}
+            <RulesChip ids={part.rules} />
+          </>
+        )}
       </p>
     </li>
   );

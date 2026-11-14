@@ -272,9 +272,14 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
   if (m.kind === "flat") return { kind: "flat", ...head, bound: figures.flat!, amount: figures.upTo! };
   // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
   const from = m.from === undefined ? {} : { from: price.form !== "free" && "flat" in price && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
-  // a sum per action's percent maximum decides up to where it meets the sum: `amount / cap`, in the sum's currency
-  if (m.kind === "cap" && price.form === "perAction")
-    return { kind: "cap", ...head, bound: figures.cap!, meets: figures.amount!, amount: reading(m.amount, sums, "F-112", { [inputKey(fees, m.fee)]: figures.amount!, [key("cap")]: figures.cap! }, today), sum: true };
+  // a sum per action's percent maximum decides up to where it meets the sum the engine charges, after a discount off it (F-116):
+  // `(1 − d) × amount / cap`, in the sum's currency
+  if (m.kind === "cap" && price.form === "perAction") {
+    const d = price.discount ? figures.discount : undefined;
+    const off = d ? { [inputKey(fees, m.fee, "discount")]: d } : {};
+    const charged = d ? reading(price.amount.v * (1 - (d.value as number) / 100), figures.amount!.unit as Unit, "F-116", { [inputKey(fees, m.fee)]: figures.amount!, ...off }, today) : figures.amount!;
+    return { kind: "cap", ...head, bound: figures.cap!, meets: charged, amount: reading(m.amount, sums, "F-112", { [inputKey(fees, m.fee)]: figures.amount!, [key("cap")]: figures.cap!, ...off }, today), sum: true };
+  }
   if (m.kind === "cap") {
     // the cap meets the minimum where it gives way to it, or the maximum where it gives way to that: the minimum the engine charges, after a
     // discount off it (F-116)
@@ -284,13 +289,20 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
     const discount = meets.field === "min" && figures.discount && price.form !== "free" && "discount" in price && price.discount?.alsoMin ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {};
     return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap!, ...discount }, today), ...from };
   }
-  const given = (m.kind === "min" ? figures.min : figures.max)!;
-  // a held share's bound printed per another period than its charge is a charge's bound by F-14: the months of a charge over its own
-  const bound = price.form === "held" && price.boundsEvery && price.boundsEvery !== price.every ? reading((given.value as number) * price.every / price.boundsEvery, "nis", "F-14", { [key(m.kind)]: given }, today) : given;
+  const bound = chargeBound(price, (m.kind === "min" ? figures.min : figures.max)!, key(m.kind), today);
   // a held share's bound is per charge, so its mark is where one charge's share meets it: the rate of a charge, `rate × every / per`
   const rate = price.form === "held" && price.per !== price.every ? reading((price.rate.v * price.every) / price.per, "pct_of_balance_per_period", "F-111", { [inputKey(fees, m.fee)]: figures.rate! }, today) : (figures.rate ?? figures.amount)!;
   const inputs = { [key(m.kind)]: bound, [inputKey(fees, m.fee)]: rate, ...(figures.cap ? { [key("cap")]: figures.cap } : {}), ...(figures.discount ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {}) };
   return { kind: m.kind, ...head, bound, rate, amount: reading(m.amount, m.units ? "count" : sums, "F-112", inputs, today), ...from, ...(m.units ? { units: true as const } : {}) };
+}
+
+/**
+ * A held share's bound as one charge's (F-14): where the list prints it per month and the share is charged every few months, the months of
+ * a charge times it, a figure worked out from the printed one (keyed `key`); else the bound as given.
+ */
+export function chargeBound(price: Price, given: SiteValue, key: string, today: string): SiteValue {
+  if (price.form !== "held" || !price.boundsEvery || price.boundsEvery === price.every) return given;
+  return reading(((given.value as number) * price.every) / price.boundsEvery, "nis", "F-14", { [key]: given }, today);
 }
 
 const near = (a: number, b: number): boolean => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b));

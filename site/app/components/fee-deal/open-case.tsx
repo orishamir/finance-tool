@@ -5,7 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, PartField, SlotEdit } from "../../lib/fee-deal/builder";
 import { addOwnPlace, editPrice, setMine, setPart, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withThirdForm, withThirdWho, type PartId, type Side } from "../../lib/fee-deal/edit";
-import { BOUND_CURRENCIES, MONTHS, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "../../lib/fee-deal/model";
+import { anySourced, BOUND_CURRENCIES, MONTHS, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "../../lib/fee-deal/model";
 import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type RangeUnit } from "../../lib/fee-deal/shapes";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
@@ -76,10 +76,11 @@ function PriceParts({
   const edit = (fn: (p: Price) => Price) => onFee(editPrice(fee, side, k, fn, caseId));
   const shape = FEE_SHAPES[fee.kind];
   // the price's currency, where the fee may take another, is chosen beside its first sum (a sum per unit's or per action's, else the
-  // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign
+  // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign. The chip is plain
+  // while the price still holds a figure a template filled (a change of currency makes the whole price the person's, `withCurrency`)
   const chooser =
     pricedIn(price) && (shape.fields[price.form] ?? []).includes("currency") ? (
-      <InlineSelect chip label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
+      <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
     ) : null;
   const chooserOn: PartId | null = chooser ? (price.form === "action" ? (parts.some((p) => p.id === "min") ? "min" : parts.some((p) => p.id === "max") ? "max" : null) : price.form) : null;
   const box = (part: PartId, f: PartField, spoken: string, opts: { optional?: boolean } = {}) => (
