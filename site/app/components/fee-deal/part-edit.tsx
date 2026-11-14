@@ -223,10 +223,10 @@ const BODIES: Readonly<Record<LinePart, { Body: ComponentType<BodyProps>; lead?:
 };
 
 /** One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; none for a free price). */
-export function PartLine({ part, at, onRemove }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined }) {
+export function PartLine({ part, at, onRemove, grip }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined; /** Its grip (⋮⋮), where it can be lifted. */ grip?: ReactNode }) {
   const { Body, lead } = BODIES[part.id];
   return (
-    <PartEdit id={partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id))} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)}>
+    <PartEdit id={partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id))} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)} grip={grip}>
       <Body part={part} at={at} />
     </PartEdit>
   );

@@ -11,9 +11,10 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { BOUND_CURRENCIES, isProductId, NAME_MAX, newDeal, newFeeId, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
+import { BOUND_CURRENCIES, hasCases, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
+import { capLine, kindById } from "./kinds";
 import { leftOutOf, type LeftOutView } from "../left-out";
 import type { DataBar } from "./offers/offer";
 import { buildPrice, type PriceSpec } from "./offers/build";
@@ -71,6 +72,8 @@ export type LeftWhy =
 /** A line a template leaves out, with why, its name as the price list prints it and its channel where it has one, for the reader. */
 export interface LeftLine {
   lineId: string;
+  /** The fee the line is a price of (its record's base), whose own list it belongs to. */
+  base: string;
   why: LeftWhy;
   name: string;
   channel?: string;
@@ -500,7 +503,7 @@ export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate
   const ownName = snap.provider.name_he;
   const bank = memberKindOf(snap.provider.class) === "bank";
   const left: LeftLine[] = [];
-  const leave = (l: Line, why: LeftWhy) => left.push({ lineId: l.id, why, name: lineName(l), ...(l.channel ? { channel: l.channel } : {}) });
+  const leave = (l: Line, why: LeftWhy) => left.push({ lineId: l.id, base: l.base, why, name: lineName(l), ...(l.channel ? { channel: l.channel } : {}) });
   const fees: TemplateFee[] = [];
   const read = new Set<string>();
   const ownPlaces: OwnPlace[] = [];
@@ -559,7 +562,48 @@ export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate
  * What a template leaves out of a deal, with why: a line of a house's price list (`line`, its id), or one of a track's two fees (`fee`):
  * one the product may not charge (PF-06, `none-by-rule`), or one the regulator's data gives no figure for (`no-value`).
  */
-export type LeftOut = { line: string; why: LeftWhy; name?: string; channel?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
+export type LeftOut = { line: string; base?: string; why: LeftWhy; name?: string; channel?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
+
+/** The house a deal's fees came from where a house's whole price list filled it (`house:<id>`), else null. */
+const dealHouseOf = (deal: FeeDeal): string | null => (deal.template && !deal.template.feesKept && deal.template.id.startsWith(HOUSE) ? deal.template.id.split("/", 1)[0]! : null);
+
+/** The houses each kind of the deal's fees came from: each fee by its own list (`Fee.house`), a fee that names none by the deal's. */
+function housesByKind(deal: FeeDeal, dealHouse: string | null): Map<string, Set<string>> {
+  const kinds = new Map<string, Set<string>>();
+  for (const f of deal.fees) {
+    const h = f.house ?? dealHouse;
+    if (h) kinds.set(f.kind, (kinds.get(f.kind) ?? new Set()).add(h));
+  }
+  return kinds;
+}
+
+/**
+ * What the deal's price lists left out (§10.6), each fee by its own list (`Fee.house`): the template's lines (`left`, of the list that
+ * filled the deal), but for each kind of fee whose fees came from other lists, those lists' lines of that kind in place of the template's.
+ * A fee that names no list stands for the template's. Lines of no fee kind the deal has stay the template's.
+ */
+export function leftOfFees(deal: FeeDeal, left: readonly LeftOut[], data: Pick<FeesData, "houses">): LeftOut[] {
+  const dealHouse = dealHouseOf(deal);
+  const kinds = housesByKind(deal, dealHouse);
+  const own = (x: LeftOut) => !("line" in x) || !x.base || !kinds.has(x.base) || (dealHouse !== null && kinds.get(x.base)!.has(dealHouse));
+  const others = [...kinds].flatMap(([kind, houses]) =>
+    [...houses].filter((h) => h !== dealHouse).flatMap((h) => (houseOf(h, data)?.left ?? []).filter((l) => l.base === kind).map(({ lineId, ...rest }): LeftOut => ({ line: lineId, ...rest }))),
+  );
+  return [...left.filter(own), ...others];
+}
+
+/**
+ * What the house of the template that filled the deal charged on average (F-122), for the kinds of fee the template still filled: each
+ * fee by its own list as `leftOfFees` reads it, so a column of a kind whose fees all came from other lists goes (F-122: a single fee filled
+ * from a house's list shows none). Columns of no fee kind the deal has stay; none where no column is left.
+ */
+export function averagesOfFees(deal: FeeDeal, averages: HouseAverages | undefined): HouseAverages | undefined {
+  if (!averages) return undefined;
+  const dealHouse = dealHouseOf(deal);
+  const kinds = housesByKind(deal, dealHouse);
+  const columns = averages.columns.filter((c) => !kinds.has(c.column.fee) || (dealHouse !== null && kinds.get(c.column.fee)!.has(dealHouse)));
+  return columns.length ? { ...averages, columns } : undefined;
+}
 
 /**
  * A regulated track as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its fee on
@@ -674,10 +718,12 @@ export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses
   const t = templateOf(deal, id, data, today);
   if (!t) return null;
   let fees = [...deal.fees];
+  // a price list's fees say which list they are from: its lines left out are theirs (§10.6)
+  const from = id.startsWith(HOUSE) ? { house: id.split("/", 1)[0]! } : {};
   for (const f of t.fees) {
     const at = fees.findIndex((x) => x.kind === f.kind);
-    if (at >= 0) fees[at] = asFee(f, fees[at]!.id);
-    else fees = [...fees, asFee(f, newFeeId())];
+    if (at >= 0) fees[at] = { ...asFee(f, fees[at]!.id), ...from };
+    else fees = [...fees, { ...asFee(f, newFeeId()), ...from }];
   }
   return { ...deal, fees, template: { id, name: t.name }, ...(t.provider ? { provider: t.provider } : {}) };
 }
@@ -754,10 +800,60 @@ export function fillFee(deal: FeeDeal, feeId: string, houseIdOf: string, data: P
   if (!fee || !h || deal.kind !== "brokerage-account") return null;
   const t = h.fees.find((f) => f.kind === fee.kind);
   if (!t) return null;
-  const filled: FeeDeal = { ...deal, fees: deal.fees.map((f) => (f.id === feeId ? asFee({ ...t, ...(fee.name !== undefined ? { name: fee.name } : {}) }, f.id) : f)) };
+  const fees = deal.fees.map((f) => (f.id === feeId ? { ...asFee({ ...t, ...(fee.name !== undefined ? { name: fee.name } : {}) }, f.id), house: houseIdOf, ...(fee.rank !== undefined ? { rank: fee.rank } : {}) } : f));
+  // a pick of a thing only the fee it replaces changed by goes with it
+  const filled: FeeDeal = withPicksOf({ ...deal, fees });
   if (!deal.provider || deal.provider === h.provider) return filled;
   const { provider: _p, ...rest } = filled;
   return rest;
+}
+
+/**
+ * A deal whose picks (`readFor`) name only things some fee of it changes by: a pick of a thing no fee changes by any more (the fee that
+ * did was replaced) goes. A deal saved before cases picks what is bought from what it held, whatever its fees: that pick stays.
+ */
+function withPicksOf(deal: FeeDeal): FeeDeal {
+  if (!deal.readFor) return deal;
+  const keys = new Set(deal.fees.flatMap((f) => (hasCases(f) ? f.by.map(pickKey) : [])));
+  const readFor = deal.readFor.filter((p) => keys.has(p.by) || p.place !== undefined || p.by === "currency");
+  if (readFor.length === deal.readFor.length) return deal;
+  const { readFor: _r, ...rest } = deal;
+  return readFor.length ? { ...rest, readFor } : rest;
+}
+
+/** The houses whose price list a securities account's deal can copy a fee from, each with the kinds of fee it prints; none for another kind of deal. */
+export function housesToCopy(deal: FeeDeal, data: Pick<FeesData, "houses">): { id: string; name: string; kinds: FeeKindId[] }[] {
+  if (deal.kind !== "brokerage-account") return [];
+  return data.houses.filter((h) => h.fees.length > 0).map((h) => ({ id: houseId(h), name: h.name, kinds: h.fees.map((f) => f.kind) }));
+}
+
+/**
+ * Whether a fee of `kind` stands alone in a deal: the law caps the kind for the deal's product (F-113), and the method does not say how two
+ * such fees meet one cap, so a second one is never added beside the first; it can only replace it.
+ */
+export const feeAlone = (deal: FeeDeal, kind: FeeKindId, data: Pick<FeesData, "kinds">): boolean => capLine(kindById(data.kinds, deal.kind), kind).state === "value";
+
+/**
+ * The deal with a fee copied from a house's price list, as the list prints it, with its sources: beside the deal's fees (`beside`), even
+ * where the deal has a fee of that kind already, so the two stand side by side and are read as two fees (values.ts names their figures
+ * apart), except a kind that stands alone (`feeAlone`); or in place of the deal's fee of that kind (`fillFee`, kept for the undo by the
+ * page). The new fee's id, where one was added. Null where the house prints no such fee, or a second fee of a kind that stands alone.
+ */
+export function copyHouseFee(deal: FeeDeal, houseIdOf: string, kind: FeeKindId, how: "beside" | "replace", data: Pick<FeesData, "houses" | "kinds">): { deal: FeeDeal; feeId: string } | null {
+  const h = data.houses.find((x) => houseId(x) === houseIdOf);
+  const t = h?.fees.find((f) => f.kind === kind);
+  if (!h || !t || deal.kind !== "brokerage-account") return null;
+  const have = deal.fees.find((f) => f.kind === kind);
+  if (how === "beside" && have && feeAlone(deal, kind, data)) return null;
+  if (how === "replace" && have) {
+    const filled = fillFee(deal, have.id, houseIdOf, data);
+    return filled && { deal: filled, feeId: have.id };
+  }
+  const fee: Fee = { ...asFee(t, newFeeId()), house: houseIdOf };
+  const next: FeeDeal = { ...deal, fees: [...deal.fees, fee] };
+  if (!deal.provider || deal.provider === h.provider) return { deal: next, feeId: fee.id };
+  const { provider: _p, ...rest } = next;
+  return { deal: rest, feeId: fee.id };
 }
 
 /** A row's title in the track picker: a track's short name where it has one (D54), else the template's name. */

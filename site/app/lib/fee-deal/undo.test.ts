@@ -6,7 +6,7 @@ import { editPrice, setSaleApart, setUntil, splitAt } from "./edits/stage";
 import { withFigure } from "./edits/price";
 import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
 import { dataBar, feePriceLists, pickTrack } from "./templates";
-import { changeFormKept, deleteDealKept, fillFeeKept, removeChangeKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
+import { changeFormKept, deleteDealKept, formBack, fillFeeKept, removeChangeKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
 import { kindById } from "./kinds";
 import { feeDeal as copy } from "../../copy";
 
@@ -303,6 +303,16 @@ describe("a price put in another form from the toolbox", () => {
     expect(undoWords(r.undo!, names, data)).toBe("המחיר הוחלף, והמינימום הוסר.");
     expect(standing(r.undo!, r.deal)).toBe(true);
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
+  });
+  it("makes a price free from the toolbox, and puts it back with its parts when its form is chosen again", () => {
+    const d = us();
+    const r = changeFormKept(d, "fee-trade", "free", null, "c2")!;
+    expect(r.deal.fees[0]!.cases![1]!.stages[0]!.price).toEqual({ form: "free" });
+    expect(undoWords(r.undo!, names, data)).toBe("המחיר הוחלף, והמינימום והמקסימום באחוזים הוסרו.");
+    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c2")).toBe(true);
+    // another form, or another case, starts afresh
+    expect(formBack(r.undo, r.deal, "fee-trade", "share", "c2")).toBe(false);
+    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c1")).toBe(false);
   });
   it("changes a price nobody gave yet silently, and a price already in the form not at all", () => {
     const blank = addFee(newDeal("brokerage-account"), "trade");

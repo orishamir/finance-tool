@@ -107,8 +107,8 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {} },
-    ask,
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, phone: false } },
+    ask: ask ? { kind: ask } : null,
     adding: "line",
   });
 };
@@ -296,9 +296,9 @@ describe("the fees' column", () => {
     const shown = text(builderOf(d, "fee-trade"));
     for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!])
       expect(shown).toContain(w);
-    // two things: a value of each is added where its row or column will stand, the fee's head holds no add of its own; the open case
-    // ends with its own slot, a change of its price with time
-    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(3);
+    // one value of what is bought split by the track: a table, a case added beside its heads, the fee's head holding no add of its own;
+    // the open case ends with its own slot, a change of its price with time
+    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(2);
     expect(text(builderOf(d, "fee-trade"))).toContain(feeDeal.panel.change.add);
     // the open case's actions, the open fee's bin and each thing's bin are icons, named by what they do
     const html = drawBuilder(d, "fee-trade");

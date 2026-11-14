@@ -180,6 +180,8 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   perAction: (c) => ({ words: { tail: ` ${perAction(c.kind)}` }, box: inPrice(c, "perAction") }),
   held: () => ({ words: { tail: ` ${copy.price.per[12]}` }, box: "pct" }),
   sum: () => ({ words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") } }),
+  // the price made free, beside the forms that charge
+  free: () => ({ words: { lead: copy.price.free } }),
   discount: () => ({ words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" }),
   third: () => ({ words: { lead: pp.third } }),
   // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)

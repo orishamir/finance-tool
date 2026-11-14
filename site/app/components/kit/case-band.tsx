@@ -33,6 +33,9 @@ export interface HeadThing {
   id: string;
   name: string;
   removeLabel?: string;
+  /** A grip that lifts the pill (two of a grid's things swap by a drop of one on the other), and the drop zone it stands in. */
+  grip?: ReactNode;
+  zone?: (pill: ReactNode) => ReactNode;
 }
 
 /**
@@ -50,8 +53,10 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
     <div className={cx("flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink", bare && "rounded-lg border border-when-edge bg-when-fill")}>
       <Split {...icon} />
       <span className="font-medium">{label}</span>
-      {things.map((t) => (
-        <span key={t.id} data-thing-place={t.id} className="inline-flex items-center gap-0.5">
+      {things.map((t) => {
+        const pill = (
+        <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-full">
+          {t.grip}
           {onThing ? (
             <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border border-when-pill bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", openThing === t.id && OPEN_RING)}>
               {t.name}
@@ -62,7 +67,9 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
           )}
           {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
         </span>
-      ))}
+        );
+        return t.zone ? <span key={t.id}>{t.zone(pill)}</span> : pill;
+      })}
     </div>
   );
 }
@@ -84,13 +91,19 @@ export function ConditionBand({ children, ...head }: { things: HeadThing[]; onTh
  * A group of a band's rows under one value of the first thing (a grid read as rows): the value's words, the parts said once for the group
  * under them (`shared`), then its rows.
  */
-export function CaseGroup({ head, shared, children }: { head: ReactNode; shared?: ReactNode; children: ReactNode }) {
+export function CaseGroup({ head, shared, grip, zone, children }: { head: ReactNode; shared?: ReactNode; /** A grip that lifts the group's value. */ grip?: ReactNode; /** Wraps the group's head (a drop zone for its value). */ zone?: (head: ReactNode) => ReactNode; children: ReactNode }) {
+  const top = (
+    <div data-liftable="" className="flex flex-col gap-0.5 px-3 pt-2 text-sm">
+      <span className="flex items-center gap-1 font-medium text-when-words">
+        {grip}
+        {head}
+      </span>
+      {shared && <div className="text-when-any">{shared}</div>}
+    </div>
+  );
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex flex-col gap-0.5 px-3 pt-2 text-sm">
-        <span className="font-medium text-when-words">{head}</span>
-        {shared && <div className="text-when-any">{shared}</div>}
-      </div>
+      {zone ? zone(top) : top}
       {children}
     </div>
   );
@@ -117,12 +130,15 @@ function CaseWords({ when }: { when: CaseWord[] }) {
  * in a column of 8.5rem beside the cell, 12rem in a band of 44rem and more, where the parts have room to spare and a long condition (three
  * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell.
  */
-export function CaseRow({ when, label, onOpen, children }: { when: CaseWord[]; label: string; onOpen?: () => void; children: ReactNode }) {
+export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; children: ReactNode }) {
   return (
-    <div className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
+    <div data-liftable="" className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} />
-      <div className={cx("ms-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-s-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0", onOpen && "group-hover:bg-accent")}>{children}</div>
+      <div className={cx("ms-3 flex min-h-target min-w-0 flex-wrap items-center gap-1.5 rounded-s-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0", onOpen && "group-hover:bg-accent")}>
+        {grip}
+        {children}
+      </div>
     </div>
   );
 }

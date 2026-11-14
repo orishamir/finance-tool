@@ -76,6 +76,7 @@ export function PriceFigure({
   optional,
   id,
   onFee,
+  onRevert,
 }: {
   fee: Fee;
   side: Side;
@@ -91,6 +92,8 @@ export function PriceFigure({
   optional?: boolean;
   id?: string;
   onFee: (fee: Fee) => void;
+  /** What Esc does in place of putting this price's figure back as it stood when the box took the focus (a figure edited for several cases). */
+  onRevert?: () => void;
 }) {
   // the figure as it stood when the box took the focus
   const atFocus = useRef<Num | undefined>(undefined);
@@ -105,7 +108,7 @@ export function PriceFigure({
       unit={unit ?? signText(sign)}
       sign={signText(sign)}
       onFocus={() => (atFocus.current = figureOf(price(), figure))}
-      onRevert={() => onFee(editPrice(fee, side, k, (p) => setFigure(p, figure, atFocus.current), caseId))}
+      onRevert={onRevert ?? (() => onFee(editPrice(fee, side, k, (p) => setFigure(p, figure, atFocus.current), caseId)))}
       words={words}
       tight
       {...(optional ? { placeholder: copy.panel.empty } : {})}

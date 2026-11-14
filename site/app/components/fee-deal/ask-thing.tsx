@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
-import { addBy, addStep, addValues, newBy } from "../../lib/fee-deal/edits/case";
+import { addBy, addStep, addValues, newBy, splitCase } from "../../lib/fee-deal/edits/case";
 import { isRange, NAME_MAX, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import { lastValueWords, rangeSign } from "../../lib/fee-deal/band-layout";
 import { thingName } from "../../lib/fee-deal/case-words";
@@ -19,7 +19,7 @@ import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
  * top and its unit. What adding does to the cases is said under it. It stands in place, in the fee's block where the thing's band will
  * stand: the focus goes into it as it opens, and Escape closes it as "ביטול" does.
  */
-export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind; onFee: (f: Fee) => void; /** The question closed: with the thing added, or not. */ onDone: (added: boolean) => void }) {
+export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: ByKind; /** The case it splits alone (`splitCase`); none: the whole fee. */ split?: string; onFee: (f: Fee) => void; /** The question closed: with the thing added, or not. */ onDone: (added: boolean) => void }) {
   const q = byQuestion(fee, kind);
   // the question takes the focus where it opens, in its first field or value, and is brought into view (above a phone's folded sheet)
   const root = useRef<HTMLDivElement>(null);
@@ -36,6 +36,7 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   const [label, setLabel] = useState("");
   const [top, setTop] = useState<number | null>(null);
   const [unit, setUnit] = useState<RangeUnit | null>(q.units?.[0]?.unit ?? null);
+  const [refused, setRefused] = useState(false);
   const toggle = (id: string) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]));
   const place = !!q.typed?.place;
   const typed = () => {
@@ -48,7 +49,9 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   };
   const range = !!q.units;
   const copies = copiesWords(fee, kind, chosen.length);
-  const note = (
+  const note = split ? (
+    <>{refused ? c.lifted.splitRefused : c.lifted.splitNote}</>
+  ) : (
     <>
       {copies.line}
       {/* how many cases there will be, once a value is ticked (a range's two steps are known at once) */}
@@ -58,7 +61,10 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   const add = () => {
     const n = newBy(kind, { values: chosen, own, label, top, unit });
     if (!n) return;
-    onFee(addBy(fee, n));
+    const next = split ? splitCase(fee, split, n) : addBy(fee, n);
+    // a split that would change which case another set of values reads is refused, and says so
+    if (split && next === fee) return setRefused(true);
+    onFee(next);
     onDone(true);
   };
   const ownForm = typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} />;
@@ -105,15 +111,17 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
 }
 
 /**
- * The page's question of a thing to change by (`asking`, its fee and thing): asked in the open fee's block (`onAsk`), the phone's sheet
+ * The page's question of a thing to change by (`asking`, its fee and thing, and the case it splits alone where a card was dropped on one):
+ * asked in the open fee's block (`onAsk`), the phone's sheet
  * folding to its tabs while it is open (`fold`). Closed (`onAskDone`), the focus goes to the new thing's pill where it was added, else back
  * to the toolbox's part it was asked from. `drop` closes it without a word, as another fee or the toolbox closing does.
  */
 export function useAskThing(chosen: string | null, phone: boolean, fold: (folded: boolean) => void) {
-  const [asking, setAsking] = useState<{ fee: string; kind: ByKind } | null>(null);
-  const onAsk = (kind: ByKind) => {
+  const [asking, setAsking] = useState<{ fee: string; kind: ByKind; split?: string } | null>(null);
+  /** The question of thing `kind`, for the open fee, or for its case `split` alone. */
+  const onAsk = (kind: ByKind, split?: string) => {
     if (!chosen) return;
-    setAsking({ fee: chosen, kind });
+    setAsking({ fee: chosen, kind, ...(split ? { split } : {}) });
     if (phone) fold(true);
   };
   const onAskDone = (added: boolean) => {

@@ -77,6 +77,7 @@ export function undoLines(shown: AnyUndo | null, words: string | null, chosen: s
     case "case":
     case "by":
     case "form":
+    case "said":
       return { ...none, case: { ...base, feeId: what.feeId, ...(what.kind === "form" ? { inCase: { caseId: what.caseId ?? null } } : {}), ...(what.kind === "by" ? { thing: what.t } : {}) } };
   }
 }

@@ -19,6 +19,7 @@ import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, toolPric
 import type { DataBar } from "./offers/offer";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
+import type { LiftResult } from "./lifted";
 
 /**
  * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
@@ -31,7 +32,9 @@ export type UndoWhat =
   | { kind: "chain"; feeId: string; side: Side; k: number; caseId?: string }
   | { kind: "case"; feeId: string; caseId: string }
   | { kind: "by"; feeId: string; t: number }
-  | { kind: "form"; feeId: string; k: number; caseId?: string };
+  | { kind: "form"; feeId: string; k: number; caseId?: string }
+  /** A change made by a drag or a knob (lifted.ts) that took something: its words, said when it was made. */
+  | { kind: "said"; feeId: string; words: string };
 
 export interface Undo {
   what: UndoWhat;
@@ -121,6 +124,21 @@ export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chose
 }
 
 /**
+ * Whether choosing form `part` for a fee's price (in case `caseId`) puts back the price an undo keeps: the undo is of that price made free
+ * (from the toolbox's "חינם"), it still stands, the price is still free, and before it was in that form. The page then undoes, so the
+ * parts it had come back with the form.
+ */
+export function formBack(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, part: PartId, caseId?: string): boolean {
+  if (!u || u.what.kind !== "form" || !standing(u, deal)) return false;
+  const f = u as Undo;
+  const w = f.what as Extract<UndoWhat, { kind: "form" }>;
+  if (w.feeId !== feeId || w.caseId !== caseId) return false;
+  const now = deal.fees.find((x) => x.id === feeId);
+  const was = pricesOn(f.before, "buy", caseId)[w.k]?.price;
+  return !!now && pricesOn(now, "buy", caseId)[w.k]?.price.form === "free" && !!was && was.form === PARTS[part].form;
+}
+
+/**
  * The deal with change `k` of a fee's prices on `side` taken away at its divider, the later price merging back into the earlier
  * (`removeChange`): kept for the undo where the later price differs from the earlier, gone silently where it is still the earlier's copy
  * (`changeUntouched`). Null where no change `k` stands.
@@ -131,6 +149,17 @@ export function removeChangeKept(deal: FeeDeal, feeId: string, side: Side, k: nu
   const changed = removeChange(fee, side, k, caseId);
   if (changeUntouched(fee, side, k, caseId)) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
   return feeChange(deal, fee, changed, { kind: "chain", feeId, side, k, ...(caseId ? { caseId } : {}) }, chosen);
+}
+
+/**
+ * The deal after a drop or a knob (`LiftResult`), kept for the undo where it took something the person gave (`kept`, the fee it changed and
+ * its words); a plain change otherwise.
+ */
+export function liftKept(deal: FeeDeal, r: LiftResult, chosen: string | null): MaybeUndoable {
+  const before = r.kept && deal.fees.find((f) => f.id === r.kept!.feeId);
+  const after = r.kept && r.deal.fees.find((f) => f.id === r.kept!.feeId);
+  if (!r.kept || !before || !after) return { deal: r.deal, chosen, undo: null };
+  return { deal: r.deal, chosen, undo: { what: { kind: "said", feeId: r.kept.feeId, words: r.kept.words }, dealId: deal.id, before, after, chosenBefore: chosen, chosenAfter: chosen } };
 }
 
 // ---------------------------------------------------------------- the deal's kind changed
@@ -236,6 +265,8 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
       return copy.panel.change.removed;
     case "case":
       return copy.cases.caseRemoved;
+    case "said":
+      return u.what.words;
     case "form":
       return formWords(u);
     case "by": {
