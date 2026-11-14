@@ -11,7 +11,7 @@ import { builder, panel, toolbox } from "../../lib/fee-deal/builder";
 import { glance } from "../../lib/fee-deal/glance";
 import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { readDealFor } from "../../lib/fee-deal/parts";
+import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
 import { FeesColumn, feeGroup } from "./builder";

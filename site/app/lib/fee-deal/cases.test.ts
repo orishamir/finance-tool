@@ -17,7 +17,7 @@ import { providentFamily } from "./offers/rules";
 import { glance } from "./glance";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
-import { readDealFor, sumsLargest } from "./parts";
+import { readDealFor, sumsLargest } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
 import { removeByKept, removeCaseKept, undo, undoWords } from "./undo";

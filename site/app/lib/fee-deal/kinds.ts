@@ -7,7 +7,7 @@ import { fraction, mainFigure, type Price, type ProviderKind } from "./model";
 import { boundsAction, charged, hasBounds, onAction, type ChargedPrice } from "./offers/capabilities";
 import { enginePrice } from "./to-engine";
 import { type FeeKindId } from "./shapes";
-import { CAPACITY } from "./offers/capacity";
+import { capacity } from "./offers/capacity";
 import { recordValue } from "./values";
 
 /**
@@ -40,7 +40,7 @@ export const kindById = (kinds: readonly DealKind[], id: ProductId | null): Deal
 
 /** The record's cap entry for a fee, where the fee is a record base the record caps. */
 export const capOf = (kind: DealKind | null, fee: FeeKindId): FeeCap | undefined => {
-  const base = CAPACITY[fee].base;
+  const base = capacity(fee).base;
   return base && kind ? kind.caps[base] : undefined;
 };
 

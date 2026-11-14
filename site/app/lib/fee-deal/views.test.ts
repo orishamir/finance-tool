@@ -9,7 +9,7 @@ import { capLine, kindById, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal, packDeal, unpackDeal } from "./link";
 import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
-import { readDealFor } from "./parts";
+import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { addFee, updateFee } from "./edits/deal";

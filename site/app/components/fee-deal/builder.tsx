@@ -12,7 +12,7 @@ import { feeDeal as copy } from "../../copy";
 import type { Builder } from "../../lib/fee-deal/builder";
 import type { DealKind } from "../../lib/fee-deal/kinds";
 import { pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { groupKey, groupOn, type DealRead } from "../../lib/fee-deal/parts";
+import { groupKey, groupOn, type DealRead } from "../../lib/fee-deal/deal-read";
 import { templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import type { LeftOutView } from "../../lib/left-out";
 import type { UndoWhat } from "../../lib/fee-deal/undo";

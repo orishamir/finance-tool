@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import type { FxSnapshot } from "../fx";
 import { typed, type FeeDeal } from "./model";
-import { readDealFor } from "./parts";
+import { readDealFor } from "./deal-read";
 import { readingOf, type LawRow } from "./reading";
-import type { MarkView } from "./parts";
+import type { MarkView } from "./deal-read";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodChanges, periodsHead, spansOf, withConversion } from "./reading-heads";
 
 const data = feesData();

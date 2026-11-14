@@ -8,7 +8,7 @@ import { charged, onAction } from "./offers/capabilities";
 import type { FigureUnit } from "./offers/figures";
 import type { PartId, StatedPartId, ToolPartId } from "./offers/parts";
 import type { PriceFigures } from "./values";
-import type { PriceView } from "./parts";
+import type { PriceView } from "./deal-read";
 import { type FeeKindId, type FormId } from "./shapes";
 import { sumCurrency } from "./offers/capacity";
 

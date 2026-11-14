@@ -112,7 +112,7 @@ interface Linked {
  * parts), and that its sums are in the currency the action is made in (`inTrade`: "מינימום 30 במטבע העסקה"), which a reading takes from
  * what is bought where the deal knows its currency (its `currency` is then that one) and otherwise does not read the fee.
  */
-interface OnAction extends Linked {
+interface ActionParts extends Linked {
   discount?: Discount;
   third?: Third;
   notes?: Note[];
@@ -129,9 +129,9 @@ export type Price =
    * A share of each action, `rate` percent, with a minimum and a maximum per action, a cap as a percent of the action (`cap`, the percent
    * maximum) and a flat price for a small action, each sum in `currency` (the shekel where absent).
    */
-  | ({ form: "action"; rate: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
+  | ({ form: "action"; rate: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & ActionParts)
   /** A sum for each unit traded, `amount` in `currency`, with the same minimum, maximum, cap and flat price as a share of an action. */
-  | ({ form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & OnAction)
+  | ({ form: "perUnit"; amount: Num; min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } & ActionParts)
   /**
    * A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge, or per
    * month where the price list prints them so (`boundsEvery: 1`, "מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds; F-14
@@ -145,7 +145,7 @@ export type Price =
    * A sum on each action, in `currency` (the shekel where absent), held to a percent of the action (`cap`, the percent maximum) where the
    * list prints one over it ("11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
    */
-  | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & OnAction);
+  | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & ActionParts);
 
 /** The currencies a bound, a flat price, a sum per unit or a sum per action may be typed in: the ones the price lists print (F-12, F-13, F-103). */
 export type BoundCurrency = "ILS" | "USD" | "EUR" | "GBP";

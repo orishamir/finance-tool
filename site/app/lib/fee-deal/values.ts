@@ -5,7 +5,7 @@ import type { ValueObject } from "@finance-tool/schema";
 import { computed, entered, type SiteValue } from "../value";
 import type { Fee, Num, Price, Sourced, ThirdPrice } from "./model";
 import type { OnActionPrice } from "./offers/capabilities";
-import { CAPACITY } from "./offers/capacity";
+import { capacity } from "./offers/capacity";
 
 export type Unit = ValueObject["unit"];
 
@@ -201,4 +201,4 @@ export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): P
 }
 
 /** Whether a fee is charged inside a fund (its management fee), which the page says beside it. */
-export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || CAPACITY[fee.kind].base === "trustee" || CAPACITY[fee.kind].base === "variable_management";
+export const insideFund = (fee: Pick<Fee, "kind">): boolean => fee.kind === "fund_management" || capacity(fee.kind).base === "trustee" || capacity(fee.kind).base === "variable_management";

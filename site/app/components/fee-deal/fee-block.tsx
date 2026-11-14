@@ -9,7 +9,7 @@ import type { BuilderRow, CaseRow as CaseRowView, OpenCase as OpenCaseView, Slim
 import { addCase, copyCase } from "../../lib/fee-deal/edits/case";
 import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import type { StandingView } from "../../lib/fee-deal/parts";
+import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { keeps, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { fmt } from "../../lib/format";

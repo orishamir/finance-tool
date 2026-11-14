@@ -8,7 +8,7 @@ import type { FxSnapshot } from "../../lib/fx";
 import type { SiteValue } from "../../lib/value";
 import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { MarkView, StandingView } from "../../lib/fee-deal/parts";
+import type { MarkView, StandingView } from "../../lib/fee-deal/deal-read";
 import { UNIT_PRICE_KEY, type Curve, type LawRow, type PeriodCard, type PeriodRow, type Reading, type StatedPart, type Statement } from "../../lib/fee-deal/reading";
 import { curveChoices, curveGroups, curveHead, firstChoice, lawHead, periodsHead, spansOf, withConversion, type CurveGroup, type CurveHead, type PeriodsHead, type Span } from "../../lib/fee-deal/reading-heads";
 import { AmountChart, Card, ChoiceChips, NumberField, PanelHead, SegmentedControl, Swatch, Tag, TypedPlain, When, cx, fill } from "../kit";

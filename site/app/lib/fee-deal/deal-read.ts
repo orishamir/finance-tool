@@ -246,7 +246,7 @@ export type MarkView =
   | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
 
 /** A mark that names one fee's part: a minimum, a maximum, a percent maximum or a flat price. */
-export type PartMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
+export type FeeMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
 
 /**
  * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says

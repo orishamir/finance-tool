@@ -3,7 +3,7 @@
 // in the reading chooses it and brings its card and panel into view; a fee's standing tag on its card or in the glance brings its row of
 // the reading's law card into view. Each column reads the page's `FeeLinks` from here.
 import { createContext, useContext, type HTMLAttributes, type ReactNode } from "react";
-import type { FeeRef, StandingView } from "../../lib/fee-deal/parts";
+import type { FeeRef, StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import { cx } from "../kit";
 import { feeDeal as copy } from "../../copy";

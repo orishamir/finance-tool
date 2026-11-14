@@ -7,7 +7,7 @@
 import { groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { monthKey, monthOf, type MonthKey } from "./model";
-import { engineGroupKey, groupKey, groupOn, groupRateValue, monthBefore, monthsValue, priceAt, priceView, refOf, standingView, subRead, type DealRead, type FeeRef, type GroupOn, type PriceView, type StandingView } from "./parts";
+import { engineGroupKey, groupKey, groupOn, groupRateValue, monthBefore, monthsValue, priceAt, priceView, refOf, standingView, subRead, type DealRead, type FeeRef, type GroupOn, type PriceView, type StandingView } from "./deal-read";
 
 /** A fee in a group: its price now (and its sale's, where a sale is priced apart), each with its standing against the cap. */
 export interface GlanceFee extends FeeRef {

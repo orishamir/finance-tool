@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/parts";
+import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";

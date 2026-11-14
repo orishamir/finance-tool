@@ -5,7 +5,7 @@
 import type { DealBase } from "@finance-tool/engine";
 import type { ProductId } from "@finance-tool/schema";
 import { formOnHolding } from "./offers/capabilities";
-import { CAPACITY } from "./offers/capacity";
+import { capacity, CAPACITY } from "./offers/capacity";
 
 export type { FeeKindId, FormId } from "./core";
 import type { FeeKindId } from "./core";
@@ -21,7 +21,7 @@ export const isFeeKindId = (x: unknown): x is FeeKindId => typeof x === "string"
  */
 export function engineBase(kind: FeeKindId): DealBase {
   if (kind === "fx_spread") return { key: "fx" };
-  const base = CAPACITY[kind].base;
+  const base = capacity(kind).base;
   return base ? { key: base } : { name: kind };
 }
 
@@ -74,7 +74,7 @@ export const CURRENCY_IDS: readonly string[] = ["USD", "EUR", "GBP", "other"];
  * Whether a fee of a kind is usually charged on what is held or on the account (its usual form is a share of what is held or a sum per
  * period): the things the toolbox offers it go by this. What a fee's own prices are charged on goes by their form (`chargedOnHolding`).
  */
-export const onHolding = (kind: FeeKindId): boolean => formOnHolding(CAPACITY[kind].usual);
+export const onHolding = (kind: FeeKindId): boolean => formOnHolding(capacity(kind).usual);
 
 /** Whether a fee is a conversion, whose price changes by the currency rather than by what is bought. */
 export const isConversion = (kind: FeeKindId): boolean => kind === "fx" || kind === "fx_spread";

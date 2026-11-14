@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { inputName } from "../provenance-sheets";
 import { feesData } from "../../lib/fees.server";
 import { BOUND_CURRENCIES, newDeal, typed, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { readDealFor } from "../../lib/fee-deal/parts";
+import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { rateKey, readingOf } from "../../lib/fee-deal/reading";
 import { inputKey } from "../../lib/fee-deal/values";
 import { feeName } from "./words";

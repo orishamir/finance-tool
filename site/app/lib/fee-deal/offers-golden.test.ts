@@ -9,7 +9,7 @@ import { feesData } from "../fees.server";
 import { toolbox } from "./builder";
 import { decodeDeal, encodeDeal } from "./link";
 import { blankPrice, newDeal, readDeal, typed, type Fee, type FeeDeal, type Price } from "./model";
-import { readDealFor } from "./parts";
+import { readDealFor } from "./deal-read";
 import { FEE_KIND_IDS, type FeeKindId, type FormId } from "./shapes";
 import { kindHas } from "./offers/offer";
 import { CAPACITY, keeps } from "./offers/capacity";

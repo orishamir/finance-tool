@@ -15,7 +15,7 @@ import { FIGURES, type Figure } from "./offers/figures";
 import { feesOffered, offerFor, type DataBar } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox } from "./part-words";
-import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
+import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./deal-read";
 import { WHAT_VALUES, type FeeKindId } from "./shapes";
 import { BY_MAX, CONDITIONS, isOwnKind, isPlaceKind, isRangeKind, isWordsKind, pickKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
@@ -353,7 +353,7 @@ export interface OpenCase {
 }
 
 /** A part's fields: each figure it holds that the price has a place for, with its value and its box's sign. */
-const fieldsOf = (id: PartId, p: Price, view: PriceView): PartField[] =>
+const figureFields = (id: PartId, p: Price, view: PriceView): PartField[] =>
   PARTS[id].figures.filter((f) => FIGURES[f].placed(p)).map((f) => ({ figure: f, value: view.figures[f] ?? null, sign: signOfUnit(FIGURES[f].unit(p)) }));
 
 /**
@@ -367,7 +367,7 @@ function openParts(fee: Fee, p: Price, view: PriceView, line: { until?: MonthKey
     const at = said.findIndex((x) => PART_IDS.indexOf(x.id) > PART_IDS.indexOf("flat"));
     said.splice(at < 0 ? said.length : at, 0, { id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK });
   }
-  return said.map((x) => ({ ...x, fields: fieldsOf(x.id, p, view), removable: PARTS[x.id].form === undefined }));
+  return said.map((x) => ({ ...x, fields: figureFields(x.id, p, view), removable: PARTS[x.id].form === undefined }));
 }
 
 /** The case open in place: the fee's slots for the case, and its prices' parts. */

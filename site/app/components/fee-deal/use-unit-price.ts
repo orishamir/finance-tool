@@ -3,7 +3,7 @@
 // read as a price in the new currency.
 import { useEffect, useMemo, useState } from "react";
 import { unitCurrency } from "../../lib/fee-deal/reading";
-import type { DealRead } from "../../lib/fee-deal/parts";
+import type { DealRead } from "../../lib/fee-deal/deal-read";
 
 /** The deal's unit price (null where none is typed in the currency it is asked in now), and what typing or clearing it does. */
 export function useUnitPrice(read: DealRead, dealId: string): { unitPrice: number | null; onUnitPrice: (n: number | null) => void } {

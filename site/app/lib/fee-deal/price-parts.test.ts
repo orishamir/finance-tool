@@ -13,7 +13,7 @@ import { inCapUnit, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
 import { feePriced, newDeal, readDeal, typed, type Fee, type FeeDeal, type Num, type Price } from "./model";
 import { engineDeal, enginePrice } from "./to-engine";
-import { readDealFor, type PartMark } from "./parts";
+import { readDealFor, type FeeMark } from "./deal-read";
 import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
@@ -453,7 +453,7 @@ describe("the templates", () => {
 });
 
 describe("the reading", () => {
-  const marksOf = (d: FeeDeal) => readingOf(read(d), data.fx).statements.flatMap((s) => (s.kind === "mark" && s.mark.kind !== "meet" ? [s.mark as PartMark] : []));
+  const marksOf = (d: FeeDeal) => readingOf(read(d), data.fx).statements.flatMap((s) => (s.kind === "mark" && s.mark.kind !== "meet" ? [s.mark as FeeMark] : []));
   it("states where the percent maximum decides, and the minimum from where it stops", () => {
     const [cap, min, max] = marksOf(account([trade(mizrahi)]));
     expect(cap).toMatchObject({ kind: "cap", currency: "USD", bound: { value: 25, unit: "pct_of_trade" }, meets: { value: 25, unit: "usd_per_trade" } });

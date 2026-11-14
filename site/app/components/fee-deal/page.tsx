@@ -31,7 +31,7 @@ import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress } from "../../lib/fee-deal/link";
 import { hasCases, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { readDealFor } from "../../lib/fee-deal/parts";
+import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { dataBar, dealFromTemplate, feePriceLists, pickTrack, templateOf, templateOptions, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
 import { changeFormKept, deleteDealKept, fillFeeKept, holdOnKept, removeByKept, removeCaseKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords as feeUndoWords, type DealUndo, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
