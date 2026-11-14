@@ -5,11 +5,13 @@
 // being added stands in the open fee's block, above its cases or its price.
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
-import type { BuilderRow, CaseRow as CaseRowView, OpenCase as OpenCaseView, SlimPart, WhenWords } from "../../lib/fee-deal/builder";
+import type { BuilderRow, CaseRow as CaseRowView } from "../../lib/fee-deal/rows";
+import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/panel";
+import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
 import { addCase, copyCase } from "../../lib/fee-deal/edits/case";
 import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import type { StandingView } from "../../lib/fee-deal/parts";
+import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { keeps, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { fmt } from "../../lib/format";

@@ -1,6 +1,6 @@
 // What every view of a deal is built from (method §10.6): the deal read once by the engine (F-110) for the reading's picks (F-114), each
 // price as the page shows it with its figures in their number states, each price's standing against the cap (F-113), the marks (F-112) and
-// what a fee is charged on (F-111). The views (glance.ts, builder.ts, reading.ts) only arrange these.
+// what a fee is charged on (F-111). The views (glance.ts, rows.ts, panel.ts, reading.ts) only arrange these.
 import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type ReadFee } from "./cases";
@@ -246,7 +246,7 @@ export type MarkView =
   | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
 
 /** A mark that names one fee's part: a minimum, a maximum, a percent maximum or a flat price. */
-export type PartMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
+export type FeeMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
 
 /**
  * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says

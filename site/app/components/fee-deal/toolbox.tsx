@@ -5,11 +5,11 @@
 // price puts the price in that form through the page (`onForm`), which keeps what it replaces for the undo.
 import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
-import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib/fee-deal/builder";
+import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib/fee-deal/toolbox";
 import { setFeeName } from "../../lib/fee-deal/edits/deal";
 import { isFormPart, isPending, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
-import { CAPACITY } from "../../lib/fee-deal/offers/capacity";
+import { capacity } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { termKey } from "../../lib/fee-page-data";
 import { IconBin, IconClose, IconPencil } from "../icons";
@@ -162,7 +162,7 @@ export function ToolboxColumn({
   const term = fee.kind === "own" ? null : feeName(fee.kind);
   const owned = term && product ? termKey(term, product) : null;
   const explained = owned && terms?.[owned] ? owned : term && terms?.[term] ? term : null;
-  const side = CAPACITY[fee.kind].oneSide;
+  const side = capacity(fee.kind).oneSide;
   return (
     <Section
       title={p.title}

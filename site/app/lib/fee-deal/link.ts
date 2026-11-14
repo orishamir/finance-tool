@@ -7,7 +7,7 @@ import type { FeesData } from "../fee-page-data";
 import { dealPagePath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
 import type { PartKey } from "./offers/capabilities";
-import { FIGURE_IDS, FIGURES as FIGURE_DEFS, type FigureKey } from "./offers/figures";
+import { FIGURE_IDS, FIGURES, type FigureKey } from "./offers/figures";
 import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
@@ -64,7 +64,7 @@ const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).ma
  * share, a third party's figure and bounds, a refund), and a range's tops (`tops`, a list of figures). A link writes a figure as its
  * number, `[number, source]` where it is sourced, or `null` where it is not given yet (`Num.blank`).
  */
-const FIGURES = new Set([...FIGURE_IDS.flatMap((f) => FIGURE_DEFS[f].keys), "tops"]);
+const FIGURE_KEYS: ReadonlySet<string> = new Set([...FIGURE_IDS.flatMap((f) => FIGURES[f].keys), "tops"]);
 
 type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -78,7 +78,7 @@ function renamed(v: unknown, names: Record<string, string>, figure: (key: string
     const to = Object.hasOwn(names, k) ? names[k]! : undefined;
     if (to === undefined) continue;
     const long = names === SHORT ? k : to;
-    out[to] = !FIGURES.has(long) ? renamed(x, names, figure) : long === "tops" && Array.isArray(x) ? x.map((n) => figure(long, n)) : figure(long, x);
+    out[to] = !FIGURE_KEYS.has(long) ? renamed(x, names, figure) : long === "tops" && Array.isArray(x) ? x.map((n) => figure(long, n)) : figure(long, x);
   }
   return out;
 }

@@ -3,7 +3,8 @@
 // its fee, asking for it where it will stand; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
 import { useState } from "react";
 import { feeDeal as copy } from "../../copy";
-import type { OpenCase, OpenPart, SlotEdit } from "../../lib/fee-deal/builder";
+import type { OpenCase, OpenPart } from "../../lib/fee-deal/panel";
+import type { SlotEdit } from "../../lib/fee-deal/things";
 import { addOwnPlace, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
 import { editPrice } from "../../lib/fee-deal/edits/stage";
 import { withCurrency } from "../../lib/fee-deal/edits/price";

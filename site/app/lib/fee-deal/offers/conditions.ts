@@ -46,16 +46,16 @@ export interface ConditionDef {
 const SUMS: readonly RangeUnit[] = ["ILS", "USD", "EUR", "GBP"];
 const always = () => true;
 /** A fee on an action: what is bought and the size of the action split it; a fee on what is held or on the account is split by what is held. */
-const onAction = (kind: FeeKindId) => !onHolding(kind);
+const actionFee = (kind: FeeKindId) => !onHolding(kind);
 
 /** Every thing, in the toolbox's order: what is bought (or held, or the currency), the track, the channel, then the sizes, then a condition. */
 export const CONDITIONS = {
-  what: { values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k: FeeKindId) => !isConversion(k) && onAction(k) },
+  what: { values: { kind: "list", ids: WHAT_IDS, places: true }, fits: (k: FeeKindId) => !isConversion(k) && actionFee(k) },
   held: { values: { kind: "list", ids: WHAT_IDS, places: true }, pickAs: "what", fits: (k: FeeKindId) => !isConversion(k) && onHolding(k) },
   currency: { values: { kind: "list", ids: CURRENCY_IDS }, picked: false, fits: isConversion },
   track: { values: { kind: "track" }, fits: always },
   channel: { values: { kind: "list", ids: CHANNEL_IDS }, fits: always },
-  actionSize: { values: { kind: "range", units: SUMS }, fits: onAction, readAcross: always },
+  actionSize: { values: { kind: "range", units: SUMS }, fits: actionFee, readAcross: always },
   portfolioSize: { values: { kind: "range", units: SUMS }, fits: always, readAcross: (onHoldingFee: boolean) => onHoldingFee },
   volume: { values: { kind: "range", units: [...SUMS, "units"] }, fits: always },
   count: { values: { kind: "range", units: ["actions"] }, fits: always },

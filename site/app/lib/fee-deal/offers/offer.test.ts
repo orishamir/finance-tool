@@ -12,9 +12,9 @@ import { capacity } from "./capacity";
 import type { ByKind } from "./conditions";
 import { banFor, capacityOffer, feeOffered, kindHas, offerFor, productOffered } from "./offer";
 import { newDeal, readDeal, typed, type FeeDeal } from "../model";
-import { readDealFor } from "../parts";
+import { readDealFor } from "../deal-read";
 import { setPart, type PartId } from "./parts";
-import { panel } from "../builder";
+import { panel } from "../panel";
 import { providentFamily, RULES } from "./rules";
 
 const data = feesData();

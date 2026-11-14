@@ -8,7 +8,7 @@
 // here too.
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
-import { thingName } from "./builder";
+import { thingName } from "./case-words";
 import { holdOn, laterUntouched, removeStage } from "./edits/stage";
 import { removeBy, removeCase } from "./edits/case";
 import { setKind, updateFee } from "./edits/deal";

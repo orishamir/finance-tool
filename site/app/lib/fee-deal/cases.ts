@@ -1,6 +1,6 @@
 // A deal read for the reading's picks (method §10.6, F-114 and F-115): each fee whose price changes by things is read in the case the picks
 // give it, and a price that changes by a size read across sizes as one fee per step, charged on that step's sizes alone. A fee whose price
-// changes by nothing is read as it is. What the views read (parts.ts) is the result: plain fees with their prices over time.
+// changes by nothing is read as it is. What the views read (deal-read.ts) is the result: plain fees with their prices over time.
 import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
 import { BOUND_CURRENCIES, pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type Price, type Stage, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, holdsFunds, onHolding } from "./shapes";
