@@ -2,6 +2,7 @@
 // figure is a Num). Written from the rule base (CS, TXK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
+import { YearOf } from "./year";
 import { Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 import { OpenLossOffset } from "./open-tax";
@@ -19,10 +20,10 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד בכל חודש {monthly ? <Num value={monthly} /> : null} עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים יכול להורות להכפיל אותם מתוכה (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
+          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> מפקיד בכל חודש {monthly ? <Num value={monthly} /> : null}<YearOf v={monthly} /> עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים יכול להורות להכפיל אותם מתוכה (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
         </Sentence>
         <Sentence measure>
-          בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>. ילדים שנולדו מאז תחילת התוכנית מקבלים {grantYoung ? <Num value={grantYoung} /> : null} בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה. ילדים שנולדו לפני כן מקבלים מענק אחד <Term prefix="ב" id="גיל הפדיון">גיל הפדיון</Term>. כולם מקבלים עוד {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null}, אבל רק אם לא משכו כלום קודם: גם <Term id="משיכה חלקית">משיכה חלקית</Term> מבטלת את המענק הזה.
+          בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>. ילדים שנולדו מאז תחילת התוכנית מקבלים {grantYoung ? <Num value={grantYoung} /> : null}<YearOf v={grantYoung} /> בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה. ילדים שנולדו לפני כן מקבלים מענק אחד <Term prefix="ב" id="גיל הפדיון">גיל הפדיון</Term>. כולם מקבלים עוד {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null}, אבל רק אם לא משכו כלום קודם: גם <Term id="משיכה חלקית">משיכה חלקית</Term> מבטלת את המענק הזה.
         </Sentence>
         <Sentence measure>
           הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן מושכים רק למימון צרכים רפואיים של הילד, כשמצב רפואי מסכן את חייו, גופו או נפשו ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד מושך לבד.

@@ -4,11 +4,12 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { help as helpCopy, trackBrowser as t } from "../../copy";
+import { help as helpCopy, track as trackCopy, trackBrowser as t } from "../../copy";
 import { loadTerms } from "../../lib/data.server";
 import { buildProductView, feeRangeOf, type SortId, type TbGroup } from "../../lib/track-browser";
 import { buildTrackBrowser } from "../../lib/track-browser.server";
 import { ProvenanceProvider } from "../provenance";
+import { FeeNum } from "../kit";
 import { TrackList } from "./list";
 
 const data = buildTrackBrowser();
@@ -30,5 +31,23 @@ describe("a company page's fee heads", () => {
     expect(html).toContain(mark(t.help.deposit));
     // the mark is the sort button's neighbour, never inside it
     expect(html).not.toMatch(/<button[^>]*>(?:(?!<\/button>).)*<button/s);
+  });
+});
+
+describe("a pension product's fees (CAT-39)", () => {
+  it("say under the fee head that they are the whole fund's, and a provident product's do not", () => {
+    expect(draw("pension-comprehensive")).toContain(`${t.columns.average.replace("{year}", "2025")}, ${trackCopy.feeWhole}`);
+    expect(draw("kupat-gemel-lehashkaa")).not.toContain(trackCopy.feeWhole);
+  });
+});
+
+describe("a fee the regulator left empty", () => {
+  it("says in words that it was not reported yet, not a dash", () => {
+    const view = buildProductView(data, "kupat-gemel-lehashkaa")!;
+    const empty = view.tracks.find((x) => x.fee.value === null);
+    expect(empty).toBeDefined();
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms, dimensions: {}, today: data.today }, children: createElement(FeeNum, { value: empty!.fee }) })));
+    expect(html).toContain(trackCopy.feeNotReported);
+    expect(html).not.toContain(trackCopy.emptyMark);
   });
 });

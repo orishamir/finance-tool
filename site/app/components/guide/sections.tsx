@@ -160,6 +160,8 @@ export interface FeeRow {
   name: string;
   base: string;
   cap: ReactNode;
+  /** Under the cap: the case it holds in and what holds where it does not bind (a cap that binds banks only), from its record. */
+  capNote?: ReactNode;
   rules: readonly string[];
   tag?: ReactNode;
   /** "תלוי בחברה" and the companies whose own rate the site holds for this fee (D30), under the cap. */
@@ -191,6 +193,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
               {f.cap}
               {f.tag}
             </span>
+            {f.capNote && <span className="block text-sm text-muted-foreground">{f.capNote}</span>}
             {f.range && <span className="block text-sm text-muted-foreground">{f.range}</span>}
             {f.varies && <span className="block">{f.varies}</span>}
             <RulesLine ids={f.rules} name={f.name} className="pt-1" />
@@ -217,6 +220,7 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
                     {f.cap}
                     {f.tag}
                   </span>
+                  {f.capNote && <span className="block pt-1 text-sm text-muted-foreground">{f.capNote}</span>}
                   {f.range && <span className="block pt-1 text-sm text-muted-foreground">{f.range}</span>}
                   {f.varies && <span className="block pt-1">{f.varies}</span>}
                   <RulesLine ids={f.rules} name={f.name} className="pt-1" />
@@ -289,11 +293,23 @@ export interface ChecklistRowView {
   id: string;
   name: string;
   explanation: string;
-  mark: "covered" | "na" | "blocked";
+  /** `uncovered`: no rule the product's record cites answers the question yet, which is not the same as the question not applying. */
+  mark: "covered" | "uncovered" | "blocked";
   code?: string;
   rules: readonly string[];
   weak?: Strength | null;
   applies?: ReactNode;
+}
+
+/**
+ * A row's mark from the product record's dimension mark (data-schema 3.3): `covered`; `blocked:<question>` or a bare `blocked`, with its
+ * open question where it names one; and a dimension the record has no mark for, which no rule it cites carries, is not covered yet.
+ */
+export function checklistMark(mark: string | undefined): Pick<ChecklistRowView, "mark" | "code"> {
+  if (mark === "covered") return { mark: "covered" };
+  if (mark === "blocked") return { mark: "blocked" };
+  if (mark?.startsWith("blocked:")) return { mark: "blocked", code: mark.slice("blocked:".length) };
+  return { mark: "uncovered" };
 }
 
 function ChecklistRow({ r }: { r: ChecklistRowView }) {
@@ -307,7 +323,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="font-medium">{r.name}</span>
           <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
-            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
+            {r.mark === "covered" ? copy.checklist.considered : r.mark === "uncovered" ? copy.checklist.uncovered : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
           </span>
           {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
           {r.applies}

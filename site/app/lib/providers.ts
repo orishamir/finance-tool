@@ -275,7 +275,9 @@ export type NotComparable =
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
   /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
-  | { code: "other-venue"; venue: "us" | "europe" };
+  | { code: "other-venue"; venue: "us" | "europe" }
+  /** the run would rest on a rule that is open (F-04: a TASE foreign fund's tax index, TXF-04): nothing is computed or ranked. */
+  | { code: "rule-open"; ruleId: string };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {

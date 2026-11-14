@@ -23,12 +23,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-40"
       ],
       "state": "sourced",
-      "notes": "Price Return, Gross Total Return and Net Total Return (methodology p.21, \"Calculation Return Types\"). The withholding-tax rate used in the net version is in the provider's Equity Indices Policies & Practices Methodology, not read."
+      "notes": "Price Return, Gross Total Return and Net Total Return (methodology p.21, \"Calculation Return Types\"). The withholding-tax rate used in the net version is in the provider's Equity Indices Policies & Practices Methodology, not read. Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     }
   },
   "text_he": "עורך המדד מחשב שלוש גרסאות של המדד, שנבדלות בטיפול בדיבידנדים. גרסת המחיר מתעלמת מהדיבידנדים; גרסת התשואה הכוללת ברוטו משקיעה אותם מחדש במדד ביום האקס בלי להוריד מס; גרסת התשואה הכוללת נטו משקיעה אותם מחדש אחרי ניכוי מס במקור. איזו גרסה קרן מסוימת עוקבת אחריה כתוב בתשקיף של הקרן, לא בכללי המדד.",

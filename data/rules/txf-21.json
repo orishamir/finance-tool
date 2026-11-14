@@ -18,21 +18,21 @@
       "value": 375000,
       "unit": "nis",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "רשות המסים, דע זכויותיך וחובותיך 2025, p.5, item 3",
+        "url": "https://www.gov.il/he/Departments/Guides/tax-return-application-guide",
+        "title": "רשות המסים, מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (updated 20.4.2026), \"נכון לשנת 2026\": \"קצבת חוץ (תוספת ד') 375,000\"; schedule ד is the ceiling the exemption regulations set for foreign income (TXG-17)",
         "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-26",
+      "checked": "2026-10-31",
       "effective_from": null,
       "effective_to": null,
-      "tax_year": 2025,
+      "tax_year": 2026,
       "update_rule": "frozen 2025-2027",
       "rule_ids": [
         "TXF-21"
       ],
       "state": "sourced",
-      "notes": "Foreign income up to this ceiling on which an advance was paid by 30 April can exempt the person from filing (guide p.5 item 3, re-read in the text layer 2026-10-25 and 2026-10-26). Indexation frozen 2025-2027 (TXG-06)."
+      "notes": "Foreign income up to this ceiling on which an advance was paid by 30 April can exempt the person from filing. The 2025 guide gives 375,000 for 2025 (p.5 item 3); the refund guide gives 375,000 for schedule ד for 2026, read in the library copy of 31.10.2026. Indexation frozen 2025-2027 (TXG-06)."
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
@@ -52,6 +52,16 @@
       "page": 118,
       "quote": "תשלום מקדמות מס בגין הכנסות בשיעורי מס מיוחדים בישראל ובחו״ל",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/he/Departments/Guides/tax-return-application-guide",
+      "title": "מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (רשות המסים, updated 20.4.2026)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "קצבת חוץ (תוספת ד') 375,000",
+      "checked": "2026-10-31"
     }
   ]
 }

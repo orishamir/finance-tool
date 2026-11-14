@@ -3,6 +3,7 @@
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { ReactNode } from "react";
 import type { GuideContent } from "./types";
+import { YearOf } from "./year";
 import type { BreakTerms } from "../../lib/guide-signature";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Link } from "react-router";
@@ -43,7 +44,7 @@ export const content: GuideContent = {
           {depositBrowser.guideLink}
         </TextLink>
         <Sentence measure>
-          {since ? <>מאז <Num value={since} /> </> : null}אפשר לפתוח פיקדון שקלי גם בבנק אחר, בלי לפתוח בו עו״ש, דרך <Term id="חשבון במערכת סגורה">חשבון במערכת סגורה</Term>: הכסף מגיע רק מהחשבון שלכם בבנק אחר וחוזר רק אליו. החובה לאפשר זאת לא חלה על בנקים קטנים וזעירים.
+          {since ? <>מאז <Num value={since} /> </> : null}אפשר לפתוח פיקדון שקלי גם בבנק אחר, בלי לפתוח בו עו״ש, דרך <Term id="חשבון במערכת סגורה">חשבון במערכת סגורה</Term>: הכסף מגיע רק מהחשבון שלכם בבנק אחר וחוזר רק אליו. החוק פוטר מהחובה הזו בנק שהיקף הפעילות שלו קטן או זעיר, לפי חלקו בנכסים של כל הבנקים. אילו בנקים פטורים היום, האתר עוד לא בדק. <IdRef id="BANK OQ5" />
         </Sentence>
         <RulesLine ids={["REG-01", "REG-03", "BANK-01", "BANK-21"]} />
       </>
@@ -101,7 +102,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          למי שההכנסה שלו ושל בן או בת הזוג {ceiling ? <>עד <Num value={ceiling} /> </> : "נמוכה "}בשנה יש <Term id="פטור למעוט הכנסה">פטור למעוט הכנסה</Term>{deduction ? <>: עד <Num value={deduction} /> בשנה</> : null} מהריבית על פיקדונות ותוכניות חיסכון. מעל התקרה הפטור הולך וקטן. בדוח השנתי הוא מחושב אוטומטית, ובמהלך השנה מקבלים אותו <Term prefix="ב" id="תיאום מס">תיאום מס</Term>.
+          למי שההכנסה שלו ושל בן או בת הזוג {ceiling ? <>עד <Num value={ceiling} /> </> : "נמוכה "}בשנה יש <Term id="פטור למעוט הכנסה">פטור למעוט הכנסה</Term>{deduction ? <>: עד <Num value={deduction} /> בשנה</> : null} מהריבית על פיקדונות ותוכניות חיסכון<YearOf v={ceiling ?? deduction} plural />. מעל התקרה הפטור הולך וקטן. בדוח השנתי הוא מחושב אוטומטית, ובמהלך השנה מקבלים אותו <Term prefix="ב" id="תיאום מס">תיאום מס</Term>.
         </Sentence>
         <RulesLine ids={["TXI-20"]} />
         <Sentence measure>

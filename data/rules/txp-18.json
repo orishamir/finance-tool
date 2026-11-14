@@ -15,7 +15,8 @@
     "liquidity-lockup",
     "eligibility"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-15",
   "figures": {
     "minimum_rate": {
       "value": 35,
@@ -38,55 +39,55 @@
       "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, and the fund withholds 35%. Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. The taxable base is the whole amount paid (reg. 3(1) of the 1962 regulations, \"על אותם כספים\"; s.87(ד) applies the ordinary tax where it is higher)."
     },
     "low_income_one": {
-      "value": 6247.67,
+      "value": 6443.85,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
-        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3",
-        "publisher": "Israel Tax Authority",
+        "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%99%D7%A0%D7%99%D7%9E%D7%95%D7%9D.aspx",
+        "title": "ביטוח לאומי, \"שכר מינימום מגיל 18 ומעלה\": \"שכר חודשי: 6,443.85 ש\"ח (החל ב- 01.04.2026)\"; the test is the monthly minimum wage under the Minimum Wage Law (reg. 34(ב)(2), קובץ התקנות 6332)",
+        "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-31",
-      "effective_from": null,
+      "checked": "2026-11-14",
+      "effective_from": "2026-04-01",
       "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
       "rule_ids": [
         "TXP-18"
       ],
       "state": "sourced",
-      "notes": "One monthly minimum wage, as of 4/2025 as the letter prints it."
+      "notes": "One monthly minimum wage. Reg. 34(ב)(2) of the 1964 provident-fund regulations (KT 6332, 2004) defines the minimal income as the monthly minimum wage under the Minimum Wage Law, with no figure of its own; the Minimum Wage Law sets it at 47.5% of the average wage as of 1 April each year. Until 31.3.2026 it was 6,247.67 (Tax Authority letter of 26.10.2025, \"as of 4/2025\"). The Tax Authority's deductions booklet updated to April 2026 still prints 6,248 in its table for tax year 2026, the amount in force on 1.1.2026; the regulation governs."
     },
     "low_income_double": {
-      "value": 12495.34,
+      "value": 12887.7,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
-        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3",
-        "publisher": "Israel Tax Authority",
+        "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%99%D7%A0%D7%99%D7%9E%D7%95%D7%9D.aspx",
+        "title": "ביטוח לאומי, \"שכר מינימום מגיל 18 ומעלה\": \"שכר חודשי: 6,443.85 ש\"ח (החל ב- 01.04.2026)\", doubled by reg. 34(ב)(2) (\"כפל הסכום האמור\", קובץ התקנות 6332)",
+        "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-31",
-      "effective_from": null,
+      "checked": "2026-11-14",
+      "effective_from": "2026-04-01",
       "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
       "rule_ids": [
         "TXP-18"
       ],
       "state": "sourced",
-      "notes": "Twice the monthly minimum wage, as of 4/2025 as the letter prints it."
+      "notes": "Twice the monthly minimum wage (6,443.85 × 2, computed), for a single person or a couple with a child under 18. Until 31.3.2026 it was 12,495.34 (Tax Authority letter of 26.10.2025, \"as of 4/2025\")."
     },
     "child_age_limit": {
       "value": 18,
       "unit": "years",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
-        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3, table: \"יחיד עם ילד אחד לפחות שטרם מלאו לו גיל 18\", \"זוג עם ילד אחד לפחות שטרם מלאו לו לגיל 18\"",
-        "publisher": "Israel Tax Authority",
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=11",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332, file p.11 (gazette p.865): \"לפחות ילד אחד שטרם מלאו לו 18 שנה - כפל הסכום האמור\"; the Tax Authority letter of 26.10.2025, p.1 s.ב.3, applies it to a single person too",
+        "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-11-12",
+      "checked": "2026-11-14",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,6 +103,33 @@
   "checked": "2026-11-12",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.864), s.16(1), reg. 34(ב)(2)",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 864), סעיף 16(1), תקנה 34(ב)(2)",
+      "page": 10,
+      "quote": "אין לו ולבן זוגו הכנסות העולות על סכום ההכנסה המזערית בחודש",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=11",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.11 (gazette p.865), the definition of סכום ההכנסה המזערית",
+      "page": 11,
+      "quote": "כפל הסכום האמור",
+      "checked": "2026-11-14"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
       "title": "Circular 2/2013",
@@ -210,6 +238,42 @@
       "locator_he": "עמוד 12, עמוד 19",
       "page": 12,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%99%D7%A0%D7%99%D7%9E%D7%95%D7%9D.aspx",
+      "title": "שכר מינימום מגיל 18 ומעלה (ביטוח לאומי)",
+      "title_he": "שכר מינימום מגיל 18 ומעלה (ביטוח לאומי)",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "שכר חודשי: 6,443.85",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/14/law/14_lsr_211403.pdf#page=1",
+      "title": "חוק שכר מינימום (תיקון מס' 2), התשנ\"ז-1997, ספר החוקים 1621",
+      "title_he": "חוק שכר מינימום (תיקון מס' 2), התשנ\"ז-1997, ספר החוקים 1621",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.1 (gazette p.128), s.1(4), the definition of שכר מינימום",
+      "page": 1,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_306623.pdf#page=3",
+      "title": "חוק שכר מינימום (העלאת סכומי שכר מינימום - הוראת שעה), התשע\"ה-2015, ספר החוקים 2489",
+      "title_he": "חוק שכר מינימום (העלאת סכומי שכר מינימום - הוראת שעה), התשע\"ה-2015, ספר החוקים 2489",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.153), s.2",
+      "locator_he": "עמוד הקובץ 3 (עמוד ספר החוקים 153), סעיף 2",
+      "page": 3,
+      "checked": "2026-11-14"
     }
   ]
 }

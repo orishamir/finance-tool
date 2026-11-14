@@ -7,7 +7,7 @@ import type { OpenCase, OpenPart, PartField, SlotEdit } from "../../lib/fee-deal
 import { addOwnPlace, editPrice, setMine, setPart, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withThirdForm, withThirdWho, type PartId, type Side } from "../../lib/fee-deal/edit";
 import { BOUND_CURRENCIES, MONTHS, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "../../lib/fee-deal/model";
 import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type RangeUnit } from "../../lib/fee-deal/shapes";
-import { formatValue, typedSum } from "../../lib/format";
+import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Button, FigureField, InlineSelect, MonthField, PartEdit, RangeMenu, SegmentedControl, Switch, TextField, TickMenu, TrackMenu, When, monthText, type PartMark } from "../kit";
 import { PriceFigure, partFieldId, signText } from "./figures";
@@ -462,5 +462,5 @@ export function WhenText({ words }: { words: { text?: string; lead?: string; fig
   return <>{words.text}</>;
 }
 
-/** A range's top as plain words, a whole sum without cents ("100 $", "200 יחידות"), for a menu's line and a case's spoken name. */
-export const numText = (v: SiteValue): string => typedSum(v.value as number, v.unit) ?? formatValue(v.value as number, v.unit);
+/** A range's top as plain words ("100 $", "200 יחידות"), for a menu's line and a case's spoken name. */
+export const numText = (v: SiteValue): string => formatValue(v.value as number, v.unit);

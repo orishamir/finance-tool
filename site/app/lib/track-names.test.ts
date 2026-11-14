@@ -2,7 +2,8 @@
 import { describe, expect, it } from "vitest";
 import { buildProductView } from "./track-browser";
 import { buildTrackBrowser } from "./track-browser.server";
-import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
+import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames, siteTrackName } from "./track-names";
+import { loadCma } from "./data.server";
 
 const data = buildTrackBrowser();
 const shortOf = (productId: string, company: string, fundName: string) => {
@@ -37,8 +38,18 @@ describe("short names, from the real tracks", () => {
     expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה עוקב מדדי מניות")).toBe("מקיפה עוקב מדדי מניות");
   });
 
-  it("the regulator's garbled S&P is written right in the short name", () => {
-    expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה עוקב מדד S1;P 500")).toBe("מקיפה עוקב מדד S&P 500");
+  it("the regulator's garbled S&P is written right in the full name and the short name", () => {
+    expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה עוקב מדד S&P 500")).toBe("מקיפה עוקב מדד S&P 500");
+  });
+
+  it("every name, kind and type of the regulator's files reaches every page written S&P (loadCma: the track, company and tracks pages)", () => {
+    const tracks = loadCma().tracks;
+    const garbled = /(?<![A-Za-z])(?:S1;P|s1;p|s&p|s&P|S&p)(?![A-Za-z])/;
+    expect(tracks.filter((x) => garbled.test(x.name) || garbled.test(x.specialization) || garbled.test(x.subSpecialization)).map((x) => x.fundId)).toEqual([]);
+    // the 12 pension S&P 500 tracks the file writes "S1;P 500" are among them
+    expect(tracks.filter((x) => x.dataset === "pensia-net" && /S&P ?500/.test(x.name)).length).toBeGreaterThanOrEqual(12);
+    expect(siteTrackName("עוקב מדד S1;P 500")).toBe("עוקב מדד S&P 500");
+    expect(siteTrackName("AT&T")).toBe("AT&T");
   });
 
   it("the regulator's lower-case s&p is written S&P in the kinds and the short names, and only as its own word", () => {

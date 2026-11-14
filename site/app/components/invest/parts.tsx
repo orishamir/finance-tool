@@ -99,5 +99,7 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
       return n.recordError;
     case "other-venue":
       return n.otherVenue(r.venue);
+    case "rule-open":
+      return c.reasons.ruleOpen[r.ruleId] ?? c.reasons.ruleOpenOther;
   }
 }

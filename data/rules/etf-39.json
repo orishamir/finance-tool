@@ -22,12 +22,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-39"
       ],
       "state": "sourced",
-      "notes": "Index page: \"Rebalancing Frequency: Quarterly in March, June, September, and December\". The methodology: share counts are updated quarterly, while composition changes are made as needed with no scheduled reconstitution (p.17)."
+      "notes": "Index page: \"Rebalancing Frequency: Quarterly in March, June, September, and December\". The methodology: share counts are updated quarterly, while composition changes are made as needed with no scheduled reconstitution (p.17). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "announcement_notice_business_days": {
       "value": 3,
@@ -42,12 +42,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-39"
       ],
       "state": "sourced",
-      "notes": "\"Index additions and deletions are announced with at least three business days advance notice. Less than three business days' notice may be given at the discretion of the Index Committee.\" (p.17)"
+      "notes": "\"Index additions and deletions are announced with at least three business days advance notice. Less than three business days' notice may be given at the discretion of the Index Committee.\" (p.17) Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     },
     "iwf_change_threshold": {
       "value": 5,
@@ -62,12 +62,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-39"
       ],
       "state": "sourced",
-      "notes": "Float-factor changes are made at the quarterly review only if they are at least 5% of current shares outstanding and relate to a single corporate action (p.17)."
+      "notes": "Float-factor changes are made at the quarterly review only if they are at least 5% of current shares outstanding and relate to a single corporate action (p.17). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     }
   },
   "text_he": "משקל כל חברה במדד הוא שווי השוק של המניות שלה שבידי הציבור, ואין במדד עצמו תקרת משקל לחברה אחת. אין מועד קבוע להחלפת חברות: ועדת המדדים מכניסה ומוציאה חברות לפי הצורך, למשל אחרי מיזוג או רכישה, ומודיעה על כך לפחות שלושה ימי עסקים מראש. מספר המניות של כל חברה מתעדכן פעם ברבעון, במרץ, ביוני, בספטמבר ובדצמבר.",

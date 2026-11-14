@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, relativeGap, isTie, securitiesBlockedBy, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -441,6 +441,15 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
+/** The open rule a run of the spec's fund would rest on (F-04), or null. */
+const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
+
+/** The open rule every fund of a kind would rest on (F-04: a foreign fund in Tel Aviv, TXF-04), or null: what a fund the person types of that kind is told. */
+export function optionOpenRule(bundle: IndicesBundle, option: OptionId): string | null {
+  const kind = option === "tase-foreign" ? "tase-foreign-fund" : option === "abroad" ? "foreign-fund" : "israeli-fund";
+  return securitiesBlockedBy({ kind }, ruleContext(bundle));
+}
+
 /** The house whose price list a snapshot reads: its own, or, for an account built on a house (F-101), that house's. */
 const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
 
@@ -574,6 +583,9 @@ function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | n
 const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.band ?? null) === JSON.stringify(b.band ?? null);
 
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
+  // a fund whose tax rests on an open rule is priced nowhere (F-04: a TASE foreign fund, TXF-04), so no house is ranked on a guess
+  const open = blockedBy(ctx, spec);
+  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ruleId: open } }]));
   // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
   // it: never run, so the empty field is never charged as zero (D56)
   // (an account built on a house reads an empty field as the house's price: it follows the house, below)
@@ -944,6 +956,9 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx, list);
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
+  // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35); D84's pre-tax figures are not built yet, so no figure
+  const open = securitiesBlockedBy(run.fund, ruleContext(ctx.bundle));
+  if (open) return { reason: { code: "rule-open", ruleId: open } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
   const listing = listingOf(rec, subject.instrumentClass);

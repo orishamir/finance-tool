@@ -20,8 +20,8 @@ export function feeName(kind: FeeKindId, own?: string): string {
   return base?.name ?? copy.names[kind] ?? kind;
 }
 
-/** A sum as plain words, isolated left to right inside Hebrew, whole without cents ("100 $"), else as its unit writes it. */
-export const sumText = (v: SiteValue): string => `\u2066${typedSum(v.value as number, v.unit) ?? formatValue(v.value as number, v.unit)}\u2069`;
+/** A sum as plain words, isolated left to right inside Hebrew, as its unit writes it (a whole sum without cents, "100 $"). */
+export const sumText = (v: SiteValue): string => `\u2066${formatValue(v.value as number, v.unit)}\u2069`;
 
 /**
  * A fee's name, with its stretch of sizes where it is one step of a fee read across sizes (F-115): "המרת מטבע, עד 100 ₪", "המרת מטבע, מעל
@@ -83,12 +83,11 @@ export function FeeName({ fee, className, before, after }: { fee: FeeRef; classN
 }
 
 /**
- * How the page shows a sum: one the person typed, or a price list prints, whole where it is whole ("8 $", never "8.00 $") and else with
- * its cents (`typedSum`); one the site works out in whole units of its currency (`computedSum`); any other figure (a percent, a price per
- * unit) as its unit's rules say.
+ * How the page shows a sum: one the person typed as they typed it (`typedSum`), one the site works out in whole units of its currency
+ * (`computedSum`); any other figure as its unit's rules say (a price list's sum whole where it is whole, "8 $", `fmt.usd`).
  */
 export const sumDisplay = (v: SiteValue): ((n: number) => string | undefined) | undefined =>
-  v.state === "computed" ? (n) => computedSum(n, v.unit) : (n) => typedSum(n, v.unit);
+  v.state === "entered" ? (n) => typedSum(n, v.unit) : v.state === "computed" ? (n) => computedSum(n, v.unit) : undefined;
 
 /** A figure on the page: a sum as `sumDisplay` shows it. */
 export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) => <Num value={value} prefix={prefix} display={sumDisplay(value)} />;

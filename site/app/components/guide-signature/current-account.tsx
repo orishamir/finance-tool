@@ -13,7 +13,7 @@ import { differenceOf, type SiteValue } from "../../lib/value";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
 import { LeadTail, Num, RuleRef, RulesLine, Term } from "../provenance";
-import { CommonRateLine, Gap, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, isMajority, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -103,7 +103,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             {copy.account.headline.inAccount}{" "}
             <Num value={values.account} /> {copy.account.headline.today} {direction ? <><Num value={change} /> {direction}</> : copy.account.headline.same}.
           </p>
-          {commonIsZero && <p>{copy.account.mostPayNothing}</p>}
+          {commonIsZero && <p>{commonCount && bankCount && isMajority(commonCount, bankCount) ? copy.account.mostPayNothing : copy.account.modePaysNothing}</p>}
         </div>
       ) : null}
 

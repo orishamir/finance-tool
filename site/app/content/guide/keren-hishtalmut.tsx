@@ -7,7 +7,7 @@ import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, ProseList } from "../../components/kit";
 import { sectionTitle } from "../../lib/guide-nav";
 import { fmt } from "../../lib/format";
-import { AbroadAmount, AbroadCount, AbroadFigure, AbroadSaid, AbroadYears } from "./abroad-parts";
+import { AbroadAmount, AbroadCount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } from "./abroad-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 const Whole = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} display={fmt.nisWhole} /> : null);
@@ -108,7 +108,7 @@ export const content: GuideContent = {
       fr: {
         title: (p) => <>בצרפת: תוכנית <bdi dir="ltr">{p}</bdi></>,
         body: (f) => <>חיסכון <AbroadSaid v={f("who")}>דרך מקום העבודה</AbroadSaid>. הכסף נעול לפחות <AbroadYears v={f("keep_years")} />, ויש מקרים שבהם אפשר למשוך מוקדם, למשל כשקונים דירה למגורים. המעסיק יכול להוסיף על מה שהעובד מפקיד.</>,
-        tiles: (f) => [<>עד פי <AbroadFigure v={f("employer_multiple")} />, ועד <AbroadAmount v={f("employer_match")} /></>, <AbroadSaid v={f("income_tax")}>אין על תוספת המעסיק</AbroadSaid>, <>לפחות <AbroadYears v={f("keep_years")} /></>],
+        tiles: (f) => [<>עד פי <AbroadFigure v={f("employer_multiple")} />, ועד <AbroadAmount v={f("employer_match")} /> בשנת <AbroadPeriod v={f("employer_match")} /></>, <AbroadSaid v={f("income_tax")}>אין על תוספת המעסיק</AbroadSaid>, <>לפחות <AbroadYears v={f("keep_years")} /></>],
       },
     },
   },

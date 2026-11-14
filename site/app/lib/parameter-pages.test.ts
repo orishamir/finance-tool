@@ -142,9 +142,15 @@ describe("the parameters page shows only what a live page reads", () => {
     expect(data.parameters.flatMap((p) => p.values.filter((v) => !v.label).map(() => p.name))).toEqual([]);
   });
 
+  it("calls the cash rate what its source is, the Bank of Israel's published rate, not an unpublished guess", () => {
+    const why = parametersPage.why["P-05"]!;
+    expect(why).toContain("ריבית בנק ישראל");
+    expect(why).not.toMatch(/לא ריבית שפורסמה/);
+  });
+
   it("names no page the site no longer has in a line it shows", async () => {
-    const data = (await loader()) as { parameters: { why: string; values: { label: string }[] }[] };
+    const data = (await loader()) as { parameters: { name: string; why: string; values: { label: string }[] }[] };
     const gone = /עמוד השאלות|עמוד ההשוואה|בהשוואה לפי חשיפה|טופס המטרה|השוואה למטרה/;
-    expect(data.parameters.flatMap((p) => [p.why, ...p.values.map((v) => v.label)]).filter((t) => gone.test(t))).toEqual([]);
+    expect(data.parameters.flatMap((p) => [p.name, p.why, ...p.values.map((v) => v.label)]).filter((t) => gone.test(t))).toEqual([]);
   });
 });

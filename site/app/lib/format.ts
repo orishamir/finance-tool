@@ -14,6 +14,10 @@ const dollars = new Intl.NumberFormat(he, { style: "currency", currency: "USD", 
 const dollarsWhole = new Intl.NumberFormat(he, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 const euros = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const eurosWhole = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const poundsWhole = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", maximumFractionDigits: 0 });
+/** An amount with no cents to show: a whole amount never shows them ("60,000 $", not "60,000.00 $"). */
+const wholeCents = (v: number) => Math.round(Math.abs(v) * 100) % 100 === 0;
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
 const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const shekelsFine = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 4 });
@@ -84,13 +88,15 @@ export const fmt = {
   nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
   /** `1,234 ₪`, whole shekels. `isolate`: wrapped in a left-to-right isolate, for an amount inside Hebrew text with no element of its own (none by default). */
   nisWhole: (v: number, { isolate = false }: SignedOptions = {}) => isolated(withMinus(plainMarks(currencyWhole.format(v))), { isolate }),
-  /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (until then a bare "2"). */
-  usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
+  /** `7 $`, `0.35 $`: a bound or a fee a foreign or bank price list prints in dollars; a whole amount shows no cents, as `nis` (wording.md). */
+  usd: (v: number) => withMinus(plainMarks((wholeCents(v) ? dollarsWhole : dollars).format(v))),
   /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
   usdWhole: (v: number) => withMinus(plainMarks(dollarsWhole.format(v))),
-  /** `25.00 €` and `5.00 £`: a bound a price list prints in euros or pounds, for trades abroad (until then a bare "25"). */
-  eur: (v: number) => withMinus(plainMarks(euros.format(v))),
-  gbp: (v: number) => withMinus(plainMarks(pounds.format(v))),
+  /** `25 €` and `5.50 £`: a bound a price list prints in euros or pounds, for trades abroad; a whole amount shows no cents. */
+  eur: (v: number) => withMinus(plainMarks((wholeCents(v) ? eurosWhole : euros).format(v))),
+  gbp: (v: number) => withMinus(plainMarks((wholeCents(v) ? poundsWhole : pounds).format(v))),
+  /** `22.70 מיליארד $`: a dollar amount of a billion or more in its short form, two decimals as `nisBillions`. */
+  usdBillions: (v: number) => `${withMinus(billions.format(v / 1e9))} ${numbers.billion} $`,
   /** `20,000`, `3,844.80`: an amount written before its currency's word in a Hebrew line (an amount abroad, "20,000 ליש״ט"): whole, or with
    *  the two decimals the law prints, never rounded and never converted. */
   amount: (v: number) => (Number.isInteger(v) ? plainNumber(v) : withMinus(fixed(2, "decimal").format(v))),
@@ -285,6 +291,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     case "nis_per_transfer":
       return state ? nisShown(value, state, parameter) : fmt.nis(value);
     case "usd":
+      return Math.abs(value) >= 1e9 ? fmt.usdBillions(value) : fmt.usd(value);
     case "usd_per_trade":
     case "usd_per_event":
       return fmt.usd(value);

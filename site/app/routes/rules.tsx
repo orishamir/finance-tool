@@ -14,7 +14,7 @@ import { RuleCard, RuleDetail, SlottedText, TopMatch } from "../components/prove
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
 import { Sheet } from "../components/Sheet";
-import { IconAll, IconArrowBack, IconChevronDown } from "../components/icons";
+import { IconAll, IconArrowBack, IconChevronDown, IconLock } from "../components/icons";
 import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, DocLink, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PageHead, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, TextLink, When, panelId, tabId, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
@@ -36,7 +36,7 @@ export async function loader() {
   const { loadChecklistRows, loadPinnedRules, loadPublishersHe, loadRules, loadProducts, today } = await import("../lib/data.server");
   const { ruleProducts, ruleScores } = await import("../lib/rule-uses.server");
   const { shelfOf } = await import("../lib/rule-shelves");
-  const { firstSentence, rowPills, rowSource } = await import("../lib/rule-row");
+  const { firstSentence, openPart, rowPills, rowSource } = await import("../lib/rule-row");
   const { loadCompanyDocRows } = await import("../lib/documents.server");
   const rules = loadRules();
   // D30: the list holds general rules only; a company's term is on that company's page, and a search finds it, named
@@ -62,6 +62,7 @@ export async function loader() {
         score: scores[r.id] ?? 0,
         products: products[r.id] ?? [],
         lead: firstSentence(r.text_he),
+        ...(openPart(r) ? { openPart: true } : {}),
         pills: rowPills(r, year),
         authority: src.authority,
         sources: src.count,
@@ -202,6 +203,13 @@ function RuleRow({ r, selected, onOpen }: { r: LightRule; selected: boolean; onO
         <>
           {gershayim(r.authority)}
           {r.sources > 0 && <span className="max-md:hidden"> · {r.sources === 1 ? copy.row.sourceOne : <WithNumber text={copy.row.sources} n={r.sources} />}</span>}
+          {/* a rule settled in its first sentence whose text goes on to an open question: the row's one sentence would read as settled */}
+          {r.openPart && (
+            <span className="text-blocked-foreground">
+              {" · "}
+              <IconLock size={14} className="inline align-[-2px]" /> {copy.row.openPart}
+            </span>
+          )}
           {r.recheck_date && (
             <span className="text-caution-foreground">
               {" · "}

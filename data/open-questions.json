@@ -21,10 +21,6 @@
     "status": "open"
   },
   {
-    "id": "BANK OQ7",
-    "status": "open"
-  },
-  {
     "id": "BANK OQ8",
     "status": "narrowed",
     "title_he": "מה מגן על המפקידים אם בנק קורס"
@@ -66,6 +62,14 @@
   },
   {
     "id": "BANK OQ20",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ21",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ22",
     "status": "open"
   },
   {
@@ -139,10 +143,6 @@
   {
     "id": "BPN OQ21",
     "status": "open"
-  },
-  {
-    "id": "BRK OQ2",
-    "status": "narrowed"
   },
   {
     "id": "BRK OQ4",
@@ -231,6 +231,10 @@
   {
     "id": "CS OQ17",
     "status": "narrowed"
+  },
+  {
+    "id": "CS OQ18",
+    "status": "open"
   },
   {
     "id": "CORP OQ1",
@@ -637,10 +641,6 @@
   {
     "id": "KGL OQ9",
     "status": "narrowed"
-  },
-  {
-    "id": "KGL OQ12",
-    "status": "open"
   },
   {
     "id": "MGD OQ1",
@@ -1201,6 +1201,10 @@
     "status": "open"
   },
   {
+    "id": "TXK OQ14",
+    "status": "open"
+  },
+  {
     "id": "TXG OQ1",
     "status": "open"
   },
@@ -1284,6 +1288,10 @@
   },
   {
     "id": "TXH OQ17",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ18",
     "status": "open"
   },
   {

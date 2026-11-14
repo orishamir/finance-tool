@@ -21,8 +21,18 @@ const DOC_PRODUCTS: Record<string, readonly string[]> = {
   "keren-hishtalmut.md": ["keren-hishtalmut"],
   "pension-and-gemel-lekitzba.md": ["pension-comprehensive", "pension-general", "provident-for-annuity"],
   "child-savings.md": ["child-savings-provident"],
+  "ira-self-directed.md": ["ira-provident", "ira-hishtalmut"],
   "etfs-and-index-funds.md": ["funds-etf", "funds-tracking"],
   "mutual-funds-and-money-market-funds.md": ["funds-money-market", "funds-other"],
+};
+
+/**
+ * The age from which a product's legal fee caps bind what its member pays, where they bind only from an age: the rule and its figure. A
+ * child-savings fund's fees are paid by the National Insurance Institute until the child is 21, and come from the savings, within the
+ * general provident caps, after that (CS-18).
+ */
+export const CAPS_FROM_AGE: Readonly<Record<string, { rule: string; figure: string }>> = {
+  "child-savings-provident": { rule: "CS-18", figure: "nii_pays_until_age" },
 };
 
 /**

@@ -1,0 +1,32 @@
+{
+  "id": "BANK-52",
+  "title": "Directive 490: lighter customer rules for small and new banks (payment services)",
+  "title_he": "הוראה 490: הקלות לבנקים קטנים וחדשים",
+  "text_he": "חוזר של המפקח על הבנקים מ־30.6.2026 קובע בהוראה 490 מסגרת פיקוח קלה יותר לבנקים קטנים וחדשים. בין השאר, בנק קטן רשאי להציע ללקוחותיו רק אמצעי תשלום אחד מתוך כמה שבנק אחר חייב להציע לצד חשבון העו״ש. לכן מה שהאתר אומר ש״כל בנק חייב״ לפי הוראות בנק ישראל בין בנק ללקוח לא תמיד חל על בנק קטן או חדש. שאר ההקלות לא נקראו אחת אחת.",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-14",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-14",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/h2fjqbrp/h2855.pdf#page=6",
+      "title": "חוזר הפיקוח על הבנקים ח-06-2855: מסגרת פיקוחית לבנקים קטנים וחדשים (הוראת ניהול בנקאי תקין מספר 490 וביטול הוראה 480), 30.6.2026",
+      "title_he": "חוזר הפיקוח על הבנקים ח-06-2855: מסגרת פיקוחית לבנקים קטנים וחדשים (הוראת ניהול בנקאי תקין מספר 490 וביטול הוראה 480), 30.6.2026",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.6, chapter ו'",
+      "locator_he": "עמוד 6, פרק ו'",
+      "page": 6,
+      "quote": "הוראות ניהול בנקאי תקין בתחום שבין הבנק לבין הלקוח",
+      "checked": "2026-11-14"
+    }
+  ]
+}

@@ -158,6 +158,9 @@
     "formula": "F-33",
     "rule_ids": [
       "TXH-04",
+      "TXH-01",
+      "TXH-03",
+      "TXH-05",
       "TXK-17"
     ]
   },
@@ -181,7 +184,7 @@
     ],
     "blocked_by": [],
     "labels": [
-      "F-51 applies the study-fund rules: F-46 at the lawful exit; F-47 (early withdrawal, opt-in) is pending R2",
+      "F-51 applies the study-fund rules: F-46 at the lawful exit; F-47 at an early withdrawal, which the person opts into (B3)",
       "institution source: real base of the 25% on gains from deposits above the benefited amount (TXH-11)",
       "foreign tax withheld inside the account is a cost; treaty relief for an Israeli provident fund is open (TXK-18, TXK OQ7)"
     ]
