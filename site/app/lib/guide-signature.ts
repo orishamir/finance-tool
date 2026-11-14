@@ -2,7 +2,7 @@
 // Everything here is a pure function over the data the page loader ships (`SignatureData`): each figure is an engine run on a
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
-import { bondPrice, currentAccountYearlyInterest, makamPrice, runInputs, runPlanned, type P05Input, type RunResult } from "@finance-tool/engine";
+import { bondPrice, brokenBalanceCondition, currentAccountYearlyInterest, makamPrice, runInputs, runPlanned, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { p05Number, runTimeline, type Bundle } from "./engine";
 import { p05Units, entered as enteredValue, type SiteValue } from "./value";
@@ -70,6 +70,8 @@ export interface AccountBank {
   ceiling: SiteValue | null;
   /** `conditions_he` of the record. */
   conditions: string | null;
+  /** The record's printed conditions on the balance itself (`balance_conditions`, F-26), each figure the bank's own. */
+  balanceConditions: AccountCondition[];
   /** The last day of the offer, when the record prints one. */
   until: string | null;
   /** The bank printed the sentence that says it offers no interest (BANK-09), not a rate. */
@@ -78,7 +80,18 @@ export interface AccountBank {
   exit?: SiteValue;
 }
 
+/** One printed condition on a balance: what it measures, its bound, whether the figure itself is in, and the figure. */
+export interface AccountCondition {
+  measure: "daily_balance" | "average_balance" | "total_assets";
+  bound: "min" | "max";
+  inclusive: boolean;
+  value: SiteValue;
+}
+
 const rateOf = (b: AccountBank) => Number(b.rate.value);
+
+/** The bank's printed condition on the balance that `balance` itself breaks, the balance flat over the year (F-26), or null. */
+export const brokenCondition = (bank: AccountBank, balance: number): AccountCondition | null => brokenBalanceCondition(balance, bank.balanceConditions);
 
 /** The banks that print a rate above 0, the highest first. */
 export const payingBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => rateOf(b) > 0).sort((a, b) => rateOf(b) - rateOf(a) || heCollator.compare(a.name, b.name));
@@ -173,8 +186,12 @@ export function currentAccountModel(d: SignatureData, c: { balance: number; year
   };
 }
 
-/** The most one bank's rate pays in a year on `balance`, after the tax the bank withholds (F-26 over one year); 0 for a bank that pays nothing. */
+/**
+ * The most one bank's rate pays in a year on `balance`, after the tax the bank withholds (F-26 over one year); 0 for a bank that pays
+ * nothing, and 0 where the balance itself breaks one of the bank's printed conditions on it (`brokenCondition`).
+ */
 export function bankYearlyMax(bank: AccountBank, balance: number, taxPct: number): number {
+  if (brokenCondition(bank, balance)) return 0;
   const ceiling = bank.ceiling && typeof bank.ceiling.value === "number" ? bank.ceiling.value : null;
   return currentAccountYearlyInterest(balance, rateOf(bank), ceiling, taxPct);
 }

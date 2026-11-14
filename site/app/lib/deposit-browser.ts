@@ -53,7 +53,8 @@ export interface DbOffer {
   /** A variable rate's anchor and spread, as the table prints them. */
   anchor: string | null;
   spread: SiteValue | null;
-  amount_range: { min: SiteValue; max: SiteValue | null };
+  /** The amounts the bank takes, with how the amount at each bound stands where the table says it is out or does not say (F-108). */
+  amount_range: { min: SiteValue; max: SiteValue | null; min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" };
   breakTerm: BreakTerm;
   exits: ExitPoints;
 }

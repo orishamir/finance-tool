@@ -141,6 +141,33 @@
       "notes": "'יתרת זכות יומית של עד ₪10,000', and only if the monthly average balance was below 10,000 NIS."
     }
   },
+  "balance_conditions": [
+    {
+      "measure": "average_balance",
+      "bound": "max",
+      "inclusive": false,
+      "value": {
+        "value": 10000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+          "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%, תנאי 3",
+          "publisher": "Bank Yahav for Government Employees Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-10-01",
+        "effective_to": "2026-12-31",
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BANK-09"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'הריבית תשולם על יתרת זכות יומית של עד ₪10,000, בכפוף לכך שיתרת העו\"ש החודשית הממוצעת היתה נמוכה מ-₪10,000' (condition 3). 'נמוכה מ' excludes 10,000."
+      }
+    }
+  ],
   "break": {
     "allowed": true,
     "penalty": "none",

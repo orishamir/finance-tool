@@ -118,7 +118,8 @@
       ],
       "state": "sourced",
       "notes": "Printed '50,000 עד 100,00 ש\"ח': the upper bound '100,00' is short of a digit and the next row starts at 100,000, so the bound is not recorded."
-    }
+    },
+    "min_edge": "unknown"
   },
   "break": {
     "allowed": false,

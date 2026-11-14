@@ -11,6 +11,9 @@ import { isoDate, source, valueObject, wrapperId } from "../value.ts";
  */
 export const taxBucket = z.enum(["unlinked_15", "linked_25"]);
 
+/** How an amount at one bound of a deposit's amount range stands (F-108): outside the range, or not known from the bank's table. */
+export const amountEdge = z.enum(["excluded", "unknown"]);
+
 /** A deposit's break column (directive 447): the deposit can be broken exactly when its penalty is not `not_allowed`. */
 const breakTerms = z
   .strictObject({
@@ -53,7 +56,21 @@ export const depositTerms = z.strictObject({
     message: 'tax_bucket.value is null only when its source strength is "open"',
     path: ["value"],
   }),
-  amount_range: z.strictObject({ min: valueObject, max: valueObject.nullable() }),
+  amount_range: z
+    .strictObject({
+      min: valueObject,
+      max: valueObject.nullable(),
+      /**
+       * Whether the amount at a bound is inside the range (F-108). Absent: the bound is included, as "מ־X" and "עד X" read. `excluded`:
+       * the bank's table prints the bound as not included ("לא כולל" in its head, or "מעל X"). `unknown`: two amount tiers of one
+       * product print the same figure, each as its own ("עד 50,000" and "50,000 ומעלה"), so which rate that amount gets is not in the
+       * source. Set only on a bound that is a number.
+       */
+      min_edge: amountEdge.optional(),
+      max_edge: amountEdge.optional(),
+    })
+    .refine((a) => a.min_edge === undefined || typeof a.min.value === "number", { message: "min_edge is set only on a minimum that is a number", path: ["min_edge"] })
+    .refine((a) => a.max_edge === undefined || (a.max !== null && typeof a.max.value === "number"), { message: "max_edge is set only on a maximum that is a number", path: ["max_edge"] }),
   break: breakTerms,
   exit_points: z
     .strictObject({
@@ -75,6 +92,25 @@ export const depositTerms = z.strictObject({
       path: ["first_after_months"],
     }),
   auto_renew: z.strictObject({ value: z.boolean(), max_renewals: z.number().int().nullable() }),
+  /**
+   * The bank's printed conditions on the balance itself, for a current account (F-26): the rate is paid only while the balance, or all
+   * the customer's assets in the account, stay on one side of a figure. `measure`: `daily_balance` (the balance on every day of the
+   * month), `average_balance` (the month's average balance), `total_assets` (everything the customer holds in the account: the current
+   * account, securities, deposits). `bound`: `min` or `max`; `inclusive` is false where the bank prints "below" or "above" rather than
+   * "up to" or "and more". `value` is the figure in `nis`, its notes quoting the bank's words. A condition that is not a figure on a
+   * balance (a salary, card spending, a tariff track) stays in `conditions_he` only. Absent where the bank prints none.
+   */
+  balance_conditions: z
+    .array(
+      z.strictObject({
+        measure: z.enum(["daily_balance", "average_balance", "total_assets"]),
+        bound: z.enum(["min", "max"]),
+        inclusive: z.boolean(),
+        value: valueObject,
+      }),
+    )
+    .min(1)
+    .optional(),
   /**
    * A short plain-Hebrew summary of the conditions the bank prints for the rate (guide page of the current account). Faithful to the
    * printed text quoted in the notes of `rate_offered`; it adds nothing that is not printed. Absent when the page has no summary yet.

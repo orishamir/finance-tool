@@ -122,6 +122,33 @@
       "notes": "Ceiling of the balance that earns the interest; eligibility also requires total assets in the account of no more than 30,000 NIS (see rate_offered)."
     }
   },
+  "balance_conditions": [
+    {
+      "measure": "total_assets",
+      "bound": "max",
+      "inclusive": true,
+      "value": {
+        "value": 30000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+          "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00:00), פריים 4.75%, 'אופן הצטרפות ותנאים לקבלת ריבית': 'סך יתרות עו\"ש (בשקל ובמט\"ח), תיק ני\"ע, פיקדונות וחסכונות בחשבון הלקוחות כאמור, לא יעלה על 30 אלף ₪'",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-10-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BANK-09"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'ובתנאי שסך יתרות עו\"ש (בשקל ובמט\"ח), תיק ני\"ע, פיקדונות וחסכונות בחשבון הלקוחות כאמור, לא יעלה על 30 אלף ₪. בחינת תנאי הזכאות תבוצע ותחושב על בסיס יומי.' 'לא יעלה על' includes 30,000."
+      }
+    }
+  ],
   "break": {
     "allowed": true,
     "penalty": "none",

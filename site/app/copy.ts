@@ -2436,7 +2436,7 @@ export const r4catalogue = {
   linkage: { none: "לא צמוד", cpi: "צמוד למדד", fx: "צמוד למט״ח" },
   tax: { unlinked: "ריבית לא צמודה; השיעור בעמוד המדריך.", linked: "ריבית צמודה; השיעור בעמוד המדריך." },
   /** A deposit's amounts on every page (lib/deposit-kind.ts `amountRangeForm`): "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪", "ללא מינימום". */
-  amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום" },
+  amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום", above: "מעל", notIncluded: "(לא כולל)" },
   breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" },
   // a deposit that cannot be broken but has exit points: "אין אפשרות שבירה" alone read as "the money is locked" beside its exits
   breakAtExits: "אין אפשרות שבירה; אפשר למשוך רק בתחנות היציאה",
@@ -2972,6 +2972,27 @@ export const guideSignature = {
         nothing: "כלום",
         sentence: { one: "כתב בפרסום שלו", many: "כתבו בפרסום שלהם", rest: "את המשפט שבנק ישראל דורש מבנק שלא מציע ריבית:", quote: "״לא מוצעת ריבית על יתרת זכות״." },
         printedZero: { mid: "כתב בפרסום ריבית", end: "." },
+      },
+      /**
+       * A paying bank whose own condition on the balance the balance entered breaks (F-26, `balance_conditions`): nothing at that balance,
+       * and the condition in the bank's figure. By what the condition measures, its bound, and whether the figure itself is in: the words
+       * before the figure, the prefix joined to it, and the words after it.
+       */
+      broken: {
+        word: "כלום ביתרה הזו",
+        lead: "הבנק משלם רק",
+        daily_balance: {
+          min: { in: { before: "כשהיתרה בעו״ש היא", prefix: "", after: " ומעלה בכל יום" }, out: { before: "כשהיתרה בעו״ש גבוהה", prefix: "מ־", after: " בכל יום" } },
+          max: { in: { before: "כשהיתרה בעו״ש לא עולה על", prefix: "", after: " בכל יום" }, out: { before: "כשהיתרה בעו״ש נמוכה", prefix: "מ־", after: " בכל יום" } },
+        },
+        average_balance: {
+          min: { in: { before: "כשהיתרה החודשית הממוצעת היא", prefix: "", after: " ומעלה" }, out: { before: "כשהיתרה החודשית הממוצעת גבוהה", prefix: "מ־", after: "" } },
+          max: { in: { before: "כשהיתרה החודשית הממוצעת לא עולה על", prefix: "", after: "" }, out: { before: "כשהיתרה החודשית הממוצעת נמוכה", prefix: "מ־", after: "" } },
+        },
+        total_assets: {
+          min: { in: { before: "כשסך הנכסים בחשבון הוא", prefix: "", after: " ומעלה" }, out: { before: "כשסך הנכסים בחשבון גבוה", prefix: "מ־", after: "" } },
+          max: { in: { before: "כשסך הנכסים בחשבון לא עולה על", prefix: "", after: "" }, out: { before: "כשסך הנכסים בחשבון נמוך", prefix: "מ־", after: "" } },
+        },
       },
     },
     worth: {

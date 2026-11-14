@@ -118,7 +118,8 @@
       ],
       "state": "sourced",
       "notes": "Printed '100,000 עד 200,000 ש\"ח'."
-    }
+    },
+    "max_edge": "unknown"
   },
   "break": {
     "allowed": false,

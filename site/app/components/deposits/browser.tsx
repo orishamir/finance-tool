@@ -23,8 +23,8 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const termParam = sp.get("term");
   const term: TermId = (TERMS as readonly string[]).includes(termParam ?? "") ? (termParam as TermId) : START_TERM;
   const amountParam = sp.get("amount");
-  // any whole amount the reader types; "none" while the field is empty
-  const amount: number | null = amountParam === "none" ? null : amountParam && /^\d+$/.test(amountParam) && Number(amountParam) > 0 ? Number(amountParam) : data.start;
+  // any whole amount the reader types; "none" while the field is empty, and an address of 0 reads as the field does when 0 is typed
+  const amount: number | null = amountParam === "none" || (amountParam !== null && /^0+$/.test(amountParam)) ? null : amountParam && /^\d+$/.test(amountParam) && Number(amountParam) > 0 ? Number(amountParam) : data.start;
   const kindParam = sp.get("kind");
   const kind: RateKind = kindParam === "variable" || kindParam === "fixed" ? kindParam : START_KIND;
   const withConditional = sp.get("conditional") !== "0";

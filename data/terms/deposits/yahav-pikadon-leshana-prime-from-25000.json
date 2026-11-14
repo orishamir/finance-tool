@@ -120,7 +120,8 @@
       "state": "sourced",
       "notes": "Printed 'מעל 25,000 ש\"ח'."
     },
-    "max": null
+    "max": null,
+    "min_edge": "excluded"
   },
   "break": {
     "allowed": false,

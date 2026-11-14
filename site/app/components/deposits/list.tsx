@@ -124,7 +124,7 @@ function tableRow({ row, top, mine }: ListRow, ctx: ListContext): ProductRow {
       <AnchorSpread variable={first.kind === "variable"} anchor={first.anchor} spread={first.spread} />
     </span>,
     ...(ctx.amount ? [<Interest o={first} ctx={ctx} />] : []),
-    <AmountRange min={first.amount_range.min} max={first.amount_range.max} />,
+    <AmountRange min={first.amount_range.min} max={first.amount_range.max} edges={first.amount_range} />,
     <Access o={first} />,
   ];
   const sub = (o: DbOffer): ReactNode[] => [
@@ -173,7 +173,7 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
       <span className="grid grid-cols-2 gap-3">
         <span className="flex flex-col">
           <span className={muted}>{t.columns.amount}</span>
-          <AmountRange min={first.amount_range.min} max={first.amount_range.max} />
+          <AmountRange min={first.amount_range.min} max={first.amount_range.max} edges={first.amount_range} />
         </span>
         <span className="flex flex-col">
           <span className={muted}>{t.columns.access}</span>

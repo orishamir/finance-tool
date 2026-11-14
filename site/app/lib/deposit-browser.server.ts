@@ -41,7 +41,12 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
     rate_offered: d.doubt_he ? { ...rate, doubt: d.doubt_he } : rate,
     anchor: d.anchor ?? null,
     spread: d.spread ? shown(d.spread, t, d.snapshot, owner) : null,
-    amount_range: { min: shown(d.amount_range.min, t, d.snapshot, owner), max: d.amount_range.max ? maxOf(d.amount_range.max, d.doubt_he, t, d.snapshot, owner) : null },
+    amount_range: {
+      min: shown(d.amount_range.min, t, d.snapshot, owner),
+      max: d.amount_range.max ? maxOf(d.amount_range.max, d.doubt_he, t, d.snapshot, owner) : null,
+      ...(d.amount_range.min_edge ? { min_edge: d.amount_range.min_edge } : {}),
+      ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}),
+    },
     breakTerm: d.break.allowed ? d.break.penalty : "not_allowed",
     exits: exitPointsOf(d.exit_points),
   };

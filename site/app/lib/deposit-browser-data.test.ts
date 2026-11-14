@@ -2,7 +2,7 @@
 // beside them (Mizrahi-Tefahot 189, read from its newest file, not an older one), and a deposit only for new joiners is limited.
 import { describe, expect, it } from "vitest";
 import { buildDepositBrowser } from "./deposit-browser.server";
-import { cellOf, foldedOffers, isLinked, offersOf, sheetNames, unknownAt } from "./deposit-browser";
+import { cellOf, foldedOffers, isLinked, offersOf, opens, sheetNames, unknownAt } from "./deposit-browser";
 
 describe("the deposits page's offers", () => {
   const data = buildDepositBrowser();
@@ -23,10 +23,32 @@ describe("the deposits page's offers", () => {
     const cell = (amount: number) => cellOf(data, "yahav", "y1", "fixed", amount, (o) => names.get(o.id)!);
     expect(cell(60_000)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
     expect(cell(99_999)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
-    // the minimum itself, and the tiers on either side whose bounds are known, open as before
-    expect(cell(50_000).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-50000");
+    // the tiers on either side whose bounds are known open as before
     expect(cell(40_000).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-1000");
     expect(cell(150_000).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-100000");
+    // 50,000 ₪ itself is printed by two tiers, "1,000 עד 50,000" and "50,000 עד 100,00": the table does not say which takes it
+    expect(cell(50_000)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
+    expect(cell(49_999).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-1000");
+  });
+
+  it("does not open Mizrahi-Tefahot's lower tier at the bound its table prints as not included, nor any Yahav tier at a bound two tiers print (F-108)", () => {
+    const names = sheetNames(data);
+    const cell = (bank: string, term: "y1" | "y2" | "m6" | "week", kind: "fixed" | "variable", amount: number) => cellOf(data, bank, term, kind, amount, (o) => names.get(o.id)!);
+    // 261, "טווח סכום להפקדה (לא כולל)": 100,000 ₪ is the upper tier's (1.97%), not 30,000 to 100,000 (1.72%)
+    const low261 = offer("mizrahi-tefahot-duvdevan-hodshi-prime-shana-261")!;
+    expect(opens(low261, 100_000)).toBe(false);
+    expect(opens(low261, 99_999)).toBe(true);
+    expect(opens(offer("mizrahi-tefahot-duvdevan-hodshi-prime-shana-261-from-100000")!, 100_000)).toBe(true);
+    // 259 at 50,000 ₪: the tier from 50,000 (2%), not the one up to it (1.15%)
+    expect(opens(offer("mizrahi-tefahot-rimonim-rivoni-prime-2-shanim-259")!, 50_000)).toBe(false);
+    expect(opens(offer("mizrahi-tefahot-rimonim-rivoni-prime-2-shanim-259-from-50000")!, 50_000)).toBe(true);
+    // Yahav's six-month fixed deposit at 50,000 and 100,000 ₪: printed by two tiers each, unknown, never both open
+    for (const amount of [50_000, 100_000]) {
+      const both = offersOf(data, "m6", "fixed").filter((o) => o.bank === "yahav");
+      expect(both.filter((o) => opens(o, amount))).toEqual([]);
+      expect(both.some((o) => unknownAt(o, amount))).toBe(true);
+      expect(cell("yahav", "m6", "fixed", amount)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
+    }
   });
 
   it("folds the offers the amount does not open under the list's own two chips, and says where it does not know (F-108)", () => {

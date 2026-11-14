@@ -122,6 +122,58 @@
       "notes": "'ריבית עו\"ש בשיעור של 2% עד לגובה של ₪10,000'."
     }
   },
+  "balance_conditions": [
+    {
+      "measure": "total_assets",
+      "bound": "max",
+      "inclusive": true,
+      "value": {
+        "value": 50000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.fibi.co.il/helpsys-api?helpId=001&bankNum=031",
+          "title": "הבנק הבינלאומי, 'הטבה של תשלום ריבית על יתרות זכות בעו\"ש בשקלים ללקוחות פרטיים' (PDF, נפתח מקישור 'אופן הצטרפות ותנאים לקבלת הריבית' בפרסום; נוצר 09.02.2026), סעיף 1, אוכלוסייה זכאית",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-10-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BANK-09"
+        ],
+        "state": "sourced",
+        "notes": "Conditions PDF s.1: total financial assets in the account (current account, securities, deposits) not above 50,000 NIS, as rate_offered's notes record it."
+      }
+    },
+    {
+      "measure": "daily_balance",
+      "bound": "min",
+      "inclusive": true,
+      "value": {
+        "value": 10000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.fibi.co.il/helpsys-api?helpId=001&bankNum=031",
+          "title": "הבנק הבינלאומי, 'הטבה של תשלום ריבית על יתרות זכות בעו\"ש בשקלים ללקוחות פרטיים' (PDF, נפתח מקישור 'אופן הצטרפות ותנאים לקבלת הריבית' בפרסום; נוצר 09.02.2026), סעיף 1, אוכלוסייה זכאית",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-10-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BANK-09"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'יתרת חשבון העו\"ש בכל אחד מהימים בחודש הנבדק לזכאות הינה ₪10,000 ומעלה' and 'אם באחד מימי החודש היתרה נמוכה מ-₪10,000 הלקוח לא יקבל זיכוי בריבית זכות עבור אותו החודש'. '10,000 ומעלה' includes 10,000."
+      }
+    }
+  ],
   "break": {
     "allowed": true,
     "penalty": "none",

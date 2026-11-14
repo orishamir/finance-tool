@@ -101,6 +101,7 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
       rate,
       ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
+      balanceConditions: (r.balance_conditions ?? []).map((c) => ({ measure: c.measure, bound: c.bound, inclusive: c.inclusive, value: ownBy({ ...c.value } as SiteValue, name) })),
       until: r.rate_offered.effective_to,
       // the record's notes quote the sentence a bank prints when it offers no interest ("לא מוצעת ריבית על יתרת זכות")
       noOffer: /לא מוצעת ריבית/.test(r.rate_offered.notes ?? ""),
