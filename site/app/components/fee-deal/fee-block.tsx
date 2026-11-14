@@ -106,6 +106,18 @@ export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode, sort?: SortO
 export interface ToolDrop {
   accepts: (feeId: string, caseId: string | null, item: string) => boolean;
   onDrop: (feeId: string, caseId: string | null, item: string) => void;
+  /** The same on a head of the open fee (its cases `cases`, standing along thing `along`): the part goes into each that lacks it (`toolToCases`). */
+  acceptsCases: (feeId: string, cases: readonly string[], along: number, item: string) => boolean;
+  onDropCases: (feeId: string, cases: readonly string[], along: number, item: string) => void;
+}
+
+/**
+ * A head that covers the open case, its part applied to all its cases from the part's menu: its words ("להחיל על כל השורה") and its place
+ * (lifted.ts's `cases` target).
+ */
+export interface HeadApply {
+  label: string;
+  on: LiftTarget;
 }
 
 /** A thing to change by among the toolbox's cards (`cardThing`): it drops on the fee's block; a part drops on a slim fee or a case. */
@@ -162,32 +174,42 @@ export function FeeBlockView({
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
   const question = isOpen && ask ? <AskThing key={`${fee.id}:${ask.kind}:${ask.split ?? ""}`} fee={fee} kind={ask.kind} {...(ask.split ? { split: ask.split } : {})} onFee={ask.split ? onSplit : onFee} onDone={onAskDone} /> : null;
   const dot = feeColour(fee.kind, row?.house).bg;
-  const openParts = (spoken: string) =>
+  const openParts = (spoken: string, heads: readonly HeadApply[] = []) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId) => onEditPrice(fee.id, caseId, k)} pendingHands={pendingHands} grip={partGrip} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId) => onEditPrice(fee.id, caseId, k)} pendingHands={pendingHands} grip={partGrip(heads)} />
         {formLine}
       </>
     );
   const remove = isOpen ? { label: copy.panel.remove, onRemove: () => onRemoveFee(fee.id) } : undefined;
-  // a part of the open case's first price lifts onto another case or fee, or into the bin (its row's content, a note alone: lifted.ts)
-  const partGrip: PartGrip = (part, side, k) => {
+  // a part of the open case's first price lifts onto another case or fee, onto a head (every case of it), or into the bin (its row's
+  // content, a note alone: lifted.ts); its menu applies it to each head over the open case that takes it (`heads`), as a drop there does
+  const partGrip = (heads: readonly HeadApply[]): PartGrip => (part, side, k) => {
     if (side !== "buy" || k !== 0) return null;
     const row = ROW_OF[part];
     const l: Lifted = { k: "part", fee: fee.id, case: open.case, row, ...(row === "notes" ? { note: part as Note } : {}) };
     const off = lift.binTakes(l);
-    return <Grip item={liftId(l)} label={`${copy.cases.lifted.grip.part}${copy.cases.rowHeads[l.row] ?? ""}`} actions={off ? [{ label: copy.cases.lifted.menu.remove, danger: true, onPick: () => lift.onBin(l) }] : []} {...(off ? { onRemove: () => lift.onBin(l) } : {})} />;
+    const wide = heads.filter((h) => lift.takes(l, h.on)).map((h) => ({ label: h.label, onPick: () => lift.onDrop(l, h.on, { copy: false }) }));
+    return <Grip item={liftId(l)} label={`${copy.cases.lifted.grip.part}${copy.cases.rowHeads[l.row] ?? ""}`} actions={[...wide, ...(off ? [{ label: copy.cases.lifted.menu.remove, danger: true, onPick: () => lift.onBin(l) }] : [])]} {...(off ? { onRemove: () => lift.onBin(l) } : {})} />;
   };
   // a case of the band takes a part, and a thing to change by, which splits it alone; the slim fee takes a part or a thing; the band's
   // block takes a thing, for the whole fee. Every place takes the things lifted by a grip it takes (`LiftHands.takes`).
   const lift = actions.lift;
   const zone: ZoneOf = (on, key, el, sort) => {
     const card = on.find((t): t is Extract<LiftTarget, { k: "case" }> => t.k === "case");
+    const heads = on.find((t): t is Extract<LiftTarget, { k: "cases" }> => t.k === "cases");
     const first = (l: Lifted) => on.find((t) => lift.takes(l, t));
+    // a toolbox card: a case takes it, else a head, for each of its cases
+    const toolTakes = (it: string) => (card ? card.case !== null && drop.accepts(fee.id, card.case, it) : !!heads && drop.acceptsCases(fee.id, heads.cases, heads.along, it));
+    // a member of its list only for what its first place takes (a row among the rows); anything else drops on it as a plain place
+    const sortFor = sort && ((it: string) => {
+      const l = liftedOf(it);
+      return l && lift.takes(l, on[0]!) ? sort : null;
+    });
     return (
       <DropZone
         key={key}
-        {...(sort ? { sort } : {})}
+        {...(sortFor ? { sort: sortFor } : {})}
         onPreview={(it, how) => {
           const l = it === null ? null : liftedOf(it);
           const t = l && first(l);
@@ -196,13 +218,14 @@ export function FeeBlockView({
         accepts={(it) => {
           const l = liftedOf(it);
           if (l) return !!first(l);
-          return !!card && card.case !== null && drop.accepts(fee.id, card.case, it);
+          return toolTakes(it);
         }}
         onDrop={(it, how) => {
           const l = liftedOf(it);
           const t = l && first(l);
           if (l && t) lift.onDrop(l, t, how);
           else if (!l && card) drop.onDrop(fee.id, card.case, it);
+          else if (!l && heads) drop.onDropCases(fee.id, heads.cases, heads.along, it);
         }}
         why={(it) => {
           const l = liftedOf(it);
@@ -275,7 +298,7 @@ export function FeeBlockView({
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
       <FeeBlock dot={dot} name={name} remove={remove} open={isOpen} grip={grip}>
         {question}
-        <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken) => openParts(spoken)} />
+        <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)} />
       </FeeBlock>
     </DropZone>
   );

@@ -3,7 +3,8 @@
 // ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
 // cells a cell for each part its cells hold alike), and beside the heads a small dashed pill that adds a case, a step, a row or a column:
 // at the end of the column heads, and under the row heads. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop
-// zone, and each cell a knob on its edges that stretches it over its neighbours; a cell covering its whole row says so under its parts. A
+// zone, each cell a knob on its edges that stretches it over its neighbours and, where it can be taken away, a small bin in its top end
+// corner; a cell covering its whole row says so under its parts. A
 // part every case holds alike is one cell over every column, not a line of its own. Under a row a slim strip drawn while the pointer is
 // there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
@@ -14,6 +15,7 @@ import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER, onSurface } from "./choice";
 import { useCarried } from "./drag-drop";
 import { cx } from "./cx";
+import { RemoveButton } from "./remove-button";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /** The open case's column head and cells: the action colour's outline, as the open case's own. */
@@ -196,6 +198,8 @@ export interface CellExtras {
   fill?: ReactNode;
   /** Delete on the cell: what its grip's bin does. */
   onRemove?: () => void;
+  /** With `onRemove`, the spoken name of the small bin in the cell's top end corner (`CellBin`, "למחוק: מקסימום · מק״מ"). */
+  removeLabel?: string;
   /** Shift with an arrow on the cell: its knob's stretch by one column (1: on in reading order, -1: back). */
   onStretch?: (by: 1 | -1) => void;
   /** Shift with the down or up arrow on a grid's cell: its stretch by one row (1: down, -1: back up). */
@@ -203,6 +207,23 @@ export interface CellExtras {
   /** Wraps the cell (a `DropZone` for its case). */
   zone?: (cell: ReactNode) => ReactNode;
 }
+
+/**
+ * A cell's own bin (`removeLabel`, `onRemove`; `RemoveButton knob`): straddling the cell's top edge in its end corner, clear of the knob's
+ * strip along the end edge, so it takes no room and covers none of the cell's lines. Its tap area reaches 44 px tall in the controls'
+ * layer, under every figure's own box, so a figure it reaches keeps its press. Drawn only on a fine pointer, while the cell is under it or
+ * has the keyboard's focus, and never while something is carried (app.css); touch takes a cell away by its grip's menu or a long press.
+ */
+function CellBin({ label, onRemove }: { label: string; onRemove: () => void }) {
+  return (
+    <span data-cell-bin-box="" className="absolute -top-2.5 end-2.5 h-5 w-5">
+      <RemoveButton knob label={label} onRemove={onRemove} />
+    </span>
+  );
+}
+
+/** The bin a cell carries, where it can be taken away. */
+const binOf = (cell: CellExtras) => (cell.onRemove && cell.removeLabel ? <CellBin label={cell.removeLabel} onRemove={cell.onRemove} /> : null);
 
 /** A knob's stretch reaching a cell: the action colour's outline, the cell taking the price it would cover. */
 const LIT = "outline-2 -outline-offset-2 outline-primary bg-accent";
@@ -342,6 +363,7 @@ export function CaseTable({ columns, rows, add, addPart, ladder, foot, label }: 
                     {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
                   </span>
                   {cell.knobs}
+                  {binOf(cell)}
                 </div>
               );
               return (
@@ -500,6 +522,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                       </span>
                     </div>
                     {cell.knobs}
+                    {binOf(cell)}
                   </div>
                 );
                 return (
@@ -520,6 +543,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                         {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
                       </span>
                       {cell.knobs}
+                      {binOf(cell)}
                     </div>
                   );
                   return (

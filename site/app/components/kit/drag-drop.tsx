@@ -92,12 +92,16 @@ export function useOver(key: string): boolean {
  * A place a carried thing can be dropped on: `accepts` says whether it takes it (asked only while one is carried), `onDrop` does what the
  * thing does here (`how.copy`: dropped with the modifier key held), `onPreview` shows that while the thing is over it. A zone inside another
  * takes the drop alone. `why`, where it does not take the thing, says why, under the pointer. `sort`: the place is a member of a sortable
- * list, which shows no frame (the gap the others open is what shows where the thing lands). A plain place that takes the thing draws its
+ * list, which shows no frame (the gap the others open is what shows where the thing lands); given as a function of the carried thing, it is
+ * a member only for the things its list sorts, and a plain place for the others (a grid's row head: a row lands among the rows, a part
+ * drops on the row). A plain place that takes the thing draws its
  * frame on what it wraps, on that element's own edge and rounding, over its border: one frame, dashed, solid and filled while the thing is
  * over it. `tone="danger"`: a bin, in the danger colour. `className` is the zone's own layout, `rounded` its rounding.
  */
-export function DropZone({ accepts, onDrop, onPreview, sort, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; onPreview?: (item: string | null, how: DropHow) => void; sort?: SortOf; why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
+export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; onPreview?: (item: string | null, how: DropHow) => void; sort?: SortOf | ((item: string) => SortOf | null); why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
   const item = useCarried();
+  // lift.tsx reads the hands once the thing is carried, after this place has drawn for it, so a list that sorts some things only is known
+  const sort = typeof sortOf === "function" ? (item === null ? undefined : (sortOf(item) ?? undefined)) : sortOf;
   const key = useId();
   const hands = useRef<Zone>({ accepts, onDrop });
   hands.current = { accepts, onDrop, ...(onPreview ? { onPreview } : {}), ...(sort ? { sort } : {}) };

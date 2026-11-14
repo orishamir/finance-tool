@@ -233,10 +233,10 @@ export function moveCell(fee: Fee, fromId: string, toId: string, row: PartRow, c
 }
 
 /** The prices of fee `fee`'s case `caseId`, or its own where it changes by nothing. */
-const pricesOf = (fee: Fee, caseId: string | null): Priced | undefined => (hasCases(fee) ? fee.cases.find((c) => c.id === caseId) : fee);
+export const pricesOf = (fee: Fee, caseId: string | null): Priced | undefined => (hasCases(fee) ? fee.cases.find((c) => c.id === caseId) : fee);
 
 /** A fee with its prices (or case `caseId`'s) replaced. */
-function withPrices(fee: Fee, caseId: string | null, x: Priced): Fee {
+export function withPrices(fee: Fee, caseId: string | null, x: Priced): Fee {
   if (hasCases(fee)) return { ...fee, cases: fee.cases.map((c) => (c.id === caseId ? priced(c, x) : c)) };
   const { stages: _s, sale: _sale, ...head } = fee;
   return { ...head, stages: x.stages, ...(x.sale ? { sale: x.sale } : {}) } as Fee;
@@ -353,4 +353,40 @@ export function partAcross(fee: Fee, ids: readonly string[], part: PartId, along
   const first = setPart(fee, part, true, { k: 0, caseId: ids[0]! });
   if (first === fee) return fee;
   return ids.length > 1 ? stretch(first, ids[0]!, ids.slice(1), row, along) : first;
+}
+
+/**
+ * A fee whose cases `ids` each take what part row `row` of prices `from` holds, replacing what they held there (`withCell`, so a figure
+ * keeps its source only where the case held that very figure from it): a part applied to a head's cases (a grid's row or column, every
+ * case of the fee). Each joins one span of that row along thing `along`, the span of case `fromId` (the case `from` is, where it is this
+ * fee's and among them) or else the default one, so neighbours that now hold it alike read as one cell. `fromId` itself and a case that
+ * cannot hold the part are left as they are; a place no case holds is no case, so it is not filled. Unchanged where `from` holds nothing
+ * in that row.
+ */
+export function partToCases(fee: Fee, from: Priced, row: PartRow, ids: readonly string[], along: number, fromId?: string): Fee {
+  if (!hasCases(fee) || !fee.by[along] || !cellHolds(from, row)) return fee;
+  const source = fromId === undefined ? undefined : fee.cases.find((c) => c.id === fromId);
+  const span = source && ids.includes(source.id) ? spanName(source, row, along) : "";
+  const next = {
+    ...fee,
+    cases: fee.cases.map((c) => {
+      if (!ids.includes(c.id) || c.id === fromId) return c;
+      const x = withCell(fee.kind, from, c, row);
+      return x ? inSpan(priced(c, x), row, along, span) : c;
+    }),
+  };
+  return sameContent(next, fee) ? fee : next;
+}
+
+/**
+ * A fee whose cases `ids` each have note `note` on their first price, added after their own notes: one note applied to a head's cases. A
+ * case that has it already or cannot hold it is left as it is.
+ */
+export function noteToCases(fee: Fee, note: Note, ids: readonly string[]): Fee {
+  if (!hasCases(fee)) return fee;
+  const next = {
+    ...fee,
+    cases: fee.cases.map((c) => (ids.includes(c.id) && !hasNote(fee, c.id, note) && PARTS[note].holds(fee.kind, c.stages[0]!.price) ? priced(c, withFirst(c, (p) => notesWith(p, note, true))) : c)),
+  };
+  return sameContent(next, fee) ? fee : next;
 }
