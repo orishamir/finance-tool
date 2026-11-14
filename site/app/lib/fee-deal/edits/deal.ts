@@ -15,8 +15,6 @@ export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: F
   return { deal: { ...deal, fees: [...deal.fees, fee] }, fee };
 }
 
-export const removeFee = (deal: FeeDeal, feeId: string): FeeDeal => ({ ...deal, fees: deal.fees.filter((f) => f.id !== feeId) });
-
 /**
  * A deal of another kind: a fee the new kind is not offered (`feeOffered`: one it does not have, one the data bars, `bar`, or one the rule
  * table offers no form that charges, a provident account's deposit fee on a switch to a study fund) leaves it, and the fees it is offered

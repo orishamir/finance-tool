@@ -95,9 +95,6 @@ export const Fig = ({ value, prefix }: { value: SiteValue; prefix?: string }) =>
 /** How the page shows the sum a flat price holds up to: whole, as the price list prints it ("50 $"), else as any sum (`sumDisplay`). */
 export const upToDisplay = (v: SiteValue) => (n: number): string | undefined => wholeSum(v.unit)(n) ?? sumDisplay(v)?.(n);
 
-/** The sum a flat price holds up to as plain text, for words inside a box ("לכל המרה עד 50 $"). */
-export const upToText = (v: SiteValue): string => upToDisplay(v)(v.value as number) ?? formatValue(v.value as number, v.unit);
-
 /** A figure with a lead held to it on one line (", מינימום 15 ₪"), and the period it is printed per where it has one (", מינימום 40 ₪ בחודש"). */
 const Bound = ({ lead, value, per }: { lead: string; value: SiteValue; per?: string }) => (
   <>

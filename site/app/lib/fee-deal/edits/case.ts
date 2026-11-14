@@ -140,16 +140,6 @@ export function removeCase(fee: Fee, caseId: string): Fee {
   return { ...fee, cases: fee.cases.filter((c) => c.id !== caseId) };
 }
 
-/** A fee with its cases in a new order: case `caseId` moved to place `to`. */
-export function moveCase(fee: Fee, caseId: string, to: number): Fee {
-  if (!hasCases(fee)) return fee;
-  const at = fee.cases.findIndex((c) => c.id === caseId);
-  if (at < 0) return fee;
-  const rest = fee.cases.filter((c) => c.id !== caseId);
-  const k = Math.max(0, Math.min(to, rest.length));
-  return { ...fee, cases: [...rest.slice(0, k), fee.cases[at]!, ...rest.slice(k)] };
-}
-
 /** Whether a value fits thing `b`: any value; for a list, values the thing knows (what is bought or held: the site's ids or its own); a range's step. */
 function fits(b: By, w: When): boolean {
   if (w === "any") return true;

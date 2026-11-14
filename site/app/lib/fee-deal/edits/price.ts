@@ -124,13 +124,6 @@ export function withThirdForm(p: Price, form: ThirdPrice["form"] | null): Price 
   return { ...p, third: { ...rest, price } };
 }
 
-/** A third party's figure in another currency (the shekel is left unsaid). */
-export function withThirdCurrency(p: Price, currency: BoundCurrency): Price {
-  if (!onAction(p) || !p.third?.price || (p.third.price.currency ?? "ILS") === currency) return p;
-  const { currency: _c, ...rest } = p.third.price;
-  return { ...p, third: { ...p.third, price: (currency === "ILS" ? rest : { ...rest, currency }) as ThirdPrice } };
-}
-
 /** A price offset against the deal's fee of `kind` (§10.6's stated parts), or not (`null`). A free price has nothing to offset. */
 export function withOffset(p: Price, kind: FeeKindId | null): Price {
   if (!charged(p)) return p;

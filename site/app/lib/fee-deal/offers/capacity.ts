@@ -97,9 +97,6 @@ export const capacity = (kind: FeeKindId): Capacity => CAPACITY[kind];
 /** Whether a fee can take a form (every fee can be free). */
 export const takes = (kind: FeeKindId, form: FormId): boolean => form === "free" || CAPACITY[kind].forms.includes(form);
 
-/** Whether a fee can take a form that `of` holds of (a capability of capabilities.ts). */
-export const takesAny = (kind: FeeKindId, of: (form: FormId) => boolean): boolean => CAPACITY[kind].forms.some(of);
-
 /** The fields a fee's form has (none for free, or a form the fee cannot take). */
 export const fieldsOf = (kind: FeeKindId, form: FormId): readonly FieldId[] => (form === "free" ? [] : (CAPACITY[kind].fields[form] ?? []));
 
@@ -112,9 +109,6 @@ export const keeps = (kind: FeeKindId, form: FormId, field: FieldId): boolean =>
  */
 export const sumCurrency = (kind: FeeKindId, p: Price, form: FormId = p.form): BoundCurrency =>
   onAction(p) && p.currency && keeps(kind, form, "currency") ? p.currency : "ILS";
-
-/** Whether any form a fee can take has a field. */
-export const anyField = (kind: FeeKindId, field: FieldId): boolean => Object.values(CAPACITY[kind].fields).some((f) => f.includes(field));
 
 /** Whether a fee's sale may be priced apart: its capacity allows it, and it is not charged on one side alone. */
 export const pricesSaleApart = (kind: FeeKindId): boolean => CAPACITY[kind].saleApart && !CAPACITY[kind].oneSide;

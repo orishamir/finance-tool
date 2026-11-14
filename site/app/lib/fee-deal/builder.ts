@@ -7,7 +7,7 @@ import type { ChangeKind } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
-import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
+import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edits/case";
 import { boundsAction } from "./offers/capabilities";
 import { capacity, type ChargedForm } from "./offers/capacity";
@@ -16,7 +16,7 @@ import { feesOffered, offerFor, type DataBar } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { isConversion, onHolding, WHAT_VALUES, type FeeKindId } from "./shapes";
+import { WHAT_VALUES, type FeeKindId } from "./shapes";
 import { BY_MAX, CONDITIONS, isOwnKind, isPlaceKind, isRangeKind, isWordsKind, pickKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
@@ -487,18 +487,6 @@ function byParts(fee: Fee, offered: readonly ByKind[]): ToolPart[] {
     return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });
 }
-
-/** Whether a fee is a conversion or charged on what is held, which words of what it changes by follow (the toolbox's first thing). */
-export const firstThing = (kind: FeeKindId): ByKind => (isConversion(kind) ? "currency" : onHolding(kind) ? "held" : "what");
-
-/** The key the reading picks a thing of a fee by (`pickKey`), for a pill that opens the reading's pick. */
-export const thingKey = (fee: CasesFee, t: number): string => pickKey(fee.by[t]!);
-
-/** A range's tops as plain numbers, for a slot's field. */
-export const topsOf = (fee: CasesFee, t: number): number[] => {
-  const b = fee.by[t]!;
-  return isRange(b) ? b.tops.map((n: Num) => n.v) : [];
-};
 
 // ---------------------------------------------------------------- adding a thing, and a case's slot opened
 
