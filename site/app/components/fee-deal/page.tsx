@@ -42,7 +42,7 @@ import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
-import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts } from "../../lib/fee-deal/lifted";
+import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolToCases } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -296,7 +296,20 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
   // own toolbox offers it and the case has it not yet; dropped on another case than the open one, that case opens first
   const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : at === null || at === caseId ? tools : toolboxOf(read, feeId, at));
+  // a toolbox card on a head of the open fee: each head asks once per card while the deal stands (every place asks while a card is carried)
+  const onHeads = useMemo(() => new Map<string, Fee | null>(), [read]);
+  const toolOnHead = (feeId: string, cases: readonly string[], along: number, item: string): Fee | null => {
+    if (feeId !== chosen) return null;
+    const key = `${feeId}|${cases.join()}|${along}|${item}`;
+    if (!onHeads.has(key)) onHeads.set(key, toolToCases(read, feeId, cases, item, along));
+    return onHeads.get(key)!;
+  };
   const drop: ToolDrop = {
+    acceptsCases: (feeId, cases, along, item) => !!toolOnHead(feeId, cases, along, item),
+    onDropCases: (feeId, cases, along, item) => {
+      const next = toolOnHead(feeId, cases, along, item);
+      if (next) onFee(next);
+    },
     accepts: (feeId, at, item) => !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off)),
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);

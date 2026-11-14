@@ -1992,19 +1992,34 @@ export const feeDeal = {
       /** One note taken away alone; a part dropped on a case that had that row's part ("מה שהיה ב״מינימום״ הוחלף."). */
       noteRemoved: "ההערה נמחקה.",
       replaced: "מה שהיה ב״{what}״ הוחלף.",
+      /** A part applied to a head's cases that replaced what some of them held, each named by what tells it apart ("באינטרנט ובאפליקציה: מה שהיה ב״מקסימום״ הוחלף."). */
+      replacedIn: "{where}: מה שהיה ב״{what}״ הוחלף.",
       /** A case dropped on a grid's place no case holds. */
       movedCase: "המקרה עבר למקום הריק.",
       /** A cell stretched back: where it left, and the line of what it took there ("בסניף: המינימום נמחק."). */
       shrunk: "{where}: {what}",
       part: { price: "המחיר נמחק.", min: "המינימום נמחק.", max: "המקסימום נמחק.", cap: "המקסימום באחוזים נמחק.", flat: "המחיר הקבוע לפעולה קטנה נמחק.", maxPerSecurity: "המקסימום לכל נייר ערך נמחק.", discount: "ההנחה נמחקה.", third: "העמלה של הצד השלישי נמחקה.", until: "השינוי במחיר נמחק.", offset: "הקיזוז נמחק.", refund: "ההחזר נמחק.", notes: "ההערות על המחיר נמחקו." },
       notHere: "העמלה הזו לא יכולה לקבל את החלק הזה.",
+      /**
+       * A sum moved onto a price counted in another currency: a figure carries its own, and one currency serves all of a price's sums, so a
+       * price that keeps a sum in another does not take it ("המקסימום בשקלים והמינימום כאן בדולרים."); a head names each case it left out.
+       */
+      currency: {
+        sumIn: { ILS: "בשקלים", USD: "בדולרים", EUR: "באירו", GBP: "בלירות שטרלינג", trade: "במטבע העסקה" } as Record<string, string>,
+        sumOf: { amount: "המחיר", min: "המינימום", max: "המקסימום", flat: "המחיר הקבוע לפעולה קטנה", upTo: "הסכום שעד אליו המחיר קבוע", refund: "ההחזר" } as Record<string, string>,
+        clash: "{moved} {from} ו{other} כאן {here}",
+        shekelsOnly: "{moved} {from}, וכל הסכומים כאן בשקלים",
+        leftOut: "{where}: לא השתנה, כי {why}.",
+      },
       /** A grip's spoken name, before what it lifts; `colOnly`, the last case's, which only duplicates it. */
       grip: { col: "להזיז או למחוק את המקרה: ", colOnly: "לשכפל את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", part: "להזיז או למחוק: ", thing: "להחליף בין השורות לעמודות: ", fee: "להזיז את העמלה: " },
-      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה", swap: "החלפה בין השורות לעמודות", swapWith: "החלפה עם {thing}", addRow: "הוספת חלק לכל השורה", addAllCases: "הוספת חלק לכל המקרים" },
+      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה", swap: "החלפה בין השורות לעמודות", swapWith: "החלפה עם {thing}", addRow: "הוספת חלק לכל השורה", addAllCases: "הוספת חלק לכל המקרים", applyRow: "להחיל על כל השורה", applyColumn: "להחיל על כל העמודה", applyAll: "להחיל על כל המקרים" },
       /** A carried thing's words, which the bin says while it is over it ("משחררים כדי למחוק: השורה ״בסניף״"). */
       name: { row: "השורה ״{name}״", column: "העמודה ״{name}״", step: "המדרגה {name}", case: "המקרה ״{name}״", partRow: "השורה ״{name}״" },
       copyName: "{name} (עותק)",
       knob: "למתוח את המחיר על התאים שלידו",
+      /** A cell's own bin, in its corner: what it takes away ("למחוק: מקסימום · מק״מ"). */
+      binCell: "למחוק: {where}",
       knobDown: "למתוח את המחיר על התאים שמעליו ומתחתיו",
       /** A figure at rest, which a tap turns into its box: "לשנות: מינימום". */
       edit: "לשנות: ",

@@ -722,9 +722,26 @@
       user-select: text;
     }
   }
-  /* While something is carried, no grip, knob or row strip is drawn, under the pointer or anywhere: what is under it reads as where the
-     thing would go, not as a thing to lift */
-  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-grip], [data-span-knob]:not(:active), [data-row-add]) {
+  /* A cell's own bin (kit/case-table.tsx, `CellBin`): drawn, and taking a press, only on a fine pointer while its cell is under it or has
+     the keyboard's focus, so an unseen corner never takes a cell away; touch has the grip's menu and the long press */
+  [data-cell-bin] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (pointer: fine) {
+    [data-liftable]:is(:hover, :focus-visible) > [data-cell-bin-box] > [data-cell-bin] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  @media (pointer: coarse) {
+    [data-cell-bin-box] {
+      display: none;
+    }
+  }
+  /* While something is carried, no grip, knob, cell's bin or row strip is drawn, under the pointer or anywhere: what is under it reads as
+     where the thing would go, not as a thing to lift */
+  :root:has([data-lift-ghost], [data-reach-frame]) :is([data-grip], [data-span-knob]:not(:active), [data-row-add], [data-cell-bin]) {
     opacity: 0 !important;
     pointer-events: none;
   }

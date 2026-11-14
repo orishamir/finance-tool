@@ -3228,8 +3228,9 @@ function ChangeDemo({ today }: { today: string }) {
 
 /**
  * A conversion's grid with what lifts and stretches: a grip on each column's head and each cell, a grab strip along a cell's edge toward a
- * place no case holds (its knob in the middle), the bin while something is lifted, and a figure edited where it is read. One price above
- * 10 $ and above 100 $ in one cell, nothing up to 10 $ until it is stretched there.
+ * place no case holds (its knob in the middle), the bin while something is lifted, a cell's own bin in its corner, a row's head and the
+ * condition's head taking a cell for every case they cover, and a figure edited where it is read. One price above 10 $ and above 100 $ in
+ * one cell, nothing up to 10 $ until it is stretched there.
  */
 function LiftDemo({ today }: { today: string }) {
   const steps = [sc.liftSteps.small, sc.liftSteps.mid, sc.liftSteps.big];
@@ -3251,7 +3252,16 @@ function LiftDemo({ today }: { today: string }) {
   );
   return (
     <FeeBlock dot="bg-fee-fx" name={sc.fx}>
-      <ConditionHead bare things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]} />
+      {/* the condition's head takes a cell for every case: dropped there, each row's price covers its whole row */}
+      <ConditionHead
+        bare
+        things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
+        zone={(h) => (
+          <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
+            {h}
+          </DropZone>
+        )}
+      />
       <CaseGrid
         steps
         label={sc.fx}
@@ -3259,6 +3269,7 @@ function LiftDemo({ today }: { today: string }) {
         rows={order.map((j) => {
           const head = [sc.channels.web, sc.channels.branch][j]!;
           const from = Math.min(starts[j]!, n - 1);
+          const emptied = starts[j]! >= n;
           const shown = reach && reach.row === j ? reach.from : from;
           const knob = (
             <SpanKnob
@@ -3276,7 +3287,7 @@ function LiftDemo({ today }: { today: string }) {
               }}
             />
           );
-          const pricedCell = { from, span: n - from, content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}) };
+          const pricedCell = { from, span: n - from, content: <span>{priced} {sc.liftPer}</span>, knobs: knob, lit: !!reach && reach.row === j, grip: <Grip item={`kit:cell:${j}:1`} label={lw.grip.cell} />, ...(from === 0 ? { whole: sc.anySize } : {}), onRemove: () => setStarts((x) => x.map((v, i) => (i === j ? n : v))), removeLabel: lw.binCell.replace("{where}", head) };
           const item = `kit:row:${j}`;
           return {
             id: head,
@@ -3284,12 +3295,21 @@ function LiftDemo({ today }: { today: string }) {
             grip: <Grip item={item} label={`${lw.grip.row}${head}`} name={lw.name.row.replace("{name}", head)} />,
             liftItem: item,
             zone: (h: ReactNode) => (
-              <DropZone sort={{ list: "kit:rows", axis: "y" }} accepts={(it) => it.startsWith("kit:row:") && it !== item} onDrop={(it) => setOrder((o) => { const from = o.indexOf(Number(it.split(":")[2])); const to = o.indexOf(j); const next = o.filter((_, i) => i !== from); next.splice(to, 0, o[from]!); return next; })}>
+              // a row lands among the rows (a sortable list); a cell drops on the head as a plain place, its price covering the whole row
+              <DropZone
+                sort={(it) => (it.startsWith("kit:row:") ? { list: "kit:rows", axis: "y" } : null)}
+                accepts={(it) => (it.startsWith("kit:row:") && it !== item) || it.startsWith("kit:cell:")}
+                onDrop={(it) => {
+                  if (it.startsWith("kit:cell:")) return setStarts((x) => x.map((v, i) => (i === j ? 0 : v)));
+                  setOrder((o) => { const from = o.indexOf(Number(it.split(":")[2])); const to = o.indexOf(j); const next = o.filter((_, i) => i !== from); next.splice(to, 0, o[from]!); return next; });
+                }}
+              >
                 {h}
               </DropZone>
             ),
             addPart: { label: dealWords.cases.rowAdd.strip, onAdd: () => undefined },
-            cells: [...Array.from({ length: from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from, fill: <span>{priced}% {sc.liftPer}</span> })), pricedCell],
+            // a row whose cell its corner's bin took away: every place empty
+            cells: [...Array.from({ length: emptied ? n : from }, (_, k) => ({ from: k, span: 1, empty: { label: dealWords.cases.addSlot.case, onAdd: () => undefined }, lit: !!reach && reach.row === j && k >= reach.from, fill: <span>{priced}% {sc.liftPer}</span> })), ...(emptied ? [] : [pricedCell])],
           };
         })}
         addColumn={{ label: dealWords.cases.addSlot.step, onAdd: () => undefined }}
@@ -3441,9 +3461,14 @@ function CaseDemos({ today }: { today: string }) {
         <State label={`a bin alone, its words spoken and its tooltip; 44 px square on a phone, ${g.states.interactive}`}>
           <RemoveButton label={dealWords.panel.remove} onRemove={() => undefined} />
         </State>
+        <State label="knob: a cell's own bin, drawn like its stretch knob; on the page it shows only while its cell is under a fine pointer">
+          <span className="[&_[data-cell-bin]]:pointer-events-auto [&_[data-cell-bin]]:opacity-100">
+            <RemoveButton knob label={dealWords.cases.lifted.binCell.replace("{where}", dealWords.cases.rowHeads.max!)} onRemove={() => undefined} />
+          </span>
+        </State>
       </Demo>
       <Demo name="Grip, DropBin, SpanKnob, EditInPlace" use={g.uses.Lift}>
-        <State label={`${g.states.interactive}: a step's grip lifts it (a long press on a phone) and the bin shows under the grid; a knob stretches the cell over the next step or back (the arrow keys too); a tap on the figure edits it in place; the cells walk by the arrow keys, Home, End and Tab`} wide>
+        <State label={`${g.states.interactive}: a step's grip lifts it (a long press on a phone) and the bin shows under the grid; a knob stretches the cell over the next step or back (the arrow keys too); a tap on the figure edits it in place; the cells walk by the arrow keys, Home, End and Tab; a cell dropped on its row's head covers the whole row, on the condition's head every row; the bin in a cell's corner, under a fine pointer, takes its row's price away`} wide>
           <div className="max-w-2xl">
             <LiftDemo today={today} />
           </div>
