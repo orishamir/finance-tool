@@ -3,7 +3,8 @@
 import { capStanding, chargesNothing, type CapStanding } from "@finance-tool/engine";
 import type { FeeBase, FeeCap, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
-import { fraction, onAction, type Price, type ProviderKind } from "./model";
+import { fraction, mainFigure, type Price, type ProviderKind } from "./model";
+import { charged, hasBounds, hasFlat, onAction, type ChargedPrice } from "./offers/capabilities";
 import { enginePrice } from "./to-engine";
 import { FEE_SHAPES, type FeeKindId } from "./shapes";
 import { recordValue } from "./values";
@@ -85,15 +86,15 @@ export function capLine(kind: DealKind | null, fee: FeeKindId): CapLine {
  */
 export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: number; converted: boolean } | undefined {
   const as = (x: number, converted = false) => ({ x, converted });
-  if (p.form === "free") return as(0);
+  if (!charged(p)) return as(0);
   const own = withoutThird(p);
   // F-116: the share left after the discount, on the rate or the sum, and on the minimum where the list says the discount is on it too
   const left = onAction(own) && own.discount ? 1 - fraction(own.discount.pct.v) : 1;
   const minLeft = onAction(own) && own.discount?.alsoMin ? left : 1;
   if (cap === 0) {
     if (chargesNothing(enginePrice(own))) return as(0);
-    const main = mainValue(own) * (own.form === "held" ? 1 : left);
-    return as(main > 0 ? main : (own.form === "action" || own.form === "perUnit" || own.form === "held") && own.min ? own.min.v * (own.form === "held" ? 1 : minLeft) : (own.form === "action" || own.form === "perUnit") && own.flat ? own.flat.amount.v : 0);
+    const main = mainFigure(own)!.v * (own.form === "held" ? 1 : left);
+    return as(main > 0 ? main : hasBounds(own) && own.min ? own.min.v * (own.form === "held" ? 1 : minLeft) : hasFlat(own) && own.flat ? own.flat.amount.v : 0);
   }
   switch (unit) {
     case "pct_per_year":
@@ -115,14 +116,11 @@ export function inCapUnit(p: Price, unit: FeeCap["unit"], cap: number): { x: num
 }
 
 /** A price without its third party's fee: F-113 judges the provider's own price (F-117). */
-const withoutThird = (p: Exclude<Price, { form: "free" }>): Exclude<Price, { form: "free" }> => {
+const withoutThird = (p: ChargedPrice): ChargedPrice => {
   if (!onAction(p) || !p.third) return p;
   const { third: _t, ...rest } = p;
-  return rest as Exclude<Price, { form: "free" }>;
+  return rest as ChargedPrice;
 };
-
-/** A price's one figure: its rate, or its sum. */
-const mainValue = (p: Exclude<Price, { form: "free" }>): number => (p.form === "action" || p.form === "held" ? p.rate.v : p.amount.v);
 
 /** F-113's answer for one price, or `other-form` where the price is typed in a form the cap's unit does not state. */
 export type Standing = CapStanding | { judged: false; why: "other-form" };

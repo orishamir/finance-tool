@@ -4,6 +4,7 @@
 import { discounted, type Deal, type DealFee, type DealPrice, type DealStage, type DealThird } from "@finance-tool/engine";
 import { isForeign, readFees, type ReadFee } from "./cases";
 import { fraction, monthOf, type FeeDeal, type Price, type ReadPick, type Stage, type ThirdPrice } from "./model";
+import { onAction } from "./offers/capabilities";
 import { engineBase } from "./shapes";
 
 /** The parts a share of an action and a sum per unit share: bounds, the cap as a fraction, and the flat price where both its figures are given. */
@@ -37,7 +38,7 @@ function engineThird(t: ThirdPrice): DealThird {
  */
 export function enginePrice(p: Price): DealPrice {
   const base = basePrice(p);
-  if (p.form !== "action" && p.form !== "perUnit" && p.form !== "perAction") return base;
+  if (!onAction(p)) return base;
   const withThird: DealPrice = p.third?.price ? ({ ...base, third: engineThird(p.third.price) } as DealPrice) : base;
   return p.discount ? discounted(withThird, fraction(p.discount.pct.v), !!p.discount.alsoMin) : withThird;
 }

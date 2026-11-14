@@ -38,6 +38,7 @@ import {
   type When,
 } from "./model";
 import type { DealKind } from "./kinds";
+import { boundsAction, byAmount, byRate, charged, hasBounds, hasCap, hasCurrency, hasFlat, onAction, pricedCurrency, sameFigureKind, type ActionBoundedPrice, type OnActionPrice } from "./offers/capabilities";
 import { BY_MAX, byKindsFor, FEE_SHAPES, isRangeKind, kindHas, LIST_IDS, RANGE_UNITS, WHAT_VALUES, type ByKind, type FeeKindId, type FormId, type RangeKind, type RangeUnit } from "./shapes";
 
 export type { Side } from "./model";
@@ -87,15 +88,8 @@ export function setPick(deal: FeeDeal, by: string, is: string | null): FeeDeal {
  */
 export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax" | "refund";
 
-/** A price that may have bounds, a cap and a flat price: a share of an action or a sum per unit. */
-type Bounded = Extract<Price, { form: "action" | "perUnit" }>;
-const isBounded = (p: Price): p is Bounded => p.form === "action" || p.form === "perUnit";
-/** A price on an action, which may carry a discount, a third party's fee and notes (F-116, F-117 and §10.6's stated parts). */
-type OnAction = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
-const isOnAction = (p: Price): p is OnAction => p.form === "action" || p.form === "perUnit" || p.form === "perAction";
-
 /** A price's main figure's key: the rate of a share, the sum of the rest. */
-const mainKey = (p: Price): "rate" | "amount" | null => (p.form === "action" || p.form === "held" ? "rate" : p.form === "free" ? null : "amount");
+const mainKey = (p: Price): "rate" | "amount" | null => (byRate(p) ? "rate" : byAmount(p) ? "amount" : null);
 
 /** A third party's price with one figure set, or a bound emptied (`n` undefined); its rate or sum emptied is blank again. */
 function setThirdFigure(t: ThirdPrice, figure: "third" | "thirdMin" | "thirdMax", n: Num | undefined): ThirdPrice {
@@ -114,23 +108,22 @@ function setThirdFigure(t: ThirdPrice, figure: "third" | "thirdMin" | "thirdMax"
  */
 function setFigure(p: Price, figure: Figure, n: Num | undefined): Price {
   if (figure === "rate" || figure === "amount") return mainKey(p) === figure ? ({ ...p, [figure]: n ?? blankFigure() } as Price) : p;
-  if (figure === "refund") return p.form === "free" || p.refund === undefined ? p : ({ ...p, refund: n ?? blankFigure() } as Price);
-  if (figure === "discount") return isOnAction(p) && p.discount ? { ...p, discount: { ...p.discount, pct: n ?? blankFigure() } } : p;
-  if (figure === "third" || figure === "thirdMin" || figure === "thirdMax") return isOnAction(p) && p.third?.price ? { ...p, third: { ...p.third, price: setThirdFigure(p.third.price, figure, n) } } : p;
+  if (figure === "refund") return !charged(p) || p.refund === undefined ? p : ({ ...p, refund: n ?? blankFigure() } as Price);
+  if (figure === "discount") return onAction(p) && p.discount ? { ...p, discount: { ...p.discount, pct: n ?? blankFigure() } } : p;
+  if (figure === "third" || figure === "thirdMin" || figure === "thirdMax") return onAction(p) && p.third?.price ? { ...p, third: { ...p.third, price: setThirdFigure(p.third.price, figure, n) } } : p;
   if (figure === "min" || figure === "max") {
-    if (!isBounded(p) && p.form !== "held") return p;
+    if (!hasBounds(p)) return p;
     const next = { ...p, [figure]: n };
     if (n === undefined) delete next[figure];
     return next;
   }
   if (figure === "cap") {
     // a share's, a sum per unit's or a sum per action's percent maximum
-    if (!isBounded(p) && p.form !== "perAction") return p;
+    if (!hasCap(p)) return p;
     const { cap: _c, ...rest } = p;
     return (n === undefined ? rest : { ...rest, cap: n }) as Price;
   }
-  if (!isBounded(p)) return p;
-  if (!p.flat) return p;
+  if (!hasFlat(p) || !p.flat) return p;
   return { ...p, flat: { ...p.flat, [figure === "flat" ? "amount" : "upTo"]: n ?? blankFigure() } };
 }
 
@@ -143,17 +136,17 @@ export function withFigure(p: Price, figure: Figure, n: number | null): Price {
 /** One figure of a price as it stands, with its source; none where the price has no such figure. */
 export function figureOf(p: Price, figure: Figure): Num | undefined {
   if (figure === "rate" || figure === "amount") return mainKey(p) === figure ? (mainFigure(p) ?? undefined) : undefined;
-  if (figure === "refund") return p.form === "free" ? undefined : p.refund;
-  if (figure === "discount") return isOnAction(p) ? p.discount?.pct : undefined;
+  if (figure === "refund") return charged(p) ? p.refund : undefined;
+  if (figure === "discount") return onAction(p) ? p.discount?.pct : undefined;
   if (figure === "third" || figure === "thirdMin" || figure === "thirdMax") {
-    const t = isOnAction(p) ? p.third?.price : undefined;
+    const t = onAction(p) ? p.third?.price : undefined;
     if (!t) return undefined;
     if (figure === "third") return t.form === "action" ? t.rate : t.amount;
     return t.form === "perAction" ? undefined : figure === "thirdMin" ? t.min : t.max;
   }
-  if (figure === "min" || figure === "max") return isBounded(p) || p.form === "held" ? p[figure] : undefined;
-  if (figure === "cap") return isBounded(p) || p.form === "perAction" ? p.cap : undefined;
-  if (!isBounded(p)) return undefined;
+  if (figure === "min" || figure === "max") return hasBounds(p) ? p[figure] : undefined;
+  if (figure === "cap") return hasCap(p) ? p.cap : undefined;
+  if (!hasFlat(p)) return undefined;
   return figure === "flat" ? p.flat?.amount : p.flat?.upTo;
 }
 
@@ -170,8 +163,8 @@ export const figureBack = (p: Price, figure: Figure, n: Num | undefined): Price 
 function owned(p: Price): Price {
   const own = (n: Num): Num => (n.blank ? n : typed(n.v));
   const opt = <K extends "min" | "max" | "cap">(k: K, n: Num | undefined) => (n ? { [k]: own(n) } : {});
-  const refund = p.form !== "free" && p.refund ? { refund: own(p.refund) } : {};
-  const parts = (x: OnAction) => ({
+  const refund = charged(p) && p.refund ? { refund: own(p.refund) } : {};
+  const parts = (x: OnActionPrice) => ({
     ...(x.discount ? { discount: { ...x.discount, pct: own(x.discount.pct) } } : {}),
     ...(x.third?.price ? { third: { ...x.third, price: ownThird(x.third.price, own) } } : {}),
   });
@@ -195,22 +188,13 @@ function owned(p: Price): Price {
 const ownThird = (t: ThirdPrice, own: (n: Num) => Num): ThirdPrice =>
   t.form === "perAction" ? { ...t, amount: own(t.amount) } : t.form === "action" ? { ...t, rate: own(t.rate), ...(t.min ? { min: own(t.min) } : {}), ...(t.max ? { max: own(t.max) } : {}) } : { ...t, amount: own(t.amount), ...(t.min ? { min: own(t.min) } : {}), ...(t.max ? { max: own(t.max) } : {}) };
 
-/**
- * The currency a price's sums are in, where it prices something (F-110, F-112): a sum per unit's and a sum per action's always, a share's
- * only with a bound or a flat price typed; none for the shekel. A currency that priced nothing is not carried into another form.
- */
-function pricedCurrency(p: Price): BoundCurrency | undefined {
-  if (!isOnAction(p) || !p.currency || p.currency === "ILS") return undefined;
-  return p.form !== "action" || p.min || p.max || p.flat ? p.currency : undefined;
-}
-
 /** The parts a price keeps in another form: the parts on an action where the new form is on an action, and an offset and a refund always. */
 function partsInto(p: Price, next: Price): Price {
-  if (p.form === "free" || next.form === "free") return next;
+  if (!charged(p) || !charged(next)) return next;
   const linked = { ...(p.offset ? { offset: p.offset } : {}), ...(p.refund ? { refund: p.refund } : {}) };
   const currency = pricedCurrency(p);
-  const onAction = isOnAction(p) && isOnAction(next) ? { ...(currency ? { currency } : {}), ...(p.cap ? { cap: p.cap } : {}), ...(p.discount ? { discount: p.discount } : {}), ...(p.third ? { third: p.third } : {}), ...(p.notes ? { notes: p.notes } : {}) } : {};
-  return { ...next, ...linked, ...onAction } as Price;
+  const actionParts = onAction(p) && onAction(next) ? { ...(currency ? { currency } : {}), ...(p.cap ? { cap: p.cap } : {}), ...(p.discount ? { discount: p.discount } : {}), ...(p.third ? { third: p.third } : {}), ...(p.notes ? { notes: p.notes } : {}) } : {};
+  return { ...next, ...linked, ...actionParts } as Price;
 }
 
 /**
@@ -227,16 +211,14 @@ function partsInto(p: Price, next: Price): Price {
 export function withForm(p: Price, form: FormId): Price {
   if (p.form === form) return p;
   const next = blankPrice(form);
-  if (isBounded(p) && isBounded(next)) {
-    const { form: _f, rate: _r, amount: _a, currency: _c, ...parts } = p as Bounded & { rate?: Num; amount?: Num };
+  if (boundsAction(p) && boundsAction(next)) {
+    const { form: _f, rate: _r, amount: _a, currency: _c, ...parts } = p as ActionBoundedPrice & { rate?: Num; amount?: Num };
     const currency = pricedCurrency(p);
     return { ...next, ...parts, ...(currency ? { currency } : {}) } as Price;
   }
-  const own = (n: Num): Num => (n.blank ? n : typed(n.v));
-  const rate = p.form === "action" || p.form === "held" ? p.rate : null;
-  const amount = p.form === "sum" || p.form === "perAction" ? p.amount : null;
-  if ((next.form === "action" || next.form === "held") && rate) return partsInto(p, { ...next, rate: own(rate) });
-  if ((next.form === "sum" || next.form === "perAction") && amount) return partsInto(p, { ...next, amount: own(amount) });
+  const main = mainFigure(p);
+  const key = mainKey(next);
+  if (main && key && sameFigureKind(p.form, form)) return partsInto(p, { ...next, [key]: main.blank ? main : typed(main.v) } as Price);
   return partsInto(p, next);
 }
 
@@ -255,7 +237,7 @@ export function withMonths(p: Price, which: "per" | "every", months: Months): Pr
  * action. The shekel is left unsaid. A currency that differs from the price's makes it the person's (`owned`).
  */
 export function withCurrency(p: Price, currency: BoundCurrency): Price {
-  if ((p.form !== "action" && p.form !== "perUnit" && p.form !== "perAction") || (p.currency ?? "ILS") === currency) return p;
+  if (!hasCurrency(p) || (p.currency ?? "ILS") === currency) return p;
   const { currency: _c, ...rest } = p;
   return owned((currency === "ILS" ? rest : { ...rest, currency }) as Price);
 }
@@ -265,7 +247,7 @@ export function withCurrency(p: Price, currency: BoundCurrency): Price {
  * (the same price on every action). A price that already has one, or has none to take away, is left as it is.
  */
 export function withFlat(p: Price, on: boolean): Price {
-  if (!isBounded(p) || on === !!p.flat) return p;
+  if (!hasFlat(p) || on === !!p.flat) return p;
   if (on) return { ...p, flat: { amount: blankFigure(), upTo: blankFigure() } };
   const { flat: _f, ...rest } = p;
   return rest;
@@ -275,7 +257,7 @@ export function withFlat(p: Price, on: boolean): Price {
 
 /** A price on an action with a discount (its share blank until typed), or without one. Any other price is left as it is. */
 export function withDiscount(p: Price, on: boolean): Price {
-  if (!isOnAction(p) || on === !!p.discount) return p;
+  if (!onAction(p) || on === !!p.discount) return p;
   if (on) return { ...p, discount: { pct: blankFigure() } };
   const { discount: _d, ...rest } = p;
   return rest;
@@ -283,14 +265,14 @@ export function withDiscount(p: Price, on: boolean): Price {
 
 /** A discount that is off the minimum too, where the list says so (F-116), or off the price alone. */
 export function withDiscountOnMin(p: Price, on: boolean): Price {
-  if (!isOnAction(p) || !p.discount || on === !!p.discount.alsoMin) return p;
+  if (!onAction(p) || !p.discount || on === !!p.discount.alsoMin) return p;
   const { alsoMin: _m, ...rest } = p.discount;
   return { ...p, discount: on ? { ...rest, alsoMin: true } : rest };
 }
 
 /** A price on an action with a third party's fee (none of its figures given: "בלי סכום בתעריפון", §10.6's stated parts), or without one. */
 export function withThird(p: Price, on: boolean): Price {
-  if (!isOnAction(p) || on === !!p.third) return p;
+  if (!onAction(p) || on === !!p.third) return p;
   if (on) return { ...p, third: {} };
   const { third: _t, ...rest } = p;
   return rest;
@@ -298,7 +280,7 @@ export function withThird(p: Price, on: boolean): Price {
 
 /** A third party's fee named in the list's words, or unnamed (`""`). */
 export function withThirdWho(p: Price, who: string): Price {
-  if (!isOnAction(p) || !p.third) return p;
+  if (!onAction(p) || !p.third) return p;
   const { who: _w, ...rest } = p.third;
   const name = who.trim();
   return { ...p, third: name ? { ...rest, who: name } : rest };
@@ -309,7 +291,7 @@ export function withThirdWho(p: Price, who: string): Price {
  * (`null`: the list gives no figure, §10.6's stated parts). The same form leaves it as it is.
  */
 export function withThirdForm(p: Price, form: ThirdPrice["form"] | null): Price {
-  if (!isOnAction(p) || !p.third) return p;
+  if (!onAction(p) || !p.third) return p;
   const before = p.third.price;
   if ((before?.form ?? null) === form) return p;
   const { price: _p, ...rest } = p.third;
@@ -321,21 +303,21 @@ export function withThirdForm(p: Price, form: ThirdPrice["form"] | null): Price 
 
 /** A third party's figure in another currency (the shekel is left unsaid). */
 export function withThirdCurrency(p: Price, currency: BoundCurrency): Price {
-  if (!isOnAction(p) || !p.third?.price || (p.third.price.currency ?? "ILS") === currency) return p;
+  if (!onAction(p) || !p.third?.price || (p.third.price.currency ?? "ILS") === currency) return p;
   const { currency: _c, ...rest } = p.third.price;
   return { ...p, third: { ...p.third, price: (currency === "ILS" ? rest : { ...rest, currency }) as ThirdPrice } };
 }
 
 /** A price offset against the deal's fee of `kind` (§10.6's stated parts), or not (`null`). A free price has nothing to offset. */
 export function withOffset(p: Price, kind: FeeKindId | null): Price {
-  if (p.form === "free") return p;
+  if (!charged(p)) return p;
   const { offset: _o, ...rest } = p;
   return (kind === null ? rest : { ...rest, offset: { kind } }) as Price;
 }
 
 /** A price with a refund (its sum blank until typed, §10.6's stated parts), or without one. */
 export function withRefund(p: Price, on: boolean): Price {
-  if (p.form === "free" || on === !!p.refund) return p;
+  if (!charged(p) || on === !!p.refund) return p;
   if (on) return { ...p, refund: blankFigure() } as Price;
   const { refund: _r, ...rest } = p;
   return rest as Price;
@@ -343,7 +325,7 @@ export function withRefund(p: Price, on: boolean): Price {
 
 /** A price on an action with a note on an order (§10.6's stated parts), or without it; the notes keep their order. */
 export function withNote(p: Price, note: Note, on: boolean): Price {
-  if (!isOnAction(p) || on === !!p.notes?.includes(note)) return p;
+  if (!onAction(p) || on === !!p.notes?.includes(note)) return p;
   const notes = on ? [...(p.notes ?? []), note] : (p.notes ?? []).filter((x) => x !== note);
   const { notes: _n, ...rest } = p;
   return notes.length ? { ...rest, notes } : rest;

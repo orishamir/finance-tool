@@ -10,6 +10,7 @@ import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy, type Figure, type PartId } from "./edit";
 import { managementFee } from "./kinds";
+import { charged, hasBounds, hasCap, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { BY_MAX, byKindsFor, FEE_SHAPES, isConversion, isRangeKind, LIST_IDS, onHolding, ONE_SIDE, RANGE_UNITS, suggestions, WHAT_VALUES, type ByKind, type FeeKindId, type FieldId, type ListKind, type RangeUnit } from "./shapes";
 import { figure, insideFund, sumUnit } from "./values";
@@ -197,7 +198,7 @@ function priceParts(kind: FeeKindId, p: Price, view: PriceView): SlimPart[] {
       out.push({ id: "sum", kind: "price", words: { ...(f.amount ? { figure: f.amount } : {}), tail: ` ${copy.price.per[p.every]}` } });
       break;
   }
-  if (p.form === "action" || p.form === "perUnit" || p.form === "perAction") {
+  if (onAction(p)) {
     const d = copy.cases.parts.discount;
     if (p.discount) out.push({ id: "discount", kind: "price", words: { lead: d.lead, ...(f.discount ? { figure: f.discount } : {}), tail: `${d.tail}${p.discount.alsoMin ? d.alsoMin : ""}` } });
     if (p.third) {
@@ -224,7 +225,7 @@ function boundParts(kind: FeeKindId, view: PriceView): SlimPart[] {
 
 /** The words of a price's links: the fee it is offset against, and its refund. */
 function linkParts(p: Price, view: PriceView): SlimPart[] {
-  if (p.form === "free") return [];
+  if (!charged(p)) return [];
   const o = copy.cases.parts.offsetOf;
   return [
     ...(p.offset ? [{ id: "offset" as const, kind: "link" as const, words: { lead: `${o.lead}${feeNameOf(p.offset.kind)}${o.tail}` } }] : []),
@@ -234,7 +235,7 @@ function linkParts(p: Price, view: PriceView): SlimPart[] {
 
 /** The words of a price's notes on an order, and of a sale priced apart. */
 function noteParts(p: Price, saleApart: boolean): SlimPart[] {
-  const notes = p.form === "action" || p.form === "perUnit" || p.form === "perAction" ? (p.notes ?? []) : [];
+  const notes = onAction(p) ? (p.notes ?? []) : [];
   return [...notes.map((n) => ({ id: n as PartId, kind: "note" as const, words: { lead: copy.cases.parts.notes[n]! } })), ...(saleApart ? [{ id: "sale" as const, kind: "note" as const, words: { lead: copy.cases.parts.notes.sale! } }] : [])];
 }
 
@@ -438,7 +439,7 @@ const signOf = (currency: string | undefined): string => copy.panel.signs[curren
 function openParts(fee: Fee, p: Price, view: PriceView, saleApart: boolean): OpenPart[] {
   const f = view.figures;
   const value = (n: SiteValue | undefined) => n ?? null;
-  const cur = "currency" in p ? p.currency : undefined;
+  const cur = hasCurrency(p) ? p.currency : undefined;
   const fieldsFor = (id: PartId): PartField[] => {
     switch (id) {
       case "share":
@@ -452,7 +453,7 @@ function openParts(fee: Fee, p: Price, view: PriceView, saleApart: boolean): Ope
       case "discount":
         return [{ figure: "discount", value: value(f.discount), sign: "pct" }];
       case "third": {
-        const t = (p.form === "action" || p.form === "perUnit" || p.form === "perAction") && p.third?.price;
+        const t = onAction(p) && p.third?.price;
         if (!t) return [];
         return [{ figure: "third", value: value(f.third), sign: t.form === "action" ? "pct" : signOf(t.currency) }, ...(t.form === "perAction" ? [] : [{ figure: "thirdMin" as const, value: value(f.thirdMin), sign: signOf(t.currency) }, { figure: "thirdMax" as const, value: value(f.thirdMax), sign: signOf(t.currency) }])];
       }
@@ -471,7 +472,7 @@ function openParts(fee: Fee, p: Price, view: PriceView, saleApart: boolean): Ope
   };
   const slim = [...priceParts(fee.kind, p, view), ...boundParts(fee.kind, view), ...linkParts(p, view), ...noteParts(p, saleApart)];
   // a bound, a cap or a flat price nobody typed yet is in the price too: it shows as an empty part while it is
-  const flatBlank = (p.form === "action" || p.form === "perUnit") && p.flat && !slim.some((x) => x.id === "flat") ? [{ id: "flat" as const, kind: "bound" as const, words: { lead: copy.cases.parts.flat.lead, mid: copy.cases.parts.flat.tail } }] : [];
+  const flatBlank = hasFlat(p) && p.flat && !slim.some((x) => x.id === "flat") ? [{ id: "flat" as const, kind: "bound" as const, words: { lead: copy.cases.parts.flat.lead, mid: copy.cases.parts.flat.tail } }] : [];
   return [...slim, ...flatBlank].map((x) => ({ ...x, fields: fieldsFor(x.id), removable: x.kind !== "price" || x.id === "discount" || x.id === "third" }));
 }
 
@@ -556,8 +557,8 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   const shape = FEE_SHAPES[fee.kind];
   const can = (form: Exclude<Price["form"], "free">) => shape.forms.includes(form);
   const fieldOk = (field: FieldId) => p.form !== "free" && (shape.fields[p.form] ?? []).includes(field);
-  const onAct = p.form === "action" || p.form === "perUnit" || p.form === "perAction";
-  const cur = "currency" in p && p.currency ? p.currency : "ILS";
+  const onAct = onAction(p);
+  const cur = hasCurrency(p) && p.currency ? p.currency : "ILS";
   const pp = copy.cases.parts;
   const price: ToolPart[] = [
     ...(can("action") ? [{ id: "share" as const, kind: "price" as const, words: { tail: ` ${perAction(fee.kind)}` }, box: "pct" as const, used: p.form === "action" }] : []),
@@ -569,13 +570,13 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
     ...(onAct || can("action") || can("perAction") ? [{ id: "discount" as const, kind: "price" as const, words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" as const, used: onAct && !!p.discount }] : []),
     ...(onAct || can("action") || can("perAction") ? [{ id: "third" as const, kind: "price" as const, words: { lead: pp.third }, used: onAct && !!p.third }] : []),
     // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)
-    ...((shape.fields.action ?? []).includes("flat") || (shape.fields.perUnit ?? []).includes("flat") ? [{ id: "flat" as const, kind: "price" as const, words: { lead: pp.flatSmall[fee.kind] ?? pp.flatSmall.default! }, box: { sign: signOf(cur) }, used: (p.form === "action" || p.form === "perUnit") && !!p.flat }] : []),
+    ...((shape.fields.action ?? []).includes("flat") || (shape.fields.perUnit ?? []).includes("flat") ? [{ id: "flat" as const, kind: "price" as const, words: { lead: pp.flatSmall[fee.kind] ?? pp.flatSmall.default! }, box: { sign: signOf(cur) }, used: hasFlat(p) && !!p.flat }] : []),
     { id: "until", kind: "price", words: { lead: pp.until }, box: "month", used: priced.stages.length > 1 },
   ];
   const bound: ToolPart[] = [
-    ...(fieldOk("min") || can("action") ? [{ id: "min" as const, kind: "bound" as const, words: { lead: pp.min }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: (p.form === "action" || p.form === "perUnit" || p.form === "held") && !!p.min }] : []),
-    ...(fieldOk("max") || can("action") ? [{ id: "max" as const, kind: "bound" as const, words: { lead: pp.max }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: (p.form === "action" || p.form === "perUnit" || p.form === "held") && !!p.max }] : []),
-    ...((shape.fields.action ?? []).includes("cap") ? [{ id: "cap" as const, kind: "bound" as const, words: { lead: pp.max, tail: ` ${shareOf(fee.kind)}` }, box: "pct" as const, used: (p.form === "action" || p.form === "perUnit" || p.form === "perAction") && !!p.cap }] : []),
+    ...(fieldOk("min") || can("action") ? [{ id: "min" as const, kind: "bound" as const, words: { lead: pp.min }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: hasBounds(p) && !!p.min }] : []),
+    ...(fieldOk("max") || can("action") ? [{ id: "max" as const, kind: "bound" as const, words: { lead: pp.max }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: hasBounds(p) && !!p.max }] : []),
+    ...((shape.fields.action ?? []).includes("cap") ? [{ id: "cap" as const, kind: "bound" as const, words: { lead: pp.max, tail: ` ${shareOf(fee.kind)}` }, box: "pct" as const, used: hasCap(p) && !!p.cap }] : []),
   ];
   const kinds = byKindsFor(fee.kind);
   const have = new Set((fee.by ?? []).map((b) => (b.kind === "held" ? "what" : b.kind)));
@@ -585,8 +586,8 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
     return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
   });
   const link: ToolPart[] = [
-    { id: "offset", kind: "link", words: { lead: pp.offset }, used: p.form !== "free" && !!p.offset },
-    { id: "refund", kind: "link", words: { lead: pp.refund.trim() }, box: { sign: signOf(cur) }, used: p.form !== "free" && !!p.refund },
+    { id: "offset", kind: "link", words: { lead: pp.offset }, used: charged(p) && !!p.offset },
+    { id: "refund", kind: "link", words: { lead: pp.refund.trim() }, box: { sign: signOf(cur) }, used: charged(p) && !!p.refund },
   ];
   const notes = onAct ? (p.notes ?? []) : [];
   const more: ToolPart[] = [

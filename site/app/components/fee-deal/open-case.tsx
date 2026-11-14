@@ -4,9 +4,10 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, PartField, SlotEdit } from "../../lib/fee-deal/builder";
-import { addOwnPlace, editPrice, setMine, setPart, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withThirdForm, withThirdWho, type PartId, type Side } from "../../lib/fee-deal/edit";
+import { addOwnPlace, editPrice, setMine, setPart, setRangeUnit, setStep, setTop, setUntil, setWhen, withCurrency, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type PartId, type Side } from "../../lib/fee-deal/edit";
 import { anySourced, BOUND_CURRENCIES, MONTHS, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type MonthKey, type Months, type Price } from "../../lib/fee-deal/model";
 import { FEE_KIND_IDS, FEE_SHAPES, type FeeKindId, type RangeUnit } from "../../lib/fee-deal/shapes";
+import { charged, hasCurrency, onAction } from "../../lib/fee-deal/offers/capabilities";
 import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Button, FigureField, InlineSelect, MonthField, PartEdit, RangeMenu, SegmentedControl, Switch, TextField, TickMenu, TrackMenu, When, monthText, type PartMark } from "../kit";
@@ -30,9 +31,6 @@ export interface Pending {
 }
 
 const monthOptions = (words: Record<number, string>) => MONTHS.map((m) => ({ id: String(m), name: words[m]! }));
-
-/** A price on an action, which carries a currency for its sums. */
-const pricedIn = (p: Price): p is Extract<Price, { form: "action" | "perUnit" | "perAction" }> => p.form === "action" || p.form === "perUnit" || p.form === "perAction";
 
 /** A word of a part trimmed of the spaces it carries to stand in a sentence. */
 const bare = (s: string | undefined) => s?.trim();
@@ -79,7 +77,7 @@ function PriceParts({
   // minimum's), whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign. The chip is plain
   // while the price still holds a figure a template filled (a change of currency makes the whole price the person's, `withCurrency`)
   const chooser =
-    pricedIn(price) && (shape.fields[price.form] ?? []).includes("currency") ? (
+    hasCurrency(price) && (shape.fields[price.form] ?? []).includes("currency") ? (
       <InlineSelect chip plain={anySourced(price)} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={price.currency ?? "ILS"} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
     ) : null;
   const chooserOn: PartId | null = chooser ? (price.form === "action" ? (parts.some((p) => p.id === "min") ? "min" : parts.some((p) => p.id === "max") ? "max" : null) : price.form) : null;
@@ -149,11 +147,11 @@ function PriceParts({
           <>
             {box(p.id, p.fields[0]!, spoken.discount!)}
             {quiet(bare(cp.discount.tail))}
-            {pricedIn(price) && price.discount && <Switch label={cp.discountOnMin} checked={!!price.discount.alsoMin} onChange={(on) => edit((x) => withDiscountOnMin(x, on))} />}
+            {onAction(price) && price.discount && <Switch label={cp.discountOnMin} checked={!!price.discount.alsoMin} onChange={(on) => edit((x) => withDiscountOnMin(x, on))} />}
           </>
         );
       case "third":
-        return pricedIn(price) && price.third ? (
+        return onAction(price) && price.third ? (
           <>
             <TextField inline labelHidden label={label(cp.thirdWho)} placeholder={cp.thirdWho} value={price.third.who ?? ""} onChange={(v) => edit((x) => withThirdWho(x, v))} />
             <InlineSelect
@@ -199,7 +197,7 @@ function PriceParts({
           </>
         );
       case "offset":
-        return price.form !== "free" && price.offset ? <OffsetChoice deal={deal} fee={fee} value={price.offset.kind} label={label(cp.offset)} onChange={(kind) => edit((x) => (x.form === "free" ? x : { ...x, offset: { kind } }))} /> : null;
+        return charged(price) && price.offset ? <OffsetChoice deal={deal} fee={fee} value={price.offset.kind} label={label(cp.offset)} onChange={(kind) => edit((x) => withOffset(x, kind))} /> : null;
       case "refund":
         return box(p.id, p.fields[0]!, spoken.refund!);
       default:
@@ -245,7 +243,7 @@ function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: 
     box?.focus({ preventScroll: true });
     bringIntoView(box?.closest("[data-lift]"));
   }, [fee.id, part]);
-  const cur = pricedIn(price) ? (price.currency ?? "ILS") : "ILS";
+  const cur = hasCurrency(price) ? (price.currency ?? "ILS") : "ILS";
   // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
   const done = (next: Fee, box?: string) => {
     onFee(next);

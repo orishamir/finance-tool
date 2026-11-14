@@ -6,6 +6,7 @@
 import { productIds, type ProductId, type ValueObject } from "@finance-tool/schema";
 import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
+import { byAmount, byRate } from "./offers/capabilities";
 import {
   BY_MAX,
   byKindsFor,
@@ -145,12 +146,6 @@ export type Price =
    * list prints one over it ("11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
    */
   | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & OnAction);
-
-/** Whether a price is on an action, and so may carry a discount, a third party's fee and notes on an order. */
-export const onAction = (p: Price): p is PricedIn => p.form === "action" || p.form === "perUnit" || p.form === "perAction";
-
-/** A price whose sums may be in a currency other than the shekel: a share of an action, a sum per unit, a sum per action. */
-export type PricedIn = Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
 
 /** The currencies a bound, a flat price, a sum per unit or a sum per action may be typed in: the ones the price lists print (F-12, F-13, F-103). */
 export type BoundCurrency = "ILS" | "USD" | "EUR" | "GBP";
@@ -396,7 +391,7 @@ export function blankPrice(form: FormId): Price {
 }
 
 /** The figure that states a price: its rate, or its sum (a sum per unit's among them); none for a free price. */
-export const mainFigure = (p: Price): Num | null => (p.form === "action" || p.form === "held" ? p.rate : p.form === "free" ? null : p.amount);
+export const mainFigure = (p: Price): Num | null => (byRate(p) ? p.rate : byAmount(p) ? p.amount : null);
 
 /**
  * Whether a price states a price: free, or its rate or sum typed or filled (not blank), and its flat price's two figures where it has one,
