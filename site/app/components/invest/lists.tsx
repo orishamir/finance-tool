@@ -330,7 +330,10 @@ export function PairLists(props: ListsProps) {
     const fs = pricedAt(h);
     return { keys: fs.map((f) => f.rec.id), headings: new Set(groupStarts(fs, h).keys()), choosable: new Set(fs.map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
   });
-  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house])).sort((a, b) => kindRank(a) - kindRank(b));
+  // F-118 (D84): a fund whose tax rests on an open rule, priced before tax at the chosen account, stands in its own list under the funds
+  const beforeTaxAt = (f: FundWay) => (priced(f.byHouse[pick.house]) ? undefined : f.beforeTax?.byHouse[pick.house]);
+  const beforeTaxFunds = funds.filter((f) => beforeTaxAt(f));
+  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !beforeTaxAt(f)).sort((a, b) => kindRank(a) - kindRank(b));
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const hedgedHeading = (
@@ -467,6 +470,70 @@ export function PairLists(props: ListsProps) {
     };
   });
 
+  // the funds on an open rule with their figures before tax at the chosen account (F-118, D84): never chosen, never set against the pair,
+  // in the order of the fund list's records (no order by value: they are not ranked)
+  const beforeTaxRows: PickRow[] = beforeTaxFunds.map((f) => {
+    const at = beforeTaxAt(f)!;
+    const typed = isCustomFund(f.rec);
+    return {
+      key: f.rec.id,
+      ...(typed ? { keep: true } : {}),
+      selected: false,
+      disabled: true,
+      onSelect: () => {},
+      cells: (
+        <>
+          {fundName(f, false)}
+          <span className="text-end text-sm tabular-nums whitespace-nowrap">
+            <Num value={at.accountCost} />
+          </span>
+          <span className="text-end text-sm font-semibold tabular-nums whitespace-nowrap">
+            <Num value={at.left} />
+          </span>
+          {typed && underRow(<FundTerms id={f.rec.id} />)}
+        </>
+      ),
+    };
+  });
+  const beforeTaxRules = [...new Set(beforeTaxFunds.map((f) => f.beforeTax!.ruleId))];
+  const beforeTaxList =
+    beforeTaxRows.length > 0 ? (
+      <section className="flex flex-col gap-1.5">
+        <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
+          <IconLock size={14} />
+          {c.beforeTax.heading}
+        </h4>
+        <p className="max-w-measure text-xs text-muted-foreground">
+          {beforeTaxRules.map((id) => (
+            <Term key={id} id={[]} name={c.beforeTax.heading} rules={[id]}>
+              {c.beforeTax.note[id] ?? c.beforeTax.noteOther}
+            </Term>
+          ))}{" "}
+          {c.beforeTax.noteTail}
+        </p>
+        <div className="nums-plain">
+          <PickList
+            look="line"
+            tone="fund"
+            label={c.beforeTax.label(short)}
+            columns="minmax(0,1fr) auto auto"
+            head={
+              <>
+                <span>{c.pair.colFund}</span>
+                <span className="text-end whitespace-nowrap">
+                  <span className="num num-computed num-sample">{c.beforeTax.colCharges}</span> <HelpMark about={c.beforeTax.colCharges} text={c.beforeTax.colChargesHelp} />
+                </span>
+                <span className="text-end whitespace-nowrap">
+                  <span className="num num-computed num-sample">{c.beforeTax.colLeft}</span> <HelpMark about={c.beforeTax.colLeft} text={c.beforeTax.colLeftHelp} />
+                </span>
+              </>
+            }
+            rows={beforeTaxRows}
+          />
+        </div>
+      </section>
+    ) : null;
+
   // ---------------------------------------------------------------- what the page says of the chosen rows, under both lists
   const at = selAt;
   const snap = snapOf(baseHouse);
@@ -576,6 +643,7 @@ export function PairLists(props: ListsProps) {
   );
   const fundsFoot = (
     <div className="flex flex-col gap-3">
+      {beforeTaxList}
       {greyRows.length > 0 && (
         <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">
           <div className="nums-plain pt-1">

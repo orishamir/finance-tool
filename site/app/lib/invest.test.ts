@@ -185,7 +185,7 @@ describe("invest page computation", () => {
     expect(v.genericHeadline).not.toBeNull();
   });
 
-  it("lists a foreign fund in Tel Aviv with the open rule its tax rests on, with no price at any house, never ranked (F-04, TXF-04, D84)", () => {
+  it("lists a foreign fund in Tel Aviv with the open rule its tax rests on, with no price after tax at any house, never ranked (F-04, TXF-04, D84)", () => {
     expect(optionOpenRule(bundle, "tase-foreign")).toBe("TXF-04");
     for (const o of ["il-tracking", "il-etf", "abroad"] as const) expect(optionOpenRule(bundle, o)).toBeNull();
     for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
@@ -200,6 +200,29 @@ describe("invest page computation", () => {
       expect(tase.bestWay).toBeNull();
       expect(v.headline?.option).not.toBe("tase-foreign");
       expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: tase.funds[0]!.rec.id, providerId: "psagot" })).toBeNull();
+    }
+  });
+
+  it("gives a foreign fund in Tel Aviv its figures before tax at each house that sells it, apart from every price the page ranks (F-118, D84)", () => {
+    for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
+      const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
+      const tase = v.options.find((o) => o.id === "tase-foreign")!;
+      for (const f of tase.funds) {
+        expect(f.beforeTax?.ruleId, f.rec.id).toBe("TXF-04");
+        const houses = Object.values(f.beforeTax!.byHouse);
+        expect(houses.length, f.rec.id).toBeGreaterThan(0);
+        for (const at of houses) {
+          expect(at.left.computed_from?.formula).toBe("F-118");
+          expect(at.left.value).toBeCloseTo(at.leftN, 9);
+          expect(at.leftN).toBeGreaterThan(0);
+          expect(at.accountCost.computed_from?.formula).toBe("F-91");
+          expect(at.accountCost.value as number).toBeGreaterThan(0);
+          // a house abroad does not sell a fund in Tel Aviv
+          expect(v.providers.find((p) => p.id === at.providerId)!.foreign).toBe(false);
+        }
+      }
+      // never in a house's ranked entries, the stairs' ways or the headline: the houses read only `byHouse`
+      for (const h of v.houses) expect(h.best?.fund.option).not.toBe("tase-foreign");
     }
   });
 
