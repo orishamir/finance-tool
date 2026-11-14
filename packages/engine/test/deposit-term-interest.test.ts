@@ -1,6 +1,6 @@
 // F-21: a bank deposit's interest over its term from the annual nominal rate the bank publishes (BANK-50, the disclosure rules'
 // Schedule A). Where the record gives m, from its words or from its printed nominal and effective pair at the decimals the bank prints (every
-// whole m and, for a deposit paid at maturity, m = 365/d), any term compounds at the run's rate by it; where the pair leaves the run's rate
+// whole m, from 365/d under a year, and for a deposit paid at maturity m = 365/d where none fits), any term compounds at the run's rate by it; where the pair leaves the run's rate
 // open, the figure is unknown (BANK OQ21). Where it gives none, the method reads a term under a year as paying once, at maturity,
 // rate × days/365 (the days the table prints, or 365/12 a month), and a one-year term as paying the rate itself; a term over a year is
 // unknown. Interest paid out during the term does not compound and is taxed in the month it is paid. Values worked by hand.
@@ -79,12 +79,28 @@ describe("F-21 a deposit's interest over its term", () => {
     expect(runDeposit(input, ctx).detail.interest).toBeCloseTo(450, 6);
     // Leumi's equal pair 1.50% beside 1.50% does not allow it (1.48% again), so it stays m = 1
     expect(periodsFromPrinted(0.015, 0.015, 2, 1_095)).toEqual([1]);
-    // an equal pair at a low rate allows it beside the whole m, and the run takes the fewest: Mizrahi-Tefahot's 332, two years at 1.00%
-    // beside 1.00%, allows m = 0.5 ((1.02)^(1/2) − 1 = 0.995%) to 302, all of which print 1.00% at its own rate, so 100,000 earns
-    // 100,000 × 0.01 × 2 = 2,000, the low end, where m = 1 gave 2,010
+    // where a whole m fits, m = 365/d is not a candidate: Mizrahi-Tefahot's 332, two years at 1.00% beside 1.00%, allows m = 1 to 302 (m = 0.5,
+    // (1.02)^(1/2) − 1 = 0.995%, would print 1.00% too), so the run takes m = 1 and 100,000 earns 100,000 × (1.01² − 1) = 2,010, 10,000 201
     const low = { printed: { nominal: 0.01, effective: 0.01, decimals: 2 } };
-    expect(periodsFromPrinted(0.01, 0.01, 2, 730)[0]).toBe(0.5);
-    expect(depositInterest(100_000, 0.01, 24, 24, { calc: low })!).toBeCloseTo(2_000, 6);
+    expect(periodsFromPrinted(0.01, 0.01, 2, 730)).toEqual(Array.from({ length: 302 }, (_, k) => k + 1));
+    expect(depositInterest(100_000, 0.01, 24, 24, { calc: low })!).toBeCloseTo(2_010, 6);
+    expect(depositInterest(10_000, 0.01, 24, 24, { calc: low })!).toBeCloseTo(201, 6);
+    // a piece inside the term at m = 365/d grows geometrically to the simple sum at maturity: a year into the three, 10,000 × (1.045^(1/3) − 1)
+    expect(depositInterest(10_000, 0.015, 12, 36, { calc: simple })!).toBeCloseTo(10_000 * (Math.pow(1.045, 1 / 3) - 1), 9);
+  });
+
+  it("never reads fewer calculations from a pair on a term under a year than one in the term, the method's no-m reading", () => {
+    // 90 days at 3.00% beside 3.03%: m = 3 ((1.01)³ − 1 = 3.0301%) and m = 4 (3.0339%) print 3.03%, both fewer than 365/90 = 4.06 a year; no
+    // whole m from 5 does (m = 5 gives 3.0362%, 3.04%), and m = 365/90 (3.0341%) does, so it is allowed alone and 100,000 earns
+    // 100,000 × 0.03 × 90/365 = 739.73, where m = 3 would have paid 738.77
+    const pair = { printed: { nominal: 0.03, effective: 0.0303, decimals: 2 } };
+    expect(periodsFromPrinted(0.03, 0.0303, 2, 90)).toEqual([365 / 90]);
+    expect(depositInterest(100_000, 0.03, 3, 3, { termDays: 90, calc: pair })!).toBeCloseTo((100_000 * 0.03 * 90) / 365, 6);
+    expect(depositInterest(100_000, 0.03, 3, 3, { termDays: 90, calc: pair })!).toBeCloseTo(depositInterest(100_000, 0.03, 3, 3, { termDays: 90 })!, 9);
+    // 30 days at 3.00% beside 3.04% fits m = 5 to 102; from 365/30 = 12.17 the candidates start at 13, the fewest
+    expect(periodsFromPrinted(0.03, 0.0304, 2, 30)).toEqual(Array.from({ length: 90 }, (_, k) => k + 13));
+    const input: DepositInput = { goal: { amountNow: 100_000, monthly: 0, months: 3 }, market: { inflation: 0 }, deposit: { rate: 0.03, termMonths: 3, termDays: 90, linkage: "unlinked", interestCalc: pair }, profile: {} };
+    expect(runDeposit(input, ctx).detail.interest).toBeCloseTo((100_000 * 0.03 * 90) / 365, 6);
   });
 
   it("applies the record's own m on a term under a year, the method's once-at-maturity reading only where it gives none", () => {

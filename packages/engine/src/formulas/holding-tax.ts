@@ -64,19 +64,22 @@ const printedUnits = (rate: number, decimals: number): number => Math.round(rate
 
 /**
  * F-21 every Schedule A `m` that the nominal and effective annual rates a bank prints side by side allow (BANK-50: where a bank prints both,
- * `m` can be read from the two), in increasing order. The candidates are every whole `m` from 1 to 365 and, for a deposit of `termDays`
- * days that pays its interest at maturity, BANK-50's `m = 365/d`, interest calculated once, at maturity; an `m` is allowed where its
- * effective rate at the printed nominal rate rounds to the printed effective rate at the `decimals` of a percent the bank prints it to. The
- * nominal rate is taken as exact, and the effective one as rounded to the nearest unit of its last place. A three-year deposit printing
- * 1.50% beside 1.48% allows `m = 365/1,095` alone; an equal pair at two decimals allows `m = 1` alone among whole `m` only from about
- * 1.42%. Empty where no `m` gives the pair.
+ * `m` can be read from the two), in increasing order. An `m` is allowed where its effective rate at the printed nominal rate rounds to the
+ * printed effective rate at the `decimals` of a percent the bank prints it to; the nominal rate is taken as exact, and the effective one as
+ * rounded to the nearest unit of its last place. The candidates are every whole `m` up to 365, from 1, or for a deposit of `termDays` days
+ * under a year from `365/d`, as a deposit paid at maturity calculates its interest at least once in its term. Where none of them fits, a
+ * deposit paid at maturity has one more candidate, BANK-50's `m = 365/d`, interest calculated once, at maturity: a three-year deposit
+ * printing 1.50% beside 1.48% allows `m = 365/1,095` alone, and 90 days at 3.00% beside 3.03% `m = 365/90` alone. An equal pair at two
+ * decimals allows `m = 1` alone only from about 1.42%. Empty where no candidate gives the pair.
  */
 export function periodsFromPrinted(nominal: number, effective: number, decimals: number, termDays?: number): number[] {
   const target = printedUnits(effective, decimals);
-  const candidates = Array.from({ length: 365 }, (_, k) => k + 1);
+  const fits = (m: number): boolean => printedUnits(scheduleA(nominal, m), decimals) === target;
   const atMaturity = termDays !== undefined && termDays > 0 ? 365 / termDays : null;
-  if (atMaturity !== null && !candidates.includes(atMaturity)) candidates.push(atMaturity);
-  return candidates.sort((a, b) => a - b).filter((m) => printedUnits(scheduleA(nominal, m), decimals) === target);
+  const lowest = atMaturity === null ? 1 : Math.max(1, Math.ceil(atMaturity - 1e-9));
+  const whole = Array.from({ length: Math.max(0, 366 - lowest) }, (_, k) => k + lowest).filter(fits);
+  if (whole.length > 0 || atMaturity === null || Math.abs(atMaturity - Math.round(atMaturity)) < 1e-9) return whole;
+  return fits(atMaturity) ? [atMaturity] : [];
 }
 
 /**
@@ -110,7 +113,8 @@ export type DepositGrowth = { kind: "simple"; rate: number; daysPerMonth: number
  * rate (BANK-50), by the disclosure rules' Schedule A, `r = (1 + i/m)^(m·d/365) − 1` over the term's `d` days.
  * - Interest paid out during the term (`paidOut`) does not compound inside the deposit, whatever the term: `r × d/365`.
  * - Where the record gives `m` (`effectiveAnnualOf`: the times a year its words give, or the `m` its printed pair allows), any term
- *   compounds at the effective annual rate `R` of the run's rate: `(1 + R)^(d/365) − 1`. Null where the printed pair leaves `R` open.
+ *   compounds at the effective annual rate `R` of the run's rate: `(1 + R)^(d/365) − 1`. Null where the printed pair leaves `R` open. At
+ *   a pair's `m = 365/d` that is `r × d/365` at maturity, and a piece inside its term grows geometrically to it, not in a straight line.
  * - Where it gives none, the method reads (the low end, as the fewest `m` is where a pair allows several): a term under a year pays its
  *   interest once, at maturity (`m = 365/d`), `r × d/365`; a one-year term pays `r` itself, `m = 365/d = 1`, `(1 + r)^(d/365) − 1`.
  *   A term over a year has no reading (BANK OQ21): null, as an open rule enters no formula.
