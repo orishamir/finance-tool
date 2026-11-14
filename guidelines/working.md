@@ -26,7 +26,9 @@
   threaded through. A stand-in is allowed only while its data is missing,
   marked as one, with the queued item that removes it. Say this in every
   brief that touches code.
-- Never tell builders how to deal with bot checks; that is up to them.
+- For a page that refuses scripts, tell researchers that FlareSolverr runs on
+  this machine (`docker start flaresolverr`, then `http://localhost:8191`);
+  the rest of how they get past a bot check is up to them.
 - Every subagent runs on Opus 5.5 at high effort, unless the founder asks for
   more. Start a fresh agent with a short brief rather than messaging an idle
   one.
