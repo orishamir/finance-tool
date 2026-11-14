@@ -151,8 +151,8 @@ export const STATED: Readonly<Record<StatedPartId, (c: StatedContext) => PartWor
 /** A flat price nobody has typed yet, as the open case shows it while it stands empty. */
 export const FLAT_BLANK: PartWords = { lead: pp.flat.lead, mid: pp.flat.tail };
 
-/** The box a toolbox card shows: a percent, a sum in a currency (its sign), a month, or none. */
-export type ToolBox = "pct" | "month" | { sign: string };
+/** The box a toolbox card shows: a percent, a sum in a currency (its sign), or none. */
+export type ToolBox = "pct" | { sign: string };
 
 /** A toolbox card's words for the fee's kind, around the box it asks for. */
 export interface ToolWords {

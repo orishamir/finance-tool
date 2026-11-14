@@ -2960,7 +2960,6 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
         { id: "sum", label: <><ToolBlank /> $ {w(perAction)}</>, spoken: `$ ${perAction}`, used: u("sum") },
         { id: "discount", label: <>{w(sc.discount)} <ToolBlank /> % {w(sc.ofPrice.split(",")[0]!)}</>, spoken: sc.discount, used: u("discount") },
         { id: "third", label: sc.thirdPartyPart, used: u("third") },
-        { id: "until", label: <>{sc.limited} <ToolBlank wide /></>, spoken: sc.limited, used: u("until") },
       ],
     },
     {

@@ -4971,7 +4971,6 @@ export const kit = {
         saleApart: "מכירה במחיר אחר",
         offset: "מתקזזת מול עמלה אחרת",
         refund: "החזר",
-        limited: "לזמן מוגבל, עד",
         thirdPartyPart: "ועוד עמלה של צד שלישי",
         capWords: "מהפעולה",
         groups: { price: "המחיר", bound: "מינימום ומקסימום", when: "המחיר משתנה לפי", link: "קשר לעמלה אחרת", note: "עוד על המחיר" },

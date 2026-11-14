@@ -26,7 +26,7 @@ const p = copy.panel;
 /** The kit's kind of each of the view's groups. */
 const KIND: Record<string, ToolKind> = { price: "price", bound: "bound", by: "when", link: "link", more: "note" };
 
-/** A part's card as it will read, its boxes drawn empty: "☐ % לכל פעולה", "מינימום ☐ ☐", "לזמן מוגבל, עד ☐". */
+/** A part's card as it will read, its boxes drawn empty: "☐ % לכל פעולה", "מינימום ☐ ☐". */
 function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const w = part.words;
   const lead = w.lead?.trim();
@@ -34,9 +34,7 @@ function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const sign = part.box === "pct" ? "%" : typeof part.box === "object" ? part.box.sign : "";
   // a minimum's and a maximum's sum come with the choice of its currency, drawn as a second, wider box
   const bound = part.id === "min" || part.id === "max";
-  const box = part.used ? null : part.box === "month" ? (
-    <ToolBlank wide />
-  ) : part.box ? (
+  const box = part.used ? null : part.box ? (
     <>
       {bound ? (
         <>
