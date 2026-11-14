@@ -97,8 +97,12 @@ describe("F-21 a deposit's interest over its term", () => {
     expect(periodsFromPrinted(0.03, 0.0303, 2, 90)).toEqual([365 / 90]);
     expect(depositInterest(100_000, 0.03, 3, 3, { termDays: 90, calc: pair })!).toBeCloseTo((100_000 * 0.03 * 90) / 365, 6);
     expect(depositInterest(100_000, 0.03, 3, 3, { termDays: 90, calc: pair })!).toBeCloseTo(depositInterest(100_000, 0.03, 3, 3, { termDays: 90 })!, 9);
-    // 30 days at 3.00% beside 3.04% fits m = 5 to 102; from 365/30 = 12.17 the candidates start at 13, the fewest
-    expect(periodsFromPrinted(0.03, 0.0304, 2, 30)).toEqual(Array.from({ length: 90 }, (_, k) => k + 13));
+    // 30 days at 3.00% beside 3.04%: m = 365/30 (3.0417%) prints 3.04%, so the run reads it, once at maturity, though m = 13 to 102 fit too:
+    // 100,000 earns 100,000 × 0.03 × 30/365 = 246.58, where m = 13 would give 246.59
+    expect(periodsFromPrinted(0.03, 0.0304, 2, 30)).toEqual([365 / 30]);
+    expect(depositInterest(100_000, 0.03, 1, 1, { termDays: 30, calc: { printed: { nominal: 0.03, effective: 0.0304, decimals: 2 } } })!).toBeCloseTo((100_000 * 0.03 * 30) / 365, 6);
+    // where 365/d does not fit, the whole m from ceil(365/d) up are the candidates: 90 days at 3.00% beside 3.04% (365/90 prints 3.03%)
+    expect(periodsFromPrinted(0.03, 0.0304, 2, 90)).toEqual(periodsFromPrinted(0.03, 0.0304, 2).filter((m) => m >= 5));
     const input: DepositInput = { goal: { amountNow: 100_000, monthly: 0, months: 3 }, market: { inflation: 0 }, deposit: { rate: 0.03, termMonths: 3, termDays: 90, linkage: "unlinked", interestCalc: pair }, profile: {} };
     expect(runDeposit(input, ctx).detail.interest).toBeCloseTo((100_000 * 0.03 * 90) / 365, 6);
   });
@@ -107,9 +111,12 @@ describe("F-21 a deposit's interest over its term", () => {
     // three months of 90 printed days at 3.5%, interest calculated monthly: (1 + 0.035/12)^(12 × 90/365) − 1 (BANK-50), not 0.035 × 90/365
     expect(depositInterest(100_000, 0.035, 3, 3, { termDays: 90, calc: { periodsPerYear: 12 } })!).toBeCloseTo(100_000 * (Math.pow(1 + 0.035 / 12, (12 * 90) / 365) - 1), 6);
     expect(depositInterest(100_000, 0.035, 3, 3, { termDays: 90 })!).toBeCloseTo((100_000 * 0.035 * 90) / 365, 6);
-    // a printed pair on a six-month term that leaves the run's rate open leaves the figure unknown, as over a year
-    const open = { printed: { nominal: 0.0115, effective: 0.0115, decimals: 2 } };
-    expect(depositInterest(10_000, 0.045, 6, 6, { calc: open })).toBeNull();
+    // a printed pair on a 90-day term that 365/90 does not fit and whose whole m (5 to 102) leave the run's rate open (an entered 6%: 6.15%
+    // at m = 5, 6.18% at m = 102) leaves the figure unknown, as over a year
+    const open = { printed: { nominal: 0.03, effective: 0.0304, decimals: 2 } };
+    expect(depositInterest(10_000, 0.06, 3, 3, { termDays: 90, calc: open })).toBeNull();
+    // six months of 365/12 days a month: 365/d = 2 fits 1.15% beside 1.15%, so the run reads m = 2 at any rate: 10,000 × ((1 + 0.045/2) − 1)
+    expect(depositInterest(10_000, 0.045, 6, 6, { calc: { printed: { nominal: 0.0115, effective: 0.0115, decimals: 2 } } })!).toBeCloseTo(225, 6);
     const input: DepositInput = { goal: { amountNow: 100_000, monthly: 0, months: 3 }, market: { inflation: 0 }, deposit: { rate: 0.035, termMonths: 3, termDays: 90, linkage: "unlinked", interestCalc: { periodsPerYear: 12 } }, profile: {} };
     expect(runDeposit(input, ctx).detail.interest).toBeCloseTo(100_000 * (Math.pow(1 + 0.035 / 12, (12 * 90) / 365) - 1), 6);
   });

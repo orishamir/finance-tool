@@ -1,7 +1,7 @@
 // Open readings (method §13, F-119, F-120): a case the rule base leaves open between a few readings it names. The resolver does not pick
 // one. A run that meets the case is run once under each reading (`acrossReadings`); where every reading gives the same result, that result
 // stands and carries the question as a flag; where they differ, the run stops on the question as on any open rule (D10).
-import type { FieldRole, Flag, Outcome, ResultFields, RunContext } from "./result.ts";
+import { labelWeight, type FieldRole, type Flag, type Label, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
 
 /** One way the rule base allows an amount to stand after a year in which the CPI fell. */
@@ -102,10 +102,39 @@ export function sameResult<R extends object>(a: R, b: R, fields: ResultFields<R>
 /**
  * A run evaluated under every reading of each open question it meets. The run is first made with the readings `ctx` already holds; when
  * the resolver meets a question it holds no reading for, the run is made again under each of that question's readings (and so on for a
- * question met inside those). If every reading gives the same outputs (`sameResult` by `fields`, the result type's declaration), that result stands, flagged with the question; if not, the run is made
+ * question met inside those). If every reading gives the same outputs (`sameResult` by `fields`, the result type's declaration), that result stands
+ * with the flags and labels of every reading merged (`mergedFlags`, `mergedLabels`), flagged with the question; if not, the run is made
  * with the question stopping it (`BlockedError` with the rule and the question), and its ledger lists or stops it as for any open rule.
  */
-export function acrossReadings<R extends { flags: Flag[] }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
+/**
+ * The flags of every reading's result, one per code in the order they first appear, each from the earliest month any reading raises it: a
+ * caveat raised under one reading only still stands beside a figure all readings give.
+ */
+export function mergedFlags(results: readonly { flags: readonly Flag[] }[]): Flag[] {
+  const byCode = new Map<string, Flag>();
+  for (const r of results) {
+    for (const f of r.flags) {
+      const seen = byCode.get(f.code);
+      if (!seen) byCode.set(f.code, f);
+      else if (f.month !== undefined && (seen.month === undefined || f.month < seen.month)) byCode.set(f.code, { ...seen, month: f.month });
+    }
+  }
+  return [...byCode.values()];
+}
+
+/** The labels of every reading's result, one per rule in the order they first appear, each the strongest any reading gives it. */
+export function mergedLabels(results: readonly { labels?: readonly Label[] }[]): Label[] {
+  const byRule = new Map<string, Label>();
+  for (const r of results) {
+    for (const l of r.labels ?? []) {
+      const seen = byRule.get(l.ruleId);
+      if (!seen || labelWeight[l.code] > labelWeight[seen.code]) byRule.set(l.ruleId, l);
+    }
+  }
+  return [...byRule.values()];
+}
+
+export function acrossReadings<R extends { flags: Flag[]; labels?: Label[] }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
   const explore = (chosen: ReadingChoice): R => {
     try {
       return run({ ...ctx, readings: chosen });
@@ -114,9 +143,11 @@ export function acrossReadings<R extends { flags: Flag[] }>(ctx: RunContext, run
       const q = e.open.question;
       const results = e.open.readings.map((r) => explore({ ...chosen, [q]: r.id }));
       if (!results.every((r) => sameResult(r, results[0]!, fields))) return explore({ ...chosen, [q]: null });
+      // the outputs agree; the caveats of every reading stand beside them, with the question's own flag
       const first = results[0]!;
       const code = readingFlag(q);
-      return first.flags.some((f) => f.code === code) ? first : { ...first, flags: [...first.flags, { code }] };
+      const flags = mergedFlags([...results, { flags: [{ code }] }]);
+      return first.labels ? { ...first, flags, labels: mergedLabels(results) } : { ...first, flags };
     }
   };
   return explore(ctx.readings ?? {});

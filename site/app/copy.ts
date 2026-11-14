@@ -997,6 +997,9 @@ export const flags: Record<string, string> = {
   "TXS-18": "הפסד משנים קודמות קוזז כאן מהרווח. הפסד כזה עובר לשנים הבאות רק אם הגשתם דוח שנתי לשנה שבה היה ההפסד, וגם לשנה שבה מקזזים אותו.",
   // F-08 and F-09 leave commissions and conversion fees out of the gain, the method's choice; form 1325 puts transaction commissions into cost and proceeds (TXS-06, method G-20)
   "G-20": "עמלות הקנייה והמכירה ועמלות המרת המטבע לא הופחתו מהרווח בחישוב המס, וזו בחירה של האתר. בטופס הדוח על רווח הון מניירות ערך (טופס 1325) רשות המסים מכניסה את עמלות הקנייה והמכירה לעלות ולתמורה, ולכן המס כאן יכול להיות מעט גבוה מדי.",
+  // F-24: a makam held to redemption, its discount taxed as interest (TXI-11) with the purchase and redemption commissions left out; whether a
+  // commission lowers that discount is not in the rule base (nearest: TX2 OQ11, on fees as a capital loss) (method G-39)
+  "G-39": "עמלות הקנייה והפדיון של המק״ם לא הופחתו מדמי הניכיון שחויבו במס בפדיון. אם עמלה מקטינה את דמי הניכיון החייבים במס, זה עוד לא נמצא במקורות.",
   // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
   // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
   "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. מה קורה לו כשהמדד יורד, לא נמצא במקורות, ולאתר אין הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",

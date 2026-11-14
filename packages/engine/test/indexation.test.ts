@@ -3,7 +3,7 @@
 import { describe, expect, it } from "vitest";
 import { cpiLinkedAmount, freezeEnd, indexedAmount, yearlyMoveOf } from "../src/formulas/indexation.ts";
 import { BlockedError, ruleBook } from "../src/resolver.ts";
-import { fallReadings, OpenReadingError, openReadingOf, sameResult, stoppedOnQuestion } from "../src/open-readings.ts";
+import { acrossReadings, fallReadings, mergedFlags, mergedLabels, OpenReadingError, openReadingOf, openReadings, sameResult, stoppedOnQuestion } from "../src/open-readings.ts";
 import { runProvident } from "../src/ledgers/provident.ts";
 import { runPension } from "../src/ledgers/pension.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
@@ -166,6 +166,26 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(sameResult({ a: { working: 1 } }, { a: { working: 2 } }, { a: "output" })).toBe(false);
   });
 
+  it("keeps the flags and labels of every reading where their outputs agree, so a caveat raised under one reading only is not dropped", () => {
+    const open = openReadings.find((o) => o.question === "TXG OQ17")!;
+    const [one, two] = open.readings;
+    const run = (c: typeof ctx) => {
+      const choice = c.readings?.[open.question];
+      if (choice === undefined) throw new OpenReadingError(open);
+      return choice === one!.id
+        ? { nominal: 1, flags: [{ code: "A" }, { code: "C", month: 9 }], labels: [{ code: "institution-source" as const, ruleId: "X" }] }
+        : { nominal: 1, flags: [{ code: "B", month: 3 }, { code: "C", month: 4 }], labels: [{ code: "reading" as const, ruleId: "X" }, { code: "derived" as const, ruleId: "Y" }] };
+    };
+    expect(two).toBeDefined();
+    const r = acrossReadings(ctx, run, { nominal: "output", flags: "trail", labels: "trail" });
+    // one flag a code, in the order they first appear, from the earliest month a reading raises it, then the question's own
+    expect(r.flags).toEqual([{ code: "A" }, { code: "C", month: 4 }, { code: "B", month: 3 }, { code: "TXG-OQ17" }]);
+    // one label a rule, the strongest a reading gives it
+    expect(r.labels).toEqual([{ code: "reading", ruleId: "X" }, { code: "derived", ruleId: "Y" }]);
+    expect(mergedFlags([{ flags: [{ code: "A", month: 5 }] }, { flags: [{ code: "A" }] }])).toEqual([{ code: "A", month: 5 }]);
+    expect(mergedLabels([{ labels: [{ code: "derived", ruleId: "Z" }] }, { labels: [{ code: "secondary-source", ruleId: "Z" }] }])).toEqual([{ code: "derived", ruleId: "Z" }]);
+  });
+
   it("compares a field a result gains unless its type declares it working: a new output counts until it is declared otherwise", () => {
     // a field the declaration does not name, as a run's result would carry before its type's declaration lists it, is compared
     const a = { ...({ nominal: 100, flags: [] } as const), gained: 1 };
@@ -173,11 +193,20 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     const declared = { nominal: "output", flags: "trail" } as const;
     expect(sameResult(a, b, declared as ResultFields<typeof a>)).toBe(false);
     expect(sameResult(a, b, { ...declared, gained: "working" })).toBe(true);
-    // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise)
+    // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise),
+    // and the fields that are not outputs are exactly these: re-declaring an output (`detail`, `routed`, `years`) as working or trail fails
+    const notOutputs = (fields: Readonly<Record<string, string>>) => Object.fromEntries(Object.entries(fields).filter(([, role]) => role !== "output"));
+    const trail = { flags: "trail", labels: "trail", formulas: "trail", rules: "trail" };
+    expect(notOutputs(RUN_RESULT_FIELDS)).toEqual(trail);
+    expect(notOutputs(PROVIDENT_RESULT_FIELDS)).toEqual(trail);
+    expect(notOutputs(PENSION_RESULT_FIELDS)).toEqual({ ...trail, working: "working" });
+    expect(notOutputs(EMPLOYER_LINE_FIELDS)).toEqual(trail);
     for (const fields of [RUN_RESULT_FIELDS, PROVIDENT_RESULT_FIELDS, PENSION_RESULT_FIELDS, EMPLOYER_LINE_FIELDS]) {
       for (const role of Object.values(fields)) expect(["output", "trail", "working"]).toContain(role);
     }
-    expect(Object.entries(PENSION_RESULT_FIELDS).filter(([, role]) => role === "working").map(([k]) => k)).toEqual(["working"]);
+    expect(PROVIDENT_RESULT_FIELDS.routed).toBe("output");
+    expect(PENSION_RESULT_FIELDS).toMatchObject({ detail: "output", years: "output", deposits: "output", exit: "output" });
+    expect(EMPLOYER_LINE_FIELDS).toMatchObject({ line: "output", ranked: "output", exit: "output" });
     expect(Object.keys(RUN_RESULT_FIELDS).sort()).toEqual(
       ["detail", "exitMonth", "fees", "feesCarried", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "taxAtExit", "taxDuring", "waitingCarried"],
     );
