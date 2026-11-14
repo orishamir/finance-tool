@@ -10,6 +10,7 @@ import { Button } from "./components/kit";
 import { site, system } from "./copy";
 import { pageMeta, type MetaPlace } from "./lib/page-meta";
 import { useIsoLayoutEffect } from "./lib/hooks";
+import { hashId } from "./lib/address-hash";
 
 /**
  * What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to,
@@ -95,7 +96,7 @@ function RestoreScroll() {
     const html = document.documentElement;
     const target = type === "POP" ? positions[entryKey(location)] : undefined;
     if (target === undefined || target <= 0) {
-      const el = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+      const el = location.hash ? document.getElementById(hashId(location.hash)) : null;
       if (el) el.scrollIntoView();
       else if (type !== "POP") window.scrollTo(0, 0);
       return;

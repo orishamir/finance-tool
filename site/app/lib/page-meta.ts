@@ -24,7 +24,16 @@ const oneLine = (s: string) => gershayim(s.replace(/\s+/g, " ").trim());
 export function pageUrl(pathname: string): string {
   const base = new URL(SITE_URL).pathname;
   const under = (pathname.startsWith(base) ? pathname.slice(base.length) : pathname.replace(/^\/+/, "")).replace(/\/+$/, "");
-  return SITE_URL + (under ? `${encodeURI(decodeURI(under))}/` : "");
+  return SITE_URL + (under ? `${encodeURI(decodedPath(under))}/` : "");
+}
+
+/** A path with its escapes decoded, as typed where an escape is broken (a stray "%"), which `decodeURI` throws on. */
+function decodedPath(path: string): string {
+  try {
+    return decodeURI(path);
+  } catch {
+    return path;
+  }
 }
 
 /** What `pageMeta` needs of a route's meta arguments. */
