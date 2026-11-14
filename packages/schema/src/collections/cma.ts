@@ -23,10 +23,17 @@ const cmaFund = z.object({
   // pipeline's track readings hold it (`company-closed`); absent where no reading closes it so. The data keeps such a track; the site
   // leaves it out (D51).
   closed_to_joiners: z.strictObject({ by: z.enum(["company-terms"]), rule_ids: z.array(z.string().min(1)).min(1) }).optional(),
+  // Whether new members may join is open, with the open question that holds it, as the rule base writes it ("CAT-OQ36"), as the
+  // pipeline's track readings hold it (`unsettled`); absent where a reading settles it. The data and the site keep such a track, and the
+  // site says the question is open beside it.
+  joining_open: z.strictObject({ open_question: z.string().min(1) }).optional(),
 });
 
 /** Whether a stored track takes new members as far as the readings say: false where its company's own terms close it (`closed_to_joiners`, D51). */
 export const takesNewMembers = (fund: { closed_to_joiners?: unknown }): boolean => fund.closed_to_joiners === undefined;
+
+/** The open question that holds whether a stored track takes new members (`joining_open`), or null where the readings settle it. */
+export const joiningQuestion = (fund: { joining_open?: { open_question: string } }): string | null => fund.joining_open?.open_question ?? null;
 
 export const cmaPeriodFile = z.object({
   dataset: z.enum(["gemelnet", "pensia-net"]),

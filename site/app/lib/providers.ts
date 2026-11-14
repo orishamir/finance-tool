@@ -4,20 +4,15 @@
 // state. Pure: no storage; the bundle is fetched once.
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { flags as flagCopy, formulaNames } from "../copy";
+import { formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
 
-// Names the number sheet shows for the formulas and gaps of this release (copy.md 3.8 style: the code stays beside the words).
+// Names the number sheet shows for the formulas of this release (copy.md 3.8 style: the code stays beside the words).
 Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
-Object.assign(flagCopy, {
-  "G-18": "קרן זרה שאינה מחלקת: רשות המסים לא אישרה שהיא ממוסה רק במכירה. האתר מחשב לפי מקור משני ולא מדרג.",
-  "G-29": "לקרנות זרות הנסחרות בחו״ל אין רשימה מלאה: האתר משווה את אלה שאסף אחת־אחת, והשאר הן שורה אחת.",
-  "F-18": "העמלה על חלוקת רווחים עוד לא מחושבת, ולכן התוצאה חלקית.",
-});
 
 // ---------------------------------------------------------------- the data (providers.server.ts)
 
@@ -63,7 +58,7 @@ export interface IndicesBundle {
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p05: ParameterRecord;
-  links: { boi: RefLink | null; tase: RefLink | null; maya: RefLink | null; taseForeign: RefLink | null };
+  links: { tase: RefLink | null; maya: RefLink | null };
   /** A provider's snapshot id to the regulator's company id (the legal id the company page is addressed by); absent when the data names no such company. */
   providerCompany: Record<string, string>;
   /** Per provident wrapper: how many managing companies the regulator's data holds (the "one of N" line). */
@@ -277,8 +272,10 @@ export type NotComparable =
   /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
   | { code: "other-venue"; venue: "us" | "europe" }
   /** the run would rest on a rule that is open (F-04: a TASE foreign fund's tax index, TXF-04): nothing is computed after tax or ranked; the
-   *  indices page shows such a fund's figures before tax beside it (F-118). */
-  | { code: "rule-open"; ruleId: string };
+   *  indices page shows such a fund's figures before tax beside it (F-118). `question`: the open question that stopped the run, its
+   *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of
+   *  the case exists (G-38). */
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {

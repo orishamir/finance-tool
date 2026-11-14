@@ -5,7 +5,7 @@
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
 import { OpenReadingError, openReadingOf } from "./open-readings.ts";
-import type { Label, RunContext } from "./result.ts";
+import { labelWeight, type Label, type RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
 
@@ -30,11 +30,13 @@ export class RecordInputError extends Error {}
 /**
  * A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). `question` names the open question
  * when the rule is settled but the case at hand is not, and the readings it allows give the run different results (an s.120ב amount after
- * its freeze while the CPI falls: TXG-09, "TXG OQ17"; `acrossReadings`).
+ * its freeze while the CPI falls: TXG-09, "TXG OQ17"; `acrossReadings`). `gap` names the method gap when the rule is settled but neither
+ * the rule base nor the method has a reading of the case (a figure linked to the CPI every 1 January, of a rule no open reading covers, at
+ * a falling CPI: G-38).
  */
 export class BlockedError extends Error {
-  constructor(readonly ruleId: string, readonly question?: string) {
-    super(`${ruleId}${question ? ` (${question})` : ""} is open in il-finance; it does not compute (D10)`);
+  constructor(readonly ruleId: string, readonly question?: string, readonly gap?: string) {
+    super(gap ? `${ruleId} has no reading for this case (method ${gap}); it does not compute (D10)` : `${ruleId}${question ? ` (${question})` : ""} is open in il-finance; it does not compute (D10)`);
   }
 }
 
@@ -57,13 +59,6 @@ const percentUnits = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_t
 const labelFor: Partial<Record<Strength, Label["code"]>> = {
   secondary: "secondary-source",
   institution: "institution-source",
-};
-const labelWeight: Record<Label["code"], number> = {
-  "secondary-source": 3,
-  "institution-source": 2,
-  reading: 4,
-  derived: 4,
-  proxy: 4,
 };
 
 export interface RuleBook {
@@ -154,7 +149,9 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
    * A money figure as it stands in calendar year `year`, by the update its record names: F-119 for an amount s.120ב freezes, F-120 for one
    * linked to the CPI every 1 January; any other kind, and the run's own year, read it as it is. At a falling CPI the amount is an open
    * reading (TXG OQ17, KGL OQ15): it is read under the reading the context chooses (`RunContext.readings`), and a run that has chosen none
-   * for the question stops so that `acrossReadings` can make it under each. A figure no open reading covers does not compute at a fall.
+   * for the question stops so that `acrossReadings` can make it under each. A figure linked to the CPI every 1 January that no open reading
+   * covers stops on its rule at a fall, naming G-38: its rule's text speaks of a rise, no open question names the case, and the method has
+   * no reading of its own (F-120).
    */
   function inYearOf(id: string, name: string, v: ValueObject, amount: number, year: number): number {
     const move = yearlyMoveOf(v.update_rule);
@@ -163,7 +160,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     if (move.kind === "frozen") indexed.add(year);
     if (years.inflation >= 0) return amountInYear(move, amount, runYear, year, years.inflation);
     const open = openReadingOf(move, id);
-    if (!open) throw new BlockedError(id);
+    if (!open) throw new BlockedError(id, undefined, "G-38");
     const choice = ctx.readings?.[open.question];
     if (choice === undefined) throw new OpenReadingError(open);
     if (choice === null) throw new BlockedError(open.ruleId, open.question);

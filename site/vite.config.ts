@@ -5,12 +5,14 @@ import { defineConfig } from "vite";
 import { newestChecked } from "./app/lib/data-as-of.ts";
 import { hasSideEffects } from "./app/lib/side-effect-modules.ts";
 import { chunkModules } from "../tools/chunk-modules.mjs";
+import { prerenderTime } from "./scripts/prerender-time.mjs";
 
 export default defineConfig({
   // Must match `basename` in react-router.config.ts (GitHub Pages project path).
   base: "/finance-tool/",
-  // chunkModules writes build/chunk-modules.json only when CHUNK_REPORT is set (tools/weight.mjs reads it)
-  plugins: [tailwindcss(), reactRouter(), chunkModules(fileURLToPath(new URL("build/chunk-modules.json", import.meta.url)))],
+  // chunkModules writes build/chunk-modules.json only when CHUNK_REPORT is set (tools/weight.mjs reads it); prerenderTime warns when a
+  // request of the build's prerender nears React Router's timeout
+  plugins: [tailwindcss(), reactRouter(), chunkModules(fileURLToPath(new URL("build/chunk-modules.json", import.meta.url))), prerenderTime()],
   resolve: { tsconfigPaths: true },
   // The browser build reads our own modules as free of side effects, except those app/lib/side-effect-modules.ts lists: a module
   // reached only through a re-export nobody uses (the kit's index, the schema package's index) then stays out of a page's scripts,

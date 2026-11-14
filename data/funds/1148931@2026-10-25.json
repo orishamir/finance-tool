@@ -114,7 +114,7 @@
         "ETF-09"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 45.67% against 46.56%; 1.1.26-30.6.26 -0.03% against 0.28%. Its comparison with the tracking asset of the previous report (p. 7) prints for 01.07.2025-30.06.2026 the fund's shekel return 16.35% against the tracking asset's change 17.07%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=8 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 45.67% against 46.56%; 1.1.26-30.6.26 -0.03% against 0.28%. Its comparison with the tracking asset of the previous report (p. 7) prints for 01.07.2025-30.06.2026 the fund's shekel return 16.35% against the tracking asset's change 17.07%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=8 for it. That page (Funds Center by Guideline, run for the managers) publishes it; the figure is not collected."
     },
     "median_spread": {
       "value": null,
@@ -135,7 +135,7 @@
         "ETF-07"
       ],
       "state": "sourced",
-      "notes": "No median bid-ask spread is printed in the annual report; the report prints only the range and average of the differences between unit value and exchange price, a premium/discount measure, not a spread (ETF-06). The median spread is published under ETF-07(b) on the same third-party page (https://chart.bursagraph.co.il/funds.shtml?m=8), whose terms forbid redistribution; not copied. Creation and redemption fee on direct orders to the manager: 0.10% each (p. 2; ETF-05)."
+      "notes": "No median bid-ask spread is printed in the annual report; the report prints only the range and average of the differences between unit value and exchange price, a premium/discount measure, not a spread (ETF-06). The median spread is published under ETF-07(b) on the same third-party page (https://chart.bursagraph.co.il/funds.shtml?m=8); not collected. Creation and redemption fee on direct orders to the manager: 0.10% each (p. 2; ETF-05)."
     },
     "fund_level_withholding_drag": {
       "value": null,

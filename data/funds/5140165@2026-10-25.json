@@ -112,7 +112,7 @@
         "ETF-09"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 9) prints the fund's return against its tracking asset: 23.4.25-31.12.25 (first period) 24.14% against 27.19% (MSCI World Index, the hedged fund's tracking asset). The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=6&inav=0705 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 9) prints the fund's return against its tracking asset: 23.4.25-31.12.25 (first period) 24.14% against 27.19% (MSCI World Index, the hedged fund's tracking asset). The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=6&inav=0705 for it. That page (Funds Center by Guideline, run for the managers) publishes it; the figure is not collected."
     },
     "median_spread": {
       "value": null,

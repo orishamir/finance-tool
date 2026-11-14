@@ -415,7 +415,14 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("real gain", r.detail.realGain, 43_152.3);
     g.done();
     expect(r.flags).toContainEqual({ code: "TXF-27", month: 33 });
+    // the distributions' advance by 30 April (TXF-21), and the sale's report and advance by 31 July or 31 January (TXF-22)
     expect(flagCodes(r)).toContain("TXF-21");
+    expect(flagCodes(r)).toContain("TXF-22");
+    // with no distribution only the sale is left to report: TXF-22, and no TXF-21, whose 30 April is a distribution's advance
+    const { distribution: _distribution, ...accumulating } = s17.fund;
+    const sale = runSecurities({ ...s17, fund: accumulating }, ctx);
+    expect(flagCodes(sale)).toContain("TXF-22");
+    expect(flagCodes(sale)).not.toContain("TXF-21");
   });
 
   it("S18 same ETF without a W-8BEN", () => {

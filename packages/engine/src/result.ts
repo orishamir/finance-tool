@@ -44,6 +44,15 @@ export interface Label {
   ruleId: string;
 }
 
+/** How much a label says, so a rule keeps its strongest one: a reading, derivation or proxy over a source's strength. */
+export const labelWeight: Record<Label["code"], number> = {
+  "secondary-source": 3,
+  "institution-source": 2,
+  reading: 4,
+  derived: 4,
+  proxy: 4,
+};
+
 /**
  * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
  * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
@@ -51,11 +60,25 @@ export interface Label {
  */
 export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXH-17", "TXH-19", "TXI-25", "TXK-04", "TXK-07", "TXK-29", "TXP-32"];
 
+/**
+ * Every flag code a ledger run can raise (`RunResult.flags`): the method gaps, assumptions, rules and open questions a page must say beside
+ * a figure, each of which has a line on the site. A test holds this list to the engine: every code a ledger flags, the blocked exits' gaps
+ * and open questions, the reliefs' (`reliefFlags`) and the open readings' (`readingFlag`).
+ */
+export const RUN_FLAG_CODES: readonly string[] = [
+  "A-30", "BANK-35", "CS-18", "CS-23", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
+  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-36", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
+  "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18",
+];
+
 /** Section 8 and B3: whether the run may enter a ranking. */
 export type Outcome =
   | { code: "eligible" }
-  /** `question`: the open question that stopped the run on `reason`, the readings it allows giving different results (`acrossReadings`). */
-  | { code: "listed-not-ranked"; reason: string; untilMonth?: number; question?: string };
+  /**
+   * `question`: the open question that stopped the run on `reason`, the readings it allows giving different results (`acrossReadings`);
+   * `gap`: the method gap that stopped it, where no reading of the case exists (G-38).
+   */
+  | { code: "listed-not-ranked"; reason: string; untilMonth?: number; question?: string; gap?: string };
 
 /** State at the end of month m (m = 0 is the start). Balance is the market value before exit costs. */
 export interface MonthPoint {
@@ -103,6 +126,39 @@ export interface RunResult {
    */
   waitingCarried?: number;
 }
+
+/**
+ * What a field of a result is to the comparison of readings (method §13, `sameResult`): an `output`, compared number for number; its
+ * `trail`, what the run read and raised (flags, labels, rules, formulas); or its `working`, a figure the run computes on the way to an output
+ * and shows nowhere, which can differ by reading while every output agrees.
+ */
+export type FieldRole = "output" | "trail" | "working";
+
+/**
+ * Every field of a result type `R` with its role: the type names each key of `R`, so a field added to a result does not compile until it is
+ * declared; the comparison compares a field unless it is declared trail or working.
+ */
+export type ResultFields<R> = { readonly [K in keyof Required<R>]: FieldRole };
+
+/** The fields of every run's result (`RunResult`). */
+export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
+  exitMonth: "output",
+  nominal: "output",
+  real: "output",
+  paidIn: "output",
+  fees: "output",
+  taxDuring: "output",
+  taxAtExit: "output",
+  series: "output",
+  detail: "output",
+  outcome: "output",
+  feesCarried: "output",
+  waitingCarried: "output",
+  flags: "trail",
+  labels: "trail",
+  formulas: "trail",
+  rules: "trail",
+};
 
 export function emptyFees(): Record<FeeType, number> {
   return { deposit: 0, balance: 0, direct: 0, trade: 0, spread: 0, custody: 0, fixed: 0, account: 0, fund: 0, fx: 0, manager: 0 };

@@ -63,16 +63,13 @@ export const content: GuideContent = {
           מי שמחזיק עד הפדיון משלם מס הכנסה של {rate ? <Num value={rate} /> : null} על ההפרש, כי ההפרש הוא ריבית והמס עליה קבוע.
         </Sentence>
         <Sentence measure>
-          מי שמוכר לפני הפדיון משלם {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי ניכוי של <Term prefix="ה" id="אינפלציה">אינפלציה</Term>: הרווח כולו נחשב <Term id="רווח הון ריאלי">רווח הון ריאלי</Term>. בחוק השיעור הזה הוא תקרה, וזה גם השיעור שהבנק מנכה מהרווח. איך מחיר המכירה מתחלק בין ניכיון <Term prefix="ל" id="רווח הון">רווח הון</Term>, עוד לא נמצא.
+          מי שמוכר לפני הפדיון משלם {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי ניכוי של <Term prefix="ה" id="אינפלציה">אינפלציה</Term>: הרווח כולו נחשב <Term id="רווח הון ריאלי">רווח הון ריאלי</Term>. בחוק השיעור הזה הוא תקרה, וזה גם השיעור שהבנק מנכה מהרווח. איך מחיר המכירה מתחלק בין ניכיון <Term prefix="ל" id="רווח הון">רווח הון</Term>, עוד לא נמצא. שאלה פתוחה <IdRef id="TXI OQ3" end="." />
         </Sentence>
         <Sentence measure>
           בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, לא חייב <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}<YearOf v={interestCeiling ?? ceiling} plural />.
         </Sentence>
-        <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מקור אחד סותר.</span> שורה במדריכי <Term id="רשות המסים">רשות המסים</Term>, בתוך סעיף על <Term id="איגרת חוב">איגרות חוב</Term> ישנות, נוקבת בשיעור אחר על דמי ניכיון של מק״מ. בפקודת מס הכנסה השיעור על ריבית מנכס <Term id="לא צמוד">לא צמוד</Term> הוא {rate ? <Num value={rate} /> : null}, והמדריך עצמו אומר שהחוק גובר, ולכן האתר מחשב לפי החוק. שאלה פתוחה <IdRef id="TXI OQ3" end="." />
-        </Callout>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null}.</span> ההקלה במס לפי מדרגות נמוכות חלה על שיעורים שהם תקרה. השיעור על רווח ממכירה לפני הפדיון הוא תקרה, ובהכנסה נמוכה המס עליו יכול להיות נמוך יותר, אבל האתר עוד לא מחשב את זה. השיעור על ריבית לא צמודה מנוסח כשיעור קבוע, ולא נמצאה הכרעה של רשות המסים, ולכן האתר לא מפחית אותו. שאלה פתוחה <IdRef id="TXI OQ9" end="." />
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null}.</span> ההקלה במס לפי מדרגות נמוכות חלה על שיעורים שהם תקרה. השיעור על רווח ממכירה לפני הפדיון הוא תקרה, ובהכנסה נמוכה המס עליו יכול להיות נמוך יותר, אבל האתר עוד לא מחשב את זה. השיעור על ריבית לא צמודה מנוסח כשיעור קבוע, ולא נמצאה הכרעה של <Term id="רשות המסים">רשות המסים</Term>, ולכן האתר לא מפחית אותו. שאלה פתוחה <IdRef id="TXI OQ9" end="." />
         </Callout>
         <RulesLine ids={["TXI-11", "TXI-12", "TXI-13", "TXS-05", "TXG-17", "TXG-04", "TXI-19"]} />
       </>

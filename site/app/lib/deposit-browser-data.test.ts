@@ -44,6 +44,13 @@ describe("the deposits page's offers", () => {
     expect(on("yahav-pikadon-leshana-kavua-from-200000", 200_000) as number).toBeCloseTo(5_600, 6);
   });
 
+  it("pays Mizrahi-Tefahot's 332, two years at 1.00% beside 1.00%, at m = 1, since a whole m fits its pair: 201 ₪ on 10,000 ₪, 2,010 ₪ on 100,000 ₪ (F-21)", () => {
+    const on = (amount: number) => interestOn(offer("mizrahi-tefahot-pomelit-madad-2-shanim-332")!, amount, entered(amount, "nis", "2026-11-14"), "2026-11-14")?.value as number;
+    expect(offer("mizrahi-tefahot-pomelit-madad-2-shanim-332")?.rate_offered.value).toBe(1);
+    expect(on(10_000)).toBeCloseTo(201, 6);
+    expect(on(100_000)).toBeCloseTo(2_010, 6);
+  });
+
   it("does not open Mizrahi-Tefahot's lower tier at the bound its table prints as not included, nor a tier at a bound two tiers print that no other table decides (F-108)", () => {
     const names = sheetNames(data);
     const cell = (bank: string, term: "y1" | "y2" | "m6" | "week" | "m1" | "m3", kind: "fixed" | "variable", amount: number) => cellOf(data, bank, term, kind, amount, (o) => names.get(o.id)!);

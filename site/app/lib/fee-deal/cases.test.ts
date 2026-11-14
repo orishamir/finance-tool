@@ -587,7 +587,7 @@ describe("the formulas the fee page's code cites", () => {
     const method = readFileSync(resolve(__dirname, "../../../../docs/method.md"), "utf8");
     const dir = resolve(__dirname);
     const sources = [...readdirSync(dir).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts")).map((f) => resolve(dir, f)), resolve(__dirname, "../../copy.ts")];
-    const cited = new Set(sources.flatMap((f) => readFileSync(f, "utf8").match(/F-\d{2,3}/g) ?? []));
+    const cited = new Set(sources.flatMap((f) => readFileSync(f, "utf8").match(/(?<![A-Z])F-\d{2,3}/g) ?? []));
     expect([...cited].filter((id) => !method.includes(`**${id} `))).toEqual([]);
   });
 });

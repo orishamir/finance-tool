@@ -152,11 +152,11 @@ function factsOf(o: DbOffer) {
 }
 
 /**
- * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21, BANK-50: `A × r × d/365` under a
- * year, by the days the table prints or 365/12 a month; a year or more compounded by the times a year the record's printed nominal and
- * effective pair or its words give, and one year at the rate itself where the record gives neither), as a computed value over the rate,
- * the amount and, where read, the record's days or effective rate. A variable rate is taken as it stands today. Null where the rate is not
- * a number, or where the term is over a year and the record says nothing of how interest is calculated (`interestUnknown`, BANK OQ21).
+ * The interest an offer pays on the amount over its term, before tax, at its rate as printed today (F-21, BANK-50: compounded by the times
+ * a year the record's printed nominal and effective pair or its words give, over any term; where the record gives neither, the method's
+ * reading, `A × r × d/365` under a year by the days the table prints or 365/12 a month, and one year at the rate itself), as a computed
+ * value over the rate, the amount and, where read, the record's days or effective rate. A variable rate is taken as it stands today. Null
+ * where the rate is not a number, or where the record does not fix the interest (`interestUnknown`, BANK OQ21).
  */
 export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, today: string): SiteValue | null {
   const r = numberOf(o.rate_offered);
@@ -165,14 +165,14 @@ export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, t
   const v = depositInterest(amount, r / 100, months, months, factsOf(o));
   if (v === null) return null;
   const inputs: Record<string, SiteValue> = { [t.interest.inputs.rate]: o.rate_offered, [t.interest.inputs.amount]: amountValue };
-  if (months >= 12 && !o.paidOut && o.calc?.effectiveAnnual) inputs[t.interest.inputs.effective] = o.calc.effectiveAnnual;
-  else if (months >= 12 && !o.paidOut && o.calc?.periodsPerYear) inputs[t.interest.inputs.periods] = o.calc.periodsPerYear;
+  if (!o.paidOut && o.calc?.effectiveAnnual) inputs[t.interest.inputs.effective] = o.calc.effectiveAnnual;
+  else if (!o.paidOut && o.calc?.periodsPerYear) inputs[t.interest.inputs.periods] = o.calc.periodsPerYear;
   return computed(v, "nis", "F-21", inputs, { today, about: `${t.interest.about}${t.termIn[o.term]}`, notes: o.kind === "variable" ? t.interest.variableNote : undefined });
 }
 
 /**
  * The record does not fix the interest at its own rate: the term is over a year and it says nothing of how the product calculates
- * interest, or its printed pair leaves the rate open (BANK OQ21).
+ * interest, or its printed pair leaves the rate open, over any term (BANK OQ21).
  */
 export function interestUnknown(o: DbOffer): boolean {
   const months = TERM_YEARS[o.term]! * 12;
