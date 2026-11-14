@@ -14,6 +14,7 @@ import { Card, cx, Disclosure, DocLink, FoldGroup, gershayim, MixedName, PageHea
 import { fmt } from "../lib/format";
 import type { DocumentCard, DocumentSection } from "../lib/documents.server";
 import { isPdfUrl } from "../lib/sources";
+import { hashId } from "../lib/address-hash";
 
 export async function loader() {
   const { today, loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
@@ -220,7 +221,7 @@ export default function Documents() {
   const { hash } = useLocation();
   const target = useRef<string | null>(null);
   useEffect(() => {
-    const id = decodeURIComponent(hash.slice(1));
+    const id = hashId(hash);
     const at = groupOf(id, sections);
     if (!at) return;
     target.current = id;

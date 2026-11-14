@@ -10,6 +10,7 @@ import { scopeWords } from "../../copy";
 import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/scope";
 import { useProvenanceData } from "../provenance";
 import { RuleCard } from "../provenance-sheets";
+import { hashId } from "../../lib/address-hash";
 import { Card, FoldGroup, Section, gershayim } from "../kit";
 
 export interface TermGroup {
@@ -22,7 +23,7 @@ export interface TermGroup {
 function useHash(): string {
   const [hash, setHash] = useState("");
   useEffect(() => {
-    const read = () => setHash(decodeURIComponent(window.location.hash.slice(1)));
+    const read = () => setHash(hashId(window.location.hash));
     read();
     window.addEventListener("hashchange", read);
     return () => window.removeEventListener("hashchange", read);

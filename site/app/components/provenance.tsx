@@ -15,6 +15,7 @@ import { Sheet } from "./Sheet";
 import { cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
+import { decodedPart } from "../lib/address-hash";
 
 // ---------------------------------------------------------------- context
 
@@ -196,13 +197,8 @@ export function TermFromAddress({ hash }: { hash: string }) {
   useEffect(() => {
     const m = /^#term=(.+)$/.exec(hash);
     if (!m || !terms) return;
-    let id: string;
-    try {
-      id = decodeURIComponent(m[1]!);
-    } catch {
-      return;
-    }
-    if (!terms[id]) return;
+    const id = decodedPart(m[1]!);
+    if (id === null || !terms[id]) return;
     const el = [...document.querySelectorAll<HTMLElement>("[data-term]")].find((n) => n.dataset.term === id) ?? null;
     el?.scrollIntoView({ block: "center" });
     api.open({ kind: "term", id }, el);
