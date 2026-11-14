@@ -10,6 +10,7 @@ import { companies as companiesCopy, companyPage as w } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { currentAddress, partOf } from "../../lib/company-page";
 import { Breadcrumb } from "../shell";
+import { hashId } from "../../lib/address-hash";
 import { MixedName, PageHead, Section, SideNav, SidePage, gershayim, type SideNavGroup } from "../kit";
 
 export interface CompanyPart {
@@ -64,7 +65,7 @@ export function CompanyTemplate({ pageId, name, line, header, parts, groups, lis
   const hrefOf = (id: string) => companyPath(pageId, { product: id });
 
   // an address's #id opens the part that holds it; once that part is shown, the page lands on the element
-  const hash = hydrated ? decodeURIComponent(location.hash.slice(1)) : "";
+  const hash = hydrated ? hashId(location.hash) : "";
   const owner = lone ? null : partOf(hash, [{ id: "", anchors: overview.anchors }, ...parts.map((p) => ({ id: p.id, anchors: p.anchors ?? [] }))]);
   useEffect(() => {
     if (owner !== null && owner !== shownId) navigate(companyPath(pageId, { product: owner, hash: encodeURIComponent(hash) }), { replace: true, preventScrollReset: true });

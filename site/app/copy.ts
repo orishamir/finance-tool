@@ -1943,11 +1943,12 @@ export const feeDeal = {
     openCase: "לפתוח את המקרה: ",
     /**
      * The workbench's table of a fee's cases (band-layout.ts): each part row's head, the price's by what every case's price is (a share, a
-     * sum, else a price); the line a part said once for every case stands under, or for the cases of one currency; a ladder's step between
+     * sum, else a price); a ladder's step between
      * two tops ("100,000 עד 500,000 ₪"); a step's top typed in place, spoken; and the place of a grid no case holds, spoken.
      */
     rowHeads: { rate: "שיעור", sum: "סכום", price: "מחיר", min: "מינימום", max: "מקסימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע לפעולה קטנה", maxPerSecurity: "מקסימום לכל נייר ערך", discount: "הנחה", third: "צד שלישי", until: "שינוי במחיר", offset: "קיזוז", refund: "החזר", notes: "עוד על המחיר" } as Record<string, string>,
-    shared: { all: "בכל המקרים:", in: { ILS: "בכל המקרים בשקלים:", USD: "בכל המקרים בדולרים:", EUR: "בכל המקרים באירו:", GBP: "בכל המקרים בלירות שטרלינג:" } as Record<string, string> },
+    /** Read as rows, the line of the parts one cell holds for every case, led by the thing's any-words ("בכל מסלול:"). */
+    onceLead: "{any}:",
     stepBetween: " עד ",
     stepTop: "הגבול העליון של המדרגה",
     /** A top typed in place that would not stay between its neighbours: "בין 100,000 ל־500,000". */
@@ -1964,6 +1965,39 @@ export const feeDeal = {
     switchLabel: "המקרים של",
     /** The line an undone case or thing leaves (undo.ts). */
     caseRemoved: "המקרה הוסר.",
+    /**
+     * What a grip lifts and a knob stretches (lifted.ts, fee-cases.tsx): the undo line of a thing dropped in the bin or of a stretch that
+     * fills a grid's empty place, why another fee does not take a part, each grip's spoken name and menu, a knob's spoken name and how far
+     * it reaches, the words under a cell that covers its whole row, a copied row's or column's name, and the question of one case split by
+     * a thing.
+     */
+    lifted: {
+      step: "המדרגה {name} נמחקה.",
+      row: "השורה ״{name}״ נמחקה.",
+      column: "העמודה ״{name}״ נמחקה.",
+      cases: "המקרים הוסרו.",
+      stretched: "המחיר חל עכשיו גם על התאים שלידו.",
+      /** One note taken away alone; a part dropped on a case that had that row's part ("מה שהיה ב״מינימום״ הוחלף."). */
+      noteRemoved: "ההערה נמחקה.",
+      replaced: "מה שהיה ב״{what}״ הוחלף.",
+      /** A case dropped on a grid's place no case holds. */
+      movedCase: "המקרה עבר למקום הריק.",
+      /** A cell stretched back: where it left, and the line of what it took there ("בסניף: המינימום נמחק."). */
+      shrunk: "{where}: {what}",
+      part: { price: "המחיר נמחק.", min: "המינימום נמחק.", max: "המקסימום נמחק.", cap: "המקסימום באחוזים נמחק.", flat: "המחיר הקבוע לפעולה קטנה נמחק.", maxPerSecurity: "המקסימום לכל נייר ערך נמחק.", discount: "ההנחה נמחקה.", third: "העמלה של הצד השלישי נמחקה.", until: "השינוי במחיר נמחק.", offset: "הקיזוז נמחק.", refund: "ההחזר נמחק.", notes: "ההערות על המחיר נמחקו." },
+      notHere: "העמלה הזו לא יכולה לקבל את החלק הזה.",
+      grip: { col: "להזיז או למחוק את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", part: "להזיז או למחוק: ", thing: "להחליף בין השורות לעמודות: ", fee: "להזיז את העמלה: " },
+      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה" },
+      copyName: "{name} (עותק)",
+      knob: "למתוח את המחיר על התאים שלידו",
+      knobDown: "למתוח את המחיר על התאים שמעליו ומתחתיו",
+      /** A figure at rest, which a tap turns into its box: "לשנות: מינימום". */
+      edit: "לשנות: ",
+      reach: "חל על {k} מתוך {n} {things}",
+      things: { what: "סוגים", held: "סוגים", channel: "ערוצים", track: "מסלולים", currency: "מטבעות", actionSize: "גדלים", portfolioSize: "גדלים", volume: "היקפים", count: "מספרים", own: "ערכים" } as Record<string, string>,
+      splitNote: "רק המקרה הזה יתפצל: כל ערך שתסמנו יתחיל במחיר שלו, ושאר המקרים יחולו בכל ערך.",
+      splitRefused: "אי אפשר לפצל רק את המקרה הזה: מקרה אחר היה נקרא אז במחיר אחר. אפשר להוסיף את התנאי לכל העמלה.",
+    },
     /**
      * The line a thing taken away leaves (undo.ts), naming it as the menu did: how many cases merged into how many, that none merged, or
      * that the fee kept one case's price, the person's track's where a case is theirs (`slimOwn`), else the first case's.
@@ -2275,7 +2309,41 @@ export const feeDeal = {
     opened: { house: (name: string) => `נפתחה עסקה חדשה מהתעריפון של ${name}.`, track: (name: string) => `נפתחה עסקה חדשה מהמסלול ${name}.` },
     /** After it, where the device keeps deals. */
     kept: " העסקה הקודמת שמורה ב״העסקאות שלי״.",
+    /** The deal is too big for a link that opens again, so the button copied nothing. */
+    tooLong: "הקישור לא הועתק: העסקה גדולה מדי לקישור שאפשר לפתוח.",
+    /** A link that did not open, above the kind chooser: `failed` before why (lib/fee-deal/link.ts, `LinkFailure`). */
+    failed: "הקישור לעסקה לא נפתח: ",
+    failedWhy: {
+      empty: "אין בו עסקה.",
+      broken: "חסר בו חלק, או שהשתנה בו תו.",
+      version: "הוא נכתב בגרסה של האתר שהעמוד לא קורא.",
+      wrapper: "סוג המוצר שבו לא קיים באתר.",
+      track: "המסלול שבו לא נמצא בנתונים של האתר.",
+    } as Record<string, string>,
+    /** Fees of a link's deal that did not open, each named with why (`FeeLeftOut`); the rest of the deal opened. */
+    left: {
+      one: (what: string) => `עמלה אחת מהקישור לא נכנסה לעסקה: ${what}. שאר העסקה נפתחה.`,
+      many: (n: number, what: string) => `${n} עמלות מהקישור לא נכנסו לעסקה: ${what}. שאר העסקה נפתחה.`,
+      /** A fee of a kind the site does not know. */
+      kind: "עמלה מסוג שהאתר לא מכיר",
+      /** A fee whose prices in the link are not prices, after its name. */
+      prices: " (המחירים שלה בקישור פגומים)",
+    },
+    /** Stored deals the page could not open, which stay stored as they are (lib/fee-deal/store.ts). */
+    unread: (n: number) => (n === 1 ? "עסקה אחת ששמורה במכשיר לא נפתחה. היא נשארת שמורה כמו שהיא." : `${n} עסקאות ששמורות במכשיר לא נפתחו. הן נשארות שמורות כמו שהן.`),
+    /** The deal on screen was deleted in another tab: it is no longer saved until kept again. */
+    deletedElsewhere: "העסקה הזו נמחקה בלשונית אחרת, והשינויים בה לא נשמרים.",
+    keepAnyway: "לשמור בכל זאת",
   },
+  /** A change refused because the deal would pass what one deal may hold (lib/fee-deal/limits.ts), said at the fee, with the limit's number. */
+  limits: {
+    stages: (n: number) => `לא נוסף: אפשר עד ${n - 1} שינויים במחיר.`,
+    cases: (n: number) => `לא נוסף: בעמלה אחת אפשר עד ${n} מקרים.`,
+    tops: (n: number) => `לא נוספה מדרגה: אפשר עד ${n + 1} מדרגות.`,
+    values: (n: number) => `לא נוסף: אפשר עד ${n} ערכים במה שהמחיר משתנה לפיו.`,
+    fees: (n: number) => `לא נוספה: בעסקה אחת אפשר עד ${n} עמלות.`,
+    picks: (n: number) => `לא נבחר: אפשר עד ${n} בחירות לקריאת העסקה.`,
+  } as Record<string, (n: number) => string>,
   /** The template picker (a sheet). */
   picker: {
     house: { title: "לבחור תבנית", lede: "העמלות מהתעריפון האחרון של כל בית.", group: "בתי השקעות ובנקים" },
@@ -4804,6 +4872,24 @@ export const dealCases = {
     close: "סגירת העמלה",
   },
   ask: { add: "להוסיף", cancel: "ביטול" },
+  /** The bin a lifted thing is dropped in, shown only while something is lifted. */
+  lift: { bin: "גוררים לכאן כדי למחוק" },
+  /**
+   * The palette's way to copy one fee from a house's price list: its button, the houses, the house's fees, and where the deal has that kind
+   * of fee already, the question and its two answers.
+   */
+  copyFee: {
+    open: "מתעריפון אחר",
+    houses: "מאיזה תעריפון",
+    fees: "איזו עמלה",
+    have: "כבר יש בעסקה {fee}. להחליף אותה או להוסיף את החדשה לידה?",
+    /** A fee the law caps: only replacing it, and why. */
+    haveAlone: "כבר יש בעסקה {fee}. אפשר רק להחליף אותה:",
+    capped: "החוק קובע תקרה לעמלה הזו, והאתר לא יודע איך שתי עמלות כאלה נמדדות מול תקרה אחת.",
+    replace: "להחליף",
+    beside: "להוסיף לידה",
+    cancel: "ביטול",
+  },
   menus: {
     /** The last row of a list of values: a value of the person's own. */
     other: "משהו אחר, בשם משלכם",
@@ -5017,12 +5103,13 @@ export const kit = {
       When: "תאריך בתוך טקסט: יום משמאל לימין, וחודש שמסמך מדפיס לבד במילים, בלי יום שהאתר המציא. המילים שלפניו נשארות איתו בשורה, ו״מ־״ או ״ב־״ לפני שם של חודש נכתבים צמודים: ״מנובמבר 2025״.",
       TariffDate: "שורת התאריך של תעריפון: מה שהמסמך עצמו מדפיס, בצבע רגיל. תאריך אחד לכל המסמך, תאריך של החלק שהאתר קורא, גרסה, תאריך שהודפס בטעות כמו שהוא, או שאין תאריך מודפס ומתי האתר בדק. מתחת לכותרת שכבר אומרת ״תעריפון״ המילה לא חוזרת.",
       ConditionBand: "הראש של עמלה שהמחיר שלה משתנה לפי דבר אחד עד שלושה (מה קונים, הערוץ, המסלול, גודל הפעולה): ״המחיר משתנה לפי״ והדברים בפס כחול, ופח ליד כל דבר. כשהמקרים נקראים כשורות (בטלפון, או יותר מחמישה מקרים) הם בפס עצמו: שורה לכל מקרה, התנאי במילים מעל החלקים, ״בכל …״ חלש יותר, ״שלכם״ ליד המסלול של האדם. טבלה של שני דברים נקראת בקבוצה לכל ערך של הדבר הראשון. מקרים שאינם של האדם מקופלים לשורה אחת. מקרה אחד פתוח: מסגרת, ״נבחר״, הערכים שלו כמקומות לבחירה והחלקים עם התיבות שלהם.",
-      CaseTable: "המקרים של עמלה לפי הצורה שלה. דבר אחד: המקרים בעמודות והחלקים בשורות, רק השורות שיש למקרה כלשהו, ותא אחד לשכנים שווים. טווח הוא סולם עולה, והגבול של כל מדרגה נכתב במקומו. שני דברים: טבלה, הראשון בצד והשני למעלה, ומקרה שחל בכל ערך של השני תופס את כל השורה. דבר שלישי הוא מתג מעל הטבלה. מה שזהה בכל המקרים נאמר פעם אחת מעליהם, ומה שזהה בשורה או בעמודה נאמר בראש שלה. ההוספה עומדת איפה שהדבר החדש יופיע: עמודה, מדרגה, שורה או מקום ריק בקו מקווקו.",
+      CaseTable: "המקרים של עמלה לפי הצורה שלה. דבר אחד: המקרים בעמודות והחלקים בשורות, רק השורות שיש למקרה כלשהו, ותא אחד לשכנים שווים. טווח הוא סולם עולה, והגבול של כל מדרגה נכתב במקומו. שני דברים: טבלה, הראשון בצד והשני למעלה, ומקרה שחל בכל ערך של השני תופס את כל השורה. דבר שלישי הוא מתג מעל הטבלה. חלק שזהה בכמה מקרים סמוכים הוא תא אחד שנמתח עליהם, ובטבלה של שני דברים הוא עומד מתחת לתאים של השורה. כשהמקרים מוצגים כשורות, מה שזהה בכולם נאמר פעם אחת מעליהם. ההוספה היא כפתור קטן מקווקו ליד הכותרות: בסוף שורת הכותרות של העמודות, ומתחת לכותרות של השורות. מקום ריק בטבלה נשאר מקום להוספה.",
       ChangeDivider: "מחיר שמשתנה עם הזמן: המחירים של העמלה זה מתחת לזה לפי הזמן, ובין שניים קו לכל הרוחב עם ״מ־״ והחודש שהמחיר הבא מתחיל בו, שאפשר לשנות במקום, ופח שמוריד את השינוי. בסוף, בקו מקווקו, ״+ המחיר משתנה מתאריך״, ששואל רק על החודש.",
       FeePalette: "העמלות שאפשר עוד להוסיף לעסקה, כשאף עמלה לא פתוחה: כרטיס לכל עמלה, הנקודה שלה, השם ושורה אחת על מה היא נגבית. הקשה מוסיפה אותה ופותחת אותה, ובמחשב אפשר גם לגרור אותה אל העסקה.",
       PartChip: "חלק של מחיר: מחיר, מינימום או מקסימום, קשר לעמלה אחרת, או הערה. במנוחה דק, והסמל והמילה הראשונה בצבע של הסוג; המספרים במצב שלהם, כמו בכל מקום. PartEdit: אותו חלק בעריכה, על כל הרוחב, עם התיבות והבחירות שלו ופח להסרה. סדר החלקים קבוע.",
       SlimFee: "עמלה שיש לה מחיר אחד: שורה אחת, נקודת הצבע שלה, השם והחלקים. הקשה פותחת אותה במקומה, כמו מקרה. FeeBlock: עמלה שהמחיר שלה משתנה, השם ומתחתיו הפס.",
       RemoveButton: "הפקד שמוריד משהו: פח, הסמל לבדו בעיגול, המילים שלו נאמרות ומופיעות כשמצביעים עליו. בטלפון 44 פיקסלים מכל צד. ✕ רק סוגר (חלונית, גיליון, תפריט); מה שמוריד חלק, מקרה, דבר שהמחיר משתנה לפיו או עמלה הוא תמיד הפח.",
+      Lift: "ידית (⋮⋮) מרימה ראש של עמודה או שורה, תא, חלק או עמלה: בעכבר כשזזים, בטלפון בלחיצה ארוכה. מה שהורם נע עם המצביע ומקומו נשאר ריק בקו מקווקו. כל מקום שמקבל אותו מסומן, וסל אדום מופיע רק בזמן ההרמה. הקשה על הידית פותחת תפריט שעושה את אותו הדבר מהמקלדת. את הקצה של תא אפשר לתפוס בכל מקום לאורכו (↔) ולמתוח את התא על מקום ריק או על מקרה שאין בו את החלק הזה, או להחזיר אותו, גם בחצים. תא לא נמתח על שכן שיש לו מחיר משלו. הקשה על מספר בתא או בכרטיס סגור הופכת אותו לשדה במקומו.",
       DropZone: "גרירה של שבב אל מקום שמקבל אותו, במחשב בלבד: שבב שהקשה עליו כבר עושה משהו נגרר גם אל מקום בעמוד, והשחרור שם עושה מה שההקשה עושה, באותו מקום. בזמן הגרירה כל מקום שמקבל את השבב מוקף בצבע הפעולה, ומקום שלא יקבל אותו לא מראה כלום. בטלפון נשארת ההקשה.",
       Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי סוג, כל קבוצה עם הצבע והסמל שלה. הקשה על חלק מוסיפה אותו, ובמחשב אפשר גם לגרור אותו אל המקום שלו; חלק שכבר במקרה מסומן ב־✓ ומעומעם, ולא נעלם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים.",
       AskValues: "השאלה שעולה פעם אחת כשמוסיפים דבר שהמחיר משתנה לפיו: אילו ערכים יש בתעריפון, כבחירות שמסמנים, ״אחר״ בשם משלכם, משפט שאומר כמה מקרים יהיו, ו״להוסיף״ או ״ביטול״.",
@@ -5044,6 +5131,12 @@ export const kit = {
         tracks: ["מסלול 1", "מסלול 2", "מסלול 3"],
         anyTrack: "בכל מסלול",
         anyChannel: "בכל ערוץ",
+        /** The lift demo: a conversion's three steps, its rate's spoken name and what follows it, and the undo line's action. */
+        liftSteps: { small: "עד 10 $", mid: "10 עד 100 $", big: "מעל 100 $" },
+        liftRate: "שיעור ההמרה",
+        liftPer: "לכל המרה",
+        anySize: "בכל גודל",
+        undo: "ביטול",
         channels: { branch: "בסניף", phone: "בטלפון", web: "באינטרנט ובאפליקציה", other: "ערוץ אחר" },
         /** A case row's spoken name: what a tap on it does. */
         open: (words: string) => `לפתוח את המקרה: ${words}`,

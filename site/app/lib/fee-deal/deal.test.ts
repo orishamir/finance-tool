@@ -212,7 +212,7 @@ describe("the link", () => {
   });
   it("carries a deal compressed in the fragment, and opens it before a query's", async () => {
     const d = { ...account(), name: "חשבון", template: { id: "house:leumi", name: "לאומי" } };
-    const packed = await packDeal(d);
+    const packed = (await packDeal(d))!;
     expect(packed).toMatch(/^[A-Za-z0-9_-]+$/);
     expect(packed.length).toBeLessThan(encodeDeal(d).length);
     const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });

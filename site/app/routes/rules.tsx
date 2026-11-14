@@ -24,6 +24,7 @@ import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
 import { analyze, isRuleKind, relaxedHits, searchEntries } from "../lib/search";
 import { pickSources, type SourcedRule } from "../lib/sources";
+import { hashId } from "../lib/address-hash";
 import type { RuleRecord } from "@finance-tool/schema";
 
 /** A rule's title for a list: the record's Hebrew title or text; never the English working title (the topic's Hebrew name stands in). */
@@ -329,7 +330,7 @@ export default function Rules() {
   }, [loc.search]);
 
   const readHash = useCallback(() => {
-    const id = decodeURIComponent(window.location.hash.slice(1));
+    const id = hashId(window.location.hash);
     setTarget((cur) => {
       if (id && id !== cur) landing.current = id;
       return id;

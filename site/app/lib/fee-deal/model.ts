@@ -13,6 +13,8 @@ import { capacity, fieldsOf, PART_FIELDS, pricesSaleApart, type ChargedForm, typ
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, PICK_KEYS, RANGE_UNITS, thingKey, type ByKind, type PlaceKind, type RangeKind, type RangeUnit, type ValuesOf } from "./offers/conditions";
 
 export * from "./core";
+import { PART_ROWS } from "./part-rows";
+import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX } from "./limits";
 import { BOUND_CURRENCIES, MONTHS, NOTES, type BoundCurrency, type Discount, type Flat, type MonthKey, type Months, type Note, type Num, type Price, type Priced, type Side, type Sourced, type Stage, type Strength, type Third } from "./core";
 
 /** A value of what is bought or held that the person named, with where it is bought and its currency (null: a foreign one not named). */
@@ -50,12 +52,46 @@ export const namesPlaces = (b: By): b is PlaceBy => isPlaceKind(b.kind);
  */
 export type When = "any" | string[] | number;
 
+/**
+ * Which span a case's cell belongs to, in the fee's table or grid: the cell (`row`: a part row of a table, `*` for the whole case in a grid),
+ * the thing along which it spans (`along`), and the span's name. Equal neighbours share one cell only within one span (layout.ts), so a
+ * span stretched back keeps its cases apart while they still hold the same price. A cell with no span named is in the default one.
+ */
+export interface Span {
+  row: string;
+  along: number;
+  span: string;
+}
+
 /** One case of a fee whose price changes: its value for each thing (in the fee's order), whether its track is the person's, and its prices. */
 export interface Case extends Priced {
   id: string;
   when: When[];
   /** The case's track is the person's own (one track of a fee is; F-114 reads it). */
   mine?: true;
+  /** The spans its cells stand in, where any is not the default one (`Span`). The reading never reads them. */
+  spans?: Span[];
+  /** Its place among its fee's cases on the page, where the person moved one (`Rank`). */
+  rank?: number;
+}
+
+/**
+ * A place on the page, apart from the order the reading reads (F-114 reads a fee's cases, and the deal's fees, in their own order: a pick's
+ * start and a tie): where the person moved a case among its fee's, or a fee among its group, things stand by rank, lowest first, those
+ * with none after them in their own order. Moving one never changes what is read.
+ */
+export type Rank = number;
+const RANK_MAX = 999;
+const HOUSE_ID = /^house:[a-z0-9-]{1,40}$/;
+/** A fee's price list as read: a house's template id; anything else is left out (the fee then says no list's caveats). */
+const readHouse = (raw: unknown): { house?: string } => (typeof raw === "string" && HOUSE_ID.test(raw) ? { house: raw } : {});
+/** A rank as read: a whole number from 0 to `RANK_MAX`; anything else is left out, as the page alone reads it. */
+const readRank = (raw: unknown): { rank?: number } => (Number.isInteger(raw) && (raw as number) >= 0 && (raw as number) <= RANK_MAX ? { rank: raw as number } : {});
+
+/** Things in the order the page shows them: by rank where any has one (none after them), else as given (`Rank`). */
+export function byRank<T extends { rank?: number }>(items: readonly T[]): T[] {
+  if (!items.some((x) => x.rank !== undefined)) return [...items];
+  return items.map((x, i) => ({ x, i })).sort((a, b) => (a.x.rank ?? Infinity) - (b.x.rank ?? Infinity) || a.i - b.i).map((y) => y.x);
 }
 
 interface FeeHead {
@@ -64,6 +100,10 @@ interface FeeHead {
   kind: FeeKindId;
   /** The person's own name for a fee of their own (`own`). */
   name?: string;
+  /** Its place among its group's fees on the page, where the person moved one (`Rank`). */
+  rank?: number;
+  /** The price list it was filled from (`house:<id>`), whose lines left out of it (§10.6) are its own, whatever list filled the deal. */
+  house?: string;
 }
 
 /** A fee whose price changes by nothing: its prices in order, and a sale's own prices where a sale is priced apart. */
@@ -130,8 +170,6 @@ const TEXT_MAX = 400;
 /** No typed percent is above this, and no sum above this many shekels: anything larger is not a price and is refused. */
 const PCT_MAX = 100;
 export const SUM_MAX = 1_000_000_000;
-const FEES_MAX = 40;
-const STAGES_MAX = 12;
 const MONTH = /^(\d{4})-(0[1-9]|1[0-2])$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ID = /^[a-z0-9-]{1,40}$/;
@@ -176,6 +214,31 @@ export const blankFigure = (): Num => ({ v: 0, blank: true });
 
 /** A figure the person changed is theirs: it loses the template's source. */
 export const retyped = (n: Num, v: number): Num => (n.src && n.v === v ? n : { v });
+
+/**
+ * A figure copied onto a place that held `was`: it keeps its source only where `was` is that same figure with that same source (the list
+ * prints it there too); otherwise it is the person's, a price the source does not give there. A blank figure stays blank.
+ */
+export const copiedFigure = (n: Num, was: Num | undefined): Num => (n.blank || !n.src || (was && sameContent(was, n)) ? n : { v: n.v });
+
+/**
+ * A price copied onto a place whose price was `onto` (none: a new place): each figure as `copiedFigure` keeps it, and a free price's source
+ * only where `onto` was free from that source.
+ */
+export function copiedPrice(p: Price, onto: Price | undefined): Price {
+  const out = FIGURE_IDS.reduce((x, f) => {
+    const n = FIGURES[f].get(x);
+    return n ? FIGURES[f].set(x, copiedFigure(n, onto && FIGURES[f].get(onto))) : x;
+  }, p);
+  if (out.form !== "free" || !out.src || (onto?.form === "free" && sameContent(onto.src, out.src))) return out;
+  return { form: "free" };
+}
+
+/** Prices over time copied onto a place whose prices were `onto` (none: a new place), each against the price at its place (`copiedPrice`). */
+export const copiedStages = (stages: readonly Stage[], onto?: readonly Stage[]): Stage[] => stages.map((st, k) => ({ ...st, price: copiedPrice(st.price, onto?.[k]?.price) }));
+
+/** Prices copied onto a place whose prices were `onto` (none: a new place): the purchase's and a sale's (`copiedStages`). */
+export const copiedPriced = (x: Priced, onto?: Priced): Priced => ({ stages: copiedStages(x.stages, onto?.stages), ...(x.sale ? { sale: copiedStages(x.sale, onto?.sale ?? onto?.stages) } : {}) });
 
 /** The figures of a price (`Num`s): its rate or sum, its bounds, its cap, its flat price, and its parts' figures (a discount, a third party's, a refund). */
 const figuresOf = (p: Price): (Num | undefined)[] => FIGURE_IDS.map((f) => FIGURES[f].get(p));
@@ -561,11 +624,6 @@ function readPriced(raw: Rec, kind: FeeKindId): Priced | null {
   return sale ? { stages, sale } : null;
 }
 
-const CASES_MAX = 40;
-const TOPS_MAX = 12;
-const VALUES_MAX = 20;
-const PICKS_MAX = 12;
-
 /** A value the person named for what is bought or held: its name, where it is bought, and its currency (a code, or null). */
 function readOwnPlace(raw: unknown): OwnPlace | null {
   if (!isRec(raw) || !str(raw.name, NAME_MAX) || raw.name.trim() === "" || Object.hasOwn(WHAT_VALUES, raw.name)) return null;
@@ -634,9 +692,39 @@ function readCase(raw: unknown, kind: FeeKindId, by: readonly By[]): Case | null
     when.push(w);
   }
   if (raw.mine !== undefined && !(raw.mine === true && by.some((b) => b.kind === "track"))) return null;
+  const spans = raw.spans === undefined ? [] : readSpans(raw.spans, by.length);
   const priced = readPriced(raw, kind);
   if (!priced) return null;
-  return { id: raw.id, when, ...(raw.mine ? { mine: true as const } : {}), ...priced };
+  return { id: raw.id, when, ...(raw.mine ? { mine: true as const } : {}), ...(spans.length ? { spans } : {}), ...readRank(raw.rank), ...priced };
+}
+
+const SPAN_NAME = /^[a-z0-9]{1,12}$/;
+/** The cells a span may name: a part row of a table, or the whole case (`*`) of a grid. */
+const SPAN_ROWS: readonly string[] = [...PART_ROWS, "*"];
+/** No case names more spans than this: a cell for each row of a table, along each of three things. */
+const SPANS_MAX = 3 * SPAN_ROWS.length;
+
+/**
+ * A case's spans (`Span`): each a cell, a thing of the fee and a short name, a cell named once along a thing. The page alone reads them (how
+ * cells merge): one that is not so is left out, never the case.
+ */
+function readSpans(raw: unknown, things: number): Span[] {
+  if (!Array.isArray(raw)) return [];
+  const out: Span[] = [];
+  for (const x of raw.slice(0, SPANS_MAX)) {
+    if (!isRec(x) || typeof x.row !== "string" || !SPAN_ROWS.includes(x.row) || !Number.isInteger(x.along) || (x.along as number) < 0 || (x.along as number) >= things) continue;
+    if (typeof x.span !== "string" || !SPAN_NAME.test(x.span) || out.some((y) => y.row === x.row && y.along === x.along)) continue;
+    out.push({ row: x.row, along: x.along as number, span: x.span });
+  }
+  return out;
+}
+
+/** A case's spans once thing `t` is taken away: those along it go, those along a later thing move down one. */
+export function spansWithout(c: Case, t: number): Case {
+  if (!c.spans) return c;
+  const spans = c.spans.filter((s) => s.along !== t).map((s) => (s.along > t ? { ...s, along: s.along - 1 } : s));
+  const { spans: _s, ...rest } = c;
+  return spans.length ? { ...rest, spans } : rest;
 }
 
 function readFee(raw: unknown): Fee | null {
@@ -650,7 +738,7 @@ function readFee(raw: unknown): Fee | null {
   if (raw.by === undefined) {
     if (raw.cases !== undefined) return null;
     const priced = readPriced(raw, kind);
-    return priced ? { id: raw.id, kind, ...name, ...priced } : null;
+    return priced ? { id: raw.id, kind, ...name, ...readRank(raw.rank), ...readHouse(raw.house), ...priced } : null;
   }
   // a fee with cases keeps its prices in them alone
   if (raw.stages !== undefined || raw.sale !== undefined) return null;
@@ -668,7 +756,7 @@ function readFee(raw: unknown): Fee | null {
     if (!x || cases.some((y) => y.id === x.id)) return null;
     cases.push(x);
   }
-  return { id: raw.id, kind, ...name, by, cases };
+  return { id: raw.id, kind, ...name, ...readRank(raw.rank), ...readHouse(raw.house), by, cases };
 }
 
 /** The reading's picks: each a thing's key and a value, no key twice; a pick of what is bought with its place and currency, both or neither. */
@@ -708,15 +796,37 @@ function heldPick(raw: unknown): ReadPick | null {
  * cases opens with every fee and price as it was, what it held becoming the reading's pick of what is bought.
  */
 export function readDeal(raw: unknown): FeeDeal | null {
+  const r = readDealParts(raw, false);
+  return r && r.deal;
+}
+
+/**
+ * A fee a link carried that does not open: its kind where it names one the site has (null: a kind the site does not know), and why (`kind`:
+ * a kind the site does not know; `prices`: its prices or its cases are not what a fee holds).
+ */
+export interface FeeLeftOut {
+  kind: FeeKindId | null;
+  why: "kind" | "prices";
+}
+
+/**
+ * A deal from a link: as `readDeal`, except that a fee that does not open is left out and named (`left`) while the rest of the deal opens.
+ * Null where anything else in it is not what a deal holds.
+ */
+export const readLinkedDeal = (raw: unknown): { deal: FeeDeal; left: FeeLeftOut[] } | null => readDealParts(raw, true);
+
+function readDealParts(raw: unknown, leaveFees: boolean): { deal: FeeDeal; left: FeeLeftOut[] } | null {
   if (!isRec(raw) || typeof raw.id !== "string" || !ID.test(raw.id) || !str(raw.name, NAME_MAX)) return null;
   if (raw.kind !== null && !isProductId(raw.kind)) return null;
   const kind = raw.kind as ProductId | null;
   if (!Array.isArray(raw.fees) || raw.fees.length > FEES_MAX) return null;
   const fees: Fee[] = [];
+  const left: FeeLeftOut[] = [];
   for (const f of raw.fees) {
     const fee = readFee(f);
-    if (!fee || fees.some((x) => x.id === fee.id)) return null;
-    fees.push(fee);
+    if (fee && !fees.some((x) => x.id === fee.id)) fees.push(fee);
+    else if (leaveFees) left.push({ kind: isRec(f) && isFeeKindId(f.kind) ? f.kind : null, why: isRec(f) && isFeeKindId(f.kind) ? "prices" : "kind" });
+    else return null;
   }
   const deal: FeeDeal = { id: raw.id, name: raw.name, kind, fees };
   if (raw.readFor !== undefined) {
@@ -744,5 +854,5 @@ export function readDeal(raw: unknown): FeeDeal | null {
     if (typeof raw.saved !== "string" || !DATE.test(raw.saved)) return null;
     deal.saved = raw.saved;
   }
-  return deal;
+  return { deal, left };
 }

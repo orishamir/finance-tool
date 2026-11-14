@@ -164,7 +164,7 @@ describe("templates", () => {
         const d = fillDeal({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is }] }, `house:${h.id}`, data, TODAY)!;
         expect(readDeal(JSON.parse(JSON.stringify(d))), `${h.id} ${is}`).toEqual(d);
         // a whole list's link is short enough for any address: under 8,000 characters, the query GitHub Pages still answers
-        const packed = await packDeal(d);
+        const packed = (await packDeal(d))!;
         expect(packed.length, `${h.id} ${is}`).toBeLessThan(8_000);
         const back = (await unpackDeal(packed))!;
         expect(back.fees.map(({ id: _i, ...f }) => f), `${h.id} ${is}`).toEqual(d.fees.map(({ id: _i, ...f }) => f));
@@ -471,9 +471,9 @@ describe("a fee its product is not offered (the rule table)", () => {
   });
   it("adds a fee in the first form its product's fee is offered: a pension's insurance premium as a share of each deposit (PEN-15)", () => {
     const pension = of("pension-comprehensive");
-    const { fee } = addFee(pension, "insurance_premium", offerFor(kindById(kinds, "pension-comprehensive"), "insurance_premium").usual ?? undefined);
+    const { fee } = addFee(pension, "insurance_premium", offerFor(kindById(kinds, "pension-comprehensive"), "insurance_premium").usual ?? undefined)!;
     expect(fee.stages?.[0]?.price.form).toBe("action");
-    expect(addFee(pension, "insurance_premium").fee.stages?.[0]?.price.form).toBe("sum");
+    expect(addFee(pension, "insurance_premium")!.fee.stages?.[0]?.price.form).toBe("sum");
   });
   it("still opens and reads in a saved deal that holds one, through the device and a link", () => {
     const deal = of("keren-hishtalmut", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]);

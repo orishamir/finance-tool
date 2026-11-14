@@ -1,17 +1,16 @@
 // One fee open in place (method §10.6, `panel`): the case open, its slots, and each price's parts with the figures each edits and the
 // currency chooser beside its first sum, a part the toolbox added that asks for what it needs on the price the toolbox acts on, and what
 // the case can do (be copied, be taken away).
-import type { SiteValue } from "../value";
 import { feeOf } from "./cases";
 import { anySourced, hasCases, pricedOf, toolPrice, type BoundCurrency, type Case, type Fee, type MonthKey, type Price, type Stage } from "./model";
 import { boundsAction } from "./offers/capabilities";
 import { keeps, sumCurrency } from "./offers/capacity";
-import { FIGURES, type Figure } from "./offers/figures";
+import { type Figure } from "./offers/figures";
 import { PART_IDS, PARTS, type Ask, type PartId, type PartKind, type PendingPart } from "./offers/parts";
-import { FLAT_BLANK, PENDING, signOfUnit, type PartWords, type PendingWords } from "./part-words";
+import { FLAT_BLANK, PENDING, type PartWords, type PendingWords } from "./part-words";
 import { priceView, refOf, type DealRead, type FeeRef, type PriceView } from "./deal-read";
 import { type ByKind } from "./offers/conditions";
-import { firstCase, saidParts, whenWords, type WhenWords } from "./case-words";
+import { figureFields, firstCase, saidParts, whenWords, type PartField, type WhenWords } from "./case-words";
 
 // ---------------------------------------------------------------- one fee's panel, and the case open in place
 
@@ -20,17 +19,8 @@ export interface Panel extends FeeRef {
   open: OpenCase;
 }
 
-/**
- * A field of a part in the open case: the figure it edits (`Figure`, offers/figures.ts), its value (null while it is blank or absent), and the sign
- * after its box (a percent, or a currency's sign; none for a sum per period, whose period is said after it).
- */
-export interface PartField {
-  figure: Figure;
-  value: SiteValue | null;
-  sign: "pct" | string;
-  /** Its box draws no sign of its own: the currency chooser stands beside it and shows the currency once. */
-  bare?: true;
-}
+/** A field of a part in the open case (case-words.ts). */
+export type { PartField };
 
 /**
  * A part of the open case's price: its id, kind, words around its fields, and its fields. Every part can be taken away but the price
@@ -103,10 +93,6 @@ export interface OpenCase {
   canCopy: boolean;
   canRemove: boolean;
 }
-
-/** A part's fields: each figure it holds that the price has a place for, with its value and its box's sign. */
-const figureFields = (id: PartId, p: Price, view: PriceView): PartField[] =>
-  PARTS[id].figures.filter((f) => FIGURES[f].placed(p)).map((f) => ({ figure: f, value: view.figures[f] ?? null, sign: signOfUnit(FIGURES[f].unit(p)) }));
 
 /**
  * A price's parts with the figures each edits, in the order a line says them, and a sale priced apart where the line has one. Every part

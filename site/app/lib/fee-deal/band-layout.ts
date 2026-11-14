@@ -4,49 +4,14 @@
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { currencyOfUnit } from "../format";
-import { isRange, type CasesFee, type When } from "./model";
+import { byRank, isRange, type CasesFee, type When } from "./model";
 import { layoutOf, type FeeLayout } from "./layout";
-import type { PartId } from "./offers/parts";
+import { PART_ROWS, rowOf, type PartRow } from "./part-rows";
 import { figure, sumUnit } from "./values";
 import { valueWords, whenWords, type SlimPart, type WhenWords } from "./case-words";
 import type { CaseRow } from "./rows";
 
-/**
- * The rows of a fee's table, in the order they stand everywhere: the price, then its bounds, then the rest of its parts, then its notes.
- * The price's forms share one row (a case free and another charged stand side by side), and so do the notes.
- */
-export const PART_ROWS = ["price", "min", "max", "cap", "flat", "maxPerSecurity", "discount", "third", "until", "offset", "refund", "notes"] as const;
-export type PartRow = (typeof PART_ROWS)[number];
-
-/** The row each part stands in: keyed by the part registry's ids, so a new part has a row before it compiles. */
-const ROW_OF: Readonly<Record<PartId, PartRow>> = {
-  share: "price",
-  perUnit: "price",
-  perAction: "price",
-  held: "price",
-  sum: "price",
-  free: "price",
-  min: "min",
-  max: "max",
-  cap: "cap",
-  flat: "flat",
-  maxPerSecurity: "maxPerSecurity",
-  discount: "discount",
-  third: "third",
-  until: "until",
-  offset: "offset",
-  refund: "refund",
-  unfilled: "notes",
-  unfilledClerk: "notes",
-  unfilledClerkAbroad: "notes",
-  capRead: "notes",
-  partial: "notes",
-  inTrade: "notes",
-  sale: "notes",
-};
-
-/** The row a part stands in: a later price's parts stand with the month the price before it ends, in its own row. */
-export const rowOf = (p: Pick<SlimPart, "id" | "stage">): PartRow => (p.stage ? "until" : ROW_OF[p.id]);
+export { PART_ROWS, rowOf, type PartRow };
 
 /** A case's parts by row, in the rows' order: the parts of each row a case has (a case may hold two notes, or a price and its later one). */
 export function partsByRow(parts: readonly SlimPart[]): Map<PartRow, SlimPart[]> {
@@ -63,10 +28,16 @@ const HEAD_SAYS_LEAD: ReadonlySet<PartRow> = new Set(["min", "max", "cap", "maxP
 export const headSaysLead = (row: PartRow): boolean => HEAD_SAYS_LEAD.has(row);
 
 /**
- * A figure's content: equal for the same number in the same unit and state. Two lines of one price list that print the same figure read
- * the same and are said once, the first case's source behind it.
+ * A figure's content: equal for the same number in the same unit, whatever its state. Two cases that print the same figure read the same
+ * to the person and share one cell, also where one holds it from the price list and the other as the person's own (a copy the list does
+ * not print there); the cell then shows it as the person's (`weakestOf`), so no figure is shown with a source it lacks somewhere.
  */
-const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit, v.state] : null);
+const figureKey = (v: SiteValue | undefined) => (v ? [v.value, v.unit] : null);
+
+/** Of cases that share one cell, the one whose parts there it shows: the first whose figure is the person's, else the first. */
+export function weakestOf(cases: readonly string[], parts: (caseId: string) => readonly SlimPart[]): string {
+  return cases.find((id) => parts(id).some((p) => p.words.figure?.state === "entered" || p.words.second?.state === "entered")) ?? cases[0]!;
+}
 
 /** A part's content, equal for two parts that read the same: its id and every word and figure of it. */
 export function partKey(p: SlimPart): string {
@@ -74,23 +45,22 @@ export function partKey(p: SlimPart): string {
   return JSON.stringify([p.id, p.stage ?? 0, w.lead ?? null, figureKey(w.figure), w.mid ?? null, figureKey(w.second), w.month ?? null, w.tail ?? null, w.quiet ?? null]);
 }
 
-/** The currency a part's figure is in; null for a share, a count or a part with no figure. */
-const currencyOf = (p: SlimPart): string | null => (p.words.figure ? currencyOfUnit(p.words.figure.unit) : null);
-
 /**
  * A fee's cases laid out by its shape (`layoutOf`), the cases being the builder's rows of it (`rows`, in the fee's order), with three things
  * the switch on `switchTo`.
  */
 export function bandLayout(fee: CasesFee, rows: readonly CaseRow[], switchTo: string | null = null): FeeLayout {
-  const whenOf = new Map(fee.cases.map((c) => [c.id, c.when]));
+  const caseOf = new Map(fee.cases.map((c) => [c.id, c]));
   return layoutOf({
     things: fee.by.map((b) => ({ range: isRange(b) })),
     rows: PART_ROWS,
     switchTo,
-    cases: rows.map((r) => ({
+    // the cases in the order the page shows them (`byRank`), which the person may have set apart from the order the reading reads
+    cases: byRank(rows.map((r) => ({ ...r, rank: caseOf.get(r.case)!.rank }))).map((r) => ({
       id: r.case,
-      when: whenOf.get(r.case)!,
-      parts: [...partsByRow(r.parts)].map(([row, ps]) => ({ row, key: ps.map(partKey).join("|"), currency: ps.map(currencyOf).find((c) => c !== null) ?? null })),
+      when: caseOf.get(r.case)!.when,
+      ...(caseOf.get(r.case)!.spans ? { spans: caseOf.get(r.case)!.spans } : {}),
+      parts: [...partsByRow(r.parts)].map(([row, ps]) => ({ row, key: ps.map(partKey).join("|") })),
     })),
   });
 }
@@ -104,9 +74,6 @@ export function rowHead(row: PartRow, parts: readonly SlimPart[]): string {
   if (units.length > 0 && units.every((u) => u !== undefined && currencyOfUnit(u) !== null)) return h.sum!;
   return h.price!;
 }
-
-/** The line a part said once stands under: every case, or the cases of one currency. */
-export const sharedLead = (currency: string | null): string => (currency === null ? copy.cases.shared.all : (copy.cases.shared.in[currency] ?? copy.cases.shared.all));
 
 /** A ladder's step as its head says it: the top of the step before it (none for the first) and its own top (none for the last). */
 export interface StepBounds {

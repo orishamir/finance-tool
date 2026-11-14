@@ -52,11 +52,11 @@ export interface Toolbox {
 
 /**
  * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`). The compiler checks that no other
- * part stands in a group, and offers/parts.test.ts that every one of them does. A flat price stands among the price's cards, though a line says
- * it among the bounds.
+ * part stands in a group, and offers/parts.test.ts that every one of them does. Free stands beside the price's forms, for the price the
+ * toolbox acts on. A flat price stands among the price's cards, though a line says it among the bounds.
  */
 export const TOOL_ORDER = {
-  price: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat"],
+  price: ["share", "perUnit", "perAction", "held", "sum", "free", "discount", "third", "flat"],
   bound: ["min", "max", "cap", "maxPerSecurity"],
   link: ["offset", "refund"],
   more: ["unfilled", "partial", "inTrade", "sale"],
