@@ -215,7 +215,8 @@ export const groupKey = (g: GroupOn): string => (g.on === "action" ? `action:${g
  * action up to `amount`, measured against the rate (`rate`: a share, or a sum per unit, whose minimum is then reached at a number of units),
  * from `from` where a flat price or a percent maximum decides before it. `max`: the maximum decides above `amount`. `cap`: the percent
  * maximum (`bound`, a share of the action) decides up to `amount`, where it meets the bound it caps (`meets`: the minimum, or the maximum
- * where the cap is below the rate), from `from` where a flat price decides before it. `flat`: the flat price (`bound`) decides on every
+ * where the cap is below the rate), from `from` where a flat price decides before it; on a sum per action (`sum`), up to where it meets
+ * the sum, above which the sum is charged. `flat`: the flat price (`bound`) decides on every
  * action up to its sum (`amount`, the figure as typed or filled). `meet`: the yearly sums on the account added, the custody fees' yearly
  * rates added, the value held on which the two are equal, and whether below it the sums are the largest cost of holding (`sumsLargest`).
  * `edge` (F-115): the top of a step of a price that changes by size (`amount`, the range's figure), above which the next step's price
@@ -224,7 +225,7 @@ export const groupKey = (g: GroupOn): string => (g.on === "action" ? `action:${g
 export type MarkView =
   | { kind: "min" | "max"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; rate: SiteValue; amount: SiteValue; from?: SiteValue; units?: true }
   | { kind: "edge"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; amount: SiteValue }
-  | { kind: "cap"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; meets: SiteValue; amount: SiteValue; from?: SiteValue }
+  | { kind: "cap"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; meets: SiteValue; amount: SiteValue; from?: SiteValue; sum?: true }
   | { kind: "flat"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; amount: SiteValue }
   | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
 
@@ -271,6 +272,9 @@ export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeri
   if (m.kind === "flat") return { kind: "flat", ...head, bound: figures.flat!, amount: figures.upTo! };
   // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
   const from = m.from === undefined ? {} : { from: price.form !== "free" && "flat" in price && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
+  // a sum per action's percent maximum decides up to where it meets the sum: `amount / cap`, in the sum's currency
+  if (m.kind === "cap" && price.form === "perAction")
+    return { kind: "cap", ...head, bound: figures.cap!, meets: figures.amount!, amount: reading(m.amount, sums, "F-112", { [inputKey(fees, m.fee)]: figures.amount!, [key("cap")]: figures.cap! }, today), sum: true };
   if (m.kind === "cap") {
     // the cap meets the minimum where it gives way to it, or the maximum where it gives way to that: the minimum the engine charges, after a
     // discount off it (F-116)

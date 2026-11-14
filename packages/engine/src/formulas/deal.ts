@@ -501,9 +501,14 @@ function stretchesOf(p: { rate: number; min?: number; max?: number; cap?: number
  * per unit reaches its minimum and maximum at `min / amount` and `max / amount` units; its flat price and its cap are read against the
  * minimum on the money traded: the flat price up to its sum, the cap where `cap × a` is below the minimum, up to `min / cap`, and the
  * minimum's stretch starts where theirs ends. Where a unit costs less than `amount / cap` the cap also decides over the price per unit;
- * that depends on the unit's price, which marks do not take, and only the curve shows it.
+ * that depends on the unit's price, which marks do not take, and only the curve shows it. A sum per action marks nothing, unless it is held
+ * to a percent maximum: then its cap, up to `amount / cap`, as a share of nothing whose minimum and maximum are the sum.
  */
 function priceMarks(price: DealPrice, fee: number, side: DealSide): DealMark[] {
+  // a sum per action held to a percent maximum is priced as F-12's line of a share of nothing whose minimum and maximum are the sum (see
+  // `priceCost`), and marks as that line does: its cap, up to `amount / cap`, where it gives way to the sum
+  if (price.kind === "perAction" && price.cap !== undefined && price.cap > 0 && price.amount > 0)
+    return priceMarks({ kind: "action", rate: 0, min: price.amount, max: price.amount, cap: price.cap, ...(price.currency ? { currency: price.currency } : {}) }, fee, side);
   if (price.kind === "action" || price.kind === "held") {
     const on = price.kind === "action" ? "action" : "held";
     const currency = price.kind === "action" ? (price.currency ?? "ILS") : "ILS";

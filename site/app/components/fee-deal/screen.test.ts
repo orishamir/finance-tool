@@ -382,6 +382,16 @@ describe("a sum on the page", () => {
   });
 });
 
+describe("a sum per action under a percent maximum", () => {
+  it("says where the maximum gives way to the sum, in the words of a point where the price changes", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "perAction", amount: typed(11), cap: typed(2), currency: "USD" } }] }];
+    expect(drawReading(d)).toContain(`ב־550 $ משתנה המחיר של ${feeName("trade")}.`);
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "perAction", amount: typed(11), currency: "USD" } }] }];
+    expect(drawReading(d)).not.toContain("משתנה המחיר של");
+  });
+});
+
 describe("a fee read across sizes", () => {
   it("names each step by its stretch in the glance, so its two prices never read alike, and says where the price changes", () => {
     const d = account();

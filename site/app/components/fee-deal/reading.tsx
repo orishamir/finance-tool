@@ -384,8 +384,9 @@ function MarkAmount({ mark, value }: { mark: MarkView; value: SiteValue }) {
 function MarkSentence({ mark }: { mark: MarkView }) {
   const p = w.points;
   if (mark.kind === "meet") return <MeetSentence mark={mark} />;
-  // a step's top (F-115): where the fee's price changes, by the fee's own name; the steps on either side are named by their stretch
-  if (mark.kind === "edge")
+  // a step's top (F-115), and where a sum per action's percent maximum gives way to the sum: where the fee's price changes, by the fee's
+  // own name; the steps on either side are named by their stretch
+  if (mark.kind === "edge" || (mark.kind === "cap" && mark.sum))
     return (
       <>
         {copy.cases.step.edge.before}

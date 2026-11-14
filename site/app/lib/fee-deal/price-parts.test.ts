@@ -2,7 +2,7 @@
 // action, a sum per unit and a sum per action in another currency, as the device keeps them, as the screen edits them, as the templates
 // fill them from the site's price lists, and as the reading states them on 11.2026.
 import { describe, expect, it } from "vitest";
-import { actionCost, dealPeriods } from "@finance-tool/engine";
+import { actionCost, dealMarks, dealPeriods } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
 import type { SiteValue } from "../value";
@@ -190,6 +190,14 @@ describe("the templates", () => {
     expect(actionCost(engine, period, "trade", 3_200, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 9);
     const back = decodeDeal(encodeDeal(deal))!;
     expect(back.fees[0]!.stages![0]!.price).toEqual(capped);
+    // the cap decides up to where it meets the sum, 11 $ / 2% = 550 $, a mark in the sum's own currency; the price changes there
+    expect(dealMarks(engine, period)).toEqual([expect.objectContaining({ kind: "cap", on: "action", amount: 550, currency: "USD" })]);
+    const mark = readingOf(read(deal), data.fx).statements.flatMap((x) => (x.kind === "mark" ? [x.mark] : []));
+    expect(mark).toHaveLength(1);
+    expect(mark[0]).toMatchObject({ kind: "cap", sum: true, amount: { value: 550, unit: "usd", state: "computed" } });
+    // a sum per action with no cap marks nothing
+    const plain = engineDeal(account([trade({ form: "perAction", amount: { v: 11, src }, currency: "USD" })]));
+    expect(dealMarks(plain, dealPeriods(plain, { y: 2026, m: 11 }).periods[0]!)).toEqual([]);
     // the case's parts: the sum, and the percent maximum as a bound
     const row = builder(read(deal)).rows[0]!;
     const parts = row.block.kind === "slim" ? row.block.parts.map((x) => x.id) : [];
