@@ -155,6 +155,17 @@ export function studyYear(study: Bundle, lockYears: number, c: StudyStoryCase, y
 }
 
 /** Every year of the drawing's strip, from the first to `years`. */
+/**
+ * F-96, waiting for the lock's end: from a withdrawal at the year picked (`at`) to one at the lock year (`lock`), what is left above what was
+ * paid in grows by `more`, and the income tax paid at the withdrawal falls by `saved`. The deposits of the years between and the tax the salary
+ * pays on the employer's money above the limit (TXH-03, `taxFromSalary`) are paid either way, so neither counts.
+ */
+export function waitFigures(at: MoneyStory, lock: MoneyStory): { more: number; saved: number } {
+  const above = (s: MoneyStory) => s.net + s.taxFromSalary - s.own - s.extra;
+  const atWithdrawal = (s: MoneyStory) => s.tax - s.taxFromSalary;
+  return { more: above(lock) - above(at), saved: atWithdrawal(at) - atWithdrawal(lock) };
+}
+
 export function studyYears(d: SignatureData, c: StudyStoryCase, years: number): StudyYear[] {
   const study = d.bundles["keren-hishtalmut"];
   const lockYears = factNumber(d, "lockYears");

@@ -6,7 +6,7 @@ import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { entered as enteredValue } from "./value";
 import { runTimeline } from "./engine";
-import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock } from "./guide-signature-g2";
+import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock, waitFigures } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
@@ -282,5 +282,26 @@ describe("the provident guides' own timelines at the slider's ends", () => {
       }
     }
     expect(page("kupat-gemel-lehashkaa").bundle!.rules.map((r) => r.id)).toContain("PF-14");
+  });
+});
+
+describe("the study fund's wait figures (F-96)", () => {
+  it("count only the income tax at the withdrawal, not what the salary pays on the employer's money above the limit, at a salary above 15,712", () => {
+    const d = page("keren-hishtalmut").signature!;
+    const income = 40000;
+    const plan = { employment: "employee" as const, income, ownMonthly: income * 0.025, employerMonthly: income * 0.075, returnPct: 7, feePct: null };
+    const years = studyYears(d, plan, 12);
+    const lock = Number(fact(d, "lockYears")!.value);
+    const at = years[lock - 2]!.slice!;
+    const end = years[lock - 1]!.slice!;
+    // the salary pays tax on the excess every year, so the lock year carries more of it than the year before
+    expect(end.taxFromSalary).toBeGreaterThan(at.taxFromSalary);
+    expect(at.taxFromSalary).toBeGreaterThan(0);
+    const w = waitFigures(at, end);
+    expect(w.saved).toBeCloseTo(at.tax - at.taxFromSalary - (end.tax - end.taxFromSalary), 6);
+    expect(w.saved).toBeGreaterThan(0);
+    // the whole tax's difference would understate it by the salary-paid tax of the year waited
+    expect(w.saved).toBeGreaterThan(at.tax - end.tax);
+    expect(w.more).toBeCloseTo(end.net + end.taxFromSalary - end.own - end.extra - (at.net + at.taxFromSalary - at.own - at.extra), 6);
   });
 });

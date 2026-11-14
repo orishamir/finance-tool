@@ -8,10 +8,10 @@ import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
-import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
+import { studyRange, studyStanding, studyYears, taxedAfterLock, waitFigures, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
+import { asField, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
 import { Num, ReadingTag, RulesLine, Term } from "../provenance";
 import { text } from "./g2-parts";
@@ -149,21 +149,26 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const compareYear = year < lock ? lock : lock - 1 >= 1 ? lock - 1 : null;
   const lockSlice = yearAt(lock);
   const beforeLock = yearAt(lock - 1);
-  // what waiting for the lock's end adds and saves, each its own figure: what is left above what was paid in at the lock year less the same
-  // at the year picked, since the deposits of the years between are paid either way (after an early withdrawal they go on into the fund),
-  // and the income tax the wait saves (F-96)
+  // what waiting for the lock's end adds and saves, each its own figure (F-96): what is left above what was paid in at the lock year less the
+  // same at the year picked, and the income tax at the withdrawal that waiting saves. The deposits of the years between are paid either way
+  // (after an early withdrawal they go on into the fund), and so is the tax the salary pays on the employer's money above the limit (TXH-03),
+  // so neither counts for or against waiting.
   const lockNet = lockSlice ? nis(lockSlice.net, story.about.lockNet, lockIn) : null;
   const paidIn = (s: NonNullable<typeof slice>) => s.own + s.extra;
+  const atWithdrawal = (s: NonNullable<typeof slice>) => s.tax - s.taxFromSalary;
+  const wait = slice && lockSlice ? waitFigures(slice, lockSlice) : null;
   const waitWords =
-    slice && lockSlice && lockNet && leftValue && year < lock
+    slice && lockSlice && wait && lockNet && leftValue && year < lock
       ? {
-          more: nis(lockSlice.net - paidIn(lockSlice) - (slice.net - paidIn(slice)), story.about.waitMore, {
+          more: nis(wait.more, story.about.waitMore, {
             [story.inputs.lockNet]: lockNet,
             [story.inputs.lockPaid]: nis(paidIn(lockSlice), story.about.lockPaid, lockIn),
+            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockIn),
             [story.inputs.left]: leftValue,
             [story.inputs.paid]: nis(paidIn(slice), story.about.paid),
+            [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary),
           }),
-          saved: differenceOf([story.inputs.tax, ranValue(slice.tax, story.about.tax, true)], [story.inputs.lockTax, nis(lockSlice.tax, story.about.lockTax, lockIn)], "F-96", { today, about: story.about.taxSaved }),
+          saved: nis(wait.saved, story.about.taxSaved, { [story.inputs.tax]: nis(atWithdrawal(slice), story.about.taxAtWithdrawal), [story.inputs.lockTax]: nis(atWithdrawal(lockSlice), story.about.lockTax, lockIn) }),
           at: lockNet,
         }
       : null;

@@ -10,7 +10,7 @@ import { WorthKnowing, worthRows } from "../guide/worth-knowing";
 import { accountWorthRow } from "./current-account";
 import { SignatureFrame, signatureRegistry } from "./index";
 import { fact } from "../../lib/guide-signature";
-import { studyYears } from "../../lib/guide-signature-g2";
+import { studyYears, waitFigures } from "../../lib/guide-signature-g2";
 import { p05Number } from "../../lib/engine";
 import { fmt } from "../../lib/format";
 
@@ -141,13 +141,12 @@ describe("study fund page", () => {
     const years = studyYears(d, plan, 12);
     const lock = Number(fact(d, "lockYears")!.value);
     const at = (y: number) => years[y - 1]!.slice!;
-    const above = (y: number) => at(y).net - at(y).own - at(y).extra;
-    const more = Math.round(above(lock) - above(lock - 1));
+    const more = Math.round(waitFigures(at(lock - 1), at(lock)).more);
     expect(more).toBeLessThan(Math.round(at(lock).net - at(lock - 1).net));
     expect(text).toContain(`${fmt.nisWhole(more)} מעבר להפקדות שבינתיים`);
     // the tax saved is its own figure, not a part of what waiting adds, which can be smaller than it or below zero
     expect(text).not.toContain("מתוכם");
-    expect(text).toContain("מס הכנסה שלא משלמים:");
+    expect(text).toContain("מס הכנסה במשיכה שלא משלמים:");
     // the multiple is of everything deposited, the employer's money too, not of the person's own deposits alone
     expect(text).toContain("ממה שהופקד, מכם ומהמעסיק");
   });
