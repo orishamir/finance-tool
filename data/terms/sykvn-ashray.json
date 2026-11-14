@@ -1,0 +1,21 @@
+{
+  "id": "sykvn-ashray",
+  "he": "סיכון אשראי",
+  "en": null,
+  "meaning": "הסיכון שמי שהנפיק את איגרת החוב לא יחזיר את הכסף, או יחזיר פחות או באיחור",
+  "where": [],
+  "wrapper_ids": [
+    "money-market-fund-daily"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BND-07"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-31"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "BND-01",
+  "title": "A bond's market price moves opposite to market interest rates",
+  "strength": "primary",
+  "dimensions": [
+    "market-price-exit",
+    "rate-sensitivity"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=25",
+      "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
+      "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.25",
+      "locator_he": "עמוד 25",
+      "page": 25,
+      "quote": "שינוי בשיעור הריבית במשק יגרור אחריו, בדרך כלל, שינוי הפוך במחיר האג״ח",
+      "checked": "2026-10-31",
+      "qualifier": "(library copy)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf#page=41",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
+      "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
+      "publisher": "gov.il",
+      "publisher_he": "החשב הכללי, משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.41",
+      "locator_he": "עמוד 41",
+      "page": 41,
+      "quote": "שההחזרים בגינה (סכום הקרן ותשלומי הריבית) אינם צמודים",
+      "checked": "2026-10-31",
+      "qualifier": "(library copy; the glossary calls its entries free definitions for clarification only)"
+    },
+    {
+      "url": "https://www.ecb.europa.eu/stats/financial_markets_and_interest_rates/euro_area_yield_curves/html/index.en.html",
+      "title": "Euro area yield curves (European Central Bank)",
+      "publisher": "European Central Bank",
+      "publisher_he": "הבנק המרכזי האירופי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "An investor calculates the price of a bond by discounting the expected future cash flows.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign central bank, general mechanism)"
+    },
+    {
+      "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
+      "title": "Bonds (Moneysmart, Australian Securities and Investments Commission)",
+      "publisher": "Moneysmart (Australian Securities and Investments Commission)",
+      "publisher_he": "רשות ניירות הערך וההשקעות של אוסטרליה (ASIC), אתר Moneysmart",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "Interest rate risk – the risk that a change in interest rates could reduce the market value of the bond.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism; page updated 2 October 2026)"
+    },
+    {
+      "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
+      "title": "Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "If the rate on your bond is higher than general interest rates, then your bond is still likely to be attractive to investors",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism; page modified 22.9.2023)"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "BND-02",
+  "title": "Held to redemption the bond pays its face value; sold before, the market price",
+  "strength": "primary",
+  "dimensions": [
+    "market-price-exit",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
+      "title": "Bonds (Moneysmart, Australian Securities and Investments Commission)",
+      "publisher": "Moneysmart (Australian Securities and Investments Commission)",
+      "publisher_he": "רשות ניירות הערך וההשקעות של אוסטרליה (ASIC), אתר Moneysmart",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "If you sell a bond before maturity, you’ll get the market value. This could be lower than the face value.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism)"
+    },
+    {
+      "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/how-bonds-work/",
+      "title": "How bonds work (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
+      "publisher": "GetSmarterAboutMoney.ca (Ontario Securities Commission)",
+      "publisher_he": "רשות ניירות הערך של אונטריו (OSC), אתר GetSmarterAboutMoney",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "You can lose money on a bond if you sell it before the maturity date for less than you paid or if the issuer defaults on their payments.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism; page modified 3.7.2025)"
+    }
+  ],
+  "derived_from": [
+    "GOV-03",
+    "GOV-11",
+    "GOV-13",
+    "GOV-17"
+  ]
+}

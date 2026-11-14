@@ -201,6 +201,7 @@ Release 1 (tier-1 wrappers and exposures, the catalogue, cross-cutting rules):
 | `etfs-and-index-funds.md` | ETF | domain | Israeli ETFs, foreign funds registered on TASE, foreign-domiciled ETFs |
 | `brokerage-account.md` | BRK | domain | The brokerage wrapper: banks, TASE members, foreign brokers; fee types; client-asset protection |
 | `government-bonds-and-makam.md` | GOV | domain | Makam, Shahar, Galil, Gilon and other government bonds; buying and holding |
+| `bond-behaviour.md` | BND | domain | How bonds behave: price against rates, yield to maturity, duration, the yield curve, the risks apart, nominal against real, ladders, bond funds, the investment horizon |
 | `kupat-gemel-lehashkaa.md` | KGL | domain | Investment provident fund |
 | `keren-hishtalmut.md` | KH | domain | Study fund |
 | `pension-and-gemel-lekitzba.md` | PEN | domain | Comprehensive and general pension fund, provident fund for annuity, mandatory pension |

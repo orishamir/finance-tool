@@ -366,7 +366,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - **Bank contingent capital (CoCo) and other hybrid instruments in detail**: only the rating indicator was recorded (CORP-14). Product terms not researched.
 - **Default history from press and law-firm articles**: the brief allows only official summaries, and none was found (open question 10).
 - **Institutional investors' bond rules (CMA investment regulations, the Hodak committee guidelines)**: they concern pension and provident managers, not the saver's own choice.
-- **Bond analysis (duration, spreads, yield-to-maturity formulas for corporates)**: the shared yield convention is in GOV-06; no official corporate-specific source was read.
+- **Bond analysis (duration, spreads, yield-to-maturity formulas for corporates)**: the shared yield convention is in GOV-06; no official corporate-specific source was read. The general mechanics (price against rates, yield to maturity, duration and its official formula, credit and liquidity risk) are in `bond-behaviour.md` (2026-11-15).
 
 ## Proposed dimensions
 

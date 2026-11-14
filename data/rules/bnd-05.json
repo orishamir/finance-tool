@@ -1,0 +1,62 @@
+{
+  "id": "BND-05",
+  "title": "Duration and modified duration: the official definition and formula",
+  "strength": "primary",
+  "dimensions": [
+    "rate-sensitivity"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7125%2Fheb#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, קובץ התקנות 7125",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, קובץ התקנות 7125",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.1192), reg. 1",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 1192), תקנה 1",
+      "page": 4,
+      "quote": "ממועד החישוב ועד לפירעון הנכסים",
+      "checked": "2026-11-08",
+      "qualifier": "(library copy; the schedule read on the page image 2026-11-15)"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7125%2Fheb#page=22",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, קובץ התקנות 7125",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, קובץ התקנות 7125",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.22 (gazette p.1210)",
+      "locator_he": "עמוד הקובץ 22 (עמוד הרשומות 1210)",
+      "page": 22,
+      "quote": "חישוב מח״מ, ומח״מ מתוקנן (מחמ״מ)",
+      "checked": "2026-11-08",
+      "qualifier": "(library copy; the schedule read on the page image 2026-11-15)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf#page=44",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
+      "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
+      "publisher": "gov.il",
+      "publisher_he": "החשב הכללי, משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.44",
+      "locator_he": "עמוד 44",
+      "page": 44,
+      "quote": "מדד המסייע בבחינת ההשפעה של שיעור הריבית על שווי השוק של החוב",
+      "checked": "2026-10-31",
+      "qualifier": "(library copy; free definitions for clarification only)"
+    }
+  ],
+  "derived_from": [
+    "GOV-06"
+  ]
+}

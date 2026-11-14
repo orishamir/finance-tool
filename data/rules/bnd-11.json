@@ -1,0 +1,28 @@
+{
+  "id": "BND-11",
+  "title": "Unexpected inflation moves wealth from savers to borrowers",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.ecb.europa.eu/mopo/intro/benefits/html/index.en.html",
+      "title": "Benefits of price stability (European Central Bank)",
+      "publisher": "European Central Bank",
+      "publisher_he": "הבנק המרכזי האירופי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "if there is an unanticipated increase in inflation, the value of savings goes down and the value of debt goes down, which transfers wealth from savers to borrowers.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign central bank, general mechanism)"
+    }
+  ],
+  "derived_from": [
+    "GOV-12"
+  ]
+}
