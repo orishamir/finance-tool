@@ -2,7 +2,7 @@
 // (F-111) where every fee of the group holds throughout; then the fees that change, grouped the
 // same way at their price now, each group with its rate in the first period, all its fees together; then what changes and when, by date,
 // each changed group with its rate from then, with the months from the device's month to the nearest date (F-110:
-// the page says it as a time from now, so for a deal that starts later it is longer than the first period). Every price carries its
+// the page says it as a time from now). Every price carries its
 // standing against its cap (F-113). The sums the prices mark (F-112) are not here: the reading's points carry them (reading.ts).
 import { groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";

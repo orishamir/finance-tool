@@ -180,9 +180,9 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
             ))}
           </Section>
         )}
-        {!empty && (
+        {/* what changes and when: only where something does (founder, 2026-11-14: "if nothing changes then dont display this") */}
+        {!empty && (glance.dates.length > 0 || changing.length > 0) && (
           <Section title={copy.glance.changes} level="card" heading="h3" gap="snug" className="border-t border-border pt-4">
-            {glance.dates.length === 0 && <p className="text-sm text-muted-foreground">{copy.glance.still}</p>}
             {changing.map((g) => (
               <Group key={groupKey(g.on)} group={g} rows={rows} saved={saved} lead={copy.standing.now} />
             ))}

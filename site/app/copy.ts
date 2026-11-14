@@ -1665,7 +1665,6 @@ export const feeDeal = {
     title: "העסקה במבט אחד",
     throughout: "לאורך כל העסקה",
     changes: "מה משתנה ומתי",
-    still: "אף עמלה בעסקה לא משתנה עם הזמן.",
     /** Before the months to the nearest change (a computed figure). */
     inMonths: "בעוד ",
     /** Before the rate a group's fees add to (F-111). */

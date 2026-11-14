@@ -29,7 +29,7 @@ export interface PeriodCard {
   from: MonthKey;
   /** The month at whose start it ends; null for the last. */
   to: MonthKey | null;
-  /** Whether today's month is in it, and whether it has begun (a deal that starts later has a first period that has not). */
+  /** Whether today's month is in it, and whether it has begun (the first period always has; a later one has not). */
   current: boolean;
   started: boolean;
   /** Its length in months, where it ends (F-110). */
