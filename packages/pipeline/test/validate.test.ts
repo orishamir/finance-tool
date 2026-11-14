@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
-import { checkCitedPages, checkFirstExitPoint } from "../src/validate.ts";
+import { checkCitedPages, checkEffectiveRateUnit, checkFirstExitPoint } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -698,5 +698,19 @@ describe("a deposit's first exit point (2026-11-12)", () => {
       expect(checkFirstExitPoint({ ...r, exit_points: { ...r.exit_points, first_after_months: null } }), f).toHaveLength(1);
     }
     expect(withFirst).toBeGreaterThan(40);
+  });
+});
+
+describe("the unit of a rate quoted as effective (data-schema §2)", () => {
+  const v = (unit: string) => ({ value: 3.2, unit });
+  it("stands only in P-05's cash_rate and a deposit record's rate_offered", () => {
+    expect(checkEffectiveRateUnit("parameters", { method_id: "P-05", inputs: { cash_rate: v("pct_per_year_effective"), "A-01": v("pct_per_year") } })).toEqual([]);
+    expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year_effective") })).toEqual([]);
+    // a bank's printed effective rate is effective by its field, and nothing reads the unit there
+    expect(checkEffectiveRateUnit("terms/deposits", { rate_offered: v("pct_per_year"), interest_calc: { effective_annual: v("pct_per_year_effective") } })).toEqual([
+      expect.stringContaining("interest_calc.effective_annual: unit pct_per_year_effective is read only in"),
+    ]);
+    expect(checkEffectiveRateUnit("parameters", { inputs: { "A-01": v("pct_per_year_effective") } })).toHaveLength(1);
+    expect(checkEffectiveRateUnit("series", { points: [v("pct_per_year_effective")] })).toEqual([expect.stringContaining("points[0]")]);
   });
 });

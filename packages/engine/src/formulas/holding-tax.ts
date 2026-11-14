@@ -13,10 +13,13 @@ export function distributionTax(dist: number, israeliRate: number, foreignWithho
   return { foreign, israeli, lost: foreign - credit, net: dist - foreign - israeli };
 }
 
-/** How a product calculates interest, as its record prints it (BANK-50, `interest_calc`): its effective annual rate, or the times a year interest is calculated. */
+/** How a product calculates interest, as its record prints it (BANK-50, `interest_calc`): its nominal and effective annual rates side by side, or the times a year interest is calculated. */
 export interface InterestCalc {
-  /** The effective annual rate the bank prints, as a fraction. */
-  effectiveAnnual?: number;
+  /**
+   * The annual nominal rate the bank prints (its 447 rate, `rate_offered`) and the effective annual rate it prints beside it ("ריבית
+   * מתואמת", `interest_calc.effective_annual`), as fractions: Schedule A's `m` is read from the two (`periodsFromPrinted`).
+   */
+  printed?: { nominal: number; effective: number };
   /** Schedule A's `m`: the times a year the bank's words say interest is calculated or credited. */
   periodsPerYear?: number;
 }
@@ -35,14 +38,30 @@ export interface DepositTermFacts {
   paidOut?: boolean;
 }
 
+/** Schedule A (BANK-50): the effective annual rate of the annual nominal rate `i` with interest calculated `m` times a year, `(1 + i/m)^m − 1`. */
+const scheduleA = (i: number, m: number): number => Math.pow(1 + i / m, m) - 1;
+
+/** Half a unit of the last decimal a bank prints a rate to, two decimals of a percent, as a fraction. */
+const HALF_PRINTED_UNIT = 0.00005;
+
 /**
- * The effective annual rate of a product from its nominal annual rate `annualRate` (BANK-50, Schedule A): the one the record prints, else
- * `(1 + i/m)^m − 1` with the record's `m`. Null when the record prints neither: `m` is each product's term, open where unread (BANK OQ21).
+ * F-21 Schedule A's `m` read from the nominal and effective annual rates a bank prints side by side (BANK-50): the fewest whole
+ * calculations a year, from 1 to 365, whose effective rate at the printed nominal rate rounds to the printed effective one at the two
+ * decimals of a percent the bank prints. An equal pair is `m = 1`. Null where no such `m` exists (BANK OQ21).
+ */
+export function periodsFromPrinted(nominal: number, effective: number): number | null {
+  for (let m = 1; m <= 365; m++) if (Math.abs(scheduleA(nominal, m) - effective) <= HALF_PRINTED_UNIT + 1e-12) return m;
+  return null;
+}
+
+/**
+ * The effective annual rate of a product at the annual nominal rate `annualRate` the run uses, the bank's or one entered (BANK-50,
+ * Schedule A): `(1 + i/m)^m − 1`, with `m` the times a year the record's words give, else the one its printed nominal and effective pair
+ * gives (`periodsFromPrinted`). Null where the record gives neither: `m` is each product's term, open where unread (BANK OQ21).
  */
 export function effectiveAnnualOf(annualRate: number, calc: InterestCalc | undefined): number | null {
-  if (calc?.effectiveAnnual !== undefined) return calc.effectiveAnnual;
-  const m = calc?.periodsPerYear;
-  return m !== undefined && m > 0 ? Math.pow(1 + annualRate / m, m) - 1 : null;
+  const m = calc?.periodsPerYear ?? (calc?.printed ? periodsFromPrinted(calc.printed.nominal, calc.printed.effective) : null);
+  return m !== null && m !== undefined && m > 0 ? scheduleA(annualRate, m) : null;
 }
 
 /**
@@ -52,18 +71,23 @@ export function effectiveAnnualOf(annualRate: number, calc: InterestCalc | undef
  *   (`termDays`), or, for a term printed in months only, 365/12 days a month (the method's convention, not BANK-50's).
  * - Interest paid out during the term (`paidOut`) does not compound inside the deposit, whatever the term: the same `r × d/365`.
  * - A one-year term: `principal × ((1 + r)^(months/12) − 1)`, which is `r` over the year.
- * - A term over a year compounds at the effective annual rate `R` the record gives (`effectiveAnnualOf`):
- *   `principal × ((1 + R)^(months/12) − 1)`. Null where the record gives none (BANK OQ21): an open rule enters no formula.
- * - A rate quoted as effective (`basis` `effective`) is that `R` itself, over any term: `principal × ((1 + R)^(months/12) − 1)`, F-07's
- *   month compounded. Interest paid out at such a rate is not in the method: null.
+ * - A term over a year compounds at the effective annual rate `R` of the run's rate by the record's `m` (`effectiveAnnualOf`):
+ *   `principal × ((1 + R)^(months/12) − 1)`. Null where the record gives no `m` (BANK OQ21): an open rule enters no formula.
+ * - A rate quoted as effective (`basis` `effective`) is that `R` itself, over any term: `principal × ((1 + R)^(d/365) − 1)` over the
+ *   days the table prints, else `(1 + R)^(months/12) − 1`, F-07's month compounded. Interest paid out at such a rate is not in the
+ *   method (G-36): null.
  * Unlinked or partly linked: `rate × max(0, interest − deduction)`, the deduction being what is left of TXI-20 for the year. Fully
  * CPI-linked: linkage exempt (TXI-05), the tax is `rate × real interest`, where the real interest is the quoted real rate on the
  * indexed principal.
  */
 export function depositInterest(principal: number, annualRate: number, months: number, termMonths: number = months, facts: DepositTermFacts = {}): number | null {
-  if (facts.basis === "effective") return facts.paidOut ? null : principal * (Math.pow(1 + annualRate, months / 12) - 1);
+  const printedDays = facts.termDays !== undefined && termMonths > 0 ? (facts.termDays * months) / termMonths : undefined;
+  if (facts.basis === "effective") {
+    if (facts.paidOut) return null;
+    return principal * (Math.pow(1 + annualRate, printedDays !== undefined ? printedDays / 365 : months / 12) - 1);
+  }
   if (termMonths < 12 || facts.paidOut) {
-    const days = facts.termDays !== undefined && termMonths > 0 ? (facts.termDays * months) / termMonths : (months * 365) / 12;
+    const days = printedDays ?? (months * 365) / 12;
     return principal * annualRate * (days / 365);
   }
   if (termMonths === 12) return principal * (Math.pow(1 + annualRate, months / 12) - 1);

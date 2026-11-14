@@ -211,7 +211,8 @@ export function runInputs(
     }
     case "deposit": {
       const kind = depositKind[w.id as keyof typeof depositKind];
-      // the cash rate's unit says how it is quoted: a bank's own rate is nominal (BANK-50), the Bank of Israel's averages effective (BANK-22)
+      // the cash rate's unit says how it is quoted: a bank's own rate is nominal (BANK-50), the Bank of Israel's averages effective (A-21,
+      // pending in BANK-22)
       const rateBasis = p05.cash_rate_basis;
       return { run: "runDeposit", input: { goal, market: { inflation }, deposit: { kind, rate: cashRate, ...(rateBasis ? { rateBasis } : {}), ...t.deposit! }, profile } };
     }
