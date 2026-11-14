@@ -103,7 +103,12 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     // a provident list names its fees by their own labels below (in the discount period and after it), so they are not listed twice
     if (bundle.feeValues.balance && !bundle.feeValues.listBalance && !bundle.feeValues.discountBalance) feeInputs[ci.balanceFee] = bundle.feeValues.balance;
     if (bundle.feeValues.deposit && !bundle.feeValues.listDeposit && !bundle.feeValues.discountDeposit) feeInputs[ci.depositFee] = bundle.feeValues.deposit;
-    for (const [key, label] of Object.entries(guideBlocks.terms.labels)) if (bundle.feeValues[key] && typeof bundle.feeValues[key]!.value === "number") feeInputs[feeLabel(termLabel(bundle, key, label), feeYear(bundle.feeValues[key]!))] = bundle.feeValues[key]!;
+    for (const [key, label] of Object.entries(guideBlocks.terms.labels)) {
+      const v = bundle.feeValues[key];
+      if (!v || typeof v.value !== "number") continue;
+      const per = custodyPeriodWord(bundle, key, v);
+      feeInputs[feeLabel(per ? `${termLabel(bundle, key, label)} ${per}` : termLabel(bundle, key, label), feeYear(v))] = v;
+    }
     const rules = rulesUsed(timeline);
     const taxRate = feeRule("TXK-07", "rate");
     const yearValues = (p: YearPoint, m: Mode) => {
@@ -118,7 +123,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
       const whole = Math.abs(p.paidInReal - asEntered) < 0.5;
       const contributions = m === "real" ? computed(p.paidInReal, "nis", whole ? "F-106" : "F-06", whole ? paid : { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` }) : computed(p.paidIn, "nis", "F-05", { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
       // the fees by type over the years are a series of the run (F-67): a balance fee is a share of a balance the whole plan grows
-      const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...inputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${ci.about.fees} ${p.year}` });
+      const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...inputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${bundle.terms.tariff ? ci.about.feesTariff : ci.about.fees} ${p.year}` });
       const gross = computed(p.grossBalance / div, "nis", "F-08", { ...inputs, ...feeInputs }, { today, rules, about: `${ci.grossBalance}, ${copy.readout.year} ${p.year}` });
       const realGainInputs: Record<string, SiteValue> = { [ci.grossBalance]: gross, [ci.paidIn]: contributions };
       // the real gain by the record's own exit formula (F-44 the provident fund for investing, F-46 the study fund, F-50 child savings);
@@ -135,7 +140,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
         if (bundle.terms.deposit?.linkage === "cpi") taxInputs[ci.inflation] = inputs[ci.inflation]!;
       }
       const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", bundle.record.tax_at_exit.formula, taxInputs, { today, rules: rules.filter((r) => r.id.startsWith("TX")), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), about: `${ci.about.tax} ${p.year}` });
-      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...inputs, [ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, about: p.year === horizonYears ? ci.about.headline : `${ci.about.net} ${p.year}` });
+      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...inputs, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
       return { yearText, contributions, fees, tax, net };
     };
     return { inputs, yearValues };
@@ -156,7 +161,10 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
   const tableTax = useRef(false);
   tableFees.current ||= hasFees;
   tableTax.current ||= hasTax;
-  const afterWhat = hasFees && hasTax ? copy.headline.afterBoth : hasTax ? copy.headline.afterTax : hasFees ? copy.headline.afterFees : null;
+  // a run on a tariff charges commissions and custody too, so its fees are not "דמי ניהול" alone
+  const onTariff = !!bundle.terms.tariff;
+  const feesLegend = onTariff ? copy.legend.feesTariff : copy.legend.fees;
+  const afterWhat = hasFees && hasTax ? (onTariff ? copy.headline.afterBothTariff : copy.headline.afterBoth) : hasTax ? copy.headline.afterTax : hasFees ? (onTariff ? copy.headline.afterFeesTariff : copy.headline.afterFees) : null;
   const modeWords = mode === "real" ? copy.headline.real : copy.headline.nominal;
   const tail = afterWhat ? `${afterWhat}, ${modeWords}` : modeWords;
 
@@ -211,7 +219,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           rowHead={copy.table.year}
           columns={[
             { id: "contributions", head: copy.table.contributions },
-            ...(tableFees.current ? [{ id: "fees", head: copy.table.fees }] : []),
+            ...(tableFees.current ? [{ id: "fees", head: onTariff ? copy.table.feesTariff : copy.table.fees }] : []),
             ...(tableTax.current ? [{ id: "tax", head: copy.table.tax }] : []),
             { id: "net", head: copy.table.net },
           ]}
@@ -307,7 +315,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
                 { id: "net", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.legend.net },
                 // no swatch for an area that is not drawn (no tax in this run)
                 ...(hasTax ? [{ id: "tax", swatch: <Swatch shape="box" className="bg-chart-tax" />, label: copy.legend.tax }] : []),
-                ...(hasFees ? [{ id: "fees", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: copy.legend.fees }] : []),
+                ...(hasFees ? [{ id: "fees", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: feesLegend }] : []),
                 { id: "contributions", swatch: <Swatch className="bg-chart-contributions" />, label: copy.legend.contributions },
               ]}
             />
@@ -321,7 +329,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
                 rows={[
                   { id: "net", label: copy.legend.net, value: <Num value={readout.net} animate /> },
                   ...(hasTax ? [{ id: "tax", label: copy.legend.tax, value: <Num value={readout.tax} animate /> }] : []),
-                  ...(hasFees ? [{ id: "fees", label: copy.legend.fees, value: <Num value={readout.fees} animate /> }] : []),
+                  ...(hasFees ? [{ id: "fees", label: feesLegend, value: <Num value={readout.fees} animate /> }] : []),
                   { id: "contributions", label: copy.legend.contributions, value: <Num value={readout.contributions} animate /> },
                 ]}
               />
@@ -378,6 +386,18 @@ function ResetAll({ onReset }: { onReset: () => void }) {
 }
 
 /** A product-term row's label: a deposit's term is "תקופת הפיקדון", since "תקופה" on the same card is the years the chart runs. */
+/**
+ * The custody line's period word for its rate, and for a bound printed per period (a bound per month keeps its own "בחודש"), from the
+ * months the run charges it over (`terms.tariff.custody.everyMonths`); null for any other figure.
+ */
+export function custodyPeriodWord(bundle: Pick<Bundle, "terms">, key: string, v: Pick<SiteValue, "unit" | "value">): string | null {
+  const every = bundle.terms.tariff?.custody?.everyMonths;
+  if (!every) return null;
+  // a zero rate charges nothing whatever its period, and prints none (instruments.server)
+  const perPeriod = (key === "custodyRate" && v.unit === "pct_of_balance_per_period" && v.value !== 0) || ((key === "custodyMin" || key === "custodyMax") && v.unit === "nis");
+  return perPeriod ? (guideBlocks.terms.perPeriod[every] ?? null) : null;
+}
+
 function termLabel(bundle: Bundle, key: string, label: string): string {
   return key === "term" && bundle.terms.deposit ? guideBlocks.terms.depositTerm : label;
 }
@@ -401,9 +421,14 @@ function TermsList({ bundle }: { bundle: Bundle }) {
     return undefined;
   };
   // D31: the company whose terms the example runs on is named here, so its figures are its own
-  const owners = [...new Set(Object.values(bundle.feeValues).map((v) => v.own).filter((n): n is string => !!n))];
-  // years and months print their own word through fmt ("12 חודשים"), so no unit word follows them
-  const unitWord = (v: SiteValue) => (v.unit === "years" || v.unit === "months" ? "" : ((provCopy.unit as Record<string, string>)[v.unit] ?? ""));
+  // a money-market fund with no tariff of its own runs on the bank route (method 2.4): its zero trade and custody lines are the rules',
+  // not a company's, so only the fund's own figures name whose they are
+  const bankRoute = !!bundle.terms.fund && !!bundle.terms.tariff && !bundle.p05.instruments?.[bundle.record.id]?.tariff;
+  const owners = [...new Set(Object.entries(bundle.feeValues).filter(([key]) => !bankRoute || key.startsWith("fund")).map(([, v]) => v.own).filter((n): n is string => !!n))];
+  // years and months print their own word through fmt ("12 חודשים"), so no unit word follows them; a custody rate, and a bound
+  // charged per period, take their period's word (F-14: the ledger charges per period, "0.03% ברבעון")
+  const unitWord = (key: string, v: SiteValue) =>
+    v.unit === "years" || v.unit === "months" ? "" : (custodyPeriodWord(bundle, key, v) ?? (provCopy.unit as Record<string, string>)[v.unit] ?? "");
   // folded: open, the provident fund's terms made the PC aside about 1,770 px beside a 970 px chart card,
   // and the page about 1,000 px longer; a block that replaces nothing starts folded (former ground rule 1)
   return (
@@ -412,9 +437,10 @@ function TermsList({ bundle }: { bundle: Bundle }) {
         <p className="text-xs text-muted-foreground">{guideBlocks.terms.line}</p>
         {owners.length > 0 && (
           <p className="text-sm">
-            {bundle.pick?.kind === "manager" ? guideBlocks.terms.whoseManager : bundle.terms.deposit && !bundle.terms.tariff ? guideBlocks.terms.whoseDeposit : guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>.
+            {bankRoute ? guideBlocks.terms.whoseFund : bundle.pick?.kind === "manager" ? guideBlocks.terms.whoseManager : bundle.terms.deposit && !bundle.terms.tariff ? guideBlocks.terms.whoseDeposit : guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>.
           </p>
         )}
+        {bankRoute && <p className="text-sm">{guideBlocks.terms.bankRoute}</p>}
         {bundle.pick && (
           <p className="text-sm">
             {bundle.pick.tied && bundle.pick.kind === "manager" ? (
@@ -464,7 +490,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
               <div key={key} className="readout-row">
                 <dt>{feeLabel(termLabel(bundle, key, label), feeYear(v))}</dt>
                 <dd>
-                  <Num value={v} display={show(key, v)} /> {unitWord(v)}
+                  {v.value === null ? <Num value={v} display={guideBlocks.terms.notCollected} /> : <><Num value={v} display={show(key, v)} /> {unitWord(key, v)}</>}
                 </dd>
               </div>
             );

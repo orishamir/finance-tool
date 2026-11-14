@@ -10,7 +10,7 @@
       "S&P 500"
     ]
   },
-  "one_line_he": "מדד של חמש מאות החברות הגדולות בארצות הברית, במשקל לפי שווי השוק הסחיר; הכסף מושקע בדולרים דרך קרן שעוקבת אחריו.",
+  "one_line_he": "מדד של חמש מאות חברות מובילות בארצות הברית, במשקל לפי שווי השוק הסחיר. בבורסה בתל אביב משקיעים בו דרך קרן שעוקבת אחריו, בשקלים, עם חשיפה לדולר או מנוטרלת ממנו.",
   "kind": "equity_index",
   "currency": "USD",
   "cash_like": false,
@@ -40,6 +40,7 @@
     "ira-provident",
     "kupat-gemel-lehashkaa",
     "keren-hishtalmut",
+    "provident-for-annuity",
     "pension-comprehensive",
     "pension-general"
   ],

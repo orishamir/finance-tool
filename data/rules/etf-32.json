@@ -24,7 +24,7 @@
         "strength": "primary"
       },
       "checked": "2026-10-25",
-      "effective_from": null,
+      "effective_from": "2026-10-22",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "market",
@@ -32,7 +32,7 @@
         "ETF-32"
       ],
       "state": "sourced",
-      "notes": "23 iShares (BlackRock) and 17 Invesco funds, data as of 22/10/2026; prices in agorot, so they trade in shekels on TASE."
+      "notes": "23 iShares (BlackRock) and 17 Invesco funds, data as of 22/10/2026; prices in agorot, so they trade in shekels on TASE. Still 40 on TASE's page on 23.10.2026. The Authority's permit list read 31.10.2026 has 37 (ETF-71): the three newest TASE listings (01206895, 01207208, 01207190) are not on it by name."
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",

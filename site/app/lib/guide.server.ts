@@ -201,7 +201,7 @@ function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): str
 function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
   const fees = loadCmaFees();
   const reported = loadCma()
-    .tracks.filter((x) => x.wrapperId === id && !/IRA|בניהול אישי/.test(`${x.name} ${x.subSpecialization}`))
+    .tracks.filter((x) => x.wrapperId === id && !x.selfDirected)
     .flatMap((x) => {
       const f = fees.get(x.fundId)?.balance;
       return f && typeof f.value === "number" ? [cmaFeeValue(f, t)] : [];

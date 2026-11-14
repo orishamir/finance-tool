@@ -46,15 +46,15 @@
         "strength": "primary"
       },
       "checked": "2026-10-25",
-      "effective_from": "2024-01-01",
+      "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": 2026,
-      "update_rule": "frozen 2024-2027",
+      "update_rule": "frozen 2025-2027",
       "rule_ids": [
         "TXH-05"
       ],
       "state": "sourced",
-      "notes": "NIS per year. Ceiling on the determining income; the maximum deduction is 4.5% x 293,397 = 13,203 NIS (stated by the Tax Authority for 2025; the 2026 maximum is computed here). Indexed from a 1995 base of 156,000 but fixed in the law at 293,397 through 2027; the value for 2028 is unknown."
+      "notes": "NIS per year. Ceiling on the determining income; the maximum deduction is 4.5% x 293,397 = 13,203 NIS (stated by the Tax Authority for 2025; the 2026 maximum is computed here). The Ordinance's base is 156,000 (1995), updated each 1 January by the CPI (s.120ב(א)); s.120ב(ה) skips the updates of 1 January 2025, 2026 and 2027, so the amount stays 293,397 (Tax Authority guide 2025 and booklet 2026) through 2027. effective_from is the first year an official text read gives this amount. The value for 2028 is unknown."
     }
   },
   "il_finance_file": "tax-hishtalmut.md",

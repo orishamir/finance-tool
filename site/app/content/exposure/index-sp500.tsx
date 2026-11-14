@@ -6,7 +6,7 @@ import type { ExposureContent } from "../guide/types";
 import type { GlanceItem } from "../../components/guide/sections";
 import { GuideFold as Fold, RuleRows } from "../../components/guide/sections";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { KeyValueList, ProseList, Section, Sentence, Tag } from "../../components/kit";
+import { KeyValueList, ProseList, Section, Sentence, Tag, When } from "../../components/kit";
 import { fmt } from "../../lib/format";
 
 export const content: ExposureContent = {
@@ -76,6 +76,8 @@ export const content: ExposureContent = {
             items={[
               <Sentence as="span" key="cap">
                 שווי שוק של לפחות {minCap ? <Num value={minCap} display={`${fmt.number(Number(minCap.value) / 1e9)} מיליארד דולר`} /> : null}
+                {/* the threshold moves at the start of every quarter (ETF-38): it says when it was read */}
+                {minCap ? <>, <When iso={minCap.checked} lead="הסף נכון ל־" /> ומתעדכן כל רבעון</> : null}
               </Sentence>,
               "סחירות מספקת",
               "רווח חשבונאי חיובי ברבעון האחרון ובארבעת הרבעונים האחרונים יחד",
@@ -114,7 +116,7 @@ export const content: ExposureContent = {
               label: "במסלול בקופה",
               value: (
                 <>
-                  <Term prefix="ב" id="קופת גמל להשקעה">קופת גמל להשקעה</Term>, <Term prefix="ב" id="קרן השתלמות">קרן השתלמות</Term> <Term prefix="וב" id="קרן פנסיה">קרן פנסיה</Term> יש מסלול ״<Term id="עוקב מדד S&P 500">עוקב מדד S&P 500</Term>״ <Term prefix="שה" id="חברה מנהלת">חברה המנהלת</Term> מנהלת.
+                  <Term prefix="ב" id="קופת גמל להשקעה">קופת גמל להשקעה</Term>, <Term prefix="ב" id="קרן השתלמות">קרן השתלמות</Term>, <Term prefix="ב" id="תגמולים ואישית לפיצויים">תגמולים ואישית לפיצויים</Term> <Term prefix="וב" id="קרן פנסיה">קרן פנסיה</Term> יש מסלול ״<Term id="עוקב מדד S&P 500">עוקב מדד S&P 500</Term>״ <Term prefix="שה" id="חברה מנהלת">חברה המנהלת</Term> מנהלת.
                 </>
               ),
               line: (
@@ -201,5 +203,5 @@ export const content: ExposureContent = {
       <RulesLine ids={["ETF-06", "ETF-11", "ETF-21", "ETF-14", "ETF-22", "ETF-24", "TXF-27", "TXF-11"]} />
     </>
   ),
-  termIds: ["נכס מעקב", "דיבידנד", "מגודרות מט\"ח", "קרן סל", "קרן מחקה פתוחה", "קרן חוץ", "קרן זרה", "עסקת החלף שאינה במימון", "דמי ניהול משתנים", "הפרש עקיבה", "קרן נאמנות פטורה", "מס רווחי הון", "מדד המחירים לצרכן", "S&P 500", "עוקב מדד S&P 500", "פרופיל חשיפה", "מספר בורסה", "ISIN", "TER", "UCITS", "קרן שאינה מחלקת", "קרן מחלקת", "טופס W-8BEN", "רשות ניירות ערך", "דמי ניהול", "נומינלי", "משיכה", "הרווח הריאלי", "חברה מנהלת", "קרן פנסיה", "קרן השתלמות", "קופת גמל להשקעה", "קופת גמל בניהול אישי", "עמלת יצירה ופדיון", "קרן נאמנות", "חשבון ניירות ערך", "ניכוי מס במקור", "בורסה", "מכירה"],
+  termIds: ["נכס מעקב", "דיבידנד", "מגודרות מט\"ח", "קרן סל", "קרן מחקה פתוחה", "קרן חוץ", "קרן זרה", "עסקת החלף שאינה במימון", "דמי ניהול משתנים", "הפרש עקיבה", "קרן נאמנות פטורה", "מס רווחי הון", "מדד המחירים לצרכן", "S&P 500", "עוקב מדד S&P 500", "פרופיל חשיפה", "מספר בורסה", "ISIN", "TER", "UCITS", "קרן שאינה מחלקת", "קרן מחלקת", "טופס W-8BEN", "רשות ניירות ערך", "דמי ניהול", "נומינלי", "משיכה", "הרווח הריאלי", "חברה מנהלת", "קרן פנסיה", "קרן השתלמות", "קופת גמל להשקעה", "תגמולים ואישית לפיצויים", "קופת גמל בניהול אישי", "עמלת יצירה ופדיון", "קרן נאמנות", "חשבון ניירות ערך", "ניכוי מס במקור", "בורסה", "מכירה"],
 };

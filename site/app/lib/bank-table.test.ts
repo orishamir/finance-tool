@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ProductRowData } from "../components/decoder/institutions/types";
 import type { SiteValue } from "./value";
-import { kindGroups, rateRange, sharedBands, sharedFacts, tableRows, taxPerLinkage, termRange } from "./bank-table";
+import { kindGroups, rangeLinkage, rateRange, sharedBands, sharedFacts, tableRows, taxPerLinkage, termRange } from "./bank-table";
 
 const v = (value: number | string | null, unit = "ils"): SiteValue => ({ value, unit, source: { url: "https://example.org", title: "t", publisher: "p", strength: "institution" }, checked: "2026-11-09", state: "sourced" }) as unknown as SiteValue;
 
@@ -92,6 +92,23 @@ describe("rateRange", () => {
   it("is the lowest and the highest rate", () => {
     const r = rateRange([rec("a", { rate: 2 }), rec("b", { rate: 0.5 }), rec("c", { rate: 3.1 })]);
     expect([r?.low.value, r?.high.value]).toEqual([0.5, 3.1]);
+  });
+});
+
+describe("rangeLinkage", () => {
+  const cpi = (id: string, rate: number) => rec(id, { rate, linkage: "cpi", taxBucket: { ...rec("x").taxBucket, value: "linked_25" } });
+  it("ranges the unlinked records alone where the product holds linked ones too (BANK OQ17: a linked rate may be real)", () => {
+    const r = rangeLinkage([rec("a", { rate: 4 }), cpi("b", 0.5), rec("c", { rate: 3 })]);
+    expect(r?.linkage).toBe("none");
+    expect(r?.products.map((p) => p.id)).toEqual(["a", "c"]);
+    expect(r?.mixed).toBe(true);
+    const range = rateRange(r!.products);
+    expect([range?.low.value, range?.high.value]).toEqual([3, 4]);
+  });
+  it("ranges the CPI-linked records where there are no unlinked ones, and says the product holds no other", () => {
+    const r = rangeLinkage([cpi("a", 1), cpi("b", 2)]);
+    expect([r?.linkage, r?.mixed, r?.products.length]).toEqual(["cpi", false, 2]);
+    expect(rangeLinkage([])).toBeNull();
   });
 });
 

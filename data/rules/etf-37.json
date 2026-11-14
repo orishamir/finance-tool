@@ -82,12 +82,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "provider-set",
       "rule_ids": [
         "ETF-37"
       ],
       "state": "sourced",
-      "notes": "\"The index Launch Date is Mar 04, 1957\" (index page). History before it is back-tested."
+      "notes": "\"The index Launch Date is Mar 04, 1957\" (index page). History before it is back-tested. Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     }
   },
   "text_he": "המדד הוא, לדברי עורך המדד S&P Dow Jones Indices, המדד היחיד הטוב ביותר למניות הגדולות בארצות הברית. הוא כולל חמש מאות חברות מובילות ומכסה בערך ארבע חמישיות משווי השוק הזמין להשקעה. משקל כל חברה נקבע לפי שווי השוק של המניות שבידי הציבור, והמדד מחושב בדולרים.",

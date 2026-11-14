@@ -21,6 +21,7 @@ import {
   runMakam,
   runProvident,
   runSecurities,
+  securitiesBlockedBy,
   surtax,
   type SecuritiesInput,
 } from "../src/index.ts";
@@ -137,15 +138,27 @@ describe("an accumulating foreign fund bought abroad (TXF-11, G-18)", () => {
 });
 
 describe("foreign funds on TASE (TXF-04)", () => {
-  it("blocks a fund on the 90% test while TXF-04 is open (2026-11-07: its only source was a copy of the letter)", () => {
-    expect(() => runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), ctx)).toThrow(BlockedError);
+  it("stops every run of a TASE foreign fund while TXF-04 is open, with or without the 90% test (F-04, G-35)", () => {
+    for (const ninetyPercentTest of [true, false, undefined]) {
+      const f = { kind: "tase-foreign-fund" as const, ...(ninetyPercentTest === undefined ? {} : { ninetyPercentTest }) };
+      expect(() => runSecurities(fund({ fund: f }), ctx)).toThrow(BlockedError);
+      expect(securitiesBlockedBy(f, ctx)).toBe("TXF-04");
+    }
+  });
+
+  it("names no open rule for a fund whose tax index is known (F-04)", () => {
+    expect(securitiesBlockedBy({ kind: "israeli-fund" }, ctx)).toBeNull();
+    expect(securitiesBlockedBy({ kind: "foreign-fund" }, ctx)).toBeNull();
+    expect(securitiesBlockedBy({ kind: "money-market-daily" }, ctx)).toBeNull();
   });
 
   it("uses the exchange rate only when the fund commits to the 90% test (on the letter's copy, harness)", () => {
-    const withTest = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), context(withTxf04AsTheLetterCopy(rules)));
-    const without = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: false } }), ctx);
+    const letter = context(withTxf04AsTheLetterCopy(rules));
+    const withTest = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: true } }), letter);
+    const without = runSecurities(fund({ fund: { kind: "tase-foreign-fund", ninetyPercentTest: false } }), letter);
+    expect(securitiesBlockedBy({ kind: "tase-foreign-fund" }, letter)).toBeNull();
     expect(ids(withTest)).toContain("TXF-04");
-    expect(ids(without)).not.toContain("TXF-04");
+    expect(ids(without)).toContain("TXF-04");
     expect(without.detail.realGain).not.toBeCloseTo(withTest.detail.realGain!, 0);
   });
 });
@@ -238,7 +251,7 @@ it("raises the US estate-tax flag only when the dollar value is known (TXF-27)",
 
 describe("flags the method asks for", () => {
   it("G-20 on every exit that leaves commissions out of the basis", () => {
-    expect(codes(runSecurities(fund(), ctx))).toContain("G-20");
+    expect(codes(runSecurities(fund({ fund: { kind: "israeli-fund", drag: { management: 0.0007 } } }), ctx))).toContain("G-20");
     const bond = runBond(
       {
         goal: { amountNow: 10_000, monthly: 500, months: 24 },

@@ -2,7 +2,7 @@
   "id": "KGL-02",
   "title": "Annual deposit ceiling: one ceiling per person across all managers, CPI-linked",
   "title_he": "תקרת ההפקדה השנתית לקופת גמל להשקעה",
-  "text_he": "החוק קובע תקרה לסך ההפקדות של אדם בשנת כספים אחת, בכל חשבונותיו בכל קופות הגמל להשקעה, אצל כל החברות המנהלות יחד. תקרת הבסיס כתובה בחוק ומתעדכנת בכל אחד בינואר לפי עליית המדד; הסכום שבתוקף לשנה הנוכחית מופיע בכלל נפרד. התקרה היא לאדם, לא לחשבון ולא לחברה, וחשבון של ילד נספר בתקרה של הילד עצמו. הצעת חוק פרטית להעלות את התקרה עברה קריאה טרומית, ומעמדה הנוכחי לא ידוע.",
+  "text_he": "החוק קובע תקרה לסך ההפקדות של אדם בשנת כספים אחת, בכל חשבונותיו בכל קופות הגמל להשקעה, אצל כל החברות המנהלות יחד. תקרת הבסיס כתובה בחוק ומתעדכנת בכל אחד בינואר לפי עליית המדד; הסכום שבתוקף לשנה הנוכחית מופיע בכלל נפרד. התקרה היא לאדם, לא לחשבון ולא לחברה, וחשבון של ילד נספר בתקרה של הילד עצמו. הצעות חוק פרטיות להעלות את התקרה עברו קריאה טרומית ולא עברו קריאה ראשונה, ולכן פקעו כשהכנסת החדשה התכנסה ב־10.11.2026.",
   "figure_names_he": {
     "base_ceiling": "תקרת הבסיס בחוק"
   },
@@ -32,11 +32,11 @@
         "KGL-02"
       ],
       "state": "sourced",
-      "notes": "THIS IS THE BASE, NOT THE CURRENT CEILING. NIS 70,000 per tax year (שנת כספים) in the law, indexed every 1 January by the CPI rise, first against the CPI known on 1 July 2016. The 2026 ceiling is KGL-03 'ceiling'. One ceiling per member across all managers. A private bill to raise it to NIS 300,000 passed a preliminary reading (20 Mar 2024, secondary report); status open (open question 12)."
+      "notes": "THIS IS THE BASE, NOT THE CURRENT CEILING. NIS 70,000 per tax year (שנת כספים) in the law, indexed every 1 January by the CPI rise, first against the CPI known on 1 July 2016. The 2026 ceiling is KGL-03 'ceiling'. One ceiling per member across all managers. The private bills to raise it (P/2333/25, P/2600/25) passed a preliminary reading but not a first reading, and lapsed with the 25th Knesset (checked 2026-11-14)."
     }
   },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-14",
   "scope": "general",
   "sources": [
     {

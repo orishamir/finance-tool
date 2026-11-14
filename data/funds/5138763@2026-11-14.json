@@ -1,0 +1,192 @@
+{
+  "id": "5138763",
+  "names": {
+    "en": [],
+    "he": [
+      "אלטשולר שחם (00) כספית",
+      "אלטשולר שחם כספית"
+    ],
+    "tase": [
+      "5138763"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "5138763",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה; קרן כספית, כספית שקלית, כספית שקלית עם קונצרני (main prospectus 31.7.2026, p.15, row 65: type 'פתוחה', classification as quoted). Units of 1 ₪ par value; trustee יובנק; investment manager שי עידן since 06/2024; traded ב'-ו', orders until 16:00 on ב'-ה' and 13:00 on ו'; tax track 'פטורה'; distribution fee 0.1%, type 4. Leumi's 447A table lists it under 'יומיות' (bought and redeemed on every trading day).",
+  "exposure_id": "shekel-cash",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": null,
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.234,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf#page=15",
+        "title": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ, תשקיף עיקרי (תאריך התשקיף 31 ביולי 2026), סעיף 4 'הצעת יחידות הקרנות שבניהול מנהל הקרן', טבלת הקרנות 'נכון ליום 26/07/2026', שורה 65 'אלטשולר שחם (00) כספית' (5138763), עמודת 'שכר' – 'שיעור שכר מנהל' (עמ' 15)",
+        "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16",
+        "MF-34",
+        "MF-39",
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Manager's fee as printed: '0.234 %' (the cell wraps the percent sign to a second line). Read 2026-11-14 in the manager's main prospectus (Maya filing 1760213, PDF; the copy fetched today is byte-identical to the library copy 0168788c67ac49ad of 2026-10-31), p.15, row 65 of the table (column heads on p.7) of the manager's funds, which p.6 dates 'נכון ליום 26/07/2026'; p.6 note ב: 'שכר מנהל הקרן והנאמן מחושבים באחוזים מהשווי הנקי השנתי הממוצע של נכסי הקרן'. The row prints: type 'פתוחה'; classification 'קרן כספית, כספית שקלית, כספית שקלית עם קונצרני'; manager's fee '0.234 %'; variable fee '0%'; trustee's fee '0.01%'; '1 ₪ ע.נ'; trustee 'יובנק'; investment manager 'שי עידן (06/2024)'; trading days 'ב'-ו''; hours 'בימים ב' – ה': 16:00; ביום ו': 13:00'; tax 'פטורה'; distribution fee '0.1%; סוג 4'; special features '-'. The prospectus serves until 30/07/2027 (p.1); a later change would be an immediate report on Maya or Magna, which refuse scripts and were not read. Until this snapshot the record held 0.23%, the 'דמי ניהול קרן' Bank Leumi's Directive 447A money-market page printed for this fund on 2026-10-23 (https://www.leumi.co.il/he/savings/money-market-products), a page that says it shows what the managers report; the manager's own prospectus is recorded instead, and it prints the trustee's fee apart from the manager's."
+    },
+    "trustee": {
+      "value": 0.01,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf#page=15",
+        "title": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ, תשקיף עיקרי (תאריך התשקיף 31 ביולי 2026), סעיף 4 'הצעת יחידות הקרנות שבניהול מנהל הקרן', טבלת הקרנות 'נכון ליום 26/07/2026', שורה 65 'אלטשולר שחם (00) כספית' (5138763), עמודת 'שכר' – 'שיעור שכר נאמן' (עמ' 15)",
+        "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee's fee as printed: '0.01%' of the fund's average annual net assets. Read 2026-11-14 in the manager's main prospectus (Maya filing 1760213, PDF; the copy fetched today is byte-identical to the library copy 0168788c67ac49ad of 2026-10-31), p.15, row 65 of the table (column heads on p.7) of the manager's funds, which p.6 dates 'נכון ליום 26/07/2026'; p.6 note ב: 'שכר מנהל הקרן והנאמן מחושבים באחוזים מהשווי הנקי השנתי הממוצע של נכסי הקרן'. The row prints: type 'פתוחה'; classification 'קרן כספית, כספית שקלית, כספית שקלית עם קונצרני'; manager's fee '0.234 %'; variable fee '0%'; trustee's fee '0.01%'; '1 ₪ ע.נ'; trustee 'יובנק'; investment manager 'שי עידן (06/2024)'; trading days 'ב'-ו''; hours 'בימים ב' – ה': 16:00; ביום ו': 13:00'; tax 'פטורה'; distribution fee '0.1%; סוג 4'; special features '-'. The prospectus serves until 30/07/2027 (p.1); a later change would be an immediate report on Maya or Magna, which refuse scripts and were not read."
+    },
+    "variable_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf#page=15",
+        "title": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ, תשקיף עיקרי (תאריך התשקיף 31 ביולי 2026), סעיף 4 'הצעת יחידות הקרנות שבניהול מנהל הקרן', טבלת הקרנות 'נכון ליום 26/07/2026', שורה 65 'אלטשולר שחם (00) כספית' (5138763), עמודת 'שכר' – 'דמי ניהול משתנים' (עמ' 15)",
+        "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee as printed: '0%'. Read 2026-11-14 in the manager's main prospectus (Maya filing 1760213, PDF; the copy fetched today is byte-identical to the library copy 0168788c67ac49ad of 2026-10-31), p.15, row 65 of the table (column heads on p.7) of the manager's funds, which p.6 dates 'נכון ליום 26/07/2026'; p.6 note ב: 'שכר מנהל הקרן והנאמן מחושבים באחוזים מהשווי הנקי השנתי הממוצע של נכסי הקרן'. The row prints: type 'פתוחה'; classification 'קרן כספית, כספית שקלית, כספית שקלית עם קונצרני'; manager's fee '0.234 %'; variable fee '0%'; trustee's fee '0.01%'; '1 ₪ ע.נ'; trustee 'יובנק'; investment manager 'שי עידן (06/2024)'; trading days 'ב'-ו''; hours 'בימים ב' – ה': 16:00; ביום ו': 13:00'; tax 'פטורה'; distribution fee '0.1%; סוג 4'; special features '-'. The prospectus serves until 30/07/2027 (p.1); a later change would be an immediate report on Maya or Magna, which refuse scripts and were not read."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-07"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: not a tracking fund (money-market fund, MF-07)."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: open fund, units bought and redeemed at the manager's price, not traded on the exchange (MF-09, ETF-04)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-43",
+        "MF-29"
+      ],
+      "state": "sourced",
+      "notes": "Shekel money-market fund (exposure code 00: no equity, no FX exposure); no foreign withholding applies and no computation is made here."
+    },
+    "load": {
+      "value": 0,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf#page=6",
+        "title": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ, תשקיף עיקרי (תאריך התשקיף 31 ביולי 2026), סעיף 4 'הצעת יחידות הקרנות שבניהול מנהל הקרן', הערה ד' לטבלת הקרנות (עמ' 6)",
+        "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-14",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "p.6 note ד' to the table of funds: 'בכל הקרנות שבניהול מנהל הקרן, לא נגבה שיעור הוספה, ולפיכך לא נכללה בטבלה שלהלן התייחסות לעניין זה'. Read 2026-11-14 in the manager's main prospectus (Maya filing 1760213)."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "liquidity-lockup": "covered:MF-34",
+    "fee-custody": "covered:BRK-17",
+    "fee-management-balance": "covered:MF-16",
+    "protection": "covered:MF-02",
+    "currency": "covered:MF-43"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf",
+    "date": "2026-07-31"
+  },
+  "exposure_code": "00",
+  "distribution_fee_type": "4",
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-11-14"
+}

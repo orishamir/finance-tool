@@ -2,7 +2,7 @@
   "id": "REG-05",
   "title": "Private deposit-insurance bill P/6522/25: content and status",
   "title_he": "הצעת חוק פרטית לביטוח פיקדונות: תוכן ומעמד",
-  "text_he": "הצעת חוק פרטית לביטוח פיקדונות בתאגיד בנקאי הייתה נותנת ללקוח שהפקיד 'חיסכון' בבנק או באגודת חיסכון ואשראי ערבות מדינה עד סכום הערבות המוצע; זו הצעת חוק בלבד, לא חוק. כפי שנוסחה: 'חיסכון' הוא כל הפקדה מראש ליותר משבעה ימים שלא מיועדת לחשבון עובר ושב; הכיסוי רק בבנקים שנתח השוק שלהם לא עולה על הנתח המרבי; התשלום בתוך שלושה חודשים מהתביעה, בתנאי שמונה מנהל מורשה; תאגידים בנקאיים ומנהלי תיקים לא יכולים לתבוע. במאגר הכנסת ההצעה הונחה על שולחן הכנסת לדיון מוקדם, בלי ועדה. האתר מציג אותה כהצעה, לעולם לא כהגנה.",
+  "text_he": "הצעת חוק פרטית לביטוח פיקדונות בתאגיד בנקאי הייתה נותנת ללקוח שהפקיד 'חיסכון' בבנק או באגודת חיסכון ואשראי ערבות מדינה עד סכום הערבות המוצע; זו הייתה הצעת חוק בלבד, והיא פקעה. כפי שנוסחה: 'חיסכון' הוא כל הפקדה מראש ליותר משבעה ימים שלא מיועדת לחשבון עובר ושב; הכיסוי רק בבנקים שנתח השוק שלהם לא עולה על הנתח המרבי; התשלום בתוך שלושה חודשים מהתביעה, בתנאי שמונה מנהל מורשה; תאגידים בנקאיים ומנהלי תיקים לא יכולים לתבוע. ההצעה הונחה על שולחן הכנסת לדיון מוקדם ולא התקדמה. כשהכנסת החדשה התכנסה ב־10.11.2026 היא פקעה, כי רק הצעה שעברה קריאה ראשונה יכולה להמשיך בכנסת הבאה. האתר לא מציג אותה כהגנה.",
   "figure_names_he": {
     "proposed_guarantee": "סכום הערבות המוצע ללקוח (הצעת חוק בלבד)",
     "small_bank_market_share_max": "נתח השוק המרבי של בנק מכוסה (הצעת חוק בלבד)"
@@ -32,7 +32,7 @@
         "REG-05"
       ],
       "state": "sourced",
-      "notes": "BILL ONLY, NOT LAW. The bill would give a client who deposited \"savings\" (an advance deposit for more than seven days, not intended for a current account) at a bank whose market share is not above 5%, or at a savings-and-credit cooperative, a state guarantee of NIS 250,000. Knesset status on 2026-10-22: \"הונחה על שולחן הכנסת לדיון מוקדם\", unchanged since 2.2.2026. The site must show it as a bill, never as protection."
+      "notes": "A LAPSED BILL, NEVER LAW (it lapsed with the 25th Knesset; the 26th convened 10.11.2026). The bill would give a client who deposited \"savings\" (an advance deposit for more than seven days, not intended for a current account) at a bank whose market share is not above 5%, or at a savings-and-credit cooperative, a state guarantee of NIS 250,000. Knesset status on 2026-10-22: \"הונחה על שולחן הכנסת לדיון מוקדם\", unchanged since 2.2.2026. The site must show it as a bill, never as protection."
     },
     "small_bank_market_share_max": {
       "value": 5,
@@ -52,13 +52,36 @@
         "REG-05"
       ],
       "state": "sourced",
-      "notes": "BILL ONLY. The proposed guarantee covers only banks whose market share does not exceed 5%."
+      "notes": "A LAPSED BILL, NEVER LAW. The proposed guarantee covers only banks whose market share does not exceed 5%."
     }
   },
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-14",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/13/law/13_lsr_210960.pdf",
+      "title": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993",
+      "title_he": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, ss.1-3",
+      "locator_he": "עמוד 1, סעיפים 1-3",
+      "page": 1,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_KnessetDates()?$filter=KnessetNum%20ge%2025&$format=json",
+      "title": "Knesset OData KNS_KnessetDates",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "the 26th Knesset's",
+      "checked": "2026-11-14"
+    },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
       "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25)",

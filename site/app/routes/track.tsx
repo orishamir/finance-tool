@@ -5,11 +5,11 @@ import type { Route } from "./+types/track";
 import { catalogue, companies as companiesCopy, company as companyCopy, feePageLink, pagePreview, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { feeLabel } from "../components/decoder/fees";
-import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
+import { DimensionChecklist, checklistMark, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter, OwnCompanyPage } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, FeeNum, GemelNetLink, KeyValueList, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, KeyValueList, MixedName, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
@@ -28,7 +28,11 @@ export async function loader({ params }: Route.LoaderArgs) {
   const track = cma.tracks.find((t) => t.companyId === params.id && String(t.fundId) === params.fund);
   if (!track) throw new Response("Not found", { status: 404 });
   const others = cma.tracks.filter((t) => t.companyId === track.companyId && t.name === track.name && t.fundId !== track.fundId);
-  const wrapper = loadWrappers().find((w) => w.id === track.wrapperId) ?? null;
+  // the product the site has a guide and checks for: a self-directed (IRA) fund's own (lib/self-directed.ts), else its regulator type's;
+  // the tracks page lists it under its regulator type either way
+  const wrappers = loadWrappers();
+  const wrapper = wrappers.find((w) => w.id === (track.selfDirected ?? track.wrapperId)) ?? null;
+  const listedIn = wrappers.find((w) => w.id === track.wrapperId) ?? null;
   const rules = loadRules();
   // the fund's company (D30): its fund's page lists the general rules and this company's terms, never another
   // company's, and a record that names several companies shows this one's part
@@ -52,9 +56,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   const cited = Object.values(rules).filter((r) => strings.has(r.id));
   const checklist = wrapper
     ? loadChecklistRows().map((row) => {
-        const mark = wrapper.dimensions[row.id];
         const carrying = cited.filter((r) => r.dimensions.includes(row.id) && ours(r)).map((r) => r.id);
-        return { id: row.id, name: row.name, explanation: row.explanation, mark: mark === "covered" ? "covered" : mark === "blocked" || mark?.startsWith("blocked:") ? "blocked" : "na", code: mark?.startsWith("blocked:") ? mark.slice(8) : undefined, rules: carrying } as ChecklistRowView;
+        return { id: row.id, name: row.name, explanation: row.explanation, ...checklistMark(wrapper.dimensions[row.id]), rules: carrying } as ChecklistRowView;
       })
     : [];
   const fees = loadCmaFees().get(track.fundId)!;
@@ -82,7 +85,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     .filter((c) => c.maps_to.track_ids.length === 1 && c.maps_to.track_ids[0] === track.fundId && owner.get(c.institution) === track.companyId)
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
   // the fee page fills a deal from the track where the track's product record lists a fee base (method §10.6)
-  const feePage = loadWrappers().some((p) => p.id === track.wrapperId && p.fee_bases_allowed.length > 0);
+  const feePage = !!wrapper && wrapper.fee_bases_allowed.length > 0;
   const isDefault = catalog.some((c) => c.default_at_joining && c.maps_to.track_ids.includes(track.fundId) && owner.get(c.institution) === track.companyId);
   return {
     track,
@@ -92,6 +95,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     feePage,
     others: others.map((o) => ({ fundId: o.fundId, href: trackPath(o.companyId, o.fundId) })),
     wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]! } : null,
+    listedIn: listedIn ? { id: listedIn.id, name: listedIn.names.he[0]! } : null,
     checklist,
     rules: citedRules,
     pointed: pointedRecords(citedRules, rules),
@@ -162,19 +166,22 @@ export default function TrackPage() {
                 label: copy.labels.product,
                 value: (
                   <span className="flex flex-wrap items-center gap-x-3">
-                    <bdi>{gershayim(track.classification)}</bdi>
+                    {/* the site's name for the product where it has one; the regulator's type where the site has no product for it */}
+                    <MixedName>{data.wrapper?.name ?? track.classification}</MixedName>
                     {data.wrapper && (
                       <span className="flex flex-wrap items-center gap-x-3 text-sm">
                         <TextLink look="line" to={guidePath(data.wrapper.id)}>
-                          {copy.toGuide} {data.wrapper.name}
+                          {copy.toGuide}
                           <IconDrillIn size={16} />
                         </TextLink>
-                        <TextLink look="line" to={trackBrowserPath(data.wrapper.id)}>
-                          {trackBrowser.guideLink.before}
-                          {data.wrapper.name}
-                          {trackBrowser.guideLink.after}
-                          <IconDrillIn size={16} />
-                        </TextLink>
+                        {data.listedIn && (
+                          <TextLink look="line" to={trackBrowserPath(data.listedIn.id)}>
+                            {trackBrowser.guideLink.before}
+                            {data.listedIn.name}
+                            {trackBrowser.guideLink.after}
+                            <IconDrillIn size={16} />
+                          </TextLink>
+                        )}
                       </span>
                     )}
                   </span>
@@ -209,7 +216,7 @@ export default function TrackPage() {
                       ))}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      {catalogue.seenAt} <bdi dir="ltr">{n.where}</bdi> <NumAfter lead={catalogue.seenOn} value={n.seen as SiteValue} />
+                      {catalogue.seenAt} {n.where} <NumAfter lead={catalogue.seenOn} value={n.seen as SiteValue} />
                     </span>
                   </li>
                 ))}

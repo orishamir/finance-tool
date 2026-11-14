@@ -134,7 +134,7 @@ export function commonAccountRate(banks: AccountBank[], rules: Record<string, Ru
       ? ceilings.reduce<SiteValue | null>((best, c) => (best === null || (c!.value as number) > (best.value as number) ? c : best), null)
       : null;
   return {
-    rate: make(result.rate, "pct_per_year", "הריבית שרוב הבנקים שנאספו מפרסמים על יתרה בעו״ש"),
+    rate: make(result.rate, "pct_per_year", "הריבית הנפוצה ביותר בין הבנקים שנאספו על יתרה בעו״ש"),
     count: make(result.count, "count", "כמה בנקים מפרסמים את הריבית הזאת"),
     of: make(result.of, "count", "כמה בנקים נאספו"),
     paying: make(result.paying, "count", "כמה בנקים מפרסמים ריבית מעל 0"),

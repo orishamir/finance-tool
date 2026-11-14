@@ -6,7 +6,7 @@ import { useMemo, useRef, useState } from "react";
 import { depositBrowser as t } from "../../copy";
 import { MQ, useAddressParams, useMedia } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
-import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
+import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
 import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
@@ -43,8 +43,11 @@ export function DepositBrowser({ data }: { data: DbData }) {
 
   const ofTerm = useMemo(() => offersOf(data, term, kind), [data, term, kind]);
   const open = useMemo(() => (amount === null ? [] : ofTerm.filter((o) => opens(o, amount))), [ofTerm, amount]);
-  const shut = useMemo(() => (amount === null ? [] : ofTerm.filter((o) => !opens(o, amount))), [ofTerm, amount]);
   const shows = (o: DbOffer) => withConditional || !o.limited;
+  // the folded group answers to the same two "show also" chips as the list (F-108)
+  const folded = useMemo(() => (amount === null ? { offers: [], unknown: false } : foldedOffers(ofTerm, amount, { conditional: withConditional, linked: withLinked })), [ofTerm, amount, withConditional, withLinked]);
+  const shutShown = folded.offers;
+  const shutUnknown = folded.unknown;
   const conditionalCount = rowsOf(open.filter((o) => o.limited && !isLinked(o))).length;
   const linkedCount = rowsOf(open.filter((o) => isLinked(o) && shows(o))).length;
   const ranked = sortRows(rowsOf(open.filter((o) => !isLinked(o) && shows(o))), sort);
@@ -189,10 +192,10 @@ export function DepositBrowser({ data }: { data: DbData }) {
           </div>
         </Section>
 
-        {shut.length > 0 && (
-          <Disclosure label={`${offersPhrase(rowsOf(shut).length)} ${t.closed.before}${amount !== null ? fmt.nisWhole(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
+        {shutShown.length > 0 && (
+          <Disclosure label={`${offersPhrase(rowsOf(shutShown).length)} ${shutUnknown ? t.closed.orUnknown : t.closed.before}${amount !== null ? fmt.nisWhole(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
             <div className="pt-2">
-              <DepositList ranked={sortRows(rowsOf(shut), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null }} sort={null} />
+              <DepositList ranked={sortRows(rowsOf(shutShown), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null }} sort={null} />
             </div>
           </Disclosure>
         )}

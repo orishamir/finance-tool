@@ -235,7 +235,12 @@ export interface PensionModel {
   insuranceMonthly: number | null;
   /** The engine's end balance of the deposits, both lines, in today's money, before the fund turns it into a pension (F-49 blocked). */
   balance: { real: number; years: number } | null;
-  balanceGap: "no-fees" | "no-run" | null;
+  /** Why there is no balance: no fees for the wrapper, a run that failed, or on the general fund's page, no deposit above the
+   *  comprehensive fund's ceiling (`below-ceiling`) or an excess the rule base does not divide between the parts (`general-split`). */
+  balanceGap: "no-fees" | "no-run" | "below-ceiling" | "general-split" | null;
+  /** On the general fund's page only (PEN-10): the comprehensive fund's monthly deposit ceiling (PEN-08) and the part of the month's
+   *  deposit above it, the money that reaches the general fund at these rates (PEN-10 names other cases the visual does not show). Null on the other pages. */
+  general: { ceiling: number; toGeneral: number } | null;
   /** Rule ids the model read: the forward relief and the engine runs. */
   rules: string[];
 }
@@ -244,7 +249,9 @@ export interface PensionModel {
  * The deposits of a salaried person at the legal minimum rates (PEN-03) on the insured wage (PEN-04), the relief on the person's own part
  * (F-31 credit, or F-32 when employee and employer together reach the beneficiary-member threshold, TXP-03: the same dispatch F-30 solves
  * for), the insurance (F-53) and, from the engine's pension ledger, what the deposits grow to. The pension itself needs conversion factors
- * the site does not hold (PEN OQ7, G-03): no figure.
+ * the site does not hold (PEN OQ7, G-03): no figure. A general fund receives only the deposit above the comprehensive fund's ceiling
+ * (PEN-10, PEN-08): on its page the deposit is split at the ceiling, and with nothing above it there is no balance, insurance or fee for
+ * the general fund (method F-67, "The general fund").
  */
 export function pensionModel(d: SignatureData, id: string, c: PensionCase): PensionModel | null {
   const bundle = d.bundles[id];
@@ -264,6 +271,15 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
     const relief = { formula: r.formula, beneficiary, yearly: r.relief, monthly: r.relief / 12, credit: r.credit / 12, deductionValue: r.deductionValue / 12 };
     const total = you + employer + severance;
     const hasInsurance = id !== "provident-for-annuity";
+    const relieved = { wage, rates, you, employer, severance, total, relief, netYou: you - relief.monthly };
+
+    // the general fund: only what is above the comprehensive fund's monthly ceiling reaches it (PEN-10); how an excess divides between
+    // the person's, the employer's and the severance parts is not in the rule base, so a positive excess has no balance either
+    if (id === "pension-general") {
+      const ceiling = book.amount("PEN-08", "monthly_deposit_ceiling");
+      const toGeneral = Math.max(0, total - ceiling);
+      return { ...relieved, insuranceMonthly: null, balance: null, balanceGap: toGeneral > 0 ? "general-split" : "below-ceiling", general: { ceiling, toGeneral }, rules: book.used().map((u) => u.id) };
+    }
     const insuranceMonthly = hasInsurance && c.insurancePct !== null ? insuranceCost(c.insurancePct / 100, total) : null;
 
     // the end balance: the person's own money through the pension ledger (F-30 turns the net outlay into the gross deposit), the employer's through F-52
@@ -298,7 +314,7 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
         balanceGap = "no-run";
       }
     }
-    return { wage, rates, you, employer, severance, total, relief, netYou: you - relief.monthly, insuranceMonthly, balance, balanceGap, rules: [...used] };
+    return { ...relieved, insuranceMonthly, balance, balanceGap, general: null, rules: [...used] };
   } catch {
     return null;
   }

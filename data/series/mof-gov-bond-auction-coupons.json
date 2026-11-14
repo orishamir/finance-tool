@@ -1,0 +1,515 @@
+{
+  "id": "mof-gov-bond-auction-coupons",
+  "names": {
+    "he": [
+      "נתוני החוב הממשלתי המקומי",
+      "הנפקת אג\"ח סחירות בשוק המקומי"
+    ]
+  },
+  "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+  "flow": "data.gov.il package goverment-domesticdebt (id d3c80c46-9d99-41a9-8b62-50b590011a60)",
+  "series_code": "resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv",
+  "unit": "pct_per_year",
+  "cadence": "on change",
+  "stale_after_days": 30,
+  "terms_of_use": {
+    "status": "confirmed",
+    "fallback": "none needed",
+    "terms_url": "https://data.gov.il/he/terms-of-use",
+    "read_on": "2026-11-14",
+    "attribution": "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"נתוני החוב הממשלתי המקומי\", data.gov.il (https://data.gov.il/dataset/goverment-domesticdebt), לפי רישיון השימוש במאגרי המידע הממשלתיים"
+  },
+  "rule_ids": [
+    "GOV-09",
+    "GOV-11",
+    "GOV-13",
+    "GOV-19"
+  ],
+  "notes": "The yearly coupon of each tradable government bond series the Ministry of Finance sold at auction in 2026, as the auction file prints it (column COUPON, percent a year). Each observation's key is \"<BONDS>|<SERIES>|<REDEMTIONDATE>|<ORIGINALTERMTOMATURITY>\" as the file prints them: the bond type ('ממשלתית צמודה', CPI-linked, GOV-11; 'ממשלתית', fixed-rate shekel, GOV-13), the TASE series number, the redemption date and the original term in years. The date is the auction (ISSUANCEDATE). A series' coupon is fixed for its life (GOV-11, GOV-13), so for each key the file keeps its first 2026 auction and its latest; the auctions in between print the same coupon. Left out: the floating-rate type ('ממשלתית בריבית משתנה', GOV-14), whose printed coupon changes from period to period; and 21 rows that print COUPON 0 for a series whose other rows print its coupon (series 1233782 (7 rows), 1237205 (7 rows), 1241991 (7 rows): the first weeks each series was sold in 2026), which are not taken as a coupon of zero. Read 2026-11-14 from the file as published on 2026-11-13 (resource last modified 2026-11-13T05:00), 1,973 rows, the latest auction 2026-11-10.",
+  "observations": [
+    {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-05",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-05",
+      "key": "ממשלתית צמודה|1220722|30/04/2031|6"
+    },
+    {
+      "value": 4.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-05",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-05",
+      "key": "ממשלתית|1226240|31/07/2028|3"
+    },
+    {
+      "value": 4.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-05",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-05",
+      "key": "ממשלתית|1227784|31/10/2035|10"
+    },
+    {
+      "value": 1.6,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-12",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-12",
+      "key": "ממשלתית צמודה|1204379|31/10/2033|10"
+    },
+    {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-12",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-12",
+      "key": "ממשלתית צמודה|1230713|30/04/2056|30"
+    },
+    {
+      "value": 5.5,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-12",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-12",
+      "key": "ממשלתית|1125400|31/01/2042|30"
+    },
+    {
+      "value": 2.8,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-01-19",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-01-19",
+      "key": "ממשלתית|1184076|29/11/2052|31"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-02-02",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-02-02",
+      "key": "ממשלתית|1233782|31/07/2031|6"
+    },
+    {
+      "value": 1.6,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-02-24",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-02-24",
+      "key": "ממשלתית צמודה|1204379|31/10/2033|10"
+    },
+    {
+      "value": 1.85,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-03-31",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-03-31",
+      "key": "ממשלתית צמודה|1237205|31/08/2037|11"
+    },
+    {
+      "value": 4.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-05-27",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-05-27",
+      "key": "ממשלתית|1226240|31/07/2028|3"
+    },
+    {
+      "value": 5.5,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-06-15",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-06-15",
+      "key": "ממשלתית|1125400|31/01/2042|30"
+    },
+    {
+      "value": 3.55,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-06-30",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-06-30",
+      "key": "ממשלתית|1241991|31/05/2030|4"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-07-20",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-07-20",
+      "key": "ממשלתית|1140193|31/03/2047|30"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-10-26",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-10-26",
+      "key": "ממשלתית|1140193|31/03/2047|30"
+    },
+    {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-03",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-03",
+      "key": "ממשלתית צמודה|1230713|30/04/2056|30"
+    },
+    {
+      "value": 4.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-03",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-03",
+      "key": "ממשלתית|1227784|31/10/2035|10"
+    },
+    {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-10",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-10",
+      "key": "ממשלתית צמודה|1220722|30/04/2031|6"
+    },
+    {
+      "value": 1.85,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-10",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-11",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-10",
+      "key": "ממשלתית צמודה|1237205|31/08/2037|11"
+    },
+    {
+      "value": 2.8,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-10",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-10",
+      "key": "ממשלתית|1184076|29/11/2052|31"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-10",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-10",
+      "key": "ממשלתית|1233782|31/07/2031|6"
+    },
+    {
+      "value": 3.55,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "משרד האוצר, החשב הכללי, \"נתוני החוב הממשלתי המקומי\": הנפקת אג\"ח סחירות בשוק המקומי, עמודת COUPON",
+        "publisher": "Ministry of Finance (Accountant General) via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-10",
+      "effective_to": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-09",
+        "GOV-13",
+        "GOV-19"
+      ],
+      "state": "sourced",
+      "date": "2026-11-10",
+      "key": "ממשלתית|1241991|31/05/2030|4"
+    }
+  ]
+}

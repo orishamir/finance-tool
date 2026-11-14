@@ -7,7 +7,7 @@
     "proposed_cap": "התקרה המוצעת על הטבת המס (המלצה, לא חוק)",
     "report_date": "חודש הדוח המסכם"
   },
-  "strength": "secondary",
+  "strength": "primary",
   "dimensions": [
     "age-or-use-exemption",
     "switching-tax-event",
@@ -29,12 +29,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "cpi-linked 1 jan",
       "rule_ids": [
         "TXK-21"
       ],
       "state": "sourced",
-      "notes": "A recommendation, not law: 200,000 NIS in total per Israeli resident, inside and outside the account together, no yearly limit, indexed to the CPI each 1 January."
+      "notes": "A recommendation, not law: 200,000 NIS in total per Israeli resident, inside and outside the account together, no yearly limit, which the report would index to the CPI each 1 January (p.14, s.5.2). The update rule shown is the report's proposal; nothing updates it today."
     },
     "report_date": {
       "value": "2026-07",
@@ -86,6 +86,41 @@
       "checked": "2026-10-31"
     },
     {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill%282204087%29",
+      "title": "הכנסת: רשומת הצעת החוק 2204087 (KNS_Bill)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "StatusID 104, LastUpdatedDate 2026-11-04",
+      "quote": "הונחה על שולחן הכנסת לדיון מוקדם",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_KnessetDates()?$filter=KnessetNum%20ge%2025&$format=json",
+      "title": "הכנסת: מועדי כנסים (KNS_KnessetDates), כנסות 25-26",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "rows 25-26",
+      "locator_he": "שורות 25-26",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/13/law/13_lsr_210960.pdf#page=1",
+      "title": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993, ספר החוקים 1413",
+      "title_he": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993, ספר החוקים 1413",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.1 (gazette p.60), ss.1-3",
+      "locator_he": "עמוד הקובץ 1 (עמוד ספר החוקים 60), סעיפים 1-3",
+      "page": 1,
+      "checked": "2026-11-14"
+    },
+    {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
       "title": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
       "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023, פ/3539/25",
@@ -128,18 +163,6 @@
       "page": 3,
       "checked": "2026-11-07",
       "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
-    },
-    {
-      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill%282204087%29",
-      "title": "הכנסת: רשומת הצעת החוק 2204087 (KNS_Bill)",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "dataset",
-      "strength": "primary",
-      "locator": "StatusID 104, LastUpdatedDate 2023-06-19",
-      "quote": "הונחה על שולחן הכנסת לדיון מוקדם",
-      "checked": "2026-11-07",
-      "qualifier": "(library 8146ed6666f72861)"
     }
   ]
 }

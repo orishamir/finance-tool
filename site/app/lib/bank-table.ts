@@ -128,6 +128,19 @@ export function taxPerLinkage(products: readonly ProductRowData[]): ProductRowDa
 /** How many deposits or plans the records are: those that differ only by amount count once. */
 export const depositCount = (products: readonly ProductRowData[]): number => tableRows(products).length;
 
+/**
+ * The records the overview's one range is over: those of one linkage, the unlinked where there are any, else the CPI-linked, else the
+ * FX-linked. Whether a 447 page's rate of a CPI-linked type is real or nominal is an open question (BANK OQ17), so a linked rate and an
+ * unlinked one are not set in one range. `mixed`: the product has records of another linkage too, so the label names this one.
+ */
+export function rangeLinkage(products: readonly ProductRowData[]): { linkage: ProductRowData["linkage"]; products: ProductRowData[]; mixed: boolean } | null {
+  for (const linkage of ["none", "cpi", "fx"] as const) {
+    const of = products.filter((p) => p.linkage === linkage);
+    if (of.length > 0) return { linkage, products: of, mixed: of.length < products.length };
+  }
+  return null;
+}
+
 /** The lowest and highest rate among the records (the overview's line); null when none prints a number. */
 export function rateRange(products: readonly ProductRowData[]): { low: SiteValue; high: SiteValue } | null {
   const rated = products.filter((p) => numberOf(p.rate) !== null);

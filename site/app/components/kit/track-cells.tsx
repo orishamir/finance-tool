@@ -35,14 +35,14 @@ export function GemelNetLink({ fundId, dataset }: { fundId: number | string; dat
   );
 }
 
-/** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "—" for an empty one (its sheet heads "עוד לא דווח"; no caution mark), and the caution mark for a negative one. Nothing here ranks a track. */
+/** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "עוד לא דווח" for an empty one (its sheet says why; no caution mark), and the caution mark for a negative one. Nothing here ranks a track. */
 export function FeeNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
   const none = depositFeeNoneByRule(value);
   const missing = value.value === null && !none;
   const negative = typeof value.value === "number" && value.value < 0;
   return (
     <span className="inline-flex items-center gap-1.5">
-      <Num value={missing ? { ...value, notes: mostlyHebrew(value.notes) ? `${r3workbench.missingNote} ${value.notes}` : r3workbench.missingNote } : value} size={size} display={none ? trackCopy.feeNone : missing ? trackCopy.emptyMark : undefined} {...(missing ? { fullWord: trackCopy.feeNotReported } : {})} />
+      <Num value={missing ? { ...value, notes: mostlyHebrew(value.notes) ? `${r3workbench.missingNote} ${value.notes}` : r3workbench.missingNote } : value} size={size} display={none ? trackCopy.feeNone : missing ? trackCopy.feeNotReported : undefined} />
       {negative && <IconAlert size={16} className="text-caution shrink-0" />}
     </span>
   );

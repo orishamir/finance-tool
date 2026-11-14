@@ -37,6 +37,8 @@ import { heCollator } from "./format";
 import { isShownParameter } from "./parameter-pages";
 import { parseAnswer } from "./answer-slots";
 import { flags as flagCopy } from "../copy";
+import { selfDirectedProduct, type SelfDirectedProduct } from "./self-directed";
+import { siteTrackName } from "./track-names";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -155,6 +157,8 @@ export interface Track {
   inception: string | null;
   reportPeriod: string;
   wrapperId: WrapperId | null;
+  /** A self-directed (IRA) fund: the site's product for it, which has its own guide, cap and checks (lib/self-directed.ts); else null. */
+  selfDirected: SelfDirectedProduct | null;
 }
 
 /**
@@ -221,18 +225,22 @@ export function loadCma(): CmaData {
     for (const fund of f.funds) {
       const companyId = fund.managing_corporation.legal_id;
       const companyName = fund.managing_corporation.name.trim();
+      // the names as the site writes them: "S&P" where the file writes "S1;P" or "s&p" (lib/track-names.ts)
+      const name = siteTrackName(fund.names.cma[0]!.trim());
+      const wrapperId = classificationToWrapper[fund.fund_classification.trim()] ?? null;
       tracks.push({
         fundId: fund.fund_id,
         dataset: f.dataset,
-        name: fund.names.cma[0]!.trim(),
+        name,
         companyId,
         companyName,
         classification: fund.fund_classification.trim(),
-        specialization: fund.specialization.trim(),
-        subSpecialization: fund.sub_specialization.trim(),
+        specialization: siteTrackName(fund.specialization.trim()),
+        subSpecialization: siteTrackName(fund.sub_specialization.trim()),
         inception: fund.inception_date,
         reportPeriod: f.report_period,
-        wrapperId: classificationToWrapper[fund.fund_classification.trim()] ?? null,
+        wrapperId,
+        selfDirected: selfDirectedProduct(wrapperId, name),
       });
       const c = byCompany.get(companyId) ?? { id: companyId, name: companyName, classifications: [], trackCount: 0 };
       if (!c.classifications.includes(fund.fund_classification.trim())) c.classifications.push(fund.fund_classification.trim());

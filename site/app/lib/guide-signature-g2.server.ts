@@ -282,6 +282,8 @@ export function buildPension(c: SignatureCtx): SignatureData {
     ["earlyAge", "PEN-26", "early_retirement_age"],
     ["retirementAge", "PEN-26", "retirement_age_men"],
     ["exemptAge", "TXK-09", "age"],
+    // the general fund receives only the deposit above the comprehensive fund's ceiling (PEN-10): its page says the ceiling
+    ...(c.id === "pension-general" ? ([["comprehensiveCeiling", "PEN-08", "monthly_deposit_ceiling"]] as [string, string, string][]) : []),
   ]);
   d.facts.returnPct = p05Value(c.p05, "A-01");
   d.facts.inflationPct = p05Value(c.p05, "A-02");
@@ -289,5 +291,5 @@ export function buildPension(c: SignatureCtx): SignatureData {
   // G-03 / PEN-OQ7: the pension a balance buys needs conversion factors; G-12: the insurance cost is entered by the person
   d.gaps.push("annuityFactors");
   if (c.id !== "provident-for-annuity") d.gaps.push("insuranceTables");
-  return withRules(d, "PEN-03", "PEN-04", "PEN-26", "TXP-01", "TXP-02", "TXP-03", "TXP-04", "TXP-10", "PEN-15", c.id === "provident-for-annuity" ? "PEN-35" : "PEN-08");
+  return withRules(d, "PEN-03", "PEN-04", "PEN-26", "TXP-01", "TXP-02", "TXP-03", "TXP-04", "TXP-10", "PEN-15", ...(c.id === "provident-for-annuity" ? ["PEN-35"] : c.id === "pension-general" ? ["PEN-08", "PEN-10"] : ["PEN-08"]));
 }

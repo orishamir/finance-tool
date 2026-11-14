@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { ownFigures } from "../lib/rule-row";
+import { ownFigures, spanWords, wordUnits } from "../lib/rule-row";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
@@ -300,7 +300,7 @@ function calendarYearOf(v: SiteValue): string | null {
 }
 
 /** Units whose number has no sign of its own: the rule card prints the word after it. */
-const suffixUnits = new Set(["months", "years", "days", "business_days", "usd", "eur"]);
+const suffixUnits = wordUnits;
 
 function unitWordOf(unit: string): string | null {
   return (copy.unit as Record<string, string>)[unit] ?? null;
@@ -360,7 +360,7 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
   );
 }
 
-const slotUnitWords = ["months", "years", "days", "business_days", "usd", "eur"];
+const slotUnitWords = [...wordUnits];
 
 /** The month a rule's figure takes effect, as a figure of its own with the figure's source ("{ID:figure.from}"), or null when it has no date. */
 export function ruleFigureFrom(rule: RuleRecord, name: string, today: string): SiteValue | null {
@@ -669,19 +669,25 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
       {head ?? <span className="text-sm text-muted-foreground">{ruleCopy.figures}</span>}
       <dl className="readout">
         {figures.flatMap(([name, f]) => {
+          // a bracket's edges and its rates are updated each by its own rule (TXG-02: the edges frozen in 2025–2027, the rates fixed in
+          // law): the first row says each under its own figure, the edge's under the edge and the rate's under the rate
           if (Array.isArray(f))
-            return f.map((b, i) => (
-              <div key={`${name}-${i}`} className="readout-row">
-                <dt>
-                  {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] })} />}
-                  {i === 0 && <FigureNote v={b.rate} labelYear={null} />}
-                </dt>
-                <dd>
-                  <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] })} />
-                  {unitSuffix(b.rate.unit)}
-                </dd>
-              </div>
-            ));
+            return f.map((b, i) => {
+              const edge = i === 0 && b.up_to.value !== null;
+              return (
+                <div key={`${name}-${i}`} className="readout-row">
+                  <dt>
+                    {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] })} />}
+                    {i === 0 && <FigureNote v={edge ? b.up_to : b.rate} labelYear={null} />}
+                  </dt>
+                  <dd>
+                    <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] })} />
+                    {unitSuffix(b.rate.unit)}
+                    {edge && b.rate.update_rule !== b.up_to.update_rule && <FigureNote v={{ update_rule: b.rate.update_rule }} labelYear={null} />}
+                  </dd>
+                </div>
+              );
+            });
           const byYear = "by_tax_year" in f ? Object.entries(f.by_tax_year) : [[null, f] as const];
           return byYear.map(([year, v]) => (
             <div key={`${name}-${year ?? ""}`} className="readout-row">
@@ -696,8 +702,9 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
                 <FigureNote v={v} labelYear={year} />
               </dt>
               <dd>
-                <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id] })} />
-                {unitSuffix(v.unit)}
+                {/* one or two years or months in words ("שנה"), never "1 שנים" */}
+                <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id] })} {...(spanWords(v.value, v.unit) ? { display: spanWords(v.value, v.unit)! } : {})} />
+                {spanWords(v.value, v.unit) ? null : unitSuffix(v.unit)}
               </dd>
             </div>
           ));

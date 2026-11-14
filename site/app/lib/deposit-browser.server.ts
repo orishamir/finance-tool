@@ -17,6 +17,12 @@ function shown(v: ValueObject, t: string, snapshot: string, owner: string): Site
   return site(mostlyHebrew(v.notes) ? v : { ...v, notes: "" }, t, snapshot, owner);
 }
 
+/** The top of an offer's amounts; one the record holds with no number carries the record's doubt, which says why it is unknown (F-108). */
+function maxOf(v: ValueObject, doubt: string | null | undefined, t: string, snapshot: string, owner: string): SiteValue {
+  const top = shown(v, t, snapshot, owner);
+  return typeof v.value !== "number" && doubt ? { ...top, doubt } : top;
+}
+
 function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffer | null {
   const term = termOf(d.term_months as { value: unknown; unit: string });
   if (!term) return null;
@@ -35,7 +41,7 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
     rate_offered: d.doubt_he ? { ...rate, doubt: d.doubt_he } : rate,
     anchor: d.anchor ?? null,
     spread: d.spread ? shown(d.spread, t, d.snapshot, owner) : null,
-    amount_range: { min: shown(d.amount_range.min, t, d.snapshot, owner), max: d.amount_range.max ? shown(d.amount_range.max, t, d.snapshot, owner) : null },
+    amount_range: { min: shown(d.amount_range.min, t, d.snapshot, owner), max: d.amount_range.max ? maxOf(d.amount_range.max, d.doubt_he, t, d.snapshot, owner) : null },
     breakTerm: d.break.allowed ? d.break.penalty : "not_allowed",
     exits: exitPointsOf(d.exit_points),
   };
