@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
-import { addBy, addStep, addValues, newBy, splitCase } from "../../lib/fee-deal/edits/case";
+import { addBy, addStep, addValues, nameTaken, newBy, splitCase } from "../../lib/fee-deal/edits/case";
 import { metLimit } from "../../lib/fee-deal/limits";
 import { isRange, NAME_MAX, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import { lastValueWords, rangeSign } from "../../lib/fee-deal/band-layout";
@@ -40,9 +40,11 @@ export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: 
   const [refused, setRefused] = useState(false);
   const toggle = (id: string) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]));
   const place = !!q.typed?.place;
+  // a name the list has already, by its id or its words, or one typed here before, is refused (the form says so)
+  const taken = (name: string) => nameTaken([...(q.values ?? []).flatMap((v) => [v.id, v.words]), ...extra], name);
   const typed = () => {
     const name = typing?.name.trim();
-    if (!typing || !name) return;
+    if (!typing || !name || taken(name)) return;
     if (!extra.includes(name) && !q.values?.some((v) => v.id === name)) setExtra((x) => [...x, name]);
     if (place) setOwn((x) => [...x.filter((o) => o.name !== name), { name, place: typing.place, currency: typing.currency }]);
     setChosen((x) => (x.includes(name) ? x : [...x, name]));
@@ -68,7 +70,7 @@ export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: 
     onFee(next);
     onDone(true);
   };
-  const ownForm = typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} />;
+  const ownForm = typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} taken={taken} />;
   const field = range ? (
     <FigureField
       value={null}
@@ -206,9 +208,12 @@ export function AskValuesOf({ fee, t, onFee, onDone }: { fee: CasesFee; t: numbe
   const [own, setOwn] = useState<OwnPlace[]>([]);
   const [typing, setTyping] = useState<OwnTyped | null>(q.typed?.open ? NEW_OWN : null);
   const place = !!q.typed?.place;
+  // a name the list has already, by its id or its words, is refused (the form says so): the cases' values and the ones ticked here
+  const known = [...(q.values ?? []).filter((v) => named.has(v.id)).map((v) => v.words), ...named, ...extra];
+  const taken = (name: string) => nameTaken(known, name);
   const typed = () => {
     const name = typing?.name.trim();
-    if (!typing || !name || named.has(name)) return;
+    if (!typing || !name || taken(name)) return;
     if (!extra.includes(name) && !q.values?.some((v) => v.id === name)) setExtra((x) => [...x, name]);
     if (place) setOwn((x) => [...x.filter((o) => o.name !== name), { name, place: typing.place, currency: typing.currency }]);
     setChosen((x) => (x.includes(name) ? x : [...x, name]));
@@ -222,7 +227,7 @@ export function AskValuesOf({ fee, t, onFee, onDone }: { fee: CasesFee; t: numbe
         chosen={chosen}
         onToggle={(id) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]))}
         {...(q.other ? { other: { label: q.other, open: !!typing, onClick: () => setTyping(typing ? null : NEW_OWN) } } : {})}
-        otherField={typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} />}
+        otherField={typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} taken={taken} />}
         note={c.addValues.replace("{last}", lastValueWords(fee, t))}
         onAdd={() => {
           if (chosen.length === 0) return;

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, OpenPending, OpenStage } from "../../lib/fee-deal/panel";
 import type { SlotEdit } from "../../lib/fee-deal/things";
-import { addOwnPlace, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
+import { addOwnPlace, nameTaken, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
 import { editPrice, moveChange, splitAt } from "../../lib/fee-deal/edits/stage";
 import { withCurrency } from "../../lib/fee-deal/edits/price";
 import { BOUND_CURRENCIES, namesPlaces, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
@@ -270,7 +270,8 @@ export function SlotMenu({ edit, fee, caseId, t, top, onFee }: { edit: SlotEdit;
     const place = !!b && namesPlaces(b);
     const add = () => {
       const name = typing?.name.trim();
-      if (!typing || !name) return;
+      // a name the list has already, by its id or its words, is refused (the form says so)
+      if (!typing || !name || nameTaken(edit.options.flatMap((o) => [o.id, o.words]), name)) return;
       const withOwn = place ? addOwnPlace(fee, t, { name, place: typing.place, currency: typing.currency }) : fee;
       const now = ticked.filter((x) => x !== "any");
       onFee(setWhen(withOwn, caseId, t, [...now.filter((x) => x !== name), name]));
@@ -287,7 +288,7 @@ export function SlotMenu({ edit, fee, caseId, t, top, onFee }: { edit: SlotEdit;
         />
         {typing && (
           <div className="border-t border-border pt-3">
-            <OwnValueForm value={typing} nameLabel={m.ownName} place={place} add={copy.cases.add} onChange={setTyping} onAdd={add} />
+            <OwnValueForm value={typing} nameLabel={m.ownName} place={place} add={copy.cases.add} onChange={setTyping} onAdd={add} taken={(name) => nameTaken(edit.options.flatMap((o) => [o.id, o.words]), name)} />
           </div>
         )}
       </div>

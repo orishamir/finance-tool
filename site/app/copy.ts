@@ -1946,6 +1946,8 @@ export const feeDeal = {
      * sum, else a price); a ladder's step between
      * two tops ("100,000 עד 500,000 ₪"); a step's top typed in place, spoken; and the place of a grid no case holds, spoken.
      */
+    /** A value of the person's own typed with a name the list has already. */
+    valueTaken: "״{name}״ כבר ברשימה.",
     /** The strip under a grid's row, or a table's last row, that adds a part to every case of it (after its plus). */
     rowAdd: { strip: "חלק לכל השורה", allCases: "חלק לכל המקרים" },
     rowHeads: { rate: "שיעור", sum: "סכום", price: "מחיר", min: "מינימום", max: "מקסימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע לפעולה קטנה", maxPerSecurity: "מקסימום לכל נייר ערך", discount: "הנחה", third: "צד שלישי", until: "שינוי במחיר", offset: "קיזוז", refund: "החזר", notes: "עוד על המחיר" } as Record<string, string>,

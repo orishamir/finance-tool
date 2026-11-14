@@ -1,7 +1,8 @@
 // A fee's cases laid out by the fee's shape (method §10.6, F-114): what the workbench draws for a fee whose price changes by one to three
-// things. One thing: the cases as columns and the parts as rows, only the rows some case has, a range's cases ascending as a ladder, and
-// with more cases than fit, the same table read as rows; two things where only one value of the first is split by the second, the same
-// table with that value's cases side by side (their sub-heads the second's values). Two things otherwise: a grid, the first thing down the
+// things. One thing: the cases as columns and the parts as rows, only the rows some case has, a range's cases ascending as a ladder; two
+// things whose first has one value only, the same table along the second (a grid with one row left: a ladder stays a ladder); two
+// things where only one value of the first is split by the second, the same table with that value's cases side by side (their sub-heads
+// the second's values). Two things otherwise: a grid, the first thing down the
 // side and the second across the top, a case on any value of the second spanning its row. Three: the third a switch above the grid. A grid
 // whose cases do not fall one to a place (two on one place, or a case on any value beside others in its row) is read as rows.
 // Equal neighbours share one cell, each only within one span (a case's cell may name the span it stands in, so cases stretched apart stay
@@ -46,9 +47,6 @@ export interface LayoutInput {
   /** With three things, the third's value the grid shows (`valueKey`); the first where it names none the cases have. */
   switchTo?: string | null;
 }
-
-/** More cases than this in one thing's table are read as rows. */
-export const MAX_COLUMNS = 5;
 
 /** A part said once for the cases read as rows (a band): its row and content, and the cases whose rows leave it out. */
 export interface Shared {
@@ -111,8 +109,6 @@ export type FeeLayout =
       thing: number;
       /** The thing is a range: the columns ascend, and read as a ladder. */
       ladder: boolean;
-      /** Whether the table fits as columns, or is read as rows (more cases than `MAX_COLUMNS`). */
-      fit: "columns" | "rows";
       /** Each column's case and its value; where one value of the first thing is split by the second (`split`), its cases' value of that too. */
       columns: { case: string; when: When; sub?: When }[];
       /** The thing one column is split by: its cases stand side by side under that value, each with its own sub-head. */
@@ -215,17 +211,28 @@ function splitValue(input: LayoutInput): string | null {
 }
 
 /**
- * One thing: the cases as columns (a range's ascending), the parts as rows, equal neighbours merged in each row. Two things with one value
- * of the first split by the second (`split`, its key): the same table, the split value's cases side by side in the second's order.
+ * Two things where the first has one value only (a grid with one row left), its cases naming each a value of the second, none any: the
+ * table is then along the second (`tableOf`'s `t`), a range's steps its heads.
  */
-function tableOf(input: LayoutInput, split: string | null = null): FeeLayout {
-  const range = input.things[0]!.range;
+function alongSecond(input: LayoutInput): boolean {
+  if (input.things.length !== 2 || headsOf(input.cases, 0, input.things[0]!.range).length !== 1) return false;
+  const values = input.cases.map((c) => c.when[1]!);
+  return values.every((w) => w !== "any") && new Set(values.map(valueKey)).size === values.length;
+}
+
+/**
+ * One thing (`t`, the fee's first, or its second where the first has one value only): the cases as columns (a range's ascending), the
+ * parts as rows, equal neighbours merged in each row. Two things with one value of the first split by the second (`split`, its key): the
+ * same table, the split value's cases side by side in the second's order.
+ */
+function tableOf(input: LayoutInput, split: string | null = null, t = 0): FeeLayout {
+  const range = input.things[t]!.range;
   const order = split === null ? null : headsOf(input.cases, 0, range).map((h) => h.key);
   const second = split === null ? null : headsOf(input.cases.filter((c) => valueKey(c.when[0]!) === split), 1, input.things[1]!.range).map((h) => h.key);
-  const rank = (c: LayoutCase) => (typeof c.when[0] === "number" ? c.when[0] : Infinity);
+  const rank = (c: LayoutCase) => (typeof c.when[t] === "number" ? c.when[t] : Infinity);
   const place = (c: LayoutCase) => [order!.indexOf(valueKey(c.when[0]!)), c.when[1] === "any" ? 0 : second!.indexOf(valueKey(c.when[1]!))];
   const cases = order ? [...input.cases].sort((a, b) => place(a)[0]! - place(b)[0]! || place(a)[1]! - place(b)[1]!) : range ? [...input.cases].sort((a, b) => rank(a) - rank(b)) : [...input.cases];
-  const columns = cases.map((c) => ({ case: c.id, when: c.when[0]!, ...(split !== null && c.when[1] !== "any" ? { sub: c.when[1]! } : {}) }));
+  const columns = cases.map((c) => ({ case: c.id, when: c.when[t]!, ...(split !== null && c.when[1] !== "any" ? { sub: c.when[1]! } : {}) }));
   const has = showsOf(cases, input.rows);
   const rows = input.rows.flatMap((row) => {
     const keys = cases.map((c) => (has[c.id]!.includes(row) ? partIn(c, row)!.key : null));
@@ -234,7 +241,7 @@ function tableOf(input: LayoutInput, split: string | null = null): FeeLayout {
     let lastSpan = "";
     keys.forEach((key, k) => {
       const last = cells.at(-1);
-      const span = spanOf(cases[k]!, row, 0);
+      const span = spanOf(cases[k]!, row, t);
       const joins = last && last.key === key && (key === null || lastSpan === span);
       lastSpan = span;
       if (last && joins) {
@@ -247,7 +254,7 @@ function tableOf(input: LayoutInput, split: string | null = null): FeeLayout {
   const shows = { ...has };
   const once = onceOf(cases.map((c) => c.id), rows, shows);
   without(shows, once);
-  return { shape: "table", thing: 0, ladder: range, fit: cases.length > MAX_COLUMNS ? "rows" : "columns", columns, split: split === null ? null : 1, rows, once, shows, add: { thing: 0, range } };
+  return { shape: "table", thing: t, ladder: range, columns, split: split === null ? null : 1, rows, once, shows, add: { thing: t, range } };
 }
 
 /**
@@ -378,6 +385,7 @@ function mergeDown(rows: GridRow[], byId: ReadonlyMap<string, LayoutCase>) {
 /** A fee's cases laid out by its shape (see the head of this file). */
 export function layoutOf(input: LayoutInput): FeeLayout {
   if (input.things.length === 1) return tableOf(input);
+  if (alongSecond(input)) return tableOf(input, null, 1);
   const split = splitValue(input);
   if (split !== null) return tableOf(input, split);
   return gridOf(input) ?? { shape: "rows", cases: input.cases.map((c) => c.id), shows: showsOf(input.cases, input.rows), add: null };
