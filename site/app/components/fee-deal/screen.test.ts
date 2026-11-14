@@ -10,7 +10,7 @@ import { feesData } from "../../lib/fees.server";
 import { builder, panel, toolbox } from "../../lib/fee-deal/builder";
 import { glance } from "../../lib/fee-deal/glance";
 import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
-import type { ByKind } from "../../lib/fee-deal/shapes";
+import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { readDealFor } from "../../lib/fee-deal/parts";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
@@ -102,15 +102,9 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     focus: null,
     onFocused: () => {},
     onDeal: () => {},
-    onOpen: () => {},
-    onSlot: () => {},
-    onThing: () => {},
     onAdd: () => {},
-    onRemoveCase: () => {},
-    onHoldOn: () => {},
-    onPendingDone: () => {},
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onHoldOn: () => {}, onPendingDone: () => {}, onAskDone: () => {} },
     ask,
-    onAskDone: () => {},
   });
 };
 const drawBuilder = (deal: FeeDeal, chosen: string | null) => markup(builderOf(deal, chosen));

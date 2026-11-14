@@ -8,25 +8,9 @@ import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
 import { byAmount, byRate } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES } from "./offers/figures";
-import {
-  BY_MAX,
-  byKindsFor,
-  FEE_SHAPES,
-  holdsFunds,
-  isFeeKindId,
-  isRangeKind,
-  LIST_IDS,
-  ONE_SIDE,
-  RANGE_UNITS,
-  WHAT_VALUES,
-  type ByKind,
-  type FeeKindId,
-  type FieldId,
-  type FormId,
-  type Place,
-  type RangeKind,
-  type RangeUnit,
-} from "./shapes";
+import { holdsFunds, isFeeKindId, WHAT_VALUES, type FeeKindId, type FormId, type Place } from "./shapes";
+import { capacity, fieldsOf, pricesSaleApart, type FieldId } from "./offers/capacity";
+import { BY_MAX, conditionsFor, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type RangeKind, type RangeUnit } from "./offers/conditions";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -422,7 +406,7 @@ export const newCaseId = () => newId("case-");
 
 /** A new fee of a kind: one price of its usual form that holds throughout. */
 export function newFee(kind: FeeKindId, name?: string): SlimFee {
-  return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(FEE_SHAPES[kind].usual) }] };
+  return { id: newFeeId(), kind, ...(kind === "own" && name ? { name: name.slice(0, NAME_MAX) } : {}), stages: [{ price: blankPrice(capacity(kind).usual) }] };
 }
 
 /** A typed percent as the engine's fraction: the one place the two meet (to-engine.ts uses it). */
@@ -585,10 +569,10 @@ function readOnAction(raw: Rec): OnAction | null {
 
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
-  const shape = FEE_SHAPES[kind];
+  // a price is read against its fee kind's capacity, which no product narrows: whatever a deal of the kind could hold still opens
   if (raw.form === "free") return { form: "free" };
-  if (!shape.forms.includes(raw.form as never)) return null;
-  const fields = shape.fields[raw.form as Exclude<FormId, "free">] ?? [];
+  if (!capacity(kind).forms.includes(raw.form as never)) return null;
+  const fields = fieldsOf(kind, raw.form as FormId);
   switch (raw.form) {
     case "action": {
       const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw);
@@ -681,7 +665,7 @@ function readPriced(raw: Rec, kind: FeeKindId): Priced | null {
   if (!stages) return null;
   if (raw.sale === undefined) return { stages };
   // a fee charged on one side alone has no separate sale price, and a fee whose shape prices no sale apart has none either
-  if (ONE_SIDE[kind] || !FEE_SHAPES[kind].saleApart) return null;
+  if (!pricesSaleApart(kind)) return null;
   const sale = readStages(raw.sale, kind);
   return sale ? { stages, sale } : null;
 }
@@ -698,9 +682,9 @@ function readOwnPlace(raw: unknown): OwnPlace | null {
   return { name: raw.name, place: raw.place, currency: raw.currency };
 }
 
-/** A thing a fee of `kind` may change by (`byKindsFor`), with its own fields; null where it is anything else. */
+/** A thing a fee of `kind` may change by (`conditionsFor`), with its own fields; null where it is anything else. */
 function readBy(raw: unknown, kind: FeeKindId): By | null {
-  if (!isRec(raw) || typeof raw.kind !== "string" || !byKindsFor(kind).includes(raw.kind as ByKind)) return null;
+  if (!isRec(raw) || typeof raw.kind !== "string" || !conditionsFor(kind).includes(raw.kind as ByKind)) return null;
   const k = raw.kind as ByKind;
   if (isRangeKind(k)) {
     if (!RANGE_UNITS[k].includes(raw.unit as RangeUnit) || !Array.isArray(raw.tops) || raw.tops.length === 0 || raw.tops.length > TOPS_MAX) return null;

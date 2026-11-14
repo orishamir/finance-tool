@@ -6,23 +6,21 @@ import type { SiteValue } from "../value";
 import { fraction, mainFigure, type Price, type ProviderKind } from "./model";
 import { charged, hasBounds, hasFlat, onAction, type ChargedPrice } from "./offers/capabilities";
 import { enginePrice } from "./to-engine";
-import { FEE_SHAPES, type FeeKindId } from "./shapes";
+import { type FeeKindId } from "./shapes";
+import { CAPACITY } from "./offers/capacity";
 import { recordValue } from "./values";
 
 /**
- * One kind of deal: a product record's id, its first Hebrew name, the fee bases it allows and their caps, and whether it is of the provident
- * family (`provident`: its record names the Capital Market Authority as its regulator, which supervises the provident funds, PF-01).
+ * One kind of deal: a product record's id, its first Hebrew name, the fee bases it allows and their caps, and the regulator its record names
+ * (data-schema §3.3, `regulator`), which the rule table reads (offers/rules.ts).
  */
 export interface DealKind {
   id: ProductId;
   name: string;
   bases: FeeBase[];
   caps: Partial<Record<FeeBase, FeeCap>>;
-  provident?: true;
+  regulator: string;
 }
-
-/** The regulator a product record of the provident family names (data-schema §3.3, `regulator`). */
-const PROVIDENT_REGULATOR = "CMA";
 
 /**
  * The kinds of the product records, for the fee page's data: every record that lists a fee base. Built at build time; each cap ships
@@ -35,20 +33,14 @@ export function dealKindsOf(records: readonly ProductRecord[]): DealKind[] {
   };
   return records
     .filter((r) => r.fee_bases_allowed.length > 0)
-    .map((r) => ({ id: r.id, name: r.names.he[0]!, bases: [...r.fee_bases_allowed], caps: Object.fromEntries(Object.entries(r.fee_caps ?? {}).map(([b, c]) => [b, shipped(c)])), ...(r.regulator.value === PROVIDENT_REGULATOR ? { provident: true as const } : {}) }));
+    .map((r) => ({ id: r.id, name: r.names.he[0]!, bases: [...r.fee_bases_allowed], caps: Object.fromEntries(Object.entries(r.fee_caps ?? {}).map(([b, c]) => [b, shipped(c)])), regulator: String(r.regulator.value) }));
 }
-
-/**
- * Whether a fee is a provident-family product's management fee, from each deposit or from the balance (KGL-14): its rules allow those
- * charges as rates alone (PF-01), with a discount for a period (PF-13), so the toolbox offers it no other part.
- */
-export const managementFee = (kind: DealKind | null, fee: FeeKindId): boolean => !!kind?.provident && (fee === "deposit" || fee === "balance");
 
 export const kindById = (kinds: readonly DealKind[], id: ProductId | null): DealKind | null => (id === null ? null : (kinds.find((k) => k.id === id) ?? null));
 
 /** The record's cap entry for a fee, where the fee is a record base the record caps. */
 export const capOf = (kind: DealKind | null, fee: FeeKindId): FeeCap | undefined => {
-  const base = FEE_SHAPES[fee].base;
+  const base = CAPACITY[fee].base;
   return base && kind ? kind.caps[base] : undefined;
 };
 

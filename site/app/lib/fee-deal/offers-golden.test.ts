@@ -10,7 +10,8 @@ import { toolbox } from "./builder";
 import { decodeDeal, encodeDeal } from "./link";
 import { blankPrice, newDeal, readDeal, typed, type Fee, type FeeDeal, type Price } from "./model";
 import { readDealFor } from "./parts";
-import { FEE_KIND_IDS, FEE_SHAPES, kindHas, type FeeKindId, type FormId } from "./shapes";
+import { FEE_KIND_IDS, kindHas, type FeeKindId, type FormId } from "./shapes";
+import { CAPACITY } from "./offers/capacity";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -18,7 +19,7 @@ const GOLDEN = new URL("./__goldens__/", import.meta.url).pathname;
 
 /** A price of a form with every field its fee kind can hold in that form, and every part a price on an action can carry. */
 function fullPrice(fee: FeeKindId, form: FormId): Price {
-  const fields = form === "free" ? [] : (FEE_SHAPES[fee].fields[form] ?? []);
+  const fields = form === "free" ? [] : (CAPACITY[fee].fields[form] ?? []);
   const has = (f: string) => (fields as readonly string[]).includes(f);
   const p = blankPrice(form) as Record<string, unknown>;
   if ("rate" in p) p.rate = typed(0.5);
@@ -50,7 +51,7 @@ describe("what each fee offers today (golden)", () => {
     const rows: Record<string, unknown> = {};
     for (const kind of data.kinds) {
       for (const fee of FEE_KIND_IDS.filter((f) => f !== "own" && kindHas(kind.id, kind.bases, f))) {
-        for (const form of FEE_SHAPES[fee].forms) {
+        for (const form of CAPACITY[fee].forms) {
           for (const state of ["plain", "full"] as const) {
             const price = state === "plain" ? blankPrice(form) : fullPrice(fee, form);
             const deal = dealOf(kind.id, { id: "fee-g", kind: fee, stages: [{ price }] });
@@ -66,7 +67,7 @@ describe("what each fee offers today (golden)", () => {
   it("a price with every field its fee kind can hold reads back as it was, through the device and a link", async () => {
     const out: Record<string, string> = {};
     for (const fee of FEE_KIND_IDS) {
-      for (const form of FEE_SHAPES[fee].forms) {
+      for (const form of CAPACITY[fee].forms) {
         const deal = dealOf("brokerage-account", { id: "fee-g", kind: fee, stages: [{ price: fullPrice(fee, form) }] });
         const stored = readDeal(JSON.parse(JSON.stringify(deal)));
         const linked = decodeDeal(encodeDeal(deal));

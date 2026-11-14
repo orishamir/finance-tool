@@ -7,7 +7,7 @@ import { withForm } from "./offers/parts";
 
 /** A kind with the bases its record lists, for the edits that read them. */
 const BASES: Partial<Record<ProductId, FeeBase[]>> = { "ira-provident": ["balance", "trade", "custody", "fx", "direct_expenses"], "pension-comprehensive": ["deposit", "balance", "direct_expenses", "insurance_premium"] };
-const kindOf = (id: ProductId): DealKind => ({ id, name: id, bases: BASES[id] ?? [], caps: {} });
+const kindOf = (id: ProductId): DealKind => ({ id, name: id, bases: BASES[id] ?? [], caps: {}, regulator: "" });
 
 const src: Num["src"] = { url: "https://example.org/list.pdf", title: "list", publisher: "house", strength: "primary", checked: "2026-11-01" };
 
