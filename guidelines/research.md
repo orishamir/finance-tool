@@ -7,6 +7,35 @@ The aim: every number on the site traces to one of three things.
 
 The page shows which of the three it is.
 
+## Which source a claim needs
+
+"Official" means the source that owns that kind of claim. Every claim the
+site makes, a number or a sentence, rests on the source for its kind:
+
+| Kind of claim | The source | How the site treats it |
+|---|---|---|
+| Israeli tax | The Tax Authority and the law it applies | True as stated, dated |
+| A law or a regulation | Its official publication: Reshumot, the Knesset, gov.il, the regulator's or exchange's own site | True as stated, dated |
+| What a company offers and on what terms | That company's binding documents | That company's term only |
+| What a calculation proves | The proof, written in `docs/method.md` with its assumptions | True wherever its assumptions hold, and the page says them |
+| How the world behaves: what earned more, what moves what, what people do | The strongest research there is: an umbrella review, then a meta-analysis or systematic review, then a long record or single studies | "The research finds", with how strong the evidence is; never as certain |
+| What an expert or a body thinks | The statement itself | That person's or body's view, named as theirs. Several agreeing is worth noting, never proof |
+
+- **A copy is never a source**, whatever the kind: not Nevo, Wikisource, a
+  mirror or a reprint. It only helps you find the original.
+- **Math is true only under its assumptions.** "The price falls when rates
+  rise" is proven for fixed payments, not for a floating-rate bond. Write the
+  assumption beside the conclusion, in `docs/method.md` and on the page.
+- **A body speaking outside its kind is giving a view.** A regulator owns
+  its own rules and publications; when it explains how markets behave, that
+  is its view, kept only until the research is found.
+- **Name the level of the research.** Umbrella reviews are rare in finance;
+  often a meta-analysis or a century-long record across countries is the
+  strongest there is. Say which it is.
+- The rule base and the data check have no kind for a research source yet.
+  The first finding that cites one adds it to `docs/data-schema.md`, the
+  schema and the check, with its own label on the site.
+
 ## Researching a rule (tax, law, regulation)
 
 1. **Look in what we have.** Search the rule base
@@ -18,11 +47,11 @@ The page shows which of the three it is.
 3. **Use leads to find where to look.** Finance blogs, forums, the press and
    search results often name the section, circular or ruling. Note each lead
    as a lead, with what it pointed to. Never cite it.
-4. **Read the official text.** The law, regulation or regulator, from its
-   official publication: Reshumot, the Knesset, gov.il, or the regulator's or
-   exchange's own site. Never a copy such as Nevo, Wikisource or a mirror; a
-   copy only helps you find the official text. Note the page and the exact
-   words you rely on.
+4. **Read the source that owns the claim** (the table above). For a law,
+   regulation or regulator, its official publication: Reshumot, the Knesset,
+   gov.il, or the regulator's or exchange's own site. Never a copy such as
+   Nevo, Wikisource or a mirror; a copy only helps you find the official
+   text. Note the page and the exact words you rely on.
 5. **Record it.** Add or update the rule in the matching
    `references/*.md` file, with its link, page, quote, checked date and
    strength. Only the file's owner (the tax-specialist for the tax files, the
