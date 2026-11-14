@@ -9,7 +9,7 @@ import { newId } from "../ids";
 import { byAmount, byRate } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES } from "./offers/figures";
 import { holdsFunds, isFeeKindId, WHAT_VALUES, type FeeKindId, type FormId, type Place } from "./shapes";
-import { capacity, fieldsOf, pricesSaleApart, type FieldId } from "./offers/capacity";
+import { capacity, fieldsOf, PART_FIELDS, pricesSaleApart, type FieldId } from "./offers/capacity";
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -499,10 +499,10 @@ function readCurrency(raw: unknown): { currency?: BoundCurrency } | false {
   return raw === "ILS" ? {} : { currency: raw as BoundCurrency };
 }
 
-/** Whether a price's sums are in the action's currency: absent, or true where its form keeps a currency; null where it is anything else. */
-function readInTrade(raw: unknown, fields: readonly FieldId[]): { inTrade?: true } | null {
+/** Whether a price's sums are in the action's currency: absent, or true; null where it is anything else. */
+function readInTrade(raw: unknown): { inTrade?: true } | null {
   if (raw === undefined) return {};
-  return raw === true && fields.includes("currency") ? { inTrade: true } : null;
+  return raw === true ? { inTrade: true } : null;
 }
 
 /** A flat price: absent, or its two figures (each may still be blank); null where it is anything else. */
@@ -513,14 +513,10 @@ function readFlat(raw: unknown): { ok: true; flat?: Flat } | { ok: false } {
   return amount && upTo ? { ok: true, flat: { amount, upTo } } : { ok: false };
 }
 
-/**
- * The parts a share of an action and a sum per unit share, each only where the fee's shape has its field (a cap on the trade fee alone, a
- * flat price on the trade fee and the conversion): null where one is there that the shape has no field for, or is not what it holds.
- */
-function readActionParts(raw: Rec, fields: readonly FieldId[]): { min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } | null {
+/** The parts a share of an action and a sum per unit share: null where one is there and is not what it holds. */
+function readActionParts(raw: Rec): { min?: Num; max?: Num; cap?: Num; flat?: Flat; currency?: BoundCurrency } | null {
   const min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), flat = readFlat(raw.flat), currency = readCurrency(raw.currency);
   if (!min.ok || !max.ok || !cap.ok || !flat.ok || !currency) return null;
-  if ((cap.n && !fields.includes("cap")) || (flat.flat && !fields.includes("flat"))) return null;
   return { ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(cap.n ? { cap: cap.n } : {}), ...(flat.flat ? { flat: flat.flat } : {}), ...currency };
 }
 
@@ -585,25 +581,36 @@ function readOnAction(raw: Rec): OnAction | null {
   return { ...linked, ...(discount.part ? { discount: discount.part } : {}), ...(third.part ? { third: third.part } : {}), ...(notes.part ? { notes: notes.part } : {}) };
 }
 
+/**
+ * The fields a price of a form was read with before its fee's capacity was the reader's limit, beyond what the capacity lists: bounds and a
+ * currency on a share of an action or a sum per unit, bounds on a share of what is held. A deal saved with them (a spread's minimum, a
+ * held insurance premium's) still opens as it was; nothing puts them on a fee whose capacity does not list them now.
+ */
+const READ_BEYOND: Partial<Record<FormId, readonly FieldId[]>> = { action: ["min", "max", "currency"], perUnit: ["min", "max", "currency"], held: ["min", "max"] };
+
+/** The fields a fee's price of a form is read with: its capacity's, and what it was read with before (`READ_BEYOND`). */
+const readFields = (kind: FeeKindId, form: FormId): readonly FieldId[] => [...fieldsOf(kind, form), ...(READ_BEYOND[form] ?? [])];
+
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
   // a price is read against its fee kind's capacity, which no product narrows: whatever a deal of the kind could hold still opens
   if (raw.form === "free") return { form: "free" };
   if (!capacity(kind).forms.includes(raw.form as never)) return null;
-  const fields = fieldsOf(kind, raw.form as FormId);
+  const fields = readFields(kind, raw.form as FormId);
+  // a field beside the form's own figure that the fee's form does not list is not one of its prices (a shekel is the absent currency)
+  if (PART_FIELDS.some((f) => raw[f] !== undefined && !(f === "currency" && raw[f] === "ILS") && !fields.includes(f))) return null;
   switch (raw.form) {
     case "action": {
-      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      const rate = readNum(raw.rate, PCT_MAX), parts = readActionParts(raw), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade);
       return rate && parts && more && inTrade ? { form: "action", rate, ...parts, ...more, ...inTrade } : null;
     }
     case "perUnit": {
-      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw, fields), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
+      const amount = readNum(raw.amount, SUM_MAX), parts = readActionParts(raw), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade);
       return amount && parts && more && inTrade ? { form: "perUnit", amount, ...parts, ...more, ...inTrade } : null;
     }
     case "held": {
       const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), perSecurity = optNum(raw.perSecurity, SUM_MAX), more = readLinked(raw);
       if (!rate || !min.ok || !max.ok || !perSecurity.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && raw.boundsEvery !== 1)) return null;
-      if (perSecurity.n && !fields.includes("perSecurity")) return null;
       const boundsEvery = raw.boundsEvery === 1 && (min.n || max.n || perSecurity.n) ? { boundsEvery: 1 as const } : {};
       return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(perSecurity.n ? { perSecurity: perSecurity.n } : {}), ...boundsEvery, ...more };
     }
@@ -612,8 +619,8 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
       return amount && more && isMonths(raw.every) ? { form: "sum", amount, every: raw.every, ...more } : null;
     }
     case "perAction": {
-      const amount = readNum(raw.amount, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade, fields);
-      if (!amount || !cap.ok || !currency || !more || !inTrade || (currency.currency && !fields.includes("currency")) || (cap.n && !fields.includes("cap"))) return null;
+      const amount = readNum(raw.amount, SUM_MAX), cap = optNum(raw.cap, PCT_MAX), currency = readCurrency(raw.currency), more = readOnAction(raw), inTrade = readInTrade(raw.inTrade);
+      if (!amount || !cap.ok || !currency || !more || !inTrade) return null;
       return { form: "perAction", amount, ...(cap.n ? { cap: cap.n } : {}), ...currency, ...more, ...inTrade };
     }
     default:

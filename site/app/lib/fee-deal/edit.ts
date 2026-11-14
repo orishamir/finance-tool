@@ -39,7 +39,7 @@ import {
   type When,
 } from "./model";
 import type { DealKind } from "./kinds";
-import { charged, hasCurrency, hasFlat, onAction } from "./offers/capabilities";
+import { boundsAction, charged, onAction } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES, type Figure } from "./offers/figures";
 import { kindHas, WHAT_VALUES, type FeeKindId, type FormId } from "./shapes";
 import { capacity } from "./offers/capacity";
@@ -138,7 +138,7 @@ export function withMonths(p: Price, which: "per" | "every", months: Months): Pr
  * action. The shekel is left unsaid. A currency that differs from the price's makes it the person's (`owned`).
  */
 export function withCurrency(p: Price, currency: BoundCurrency): Price {
-  if (!hasCurrency(p) || (p.currency ?? "ILS") === currency) return p;
+  if (!onAction(p) || (p.currency ?? "ILS") === currency) return p;
   const { currency: _c, ...rest } = p;
   return owned((currency === "ILS" ? rest : { ...rest, currency }) as Price);
 }
@@ -148,7 +148,7 @@ export function withCurrency(p: Price, currency: BoundCurrency): Price {
  * (the same price on every action). A price that already has one, or has none to take away, is left as it is.
  */
 export function withFlat(p: Price, on: boolean): Price {
-  if (!hasFlat(p) || on === !!p.flat) return p;
+  if (!boundsAction(p) || on === !!p.flat) return p;
   if (on) return { ...p, flat: { amount: blankFigure(), upTo: blankFigure() } };
   const { flat: _f, ...rest } = p;
   return rest;

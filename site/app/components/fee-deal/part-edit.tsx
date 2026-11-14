@@ -6,7 +6,8 @@ import { dealCases, feeDeal as copy } from "../../copy";
 import type { OpenPart, PartField } from "../../lib/fee-deal/builder";
 import { setUntil, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
 import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
-import { charged, hasCurrency, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
+import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
+import { sumCurrency } from "../../lib/fee-deal/offers/capacity";
 import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
@@ -260,7 +261,7 @@ export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onD
     box?.focus({ preventScroll: true });
     bringIntoView(box?.closest("[data-lift]"));
   }, [fee.id, part, figure]);
-  const cur = hasCurrency(price) ? (price.currency ?? "ILS") : "ILS";
+  const cur = sumCurrency(fee.kind, price);
   // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
   const done = (next: Fee, box?: string) => {
     onFee(next);

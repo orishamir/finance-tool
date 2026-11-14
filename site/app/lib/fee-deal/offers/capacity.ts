@@ -1,18 +1,26 @@
 // What each fee kind's price can hold (method §10.6, F-110): the forms it can take, its usual form, the fields of each form, whether a
-// sale may be priced apart, the side it is charged on alone, and the record's fee base it is. This is the model's limit, never narrowed by
-// a product: every saved deal and link that held a price of these forms and fields still opens (`readPrice`). What a product's fee is
-// offered (the toolbox, a template) is narrower, and is decided in offer.ts. Pure data; no Hebrew.
+// sale may be priced apart, the side it is charged on alone, and the record's fee base it is. This is the model's limit and the one
+// answer to what a fee can hold: a part stands on a price only where its form's fields list the part's field (offers/parts.ts), a price
+// is read only with the fields its form lists (`readPrice`), and a price's sums are in a currency of their own only where the form lists
+// one (`sumCurrency`). No product narrows it, so every saved deal and link that held a price of these forms and fields still opens. What a
+// product's fee is offered (the toolbox, a template) is narrower, and is decided in offer.ts. Pure data; no Hebrew.
 import type { FeeBase } from "@finance-tool/schema";
-import type { Side } from "../model";
+import type { BoundCurrency, Price, Side } from "../model";
 import type { FeeKindId, FormId } from "../shapes";
+import { onAction } from "./capabilities";
 
 /**
  * A field of a price: its rate, the months the rate is for, the months between charges, its bounds, the currency of its sums, a sum (a
  * sum per unit's among them), the percent maximum (`cap`, a share of the action that wins over the minimum, F-12) and the flat price for a
- * small action (`flat`, its price and the sum it holds up to, F-12, F-13), and a held share's maximum on each security (`perSecurity`,
- * §10.6's stated parts).
+ * small action (`flat`, its price and the sum it holds up to, F-12, F-13), a held share's maximum on each security (`perSecurity`,
+ * §10.6's stated parts), and sums in the currency the action is made in (`inTrade`, §10.6). Each field but a form's own (its rate or sum
+ * and its periods) is kept in the price under its own name.
  */
-export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount" | "cap" | "flat" | "perSecurity";
+export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount" | "cap" | "flat" | "perSecurity" | "inTrade";
+
+/** The fields a price holds beside its form's own figure and periods, each kept in the price under its own name (`Price[field]`). */
+export const PART_FIELDS = ["min", "max", "currency", "cap", "flat", "perSecurity", "inTrade"] as const satisfies readonly FieldId[];
+export type PartFieldId = (typeof PART_FIELDS)[number];
 
 /** A form that charges something: every form but free, which every price can be. */
 export type ChargedForm = Exclude<FormId, "free">;
@@ -33,10 +41,10 @@ export interface Capacity {
 }
 
 const ACTION_ALL: readonly FieldId[] = ["rate", "min", "max", "currency"];
-/** The trade fee's share of an action: its bounds, the percent maximum and the flat price (F-12). */
-const TRADE: readonly FieldId[] = ["rate", "min", "max", "cap", "flat", "currency"];
+/** The trade fee's share of an action: its bounds, the percent maximum and the flat price (F-12), its sums in the trade's currency. */
+const TRADE: readonly FieldId[] = ["rate", "min", "max", "cap", "flat", "currency", "inTrade"];
 /** The trade fee's sum per unit (F-12's price per share), with the same parts. */
-const PER_UNIT: readonly FieldId[] = ["amount", "min", "max", "cap", "flat", "currency"];
+const PER_UNIT: readonly FieldId[] = ["amount", "min", "max", "cap", "flat", "currency", "inTrade"];
 /** The conversion's share: its bounds and the flat price (F-13). */
 const FX: readonly FieldId[] = ["rate", "min", "max", "flat", "currency"];
 const RATE: readonly FieldId[] = ["rate"];
@@ -48,8 +56,8 @@ const SUM: readonly FieldId[] = ["amount", "every"];
 const AMOUNT: readonly FieldId[] = ["amount"];
 /** A sum per action in a currency of its own (F-103's charge in dollars for each corporate event). */
 const AMOUNT_IN: readonly FieldId[] = ["amount", "currency"];
-/** A trade's sum on each order, in its currency, under a percent ceiling where the list prints one (Excellence's US fixed track). */
-const AMOUNT_IN_CAP: readonly FieldId[] = ["amount", "currency", "cap"];
+/** A trade's sum on each order, in its currency or the trade's, under a percent ceiling where the list prints one (Excellence's US fixed track). */
+const AMOUNT_IN_CAP: readonly FieldId[] = ["amount", "currency", "cap", "inTrade"];
 
 const action = (fields: readonly FieldId[], saleApart = false): Capacity => ({ base: null, forms: ["action"], usual: "action", fields: { action: fields }, saleApart });
 const held = (fields: readonly FieldId[] = HELD): Capacity => ({ base: null, forms: ["held"], usual: "held", fields: { held: fields }, saleApart: false });
@@ -95,6 +103,16 @@ export const takesAny = (kind: FeeKindId, of: (form: FormId) => boolean): boolea
 
 /** The fields a fee's form has (none for free, or a form the fee cannot take). */
 export const fieldsOf = (kind: FeeKindId, form: FormId): readonly FieldId[] => (form === "free" ? [] : (CAPACITY[kind].fields[form] ?? []));
+
+/** Whether a fee's form has a field. */
+export const keeps = (kind: FeeKindId, form: FormId, field: FieldId): boolean => fieldsOf(kind, form).includes(field);
+
+/**
+ * The currency a fee's price keeps its sums in, in its own form or in `form`: the price's currency where that form of the fee has one, else
+ * the shekel (a share of what is held, a sum per period, a deposit's share).
+ */
+export const sumCurrency = (kind: FeeKindId, p: Price, form: FormId = p.form): BoundCurrency =>
+  onAction(p) && p.currency && keeps(kind, form, "currency") ? p.currency : "ILS";
 
 /** Whether any form a fee can take has a field. */
 export const anyField = (kind: FeeKindId, field: FieldId): boolean => Object.values(CAPACITY[kind].fields).some((f) => f.includes(field));

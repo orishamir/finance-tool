@@ -9,7 +9,7 @@ import type { BuilderRow, CaseRow as CaseRowView, OpenCase as OpenCaseView, Slim
 import { addCase, copyCase, type Side } from "../../lib/fee-deal/edit";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import type { StandingView } from "../../lib/fee-deal/parts";
-import { fieldsOf } from "../../lib/fee-deal/offers/capacity";
+import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { fmt } from "../../lib/format";
 import { CaseFold, CaseRow, CaseSlot, ConditionBand, FeeBlock, OpenCase, PartChip, SlimFee, When, monthText, type CaseWord } from "../kit";
@@ -98,7 +98,7 @@ function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
   else if (!row.priced) notes.push(row.noCurrency ? copy.cases.noCurrency : row.unmatched ? copy.cases.unmatched : b.facts.noPrice);
   if (row.next) notes.push(<When key="next" iso={row.next.at} lead={b.facts.next[row.next.change]!} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
-  if (row.priced && row.stages[0]!.price.form === "action" && fieldsOf(fee.kind, "action").includes("min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
+  if (row.priced && row.stages[0]!.price.form === "action" && keeps(fee.kind, "action", "min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
   return (
     <ul className="flex flex-col items-start gap-1 text-sm text-muted-foreground">

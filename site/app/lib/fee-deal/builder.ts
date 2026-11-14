@@ -9,7 +9,7 @@ import type { SiteValue } from "../value";
 import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
-import { hasFlat } from "./offers/capabilities";
+import { boundsAction } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
 import { feeOffered, offerFor } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
@@ -366,7 +366,7 @@ const fieldsOf = (id: PartId, p: Price, view: PriceView): PartField[] =>
 function openParts(fee: Fee, p: Price, view: PriceView, line: { until?: MonthKey; sale: boolean }): OpenPart[] {
   const said = saidParts({ kind: fee.kind, p, view, ...(line.until ? { until: line.until } : {}) }, line.sale);
   // a flat price nobody typed yet is in the price too: it shows as an empty part where a typed one stands, after the bounds
-  if (hasFlat(p) && p.flat && !said.some((x) => x.id === "flat")) {
+  if (boundsAction(p) && p.flat && !said.some((x) => x.id === "flat")) {
     const at = said.findIndex((x) => PART_IDS.indexOf(x.id) > PART_IDS.indexOf("flat"));
     said.splice(at < 0 ? said.length : at, 0, { id: "flat", kind: PARTS.flat.kind, words: FLAT_BLANK });
   }

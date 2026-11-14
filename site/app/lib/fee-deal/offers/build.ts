@@ -6,7 +6,7 @@ import type { BoundCurrency, Months, Note, Num, Price } from "../model";
 import type { FeeKindId } from "../shapes";
 import type { ChargedForm } from "./capacity";
 import { FIGURES, type Figure } from "./figures";
-import { fitted, PARTS, type PartAt, type PartId } from "./parts";
+import { fitted, PARTS, putPart, type PartId } from "./parts";
 
 /** What a template gives of a price: its form, its figures with their sources, its notes, and the fields a form has that are no part. */
 export interface PriceSpec {
@@ -25,18 +25,12 @@ const FORM_PART: Readonly<Record<ChargedForm, PartId>> = { action: "share", perU
 /** The part a figure beside the main one stands in; the rate and the sum are the form's own. */
 const FIGURE_PART: Readonly<Partial<Record<Figure, PartId>>> = { min: "min", max: "max", cap: "cap", flat: "flat", upTo: "flat", discount: "discount", third: "third", thirdMin: "third", thirdMax: "third", refund: "refund", perSecurity: "maxPerSecurity" };
 
-/** A part's edit of one price, with the fee's kind (a part of the fee's prices, a later price or a sale, is no template's). */
-function onPrice(part: PartId, p: Price, at: PartAt, kind: FeeKindId): Price {
-  const a = PARTS[part].apply;
-  return a.on === "price" ? a.edit(p, true, at, kind) : p;
-}
-
 /**
  * A template's price for a fee of `kind`: the form put on a free price, its periods and currency, each figure whose part the price can
  * hold (a part that stands blank until typed is put on first), each note, then what the fee's capacity keeps.
  */
 export function buildPrice(kind: FeeKindId, spec: PriceSpec): Price {
-  let p = onPrice(FORM_PART[spec.form], { form: "free" }, {}, kind);
+  let p = putPart(kind, { form: "free" }, FORM_PART[spec.form], true);
   const fields = { ...(spec.per ? { per: spec.per } : {}), ...(spec.every ? { every: spec.every } : {}), ...(spec.boundsEvery ? { boundsEvery: spec.boundsEvery } : {}), ...(spec.currency ? { currency: spec.currency } : {}) };
   p = { ...p, ...fields } as Price;
   for (const [figure, n] of Object.entries(spec.figures) as [Figure, Num][]) {
@@ -44,10 +38,10 @@ export function buildPrice(kind: FeeKindId, spec: PriceSpec): Price {
     if (part) {
       if (!PARTS[part].holds(kind, p)) continue;
       // a part that asks for no figure stands blank until its figures are set; a bound's figure is the part itself
-      if (PARTS[part].ask === null && !PARTS[part].used(p)) p = onPrice(part, p, {}, kind);
+      if (PARTS[part].ask === null && !PARTS[part].used(p)) p = putPart(kind, p, part, true);
     }
     p = FIGURES[figure].set(p, n);
   }
-  for (const note of spec.notes ?? []) p = onPrice(note, p, {}, kind);
+  for (const note of spec.notes ?? []) p = putPart(kind, p, note, true);
   return fitted(kind, p);
 }

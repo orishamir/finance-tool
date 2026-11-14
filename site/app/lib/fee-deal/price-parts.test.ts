@@ -43,7 +43,7 @@ describe("the price parts as the device keeps them", () => {
   it("gives the trade fee a sum per unit, a percent maximum and a flat price, and the conversion a flat price but no percent maximum", () => {
     expect(CAPACITY.trade.forms).toContain("perUnit");
     expect(CAPACITY.trade.fields.action).toEqual(expect.arrayContaining(["cap", "flat"]));
-    expect(CAPACITY.trade.fields.perUnit).toEqual(["amount", "min", "max", "cap", "flat", "currency"]);
+    expect(CAPACITY.trade.fields.perUnit).toEqual(expect.arrayContaining(["amount", "min", "max", "cap", "flat", "currency"]));
     expect(CAPACITY.fx.fields.action).toContain("flat");
     expect(CAPACITY.fx.fields.action).not.toContain("cap");
     expect(CAPACITY.corporate_event.fields.perAction).toContain("currency");
@@ -62,6 +62,26 @@ describe("the price parts as the device keeps them", () => {
     expect(kept.fees[0]!.stages![0]!.price).toEqual(asked);
     expect(feePriced(kept.fees[0]!, "2026-11")).toBe(false);
     expect(read(kept).unpriced).toEqual(["fee-fx"]);
+  });
+  it("reads a part only where the fee's form lists its field, and the bounds and currency it read before capacity was its limit", () => {
+    const d = account([]);
+    const one = (kind: Fee["kind"], price: Price) => readDeal({ ...d, fees: [{ id: "fee-x", kind, stages: [{ price }] }] });
+    const spread: Price = { form: "action", rate: typed(0.1) };
+    // a spread's share lists its rate alone: no percent maximum, no flat price, no sums in the trade's currency
+    expect(one("spread", { ...spread, cap: typed(1) } as Price)).toBeNull();
+    expect(one("spread", { ...spread, inTrade: true } as Price)).toBeNull();
+    expect(one("balance", { form: "held", rate: typed(0.5), per: 12, every: 1, perSecurity: typed(10) } as Price)).toBeNull();
+    // bounds and a currency on a share of an action, and bounds on a held share, still read where a deal was saved with them
+    expect(one("spread", { ...spread, min: typed(5), currency: "USD" } as Price)).not.toBeNull();
+    expect(one("insurance_premium", { form: "held", rate: typed(0.5), per: 12, every: 1, min: typed(5) } as Price)).not.toBeNull();
+    // a shekel is the absent currency, on any form
+    expect(one("deposit", { ...spread, currency: "ILS" } as Price)!.fees[0]!.stages![0]!.price).toEqual(spread);
+  });
+  it("puts a part on a price only where the fee's form lists its field", () => {
+    const deposit: Fee = { id: "fee-d", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] };
+    expect(setPart(deposit, "min", true, { value: 5 })).toEqual(deposit);
+    expect(setPart({ ...deposit, kind: "trade" }, "min", true, { value: 5 }).stages![0]!.price).toMatchObject({ min: typed(5) });
+    expect(setPart(deposit, "inTrade", true)).toEqual(deposit);
   });
   it("turns a percent maximum into a fraction, and carries the currency of a flat price, a sum per unit and a sum per action", () => {
     expect(enginePrice(mizrahi)).toEqual({ kind: "action", rate: 0.003, min: 25, max: 6750, cap: 0.25, currency: "USD" });

@@ -29,10 +29,15 @@ const BY_RATE: readonly FormId[] = ["action", "held"];
  */
 const FIGURE_KIND: Readonly<Record<Exclude<FormId, "free">, "rate" | "sum" | "unit">> = { action: "rate", held: "rate", sum: "sum", perAction: "sum", perUnit: "unit" };
 
-/** Whether a form is on an action: it may carry a discount, a third party's fee, notes on an order, a percent maximum and a currency. */
+/**
+ * Whether a form is on an action: its price has a place for a discount, a third party's fee, notes on an order, a percent maximum and a
+ * currency (whether a fee's price holds the last two is its capacity's, capacity.ts).
+ */
 export const formOnAction = (form: FormId): boolean => ON_ACTION.includes(form);
-/** Whether a form bounds an action: its minimum, maximum and flat price price the action the same way in each such form. */
+/** Whether a form bounds an action: its minimum, maximum and flat price (where its fee holds them) price the action the same way in each such form. */
 export const formBoundsAction = (form: FormId): boolean => BOUNDS_ACTION.includes(form);
+/** Whether a form has a minimum and a maximum: per action (a share of each action, a sum for each unit) or per charge (a share of what is held). */
+export const formBounded = (form: FormId): boolean => BOUNDED.includes(form);
 /** Whether a form charges something. */
 export const formCharged = (form: FormId): boolean => form !== "free";
 /** Whether a form is charged on what is held or on the account: a share of what is held, a sum per period. */
@@ -45,13 +50,7 @@ export const onAction = (p: Price): p is OnActionPrice => formOnAction(p.form);
 /** Whether a price bounds an action (`formBoundsAction`): it may have bounds per action and a flat price. */
 export const boundsAction = (p: Price): p is ActionBoundedPrice => formBoundsAction(p.form);
 /** Whether a price may have a minimum and a maximum, per action or per charge. */
-export const hasBounds = (p: Price): p is BoundedPrice => BOUNDED.includes(p.form);
-/** Whether a price may have a percent maximum: a share of an action's, a sum per unit's, a sum per action's. */
-export const hasCap = (p: Price): p is OnActionPrice => onAction(p);
-/** Whether a price may have a flat price for a small action. */
-export const hasFlat = (p: Price): p is ActionBoundedPrice => boundsAction(p);
-/** Whether a price's sums may be in a currency other than the shekel. */
-export const hasCurrency = (p: Price): p is OnActionPrice => onAction(p);
+export const hasBounds = (p: Price): p is BoundedPrice => formBounded(p.form);
 /** Whether a price charges something, and so may be offset against another fee or carry a refund. */
 export const charged = (p: Price): p is ChargedPrice => formCharged(p.form);
 /** Whether a price's main figure is a rate. */
@@ -64,6 +63,6 @@ export const byAmount = (p: Price): p is AmountPrice => charged(p) && !byRate(p)
  * or a flat price typed; none for the shekel. A currency that prices nothing is not carried into another form.
  */
 export function pricedCurrency(p: Price): BoundCurrency | undefined {
-  if (!hasCurrency(p) || !p.currency || p.currency === "ILS") return undefined;
+  if (!onAction(p) || !p.currency || p.currency === "ILS") return undefined;
   return !byRate(p) || p.min || p.max || p.flat ? p.currency : undefined;
 }

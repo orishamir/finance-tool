@@ -5,8 +5,8 @@
 import { blankPrice, mainFigure, typed, type Fee, type MonthKey, type Note, type Price, type Priced, type Side } from "../model";
 import { editPrice, holdOn, setLimited, setSaleApart, withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edit";
 import { type FeeKindId, type FormId } from "../shapes";
-import { fieldsOf, pricesSaleApart, takes, type FieldId } from "./capacity";
-import { boundsAction, byRate, charged, formBoundsAction, formCharged, formOnAction, hasBounds, hasCurrency, hasFlat, onAction, pricedCurrency, sameFigureKind } from "./capabilities";
+import { keeps, PART_FIELDS, pricesSaleApart, takes, type PartFieldId } from "./capacity";
+import { boundsAction, byRate, charged, formBounded, formBoundsAction, formCharged, formOnAction, onAction, pricedCurrency, sameFigureKind } from "./capabilities";
 import { FIGURES, type Figure } from "./figures";
 
 /**
@@ -65,8 +65,8 @@ export interface PartAt {
   against?: FeeKindId;
 }
 
-/** The field of a price a part is kept in: a note's is the price's list of notes, which every note shares. */
-type PartField = "min" | "max" | "cap" | "flat" | "perSecurity" | "discount" | "third" | "notes" | "inTrade" | "offset" | "refund";
+/** The key of a price a part is kept in: a capacity field's (capacity.ts), or a part's own; a note's is the price's list of notes, which every note shares. */
+type PartKey = Exclude<PartFieldId, "currency"> | "discount" | "third" | "notes" | "offset" | "refund";
 
 /** A part's edit: of the one price it is on (with the fee's kind, which a form's fields follow), or of the fee's prices (a later price, a sale). */
 type PartEdit = { on: "price"; edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price } | { on: "fee"; edit: <F extends Fee>(fee: F, on: boolean, at: PartAt) => F };
@@ -76,18 +76,24 @@ export interface PartDef {
   kind: PartKind;
   /** The form it puts the price in, for a form of the price. */
   form?: FormId;
-  /** The field of the price it is kept in, for a part a price holds beside its main figure. */
-  field?: PartField;
-  /** The forms it can stand in: a change of form carries it where it can stand in both forms. None for a part that is not carried. */
+  /** The key of the price it is kept in, for a part a price holds beside its main figure. */
+  field?: PartKey;
+  /** The forms whose price has a place for it, for a part kept in a key. */
+  standsIn?: (form: FormId) => boolean;
+  /**
+   * The forms between which a change of form carries it, where narrower than where it stands: a minimum and a maximum carry between a share
+   * of an action and a sum per unit, which bound the action the same way, and not to or from a share of what is held, whose bounds are per
+   * charge.
+   */
   carriesIn?: (form: FormId) => boolean;
-  /** The field the fee's form must have for the part to stand in it (its capacity): a percent maximum, a flat price. */
-  needsField?: FieldId;
+  /** The capacity field a fee's form must list for the part to stand on its price (capacity.ts); none where every price of its forms can. */
+  capField?: PartFieldId;
   /** The figures it holds, in the order its boxes stand. */
   figures: readonly Figure[];
   /**
-   * Whether a fee of `kind` can hold it on the price `p` as it stands: a form where the fee can take it; any other part where the price's
-   * own form can hold it (a discount on a price on an action) and, for a percent maximum, a flat price or a held share's bounds, where the
-   * fee's capacity gives that form the field. A part the price cannot hold is not offered; a form of the price that can is.
+   * Whether a fee of `kind` can hold it on the price `p` as it stands: a form, where the fee can take it; a part kept in a key, where the
+   * price's form has a place for it and the fee's capacity lists its field there. A part the price cannot hold is not offered and is not
+   * put on; a form of the price that can is.
    */
   holds: (kind: FeeKindId, p: Price) => boolean;
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
@@ -102,13 +108,11 @@ export interface PartDef {
 
 const onPrice = (edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price): PartEdit => ({ on: "price", edit });
 
-/** Whether the price is on an action. */
-const onActionPrice = (_kind: FeeKindId, p: Price) => onAction(p);
-/** Whether the price charges something. */
-const chargedPrice = (_kind: FeeKindId, p: Price) => charged(p);
-/** Whether the price's form has a field in the fee's capacity. */
-const withField = (field: FieldId) => (kind: FeeKindId, p: Price) => fieldsOf(kind, p.form).includes(field);
-const always = () => true;
+/** A part kept in a key of the price: where it holds follows from where it stands and its capacity field. */
+const keyed = (def: Omit<PartDef, "holds"> & Required<Pick<PartDef, "field" | "standsIn">>): PartDef => ({
+  ...def,
+  holds: (kind, p) => def.standsIn(p.form) && (!def.capField || keeps(kind, p.form, def.capField)),
+});
 
 /** A form of the price: on, the price in that form with what carries over (`withForm`), as the fee may hold it (`fitted`); off, free. */
 const formPart = (id: PartId, form: FormId, figures: readonly Figure[]): PartDef => ({
@@ -122,36 +126,34 @@ const formPart = (id: PartId, form: FormId, figures: readonly Figure[]): PartDef
   apply: onPrice((p, on, _at, kind) => (on ? fitted(kind, withForm(p, form)) : p.form === form ? { form: "free" } : p)),
 });
 
-/** A bound or a percent maximum: on, with the figure the open case asked for; off, taken away. */
-const boundPart = (id: "min" | "max" | "cap", ask: Ask, carriesIn: (form: FormId) => boolean): PartDef => ({
-  id,
-  kind: "bound",
-  field: id,
-  carriesIn,
-  ...(id === "cap" ? { needsField: "cap" as const } : {}),
-  figures: [id],
-  // a minimum and a maximum on a share of an action or a sum per unit, and on a held share whose form has them; a percent maximum where
-  // the price's form has one
-  holds: id === "cap" ? withField("cap") : (kind, p) => boundsAction(p) || (hasBounds(p) && withField(id)(kind, p)),
-  ask,
-  used: (p) => FIGURES[id].get(p) !== undefined,
-  apply: onPrice((p, on, at) => withFigure(p, id, on ? at.value! : null)),
-  lost: true,
-});
+/** A bound or a percent maximum, where the fee's form lists it: on, with the figure the open case asked for; off, taken away. */
+const boundPart = (id: "min" | "max" | "cap", ask: Ask, standsIn: (form: FormId) => boolean, carriesIn?: (form: FormId) => boolean): PartDef =>
+  keyed({
+    id,
+    kind: "bound",
+    field: id,
+    standsIn,
+    ...(carriesIn ? { carriesIn } : {}),
+    capField: id,
+    figures: [id],
+    ask,
+    used: (p) => FIGURES[id].get(p) !== undefined,
+    apply: onPrice((p, on, at) => withFigure(p, id, on ? at.value! : null)),
+    lost: true,
+  });
 
-/** A note on an order (§10.6's stated parts), kept in the price's list of notes. */
-const notePart = (id: Note): PartDef => ({
-  id,
-  kind: "note",
-  field: "notes",
-  carriesIn: formOnAction,
-  figures: [],
-  // an order is a share of an action or a sum per unit, so not a sum on each event alone (a corporate event's)
-  holds: onActionPrice,
-  ask: null,
-  used: (p) => onAction(p) && !!p.notes?.includes(id),
-  apply: onPrice((p, on) => withNote(p, id, on)),
-});
+/** A note on an order (§10.6's stated parts), kept in the price's list of notes: on any price on an action, a corporate event's sum among them. */
+const notePart = (id: Note): PartDef =>
+  keyed({
+    id,
+    kind: "note",
+    field: "notes",
+    standsIn: formOnAction,
+    figures: [],
+    ask: null,
+    used: (p) => onAction(p) && !!p.notes?.includes(id),
+    apply: onPrice((p, on) => withNote(p, id, on)),
+  });
 
 /** Every part, in the order a price's line says them: its price, its time limit, its bounds, its links, its notes. */
 export const PARTS: Readonly<Record<PartId, PartDef>> = {
@@ -161,57 +163,54 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   held: formPart("held", "held", ["rate"]),
   sum: formPart("sum", "sum", ["amount"]),
   free: formPart("free", "free", []),
-  discount: { id: "discount", kind: "price", field: "discount", carriesIn: formOnAction, figures: ["discount"], holds: onActionPrice, ask: null, used: (p) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
-  third: { id: "third", kind: "price", field: "third", carriesIn: formOnAction, figures: ["third", "thirdMin", "thirdMax"], holds: onActionPrice, ask: null, used: (p) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
+  discount: keyed({ id: "discount", kind: "price", field: "discount", standsIn: formOnAction, figures: ["discount"], ask: null, used: (p) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) }),
+  third: keyed({ id: "third", kind: "price", field: "third", standsIn: formOnAction, figures: ["third", "thirdMin", "thirdMax"], ask: null, used: (p) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) }),
   until: {
     id: "until",
     kind: "price",
     figures: [],
-    holds: always,
+    holds: () => true,
     ask: "month",
     used: (_p, x) => !!x && x.stages.length > 1,
     // on, the price ends at the month and a later one follows it; off, the prices after it go
     apply: { on: "fee", edit: (fee, on, at) => (on ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month!, at.caseId) : holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId)) },
   },
-  min: boundPart("min", "sum", formBoundsAction),
-  max: boundPart("max", "sum", formBoundsAction),
+  min: boundPart("min", "sum", formBounded, formBoundsAction),
+  max: boundPart("max", "sum", formBounded, formBoundsAction),
   cap: boundPart("cap", "pct", formOnAction),
-  flat: { id: "flat", kind: "bound", field: "flat", carriesIn: formBoundsAction, needsField: "flat", figures: ["flat", "upTo"], holds: (kind, p) => hasFlat(p) && withField("flat")(kind, p), ask: null, used: (p) => hasFlat(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true },
-  // a maximum on each security of a held share, stated and never computed (§10.6's stated parts): where the fee's capacity gives it
-  maxPerSecurity: {
+  flat: keyed({ id: "flat", kind: "bound", field: "flat", standsIn: formBoundsAction, capField: "flat", figures: ["flat", "upTo"], ask: null, used: (p) => boundsAction(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true }),
+  // a maximum on each security of a held share, stated and never computed (§10.6's stated parts)
+  maxPerSecurity: keyed({
     id: "maxPerSecurity",
     kind: "bound",
     field: "perSecurity",
-    carriesIn: (form) => form === "held",
-    needsField: "perSecurity",
+    standsIn: (form) => form === "held",
+    capField: "perSecurity",
     figures: ["perSecurity"],
-    holds: (kind, p) => p.form === "held" && withField("perSecurity")(kind, p),
     ask: "sum",
     used: (p) => p.form === "held" && p.perSecurity !== undefined,
     apply: onPrice((p, on, at) => withFigure(p, "perSecurity", on ? at.value! : null)),
     lost: true,
-  },
-  offset: { id: "offset", kind: "link", field: "offset", carriesIn: formCharged, figures: [], holds: chargedPrice, ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
-  refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], holds: chargedPrice, ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
+  }),
+  offset: keyed({ id: "offset", kind: "link", field: "offset", standsIn: formCharged, figures: [], ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) }),
+  refund: keyed({ id: "refund", kind: "link", field: "refund", standsIn: formCharged, figures: ["refund"], ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) }),
   unfilled: notePart("unfilled"),
   unfilledClerk: notePart("unfilledClerk"),
   unfilledClerkAbroad: notePart("unfilledClerkAbroad"),
   capRead: notePart("capRead"),
   partial: notePart("partial"),
-  // sums in the currency the trade is made in ("מינימום 30 במטבע העסקה"), on a trade price whose form keeps a currency: a reading takes
-  // it from what is bought
-  inTrade: {
+  // sums in the currency the trade is made in ("מינימום 30 במטבע העסקה"), where the fee's form lists it: a reading takes it from what is bought
+  inTrade: keyed({
     id: "inTrade",
     kind: "note",
     field: "inTrade",
-    carriesIn: (form) => formOnAction(form) && form !== "free",
-    needsField: "currency",
+    standsIn: formOnAction,
+    capField: "inTrade",
     figures: [],
-    holds: (kind, p) => kind === "trade" && onAction(p) && withField("currency")(kind, p),
     ask: null,
     used: (p) => onAction(p) && !!p.inTrade,
-    apply: onPrice((p, on, _at, kind) => (!onAction(p) || on === !!p.inTrade || (on && kind !== "trade") ? p : on ? { ...p, inTrade: true } : (({ inTrade: _t, ...rest }) => rest as Price)(p))),
-  },
+    apply: onPrice((p, on) => (!onAction(p) || on === !!p.inTrade ? p : on ? { ...p, inTrade: true } : without(p, "inTrade"))),
+  }),
   sale: { id: "sale", kind: "note", figures: [], holds: pricesSaleApart, ask: null, used: (_p, x) => !!x?.sale, apply: { on: "fee", edit: (fee, on, at) => setSaleApart(fee, on, at.caseId) } },
 };
 
@@ -244,15 +243,24 @@ function gives(at: PartAt, ask: Ask): boolean {
 }
 
 /**
+ * A price of a fee of `kind` with a part of the price added (`on`) or taken away: a part the price cannot hold (`holds`) is not put on, and
+ * a part of the fee's prices (a later price, a sale) is no single price's.
+ */
+export function putPart(kind: FeeKindId, p: Price, part: PartId, on: boolean, at: PartAt = {}): Price {
+  const a = PARTS[part].apply;
+  if (a.on === "fee" || (on && !PARTS[part].holds(kind, p))) return p;
+  return a.edit(p, on, at, kind);
+}
+
+/**
  * A fee with a part added (`on`) or taken away, as the toolbox and the open case's ✕ do (`PARTS[part].apply`), on the price `at` names. A
- * part that asks for what `at` does not give, or a price that cannot take it, leaves the fee as it is.
+ * part that asks for what `at` does not give, or a price that cannot hold it, leaves the fee as it is.
  */
 export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: PartAt = {}): F {
   const def = PARTS[part];
   if (on && !gives(at, def.ask)) return fee;
   if (def.apply.on === "fee") return def.apply.edit(fee, on, at);
-  const edit = def.apply.edit;
-  return editPrice(fee, at.side ?? "buy", at.k ?? 0, (p) => edit(p, on, at, fee.kind), at.caseId);
+  return editPrice(fee, at.side ?? "buy", at.k ?? 0, (p) => putPart(fee.kind, p, part, on, at), at.caseId);
 }
 
 /**
@@ -270,29 +278,30 @@ export function withForm(p: Price, form: FormId): Price {
   const main = mainFigure(p);
   const key = byRate(next) ? "rate" : "amount";
   const figure = main && sameFigureKind(p.form, form) ? { [key]: main.blank ? main : typed(main.v) } : {};
-  const kept: Partial<Record<PartField, unknown>> = {};
+  const from: Partial<Record<PartKey, unknown>> = p;
+  const kept: Partial<Record<PartKey, unknown>> = {};
   for (const id of PART_IDS) {
-    const { field, carriesIn } = PARTS[id];
-    if (field && carriesIn?.(p.form) && carriesIn(form) && (p as Partial<Record<PartField, unknown>>)[field] !== undefined) kept[field] = (p as Partial<Record<PartField, unknown>>)[field];
+    const { field, standsIn, carriesIn = standsIn } = PARTS[id];
+    if (field && carriesIn?.(p.form) && carriesIn(form) && from[field] !== undefined) kept[field] = from[field];
   }
-  const currency = hasCurrency(next) ? pricedCurrency(p) : undefined;
+  const currency = onAction(next) ? pricedCurrency(p) : undefined;
   return { ...next, ...figure, ...kept, ...(currency ? { currency } : {}) } as Price;
 }
 
 /**
- * A price as a fee of `kind` may hold it (its capacity): a part, or a currency, carried into a form whose fields the fee keeps without it is
- * dropped (a percent maximum carried into a form that has none, a currency into a form whose sums the fee keeps in shekels).
+ * A price as a fee of `kind` may hold it (its capacity): each field its form's capacity does not list is dropped (a percent maximum carried
+ * into a form that has none, a currency into a form whose sums the fee keeps in shekels).
  */
 export function fitted(kind: FeeKindId, p: Price): Price {
-  if (!charged(p)) return p;
-  const fields = fieldsOf(kind, p.form);
-  const out = { ...p } as Record<string, unknown>;
-  for (const id of PART_IDS) {
-    const { field, needsField } = PARTS[id];
-    if (field && needsField && !fields.includes(needsField)) delete out[field];
-  }
-  if (!fields.includes("currency")) delete out.currency;
-  return out as Price;
+  return PART_FIELDS.reduce((out, field) => (keeps(kind, p.form, field) ? out : without(out, field)), p);
+}
+
+/** A price without one of its keys. */
+function without<P extends Price>(p: P, key: PartFieldId): P {
+  if (!(key in p)) return p;
+  const out: Partial<Record<string, unknown>> = { ...p };
+  delete out[key];
+  return out as P;
 }
 
 /** The parts the open case's first price leaves behind in a change of form that name themselves (`lost`), in the registry's order. */
