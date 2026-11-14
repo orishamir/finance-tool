@@ -131,11 +131,11 @@ describe("templates", () => {
     const line = { ...custody, id: "x-per-payment", base: "distribution_handling" as const, applies_to: ["all"], period: null, min: null, max: null, rate: { ...custody.rate, unit: "nis_per_trade" as const, value: 0.25 } };
     expect(houseTemplate({ ...snap, lines: [...snap.lines, line] }).left).toContainEqual({ lineId: "x-per-payment", why: "other-base" });
   });
-  it("lists a bank's distribution fee on the units of a mutual or money-market fund as a fee the template does not fill", () => {
+  it("lists a bank's yearly distribution fee on the units of a mutual or money-market fund as a fee the deal holds no price for", () => {
     const snaps = latestSnapshots();
     const distribution = snaps.flatMap((s) => s.lines.filter((l) => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period"));
     expect(distribution.length).toBeGreaterThan(0);
-    for (const s of snaps) for (const l of s.lines.filter((x) => distribution.includes(x))) expect(houseTemplate(s).left, l.id).toContainEqual({ lineId: l.id, why: "other-base" });
+    for (const s of snaps) for (const l of s.lines.filter((x) => distribution.includes(x))) expect(houseTemplate(s).left, l.id).toContainEqual({ lineId: l.id, why: "distribution-yearly" });
   });
   it("reads every house's whole latest price list into fees, each figure sourced, and lists every line it leaves out", () => {
     expect(data.houses.length).toBeGreaterThan(3);

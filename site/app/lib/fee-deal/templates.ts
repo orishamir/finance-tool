@@ -45,7 +45,15 @@ export type LeftWhy =
    * A conversion that charges nothing beside a spread the documents do not limit, recorded with no value and so not priced (F-13, D65:
    * Interactive Brokers' automatic conversion): filled at 0%, the conversion still costs that spread.
    */
-  | "spread-unpriced";
+  | "spread-unpriced"
+  /**
+   * A bank's line for trading on the Tel Aviv exchange that names mutual fund units: it is read for what it prices there, and a mutual fund
+   * that is neither a tracking fund nor listed on the exchange is left out of it (BRK-16, part 4(א)(1) and footnote 4; MF-27), so such a
+   * fund has no trade price in the deal.
+   */
+  | "bank-funds"
+  /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
+  | "distribution-yearly";
 
 /** One house's price list as a template: the fees its whole list fills, and the lines it leaves, with why. */
 export interface HouseTemplate {
@@ -105,7 +113,7 @@ const ITEM_ONE = new Set(["tase_shares_bonds", "etf_units", "tase_bonds", "tase_
  * What a trade line notes of an order not carried out (§10.6's stated parts). At a bank the fee rules decide it whatever the line's heading
  * says (BRK-16, notes to part 4(א)(1)): an order through a clerk not carried out for a reason on the client's side pays the minimum, so a
  * line of the branch's channel that prices securities on the Tel Aviv exchange carries that note, whose words keep the item's own
- * exception of mutual funds (a bank's line often prices them with the rest), and a direct line none. At a house that is no
+ * exception of mutual funds (`bankTradeLeavesFunds`), and a direct line none. At a house that is no
  * bank, the line's own words say it (`chargesUnfilled`). None where neither does.
  */
 export function unfilledNote(l: Line, bank: boolean): Note | null {
@@ -253,9 +261,10 @@ interface OwnValues {
  * "קרנות נאמנות מסורתיות", F-63 reading the standard line for a mutual fund), and a line abroad whose band leaves Canada out (IBI's "מחוץ
  * לארה״ב, לקנדה ולישראל" prices Europe and that value, not the rest of the world).
  */
-function valuesOf(l: Line, own: OwnValues): string[] {
+function valuesOf(l: Line, own: OwnValues, bank: boolean): string[] {
   const out = new Set<string>();
   for (const a of l.applies_to) {
+    if (a === "mutual_fund_units" && bankTradeLeavesFunds(l, bank)) continue;
     if (a === "all" || a === "brokerage-account") WHAT_IDS.forEach((v) => out.add(v));
     else if (TASE_CLASSES.has(a)) {
       const o = SUB_CLASSES.has(a) && l.applies_to.every((x) => SUB_CLASSES.has(x)) ? own.sub(l) : null;
@@ -272,6 +281,13 @@ function valuesOf(l: Line, own: OwnValues): string[] {
   for (const x of l.excludes ?? []) if (CLASS_VALUE[x]) out.delete(CLASS_VALUE[x]!);
   return [...out];
 }
+
+/**
+ * Whether a line is a bank's trade line that leaves mutual funds out (BRK-16, part 4(א)(1): its line for the Tel Aviv exchange excludes
+ * mutual funds but a tracking fund and a fund listed on the exchange, footnote 4; MF-27): a bank's trade line that names the exchange's
+ * classes beside mutual fund units prices the tracking and listed funds as the exchange's value (`tase`, ETFs among it), and no other fund.
+ */
+const bankTradeLeavesFunds = (l: Line, bank: boolean): boolean => bank && l.base === "trade" && l.applies_to.includes("mutual_fund_units") && l.applies_to.some((a) => TASE_CLASSES.has(a));
 
 /** How many classes a line names: a line that names fewer prices what it names more narrowly, and wins over a wider one (F-63). */
 const breadth = (l: Line): number => (l.applies_to.some((a) => a === "all" || a === "brokerage-account") ? Infinity : l.applies_to.length);
@@ -417,7 +433,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
         lines = lines.filter((l) => l === free || !!l.conversion_currency);
       }
     }
-    const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf);
+    const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf, bank);
     const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
     for (const l of ambiguous) left.push({ lineId: l.id, why: "ambiguous" });
     for (const l of unread) left.push({ lineId: l.id, why: "another-line" });
@@ -426,6 +442,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);
       left.push(...m.left.map((why) => ({ lineId: l.id, why })));
+      if (bankTradeLeavesFunds(l, bank)) left.push({ lineId: l.id, why: "bank-funds" });
     }
     const first = base === "fx" ? "currency" : base === "custody" || base === "fixed_period" ? "held" : "what";
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));
@@ -437,7 +454,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   // every other line is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
-    left.push({ lineId: l.id, why: l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base" });
+    left.push({ lineId: l.id, why: l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base" });
   }
   return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left };
 }
