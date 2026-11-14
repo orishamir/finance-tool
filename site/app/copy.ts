@@ -2103,7 +2103,6 @@ export const feeDeal = {
       /** A curve the site cannot draw: a bound in a currency it has no rate for. */
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
       /** Under a curve of holding with a fee whose price list prints a maximum on the whole deposit, which no data field holds and the curve does not apply. */
-      perDeposit: (fee: string) => `במחירון יש ל${fee} גם מקסימום לכל הפיקדון, והגרף לא מחיל אותו. מהשווי שבו המקסימום הזה מתחיל לחול, העמלה בפועל נמוכה ממה שהגרף מראה. האתר לא מחשב מאיזה שווי זה קורה, כי המקסימום הזה כתוב במחירון רק במילים.`,
       /** A curve with a price per unit (F-112): the unit's price, a chart's field, and beside it why the chart needs it. */
       unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
@@ -2220,7 +2219,6 @@ export const feeDeal = {
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
       /** A maximum on the whole deposit the record prints beside the one on each security, which the page does not apply yet. */
-      "per-deposit": "המחירון קובע גם מקסימום לכל הפיקדון, ליד המקסימום לכל נייר ערך. האתר לא מחיל אותו עד שיהיה לו שדה בנתונים, ולכן על פיקדון גדול העמלה בפועל יכולה להיות נמוכה ממה שמוצג.",
       "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
@@ -3463,6 +3461,11 @@ const shownPair = (chosen: boolean) => {
 };
 
 export const invest = {
+  /** A house that sells a fund only where the fund's manager signed a distribution agreement with it (BRK-38). */
+  agreements: {
+    searchTitle: (distributor: string) => `דיווחי מנהלי הקרנות באתר מאיה על הסכמי הפצה עם ${distributor}`,
+    noAgreement: "אי אפשר לקנות את הקרן הזו דרך הבנק: הוא מוכר רק קרנות שהמנהל שלהן חתם איתו על הסכם הפצה, ובדיווחים של מנהלי הקרנות אין הסכם כזה לקרן הזו.",
+  },
   /** The notes on a money-market fund's zero trade and custody lines at a bank (lib/instruments.server.ts): the rule, and what the example assumes. */
   bankMoneyMarketZero: {
     trade: "בקרן כספית שיש עליה הסכם הפצה המפיץ לא רשאי לגבות מבעל היחידה עמלה על קנייה, החזקה או פדיון (MF-26). ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן, כמקובל.",

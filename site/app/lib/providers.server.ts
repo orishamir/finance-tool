@@ -5,7 +5,7 @@
 import type { FeesSnapshot, ParameterRecord, RuleRecord } from "@finance-tool/schema";
 import { collectRuleIds, loadCma, loadFees, loadParameters, loadRules, pointedRecords, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
-import { HOUSE_CLASSES, onlyWhatCanBeDone, type IndicesBundle } from "./providers";
+import { HOUSE_CLASSES, onlyWhatCanBeDoneFundByFund, type IndicesBundle } from "./providers";
 import { loadFundLists, workbenchLinks } from "./variants.server";
 import { loadFx, loadFxHistory } from "./fx.server";
 
@@ -53,7 +53,7 @@ export function buildIndicesBundle(): IndicesBundle {
     if (!p) throw new Error(`data/parameters/ holds no ${id} record`);
     return p;
   };
-  const all = latestSnapshots().map(onlyWhatCanBeDone);
+  const all = latestSnapshots().map(onlyWhatCanBeDoneFundByFund);
   // the page prices accounts at banks and brokers; a provident fund manager's price list stays in data/fees/ for the pages that read it
   const snapshots = all.filter((s) => HOUSE_CLASSES.includes(s.provider.class));
   const funds = loadFunds();

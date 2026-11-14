@@ -37,8 +37,32 @@ export const houseSnapshots = (snapshots: readonly FeesSnapshot[]): FeesSnapshot
  * `availability` quotes the document saying a person can do it. Pages that show a tariff as printed read the record itself.
  */
 export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
+  return keepLines(s, []);
+}
+
+/**
+ * The same, for the indices page, which asks each fund of a house's distribution agreements (BRK-38, `agreementOf`): the lines of the classes
+ * the agreements decide fund by fund stay, and a fund no report names is not sold there (invest.ts).
+ */
+export function onlyWhatCanBeDoneFundByFund<S extends FeesSnapshot>(s: S): S {
+  return keepLines(s, agreedClasses(s));
+}
+
+/** The classes a house sells fund by fund, under the distribution agreements its record holds (data-schema §3.6). */
+export const agreedClasses = (s: Pick<FeesSnapshot, "distribution_agreements">): readonly string[] => s.distribution_agreements?.applies_to ?? [];
+
+/**
+ * Whether a house sells a fund of a class it sells fund by fund: the report of an agreement that has not ended naming the fund's number, or
+ * null where none does; undefined where the house does not decide the class fund by fund.
+ */
+export function agreementOf(s: Pick<FeesSnapshot, "distribution_agreements">, cls: string, fundNumber: string): NonNullable<FeesSnapshot["distribution_agreements"]>["reports"][number] | null | undefined {
+  if (!agreedClasses(s).includes(cls)) return undefined;
+  return s.distribution_agreements!.reports.find((r) => !r.ends && r.funds.includes(fundNumber)) ?? null;
+}
+
+function keepLines<S extends FeesSnapshot>(s: S, fundByFund: readonly string[]): S {
   if (!HOUSE_CLASSES.includes(s.provider.class) || s.missing) return s;
-  const can = new Set<string>((s.availability ?? []).filter((a) => a.available === true).flatMap((a) => a.applies_to));
+  const can = new Set<string>([...(s.availability ?? []).filter((a) => a.available === true).flatMap((a) => a.applies_to), ...fundByFund]);
   const blocked = (c: string) => PRICED_ON_PREMISE.includes(c) && !can.has(c);
   const lines = s.lines.flatMap((l) => {
     if (!l.applies_to.some(blocked)) return [l];

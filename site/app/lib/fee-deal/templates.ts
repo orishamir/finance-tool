@@ -17,6 +17,7 @@ import { sourcedOf } from "./values";
 import { leftOutOf, type LeftOutView } from "../left-out";
 import type { DataBar } from "./offers/offer";
 import { buildPrice, type PriceSpec } from "./offers/build";
+import { withOffset } from "./edits/price";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
 export type SlimTemplateFee = Omit<SlimFee, "id">;
@@ -62,12 +63,7 @@ export type LeftWhy =
   /** A line for redeeming a security when it falls due (band `REDEMPTION_BAND`: makam's at maturity), which no purchase or sale pays (F-63). */
   | "redemption"
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
-  | "distribution-yearly"
-  /**
-   * A custody line filled with its maximum on each security whose record's note also prints a maximum on the whole deposit (Leumi's
-   * "11500 לפקדון"): the price list has it, quoted from the record, and the page does not apply it until a data field holds it.
-   */
-  | "per-deposit";
+  | "distribution-yearly";
 
 /** A line a template leaves out, with why, its name as the price list prints it and its channel where it has one, for the reader. */
 export interface LeftLine {
@@ -75,8 +71,6 @@ export interface LeftLine {
   why: LeftWhy;
   name: string;
   channel?: string;
-  /** The record's own words for what is left, where the reason quotes them (a maximum per deposit). */
-  quote?: string;
 }
 
 /**
@@ -121,17 +115,26 @@ function actionPrice(l: Line, num: (v: ValueObject) => Num): { spec: PriceSpec }
   const perUnit = l.rate.unit === "usd_per_share";
   const flat = l.flat_up_to && has(l.flat_up_to.amount) && has(l.flat_up_to.up_to) ? { amount: l.flat_up_to.amount, upTo: l.flat_up_to.up_to } : null;
   const sums = [l.min, l.max, flat?.amount, flat?.upTo, ...(perUnit ? [l.rate] : [])].filter(has);
-  const currencies = new Set(sums.map((b) => CURRENCY_OF_UNIT[b.unit]));
+  // a bound printed in the trade's own currency (data-schema §3.6a item 1) is a sum in whatever currency the trade is in (`inTrade`)
+  const currencies = new Set(sums.map((b) => (b.unit === "trade_ccy_per_trade" ? IN_TRADE : CURRENCY_OF_UNIT[b.unit])));
   if (currencies.has(undefined) || currencies.size > 1) return { left: "bound-currency" };
   const currency = [...currencies][0];
-  const figures = {
+  if (currency === IN_TRADE) return { spec: { form: perUnit ? "perUnit" : "action", figures: figuresOf(l, num, perUnit, flat), inTrade: true } };
+  return { spec: { form: perUnit ? "perUnit" : "action", figures: figuresOf(l, num, perUnit, flat), ...(currency && currency !== "ILS" ? { currency } : {}) } };
+}
+
+/** The mark of a bound printed in the trade's own currency, beside the currencies of `CURRENCY_OF_UNIT`. */
+const IN_TRADE = "in-trade" as const;
+
+/** A price's figures from a line: its rate or sum per unit, its bounds, its cap and its flat price for a small action. */
+function figuresOf(l: Line, num: (v: ValueObject) => Num, perUnit: boolean, flat: { amount: ValueObject; upTo: ValueObject } | null): PriceSpec["figures"] {
+  return {
     ...(perUnit ? { amount: num(l.rate) } : { rate: num(l.rate) }),
     ...(has(l.min) ? { min: num(l.min) } : {}),
     ...(has(l.max) ? { max: num(l.max) } : {}),
     ...(has(l.cap) ? { cap: num(l.cap) } : {}),
     ...(flat ? { flat: num(flat.amount), upTo: num(flat.upTo) } : {}),
   };
-  return { spec: { form: perUnit ? "perUnit" : "action", figures, ...(currency && currency !== "ILS" ? { currency } : {}) } };
 }
 
 /**
@@ -167,25 +170,6 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
   return { sum: l.min, currency };
 }
 
-/**
- * The custody lines whose maximum is on each security and not on the whole deposit, as their records' notes say ("₪ 7,500 לני״ע לרבעון";
- * Leumi's and FIBI's notes name a larger maximum per deposit beside it, which no field of the record holds). A template fills that maximum
- * as one on each security (`perSecurity`), which the page states and never reads as the holding's maximum (§10.6's stated parts). A line
- * whose maximum per deposit is the same figure keeps it as the holding's maximum, which it then is. The records give no field for this, so
- * the list is kept here, each id checked against its record's note by a test, until a data field does.
- */
-export const MAX_PER_SECURITY: ReadonlySet<string> = new Set([
-  "discount-custody-israel",
-  "discount-custody-foreign",
-  "mercantile-custody-israel",
-  "mercantile-custody-foreign",
-  "leumi-custody-israel",
-  "leumi-custody-foreign",
-  "pepper-custody-israel",
-  "pepper-custody-foreign",
-  "fibi-custody-israel",
-  "fibi-custody-foreign",
-]);
 
 /**
  * Why a line no fee reads fills nothing: a bank's yearly distribution share, a redemption at maturity, a line of no list or of another base,
@@ -201,15 +185,6 @@ function unreadWhy(l: Line): LeftWhy {
   return l.band !== null ? "plan" : "another-line";
 }
 
-/**
- * The record's quote of a maximum on the whole deposit, from its maximum's note, where it prints one beside a maximum on each security: the
- * note's first passage in single quotes that names the deposit ("לפקדון", "לפיקדון"); null where none does.
- */
-export function perDepositQuote(l: Line): string | null {
-  // a passage closes at a quote followed by the end, punctuation or a non-Hebrew word, so a geresh inside it ("מקס'") does not cut it
-  const quoted = [...(l.max?.notes ?? "").matchAll(/(?:^|[\s(])'(.+?)'(?=\s*(?:$|[^\u0590-\u05FF\s]))/g)].map((m) => m[1]!);
-  return quoted.find((q) => /לפקדון|לפיקדון/.test(q)) ?? null;
-}
 
 /**
  * The houses whose list prints a percent maximum beside a minimum with nothing on which wins on a small action, so that the maximum wins
@@ -217,13 +192,6 @@ export function perDepositQuote(l: Line): string | null {
  */
 export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive-israel"]);
 
-/**
- * The trade lines whose minimum is printed in the trade's own currency, not in one currency (BRK-48: Excellence's "מינימום 35 בש\"ח/$
- * ארה\"ב/יורו במטבע העסקה" outside the US, IBI's "מינימום 30 במטבע העסקה" in other markets). A template fills their sums as in the trade's
- * currency (`inTrade`), which a reading takes from what is bought and, where that is not known, does not read the fee. The records give the
- * minimum a dollar unit and no field for this, so the list is kept here, each id checked against its record's quote by a test.
- */
-export const IN_TRADE: ReadonlySet<string> = new Set(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "meitav-trade-buy-sell-foreign-world", "interactive-israel-buy-sell-europe"]);
 
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
 export function lineFees(l: Line, own: string, bank = false, capRead = false): Mapped {
@@ -248,9 +216,7 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
       const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
-      // a minimum in the trade's own currency is no sum in the currency its record gives it (BRK-48)
-      const { currency: _c, ...inTrade } = p.spec;
-      return { fees: [fee("trade", IN_TRADE.has(l.id) ? { ...inTrade, inTrade: true, ...notes } : { ...p.spec, ...notes })], left: [] };
+      return { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
       if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
@@ -270,20 +236,26 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       if (!l.period && l.rate.value > 0) return { fees: [], left: ["no-period"] };
       if (!l.period && !has(l.min)) return { fees: [{ kind: "custody", stages: [{ price: { form: "free", src: sourcedOf(l.rate, own) } }] }], left: [] };
       const every = l.period ? PERIOD_MONTHS[l.period]! : 1;
-      const bounds = [l.min, l.max].filter(has);
+      const bounds = [l.min, l.max, l.max_deposit].filter(has);
       if (bounds.some((b) => !NIS_UNITS.has(b.unit))) return { fees: [], left: ["bound-currency"] };
       // a bound keeps the figure and the period the list prints it in ("מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bound;
       // where one bound is printed per month and the other per charge, both are a charge's, the monthly one times the months of a charge
       const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
       const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
       const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      // a maximum on each security is said as one (`MAX_PER_SECURITY`), never as the holding's
-      const maxAs = MAX_PER_SECURITY.has(l.id) ? "perSecurity" : "max";
-      return { fees: [fee("custody", { form: "held", figures: { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { [maxAs]: bound(l.max) } : {}) }, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
+      // a maximum on each security is said as one, never as the holding's; a maximum on the whole deposit printed beside it is the holding's
+      // (data-schema §3.6a item 2: the deal holds one deposit), and a maximum the list prints with no scope is read as the holding's
+      const maxAs = l.max_per === "security" ? "perSecurity" : "max";
+      const figures = { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { [maxAs]: bound(l.max) } : {}), ...(has(l.max_deposit) ? { max: bound(l.max_deposit) } : {}) };
+      return { fees: [fee("custody", { form: "held", figures, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
     }
-    case "fixed_period":
+    case "fixed_period": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
-      return { fees: [fee("fixed_period", { form: "sum", figures: { amount: num(l.rate) }, every: l.period ? PERIOD_MONTHS[l.period]! : 1 })], left: [] };
+      const sum = fee("fixed_period", { form: "sum", figures: { amount: num(l.rate) }, every: l.period ? PERIOD_MONTHS[l.period]! : 1 });
+      // the month's trade fees reduce it, as the list prints (data-schema §3.6a item 4: IBI's "הניתנת לקיזוז כנגד חיובי עמלות")
+      if (l.offset) sum.stages = sum.stages.map((st) => ({ ...st, price: withOffset(st.price, "trade") }));
+      return { fees: [sum], left: [] };
+    }
     case "transfer_out":
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
       if (!NIS_UNITS.has(l.rate.unit)) return { fees: [], left: ["bound-currency"] };
@@ -509,7 +481,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   const ownName = snap.provider.name_he;
   const bank = memberKindOf(snap.provider.class) === "bank";
   const left: LeftLine[] = [];
-  const leave = (l: Line, why: LeftWhy, quote?: string) => left.push({ lineId: l.id, why, name: lineName(l), ...(l.channel ? { channel: l.channel } : {}), ...(quote ? { quote } : {}) });
+  const leave = (l: Line, why: LeftWhy) => left.push({ lineId: l.id, why, name: lineName(l), ...(l.channel ? { channel: l.channel } : {}) });
   const fees: TemplateFee[] = [];
   const read = new Set<string>();
   const ownPlaces: OwnPlace[] = [];
@@ -548,8 +520,6 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
       read.add(l.id);
       for (const why of m.left) leave(l, why);
       if (bankTradeLeavesFunds(l, bank)) leave(l, "bank-funds");
-      const perDeposit = MAX_PER_SECURITY.has(l.id) ? perDepositQuote(l) : null;
-      if (perDeposit) leave(l, "per-deposit", perDeposit);
     }
     const first = base === "fx" ? "currency" : base === "custody" || base === "fixed_period" ? "held" : "what";
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));
@@ -570,13 +540,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
  * What a template leaves out of a deal, with why: a line of a house's price list (`line`, its id), or one of a track's two fees (`fee`):
  * one the product may not charge (PF-06, `none-by-rule`), or one the regulator's data gives no figure for (`no-value`).
  */
-export type LeftOut = { line: string; why: LeftWhy; name?: string; channel?: string; quote?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
-
-/**
- * The fees whose price list prints a maximum on the whole deposit that no field of the record holds, by what a template left out: the
- * custody fee, where a custody line's note quotes one (`per-deposit`, given only on the custody lines of `MAX_PER_SECURITY`).
- */
-export const perDepositFees = (left: readonly LeftOut[]): FeeKindId[] => (left.some((x) => "line" in x && x.why === "per-deposit") ? ["custody"] : []);
+export type LeftOut = { line: string; why: LeftWhy; name?: string; channel?: string } | { fee: "balance" | "deposit"; why: "none-by-rule" | "no-value" };
 
 /**
  * A regulated track as a template (CMA averages, F-68's source): its yearly fee on the savings, charged each month (F-15), and its fee on

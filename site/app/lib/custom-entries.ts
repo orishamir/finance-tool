@@ -402,7 +402,7 @@ export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSna
   const shut = [...(b.sells.israeli ? [] : [closed(IL_CLASSES)]), ...(b.sells.abroad ? [] : [closed(ABROAD_CLASSES)])];
   if (house) {
     const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
-    return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut] };
+    return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut], ...(house.distribution_agreements ? { distribution_agreements: house.distribution_agreements } : {}) };
   }
   // a field left empty is not known: the account has no price, and its row says so; the conversion alone leaves it priced
   // for every fund that does not convert, and without a price for a fund bought abroad, with the reason on that row
