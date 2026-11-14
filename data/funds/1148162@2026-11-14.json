@@ -111,7 +111,7 @@
         "ETF-09"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. The report prints for 2025 the fund's shekel return 1.85% and the tracking asset's change 2.61% (S&P 500 100%, USD 100%) side by side, and the manager attributes most of the gap to expenses paid from fund assets of about 0.8085% (management plus trustee fees). The difference is not computed here (data-update rule). Earlier years printed: 2024 fund 24.06% vs 24.96%; 2023 29.56% vs 29.43%; 2022 -8.15% vs -7.55%. Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+      "notes": "Not printed as one number. The report prints for 2025 the fund's shekel return 1.85% and the tracking asset's change 2.61% (S&P 500 100%, USD 100%) side by side, and the manager attributes most of the gap to expenses paid from fund assets of about 0.8085% (management plus trustee fees). The difference is not computed here (data-update rule). Earlier years printed: 2024 fund 24.06% vs 24.96%; 2023 29.56% vs 29.43%; 2022 -8.15% vs -7.55%. The third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e) and states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר'; its figures are not collected."
     },
     "median_spread": {
       "value": null,

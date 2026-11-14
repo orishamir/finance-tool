@@ -25,6 +25,14 @@ describe("a minimum in the trade's currency (§3.6a item 1)", () => {
     const custody = line(ibi, "ibi-custody");
     expect(checkLineFacts({ ...custody, min: trade.min }, true).join()).toMatch(/on a custody line; only a trade line takes one/);
   });
+  it("a bound left open between currencies names them, and only beside such a bound (bound_readings)", () => {
+    const l = line(ibi, "ibi-buy-sell-foreign-other-markets");
+    const open = { ...l, min: { ...l.min!, unit: "dearer_ccy_per_trade" as const }, bound_readings: { currencies: ["USD", "GBP"], open_questions: ["BRK-OQ24"] } };
+    expect(checkLineFacts(open, true)).toEqual([]);
+    expect(checkLineFacts({ ...open, bound_readings: undefined }, true).join()).toMatch(/names the currencies it may be in/);
+    expect(checkLineFacts({ ...l, bound_readings: open.bound_readings }, true).join()).toMatch(/bound_readings belongs/);
+    expect(checkLineFacts({ ...open, base: "custody" }, true).join()).toMatch(/only a trade line takes one/);
+  });
   it("fails on currencies with no bound in the trade's currency beside them", () => {
     const l = line(ibi, "ibi-custody");
     expect(checkLineFacts({ ...l, trade_currencies: ["USD"] }, true).join()).toMatch(/trade_currencies belongs/);

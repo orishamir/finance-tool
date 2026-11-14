@@ -9,7 +9,7 @@ const fee = valueObject.nullable().optional();
  * data-schema §3.5: a fee lowered for a stated period, as the manager or the trustee reports it ("מבצע"). `fee` names the key of `fees` it
  * lowers; `rate` is the rate charged during the promotion, in the fee's unit, its `effective_from` and `effective_to` the promotion's first and
  * last days as the report prints them, its source the report. The fee's own value holds the rate outside the promotion; F-121 charges the
- * promotion's rate in a run's months before it ends and the fee's own rate after.
+ * promotion's rate in the run's months it covers whole and the fee's own rate in the others.
  */
 export const fundPromotion = z.strictObject({
   fee: z.enum(["fixed_management", "variable_management", "trustee"]),

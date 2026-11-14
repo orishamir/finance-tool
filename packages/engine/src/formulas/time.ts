@@ -51,6 +51,13 @@ export function dayAfter(date: string): string {
   return d.toISOString().slice(0, 10);
 }
 
+/** The calendar day before a date (`YYYY-MM-DD`), in UTC so no clock or zone moves it. */
+export function dayBefore(date: string): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
 /** The run's month in which a calendar date falls, month 1 starting on the run date (`YYYY-MM-DD` both); 0 or less for a date before it. */
 export function monthOfDate(runDate: string, date: string): number {
   const ym = (d: string) => Number(d.slice(0, 4)) * 12 + Number(d.slice(5, 7)) - 1;

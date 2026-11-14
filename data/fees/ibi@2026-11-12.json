@@ -636,9 +636,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-24",
-              "BRK-15",
-              "BRK-25"
+              "BRK-48",
+              "BRK-24"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -661,9 +660,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-24",
-              "BRK-15",
-              "BRK-25"
+              "BRK-48",
+              "BRK-24"
             ],
             "state": "sourced",
             "notes": "The spread in this step."
@@ -696,9 +694,8 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-24",
-              "BRK-15",
-              "BRK-25"
+              "BRK-48",
+              "BRK-24"
             ],
             "state": "sourced",
             "notes": "The spread in this step."

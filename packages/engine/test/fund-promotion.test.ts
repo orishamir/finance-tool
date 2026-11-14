@@ -44,10 +44,13 @@ describe("a fund fee's promotion (F-121)", () => {
     const now = promotedDrag(0.012, [{ cut: 0.012, from: "2026-07-01", to: "2026-12-31" }], "2026-11-14");
     expect([1, 2, 3].map(now.at)).toEqual([0, 0.012, 0.012]);
   });
-  it("a promotion that starts on a month's first day still pays the fee's own rate in that month, the cautious reading", () => {
-    // 14.1.2027 is month 3's first day: month 3 pays the own rate, month 4 the promotion's
-    const d = promotedDrag(0.012, [{ cut: 0.012, from: "2027-01-14", to: "2027-06-30" }], "2026-11-14");
-    expect([2, 3, 4].map(d.at)).toEqual([0.012, 0.012, 0]);
+  it("a promotion that starts on a month's first day covers that month whole, as one that ends on a month's last day covers its last month", () => {
+    // 14.1.2027 is month 3's first day: month 3 pays the promotion's rate; 13.4.2027 is month 5's last day, so month 5 does too and month 6 not
+    const d = promotedDrag(0.012, [{ cut: 0.012, from: "2027-01-14", to: "2027-04-13" }], "2026-11-14");
+    expect([2, 3, 4, 5, 6].map(d.at)).toEqual([0.012, 0, 0, 0, 0.012]);
+    // a day later, 15.1.2027, month 3 is covered in part and pays the fee's own rate
+    const later = promotedDrag(0.012, [{ cut: 0.012, from: "2027-01-15", to: "2027-04-13" }], "2026-11-14");
+    expect([3, 4].map(later.at)).toEqual([0.012, 0]);
   });
   it("where the month matters (a return), a shifted window gives another figure", () => {
     const grow = (promotions: NonNullable<SecuritiesInput["fund"]["drag"]>["promotions"]) =>

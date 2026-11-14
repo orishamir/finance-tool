@@ -264,10 +264,10 @@ export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
 }
 
 /** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, for the ban's rules chip. */
-export function UnreadWords({ banned, noCurrency, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; unmatched?: boolean; fee?: string }) {
-  const why = unreadReason({ banned, noCurrency, unmatched });
+export function UnreadWords({ banned, noCurrency, notPrinted, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; notPrinted?: boolean; unmatched?: boolean; fee?: string }) {
+  const why = unreadReason({ banned, noCurrency, notPrinted, unmatched });
   if (why === "banned") return <BannedWords ban={banned!} {...(fee ? { fee } : {})} />;
-  return <>{why === "noCurrency" ? copy.cases.noCurrency : why === "unmatched" ? copy.cases.unmatched : copy.builder.facts.noPrice}</>;
+  return <>{why === "noCurrency" ? copy.cases.noCurrency : why === "notPrinted" ? copy.cases.notPrinted : why === "unmatched" ? copy.cases.unmatched : copy.builder.facts.noPrice}</>;
 }
 
 /**

@@ -42,6 +42,8 @@ export interface BuilderRow extends FeeRef {
   unmatched: boolean;
   /** Whether its case's sums are in the action's currency, which the deal does not know for the picks: its card says so. */
   noCurrency: boolean;
+  /** Whether its case's sums in the action's currency are printed for other currencies than the picks' only (F-114): its card says so. */
+  notPrinted: boolean;
   /** How the ban on the fee here is said (`DealRead.banned`): it is read as nothing charged, and its card says it is banned. */
   banned?: BanSaid;
   /** A sale's own prices from the reading's month on, where a sale is priced apart. */
@@ -213,6 +215,7 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
     priced: given,
     unmatched: r.unmatched.includes(fee.id),
     noCurrency: r.noCurrency.includes(fee.id),
+    notPrinted: r.notPrinted.includes(fee.id),
     ...(banned ? { banned } : {}),
     ...(sale ? { sale } : {}),
     ...(c ? { next: { at: monthKey(c.at), change: c.kind } } : {}),

@@ -315,6 +315,8 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return `${fmt.number(value * 100)} ${numbers.agorotPerDollar}`;
     case "trade_ccy_per_trade":
       return `${fmt.number(value)} ${numbers.inTradeCurrency}`;
+    case "dearer_ccy_per_trade":
+      return `${fmt.number(value)} ${numbers.inDearerCurrency}`;
     case "fx_per_eur":
       return withMinus(ecbRate.format(value));
     case "pct":

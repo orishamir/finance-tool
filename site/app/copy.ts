@@ -74,6 +74,11 @@ export const numbers = {
   monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   inTradeCurrency: "במטבע העסקה", // a bound printed in whatever currency the trade is in (data-schema §3.6a item 1)
+  /** A bound whose currency the list leaves open between readings, priced in the dearer (`dearer_ccy_per_trade`, D56): "2.5 דולר או ליש״ט, לפי היקר מביניהם". */
+  inDearerCurrency: "במטבע היקר מבין השניים",
+  dearerOf: (amount: string, currencies: string[]) => `${amount} ${currencies.join(" או ")}, לפי היקר מביניהם`,
+  /** The currencies such a bound names, in words. */
+  currencyNames: { USD: "דולר", GBP: "ליש״ט", EUR: "אירו", CHF: "פרנק שוויצרי", ILS: "שקל" } as Record<string, string>,
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
   weak: { secondary: "משני", institution: "לפי החברה" },
@@ -2047,6 +2052,8 @@ export const feeDeal = {
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
     /** A fee whose sums are in the action's currency, read for something bought in a currency the deal does not know. */
     noCurrency: "הסכומים שלה במטבע של העסקה, ובמה שבחרתם המטבע לא ידוע, ולכן העמלה לא נקראת.",
+    /** A fee whose sums in the trade's currency the list prints for other currencies only (F-114, data-schema §3.6a item 1). */
+    notPrinted: "התעריפון לא מדפיס את הסכומים שלה למטבע של מה שבחרתם, רק למטבעות אחרים, ולכן העמלה לא נקראת.",
     /** A fee the law bans here (the rule table's ban), as its card, its line in the glance and the law card say it, before its rules. */
     ban: {
       law: "כללי הבנקאות אוסרים על בנק לגבות אותה על מה שבחרתם, ולכן היא לא עולה כלום.",
@@ -2755,8 +2762,8 @@ export const r4workbench = {
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
     noAverage: (cls: string) => `לא נאסף ממוצע לשורות שחלות על ${cls}.`,
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
-    /** F-12: the line prints its minimum in the trade's currency for some currencies only (`trade_currencies`), and the fund trades in another */
-    notPrintedForCurrency: (name: string, printed: string[], currency: string) => `לעסקה ב${currency} אין בתעריפון מינימום: בשורה ״${name}״ המינימום מודפס רק לעסקאות ב${andList(printed)}.`,
+    /** F-12, F-114: the list's own words print the line's minimum for some currencies only (`trade_currencies`), and the fund trades in another: no price */
+    notPrintedForCurrency: (name: string, printed: string[], currency: string) => `אין כאן מחיר לעסקה ב${currency}: בשורה ״${name}״ המינימום מודפס רק לעסקאות ב${andList(printed)}, ולעסקה כזו התעריפון לא קובע מינימום.`,
     /** copy.md 8.0: the engine refuses a tariff whose lines it cannot choose between (a plan, a sub-class); the page says so rather than guess a price */
     ambiguous: (cls: string) => `בתעריפון יש כמה שורות שחלות על ${cls}, ולאתר אין עדיין דרך לבחור ביניהן בלי לנחש:`,
     /** a fee per unit bought, and the fund's unit price is not collected */

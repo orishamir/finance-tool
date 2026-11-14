@@ -139,18 +139,21 @@ describe("sums in the trade's currency", () => {
   });
 });
 
-describe("sums in the trade's currency printed for some currencies only (trade_currencies, §10.6)", () => {
+describe("sums in the trade's currency printed for some currencies only (trade_currencies, F-114, §10.6)", () => {
   /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-48). */
   const printed: Price = { form: "action", rate: typed(0.4), min: typed(35), inTrade: ["ILS", "USD", "EUR"] };
   const own = (currency: string): FeeDeal => ({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "mine", place: "abroad", currency }], fees: [trade(printed)] } as FeeDeal);
   it("reads the minimum in a currency the list prints it for", () => {
     expect(read(own("EUR")).fees[0]!.stages[0]!.price).toMatchObject({ min: { v: 35 }, currency: "EUR" });
   });
-  it("gives a trade in another currency no bound: the list prints none for it", () => {
-    const p = read(own("GBP")).fees[0]!.stages[0]!.price;
-    expect(p).toMatchObject({ rate: { v: 0.4 }, currency: "GBP" });
-    expect(p).not.toHaveProperty("min");
-    expect(p).not.toHaveProperty("inTrade");
+  it("does not read the fee for a trade in another currency, and says why: the list prints no bound for it (F-114)", () => {
+    const r = read(own("GBP"));
+    expect(r.fees).toHaveLength(0);
+    expect(r.unmatched).toEqual(["fee-trade"]);
+    expect(r.notPrinted).toEqual(["fee-trade"]);
+    expect(r.noCurrency).toEqual([]);
+    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", notPrinted: true });
+    expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, notPrinted: true });
   });
   it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
     const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
@@ -160,6 +163,17 @@ describe("sums in the trade's currency printed for some currencies only (trade_c
     const deal = account([trade(printed)]);
     expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
+  });
+});
+
+describe("a bound the list leaves open between currencies (bound_readings, D56)", () => {
+  it("a template fills it in the dearer currency it is given, and leaves the line out where it is given none", async () => {
+    const { houseTemplate } = await import("./templates");
+    const snap = latestSnapshots().find((x) => x.id === "interactive-israel")!;
+    const open = { ...snap, lines: snap.lines.map((l) => (l.id === "interactive-israel-buy-sell-europe" ? { ...l, trade_currencies: undefined, min: { ...l.min!, unit: "dearer_ccy_per_trade" as const }, bound_readings: { currencies: ["USD", "GBP"], open_questions: ["BRK-OQ24"] } } : l)) };
+    const trade = JSON.stringify(houseTemplate(open, () => "GBP").fees.find((f) => f.kind === "trade"));
+    expect(trade).toMatch(/"min":\{"v":2\.5[^}]*\}[^]*"currency":"GBP"|"currency":"GBP"[^]*"min":\{"v":2\.5/);
+    expect(houseTemplate(open).left).toContainEqual(expect.objectContaining({ lineId: "interactive-israel-buy-sell-europe", why: "bound-currency" }));
   });
 });
 

@@ -38,7 +38,7 @@ const num = (v: Figure | null | undefined): v is Figure => !!v && typeof v.value
 const bound = (v: Figure | null | undefined): Figure | null => (num(v) ? v : null);
 
 /** Bounds of a trade or a conversion that read as "for each one" beside a rate that says so: shekels, dollars, euros or pounds. */
-const PER_ORDER = new Set(["nis", "nis_per_trade", "usd", "usd_per_trade", "eur", "gbp_per_trade", "trade_ccy_per_trade"]);
+const PER_ORDER = new Set(["nis", "nis_per_trade", "usd", "usd_per_trade", "eur", "gbp_per_trade", "trade_ccy_per_trade", "dearer_ccy_per_trade"]);
 
 /** A flat price for an order or a conversion up to a sum, in the line's own currency (F-12, F-13); none where the line has none. */
 function flatPart(l: SnapLine, per: RatePer): RatePart[] | null {
