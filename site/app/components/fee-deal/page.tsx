@@ -177,7 +177,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     oc.sheet.unfold();
     doc.setFocus({ fee: fee.id, on: "box" });
   };
-  // the open fee's bin, beside its name: the fee's undo line takes its place, as tall as its block was, so a second press there finds no control
+  // the open fee's bin, beside its name: the fee's undo line takes its place, as tall as its block was, and stands where the block stood on
+  // the screen whichever fee opens in its stead, the next or, after the last, the one above (`UndoLine.standAt`), so a second press of a
+  // double-click lands on the line, never in the fee that opened
   const onRemoveFee = (feeId: string) => kept(removeFeeKept(deal, feeId, chosen));
   // another kind of product: the fees it does not have leave the deal, kept for the undo where any of them held something
   const onKind = (id: ProductId) => {

@@ -2,14 +2,15 @@
 // what happened, and "ביטול", which puts the deal back as it was (lib/fee-deal/undo.ts). It takes the focus when it appears for the change
 // just made (`take`), brought into view, not when it is drawn again for one made before (a panel opened again on its fee). Its time to
 // go stops while the focus is in it or the pointer is over it (`onHold`); when it goes while it holds the focus, the focus moves to what
-// took its place (`refocus`), never to the page's body.
+// took its place (`refocus`), never to the page's body. The line of something taken away by a press can stand where that thing stood on
+// the screen (`standAt`), whatever grew above it, so a second press of a double-click lands on the line.
 import { useRef, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Button, Card, cx } from "../kit";
 import { bringIntoView } from "./in-view";
 
-export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUndo, height, as = "li", className }: {
+export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUndo, height, standAt, as = "li", className }: {
   /** What happened, in words. */
   children: ReactNode;
   onUndo: () => void;
@@ -23,6 +24,11 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
   refocusOnUndo?: boolean;
   /** The height of what the line stands in for (a card taken away), so nothing under it moves until it goes. */
   height?: number;
+  /**
+   * Where the top of what the line stands in for was in the window as it was pressed away: as the line appears, the page scrolls at once by
+   * what moved it from there (a fee above it that opened in its stead), so the line stands under the pointer that pressed.
+   */
+  standAt?: number;
   as?: "li" | "div";
   className?: string;
 }) {
@@ -36,6 +42,10 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
   // a layout effect: its cleanup runs before the line leaves the page, while the focus is still in it
   useIsoLayoutEffect(() => {
     const el = line.current;
+    if (el && standAt !== undefined) {
+      const moved = el.getBoundingClientRect().top - standAt;
+      if (Math.abs(moved) >= 1) window.scrollBy({ top: moved, behavior: "instant" });
+    }
     // the line just made takes the focus where the reader can see it, above a phone's pinned sheet too
     if (take()) {
       el?.querySelector("button")?.focus({ preventScroll: true });

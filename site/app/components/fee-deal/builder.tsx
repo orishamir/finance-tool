@@ -252,10 +252,22 @@ export function FeesColumn({
   const root = useRef<HTMLDivElement>(null);
   const adding = useRef<HTMLDivElement>(null);
   const heights = useRef(new Map<string, number>());
+  // where the top of a fee pressed away by its bin was in the window, for its undo line to stand there as it appears (`UndoLine.standAt`);
+  // read once, by the line drawn in the same pass
+  const pressedAway = useRef<{ fee: string; top: number } | null>(null);
+  const blockActions: BlockActions = {
+    ...actions,
+    onRemoveFee: (feeId) => {
+      const top = blockOf(feeId)?.getBoundingClientRect().top;
+      pressedAway.current = top === undefined ? null : { fee: feeId, top };
+      actions.onRemoveFee(feeId);
+    },
+  };
   // the fees whose folded tracks are open
   const [unfolded, setUnfolded] = useState<ReadonlySet<string>>(new Set());
   const blockOf = (feeId: string) => root.current?.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(feeId)}"]`);
   useIsoLayoutEffect(() => {
+    pressedAway.current = null;
     for (const li of root.current?.querySelectorAll<HTMLElement>("li[data-fee]") ?? []) heights.current.set(li.dataset.fee!, li.getBoundingClientRect().height);
     if (!focus) return;
     const li = blockOf(focus.fee);
@@ -294,7 +306,15 @@ export function FeesColumn({
     return (id ? feeFocus(blockOf(id)) : null) ?? adding.current?.querySelector("button");
   };
   const undoLine = (l: FeeUndoLine) => (
-    <UndoLine key={`undo:${l.what.kind}:${l.what.feeId}`} onUndo={l.onUndo} onHold={l.onHold} take={l.take} refocus={afterRemoved} height={heights.current.get(l.what.feeId)}>
+    <UndoLine
+      key={`undo:${l.what.kind}:${l.what.feeId}`}
+      onUndo={l.onUndo}
+      onHold={l.onHold}
+      take={l.take}
+      refocus={afterRemoved}
+      height={heights.current.get(l.what.feeId)}
+      standAt={pressedAway.current?.fee === l.what.feeId ? pressedAway.current.top : undefined}
+    >
       {l.words}
     </UndoLine>
   );
@@ -332,7 +352,7 @@ export function FeesColumn({
                 const cl = caseLine?.feeId === it.fee.id && !caseLine.inCase ? caseLine : null;
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
-                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} unfolded={unfolded.has(it.fee.id)} formLine={formLine(it.fee)} actions={actions} onUnfold={unfold(it.fee.id)} onFee={onFee} />
+                    <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} unfolded={unfolded.has(it.fee.id)} formLine={formLine(it.fee)} actions={blockActions} onUnfold={unfold(it.fee.id)} onFee={onFee} />
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
                         {cl.words}
