@@ -87,7 +87,8 @@ const note = (id: Note) => (): PartWords => ({ lead: pp.notes[id]! });
  * not given, a price of another form).
  */
 export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>> = {
-  free: () => ({ lead: copy.price.free }),
+  // a free price a template filled is its sourced value, which says it and opens its source; one the person made is the word alone
+  free: ({ view }) => (view.free ? { figure: view.free } : { lead: copy.price.free }),
   share: ({ kind, view }) => ({ ...fig(view.figures.rate), tail: ` ${perAction(kind)}` }),
   perUnit: ({ view }) => ({ ...fig(view.figures.amount), tail: ` ${pp.perUnit}` }),
   perAction: ({ kind, view }) => ({ ...fig(view.figures.amount), tail: ` ${perAction(kind)}` }),

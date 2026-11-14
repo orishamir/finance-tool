@@ -10,7 +10,7 @@ import { boundsAction, charged, onAction } from "./offers/capabilities";
 import { banFor, type Ban } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
-import { figure, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
+import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
 
 /**
  * How a ban is said (offers/offer.ts, `Ban`): the rules that ban the fee, whether that is the site's reading of them, and whether a
@@ -107,6 +107,8 @@ export interface PriceView {
   /** The months a share of what is held prints its bounds per, where not per charge ("מינימום 40 ₪ בחודש"). */
   boundsEvery?: Months;
   currency?: string;
+  /** A free price a template filled: nothing charged, with its record's source (`freeValue`). */
+  free?: SiteValue;
   yearly?: SiteValue;
   /** The parts of the price beside its figures (F-116, F-117, and the parts §10.6 states without computing), where it has any. */
   parts?: PartsView;
@@ -157,6 +159,8 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
       const yearly = p.every === 12 ? figures.amount! : reading((p.amount.v * 12) / p.every, "nis", "F-111", { [inputKey(fees, i)]: figures.amount! }, today);
       return { form: "sum", figures, every: p.every, yearly, ...parts };
     }
+    case "free":
+      return { form: "free", figures, ...(p.src ? { free: freeValue(p.src) } : {}) };
     default:
       return { form: p.form, figures, ...currency, ...parts };
   }

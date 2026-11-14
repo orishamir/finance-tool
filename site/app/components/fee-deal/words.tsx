@@ -117,7 +117,8 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
   let body: ReactNode;
   switch (price.form) {
     case "free":
-      body = p.free;
+      // a free price a template filled opens its record's source, as a sourced figure does
+      body = price.free ? <Fig value={price.free} /> : p.free;
       break;
     case "action":
     case "perUnit": {

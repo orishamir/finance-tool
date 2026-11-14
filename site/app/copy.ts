@@ -82,7 +82,7 @@ export const numbers = {
   no: "לא",
   /** values the rule records write as English words, shown in Hebrew */
   // and the deposit records' linkage and tax bucket, and a parameter's wrapper: a sheet with no word of its own
-  enums: { unlinked: "לא צמוד", cpi: "צמוד למדד", none: "אין", unlinked_15: "ריבית לא צמודה", linked_25: "ריבית צמודה", makam: "מק״מ" } as Record<string, string>,
+  enums: { unlinked: "לא צמוד", cpi: "צמוד למדד", none: "אין", free: "חינם", unlinked_15: "ריבית לא צמודה", linked_25: "ריבית צמודה", makam: "מק״מ" } as Record<string, string>,
   monthsHe: { January: "בינואר", February: "בפברואר", March: "במרץ", April: "באפריל", May: "במאי", June: "ביוני", July: "ביולי", August: "באוגוסט", September: "בספטמבר", October: "באוקטובר", November: "בנובמבר", December: "בדצמבר" } as Record<string, string>,
 } as const;
 

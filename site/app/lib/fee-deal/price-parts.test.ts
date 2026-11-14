@@ -283,6 +283,25 @@ describe("the templates", () => {
     expect(readDeal(JSON.parse(JSON.stringify(ibi)))).toEqual(ibi);
     expect(decodeDeal(encodeDeal(ibi))!.fees.find((f) => f.kind === "custody")!.stages?.[0]?.price ?? decodeDeal(encodeDeal(ibi))!.fees.find((f) => f.kind === "custody")!.cases![0]!.stages[0]!.price).toMatchObject({ form: "free", src: { strength: "institution" } });
   });
+  it("show IBI's free custody with its record's source wherever the page shows a sourced price's source, and a free price of the person's own as the word alone", () => {
+    const ibi = { ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "held", is: "tase" }] };
+    const r = read(ibi);
+    const custody = ibi.fees.find((f) => f.kind === "custody")!;
+    // the builder's line and the open case: the free part is its sourced value
+    const row = builder(r).rows.find((x) => x.fee === custody.id)!;
+    const parts = row.block.kind === "slim" ? row.block.parts : row.block.rows.flatMap((x) => x.parts);
+    const said = parts.find((p) => p.id === "free")!.words;
+    expect(said.lead).toBeUndefined();
+    expect(said.figure).toMatchObject({ value: "free", unit: "text", state: "sourced", source: { strength: "institution" } });
+    const open = panel(r, custody.id)!.open.buy[0]!.parts.find((p) => p.id === "free")!;
+    expect(open.words.figure?.state).toBe("sourced");
+    // the reading's price, which the glance, the period cards and the law card say
+    const read0 = readingOf(r, data.fx).periods[0]!.rows.find((x) => x.fee === custody.id);
+    expect(read0?.price.free?.state).toBe("sourced");
+    // the person's own free price has no source: the word alone
+    const own = builder(read({ id: "d", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "free" } }] }] })).rows[0]!;
+    expect(own.block.kind === "slim" && own.block.parts[0]!.words).toEqual({ lead: copy.price.free });
+  });
   it("fill a custody maximum on each security as one, stated and never read as the holding's maximum (§10.6's stated parts)", () => {
     const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
     // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit

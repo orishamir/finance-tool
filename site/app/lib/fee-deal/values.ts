@@ -36,9 +36,16 @@ export function sourcedOf(v: ValueObject, own?: string): Sourced {
 /** A figure of a deal as a value object: sourced with its record's source where a template filled it, else entered by the person. */
 export function figure(n: Num, unit: Unit, today: string, about?: string): SiteValue {
   if (!n.src) return entered(n.v, unit, today, about);
-  const s = n.src;
+  return sourcedValue(n.v, unit, n.src, about);
+}
+
+/** A free price a template filled, as a value object: nothing charged (`free`, which the page says as its word for it), sourced from its record. */
+export const freeValue = (src: Sourced): SiteValue => sourcedValue("free", "text", src);
+
+/** A value a template filled, with its record's source. */
+function sourcedValue(value: number | string, unit: Unit, s: Sourced, about?: string): SiteValue {
   return {
-    value: n.v,
+    value,
     unit,
     source: { url: s.url, title: s.title, publisher: s.publisher, strength: s.strength, ...(s.page ? { page: s.page } : {}) },
     checked: s.checked,
