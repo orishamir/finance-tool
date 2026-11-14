@@ -18,8 +18,9 @@ describe("the data the loader ships", () => {
     expect(gemel.companies).toHaveLength(12);
     expect(view("provident-for-annuity").tracks).toHaveLength(172);
     expect(view("child-savings-provident").tracks).toHaveLength(30);
-    expect(view("pension-comprehensive").tracks).toHaveLength(125);
-    expect(view("pension-general").tracks).toHaveLength(119);
+    // the pension funds' general tracks are closed to new joiners and left out (CAT-19, D51): five comprehensive, three general
+    expect(view("pension-comprehensive").tracks).toHaveLength(120);
+    expect(view("pension-general").tracks).toHaveLength(116);
   });
 
   it("the pension products have no kinds, and say so", () => {

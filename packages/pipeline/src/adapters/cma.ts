@@ -52,12 +52,18 @@ export const USER_AGENT =
 // Pipeline configuration (not site parameters): the sanity thresholds.
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
+/** A pension fund's general investment track: the name's last word is "כללי" (CAT-19); "פנסיה כללית", the general fund itself, is not. */
+const PENSION_GENERAL_TRACK = /(?:^|[\s\-])כללי\s*$/;
+
 /**
  * A track closed to joiners, left out with those companies: the regulator marks it as for workers of
  * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
- * of investment tracks).
+ * of investment tracks), or it is a pension fund's general track ("כללי" as the track's last word, pensia-net only), which the
+ * investment-tracks circular closes to members who were not in it on 1.1.2016 (CAT-19). Gemelnet's general tracks are not read by
+ * this rule: which of its "כללי" rows the same section closes was not checked one by one.
  */
-export const closedTrack = (population: string, name: string): boolean => population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name);
+export const closedTrack = (population: string, name: string, dataset?: CmaDataset): boolean =>
+  population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name) || (dataset === "pensia-net" && PENSION_GENERAL_TRACK.test(name));
 
 /**
  * Managing companies left out of the data, by legal id (43 companies): their funds serve one
@@ -495,7 +501,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
   for (const r of rows) {
-    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"))) continue;
+    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"), ctx.config.dataset)) continue;
     // a Halacha or Sharia track: the regulator classes it "הלכתי" in gemelnet; pensia-net has no classification, so its name says it
     if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();

@@ -154,6 +154,13 @@ describe("normalise", () => {
     expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי")).toBe(false);
   });
 
+  it("leaves out a pension fund's general track, closed to new joiners (CAT-19), and keeps the general fund's other tracks", () => {
+    for (const name of ["כלל פנסיה כללי", "מנורה מבטחים פנסיה - כללי", "הראל פנסיה כללית - כללי", "הראל  פנסיה - גילעד כללי"]) expect(closedTrack("", name, "pensia-net"), name).toBe(true);
+    for (const name of ["מיטב פנסיה כללית לבני 50 ומטה", "הראל פנסיה כללית מניות", "מור פנסיה כללית - מסלול בסיסי למקבלי קצבה"]) expect(closedTrack("", name, "pensia-net"), name).toBe(false);
+    // gemelnet's general tracks are not read by this rule
+    expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet")).toBe(false);
+  });
+
   it("reports a population it does not know, in place of treating the track as open", () => {
     const csv = decodeWindows1255(fixture).replaceAll("כלל האוכלוסיה", "אוכלוסיה חדשה");
     expect(normalise(csv, ctx).problems.join(" ")).toContain("unknown TARGET_POPULATION");
@@ -172,7 +179,7 @@ describe("normalise", () => {
     const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
     for (const dataset of ["gemelnet", "pensia-net"] as const) {
       for (const period of listPeriods(cmaDir, dataset)) {
-        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!));
+        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!, dataset));
         expect(left.map((f) => f.fund_id)).toEqual([]);
       }
     }
