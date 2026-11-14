@@ -39,6 +39,12 @@ export const depositTerms = z.strictObject({
   type_447: z.string().min(1),
   wrapper_id: wrapperId,
   term_months: valueObject,
+  /**
+   * The term in days, where the bank's table prints it as one count of days beside the term ("פיקדון ל-3 חודשים (90 יום)", "30 יום"),
+   * a value object in `days` whose notes quote it. F-21 counts a term under a year by these days. Absent where the table prints none, or
+   * prints a range of days ("30-59 יום").
+   */
+  term_days: valueObject.optional(),
   rate_type: z.enum(["fixed", "variable"]),
   /** What a variable rate is tied to (e.g. "prime"); null for a fixed rate. */
   anchor: z.string().min(1).nullable().optional(),
@@ -50,6 +56,17 @@ export const depositTerms = z.strictObject({
    * defines the column only in some product terms, as an average where the rate is not uniform over the term. Absent otherwise.
    */
   rate_effective: valueObject.optional(),
+  /**
+   * How the product calculates interest, where the bank prints it (BANK-50: the disclosure rules' Schedule A leaves `m`, the times a year
+   * interest is calculated, to each product): `effective_annual`, the effective annual rate the bank prints beside the nominal one ("ריבית
+   * מתואמת", Mizrahi-Tefahot's "ריבית אפקטיבית"), in `pct_per_year`; `periods_per_year`, the times a year the bank's words say interest is
+   * calculated or credited ("בריבית דריבית חודשית" is 12, "בכל סוף רבעון" 4), in `count`. Each value's notes quote the record. F-21 reads it
+   * for a term over a year and F-26 for a current account. Absent where the bank prints neither.
+   */
+  interest_calc: z
+    .strictObject({ effective_annual: valueObject.optional(), periods_per_year: valueObject.optional() })
+    .refine((c) => c.effective_annual !== undefined || c.periods_per_year !== undefined, { message: "interest_calc holds an effective annual rate or the times a year interest is calculated" })
+    .optional(),
   linkage: z.enum(["none", "cpi", "fx"]),
   // null only with an open source: a null bucket at another strength would read "not found in the source", not the open question and its lock
   tax_bucket: valueObject.and(z.object({ value: taxBucket.nullable() })).refine((t) => t.value !== null || t.source.strength === "open", {

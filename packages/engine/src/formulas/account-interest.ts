@@ -126,10 +126,12 @@ export type OfferRecord = Pick<DepositTerms, "id" | "rate_offered" | "amount_ran
 /**
  * F-108's test of one offer: an amount opens it when it is at or above the offer's minimum and at or below its maximum. No maximum
  * (`max` null) is no upper limit. A bound that is recorded but not a number is unknown, not open: an unknown minimum opens no amount,
- * and an unknown maximum opens only the minimum itself, the one amount the bank's row surely covers (Yahav's one-year fixed deposit
- * from 50,000 ₪, whose table prints its maximum short of a digit). The amount at a bound the table prints as not included
- * (`min_edge` or `max_edge` `excluded`: Mizrahi-Tefahot's "טווח סכום להפקדה (לא כולל)") is outside, and at a bound two tiers of one
- * product both print (`unknown`: Yahav's "עד 50,000" and "50,000 ומעלה") it is not opened, since the table does not say which tier takes it.
+ * and an unknown maximum opens only the minimum itself, the one amount the bank's row surely covers, unless that minimum's own edge is
+ * unknown. The amount at a bound the table prints as not included (`min_edge` or `max_edge` `excluded`: Mizrahi-Tefahot's "טווח סכום
+ * להפקדה (לא כולל)") is outside, and at a bound two tiers of one product both print (`unknown`) it is not opened, since the table does not
+ * say which tier takes it: Yahav's one-year fixed deposit from 50,000 ₪ ("50,000 עד 100,00", its maximum short of a digit) opens no
+ * amount at all, 50,000 ₪ being also the top of "1,000 עד 50,000" and every amount above it under its unreadable maximum; and 100,000 ₪,
+ * where that misprinted top meets "100,000 עד 200,000", is unknown at both tiers.
  */
 export function amountOpens(r: Pick<DepositTerms, "amount_range">, amount: number): boolean {
   const { min: minV, max, min_edge, max_edge } = r.amount_range;
@@ -143,9 +145,9 @@ export function amountOpens(r: Pick<DepositTerms, "amount_range">, amount: numbe
 
 /**
  * F-108: an amount the offer's unknown bound leaves undecided, which is unknown at the offer and never closed: above the minimum where the
- * maximum is recorded with no number (Yahav's one-year fixed deposit from 50,000 ₪ at 60,000 ₪), at or below a known maximum (any
- * amount where there is none) where the minimum is so recorded, and the amount at a bound whose edge is `unknown` (Yahav's 50,000 ₪,
- * printed by two tiers). False where the amount opens the offer or the known bounds shut it.
+ * maximum is recorded with no number (Yahav's one-year fixed deposit from 50,000 ₪, at 60,000 ₪ and at 100,000 ₪), at or below a known
+ * maximum (any amount where there is none) where the minimum is so recorded, and the amount at a bound whose edge is `unknown` (Yahav's
+ * 50,000 ₪ and 100,000 ₪, each printed by two tiers). False where the amount opens the offer or the known bounds shut it.
  */
 export function amountUnknown(r: Pick<DepositTerms, "amount_range">, amount: number): boolean {
   if (amountOpens(r, amount)) return false;

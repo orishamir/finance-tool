@@ -90,7 +90,12 @@ describe("buildInstrumentTerms: a deposit's exit points", () => {
     const built = buildInstrumentTerms("savings-plan", "deposit", { deposit_terms: rec.id }, { fees: [], funds: [], deposits, rules, today: "2026-11-12" });
     const terms = depositOf(built);
     expect(terms).toMatchObject({ termMonths: 36, exitFirstMonth: 6, exitEveryMonths: 3 });
-    const plan = runInputs(loadWrappers().find((w) => w.id === "savings-plan")!, loadParameters(), { deposit: terms });
+    // the record prints no effective rate and no compounding, so a run of it stops on BANK OQ21 (BANK-50's m is open); the exit points are
+    // read here on a plan whose terms are taken to calculate interest yearly
+    expect(terms.interestCalc).toBeUndefined();
+    const open = runInputs(loadWrappers().find((w) => w.id === "savings-plan")!, loadParameters(), { deposit: terms });
+    expect(() => runPlanned(open, { rules: Object.values(rules), runDate: "2026-11-12" })).toThrow(/BANK-OQ21/);
+    const plan = runInputs(loadWrappers().find((w) => w.id === "savings-plan")!, loadParameters(), { deposit: { ...terms, interestCalc: { periodsPerYear: 1 } } });
     // one sum paid in on the first month, so the plan and its one piece count alike; what the last day says of money inside its term
     const said = (months: number) => {
       const codes = runPlanned({ ...plan, input: { ...plan.input, goal: { ...plan.input.goal, monthly: 0, months } } } as typeof plan, { rules: Object.values(rules), runDate: "2026-11-12" }).flags.map((f) => f.code);

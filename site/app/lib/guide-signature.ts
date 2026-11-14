@@ -70,6 +70,8 @@ export interface AccountBank {
   ceiling: SiteValue | null;
   /** `conditions_he` of the record. */
   conditions: string | null;
+  /** How often the bank credits the interest, where its record prints it (`interest_calc.periods_per_year`, F-26). */
+  periodsPerYear?: number;
   /** The record's printed conditions on the balance itself (`balance_conditions`, F-26), each figure the bank's own. */
   balanceConditions: AccountCondition[];
   /** The last day of the offer, when the record prints one. */
@@ -136,7 +138,9 @@ export function bundleAtBank(bundle: Bundle, bank: AccountBank): Bundle {
   const { balanceCeiling: _was, ...feeValues } = bundle.feeValues;
   const deposit = bundle.terms.deposit;
   if (!deposit) return { ...bundle, p05, feeValues };
-  const { balanceCeiling: _old, ...rest } = deposit;
+  const { balanceCeiling: _old, interestCalc: _calc, ...kept } = deposit;
+  // F-26: the bank's own crediting, where its record prints it
+  const rest = bank.periodsPerYear !== undefined ? { ...kept, interestCalc: { periodsPerYear: bank.periodsPerYear } } : kept;
   return { ...bundle, p05, feeValues: ceiling ? { ...feeValues, balanceCeiling: ceiling } : feeValues, terms: { ...bundle.terms, deposit: ceiling ? { ...rest, balanceCeiling: ceiling.value as number } : rest } };
 }
 

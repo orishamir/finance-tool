@@ -56,6 +56,29 @@
     "state": "sourced",
     "notes": "Nominal annual rate before tax printed '2.00%'. Row '133 - פומלית- קבועה 3 ש'': period '3 שנים', rate type 'קבועה', linkage 'אין', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'אין' 'אין', anchor 'לא רלוונטי', deposit options 'כיצד להפקיד'. Amount tiers merged into this record (each as printed): '100000' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.00%'; '250000' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.00%'; '1000000' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.00%'; '1000000<' / 'לא רלוונטי' / '2.00%' / common '' / effective '2.00%'. Read 2026-11-09 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 09/11/2026 08:31:13; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'."
   },
+  "interest_calc": {
+    "effective_annual": {
+      "value": 2.0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+        "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף', טבלת 'פיקדונות מקובלים', שורת '133 - פומלית- קבועה 3 ש'', 'שיעור הריבית המוצע (נומינלי שנתי)', 'ריבית אפקטיבית'",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-11-09",
+      "effective_from": "2026-11-09",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-50",
+        "BANK-04"
+      ],
+      "state": "sourced",
+      "notes": "Printed effective '2.00%' beside the offered rate in every amount tier of the row (rate_offered's notes); the bank's own effective annual rate, read under BANK-50's Schedule A."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",

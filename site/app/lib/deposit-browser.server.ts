@@ -48,6 +48,16 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
       ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}),
     },
     breakTerm: d.break.allowed ? d.break.penalty : "not_allowed",
+    ...(d.term_days && typeof d.term_days.value === "number" ? { termDays: d.term_days.value } : {}),
+    ...(d.interest_calc
+      ? {
+          calc: {
+            ...(d.interest_calc.effective_annual ? { effectiveAnnual: shown(d.interest_calc.effective_annual, t, d.snapshot, owner) } : {}),
+            ...(d.interest_calc.periods_per_year ? { periodsPerYear: shown(d.interest_calc.periods_per_year, t, d.snapshot, owner) } : {}),
+          },
+        }
+      : {}),
+    ...((d.variant ?? []).includes("interest_during_term") ? { paidOut: true } : {}),
     exits: exitPointsOf(d.exit_points),
   };
 }
@@ -72,5 +82,5 @@ export function buildDepositBrowser(): DbData {
 
 /** The rules the page's sheets cite: the deposits' kinds and the standard table. */
 export function depositBrowserRuleIds(data: DbData): string[] {
-  return [...new Set(["BANK-13", "BANK-14", "BANK-21", ...data.offers.flatMap((o) => o.labels.flatMap((l) => l.rules))])];
+  return [...new Set(["BANK-13", "BANK-14", "BANK-21", "BANK-50", ...data.offers.flatMap((o) => o.labels.flatMap((l) => l.rules))])];
 }

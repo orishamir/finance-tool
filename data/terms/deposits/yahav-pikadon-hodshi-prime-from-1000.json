@@ -31,6 +31,27 @@
     "state": "sourced",
     "notes": "Printed as 'פיקדון חודשי (30 יום)'; recorded as 1 months, the period of a monthly deposit (directive 447 Annex A, BANK-14)."
   },
+  "term_days": {
+    "value": 30,
+    "unit": "days",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון חודשי (30 יום)' (משתנה, 1,000 עד 500,000 ש\"ח), 'סוג המוצר (לפי תקופה)'",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-11-09",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-14",
+      "BANK-50"
+    ],
+    "state": "sourced",
+    "notes": "Printed (30 יום) beside the term; the term's days as the bank prints them (F-21)."
+  },
   "rate_type": "variable",
   "anchor": "prime",
   "spread": {

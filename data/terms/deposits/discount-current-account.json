@@ -56,6 +56,29 @@
     "state": "sourced",
     "notes": "Printed: 'יתרת זכות בחשבון', 'סוג ריבית: קבועה', 'שיעור הריבית הנומינלית השנתית המוצעת' 3.0. Conditions as printed ('אופן הצטרפות ותנאים לקבלת ריבית'): 'אופן ההצטרפות- אוטומטי עבור לקוחות המשויכים לתעריפון יחיד/עסק קטן ובתנאי שסך יתרות עו\"ש (בשקל ובמט\"ח), תיק ני\"ע, פיקדונות וחסכונות בחשבון הלקוחות כאמור, לא יעלה על 30 אלף ₪. בחינת תנאי הזכאות תבוצע ותחושב על בסיס יומי.' Interest on a balance 'מ- 0 ₪ עד יתרה מקסימלית של 10,000 ₪'; credited every quarter 'בכל סוף רבעון החל מתום הרבעון הרביעי של שנת 2025'; the bank may change the rate or cancel the arrangement. So an account whose total assets (current account in NIS and FX, securities, deposits and savings) exceed 30,000 NIS gets nothing."
   },
+  "interest_calc": {
+    "periods_per_year": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00:00), פריים 4.75%, 'שיעור הריבית הנומינלית השנתית המוצעת': 3.0",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09",
+        "BANK-50"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'בכל סוף רבעון החל מתום הרבעון הרביעי של שנת 2025' for the crediting of the interest (rate_offered's notes): credited four times a year."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",

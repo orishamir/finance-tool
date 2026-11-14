@@ -1,9 +1,10 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
-import { currentAccountInterest, depositInterest, lowIncomeDeduction } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
+import { currentAccountInterest, currentAccountMonthlyRate, depositInterest, effectiveAnnualOf, lowIncomeDeduction, type InterestCalc } from "../formulas/holding-tax.ts";
+import { closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
+import { NotEvaluatedError } from "./securities.ts";
 
 export interface DepositInput {
   goal: Goal;
@@ -11,10 +12,16 @@ export interface DepositInput {
   deposit: {
     /** F-21 deposit (default), F-22 savings plan, or F-26 current-account credit balance. */
     kind?: "deposit" | "savings-plan" | "current-account";
-    /** Effective annual rate (A-21, A-25 or A-26); for a CPI-linked deposit, the real rate. */
+    /** The bank's annual nominal rate (A-21, A-25 or A-26; BANK-50, BANK-13); for a CPI-linked deposit, the real rate. */
     rate: number;
     /** A-15 term in months; 1 for a current account. */
     termMonths: number;
+    /** F-21: the term in days as the record prints them (`term_days`), for a term under a year. */
+    termDays?: number;
+    /** F-21, F-26: how the product calculates interest, as its record prints it (`interest_calc`, BANK-50). */
+    interestCalc?: InterestCalc;
+    /** F-21: interest paid out during the term (the record's `variant` `interest_during_term`), which does not compound (BANK-50). */
+    interestPaidOut?: boolean;
     /** A-16: unlinked, CPI-linked, or prime-linked (taxed as unlinked, TXI-04). */
     linkage: "unlinked" | "cpi" | "prime";
     /**
@@ -106,6 +113,12 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
   const linked = deposit.linkage === "cpi";
   const isCurrentAccount = deposit.kind === "current-account";
   const tally = new Tally();
+  const facts = { termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
+  // F-21: a term over a year compounds at a rate only the product's own terms give (BANK-50's m); where the record prints none, the run stops
+  if (!isCurrentAccount && n > 12 && !deposit.interestPaidOut && effectiveAnnualOf(deposit.rate, deposit.interestCalc) === null) throw new NotEvaluatedError("BANK-OQ21");
+  // F-26: the current account's month at the rate its crediting gives, or F-07's convention
+  const accountMonth = currentAccountMonthlyRate(deposit.rate, deposit.interestCalc);
+  const termInterest = (principal: number, months: number) => (isCurrentAccount ? currentAccountInterest(principal, Math.pow(1 + accountMonth, months) - 1) : depositInterest(principal, deposit.rate, months, n, facts)!);
 
   // The bank withholds at maturity (TXI-07, TXI-08): 25% of the real interest on a fully linked deposit with
   // linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03).
@@ -167,9 +180,8 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
       // an exit point (TXI OQ14), so the run reads no exit point for it and says only that it priced the piece as matured.
       if (months < n) tally.flag(!linked && pieceAtExitPoint(m, d.startMonth, deposit) ? "G-34" : "G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
-      // F-26: the current account's month at F-07's monthly rate; F-21: a deposit's interest by its term (a year or more yearly, under a
-      // year once at maturity, BANK-50)
-      const interest = isCurrentAccount ? currentAccountInterest(indexed * earning, Math.pow(1 + annualToMonthly(deposit.rate), months) - 1) : depositInterest(indexed * earning, deposit.rate, months, n);
+      // F-26 or F-21, by the product's term (BANK-50)
+      const interest = termInterest(indexed * earning, months);
       const tax = rate * interest;
       totalInterest += interest;
       yearTaxable += interest;
@@ -202,7 +214,7 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     const accrued = open.reduce((s, d) => {
       const principal = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       const age = m - d.startMonth + 1;
-      return s + principal + (isCurrentAccount ? principal * (Math.pow(1 + deposit.rate, age / 12) - 1) : depositInterest(principal, deposit.rate, age, n));
+      return s + principal + termInterest(principal, age);
     }, 0);
     tally.point(m, I[m]!, m < T ? accrued : finalValue);
   }

@@ -503,7 +503,7 @@ def s01_s02_s04():
     income = 12000 * 12
     txi20 = max(0.0, 10920 - max(0.0, income - 69840))
     common = (
-        f'| 1 | A one-month deposit\'s interest from the bank\'s annual nominal rate, paid once at maturity: g = 3.5% × 1/12 (Schedule A, interest at maturity: i × n/365, a month counted as 365/12 days) | {L("BANK-50")} | g = {f6(g)} |\n'
+        f'| 1 | A one-month deposit\'s interest from the bank\'s annual nominal rate, paid once at maturity: g = 3.5% × 1/12 (Schedule A, interest at maturity: i × n/365; the month counted as 365/12 days is the method\'s convention, not BANK-50: the scenario prints no days) | {L("BANK-50")} | g = {f6(g)} |\n'
         f'| 2 | CPI path I_m = 1.03^(m/12) | scenario convention (F-03); no rule | I_36 = {f6(path.I(36))} |\n'
         f'| 4 | Each month the one-month deposit matures: interest = balance × g; 15% withheld; principal plus net interest rolls into a new deposit with the new contribution | {L("TXI-03", "TXI-08", "TXI-07", "BANK-14")} | see table |\n'
         f'| 5 | Low-income deduction from deposit interest: income {f2(income)} exceeds 69,840 by more than 10,920, so the deduction is max(0, 10,920 − (income − 69,840)) | {L("TXI-20")} | {f2(txi20)} |\n'

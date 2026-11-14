@@ -1506,7 +1506,9 @@ export const depositBrowser = {
   /** The line of an offer under the first of its name. */
   variant: { withExits: "אותו פיקדון, עם תחנות יציאה", withWords: "אותו פיקדון, עם ", noExits: "אותו פיקדון, בלי תחנות יציאה", same: "אותו פיקדון, ", from: "מ־", plain: "אותו פיקדון" },
   interest: {
-    inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים" },
+    inputs: { rate: "הריבית שהבנק מפרסם", amount: "הסכום שמפקידים", effective: "הריבית האפקטיבית שהבנק מפרסם", periods: "כמה פעמים בשנה הבנק מחשב ריבית" },
+    /** A term over a year whose record says nothing of how the product calculates interest (BANK-50, BANK OQ21). */
+    unknown: "לא ידוע: הבנק לא מפרסם כמה פעמים בשנה הוא מחשב ריבית",
     about: "הריבית על הסכום, לפני המס על הריבית, ",
     about2: "כ־",
     underOne: "פחות מ־⁦1 ₪⁩",

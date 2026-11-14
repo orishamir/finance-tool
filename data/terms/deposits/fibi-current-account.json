@@ -56,6 +56,29 @@
     "state": "sourced",
     "notes": "447 row: 'תשלום ריבית על יתרות זכות בעו\"ש ללקוחות פרטיים', 'interestType: קבועה', 'interestRate: 2%'. Conditions (linked PDF): private customers receiving a salary of at least 3,000 NIS into the account; total financial assets in the account (current account, securities, deposits) not above 50,000 NIS; not in the 'הטבה פלוס' programme; the current-account balance on every day of the month is 10,000 NIS or more ('אם באחד מימי החודש היתרה נמוכה מ-₪10,000 הלקוח לא יקבל זיכוי בריבית זכות עבור אותו החודש'); not for accounts with another credit-interest product; 'ריבית עו\"ש בשיעור של 2% עד לגובה של ₪10,000'; checked on the last day of each month; paid automatically each quarter. CONFLICT: the conditions PDF ends 'ההטבה בתוקף עד 31.03.2026', while the 447 publication dated 2026-10-25 still lists the 2% row; the 447 publication is stored as authoritative."
   },
+  "interest_calc": {
+    "periods_per_year": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://www.fibi.co.il/helpsys-api?helpId=001&bankNum=031",
+        "title": "הבנק הבינלאומי, 'הטבה של תשלום ריבית על יתרות זכות בעו\"ש בשקלים ללקוחות פרטיים' (PDF, נפתח מקישור 'אופן הצטרפות ותנאים לקבלת הריבית' בפרסום; נוצר 09.02.2026), סעיף 4, אופן ההצטרפות ומועד הזיכוי",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09",
+        "BANK-50"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'ההטבה תשולם אוטומטית אחת לרבעון על היתרות שהצטברו במהלך הרבעון' (conditions PDF s.4): credited four times a year."
+    }
+  },
   "linkage": "none",
   "tax_bucket": {
     "value": "unlinked_15",
@@ -145,7 +168,7 @@
           "BANK-09"
         ],
         "state": "sourced",
-        "notes": "Conditions PDF s.1: total financial assets in the account (current account, securities, deposits) not above 50,000 NIS, as rate_offered's notes record it."
+        "notes": "Conditions PDF s.1: 'סך הנכסים הפיננסיים בחשבון (עו\"ש, ני\"ע ופיקדונות) אינו עולה על שווי של ₪ 50,000'. 'אינו עולה על' includes 50,000."
       }
     },
     {

@@ -20,7 +20,7 @@ Conventions shared by all scenarios: tax year 2026 for every rule figure; the en
 Exercises F-01 to F-09, F-21, F-41.
 - Profile: salary 12,000/month; age 22.
 - Goal: 50,000 now; 1,000/month; horizon 3 years.
-- Market: deposit rate 3.5% effective annual (A-21, sourced in production); π = 3%; no FX.
+- Market: deposit rate 3.5% annual nominal, as a bank publishes it (A-21, sourced in production; BANK-50); π = 3%; no FX. A one-month term pays 3.5% × 1/12 at maturity, the month counted as 365/12 days by the method's convention.
 - Instrument: one-month unlinked deposit (A-15 = 1, A-16 = unlinked fixed), auto-renewing; no fees; tax 15% withheld at each maturity (TXI-03, TXI-08).
 - Expected: _(founder)_
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S01): Real V_T/I_T = 86,120.54; nominal V_T = 94,106.24; paid in 87,690.80; fees 0; interest 7,547.57; tax during 1,132.14 (15% at each monthly maturity); tax at exit 0; TXI-20 deduction 0. Subject to Q1.

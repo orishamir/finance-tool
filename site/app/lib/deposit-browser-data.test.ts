@@ -29,6 +29,10 @@ describe("the deposits page's offers", () => {
     // 50,000 ₪ itself is printed by two tiers, "1,000 עד 50,000" and "50,000 עד 100,00": the table does not say which takes it
     expect(cell(50_000)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
     expect(cell(49_999).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-1000");
+    // 100,000 ₪, where the misprinted top "100,00" meets "100,000 עד 200,000", is unknown at both tiers; just above it the upper tier opens
+    expect(cell(100_000)).toMatchObject({ pick: null, gap: "unknownAtAmount" });
+    expect(unknownAt(offer("yahav-pikadon-leshana-kavua-from-100000")!, 100_000)).toBe(true);
+    expect(cell(100_001).pick?.id).toBe("yahav-pikadon-leshana-kavua-from-100000");
   });
 
   it("does not open Mizrahi-Tefahot's lower tier at the bound its table prints as not included, nor any Yahav tier at a bound two tiers print (F-108)", () => {
