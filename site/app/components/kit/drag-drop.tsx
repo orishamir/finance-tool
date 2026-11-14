@@ -38,10 +38,8 @@ export function putChip(data: Pick<DataTransfer, "setData" | "effectAllowed">, i
   data.effectAllowed = "copy";
 }
 
-/** Makes a chip carriable as `item` where the pointer is fine; null leaves it a tap alone. */
-export function useDragSource(item: string | null): DragSourceProps {
-  const fine = useMedia("(pointer: fine)");
-  if (!fine || item === null) return {};
+/** What a chip carriable as `item` spreads on its element: its id put on the drag's data (`putChip`) and held as the carried chip until it ends. */
+export function dragSource(item: string): Required<DragSourceProps> {
   return {
     draggable: true,
     onDragStart: (e) => {
@@ -50,6 +48,12 @@ export function useDragSource(item: string | null): DragSourceProps {
     },
     onDragEnd: () => carry(null),
   };
+}
+
+/** Makes a chip carriable as `item` where the pointer is fine (`dragSource`); null leaves it a tap alone. */
+export function useDragSource(item: string | null): DragSourceProps {
+  const fine = useMedia("(pointer: fine)");
+  return !fine || item === null ? {} : dragSource(item);
 }
 
 /** Whether chips can be carried here: the pointer is fine. */
