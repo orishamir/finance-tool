@@ -196,7 +196,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} /></span> {waitGains ? story.note.more : story.note.less}
       </div>
       <div>
-        {story.note.saved} <Num value={waitWords.saved} display={fmt.nisWhole} />
+        <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
       </div>
     </>
   );
