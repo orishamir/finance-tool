@@ -2,7 +2,7 @@
 // assumption chips (phone), readout, table, rules used; the values sheet (phone) or panel (PC) beside it.
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
-import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
+import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
@@ -342,8 +342,16 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           </>
         ) : timeline.kind === "blocked" ? (
           <Callout tone="blocked">
-            {copy.blockedBand} <RuleRef id={timeline.ruleId} />
-            {timeline.question && <> <IdRef id={timeline.question} /></>}
+            {timeline.gap ? (
+              <>
+                {copy.blockedGapBand} <RuleRef id={timeline.ruleId} /> {flags[timeline.gap] ?? ""}
+              </>
+            ) : (
+              <>
+                {copy.blockedBand} <RuleRef id={timeline.ruleId} />
+                {timeline.question && <> <IdRef id={timeline.question} /></>}
+              </>
+            )}
           </Callout>
         ) : timeline.kind === "figure-not-updated" ? (
           <Callout tone="caution">

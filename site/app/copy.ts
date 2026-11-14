@@ -279,6 +279,8 @@ export const guide = {
   enteredReturnCaption: "הקו המקווקו מבוסס על תשואה שהזנתם, לא על הערכה של האתר.",
   enteredRateCaption: "הקו המקווקו מבוסס על ריבית שהזנתם, לא על זו שפורסמה או על הנחה של האתר.",
   blockedBand: "לא מחושב: שאלה פתוחה",
+  /** Before the rule a run stopped on where no reading of its case exists (a method gap); the gap's line in `flags` follows. */
+  blockedGapBand: "לא מחושב:",
   figureNotUpdated: { before: "הנתון לא עודכן:", middle: "היה בתוקף עד", after: "עד שהוא יעודכן, האתר לא מחשב את הגרף.", link: "לפרטים" },
   appliesToYou: "לפי מה שהזנתם",
   employeesOnly: "לשכירים בלבד",
@@ -995,6 +997,9 @@ export const flags: Record<string, string> = {
   "TXS-18": "הפסד משנים קודמות קוזז כאן מהרווח. הפסד כזה עובר לשנים הבאות רק אם הגשתם דוח שנתי לשנה שבה היה ההפסד, וגם לשנה שבה מקזזים אותו.",
   // F-08 and F-09 leave commissions and conversion fees out of the gain, the method's choice; form 1325 puts transaction commissions into cost and proceeds (TXS-06, method G-20)
   "G-20": "עמלות הקנייה והמכירה ועמלות המרת המטבע לא הופחתו מהרווח בחישוב המס, וזו בחירה של האתר. בטופס הדוח על רווח הון מניירות ערך (טופס 1325) רשות המסים מכניסה את עמלות הקנייה והמכירה לעלות ולתמורה, ולכן המס כאן יכול להיות מעט גבוה מדי.",
+  // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
+  // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
+  "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. מה קורה לו כשהמדד יורד, לא נמצא במקורות, ולאתר אין הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
   "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי, והחישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale

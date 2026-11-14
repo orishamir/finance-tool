@@ -8,7 +8,7 @@ import { entered as enteredValue } from "./value";
 import { runTimeline } from "./engine";
 import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock, waitFigures } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
-import { guideSignature as copy } from "../copy";
+import { flags, guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 
@@ -323,6 +323,25 @@ describe("a timeline its open question stops", () => {
     // route different amounts and the drawing stops on KGL-03 with the question
     const t = runTimeline(page("kupat-gemel-lehashkaa").bundle!, { entered: { amount_now: 0, monthly_deposit: 6_970, "A-02": -1 } as never, age: null });
     expect(t).toMatchObject({ kind: "blocked", ruleId: "KGL-03", question: "KGL OQ15" });
+  });
+
+  it("names the method gap with the rule where no reading of the case exists, for the band to show its line (G-38)", () => {
+    // No page runs child savings today, whose CS-03 stops at a fall (F-54). A page's bundle with its surtax threshold linked every 1 January
+    // instead of frozen meets the same case: at −1% the threshold for a later year has no reading, and the drawing stops on TXG-09 naming
+    // G-38, whether the run throws (a deposit) or its ledger lists it (a brokerage account).
+    const linkedSurtax = (id: string) => {
+      const b = page(id).bundle!;
+      const rules = b.rules.map((r) =>
+        r.id === "TXG-09" ? { ...r, figures: { ...r.figures, threshold: { ...(r.figures?.threshold as object), update_rule: "cpi-linked 1 jan" } } } : r,
+      ) as typeof b.rules;
+      return { ...b, rules };
+    };
+    for (const id of ["bank-deposit", "brokerage-account"]) {
+      const t = runTimeline(linkedSurtax(id), { entered: { "A-02": -1 } as never, age: null });
+      expect(t, id).toMatchObject({ kind: "blocked", ruleId: "TXG-09", gap: "G-38" });
+      expect(t, id).not.toHaveProperty("question");
+    }
+    expect(flags["G-38"]).toBeTruthy();
   });
 });
 

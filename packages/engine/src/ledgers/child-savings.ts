@@ -42,15 +42,16 @@ export type ChildSavingsResult = RunResult & {
 };
 
 /**
- * F-54 Child savings accumulation. Monthly `58 × I` from NII, `I` the index at the last 1 January (CS-03),
- * doubled if the parent adds (CS-04), from birth to 18 (CS-02); grants at 3, 12 or 13, and 21 by cohort,
- * updated the same way (CS-13); no fees until 21 (NII pays, CS-18), then on the provident route the yearly fee on the
+ * F-54 Child savings accumulation. Monthly CS-03's amount from NII, doubled if the parent adds (CS-04), from birth to 18 (CS-02);
+ * grants at 3, 12 or 13, and 21 by cohort (CS-13). Each amount is linked to the CPI every 1 January, so a later tax year reads it
+ * through the rule book in that year (`inYear`, F-120): grown by A-02 at a rising CPI, and at a falling one stopped on its rule
+ * naming G-38, as no reading of a fall exists; no fees until 21 (NII pays, CS-18), then on the provident route the yearly fee on the
  * balance at CS-18's legal cap, an upper bound ("עד"), or at the rate the person enters from their manager's bylaw, bounded
  * by the cap (CS-30's 0.23% is two companies' own rate, a named example only). No deposits after 18, so the
  * cap on deposits does not bite. Deposits and grants are principal (TXK-19). Exit tax per F-50.
  */
 export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): ChildSavingsResult {
-  const book = ruleBook(ctx);
+  const book = ruleBook(ctx, { inflation: input.market.inflation });
   const tally = new Tally();
   const T = input.months;
   const I = cpiPath(input.market.inflation, T);
@@ -58,16 +59,17 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
   const g = annualToMonthly(provident ? input.market.grossReturn! : input.market.rate!);
   const linked = !provident && input.bankLinkage === "cpi";
 
-  const monthly = book.amount("CS-03", "monthly_deposit") + (input.doubling ? book.amount("CS-04", "monthly_addition") : 0);
+  // CS-03's deposit and CS-04's addition as they stand in the tax year `year` of the grid (1 = the run's own), F-120.
+  const monthlyIn = (year: number): number => {
+    const inYear = book.inYear(year);
+    return inYear.amount("CS-03", "monthly_deposit") + (input.doubling ? inYear.amount("CS-04", "monthly_addition") : 0);
+  };
   const depositMonths = 12 * book.amount("CS-02", "deposits_until_age");
   const lastGrantMonth = 12 * book.amount("CS-13", "age_last_grant");
   const grantPlan = [
-    { month: 12 * book.amount("CS-13", "age_first_grant"), amount: book.amount("CS-13", "grant_age_3") },
-    {
-      month: 12 * book.amount("CS-13", input.sex === "boy" ? "age_bar_mitzvah_boy" : "age_bar_mitzvah_girl"),
-      amount: book.amount("CS-13", "grant_bar_mitzvah"),
-    },
-    { month: lastGrantMonth, amount: book.amount("CS-13", "grant_age_21") },
+    { month: 12 * book.amount("CS-13", "age_first_grant"), figure: "grant_age_3" },
+    { month: 12 * book.amount("CS-13", input.sex === "boy" ? "age_bar_mitzvah_boy" : "age_bar_mitzvah_girl"), figure: "grant_bar_mitzvah" },
+    { month: lastGrantMonth, figure: "grant_age_21" },
   ];
   // After 21 the fee comes out of the savings, within the general provident-fund cap (CS-18: up to 1.05% of the balance and
   // 4% of deposits). The run uses the cap unless the person enters their manager's rate, which the cap bounds (F-15's rule).
@@ -116,8 +118,8 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
 
   for (let m = 1; m <= T; m++) {
     if (m <= depositMonths) {
-      // The amount is updated once a year on 1 January (CS-03): the index at the start of the year.
-      const amount = monthly * I[12 * Math.floor((m - 1) / 12)]!;
+      // The amount is updated once a year on 1 January (CS-03, CS-04): the amount of the month's tax year.
+      const amount = monthlyIn(Math.floor((m - 1) / 12) + 1);
       balance += amount;
       principal.push({ amount, index: I[m]! });
       tally.paidIn += amount;
@@ -129,9 +131,10 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
       tally.fee("balance", fee);
       balance -= fee;
     }
-    // Grants fall on the birthday, the end of the month on this grid, at the index of that 1 January.
+    // Grants fall on the birthday, the end of the month on this grid: the child is born on 1 January, so a birthday is the 1 January
+    // that opens the next tax year, and the grant is that year's amount (CS-13).
     for (const grant of grantPlan.filter((x) => x.month === m)) {
-      const amount = grant.amount * I[m]!;
+      const amount = book.inYear(Math.floor(m / 12) + 1).amount("CS-13", grant.figure);
       grants.push({ month: m, amount });
       balance += amount;
       principal.push({ amount, index: I[m]! });

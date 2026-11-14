@@ -7,6 +7,7 @@ import { fallReadings, OpenReadingError, openReadingOf, sameResult, stoppedOnQue
 import { runProvident } from "../src/ledgers/provident.ts";
 import { runPension } from "../src/ledgers/pension.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
+import { runChildSavings } from "../src/ledgers/child-savings.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context(); // run date 2026-10-23: grid year 1 is 2026
@@ -183,6 +184,23 @@ describe("F-120 an amount linked to the CPI every 1 January", () => {
       expect(e).toBeInstanceOf(BlockedError);
       expect(e).toMatchObject({ ruleId: "CS-04", gap: "G-38" });
       expect((e as Error).message).toContain("G-38");
+    }
+  });
+  it("reads child savings' deposits and grants for later years through the rule book, so a falling CPI stops the run on G-38 (F-54)", () => {
+    const input = { route: "provident" as const, doubling: true, sex: "girl" as const, months: 36, market: { grossReturn: 0, inflation: 0.02 } };
+    // at no return and 2% a year: 116 a month in 2026, 116 × 1.02 in 2027 and 116 × 1.02² in 2028, and the age-3 grant on the birthday
+    // that opens 2029, 291 × 1.02³
+    const r = runChildSavings(input, ctx);
+    expect(r.grants).toEqual([{ month: 36, amount: expect.closeTo(291 * 1.02 ** 3, 9) }]);
+    expect(r.detail.grossBalance).toBeCloseTo(12 * 116 * (1 + 1.02 + 1.02 ** 2) + 291 * 1.02 ** 3, 6);
+    // the first year reads the amounts as they are at any CPI; from the second, a fall has no reading: the run stops on CS-03 naming G-38
+    expect(runChildSavings({ ...input, months: 12, market: { grossReturn: 0, inflation: -0.01 } }, ctx).detail.grossBalance).toBeCloseTo(12 * 116, 9);
+    try {
+      runChildSavings({ ...input, market: { grossReturn: 0, inflation: -0.01 } }, ctx);
+      expect.unreachable();
+    } catch (e) {
+      expect(e).toBeInstanceOf(BlockedError);
+      expect(e).toMatchObject({ ruleId: "CS-03", gap: "G-38" });
     }
   });
   it("lets a kupat gemel lehashkaa take the year's ceiling: a deposit of the 2027 ceiling in 2027 is all accepted", () => {

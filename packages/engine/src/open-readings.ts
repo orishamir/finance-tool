@@ -119,6 +119,15 @@ export function acrossReadings<R extends { flags: Flag[] }>(ctx: RunContext, run
   return explore(ctx.readings ?? {});
 }
 
+/**
+ * The rule and method gap a run stopped on where no reading of its case exists (a figure linked every 1 January at a falling CPI, G-38),
+ * caught by its ledger as for any open rule, or null.
+ */
+export function stoppedOnGap(r: { outcome: Outcome }): { ruleId: string; gap: string } | null {
+  const o = r.outcome;
+  return o.code === "listed-not-ranked" && o.gap ? { ruleId: o.reason, gap: o.gap } : null;
+}
+
 /** The rule and open question a run stopped on because the question's readings gave it different results, or null. */
 export function stoppedOnQuestion(r: { outcome: Outcome }): { ruleId: string; question: string } | null {
   const o = r.outcome;
