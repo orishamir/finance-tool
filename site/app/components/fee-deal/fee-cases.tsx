@@ -15,7 +15,9 @@
 // price while it is pulled, a cell over its whole row saying so. Under a grid's row, or a table's last row, a strip drawn while the
 // pointer is there adds a part to every case of it as one stretched cell (`partAcross`), as its head's menu does. A toolbox part dragged
 // here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head, splits that case alone.
-import { useMemo, useRef, useState, type ReactNode } from "react";
+// Several cells of a table or a grid are chosen at once by Shift+click or a drag over them, with a bar that takes them all away or puts a
+// part in all their cases; Ctrl+C copies a cell and Ctrl+V pastes it on the cells chosen, a cell, a head or the fee's head (paste.ts).
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
@@ -31,13 +33,15 @@ import { isRange, NAME_MAX, type CasesFee, type Fee } from "../../lib/fee-deal/m
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, tableSlots, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { ActionMenu, AddSlot, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
+import { ActionMenu, AddSlot, KnobButton, SelectBar, type CellSelect, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
-import { PARTS, setPart } from "../../lib/fee-deal/offers/parts";
+import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
+import { pasteOnAll, removeAll, type PastePlace } from "../../lib/fee-deal/paste";
+import { clipboard } from "./clipboard";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import { EditHere, PartFig } from "./edit-here";
 import type { BlockActions, HeadApply, OpenHere, ZoneOf } from "./fee-block";
@@ -401,6 +405,92 @@ export function FeeCases({
     };
   };
 
+  // ---------------------------------------------------------------- several cells at once, and copy and paste (SPEC-table-4, 4 and 7)
+  /** The cells of a table or a grid, by their select keys: what each lifts as its grip does, and the place a paste on it goes into. */
+  const cellsByKey = new Map<string, { l: Extract<Lifted, { k: "cell" }>; place: PastePlace }>();
+  /** A cell registered by its key (`selectKey`): it can be chosen with others, copied and pasted on. */
+  const selectable = (key: string, l: Extract<Lifted, { k: "cell" }>) => {
+    // a cell of one case is named by the case's values, so an undo line over several cells tells them apart
+    const one = l.cases.length === 1 ? byCase.get(l.cases[0]!) : undefined;
+    const place = (one ? { ...headCases(l.cases, l.along), names: { [l.cases[0]!]: caseText(one.when) } } : headCases(l.cases, l.along)) as PastePlace;
+    cellsByKey.set(key, { l, place });
+    return { selectKey: key };
+  };
+  // the head a paste on lands in, by the head pressed (a table's column, a grid's row or column, the fee's own head); set by the layout drawn
+  let headPlace: (el: HTMLElement) => PastePlace | null = () => null;
+  const [picked, setPicked] = useState<string[]>([]);
+  // the cells are registered as the layout is drawn, after these lines: the keys still drawn are read when they are used
+  const chosenNow = () => picked.filter((k) => cellsByKey.has(k));
+  const select: CellSelect = { keys: new Set(picked), onChange: setPicked };
+  const [applyAt, setApplyAt] = useState<HTMLElement | null>(null);
+  // while cells are chosen their keys answer wherever the focus is (a Shift+click moves none), before the cell's own keys
+  const keysNow = useRef(onKeysLater);
+  useEffect(() => {
+    if (picked.length === 0) return;
+    const onKey = (e: globalThis.KeyboardEvent) => keysNow.current(e);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [picked.length]);
+  // the choice goes with any press but a Shift+press, a press on its bar or on a menu it opened; Esc clears it too
+  useEffect(() => {
+    if (picked.length === 0) return;
+    const onDown = (e: PointerEvent) => {
+      const t = e.target as Element;
+      if (e.shiftKey || t.closest("[data-select-bar], [role=menu]")) return;
+      setPicked([]);
+    };
+    document.addEventListener("pointerdown", onDown, true);
+    return () => document.removeEventListener("pointerdown", onDown, true);
+  }, [picked.length]);
+  /** The cases of the cells chosen, each once, and the thing they stand along. */
+  const chosenCases = () => [...new Set(chosenNow().flatMap((k) => cellsByKey.get(k)!.l.cases))];
+  const chosenAlong = () => cellsByKey.get(chosenNow()[0] ?? "")?.l.along ?? 0;
+  /** The parts every case chosen can take and none holds yet, each put in all of them as the row's plus does (`partAcross`). */
+  const applyChoices = (): GripAction[] => lift.rowParts(fee.id, chosenCases()).map((p) => ({ label: p.label, onPick: () => onFee(partAcross(fee, chosenCases(), p.id as PartId, chosenAlong())) }));
+  function onKeysLater(e: globalThis.KeyboardEvent) {
+    onKeys(e);
+  }
+  keysNow.current = onKeysLater;
+  const removeChosen = () => {
+    const ls = chosenNow().map((k) => cellsByKey.get(k)!.l);
+    setPicked([]);
+    lift.onResult((d) => removeAll(d, ls));
+  };
+  /**
+   * The keys of the cells chosen and of copy and paste, outside a field: Delete takes the cells chosen away, Esc clears the choice;
+   * Ctrl+C copies the cell that has the focus; Ctrl+V pastes the copy on every cell chosen, else on the cell or the head that has it.
+   * Taken before the cell's own keys, so Delete with cells chosen takes them all.
+   */
+  const onKeys = (e: KeyboardEvent<HTMLDivElement> | globalThis.KeyboardEvent) => {
+    const t = e.target as HTMLElement;
+    if (t.closest?.("input, textarea, select, [contenteditable]:not([contenteditable=false])")) return;
+    const mod = (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey;
+    const stop = () => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    if (chosenNow().length > 0 && (e.key === "Delete" || e.key === "Backspace")) return void (stop(), removeChosen());
+    if (chosenNow().length > 0 && e.key === "Escape") return void (stop(), setPicked([]));
+    const cellKey = t.closest<HTMLElement>("[data-select-key]")?.dataset.selectKey;
+    if (!t.closest?.("[data-fee-cases]") && chosenNow().length === 0) return;
+    if (mod && (e.code === "KeyC" || e.key.toLowerCase() === "c")) {
+      const x = cellKey !== undefined ? cellsByKey.get(cellKey) : undefined;
+      if (x) {
+        stop();
+        clipboard.set(x.l);
+      }
+      return;
+    }
+    if (mod && (e.code === "KeyV" || e.key.toLowerCase() === "v")) {
+      const clip = clipboard.get();
+      if (!clip) return;
+      const places = chosenNow().length > 0 ? chosenNow().map((k) => cellsByKey.get(k)!.place) : cellKey !== undefined && cellsByKey.has(cellKey) ? [cellsByKey.get(cellKey)!.place] : [headPlace(t)].filter((p): p is PastePlace => p !== null);
+      if (places.length === 0) return;
+      stop();
+      lift.onResult((d) => pasteOnAll(d, clip, places));
+    }
+  };
+
   // ---------------------------------------------------------------- knobs: a cell stretched over its neighbours, or back
   const plural = (t: number) => lw.things[fee.by[t]!.kind] ?? lw.things.own!;
   /**
@@ -567,12 +657,21 @@ export function FeeCases({
       return { key: valueKey(col.when), bounds: r.bounds[t] ?? null, words: layout.ladder ? stepName(r, t) : caseText(r.when) };
     });
     const inserts = listThing || layout.ladder;
+    // a paste on a column's head goes into its case; on a part row's head or the fee's own head, into every case
+    headPlace = (el) => {
+      const col = el.closest<HTMLElement>("[role=columnheader]");
+      const x = col ? layout.columns[Number(col.dataset.col)] : undefined;
+      if (x) return headCases([x.case], t) as PastePlace;
+      return el.closest("[role=rowheader], [data-paste-head]") ? (everyCase as PastePlace) : null;
+    };
     /** What a column's grip lifts: a ladder's step (to its bin), a value of the table's thing where it is not the fee's first, else its case. */
     const colLifted = (col: (typeof layout.columns)[number], words: string): Lifted | null =>
       layout.ladder ? (typeof col.when === "number" ? { k: "step", fee: fee.id, t, step: col.when, name: words } : null) : t !== 0 ? { k: "value", fee: fee.id, t, key: valueKey(col.when), name: words } : { k: "col", fee: fee.id, case: col.case };
     body = (
       <>
-        <ConditionHead bare {...head} />
+        <div data-paste-head="" className="contents">
+          <ConditionHead bare {...head} />
+        </div>
         <CaseTable
           label={name}
           ladder={layout.ladder}
@@ -609,7 +708,8 @@ export function FeeCases({
               cells: row.cells.map((cell) => {
                 const target: LiftTarget = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t };
                 const cellZone = (el: ReactNode) => zone([target, caseTarget(cell.cases[0]!)], `${row.row}:${cell.from}`, el);
-                if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...fillAt(row.row, cell.from, cell.span) };
+                const sk = selectable(`${row.row}:${cell.from}`, { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t });
+                if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...sk, ...fillAt(row.row, cell.from, cell.span) };
                 const ww = wholeWords(cell.span, n, t);
                 const shownHere = mergedParts(cell.cases, (id) => partsOf(id, pr));
                 // a cell stretched over several cases is taken away whole, by its bin: a ✕ only in a cell of one case
@@ -629,6 +729,7 @@ export function FeeCases({
                   ...fillAt(row.row, cell.from, cell.span),
                   ...(ww ? { whole: ww } : {}),
                   zone: cellZone,
+                  ...sk,
                 };
               }),
             };
@@ -636,6 +737,7 @@ export function FeeCases({
           add={layout.ladder ? stepSlot(t) : listThing ? valuesSlot(t, undefined, c.addKnob.case) : addOne}
           {...(inserts ? { insert: insertAt(t, heads) } : {})}
           {...(across.strip ? { addPart: across.strip } : {})}
+          select={select}
           foot={bin}
         />
       </>
@@ -669,6 +771,7 @@ export function FeeCases({
               ...fillAt(lineKey, cell.from, cell.span),
               ...(ww ? { whole: ww } : {}),
               zone: (el: ReactNode) => zone([l as LiftTarget, caseTarget(cell.cases[0]!)], `${lineKey}:${cell.from}`, el),
+              ...selectable(`${lineKey}:${cell.from}`, l as Extract<Lifted, { k: "cell" }>),
             };
           }),
         };
@@ -679,9 +782,21 @@ export function FeeCases({
     const headsOf = (hs: readonly Head[], t: number) => hs.map((h) => ({ key: h.key, bounds: byCase.get(h.cases[0]!)!.bounds[t] ?? null, words: stepName(byCase.get(h.cases[0]!)!, t) }));
     const colHeads = headsOf(g.columns, 1);
     const rowHeads = headsOf(g.rows, 0);
+    // a paste on a column's or a row's head goes into the cases it covers; on the fee's own head, into every case
+    headPlace = (el) => {
+      const col = el.closest<HTMLElement>("[role=columnheader]");
+      const row = el.closest<HTMLElement>("[role=rowheader]");
+      const x = col ? g.columns[Number(col.dataset.col)] : undefined;
+      const y = row ? g.rows[Number(row.dataset.rowpos)] : undefined;
+      if (x) return headCases(x.cases, 0) as PastePlace;
+      if (y) return headCases(y.cases, 1) as PastePlace;
+      return el.closest("[data-paste-head]") ? (everyCase as PastePlace) : null;
+    };
     body = (
       <>
-        <ConditionHead bare {...head} />
+        <div data-paste-head="" className="contents">
+          <ConditionHead bare {...head} />
+        </div>
         <CaseGrid
           label={name}
           steps={g.across.range}
@@ -759,6 +874,7 @@ export function FeeCases({
                   ...(lift.binTakes(cl) ? { onRemove: () => lift.onBin(cl), removeLabel: binWords(caseText(r.when)) } : {}),
                   ...(ww ? { whole: ww } : {}),
                   zone: (el: ReactNode) => zone([target, caseTarget(cell.case!)], cell.case!, el),
+                  ...selectable(`case:${cell.case}`, cl as Extract<Lifted, { k: "cell" }>),
                 };
               }),
             };
@@ -767,6 +883,7 @@ export function FeeCases({
           addColumn={slotOf(g.across.thing, g.across.range)}
           insertRow={insertAt(0, rowHeads)}
           insertColumn={insertAt(1, colHeads)}
+          select={select}
           foot={bin}
         />
       </>
@@ -850,8 +967,20 @@ export function FeeCases({
     );
   }
   return (
-    <div ref={box} className="flex flex-col gap-2">
+    <div ref={box} data-fee-cases="" className="flex flex-col gap-2" onKeyDownCapture={(e) => picked.length === 0 && onKeys(e)}>
       {body}
+      {wide && chosenNow().length > 0 && (
+        <SelectBar
+          label={c.selection.label}
+          sep={sep}
+          count={chosenNow().length === 1 ? c.selection.one : c.selection.count.replace("{n}", String(chosenNow().length))}
+          actions={[
+            { label: c.selection.remove, danger: true, onPick: removeChosen },
+            ...(applyChoices().length ? [{ label: c.selection.apply, expanded: !!applyAt, onPick: (at: HTMLElement) => setApplyAt((x) => (x ? null : at)) }] : []),
+          ]}
+        />
+      )}
+      {applyAt && applyAt.isConnected && chosenNow().length > 0 && <ActionMenu actions={applyChoices()} back={{ current: applyAt }} onClose={() => setApplyAt(null)} />}
       {question}
       {rowMenuView}
       {wide && openRow && openView(openRow)}

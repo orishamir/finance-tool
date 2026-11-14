@@ -16,7 +16,7 @@ import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/m
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
-import { liftId, liftedOf, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
+import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
 import { OpenParts, type PartGrip } from "./open-case";
@@ -86,6 +86,8 @@ export interface LiftHands {
   preview: (drop: { l: Lifted; on: LiftTarget; how: DropHow } | null) => void;
   /** The parts every one of a fee's cases `cases` can take and none holds yet, each by its id and its toolbox words: what a row's strip adds across it. */
   rowParts: (feeId: string, cases: readonly string[]) => { id: PartId; label: string }[];
+  /** A change made of the deal as it is (a paste, the cells chosen taken away), kept for the undo where it took something (`kept`, its line). */
+  onResult: (make: (deal: FeeDeal) => LiftResult | null) => void;
   /** The bin stands at the foot of the screen. */
   phone: boolean;
 }

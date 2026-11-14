@@ -10,13 +10,15 @@
 // there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
 // wider than its block scrolls inside itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
-// table, its column or cell outlined in the action colour.
+// table, its column or cell outlined in the action colour. With `select`, several cells are chosen at once by Shift+click or a drag over them
+// (cell-select.ts), each in a dashed frame.
 import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER, onSurface } from "./choice";
 import { useCarried } from "./drag-drop";
 import { cx } from "./cx";
 import { KnobButton } from "./knob-button";
+import { useCellSelect, type CellSelect } from "./cell-select";
 import { RemoveButton } from "./remove-button";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
@@ -236,6 +238,8 @@ export interface CellExtras {
   onStretchDown?: (by: 1 | -1) => void;
   /** Wraps the cell (a `DropZone` for its case). */
   zone?: (cell: ReactNode) => ReactNode;
+  /** Its key among the cells chosen together (`select`): where given, Shift+click or a drag over it chooses it. */
+  selectKey?: string;
 }
 
 /**
@@ -324,15 +328,16 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
  * a range, its steps ascending, each head with the range's icon. `addPart`: the strip under its last row that adds a part row across every
  * column. `foot`: what stands under the table (the bin while something is lifted). Wider than its block, it scrolls inside itself.
  */
-export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
+export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, select, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; addPart?: AddSpec; ladder?: boolean; /** Several cells chosen at once (cell-select.ts), each by its `selectKey`. */ select?: CellSelect; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
+  const sel = useCellSelect(keys.root, select);
   const gapCol = carriedAt(columns, useCarried());
   // a ladder's head holds a step's two bounds and its top's box, on one line where they fit, else wrapped inside the column
   const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " max-content" : ""}`;
   return (
     <div className="flex flex-col gap-2">
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} aria-multiselectable={select ? true : undefined} onKeyDown={keys.onKeyDown} {...sel.rootProps} data-case-table="" data-span-table="" className="group/table grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {
@@ -366,7 +371,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
                 // a case with no such part: an empty place, no cell drawn; it still takes a part dropped on it, and shows the price a
                 // knob's stretch would give it
                 const empty = (
-                  <span {...cp} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-md", CELL_FOCUS, cell.lit && cx(CELL, LIT))}>
+                  <span {...cp} {...sel.cellAttrs(cell.selectKey)} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-md", CELL_FOCUS, cell.lit && cx(CELL, LIT))}>
                     <span id={keys.wordsId(j, cell.from)} className="contents">
                       {cell.lit && cell.fill !== undefined && <CellBody content={null} fill={cell.fill} lit />}
                     </span>
@@ -379,7 +384,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
                 );
               }
               const el = (
-                <div {...cp} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                <div {...cp} {...sel.cellAttrs(cell.selectKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
                     <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
@@ -466,9 +471,10 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
  * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each, and take the room for
  * it. `foot`: what stands under the grid. Wider than its block, it scrolls inside itself.
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, select, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; /** Several cells chosen at once (cell-select.ts), each by its `selectKey`. */ select?: CellSelect; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
+  const sel = useCellSelect(keys.root, select);
   const carried = useCarried();
   const gapCol = carriedAt(columns, carried);
   const gapRow = carriedAt(rows, carried);
@@ -482,7 +488,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
   return (
     <div className="flex flex-col gap-2">
       {above}
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} aria-multiselectable={select ? true : undefined} onKeyDown={keys.onKeyDown} {...sel.rootProps} data-case-grid="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {
@@ -533,7 +539,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   );
                 }
                 const el = (
-                  <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
+                  <div {...cp} {...sel.cellAttrs(cell.selectKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
                     <div className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
@@ -557,7 +563,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                    <div {...cp} {...sel.cellAttrs(cell.selectKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />

@@ -87,6 +87,8 @@ export { AddSlot, CaseGrid, CaseTable, SharedLine, type AddSpec, type CaseColumn
 export { ActionMenu, DropBin, Grip, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
 export { flip } from "./flip";
 export { KnobButton } from "./knob-button";
+export { SelectBar, type SelectAction } from "./select-bar";
+export { rectKeys, toggled, useCellSelect, type CellSelect, type CellPlace } from "./cell-select";
 export { EditInPlace } from "./edit-in-place";
 export { FeePalette, type PaletteItem } from "./fee-palette";
 export { ChangeDivider } from "./change-divider";

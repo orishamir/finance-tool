@@ -855,6 +855,17 @@
   :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-corner] {
     display: none;
   }
+  /* A cell chosen among several (kit/cell-select.ts): a dashed frame in the action colour just outside it, so the open case's own outline
+     and the cell's knobs stay; while a drag chooses, no words are selected */
+  [data-selected] {
+    outline: 2px dashed var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+  [data-selecting],
+  [data-selecting] * {
+    user-select: none;
+  }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */
   [data-lifted] {

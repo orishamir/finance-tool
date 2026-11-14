@@ -364,6 +364,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     onStretch: (next, words) => kept(liftKept(deal, { deal: updateFee(deal, next.id, () => next), ...(words ? { kept: { feeId: next.id, words } } : {}) }, chosen)),
     preview: (x) => setPreview(x ? (liftDrop(deal, x.l, x.on, { copy: x.how.copy })?.deal ?? null) : null),
     rowParts: (feeId, cases) => rowParts(read, feeId, cases),
+    onResult: (make) => {
+      const r = make(deal);
+      if (r) kept(liftKept(deal, r, chosen));
+    },
     phone,
   };
   const menu = oc.menus.slot;
