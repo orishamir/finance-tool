@@ -15,8 +15,8 @@ const [command, ...rest] = process.argv.slice(2);
 
 /**
  * Refresh sources. They run in the order given.
- * No adapter: the Bank of Israel series (policy rate A-20, per-bank deposit averages A-21, makam yields A-22)
- * are links, not numbers (product.md D20), and are not fetched into data/.
+ * No adapter: the Bank of Israel series (policy rate A-20, per-bank deposit averages A-21, makam yields A-22) are not
+ * fetched into data/ (product.md D20); the policy rate is quoted as one published figure in P-05 cash_rate.
  */
 const SOURCES = ["cma", "cbs-cpi", "mof-child-savings", "ecb-fx", "ecb-fx-month-end"] as const;
 const USAGE = `usage: cli.ts refresh <${SOURCES.join("|")}>... [--dry-run] [--no-archive] [--force]`;
