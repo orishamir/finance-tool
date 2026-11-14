@@ -992,6 +992,9 @@ function fundInputs(rec: FundRecord, list: GapList, today: string): Record<strin
  */
 const COST_FLAGS: readonly string[] = ["BANK-35"];
 
+/** The open questions the house's price list leaves the run resting on (a line's `open_questions`, data-schema §3.6): said on what is left. */
+const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f) => /^[A-Z0-9]+-OQ\d+$/.test(f));
+
 /** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
 function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
@@ -1000,7 +1003,7 @@ function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, w
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
 function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, reads), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, reads), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {

@@ -54,7 +54,7 @@ const SHORT: Record<string, string> = {
   currency: "c", per: "q", every: "e", place: "l", payout: "o", id: "i",
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
   by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
-  alsoMin: "Am", who: "Wh", boundsEvery: "Be", src: "Sr",
+  alsoMin: "Am", who: "Wh", boundsEvery: "Be", src: "Sr", questions: "Qs",
   ...PART_SHORT,
   ...FIGURE_SHORT,
 };

@@ -101,11 +101,10 @@ export const feeLine = z.strictObject({
    */
   trade_currencies: z.array(z.string().regex(/^[A-Z]{3}$/)).min(1).optional(),
   /**
-   * data-schema §3.6a item 1: the currencies a bound in `dearer_ccy_per_trade` may be in, where the list's words leave its currency open between
-   * them (Interactive Israel's European minimum: dollars or pounds, BRK-40), and the open questions that leave it so. A run prices the bound in
-   * the dearer of them at its rates (F-12, F-84).
+   * data-schema §3.6: the open questions of the rule base a line's price rests on, where its words leave a part of it open (Interactive
+   * Israel's European minimum, BRK OQ25): shown beside the line on every page that shows it, and flagged on every run that reads it.
    */
-  bound_readings: z.strictObject({ currencies: z.array(z.string().regex(/^[A-Z]{3}$/)).min(2), open_questions: z.array(z.string().regex(/^[A-Z0-9]+-OQ\d+$/)).min(1) }).optional(),
+  open_questions: z.array(z.string().regex(/^[A-Z0-9]+-OQ\d+$/)).min(1).optional(),
   /**
    * data-schema §3.6a item 2: what a custody line's `max` bounds: each security (`security`), the whole securities deposit (`deposit`), or the
    * list prints the figure with no scope (`unstated`). Required on a custody line with a maximum (the data check, on a house's latest record).

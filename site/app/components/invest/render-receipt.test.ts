@@ -257,8 +257,7 @@ describe("the lists beside the receipt", () => {
     const mine = kindOf(allFunds(v).find((f) => f.rec.id === pk.fund)!.rec);
     const kindF = allFunds(v).filter((f) => kindOf(f.rec) === mine);
     const allOpen = v.providers.filter((p) => { const a = kindF.map((f) => f.byHouse[p.id]).filter((x) => !!x && "valueN" in x) as { open: boolean }[]; return a.length > 0 && a.every((x) => x.open); });
-    // Interactive Israel prices no fund here: its European minimum is printed for euros, pounds and Swiss francs, and these trade in dollars (F-12)
-    expect(allOpen.map((p) => p.id).sort()).toEqual(["interactive-brokers"]);
+    expect(allOpen.map((p) => p.id).sort()).toEqual(["interactive-brokers", "interactive-israel"]);
     const ranked = stretchesOf(kindF, v.providers.map((p) => p.id)).map((s) => s.house);
     const none = v.providers.filter((p) => !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {}))).map((p) => p.id);
     const pos = (id: string) => out.indexOf(`data-pick-key="${id}"`);

@@ -158,22 +158,33 @@ describe("sums in the trade's currency printed for some currencies only (trade_c
   it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
     const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
     expect(tradeOf("excellence")).toContain('"inTrade":["ILS","USD","EUR"]');
-    // Interactive Israel's European minimum: 2.5 for euros, pounds and Swiss francs; the deal's currencies hold the first two
-    expect(tradeOf("interactive-israel")).toContain('"inTrade":["EUR","GBP"]');
+    // Interactive Israel's European minimum is 2.5 in any trade's currency: no list of currencies
+    expect(tradeOf("interactive-israel")).toContain('"inTrade":true');
     const deal = account([trade(printed)]);
     expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
   });
 });
 
-describe("a bound the list leaves open between currencies (bound_readings, D56)", () => {
-  it("a template fills it in the dearer currency it is given, and leaves the line out where it is given none", async () => {
-    const { houseTemplate } = await import("./templates");
-    const snap = latestSnapshots().find((x) => x.id === "interactive-israel")!;
-    const open = { ...snap, lines: snap.lines.map((l) => (l.id === "interactive-israel-buy-sell-europe" ? { ...l, trade_currencies: undefined, min: { ...l.min!, unit: "dearer_ccy_per_trade" as const }, bound_readings: { currencies: ["USD", "GBP"], open_questions: ["BRK-OQ24"] } } : l)) };
-    const trade = JSON.stringify(houseTemplate(open, () => "GBP").fees.find((f) => f.kind === "trade"));
-    expect(trade).toMatch(/"min":\{"v":2\.5[^}]*\}[^]*"currency":"GBP"|"currency":"GBP"[^]*"min":\{"v":2\.5/);
-    expect(houseTemplate(open).left).toContainEqual(expect.objectContaining({ lineId: "interactive-israel-buy-sell-europe", why: "bound-currency" }));
+describe("a line's open questions on the price a template fills (data-schema §3.6)", () => {
+  const tradeOf = () => data.houses.find((h) => h.id === "interactive-israel")!.fees.find((f) => f.kind === "trade")!;
+  it("Interactive Israel's trade price carries BRK OQ25 beside its minimum in the trade's own currency", () => {
+    const t = JSON.stringify(tradeOf());
+    expect(t).toContain('"questions":["BRK-OQ25"]');
+    expect(t).toContain('"inTrade":true');
+  });
+  it("a pick in euros reads 2.5 euros, with the question in the price's words", () => {
+    const deal = { ...fillDeal(newDeal("brokerage-account"), "house:interactive-israel", data, TODAY)!, readFor: [{ by: "what", is: "europe" }] };
+    const r = read(deal);
+    expect(r.fees.find((f) => f.kind === "trade")!.stages[0]!.price).toMatchObject({ min: { v: 2.5 }, currency: "EUR", questions: ["BRK-OQ25"] });
+    const row = builder(r).rows.find((x) => x.kind === "trade")!;
+    expect(JSON.stringify(row.block)).toContain('"questions":["BRK-OQ25"]');
+  });
+  it("keeps the questions through the device and a link", () => {
+    const p: Price = { form: "action", rate: typed(0.15), min: typed(2.5), inTrade: true, questions: ["BRK-OQ25"] };
+    const deal = account([trade(p)]);
+    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(p);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
   });
 });
 

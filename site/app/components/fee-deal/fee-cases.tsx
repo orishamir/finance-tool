@@ -18,7 +18,7 @@ import { isRange, type CasesFee, type Fee } from "../../lib/fee-deal/model";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
 import { AddSlot, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FigureField, OpenCase, PartChip, SegmentedControl, SharedLine, Tag, monthText, useWidth, type AddSpec, type CaseWord } from "../kit";
-import { Num } from "../provenance";
+import { IdRef, Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
@@ -72,6 +72,7 @@ export function RestPart({ part }: { part: SlimPart }) {
       {w.mid && <span className="text-muted-foreground">{w.mid.trim()}</span>}
       {w.second && <Fig value={w.second} />}
       {w.month && <bdi dir="ltr">{monthText(w.month)}</bdi>}
+      {w.questions?.map((q) => <IdRef key={q} id={q} />)}
     </PartChip>
   );
 }
@@ -88,6 +89,7 @@ function PartText({ part, bare }: { part: SlimPart; bare?: boolean }) {
       {w.month && <bdi dir="ltr">{monthText(w.month)}</bdi>}
       {w.tail}
       {w.quiet && <span className="text-muted-foreground">{w.quiet}</span>}
+      {w.questions?.map((q) => <IdRef key={q} id={q} />)}
     </span>
   );
 }

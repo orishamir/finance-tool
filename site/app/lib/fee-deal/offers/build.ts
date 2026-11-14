@@ -6,6 +6,7 @@ import type { BoundCurrency, Months, Note, Num, Price } from "../model";
 import type { FeeKindId } from "../shapes";
 import type { ChargedForm } from "./capacity";
 import { FIGURES, type Figure } from "./figures";
+import { onAction } from "./capabilities";
 import { fitted, isFormPart, PART_IDS, PARTS, putPart, type FormPart, type PartId } from "./parts";
 
 /** What a template gives of a price: its form, its figures with their sources, its notes, and the fields a form has that are no part. */
@@ -16,6 +17,8 @@ export interface PriceSpec {
   /** The currency of its sums, for a form on an action; or that they are in the currency the action is made in (`inTrade`). */
   currency?: BoundCurrency;
   inTrade?: true | readonly BoundCurrency[];
+  /** The open questions the line's price rests on, for a form on an action. */
+  questions?: readonly string[];
   /** The months a share of what is held is for and between charges, and the months its bounds are printed per. */
   per?: Months;
   every?: Months;
@@ -50,5 +53,6 @@ export function buildPrice(kind: FeeKindId, spec: PriceSpec): Price {
     p = putPart(kind, p, "inTrade", true);
     if (spec.inTrade !== true && "inTrade" in p && p.inTrade) p = { ...p, inTrade: [...spec.inTrade] } as Price;
   }
+  if (spec.questions?.length && onAction(p)) p = { ...p, questions: [...spec.questions] } as Price;
   return fitted(kind, p);
 }

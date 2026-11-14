@@ -2,7 +2,7 @@
 // bounds, the cap, a fund in another currency than its exposure, and a provider's bad record as its own row.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { buildTariff, dearerCurrency, fundOf, fundVariants, gapListOf, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
+import { buildTariff, fundOf, fundVariants, gapListOf, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -115,44 +115,24 @@ describe("F-63 on the foreign brokers' tariffs (E1, E2, E3)", () => {
   });
 });
 
-describe("F-12 a minimum in the trade's currency printed for some currencies only (trade_currencies)", () => {
-  const current = read("fees/interactive-israel@2026-11-12.json");
-  const europe = "מניות ותעודות סל הנסחרות באירופה";
-  it("a trade in a currency the line names is bounded by the minimum in that currency", () => {
-    const wb = providerWorkbench(input({ currency: { code: "GBP", startRate: 4.6 }, providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
-    const r = row(wb.rows, "interactive-israel");
-    if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
-    expect(r.tariff.buy?.min).toBeCloseTo(2.5 * 4.6, 12);
-  });
-  it("a trade in another currency is not priced, with its own reason naming the line, the currency and the line's list", () => {
-    const wb = providerWorkbench(input({ providers: [{ snapshot: current, level: "list", band: europe }] }), ctx);
-    expect(notComparable(row(wb.rows, "interactive-israel")).reason).toMatchObject({ code: "not-printed-for-currency", line: "interactive-israel-buy-sell-europe", currency: "USD", printed: ["EUR", "GBP", "CHF"] });
-  });
-});
-
-describe("F-12 a bound the list leaves open between currencies, priced in the dearer (bound_readings, D56)", () => {
+describe("F-12 a minimum in the trade's own currency, and a line's open question", () => {
   const europe = "מניות ותעודות סל הנסחרות באירופה";
   const excellence = read("fees/excellence@2026-11-12.json");
-  /** Interactive Israel's European line with its minimum read as 2.5 dollars or 2.5 pounds. */
-  const open = () => {
-    const s = structuredClone(read("fees/interactive-israel@2026-11-12.json"));
-    const l = s.lines.find((x: { id: string }) => x.id === "interactive-israel-buy-sell-europe");
-    delete l.trade_currencies;
-    l.min = { ...l.min, unit: "dearer_ccy_per_trade" };
-    l.bound_readings = { currencies: ["USD", "GBP"], open_questions: ["BRK-OQ24"] };
-    return s;
-  };
-  it("takes the dearer currency at the run's rates, whatever the fund trades in", () => {
-    expect(dearerCurrency(["USD", "GBP"], (c) => fx[c as keyof typeof fx] ?? null)).toEqual({ code: "GBP", rate: 4.6 });
-    expect(dearerCurrency(["USD", "GBP"], (c) => ({ USD: 3.7, GBP: 3.5 })[c] ?? null)).toEqual({ code: "USD", rate: 3.7 });
-    const wb = providerWorkbench(input({ providers: [{ snapshot: open(), level: "list", band: europe }] }), ctx);
-    const r = row(wb.rows, "interactive-israel");
+  const current = read("fees/interactive-israel@2026-11-12.json");
+  const compared = (r: ProviderRow) => {
     if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
-    expect(r.tariff.buy?.min).toBeCloseTo(2.5 * 4.6, 12);
+    return r;
+  };
+  it("Interactive Israel's European minimum is 2.5 in the trade's own currency, and the run carries BRK OQ25", () => {
+    for (const currency of [{ code: "USD", startRate: 3.7 }, { code: "EUR", startRate: 4.1 }, { code: "GBP", startRate: 4.6 }]) {
+      const r = compared(row(providerWorkbench(input({ currency, fx: { ...fx, EUR: 4.1 }, providers: [{ snapshot: current, level: "list", band: europe }] }), ctx).rows, "interactive-israel"));
+      expect(r.tariff.buy?.min).toBeCloseTo(2.5 * currency.startRate, 12);
+      expect(r.flags).toContain("BRK-OQ25");
+    }
   });
-  it("without a rate for one of the currencies the house is not priced, never at the cheaper one", () => {
-    const wb = providerWorkbench(input({ fx: { USD: 3.7 }, providers: [{ snapshot: open(), level: "list", band: europe }] }), ctx);
-    expect(notComparable(row(wb.rows, "interactive-israel")).reason.code).toBe("needs-fx-rate");
+  it("a line with no open question flags none", () => {
+    const r = compared(row(providerWorkbench(input({ providers: [{ snapshot: current, level: "list", band: usIsrael }] }), ctx).rows, "interactive-israel"));
+    expect(r.flags).not.toContain("BRK-OQ25");
   });
   it("a trade in a currency the list's own words do not print a minimum for is not priced, with its own reason (Excellence: shekels, dollars, euros)", () => {
     const line = (excellence.lines as { id: string; band: string | null }[]).find((l) => l.id === "excellence-buy-sell-foreign-non-us")!;
