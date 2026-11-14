@@ -9,6 +9,7 @@ import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, inde
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { type SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
+import { reasonText } from "./parts";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { TitleRow } from "./title";
 import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline, whyNoFundAt, whyNoKindAt } from "./pair";
@@ -621,6 +622,11 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
     const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
     if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
+  });
+  it("each new kind of no price says its own words, never a missing line or a line without value (sold fund by fund, a fund no agreement names, a bound not printed for the currency)", () => {
+    const words = [reasonText({ code: "sold-fund-by-fund" }, "mutual_fund_units"), reasonText({ code: "no-agreement-found" }, "mutual_fund_units"), reasonText({ code: "not-printed-for-currency", detail: "", lineName: "מניות ותעודות סל הנסחרות באירופה", currency: "USD", printed: ["EUR", "GBP", "CHF"] }, "foreign_securities")];
+    expect(words).toEqual([invest.reasons.soldFundByFund, invest.reasons.noAgreementFound, expect.stringContaining("אירו, פאונד ופרנק שוויצרי")]);
+    expect(words[2]).toContain("דולר");
   });
   it("on the S&P 500 page, One Zero's line for a fund no report names reads open with the search and the open question, and a named fund shows its price (rendered)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });

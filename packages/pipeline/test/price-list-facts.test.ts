@@ -151,3 +151,11 @@ describe("the averages a house charged (§3.9)", () => {
     expect(JSON.stringify(parsed.error?.issues)).toMatch(/overlaps/);
   });
 });
+
+describe("the citations of the price-list facts (2026-11-14)", () => {
+  it("each step of the six banks' small conversions cites BRK-68", () => {
+    for (const name of ["discount@2026-11-14", "mercantile@2026-11-12", "fibi@2026-11-12", "massad@2026-11-12", "mizrahi-tefahot@2026-11-12", "hapoalim@2026-11-12"])
+      for (const l of snap(name).lines)
+        for (const t of l.size_tiers ?? []) for (const v of [t.up_to, t.discount_pct, t.flat, t.rate]) if (v) expect(v.rule_ids, `${name} ${l.id}`).toContain("BRK-68");
+  });
+});
