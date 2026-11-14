@@ -170,7 +170,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "Recorded in USD for a USD-quoted European listing (CSPX on the LSE), on the note's own words 'מינימום 2.5 בהתאם למטבע העסקה'. Doubt: the same page also says the commission is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך', which for the LSE would be GBP (2.5 GBP); the tariff does not say which applies to a USD line on a GBP exchange. For GBP trades the minimum is 2.5 GBP (unit gbp_per_trade exists since 2026-10-25); the USD reading is kept because the note says 'בהתאם למטבע העסקה' and the CSPX line trades in USD. A second reading, 2.5 GBP, is the open doubt."
+        "notes": "Recorded in USD for a USD-quoted European listing (CSPX on the LSE), on the note's own words 'מינימום 2.5 בהתאם למטבע העסקה'. Doubt: the same page also says the commission is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך', and does not say how that relates to a minimum set in the trade's currency (BRK OQ25). For GBP trades the minimum is 2.5 GBP (unit gbp_per_trade exists since 2026-10-25); the USD reading is kept because the note says 'בהתאם למטבע העסקה' and the CSPX line trades in USD. What the collection sentence means for the minimum is the open doubt."
       },
       "max": null,
       "period": null,

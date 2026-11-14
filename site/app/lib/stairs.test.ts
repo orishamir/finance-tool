@@ -69,7 +69,7 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83525, 6893], [83587, 62]]));
   it("Interactive Israel with the same iShares: to Interactive Brokers (Tiered, the automatic conversion), then the distributing iShares", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
-    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83309, null], [83525, 216], [83587, 62]]);
+    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83525, 39], [83587, 62]]);
     expect(c.chain[1]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie00b5bmr087" });
     expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie0031442068" });
   });

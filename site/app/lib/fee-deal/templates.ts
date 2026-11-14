@@ -115,14 +115,13 @@ const has = (v: ValueObject | null | undefined): v is ValueObject & { value: num
  * F-12, F-13), every sum in one currency (a line whose sums are in two is left, F-13). A part the fee cannot hold (a conversion's percent
  * maximum) is dropped where the price is built (`buildPrice`).
  */
-function actionPrice(l: Line, num: (v: ValueObject) => Num, dearer: DearerOf): { spec: PriceSpec } | { left: LeftWhy } {
+function actionPrice(l: Line, num: (v: ValueObject) => Num): { spec: PriceSpec } | { left: LeftWhy } {
   if (!has(l.rate)) return { left: "no-value" };
   const perUnit = l.rate.unit === "usd_per_share";
   const flat = l.flat_up_to && has(l.flat_up_to.amount) && has(l.flat_up_to.up_to) ? { amount: l.flat_up_to.amount, upTo: l.flat_up_to.up_to } : null;
   const sums = [l.min, l.max, flat?.amount, flat?.upTo, ...(perUnit ? [l.rate] : [])].filter(has);
   // a bound printed in the trade's own currency (data-schema §3.6a item 1) is a sum in whatever currency the trade is in (`inTrade`)
-  // a bound the list leaves open between currencies (`bound_readings`) is in the dearer of them at the build's rates (F-12, `dearerCurrency`)
-  const currencies = new Set(sums.map((b) => (b.unit === "trade_ccy_per_trade" ? IN_TRADE : b.unit === "dearer_ccy_per_trade" ? (dearer(l) ?? undefined) : CURRENCY_OF_UNIT[b.unit])));
+  const currencies = new Set(sums.map((b) => (b.unit === "trade_ccy_per_trade" ? IN_TRADE : CURRENCY_OF_UNIT[b.unit])));
   if (currencies.has(undefined) || currencies.size > 1) return { left: "bound-currency" };
   const currency = [...currencies][0];
   if (currency === IN_TRADE) {
@@ -206,10 +205,7 @@ export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive
 
 
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
-/** The dearer of the currencies a line's bound may be in, at the build's rates (F-12, `dearerCurrency`); null where it cannot say. */
-export type DearerOf = (l: Line) => BoundCurrency | null;
-
-export function lineFees(l: Line, own: string, bank = false, capRead = false, dearer: DearerOf = () => null): Mapped {
+export function lineFees(l: Line, own: string, bank = false, capRead = false): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
   // every price goes through the registries (`buildPrice`), so none is one the fee cannot hold
   const fee = (kind: FeeKindId, spec: PriceSpec): SlimTemplateFee => ({ kind, stages: [{ price: buildPrice(kind, spec) }] });
@@ -220,7 +216,8 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false, de
       const note = unfilledNote(l, bank);
       const read = capRead && has(l.cap) && (has(l.min) || !!fixedSum(l)) ? (["capRead"] as const) : [];
       const all: Note[] = [...(note ? [note] : []), ...read];
-      const notes = all.length ? { notes: all } : {};
+      // the line's notes, and the open questions its price rests on (data-schema §3.6), which the price says beside it
+      const notes = { ...(all.length ? { notes: all } : {}), ...(l.open_questions ? { questions: [...l.open_questions] } : {}) };
       const perAction = (amount: Num, more: Partial<PriceSpec["figures"]> = {}, currency?: BoundCurrency): PriceSpec => ({ form: "perAction", figures: { amount, ...more }, ...(currency && currency !== "ILS" ? { currency } : {}), ...notes });
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
       if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", perAction(num(l.rate)))], left: [] } : { fees: [], left: ["no-value"] };
@@ -229,13 +226,13 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false, de
       const fixed = fixedSum(l);
       if (fixed) return { fees: [fee("trade", perAction(num(fixed.sum), has(l.cap) ? { cap: num(l.cap) } : {}, fixed.currency))], left: [] };
       if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
-      const p = actionPrice(l, num, dearer);
+      const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
       return { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
       if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
-      const p = actionPrice(l, num, dearer);
+      const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
@@ -494,12 +491,12 @@ const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "
  * the way F-63 converts by (a way that charges nothing on any conversion wins over the standard line, `convertsFree`). Each figure keeps its
  * line's source and date. Every line that fills nothing is listed with why.
  */
-export function houseTemplate(snap: FeesSnapshot, dearer?: DearerOf): HouseTemplate {
-  return houseTemplateRead(snap, dearer).template;
+export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
+  return houseTemplateRead(snap).template;
 }
 
 /** `houseTemplate`, with the ids of the lines it filled a fee from (`read`), which the build reads and the page does not. */
-export function houseTemplateRead(snap: FeesSnapshot, dearer: DearerOf = () => null): { template: HouseTemplate; read: string[] } {
+export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate; read: string[] } {
   const ownName = snap.provider.name_he;
   const bank = memberKindOf(snap.provider.class) === "bank";
   const left: LeftLine[] = [];
@@ -536,7 +533,7 @@ export function houseTemplateRead(snap: FeesSnapshot, dearer: DearerOf = () => n
     const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
     for (const l of ambiguous) leave(l, "ambiguous");
     for (const l of unread) leave(l, "another-line");
-    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank, CAP_READ.has(snap.id), dearer)]));
+    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank, CAP_READ.has(snap.id))]));
     for (const [l, m] of mapped) {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);

@@ -13,6 +13,7 @@ import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, PartEdit, Switch, TextField, type PartMark } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
+import { IdRef } from "../provenance";
 import { Fig, feeName, perActionWord } from "./words";
 
 const cp = copy.cases.parts;
@@ -80,6 +81,7 @@ const MainBody = ({ part, at }: BodyProps) => (
     {at.box(part.id, part.fields[0]!)}
     {part.chooser && at.chooser}
     {quiet(bare(part.words.tail))}
+    {part.words.questions?.map((q) => <IdRef key={q} id={q} />)}
   </>
 );
 

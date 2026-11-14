@@ -151,7 +151,7 @@
       },
       "min": {
         "value": 2.5,
-        "unit": "dearer_ccy_per_trade",
+        "unit": "trade_ccy_per_trade",
         "source": {
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל ('תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מינימום 2.5 בהתאם למטבע העסקה",
@@ -170,7 +170,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1): the Europe line has a 2.5 minimum in every trading currency (BRK-40). The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך', and its share table's one USD row is 'USD (Shares)' 0.01 a share with a minimum of 2.5 USD. For a listing traded in USD on the LSE, whether the 2.5 is in USD or in the exchange's main currency is open (BRK OQ25). The value names the two readings BRK-40 gives, 2.5 USD and 2.5 GBP (`bound_readings`), and a run prices the dearer at its rates (F-12, F-84, D56). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
+        "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1), read plainly: 2.5 in the trade's own currency (BRK-40). The share table prints it for each currency it lists, 'EUR (%) 0.15 2.5 EUR', 'GBP (%) 0.15 2.5 GBP', and its one USD row 'USD (Shares) 0.01 2.5 USD'; so a listing traded in USD on the LSE, such as CSPX, pays at least 2.5 USD, and one traded in EUR, GBP or CHF 2.5 in its own currency. The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; what that sentence means for a minimum set in the trade's currency is open (BRK OQ25, on the line's open_questions). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
       },
       "max": null,
       "period": null,
@@ -183,15 +183,9 @@
           "מניות/תעודות סל הנסחרות באירופה"
         ]
       },
-      "bound_readings": {
-        "currencies": [
-          "USD",
-          "GBP"
-        ],
-        "open_questions": [
-          "BRK-OQ25"
-        ]
-      }
+      "open_questions": [
+        "BRK-OQ25"
+      ]
     },
     {
       "id": "interactive-israel-custody-foreign",
@@ -601,8 +595,8 @@
     {
       "what": "מינימום העמלה על קרן שנסחרת באירופה: 'מינימום 2.5 בהתאם למטבע העסקה' מול 'עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך'",
       "page": 1,
-      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). For a USD-quoted fund on the LSE such as CSPX, whether the 2.5 minimum is in USD or in the exchange's main currency is open (BRK OQ25). The record prices the dearer of 2.5 USD and 2.5 GBP at the run's rates (D56), today 2.5 GBP; if the cheaper applies, every small European purchase costs less than the site shows.",
-      "why_he": "התעריפון לא אומר אם עמלת המינימום על קרן שנסחרת בדולרים בבורסת לונדון היא 2.5 דולר או 2.5 במטבע הראשי של הבורסה. האתר מחשב לפי היקר מבין 2.5 דולר ל־2.5 ליש״ט, היום 2.5 ליש״ט; אם חל הזול, קנייה קטנה באירופה עולה בפועל פחות.",
+      "why": "Both sentences are on p.1 of the tariff of 23.09.2026 (re-read 2026-11-12, same bytes). The record reads the minimum as its own words say, 2.5 in the trade's currency: 2.5 USD for a USD-quoted fund on the LSE such as CSPX. The collection sentence does not say how a fee collected in the exchange's main currency relates to that minimum (BRK OQ25), so the fee actually charged can differ. Not settled by any page of the company.",
+      "why_he": "עמלת המינימום מחושבת כלשון התעריפון, 2.5 במטבע העסקה: 2.5 דולר על קרן שנסחרת בדולרים בבורסת לונדון. התעריפון אומר גם שהעמלה נגבית במטבע הראשי של הבורסה, ולא אומר איך זה מתיישב עם המינימום, ולכן העמלה בפועל יכולה להיות שונה.",
       "could_change_price": true
     },
     {

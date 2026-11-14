@@ -102,6 +102,8 @@ export interface TariffLineRow {
   flat: { amount: SiteValue; upTo: SiteValue; where: TariffLineRow["where"] } | null;
   /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
   spread: SiteValue | "not_limited" | null;
+  /** The open questions of the rule base the line's price rests on (data-schema §3.6), each a chip beside the line. */
+  questions?: string[];
   /** What the house charged on average for the line's kind of fee (F-122), for reference only; absent where its sheet prints none. */
   average?: ColumnAverage;
 }

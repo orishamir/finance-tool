@@ -277,18 +277,3 @@ export function currentAccountFee(monthlyMinimum: number | undefined, marketValu
 export function corporateEventFee(perEvent: number | undefined, fxRate: number, marketValue: number): number {
   return Math.min((perEvent ?? 0) * fxRate, Math.max(0, marketValue));
 }
-
-/**
- * F-12 The dearer of the currencies a bound may be in, where the list's words leave its currency open between them (`bound_readings`, D56):
- * the one with the most shekels to a unit at the run's rates (F-84), the shekel at 1. Null where a currency has no rate: the bound cannot be
- * priced, never priced at the cheaper one.
- */
-export function dearerCurrency(currencies: readonly string[], shekelsPer: (code: string) => number | null): { code: string; rate: number } | null {
-  let best: { code: string; rate: number } | null = null;
-  for (const code of currencies) {
-    const rate = code === "ILS" ? 1 : shekelsPer(code);
-    if (typeof rate !== "number" || !(rate > 0)) return null;
-    if (!best || rate > best.rate) best = { code, rate };
-  }
-  return best;
-}

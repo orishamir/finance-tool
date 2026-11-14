@@ -32,9 +32,8 @@ describe("invest page computation", () => {
     for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
       expect(of(id).best?.valueN).toBeGreaterThan(0);
       expect(of(id).best?.open).toBe(false);
-      // paying out costs tax along the way: below the accumulating fund at the same house and fee, where both are bought by amount
-      const at = (fund: string) => (of(fund).byHouse["interactive-israel"] as { valueN: number }).valueN;
-      expect(at(id)).toBeLessThan(at("ie00b5bmr087"));
+      // paying out costs tax along the way: below the same house's accumulating fund at the same fee, which is not ranked
+      expect(of(id).best!.valueN).toBeLessThan(of("ie00b5bmr087").best!.valueN);
     }
     for (const id of ["us-voo", "us-ivv"]) {
       expect(of(id).best).toBeUndefined();
@@ -584,11 +583,9 @@ describe("Interactive Brokers abroad: its pricing plans and ways to convert", ()
     // F-109 (D94): VUAA's unit (USD 146) is bought every month in whole units at Interactive Brokers, and costs less there
     expect(at("ie00bfmxxd54", "interactive-brokers").accountCost).toBeLessThan(at("ie00bfmxxd54", "interactive-israel").accountCost);
     // CSPX's unit (USD 815) is more than 2,000 a month: at Interactive Brokers the money waits for a unit, earning nothing, while
-    // Interactive Israel's recurring plan buys each month by amount, at a minimum of the dearer of 2.5 dollars and 2.5 pounds (BRK OQ25,
-    // D56), which costs more here
+    // Interactive Israel's recurring plan buys each month by amount, so there it costs less
     expect(at("ie00b5bmr087", "interactive-brokers").units).not.toBeNull();
-    expect(at("ie00b5bmr087", "interactive-israel").units?.skipped).toBe(0);
-    expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeGreaterThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
+    expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeLessThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
   });
 });
 

@@ -106,9 +106,10 @@ describe("the words around an average and the custody row's rules", async () => 
   });
 });
 
-describe("a bound the list leaves open between currencies, on the company page", () => {
-  it("Interactive Israel's European minimum names both readings and the dearer rule (BRK OQ25, D56)", () => {
+describe("a line's open question on the company page (data-schema §3.6)", () => {
+  it("Interactive Israel's European line: its minimum as printed, the house's own, and BRK OQ25 beside it", () => {
     const line = brokeragePart("interactive-israel")!.tariff.lines.find((l) => l.id === "interactive-israel-buy-sell-europe")!;
-    expect(line.min).toMatchObject({ unit: "text", value: "2.5 $ או £, לפי היקר" });
+    expect(line.min).toMatchObject({ unit: "trade_ccy_per_trade", value: 2.5 });
+    expect(line.questions).toEqual(["BRK-OQ25"]);
   });
 });

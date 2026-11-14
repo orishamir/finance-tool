@@ -11,7 +11,7 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
-import { Num, NumAfter, RuleRef, RulesLine, Term } from "../../provenance";
+import { IdRef, Num, NumAfter, RuleRef, RulesLine, Term } from "../../provenance";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
@@ -73,6 +73,17 @@ function Bound({ l, side }: { l: TariffLineRow; side: "min" | "max" }) {
   const v = l[side];
   if (v) return figure(side, v, boundWord(l, v));
   return <span className="text-sm text-muted-foreground">{bounded(l) ? copy.card.noBound[side] : "—"}</span>;
+}
+
+/** The open questions a line's price rests on (data-schema §3.6), each by its title, opening its card: a quiet line under the line's prices. */
+function QuestionsLine({ ids }: { ids: readonly string[] }) {
+  return (
+    <span className="flex flex-wrap gap-2 text-sm">
+      {ids.map((q) => (
+        <IdRef key={q} id={q} titled />
+      ))}
+    </span>
+  );
 }
 
 /** A flat price for a small conversion or order (F-12, F-13), its amount first as every price's: "3.30 $ להמרה של עד 99 $"; nothing where the line has none. */
@@ -210,8 +221,10 @@ function FeeTable({ lines, channel, kind, average }: { lines: TariffLineRow[]; /
           // what the house charged on average for the kind (F-122) is a quiet line under them, across the same columns
           const flat = r.pair ? !!(r.pair.direct.flat || r.pair.branch.flat) : !!r.line.flat;
           const averaged = (r.pair ? r.pair[channel] : r.line).average;
+          const questions = (r.pair ? r.pair[channel] : r.line).questions;
           const extra = [
             ...(flat ? [{ key: "flat", cells: [held((l) => <FlatFigure l={l} />), null, null, held((l) => (l.flat ? <WhereCell w={l.flat.where} /> : null))], spans: [3, 1, 1, 1] }] : []),
+            ...(questions ? [{ key: "questions", cells: [<QuestionsLine key="questions" ids={questions} />], spans: [4] }] : []),
             ...(averaged ? [{ key: "average", cells: [average(r.pair ? r.pair[channel] : r.line)], spans: [4] }] : []),
           ];
           const lines = extra.length ? { columns: ["price", "min", "max", "where"], rows: [{ key: "rate", cells: cells.slice(1) }, ...extra] } : undefined;
@@ -252,6 +265,7 @@ function PhoneFee({ l, same, average }: { l: TariffLineRow; same: boolean; avera
         </span>
       )}
       <Spread l={l} />
+      {l.questions && <QuestionsLine ids={l.questions} />}
       {average(l)}
     </span>
   );

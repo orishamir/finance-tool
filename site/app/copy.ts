@@ -74,11 +74,6 @@ export const numbers = {
   monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   inTradeCurrency: "במטבע העסקה", // a bound printed in whatever currency the trade is in (data-schema §3.6a item 1)
-  /** A bound whose currency the list leaves open between readings, priced in the dearer (`dearer_ccy_per_trade`, D56): "2.5 $ או £, לפי היקר". */
-  inDearerCurrency: "במטבע היקר מבין השניים",
-  dearerOf: (amount: string, signs: string[]) => `${amount} ${signs.join(" או ")}, לפי היקר`,
-  /** The signs of the currencies such a bound names, short enough for a price-list cell on a phone. */
-  currencySigns: { USD: "$", GBP: "£", EUR: "€", CHF: "CHF", ILS: "₪" } as Record<string, string>,
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
   weak: { secondary: "משני", institution: "לפי החברה" },
@@ -959,6 +954,8 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
 /** What each engine flag means, in one line (method.md §12); copy.md 3.8. The code stays beside the words. */
 export const flags: Record<string, string> = {
   // F-107 at TXF-16's rate, which a fund obtains only if it passes the treaty's limitation-on-benefits article (TXF OQ7, method G-33)
+  // F-12 at Interactive Israel's European minimum, 2.5 in the trade's currency, beside its collection sentence (BRK OQ25)
+  "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה, ולא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact

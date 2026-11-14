@@ -119,6 +119,8 @@ interface ActionParts extends Linked {
   third?: Third;
   notes?: Note[];
   inTrade?: true | readonly BoundCurrency[];
+  /** The open questions of the rule base the price rests on, from its line (data-schema §3.6): said beside the price with their chips. */
+  questions?: readonly string[];
 }
 
 /**
