@@ -15,14 +15,12 @@
  ],
  "bank-deposit · exit · perAction · plain": [
   "price: share perAction✓ discount third until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial"
  ],
  "bank-deposit · exit · perAction · full": [
   "price: share perAction✓ discount✓ third✓ until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓"
@@ -56,15 +54,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "brokerage-account · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "brokerage-account · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
@@ -113,14 +111,12 @@
  ],
  "brokerage-account · distribution_handling · perAction · plain": [
   "price: share perAction✓ discount third until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial"
  ],
  "brokerage-account · distribution_handling · perAction · full": [
   "price: share perAction✓ discount✓ third✓ until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓"
@@ -139,14 +135,12 @@
  ],
  "brokerage-account · transfer_out · perAction · plain": [
   "price: share perAction✓ discount third until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial"
  ],
  "brokerage-account · transfer_out · perAction · full": [
   "price: share perAction✓ discount✓ third✓ until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓"
@@ -233,14 +227,12 @@
  ],
  "child-savings-bank · exit · perAction · plain": [
   "price: share perAction✓ discount third until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial"
  ],
  "child-savings-bank · exit · perAction · full": [
   "price: share perAction✓ discount✓ third✓ until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓"
@@ -300,15 +292,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "ira-hishtalmut · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "ira-hishtalmut · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
@@ -442,15 +434,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "ira-provident · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "ira-provident · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
@@ -634,32 +626,24 @@
   "link: offset✓ refund✓"
  ],
  "pension-comprehensive · insurance_premium · sum · plain": [
-  "price: share held sum✓ discount third until",
-  "bound: min max",
+  "price: share held sum✓ until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset refund",
-  "more: unfilled partial"
+  "link: offset refund"
  ],
  "pension-comprehensive · insurance_premium · sum · full": [
-  "price: share held sum✓ discount third until",
-  "bound: min max",
+  "price: share held sum✓ until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset✓ refund✓",
-  "more: unfilled partial"
+  "link: offset✓ refund✓"
  ],
  "pension-comprehensive · insurance_premium · held · plain": [
-  "price: share held✓ sum discount third until",
-  "bound: min max",
+  "price: share held✓ sum until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset refund",
-  "more: unfilled partial"
+  "link: offset refund"
  ],
  "pension-comprehensive · insurance_premium · held · full": [
-  "price: share held✓ sum discount third until",
-  "bound: min max",
+  "price: share held✓ sum until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset✓ refund✓",
-  "more: unfilled partial"
+  "link: offset✓ refund✓"
  ],
  "pension-comprehensive · insurance_premium · action · plain": [
   "price: share✓ held sum discount third until",
@@ -702,32 +686,24 @@
   "link: offset✓ refund✓"
  ],
  "pension-general · insurance_premium · sum · plain": [
-  "price: share held sum✓ discount third until",
-  "bound: min max",
+  "price: share held sum✓ until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset refund",
-  "more: unfilled partial"
+  "link: offset refund"
  ],
  "pension-general · insurance_premium · sum · full": [
-  "price: share held sum✓ discount third until",
-  "bound: min max",
+  "price: share held sum✓ until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset✓ refund✓",
-  "more: unfilled partial"
+  "link: offset✓ refund✓"
  ],
  "pension-general · insurance_premium · held · plain": [
-  "price: share held✓ sum discount third until",
-  "bound: min max",
+  "price: share held✓ sum until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset refund",
-  "more: unfilled partial"
+  "link: offset refund"
  ],
  "pension-general · insurance_premium · held · full": [
-  "price: share held✓ sum discount third until",
-  "bound: min max",
+  "price: share held✓ sum until",
   "by: by:held by:track by:channel by:portfolioSize by:volume by:count by:own",
-  "link: offset✓ refund✓",
-  "more: unfilled partial"
+  "link: offset✓ refund✓"
  ],
  "pension-general · insurance_premium · action · plain": [
   "price: share✓ held sum discount third until",
@@ -785,14 +761,12 @@
  ],
  "savings-plan · exit · perAction · plain": [
   "price: share perAction✓ discount third until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial"
  ],
  "savings-plan · exit · perAction · full": [
   "price: share perAction✓ discount✓ third✓ until",
-  "bound: min max",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓"
@@ -826,15 +800,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "government-bond · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "government-bond · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
@@ -900,15 +874,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "makam · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "makam · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
@@ -974,15 +948,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "money-market-fund-daily · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "money-market-fund-daily · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
@@ -1086,15 +1060,15 @@
   "more: unfilled✓ partial✓ sale"
  ],
  "money-market-fund-renewable · trade · perAction · plain": [
-  "price: share perUnit perAction✓ discount third flat until",
-  "bound: min max cap",
+  "price: share perUnit perAction✓ discount third until",
+  "bound: cap",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset refund",
   "more: unfilled partial sale"
  ],
  "money-market-fund-renewable · trade · perAction · full": [
-  "price: share perUnit perAction✓ discount✓ third✓ flat until",
-  "bound: min max cap✓",
+  "price: share perUnit perAction✓ discount✓ third✓ until",
+  "bound: cap✓",
   "by: by:what by:track by:channel by:actionSize by:portfolioSize by:volume by:count by:own",
   "link: offset✓ refund✓",
   "more: unfilled✓ partial✓ sale"
