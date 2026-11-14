@@ -156,38 +156,34 @@ export function tradeCurrency(fees: readonly Fee[], picks: readonly ReadPick[]):
   return place?.currency && (BOUND_CURRENCIES as readonly string[]).includes(place.currency) ? (place.currency as BoundCurrency) : null;
 }
 
-/**
- * A price whose sums are in the action's currency, in that currency (the shekel left unsaid); where the price names the currencies the list
- * prints those sums for and the action's is not one of them, without them: its minimum, maximum and flat price (§10.6, data-schema §3.6a
- * item 1). Any other price as it is.
- */
+/** A price whose sums are in the action's currency, in that currency (the shekel left unsaid); any other price as it is. */
 export function inCurrency(p: Price, currency: BoundCurrency): Price {
   if (!("inTrade" in p) || !p.inTrade) return p;
-  const { inTrade: printed, currency: _c, ...rest } = p;
-  const bounded = printed === true || printed.includes(currency) ? rest : withoutSums(rest);
-  return (currency === "ILS" ? bounded : { ...bounded, currency }) as Price;
-}
-
-/** A price on an action without the sums its list prints for other currencies only: its rate or sum per unit, its cap and its parts stay. */
-function withoutSums<P extends object>(p: P): P {
-  const { min: _m, max: _x, flat: _f, ...rest } = p as P & { min?: unknown; max?: unknown; flat?: unknown };
-  return rest as P;
+  const { inTrade: _t, currency: _c, ...rest } = p;
+  return (currency === "ILS" ? rest : { ...rest, currency }) as Price;
 }
 
 /** Whether a read fee has a price whose sums are in the action's currency. */
 const asksTrade = (f: ReadFee): boolean => [...f.stages, ...(f.sale ?? [])].some((s) => "inTrade" in s.price && !!s.price.inTrade);
 
 /**
+ * Whether a read fee has a price whose sums in the action's currency the list prints for other currencies only (`inTrade` naming them,
+ * data-schema §3.6a item 1): for a trade in `currency` it prints no bound, so the fee is not read (F-114), never read without its minimum.
+ */
+const notPrintedFor = (f: ReadFee, currency: BoundCurrency): boolean => [...f.stages, ...(f.sale ?? [])].some((s) => "inTrade" in s.price && Array.isArray(s.price.inTrade) && !s.price.inTrade.includes(currency));
+
+/**
  * The deal read for its picks: the fees read (`readFee`), in the deal's order, each price whose sums are in the action's currency in what is
  * bought's (`tradeCurrency`); the ids of the fees the picks give no case (`unmatched`), and among them the ones read in a case whose sums
- * are in a currency the deal does not know (`noCurrency`).
+ * are in a currency the deal does not know (`noCurrency`) or in one the list prints them not for (`notPrinted`).
  */
-export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[]; noCurrency: string[]; picks: ReadPick[] } {
+export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[]; noCurrency: string[]; notPrinted: string[]; picks: ReadPick[] } {
   const picks = picksOf(deal);
   const trade = tradeCurrency(deal.fees, picks);
   const fees: ReadFee[] = [];
   const unmatched: string[] = [];
   const noCurrency: string[] = [];
+  const notPrinted: string[] = [];
   const resolve = (stages: readonly Stage[]): Stage[] => stages.map((s) => ({ ...s, price: inCurrency(s.price, trade!) }));
   for (const fee of deal.fees) {
     const read = readFee(fee, picks);
@@ -195,9 +191,12 @@ export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[];
     else if (read.some(asksTrade) && !trade) {
       unmatched.push(fee.id);
       noCurrency.push(fee.id);
+    } else if (trade && read.some((f) => notPrintedFor(f, trade))) {
+      unmatched.push(fee.id);
+      notPrinted.push(fee.id);
     } else fees.push(...(trade ? read.map((f) => (asksTrade(f) ? { ...f, stages: resolve(f.stages), ...(f.sale ? { sale: resolve(f.sale) } : {}) } : f)) : read));
   }
-  return { fees, unmatched, noCurrency, picks };
+  return { fees, unmatched, noCurrency, notPrinted, picks };
 }
 
 /**

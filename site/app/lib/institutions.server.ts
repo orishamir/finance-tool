@@ -21,7 +21,7 @@ import type {
 import { distributionRuleIds } from "../components/decoder/institutions/types";
 import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedRecords, root, today } from "./data.server";
 import { HELP_TERMS as DEPOSIT_TERMS } from "./deposit-browser";
-import { topicName } from "../copy";
+import { numbers, topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { isFxToFx } from "./invest";
 import { shortName } from "./providers";
@@ -31,7 +31,7 @@ import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from ".
 import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type TextFragment } from "./sources";
-import { heCollator } from "./format";
+import { fmt, heCollator } from "./format";
 import { daysBetween } from "./dates";
 import { leftOutOf } from "./left-out";
 import { latestSnapshots } from "./providers.server";
@@ -115,6 +115,13 @@ function rateTableUrl(bank: string): string | null {
 // ---------------------------------------------------------------- value objects
 
 // D31: everything on a company's page is that company's own figure about its own product; the deposits page shows each bank's the same way
+/** A line's bound as the page shows it: a bound the list leaves open between currencies names them, priced in the dearer (`bound_readings`, D56). */
+function bound(l: FeeLine, v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
+  const s = site(v, t, snapshot, owner);
+  if (v.unit !== "dearer_ccy_per_trade" || !l.bound_readings || typeof v.value !== "number") return s;
+  return { ...s, value: numbers.dearerOf(fmt.number(v.value), l.bound_readings.currencies.map((c) => numbers.currencyNames[c] ?? c)), unit: "text" };
+}
+
 export function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
   return ownBy({ ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
 }
@@ -229,8 +236,8 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     distribution: isDistributionFee(l),
     rate: site(l.rate, t, snapshot, owner),
     period: l.period,
-    min: l.min ? site(l.min, t, snapshot, owner) : null,
-    max: l.max ? site(l.max, t, snapshot, owner) : null,
+    min: l.min ? bound(l, l.min, t, snapshot, owner) : null,
+    max: l.max ? bound(l, l.max, t, snapshot, owner) : null,
     where: whereOf(l.rate),
     // a flat price for a small order or conversion (F-12, F-13) stands on its own place in the documents
     flat: l.flat_up_to ? { amount: site(l.flat_up_to.amount, t, snapshot, owner), upTo: site(l.flat_up_to.up_to, t, snapshot, owner), where: whereOf(l.flat_up_to.amount) } : null,

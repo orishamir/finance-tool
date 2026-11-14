@@ -268,7 +268,16 @@ describe("flags the method asks for", () => {
       { goal: { amountNow: 10_000, monthly: 0, months: 12 }, market: { inflation: 0.02 }, makam: { yield: 0.04 }, tariff: { buy: { rate: 0.001, min: 20 } } },
       ctx,
     );
-    expect(codes(makam)).toContain("G-20");
+    // the series bought in month 1 is redeemed in month 12: its purchase commission is left out of the taxed discount (G-39), not a gain
+    expect(codes(makam)).toContain("G-39");
+    expect(codes(makam)).not.toContain("G-20");
+    // held past the horizon, the series is sold: the commission is left out of the gain (G-20, form 1325 under TXS-06)
+    const sold = runMakam(
+      { goal: { amountNow: 10_000, monthly: 0, months: 6 }, market: { inflation: 0.02 }, makam: { yield: 0.04 }, tariff: { buy: { rate: 0.001, min: 20 } } },
+      ctx,
+    );
+    expect(codes(sold)).toContain("G-20");
+    expect(codes(sold)).not.toContain("G-39");
   });
 
   it("G-14 when a provident track has no direct expenses figure", () => {

@@ -5,6 +5,7 @@ import type { FeesSnapshot, FundRecord } from "@finance-tool/schema";
 type Line = FeesSnapshot["lines"][number];
 
 const TRADE_CCY = "trade_ccy_per_trade";
+const DEARER = "dearer_ccy_per_trade";
 /** The words a bound in the trade's currency rests on: "במטבע העסקה", "בהתאם למטבע העסקה". */
 const TRADE_CCY_WORDS = /מטבע העסקה/;
 
@@ -21,6 +22,13 @@ export function checkLineFacts(line: Line, latest: boolean): string[] {
   if (ccyBounds.length > 0 && line.base !== "trade") out.push(`${at}: a bound in ${TRADE_CCY} on a ${line.base} line; only a trade line takes one`);
   for (const b of ccyBounds) if (!TRADE_CCY_WORDS.test(b!.source.quote ?? "")) out.push(`${at}: a bound in ${TRADE_CCY} quotes no words naming the trade's currency ("מטבע העסקה")`);
   if (line.trade_currencies && ccyBounds.length === 0) out.push(`${at}: trade_currencies belongs to a bound in ${TRADE_CCY}`);
+  // a bound whose currency the list leaves open between readings: a trade line's minimum or maximum, beside the readings it may be in
+  for (const key of ["rate", "cap", "spread", "discount_months", "reverts_to", "max_deposit"] as const) if (line[key]?.unit === DEARER) out.push(`${at}: ${key} is in ${DEARER}, which only a trade line's min or max takes`);
+  const dearer = [line.min, line.max].filter((b) => b?.unit === DEARER);
+  if (dearer.length > 0 && line.base !== "trade") out.push(`${at}: a bound in ${DEARER} on a ${line.base} line; only a trade line takes one`);
+  if (dearer.length > 0 && !line.bound_readings) out.push(`${at}: a bound in ${DEARER} names the currencies it may be in (bound_readings)`);
+  if (line.bound_readings && dearer.length === 0) out.push(`${at}: bound_readings belongs to a bound in ${DEARER}`);
+  if (line.bound_readings && new Set(line.bound_readings.currencies).size !== line.bound_readings.currencies.length) out.push(`${at}: bound_readings names a currency twice`);
   // 2. a custody maximum's scope
   const hasMax = typeof line.max?.value === "number";
   if (line.max_per !== undefined && (line.base !== "custody" || !hasMax)) out.push(`${at}: max_per belongs to a custody line with a maximum`);

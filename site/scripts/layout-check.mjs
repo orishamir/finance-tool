@@ -6,6 +6,8 @@
 //   mark     a "?" (HelpMark) on a line of its own, apart from the words it explains (2026-11-08: the rate head of the current account);
 //   term     a glossary term (`.term`, which never wraps) wider than the column it stands in, at every width: a whole sentence marked as one
 //            term runs out of its column, past the screen on a phone;
+//   head     a head of a fee's table or grid (`data-case-head`) whose words run past its column into the next (2026-11-14: a ladder step's
+//            "₪" ran into the next step's head at 1440), at every width;
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
 //            doubt or a lock.
@@ -119,6 +121,15 @@ async function selfTest() {
   });
   if (!(await page.evaluate(wideTerms)).some((t) => t.where.includes("planted-term"))) missed.push("term");
   await page.evaluate(() => document.getElementById("planted-term").remove());
+  await page.evaluate(() => {
+    const head = Object.assign(document.createElement("div"), { id: "planted-head" });
+    head.setAttribute("data-case-head", "");
+    head.style.cssText = "width:60px";
+    head.append(Object.assign(document.createElement("span"), { textContent: "100,000 עד 500,000 ₪", style: "white-space:nowrap" }));
+    document.querySelector("main").append(head);
+  });
+  if (!(await page.evaluate(wideHeads)).some((h) => h.where === "planted-head")) missed.push("head");
+  await page.evaluate(() => document.getElementById("planted-head").remove());
   const doubted = page.locator("main button.num-doubt").first();
   if (await doubted.count()) {
     await doubted.scrollIntoViewIfNeeded();
@@ -215,6 +226,7 @@ async function checkPage(page, path, width) {
     }
     for (const m of await page.evaluate(lonelyMarks)) add({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
     for (const t of await page.evaluate(wideTerms)) add({ check: "term", id: t.text, detail: `the term "${t.text}" is ${t.width} px wide in a ${t.column} px column (${t.where})` });
+    for (const h of await page.evaluate(wideHeads)) add({ check: "head", id: h.text, detail: `the head "${h.text}" runs ${h.by} px past its column` });
   };
   await look();
   // a closed tab card's panel is not in the page (the index page's "לפני שמחליטים"): each is opened in turn and the page looked at again,
@@ -376,6 +388,24 @@ function wideTerms() {
     seen.add(text);
     const id = col.id ? `#${col.id}` : typeof col.className === "string" && col.className ? "." + col.className.split(/\s+/).slice(0, 2).join(".") : "";
     out.push({ text, width: Math.round(width), column: Math.round(column), where: `<${col.tagName.toLowerCase()}${id}>` });
+  }
+  return out.slice(0, 6);
+}
+
+// Runs in the page. Each visible head of a fee's table or grid (`data-case-head`) with something drawn past its own box at either side: its
+// words run out of its column, into the next head.
+function wideHeads() {
+  const out = [];
+  for (const head of document.querySelectorAll("main [data-case-head]")) {
+    if (!head.checkVisibility()) continue;
+    const r = head.getBoundingClientRect();
+    let by = 0;
+    for (const el of head.querySelectorAll("*")) {
+      const e = el.getBoundingClientRect();
+      if (e.width === 0) continue;
+      by = Math.max(by, e.right - r.right, r.left - e.left);
+    }
+    if (by > 1) out.push({ text: (head.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 40), by: Math.round(by), where: head.id || "head" });
   }
   return out.slice(0, 6);
 }

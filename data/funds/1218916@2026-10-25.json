@@ -114,7 +114,7 @@
         "ETF-10"
       ],
       "state": "sourced",
-      "notes": "Not printed as one number. For 08.04.2025 to 31.12.2025 the report prints the fund's price return 16.97% (standard deviation 19.22) against the tracking asset (S&P 500 100%, דולר ארה\"ב 100%) 17.43% (standard deviation 20.15). The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+      "notes": "Not printed as one number. For 08.04.2025 to 31.12.2025 the report prints the fund's price return 16.97% (standard deviation 19.22) against the tracking asset (S&P 500 100%, דולר ארה\"ב 100%) 17.43% (standard deviation 20.15). The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
       "value": null,

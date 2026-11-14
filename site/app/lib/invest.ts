@@ -578,7 +578,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
       } catch (e) {
         const base = { id: x.s.id, name: x.s.provider.name_he, providerClass: x.s.provider.class, level: "list" as const, snapshot: x.s.snapshot, tariffSource: x.s.tariff, protectionRuleIds: x.s.provider.protection_rule_ids, minimums: x.s.minimums };
         // a run stopped on an open rule before its exit (an open question whose readings split a yearly tax) is that rule's, not the record's
-        if (e instanceof BlockedError) return { ...base, kind: "not-comparable" as const, reason: { code: "rule-open" as const, ruleId: e.ruleId, question: e.question ?? e.ruleId } };
+        if (e instanceof BlockedError) return { ...base, kind: "not-comparable" as const, reason: blockedReason(e) };
         return { ...base, kind: "not-comparable" as const, reason: { code: "record-error" as const, detail: e instanceof Error ? e.message : String(e) } };
       }
     });
@@ -613,6 +613,14 @@ export function listReading(bundle: IndicesBundle, s: FeesSnapshot, option: Opti
   const won = builds.length > 1 ? priceMany(ctx, spec, option, [s], null).get(s.id) : undefined;
   const { built } = (won?.kind === "ok" && builds.find((b) => sameCand(b.cand, won.cand))) || builds[0]!;
   return { built, run: { fx: ctx.fx, instrumentClass: spec.cls, currency: spec.currency, sharePrice: undefined }, line: (id) => scopedSnap.lines.find((l) => l.id === id) };
+}
+
+/**
+ * The reason of a provider row whose run stopped on its rule (`BlockedError`): the rule, with the open question whose readings split the
+ * run where there is one, and the method gap where no reading of the case exists (G-38); never the rule's id in place of a question.
+ */
+export function blockedReason(e: BlockedError): { code: "rule-open"; ruleId: string; question?: string; gap?: string } {
+  return { code: "rule-open", ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}), ...(e.gap ? { gap: e.gap } : {}) };
 }
 
 function ambiguity(message: string, s: FeesSnapshot): NotComparable | null {

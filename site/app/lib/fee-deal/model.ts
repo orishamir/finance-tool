@@ -257,10 +257,11 @@ export function pricedOf(fee: Fee, caseId?: string): Priced {
 }
 
 /**
- * The price of a case's prices the toolbox acts on, by its place among the purchase's: the last, the one that runs on with no end, which a
- * later price follows. The toolbox offers what it can hold, and adds a part, asks for a pending part and changes the form there.
+ * The price of a case's prices the toolbox acts on, by its place among the purchase's: the one the person is editing (`at`, where the
+ * prices have it), else the last, the one that runs on with no end. The toolbox offers what it can hold, and adds a part, asks for a
+ * pending part and changes the form there.
  */
-export const toolPrice = (x: Priced): number => x.stages.length - 1;
+export const toolPrice = (x: Priced, at?: number): number => (at !== undefined && at >= 0 && at < x.stages.length ? at : x.stages.length - 1);
 
 /** A fee's prices on a side (of a case, where `caseId` names one): the sale's where it is priced apart, else the fee's own. */
 export const pricesOn = (fee: Fee, side: Side, caseId?: string): Stage[] => {

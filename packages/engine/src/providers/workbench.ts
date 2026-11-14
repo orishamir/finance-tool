@@ -8,7 +8,7 @@ import { isTie, relativeGap } from "../compare/ranking.ts";
 import type { CoverageLine, Reason } from "../compare/types.ts";
 import { computedValue, weakestStrength } from "../fees/computed.ts";
 import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
-import type { Commission, Custody } from "../formulas/fees.ts";
+import { dearerCurrency, type Commission, type Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
@@ -473,6 +473,15 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
             if (l.line.trade_currencies && !l.line.trade_currencies.includes(trade)) throw new NotPrintedForCurrency(l.line.id, trade, l.line.trade_currencies);
             if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
             return trade === "ILS" ? vo.value : vo.value * rateOf(input.fx, trade, what);
+          }
+          // F-12: a bound the list leaves open between currencies (`bound_readings`) is priced in the dearer at the run's rates (D56)
+          if (vo.unit === "dearer_ccy_per_trade") {
+            const readings = l.line.bound_readings;
+            if (!readings) throw new RecordInputError(`${what}: unit is ${vo.unit} and the line names no bound_readings`);
+            if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+            const dearer = dearerCurrency(readings.currencies, (code) => { const r = input.fx?.[code]; return typeof r === "number" ? r : null; });
+            if (!dearer) throw new Unusable("needs-fx-rate", `${what}: no rate for one of ${readings.currencies.join(", ")} in the run`);
+            return vo.value * dearer.rate;
           }
           const code = CURRENCY_OF_UNIT[vo.unit];
           if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);

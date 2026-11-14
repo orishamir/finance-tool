@@ -65,7 +65,8 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **Number states.**
   - Sourced: a solid grey underline.
   - Computed: a dotted violet underline.
-  - Entered by the person: blue ink on a blue highlight. Not a chart's
+  - Entered by the person: blue ink, with no highlight behind it (the
+    "entered" tag keeps its own). Not a chart's
     field: its default and what the reader types in it are plain numbers
     ([charts.md](charts.md)).
   - `caution`, amber: stale, a secondary source, or a company's figure used

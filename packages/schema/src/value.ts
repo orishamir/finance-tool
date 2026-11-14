@@ -42,6 +42,11 @@ export const unit = z.enum([
   "usd_per_trade",
   "gbp_per_trade",
   "trade_ccy_per_trade",
+  /**
+   * An amount per trade in whichever of the line's `bound_readings.currencies` is dearer at the run's rates (F-12, F-84): a list whose words
+   * leave a bound's currency open between readings, priced at the dearer (D56).
+   */
+  "dearer_ccy_per_trade",
   /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
   "usd_per_event",
   "nis_per_usd",

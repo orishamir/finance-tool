@@ -63,7 +63,7 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `nis_millions`, `usd`, `eur`, `gbp`, `pct` (a share), `pct_per_year`, `pct_per_year_effective`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `nis_per_share`, `eur_per_share`, `gbp_per_share`, `usd_per_trade`, `gbp_per_trade`, `trade_ccy_per_trade`, `usd_per_event`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `nis_millions`, `usd`, `eur`, `gbp`, `pct` (a share), `pct_per_year`, `pct_per_year_effective`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `nis_per_share`, `eur_per_share`, `gbp_per_share`, `usd_per_trade`, `gbp_per_trade`, `trade_ccy_per_trade`, `dearer_ccy_per_trade` (§3.6a item 1), `usd_per_event`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
 
 Units that need a word:
 
@@ -445,16 +445,17 @@ One file per provider per snapshot: `fees/<provider-id>@<date>.json`. The schema
 
 Six fields on a line or a snapshot of a bank's, broker's or foreign broker's record (`packages/schema/src/collections/fees.ts`), each with the price list's own words as its quote (the place of a value, §3.6: `page` in a PDF, `quote` of at most 240 characters), so a tap opens the document where it says so. The values were read on 2026-11-14 in each house's current list. The data check is `packages/pipeline/src/price-list-facts.ts`.
 
-**1. A bound in the trade's currency.** A new unit, `trade_ccy_per_trade`: an amount per trade in units of whatever currency the trade is in, as the list prints it ("מינימום 30 במטבע העסקה"). It replaces the dollar unit such a `min` (or `max`) carries today. Optional beside it, on the line, `trade_currencies` (array of ISO codes): only where the list names the currencies (Excellence: `["ILS", "USD", "EUR"]` from "בש"ח/$ ארה"ב/יורו"; Interactive Israel: `["EUR", "GBP", "CHF"]`, the currencies its per-currency table prints the 2.5 minimum for); absent, any currency. Carried by `trade` lines of `bank`, `broker` and `foreign_broker` records. The check: the unit only on a trade line's `min` or `max`, its quote naming "מטבע העסקה" (or "בהתאם למטבע העסקה"), and `trade_currencies` only beside it. F-12 reads it in the currency the run trades the fund in, and does not price a trade in a currency outside `trade_currencies`; /deal fills it as a sum in the trade's currency, with the currencies, and reads a trade in another currency without it (method §10.6).
+**1. A bound in the trade's currency.** A new unit, `trade_ccy_per_trade`: an amount per trade in units of whatever currency the trade is in, as the list prints it ("מינימום 30 במטבע העסקה"). It replaces the dollar unit such a `min` (or `max`) carries today. Optional beside it, on the line, `trade_currencies` (array of ISO codes): only where the list's own words name the currencies (Excellence: `["ILS", "USD", "EUR"]` from "בש"ח/$ ארה"ב/יורו"); absent, any currency. Carried by `trade` lines of `bank`, `broker` and `foreign_broker` records. The check: the unit only on a trade line's `min` or `max`, its quote naming "מטבע העסקה" (or "בהתאם למטבע העסקה"), and `trade_currencies` only beside it. F-12 reads it in the currency the run trades the fund in, and does not price a trade in a currency outside `trade_currencies`; /deal fills it as a sum in the trade's currency, with the currencies, and leaves the fee unread for a trade in another currency, saying why (F-114, method §10.6).
 
 | Line | Value | The list's words (quote) |
 |---|---|---|
 | `excellence-buy-sell-foreign-non-us` `min` | 35, `trade_currencies` ILS, USD, EUR | "0.4% משווי העסקה עם מינימום 35 בש"ח/$ ארה"ב/יורו במטבע העסקה" (p.4, item 7) |
 | `ibi-buy-sell-foreign-other-markets` `min` | 30 | "0.3%, מינימום 30 במטבע העסקה" (annex p.73; the public list p.4: "ני"ע באסיה ובאירופה 0.3% משווי העסקה, מינימום 30 במטבע העסקה") |
 | `meitav-trade-buy-sell-foreign-world` `min` | 25 | "מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה" (p.3) |
-| `interactive-israel-buy-sell-europe` `min` | 2.5, `trade_currencies` EUR, GBP, CHF | "עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה" (p.1); the same page: "עמלת הביצוע במניות/תעודות סל תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך" |
 
 Psagot's Europe minimum is not one: it is fixed in euros and only collected in the trade's currency ("הגבייה בפועל מהלקוח תעשה בהתאם למטבע בו בוצעה הפעולה ... העמלה המינימלית תהיה 15 יורו לאחר המרתם לפרנק שוויצרי"), so it keeps `eur`.
+
+**A bound whose currency the list leaves open.** A unit beside it, `dearer_ccy_per_trade`: an amount per trade in whichever of the line's `bound_readings.currencies` is dearer at the run's rates. `bound_readings: { currencies, open_questions }` names the currencies the readings give (ISO codes, at least two) and the open questions that leave it so. F-12 prices the bound in the dearer at the run's rates (F-84, D56); /deal fills it in the dearer at the build's rates; a company page shows the amount with both currencies, "לפי היקר מביניהם". The check holds the unit to a trade line's `min` or `max` with `bound_readings` beside it, and `bound_readings` to such a bound. One line today: `interactive-israel-buy-sell-europe` `min`, 2.5 in `USD` or `GBP`, with `BRK-OQ25`: the list prints "מינימום 2.5 בהתאם למטבע העסקה" and "עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך" (p.1), and its share table "GBP (%) 0.15 2.5 GBP" and "USD (Shares) 0.01 2.5 USD"; for a listing traded in dollars on the LSE, which currency's 2.5 applies is open (BRK-40, BRK OQ25).
 
 **2. The scope of a custody maximum.** On a `custody` line with a `max`: `max_per`, required there, one of `security` (each security, Discount's "₪ 7,500 לני"ע לרבעון"), `deposit` (the whole securities deposit, Yahav's "8,500.00 לפיקדון"), or `unstated` (the list prints the figure with no scope; the notes say what else was read). Where the scope is read from another document of the house than the one `max` quotes (its own sheet in TASE's fee calculator, which the house fills, BRK-24), `max_per_source` cites it: link, title, publisher, strength `institution`, quote and the day it was read. And `max_deposit`, optional: a value object in `nis`, a second maximum on the whole deposit printed beside a `max` on each security, with its own quote. Where the list prints one figure for both (Hapoalim's "10,600.00 לנייר ערך" and "10,600.00 לפקדון"), `max` holds it with `max_per: deposit`, which then binds first, and no `max_deposit`. A maximum's period: every list read prints it in the line's own period (a quarter), so no field is proposed; a list that prints another period would need one. Carried by `custody` lines of `bank` and `broker` records. The data check requires `max_per` on every custody line with a maximum on a house's latest record, `max_deposit` only beside `max_per: security`, in `nis`, with its quote and no lower than the maximum on each security. The check also holds `max_per_source` to a `security` or `deposit` scope and to the house's own document. /deal fills a maximum on each security as one (stated, not applied to the holding) and a maximum on the deposit as the holding's maximum; an `unstated` maximum is left out and listed with why, the cautious reading.
 
@@ -474,7 +475,7 @@ Psagot's Europe minimum is not one: it is fixed in euros and only collected in t
 
 Leumi's notes on how the two combine stay in `notes`: "בחיוב רבעוני - תיגבה עמלת מקסימום לני"ע או לפיקדון הנמוכה מביניהן" and "בהקטנת יתרה במהלך רבעון - תיגבה עמלת מקסימום לעסקה ללא צבירה" (p.32).
 
-**3. A conversion priced by its size.** On an `fx` line: `size_tiers`, an array sorted by amount, each `{ up_to, on, exempt?, discount_pct?, flat?, rate?, source }`: `up_to` a value object in `usd` (the last tier `null`, above the one before); `on` is `fee` (the conversion fee) or `spread` (the spread the line records); exactly one of `exempt: true`, `discount_pct` (a value object in `pct`, off the line's own price, the words saying whether it reaches the minimum), `flat` (a value object in `usd`) or `rate` (a value object in `pct_of_trade`, the spread in that tier). `flat_up_to` (§3.6) stays the one step the run prices (F-13); where a line has both, the data check holds the flat step to it. The other steps are data no page shows yet: no calculation, template or page reads them. Each step's figures cite BRK-68 for the six banks it records, and BRK-24 and BRK-25 for IBI. Carried by `fx` lines of `bank`, `broker` and `foreign_broker` records.
+**3. A conversion priced by its size.** On an `fx` line: `size_tiers`, an array sorted by amount, each `{ up_to, on, exempt?, discount_pct?, flat?, rate?, source }`: `up_to` a value object in `usd` (the last tier `null`, above the one before); `on` is `fee` (the conversion fee) or `spread` (the spread the line records); exactly one of `exempt: true`, `discount_pct` (a value object in `pct`, off the line's own price, the words saying whether it reaches the minimum), `flat` (a value object in `usd`) or `rate` (a value object in `pct_of_trade`, the spread in that tier). `flat_up_to` (§3.6) stays the one step the run prices (F-13); where a line has both, the data check holds the flat step to it. The other steps are data no page shows yet: no calculation, template or page reads them. Each step's figures cite BRK-68 for the six banks it records, and BRK-48 with BRK-24 for IBI. Carried by `fx` lines of `bank`, `broker` and `foreign_broker` records.
 
 | Line(s) | Tiers | The list's words (quote) |
 |---|---|---|
@@ -539,19 +540,51 @@ One file per bank per product per snapshot. The folder `terms/deposits/` is matc
 
 ### 3.8 `data/series/` — sourced time series (dependency 7)
 
-One file per series, appended on each refresh. Observations are value objects with `date`.
+One file per series, appended on each refresh. Observations are value objects with `date`. The example is `cbs-cpi.json` with its latest observation only.
 
 ```json
 {
-  "id": "boi-policy-rate",
-  "names": { "he": ["ריבית בנק ישראל"] },
-  "publisher": "Bank of Israel",
-  "flow": "EDGE ...", "series_code": "...",
-  "unit": "pct_per_year",
-  "cadence": "on change", "stale_after_days": 45,
-  "terms_of_use": { "terms_url": "https://...", "read_on": "2026-10-22", "attribution": "<the line the licence prescribes>" },
-  "rule_ids": ["BANK-22", "BANK-25"],
-  "observations": [ { "date": "2026-09-03", "value": 3.25, "source": { "...": "value object fields" }, "checked": "2026-10-22" } ]
+  "id": "cbs-cpi",
+  "names": {
+    "he": [
+      "מדד המחירים לצרכן - כללי"
+    ]
+  },
+  "publisher": "Central Bureau of Statistics",
+  "flow": "CBS price-index API (api.cbs.gov.il/index/data/price)",
+  "series_code": "120010",
+  "unit": "index_points",
+  "cadence": "monthly",
+  "stale_after_days": 45,
+  "terms_of_use": {
+    "terms_url": "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx",
+    "read_on": "2026-10-23",
+    "attribution": "הלשכה המרכזית לסטטיסטיקה (הלמ\"ס), מדד המחירים לצרכן - כללי (קוד 120010), (2026-10-23), ניתן לצפייה באתר: https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025 מועתק ומופץ כמות שהוא – as is – על פי רישיון שימוש של הלמ\"ס בכתובת אתר האינטרנט https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx"
+  },
+  "rule_ids": [],
+  "notes": "General CPI as the CBS prints it, base 2024 ממוצע = 100, from 2025-01. The CBS publishes a month's index on the 15th of the next month. Months before 2025-01 are printed in the 2022 base and are not stored; chaining coefficients are at https://api.cbs.gov.il/index/data/price_selected?id=120010. date is the index month (first day); effective_to is its last day. This series is the history deflator, not an inflation expectation.",
+  "raw": {
+    "archive_key": "cbs-cpi/2026-10-23.json.gz",
+    "sha256": "886fbbacd61b15b1f89b73236b5ed58289eb1a9344f9f841e6b1c9d98f7287eb"
+  },
+  "observations": [
+    {
+      "value": 105.3,
+      "unit": "index_points",
+      "source": {
+        "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025",
+        "title": "מדד המחירים לצרכן - כללי (code 120010), CBS price-index API, base 2024 ממוצע = 100, index of 2026-09",
+        "publisher": "Central Bureau of Statistics",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-09-01",
+      "effective_to": "2026-09-30",
+      "update_rule": "market",
+      "state": "sourced",
+      "date": "2026-09-01"
+    }
+  ]
 }
 ```
 
@@ -565,7 +598,7 @@ One file per series, appended on each refresh. Observations are value objects wi
   - `ecb-fx-month-end` (source `ecb-fx-month-end`): the same unit for the dollar and the shekel on each month's last reference day since January 2000, from the ECB Data Portal's `EXR.M.<code>.EUR.SP00.E`, for F-93.
 - **Series written by hand**, with no adapter:
   - `mof-gov-bond-auction-coupons` (GOV-09, GOV-11, GOV-13, GOV-19): the yearly coupon of each tradable government bond series the Ministry of Finance sold at auction in 2026, from the Ministry's dataset "נתוני החוב הממשלתי המקומי" on data.gov.il (resource "הנפקת אג"ח סחירות בשוק המקומי"), under data.gov.il's open licence, with the attribution line it prescribes. Key `<type>|<series>|<redemption date>|<original term>` as the file prints them; for each key the first and the latest 2026 auction, since a series' coupon is fixed for its life. The floating-rate type, and the rows that print a coupon of 0 in a series' first weeks, are left out (the file's `notes`). These are the sourced coupons A-23 names.
-- **Series the method names that are not in the data.** The Bank of Israel's series (`boi-policy-rate` for A-20; `bank-deposit-rate-avg-<bank>-<term>` from INTEREST_DASH for A-21; `makam-yield-<months>` for A-22; `gov-bond-yield-<type>-<years>` for A-23) have no adapter and none is committed (D20); the policy rate is quoted as one published figure in P-05 `cash_rate` (D20, D22), the others are links, not numbers. `cpi-expectations` (A-02, G-01) and `average-wage` (TXP-03, PEN-04, PEN-08) are not sourced.
+- **Series the method names that are not in the data.** The Bank of Israel's series (`boi-policy-rate` for A-20; `bank-deposit-rate-avg-<bank>-<term>` from INTEREST_DASH for A-21; `makam-yield-<months>` for A-22; `gov-bond-yield-<type>-<years>` for A-23) have no adapter and none is committed (D20); the policy rate is quoted as one published figure in P-05 `cash_rate` (D20, D22), the others are not collected. `cpi-expectations` (A-02, G-01) and `average-wage` (TXP-03, PEN-04, PEN-08) are not sourced.
 
 ### 3.9 `data/averages/` — the fees a house actually charged on average
 
@@ -573,7 +606,7 @@ The schema is `averagesRecord` (strict; `packages/schema/src/collections/average
 
 **TASE's fee calculator, one record per member** (BRK-15, BRK-33; method F-122). TASE's calculator (https://market.tase.co.il/he/market_data/trading_fees) publishes, for each member, a sheet with the average fees actually charged ("עמלות ממוצעות") for a reporting period, by portfolio band and by five columns, and the member's main list fees ("עמלות תעריפון") with the date they were updated. Its data come from `https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=<id>`, the member ids from `.../loadcommissions`. A fee line's `averages` (§3.6) does not hold them:
 
-- It ties an average to one list line (`line_id`), while the calculator averages over a kind of security and every channel: a house with a direct and a teller line has one average for both, and a house with no makam line still has a makam average.
+- It ties an average to one list line (`line_id`), while the calculator averages over a kind of security, not by channel: a house with a direct and a teller line has one average for both, and a house with no makam line still has a makam average.
 - It has no period: the custody averages are yearly rates ("שיעור עמלה שנתי בפועל"), and a quarterly or monthly custody line would charge a yearly average every period.
 - It has no place for the reporting period as a pair of dates, for the bands' bounds, or for the calculator's own list rows.
 
@@ -729,7 +762,7 @@ One file per dataset per report period, written by the pipeline: `cma/<dataset>@
 
 ### 3.14 `data/fund-lists/` — the fund lists (3.4 fund variants, 3.10, product D17)
 
-**No file is in the repository.** The site gives the counts with a link to the lists and the by-hand download path, and no fund list (product.md dependency 6). The schema and the reader stand for a saved list: the site reads the latest file of each list (`loadFundLists` in `site/app/lib/variants.server.ts`).
+**No file is in the repository.** The site shows the funds that have records and links out to Maya, with no count and no fund list (product.md dependency 6). The schema and the reader stand for a saved list: the site reads the latest file of each list (`loadFundLists` in `site/app/lib/variants.server.ts`).
 
 The two lists, each saved by hand, because the pages block scripts:
 

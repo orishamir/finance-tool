@@ -1,6 +1,7 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { accountSum, buildInvest, listReading, optionOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { BlockedError } from "@finance-tool/engine";
+import { accountSum, blockedReason, buildInvest, listReading, optionOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
@@ -597,5 +598,13 @@ describe("Interactive Brokers abroad: its pricing plans and ways to convert", ()
     // Interactive Israel's recurring plan buys each month by amount, so there it costs less
     expect(at("ie00b5bmr087", "interactive-brokers").units).not.toBeNull();
     expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeLessThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
+  });
+});
+
+describe("a provider row whose run stopped on its rule", () => {
+  it("carries the open question where there is one and the method gap where no reading exists, never the rule's id as a question", () => {
+    expect(blockedReason(new BlockedError("TXG-09", "TXG OQ17"))).toEqual({ code: "rule-open", ruleId: "TXG-09", question: "TXG OQ17" });
+    expect(blockedReason(new BlockedError("CS-03", undefined, "G-38"))).toEqual({ code: "rule-open", ruleId: "CS-03", gap: "G-38" });
+    expect(blockedReason(new BlockedError("TXF-04"))).toEqual({ code: "rule-open", ruleId: "TXF-04" });
   });
 });
