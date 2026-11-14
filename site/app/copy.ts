@@ -1946,6 +1946,8 @@ export const feeDeal = {
      * sum, else a price); a ladder's step between
      * two tops ("100,000 עד 500,000 ₪"); a step's top typed in place, spoken; and the place of a grid no case holds, spoken.
      */
+    /** The strip under a grid's row, or a table's last row, that adds a part to every case of it (after its plus). */
+    rowAdd: { strip: "חלק לכל השורה", allCases: "חלק לכל המקרים" },
     rowHeads: { rate: "שיעור", sum: "סכום", price: "מחיר", min: "מינימום", max: "מקסימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע לפעולה קטנה", maxPerSecurity: "מקסימום לכל נייר ערך", discount: "הנחה", third: "צד שלישי", until: "שינוי במחיר", offset: "קיזוז", refund: "החזר", notes: "עוד על המחיר" } as Record<string, string>,
     /** Read as rows, the line of the parts one cell holds for every case, led by the thing's any-words ("בכל מסלול:"). */
     onceLead: "{any}:",
@@ -1986,8 +1988,11 @@ export const feeDeal = {
       shrunk: "{where}: {what}",
       part: { price: "המחיר נמחק.", min: "המינימום נמחק.", max: "המקסימום נמחק.", cap: "המקסימום באחוזים נמחק.", flat: "המחיר הקבוע לפעולה קטנה נמחק.", maxPerSecurity: "המקסימום לכל נייר ערך נמחק.", discount: "ההנחה נמחקה.", third: "העמלה של הצד השלישי נמחקה.", until: "השינוי במחיר נמחק.", offset: "הקיזוז נמחק.", refund: "ההחזר נמחק.", notes: "ההערות על המחיר נמחקו." },
       notHere: "העמלה הזו לא יכולה לקבל את החלק הזה.",
-      grip: { col: "להזיז או למחוק את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", part: "להזיז או למחוק: ", thing: "להחליף בין השורות לעמודות: ", fee: "להזיז את העמלה: " },
-      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה" },
+      /** A grip's spoken name, before what it lifts; `colOnly`, the last case's, which only duplicates it. */
+      grip: { col: "להזיז או למחוק את המקרה: ", colOnly: "לשכפל את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", part: "להזיז או למחוק: ", thing: "להחליף בין השורות לעמודות: ", fee: "להזיז את העמלה: " },
+      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה", swap: "החלפה בין השורות לעמודות", swapWith: "החלפה עם {thing}", addRow: "הוספת חלק לכל השורה", addAllCases: "הוספת חלק לכל המקרים" },
+      /** A carried thing's words, which the bin says while it is over it ("משחררים כדי למחוק: השורה ״בסניף״"). */
+      name: { row: "השורה ״{name}״", column: "העמודה ״{name}״", step: "המדרגה {name}", case: "המקרה ״{name}״", partRow: "השורה ״{name}״" },
       copyName: "{name} (עותק)",
       knob: "למתוח את המחיר על התאים שלידו",
       knobDown: "למתוח את המחיר על התאים שמעליו ומתחתיו",
@@ -4873,7 +4878,7 @@ export const dealCases = {
   },
   ask: { add: "להוסיף", cancel: "ביטול" },
   /** The bin a lifted thing is dropped in, shown only while something is lifted. */
-  lift: { bin: "גוררים לכאן כדי למחוק" },
+  lift: { bin: "גוררים לכאן כדי למחוק", binOver: "משחררים כדי למחוק: {what}" },
   /**
    * The palette's way to copy one fee from a house's price list: its button, the houses, the house's fees, and where the deal has that kind
    * of fee already, the question and its two answers.
