@@ -16,12 +16,12 @@
     "unit": "months",
     "source": {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'סוג המוצר (לפי תקופה)'",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים', בתוקף מיום 11/11/2026, '10/11/2026 11_26' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'סוג המוצר (לפי תקופה)'",
       "publisher": "Bank Yahav for Government Employees Ltd.",
       "strength": "institution"
     },
-    "checked": "2026-11-09",
-    "effective_from": "2026-10-06",
+    "checked": "2026-11-14",
+    "effective_from": "2026-11-11",
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
@@ -36,12 +36,12 @@
     "unit": "days",
     "source": {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'סוג המוצר (לפי תקופה)'",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים', בתוקף מיום 11/11/2026, '10/11/2026 11_26' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'סוג המוצר (לפי תקופה)'",
       "publisher": "Bank Yahav for Government Employees Ltd.",
       "strength": "institution"
     },
-    "checked": "2026-11-09",
-    "effective_from": "2026-10-06",
+    "checked": "2026-11-14",
+    "effective_from": "2026-11-11",
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
@@ -60,12 +60,12 @@
     "unit": "pct_per_year",
     "source": {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים', בתוקף מיום 11/11/2026, '10/11/2026 11_26' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'שיעור הריבית המוצעת (נומינלי שנתי)'",
       "publisher": "Bank Yahav for Government Employees Ltd.",
       "strength": "institution"
     },
-    "checked": "2026-11-09",
-    "effective_from": "2026-10-06",
+    "checked": "2026-11-14",
+    "effective_from": "2026-11-11",
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
@@ -74,7 +74,7 @@
       "BANK-25"
     ],
     "state": "sourced",
-    "notes": "Nominal annual rate before tax printed '1.80%'. Row 'פיקדון ל-6 חודשים (180 יום)', rate type 'קבועה', linkage 'לא צמוד', amount '1,000 עד 50,000 ש\"ח', break 'אין אפשרות לשבירה', automatic renewal 'לא קיימת', number of renewals 'ללא', exit points 'לא קיימת'. This row as printed: '1,000 עד 50,000 ש\"ח': '1.80%'. Read 2026-11-09 from board 13_26 ('בתוקף מיום 06/10/2026'), the file the bank's deposits page links today (https://www.bank-yahav.co.il/investments/deposits/); p.6 also prints '24/09/2026 11_26' under the date. The common-deposit column is empty on every row."
+    "notes": "Nominal annual rate before tax printed '1.80%'. Row 'פיקדון ל-6 חודשים (180 יום)', rate type 'קבועה', linkage 'לא צמוד', amount '1,000 עד 50,000 ש\"ח', break 'אין אפשרות לשבירה', automatic renewal 'לא קיימת', number of renewals 'ללא', exit points 'לא קיימת'. This row as printed: '1,000 עד 50,000 ש\"ח': '1.80%'. Read 2026-11-14 on p.6 of the file the bank's deposits page links (https://www.bank-yahav.co.il/investments/deposits/), re-issued on 10.11.2026, headed 'בתוקף מיום: 11/11/2026' with '10/11/2026 11_26' under the date. The common-deposit column is empty on every row."
   },
   "linkage": "none",
   "tax_bucket": {
@@ -105,12 +105,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'טווח סכום להפקדה'",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים', בתוקף מיום 11/11/2026, '10/11/2026 11_26' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'טווח סכום להפקדה'",
         "publisher": "Bank Yahav for Government Employees Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
-      "effective_from": "2026-10-06",
+      "checked": "2026-11-14",
+      "effective_from": "2026-11-11",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
@@ -125,11 +125,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6), שורת 'פיקדון ל-6 חודשים (180 יום)' (קבועה, 1,000 עד 50,000 ש\"ח), 'טווח סכום להפקדה'",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'לוח שיעורי ריבית על פקדונות בריבית קבועה', עמודת 'מ-180 עד 190 יום', 'סכום' (עמ' 1)",
         "publisher": "Bank Yahav for Government Employees Ltd.",
         "strength": "institution"
       },
-      "checked": "2026-11-09",
+      "checked": "2026-11-14",
       "effective_from": "2026-10-06",
       "effective_to": null,
       "tax_year": null,
@@ -138,9 +138,9 @@
         "BANK-27"
       ],
       "state": "sourced",
-      "notes": "Printed '1,000 עד 50,000 ש\"ח'."
+      "notes": "The 447 table (p.6) prints '1,000 עד 50,000 ש\"ח'; the board (p.1) starts the next tier at 'מ-50,000 ש\"ח'. The fixed-rate board on p.1 prints its amount tiers as starting points, each 'תעריפית' and 'מתואמת' alike, in the column 'מ-180 עד 190 יום': 'מ-1,000 ש\"ח' 1.80%, 'מ-25,000 ש\"ח' 1.80%, 'מ-50,000 ש\"ח' 2.00%, 'מ-100,000 ש\"ח' 2.20%, 'מ-300,000 ש\"ח' 2.20%, 'מ-500,000 ש\"ח' 2.20%: for the tiers the two share, the same rates as the 447 table's row 'פיקדון ל-6 חודשים (180 יום)' on p.6 ('1,000 עד 50,000 ש\"ח' 1.80%, '50,000 עד 100,000 ש\"ח' 2.00%, '100,000 ש\"ח ומעלה' 2.20%; p.6 headed 'בתוקף מיום: 11/11/2026', '10/11/2026 11_26'). On the board an amount from X takes X's rate, so 50,000 and 100,000 ₪ each take the higher tier (F-108). Read 2026-11-14 in the file re-issued on 10.11.2026."
     },
-    "max_edge": "unknown"
+    "max_edge": "excluded"
   },
   "break": {
     "allowed": false,
@@ -160,10 +160,10 @@
     "value": false,
     "max_renewals": null
   },
-  "snapshot": "2026-11-09",
+  "snapshot": "2026-11-14",
   "source": {
     "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-    "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', לוח מספר 13_26, בתוקף מיום 06/10/2026, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' (עמ' 6)",
+    "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים', בתוקף מיום 11/11/2026, '10/11/2026 11_26' (עמ' 6)",
     "publisher": "Bank Yahav for Government Employees Ltd.",
     "strength": "institution"
   }
