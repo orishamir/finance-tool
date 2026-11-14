@@ -51,7 +51,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
     item("linkage", l.linkage, <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />, known),
     // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
     item("tax", l.tax, <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} />, known, { rules: p.taxBucket.rule_ids ?? [] }),
-    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} />, known, { rules: p.amountMin.rule_ids ?? [] }),
+    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} edges={p.amountEdges} />, known, { rules: p.amountMin.rule_ids ?? [] }),
     item("break", l.breakTerms, breakText(p.breakTerms.penalty, p.exitPoints.exists), known, {
       rules: p.breakTerms.rules,
       after: p.breakTerms.quotes.length > 0 && (

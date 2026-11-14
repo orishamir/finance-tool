@@ -448,7 +448,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
       )}
 
       {/* the working notes are English; only a note written in Hebrew is shown */}
-      {/* an open value's reason is the blocked callout below, and an empty value a rule explains ("אין תקרה בחוק") has its rules under
+      {/* an open value's reason is the blocked callout below, and an empty value a rule explains ("לא נמצאה תקרה בחוק") has its rules under
           it; "not found in the source" would be untrue of either */}
       {value.value === null && !(blocked && !mostlyHebrew(value.notes)) && (mostlyHebrew(value.notes) || !(display && value.rule_ids?.length)) && <p className="text-sm">{mostlyHebrew(value.notes) ? value.notes : copy.sourced.noValue}</p>}
       {/* an empty value a rule explains ("אין", PF-06) names that rule as a chip, as a sourced figure does */}

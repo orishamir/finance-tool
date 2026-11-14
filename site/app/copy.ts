@@ -340,7 +340,7 @@ export const values = {
   optional: "(לא חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
   units: { nis: "₪", pct: "%", years: "שנים", usd: "$", eur: "€", gbp: "£" },
-  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא הנחה של האתר: אין ריבית שפורסמה למוצר הזה.", cashRenews: { deposit: "אחרי התקופה הראשונה זו הנחה: בכל חידוש הפיקדון מקבל את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום.", "savings-plan": "אחרי התקופה הראשונה זו הנחה: תוכנית חדשה מקבלת את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום." }, asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
+  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא ריבית בנק ישראל: הנחה של האתר, לא התשואה של המוצר הזה.", cashRenews: { deposit: "אחרי התקופה הראשונה זו הנחה: בכל חידוש הפיקדון מקבל את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום.", "savings-plan": "אחרי התקופה הראשונה זו הנחה: תוכנית חדשה מקבלת את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום." }, asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
@@ -492,14 +492,6 @@ export const parametersPage = {
     rules: "עמוד החוקים והכללים",
     indices: "עמוד המדדים",
     deposits: "עמוד הפיקדונות",
-  } as Record<string, string>,
-  /**
-   * The page's own general line, where the file's line still speaks of a page the site no longer has (the comparison, the questions
-   * page). The same reasons, said of the pages that read the parameter now.
-   */
-  why: {
-    "P-05": "גרפי המדריכים ועמוד המדדים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. הריבית למוצרים דמויי מזומן היא ריבית בנק ישראל, כפי שבנק ישראל פרסם אותה, וזו ההנחה של האתר לאפשרויות שאין להן ריבית מפורסמת משלהן (הקרן הכספית, המק״מ והאג״ח הממשלתית). היא לא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו. בחשבון ניירות ערך, במק״מ ובאג״ח ממשלתית זה התעריפון שמשאיר הכי הרבה מבין מי שנאספו, או שהעמוד אומר שהתעריפונים שקולים. בפיקדון בנקאי זה האמצעי מבין הפיקדונות לשנה שנאספו שאי אפשר לשבור אותם, לצד הטווח של כל הפיקדונות שנאספו, והעמוד אומר זאת.",
-    "P-09": "בעמוד החוקים והכללים מופיעות עובדות ששווה לדעת, ובכל עמוד מדריך שתיים או שלוש מהן. איזה כלל חשוב יותר הוא שיקול דעת, ולכן הרשימה היא פרמטר של האתר: הדירוג המחושב של הכללים (שימוש בחישובים, באתר ובנתונים, מספרים, מוצר, חוזק המקור) מסדר את הכללים בתוך הקבוצות ובוחר דוגמאות, אבל לא את הרשימה הזאת. נבחרו כללים שמכריעים תוצאה באתר או שהמחקר מצא שאנשים טועים בהם או שואלים עליהם שוב ושוב, ושיש להם מקור ראשי עם קישור.",
   } as Record<string, string>,
   /** Over the kinds of saving the first page names (P-10), each its guide's name. */
   homeKinds: "בעמוד הראשון, לפי הסדר:",
@@ -1711,7 +1703,7 @@ export const feeDeal = {
   },
   /** A price against its legal cap (F-113). */
   standing: {
-    tag: { below: "מתחת לתקרה", at: "בתקרה", above: "מעל התקרה", none: "אין תקרה בחוק" } as Record<string, string>,
+    tag: { below: "מתחת לתקרה", at: "בתקרה", above: "מעל התקרה", none: "לא נמצאה תקרה בחוק" } as Record<string, string>,
     /** "{price}, שהם {share} מהתקרה." */
     share: { before: ", שהם ", after: " מהתקרה." },
     /** In a builder row's line: "{share} מהתקרה". */
@@ -1726,7 +1718,7 @@ export const feeDeal = {
     bindsUnjudged: " העסקה לא אומרת שהיא בבנק, ולכן המחיר לא נבדק מולה.",
     /**
      * A cap that holds only in a case the deal does not state (its record's `caveat`, F-113): what it says, after the cap's figure, or after
-     * "אין תקרה בחוק" where the record sets none. No price is judged against it.
+     * "לא נמצאה תקרה בחוק" where the record sets none. No price is judged against it.
      */
     caveat: {
       closing_account: "התקרה חלה בבנק, כשסוגרים את החשבון ומעבירים את הניירות לחשבון שלכם בגוף אחר. הכללים מזכירים לצידה גם הוצאות צד שלישי. כשהחשבון נשאר פתוח חל מחיר אחר, בפיקוח. לכן המחיר לא נבדק מולה.",
@@ -1734,9 +1726,9 @@ export const feeDeal = {
     } as Record<string, string>,
     /** The cap's line: its figure, with its unit's words after it. */
     capLine: "התקרה: ",
-    /** What the cap's figure (or "אין תקרה בחוק") opens, said before it by a screen reader: the fee's cap and the rules that set it. */
+    /** What the cap's figure (or "לא נמצאה תקרה בחוק") opens, said before it by a screen reader: the fee's cap and the rules that set it. */
     capRules: (fee: string) => `התקרה על ${fee} והחוקים שקובעים אותה`,
-    /** What "אין תקרה בחוק" opens, said before it by a screen reader: the rules on the fee. */
+    /** What "לא נמצאה תקרה בחוק" opens, said before it by a screen reader: the rules on the fee. */
     noCapRules: (fee: string) => `החוקים על ${fee}`,
     /** The spoken name of the rules that ban a fee here. */
     bannedRules: (fee: string) => `החוקים שאוסרים את ${fee}`,
@@ -2138,7 +2130,7 @@ export const feeDeal = {
       at: { one: "עמלה אחת מגיעה למקסימום שמותר לגבות", two: "שתי עמלות מגיעות למקסימום שמותר לגבות", many: "{n} עמלות מגיעות למקסימום שמותר לגבות" },
       below: "העמלות שנבדקו מול התקרה מתחתיה",
       /** No number in it: one fee, or several. */
-      noCap: { one: "לעמלה שבעסקה אין תקרה בחוק", several: "לעמלות שבעסקה אין תקרה בחוק" },
+      noCap: { one: "לעמלה שבעסקה לא נמצאה תקרה בחוק", several: "לעמלות שבעסקה לא נמצאה תקרה בחוק" },
       notJudged: "אף מחיר בעסקה לא נבדק מול תקרה",
       /** A fee the law bans here, where no price is above or at its cap. */
       banned: { one: "עמלה אחת בעסקה בנק לא גובה, לפי כללי הבנקאות", several: "יש בעסקה עמלות שבנק לא גובה, לפי כללי הבנקאות" },
@@ -2519,7 +2511,8 @@ export const r4catalogue = {
   },
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
-  notAnOffer: "הריבית היא מה שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
+  /** BANK-13 and BANK-14: a rate published under directive 447 is the minimum the bank pays for the deposit type. */
+  notAnOffer: "הריבית היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם.",
   rowLinks: { whatIs: "מה זה" },
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
@@ -3445,6 +3438,11 @@ const shownPair = (chosen: boolean) => {
 };
 
 export const invest = {
+  /** The notes on a money-market fund's zero trade and custody lines at a bank (lib/instruments.server.ts): the rule, and what the example assumes. */
+  bankMoneyMarketZero: {
+    trade: "בקרן כספית שיש עליה הסכם הפצה המפיץ לא רשאי לגבות מבעל היחידה עמלה על קנייה, החזקה או פדיון (MF-26). ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן, כמקובל.",
+    custody: "בבנק אי אפשר לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית (BANK-18). ההדגמה מניחה שהקרן נקנית דרך הבנק.",
+  },
   shownPair,
   /** The plan's inputs as a computed figure's sheet lists them (`planInputs` in lib/invest.ts): a figure lists only those its formula uses. */
   planInputs: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", return: "תשואה", inflation: "אינפלציה" },
@@ -3453,6 +3451,12 @@ export const invest = {
   sub: "בוחרים חשבון ניירות ערך וקרן, ורואים כמה יישאר לכם. לפי התעריפון של כל בנק ובית השקעות ולפי הדוח של כל קרן.",
   loading: "טוען את התעריפונים והקרנות…",
   failed: "האתר לא הצליח לטעון את התעריפונים והקרנות. נסו לרענן את העמוד.",
+  /**
+   * In place of the pair, its receipt and the lists, when the plan puts in nothing: no account or fund is crowned on 0 ₪. The knobs beside
+   * it already show the two zeros, so the line says what the comparison needs. `action` is followed by the amount knob's own label
+   * (`plan.knobs.amount`), and moves the focus to that knob's box.
+   */
+  empty: { title: "אין מה להשקיע", body: "כדי להשוות חשבונות וקרנות צריך סכום להשקיע, היום או בכל חודש.", action: "להזין" },
   breadcrumbHome: "ראשי",
 
   chips: {
@@ -3901,6 +3905,15 @@ export const invest = {
       /** At the head of the assumptions: what the return is (A-01), what the results are, and A-04 "constant real" (F-05), since the
        *  results hold only with the deposit rising with prices. */
       assumptions: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס. מה שנשאר מחושב אחרי כל אלה, בכסף של היום. ההפקדה החודשית עולה עם האינפלציה, כך שבכסף של היום היא נשארת קבועה.",
+      /** Under them: the yearly income the runs assume (P-05 `annual_income`, or the one entered), and that the receipt's capital gains tax
+       *  line holds the surtax too when that income with the real gain passes its threshold in the year of the sale (F-43, TXG-09, TXG-10) */
+      income: {
+        before: "החישוב מניח הכנסה של",
+        after: "בשנה, מלבד הרווח.",
+        surtax: "השורה ״מס רווחי הון״ כוללת גם",
+        term: "מס נוסף",
+        end: ", אם בשנת המכירה ההכנסה יחד עם הרווח עוברת את הסף שלו.",
+      },
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -4749,6 +4762,7 @@ export const kit = {
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
       Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info, ו־upcoming (כללים שעומדים להשתנות: הצבעים של info עם לוח שנה, והתאריך בתגית ליד הכותרת; מספר בתוכה בלי סימן \"נכנס לתוקף\"). לכולן אותה צורה: מסגרת דקה וקצה של 4 פיקסלים בצד שבו הטקסט מתחיל, בצבע של הסוג; הרקע המלא מבדיל אזהרה מהערה.",
+      EmptyState: "במקום התוצאה של בלוק, כשהמספרים של הקורא לא משאירים מה להראות: אייקון, כותרת של שורה אחת, הסבר של שורה אחת ופעולה אחת שמובילה למה שימלא את הבלוק. ההסבר אומר מה הבלוק צריך, ולא חוזר על מה שהשדות לידו מראים.",
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
       PageHead: "ראש העמוד: הכותרת, שורת הפתיחה מתחתיה, ומה שעומד מעליהן או לידן: לשוניות, הדרך חזרה, שדה. בכל עמוד אותו ריווח מלמעלה ואותם גדלים לכותרת ולשורת הפתיחה.",
       Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form, ו־kick לשם קטן בצבע ההדגשה מעל עמודה של כלי, שלחלקים שלה כותרות משלהם.",

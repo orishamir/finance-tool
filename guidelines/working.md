@@ -18,7 +18,17 @@
   research), and say to build from the kit.
 - Say what to leave alone, and what to report: each item done, left or
   already gone, with why; the checks. No screenshots.
-- Never tell builders how to deal with bot checks; that is up to them.
+- **A new kind of thing gets its own abstraction, not a special case.**
+  When the work meets something the code can't yet represent (a new kind of
+  fee, condition, bound or source), the builder refactors so it has its own
+  type, field or module, the way the existing kinds have theirs, rather
+  than a lookup list, a regex over prose, an `if` on an id, or a flag
+  threaded through. A stand-in is allowed only while its data is missing,
+  marked as one, with the queued item that removes it. Say this in every
+  brief that touches code.
+- For a page that refuses scripts, tell researchers that FlareSolverr runs on
+  this machine (`docker start flaresolverr`, then `http://localhost:8191`);
+  the rest of how they get past a bot check is up to them.
 - Every subagent runs on Opus 5.5 at high effort, unless the founder asks for
   more. Start a fresh agent with a short brief rather than messaging an idle
   one.
