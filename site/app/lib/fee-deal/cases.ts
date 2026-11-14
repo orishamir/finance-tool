@@ -156,11 +156,22 @@ export function tradeCurrency(fees: readonly Fee[], picks: readonly ReadPick[]):
   return place?.currency && (BOUND_CURRENCIES as readonly string[]).includes(place.currency) ? (place.currency as BoundCurrency) : null;
 }
 
-/** A price whose sums are in the action's currency, in that currency (the shekel left unsaid); any other price as it is. */
+/**
+ * A price whose sums are in the action's currency, in that currency (the shekel left unsaid); where the price names the currencies the list
+ * prints those sums for and the action's is not one of them, without them: its minimum, maximum and flat price (§10.6, data-schema §3.6a
+ * item 1). Any other price as it is.
+ */
 export function inCurrency(p: Price, currency: BoundCurrency): Price {
   if (!("inTrade" in p) || !p.inTrade) return p;
-  const { inTrade: _t, currency: _c, ...rest } = p;
-  return (currency === "ILS" ? rest : { ...rest, currency }) as Price;
+  const { inTrade: printed, currency: _c, ...rest } = p;
+  const bounded = printed === true || printed.includes(currency) ? rest : withoutSums(rest);
+  return (currency === "ILS" ? bounded : { ...bounded, currency }) as Price;
+}
+
+/** A price on an action without the sums its list prints for other currencies only: its rate or sum per unit, its cap and its parts stay. */
+function withoutSums<P extends object>(p: P): P {
+  const { min: _m, max: _x, flat: _f, ...rest } = p as P & { min?: unknown; max?: unknown; flat?: unknown };
+  return rest as P;
 }
 
 /** Whether a read fee has a price whose sums are in the action's currency. */

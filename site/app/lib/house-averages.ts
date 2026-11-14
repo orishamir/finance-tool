@@ -20,7 +20,7 @@ export interface ColumnAverage {
 export interface HouseAverages {
   from: string;
   to: string;
-  page: { url: string; title: string };
+  page: { url: string };
   columns: ColumnAverage[];
 }
 
@@ -74,5 +74,5 @@ export function houseAverages(rec: AveragesRecord, wanted?: readonly AverageColu
     };
     columns.push({ column, lo: figure(range.lo), hi: figure(range.hi) });
   }
-  return { from: rec.averages.period.from, to: rec.averages.period.to, page: { url: rec.page.url, title: rec.page.title }, columns };
+  return { from: rec.averages.period.from, to: rec.averages.period.to, page: { url: rec.page.url }, columns };
 }

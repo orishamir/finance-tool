@@ -25,6 +25,8 @@ const eurosFine = new Intl.NumberFormat(he, { style: "currency", currency: "EUR"
 const poundsFine = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
+/** A small percent to its first two significant digits (`0.0012%`). */
+const percentSmall = new Intl.NumberFormat(he, { style: "percent", maximumSignificantDigits: 2 });
 /** An ECB reference rate, to the four decimals the ECB publishes it with. */
 const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
@@ -112,6 +114,11 @@ export const fmt = {
     const thousandths = v * 1000;
     return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? withMinus(percent3.format(v / 100)) : withMinus(percent.format(v / 100));
   },
+  /**
+   * A percent that never reads 0% when it is not nothing (an average a house charged, F-122): `pct`, or, where `pct` would round a figure
+   * other than zero to 0%, its first two significant digits (`0.0012%`).
+   */
+  pctNonZero: (v: number) => (v !== 0 && Math.abs(v) < 0.005 ? withMinus(percentSmall.format(v / 100)) : fmt.pct(v)),
   /** The number `pct` shows, as a number: what a field prefilled from a displayed percentage holds (0.4293 reads 0.43). */
   pctShown: (v: number) => {
     const thousandths = v * 1000;

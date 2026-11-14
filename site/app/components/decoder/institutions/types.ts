@@ -142,7 +142,7 @@ export interface TariffCardData {
   priceFor: string | null;
   availability: AvailabilityRow[];
   /** The period and the page of the averages its lines show (F-122); absent where the house has none. */
-  averages?: { from: string; to: string; page: { url: string; title: string } };
+  averages?: { from: string; to: string; page: { url: string } };
   /** What the house's documents hold and its prices leave out (D106), or null where the record lists nothing. */
   leftOut?: LeftOutView | null;
 }

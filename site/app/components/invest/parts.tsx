@@ -71,6 +71,10 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.feeUnknown;
     case "domicile-unknown":
       return c.reasons.domicileUnknown;
+    case "sold-fund-by-fund":
+      return c.reasons.soldFundByFund;
+    case "no-agreement-found":
+      return c.reasons.noAgreementFound;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
   }
@@ -89,6 +93,8 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
       return n.noAverage(cls);
     case "line-without-value":
       return n.lineWithoutValue(r.lineName ?? r.detail);
+    case "not-printed-for-currency":
+      return n.notPrintedForCurrency(r.lineName ?? r.detail, r.printed.map((x) => c.currencies[x] ?? x), c.currencies[r.currency] ?? r.currency);
     case "ambiguous":
       return n.ambiguous(cls);
     case "needs-share-price":

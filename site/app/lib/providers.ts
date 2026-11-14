@@ -41,23 +41,60 @@ export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
 }
 
 /**
- * The same, for the indices page, which asks each fund of a house's distribution agreements (BRK-38, `agreementOf`): the lines of the classes
- * the agreements decide fund by fund stay, and a fund no report names is not sold there (invest.ts).
+ * The same, for the indices page, which asks each fund of a house's distribution agreements (BRK-38, `fundByFundOf`): the lines of the classes
+ * the agreements decide fund by fund stay, so a fund a report names is priced there (invest.ts).
  */
 export function onlyWhatCanBeDoneFundByFund<S extends FeesSnapshot>(s: S): S {
-  return keepLines(s, agreedClasses(s));
+  return keepLines(s, s.distribution_agreements?.applies_to ?? []);
 }
 
-/** The classes a house sells fund by fund, under the distribution agreements its record holds (data-schema §3.6). */
-export const agreedClasses = (s: Pick<FeesSnapshot, "distribution_agreements">): readonly string[] => s.distribution_agreements?.applies_to ?? [];
+/**
+ * What the indices page reads of a house's distribution agreements (BRK-38, data-schema §3.6), built at build time from the record
+ * (`fundByFundOf`), the reports themselves staying on the server: the classes they decide fund by fund, the site's own fund numbers a report
+ * of an agreement in force names (`named`), the search that found the reports, and what the page says of a fund none names (`unnamed`).
+ */
+export interface FundByFund {
+  applies_to: string[];
+  named: string[];
+  search: { url: string; title: string; checked: string };
+  unnamed: { reason_he: string; rule_ids: string[]; open_questions: string[] };
+}
+
+/** A house's snapshot as the indices bundle ships it: the record with only what the page reads (`shippedSnapshot`). */
+export type BundleSnapshot = Omit<FeesSnapshot, "distribution_agreements"> & { fundByFund?: FundByFund };
+
+/** The classes a house sells fund by fund, under the distribution agreements its record holds. */
+export const agreedClasses = (s: Pick<BundleSnapshot, "fundByFund">): readonly string[] => s.fundByFund?.applies_to ?? [];
 
 /**
- * Whether a house sells a fund of a class it sells fund by fund: the report of an agreement that has not ended naming the fund's number, or
- * null where none does; undefined where the house does not decide the class fund by fund.
+ * `FundByFund` from a record: the fund numbers of `siteFunds` that a report of an agreement that has not ended names, the search titled by
+ * `searchTitle`. Null where the record holds no agreements.
  */
-export function agreementOf(s: Pick<FeesSnapshot, "distribution_agreements">, cls: string, fundNumber: string): NonNullable<FeesSnapshot["distribution_agreements"]>["reports"][number] | null | undefined {
-  if (!agreedClasses(s).includes(cls)) return undefined;
-  return s.distribution_agreements!.reports.find((r) => !r.ends && r.funds.includes(fundNumber)) ?? null;
+export function fundByFundOf(s: Pick<FeesSnapshot, "distribution_agreements">, siteFunds: ReadonlySet<string>, searchTitle: (distributor: string) => string): FundByFund | null {
+  const da = s.distribution_agreements;
+  if (!da) return null;
+  const inForce = new Set(da.reports.filter((r) => !r.ends).flatMap((r) => r.funds));
+  return {
+    applies_to: [...da.applies_to],
+    named: [...siteFunds].filter((n) => inForce.has(n)).sort(),
+    search: { url: da.searched.url, title: searchTitle(da.distributor_he), checked: da.searched.checked },
+    unnamed: { reason_he: da.unnamed.reason_he, rule_ids: [...da.unnamed.rule_ids], open_questions: [...da.unnamed.open_questions] },
+  };
+}
+
+/** The line fields no calculation or line of the indices page reads (data-schema §3.6a): the record keeps them for the pages that show them. */
+const NOT_SHIPPED = ["size_tiers", "max_per", "max_per_source", "max_deposit", "offset", "collection"] as const;
+
+/** A snapshot as the indices bundle ships it: its agreements read for the site's funds (`fundByFundOf`), and its lines without `NOT_SHIPPED`. */
+export function shippedSnapshot(s: FeesSnapshot, siteFunds: ReadonlySet<string>, searchTitle: (distributor: string) => string): BundleSnapshot {
+  const { distribution_agreements: _da, ...rest } = s;
+  const byFund = fundByFundOf(s, siteFunds, searchTitle);
+  const lines = s.lines.map((l) => {
+    const kept = { ...l };
+    for (const k of NOT_SHIPPED) delete kept[k];
+    return kept;
+  });
+  return { ...rest, lines, ...(byFund ? { fundByFund: byFund } : {}) };
 }
 
 function keepLines<S extends FeesSnapshot>(s: S, fundByFund: readonly string[]): S {
@@ -74,8 +111,8 @@ function keepLines<S extends FeesSnapshot>(s: S, fundByFund: readonly string[]):
 
 export interface IndicesBundle {
   today: string;
-  /** The latest snapshot of each provider in `data/fees/`. */
-  snapshots: FeesSnapshot[];
+  /** The latest snapshot of each bank and broker in `data/fees/`, with only what the page reads (`shippedSnapshot`). */
+  snapshots: BundleSnapshot[];
   funds: FundRecord[];
   exposures: ExposureRecord[];
   /** The latest saved file of each fund list in `data/fund-lists/` (none until the lists are collected and cleared for use). */
@@ -295,6 +332,8 @@ export type NotComparable =
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
   | { code: "line-without-value"; detail: string; lineName: string | null }
+  /** F-12: the line prints its bound in the trade's currency for other currencies only (`trade_currencies`): its name, the trade's currency, its list. */
+  | { code: "not-printed-for-currency"; detail: string; lineName: string | null; currency: string; printed: string[] }
   /** E2, E5: a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }

@@ -4,12 +4,12 @@
 // `withCustomEntries` adds them to one copy of the bundle, which only the index page uses.
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
-import { groupPrice, valueObject, type ExposureRecord, type FeesSnapshot, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import { groupPrice, valueObject, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
 import type { EnteredTariff, ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
 import { groupInputs, layeredOf, type BrokerBase, type GroupCopy } from "./own-account";
-import type { IndicesBundle } from "./providers";
+import type { BundleSnapshot, IndicesBundle } from "./providers";
 import { entered, numberOf, type SiteValue } from "./value";
 import { isShekel } from "./fx";
 import { newId } from "./ids";
@@ -397,12 +397,12 @@ const ABROAD_CLASSES = ["foreign_securities"] as const;
  * With `house`, an account built on it (F-101): the house's own record under the person's name, so its lines, availability and kind of house are the house's,
  * and what the person's row leaves to the house is read from them; its group prices, price-list notes and what is said against its binding documents stay on the house.
  */
-export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSnapshot {
+export function snapshotOfBroker(b: CustomBroker, house?: BundleSnapshot): BundleSnapshot {
   const closed = (applies: readonly (typeof IL_CLASSES[number] | typeof ABROAD_CLASSES[number])[]) => ({ applies_to: [...applies], available: false, source: { url: "local", title: c.notSoldSource, checked: b.added } });
   const shut = [...(b.sells.israeli ? [] : [closed(IL_CLASSES)]), ...(b.sells.abroad ? [] : [closed(ABROAD_CLASSES)])];
   if (house) {
     const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
-    return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut], ...(house.distribution_agreements ? { distribution_agreements: house.distribution_agreements } : {}) };
+    return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut], ...(house.fundByFund ? { fundByFund: house.fundByFund } : {}) };
   }
   // a field left empty is not known: the account has no price, and its row says so; the conversion alone leaves it priced
   // for every fund that does not convert, and without a price for a fund bought abroad, with the reason on that row

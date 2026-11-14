@@ -1935,6 +1935,8 @@ export const feeDeal = {
       offset: "מתקזזת מול עמלה אחרת",
       /** An offset against a named fee: "מתקזזת מול {fee} של אותו חודש". */
       offsetOf: { lead: "מתקזזת מול ", tail: " של אותו חודש" },
+      /** Sums in the trade's currency that the list prints for some currencies only (data-schema §3.6a item 1): a trade in another has no bound. */
+      inTradeFor: (currencies: string[]) => `הסכומים במטבע של העסקה, רק לעסקאות ב${andList(currencies)}`,
       refund: "החזר ",
       notes: { unfilled: "גם על הוראה שלא בוצעה", unfilledClerk: "במינימום על הוראה דרך פקיד שלא בוצעה, לא בקרנות נאמנות", unfilledClerkAbroad: "במינימום על הוראה דרך פקיד שלא בוצעה", capRead: "המקסימום באחוזים גובר על המינימום, לפי קריאת האתר", partial: "כל ביצוע חלקי בנפרד", inTrade: "הסכומים במטבע של העסקה", sale: "מכירה במחיר אחר" } as Record<string, string>,
       flat: { lead: "מחיר קבוע ", tail: " עד " },
@@ -2105,7 +2107,6 @@ export const feeDeal = {
       rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
       /** A curve the site cannot draw: a bound in a currency it has no rate for. */
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
-      /** Under a curve of holding with a fee whose price list prints a maximum on the whole deposit, which no data field holds and the curve does not apply. */
       /** A curve with a price per unit (F-112): the unit's price, a chart's field, and beside it why the chart needs it. */
       unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
@@ -2221,8 +2222,10 @@ export const feeDeal = {
       "bank-funds": "בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית, לפי כללי העמלות של בנק ישראל, ולכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
-      /** A maximum on the whole deposit the record prints beside the one on each security, which the page does not apply yet. */
+      /** A yearly share of what is held, charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71). */
       "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
+      /** A custody maximum the list prints with no scope (`max_per: unstated`, data-schema §3.6a item 2): left out, the cautious reading. */
+      "max-scope-unstated": "התעריפון מדפיס מקסימום לדמי המשמרת בלי לומר אם הוא לכל נייר ערך או לכל הפיקדון, ולכן העסקה לא מחילה אותו. אם הוא חל, תשלמו פחות.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
@@ -2705,6 +2708,8 @@ export const r4workbench = {
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
     noAverage: (cls: string) => `לא נאסף ממוצע לשורות שחלות על ${cls}.`,
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
+    /** F-12: the line prints its minimum in the trade's currency for some currencies only (`trade_currencies`), and the fund trades in another */
+    notPrintedForCurrency: (name: string, printed: string[], currency: string) => `לעסקה ב${currency} אין בתעריפון מינימום: בשורה ״${name}״ המינימום מודפס רק לעסקאות ב${andList(printed)}.`,
     /** copy.md 8.0: the engine refuses a tariff whose lines it cannot choose between (a plan, a sub-class); the page says so rather than guess a price */
     ambiguous: (cls: string) => `בתעריפון יש כמה שורות שחלות על ${cls}, ולאתר אין עדיין דרך לבחור ביניהן בלי לנחש:`,
     /** a fee per unit bought, and the fund's unit price is not collected */
@@ -3473,9 +3478,9 @@ export const houseAverage = {
   byPortfolio: "לפי גודל התיק",
   period: (from: string, to: string) => `${from} עד ${to}`,
   link: "למחשבון העמלות של הבורסה",
-  /** The sheet's head line for the figure, and what it is and is not. */
+  /** The sheet's head line for the figure, and what it is and is not, in the words of BRK-33's definition (individuals and small businesses, orders carried out, no derivatives). */
   about: (house: string) => `העמלה ש${house} גבה בפועל בממוצע, לפי מחשבון העמלות של הבורסה`,
-  sheetLead: "ממוצע על כל הלקוחות של בית ההשקעות, בכל הערוצים, בתקופה שבמחשבון. זה לא המחיר שתשלמו: האתר מציג אותו לידיעה בלבד, ומחשב תמיד לפי המחירון.",
+  sheetLead: "ממוצע העמלות שנגבו בפועל מלקוחות שהם יחידים ועסקים קטנים, על פעולות שבוצעו בניירות ערך (בלי נגזרים), בתקופה שבמחשבון. זה לא המחיר שתשלמו: האתר מציג אותו לידיעה בלבד, ומחשב תמיד לפי המחירון.",
   /** On /deal, where the line names the house's whole price list: each column's short name before its figures. */
   columns: { trade_il_shares_bonds: "מניות ואג״ח בבורסה", trade_il_makam: "מק״מ", trade_foreign: "קנייה ומכירה בחו״ל", custody_il: "דמי משמרת בארץ", custody_foreign: "דמי משמרת בחו״ל" } as Record<string, string>,
 };
@@ -3484,7 +3489,6 @@ export const invest = {
   /** A house that sells a fund only where the fund's manager signed a distribution agreement with it (BRK-38). */
   agreements: {
     searchTitle: (distributor: string) => `דיווחי מנהלי הקרנות באתר מאיה על הסכמי הפצה עם ${distributor}`,
-    noAgreement: "אי אפשר לקנות את הקרן הזו דרך הבנק: הוא מוכר רק קרנות שהמנהל שלהן חתם איתו על הסכם הפצה, ובדיווחים של מנהלי הקרנות אין הסכם כזה לקרן הזו.",
   },
   /** The notes on a money-market fund's zero trade and custody lines at a bank (lib/instruments.server.ts): the rule, and what the example assumes. */
   bankMoneyMarketZero: {
@@ -4606,6 +4610,10 @@ export const invest = {
     /** A fund the person typed with a fee left empty (D56). */
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
+    /** A house that sells this kind of fund only under distribution agreements (BRK-38), and a fund with no number a report can name. */
+    soldFundByFund: "אין מחיר בלי קרן מסוימת: הבית מוכר קרן כזו רק אם מנהל הקרן חתם איתו על הסכם הפצה.",
+    /** The same house, and a fund no report of an agreement names: open, never "not sold" (the record's own words show where it has them). */
+    noAgreementFound: "לא ידוע אם אפשר לקנות את הקרן הזו שם: לא נמצא הסכם הפצה עליה.",
     /** A fund whose tax rests on an open rule (F-04, G-35), where no figure before tax is shown for it (an account that does not price it, a
      *  kind with no fund record, a fund that pays out, the preview of a fund being typed): by the rule, said plainly; nothing is ranked. Where
      *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
@@ -4874,7 +4882,7 @@ export const kit = {
       ProductPhoneFold: "מוצר ברשימה ארוכה בטלפון (מסלולים תחת חברה): שורה אחת עם השם ומספר אחד עם המילה שלו. הקשה על השורה פותחת במקום את כל השאר, והשורה גדלה בהדרגה, כך שמה שמתחתיה זז בעדינות ומה שמעליה לא זז. המספר שבשורה שומר על ההקשה שלו ופותח את המקור.",
       SortHead: "כותרת עמודה שממיינת את הטבלה בלחיצה: מודגשת עם ▲ או ▼ כשהיא פעילה, ⇅ חלש כשלא. לחיצה ראשונה נותנת את הסדר הטבעי של העמודה והשנייה הופכת אותו. החץ במקום קבוע ורוחב המודגש נשמר, ולכן לחיצה לא מזיזה דבר.",
       MarkHold: "סימן קטן לפני מילים או אחריהן (אזהרה, מנעול, חץ של קישור, סימן שאלה) נצמד למילה שלידו, כדי שלא יעמוד לבד בשורה.",
-      HouseAverageLine: "שורה שקטה מתחת למחיר מהמחירון: מה שבית ההשקעות גבה בפועל בממוצע על סוג העמלה, מהנמוך לגבוה לפי גודל התיק, התקופה וקישור למחשבון העמלות של הבורסה. לידיעה בלבד: שום חישוב לא קורא אותה.",
+      HouseAverageLine: "שורה שקטה מתחת למחיר מהמחירון: מה שבית ההשקעות או הבנק גבה בפועל בממוצע על סוג העמלה, מהנמוך לגבוה לפי גודל התיק, התקופה וקישור למחשבון העמלות של הבורסה. לידיעה בלבד: שום חישוב לא קורא אותה.",
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",

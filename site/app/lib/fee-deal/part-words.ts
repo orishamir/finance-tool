@@ -113,7 +113,7 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
   unfilledClerkAbroad: note("unfilledClerkAbroad"),
   capRead: note("capRead"),
   partial: note("partial"),
-  inTrade: () => ({ lead: pp.notes.inTrade! }),
+  inTrade: ({ p }) => ({ lead: onAction(p) && Array.isArray(p.inTrade) ? pp.inTradeFor(p.inTrade.map((c) => copy.panel.currencies[c] ?? c)) : pp.notes.inTrade! }),
   sale: () => ({ lead: pp.notes.sale! }),
 };
 

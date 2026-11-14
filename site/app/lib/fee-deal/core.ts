@@ -110,13 +110,15 @@ interface Linked {
 /**
  * The parts of a price on an action beside its figures: a discount (F-116), a third party's fee (F-117), notes on an order (§10.6's stated
  * parts), and that its sums are in the currency the action is made in (`inTrade`: "מינימום 30 במטבע העסקה"), which a reading takes from
- * what is bought where the deal knows its currency (its `currency` is then that one) and otherwise does not read the fee.
+ * what is bought where the deal knows its currency (its `currency` is then that one) and otherwise does not read the fee. `inTrade` is
+ * `true`, any currency, or the currencies the list prints those sums for (Excellence's "בש״ח/$ ארה״ב/יורו", data-schema §3.6a item 1): an
+ * action in another currency has no bound from the price, since the list prints none for it (§10.6).
  */
 interface ActionParts extends Linked {
   discount?: Discount;
   third?: Third;
   notes?: Note[];
-  inTrade?: true;
+  inTrade?: true | readonly BoundCurrency[];
 }
 
 /**

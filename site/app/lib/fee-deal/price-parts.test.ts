@@ -139,6 +139,28 @@ describe("sums in the trade's currency", () => {
   });
 });
 
+describe("sums in the trade's currency printed for some currencies only (trade_currencies, §10.6)", () => {
+  /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-48). */
+  const printed: Price = { form: "action", rate: typed(0.4), min: typed(35), inTrade: ["ILS", "USD", "EUR"] };
+  const own = (currency: string): FeeDeal => ({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "mine", place: "abroad", currency }], fees: [trade(printed)] } as FeeDeal);
+  it("reads the minimum in a currency the list prints it for", () => {
+    expect(read(own("EUR")).fees[0]!.stages[0]!.price).toMatchObject({ min: { v: 35 }, currency: "EUR" });
+  });
+  it("gives a trade in another currency no bound: the list prints none for it", () => {
+    const p = read(own("GBP")).fees[0]!.stages[0]!.price;
+    expect(p).toMatchObject({ rate: { v: 0.4 }, currency: "GBP" });
+    expect(p).not.toHaveProperty("min");
+    expect(p).not.toHaveProperty("inTrade");
+  });
+  it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
+    const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
+    expect(tradeOf("excellence")).toContain('"inTrade":["ILS","USD","EUR"]');
+    const deal = account([trade(printed)]);
+    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
+    expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
+  });
+});
+
 describe("the price parts as the screen edits them", () => {
   it("types, empties and puts back a percent maximum and a flat price's figures", () => {
     const p: Price = { form: "action", rate: { v: 0.3, src }, cap: { v: 25, src } };
@@ -320,8 +342,18 @@ describe("the templates", () => {
     // each line whose maximum is on each security says so in its record (max_per), and its maximum on the deposit quotes the list
     const lines = latestSnapshots().flatMap((x) => x.lines);
     for (const l of lines.filter((x) => x.max_per === "security")) expect(`${l.max?.notes} ${l.max_deposit?.source.quote ?? ""}`, l.id).toMatch(/לני"ע|לנייר/);
-    // a maximum the list prints with no scope is read as the holding's, as before
+    // Jerusalem's maximum is on the deposit, by the bank's own sheet (max_per_source): the holding's maximum
     expect(custodyOf("jerusalem", "tase")).toMatchObject({ max: { v: 10000 } });
+    expect(custodyOf("mizrahi-tefahot", "tase")).toMatchObject({ max: { v: 10750 } });
+  });
+  it("leave out a custody maximum the list prints with no scope, with its own reason: the cautious reading (data-schema §3.6a item 2)", async () => {
+    const { houseTemplate } = await import("./templates");
+    const snap = latestSnapshots().find((x) => x.id === "jerusalem")!;
+    const unstated = { ...snap, lines: snap.lines.map((l) => (l.base === "custody" ? { ...l, max_per: "unstated" as const, max_per_source: undefined } : l)) };
+    const t = houseTemplate(unstated);
+    expect(JSON.stringify(t.fees.find((f) => f.kind === "custody"))).not.toContain('"v":10000');
+    expect(t.left).toContainEqual(expect.objectContaining({ lineId: "jerusalem-custody-israel", why: "max-scope-unstated" }));
+    expect(copy.filled.why["max-scope-unstated"]).toBeTruthy();
   });
   it("fill Leumi's custody abroad as its own case: 0.2% a quarter, a maximum of 7,400 ₪ on each security and 23,000 ₪ on the deposit", () => {
     const abroad = filledFor("leumi", [{ by: "what", is: "us" }, { by: "held", is: "us" }])("custody");

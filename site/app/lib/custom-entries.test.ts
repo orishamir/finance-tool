@@ -220,7 +220,11 @@ describe("a fund the person types is priced at the collected houses under its ki
     for (const p of view.providers.filter((x) => !x.custom)) {
       expect(mine.byHouse[p.id], p.id).toBeTruthy();
       // a house that sells the kind fund by fund (One Zero, BRK-38) cannot say whether it sells a fund the person typed: no price there
-      if (bundle.snapshots.find((s) => s.id === p.id)?.distribution_agreements) expect(priced(mine.byHouse[p.id]), p.id).toBe(false);
+      const at = mine.byHouse[p.id]!;
+      if (bundle.snapshots.find((s) => s.id === p.id)?.fundByFund) {
+        expect(priced(at), p.id).toBe(false);
+        expect("reason" in at && at.reason, p.id).toEqual({ code: "sold-fund-by-fund" });
+      }
       else expect(priced(mine.byHouse[p.id]), p.id).toBe(priced(collected.byHouse[p.id]));
     }
   });

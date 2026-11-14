@@ -3,6 +3,7 @@
 import { describe, expect, it } from "vitest";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
 import { dayAfter } from "../src/formulas/time.ts";
+import { promotedDrag } from "../src/formulas/fund-promotion.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = { ...context(), runDate: "2026-11-14" };
@@ -33,6 +34,36 @@ describe("a fund fee's promotion (F-121)", () => {
     // 1.2.2027 falls in month 3 (14.1 to 13.2); month 4 (14.2 to 13.3) is the first inside it, and 1.4.2027 falls in month 5: one free month
     const r = runSecurities(input({ trustee: 0.012, promotions: [{ part: "trustee", rate: 0, from: "2027-02-01", to: "2027-03-31" }] }), ctx);
     expect(r.fees.fund).toBeCloseTo(120_000 * (1 - 0.999 ** 11), 2);
+  });
+  it("charges the promotion in the months it covers whole, by month, not only how many", () => {
+    // run of 14.11.2026; months start on the 14th. A promotion of 1.2.2027 to 31.3.2027 falls in month 3 (14.1 to 13.2); month 4 is the
+    // first inside it; the day after its end, 1.4.2027, falls in month 5
+    const d = promotedDrag(0.012, [{ cut: 0.012, from: "2027-02-01", to: "2027-03-31" }], "2026-11-14");
+    expect([1, 2, 3, 4, 5, 6].map(d.at)).toEqual([0.012, 0.012, 0.012, 0, 0.012, 0.012]);
+    // one that started by the run date is charged from month 1; month 2 holds 1.1.2027, the day after it ends
+    const now = promotedDrag(0.012, [{ cut: 0.012, from: "2026-07-01", to: "2026-12-31" }], "2026-11-14");
+    expect([1, 2, 3].map(now.at)).toEqual([0, 0.012, 0.012]);
+  });
+  it("a promotion that starts on a month's first day still pays the fee's own rate in that month, the cautious reading", () => {
+    // 14.1.2027 is month 3's first day: month 3 pays the own rate, month 4 the promotion's
+    const d = promotedDrag(0.012, [{ cut: 0.012, from: "2027-01-14", to: "2027-06-30" }], "2026-11-14");
+    expect([2, 3, 4].map(d.at)).toEqual([0.012, 0.012, 0]);
+  });
+  it("where the month matters (a return), a shifted window gives another figure", () => {
+    const grow = (promotions: NonNullable<SecuritiesInput["fund"]["drag"]>["promotions"]) =>
+      runSecurities({ ...input({ trustee: 0.012, ...(promotions ? { promotions } : {}) }), market: { grossReturn: 0.2, inflation: 0 } }, ctx).fees.fund;
+    // one free month each: month 1, or month 9 (1.7.2027 falls in month 8, 1.9.2027 in month 10); the balance has grown by month 9, so its
+    // free month saves more
+    const plain = grow(undefined);
+    const early = grow([{ part: "trustee", rate: 0, from: "2026-07-01", to: "2026-12-31" }]);
+    const late = grow([{ part: "trustee", rate: 0, from: "2027-07-01", to: "2027-08-31" }]);
+    expect(early).toBeLessThan(plain);
+    expect(late).toBeLessThan(early);
+  });
+  it("a part already below the promotion's rate (a variable fee priced at what it charged) stays as it is: a promotion never raises the drag", () => {
+    const plain = runSecurities(input({ variable: 0.001 }), ctx).fees.fund;
+    const promoted = runSecurities(input({ variable: 0.001, promotions: [{ part: "variable", rate: 0.004, from: "2026-07-01", to: "2027-12-31" }] }), ctx).fees.fund;
+    expect(promoted).toBeCloseTo(plain, 6);
   });
   it("a promotion that ended before the run, or of a part the drag does not hold, changes nothing", () => {
     const plain = runSecurities(input({ trustee: 0.012 }), ctx).fees.fund;

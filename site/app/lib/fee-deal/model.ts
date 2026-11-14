@@ -434,7 +434,7 @@ const READ_KEY: Readonly<Record<PartKey | "currency" | "boundsEvery", (raw: unkn
   discount: readDiscount,
   third: readThird,
   notes: (n) => (Array.isArray(n) && n.length > 0 && n.every((x) => NOTES.includes(x as Note)) && new Set(n).size === n.length ? n : null),
-  inTrade: (raw) => (raw === true ? true : null),
+  inTrade: (raw) => (raw === true ? true : Array.isArray(raw) && raw.length > 0 && raw.every((c) => (BOUND_CURRENCIES as readonly unknown[]).includes(c)) && new Set(raw).size === raw.length ? (raw as BoundCurrency[]) : null),
 };
 
 /** Where the currency and the months a bound is printed per have a place: a price on an action's sums, a share of what is held's bounds. */
