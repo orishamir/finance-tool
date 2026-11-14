@@ -2,10 +2,11 @@
 // condition's head, then, where its block has the room, a table of its cases (one thing; a range as a ladder whose step tops are typed in
 // place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the case open
 // under them; on a block narrower than a computer's, the same cases as rows in the cases' band, a grid's in one group per value of its first thing,
-// a part one cell holds for every case said once above them. Each add slot stands beside the heads (at the end of the column heads, under
-// the row heads): "+ מקרה" on a list thing's table and a grid's row and column ask their new values from those the cases name not yet
-// (`AskValuesOf`), on a split table it copies the open case (else the last); "+ מדרגה" asks only the new boundary (`AskStep`); a place of a
-// grid no case holds takes a copy of its row's case. Every
+// a part one cell holds for every case said once above them. Each add is a plus knob beside the heads (at the end of the column heads,
+// under the row heads, and on the line between two heads, which adds exactly there; the head's menu adds before or after it), a row of
+// its own after a band's rows: on a list thing's table and a grid's row and column it asks the new values from those the cases name not
+// yet (`AskValuesOf`), on a split table it copies the open case (else the last); on a ladder it asks only the new boundary (`AskStep`),
+// between two steps one that splits one of them; a place of a grid no case holds takes a copy of its row's case. Every
 // case shows, in the fee's order, the person's own marked "שלכם" and none set apart for not being theirs. Every head, row, cell and thing
 // of the head has a grip (⋮⋮, lifted.ts says where each drops and what the bin takes), whose menu moves, duplicates or removes by
 // keyboard; a table's columns, a grid's rows and columns and the cases read as rows are sortable lists, the others opening the gap where
@@ -136,8 +137,14 @@ const TABLE_ROOM = 600;
 /** A ladder's column, in px: room for its head on one line, "100,000 עד" and its top's box (`CaseTable`'s and `CaseGrid`'s `steps`). */
 const STEP_COLUMN = 184;
 
-/** The question of an add slot open: the thing it adds a value of, and whether it adds a step. */
-type Asking = { thing: number; range: boolean } | null;
+/**
+ * The question of an add open: the thing it adds a value of, whether it adds a step, and where (`where`: "end", or the place between two
+ * heads it was asked at); a value then stands right before value `before`, a step's boundary falls `within` its two neighbours.
+ */
+type Asking = { thing: number; range: boolean; where: string; before?: string; within?: { low: number; high: number | null } } | null;
+
+/** Where an add puts what it adds: at the end, or at place `k` among the heads (before head `k`), with what that place asks. */
+type Place = { where: string; before?: string; within?: { low: number; high: number | null } };
 
 /**
  * A knob being dragged: the line it stands in (a part row, a grid's row by its key, or a grid's column as `col:` and its key), where its
@@ -220,21 +227,52 @@ export function FeeCases({
     const fresh = next.cases?.find((x) => !fee.cases.some((o) => o.id === x.id));
     if (fresh) onOpen(fee.id, fresh.id, "pointer");
   };
-  const ask = (thing: number, range: boolean) => (at: HTMLElement) => {
+  const ask = (thing: number, range: boolean, place: Place = { where: "end" }) => (at: HTMLElement | null) => {
     slot.current = at;
-    setAsking((a) => (a && a.thing === thing ? null : { thing, range }));
+    setAsking((a) => (a && a.thing === thing && a.where === place.where ? null : { thing, range, ...place }));
   };
+  const askedHere = (t: number, where: string) => asking?.thing === t && asking.where === where;
   const asked = (added: boolean) => {
     setAsking(null);
     if (!added) requestAnimationFrame(() => slot.current?.isConnected && slot.current.focus());
   };
   // where a case has no new value to ask (a split table's), "+ מקרה" copies the open case, else the last, and opens the copy
-  const addOne: AddSpec = { label: c.addSlot.case, onAdd: () => addAndOpen(addCase(fee, openCase ?? undefined)) };
-  const stepSlot = (t: number): AddSpec => ({ label: c.addSlot.step, onAdd: ask(t, true), expanded: asking?.thing === t });
-  const valuesSlot = (t: number): AddSpec => valuesSlotAs(t, thingName(fee.kind, fee.by[t]!));
-  /** An add slot that asks the new values of list thing `t` (`AskValuesOf`, the values the cases name not yet), with its own words. */
-  const valuesSlotAs = (t: number, words: string): AddSpec => ({ label: words, onAdd: ask(t, false), expanded: asking?.thing === t });
+  const addOne: AddSpec = { label: c.addKnob.case, onAdd: () => addAndOpen(addCase(fee, openCase ?? undefined)) };
+  /** The add that asks a ladder's new boundary (`AskStep`), at the end or at `place`. */
+  const stepSlot = (t: number, place: Place = { where: "end" }): AddSpec => ({ label: c.addKnob.step, onAdd: ask(t, true, place), expanded: askedHere(t, place.where) });
+  /** The add that asks new values of list thing `t` (`AskValuesOf`, the values the cases name not yet), at the end or at `place`. */
+  const valuesSlot = (t: number, place: Place = { where: "end" }, words = c.addKnob.value[fee.by[t]!.kind] ?? c.addKnob.value.own!): AddSpec => ({ label: words, onAdd: ask(t, false, place), expanded: askedHere(t, place.where) });
   const slotOf = (t: number, range: boolean) => (range ? stepSlot(t) : valuesSlot(t));
+  /** An add read as rows, where it stands as a row of its own: its words after the plus ("+ מקרה", "+ מדרגה", "+ הערוץ"). */
+  const asRow = (add: AddSpec, words: string): AddSpec => ({ ...add, label: words });
+  const rowWords = (t: number, range: boolean) => (range ? c.addSlot.step : thingName(fee.kind, fee.by[t]!));
+  /**
+   * Place `k` among heads of thing `t` (before head `k`; `k` = their count, the end), the heads given by their keys and, for a range, each
+   * step's bounds: a value added there stands before head `k`; a step's boundary falls between head `k - 1`'s bottom and head `k`'s top.
+   */
+  const placeAt = (t: number, k: number, heads: readonly { key: string; bounds: StepBounds | null }[]): Place | null => {
+    const n = heads.length;
+    if (k >= n) return { where: "end" };
+    if (!isRange(fee.by[t]!)) return { where: `at:${k}`, before: heads[k]!.key };
+    const prev = k > 0 ? heads[k - 1]!.bounds : null;
+    const next = heads[k]!.bounds;
+    if ((k > 0 && !prev) || !next) return null;
+    return { where: `at:${k}`, within: { low: (prev?.from?.value as number | undefined) ?? 0, high: (next.to?.value as number | undefined) ?? null } };
+  };
+  /** The plus between head `k - 1` and head `k` of thing `t`: the add that puts its value or step exactly there, named by the two. */
+  const insertAt = (t: number, heads: readonly { key: string; bounds: StepBounds | null; words: string }[]) => (k: number): AddSpec | null => {
+    const place = placeAt(t, k, heads);
+    if (!place) return null;
+    const add = isRange(fee.by[t]!) ? stepSlot(t, place) : valuesSlot(t, place);
+    return { ...add, spoken: c.addKnob.between.replace("{add}", add.label).replace("{a}", heads[k - 1]!.words).replace("{b}", heads[k]!.words) };
+  };
+  /** A head's menu inserts, before it and after it (keyboard and touch: what the plus between heads does). */
+  const insertActions = (t: number, k: number, heads: readonly { key: string; bounds: StepBounds | null }[]): GripAction[] =>
+    [k, k + 1].flatMap((p, i) => {
+      const place = placeAt(t, p, heads);
+      if (!place) return [];
+      return [{ label: i === 0 ? c.insertMenu.before : c.insertMenu.after, onPick: () => ask(t, isRange(fee.by[t]!), place)(null) }];
+    });
 
   // ---------------------------------------------------------------- grips: what each lifts, its menu, and what its bin takes
   /** A cell's own bin's spoken name: "למחוק: מקסימום · מק״מ". */
@@ -472,7 +510,7 @@ export function FeeCases({
           o.sort,
         );
 
-  const question = asking ? (asking.range ? <AskStep key={`step:${asking.thing}`} fee={fee} t={asking.thing} onFee={addAndOpen} onDone={asked} /> : <AskValuesOf key={`values:${asking.thing}`} fee={fee} t={asking.thing} onFee={addAndOpen} onDone={asked} />) : null;
+  const question = asking ? (asking.range ? <AskStep key={`step:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.within ? { within: asking.within } : {})} onFee={addAndOpen} onDone={asked} /> : <AskValuesOf key={`values:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.before !== undefined ? { before: asking.before } : {})} onFee={addAndOpen} onDone={asked} />) : null;
   // the bin, while something of this fee is lifted: under its table, grid or band; on a phone at the foot of the screen
   const bin = <DropBin phone={lift.phone} accepts={(it) => lift.binTakesItem(fee.id, it)} onDrop={(it) => lift.onBinItem(it)} />;
   /** The menu a row's strip opens: the parts every case of the row can take. */
@@ -487,6 +525,12 @@ export function FeeCases({
     const order = layout.columns.map((x) => x.case);
     const allCases = layout.columns.map((x) => x.case);
     const across = rowAdd(allCases, t, { strip: c.rowAdd.allCases, menu: lw.menu.addAllCases, spoken: lw.menu.addAllCases });
+    // the columns' heads as an insert between two of them reads them: a list's values, a ladder's steps
+    const heads = layout.columns.map((col) => {
+      const r = byCase.get(col.case)!;
+      return { key: valueKey(col.when), bounds: r.bounds[t] ?? null, words: layout.ladder ? stepName(r, t) : caseText(r.when) };
+    });
+    const inserts = listThing || layout.ladder;
     /** What a column's grip lifts: a ladder's step (to its bin), a value of the table's thing where it is not the fee's first, else its case. */
     const colLifted = (col: (typeof layout.columns)[number], words: string): Lifted | null =>
       layout.ladder ? (typeof col.when === "number" ? { k: "step", fee: fee.id, t, step: col.when, name: words } : null) : t !== 0 ? { k: "value", fee: fee.id, t, key: valueKey(col.when), name: words } : { k: "col", fee: fee.id, case: col.case };
@@ -496,12 +540,12 @@ export function FeeCases({
         <CaseTable
           label={name}
           ladder={layout.ladder}
-          columns={layout.columns.map((col) => {
+          columns={layout.columns.map((col, k) => {
             const r = byCase.get(col.case)!;
             const words = layout.ladder ? stepName(r, t) : caseText(r.when);
             const l = colLifted(col, words);
             const moves = listThing && n > 1;
-            const more = listThing ? caseActions(col.case, order, words, t) : [];
+            const more = [...(listThing ? caseActions(col.case, order, words, t) : []), ...(inserts ? insertActions(t, k, heads) : [])];
             const still = !!l && !moves && !lift.binTakes(l);
             const spoken = layout.ladder ? `${lw.grip.step}${words}` : still ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
             const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : lw.name.case.replace("{name}", words), still }) : null;
@@ -551,7 +595,8 @@ export function FeeCases({
               }),
             };
           })}
-          add={layout.ladder ? stepSlot(t) : listThing ? valuesSlotAs(t, c.addSlot.case) : addOne}
+          add={layout.ladder ? stepSlot(t) : listThing ? valuesSlot(t, undefined, c.addKnob.case) : addOne}
+          {...(inserts ? { insert: insertAt(t, heads) } : {})}
           {...(across.strip ? { addPart: across.strip } : {})}
           foot={bin}
         />
@@ -592,6 +637,10 @@ export function FeeCases({
       });
     const downList = !g.down.range ? list("grows", "y") : undefined;
     const acrossList = !g.across.range ? list("gcols", "x") : undefined;
+    // the heads of each side as an insert between two of them reads them
+    const headsOf = (hs: readonly Head[], t: number) => hs.map((h) => ({ key: h.key, bounds: byCase.get(h.cases[0]!)!.bounds[t] ?? null, words: stepName(byCase.get(h.cases[0]!)!, t) }));
+    const colHeads = headsOf(g.columns, 1);
+    const rowHeads = headsOf(g.rows, 0);
     body = (
       <>
         <ConditionHead bare {...head} />
@@ -599,8 +648,8 @@ export function FeeCases({
           label={name}
           steps={g.across.range}
           above={g.switch && <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => byCase.get(h.cases[0]!)!.when[2]!} mine={(h) => byCase.get(h.cases[0]!)!.mine} onChange={setSwitchTo} />}
-          columns={g.columns.map((col) => {
-            const hg = headGrip(col, 1, g.columns);
+          columns={g.columns.map((col, k) => {
+            const hg = headGrip(col, 1, g.columns, insertActions(1, k, colHeads));
             return { id: col.key, head: headOfValue(col, 1), ...(hg ? { grip: hg } : {}), ...headItem(col, 1), zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 1, key: col.key }, headCases(col.cases, 0)], `col:${col.key}`, h, acrossList) };
           })}
           rows={g.rows.map((row, j) => {
@@ -608,7 +657,7 @@ export function FeeCases({
             const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
             const words = whenText(byCase.get(row.cases[0]!)!.when[0]!);
             const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
-            const hg = headGrip(row, 0, g.rows, strip.menu);
+            const hg = headGrip(row, 0, g.rows, [...strip.menu, ...insertActions(0, j, rowHeads)]);
             return {
               id: row.key,
               head: headOfValue(row, 0),
@@ -678,6 +727,8 @@ export function FeeCases({
           })}
           addRow={slotOf(g.down.thing, g.down.range)}
           addColumn={slotOf(g.across.thing, g.across.range)}
+          insertRow={insertAt(0, rowHeads)}
+          insertColumn={insertAt(1, colHeads)}
           foot={bin}
         />
       </>
@@ -710,16 +761,16 @@ export function FeeCases({
                 const from = row.cells.find((x) => x.case)?.case ?? row.cases[0]!;
                 return [
                   <div key={`empty:${cell.from}`} className="px-3">
-                    {zone([{ k: "place", fee: fee.id, row: from, t: 1, when: col.when }], `place:${row.key}:${cell.from}`, <AddSlot shape="row" add={{ label: `${c.addSlot.case}${sep}${whenText(byCase.get(col.cases[0]!)!.when[1]!)}`, onAdd: () => addAndOpen(addCaseAt(fee, from, 1, col.when)) }} />)}
+                    {zone([{ k: "place", fee: fee.id, row: from, t: 1, when: col.when }], `place:${row.key}:${cell.from}`, <AddSlot add={{ label: `${c.addSlot.case}${sep}${whenText(byCase.get(col.cases[0]!)!.when[1]!)}`, onAdd: () => addAndOpen(addCaseAt(fee, from, 1, col.when)) }} />)}
                   </div>,
                 ];
               })}
             </CaseGroup>
           );
         })}
-        <div className="flex flex-wrap gap-2 px-3 pt-1 pb-1">
-          <AddSlot shape="pill" add={slotOf(g.down.thing, g.down.range)} />
-          <AddSlot shape="pill" add={slotOf(g.across.thing, g.across.range)} />
+        <div className="flex flex-col gap-1 px-3 pt-1 pb-1">
+          <AddSlot add={asRow(slotOf(g.down.thing, g.down.range), rowWords(g.down.thing, g.down.range))} />
+          <AddSlot add={asRow(slotOf(g.across.thing, g.across.range), rowWords(g.across.thing, g.across.range))} />
         </div>
         <div className="px-3">{bin}</div>
       </ConditionBand>
@@ -730,7 +781,7 @@ export function FeeCases({
     const order = layout.shape === "table" ? layout.columns.map((x) => x.case) : layout.cases;
     const ladder = layout.shape === "table" && layout.ladder;
     const listThing = layout.shape === "table" && !layout.ladder && layout.split === null && t === 0 && !isRange(fee.by[t]!);
-    const add = ladder ? stepSlot(t) : listThing ? valuesSlotAs(t, c.addSlot.case) : addOne;
+    const add = asRow(ladder ? stepSlot(t) : listThing ? valuesSlot(t) : addOne, ladder ? c.addSlot.step : c.addSlot.case);
     body = (
       <ConditionBand {...head}>
         {layout.shape === "table" && layout.once.length > 0 && <div className="px-3 pt-1">{onceLine(layout.once, t)}</div>}
@@ -754,7 +805,7 @@ export function FeeCases({
           );
         })}
         <div className="px-3 pt-1 pb-1">
-          <AddSlot shape="pill" add={add} />
+          <AddSlot add={add} />
         </div>
         <div className="px-3">{bin}</div>
       </ConditionBand>

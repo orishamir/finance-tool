@@ -1,7 +1,9 @@
 // The edits the workbench's add slots make (method §10.6, F-114): a ladder's step added by its boundary alone, a boundary moved, a case put
 // in a grid's empty place, and a grid's new row or column of values.
 import { describe, expect, it } from "vitest";
-import { addCaseAt, addStep, addValues, nameTaken, setTop } from "./edits/case";
+import { addCaseAt, addStep, addValues, addValuesAt, nameTaken, setTop } from "./edits/case";
+import { byRank } from "./model";
+import { valueKey } from "./layout";
 import { readDeal, typed, type CasesFee, type Price } from "./model";
 
 const held = (rate: number): Price => ({ form: "held", rate: typed(rate), per: 12, every: 12 });
@@ -123,6 +125,23 @@ describe("a grid's new row or column", () => {
     const f = addValues(grid(), 0, ["אג״ח בלונדון"], [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }]) as CasesFee;
     expect(f.by[0]).toEqual({ kind: "what", own: [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }] });
     expect(f.cases.at(-1)!.when[0]).toEqual(["אג״ח בלונדון"]);
+  });
+});
+
+describe("a row or a column added between two", () => {
+  /** The values of thing `t` in the order the page stands them. */
+  const order = (f: CasesFee, t: number) => [...new Set(byRank(f.cases).map((c) => valueKey(c.when[t]!)))];
+  it("stands its new values right before the value it was added before, in the order given, the other thing's order kept", () => {
+    const f = addValuesAt(grid(), 0, ["us", "europe"], [], valueKey(["tase"])) as CasesFee;
+    expect(order(f, 0)).toEqual([valueKey(["us"]), valueKey(["europe"]), valueKey(["tase"]), ...order(grid(), 0).filter((k) => k !== valueKey(["tase"]))]);
+    expect(order(f, 1)).toEqual(order(grid(), 1));
+    // what is added is what addValues adds
+    expect(f.cases.length).toBe((addValues(grid(), 0, ["us", "europe"]) as CasesFee).cases.length);
+  });
+  it("is addValues without a place, or where nothing was added", () => {
+    const whens = (f: unknown) => (f as CasesFee).cases.map((c) => c.when);
+    expect(whens(addValuesAt(grid(), 1, ["phone"]))).toEqual(whens(addValues(grid(), 1, ["phone"])));
+    expect(addValuesAt(grid(), 0, ["tase"], [], valueKey(["tase"]))).toEqual(grid());
   });
 });
 

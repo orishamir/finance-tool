@@ -4,13 +4,14 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
-import { addBy, addStep, addValues, nameTaken, newBy, splitCase } from "../../lib/fee-deal/edits/case";
+import { addBy, addStep, addValuesAt, nameTaken, newBy, splitCase } from "../../lib/fee-deal/edits/case";
 import { metLimit } from "../../lib/fee-deal/limits";
 import { isRange, NAME_MAX, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import { lastValueWords, rangeSign } from "../../lib/fee-deal/band-layout";
 import { thingName } from "../../lib/fee-deal/case-words";
 import type { ByKind, RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, FigureField, InlineSelect, TextField } from "../kit";
+import { fmt } from "../../lib/format";
 import { bringIntoView } from "./in-view";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
 
@@ -177,10 +178,11 @@ const escapeCloses = (onDone: (added: boolean) => void) => (e: KeyboardEvent) =>
 };
 
 /**
- * A ladder's "+ מדרגה": the new boundary alone, in the range's unit. The step it falls in splits in two at it, both halves keeping its
- * price (`addStep`); a boundary the range has already is refused.
+ * A ladder's new step: the new boundary alone, in the range's unit. The step it falls in splits in two at it, both halves keeping its
+ * price (`addStep`); a boundary the range has already is refused. Asked between two steps (`within`), the boundary falls between the
+ * first one's bottom and the second one's top, so one of the two splits.
  */
-export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
+export function AskStep({ fee, t, within, onFee, onDone }: { fee: CasesFee; t: number; within?: { low: number; high: number | null }; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
   const root = useAskFocus();
   const c = copy.cases;
   const b = fee.by[t]!;
@@ -188,16 +190,17 @@ export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; o
   if (!isRange(b)) return null;
   const sign = rangeSign(b.unit);
   const taken = (n: number) => b.tops.some((x) => x.v === n);
+  const inside = (n: number) => !within || (n > within.low && (within.high === null || n < within.high));
   return (
     <div ref={root} data-ask-thing="" onKeyDown={escapeCloses(onDone)}>
       <AskValues
         question={c.addStep.ask.replace("{thing}", thingName(fee.kind, b))}
-        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight asks validate={(n) => (taken(n) ? c.addStep.taken : null)} onCommit={setTop} onClear={() => setTop(null)} />}
+        field={<FigureField value={null} label={c.addStep.field} unit={sign} sign={sign} tight asks validate={(n) => (taken(n) ? c.addStep.taken : !inside(n) ? c.stepTopRange(fmt.number(within!.low), within!.high === null ? null : fmt.number(within!.high)) : null)} onCommit={setTop} onClear={() => setTop(null)} />}
         options={[]}
         chosen={[]}
         onToggle={() => undefined}
         note={c.addStep.note}
-        ready={top !== null && top > 0 && !taken(top)}
+        ready={top !== null && top > 0 && !taken(top) && inside(top)}
         onAdd={() => {
           if (top === null) return;
           onFee(addStep(fee, t, top));
@@ -212,9 +215,10 @@ export function AskStep({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; o
 
 /**
  * A grid's new row or column: the values of thing `t` the cases name not yet, to tick, and one of the person's own; each new value starts
- * with the prices of the value the cases name last (`addValues`), as the line under them says.
+ * with the prices of the value the cases name last (`addValues`), as the line under them says, and stands at the end, or right before
+ * value `before` where it is added between two (`addValuesAt`).
  */
-export function AskValuesOf({ fee, t, onFee, onDone }: { fee: CasesFee; t: number; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
+export function AskValuesOf({ fee, t, before, onFee, onDone }: { fee: CasesFee; t: number; before?: string; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
   const root = useAskFocus();
   const c = copy.cases;
   const b = fee.by[t]!;
@@ -248,7 +252,7 @@ export function AskValuesOf({ fee, t, onFee, onDone }: { fee: CasesFee; t: numbe
         note={c.addValues.replace("{last}", lastValueWords(fee, t))}
         onAdd={() => {
           if (chosen.length === 0) return;
-          onFee(addValues(fee, t, chosen, own));
+          onFee(addValuesAt(fee, t, chosen, own, before));
           onDone(true);
           focusOpened(fee.id);
         }}

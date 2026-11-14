@@ -1,10 +1,11 @@
 // A fee's cases laid out by the fee's shape (design-system 11, "Cases and parts"; the layout is lib/fee-deal/layout.ts): under the
 // condition's head, a table for a fee that changes by one thing (its cases as columns, its parts as rows, a range's steps ascending as a
 // ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
-// cells a cell for each part its cells hold alike), and beside the heads a small dashed pill that adds a case, a step, a row or a column:
-// at the end of the column heads, and under the row heads. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop
-// zone, each cell a knob on its edges that stretches it over its neighbours and, where it can be taken away, a small bin in its top end
-// corner; a cell covering its whole row says so under its parts. A
+// cells a cell for each part its cells hold alike), and beside the heads a small plus knob that adds a case, a step, a row or a column:
+// always at the end of the column heads and under the row heads, and on the line between two heads while the pointer rests there, adding
+// exactly there. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop zone, each cell a knob on its edges that
+// stretches it over its neighbours and, where it can be taken away, a small bin in its top end corner; a cell covering its whole row says
+// so under its parts. A
 // part every case holds alike is one cell over every column, not a line of its own. Under a row a slim strip drawn while the pointer is
 // there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
@@ -15,6 +16,7 @@ import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER, onSurface } from "./choice";
 import { useCarried } from "./drag-drop";
 import { cx } from "./cx";
+import { KnobButton } from "./knob-button";
 import { RemoveButton } from "./remove-button";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
@@ -145,21 +147,20 @@ export interface AddSpec {
 }
 
 /**
- * What adds a new case, step, row or column: a dashed frame with a plus and its words in the action colour. A `row` stands as wide as
- * what it is under (the cases read as rows, a grid's place no case holds); a `pill` is small, beside the heads (at the end of the column
- * heads, under the row heads), 32 px tall with a 44 px press.
+ * What adds a new case, row or column where it stands in the table's own room (a grid's place no case holds, the cases read as rows, a
+ * price's "+ המחיר משתנה מתאריך"): a dashed frame as wide as what it is under, a plus and its words in the action colour. Beside the heads
+ * the add is a plus knob (`HeadAdd`, `BetweenAdd`).
  */
-export function AddSlot({ add, shape, className }: { add: AddSpec; shape: "row" | "pill"; className?: string }) {
+export function AddSlot({ add, className }: { add: AddSpec; className?: string }) {
   return (
     <button
       type="button"
-      data-add-slot={shape}
+      data-add-slot="row"
       aria-expanded={add.expanded}
       aria-label={add.spoken}
       onClick={(e) => add.onAdd(e.currentTarget)}
       className={cx(
-        "inline-flex items-center justify-center gap-1.5 border border-dashed border-primary text-sm text-primary transition-colors duration-[var(--duration-fast)] hover:bg-accent",
-        shape === "row" ? "min-h-target w-full rounded-md px-3" : "tap-area h-8 w-max shrink-0 whitespace-nowrap rounded-full px-3",
+        "inline-flex min-h-target w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-primary px-3 text-sm text-primary transition-colors duration-[var(--duration-fast)] hover:bg-accent",
         add.expanded && "bg-accent",
         className,
       )}
@@ -167,6 +168,35 @@ export function AddSlot({ add, shape, className }: { add: AddSpec; shape: "row" 
       <Plus {...icon} />
       {add.label}
     </button>
+  );
+}
+
+/**
+ * The plus at the end of the column heads, or under the row heads, that adds a case, a step, a row or a column (`add`, its words spoken and
+ * in its title): a knob always drawn, standing alone, so its press reaches 44 px both ways.
+ */
+function HeadAdd({ add, style, className }: { add: AddSpec; style: CSSProperties; className: string }) {
+  return (
+    <div style={style} className={className}>
+      <KnobButton icon={Plus} label={add.spoken ?? add.label} wide expanded={add.expanded} data-head-add="" onClick={(e) => add.onAdd(e.currentTarget)} />
+    </div>
+  );
+}
+
+/**
+ * The plus on the line between two heads that adds a new column (`axis` x, the line at the inline end of the head it stands with) or a
+ * new row (`axis` y, the line under it) exactly there (`add`). It takes no room: a zero-wide place at that edge holds a strip 16 px across
+ * straddling the gap between the heads, and the knob is drawn only while a fine pointer rests on that strip (app.css,
+ * `data-between-add`); the keyboard and touch reach the same through the head's menu ("הוספה לפני", "הוספה אחרי"). Under a figure's own
+ * box: a figure in a head beside it keeps its press.
+ */
+function BetweenAdd({ add, axis, style }: { add: AddSpec; axis: "x" | "y"; style: CSSProperties }) {
+  return (
+    <div style={style} className={cx("pointer-events-none relative", axis === "x" ? "w-0 justify-self-end" : "h-0 self-end")}>
+      <div data-between-add={axis} className={cx("absolute flex items-center justify-center", axis === "x" ? "inset-y-0 -end-3 w-4" : "inset-x-0 -bottom-[11px] h-4")}>
+        <KnobButton icon={Plus} label={add.spoken ?? add.label} tabIndex={-1} expanded={add.expanded} onClick={(e) => add.onAdd(e.currentTarget)} />
+      </div>
+    </div>
   );
 }
 
@@ -217,7 +247,7 @@ export interface CellExtras {
 function CellBin({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
     <span data-cell-bin-box="" className="absolute -top-2.5 end-2.5 h-5 w-5">
-      <RemoveButton knob label={label} onRemove={onRemove} />
+      <RemoveButton knob cell label={label} onRemove={onRemove} />
     </span>
   );
 }
@@ -265,6 +295,9 @@ const placeOf = (from: number, span: number, row: number) => ({ gridColumn: `${f
 /** The column whose grip lifted the thing carried now, by its place; -1 where none. */
 const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | null) => (carried === null ? -1 : heads.findIndex((h) => h.liftItem === carried));
 
+/** The places between `n` heads that take an insert: each `k` from 1 to `n - 1` (between head `k - 1` and head `k`) whose add is given. */
+const betweenOf = (n: number, insert: (k: number) => AddSpec | null) => Array.from({ length: Math.max(0, n - 1) }, (_, i) => ({ k: i + 1, add: insert(i + 1) })).filter((x): x is { k: number; add: AddSpec } => x.add !== null);
+
 /**
  * The plus under a row (or a table's last row) that adds a part to every case of it (`add`): a small knob like a cell's stretch knob, in the
  * middle of the row's foot, its words only spoken and in its title; drawn only while the pointer is over the row or the focus is in it
@@ -276,29 +309,19 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
   // reaches the next row's first line, a press on a figure there is still the figure's
   return (
     <div style={style} className="relative h-0 self-end">
-      <button
-        type="button"
-        tabIndex={-1}
-        data-row-add=""
-        aria-expanded={add.expanded}
-        aria-label={add.spoken}
-        title={add.spoken}
-        onClick={(e) => add.onAdd(e.currentTarget)}
-        className="tap-area absolute top-0 left-1/2 z-[1] flex h-4 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm border border-border bg-popover text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-      >
-        <Plus size={12} strokeWidth={2} aria-hidden />
-      </button>
+      <KnobButton icon={Plus} label={add.spoken ?? add.label} tabIndex={-1} expanded={add.expanded} data-row-add="" onClick={(e) => add.onAdd(e.currentTarget)} className="absolute top-0 left-1/2 z-[1] -translate-x-1/2 -translate-y-1/2" />
     </div>
   );
 }
 
 /**
  * A fee that changes by one thing, as a table: the cases as columns (`columns`, heads that open their case), the parts as rows (`rows`),
- * a merged cell where neighbours are equal, and at the end of the heads the pill that adds a case or a step (`add`). `ladder`: the thing is
+ * a merged cell where neighbours are equal, and at the end of the heads the plus knob that adds a case or a step (`add`); `insert`, the
+ * plus on the line between column `k - 1` and column `k` that adds one there (none where it gives nothing). `ladder`: the thing is
  * a range, its steps ascending, each head with the range's icon. `addPart`: the strip under its last row that adds a part row across every
  * column. `foot`: what stands under the table (the bin while something is lifted). Wider than its block, it scrolls inside itself.
  */
-export function CaseTable({ columns, rows, add, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
+export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
   const gapCol = carriedAt(columns, useCarried());
@@ -322,11 +345,8 @@ export function CaseTable({ columns, rows, add, addPart, ladder, foot, label }: 
               </div>
             );
           })}
-          {add && (
-            <div className="flex items-center" style={{ gridColumn: n + 2, gridRow: 1 }}>
-              <AddSlot add={add} shape="pill" />
-            </div>
-          )}
+          {add && <HeadAdd add={add} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex items-center px-1" />}
+          {insert && betweenOf(n, insert).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => (
           <div key={r.id} role="row" className="contents">
@@ -437,12 +457,13 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
  * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`);
  * one cell per case (equal neighbours one cell), a press anywhere on it opening it, a case on any value across spanning its row;
  * under a row's cells, its `lines`, one per part row, each a cell of the parts two or more of its cells hold alike over them; at the end of
- * the column heads the pill that adds a value across (`addColumn`), and under the row heads the pill that adds a value down (`addRow`).
+ * the column heads the plus knob that adds a value across (`addColumn`), and under the row heads the one that adds a value down (`addRow`);
+ * between two heads, the plus that adds one exactly there (`insertColumn`, `insertRow`).
  * A row's head is as tall as its cells and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
  * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each, and take the room for
  * it. `foot`: what stands under the grid. Wider than its block, it scrolls inside itself.
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
   const carried = useCarried();
@@ -469,11 +490,8 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
               </div>
             );
           })}
-          {addColumn && (
-            <div className="flex items-center" style={{ gridColumn: n + 2, gridRow: 1 }}>
-              <AddSlot add={addColumn} shape="pill" />
-            </div>
-          )}
+          {addColumn && <HeadAdd add={addColumn} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex items-center px-1" />}
+          {insertColumn && betweenOf(n, insertColumn).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => {
           const head = <HeadWords head={r.head} grip={r.grip} />;
@@ -500,7 +518,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                             <CellBody content={null} fill={cell.fill} lit />
                           </div>
                         ) : (
-                          <AddSlot add={add} shape="row" className={cx("h-full", cell.lit && LIT)} />
+                          <AddSlot add={add} className={cx("h-full", cell.lit && LIT)} />
                         )}
                       </span>
                     </div>
@@ -559,11 +577,13 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
             </div>
           );
         })}
-        {addRow && (
-          <div className="flex" style={{ gridColumn: 1, gridRow: lines + 2 }}>
-            <AddSlot add={addRow} shape="pill" />
-          </div>
-        )}
+        {addRow && <HeadAdd add={addRow} style={{ gridColumn: 1, gridRow: lines + 2 }} className="flex justify-center py-1" />}
+        {insertRow &&
+          betweenOf(rows.length, insertRow).map(({ k, add: a }) => {
+            // the line under row k - 1: the foot of its last part line
+            const last = start[k - 1]! + height[k - 1]!;
+            return <BetweenAdd key={`between:${k}`} add={a} axis="y" style={{ gridColumn: 1, gridRow: last + 1 }} />;
+          })}
       </div>
       {foot}
     </div>
