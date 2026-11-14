@@ -31,9 +31,19 @@ const sep = copy.cases.sep;
 /** A case's value for each thing in plain words, joined, for its spoken name and the toolbox's line ("בחו״ל, בארה״ב · מסלול 1"). */
 export const caseText = (when: readonly WhenWords[]): string => when.map(whenText).join(sep);
 
-/** A case's value for each thing as a band row says it: the person's track marked "שלכם", a range's step with the range's icon. */
-export const caseWords = (when: readonly WhenWords[], mine: boolean, things: readonly { kind: string }[]): CaseWord[] =>
-  when.map((w) => ({ text: <WhenText words={w} />, ...(w.any ? { any: true } : {}), ...(w.figure ? { range: true } : {}), ...(mine && things[w.thing]?.kind === "track" ? { mine: true } : {}) }));
+/** A ladder's step as plain words, its range: "עד 100,000 ₪", "100,000 עד 500,000 ₪", "מעל 500,000 ₪". */
+const stepText = (b: StepBounds): string =>
+  !b.from ? `${copy.cases.upTo}${numText(b.to!)}` : !b.to ? `${copy.cases.over}${numText(b.from)}` : `${fmt.number(b.from.value as number)}${copy.cases.stepBetween}${numText(b.to)}`;
+
+/**
+ * A case's value for each thing as a band row says it: the person's track marked "שלכם", a range's step with the range's icon, read as its
+ * range where its bounds are given (`bounds`, the case's `CaseRow.bounds`).
+ */
+export const caseWords = (when: readonly WhenWords[], mine: boolean, things: readonly { kind: string }[], bounds: readonly (StepBounds | null)[] = []): CaseWord[] =>
+  when.map((w) => {
+    const b = bounds[w.thing];
+    return { text: b ? <bdi>{stepText(b)}</bdi> : <WhenText words={w} />, ...(w.any ? { any: true } : {}), ...(w.figure ? { range: true } : {}), ...(mine && things[w.thing]?.kind === "track" ? { mine: true } : {}) };
+  });
 
 /**
  * A price's standing against the cap now, after its parts (a slim fee's, or a case's): the share of the cap or the standing's tag; a tag
@@ -99,12 +109,12 @@ function Joined({ parts, bare }: { parts: readonly SlimPart[]; bare?: boolean })
 /** The room a table or a grid needs, in px: a head column, each case's or value's, and the add column; less than that reads as rows. */
 function fits(layout: FeeLayout, width: number): boolean {
   if (layout.shape === "table") return layout.fit === "columns" && width >= 96 + layout.columns.length * (layout.ladder ? STEP_COLUMN : 128) + 120;
-  if (layout.shape === "grid") return width >= 112 + layout.columns.length * (layout.across.range ? STEP_COLUMN : 140) + 112;
+  if (layout.shape === "grid") return width >= 152 + layout.columns.length * (layout.across.range ? STEP_COLUMN : 136) + 104;
   return false;
 }
 
 /** A ladder's column, in px: room for its head on one line, "100,000 עד" and its top's box (`CaseTable`'s and `CaseGrid`'s `steps`). */
-const STEP_COLUMN = 200;
+const STEP_COLUMN = 184;
 
 /** The question of an add slot open: the thing it adds a value of, and whether it adds a step. */
 type Asking = { thing: number; range: boolean } | null;
@@ -321,7 +331,7 @@ export function FeeCases({
             {row.cells.map((cell) => {
               if (cell.case) {
                 const r = byCase.get(cell.case)!;
-                return <div key={cell.case}>{bandRow(r, caseWords([r.when[1]!], r.mine, band.things))}</div>;
+                return <div key={cell.case}>{bandRow(r, caseWords([r.when[1]!], r.mine, band.things, r.bounds))}</div>;
               }
               const col = g.columns[cell.from]!;
               const from = row.cells.find((x) => x.case)?.case ?? row.cases[0]!;
@@ -348,7 +358,7 @@ export function FeeCases({
         {layout.shared.length > 0 && <div className="px-3 pt-1">{sharedLines(layout.shared)}</div>}
         {order.map((id) => {
           const r = byCase.get(id)!;
-          return <div key={id}>{bandRow(r, caseWords(r.when, r.mine, band.things))}</div>;
+          return <div key={id}>{bandRow(r, caseWords(r.when, r.mine, band.things, r.bounds))}</div>;
         })}
         <div className="px-3 pt-1 pb-1">
           <AddSlot shape="row" add={add} />
@@ -403,13 +413,14 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
         <FigureField
           value={bounds.to}
           label={c.stepTop}
-          unit={sign}
+          unit=""
           sign={sign}
           tight
           validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
           onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
         />
       </span>
+      <span>{sign}</span>
     </div>
   );
 }

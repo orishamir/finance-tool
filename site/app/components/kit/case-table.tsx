@@ -101,7 +101,7 @@ export interface CaseTableRow {
 export function CaseTable({ columns, rows, add, ladder }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; ladder?: boolean }) {
   const n = columns.length;
   // a ladder's head holds a step's two bounds and its top's box on one line
-  const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "12rem" : "7.5rem"}, 1fr))${add ? " 7rem" : ""}`;
+  const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " 7rem" : ""}`;
   return (
     <div data-case-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto p-0.5" style={{ gridTemplateColumns: template }}>
       <span aria-hidden />
@@ -187,7 +187,8 @@ function HeadWords({ head, shared, end }: { head: ReactNode; shared?: ReactNode;
  */
 export function CaseGrid({ columns, rows, addRow, addColumn, above, steps }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[] })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean }) {
   const n = columns.length;
-  const template = `minmax(6rem, max-content) repeat(${n}, minmax(${steps ? "12rem" : "8rem"}, 1fr))${addColumn ? " 6.5rem" : ""}`;
+  // a row's head wraps past 9 rem, so the values across keep their room
+  const template = `minmax(6rem, 9rem) repeat(${n}, minmax(${steps ? "11rem" : "8rem"}, 1fr))${addColumn ? " 6rem" : ""}`;
   return (
     <div className="flex flex-col gap-2">
       {above}
