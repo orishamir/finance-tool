@@ -77,23 +77,35 @@ export type TrackReading =
   | { name: string; reading: "unsettled"; mayBe: FundOutsideCircular; openQuestion: string }
   | { name: string; reading: "company-closed"; rules: readonly string[] };
 
-/** The columns of a regulator row that say whether it is a general track. */
+/** What a refresh knows of a regulator row to say which family it is in: its columns, and the fund it belongs to. */
 export interface TrackRow {
+  fundId: number;
   name: string;
   classification: string;
   specialization: string;
+  /**
+   * The track's parent fund as Gemel-Net's monthly XML gives it (`MISPAR_KUPA_AV`, `fetchParentFunds`): null for a track that is its own
+   * fund (the XML's 0), and where the refresh read no parents.
+   */
+  parentFund: number | null;
 }
+
+/** The fund a track belongs to: its parent fund, or the track itself where it is its own fund. */
+export const fundOf = (row: TrackRow): number => row.parentFund ?? row.fundId;
 
 /**
  * A family of tracks every member of which needs a reading before a refresh keeps or drops it: the rows it holds, and what a reading of a
- * member must settle. The general tracks (CAT-19 may close them) and the guaranteed-yield tracks (their companies close them, CAT-55) are
- * the two.
+ * member must settle. The general tracks (CAT-19 may close them) and the tracks of the guaranteed-yield funds (their companies close the
+ * guaranteed ones, CAT-55, and a general one may be outside the circular with its fund, CAT-53) are the two.
  */
 export interface TrackFamily {
   id: "general" | "guaranteed-yield";
-  holds: (row: TrackRow) => boolean;
+  /** Whether the family holds `row`, every row of the file beside it. */
+  holds: (row: TrackRow, rows: readonly TrackRow[]) => boolean;
   /** What the refresh asks of a member with no reading. */
   ask: string;
+  /** The family is known by parent fund, so a refresh reads each track's parent (`fetchParentFunds`) before it checks the family. */
+  byParentFund?: boolean;
 }
 
 /** A dataset's track readings: the families whose every track needs a reading, and the reading of each track read, by fund id. */
@@ -103,10 +115,50 @@ export interface TrackReadings {
 }
 
 /** What a refresh reports of a track of a family that has no reading, or null where it has one or is in no such family. */
-export function unreadTrack(readings: TrackReadings, fundId: number, row: TrackRow): string | null {
-  if (readings.readings.has(fundId)) return null;
-  const family = readings.families.find((f) => f.holds(row));
-  return family ? `fund ${fundId}: "${row.name}" is a ${family.id} track with no reading in TRACK_READINGS; ${family.ask}` : null;
+export function unreadTrack(readings: TrackReadings, row: TrackRow, rows: readonly TrackRow[] = [row]): string | null {
+  if (readings.readings.has(row.fundId)) return null;
+  const family = readings.families.find((f) => f.holds(row, rows));
+  return family ? `fund ${row.fundId}: "${row.name}" is a ${family.id} track with no reading in TRACK_READINGS; ${family.ask}` : null;
+}
+
+/** What a refresh reports of every track of the file that a family holds and no reading covers (`unreadTrack`). */
+export const unreadTracks = (readings: TrackReadings, rows: readonly TrackRow[]): string[] =>
+  rows.flatMap((row) => {
+    const said = unreadTrack(readings, row, rows);
+    return said ? [said] : [];
+  });
+
+/** Whether a dataset's families need each track's parent fund (`TrackFamily.byParentFund`). */
+export const readsParentFunds = (dataset: CmaDataset): boolean => TRACK_READINGS[dataset].families.some((f) => f.byParentFund);
+
+/** Gemel-Net's monthly XML for the tracks `ids` in the report period `period` (YYYYMM): it gives each track's parent fund. */
+export const parentFundsUrl = (period: string, ids: readonly number[]): string =>
+  `https://gemelnet.cma.gov.il/tsuot/ui/tsuotHodXML.aspx?miTkfDivuach=${period}&adTkfDivuach=${period}&kupot=${ids.join(",")}&Dochot=1&sug=1`;
+
+/** Each track's parent fund in a Gemel-Net monthly XML (`<ID>`, `<MISPAR_KUPA_AV>`): null for a track that is its own fund (0). */
+export function parseParentFunds(xml: string): Map<number, number | null> {
+  const parents = new Map<number, number | null>();
+  for (const [, row] of xml.matchAll(/<Row>([\s\S]*?)<\/Row>/g)) {
+    const id = /<ID>\s*(\d+)\s*<\/ID>/.exec(row!)?.[1];
+    const parent = /<MISPAR_KUPA_AV>\s*(\d+)\s*<\/MISPAR_KUPA_AV>/.exec(row!)?.[1];
+    if (id === undefined || parent === undefined) continue;
+    parents.set(Number(id), Number(parent) === 0 ? null : Number(parent));
+  }
+  return parents;
+}
+
+/** Tracks a request to Gemel-Net's XML names at a time: the library read the month's 764 in 13 parts. */
+const PARENT_FUNDS_CHUNK = 60;
+
+/** Reads the parent fund of each of the tracks `ids` in `period` from Gemel-Net's monthly XML; a track the XML does not return is absent. */
+export async function fetchParentFunds(period: string, ids: readonly number[]): Promise<Map<number, number | null>> {
+  const parents = new Map<number, number | null>();
+  for (let i = 0; i < ids.length; i += PARENT_FUNDS_CHUNK) {
+    const res = await fetch(parentFundsUrl(period, ids.slice(i, i + PARENT_FUNDS_CHUNK)), { headers: { "User-Agent": USER_AGENT, Accept: "text/xml,*/*" }, redirect: "follow" });
+    if (!res.ok) throw new Error(`gemelnet parent funds: HTTP ${res.status}`);
+    for (const [id, parent] of parseParentFunds(await res.text())) parents.set(id, parent);
+  }
+  return parents;
 }
 
 const closed = (name: string, rules: readonly string[]): TrackReading => ({ name, reading: "closed", rules });
@@ -135,6 +187,17 @@ export const endsInGeneral = (name: string): boolean => /(?:^|[\s\-])כללי\s*
 /** Gemel-Net's specialization for a guaranteed-yield track ("מבטיח תשואה"). */
 export const GUARANTEED_YIELD_SPECIALIZATION = "מבטיח תשואה";
 
+/** A guaranteed-yield track: Gemel-Net's specialization "מבטיח תשואה". */
+const isGuaranteedYield = (row: TrackRow): boolean => row.specialization.trim() === GUARANTEED_YIELD_SPECIALIZATION;
+
+/**
+ * A track of a guaranteed-yield fund: a guaranteed-yield track, or any track of the fund one belongs to by its parent fund (CAT-53: 119 is
+ * the parent of 530 to 532, 120 of 529 and 923). Where the refresh read no parents, each track is its own fund, so only the guaranteed
+ * tracks themselves are held.
+ */
+const inGuaranteedYieldFund = (row: TrackRow, rows: readonly TrackRow[]): boolean =>
+  isGuaranteedYield(row) || rows.some((other) => isGuaranteedYield(other) && fundOf(other) === fundOf(row));
+
 const ASK_CIRCULAR = "say whether CAT-19 closes it to joiners";
 const ASK_COMPANY = "say whether its company's own terms close it to new members, as CAT-55 reads the nine known";
 
@@ -144,8 +207,9 @@ const ASK_COMPANY = "say whether its company's own terms close it to new members
  *   itself, since an age or specialised track can carry the word, and each listed one was checked to be a general track in the circular's
  *   sense. In Gemel-Net the circular's general tracks are those of provident funds for annuity: classification "תגמולים ואישית לפיצויים",
  *   specialization "כללי"; the study funds and the provident funds for investing it does not cover.
- * - Gemel-Net's guaranteed-yield tracks, specialization "מבטיח תשואה", which their companies close (CAT-55).
- * A refresh reports a track of a family with no reading (`unreadTrack`), so none is dropped or kept without one. `closedTrack` leaves out
+ * - the tracks of Gemel-Net's guaranteed-yield funds: the guaranteed-yield tracks, specialization "מבטיח תשואה", which their companies
+ *   close (CAT-55), and every other track of a fund one of them belongs to by its parent fund (CAT-53), in any classification.
+ * A refresh reports a track of a family with no reading (`unreadTracks`), so none is dropped or kept without one. `closedTrack` leaves out
  * the circular's closed ones; an unsettled one stays until it is read; a company-closed one stays in the data with its reading
  * (`closedToJoiners`).
  */
@@ -166,7 +230,7 @@ export const TRACK_READINGS: Readonly<Record<CmaDataset, TrackReadings>> = {
   gemelnet: {
     families: [
       { id: "general", holds: (r) => r.classification.trim() === GEMEL_ANNUITY_CLASSIFICATION && r.specialization.trim() === "כללי", ask: ASK_CIRCULAR },
-      { id: "guaranteed-yield", holds: (r) => r.specialization.trim() === GUARANTEED_YIELD_SPECIALIZATION, ask: ASK_COMPANY },
+      { id: "guaranteed-yield", holds: inGuaranteedYieldFund, ask: ASK_COMPANY, byParentFund: true },
     ],
     readings: new Map([
       // the general track of a guaranteed-yield fund the fee regulations name: Gemel-Net puts 119 in the fund of 530 to 532 ("מנורה
@@ -389,6 +453,8 @@ export interface NormaliseContext {
   sha256: string;
   /** Value of the HTTP Last-Modified header as ISO 8601, when the server sent one. */
   lastModified?: string | null;
+  /** Each track's parent fund (`fetchParentFunds`), for a family known by parent fund; absent, every track is its own fund. */
+  parents?: ReadonlyMap<number, number | null>;
 }
 
 export interface NormaliseResult {
@@ -636,6 +702,19 @@ export function inceptionDate(raw: string): string | null | undefined {
   return m ? m[1]! : undefined;
 }
 
+/** The latest REPORT_PERIOD of a regulator CSV (YYYYMM) and the FUND_IDs of its rows, for what a refresh reads beside it; null where unreadable. */
+export function latestFundIds(csvText: string): { period: string; ids: number[] } | null {
+  const [header = [], ...body] = parseCsv(csvText);
+  const at = (name: string) => header.indexOf(name);
+  const [period, id] = [at("REPORT_PERIOD"), at("FUND_ID")];
+  if (period < 0 || id < 0) return null;
+  const periods = body.map((r) => (r[period] ?? "").trim()).filter((p) => /^\d{6}$/.test(p));
+  if (periods.length === 0) return null;
+  const latest = periods.reduce((a, b) => (a > b ? a : b));
+  const ids = body.filter((r) => (r[period] ?? "").trim() === latest).map((r) => Number((r[id] ?? "").trim())).filter((n) => Number.isInteger(n) && n > 0);
+  return { period: latest, ids: [...new Set(ids)] };
+}
+
 export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResult {
   const problems: string[] = [];
   const table = parseCsv(csvText);
@@ -671,14 +750,15 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
 
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
+  const trackRows: TrackRow[] = [];
   for (const r of rows) {
     if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"), ctx.config.dataset, Number(get(r, "FUND_ID").trim()))) continue;
     // a Halacha or Sharia track: the regulator classes it "הלכתי" in gemelnet; pensia-net has no classification, so its name says it
     if (isReligiousLaw(get(r, "FUND_NAME"), get(r, "SPECIALIZATION"), get(r, "SUB_SPECIALIZATION"))) continue;
     const population = get(r, "TARGET_POPULATION").trim();
     if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
-    const unread = unreadTrack(TRACK_READINGS[ctx.config.dataset], Number(get(r, "FUND_ID").trim()), { name: get(r, "FUND_NAME"), classification: get(r, "FUND_CLASSIFICATION"), specialization: get(r, "SPECIALIZATION") });
-    if (unread) problems.push(unread);
+    const fundId = Number(get(r, "FUND_ID").trim());
+    trackRows.push({ fundId, name: get(r, "FUND_NAME"), classification: get(r, "FUND_CLASSIFICATION"), specialization: get(r, "SPECIALIZATION"), parentFund: ctx.parents?.get(fundId) ?? null });
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);
@@ -716,6 +796,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
       fees: null as unknown as CmaFund["fees"], // filled below, once the file-level fields exist
     });
   }
+  problems.push(...unreadTracks(TRACK_READINGS[ctx.config.dataset], trackRows));
   funds.sort((a, b) => a.fund_id - b.fund_id);
 
   const { config } = ctx;
@@ -931,6 +1012,8 @@ export interface RefreshOptions {
   force: boolean;
   datasets?: DatasetConfig[];
   fetchRaw?: (c: DatasetConfig) => Promise<Downloaded>;
+  /** Reads each track's parent fund for a dataset whose families need it (`readsParentFunds`); default `fetchParentFunds`. */
+  fetchParents?: (period: string, ids: readonly number[]) => Promise<ReadonlyMap<number, number | null>>;
   archiveRaw?: Archive;
   log?: (line: string) => void;
 }
@@ -965,9 +1048,23 @@ export async function refreshCma(opts: RefreshOptions): Promise<DatasetReport[]>
       const dl = await (opts.fetchRaw ?? fetchRaw)(config);
       const sha = sha256Hex(dl.bytes);
       const text = decodeWindows1255(dl.bytes);
-      const res = normalise(text, { config, runDate: opts.runDate, sha256: sha, lastModified: dl.lastModified });
+      // A family known by parent fund (the guaranteed-yield funds) is checked only once each track's parent is read; a parent not read is
+      // a reason, so no track of such a fund is kept without a reading unseen.
+      const parentProblems: string[] = [];
+      let parents: ReadonlyMap<number, number | null> | undefined;
+      const latest = readsParentFunds(config.dataset) ? latestFundIds(text) : null;
+      if (latest) {
+        try {
+          parents = await (opts.fetchParents ?? fetchParentFunds)(latest.period, latest.ids);
+          const missing = latest.ids.filter((id) => !parents!.has(id));
+          if (missing.length > 0) parentProblems.push(`Gemel-Net's XML gave no parent fund for ${missing.length} track(s) (${missing.slice(0, 10).join(", ")}): each is read as its own fund for the guaranteed-yield family`);
+        } catch (e) {
+          parentProblems.push(`parent funds not read (${(e as Error).message}): the guaranteed-yield family holds only the tracks whose specialization says so`);
+        }
+      }
+      const res = normalise(text, { config, runDate: opts.runDate, sha256: sha, lastModified: dl.lastModified, ...(parents ? { parents } : {}) });
       report.period = res.period ? periodDashed(res.period) : null;
-      const reasons = [...res.problems];
+      const reasons = [...parentProblems, ...res.problems];
       let previous: CmaPeriodFile | null = null;
       if (res.file) {
         previous = currentBaseline(cmaDir, config.dataset, res.file.report_period);

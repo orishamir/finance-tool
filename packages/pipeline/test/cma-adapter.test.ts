@@ -30,6 +30,10 @@ import {
   feeYear,
   renormaliseFees,
   parseCsv,
+  parentFundsUrl,
+  parseParentFunds,
+  readsParentFunds,
+  unreadTrack,
   refreshCma,
   releaseTag,
   sanityCheck,
@@ -292,6 +296,42 @@ describe("normalise", () => {
     expect(said).toContain("fund 99996");
     // a track read on its company's terms (CAT-55) is kept without a report
     expect(said).not.toContain("fund 530");
+  });
+
+  it("reports a track of a guaranteed-yield fund with no reading by its parent fund, whatever its specialization (CAT-53)", () => {
+    const head = "FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,TARGET_POPULATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n";
+    const row = (id: number, name: string, classification: string, spec: string) =>
+      `"${id}","${name}","${classification}","בקרה","מנהלת","202609","2015-12-31T00:00:00","כלל האוכלוסיה","${spec}","${spec}","0.5","0.1","512065202"\n`;
+    // a new equity track whose parent is 119, the fund of the guaranteed tracks 530 to 532, in a study fund's classification; 119 itself is
+    // read (CAT-OQ36), and an equity track of another fund is in no family
+    const csv =
+      head +
+      row(119, "מנורה מבטחים יותר מסלול ד'", "תגמולים ואישית לפיצויים", "כללי") +
+      row(530, "מנורה מבטחים יותר מסלול א'", "תגמולים ואישית לפיצויים", "מבטיח תשואה") +
+      row(99995, "מנורה מבטחים יותר מסלול מניות", "קרנות השתלמות", "מניות") +
+      row(99994, "גמל אחרת מניות", "תגמולים ואישית לפיצויים", "מניות");
+    const parents = new Map<number, number | null>([[119, null], [530, 119], [99995, 119], [99994, null]]);
+    const said = normalise(csv, { ...ctx, parents }).problems.join(" ");
+    expect(said).toContain('fund 99995: "מנורה מבטחים יותר מסלול מניות" is a guaranteed-yield track with no reading in TRACK_READINGS');
+    for (const id of [119, 530, 99994]) expect(said).not.toContain(`fund ${id}:`);
+    // with no parents read every track is its own fund, so only a guaranteed-yield specialization is held
+    expect(normalise(csv, ctx).problems.join(" ")).not.toContain("fund 99995");
+    expect(unreadTrack(TRACK_READINGS.gemelnet, { fundId: 99995, name: "x", classification: "קרנות השתלמות", specialization: "מניות", parentFund: 120 }, [{ fundId: 529, name: "y", classification: "", specialization: "מבטיח תשואה", parentFund: 120 }])).toContain("guaranteed-yield");
+  });
+
+  it("reads each track's parent fund from Gemel-Net's XML, a fund of its own as null, and a refresh that cannot read them says so", async () => {
+    const xml = "<ROWSET><Row><ID>119</ID><SHM_KUPA>א</SHM_KUPA><MISPAR_KUPA_AV>0</MISPAR_KUPA_AV></Row><Row>\n <ID>530</ID>\n <MISPAR_KUPA_AV>119</MISPAR_KUPA_AV>\n</Row></ROWSET>";
+    expect(parseParentFunds(xml)).toEqual(new Map([[119, null], [530, 119]]));
+    expect(parentFundsUrl("202609", [119, 530])).toBe("https://gemelnet.cma.gov.il/tsuot/ui/tsuotHodXML.aspx?miTkfDivuach=202609&adTkfDivuach=202609&kupot=119,530&Dochot=1&sug=1");
+    expect(readsParentFunds("gemelnet")).toBe(true);
+    expect(readsParentFunds("pensia-net")).toBe(false);
+    const dataDir = mkdtempSync(join(tmpdir(), "cma-parents-"));
+    const base = { dataDir, runDate: "2026-10-23", dryRun: true, archive: false, force: false, datasets: [gemel], fetchRaw: async (): Promise<Downloaded> => ({ bytes: fixture, lastModified: null }), log: () => {} };
+    const failed = await refreshCma({ ...base, fetchParents: async () => { throw new Error("HTTP 403"); } });
+    expect(failed[0]!.status).toBe("sanity-failed");
+    expect(failed[0]!.reasons.join(" ")).toContain("parent funds not read (HTTP 403)");
+    const partial = await refreshCma({ ...base, fetchParents: async () => new Map() });
+    expect(partial[0]!.reasons.join(" ")).toContain("gave no parent fund");
   });
 
   it("reports a Pension-Net name ending in כללי with no reading, so it is not dropped or kept silently", () => {
@@ -619,6 +659,8 @@ describe("refreshCma end to end with an injected download", () => {
         force: false,
         datasets: [gemel],
         fetchRaw: async (c): Promise<Downloaded> => ({ bytes: csvFor(c), lastModified: "2026-10-23T04:00:20Z" }),
+        // every track its own fund, as Gemel-Net's XML gives the fixture's tracks
+        fetchParents: async (_period, ids) => new Map(ids.map((id) => [id, null])),
         archiveRaw: ({ tag, assetName }) => (uploads.push({ tag, assetName }), "uploaded"),
         log: () => {},
         ...over,
