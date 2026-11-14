@@ -4,20 +4,15 @@
 // state. Pure: no storage; the bundle is fetched once.
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { flags as flagCopy, formulaNames } from "../copy";
+import { formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
 
-// Names the number sheet shows for the formulas and gaps of this release (copy.md 3.8 style: the code stays beside the words).
+// Names the number sheet shows for the formulas of this release (copy.md 3.8 style: the code stays beside the words).
 Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
-Object.assign(flagCopy, {
-  "G-18": "קרן זרה שאינה מחלקת: רשות המסים לא אישרה שהיא ממוסה רק במכירה. האתר מחשב לפי מקור משני ולא מדרג.",
-  "G-29": "לקרנות זרות הנסחרות בחו״ל אין רשימה מלאה: האתר משווה את אלה שאסף אחת־אחת, והשאר הן שורה אחת.",
-  "F-18": "העמלה על חלוקת רווחים עוד לא מחושבת, ולכן התוצאה חלקית.",
-});
 
 // ---------------------------------------------------------------- the data (providers.server.ts)
 

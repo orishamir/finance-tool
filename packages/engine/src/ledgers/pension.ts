@@ -337,6 +337,8 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   let depositTax = 0;
   // F-119: the brackets of each year the excess is paid in
   for (const [y, x] of perYear) depositTax += deductionValue(book.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
+  // G-23: that tax is at the brackets, which leave out the person's credit points
+  if (depositTax > 0) tally.flag("G-23");
 
   const exit = blockedWrapperExit("F-49", out.balance);
   if (exit.gap) tally.flag(exit.gap);

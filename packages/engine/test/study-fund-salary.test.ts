@@ -114,6 +114,16 @@ describe("limitStanding (F-97)", () => {
     expect(s.over[1]).toBeCloseTo(1_350 - 0.075 * 15_712, 6);
     expect(s.room).toEqual([0, 0]);
     expect(s.firstOverYear).toBe(1);
+    // an employee's month at today's amounts holds no tax: no G-23 on it
+    expect(s.flags).toEqual([]);
+  });
+  it("flags the employer's money above the limit, taxed at the brackets when paid, even where the run owes nothing at its exit (F-52, G-23)", () => {
+    // 1,350 a month from the employer on 18,000, returns at inflation: no real gain above the limit, so no tax at the exit
+    const r = runProvident({ ...months(18_000, 1_350, "employer"), market: { grossReturn: 0.02, inflation: 0.02 } }, ctx);
+    expect(r.taxAtExit).toBeCloseTo(0, 6);
+    expect(r.taxDuring).toBe(0);
+    expect(r.detail.employerDepositTax).toBeGreaterThan(0);
+    expect(r.flags.map((f) => f.code)).toContain("G-23");
   });
   it("finds the year the deposits pass a ceiling that does not move: 14,000 at 2% in the sixth year", () => {
     const s = limitStanding([runProvident(months(14_000, 350), ctx), runProvident(months(14_000, 1_050, "employer"), ctx)]);

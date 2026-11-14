@@ -477,6 +477,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     if (Number.isFinite(benefitedYearly)) {
       detail.excessYear = Math.max(0, fullYearGross - benefitedYearly);
       detail.roomYear = Math.max(0, benefitedYearly - fullYearGross);
+      // the whole year's tax back at the brackets inside both (G-23 on them, `limitStanding`)
+      detail.fullYearRelief = fullYearGross - fullYearNet;
     } else if (split === undefined) detail.roomMonthly = Math.max(0, benefitedMonthly - goal.monthly);
   }
 
@@ -492,6 +494,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       employerPaidToday += (paid * employerExcessTodayByYear.get(y)!) / x;
     }
     book.cite("TXH-03");
+    // G-23: that tax is at the brackets, which leave out the person's credit points, whether or not the run owes tax at its exit
+    if (employerDepositTax > 0) tally.flag("G-23");
     detail.employerDepositTax = employerDepositTax;
     detail.employerSocial = employerSocial;
     detail.employerPaidToday = employerPaidToday;

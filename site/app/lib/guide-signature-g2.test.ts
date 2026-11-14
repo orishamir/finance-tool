@@ -140,6 +140,9 @@ describe("study fund", () => {
     expect(st.per).toBe("year");
     expect(st.over[0]).toBe(0);
     expect(st.room[0]).toBeCloseTo(946, 6);
+    // the room holds the 1,620 back, valued at the brackets without credit points: the figure carries G-23; an employee's month holds none
+    expect(st.flags).toEqual(["G-23"]);
+    expect(studyStanding(d, employee, studyYears(d, employee, 12))!.flags).toEqual([]);
   });
   it("has no tax after the lock on an own deposit above the limit that earned less than prices rose", () => {
     const low = { ...employee, income: 10000, ownMonthly: 500, employerMonthly: 500, returnPct: 1 };
