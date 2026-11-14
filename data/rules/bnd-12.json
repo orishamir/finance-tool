@@ -1,0 +1,40 @@
+{
+  "id": "BND-12",
+  "title": "Renewing short paper against locking a long bond; a ladder",
+  "strength": "primary",
+  "dimensions": [
+    "rate-sensitivity",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf#page=44",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
+      "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
+      "publisher": "gov.il",
+      "publisher_he": "החשב הכללי, משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.44",
+      "locator_he": "עמוד 44",
+      "page": 44,
+      "quote": "עקום פירעונות מדורג",
+      "checked": "2026-10-31",
+      "qualifier": "(library copy)"
+    },
+    {
+      "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
+      "title": "Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
+      "publisher": "getsmarteraboutmoney.ca",
+      "kind": "other",
+      "strength": "primary",
+      "quote": "Laddering can help reduce the risk that all your bonds will mature at a time when interest rates are low.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism)"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "BND-08",
+  "title": "Reinvestment risk: money coming back is reinvested at the rates of its day",
+  "strength": "primary",
+  "dimensions": [
+    "rate-sensitivity"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
+      "title": "Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)",
+      "publisher": "getsmarteraboutmoney.ca",
+      "kind": "other",
+      "strength": "primary",
+      "quote": "However, if you reinvest that money, you’ll make less interest on it.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism)"
+    }
+  ],
+  "derived_from": [
+    "MF-41"
+  ]
+}

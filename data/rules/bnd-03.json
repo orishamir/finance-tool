@@ -1,0 +1,40 @@
+{
+  "id": "BND-03",
+  "title": "Yield to maturity (תשואה לפדיון): one yearly rate from the price, and what it assumes",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "rate-sensitivity"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
+      "title": "Bonds (Moneysmart, Australian Securities and Investments Commission)",
+      "publisher": "moneysmart.gov.au",
+      "kind": "other",
+      "strength": "primary",
+      "quote": "It assumes that you reinvest coupon payments in the bond at the same interest rate the bond is earning.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign regulator, general mechanism)"
+    },
+    {
+      "url": "https://www.ecb.europa.eu/stats/financial_markets_and_interest_rates/euro_area_yield_curves/html/index.en.html",
+      "title": "Euro area yield curves (European Central Bank)",
+      "publisher": "ecb.europa.eu",
+      "kind": "other",
+      "strength": "primary",
+      "quote": "The zero coupon curve represents the yield to maturity of hypothetical zero coupon bonds, since they are not directly observable in the market for a wide range of maturities.",
+      "checked": "2026-11-15",
+      "qualifier": "(foreign central bank)"
+    }
+  ],
+  "derived_from": [
+    "GOV-03",
+    "GOV-06",
+    "GOV-22"
+  ]
+}
