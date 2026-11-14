@@ -2,7 +2,7 @@
   "id": "TXG-09",
   "title": "Surtax (מס נוסף, \"מס יסף\"), base 3%",
   "title_he": "מס נוסף (מס יסף) על הכנסה מעל הסף",
-  "text_he": "יחיד שהכנסתו החייבת בשנת המס עולה על הסף משלם מס נוסף בשיעור המס הנוסף על החלק שמעל הסף; 'הכנסה חייבת' לעניין זה לא כוללת סכום אינפלציוני וכוללת שבח. המס הנוסף חל גם על הכנסה שממוסה בשיעורים מוגבלים, כמו הכנסות משוק ההון, ועל הכנסה בשיעור סופי. המעסיק מנכה אותו במקור משכר מעל הסף החודשי המקביל. הפקודה נוקבת בסכום בסיס לסף ומעדכנת אותו לפי המדד, והעדכון מוקפא בשנים 2025 עד 2027; הסף לשנה הנוכחית הוא זה שבחוברת הניכויים של רשות המסים.",
+  "text_he": "יחיד שהכנסתו החייבת בשנת המס עולה על הסף משלם מס נוסף בשיעור המס הנוסף על החלק שמעל הסף; 'הכנסה חייבת' לעניין זה לא כוללת סכום אינפלציוני וכוללת שבח. המס הנוסף חל גם על הכנסה שממוסה בשיעורים מוגבלים, כמו הכנסות משוק ההון, ועל הכנסה בשיעור סופי. המעסיק מנכה אותו במקור משכר מעל הסף החודשי המקביל. הפקודה נוקבת בסכום בסיס לסף ומעדכנת אותו בכל 1 בינואר לפי עליית מדד המחירים לצרכן בשנה הקודמת. העדכון מוקפא בשנים 2025 עד 2027. ב־1 בינואר 2028 הסף יתעדכן רק לפי עליית המדד ב־2027, ומשם שוב כל שנה; עליית המדד ב־2024 עד 2026 לא תיכלל בו. אותו עדכון חל על מדרגות המס, גם המדרגות המופחתות למי שמלאו לו 60, ועל הסכומים של קרן השתלמות לעצמאים. הסף לשנה הנוכחית הוא זה שבחוברת הניכויים של רשות המסים.",
   "figure_names_he": {
     "rate": "שיעור המס הנוסף",
     "threshold": "סף ההכנסה החייבת השנתית למס הנוסף"
@@ -55,13 +55,54 @@
         "TXG-06"
       ],
       "state": "sourced",
-      "notes": "NIS per year (= 60,130 NIS per month, the employer withholding threshold on salary). Valid 2024 to 2027 (frozen, TXG-06); indexed from 2028. Ordinance s.121B(a) editorial note: 'בשנים 2024–2027, 721,560 ש״ח'."
+      "notes": "NIS per year (= 60,130 NIS per month, the employer withholding threshold on salary). Valid 2024 to 2027 (frozen, TXG-06). From 1.1.2028 the unrounded 1.1.2024 amount is indexed by the CPI rise of 2027 only, then yearly by the previous year's rise (s.120ב(ה)(2), s.120ב(א); the bill's explanatory notes); the formula and its open points are in TXG-09 and TXG OQ16."
     }
   },
   "il_finance_file": "tax-general.md",
   "checked": "2026-10-25",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=15",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.15, s.1, definition מדד",
+      "locator_he": "עמוד 15, סעיף 1, הגדרת מדד",
+      "page": 15,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=201",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.201, s.120ב(ד)",
+      "locator_he": "עמוד 201, סעיף 120ב(ד)",
+      "page": 201,
+      "quote": "שר האוצר רשאי לקבוע כללים לעיגול סכומים שתואמו לפי סעיף זה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2024.pdf#page=3",
+      "title": "לוח ניכויים חודשי 2024",
+      "title_he": "לוח ניכויים חודשי 2024",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "בשיעור עליית המדד 3.34%",
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Deductions booklet 2026",
@@ -115,6 +156,34 @@
       "locator_he": "עמוד 200, סעיף 120א, סעיף 120ב(א)",
       "page": 200,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_ls1_5122141.pdf#page=3",
+      "title": "הצעת חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, הצעות חוק הממשלה 1799",
+      "title_he": "הצעת חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, הצעות חוק הממשלה 1799",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "file p.3",
+      "locator_he": "עמוד הקובץ 3",
+      "page": 3,
+      "quote": "כלומר גם הסכומים בשנת 2028 ואילך לא יכללו את השינוי במדד בשנות 2024 עד 2026",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf#page=1",
+      "title": "ספר החוקים 3342",
+      "title_he": "ספר החוקים 3342",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1 (gazette p.150), s.1(1), s.120ב(ה)(1)-(2)",
+      "locator_he": "עמוד 1 (עמוד ספר החוקים 150), סעיף 1(1), סעיף 120ב(ה)(1)-(2)",
+      "page": 1,
+      "quote": "טרם עיגולם לפי סעיף קטן (ד)",
+      "checked": "2026-11-14"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",

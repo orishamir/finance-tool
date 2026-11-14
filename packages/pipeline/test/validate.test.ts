@@ -452,8 +452,11 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // in the 2016 tender (CS OQ18); BANK OQ7, KGL OQ12 and BRK OQ2 deleted, bills that lapsed with the 25th Knesset; later that day
     // three more from the combinations sweep, the Commissioner's approved fee variables (PF OQ19), what reg. 7 lets an IRA fund be
     // charged (IRA OQ17) and the non-bank fund trade lines on money-market units (MF OQ23), and PEN OQ28 deleted, the 2013
-    // insurance-cover regulations now read in the gazette (PEN-15)
-    expect(items.length).toBe(426);
+    // insurance-cover regulations now read in the gazette (PEN-15); later still, from the tax-questions pass, three more and one answered:
+    // whether an unused s.45A credit is lost, refunded or carried (TXP OQ20), whether the 2003 regulations on a foreign-investment
+    // fund's index still operate (TXS OQ26) and what keeps the 2028 indexation from being exact (TXG OQ16); TXG OQ8 deleted, the
+    // bill's explanatory notes say the 2028 indexation adds only the 2027 CPI rise (TXG-06)
+    expect(items.length).toBe(428);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
