@@ -339,8 +339,8 @@ describe("S40 wrapper mode: the founder's apartment case (F-83, F-80)", () => {
     g.value("paid in by the compared money", byId(set, "makam").run!.paidIn, x.s40.paid);
     g.done();
     expect(ranking.entries.map((e) => e.id)).toEqual([
-      "makam",
       "bank-deposit",
+      "makam",
       "money-market-fund-daily",
       "brokerage-account",
       "current-account",
@@ -365,10 +365,11 @@ describe("S40 wrapper mode: the founder's apartment case (F-83, F-80)", () => {
 
   it("declares the top two a tie", () => {
     expect(ranking.topTwo!.tie).toBe(true);
-    // The workings print 0.11%; the makam row differs from them by 16 NIS (inside P-06), so the engine's gap is 0.12%.
+    // The workings print 0.02%: the one-month deposit, at its rate × 1/12 a month (BANK-50), now leads the makam by 47 NIS real; the
+    // makam row differs from the workings by 16 NIS (inside P-06), so the engine's gap is 0.01%.
     expect(ranking.topTwo!.gap * 100).toBeCloseTo(x.s40.gapPct, 1);
-    // F-80 ties every option within θ of the top, so the daily fund (0.26% below, also by the workings' numbers) is in the set.
-    expect(ranking.tieSet.slice(0, 3)).toEqual(["makam", "bank-deposit", "money-market-fund-daily"]);
+    // F-80 ties every option within θ of the top, so the daily fund (0.28% below, also by the workings' numbers) is in the set.
+    expect(ranking.tieSet.slice(0, 3)).toEqual(["bank-deposit", "makam", "money-market-fund-daily"]);
     expect(ranking.tieSet).not.toContain("brokerage-account");
     expect(ranking.tieSet).not.toContain("current-account");
   });

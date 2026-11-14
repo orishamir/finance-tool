@@ -66,15 +66,15 @@ export const r2Expected = {
   s40: {
     /** Real value at 4 years, best first, with the nominal value (workings table). */
     ranked: [
+      { id: "bank-deposit", real: 296_409.54, nominal: 327_180.67 },
       { id: "makam", real: 296_362.17, nominal: 327_128.38 },
-      { id: "bank-deposit", real: 296_034.36, nominal: 326_766.55 },
       { id: "money-market-fund-daily", real: 295_594.33, nominal: 326_280.83 },
       { id: "brokerage-account", real: 293_119.64, nominal: 323_549.24 },
       { id: "government-bond", real: 291_761.83, nominal: 322_050.47 },
       { id: "current-account", real: 276_722.74, nominal: 305_450.13 },
     ],
     paid: 302_009.7,
-    gapPct: 0.11,
+    gapPct: 0.02,
     keptNominal: 50_855.14,
     keptReal: 46_072.25,
     routed: 65_006.55,
@@ -83,7 +83,7 @@ export const r2Expected = {
   },
   s41: {
     amount: 60_000,
-    costs: { average: 113.12, ownOffer: 129.69, makam: 142.07, fund: 129.13 },
+    costs: { average: 114.79, ownOffer: 131.79, makam: 142.07, fund: 129.13 },
     coverage: { considered: 26, baseline: 1, compared: 3, notEligible: 2, notEvaluated: 20 },
   },
   s50: { bankA2: 132_426.4, bankA: 132_353.91, gapPct: 0.05 },

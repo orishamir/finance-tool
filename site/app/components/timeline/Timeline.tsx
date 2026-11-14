@@ -526,6 +526,11 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   const pctCheck = percentCheck(pctRange ?? undefined);
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
   const common = cash?.common;
+  // a deposit or a savings plan renews at the end of its term at the rate the bank publishes that day (BANK-05): past the first term the
+  // chart's rate is an assumption, said where the run is longer than the term
+  const term = bundle.terms.deposit;
+  const renewKind = bundle.record.id === "bank-deposit" ? "deposit" : bundle.record.id === "savings-plan" ? "savings-plan" : null;
+  const renews = renewKind && term && current("horizon_years") * 12 > term.termMonths ? <span>{valuesCopy.hints.cashRenews[renewKind]}</span> : null;
   // from lg only: below it the same line stands in sight under the chart's switch, and this panel is a sheet
   const deposits = !lumpSum && current("monthly_deposit") > 0 ? <span className="max-lg:hidden">{valuesCopy.hints.deposits}</span> : null;
   const hints = cash ? (
@@ -537,6 +542,7 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
       ) : (
         <span>{publishedFrom ? `${valuesCopy.hints.cashPublished} ${valuesCopy.hints.asOf}${fmt.date(publishedFrom)}.` : valuesCopy.hints.cashAssumption}</span>
       )}
+      {renews}
       <span>{valuesCopy.returnNoteCash}</span>
       <span>{valuesCopy.hints.inflation}</span>
       {deposits}

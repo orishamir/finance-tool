@@ -39,12 +39,14 @@ describe("the regulator's files", () => {
 });
 
 describe("the pages agree on which funds are self-directed", () => {
-  it("the tracks page lists them under their regulator type, their yields not shown", () => {
+  it("the tracks page lists them as products of their own, out of their regulator type's list, their yields not shown (F-100)", () => {
     const all = buildTrackBrowser();
-    const annuity = buildProductView(all, "provident-for-annuity")!;
-    const meitav = annuity.tracks.find((x) => x.id === 1486)!;
-    expect(meitav.selfManaged).toBe(true);
-    expect(annuity.tracks.filter((x) => x.selfManaged).map((x) => x.id).sort((a, b) => a - b)).toEqual([1486, 1514, 1541, 2023, 2098, 8888, 14938, 15367]);
+    const own = buildProductView(all, "ira-provident")!;
+    expect(own.tracks.find((x) => x.id === 1486)!.selfManaged).toBe(true);
+    expect(own.tracks.map((x) => x.id).sort((a, b) => a - b)).toEqual([1486, 1514, 1541, 2023, 2098, 8888, 14938, 15367]);
+    expect(buildProductView(all, "ira-hishtalmut")!.tracks.map((x) => x.id).sort((a, b) => a - b)).toEqual([1487, 1515, 1542, 2024, 2100, 8890, 14936]);
+    expect(buildProductView(all, "provident-for-annuity")!.tracks.some((x) => x.selfManaged)).toBe(false);
+    expect(buildProductView(all, "keren-hishtalmut")!.tracks.some((x) => x.selfManaged)).toBe(false);
   });
 
   it("a company's page shows them as products of their own, out of the ordinary product's list, its range and its cap", () => {

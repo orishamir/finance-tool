@@ -9,7 +9,7 @@ import { company as companyCopy, track as trackCopy, trackBrowser as t } from ".
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, feeMarkTerms, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
-import { Num, useProvenanceData } from "../provenance";
+import { IdRef, Num, useProvenanceData } from "../provenance";
 import { ExposureCell, FeeNum, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, SortNote, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 /** A product's legal fee caps on a company's page (its record's `fee_caps`), and the age from which they bind its member where they bind
@@ -30,34 +30,49 @@ export function CapLead({ from }: { from?: SiteValue | null }) {
   );
 }
 
+/** The product whose fee figure is what members over 21 paid, averaged over the whole track (CS OQ9). */
+export const CHILD_SAVINGS = "child-savings-provident";
+
+/** Over a child-savings list or track: the fee figure is what members past `age` (CS-18's `nii_pays_until_age`, until which National
+ *  Insurance pays the fee) paid, averaged over all the track's assets, not the fund's price; the rule base reads it so and keeps the
+ *  question open (CS OQ9). Nothing without the age. */
+export function ChildFeeNote({ age }: { age: SiteValue | null | undefined }) {
+  if (!age) return null;
+  return (
+    <p className="text-sm text-muted-foreground max-w-measure">
+      {t.childFee.before} <Num value={age} display={String(age.value)} /> {t.childFee.after} <IdRef id="CS OQ9" end="." />
+    </p>
+  );
+}
+
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
 const sayEmpty = (value: SiteValue, sentence: string): SiteValue => (!value.notes || value.notes.trim() === `${t.yield.missing}.` ? { ...value, notes: sentence } : value);
 
-/** A figure of the regulator's that may be empty: its number, or its words ("לא דווח", "אין") on the same button, so the sheet says why. */
+/** A figure of the regulator's that may be empty: its number, or its words on the same button, so the sheet says why. Not reported reads
+ *  "עוד לא דווח" in the cell, as an empty fee does (`FeeNum`); a track younger than the window reads "אין". */
 function YieldFigure({ value, track, years, size }: { value: SiteValue | null; track: TbTrack; years: 3 | 5; size: "inline" | "cell" }) {
-  if (!value) return <span className={mutedWord}>{missingYield(track, years)}</span>;
-  // not reported: a short mark, the sheet heads with the words; a young track's "אין" is short already
-  if (value.value === null) return (years === 3 ? track.young3 : track.young5) ? <Num value={value} size={size} display={missingYield(track, years)} /> : <Num value={sayEmpty(value, `${t.yield.emptyNote.before}${years}${t.yield.emptyNote.after}`)} size={size} display={trackCopy.emptyMark} fullWord={missingYield(track, years)} />;
+  const young = years === 3 ? track.young3 : track.young5;
+  if (!value) return <span className={mutedWord}>{young ? missingYield(track, years) : trackCopy.feeNotReported}</span>;
+  if (value.value === null) return young ? <Num value={value} size={size} display={missingYield(track, years)} /> : <Num value={sayEmpty(value, `${t.yield.emptyNote.before}${years}${t.yield.emptyNote.after}`)} size={size} display={trackCopy.feeNotReported} />;
   return <Num value={value} size={size} />;
 }
 
-/** The two yields, each followed by its window; a track younger than the window reads "אין 3 שנים", one not reported its words alone. */
+/** The two yields, each followed by its window: "אין 3 שנים" for a track younger than the window, "עוד לא דווח 3 שנים" for one not reported. */
 function Yields({ x, size, inline }: { x: TbTrack; size: "inline" | "cell"; inline?: boolean }) {
   if (x.selfManaged) return <span className={cx(mutedWord, "block whitespace-normal")}>{t.yield.selfManaged}</span>;
   const items = ([3, 5] as const).map((years) => {
     const v = years === 3 ? x.y3 : x.y5;
-    const young = years === 3 ? x.young3 : x.young5;
-    const empty = (!v || v.value === null) && !young;
-    return { id: `y${years}`, figure: <YieldFigure value={v} track={x} years={years} size={size} />, word: empty ? null : years === 3 ? t.yield.years3 : t.yield.years5 };
+    return { id: `y${years}`, figure: <YieldFigure value={v} track={x} years={years} size={size} />, word: years === 3 ? t.yield.years3 : t.yield.years5 };
   });
   return <ProductFigures items={items} inline={inline} />;
 }
 
 /** Assets at the period's end: "19.1 מיליארד ₪" for a thousand million and more. */
 function AssetsFigure({ value, size = "cell" }: { value: SiteValue | null; size?: "inline" | "cell" }) {
-  if (!value) return <span className={mutedWord}>{t.assets.missing}</span>;
-  return typeof value.value === "number" ? <Num value={value} size={size} display={assetsText(value.value)} /> : <Num value={sayEmpty(value, t.assets.emptyNote)} size={size} display={trackCopy.emptyMark} fullWord={t.assets.missing} />;
+  // not reported reads "עוד לא דווח" in the cell, as an empty fee does, and its sheet says why
+  if (!value) return <span className={mutedWord}>{trackCopy.feeNotReported}</span>;
+  return typeof value.value === "number" ? <Num value={value} size={size} display={assetsText(value.value)} /> : <Num value={sayEmpty(value, t.assets.emptyNote)} size={size} display={trackCopy.feeNotReported} />;
 }
 
 /** "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪": the company's size in the product, each part unbroken. `stacked`: one part under the other, in a
@@ -266,7 +281,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const provenance = useProvenanceData();
   const wrappers = (term: string) => provenance?.terms[term]?.wrapperIds;
   // a pension track's fees are its fund's, the same on every track of the fund (CAT-39): the note under the fee head says so
-  const average = (feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear) + (view.dataset === "pensia-net" ? `, ${trackCopy.feeWhole}` : "");
+  const average = (feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear) + (view.dataset === "pensia-net" ? `, ${trackCopy.feeWhole}` : view.id === CHILD_SAVINGS ? `, ${trackCopy.feeOver21}` : "");
   const feeHead = (id: SortId, label: string, side: "savings" | "deposit") => {
     const terms = side === "savings" ? [...feeMarkTerms(side, view.id, wrappers), HELP_TERMS.direct] : feeMarkTerms(side, view.id, wrappers);
     return (

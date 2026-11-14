@@ -29,28 +29,30 @@ export const content: GuideContent = {
           {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
           {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי מוגבל בצו{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null} <RuleRef id="BANK-17" end="." />
         </Sentence>
+        <Sentence measure>
+          חוץ מבנק חדש: בשנים הראשונות אחרי שקיבל רישיון הוא לא כפוף לתעריפון המלא ומפרסם תעריפון משלו, ולכן ייתכן שגם חובת המסלולים לא חלה עליו <RuleRef id="BANK-51" end="." /> גם בנק קטן מקבל הקלות בחלק מהכללים של <Term id="בנק ישראל">בנק ישראל</Term> ללקוחות, למשל בשירותי התשלום שהוא חייב להציע בחשבון <RuleRef id="BANK-52" end="." />
+        </Sentence>
         {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
         <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
           <Sentence size="sm">
             צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו מבטל את המסלולים וקובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null} <RuleRef id="BANK-35" end="." />
           </Sentence>
         </Callout>
-        <RulesLine ids={["BANK-01", "BANK-09", "BANK-17", "BANK-35", "TXI-08"]} />
+        <RulesLine ids={["BANK-01", "BANK-09", "BANK-17", "BANK-51", "BANK-52", "BANK-35", "TXI-08"]} />
       </>
     );
   },
   termIds: ["חשבון עובר ושב", "יתרת זכות בחשבון", "ריבית על יתרת זכות", "מסלול בסיסי", "מסלול מורחב", "הטבה בנקאית", "מנהל מורשה", "ביטוח פיקדונות", "פיקדון", "קרן כספית", "יחידה", "התעריפון המלא", "ריבית", "קרנות כספיות יומיות", "תשואה"],
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
-    const proposed = figure("REG-05", "proposed_guarantee");
     const notice = figure("BANK-19", "notice_days");
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, אין חוק שמחזיר לכם את הכסף. נגיד <Term id="בנק ישראל">בנק ישראל</Term> יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term> ולהעביר את נכסיו והתחייבויותיו, ובאישור הממשלה גם להכריז על ערבות לפיקדונות. אלה סמכויות שלו, לא זכויות שלכם.
+          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, אין חוק שמחזיר לכם את הכסף. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term> ולהעביר את נכסיו והתחייבויותיו, ובאישור הממשלה גם להכריז על ערבות לפיקדונות. אלה סמכויות שלו, לא זכויות שלכם.
         </p>
         <Sentence measure>
-          חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית מציעה ערבות {proposed ? <>של עד <Num value={proposed} /> </> : null}ללקוח בבנקים קטנים, אבל היא רק הצעה, ויתרת עו״ש ממילא לא נכללת בה.
+          חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות פקעה כשהכנסת החדשה התכנסה <When iso="2026-11-10" lead="ב־" /> <RuleRef id="REG-05" end="." />
         </Sentence>
         <Sentence measure>
           כסף שיושב בעו״ש בלי ריבית לא גדל. <Term id="הטבה בנקאית">הטבה</Term> בריבית או <Term prefix="ב" id="עמלה">עמלה</Term> שנמשכת יותר משלושה חודשים מסתיימת אחרי הודעה{notice ? <> של לפחות <Num value={notice} /> ימים</> : " מראש"}.

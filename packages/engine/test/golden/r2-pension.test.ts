@@ -365,6 +365,36 @@ describe("S30 provident fund for annuity, same money as S27", () => {
   });
 });
 
+describe("F-52 pension employer line: TXP-10 on the salary the employer deposits on", () => {
+  const base: PensionInput = { ...s27, wrapper: "provident-for-annuity", fees: { deposit: 0, balance: 0.005, direct: 0 }, insurance: { rate: 0 }, goal: { amountNow: 0, monthly: 0, months: 120 } };
+  const withEmployer = (employer: NonNullable<PensionInput["pension"]["employer"]>, monthlySalary = 50_000): PensionInput => ({
+    ...base,
+    pension: { employment: "employee", monthlySalary, existingEmployeeRate: 0, employer },
+  });
+
+  it("deposits the rates on `employer.salary`, so 6.5% on 13,769 is under the 7.5% limit at any gross salary (TXP-10's \"salary\")", () => {
+    const capped = employerLine({ kind: "pension", input: withEmployer({ pensionRate: 0.065, severanceRate: 0.06, salary: 13_769 }) }, ctx);
+    const plain = employerLine({ kind: "pension", input: withEmployer({ pensionRate: 0.065, severanceRate: 0.06 }, 13_769) }, ctx);
+    expect(capped.detail.employerDeposits).toBeCloseTo(0.125 * 13_769 * 120, 6);
+    expect(capped.detail.depositTax).toBe(0);
+    expect(capped.nominal).toBeCloseTo(capped.detail.grossBalance!, 6);
+    // the same deposits as an employer paying on a 13,769 salary
+    expect(capped.nominal).toBeCloseTo(plain.nominal, 6);
+  });
+
+  it("taxes the part above `min(7.5%, rate) × min(salary, 34,423)` as salary, paid from the salary: the fund keeps the whole deposit", () => {
+    // 8% on 50,000 is 4,000 a month; the limit is 7.5% × 34,423 = 2,581.725, so 1,418.275 a month is salary when paid
+    const line = employerLine({ kind: "pension", input: withEmployer({ pensionRate: 0.08, severanceRate: 0 }) }, ctx);
+    const book = ruleBook(ctx);
+    const excess = 0.08 * 50_000 - book.rate("TXP-10", "employer_exempt_pct") * book.amount("TXP-10", "employer_ceiling");
+    expect(excess).toBeCloseTo(1_418.275, 6);
+    expect(line.detail.depositTax).toBeGreaterThan(0);
+    // the tax at the top bracket on the excess, each year: at most 50% of it (47% + 3% surtax would be more; TXG-02 alone here)
+    expect(line.detail.depositTax).toBeLessThanOrEqual(0.5 * excess * 120);
+    expect(line.nominal).toBeCloseTo(line.detail.grossBalance! - line.detail.depositTax!, 6);
+  });
+});
+
 describe("F-45, F-48, F-49 blocked exits (G-03; F-48 not built)", () => {
   it("return the gross balance, the reason and the rules, never a value after tax", () => {
     expect(blockedWrapperExit("F-45", 1_000)).toMatchObject({ blocked: true, reason: "G-03", gap: "G-03", grossBalance: 1_000 });

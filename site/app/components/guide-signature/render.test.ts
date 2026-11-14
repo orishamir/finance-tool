@@ -9,6 +9,10 @@ import { ProvenanceProvider } from "../provenance";
 import { WorthKnowing, worthRows } from "../guide/worth-knowing";
 import { accountWorthRow } from "./current-account";
 import { SignatureFrame, signatureRegistry } from "./index";
+import { fact } from "../../lib/guide-signature";
+import { studyYears, waitFigures } from "../../lib/guide-signature-g2";
+import { p05Number } from "../../lib/engine";
+import { fmt } from "../../lib/format";
 
 const inProviders = (p: NonNullable<ReturnType<typeof buildGuidePage>>, child: ReactNode) =>
   createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: child }) }));
@@ -113,11 +117,37 @@ describe("the pension visuals", () => {
     // a provident fund for annuity has no insurance, so the line does not say it is left out
     expect(text).not.toContain("בלי דמי ביטוח");
   });
-  it("does not say when the credit arrives: payroll or the annual return is an open question (TXP OQ6)", () => {
+  it("says payroll gives the credit only on a direction or a notice (reg. 9(א)), that a general notice is open (TXP OQ6), and that the year's tax otherwise is a reading", () => {
     for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
       const text = textOf(id);
-      expect(text, id).toContain("עוד לא ידוע");
+      expect(text, id).toContain("רק אם רשות המסים הורתה כך למעסיק לבקשתכם");
+      expect(text, id).toContain("אם יש הודעה כזו, עוד לא ידוע");
+      expect(text, id).toContain("בלי אחת מהשתיים, הוא מגיע כשמחושב מס ההכנסה של השנה");
+      expect(text, id).toContain("קריאה של האתר");
       expect(text, id).not.toContain("שמחושב בדוח השנתי");
     }
+  });
+});
+
+describe("study fund page", () => {
+  const p = buildGuidePage("keren-hishtalmut")!;
+  const d = p.signature!;
+  const html = renderToString(inProviders(p, createElement(SignatureFrame, { id: "keren-hishtalmut", data: d, today: p.today, timeline: null })));
+  const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
+
+  it("counts what waiting adds above the deposits of the years between, which are paid either way (F-96)", () => {
+    const income = p05Number(d.bundles["keren-hishtalmut"]!.p05, "annual_income") / 12;
+    const plan = { employment: "employee" as const, income, ownMonthly: (income * Number(fact(d, "ownPct")!.value)) / 100, employerMonthly: (income * Number(fact(d, "employerPct")!.value)) / 100, returnPct: p05Number(d.bundles["keren-hishtalmut"]!.p05, "A-01"), feePct: null };
+    const years = studyYears(d, plan, 12);
+    const lock = Number(fact(d, "lockYears")!.value);
+    const at = (y: number) => years[y - 1]!.slice!;
+    const more = Math.round(waitFigures(at(lock - 1), at(lock)).more);
+    expect(more).toBeLessThan(Math.round(at(lock).net - at(lock - 1).net));
+    expect(text).toContain(`${fmt.nisWhole(more)} מעבר להפקדות שבינתיים`);
+    // the tax saved is its own figure, not a part of what waiting adds, which can be smaller than it or below zero
+    expect(text).not.toContain("מתוכם");
+    expect(text).toContain("מס הכנסה במשיכה שלא משלמים:");
+    // the multiple is of everything deposited, the employer's money too, not of the person's own deposits alone
+    expect(text).toContain("ממה שהופקד, מכם ומהמעסיק");
   });
 });

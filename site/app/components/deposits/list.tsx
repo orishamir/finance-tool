@@ -8,12 +8,12 @@ import { Fragment, type ReactNode } from "react";
 import { companyPath } from "../../lib/site-paths";
 import { Link } from "react-router";
 import { depositBrowser as t } from "../../copy";
-import { HELP_TERMS, accessOf, ascending, interestOn, interestText, isLinked, rowSplit, variantWords, type DbBank, type DbOffer, type DbRow, type RowSplit, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
+import { HELP_TERMS, accessOf, ascending, interestOn, interestText, interestUnknown, isLinked, rowSplit, variantWords, type DbBank, type DbOffer, type DbRow, type RowSplit, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
 import { exitTiming } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import type { Label } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
-import { Num, Term } from "../provenance";
+import { IdRef, Num, Term } from "../provenance";
 import { AmountRange, AnchorSpread, HelpMark, LabelChip, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
 import { IconChevronDown } from "../icons";
 
@@ -106,7 +106,12 @@ export interface ListContext {
 function Interest({ o, ctx, small }: { o: DbOffer; ctx: ListContext; small?: boolean }) {
   if (!ctx.amount) return null;
   const v = interestOn(o, ctx.amount.n, ctx.amount.value, ctx.today);
-  if (!v) return null;
+  if (!v)
+    return interestUnknown(o) ? (
+      <span className="text-sm text-muted-foreground font-normal">
+        {t.interest.unknown} <IdRef id="BANK OQ21" />
+      </span>
+    ) : null;
   return <Num value={v} display={(n: number) => interestText(n)} className={small ? "" : "font-semibold"} />;
 }
 
@@ -124,7 +129,7 @@ function tableRow({ row, top, mine }: ListRow, ctx: ListContext): ProductRow {
       <AnchorSpread variable={first.kind === "variable"} anchor={first.anchor} spread={first.spread} />
     </span>,
     ...(ctx.amount ? [<Interest o={first} ctx={ctx} />] : []),
-    <AmountRange min={first.amount_range.min} max={first.amount_range.max} />,
+    <AmountRange min={first.amount_range.min} max={first.amount_range.max} edges={first.amount_range} />,
     <Access o={first} />,
   ];
   const sub = (o: DbOffer): ReactNode[] => [
@@ -173,7 +178,7 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
       <span className="grid grid-cols-2 gap-3">
         <span className="flex flex-col">
           <span className={muted}>{t.columns.amount}</span>
-          <AmountRange min={first.amount_range.min} max={first.amount_range.max} />
+          <AmountRange min={first.amount_range.min} max={first.amount_range.max} edges={first.amount_range} />
         </span>
         <span className="flex flex-col">
           <span className={muted}>{t.columns.access}</span>

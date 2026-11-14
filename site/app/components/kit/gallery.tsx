@@ -1994,7 +1994,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="AnchorSpread, AmountRange" use={g.uses.DepositWords}>
-        <State label={'a variable rate\'s anchor and spread: look="under" a rate, "after" it on its line, "words" in a sentence; the amounts a deposit takes, each form'} wide>
+        <State label={'a variable rate\'s anchor and spread: look="under" a rate, "after" it on its line, "words" in a sentence; the amounts a deposit takes, each form, and a bound the bank\'s table prints as not included'} wide>
           <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
             <span className="flex flex-col">
               <Num value={s.rate} size="cell" />
@@ -2009,6 +2009,8 @@ function Lists({ today }: { today: string }) {
               <AmountRange min={s.sourced} max={{ ...s.sourced, value: null }} />
               <AmountRange min={{ ...s.sourced, value: 0 }} max={{ ...s.sourced, value: 50000 }} />
               <AmountRange min={{ ...s.sourced, value: 0 }} max={null} />
+              <AmountRange min={s.sourced} max={{ ...s.sourced, value: 50000 }} edges={{ max_edge: "excluded" }} />
+              <AmountRange min={s.sourced} max={null} edges={{ min_edge: "excluded" }} />
             </span>
           </div>
         </State>

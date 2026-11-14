@@ -5,7 +5,7 @@ import { buildGuidePage, depositSheetNames } from "./guide.server";
 import type { DepositTerms } from "@finance-tool/schema";
 import { runTimeline } from "./engine";
 import { guideSignature } from "../copy";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer } from "./guide-signature";
+import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -142,16 +142,31 @@ describe("current account", () => {
     expect(d.banks).toHaveLength(8);
   });
 
-  it("the most each bank pays in a year on 10,000 NIS, after the 15% withheld, and the ceiling caps it", () => {
+  it("the most each bank pays in a year on a balance, after the 15% withheld: the ceiling caps it, and a balance that breaks the bank's own condition on it earns nothing", () => {
     const tax = Number(fact(d, "taxRate")!.value);
-    const of = (bank: string, balance: number) => bankYearlyMax(d.banks!.find((b) => b.bank === bank)!, balance, tax);
+    const by = (bank: string) => d.banks!.find((b) => b.bank === bank)!;
+    const of = (bank: string, balance: number) => bankYearlyMax(by(bank), balance, tax);
     expect(of("discount", 10000)).toBeCloseTo(255, 9);
     expect(of("fibi", 10000)).toBeCloseTo(170, 9);
     expect(of("leumi", 10000)).toBeCloseTo(85, 9);
-    expect(of("yahav", 10000)).toBeCloseTo(63.75, 9);
     expect(of("hapoalim", 10000)).toBe(0);
-    expect(of("discount", 100000)).toBeCloseTo(255, 9);
     expect(of("discount", 4000)).toBeCloseTo(102, 9);
+    expect(of("discount", 30000)).toBeCloseTo(255, 9);
+    // Discount pays only while all the customer's assets in the account stay at or below 30,000 NIS (F-26, `balance_conditions`)
+    expect(of("discount", 30001)).toBe(0);
+    expect(of("discount", 50000)).toBe(0);
+    expect(brokenCondition(by("discount"), 50000)).toMatchObject({ measure: "total_assets", bound: "max", inclusive: true });
+    // Yahav only while the monthly average balance is below 10,000 NIS: at 10,000 it pays nothing, just below it 0.75%
+    expect(of("yahav", 10000)).toBe(0);
+    expect(of("yahav", 9999)).toBeCloseTo(9999 * 0.0075 * 0.85, 9);
+    expect(of("yahav", 50000)).toBe(0);
+    // First International: 10,000 NIS or more every day, and assets up to 50,000 NIS
+    expect(of("fibi", 9999)).toBe(0);
+    expect(of("fibi", 50000)).toBeCloseTo(170, 9);
+    expect(of("fibi", 50001)).toBe(0);
+    // Leumi prints no condition on the balance: its ceiling caps it
+    expect(of("leumi", 50000)).toBeCloseTo(85, 9);
+    expect(brokenCondition(by("leumi"), 50000)).toBeNull();
   });
 
   it("every bank carries the record's own Hebrew conditions; the doubts, the end date and the printed no-offer sentence travel with the rows", () => {

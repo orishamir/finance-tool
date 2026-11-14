@@ -36,10 +36,10 @@ describe("accepted drop below P-04's equity fall", () => {
 
 describe("the fit demotion reads the option's own P-04 row (review fix 2026-10-24)", () => {
   const get = (id: string) => bundle.wrappers.find((x) => x.id === id)!;
-  it("keeps the study fund and the provident-for-annuity general track at an accepted fall of 25 and demotes it below the general row's 20", () => {
+  it("keeps the study fund's general track at an accepted fall of 25 and demotes it below the general row's 20", () => {
     const general = bundle.fit!.rows.find((r) => r.classification === "כללי")!.maxFallPct!.value as number;
     expect(general).toBe(20);
-    for (const id of ["keren-hishtalmut", "provident-for-annuity"]) {
+    for (const id of ["keren-hishtalmut"]) {
       expect(get(id).fitBasis, id).toBeDefined();
       expect(fitDropReason(bundle, get(id), { acceptedFall: 25 }), id).toBeNull();
       expect(fitDropOf(fitDropReason(bundle, get(id), { acceptedFall: 10 })!), id).toBe(general);
@@ -47,6 +47,10 @@ describe("the fit demotion reads the option's own P-04 row (review fix 2026-10-2
   });
   it("does not demote the general pension: the regulator's record for track 2158 has no specialization, so P-04 has no row for it", () => {
     expect(fitDropReason(bundle, get("pension-general"), { acceptedFall: 0 })).toBeNull();
+  });
+  it("does not demote the provident fund for annuity: its track 7215 is an age track (\"מדרגות\"), for which P-04 has no row", () => {
+    expect(get("provident-for-annuity").fitBasis).toMatchObject({ track: { specialization: "מדרגות" } });
+    expect(fitDropReason(bundle, get("provident-for-annuity"), { acceptedFall: 0 })).toBeNull();
   });
   it("demotes the brokerage S&P fund below the equity row's 30", () => {
     expect(fitDropOf(fitDropReason(bundle, get("brokerage-account"), { acceptedFall: 25 })!)).toBe(30);

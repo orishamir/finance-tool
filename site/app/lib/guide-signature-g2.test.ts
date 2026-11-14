@@ -1,11 +1,12 @@
 // D29, second wave: the study fund, the provident fund for investing and the pensions. Every figure equals an engine run; the holding
 // on each side is the same index; a gap is a gap, never a number.
 import { describe, expect, it } from "vitest";
-import { runInputs, runPlanned } from "@finance-tool/engine";
+import { ruleBook, runInputs, runPlanned } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { entered as enteredValue } from "./value";
-import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock } from "./guide-signature-g2";
+import { runTimeline } from "./engine";
+import { hishtalmutTerms, pensionModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock, waitFigures } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
@@ -215,6 +216,18 @@ describe("pensions", () => {
     expect(m.balance!.real).toBeGreaterThan(0);
     expect(m.general).toBeNull();
   });
+  it("gives the same balance at every salary from the average wage up, since the deposits are the same and nothing is above TXP-10's limit", () => {
+    const annuity = page("provident-for-annuity").signature!;
+    const book = ruleBook({ rules: annuity.bundles["provident-for-annuity"]!.rules, runDate: annuity.bundles["provident-for-annuity"]!.runDate });
+    const average = book.amount("PEN-04", "average_wage");
+    const at = (salary: number) => pensionModel(annuity, "provident-for-annuity", { salary, years: 10, insurancePct: null })!;
+    const base = at(average);
+    for (const salary of [30000, 50000, 100000]) {
+      const m = at(salary);
+      expect(m.total).toBeCloseTo(base.total, 9);
+      expect(m.balance!.real).toBeCloseTo(base.balance!.real, 6);
+    }
+  });
   it("has no insurance for a provident fund for annuity (PEN-35), and no balance where no track is named", () => {
     const annuity = page("provident-for-annuity").signature!;
     const a = pensionModel(annuity, "provident-for-annuity", { salary: 12000, years: 10, insurancePct: 0.5 })!;
@@ -254,5 +267,41 @@ describe("pensions", () => {
     expect(m.general!.toGeneral).toBeCloseTo(m.total - 2000, 9);
     expect(m.balance).toBeNull();
     expect(m.balanceGap).toBe("general-split");
+  });
+});
+
+describe("the provident guides' own timelines at the slider's ends", () => {
+  it("runs with no monthly deposit, and with nothing at all, on the rules the page ships (a discount that ends after deposits stop reads PF-14)", () => {
+    for (const id of ["kupat-gemel-lehashkaa", "keren-hishtalmut"]) {
+      const b = page(id).bundle!;
+      for (const entered of [{ monthly_deposit: 0 }, { amount_now: 0, monthly_deposit: 0 }, { monthly_deposit: 10000 }]) {
+        for (const age of [null, 65]) {
+          const t = runTimeline(b, { entered, age });
+          expect(t.kind === "failed" ? `${id} ${JSON.stringify(entered)} ${age}: ${t.message}` : "ok").toBe("ok");
+        }
+      }
+    }
+    expect(page("kupat-gemel-lehashkaa").bundle!.rules.map((r) => r.id)).toContain("PF-14");
+  });
+});
+
+describe("the study fund's wait figures (F-96)", () => {
+  it("count only the income tax at the withdrawal, not what the salary pays on the employer's money above the limit, at a salary above 15,712", () => {
+    const d = page("keren-hishtalmut").signature!;
+    const income = 40000;
+    const plan = { employment: "employee" as const, income, ownMonthly: income * 0.025, employerMonthly: income * 0.075, returnPct: 7, feePct: null };
+    const years = studyYears(d, plan, 12);
+    const lock = Number(fact(d, "lockYears")!.value);
+    const at = years[lock - 2]!.slice!;
+    const end = years[lock - 1]!.slice!;
+    // the salary pays tax on the excess every year, so the lock year carries more of it than the year before
+    expect(end.taxFromSalary).toBeGreaterThan(at.taxFromSalary);
+    expect(at.taxFromSalary).toBeGreaterThan(0);
+    const w = waitFigures(at, end);
+    expect(w.saved).toBeCloseTo(at.tax - at.taxFromSalary - (end.tax - end.taxFromSalary), 6);
+    expect(w.saved).toBeGreaterThan(0);
+    // the whole tax's difference would understate it by the salary-paid tax of the year waited
+    expect(w.saved).toBeGreaterThan(at.tax - end.tax);
+    expect(w.more).toBeCloseTo(end.net + end.taxFromSalary - end.own - end.extra - (at.net + at.taxFromSalary - at.own - at.extra), 6);
   });
 });
