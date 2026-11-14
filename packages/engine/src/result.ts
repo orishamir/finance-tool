@@ -65,8 +65,11 @@ export const RUN_FLAG_CODES: readonly string[] = [
 /** Section 8 and B3: whether the run may enter a ranking. */
 export type Outcome =
   | { code: "eligible" }
-  /** `question`: the open question that stopped the run on `reason`, the readings it allows giving different results (`acrossReadings`). */
-  | { code: "listed-not-ranked"; reason: string; untilMonth?: number; question?: string };
+  /**
+   * `question`: the open question that stopped the run on `reason`, the readings it allows giving different results (`acrossReadings`);
+   * `gap`: the method gap that stopped it, where no reading of the case exists (G-38).
+   */
+  | { code: "listed-not-ranked"; reason: string; untilMonth?: number; question?: string; gap?: string };
 
 /** State at the end of month m (m = 0 is the start). Balance is the market value before exit costs. */
 export interface MonthPoint {

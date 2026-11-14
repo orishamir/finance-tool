@@ -173,6 +173,18 @@ describe("F-120 an amount linked to the CPI every 1 January", () => {
     expect(ruleBook({ ...ctx, readings: { "KGL OQ15": "lower" } }, { inflation: -0.01 }).inYear(3).amount("KGL-03", "ceiling")).toBeCloseTo(83_641 * 0.99 ** 2, 6);
     expect(ruleBook({ ...ctx, readings: { "KGL OQ15": "hold" } }, { inflation: -0.01 }).inYear(3).amount("KGL-03", "ceiling")).toBe(83_641);
   });
+  it("stops a figure linked to the CPI every 1 January of a rule no open reading covers, at a falling CPI, on its rule with the method gap (G-38)", () => {
+    // CS-04's monthly addition is linked every 1 January; no open question names a fall for it, and the method has no reading
+    expect(ruleBook(ctx, { inflation: 0.02 }).inYear(2).amount("CS-04", "monthly_addition")).toBeCloseTo(58 * 1.02, 9);
+    try {
+      ruleBook(ctx, { inflation: -0.01 }).inYear(2).amount("CS-04", "monthly_addition");
+      expect.unreachable();
+    } catch (e) {
+      expect(e).toBeInstanceOf(BlockedError);
+      expect(e).toMatchObject({ ruleId: "CS-04", gap: "G-38" });
+      expect((e as Error).message).toContain("G-38");
+    }
+  });
   it("lets a kupat gemel lehashkaa take the year's ceiling: a deposit of the 2027 ceiling in 2027 is all accepted", () => {
     // 85,000 a year in January of each year (2026 grid, run date 2026-10-23, month 1 = January): 2026's ceiling is 83,641, so 1,359 is
     // routed; 2027's is 85,732.03 at 2.5%, so nothing is

@@ -52,7 +52,7 @@ export interface OpenReading {
  *   (TXG-09) and says nothing of a fall.
  * - KGL OQ15: KGL-03's yearly ceiling (F-120), which the Provident Funds Law s.22(א) updates every 1 January "by the rise in the CPI"
  *   (KGL-02) and says nothing of a fall.
- * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule.
+ * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule, naming G-38.
  */
 export const openReadings: readonly OpenReading[] = [
   { ruleId: "TXG-09", question: "TXG OQ17", covers: { move: "frozen" }, readings: fallReadings },
