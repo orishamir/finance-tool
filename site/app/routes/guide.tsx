@@ -5,6 +5,7 @@ import { useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePreview, scopeWords } from "../copy";
 import { pageMeta } from "../lib/page-meta";
+import { feeRowKind, type FeeFacts } from "../lib/guide-fees";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, RelatedProducts, RuleRows, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type RuleRowItem, type TaxStep } from "../components/guide/sections";
 import { IdRef, Num, NumberLegend, ReadingTag, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { PageShell } from "../components/shell";
@@ -237,14 +238,17 @@ export default function GuidePage() {
     );
   };
 
-  // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff
+  // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff. A base the
+  // record does not allow but caps at 0 is a fee the law bars (a study fund's fee from deposits, KH-22): its row says no one charges it, from
+  // that cap, so a reader comparing products sees the ban; it is not a fee the product has.
   const provident = isProvidentFamily(record.id);
   const feeCopy = blocks.fees as Record<string, any>;
   const fees: FeeRow[] = [];
   const feeOrder = ["balance", "deposit", "variable_management", "trustee", "trade", "spread", "custody", "fx", "fixed_period", "distribution_handling", "creation_redemption", "load", "redemption_deduction", "transfer_out", "insurance_premium", "exit"];
   for (const base of feeOrder) {
     const cap = record.fee_caps[base as keyof typeof record.fee_caps] as SiteValue | undefined;
-    if (!(record.fee_bases_allowed as string[]).includes(base)) continue;
+    const kind = feeRowKind(record as unknown as FeeFacts, base);
+    if (!kind) continue;
     // a fund's own fee is the manager's percentage inside the unit price (MF-16), not a provident fund's fee on savings (glossary)
     const c = base === "balance" && (record as { held_as?: string }).held_as === "fund_units" ? feeCopy.balanceFund : feeCopy[base];
     if (!c) continue;
@@ -294,9 +298,10 @@ export default function GuidePage() {
       ),
       ...(capNote.length > 0 ? { capNote: <>{capNote.flatMap((n, i) => (i ? [" ", n] : [n]))}</> } : {}),
       // the note under the table says how long a discount lasts and when it can end earlier (D83): its rules sit on the fee's row
-      rules: gen([...(cap?.rule_ids ?? []), ...(data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
-      varies: feeVaries(base),
-      range: listRangeLine(base),
+      kind,
+      rules: gen([...(cap?.rule_ids ?? []), ...(kind === "allowed" && data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
+      // a barred fee has no company's rate and no range of the managers' documents
+      ...(kind === "allowed" ? { varies: feeVaries(base), range: listRangeLine(base) } : {}),
       // a provident product's figure is a cap of the management-fee regulations (PF-02 to PF-06); "no cap" and the provider's own tariff are not caps
       regsCap: provident && !!cap && cap.value !== null,
     });

@@ -1,6 +1,7 @@
 // Guide page components (design-spec 2): section index, sections, the facts with their rules, fee table, tax steps,
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
+import type { FeeRowKind } from "../../lib/guide-fees";
 import { companyPath, dealPagePath } from "../../lib/site-paths";
 import { Link, useParams } from "react-router";
 import { feePageLink, guide as copy, guideIndex, trackBrowser } from "../../copy";
@@ -157,6 +158,8 @@ export function RuleRows({ items }: { items: RuleRowItem[] }) {
 
 export interface FeeRow {
   id: string;
+  /** Absent on the rows the table adds by itself (direct expenses, no exit fee). */
+  kind?: FeeRowKind;
   name: string;
   base: string;
   cap: ReactNode;

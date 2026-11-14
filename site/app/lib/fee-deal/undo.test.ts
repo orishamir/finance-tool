@@ -257,7 +257,7 @@ describe("another kind of product for the deal", () => {
   it("keeps a fee both kinds have and offer as typed, and takes away one the new kind has by record but does not offer, which the undo puts back", () => {
     const d = provident();
     const r = setKindKept(d, kind("keren-hishtalmut"), null, null);
-    // a study fund's fee is from the balance alone, and a provident account takes no fee of the person's own (the rule table)
+    // a study fund's record lists no fee from deposits (KH-22), and a provident account takes no fee of the person's own (the rule table)
     expect(r.deal.fees).toEqual(d.fees.filter((f) => f.kind === "balance"));
     expect(r.undo).not.toBeNull();
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
