@@ -201,8 +201,9 @@ export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput
 /**
  * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03),
  * the CPI for the rest. A TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is known for it, with or
- * without its 90% test: the book stops on it (BlockedError) and the run computes nothing (D10). Were TXF-04 settled as the letter's
- * copy states it (the golden harness), a fund on the 90% test would take the exchange rate and any other the CPI.
+ * without its 90% test: the book stops on it (BlockedError) and the run computes nothing after tax (D10); F-118 reads its value before
+ * the exit tax. Were TXF-04 settled as the letter's copy states it (the golden harness), a fund on the 90% test would take the exchange
+ * rate and any other the CPI.
  */
 export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest">, book: RuleBook): "fx" | "cpi" {
   if (fund.kind === "foreign-fund") {
@@ -231,6 +232,60 @@ export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest
 }
 
 /**
+ * F-118: the open rule a fund's after-tax run stops on (F-04), where the value before the exit tax can be read instead, or null. Only a
+ * fund that pays nothing out: the tax on a TASE foreign fund's distribution would be paid inside the run, and part of it rests on a letter
+ * read only in a copy (TXF-05, TXF-07), so a distributing one keeps no figure.
+ */
+export function beforeTaxPathOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "distribution">, ctx: RunContext): string | null {
+  if (fund.distribution) return null;
+  return securitiesBlockedBy(fund, ctx);
+}
+
+/**
+ * F-118: a securities run whose exit tax an open rule blocks, read up to the sale and stopped before the tax. It has no after-tax value:
+ * no `nominal`, `real` or `taxAtExit`, and its outcome is "listed, not ranked" with the open rule as the reason (B3, D84).
+ */
+export interface BeforeTaxRun extends Omit<RunResult, "nominal" | "real" | "taxAtExit" | "outcome"> {
+  /** `V_T^pre`, nominal: what the sale leaves after its costs (F-09's `R_T`, with the cash still waiting for a unit, F-109), before the exit tax. */
+  beforeTaxNominal: number;
+  /** `V_T^pre / I_T` (F-06), in today's shekels: the CPI as the deflator, not as a tax index. */
+  beforeTaxReal: number;
+  outcome: { code: "listed-not-ranked"; reason: string };
+}
+
+/**
+ * F-118 The value before the exit tax of a run an open rule blocks (D84, B3). The same ledger as `runSecurities`, month by month with every
+ * fee, cost and the exchange-rate path, and the sale's costs at the exit; the tax index is never read (a lot's index serves the exit tax
+ * alone), so the open rule enters no figure (method section 13). Only for a fund the open rule blocks (`beforeTaxPathOf`); any other run is
+ * `runSecurities`'s, unchanged.
+ */
+export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTaxRun {
+  const rule = beforeTaxPathOf(input.fund, ctx);
+  if (rule === null) {
+    if (input.fund.distribution && securitiesBlockedBy(input.fund, ctx) !== null) throw new NotEvaluatedError("G-35");
+    throw new Error("F-118: the run's exit tax is not blocked by an open rule; its value is runSecurities's");
+  }
+  if (input.wrapper || input.carriedLoss) throw new Error("F-118 reads a securities account alone, with no wrapper and no carried loss");
+  const r = securitiesLedger(input, ctx, rule);
+  return {
+    exitMonth: r.exitMonth,
+    paidIn: r.paidIn,
+    fees: r.fees,
+    taxDuring: r.taxDuring,
+    series: r.series,
+    detail: r.detail,
+    flags: r.flags,
+    labels: r.labels,
+    formulas: r.formulas,
+    rules: r.rules,
+    ...(r.feesCarried ? { feesCarried: r.feesCarried } : {}),
+    beforeTaxNominal: r.nominal,
+    beforeTaxReal: r.real,
+    outcome: { code: "listed-not-ranked", reason: rule },
+  };
+}
+
+/**
  * F-08 Month step for fund units. Each contribution is one order: FX fee, then trade value plus commission;
  * bought at the ask, so the lot's cost is the price paid. Distributions are taxed and the net reinvested as
  * a new lot; custody and account fees are paid by removing units oldest first.
@@ -242,12 +297,20 @@ export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
+  return securitiesLedger(input, ctx, null);
+}
+
+/**
+ * The ledger behind `runSecurities` and `runSecuritiesBeforeTax`. `beforeTaxOf` is null for the run to the exit tax; for F-118 it is the
+ * open rule that blocks the exit tax, and the run then reads no tax index and stops after the sale's costs.
+ */
+function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null): RunResult {
   const book = ruleBook(ctx);
   const { goal, market, fund, tariff, profile } = input;
-  // F-04 first: a fund whose tax index rests on an open rule computes nothing
-  const taxIndex = taxIndexOf(fund, book);
+  // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax; F-118 never reads the index
+  const taxIndex = beforeTaxOf === null ? taxIndexOf(fund, book) : null;
   const tally = new Tally();
-  const formulas = ["F-08", "F-09", "F-10", "F-12", "F-13", "F-14", "F-40"];
+  const formulas = ["F-08", "F-09", "F-10", "F-12", "F-13", "F-14", beforeTaxOf === null ? "F-40" : "F-118"];
   if (tariff.until) {
     formulas.push("F-101");
     checkTariffPeriods(tariff, input.gridOffset ?? 0);
@@ -289,7 +352,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
   const fxIndexed = taxIndex === "fx";
-  const J = fxIndexed ? X : I;
+  // F-118: no tax index; a lot's index is read only by the exit tax, which that run does not compute
+  const J = taxIndex === null ? null : fxIndexed ? X : I;
 
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
@@ -401,7 +465,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     tally.fee("trade", chosen.commission);
     const value = navBought(chosen.trade, spread);
     tally.fee("spread", chosen.trade - value);
-    lots.push({ units: value / nav, basis: chosen.trade, index: J[eventMonth]! });
+    lots.push({ units: value / nav, basis: chosen.trade, index: J ? J[eventMonth]! : Number.NaN });
   };
   /** F-109: the cash waiting in the account in month m, in shekels at the month's rate. */
   const waiting = (m: number) => waitingNis + waitingHeld * fxRate(m);
@@ -410,6 +474,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   let israeliDistRate = 0;
   let foreignWithholding = 0;
   if (fund.distribution) {
+    if (beforeTaxOf !== null) throw new NotEvaluatedError("G-35");
     formulas.push("F-20");
     if (fund.kind === "money-market-taxable") {
       // The holder of a taxable fund pays nothing on its distributions; the fund has paid (TXS-11).
@@ -432,7 +497,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     } else {
       israeliDistRate = book.rate("TXS-10", "rate");
     }
-  } else if (isForeign) {
+  } else if (isForeign && beforeTaxOf === null) {
     // An accumulating foreign fund is taxed only at sale under TXF-11, which the law supports by implication (no deemed-distribution
     // rule reaches a non-controlling holder; no sentence says it): computed, labelled a reading, and listed, not ranked (F-65, G-18);
     // unless its own annex reports a ruling that says so. No secondary source is cited.
@@ -586,6 +651,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const fx = tariff.currency && converted > 0 ? fxFee(atExit.fx, converted, { fxRate: fxRate(T) }) + (atExit.fxSpread ?? 0) * converted : 0;
   tally.fee("fx", fx);
   const proceeds = converted - fx + waitingNis;
+  // F-109: what whole units did to the monthly purchases, for the page's line on the row
+  const unitDetail: Record<string, number> = unitBuy ? { wholeUnits: 1, unitPrice: unitBuy.price, monthlyBuys: wait.monthly, monthlyOrders: wait.placed, monthlySkipped: wait.skipped, cashLeft: waitingNis + heldAtExit } : {};
+  // F-118: stopped before the exit tax; listed with the open rule, never ranked (B3, D84)
+  if (beforeTaxOf !== null) return tally.result(book, { exitMonth: T, nominal: proceeds, index: I, taxAtExit: 0, outcome: { code: "listed-not-ranked", reason: beforeTaxOf }, detail: unitDetail, formulas });
 
   const cost = lots.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
@@ -593,7 +662,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
   // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open). The exit
   // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
-  const adjusted = indexedCost(lots, J[T]!, nav * (1 - spread));
+  const adjusted = indexedCost(lots, J![T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
@@ -657,8 +726,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       foreignTax,
       israeliTaxOnDistributions: israeliDistTax,
       fundLevelTax,
-      // F-109: what whole units did to the monthly purchases, for the page's line on the row
-      ...(unitBuy ? { wholeUnits: 1, unitPrice: unitBuy.price, monthlyBuys: wait.monthly, monthlyOrders: wait.placed, monthlySkipped: wait.skipped, cashLeft: waitingNis + heldAtExit } : {}),
+      ...unitDetail,
     },
     formulas,
   });
