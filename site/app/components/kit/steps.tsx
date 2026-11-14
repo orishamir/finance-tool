@@ -1,5 +1,6 @@
 // A step of a page that builds something in order (the fee page's deal: its kind, what it holds, its fees): a number in a circle, or a
-// check once the step is done, its heading, what was chosen, and the way to change it at the end of the line.
+// check once the step is done, its heading, what was chosen, and the way to change it at the end of the line. The steps once made, where
+// they are seldom changed again, stand on one line over what they built (`StepStrip`).
 import type { ReactNode } from "react";
 import { kit as copy } from "../../copy";
 import { IconCheck } from "../icons";
@@ -22,6 +23,47 @@ export function Step({ n, done, title, value, action, children, className }: { n
         <h3 className="font-semibold">{title}</h3>
         {value && <span className="text-sm text-muted-foreground min-w-0">{value}</span>}
         {action && <span className="ms-auto">{action}</span>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/** One done step on a `StepStrip`: its name, what was chosen, and the way to change it. */
+export interface StripStep {
+  id: string;
+  title: ReactNode;
+  value?: ReactNode;
+  /** The way to change it, after the value and a dot (a quiet `Button`, `size="sm"`). */
+  action?: ReactNode;
+}
+
+/**
+ * The steps of such a page once they are made, on one line over what they built, where they are seldom changed again: each step's name and
+ * what was chosen ("סוג המוצר: חשבון ניירות ערך"), a dot, and the way to change it; the line's own action at its end (`end`); and under the
+ * line what a step opens to be changed (its chips) or says about what was chosen (`children`). The line wraps where the width runs out.
+ * `heading` names the strip for a screen reader, as the steps' section would: the line shows each step's own name.
+ */
+export function StepStrip({ heading, steps, end, children }: { heading: string; steps: readonly StripStep[]; end?: ReactNode; children?: ReactNode }) {
+  return (
+    <section className="flex flex-col gap-2">
+      <h2 className="sr-only">{heading}</h2>
+      <div className="flex min-h-target flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+        {steps.map((s) => (
+          <span key={s.id} className="inline-flex min-w-0 flex-wrap items-center gap-x-2">
+            <span className="text-muted-foreground">{s.title}:</span>
+            {s.value && <span className="font-medium">{s.value}</span>}
+            {s.action && (
+              <>
+                <span aria-hidden="true" className="text-muted-foreground">
+                  ·
+                </span>
+                {s.action}
+              </>
+            )}
+          </span>
+        ))}
+        {end && <span className="ms-auto">{end}</span>}
       </div>
       {children}
     </section>

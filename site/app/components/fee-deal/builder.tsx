@@ -1,5 +1,6 @@
-// The two columns that enter the deal (method §10.6, `builder`). "על מה העסקה" (`SetupColumn`): the deal's kind or, in the provident family,
-// the place for its company and track, and the price list it was filled from with the button that fills a new deal from another.
+// What enters the deal (method §10.6, `builder`). "על מה העסקה" (`SetupStrip`): a deal with no kind yet chooses one in full; once it has one,
+// a line over its fees, as it is seldom changed, says its kind with the way to change it, in the provident family its company and track,
+// and at its end the button that fills a new deal from a price list, with the price list it was filled from under the line.
 // "העמלות בעסקה" (`FeesColumn`): its fees, grouped by what each is charged on under the summary's group headings, a group shown only while
 // the deal has a fee in it, each fee in its block (fee-block.tsx). A fee just taken away leaves the page's undo line (`UndoLine`) in its
 // place, as tall as its block was; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the
@@ -19,7 +20,7 @@ import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { useIsoLayoutEffect } from "../../lib/hooks";
-import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, focusPartEdit, type AddItem } from "../kit";
+import { AddLine, Button, ChoiceChips, GroupHead, Section, Step, StepStrip, focusPartEdit, type AddItem } from "../kit";
 import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
@@ -54,9 +55,8 @@ export type KindUndoLine = Omit<FeeUndoLine, "what" | "fee">;
 export type FeeFocus = { fee: string; on: "card" | "box" } | { fee: string; on: "part"; part: string };
 
 
-export function SetupColumn({ deal, view, kinds, offered, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
+export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, filled, kindLine, onKind }: {
   deal: FeeDeal;
-  view: Builder;
   kinds: readonly DealKind[];
   /** The products the picker offers (`productOffered`); a saved deal of another still opens with its own. */
   offered: readonly DealKind[];
@@ -68,92 +68,102 @@ export function SetupColumn({ deal, view, kinds, offered, onPickTrack, onTemplat
   filled: { left: readonly LeftOut[]; leftOut: LeftOutView | null } | null;
   /** The undo line of another kind just chosen that took fees away; null where none stands. */
   kindLine: KindUndoLine | null;
-  onDeal: (deal: FeeDeal) => void;
   /** Another kind chosen for the deal. */
   onKind: (kind: ProductId) => void;
 }) {
   const kind = kinds.find((k) => k.id === deal.kind) ?? null;
-  // a choice opened in the column belongs to the deal it was opened in (kept by its id): another deal opens with it closed. The column
-  // is not remounted for it, so the track button the picker opened from keeps the focus it gets back.
+  // a choice opened in the strip belongs to the deal it was opened in (kept by its id): another deal opens with it closed. The strip is not
+  // remounted for it, so the track button the picker opened from keeps the focus it gets back.
   const [pickingIn, setPickingIn] = useState<string | null>(null);
   const picking = pickingIn === deal.id;
   const setPicking = (open: boolean) => setPickingIn(open ? deal.id : null);
   const root = useRef<HTMLDivElement>(null);
-  // a kind just chosen hands the focus to the next step's first control, where the chips it was chosen in leave; a kind with no second
-  // step (a current account, a deposit, a makam) hands it to the next thing on the page, the fees column's add line
+  // a kind just chosen hands the focus to the next step's control on the strip (the track's, else the price lists'), where the chips it was
+  // chosen in leave; a kind with neither (a current account, a deposit, a makam) hands it to the next thing on the page, the fees' add line
   const kindChosen = useRef(false);
   useIsoLayoutEffect(() => {
     if (!kindChosen.current) return;
     kindChosen.current = false;
     // the undo line of a kind that took fees away has the focus already
-    if (!kindLine) (root.current?.querySelector<HTMLElement>("section:nth-of-type(2) :is(button, select, input)") ?? document.querySelector<HTMLElement>("[data-fees-add] button"))?.focus();
+    if (!kindLine) (root.current?.querySelector<HTMLElement>("[data-next-step]") ?? document.querySelector<HTMLElement>("[data-fees-add] button"))?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deal.kind]);
   const track = deal.template && templateSource(deal.template.id) === "track" ? deal.template : null;
   const house = deal.template && templateSource(deal.template.id) === "house" ? deal.template : null;
-  let n = 1;
+  const kindChips = (
+    <ChoiceChips
+      wrap
+      bleed=""
+      ids={offered.map((k) => k.id)}
+      labels={Object.fromEntries(offered.map((k) => [k.id, k.name]))}
+      value={deal.kind}
+      ariaLabel={b.kindsAria}
+      onChange={(id: ProductId) => {
+        kindChosen.current = true;
+        onKind(id);
+        setPicking(false);
+      }}
+    />
+  );
+  // a deal with no kind yet: the first step in full, its kinds to choose from
+  if (!kind)
+    return (
+      <Section title={b.title} level="kick" heading="h2">
+        <div ref={root} className="flex flex-col gap-4">
+          <Step n={1} title={b.kind}>
+            {kindChips}
+          </Step>
+        </div>
+      </Section>
+    );
+  const template = track ?? house;
   return (
-    <Section title={b.title} level="kick" heading="h2">
-      <div ref={root} className="flex flex-col gap-4">
-        <Step
-          n={n++}
-          done={!!kind}
-          title={b.kind}
-          value={kind?.name}
-          action={
-            kind && (
-              <Button variant="quiet" size="sm" flush wide onClick={() => setPicking(!picking)} aria-expanded={picking}>
+    <div ref={root}>
+      <StepStrip
+        heading={b.title}
+        steps={[
+          {
+            id: "kind",
+            title: b.kind,
+            value: kind.name,
+            action: (
+              <Button variant="quiet" size="sm" flush onClick={() => setPicking(!picking)} aria-expanded={picking}>
                 {picking ? b.close : b.kindChange}
               </Button>
-            )
-          }
-        >
-          {(!kind || picking) && (
-            <ChoiceChips
-              wrap
-              bleed=""
-              ids={offered.map((k) => k.id)}
-              labels={Object.fromEntries(offered.map((k) => [k.id, k.name]))}
-              value={deal.kind}
-              ariaLabel={b.kindsAria}
-              onChange={(id: ProductId) => {
-                kindChosen.current = true;
-                onKind(id);
-                setPicking(false);
-              }}
-            />
-          )}
-          {kindLine && (
-            <UndoLine key={`undo:product:${deal.kind}`} as="div" onUndo={kindLine.onUndo} onHold={kindLine.onHold} take={kindLine.take} refocusOnUndo refocus={() => root.current?.querySelector<HTMLElement>("button")}>
-              {kindLine.words}
-            </UndoLine>
-          )}
-        </Step>
-        {kind && !holdsFunds(kind.id) && onPickTrack && (
-          <Step
-            n={n++}
-            done={!!track}
-            title={b.track}
-            value={track ? track.name : b.trackNone}
-            action={
-              <Button variant="quiet" size="sm" flush onClick={(e) => onPickTrack(e.currentTarget)}>
-                {b.trackPick}
-              </Button>
-            }
-          >
-            {track && filled && <TemplateNote template={track} left={filled.left} />}
-          </Step>
-        )}
-        {kind && onTemplates && (
-          <Step n={n++} done={!!house} title={b.fill}>
-            {house && filled && <TemplateNote template={house} left={filled.left} leftOut={filled.leftOut} />}
-            <Button variant="outline" className="self-start" onClick={(e) => onTemplates(e.currentTarget)}>
+            ),
+          },
+          ...(!holdsFunds(kind.id) && onPickTrack
+            ? [
+                {
+                  id: "track",
+                  title: b.track,
+                  value: track ? track.name : b.trackNone,
+                  action: (
+                    <Button variant="quiet" size="sm" flush data-next-step="" onClick={(e) => onPickTrack(e.currentTarget)}>
+                      {b.trackPick}
+                    </Button>
+                  ),
+                },
+              ]
+            : []),
+        ]}
+        end={
+          onTemplates && (
+            <Button variant="quiet" size="sm" flush data-next-step="" onClick={(e) => onTemplates(e.currentTarget)}>
               {copy.end.template}
             </Button>
-          </Step>
+          )
+        }
+      >
+        {picking && kindChips}
+        {kindLine && (
+          <UndoLine key={`undo:product:${deal.kind}`} as="div" onUndo={kindLine.onUndo} onHold={kindLine.onHold} take={kindLine.take} refocusOnUndo refocus={() => root.current?.querySelector<HTMLElement>("button")}>
+            {kindLine.words}
+          </UndoLine>
         )}
-      </div>
-    </Section>
+        {template && filled && <TemplateNote template={template} left={filled.left} leftOut={house ? filled.leftOut : null} row />}
+      </StepStrip>
+    </div>
   );
 }
 
