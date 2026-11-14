@@ -4,7 +4,7 @@
 import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, dayAfter, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
@@ -35,6 +35,12 @@ export interface Fund {
      * The run reads TXF-16's rate and adds the product to the drag; `foreignWithholding`, where the record holds one, replaces it.
      */
     usDividends?: { yield: number; weight: number };
+    /**
+     * F-121: a fee lowered for a stated period (the fund record's `promotions`): the drag part it lowers, the rate charged during it as a
+     * fraction a year, and its first and last days. The part's own value is the rate outside it; a promotion of a part the drag does not
+     * hold changes nothing.
+     */
+    promotions?: { part: "management" | "variable" | "trustee"; rate: number; from: string; to: string }[];
   };
   /** A-08 half-spread on exchange trades. */
   halfSpread?: number;
@@ -372,6 +378,11 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     tally.flag("TXF-OQ7");
   }
   const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
+  // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate: from the first month that starts on or after
+  // its first day to the month before the one the day after its last day falls in, so a month it covers in part pays the fee's own rate
+  const lowered = (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: d[p.part]! - p.rate, from: p.from <= ctx.runDate ? 1 : monthOfDate(ctx.runDate, p.from) + 1, until: monthOfDate(ctx.runDate, dayAfter(p.to)) }));
+  if (lowered.some((p) => p.until > p.from)) formulas.push("F-121");
+  const deltaAt = (m: number) => lowered.reduce((x, p) => (m >= p.from && m < p.until ? x - p.cut : x), delta);
   const spread = fund.halfSpread ?? 0;
   if (spread > 0) book.cite("ETF-06");
 
@@ -563,10 +574,11 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
     let units = totalUnits(lots);
     const before = units * nav;
-    tally.fee("fund", (before * delta) / 12);
+    const dm = deltaAt(m);
+    tally.fee("fund", (before * dm) / 12);
     fundLevelTax += before * fundLevelRate * g;
-    nav *= 1 + g - delta / 12 - fundLevelRate * g;
-    tally.grow(1 + g - delta / 12 - fundLevelRate * g);
+    nav *= 1 + g - dm / 12 - fundLevelRate * g;
+    tally.grow(1 + g - dm / 12 - fundLevelRate * g);
 
     // 4. Distributions (F-20): paid out of the fund's value; the net is reinvested as a new lot.
     if (fund.distribution && m % (12 / fund.distribution.perYear) === 0) {
