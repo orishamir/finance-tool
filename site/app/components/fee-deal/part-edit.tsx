@@ -15,7 +15,7 @@ import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
 import { partFieldId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
-import { feeName, perActionWord } from "./words";
+import { Fig, feeName, perActionWord } from "./words";
 
 const cp = copy.cases.parts;
 
@@ -178,7 +178,10 @@ function OffsetBody({ at }: BodyProps) {
 /** A refund: its sum. */
 const RefundBody = ({ part, at }: BodyProps) => <>{at.box(part.id, part.fields[0]!)}</>;
 
-/** A part said in words alone (a note, a sale priced apart, free), with what it says fainter. */
+/** A free price: a template's is its sourced value, which opens its record's source; the person's is said by its lead alone. */
+const FreeBody = ({ part }: BodyProps) => (part.words.figure ? <Fig value={part.words.figure} /> : null);
+
+/** A part said in words alone (a note, a sale priced apart), with what it says fainter. */
 const QuietBody = ({ part }: BodyProps) => <>{part.words.quiet ? quiet(bare(part.words.quiet)) : null}</>;
 
 /** Each part's body, and the words it leads with where they are not its words' own (an offset's: its choice of fee is said around it). */
@@ -188,7 +191,7 @@ const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: s
   perAction: { Body: MainBody },
   held: { Body: HeldBody },
   sum: { Body: SumBody },
-  free: { Body: QuietBody },
+  free: { Body: FreeBody },
   discount: { Body: DiscountBody },
   third: { Body: ThirdBody },
   until: { Body: UntilBody },

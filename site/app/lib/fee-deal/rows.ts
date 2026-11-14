@@ -4,12 +4,13 @@
 import { feeDeal as copy } from "../../copy";
 import type { ChangeKind } from "@finance-tool/engine";
 import { feeOf, inCurrency, picked, tradeCurrency } from "./cases";
-import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
+import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type BoundCurrency, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
 import { feesOffered, type DataBar } from "./offers/offer";
 import { priceView, refOf, standingView, type BanSaid, type DealRead, type FeeRef, type PriceView, type StandingView } from "./deal-read";
 import { type FeeKindId } from "./shapes";
 import { BY_MAX, type ByKind } from "./offers/conditions";
 import { insideFund } from "./values";
+import type { SiteValue } from "../value";
 import { firstCase, slimParts, thingName, whenWords, type SlimPart, type WhenWords } from "./case-words";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -108,13 +109,40 @@ function stageViews(r: DealRead, fees: readonly Pick<Fee, "kind">[], i: number, 
 /** The stages read from the reading's month on: those whose end is after it, and the last. */
 const readStages = (r: DealRead, views: StageView[]): StageView[] => views.filter((s) => s.until === undefined || s.until > monthKey(r.reading.from));
 
+/** A case's prices with their sums in the trade's currency in that currency (`inCurrency`); as they are where the deal does not know it. */
+const inTradeOf = <P extends Priced>(priced: P, trade: BoundCurrency | null): P => (trade ? { ...priced, stages: priced.stages.map((s) => ({ ...s, price: inCurrency(s.price, trade) })) } : priced);
+
+/** A part's figure with no currency sign, where it is a sum (its unit a shekel one, since a price in the trade's currency names none). */
+const signless = (v: SiteValue): SiteValue => (v.unit.startsWith("nis") ? { ...v, unit: "count" } : v);
+
+/** Where the reading reads a fee's case (or its own prices, `caseId` none): its place among the read fees, -1 where it does not. */
+const readAt = (r: DealRead, fee: Fee, caseId: string | undefined): number => r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
+
+/**
+ * The currency a case's sums in the trade's currency (`inTrade`, BRK-48) are in: what is bought's, where the reading reads the case for
+ * the picks; none for a case it does not read, whose trade is not the one picked, nor where the deal does not know it.
+ */
+const tradeOf = (r: DealRead, fee: Fee, caseId: string | undefined): BoundCurrency | null => (readAt(r, fee, caseId) >= 0 ? tradeCurrency(r.deal.fees, r.picks) : null);
+
+/**
+ * A price's parts as the builder line says them: sums in the trade's currency in it where it is known (`tradeOf`), as the reading reads
+ * them, else as the list prints them, a number with no currency sign, which the price's own note says is in the trade's currency.
+ */
+function lineParts(r: DealRead, fee: Fee, priced: Priced, caseId: string | undefined): SlimPart[] {
+  const trade = tradeOf(r, fee, caseId);
+  const parts = slimParts(fee, inTradeOf(priced, trade), r);
+  const p = priced.stages[0]!.price;
+  if (trade || !("inTrade" in p) || !p.inTrade) return parts;
+  return parts.map((x) => ({ ...x, words: { ...x.words, ...(x.words.figure ? { figure: signless(x.words.figure) } : {}), ...(x.words.second ? { second: signless(x.words.second) } : {}) } }));
+}
+
 /** A fee's things as the band's pills. */
 const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: thingName(fee.kind, b), picked: picked(fee, b) }));
 
 /** A case as its band row (`open`: the case open in place). */
 function caseRow(r: DealRead, fee: CasesFee, c: Case, open: string | null): CaseRow {
   const from = monthKey(r.reading.from);
-  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: slimParts(fee, c, r), standing: standingNow(r, fee, c, c.id) };
+  return { case: c.id, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)), mine: !!c.mine, open: c.id === open, priced: feeInOrder(c) && feePriced(c, from), parts: lineParts(r, fee, c, c.id), standing: standingNow(r, fee, c, c.id) };
 }
 
 /** The count of a number of tracks in words. */
@@ -126,7 +154,7 @@ const tracksWords = (n: number): string => (n === 1 ? copy.cases.folded.one : n 
  */
 function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null } | null): FeeBlock {
   const isOpen = open?.fee === fee.id;
-  if (!hasCases(fee)) return { kind: "slim", parts: slimParts(fee, fee, r), open: isOpen };
+  if (!hasCases(fee)) return { kind: "slim", parts: lineParts(r, fee, fee, undefined), open: isOpen };
   const openCase = isOpen ? (open!.case ?? fee.cases[0]!.id) : null;
   const t = fee.by.findIndex((b) => b.kind === "track");
   const marked = t >= 0 && fee.cases.some((c) => c.mine);
@@ -150,12 +178,11 @@ function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null
  * its prices from the reading's start, and its price now (the last where every price ended before the start).
  */
 function caseRead(r: DealRead, fee: Fee, priced: Priced, caseId: string | undefined) {
-  const i = r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
+  const i = readAt(r, fee, caseId);
   const fees = i >= 0 ? r.fees : [fee];
   const at = Math.max(i, 0);
-  // sums in the trade's currency are shown in it where the picks give it (BRK-48), as the reading reads them
-  const trade = tradeCurrency(r.deal.fees, r.picks);
-  const views = stageViews(r, fees, at, trade ? priced.stages.map((s) => ({ ...s, price: inCurrency(s.price, trade) })) : priced.stages);
+  // sums in the trade's currency are shown in it where the reading reads the case for the picks (BRK-48), as the reading reads them
+  const views = stageViews(r, fees, at, inTradeOf(priced, tradeOf(r, fee, caseId)).stages);
   const stages = readStages(r, views);
   return { i, fees, at, stages, now: stages[0] ?? views.at(-1)! };
 }
