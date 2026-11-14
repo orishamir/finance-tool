@@ -76,7 +76,7 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
       {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
       className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", PART_LOOK[kind])}
     >
-      {grip && <span className="flex min-h-target items-center">{grip}</span>}
+      {grip}
       <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead kind={kind} mark={mark} lead={lead} />
         {children}
