@@ -41,16 +41,17 @@ export interface StripStep {
 /**
  * The steps of such a page once they are made, on one line over what they built, where they are seldom changed again: each step's name and
  * what was chosen ("סוג המוצר: חשבון ניירות ערך"), a dot, and the way to change it; the line's own action at its end (`end`); and under the
- * line what a step opens to be changed (its chips) or says about what was chosen (`children`). The line wraps where the width runs out.
- * `heading` names the strip for a screen reader, as the steps' section would: the line shows each step's own name.
+ * line what a step opens to be changed (its chips) or says about what was chosen (`children`). The line wraps where the width runs out,
+ * each step and the end 44 px tall, so the tap areas of actions on wrapped lines never meet. `heading` names the strip for a screen reader,
+ * as the steps' section would: the line shows each step's own name.
  */
 export function StepStrip({ heading, steps, end, children }: { heading: string; steps: readonly StripStep[]; end?: ReactNode; children?: ReactNode }) {
   return (
     <section className="flex flex-col gap-2">
       <h2 className="sr-only">{heading}</h2>
-      <div className="flex min-h-target flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+      <div className="flex flex-wrap items-center gap-x-6 text-sm">
         {steps.map((s) => (
-          <span key={s.id} className="inline-flex min-w-0 flex-wrap items-center gap-x-2">
+          <span key={s.id} className="inline-flex min-h-target min-w-0 flex-wrap items-center gap-x-2">
             <span className="text-muted-foreground">{s.title}:</span>
             {s.value && <span className="font-medium">{s.value}</span>}
             {s.action && (
@@ -63,7 +64,7 @@ export function StepStrip({ heading, steps, end, children }: { heading: string; 
             )}
           </span>
         ))}
-        {end && <span className="ms-auto">{end}</span>}
+        {end && <span className="ms-auto inline-flex min-h-target items-center">{end}</span>}
       </div>
       {children}
     </section>
