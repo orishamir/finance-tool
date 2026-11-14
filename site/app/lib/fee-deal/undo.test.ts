@@ -36,6 +36,19 @@ describe("one undo for a change that loses something", () => {
     expect(back.deal).toEqual(d);
     expect(back.chosen).toBe("fee-trade");
   });
+  it("keeps the undo of a fee taken away from beside another of its kind, until a fee of its kind comes", () => {
+    const d = account();
+    const copied: FeeDeal = { ...d, fees: [...d.fees, { id: "fee-custody-2", kind: "custody", house: "house:leumi", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }] };
+    const r = removeFeeKept(copied, "fee-custody-2", null)!;
+    expect(standing(r.undo, r.deal)).toBe(true);
+    expect(undo(r.deal, r.undo, r.chosen)!.deal).toEqual(copied);
+    const another = addFee(r.deal, "custody")!.deal;
+    expect(standing(r.undo, another)).toBe(false);
+    // a fee of a kind that stood alone: a new fee of its kind ends its undo, as before
+    const alone = removeFeeKept(d, "fee-custody", null)!;
+    expect(standing(alone.undo, alone.deal)).toBe(true);
+    expect(standing(alone.undo, addFee(alone.deal, "custody")!.deal)).toBe(false);
+  });
   it("hands the choice of a removed chosen fee to the next card, else the one before, and gives it back on undo", () => {
     const d = account();
     expect(removeFeeKept(d, "fee-trade", "fee-trade")!.chosen).toBe("fee-custody");

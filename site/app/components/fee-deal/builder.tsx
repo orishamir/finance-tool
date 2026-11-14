@@ -363,7 +363,8 @@ export function FeesColumn({
     const menu: GripAction[] = [];
     if (k > 0) menu.push({ label: lw.menu.up, onPick: to(ids[k - 1]) });
     if (k < count - 1) menu.push({ label: lw.menu.down, onPick: to(ids[k + 1]) });
-    return count > 1 ? <Grip item={liftId(l)} label={`${lw.grip.fee}${feeName(fee.kind, fee.name)}`} actions={menu} /> : undefined;
+    // named as its card names it: a fee copied from another house's list says the house after its name
+    return count > 1 ? <Grip item={liftId(l)} label={`${lw.grip.fee}${feeName(fee.kind, fee.name, rows.get(fee.id)?.house)}`} actions={menu} /> : undefined;
   };
   const feeZone = (fee: Fee, group: string, el: ReactNode) => (
     <DropZone

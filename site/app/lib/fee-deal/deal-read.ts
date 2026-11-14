@@ -59,13 +59,22 @@ export interface DealRead {
 /** The house part of a price list's id (`house:<id>`, or `house:<id>/<line>`). */
 const houseOfId = (id: string) => id.split("/", 1)[0]!;
 
-/** The deal's fees filled from another house's price list than the deal's own, by id, with that house's name (`houses`). */
-export function copiedFees(deal: FeeDeal, houses: (id: string) => string | null): Record<string, string> {
+/**
+ * The house of another price list than the deal's own that a fee was filled from, by its name (`houses`), which every place that names
+ * the fee says after its name; undefined for a fee of the deal's own list or of none. The fee may be one the deal no longer holds (an
+ * undo's line names a fee taken away).
+ */
+export function copiedHouse(deal: Pick<FeeDeal, "template">, f: { house?: string }, houses: (id: string) => string | null): string | undefined {
   const own = deal.template ? houseOfId(deal.template.id) : null;
+  if (!f.house || houseOfId(f.house) === own) return undefined;
+  return houses(f.house) ?? undefined;
+}
+
+/** The deal's fees filled from another house's price list than the deal's own, by id, with that house's name (`copiedHouse`). */
+export function copiedFees(deal: FeeDeal, houses: (id: string) => string | null): Record<string, string> {
   return Object.fromEntries(
     deal.fees.flatMap((f) => {
-      if (!f.house || houseOfId(f.house) === own) return [];
-      const name = houses(f.house);
+      const name = copiedHouse(deal, f, houses);
       return name ? [[f.id, name]] : [];
     }),
   );

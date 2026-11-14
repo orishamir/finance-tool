@@ -7,7 +7,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
+import { copiedHouse } from "../../lib/fee-deal/deal-read";
 import { kindById } from "../../lib/fee-deal/kinds";
+import { houseName } from "../../lib/fee-deal/templates";
 import { dealBreach, LIMITS, takeRefusal, type Limit } from "../../lib/fee-deal/limits";
 import type { AddressDeal } from "../../lib/fee-deal/link";
 import { NAME_MAX, newDeal, type FeeDeal } from "../../lib/fee-deal/model";
@@ -213,7 +215,8 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
   const shown = undoing && ("dealId" in undoing ? standing(undoing, deal) : true) ? undoing : null;
   const undoWords = (u: AnyUndo): string => {
     if (!("dealId" in u)) return `${copy.end.deleted}${dealLabel(u.deal, kindById(data.kinds, u.deal.kind)?.name ?? null)}.`;
-    return feeUndoWords(u, (f) => feeName(f.kind, f.name), data);
+    // a fee named as its card names it: one copied from another house's list says the house after its name
+    return feeUndoWords(u, (f) => feeName(f.kind, f.name, copiedHouse(deal, f, (id) => houseName(id, data))), data);
   };
   const words = shown ? undoWords(shown) : null;
   return {
