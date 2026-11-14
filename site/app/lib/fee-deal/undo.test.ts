@@ -312,10 +312,10 @@ describe("a price put in another form from the toolbox", () => {
     expect(undoWords(r.undo!, names, data)).toBe(copy.cases.formChanged.plain);
     expect(undo(r.deal, r.undo!, "fee-trade")!.deal).toEqual(d);
   });
-  it("names the bounds a trade's sum per action has no place for, and puts them back", () => {
+  it("names the bounds a trade's sum per action has no place for, keeps its currency, and puts them back", () => {
     const d = us();
     const r = changeFormKept(d, "fee-trade", "perAction", null, "c2")!;
-    expect(r.deal.fees[0]!.cases![1]!.stages[0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
+    expect(r.deal.fees[0]!.cases![1]!.stages[0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true }, currency: "USD" });
     expect(undoWords(r.undo!, names, data)).toBe("המחיר הוחלף, והמינימום והמקסימום באחוזים הוסרו.");
     expect(standing(r.undo!, r.deal)).toBe(true);
     expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);

@@ -60,7 +60,7 @@ const sum = (): FeeShape => ({ base: null, forms: ["sum"], usual: "sum", fields:
 
 /** Every fee's shape. A record base is its own `base`; the four the records do not list take the base whose cap would apply, or none. */
 export const FEE_SHAPES: Readonly<Record<FeeKindId, FeeShape>> = {
-  trade: { base: "trade", forms: ["action", "perUnit", "perAction"], usual: "action", fields: { action: TRADE, perUnit: PER_UNIT, perAction: AMOUNT }, saleApart: true },
+  trade: { base: "trade", forms: ["action", "perUnit", "perAction"], usual: "action", fields: { action: TRADE, perUnit: PER_UNIT, perAction: AMOUNT_IN }, saleApart: true },
   spread: { ...action(RATE), base: "spread" },
   creation_redemption: { ...action(RATE, true), base: "creation_redemption" },
   load: { ...action(RATE), base: "load" },
