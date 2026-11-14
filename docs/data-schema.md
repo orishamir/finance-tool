@@ -63,10 +63,11 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `nis_millions`, `usd`, `eur`, `gbp`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `nis_per_share`, `eur_per_share`, `gbp_per_share`, `usd_per_trade`, `gbp_per_trade`, `usd_per_event`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `nis_millions`, `usd`, `eur`, `gbp`, `pct` (a share), `pct_per_year`, `pct_per_year_effective`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `nis_per_share`, `eur_per_share`, `gbp_per_share`, `usd_per_trade`, `gbp_per_trade`, `usd_per_event`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
 
 Units that need a word:
 
+- `pct_per_year_effective`: an annual rate quoted as effective, compounded at each payment, as the Bank of Israel's averages of deposit rates paid are (BANK-22; reporting directive 877 s.9). A bank's own rate in `pct_per_year` is nominal (BANK-50); F-21 reads the unit to know which a rate is.
 - `nis_millions`: an amount in millions of shekels, as the CMA datasets report amounts (CAT-03), used by the `holdings` of §3.13 (D34). The site shows it as `25,706.14 מיליון ₪` and does not convert it.
 - `usd`, `eur`, `gbp`: an amount in dollars, euros or pounds sterling, as its source prints it. An amount abroad (§3.16) stays in its own currency and is never converted, since a conversion would add a rate that needs a source and a date of its own.
 - `usd_per_share`: a dollar amount per share, a per-share commission rate. `nis_per_share`, `eur_per_share` and `gbp_per_share`: the same in shekels, euros or pounds, a sum per unit the person types on the fee page (method F-112); no price list collected prints one. `usd_per_trade` and `gbp_per_trade`: a dollar or pound amount per trade, a minimum or maximum commission in a foreign currency. They serve the foreign brokers' tariffs; the engine converts them at the run's exchange rate.

@@ -1749,9 +1749,11 @@ def s41_fill():
     pi = 0.03
     cc = 0.85 * 0.005
     rows = []
-    # a one-month deposit pays its month's interest at the annual nominal rate, once at maturity (BANK-50); the makam's yield is effective
-    for name, r in (('one-month deposit, bank average 3.2% ("average paid at this bank last month")', 0.032),
-                    ('one-month deposit, own offer 3.6% ("entered by you")', 0.036)):
+    # the bank average is the Bank of Israel's series (BANK-22), a weighted average of effective annual rates (reporting directive 877
+    # s.9), so its month is (1 + r)^(1/12) - 1; the person's offer is the bank's annual nominal rate, paid once at maturity (BANK-50);
+    # the makam's yield is effective
+    rows.append(['one-month deposit, bank average 3.2% ("average paid at this bank last month")', f2(B * ((1 + 0.85 * mrate(0.032)) - (1 + cc) ** (1 / 12)))])
+    for name, r in (('one-month deposit, own offer 3.6% ("entered by you")', 0.036),):
         rows.append([name, f2(B * ((1 + 0.85 * term_rate(r, 1)) - (1 + cc) ** (1 / 12)))])
     for name, r in (('makam 3.9% (no commission given)', 0.039),):
         rows.append([name, f2(B * ((1 + 0.85 * r) ** (1 / 12) - (1 + cc) ** (1 / 12)))])
@@ -1778,9 +1780,9 @@ def s41_fill():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 0 | Filled-in inputs | — | {filled("π 3% (as the daily money-market fund example)")} |\n'
         f'| 1 | Amount considered: 80,000 − 20,000 that must stay available = 60,000 | product D13 | 60,000 |\n'
-        f'| 2 | Current account 0.5%, 15% withheld; deposits and makam 85% of the rate after tax; a one-month deposit pays its rate × 1/12 at maturity, the annual nominal rate (BANK-50) | {L("TXI-08", "TXI-03", "TXI-11", "BANK-50")} | — |\n'
+        f'| 2 | Current account 0.5%, 15% withheld; deposits and makam 85% of the rate after tax; the own offer is the bank\'s annual nominal rate, a one-month deposit paying it × 1/12 at maturity (BANK-50); the bank average is the Bank of Israel\'s series (BANK-22), a weighted average of effective annual rates, so its month is (1 + 3.2%)^(1/12) − 1 = {f6(mrate(0.032))} | {L("TXI-08", "TXI-03", "TXI-11", "BANK-50", "BANK-22")}, [reporting directive 877 s.9](<https://boi.org.il/media/1hinf3k4/h2689.pdf#page=62>) (circular ח-2689, 28.12.2021, p.62), which the series\' directive 823A s.8 cites for its rate ([circular ח-2757](<https://boi.org.il/media/z0ypeptz/h2757.pdf#page=9>), p.9) | — |\n'
         f'| 3 | Daily money-market fund: one-year return {pct(n, 3)}, tax 25% of the part above inflation → {pct(net, 3)} after tax | {L("MF-34", "TXS-12")} | — |\n'
-        f'| 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)], where a one-month deposit\'s (1 + r_alt after tax)^(1/12) is its month, 1 + 0.85 × r/12 | method F-60 | see table |\n'
+        f'| 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)], where a one-month deposit\'s (1 + r_alt after tax)^(1/12) is its month after tax: 1 + 0.85 × r/12 at the own offer, 1 + 0.85 × ((1 + r)^(1/12) − 1) at the bank average | method F-60, F-07 | see table |\n'
         f'| 5 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once; the preset runs only the cash options with a sourced or entered rate | method F-60, F-83, G-28; product D17 | see second table |\n\n'
         + table(['Alternative', 'Monthly cost of leaving 60,000 in the current account'], rows)
         + '\n\n' + table(['Candidate', 'Outcome', 'Reason'], [[c, o, r] for c, o, r in cov])

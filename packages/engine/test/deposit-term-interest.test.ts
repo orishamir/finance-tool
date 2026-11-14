@@ -75,3 +75,15 @@ describe("F-26 the current account's monthly rate", () => {
     expect(currentAccountMonthlyRate(0.03, undefined)).toBeCloseTo(Math.pow(1.03, 1 / 12) - 1, 12);
   });
 });
+
+describe("F-21 at a rate quoted as effective (the unit pct_per_year_effective)", () => {
+  it("compounds the effective rate over any term, F-07's month, and leaves interest paid out at it unknown", () => {
+    // 60,000 for one month at 3.2% effective: 60,000 × (1.032^(1/12) − 1) = 157.73, where 3.2% nominal pays 160
+    expect(depositInterest(60_000, 0.032, 1, 1, { basis: "effective" })!).toBeCloseTo(60_000 * (Math.pow(1.032, 1 / 12) - 1), 9);
+    expect(depositInterest(60_000, 0.032, 1)).toBeCloseTo(160, 9);
+    // the printed days and the term do not change it: the rate already holds its compounding
+    expect(depositInterest(10_000, 0.032, 3, 3, { basis: "effective", termDays: 90 })!).toBeCloseTo(10_000 * (Math.pow(1.032, 3 / 12) - 1), 9);
+    expect(depositInterest(10_000, 0.032, 24, 24, { basis: "effective" })!).toBeCloseTo(10_000 * (Math.pow(1.032, 2) - 1), 9);
+    expect(depositInterest(10_000, 0.032, 1, 1, { basis: "effective", paidOut: true })).toBeNull();
+  });
+});

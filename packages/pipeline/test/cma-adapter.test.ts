@@ -23,7 +23,7 @@ import {
   EXCLUDED_COMPANIES,
   closedTrack,
   endsInGeneral,
-  PENSION_GENERAL_CLOSED,
+  GENERAL_TRACKS,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -157,21 +157,50 @@ describe("normalise", () => {
   });
 
   it("leaves out the eight pension general tracks CAT-19 closes, by id, and nothing else whose name ends in כללי", () => {
-    for (const [id, name] of PENSION_GENERAL_CLOSED) expect(closedTrack("", name, "pensia-net", id), name).toBe(true);
+    const pension = [...GENERAL_TRACKS["pensia-net"].readings];
+    expect(pension.filter(([, r]) => r.cat19 === "closed")).toHaveLength(8);
+    for (const [id, r] of pension) expect(closedTrack("", r.name, "pensia-net", id), r.name).toBe(true);
     // a name alone is not enough: another track ending in the word is kept by this rule
     expect(closedTrack("", "קרן חדשה פנסיה - כללי", "pensia-net", 99999)).toBe(false);
     for (const name of ["מיטב פנסיה כללית לבני 50 ומטה", "הראל פנסיה כללית מניות"]) expect(closedTrack("", name, "pensia-net", 1)).toBe(false);
-    // gemelnet's general tracks are not read by this rule (923 among them, queued for a check one by one)
-    expect(closedTrack("כלל האוכלוסיה", "מיטב בטחון", "gemelnet", 923)).toBe(false);
-    expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet", 880)).toBe(false);
+    // a Pension-Net id is read in Pension-Net only
+    expect(closedTrack("כלל האוכלוסיה", "כלל פנסיה כללי", "gemelnet", 2002)).toBe(false);
   });
 
-  it("reports a Pension-Net name ending in כללי that is not on the list, so it is not dropped or kept silently", () => {
+  it("leaves out the four general tracks of provident funds for annuity CAT-19 closes, by id, and keeps the sick-pay and self-directed ones", () => {
+    const gemel = [...GENERAL_TRACKS.gemelnet.readings];
+    expect(gemel.filter(([, r]) => r.cat19 === "closed").map(([id]) => id)).toEqual([119, 260, 263, 923]);
+    for (const [id, r] of gemel) expect(closedTrack("כלל האוכלוסיה", r.name, "gemelnet", id), r.name).toBe(r.cat19 === "closed");
+    // the circular's "קופת גמל" leaves out sick-pay and self-directed funds, so their general tracks are not closed by it
+    expect(gemel.filter(([, r]) => r.cat19 === "outside").map(([id]) => id)).toEqual([857, 872, 1008, 1161, 1486, 1514, 1541, 2023, 2098, 8888, 14938, 15367]);
+    // every track read is a general track of a provident fund for annuity in the stored file's terms
+    for (const [, r] of gemel) expect(GENERAL_TRACKS.gemelnet.isGeneral({ name: r.name, classification: "תגמולים ואישית לפיצויים", specialization: "כללי" })).toBe(true);
+    expect(GENERAL_TRACKS.gemelnet.isGeneral({ name: "מיטב השתלמות כללי", classification: "קרנות השתלמות", specialization: "כללי" })).toBe(false);
+    // a study fund's general track is open; a Gemel-Net id is read in Gemel-Net only
+    expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי", "gemelnet", 880)).toBe(false);
+    expect(closedTrack("", "מיטב בטחון", "pensia-net", 923)).toBe(false);
+  });
+
+  it("reports a general track of a provident fund for annuity with no reading, so it is not dropped or kept silently", () => {
+    const head = "FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,TARGET_POPULATION,SPECIALIZATION,SUB_SPECIALIZATION,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n";
+    const row = (id: number, name: string, classification: string, spec: string) =>
+      `"${id}","${name}","${classification}","בקרה","מנהלת","202609","2015-12-31T00:00:00","כלל האוכלוסיה","${spec}","${spec}","0.5","0.1","512065202"\n`;
+    const csv = head + row(99999, "גמל חדשה כללי", "תגמולים ואישית לפיצויים", "כללי") + row(923, "מיטב בטחון", "תגמולים ואישית לפיצויים", "כללי") + row(1486, "מיטב גמל בניהול אישי", "תגמולים ואישית לפיצויים", "כללי") + row(99998, "השתלמות חדשה כללי", "קרנות השתלמות", "כללי");
+    const r = normalise(csv, ctx);
+    const said = r.problems.join(" ");
+    expect(said).toContain("fund 99999");
+    expect(said).toContain("no reading in GENERAL_TRACKS");
+    // a closed track is left out without a report, a listed sick-pay or self-directed one is kept without one, and a study fund is not read
+    for (const id of [923, 1486, 99998]) expect(said).not.toContain(`fund ${id}`);
+    expect(r.file?.funds.map((f) => f.fund_id).sort()).toEqual([1486, 99998, 99999]);
+  });
+
+  it("reports a Pension-Net name ending in כללי with no reading, so it is not dropped or kept silently", () => {
     const head = "FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n";
     const row = (id: number, name: string) => `"${id}","${name}","קרנות חדשות","בקרה","מנהלת","202609","2015-12-31T00:00:00","0.11","1.25","512065202"\n`;
     const r = normalise(head + row(99999, "קרן חדשה פנסיה - כללי") + row(2002, "כלל פנסיה כללי"), { ...ctx, config: pensia });
     expect(r.problems.join(" ")).toContain("fund 99999");
-    expect(r.problems.join(" ")).toContain("is not in PENSION_GENERAL_CLOSED");
+    expect(r.problems.join(" ")).toContain("no reading in GENERAL_TRACKS");
     // a listed track is left out without a report
     expect(r.problems.join(" ")).not.toContain("fund 2002");
     expect(endsInGeneral("מיטב פנסיה כללית לבני 50 ומטה")).toBe(false);

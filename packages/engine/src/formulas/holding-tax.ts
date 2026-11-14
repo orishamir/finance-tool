@@ -21,8 +21,13 @@ export interface InterestCalc {
   periodsPerYear?: number;
 }
 
-/** What F-21 reads of a deposit beyond its rate and term: the days the table prints, how it calculates interest, and whether interest is paid out during the term. */
+/** How an annual rate is quoted: nominal, as a bank publishes its own (BANK-50), or effective (the unit `pct_per_year_effective`). */
+export type RateBasis = "nominal" | "effective";
+
+/** What F-21 reads of a deposit beyond its rate and term: how the rate is quoted, the days the table prints, how it calculates interest, and whether interest is paid out during the term. */
 export interface DepositTermFacts {
+  /** The rate's quote; absent, nominal. */
+  basis?: RateBasis;
   /** The term in days as the table prints it (`term_days`), for a term under a year. */
   termDays?: number;
   calc?: InterestCalc;
@@ -49,11 +54,14 @@ export function effectiveAnnualOf(annualRate: number, calc: InterestCalc | undef
  * - A one-year term: `principal × ((1 + r)^(months/12) − 1)`, which is `r` over the year.
  * - A term over a year compounds at the effective annual rate `R` the record gives (`effectiveAnnualOf`):
  *   `principal × ((1 + R)^(months/12) − 1)`. Null where the record gives none (BANK OQ21): an open rule enters no formula.
+ * - A rate quoted as effective (`basis` `effective`) is that `R` itself, over any term: `principal × ((1 + R)^(months/12) − 1)`, F-07's
+ *   month compounded. Interest paid out at such a rate is not in the method: null.
  * Unlinked or partly linked: `rate × max(0, interest − deduction)`, the deduction being what is left of TXI-20 for the year. Fully
  * CPI-linked: linkage exempt (TXI-05), the tax is `rate × real interest`, where the real interest is the quoted real rate on the
  * indexed principal.
  */
 export function depositInterest(principal: number, annualRate: number, months: number, termMonths: number = months, facts: DepositTermFacts = {}): number | null {
+  if (facts.basis === "effective") return facts.paidOut ? null : principal * (Math.pow(1 + annualRate, months / 12) - 1);
   if (termMonths < 12 || facts.paidOut) {
     const days = facts.termDays !== undefined && termMonths > 0 ? (facts.termDays * months) / termMonths : (months * 365) / 12;
     return principal * annualRate * (days / 365);
