@@ -15,6 +15,7 @@ import { Button, FigureField, InlineSelect, RangeMenu, SegmentedControl, TextFie
 import { PriceFigure, partFieldId } from "./figures";
 import { PartLine, PendingEdit, SPOKEN, type PartPlace } from "./part-edit";
 import type { PendingPart } from "../../lib/fee-deal/offers/parts";
+import type { ChargedForm } from "../../lib/fee-deal/offers/capacity";
 
 /**
  * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's ✕
@@ -30,6 +31,7 @@ function PriceParts({
   parts,
   name,
   deal,
+  later,
   pending,
   onFee,
   onHoldOn,
@@ -43,6 +45,8 @@ function PriceParts({
   parts: OpenPart[];
   name: string;
   deal: FeeDeal;
+  /** The form a price added after a free one takes (`OpenCase.later`). */
+  later: ChargedForm;
   /** The part asking for its figure, month or fee here, where it asks on this price (the last price of the purchase). */
   pending: PendingPart | null;
   onFee: (f: Fee) => void;
@@ -103,7 +107,7 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} />
       ))}
-      {pending && <PendingEdit fee={fee} caseId={caseId} side={side} k={k} part={pending} deal={deal} name={name} onFee={onFee} onDone={onPendingDone} />}
+      {pending && <PendingEdit fee={fee} caseId={caseId} side={side} k={k} part={pending} deal={deal} name={name} later={later} onFee={onFee} onDone={onPendingDone} />}
     </>
   );
 }
@@ -129,7 +133,7 @@ export function OpenParts({
   name: string;
   pending: PendingPart | null;
   onFee: (f: Fee) => void;
-  onHoldOn: (side: Side, k: number, caseId?: string) => void;
+  onHoldOn: (side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
   onPendingDone: () => void;
 }) {
   const caseId = open.case ?? undefined;
@@ -153,9 +157,10 @@ export function OpenParts({
             parts={st.parts}
             name={stageName}
             deal={deal}
+            later={open.later}
             pending={s === "buy" && j === stages.length - 1 ? pending : null}
             onFee={onFee}
-            onHoldOn={(sd, k) => onHoldOn(sd, k, caseId)}
+            onHoldOn={(sd, k) => onHoldOn(sd, k, caseId, open.later)}
             onPendingDone={onPendingDone}
           />
         </div>

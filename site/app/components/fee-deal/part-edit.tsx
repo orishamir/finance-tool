@@ -7,7 +7,7 @@ import type { OpenPart, PartField } from "../../lib/fee-deal/builder";
 import { setUntil, withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho, type Side } from "../../lib/fee-deal/edit";
 import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
-import { sumCurrency } from "../../lib/fee-deal/offers/capacity";
+import { sumCurrency, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
@@ -245,7 +245,7 @@ function OffsetChoice({ deal, fee, value, label, onChange }: { deal: FeeDeal; fe
  * A part the toolbox added that asks, where it will stand, for what it needs (`PARTS[part].ask`): a later price its month, an offset its
  * fee, a bound or a percent maximum its figure, whose box takes the focus as it appears.
  */
-export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onDone }: { fee: Fee; caseId?: string; side: Side; k: number; part: PendingPart; deal: FeeDeal; name: string; onFee: (f: Fee) => void; onDone: () => void }) {
+export function PendingEdit({ fee, caseId, side, k, part, deal, name, later, onFee, onDone }: { fee: Fee; caseId?: string; side: Side; k: number; part: PendingPart; deal: FeeDeal; name: string; later: ChargedForm; onFee: (f: Fee) => void; onDone: () => void }) {
   const at = { side, k, ...(caseId ? { caseId } : {}) };
   const label = (field: string) => copy.builder.fieldName(name, field);
   const price = pricesOn(fee, side, caseId)[k]!.price;
@@ -274,7 +274,7 @@ export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onD
   let lead: string | undefined;
   if (ask === "month") {
     lead = bare(cp.until);
-    body = <MonthField value={null} label={label(copy.panel.until)} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m }))} />;
+    body = <MonthField value={null} label={label(copy.panel.until)} tight waits autoFocus {...untilRange(pricesOn(fee, side, caseId), k)} onCommit={(m) => done(setPart(fee, part, true, { ...at, month: m, after: later }))} />;
   } else if (ask === "fee") {
     lead = bare(cp.offsetOf.lead);
     body = (

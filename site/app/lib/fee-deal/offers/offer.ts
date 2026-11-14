@@ -1,10 +1,13 @@
-// What a product's fee is offered (method §10.6): its kind's capacity (capacity.ts, the parts a price of it can hold and the things it may
-// change by), narrowed by the rule table's rows for the product (rules.ts). The toolbox shows only what the offer holds, a fee is offered
-// to add only where its offer keeps a form that charges, and a new fee starts in the first form offered; a deal that holds more still
-// opens and reads, since the model reads capacity. Pure; no Hebrew.
+// What a product is offered (method §10.6), decided here alone: which fees it is offered to add (`feeOffered`, `feesOffered`; the fees its
+// records give it, less a fee the regulator's data bars and a fee whose offer keeps no form that charges), whether the product picker
+// offers it (`productOffered`), and what each fee is offered (`offerFor`: its kind's capacity, the parts a price of it can hold and the
+// things it may change by, narrowed by the rule table's rows for the product, rules.ts). The toolbox shows only what the offer holds, a new
+// fee and a price after a free one start in the first form offered, and a deal of another product keeps only the fees it is offered; a
+// deal that holds more still opens and reads, since the model reads capacity. Pure; no Hebrew.
 import type { ProviderKind } from "../model";
 import { blankPrice } from "../model";
-import { FEE_KIND_IDS, kindHas, type FeeKindId, type FormId } from "../shapes";
+import type { FeeBase, ProductId } from "@finance-tool/schema";
+import { FEE_KIND_IDS, holdsFunds, type FeeKindId, type FormId } from "../shapes";
 import { capacity, type ChargedForm } from "./capacity";
 import { conditionsFor, type ByKind } from "./conditions";
 import { PART_IDS, PARTS, type PartId } from "./parts";
@@ -101,15 +104,57 @@ export function offerFor(product: ProductFacts | null, fee: FeeKindId): Offer {
   return { forms, usual, parts, conditions, bans, why };
 }
 
-/** Whether a product's fee is offered as a fee to add: its offer keeps a form that charges. */
-export const feeOffered = (product: ProductFacts | null, fee: FeeKindId): boolean => offerFor(product, fee).usual !== null;
+/**
+ * The fees a kind offers beyond its record's bases, the rarer ones: for a kind that holds funds, the spread of a conversion, a charge for a
+ * corporate event abroad and a current account at a bank. A fee of the person's own (`own`) is offered to every kind, last.
+ */
+const RARER_FOR_FUNDS: readonly FeeKindId[] = ["fx_spread", "corporate_event", "current_account"];
 
 /**
- * Whether the page's product picker offers a product: some fee it has (`kindHas`) is offered. A bank deposit's, a savings plan's and a bank
+ * Whether a kind has a fee at all: one of its record's bases, for a kind that holds funds the fund's own fee and the rarer fees, and a fee
+ * of the person's own, which every kind has.
+ */
+export function kindHas(kind: ProductId, bases: readonly FeeBase[], fee: FeeKindId): boolean {
+  return fee === "own" || (bases as readonly FeeKindId[]).includes(fee) || (holdsFunds(kind) && (fee === "fund_management" || RARER_FOR_FUNDS.includes(fee)));
+}
+
+/**
+ * A verdict from the data that a product may not charge some fees, which no rule row can say since it reads the regulator's data, with the
+ * rules it stands on: a fee from deposits where the data says of every track of the product that there is none, by rule (PF-06).
+ */
+export interface DataBar {
+  fees: readonly FeeKindId[];
+  cite: readonly string[];
+}
+
+/**
+ * Whether a product's fee is offered as a fee to add: the product has it (`kindHas`), the data does not bar it (`bar`), and its offer
+ * keeps a form that charges; with no product yet, any fee its kind's capacity can charge.
+ */
+export const feeOffered = (product: ProductFacts | null, fee: FeeKindId, bar?: DataBar | null): boolean =>
+  (product === null || kindHas(product.id, product.bases, fee)) && !bar?.fees.includes(fee) && offerFor(product, fee).usual !== null;
+
+/**
+ * The fees to suggest for a deal of a product, each one it is offered (`feeOffered`) and lacks (`present`): `usual`, its record's bases
+ * (and, for a kind that holds funds, the fund's own fee); `rarer`, the rarer fees and a fee of the person's own, last. A deal with no
+ * product yet is suggested a fee of the person's own alone.
+ */
+export function feesOffered(product: ProductFacts | null, present: readonly FeeKindId[], bar?: DataBar | null): { usual: FeeKindId[]; rarer: FeeKindId[] } {
+  const ok = (k: FeeKindId) => !present.includes(k) && feeOffered(product, k, bar);
+  if (!product) return { usual: [], rarer: ok("own") ? ["own"] : [] };
+  const funds = holdsFunds(product.id);
+  const own: FeeKindId[] = [...(product.bases as readonly FeeKindId[]), ...(funds ? (["fund_management"] as const) : [])];
+  const usual = own.filter(ok);
+  const rarer = [...(funds ? RARER_FOR_FUNDS.filter((k) => !own.includes(k)) : []), "own" as const].filter(ok);
+  return { usual, rarer };
+}
+
+/**
+ * Whether the page's product picker offers a product: some fee it has is offered. A bank deposit's, a savings plan's and a bank
  * child-savings plan's only fee, breaking it, fits no form the page has (BANK-06, BANK-16, BANK-28), so they are not; a saved deal of one
  * still opens.
  */
-export const productOffered = (product: ProductFacts): boolean => FEE_KIND_IDS.some((f) => kindHas(product.id, product.bases, f) && feeOffered(product, f));
+export const productOffered = (product: ProductFacts): boolean => FEE_KIND_IDS.some((f) => feeOffered(product, f));
 
 /**
  * The ban the law sets on a product's fee for a deal (a row's `ban`): one that binds the deal's provider kind and, where it names values,

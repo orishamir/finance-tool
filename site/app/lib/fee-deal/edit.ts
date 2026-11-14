@@ -41,10 +41,10 @@ import {
 import type { DealKind } from "./kinds";
 import { boundsAction, charged, onAction } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES, type Figure } from "./offers/figures";
-import { kindHas, WHAT_VALUES, type FeeKindId, type FormId } from "./shapes";
-import { capacity } from "./offers/capacity";
+import { WHAT_VALUES, type FeeKindId, type FormId } from "./shapes";
+import { capacity, type ChargedForm } from "./offers/capacity";
 import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, LIST_IDS, RANGE_UNITS, type ByKind, type PlaceKind, type RangeKind, type RangeUnit } from "./offers/conditions";
-import { feeOffered } from "./offers/offer";
+import { feeOffered, type DataBar } from "./offers/offer";
 
 export type { Side } from "./model";
 
@@ -60,16 +60,16 @@ export function addFee(deal: FeeDeal, kind: FeeKindId, form?: FormId): { deal: F
 export const removeFee = (deal: FeeDeal, feeId: string): FeeDeal => ({ ...deal, fees: deal.fees.filter((f) => f.id !== feeId) });
 
 /**
- * A deal of another kind: a fee the new kind does not have (`kindHas`), may not charge by rule (`barred`), or is not offered on it (the
- * rule table's `feeOffered`: a provident account's deposit fee on a switch to a study fund) leaves it, and the fees of kinds both have
- * and offer stay as typed, a fee of the person's own among them. Its template goes, with the provider kind the template gave: a
+ * A deal of another kind: a fee the new kind is not offered (`feeOffered`: one it does not have, one the data bars, `bar`, or one the rule
+ * table offers no form that charges, a provident account's deposit fee on a switch to a study fund) leaves it, and the fees it is offered
+ * stay as typed, a fee of the person's own among them. Its template goes, with the provider kind the template gave: a
  * template belongs to one kind (a house's price list to the securities account, a track to its product). The reading's picks stay. The
  * same kind leaves the deal as it is.
  */
-export function setKind(deal: FeeDeal, kind: DealKind, barred: readonly FeeKindId[] = []): FeeDeal {
+export function setKind(deal: FeeDeal, kind: DealKind, bar: DataBar | null = null): FeeDeal {
   if (deal.kind === kind.id) return deal;
   const { template: _template, provider: _provider, ...rest } = deal;
-  const fees = deal.fees.filter((f) => kindHas(kind.id, kind.bases, f.kind) && !barred.includes(f.kind) && feeOffered(kind, f.kind));
+  const fees = deal.fees.filter((f) => feeOffered(kind, f.kind, bar));
   return { ...rest, kind: kind.id, fees };
 }
 
@@ -278,22 +278,23 @@ export function setUntil<F extends Fee>(fee: F, side: Side, k: number, month: Mo
 // and adds the next one, which asks for its price; "כל הזמן" makes a price the last, taking away the prices after it.
 
 /**
- * A fee whose last price on a side ends at the start of `until`, with one more price after it: of the form the last had (the fee's usual
- * form after a free price), its rate or sum blank, so the fee is not read until the person gives it (`feePriced`). The person says the
- * month first, so the prices are in order from the start.
+ * A fee whose last price on a side ends at the start of `until`, with one more price after it: of the form the last had, or after a free
+ * price the form `after` (the first form the product's fee is offered in, `Offer.usual`; the kind's usual form for a fee of no product),
+ * its rate or sum blank, so the fee is not read until the person gives it (`feePriced`). The person says the month first, so the prices are
+ * in order from the start.
  */
-export function addLater<F extends Fee>(fee: F, side: Side, until: MonthKey, caseId?: string): F {
+export function addLater<F extends Fee>(fee: F, side: Side, until: MonthKey, caseId?: string, after: ChargedForm = capacity(fee.kind).usual): F {
   const stages = pricesOn(fee, side, caseId);
   const last = stages.at(-1)!;
-  return withStages(fee, side, [...stages.slice(0, -1), { ...last, until }, { price: blankPrice(laterForm(fee, last.price)) }], caseId);
+  return withStages(fee, side, [...stages.slice(0, -1), { ...last, until }, { price: blankPrice(last.price.form === "free" ? after : last.price.form) }], caseId);
 }
 
-/** The form of the price that follows `before`: the same form, or the fee's usual one after a free price. */
-const laterForm = (fee: Fee, before: Price): FormId => (before.form === "free" ? capacity(fee.kind).usual : before.form);
-
-/** Price `k` for a limited time, up to the start of `month`: the last price ends there and the next one follows it (`addLater`); another moves its end. */
-export function setLimited<F extends Fee>(fee: F, side: Side, k: number, month: MonthKey, caseId?: string): F {
-  return k === pricesOn(fee, side, caseId).length - 1 ? addLater(fee, side, month, caseId) : setUntil(fee, side, k, month, caseId);
+/**
+ * Price `k` for a limited time, up to the start of `month`: the last price ends there and the next one follows it (`addLater`, in the form
+ * `after` where it follows a free price); another moves its end.
+ */
+export function setLimited<F extends Fee>(fee: F, side: Side, k: number, month: MonthKey, caseId?: string, after?: ChargedForm): F {
+  return k === pricesOn(fee, side, caseId).length - 1 ? addLater(fee, side, month, caseId, after) : setUntil(fee, side, k, month, caseId);
 }
 
 /** Price `k` held on with no end: the prices after it go. */
@@ -308,10 +309,11 @@ export function holdOn<F extends Fee>(fee: F, side: Side, k: number, caseId?: st
  * Whether the prices after `k` hold nothing the person gave: one price only, as "לזמן מוגבל" added it (no month, its form the one it
  * came with, its figures, periods and currency untouched). Anything chosen in it counts. They go then without an undo.
  */
-export function laterUntouched(fee: Fee, side: Side, k: number, caseId?: string): boolean {
+export function laterUntouched(fee: Fee, side: Side, k: number, caseId?: string, after: ChargedForm = capacity(fee.kind).usual): boolean {
   const stages = pricesOn(fee, side, caseId);
   const later = stages.slice(k + 1);
-  return later.length === 1 && later[0]!.until === undefined && sameContent(later[0]!.price, blankPrice(laterForm(fee, stages[k]!.price)));
+  const form = stages[k]!.price.form === "free" ? after : stages[k]!.price.form;
+  return later.length === 1 && later[0]!.until === undefined && sameContent(later[0]!.price, blankPrice(form));
 }
 
 /**

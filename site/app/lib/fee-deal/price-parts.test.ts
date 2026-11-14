@@ -127,7 +127,7 @@ describe("sums in the trade's currency", () => {
     expect(r.unmatched).toEqual(["fee-trade"]);
     expect(r.noCurrency).toEqual(["fee-trade"]);
     expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
-    expect(builder(r, [], null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
+    expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
   });
   it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", () => {
     const deal = account([trade(inTrade)]);

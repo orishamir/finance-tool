@@ -10,12 +10,13 @@ import { feeOf, picked } from "./cases";
 import { feeInOrder, feePriced, hasCases, isRange, monthKey, namesPlaces, pickKey, pricedOf, type Case, type CasesFee, type Fee, type MonthKey, type Num, type Price, type Priced, type Stage, type When } from "./model";
 import { canAddBy, removeBy } from "./edit";
 import { boundsAction } from "./offers/capabilities";
+import { capacity, type ChargedForm } from "./offers/capacity";
 import { FIGURES, type Figure } from "./offers/figures";
-import { feeOffered, offerFor } from "./offers/offer";
+import { feesOffered, offerFor, type DataBar } from "./offers/offer";
 import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
 import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
-import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
+import { isConversion, onHolding, WHAT_VALUES, type FeeKindId } from "./shapes";
 import { BY_MAX, CONDITIONS, isRangeKind, type ByKind, type RangeUnit } from "./offers/conditions";
 import { figure, insideFund, sumUnit } from "./values";
 
@@ -288,23 +289,17 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   };
 }
 
-/** The suggestions the deal's product is offered (`feeOffered`, the rule table) and may charge (`barred`). */
-const offered = (s: Builder["suggestions"], product: DealRead["kind"], barred: readonly FeeKindId[]): Builder["suggestions"] => {
-  const ok = (k: FeeKindId) => !barred.includes(k) && feeOffered(product, k);
-  return { usual: s.usual.filter(ok), rarer: s.rarer.filter(ok) };
-};
-
 /**
  * The builder column of a deal, from the deal read once (`readDealFor`): a row per fee, the read ones and those not read for a price not
  * given or for no case for the picks, each with its block; a fee whose prices are out of order has none (the glance names it, `unread`).
- * `barred`: fees the deal's product may not charge by rule, never offered, nor is a fee its product is not offered (`feeOffered`). `open`:
+ * `bar`: the fees the data says the deal's product may not charge, never offered, nor is a fee its product is not offered (`feesOffered`). `open`:
  * the fee open in place, and its case (the first where none is named).
  */
-export function builder(r: DealRead, barred: readonly FeeKindId[] = [], open: { fee: string; case: string | null } | null = null): Builder {
+export function builder(r: DealRead, bar: DataBar | null = null, open: { fee: string; case: string | null } | null = null): Builder {
   const deal = r.deal;
   return {
     rows: deal.fees.filter((fee) => !r.unread.includes(fee.id)).map((fee) => rowOf(r, fee, open)),
-    suggestions: deal.kind && r.kind ? offered(suggestions(deal.kind, r.kind.bases, deal.fees.map((f) => f.kind), undefined), r.kind, barred) : { usual: [], rarer: ["own"] },
+    suggestions: feesOffered(r.kind, deal.fees.map((f) => f.kind), bar),
   };
 }
 
@@ -353,6 +348,8 @@ export interface OpenCase {
   sell?: { k: number; until?: MonthKey; parts: OpenPart[] }[];
   canCopy: boolean;
   canRemove: boolean;
+  /** The form a price added after a free one takes: the first form the product's fee is offered in (`Offer.usual`). */
+  later: ChargedForm;
 }
 
 /** A part's fields: each figure it holds that the price has a place for, with its value and its box's sign. */
@@ -386,6 +383,7 @@ function openCase(r: DealRead, fee: Fee, caseId: string | undefined): OpenCase {
     ...(priced.sale ? { sell: stagesOf(priced.sale, false) } : {}),
     canCopy: !!c,
     canRemove: !!c && hasCases(fee) && fee.cases.length > 1,
+    later: offerFor(r.kind, fee.kind).usual ?? capacity(fee.kind).usual,
   };
 }
 

@@ -9,7 +9,7 @@ import type { BuilderRow, CaseRow as CaseRowView, OpenCase as OpenCaseView, Slim
 import { addCase, copyCase, type Side } from "../../lib/fee-deal/edit";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import type { StandingView } from "../../lib/fee-deal/parts";
-import { keeps } from "../../lib/fee-deal/offers/capacity";
+import { keeps, type ChargedForm } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { fmt } from "../../lib/format";
 import { CaseFold, CaseRow, CaseSlot, ConditionBand, FeeBlock, OpenCase, PartChip, SlimFee, When, monthText, type CaseWord } from "../kit";
@@ -47,7 +47,7 @@ export interface BlockActions {
   /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
   onThing: (t: number, at: HTMLElement) => void;
   onRemoveCase: (feeId: string, caseId: string) => void;
-  onHoldOn: (feeId: string, side: Side, k: number, caseId?: string) => void;
+  onHoldOn: (feeId: string, side: Side, k: number, caseId: string | undefined, after: ChargedForm) => void;
   onPendingDone: () => void;
   /** The question closed: the thing added, or not. */
   onAskDone: (added: boolean) => void;
@@ -147,7 +147,7 @@ export function FeeBlockView({
   const openParts = (spoken: string) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} pending={open.pending} onFee={onFee} onHoldOn={(side, k, caseId) => onHoldOn(fee.id, side, k, caseId)} onPendingDone={onPendingDone} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} pending={open.pending} onFee={onFee} onHoldOn={(side, k, caseId, after) => onHoldOn(fee.id, side, k, caseId, after)} onPendingDone={onPendingDone} />
         {formLine}
       </>
     );

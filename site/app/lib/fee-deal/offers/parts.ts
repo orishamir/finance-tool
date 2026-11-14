@@ -9,7 +9,7 @@
 import { blankPrice, mainFigure, typed, type Fee, type MonthKey, type Note, type Price, type Priced, type Side } from "../model";
 import { editPrice, holdOn, setLimited, setSaleApart, withDiscount, withFigure, withFlat, withNote, withOffset, withRefund, withThird } from "../edit";
 import { type FeeKindId, type FormId } from "../shapes";
-import { keeps, PART_FIELDS, pricesSaleApart, takes, type PartFieldId } from "./capacity";
+import { keeps, PART_FIELDS, pricesSaleApart, takes, type ChargedForm, type PartFieldId } from "./capacity";
 import { boundsAction, byRate, charged, formBoundsAction, KEY_FORMS, onAction, pricedCurrency, sameFigureKind, type PartKey } from "./capabilities";
 import { FIGURES, type Figure } from "./figures";
 
@@ -62,7 +62,8 @@ export type Ask = "pct" | "sum" | "month" | "fee" | null;
 /**
  * Where a part goes, and what it needs: the case (`caseId`; a fee with cases is edited in its first where none is named), the side and the
  * price (`side`, `k`: the purchase's first where none is said), a bound's or a percent maximum's figure (`value`: a bound is never blank),
- * a later price's month (`month`), and the fee an offset is against (`against`).
+ * a later price's month (`month`) and the form it takes after a free price (`after`: the first form the product's fee is offered in), and
+ * the fee an offset is against (`against`).
  */
 export interface PartAt {
   caseId?: string;
@@ -70,6 +71,7 @@ export interface PartAt {
   k?: number;
   value?: number;
   month?: MonthKey;
+  after?: ChargedForm;
   against?: FeeKindId;
 }
 
@@ -156,7 +158,7 @@ const SPECS = {
     tool: "price",
     used: (_p: Price, x?: Priced) => !!x && x.stages.length > 1,
     // on, the price ends at the month and a later one follows it; off, the prices after it go
-    apply: { on: "fee", edit: (fee, on, at) => (on ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month!, at.caseId) : holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId)) },
+    apply: { on: "fee", edit: (fee, on, at) => (on ? setLimited(fee, at.side ?? "buy", at.k ?? 0, at.month!, at.caseId, at.after) : holdOn(fee, at.side ?? "buy", at.k ?? 0, at.caseId)) },
   },
   min: { kind: "bound", field: "min", carriesIn: formBoundsAction, capField: "min", figures: ["min"], ask: "sum", tool: "bound", lost: true, ...figureEdit("min") },
   max: { kind: "bound", field: "max", carriesIn: formBoundsAction, capField: "max", figures: ["max"], ask: "sum", tool: "bound", lost: true, ...figureEdit("max") },
