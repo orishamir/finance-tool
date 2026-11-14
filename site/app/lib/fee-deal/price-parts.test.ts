@@ -155,6 +155,8 @@ describe("sums in the trade's currency printed for some currencies only (trade_c
   it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
     const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
     expect(tradeOf("excellence")).toContain('"inTrade":["ILS","USD","EUR"]');
+    // Interactive Israel's European minimum: 2.5 for euros, pounds and Swiss francs; the deal's currencies hold the first two
+    expect(tradeOf("interactive-israel")).toContain('"inTrade":["EUR","GBP"]');
     const deal = account([trade(printed)]);
     expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
