@@ -32,8 +32,8 @@ describe("a saved deal in the list", () => {
 describe("what a template leaves out", () => {
   const probe = newDeal("brokerage-account");
   it("counts a price list's lines in the picker", () => {
-    // Psagot's whole list fills the deal but its conversion priced per dollar and its redemption's plan
-    expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBe("שתי שורות לא נכנסות");
+    // Psagot's whole list fills the deal but its conversion priced per dollar, the spread on its other conversion, and makam's redemption
+    expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBe("3 שורות לא נכנסות");
     expect(leavesText([])).toBeUndefined();
   });
   it("names the template a new deal was filled from, what its record says the price leaves out, and each line it left out by name under why", () => {

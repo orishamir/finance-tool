@@ -180,8 +180,9 @@ describe("the templates", () => {
     if (t.form === "action") expect(t.cap!.src).toBeDefined();
     expect(price("fx")).toMatchObject({ form: "action", flat: { amount: { v: 2.85 }, upTo: { v: 50 } }, currency: "USD" });
     expect(filledFor("mizrahi-tefahot", [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }])("trade")).toMatchObject({ rate: { v: 0.64 }, min: { v: 50 } });
-    // what stays out is a plan's own line (a redemption), mutual funds on the exchange's line, and the yearly distribution fees
-    expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["plan", "bank-funds", "distribution-yearly"]));
+    // what stays out is makam's redemption, mutual funds on the exchange's line, the spread its conversion does not limit, and the yearly
+    // distribution fees
+    expect(new Set(house("mizrahi-tefahot").left.map((l) => l.why))).toEqual(new Set(["redemption", "bank-funds", "spread-on-top", "distribution-yearly"]));
   });
   it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars, on what is bought abroad alone", () => {
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
@@ -235,6 +236,24 @@ describe("the templates", () => {
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
     expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
   });
+  it("say that a percent maximum winning over a minimum is the site's reading where the list does not say which wins (F-12)", () => {
+    const notesOf = (id: string) => house(id).fees.find((f) => f.kind === "trade")!.cases!.map((c) => c.stages[0]!.price).filter((p) => "cap" in p && p.cap).map((p) => ("notes" in p ? (p.notes ?? []) : []));
+    for (const id of ["excellence", "interactive-israel"]) {
+      expect(notesOf(id).length, id).toBeGreaterThan(0);
+      expect(notesOf(id).every((n) => n.includes("capRead")), id).toBe(true);
+    }
+    // Mizrahi-Tefahot's words put its ceiling on the minimum (BRK-67): its list says it, so no reading is noted
+    expect(notesOf("mizrahi-tefahot").some((n) => n.includes("capRead"))).toBe(false);
+    const d = { ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is: "us" }] };
+    expect(readingOf(read(d), data.fx).stated.find((x) => x.part === "capRead")?.words.lead).toBe(copy.cases.stated.capRead);
+  });
+  it("say a spread the list does not limit on top of a priced conversion, makam's redemption as a redemption, and a custody of nothing as free", () => {
+    expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-fx-conversion", why: "spread-on-top" }));
+    expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-redemption-makam", why: "redemption" }));
+    expect(house("excellence").left.some((l) => l.why === "plan")).toBe(false);
+    // IBI's "דמי משמרת: פטור" prints no period: free, not 0% a month
+    expect(filledFor("ibi", [{ by: "held", is: "tase" }])("custody")).toEqual({ form: "free" });
+  });
   it("fill a custody maximum on each security as one, stated and never read as the holding's maximum (§10.6's stated parts)", () => {
     const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
     // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit
@@ -274,7 +293,7 @@ describe("the templates", () => {
     expect(tracks("altshuler-trade").find((p) => p.form === "perAction" && p.currency === "USD")).not.toHaveProperty("cap");
     // Excellence's "11$ פיקס לעסקה" under the line's "עמלת מקסימום 2% משווי העסקה": the sum with its ceiling, each figure sourced
     const ex = tracks("excellence").find((p) => p.form === "perAction" && p.currency === "USD")!;
-    expect(ex).toMatchObject({ form: "perAction", amount: { v: 11 }, cap: { v: 2 }, currency: "USD", notes: ["unfilled"] });
+    expect(ex).toMatchObject({ form: "perAction", amount: { v: 11 }, cap: { v: 2 }, currency: "USD", notes: ["unfilled", "capRead"] });
     expect(ex.form === "perAction" && ex.amount.src && ex.cap?.src).toBeTruthy();
     expect(tracks("excellence").some((p) => p.form === "action" && p.rate.v === 0)).toBe(false);
   });

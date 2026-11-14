@@ -53,6 +53,13 @@ export type LeftWhy =
    * fund has no trade price in the deal.
    */
   | "bank-funds"
+  /**
+   * A conversion whose price the line gives beside a spread the documents do not limit, recorded with no value (F-13, D65: Excellence's
+   * "אינו כולל מרווח הנקבע בהסכם מול הלקוח"): the price is filled, and the conversion costs that spread on top.
+   */
+  | "spread-on-top"
+  /** A line for redeeming a security when it falls due (band `REDEMPTION_BAND`: makam's at maturity), which no purchase or sale pays (F-63). */
+  | "redemption"
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
   | "distribution-yearly";
 
@@ -171,16 +178,25 @@ export const MAX_PER_SECURITY: ReadonlySet<string> = new Set([
   "fibi-custody-foreign",
 ]);
 
+/**
+ * The houses whose list prints a percent maximum beside a minimum with nothing on which wins on a small action, so that the maximum wins
+ * is the site's reading (F-12: Excellence's 2%, BRK-48; Interactive Israel's 2%, BRK-40). A template notes it on those trade prices.
+ */
+export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive-israel"]);
+
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
-export function lineFees(l: Line, own: string, bank = false): Mapped {
+export function lineFees(l: Line, own: string, bank = false, capRead = false): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
   // every price goes through the registries (`buildPrice`), so none is one the fee cannot hold
   const fee = (kind: FeeKindId, spec: PriceSpec): SlimTemplateFee => ({ kind, stages: [{ price: buildPrice(kind, spec) }] });
   switch (l.base) {
     case "trade": {
-      // what the line, or at a bank the fee rules, say of an order not carried out (`unfilledNote`)
+      // what the line, or at a bank the fee rules, say of an order not carried out (`unfilledNote`); and where the house's list does not say
+      // whether its percent maximum wins over its minimum, that the page reads it so (`CAP_READ`, F-12)
       const note = unfilledNote(l, bank);
-      const notes = note ? { notes: [note] } : {};
+      const read = capRead && has(l.cap) && (has(l.min) || !!fixedSum(l)) ? (["capRead"] as const) : [];
+      const all: Note[] = [...(note ? [note] : []), ...read];
+      const notes = all.length ? { notes: all } : {};
       const perAction = (amount: Num, more: Partial<PriceSpec["figures"]> = {}, currency?: BoundCurrency): PriceSpec => ({ form: "perAction", figures: { amount, ...more }, ...(currency && currency !== "ILS" ? { currency } : {}), ...notes });
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
       if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", perAction(num(l.rate)))], left: [] } : { fees: [], left: ["no-value"] };
@@ -198,14 +214,17 @@ export function lineFees(l: Line, own: string, bank = false): Mapped {
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
-      // a conversion filled at nothing whose spread is recorded but not limited says the spread is not counted, so 0% does not read as free
-      const unpriced = l.spread && !has(l.spread) && convertsFree(l);
-      return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? ["spread-unpriced"] : [] };
+      // a spread recorded but not limited is not counted, and says so: on a conversion filled at nothing, so 0% does not read as free; on
+      // one with a price, as a cost on top of it
+      const unpriced = !!l.spread && !has(l.spread);
+      return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? [convertsFree(l) ? "spread-unpriced" : "spread-on-top"] : [] };
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
-      // a zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is; a rate above it needs one
+      // a zero rate prints no period (One Zero's "0 אחוז", IBI's "פטור"): it charges nothing whatever the period is, so it is free rather
+      // than a share of nothing per a period the list never names; a rate above it needs one
       if (!l.period && l.rate.value > 0) return { fees: [], left: ["no-period"] };
+      if (!l.period && !has(l.min)) return { fees: [{ kind: "custody", stages: [{ price: { form: "free" } }] }], left: [] };
       const every = l.period ? PERIOD_MONTHS[l.period]! : 1;
       const bounds = [l.min, l.max].filter(has);
       if (bounds.some((b) => !NIS_UNITS.has(b.unit))) return { fees: [], left: ["bound-currency"] };
@@ -479,7 +498,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
     const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
     for (const l of ambiguous) leave(l, "ambiguous");
     for (const l of unread) leave(l, "another-line");
-    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank)]));
+    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank, CAP_READ.has(snap.id))]));
     for (const [l, m] of mapped) {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);
@@ -496,7 +515,7 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   // every other line is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
-    leave(l, l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base");
+    leave(l, l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period" ? "distribution-yearly" : l.band === REDEMPTION_BAND ? "redemption" : l.level !== "list" ? "other-base" : l.not_ranked !== undefined ? "set-aside" : (HOUSE_BASES as readonly string[]).includes(l.base) && l.band !== null ? "plan" : (HOUSE_BASES as readonly string[]).includes(l.base) ? "another-line" : "other-base");
   }
   return { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap) };
 }
