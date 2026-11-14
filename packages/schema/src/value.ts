@@ -73,7 +73,11 @@ export const numberState = z.enum(["sourced", "computed", "entered"]);
 export const updateRule = z.union([
   z.enum([
     "fixed in law",
+    // binding text below a law: regulations, a regulator's circulars and directives, the exchange's rules
     "fixed in regulation",
+    // fixed by the document the value cites, which binds no one at large: a tax ruling, a circular that binds only the body that wrote it,
+    // a report, an index's methodology; it changes when that document is replaced
+    "fixed in document",
     "cpi-linked 1 jan",
     "average-wage-linked",
     "provider-set",

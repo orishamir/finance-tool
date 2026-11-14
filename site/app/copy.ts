@@ -2748,7 +2748,8 @@ export const sourceBlock = {
 /**
  * Hebrew for the `update_rule` words the rule records carry (shown beside a figure with its tax year). "fixed in regulation" covers every
  * binding text below a law that the records cite with it (regulations, a regulator's circulars and directives, the exchange's rules), so
- * its word names none of them in particular.
+ * its word names none of them in particular. "fixed in document" is a figure that the document the figure cites fixes without binding
+ * anyone at large (a tax ruling, a report, an index's methodology): it says the figure is as that document, shown in the source line, has it.
  */
 export const updateRules = {
   "fixed in law": "קבוע בחוק",
@@ -2756,6 +2757,7 @@ export const updateRules = {
   "average-wage-linked": "מתעדכן לפי השכר הממוצע",
   "provider-set": "החברה קובעת",
   "fixed in regulation": "קבוע בכללים",
+  "fixed in document": "קבוע במסמך המקור",
   market: "לפי השוק",
   founder: "פרמטר של האתר",
   frozen: "מוקפא בשנים {years}",

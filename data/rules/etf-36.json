@@ -30,7 +30,7 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "fixed in document",
       "rule_ids": [
         "ETF-36"
       ],
@@ -50,7 +50,7 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "fixed in document",
       "rule_ids": [
         "ETF-36"
       ],
@@ -70,7 +70,7 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "fixed in document",
       "rule_ids": [
         "ETF-36"
       ],
@@ -89,7 +89,7 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in regulation",
+      "update_rule": "fixed in document",
       "rule_ids": [
         "ETF-36"
       ],
