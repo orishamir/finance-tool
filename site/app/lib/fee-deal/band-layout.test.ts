@@ -38,29 +38,9 @@ describe("two parts that read the same", () => {
 });
 
 describe("a later price in a table, a grid or its rows", () => {
-  const rate = (v: number, stage?: number): SlimPart => ({ id: "share", kind: "price", words: { figure: sourced(v), tail: " לכל פעולה" }, ...(stage ? { stage } : {}) } as SlimPart);
-  const cap = (v: number, stage?: number): SlimPart => ({ ...max(sourced(v)), ...(stage ? { stage } : {}) });
-  const note = (stage?: number): SlimPart => ({ id: "unfilled", kind: "note", words: { lead: "ועוד עמלת ברוקר בחו״ל" }, ...(stage ? { stage } : {}) } as SlimPart);
-  const until = (month: string, stage: number): SlimPart => ({ id: "until", kind: "note", words: { lead: "ו", month }, stage } as SlimPart);
-  const ids = (ps: readonly SlimPart[]) => ps.map((p) => `${p.id}@${p.stage ?? 0}`);
-
-  it("says only what it changes: a part it holds as the price before it reads once, for every price", () => {
-    const parts = [rate(0.25), cap(30), note(), until("2027-03", 1), rate(0.5, 1), cap(30, 1), note(1)];
-    expect(ids(laterChanges(parts))).toEqual(["share@0", "cap@0", "unfilled@0", "until@1", "share@1"]);
-  });
-
-  it("is read against the price just before it, so a part changed back is said", () => {
-    const parts = [rate(0.25), cap(30), until("2027-03", 1), rate(0.5, 1), cap(25, 1), until("2027-09", 2), rate(0.5, 2), cap(30, 2)];
-    expect(ids(laterChanges(parts))).toEqual(["share@0", "cap@0", "until@1", "share@1", "cap@1", "until@2", "cap@2"]);
-  });
-
-  it("is said whole where it lacks a part the price before it holds", () => {
-    const parts = [rate(0.25), cap(30), note(), until("2027-03", 1), rate(0.5, 1), note(1)];
-    expect(ids(laterChanges(parts))).toEqual(ids(parts));
-  });
-
-  it("leaves a fee whose price does not change with time as it is", () => {
-    const parts = [rate(0.25), cap(30)];
-    expect(laterChanges(parts)).toEqual(parts);
+  it("leaves out each part its price holds as the price before it, and nothing else", () => {
+    const part = (id: string, stage?: number, alike?: true): SlimPart => ({ id, kind: "price", words: {}, ...(stage ? { stage } : {}), ...(alike ? { alike } : {}) } as SlimPart);
+    const parts = [part("share"), part("cap"), part("until", 1), part("share", 1), part("cap", 1, true)];
+    expect(laterChanges(parts).map((p) => `${p.id}@${p.stage ?? 0}`)).toEqual(["share@0", "cap@0", "until@1", "share@1"]);
   });
 });

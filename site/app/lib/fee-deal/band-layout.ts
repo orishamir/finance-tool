@@ -75,30 +75,16 @@ export function partKey(p: SlimPart): string {
   return JSON.stringify([p.id, p.stage ?? 0, w.lead ?? null, figureKey(w.figure), w.mid ?? null, figureKey(w.second), w.month ?? null, w.tail ?? null, w.quiet ?? null]);
 }
 
-/** A part's words, equal for two parts that read the same whichever price they belong to. */
-const wordsKey = (p: SlimPart): string => {
-  const w = p.words;
-  return JSON.stringify([p.id, w.lead ?? null, figureKey(w.figure), w.mid ?? null, figureKey(w.second), w.month ?? null, w.tail ?? null, w.quiet ?? null]);
-};
-
 /**
  * A case's parts as a table, a grid or its rows say them (`slimParts`' order: the first price's parts, then for each later price the month
- * it starts and its parts): a later price says only what it changes. Each part it holds exactly as the price before it is left out, since
- * that part, said once with the first price (in its own row, its own part cell, or before the change), reads for every price after it;
- * so a part shared over a grid's row, said once under its cells, is not said again inside a cell for a later period. A later price that
- * lacks a part the price before it holds is said whole, so nothing reads as going on that does not.
+ * it starts and its parts): a later price says only what it changes. Each part it holds exactly as the price before it (`heldAlike`: the
+ * same figures from the same places, nothing else of the price changed) is left out, since that part, said once with the first price (in
+ * its own row, its own part cell, or before the change), reads for every price after it; so a part shared over a grid's row, said once
+ * under its cells, is not said again inside a cell for a later period. A later price that lacks a part the price before it holds, or
+ * differs from it in what its words do not show, is said whole (`saidWhole`).
  */
 export function laterChanges(parts: readonly SlimPart[]): SlimPart[] {
-  const at = (k: number) => parts.filter((p) => (p.stage ?? 0) === k && p.id !== "until");
-  const left = new Set<SlimPart>();
-  const last = Math.max(0, ...parts.map((p) => p.stage ?? 0));
-  for (let k = 1; k <= last; k++) {
-    const before = new Map(at(k - 1).map((p) => [p.id, wordsKey(p)]));
-    const now = at(k);
-    if (![...before.keys()].every((id) => now.some((p) => p.id === id))) continue;
-    for (const p of now) if (before.get(p.id) === wordsKey(p)) left.add(p);
-  }
-  return left.size ? parts.filter((p) => !left.has(p)) : [...parts];
+  return parts.filter((p) => !p.alike);
 }
 
 /**
