@@ -17,7 +17,8 @@ import { Num } from "../provenance";
 import { AskThing } from "./ask-thing";
 import { LawTag } from "./links";
 import { OpenParts, WhenText, numText } from "./open-case";
-import { PART_MARK, type PendingPart } from "./part-edit";
+import { PART_MARK } from "./part-edit";
+import type { PendingPart } from "../../lib/fee-deal/offers/parts";
 import { BannedWords, Fig, feeColour, feeName } from "./words";
 
 const b = copy.builder;

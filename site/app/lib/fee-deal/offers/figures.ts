@@ -12,6 +12,9 @@ import { boundsAction, byAmount, byRate, charged, hasBounds, onAction } from "./
  */
 export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax" | "refund" | "perSecurity";
 
+/** A key a figure is kept under, in the price or in its part (a flat price's two, a discount's share, a third party's figure and bounds). */
+export type FigureKey = "rate" | "amount" | "min" | "max" | "cap" | "upTo" | "pct" | "perSecurity" | "refund";
+
 /** What a figure is counted in: a percent, or a sum in a currency (the shekel where none is named). */
 export type FigureUnit = { pct: true } | { currency: BoundCurrency | undefined };
 
@@ -27,7 +30,7 @@ interface FigureDef {
   /** What the figure is counted in, for its box's sign. */
   unit: (p: Price) => FigureUnit;
   /** The key the figure is kept under in the price, or in its part (a link writes every figure under these keys as a number). */
-  keys: readonly string[];
+  keys: readonly FigureKey[];
 }
 
 const PCT: FigureUnit = { pct: true };

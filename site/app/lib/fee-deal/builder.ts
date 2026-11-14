@@ -12,8 +12,8 @@ import { canAddBy, removeBy } from "./edit";
 import { boundsAction } from "./offers/capabilities";
 import { FIGURES, type Figure } from "./offers/figures";
 import { feeOffered, offerFor } from "./offers/offer";
-import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
-import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox, type ToolPartId } from "./part-words";
+import { PART_IDS, PARTS, partsSaid, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
+import { FLAT_BLANK, OFFERED, SAID, feeNameOf, signOfUnit, type PartContext, type PartWords, type ToolBox } from "./part-words";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./parts";
 import { isConversion, onHolding, suggestions, WHAT_VALUES, type FeeKindId } from "./shapes";
 import { BY_MAX, CONDITIONS, isRangeKind, type ByKind, type RangeUnit } from "./offers/conditions";
@@ -439,14 +439,28 @@ export interface Toolbox {
   groups: ToolGroup[];
 }
 
-/** The toolbox's groups in order, each with its parts in order; what the price changes by is the fee's things (`conditionsFor`). */
-const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
-  { group: "price", kind: "price", parts: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"] },
-  { group: "bound", kind: "bound", parts: ["min", "max", "cap", "maxPerSecurity"] },
+/**
+ * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`), every one of them and no other,
+ * which the compiler checks. A flat price stands among the price's cards, though a line says it among the bounds.
+ */
+const TOOL_ORDER = {
+  price: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"],
+  bound: ["min", "max", "cap", "maxPerSecurity"],
+  link: ["offset", "refund"],
+  more: ["unfilled", "partial", "inTrade", "sale"],
+} as const satisfies { [G in ToolGroupId]: readonly ToolPartIn<G>[] };
+/** A part of a group that its order leaves out: none, or the order does not compile where it is used. */
+type Unordered = { [G in ToolGroupId]: Exclude<ToolPartIn<G>, (typeof TOOL_ORDER)[G][number]> }[ToolGroupId];
+
+/** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`). */
+const toolboxOf = (order: [Unordered] extends [never] ? typeof TOOL_ORDER : Unordered): readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] => [
+  { group: "price", kind: "price", parts: order.price },
+  { group: "bound", kind: "bound", parts: order.bound },
   { group: "by", kind: "by", parts: [] },
-  { group: "link", kind: "link", parts: ["offset", "refund"] },
-  { group: "more", kind: "note", parts: ["unfilled", "partial", "inTrade", "sale"] },
+  { group: "link", kind: "link", parts: order.link },
+  { group: "more", kind: "note", parts: order.more },
 ];
+const TOOLBOX = toolboxOf(TOOL_ORDER);
 
 export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);

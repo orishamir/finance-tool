@@ -66,3 +66,26 @@ export function pricedCurrency(p: Price): BoundCurrency | undefined {
   if (!onAction(p) || !p.currency || p.currency === "ILS") return undefined;
   return !byRate(p) || p.min || p.max || p.flat ? p.currency : undefined;
 }
+
+/**
+ * A key of a price beside its form's own figure and periods that a part is kept in: its bounds, its percent maximum, its flat price, a held
+ * share's maximum on each security, sums in the trade's currency (each a capacity field too, capacity.ts), a discount, a third party's fee,
+ * notes on an order, an offset and a refund.
+ */
+export type PartKey = "min" | "max" | "cap" | "flat" | "perSecurity" | "inTrade" | "discount" | "third" | "notes" | "offset" | "refund";
+
+/** Where each part key has a place: the forms whose price type holds it. A part kept in a key stands only in these forms. */
+export const KEY_FORMS: Readonly<Record<PartKey, (form: FormId) => boolean>> = {
+  min: formBounded,
+  max: formBounded,
+  cap: formOnAction,
+  flat: formBoundsAction,
+  perSecurity: (form) => form === "held",
+  inTrade: formOnAction,
+  discount: formOnAction,
+  third: formOnAction,
+  notes: formOnAction,
+  offset: formCharged,
+  refund: formCharged,
+};
+export const PART_KEYS = Object.keys(KEY_FORMS) as PartKey[];

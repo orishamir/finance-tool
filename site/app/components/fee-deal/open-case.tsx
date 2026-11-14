@@ -13,7 +13,8 @@ import { formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Button, FigureField, InlineSelect, RangeMenu, SegmentedControl, TextField, TickMenu, TrackMenu, When, monthText } from "../kit";
 import { PriceFigure, partFieldId } from "./figures";
-import { PartLine, PendingEdit, SPOKEN, type PartPlace, type PendingPart } from "./part-edit";
+import { PartLine, PendingEdit, SPOKEN, type PartPlace } from "./part-edit";
+import type { PendingPart } from "../../lib/fee-deal/offers/parts";
 
 /**
  * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's ✕

@@ -8,7 +8,7 @@ import { setUntil, withDiscountOnMin, withMonths, withOffset, withThirdForm, wit
 import { MONTHS, pricesOn, untilRange, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
 import { sumCurrency } from "../../lib/fee-deal/offers/capacity";
-import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
+import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, MonthField, PartEdit, Switch, TextField, type PartMark } from "../kit";
 import { partFieldId, signText } from "./figures";
@@ -19,9 +19,6 @@ const cp = copy.cases.parts;
 
 /** The icon before a part's first word: a minimum's, a maximum's (a percent maximum's too), a link's. */
 export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
-
-/** A part the toolbox added that cannot stand until it has what it asks for (`PARTS[id].ask`): a figure, a month or a fee. */
-export type PendingPart = "min" | "max" | "cap" | "maxPerSecurity" | "until" | "offset";
 
 /** Where a pending part stands: its fee, its case (null for a slim fee), and the part. */
 export interface Pending {

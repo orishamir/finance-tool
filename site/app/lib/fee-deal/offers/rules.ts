@@ -8,7 +8,7 @@ import type { DealKind } from "../kinds";
 import type { ProviderKind } from "../model";
 import { holdsFunds, type FeeKindId, type FormId } from "../shapes";
 import type { ByKind } from "./conditions";
-import type { PartId } from "./parts";
+import type { RulePart } from "./parts";
 
 /** The facts of a product the rows read: its record's id, the fee bases it allows, and its regulator (data-schema §3.3). */
 export type ProductFacts = Pick<DealKind, "id" | "bases" | "regulator">;
@@ -18,9 +18,6 @@ export interface Selector {
   products?: (f: ProductFacts) => boolean;
   fees?: readonly FeeKindId[];
 }
-
-/** A part a row names: every part but a form of the price, which follows the forms it keeps (offer.ts). */
-export type RulePart = Exclude<PartId, "share" | "perUnit" | "perAction" | "held" | "sum" | "free">;
 
 /**
  * What a row does to the offer: `only` keeps the forms, parts and things to change by it names (of each list it names) and drops the

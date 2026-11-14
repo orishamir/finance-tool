@@ -6,7 +6,7 @@ import type { BoundCurrency, Months, Note, Num, Price } from "../model";
 import type { FeeKindId } from "../shapes";
 import type { ChargedForm } from "./capacity";
 import { FIGURES, type Figure } from "./figures";
-import { fitted, PARTS, putPart, type PartId } from "./parts";
+import { fitted, isFormPart, PART_IDS, PARTS, putPart, type FormPart, type PartId } from "./parts";
 
 /** What a template gives of a price: its form, its figures with their sources, its notes, and the fields a form has that are no part. */
 export interface PriceSpec {
@@ -21,9 +21,10 @@ export interface PriceSpec {
   boundsEvery?: 1;
 }
 
-const FORM_PART: Readonly<Record<ChargedForm, PartId>> = { action: "share", perUnit: "perUnit", perAction: "perAction", held: "held", sum: "sum" };
-/** The part a figure beside the main one stands in; the rate and the sum are the form's own. */
-const FIGURE_PART: Readonly<Partial<Record<Figure, PartId>>> = { min: "min", max: "max", cap: "cap", flat: "flat", upTo: "flat", discount: "discount", third: "third", thirdMin: "third", thirdMax: "third", refund: "refund", perSecurity: "maxPerSecurity" };
+/** The part a form is, by the form (the registry's form parts). */
+const FORM_PART = Object.fromEntries(PART_IDS.filter(isFormPart).map((id) => [PARTS[id].form, id])) as Readonly<Record<ChargedForm, FormPart>>;
+/** The part a figure beside the main one stands in (the registry's figures of each part that is no form); the rate and the sum are the form's own. */
+const FIGURE_PART = Object.fromEntries(PART_IDS.filter((id) => !isFormPart(id)).flatMap((id) => PARTS[id].figures.map((f) => [f, id]))) as Readonly<Partial<Record<Figure, PartId>>>;
 
 /**
  * A template's price for a fee of `kind`: the form put on a free price, its periods and currency, each figure whose part the price can

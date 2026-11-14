@@ -7,7 +7,7 @@ import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { Toolbox as ToolboxView, ToolPart as ToolPartView } from "../../lib/fee-deal/builder";
 import { setFeeName } from "../../lib/fee-deal/edit";
-import { PARTS, setPart, type PartId } from "../../lib/fee-deal/offers/parts";
+import { isFormPart, isPending, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import { NAME_MAX, type Fee } from "../../lib/fee-deal/model";
 import { CAPACITY } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
@@ -15,7 +15,6 @@ import { termKey } from "../../lib/fee-page-data";
 import { IconBin, IconClose, IconPencil } from "../icons";
 import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
 import { useProvenanceData } from "../provenance";
-import type { PendingPart } from "./part-edit";
 import { UndoLine } from "./undo-line";
 import { caseText } from "./fee-block";
 import { FeeName, feeColour, feeName } from "./words";
@@ -131,8 +130,8 @@ export function ToolboxColumn({
   const onAdd = (_group: string, part: string) => {
     if (part.startsWith("by:")) return onAsk(part.slice(3) as ByKind);
     const id = part as PartId;
-    if (PARTS[id].ask) return onPending(id as PendingPart);
-    if (PARTS[id].form) return onForm(id);
+    if (isPending(id)) return onPending(id);
+    if (isFormPart(id)) return onForm(id);
     onFee(setPart(fee, id, true, caseId ? { caseId } : {}));
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;

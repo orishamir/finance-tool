@@ -10,7 +10,7 @@ import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
 import { thingName } from "./builder";
 import { holdOn, laterUntouched, removeBy, removeCase, removeStage, setKind, updateFee, type Side } from "./edit";
-import { lostParts, PARTS, setPart, type PartId } from "./offers/parts";
+import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type ProviderKind } from "./model";
 import type { FeeKindId } from "./shapes";
@@ -267,6 +267,9 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
   }
 }
 
+/** Each part a change of form names when it leaves it behind (`PARTS[id].lost`), by its words. */
+const LOST_WORDS: Readonly<Record<LostPart, string>> = copy.cases.formChanged.parts;
+
 /**
  * The words of a price put in another form: that it changed, and the bounds, the percent maximum and the flat price it left behind, by
  * name, where it left any.
@@ -276,7 +279,7 @@ function formWords(u: Undo): string {
   const caseId = u.what.kind === "form" ? u.what.caseId : undefined;
   const before = pricedOf(u.before, caseId);
   const after = u.after ? pricesOn(u.after, "buy", caseId)[0]!.price : null;
-  const lost = lostParts(before.stages[0]!.price, after, before).map((id) => w.parts[id]!);
+  const lost = lostParts(before.stages[0]!.price, after, before).map((id) => LOST_WORDS[id]);
   if (lost.length === 0) return w.plain;
   const list = lost.length === 1 ? lost[0]! : `${lost.slice(0, -1).join(", ")} ${w.and}${lost.at(-1)!}`;
   return w.lost.replace("{parts}", list).replace("{verb}", lost.length === 1 ? w.one : w.many);

@@ -6,7 +6,8 @@
 import type { FeesData } from "../fee-page-data";
 import { dealPagePath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readDeal, type FeeDeal, type Sourced } from "./model";
-import { FIGURE_IDS, FIGURES as FIGURE_DEFS } from "./offers/figures";
+import type { PartKey } from "./offers/capabilities";
+import { FIGURE_IDS, FIGURES as FIGURE_DEFS, type FigureKey } from "./offers/figures";
 import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
@@ -40,13 +41,22 @@ const QUERY_MAX = 12_000;
 const PACKED_MAX = 12_000;
 const TEXT_MAX = 200_000;
 
+/**
+ * The short name in a link of each key a price's parts are kept in (capabilities.ts) and of each key a figure is kept under (figures.ts):
+ * typed by those keys, so a new part's or figure's key cannot be left out of links.
+ */
+const PART_SHORT: Readonly<Record<PartKey, string>> = { min: "m", max: "x", cap: "Cp", flat: "Fl", perSecurity: "Ps", inTrade: "It", discount: "Di", third: "Th", notes: "No", offset: "Of", refund: "Rf" };
+const FIGURE_SHORT: Readonly<Record<FigureKey, string>> = { rate: "r", amount: "a", min: "m", max: "x", cap: "Cp", upTo: "Ut", pct: "Pc", perSecurity: "Ps", refund: "Rf" };
+
 /** Each field's short name in a link, both ways; a key not named here is not carried, and is dropped on the way in. */
 const SHORT: Record<string, string> = {
   name: "n", kind: "k", provider: "p", held: "h", fees: "f", template: "T", stages: "s", sale: "S", price: "P", until: "u", form: "F",
-  rate: "r", min: "m", max: "x", currency: "c", per: "q", every: "e", amount: "a", place: "l", payout: "o", id: "i", cap: "Cp", flat: "Fl", upTo: "Ut",
+  currency: "c", per: "q", every: "e", place: "l", payout: "o", id: "i",
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
   by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
-  discount: "Di", pct: "Pc", alsoMin: "Am", third: "Th", who: "Wh", offset: "Of", refund: "Rf", notes: "No", boundsEvery: "Be", perSecurity: "Ps", inTrade: "It",
+  alsoMin: "Am", who: "Wh", boundsEvery: "Be",
+  ...PART_SHORT,
+  ...FIGURE_SHORT,
 };
 const LONG: Record<string, string> = Object.fromEntries(Object.entries(SHORT).map(([k, v]) => [v, k]));
 /**

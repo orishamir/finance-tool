@@ -1,7 +1,7 @@
-// Characterization of what a fee offers and holds today, before the offers refactor (OFFERS-DESIGN.md, step 1): the toolbox's groups for
-// every product, every fee its product has and every form the fee can take, each in its plain state and with every part it can hold; a
-// price with every field its fee kind can hold, read back through the device and a link; and links written today, read back. A refactor
-// step leaves these files as they are; a step that narrows an offer changes the toolbox file only in the rows its rule names.
+// What each fee offers and holds, pinned in golden files: the toolbox's groups for every product, every fee its product has and every form
+// the fee can take, each in its plain state and with every part it can hold; a price with every field and part its fee kind can hold,
+// read back through the device and a link; and links written in the past, read back. A change that leaves what the page offers and reads
+// as it is leaves these files as they are; one that narrows an offer changes the toolbox file only in the rows it names.
 import { readFileSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
 import { describe, expect, it } from "vitest";
@@ -11,36 +11,33 @@ import { decodeDeal, encodeDeal } from "./link";
 import { blankPrice, newDeal, readDeal, typed, type Fee, type FeeDeal, type Price } from "./model";
 import { readDealFor } from "./parts";
 import { FEE_KIND_IDS, kindHas, type FeeKindId, type FormId } from "./shapes";
-import { CAPACITY } from "./offers/capacity";
+import { CAPACITY, keeps } from "./offers/capacity";
+import { FIGURES, type Figure } from "./offers/figures";
+import { isFormPart, PART_IDS, PARTS, putPart, type PartDef } from "./offers/parts";
 
 const data = feesData();
 const TODAY = "2026-11-12";
 const GOLDEN = new URL("./__goldens__/", import.meta.url).pathname;
 
-/** A price of a form with every field its fee kind can hold in that form, and every part a price on an action can carry. */
+/** A sample for each figure a price can hold. */
+const SAMPLE: Readonly<Record<Figure, number>> = { rate: 0.5, amount: 10, min: 5, max: 500, cap: 2, flat: 3, upTo: 50, discount: 10, third: 1, thirdMin: 1, thirdMax: 2, refund: 1, perSecurity: 7500 };
+
+/**
+ * A price of a form with every part its fee kind can hold there, from the part registry: the form's own figure, the currency where the
+ * form keeps one, then each part of one price that the price holds (`PARTS[id].holds`), put on with its figures set. A new part is in it
+ * without a change here.
+ */
 function fullPrice(fee: FeeKindId, form: FormId): Price {
-  const fields = form === "free" ? [] : (CAPACITY[fee].fields[form] ?? []);
-  const has = (f: string) => (fields as readonly string[]).includes(f);
-  const p = blankPrice(form) as Record<string, unknown>;
-  if ("rate" in p) p.rate = typed(0.5);
-  if ("amount" in p) p.amount = typed(form === "perUnit" ? 0.01 : 10);
-  if (has("min")) p.min = typed(5);
-  if (has("max")) p.max = typed(500);
-  if (has("cap")) p.cap = typed(2);
-  if (has("flat")) p.flat = { amount: typed(3), upTo: typed(50) };
-  if (has("perSecurity")) p.perSecurity = typed(7500);
-  if (has("currency")) p.currency = "USD";
-  if (form === "action" || form === "perUnit" || form === "perAction") {
-    p.discount = { pct: typed(10), alsoMin: true };
-    p.third = { who: "הברוקר" };
-    p.notes = ["unfilled", "partial"];
-    if (fee === "trade") p.inTrade = true;
+  let p: Price = blankPrice(form);
+  for (const f of ["rate", "amount"] as const) p = FIGURES[f].set(p, typed(form === "perUnit" ? 0.01 : SAMPLE[f]));
+  if (keeps(fee, form, "currency")) p = { ...p, currency: "USD" } as Price;
+  for (const id of PART_IDS) {
+    const def: PartDef = PARTS[id];
+    if (isFormPart(id) || def.apply.on === "fee" || !def.holds(fee, p)) continue;
+    p = putPart(fee, p, id, true, { value: SAMPLE[def.figures[0] ?? "min"], against: "fixed_period" });
+    for (const f of def.figures) if (FIGURES[f].placed(p)) p = FIGURES[f].set(p, typed(SAMPLE[f]));
   }
-  if (form !== "free") {
-    p.refund = typed(1);
-    p.offset = { kind: "fixed_period" };
-  }
-  return p as Price;
+  return p;
 }
 
 /** A deal without its ids and its fees' ids, which a link makes anew by design. */
