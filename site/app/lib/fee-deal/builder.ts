@@ -545,7 +545,7 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   const bound: ToolPart[] = [
     ...(fieldOk("min") || can("action") ? [{ id: "min" as const, kind: "bound" as const, words: { lead: pp.min }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: (p.form === "action" || p.form === "perUnit" || p.form === "held") && !!p.min }] : []),
     ...(fieldOk("max") || can("action") ? [{ id: "max" as const, kind: "bound" as const, words: { lead: pp.max }, box: { sign: signOf(p.form === "held" ? "ILS" : cur) }, used: (p.form === "action" || p.form === "perUnit" || p.form === "held") && !!p.max }] : []),
-    ...((shape.fields.action ?? []).includes("cap") ? [{ id: "cap" as const, kind: "bound" as const, words: { lead: pp.max, tail: ` ${shareOf(fee.kind)}` }, box: "pct" as const, used: (p.form === "action" || p.form === "perUnit") && !!p.cap }] : []),
+    ...((shape.fields.action ?? []).includes("cap") ? [{ id: "cap" as const, kind: "bound" as const, words: { lead: pp.max, tail: ` ${shareOf(fee.kind)}` }, box: "pct" as const, used: (p.form === "action" || p.form === "perUnit" || p.form === "perAction") && !!p.cap }] : []),
   ];
   const kinds = byKindsFor(fee.kind);
   const have = new Set((fee.by ?? []).map((b) => (b.kind === "held" ? "what" : b.kind)));

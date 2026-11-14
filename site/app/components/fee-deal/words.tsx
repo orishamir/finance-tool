@@ -188,6 +188,15 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
       body = (
         <>
           <Fig value={f.amount!} /> {perActionWord(kind)}
+          {/* a percent maximum over the sum, said as a share's is ("11 $ לכל פעולה, מקסימום 2% מהפעולה") */}
+          {f.cap && (
+            <>
+              ,{" "}
+              <span className="whitespace-nowrap">
+                <Fig value={f.cap} prefix={p.max} /> {of}
+              </span>
+            </>
+          )}
         </>
       );
       break;

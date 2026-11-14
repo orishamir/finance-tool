@@ -99,11 +99,11 @@ const UNFILLED_RE = /כולל קני?יה או מכירה שלא בוצעה/;
 export const chargesUnfilled = (l: Line): boolean => l.names.tariff.some((n) => UNFILLED_RE.test(n));
 
 /**
- * A trade line that is one sum on every trade (F-12: `max(min, min(0 × amount, max))` with `min = max`): a share of nothing, its minimum and
- * maximum the same sum in one currency, and no cap or flat price; the sum and its currency, else null.
+ * A trade line that is one sum on every trade (F-12: `max(min, min(0 × amount, max))` with `min = max`, held to the line's cap where it has
+ * one): a share of nothing, its minimum and maximum the same sum in one currency, and no flat price; the sum and its currency, else null.
  */
 function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: BoundCurrency } | null {
-  if (!has(l.rate) || l.rate.unit !== "pct_of_trade" || l.rate.value !== 0 || !has(l.min) || !has(l.max) || has(l.cap) || l.flat_up_to) return null;
+  if (!has(l.rate) || l.rate.unit !== "pct_of_trade" || l.rate.value !== 0 || !has(l.min) || !has(l.max) || l.flat_up_to) return null;
   const currency = CURRENCY_OF_UNIT[l.min.unit];
   if (!currency || CURRENCY_OF_UNIT[l.max.unit] !== currency || l.min.value !== l.max.value) return null;
   return { sum: l.min, currency };
@@ -119,10 +119,10 @@ export function lineFees(l: Line, own: string): Mapped {
       const notes = chargesUnfilled(l) ? { notes: ["unfilled" as const] } : {};
       // a sum on each trade with no bound (Excellence's 16 ₪ on a traditional mutual fund) is a sum per action
       if (NIS_UNITS.has(l.rate.unit) && !l.min && !l.max && !l.cap && !l.flat_up_to) return has(l.rate) ? { fees: [fee("trade", { form: "perAction", amount: num(l.rate), ...notes })], left: [] } : { fees: [], left: ["no-value"] };
-      // a share of nothing whose minimum and maximum are one sum, with no cap and no flat price, is that sum on each trade, in its currency
-      // (Altshuler's "11$ לעסקה", IBI's "פיקס 12$"); with a cap it stays a share with its bounds, which a sum per action cannot hold
+      // a share of nothing whose minimum and maximum are one sum, with no flat price, is that sum on each trade, in its currency (Altshuler's
+      // "11$ לעסקה", IBI's "פיקס 12$"), under the line's percent maximum where it prints one (Excellence's "11$ פיקס לעסקה" under 2%)
       const fixed = fixedSum(l);
-      if (fixed) return { fees: [fee("trade", { form: "perAction", amount: num(fixed.sum), ...(fixed.currency !== "ILS" ? { currency: fixed.currency } : {}), ...notes })], left: [] };
+      if (fixed) return { fees: [fee("trade", { form: "perAction", amount: num(fixed.sum), ...(has(l.cap) ? { cap: num(l.cap) } : {}), ...(fixed.currency !== "ILS" ? { currency: fixed.currency } : {}), ...notes })], left: [] };
       if (l.rate.unit !== "pct_of_trade" && l.rate.unit !== "usd_per_share") return { fees: [], left: ["bound-currency"] };
       const p = actionPrice(l, num, true);
       return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("trade", { ...p.price, ...notes } as Price)], left: [] };

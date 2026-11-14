@@ -45,8 +45,11 @@ export type DealPrice =
   | { kind: "held"; rate: number; everyMonths: number; min?: number; max?: number }
   /** A sum in shekels every `everyMonths` months, whatever the account holds (F-17). */
   | { kind: "sum"; amount: number; everyMonths: number }
-  /** A sum on each action, in `currency` (the shekel where absent; One Zero's 50 dollars for each corporate event, F-103). */
-  | { kind: "perAction"; amount: number; currency?: string; third?: DealThird };
+  /**
+   * A sum on each action, in `currency` (the shekel where absent; One Zero's 50 dollars for each corporate event, F-103), held to `cap`, a
+   * share of the action, where the list prints one over it (Excellence's "11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
+   */
+  | { kind: "perAction"; amount: number; cap?: number; currency?: string; third?: DealThird };
 
 /** A price and the calendar month at whose start it ends; the last price of a fee has no end (F-110). */
 export interface DealStage {
@@ -208,7 +211,7 @@ export function chargesNothing(p: DealPrice): boolean {
     case "sum":
       return p.amount === 0;
     case "perAction":
-      return p.amount === 0 && !thirdCharges(p.third);
+      return (p.amount === 0 || p.cap === 0) && !thirdCharges(p.third);
   }
 }
 
@@ -654,15 +657,18 @@ export function actionCost(
 
 /**
  * The cost of one price on an action of `a` shekels (F-12, F-13): a share with its bounds, its cap and its flat price, a sum per unit, or a
- * sum per action; a third party's fee (F-117) is priced the same way on its own. A conversion is priced as F-13 prices it.
+ * sum per action, held to its cap as a share's minimum is; a third party's fee (F-117) is priced the same way on its own. A conversion is priced as F-13 prices it.
  */
 function priceCost(
-  price: { kind: "action"; rate: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string } | { kind: "perUnit"; amount: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string } | { kind: "perAction"; amount: number; currency?: string },
+  price: { kind: "action"; rate: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string } | { kind: "perUnit"; amount: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string } | { kind: "perAction"; amount: number; cap?: number; currency?: string },
   a: number,
   rateOf: (currency: string) => number,
   unitPrice: number | undefined,
   isFx: boolean,
 ): number {
+  // a sum per action held to a percent ceiling is F-12's line of a share of nothing whose minimum and maximum are the sum, with the cap:
+  // the share of the action wins over the sum where it is lower, as it wins over a share's minimum
+  if (price.kind === "perAction" && price.cap !== undefined) return priceCost({ kind: "action", rate: 0, min: price.amount, max: price.amount, cap: price.cap, ...(price.currency ? { currency: price.currency } : {}) }, a, rateOf, unitPrice, isFx);
   if (price.kind === "perAction") return tradeCommission({ rate: 0, min: price.amount }, a, { fxRate: 1 }) * rateOf(price.currency ?? "ILS");
   const priced = price.kind === "perUnit" || price.min !== undefined || price.max !== undefined || price.flat !== undefined;
   const currency = priced ? (price.currency ?? "ILS") : "ILS";

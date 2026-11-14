@@ -58,7 +58,7 @@ function basePrice(p: Price): DealPrice {
     case "sum":
       return { kind: "sum", amount: p.amount.v, everyMonths: p.every };
     case "perAction":
-      return { kind: "perAction", amount: p.amount.v, ...currencyOf(p.currency) };
+      return { kind: "perAction", amount: p.amount.v, ...(p.cap ? { cap: fraction(p.cap.v) } : {}), ...currencyOf(p.currency) };
   }
 }
 

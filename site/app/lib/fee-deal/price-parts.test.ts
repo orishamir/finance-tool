@@ -110,10 +110,10 @@ describe("the price parts as the screen edits them", () => {
     const filled: Price = { form: "action", rate: { v: 0.3, src }, min: { v: 1, src }, cap: { v: 1, src }, currency: "USD" };
     expect(withForm(filled, "perUnit")).toEqual({ form: "perUnit", amount: { v: 0, blank: true }, min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
     expect(withForm(ibFixed, "action")).toEqual({ form: "action", rate: { v: 0, blank: true }, min: { v: 1 }, cap: { v: 1 }, currency: "USD" });
-    // a sum per action keeps the currency, a trade's as a sum per unit's does; a fee whose sum per action is in shekels by its shape (a
-    // payout's handling) loses it
-    expect(withForm(ibFixed, "perAction")).toEqual({ form: "perAction", amount: { v: 0, blank: true }, currency: "USD" });
-    expect(setPart(trade(ibFixed), "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true }, currency: "USD" });
+    // a sum per action keeps the currency and the percent maximum, a trade's as a sum per unit's does; a fee whose sum per action is in
+    // shekels with no percent maximum by its shape (a payout's handling) loses them
+    expect(withForm(ibFixed, "perAction")).toEqual({ form: "perAction", amount: { v: 0, blank: true }, cap: { v: 1 }, currency: "USD" });
+    expect(setPart(trade(ibFixed), "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true }, cap: { v: 1 }, currency: "USD" });
     const payout: Fee = { id: "fee-payout", kind: "distribution_handling", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5), currency: "USD" } }] };
     expect(setPart(payout, "perAction", true).stages![0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true } });
     const event: Fee = { id: "fee-event", kind: "corporate_event", stages: [{ price: { form: "perAction", amount: typed(50), currency: "USD" } }] };
@@ -167,14 +167,33 @@ describe("the templates", () => {
     expect(chargesUnfilled(line(["קניה, מכירה ופדיון (כולל קנייה או מכירה שלא בוצעה) - מניות"]))).toBe(true);
     expect(chargesUnfilled(line(["קניה, מכירה ופדיון של קרנות נאמנות"]))).toBe(false);
   });
-  it("fill a fixed sum on each trade in its currency, as the line prints it, where no cap rides on it", () => {
+  it("fill a fixed sum on each trade in its currency, as the line prints it, under the line's percent maximum where it has one", () => {
     const tracks = (id: string) => data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade")!.cases!.map((c) => c.stages[0]!.price);
     // Altshuler's "עמלה קבועה 11$ לעסקה" and IBI's "פיקס 12$ לעסקה": a share of nothing with a minimum and a maximum of one sum
     expect(tracks("altshuler-trade")).toContainEqual(expect.objectContaining({ form: "perAction", amount: expect.objectContaining({ v: 11 }), currency: "USD" }));
     expect(tracks("ibi")).toContainEqual(expect.objectContaining({ form: "perAction", amount: expect.objectContaining({ v: 12 }), currency: "USD" }));
-    // Excellence's "11$ פיקס לעסקה" carries the line's 2% ceiling, which a sum per action has no place for: it stays a share with its bounds
-    expect(tracks("excellence")).toContainEqual(expect.objectContaining({ form: "action", rate: expect.objectContaining({ v: 0 }), min: expect.objectContaining({ v: 11 }), max: expect.objectContaining({ v: 11 }), cap: expect.objectContaining({ v: 2 }), currency: "USD" }));
-    expect(tracks("excellence").some((p) => p.form === "perAction" && p.currency === "USD")).toBe(false);
+    expect(tracks("altshuler-trade").find((p) => p.form === "perAction" && p.currency === "USD")).not.toHaveProperty("cap");
+    // Excellence's "11$ פיקס לעסקה" under the line's "עמלת מקסימום 2% משווי העסקה": the sum with its ceiling, each figure sourced
+    const ex = tracks("excellence").find((p) => p.form === "perAction" && p.currency === "USD")!;
+    expect(ex).toMatchObject({ form: "perAction", amount: { v: 11 }, cap: { v: 2 }, currency: "USD", notes: ["unfilled"] });
+    expect(ex.form === "perAction" && ex.amount.src && ex.cap?.src).toBeTruthy();
+    expect(tracks("excellence").some((p) => p.form === "action" && p.rate.v === 0)).toBe(false);
+  });
+  it("hold a dollar sum per action to its percent maximum, as a share's minimum is held (F-12, F-112), and keep it through a link", () => {
+    const capped: Price = { form: "perAction", amount: { v: 11, src }, cap: { v: 2, src }, currency: "USD" };
+    const deal = account([trade(capped)]);
+    const engine = engineDeal(deal);
+    expect(engine.fees[0]!.stages[0]!.price).toEqual({ kind: "perAction", amount: 11, cap: 0.02, currency: "USD" });
+    const period = dealPeriods(engine, { y: 2026, m: 11 }).periods[0]!;
+    // at 3.20 ₪ a dollar: a 100 $ trade (320 ₪) costs 2% of it, 2 $ = 6.40 ₪; a 1,000 $ trade (3,200 ₪) costs the 11 $ = 35.20 ₪
+    expect(actionCost(engine, period, "trade", 320, "buy", { USD: 3.2 }).total).toBeCloseTo(6.4, 9);
+    expect(actionCost(engine, period, "trade", 3_200, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 9);
+    const back = decodeDeal(encodeDeal(deal))!;
+    expect(back.fees[0]!.stages![0]!.price).toEqual(capped);
+    // the case's parts: the sum, and the percent maximum as a bound
+    const row = builder(read(deal)).rows[0]!;
+    const parts = row.block.kind === "slim" ? row.block.parts.map((x) => x.id) : [];
+    expect(parts).toEqual(expect.arrayContaining(["perAction", "cap"]));
   });
   it("charge a trade's sum per action in dollars at the rate it is given, as a sum per unit's is (F-112, F-84), and keep it through a link", () => {
     const deal = account([trade({ form: "perAction", amount: { v: 11, src }, currency: "USD" })]);

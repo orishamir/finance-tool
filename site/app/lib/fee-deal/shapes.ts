@@ -53,6 +53,8 @@ const SUM: readonly FieldId[] = ["amount", "every"];
 const AMOUNT: readonly FieldId[] = ["amount"];
 /** A sum per action in a currency of its own (F-103's charge in dollars for each corporate event). */
 const AMOUNT_IN: readonly FieldId[] = ["amount", "currency"];
+/** A trade's sum on each order, in its currency, under a percent ceiling where the list prints one (Excellence's US fixed track). */
+const AMOUNT_IN_CAP: readonly FieldId[] = ["amount", "currency", "cap"];
 
 const action = (fields: readonly FieldId[], saleApart = false): FeeShape => ({ base: null, forms: ["action"], usual: "action", fields: { action: fields }, saleApart });
 const held = (fields: readonly FieldId[] = HELD): FeeShape => ({ base: null, forms: ["held"], usual: "held", fields: { held: fields }, saleApart: false });
@@ -60,7 +62,7 @@ const sum = (): FeeShape => ({ base: null, forms: ["sum"], usual: "sum", fields:
 
 /** Every fee's shape. A record base is its own `base`; the four the records do not list take the base whose cap would apply, or none. */
 export const FEE_SHAPES: Readonly<Record<FeeKindId, FeeShape>> = {
-  trade: { base: "trade", forms: ["action", "perUnit", "perAction"], usual: "action", fields: { action: TRADE, perUnit: PER_UNIT, perAction: AMOUNT_IN }, saleApart: true },
+  trade: { base: "trade", forms: ["action", "perUnit", "perAction"], usual: "action", fields: { action: TRADE, perUnit: PER_UNIT, perAction: AMOUNT_IN_CAP }, saleApart: true },
   spread: { ...action(RATE), base: "spread" },
   creation_redemption: { ...action(RATE, true), base: "creation_redemption" },
   load: { ...action(RATE), base: "load" },
