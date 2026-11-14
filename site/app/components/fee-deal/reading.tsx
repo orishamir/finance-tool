@@ -346,6 +346,11 @@ function CurveCard({ group, reading, saved, fx, unitPrice, onUnitPrice }: { grou
         </p>
       )}
       {curve?.rates.map((r) => <RateLine key={r.currency} currency={r.currency} rate={r.rate} fx={fx} />)}
+      {curve?.unapplied?.map((f) => (
+        <p key={f.fee} className="text-sm text-muted-foreground">
+          {c.perDeposit(refName(f))}
+        </p>
+      ))}
       {group.undrawn
         .filter((u) => u.why === "rate")
         .map((u) => (

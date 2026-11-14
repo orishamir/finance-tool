@@ -4,19 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
 import { addBy, newBy } from "../../lib/fee-deal/edits/case";
-import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
+import { NAME_MAX, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
 import type { ByKind, RangeUnit } from "../../lib/fee-deal/offers/conditions";
-import { AskValues, Button, FigureField, InlineSelect, TextField } from "../kit";
+import { AskValues, FigureField, InlineSelect, TextField } from "../kit";
 import { bringIntoView } from "./in-view";
-
-const p = copy.panel;
-
-/** A value of the person's own typed while a thing is added: its name, and for what is bought or held, where it is bought and its currency. */
-interface Own {
-  name: string;
-  place: OwnPlace["place"];
-  currency: BoundCurrency;
-}
+import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
 
 /**
  * The one question a thing to change by asks before it is added: for a list, its values to tick and one of the person's own
@@ -37,7 +29,7 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
   const [chosen, setChosen] = useState<string[]>([]);
   const [extra, setExtra] = useState<string[]>([]);
   const [own, setOwn] = useState<OwnPlace[]>([]);
-  const [typing, setTyping] = useState<Own | null>(q.typed?.open ? { name: "", place: "abroad", currency: "USD" } : null);
+  const [typing, setTyping] = useState<OwnTyped | null>(q.typed?.open ? NEW_OWN : null);
   const [label, setLabel] = useState("");
   const [top, setTop] = useState<number | null>(null);
   const [unit, setUnit] = useState<RangeUnit | null>(q.units?.[0]?.unit ?? null);
@@ -66,22 +58,7 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
     onFee(addBy(fee, n));
     onDone(true);
   };
-  const ownForm = typing && (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-end gap-2">
-        <TextField label={q.typed?.name ?? c.slot.ownName} value={typing.name} maxLength={NAME_MAX} onChange={(name) => setTyping({ ...typing, name })} />
-        <Button variant="outline" disabled={!typing.name.trim()} onClick={typed}>
-          {c.addValue}
-        </Button>
-      </div>
-      {place && (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <InlineSelect label={c.slot.ownPlace} options={(["israel", "abroad"] as const).map((x) => ({ id: x, name: c.slot[x] }))} value={typing.place} onChange={(v) => v && setTyping({ ...typing, place: v as OwnPlace["place"] })} />
-          <InlineSelect label={c.slot.ownCurrency} options={BOUND_CURRENCIES.map((x) => ({ id: x, name: p.currencies[x]! }))} value={typing.currency} onChange={(v) => v && setTyping({ ...typing, currency: v as BoundCurrency })} />
-        </div>
-      )}
-    </div>
-  );
+  const ownForm = typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} />;
   const field = range ? (
     <FigureField
       value={null}
@@ -113,7 +90,7 @@ export function AskThing({ fee, kind, onFee, onDone }: { fee: Fee; kind: ByKind;
       options={[...(q.values ?? []).map((v) => ({ id: v.id, label: v.words })), ...extra.map((v) => ({ id: v, label: v }))]}
       chosen={chosen}
       onToggle={toggle}
-      {...(q.other ? { other: { label: q.other, open: !!typing, onClick: () => setTyping(typing ? null : { name: "", place: "abroad", currency: "USD" }) } } : {})}
+      {...(q.other ? { other: { label: q.other, open: !!typing, onClick: () => setTyping(typing ? null : NEW_OWN) } } : {})}
       otherField={ownForm}
       note={note}
       {...(range ? { ready: top !== null && top > 0 && !!unit } : q.label ? { ready: label.trim() !== "" && chosen.length > 0 } : {})}

@@ -7,7 +7,7 @@
 import { groupRate, type ChangeKind, type DealSide } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { monthKey, monthOf, type MonthKey } from "./model";
-import { engineGroupKey, groupKey, groupOn, groupRateValue, monthBefore, monthsValue, priceAt, priceView, refOf, standingView, subRead, type DealRead, type FeeRef, type GroupOn, type PriceView, type StandingView } from "./deal-read";
+import { engineGroupKey, groupKey, groupOn, groupRateValue, monthBefore, monthsValue, priceAt, priceView, refOf, standingView, subRead, type BanSaid, type DealRead, type FeeRef, type GroupOn, type PriceView, type StandingView } from "./deal-read";
 
 /** A fee in a group: its price now (and its sale's, where a sale is priced apart), each with its standing against the cap. */
 export interface GlanceFee extends FeeRef {
@@ -60,7 +60,7 @@ export interface Glance {
   /** Fees left out because the picks give them no case (F-114): the price list prints no price for what is picked. */
   unmatched: (FeeRef & { noCurrency?: true })[];
   /** Fees the law bans here, read as nothing charged, with the rules that ban them (`DealRead.banned`). */
-  banned: (FeeRef & { rules: readonly string[] })[];
+  banned: (FeeRef & { ban: BanSaid })[];
 }
 
 /** The order the groups are listed in: the actions as F-111 names them, then what is held, the account, cover, and what is not said. */
@@ -154,5 +154,5 @@ export function glance(r: DealRead): Glance {
   const holds = r.reading.fees.flatMap((f, i) => (f.holds ? [i] : []));
   const changes = r.reading.fees.flatMap((f, i) => (f.holds ? [] : [i]));
   const refs = (ids: readonly string[]) => r.deal.fees.filter((f) => ids.includes(f.id)).map((f): FeeRef => ({ fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) }));
-  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched).map((f) => (r.noCurrency.includes(f.fee) ? { ...f, noCurrency: true as const } : f)), banned: r.banned.map((b) => ({ ...refs([b.fee])[0]!, rules: b.rules })) };
+  return { from: monthKey(r.reading.from), throughout: groupsOf(r, holds, true, touchedBy(r, changes)), changing: withFirstRates(r, groupsOf(r, changes, false)), dates: datesOf(r), unread: r.unread, unpriced: refs(r.unpriced), unmatched: refs(r.unmatched).map((f) => (r.noCurrency.includes(f.fee) ? { ...f, noCurrency: true as const } : f)), banned: r.banned.map(({ fee, ...ban }) => ({ ...refs([fee])[0]!, ban })) };
 }

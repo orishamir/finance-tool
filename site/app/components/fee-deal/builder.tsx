@@ -52,7 +52,6 @@ export interface FeeFocus {
   on: "card" | "box";
 }
 
-export { bringIntoView } from "./in-view";
 
 export function SetupColumn({ deal, view, kinds, onPickTrack, onTemplates, filled, kindLine, onDeal, onKind }: {
   deal: FeeDeal;

@@ -12,9 +12,9 @@ import { type FeeKindId } from "../shapes";
 /**
  * A price with one figure set to `n`, or emptied (`n` undefined): an emptied bound or cap is taken away, an emptied rate, sum, figure of a
  * flat price, discount's share, third party's rate or sum, or refund is blank again (`blankFigure`). A figure the price's form has no place
- * for, or a part's figure where the price has not that part, leaves it as it is.
+ * for, or a part's figure where the price has not that part, leaves it as it is. The undo of a typed figure puts it back so, with its source.
  */
-function setFigure(p: Price, figure: Figure, n: Num | undefined): Price {
+export function setFigure(p: Price, figure: Figure, n: Num | undefined): Price {
   const def = FIGURES[figure];
   return def.set(p, n ?? (def.emptied === "blank" ? blankFigure() : undefined));
 }
@@ -28,11 +28,6 @@ export function withFigure(p: Price, figure: Figure, n: number | null): Price {
 /** One figure of a price as it stands, with its source; none where the price has no such figure. */
 export const figureOf = (p: Price, figure: Figure): Num | undefined => FIGURES[figure].get(p);
 
-/**
- * A price with one figure put back as it stood (`figureOf`), its source with it: none takes a bound or a cap away and leaves a rate, a sum
- * or a part's figure blank. A price of another form than the figure's is left as it is.
- */
-export const figureBack = (p: Price, figure: Figure, n: Num | undefined): Price => setFigure(p, figure, n);
 
 /**
  * A price the person changed the terms of is theirs: every figure in it loses a template's source, which states the price as it was (the

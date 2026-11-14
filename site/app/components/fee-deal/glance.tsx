@@ -6,14 +6,14 @@ import type { ReactNode } from "react";
 import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { Glance, GlanceChange, GlanceFee, GlanceGroup } from "../../lib/fee-deal/glance";
-import { groupKey, type FeeRef, type GroupOn } from "../../lib/fee-deal/deal-read";
+import { groupKey, type BanSaid, type FeeRef, type GroupOn } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { GroupHead, Section, Tag, TypedPlain, When, cx } from "../kit";
 import { Num } from "../provenance";
 import { FeeOpen, LawRowTag, markedLine, useFeeMark, useLineOpen } from "./links";
-import { BannedWords, CapBlock, PriceWords, StandingWords, refName } from "./words";
+import { CapBlock, UnreadWords, PriceWords, StandingWords, refName } from "./words";
 
 /** The id of the reading's section under the columns. */
 export const READING_ID = "deal-reading";
@@ -149,13 +149,13 @@ function ChangeLine({ change, row, saved }: { change: GlanceChange; row: LawRow 
  * A fee not read: a price of it not given yet, its price still to come; no case of it for what the reading is read for (F-114), which
  * the line says (`unmatched`), or a case whose sums are in a currency the deal does not know (`noCurrency`); or banned by law here, which the line says with its rules (`banned`).
  */
-function UnpricedLine({ fee, unmatched, noCurrency, banned }: { fee: FeeRef; unmatched?: boolean; noCurrency?: boolean; banned?: readonly string[] }) {
+function UnpricedLine({ fee, unmatched, noCurrency, banned }: { fee: FeeRef; unmatched?: boolean; noCurrency?: boolean; banned?: BanSaid }) {
   const { marked, handlers } = useFeeMark(fee.fee);
   const onClick = useLineOpen(fee.fee);
   return (
     <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-glance-fee={fee.fee}>
       <FeeOpen fee={fee} after={copy.price.sep} />
-      <span className="text-muted-foreground">{banned ? <BannedWords rules={banned} fee={refName(fee)} /> : noCurrency ? copy.cases.noCurrency : unmatched ? copy.cases.unmatched : copy.builder.facts.noPrice}</span>
+      <span className="text-muted-foreground"><UnreadWords banned={banned} noCurrency={noCurrency} unmatched={unmatched} fee={refName(fee)} /></span>
     </li>
   );
 }
@@ -223,7 +223,7 @@ export function GlanceCard({ glance, law, saved, names, empty }: { glance: Glanc
               <UnpricedLine key={f.fee} fee={f} unmatched noCurrency={!!f.noCurrency} />
             ))}
             {glance.banned.map((f) => (
-              <UnpricedLine key={f.fee} fee={f} banned={f.rules} />
+              <UnpricedLine key={f.fee} fee={f} banned={f.ban} />
             ))}
           </ul>
         )}

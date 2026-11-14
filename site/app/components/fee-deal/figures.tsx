@@ -2,7 +2,7 @@
 import { useRef, type ReactNode } from "react";
 import { feeDeal as copy, values as valuesCopy } from "../../copy";
 import { editPrice } from "../../lib/fee-deal/edits/stage";
-import { figureBack, figureOf, withFigure } from "../../lib/fee-deal/edits/price";
+import { setFigure, figureOf, withFigure } from "../../lib/fee-deal/edits/price";
 import { type Side } from "../../lib/fee-deal/model";
 import type { Figure } from "../../lib/fee-deal/offers/figures";
 import { pricesOn, SUM_MAX, type Fee, type Num } from "../../lib/fee-deal/model";
@@ -102,7 +102,7 @@ export function PriceFigure({
       unit={unit ?? signText(sign)}
       sign={signText(sign)}
       onFocus={() => (atFocus.current = figureOf(price(), figure))}
-      onRevert={() => onFee(editPrice(fee, side, k, (p) => figureBack(p, figure, atFocus.current), caseId))}
+      onRevert={() => onFee(editPrice(fee, side, k, (p) => setFigure(p, figure, atFocus.current), caseId))}
       words={words}
       tight
       {...(optional ? { placeholder: copy.panel.empty } : {})}

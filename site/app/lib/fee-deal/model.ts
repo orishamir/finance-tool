@@ -201,6 +201,8 @@ export function untouched(fee: Fee): boolean {
 const pricesUntouched = (x: Priced): boolean => {
   if (x.stages.length !== 1 || x.stages[0]!.until !== undefined || x.sale) return false;
   const price = x.stages[0]!.price;
+  // a free price a template filled holds its source, as a figure does
+  if (price.form === "free") return price.src !== undefined;
   const figures = figuresOf(price).filter((n): n is Num => n !== undefined);
   if (mainFigure(price)?.blank) return figures.length === 1;
   return figures.length > 0 && figures.every((n) => n.src !== undefined);
@@ -253,6 +255,12 @@ export function pricedOf(fee: Fee, caseId?: string): Priced {
   if (!hasCases(fee)) return fee;
   return fee.cases.find((c) => c.id === caseId) ?? fee.cases[0]!;
 }
+
+/**
+ * The price of a case's prices the toolbox acts on, by its place among the purchase's: the last, the one that runs on with no end, which a
+ * later price follows. The toolbox offers what it can hold, and adds a part, asks for a pending part and changes the form there.
+ */
+export const toolPrice = (x: Priced): number => x.stages.length - 1;
 
 /** A fee's prices on a side (of a case, where `caseId` names one): the sale's where it is priced apart, else the fee's own. */
 export const pricesOn = (fee: Fee, side: Side, caseId?: string): Stage[] => {
@@ -458,7 +466,11 @@ const READ_BEYOND: Partial<Record<FormId, readonly FieldId[]>> = { action: ["min
  */
 function readPrice(raw: unknown, kind: FeeKindId): Price | null {
   if (!isRec(raw)) return null;
-  if (raw.form === "free") return { form: "free" };
+  if (raw.form === "free") {
+    if (raw.src === undefined) return { form: "free" };
+    const src = readSourced(raw.src);
+    return src ? { form: "free", src } : null;
+  }
   if (!capacity(kind).forms.includes(raw.form as never)) return null;
   const form = raw.form as ChargedForm;
   const fields = [...fieldsOf(kind, form), ...(READ_BEYOND[form] ?? [])];

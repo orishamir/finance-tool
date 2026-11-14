@@ -7,10 +7,29 @@ import { feeOf, readFees, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type DealKind, type Standing } from "./kinds";
 import { feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
 import { boundsAction, charged, onAction } from "./offers/capabilities";
-import { banFor } from "./offers/offer";
+import { banFor, type Ban } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
-import { figure, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
+import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
+
+/**
+ * How a ban is said (offers/offer.ts, `Ban`): the rules that ban the fee, whether that is the site's reading of them, and whether a
+ * distribution fee may still be charged on the units.
+ */
+export interface BanSaid {
+  rules: readonly string[];
+  reading?: true;
+  distribution?: true;
+}
+
+/**
+ * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, no case for the picks,
+ * or a price not given yet. Its card and its line in the glance both say this one reason.
+ */
+export const unreadReason = (x: { banned?: BanSaid | undefined; noCurrency?: boolean; unmatched?: boolean }): "banned" | "noCurrency" | "unmatched" | "noPrice" =>
+  x.banned ? "banned" : x.noCurrency ? "noCurrency" : x.unmatched ? "unmatched" : "noPrice";
+
+export const banSaid = (b: Ban): BanSaid => ({ rules: b.cite, ...(b.reading ? { reading: true as const } : {}), ...(b.distribution ? { distribution: true as const } : {}) });
 
 /** A deal read once: the fees F-110 can read (in order), the engine's deal over them, its reading, and the day and month it is for. */
 export interface DealRead {
@@ -32,7 +51,7 @@ export interface DealRead {
    * The deal's fees the law bans here (the rule table's `ban`, `banFor`), with the rules that ban them: read as nothing charged, so left out
    * of the reading whatever their prices, and said as banned.
    */
-  banned: { fee: string; rules: readonly string[] }[];
+  banned: ({ fee: string } & BanSaid)[];
   engine: Deal;
   reading: DealReading;
   /** The device's day, YYYY-MM-DD, and its month. */
@@ -53,7 +72,7 @@ export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: st
   const read = readFees(deal);
   const banned = deal.fees.flatMap((f) => {
     const ban = banFor(kind, f.kind, deal.provider, read.picks);
-    return ban ? [{ fee: f.id, rules: ban.cite }] : [];
+    return ban ? [{ fee: f.id, ...banSaid(ban) }] : [];
   });
   const kept = (id: string) => !banned.some((b) => b.fee === id);
   const fees = read.fees.filter((f) => kept(feeOf(f)) && feeInOrder(f) && feePriced(f, from));
@@ -88,6 +107,8 @@ export interface PriceView {
   /** The months a share of what is held prints its bounds per, where not per charge ("מינימום 40 ₪ בחודש"). */
   boundsEvery?: Months;
   currency?: string;
+  /** A free price a template filled: nothing charged, with its record's source (`freeValue`). */
+  free?: SiteValue;
   yearly?: SiteValue;
   /** The parts of the price beside its figures (F-116, F-117, and the parts §10.6 states without computing), where it has any. */
   parts?: PartsView;
@@ -138,6 +159,8 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
       const yearly = p.every === 12 ? figures.amount! : reading((p.amount.v * 12) / p.every, "nis", "F-111", { [inputKey(fees, i)]: figures.amount! }, today);
       return { form: "sum", figures, every: p.every, yearly, ...parts };
     }
+    case "free":
+      return { form: "free", figures, ...(p.src ? { free: freeValue(p.src) } : {}) };
     default:
       return { form: p.form, figures, ...currency, ...parts };
   }

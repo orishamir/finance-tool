@@ -13,11 +13,16 @@ import { conditionsFor, type ByKind } from "./conditions";
 import { PART_IDS, PARTS, type PartId } from "./parts";
 import { RULES, type ProductFacts, type RuleRow } from "./rules";
 
-/** A ban the law sets on a fee (a row's `ban`): the provider kind it binds, the values of what is bought or held it holds for, its cites. */
+/**
+ * A ban the law sets on a fee (a row's `ban`): the provider kind it binds, the values of what is bought or held it holds for, its cites,
+ * whether it is the site's reading of them (`reading`), and whether a distribution fee may still be charged (`distribution`).
+ */
 export interface Ban {
   provider: ProviderKind;
   values?: readonly string[];
   cite: readonly string[];
+  reading?: true;
+  distribution?: true;
 }
 
 export interface Offer {
@@ -82,7 +87,7 @@ export function offerFor(product: ProductFacts | null, fee: FeeKindId): Offer {
   for (const row of RULES.filter((r) => about(r, product, fee))) {
     const v = row.verdict;
     if (v.kind === "ban") {
-      bans.push({ provider: v.provider, ...(v.values ? { values: v.values } : {}), cite: row.cite });
+      bans.push({ provider: v.provider, ...(v.values ? { values: v.values } : {}), cite: row.cite, ...(v.reading ? { reading: true as const } : {}), ...(v.distribution ? { distribution: true as const } : {}) });
       continue;
     }
     const reasons = [...row.cite, ...(row.records && product ? [product.id] : [])];

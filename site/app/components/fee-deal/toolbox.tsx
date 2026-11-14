@@ -1,7 +1,7 @@
 // The toolbox for the case open in place (method §10.6, `toolbox`): on a computer the column "העמלה שבחרתם", the fee's name as its head and
 // the parts to add to the open case in groups by kind, and at its end filling the fee from a price list and taking the fee away; on a phone
 // the same in the short sheet pinned to the foot of the screen. A thing to change by asks its question in the fee's block (`AskThing`).
-// A tap on a part adds it; a part that needs its figure, month or fee first asks for it in the open case (`onPending`), and a form of the
+// A tap on a part adds it to the price the toolbox acts on (`view.k`); a part that needs its figure, month or fee first asks for it in the open case (`onPending`), and a form of the
 // price puts the price in that form through the page (`onForm`), which keeps what it replaces for the undo.
 import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
@@ -132,7 +132,7 @@ export function ToolboxColumn({
     const id = part as PartId;
     if (isPending(id)) return onPending(id);
     if (isFormPart(id)) return onForm(id);
-    onFee(setPart(fee, id, true, caseId ? { caseId } : {}));
+    onFee(setPart(fee, id, true, { k: view.k, ...(caseId ? { caseId } : {}) }));
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
   const foot = (

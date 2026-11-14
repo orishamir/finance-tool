@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import type { CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import type { FeeRef, MarkView, PriceView, StandingView } from "../../lib/fee-deal/deal-read";
+import { unreadReason, type BanSaid, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -117,7 +117,8 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
   let body: ReactNode;
   switch (price.form) {
     case "free":
-      body = p.free;
+      // a free price a template filled opens its record's source, as a sourced figure does
+      body = price.free ? <Fig value={price.free} /> : p.free;
       break;
     case "action":
     case "perUnit": {
@@ -247,15 +248,26 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
 }
 
 /**
- * That the law bans a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: what a fee's card, its line in
- * the glance and the law card say in place of "no price".
+ * That a bank may not charge a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: as the rules' words,
+ * or as the site's reading of them (`reading`); that a new bank is outside those rules for its first five years (BANK-51, among each ban's rules); and, where the
+ * rules leave one, the distribution fee a bank may still charge on the units (MF-71). What a fee's card, its line in the glance and the law
+ * card say in place of "no price".
  */
-export function BannedWords({ rules, fee }: { rules: readonly string[]; fee?: string }) {
+export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
+  const w = copy.cases.ban;
   return (
     <>
-      {copy.cases.banned} <RulesChip ids={rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
+      {ban.reading ? w.reading : w.law} {w.newBank}
+      {ban.distribution && <> {w.distribution}</>} <RulesChip ids={ban.rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
     </>
   );
+}
+
+/** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, for the ban's rules chip. */
+export function UnreadWords({ banned, noCurrency, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; unmatched?: boolean; fee?: string }) {
+  const why = unreadReason({ banned, noCurrency, unmatched });
+  if (why === "banned") return <BannedWords ban={banned!} {...(fee ? { fee } : {})} />;
+  return <>{why === "noCurrency" ? copy.cases.noCurrency : why === "unmatched" ? copy.cases.unmatched : copy.builder.facts.noPrice}</>;
 }
 
 /**
@@ -269,7 +281,7 @@ export function CapRules({ cap, fee }: { cap: CapLine; fee: string }) {
   if (cap.state === "banned")
     return (
       <p className="text-xs text-muted-foreground">
-        <BannedWords rules={cap.ruleIds} fee={fee} />
+        <BannedWords ban={cap.ban} fee={fee} />
       </p>
     );
   return (

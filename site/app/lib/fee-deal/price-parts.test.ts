@@ -6,12 +6,12 @@ import { actionCost, dealMarks, dealPeriods } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
 import type { SiteValue } from "../value";
-import { withCurrency, withFigure, withFlat, figureOf, figureBack } from "./edits/price";
+import { withCurrency, withFigure, withFlat, figureOf, setFigure } from "./edits/price";
 import { setPart, withForm } from "./offers/parts";
 import { glance } from "./glance";
 import { inCapUnit, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
-import { feePriced, newDeal, readDeal, typed, type Fee, type FeeDeal, type Num, type Price } from "./model";
+import { feePriced, newDeal, readDeal, typed, untouched, type Fee, type FeeDeal, type Num, type Price } from "./model";
 import { engineDeal, enginePrice } from "./to-engine";
 import { readDealFor, type FeeMark } from "./deal-read";
 import { readingOf, UNIT_PRICE_KEY } from "./reading";
@@ -19,7 +19,8 @@ import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
 import { builder } from "./rows";
 import { panel } from "./panel";
-import { chargesUnfilled, fillDeal, houseName, MAX_PER_SECURITY, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, IN_TRADE, MAX_PER_SECURITY, perDepositFees, templateOf, templateOptions } from "./templates";
+import type { FeeKindId } from "./shapes";
 import { latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
@@ -151,7 +152,7 @@ describe("the price parts as the screen edits them", () => {
     expect(typedIn).toEqual({ ...p, flat: { amount: { v: 2.85 }, upTo: { v: 50 } } });
     expect(withFigure(typedIn, "upTo", null)).toEqual({ ...p, flat: { amount: { v: 2.85 }, upTo: { v: 0, blank: true } } });
     expect(figureOf(typedIn, "flat")).toEqual({ v: 2.85 });
-    expect(figureBack(typedIn, "cap", undefined)).toEqual({ form: "action", rate: { v: 0.3, src }, flat: { amount: { v: 2.85 }, upTo: { v: 50 } } });
+    expect(setFigure(typedIn, "cap", undefined)).toEqual({ form: "action", rate: { v: 0.3, src }, flat: { amount: { v: 2.85 }, upTo: { v: 50 } } });
     expect(withFlat(typedIn, false)).toEqual(p);
     // a flat price's figure on a price with none, and a cap on a sum per period, change nothing
     expect(withFigure(p, "flat", 3)).toEqual(p);
@@ -273,7 +274,33 @@ describe("the templates", () => {
     expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-redemption-makam", why: "redemption" }));
     expect(house("excellence").left.some((l) => l.why === "plan")).toBe(false);
     // IBI's "דמי משמרת: פטור" prints no period: free, not 0% a month
-    expect(filledFor("ibi", [{ by: "held", is: "tase" }])("custody")).toEqual({ form: "free" });
+    // with its record's source, so it counts as the template's, not as the person's own entry, and survives the device and a link
+    const free = filledFor("ibi", [{ by: "held", is: "tase" }])("custody")!;
+    expect(free).toMatchObject({ form: "free", src: { strength: "institution" } });
+    const ibi = fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!;
+    const custody = ibi.fees.find((f) => f.kind === "custody")!;
+    expect(untouched(custody)).toBe(true);
+    expect(readDeal(JSON.parse(JSON.stringify(ibi)))).toEqual(ibi);
+    expect(decodeDeal(encodeDeal(ibi))!.fees.find((f) => f.kind === "custody")!.stages?.[0]?.price ?? decodeDeal(encodeDeal(ibi))!.fees.find((f) => f.kind === "custody")!.cases![0]!.stages[0]!.price).toMatchObject({ form: "free", src: { strength: "institution" } });
+  });
+  it("show IBI's free custody with its record's source wherever the page shows a sourced price's source, and a free price of the person's own as the word alone", () => {
+    const ibi = { ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "held", is: "tase" }] };
+    const r = read(ibi);
+    const custody = ibi.fees.find((f) => f.kind === "custody")!;
+    // the builder's line and the open case: the free part is its sourced value
+    const row = builder(r).rows.find((x) => x.fee === custody.id)!;
+    const parts = row.block.kind === "slim" ? row.block.parts : row.block.rows.flatMap((x) => x.parts);
+    const said = parts.find((p) => p.id === "free")!.words;
+    expect(said.lead).toBeUndefined();
+    expect(said.figure).toMatchObject({ value: "free", unit: "text", state: "sourced", source: { strength: "institution" } });
+    const open = panel(r, custody.id)!.open.buy[0]!.parts.find((p) => p.id === "free")!;
+    expect(open.words.figure?.state).toBe("sourced");
+    // the reading's price, which the glance, the period cards and the law card say
+    const read0 = readingOf(r, data.fx).periods[0]!.rows.find((x) => x.fee === custody.id);
+    expect(read0?.price.free?.state).toBe("sourced");
+    // the person's own free price has no source: the word alone
+    const own = builder(read({ id: "d", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "free" } }] }] })).rows[0]!;
+    expect(own.block.kind === "slim" && own.block.parts[0]!.words).toEqual({ lead: copy.price.free });
   });
   it("fill a custody maximum on each security as one, stated and never read as the holding's maximum (§10.6's stated parts)", () => {
     const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
@@ -293,6 +320,34 @@ describe("the templates", () => {
     // each line kept as one on each security says so in its record's note
     const lines = latestSnapshots().flatMap((x) => x.lines);
     for (const id of MAX_PER_SECURITY) expect(lines.find((l) => l.id === id)?.max?.notes, id).toMatch(/לני"ע|לנייר/);
+  });
+  it("fill Leumi's custody abroad as its own case: 0.2% a quarter, a maximum of 7,400 ₪ on each security, and its maximum per deposit listed", () => {
+    const abroad = filledFor("leumi", [{ by: "what", is: "us" }, { by: "held", is: "us" }])("custody");
+    expect(abroad).toEqual({ form: "held", rate: expect.objectContaining({ v: 0.2 }), per: 3, every: 3, perSecurity: expect.objectContaining({ v: 7400 }) });
+    const home = filledFor("leumi", [{ by: "what", is: "tase" }, { by: "held", is: "tase" }])("custody");
+    expect(home).toMatchObject({ rate: { v: 0.15 }, perSecurity: { v: 3700 } });
+  });
+  it("list a maximum per deposit printed beside the one on each security, in the record's words, and never imply there is none", () => {
+    const perDeposit = (id: string) => house(id).left.filter((l) => l.why === "per-deposit").map((l) => [l.lineId, l.quote]);
+    expect(perDeposit("leumi")).toEqual([["leumi-custody-israel", 'מכסימום 3700 ש"ח לני"ע, 11500 לפקדון'], ["leumi-custody-foreign", 'מכסימום 7400 ש"ח לני"ע, 23000 לפקדון']]);
+    expect(perDeposit("fibi").map(([id]) => id)).toEqual(["fibi-custody-israel", "fibi-custody-foreign"]);
+    expect(perDeposit("discount")).toEqual([]);
+    expect(copy.cases.stated.maxPerSecurity.tail).not.toMatch(/כל מה שמוחזק/);
+  });
+  it("say under a curve of holding that it does not apply a custody maximum per deposit its list prints, with no holding where it binds", () => {
+    const left = (id: string) => {
+      const d = fillDeal(newDeal("brokerage-account"), `house:${id}`, data, TODAY)!;
+      return templateOf(d, d.template!.id, data, TODAY)!.left;
+    };
+    expect(perDepositFees(left("leumi"))).toEqual(["custody"]);
+    expect(perDepositFees(left("excellence"))).toEqual([]);
+    // a curve of holding is drawn where a mark falls on it: a custody price with a minimum
+    const deal: FeeDeal = { id: "d", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 3, every: 3, min: typed(50) } }] }] };
+    const held = (kinds: FeeKindId[]) => readingOf(read(deal), data.fx, null, kinds).curves.find((c) => c.on === "held")!;
+    expect(held(["custody"]).unapplied?.map((f) => f.fee)).toEqual(["fee-c"]);
+    expect(held([]).unapplied).toBeUndefined();
+    // no figure is invented for where it binds: the record gives the maximum in words alone
+    expect(copy.read.curves.perDeposit("x")).not.toMatch(/\d/);
   });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;
@@ -423,12 +478,40 @@ describe("the templates", () => {
     const band = "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל";
     const trade = house("ibi").fees.find((f) => f.kind === "trade")!;
     expect(trade.by![0]).toEqual({ kind: "what", own: [{ name: band, place: "abroad", currency: null }] });
-    expect(filledFor("ibi", [{ by: "what", is: "europe" }])("trade")).toMatchObject({ rate: { v: 0.3 }, min: { v: 30 } });
-    expect(filledFor("ibi", [{ by: "what", is: band }])("trade")).toMatchObject({ rate: { v: 0.3 }, min: { v: 30 } });
+    // its minimum is in the trade's currency (BRK-48): 30 euros in Europe; on a value of its own whose currency is not named, not read
+    expect(filledFor("ibi", [{ by: "what", is: "europe" }])("trade")).toMatchObject({ rate: { v: 0.3 }, min: { v: 30 }, currency: "EUR" });
+    expect(filledFor("ibi", [{ by: "what", is: band }])("trade")).toBeUndefined();
+    expect(read({ ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "what", is: band }] }).noCurrency).toHaveLength(1);
     // the rest of the world holds Canada, which the line leaves out
     expect(filledFor("ibi", [{ by: "what", is: "world" }])("trade")).toBeUndefined();
     // a value of its own abroad, in a currency it does not name, puts a conversion on a purchase (F-111)
     expect(read({ ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "what", is: band }] }).engine.foreign).toBe(true);
+  });
+  it("fill a minimum printed in the trade's own currency as one, never as dollars (BRK-48)", () => {
+    // Excellence outside the US: 35 euros in Europe, and not read where the currency is not known ("בשאר העולם")
+    const europe = filledFor("excellence", [{ by: "what", is: "europe" }])("trade");
+    expect(europe).toMatchObject({ rate: { v: 0.4 }, min: { v: 35 }, currency: "EUR" });
+    const world = { ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is: "world" }] };
+    expect(read(world).noCurrency.length).toBeGreaterThan(0);
+    // each line so filled says so in its record's quote or note
+    const lines = latestSnapshots().flatMap((x) => x.lines);
+    for (const id of IN_TRADE) {
+      const min = lines.find((l) => l.id === id)?.min;
+      expect(`${min?.source.quote} ${min?.notes}`, id).toMatch(/במטבע העסקה/);
+    }
+  });
+  it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
+    const minOf = (is: string) => {
+      const r = read({ ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is }] });
+      const band = builder(r).rows.find((x) => x.kind === "trade")!.block;
+      if (band.kind !== "band") throw new Error("a band");
+      const mins = band.rows.flatMap((x) => x.parts.filter((p) => p.id === "min").map((p) => p.words.figure!));
+      return mins.find((v) => v.value === 35)!;
+    };
+    expect(minOf("europe")).toMatchObject({ value: 35, unit: "eur" });
+    // the rest of the world: the currency is not known, and the fee is not read; on a pick in the US, the case is not the one read
+    expect(minOf("world")).toMatchObject({ value: 35, unit: "count" });
+    expect(minOf("us")).toMatchObject({ value: 35, unit: "count" });
   });
   it("name a house by the id of one of its ways to buy, which a deal saved before cases may hold", () => {
     expect(houseName("house:interactive-brokers/interactive-brokers-buy-sell-us-fixed", data)).toBe("Interactive Brokers");
