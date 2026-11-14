@@ -109,12 +109,12 @@
  ],
  "brokerage-account · custody · held · plain": [
   "price: held✓ until",
-  "bound: min max",
+  "bound: min max maxPerSecurity",
   "by: by:held by:track by:channel by:portfolioSize by:own"
  ],
  "brokerage-account · custody · held · full": [
   "price: held✓ until",
-  "bound: min✓ max✓",
+  "bound: min✓ max✓ maxPerSecurity✓",
   "by: by:held by:track by:channel by:portfolioSize by:own"
  ],
  "brokerage-account · custody · sum · plain": [

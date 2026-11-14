@@ -516,12 +516,12 @@ export function pickLine(r: DealRead): PickLine | null {
 
 /**
  * A part of a price the reading states without computing (§10.6, "What the page states and does not compute"), on the fee it is printed
- * with: a third party's fee with no figure, an offset against another fee, a refund, a fee on an order not carried out, each partial fill
- * charged apart; with its sentence's words.
+ * with: a third party's fee with no figure, an offset against another fee, a refund, a maximum on each security held, a fee on an order
+ * not carried out, each partial fill charged apart; with its sentence's words.
  */
 export interface StatedPart {
   fee: FeeRef;
-  part: "third" | "offset" | "refund" | Note;
+  part: "third" | "offset" | "refund" | "maxPerSecurity" | Note;
   words: PartWords;
   /** The rules its sentence states, where it states one (a bank's order through a clerk, BRK-16). */
   rules?: readonly string[];
@@ -550,6 +550,10 @@ function statedOf(r: DealRead): StatedPart[] {
       if (p.refund && !p.refund.blank) {
         const f = priceFigures(fee, p, r.today).refund;
         add("refund", { lead: st.refund.lead, ...(f ? { figure: f } : {}), tail: st.refund.tail });
+      }
+      if (p.form === "held" && p.perSecurity) {
+        const f = priceFigures(fee, p, r.today).perSecurity;
+        add("maxPerSecurity", { lead: st.maxPerSecurity.lead, ...(f ? { figure: f } : {}), tail: st.maxPerSecurity.tail });
       }
       if (onAction(p)) for (const n of p.notes ?? []) add(n, { lead: st[n] });
     }

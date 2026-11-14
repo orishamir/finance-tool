@@ -121,9 +121,10 @@ export type Price =
   /**
    * A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge, or per
    * month where the price list prints them so (`boundsEvery: 1`, "מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds; F-14
-   * names no other period a bound is printed in.
+   * names no other period a bound is printed in. `perSecurity` is a maximum in shekels on each security held, in the bounds' period
+   * ("₪ 7,500 לני״ע לרבעון"): §10.6 states it and never computes it, since the charge it bounds depends on how many securities are held.
    */
-  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; boundsEvery?: 1 } & Linked)
+  | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; perSecurity?: Num; boundsEvery?: 1 } & Linked)
   /** A sum in shekels every `every` months, whatever the account holds. */
   | ({ form: "sum"; amount: Num; every: Months } & Linked)
   /**
@@ -587,10 +588,11 @@ function readPrice(raw: unknown, kind: FeeKindId): Price | null {
       return amount && parts && more ? { form: "perUnit", amount, ...parts, ...more } : null;
     }
     case "held": {
-      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), more = readLinked(raw);
-      if (!rate || !min.ok || !max.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && raw.boundsEvery !== 1)) return null;
-      const boundsEvery = raw.boundsEvery === 1 && (min.n || max.n) ? { boundsEvery: 1 as const } : {};
-      return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...boundsEvery, ...more };
+      const rate = readNum(raw.rate, PCT_MAX), min = optNum(raw.min, SUM_MAX), max = optNum(raw.max, SUM_MAX), perSecurity = optNum(raw.perSecurity, SUM_MAX), more = readLinked(raw);
+      if (!rate || !min.ok || !max.ok || !perSecurity.ok || !more || !isMonths(raw.per) || !isMonths(raw.every) || (raw.boundsEvery !== undefined && raw.boundsEvery !== 1)) return null;
+      if (perSecurity.n && !fields.includes("perSecurity")) return null;
+      const boundsEvery = raw.boundsEvery === 1 && (min.n || max.n || perSecurity.n) ? { boundsEvery: 1 as const } : {};
+      return { form: "held", rate, per: raw.per, every: raw.every, ...(min.n ? { min: min.n } : {}), ...(max.n ? { max: max.n } : {}), ...(perSecurity.n ? { perSecurity: perSecurity.n } : {}), ...boundsEvery, ...more };
     }
     case "sum": {
       const amount = readNum(raw.amount, SUM_MAX), more = readLinked(raw);

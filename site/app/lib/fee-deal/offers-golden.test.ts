@@ -28,6 +28,7 @@ function fullPrice(fee: FeeKindId, form: FormId): Price {
   if (has("max")) p.max = typed(500);
   if (has("cap")) p.cap = typed(2);
   if (has("flat")) p.flat = { amount: typed(3), upTo: typed(50) };
+  if (has("perSecurity")) p.perSecurity = typed(7500);
   if (has("currency")) p.currency = "USD";
   if (form === "action" || form === "perUnit" || form === "perAction") {
     p.discount = { pct: typed(10), alsoMin: true };

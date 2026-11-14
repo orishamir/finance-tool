@@ -18,7 +18,8 @@ import { readingOf, UNIT_PRICE_KEY } from "./reading";
 import { curveHead } from "./reading-heads";
 import { CAPACITY } from "./offers/capacity";
 import { builder, panel } from "./builder";
-import { chargesUnfilled, fillDeal, houseName, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, MAX_PER_SECURITY, templateOf, templateOptions } from "./templates";
+import { latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -198,6 +199,25 @@ describe("the templates", () => {
     expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
     expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
+  });
+  it("fill a custody maximum on each security as one, stated and never read as the holding's maximum (§10.6's stated parts)", () => {
+    const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
+    // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit
+    expect(custodyOf("discount", "tase")).toMatchObject({ form: "held", rate: { v: 0.2 }, perSecurity: { v: 7500 } });
+    expect(custodyOf("discount", "tase")).not.toHaveProperty("max");
+    expect(custodyOf("leumi", "tase")).toMatchObject({ perSecurity: { v: 3700 } });
+    // Hapoalim's maximum is the same on each security and on the deposit: the holding's maximum, which it then is
+    expect(custodyOf("hapoalim", "tase")).toMatchObject({ max: { v: 10600 } });
+    // the reading states it, and marks no maximum on the holding
+    const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "held", is: "tase" }] };
+    const reading = readingOf(read(d), data.fx);
+    const stated = reading.stated.find((x) => x.part === "maxPerSecurity")!;
+    expect(stated.words.figure?.value).toBe(7500);
+    expect(stated.words.tail).toBe(copy.cases.stated.maxPerSecurity.tail);
+    expect(reading.statements.some((x) => x.kind === "mark" && x.mark.kind === "max" && x.mark.on === "held")).toBe(false);
+    // each line kept as one on each security says so in its record's note
+    const lines = latestSnapshots().flatMap((x) => x.lines);
+    for (const id of MAX_PER_SECURITY) expect(lines.find((l) => l.id === id)?.max?.notes, id).toMatch(/לני"ע|לנייר/);
   });
   it("note a trade charged on an order not carried out too where the line's own name says so, and no other", () => {
     const snap = (id: string) => data.houses.find((h) => h.id === id)!;

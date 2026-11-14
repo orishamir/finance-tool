@@ -23,7 +23,7 @@ export interface PriceSpec {
 
 const FORM_PART: Readonly<Record<ChargedForm, PartId>> = { action: "share", perUnit: "perUnit", perAction: "perAction", held: "held", sum: "sum" };
 /** The part a figure beside the main one stands in; the rate and the sum are the form's own. */
-const FIGURE_PART: Readonly<Partial<Record<Figure, PartId>>> = { min: "min", max: "max", cap: "cap", flat: "flat", upTo: "flat", discount: "discount", third: "third", thirdMin: "third", thirdMax: "third", refund: "refund" };
+const FIGURE_PART: Readonly<Partial<Record<Figure, PartId>>> = { min: "min", max: "max", cap: "cap", flat: "flat", upTo: "flat", discount: "discount", third: "third", thirdMin: "third", thirdMax: "third", refund: "refund", perSecurity: "maxPerSecurity" };
 
 /** A part's edit of one price, with the fee's kind (a part of the fee's prices, a later price or a sale, is no template's). */
 function onPrice(part: PartId, p: Price, at: PartAt, kind: FeeKindId): Price {

@@ -1786,7 +1786,7 @@ export const feeDeal = {
     ownName: "שם העמלה",
     forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה" } as Record<string, string>,
     /** The price parts beyond a rate and its bounds, by the name the reading's sheets give them (values.ts `inputKey`; reading.ts `UNIT_PRICE_KEY`). */
-    parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", discount: "ההנחה", third: "העמלה של הצד השלישי", thirdMin: "המינימום של הצד השלישי", thirdMax: "המקסימום של הצד השלישי", refund: "ההחזר", unitPrice: "מחיר יחידה בקרן" },
+    parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", discount: "ההנחה", third: "העמלה של הצד השלישי", thirdMin: "המינימום של הצד השלישי", thirdMax: "המקסימום של הצד השלישי", refund: "ההחזר", perSecurity: "המקסימום לכל נייר ערך", unitPrice: "מחיר יחידה בקרן" },
     howMuch: "כמה",
     min: "מינימום",
     max: "מקסימום",
@@ -1905,6 +1905,8 @@ export const feeDeal = {
       until: "לזמן מוגבל, עד ",
       min: "מינימום ",
       max: "מקסימום ",
+      /** A held share's maximum on each security, after its sum: "מקסימום 7,500 ₪ לכל נייר ערך בכל חיוב" (§10.6's stated parts). */
+      perSecurity: { each: " לכל נייר ערך", charge: " בכל חיוב" },
       /** After a bound's sum: on each action, by the fee (`price.perAction` names the action). */
       boundPer: { default: "לפעולה", fx: "להמרה", fx_spread: "להמרה" } as Record<string, string>,
       offset: "מתקזזת מול עמלה אחרת",
@@ -1976,6 +1978,8 @@ export const feeDeal = {
       thirdOf: { lead: "נוספת עמלת ", tail: " בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג." },
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
+      /** A maximum on each security held: it bounds each security's charge, never the whole holding's. */
+      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך ולא על כל מה שמוחזק, ולכן האתר לא מחשב אותו: הוא תלוי בכמה ניירות ערך מחזיקים ובשווי של כל אחד." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)). */
       unfilledClerk: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום.",
@@ -2198,7 +2202,7 @@ function dealInputNames(): Record<string, string> {
     out[`deal:${k}.min`] = `${name}: המינימום`;
     out[`deal:${k}.max`] = `${name}: המקסימום`;
     out[`deal:${k}.yearly`] = `${name}, בשנה`;
-    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
+    for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
   out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
   return out;

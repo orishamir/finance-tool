@@ -9,9 +9,10 @@ import type { FeeKindId, FormId } from "../shapes";
 /**
  * A field of a price: its rate, the months the rate is for, the months between charges, its bounds, the currency of its sums, a sum (a
  * sum per unit's among them), the percent maximum (`cap`, a share of the action that wins over the minimum, F-12) and the flat price for a
- * small action (`flat`, its price and the sum it holds up to, F-12, F-13).
+ * small action (`flat`, its price and the sum it holds up to, F-12, F-13), and a held share's maximum on each security (`perSecurity`,
+ * §10.6's stated parts).
  */
-export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount" | "cap" | "flat";
+export type FieldId = "rate" | "per" | "every" | "min" | "max" | "currency" | "amount" | "cap" | "flat" | "perSecurity";
 
 /** A form that charges something: every form but free, which every price can be. */
 export type ChargedForm = Exclude<FormId, "free">;
@@ -41,6 +42,8 @@ const FX: readonly FieldId[] = ["rate", "min", "max", "flat", "currency"];
 const RATE: readonly FieldId[] = ["rate"];
 const HELD: readonly FieldId[] = ["rate", "per", "every"];
 const HELD_BOUNDED: readonly FieldId[] = ["rate", "per", "every", "min", "max"];
+/** Custody's share of what is held: its bounds per charge, and a maximum on each security that the page states (§10.6's stated parts). */
+const CUSTODY: readonly FieldId[] = [...HELD_BOUNDED, "perSecurity"];
 const SUM: readonly FieldId[] = ["amount", "every"];
 const AMOUNT: readonly FieldId[] = ["amount"];
 /** A sum per action in a currency of its own (F-103's charge in dollars for each corporate event). */
@@ -70,7 +73,7 @@ export const CAPACITY: Readonly<Record<FeeKindId, Capacity>> = {
   transfer_out: { base: "transfer_out", forms: ["perAction", "action"], usual: "perAction", fields: { perAction: AMOUNT, action: ACTION_ALL }, saleApart: false },
   exit: { base: "exit", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },
   balance: { ...held(), base: "balance" },
-  custody: { base: "custody", forms: ["held", "sum"], usual: "held", fields: { held: HELD_BOUNDED, sum: SUM }, saleApart: false },
+  custody: { base: "custody", forms: ["held", "sum"], usual: "held", fields: { held: CUSTODY, sum: SUM }, saleApart: false },
   variable_management: { ...held(), base: "variable_management" },
   trustee: { ...held(), base: "trustee" },
   direct_expenses: { ...held(), base: "direct_expenses" },

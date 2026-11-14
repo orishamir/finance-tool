@@ -13,7 +13,8 @@ import { FIGURES, type Figure } from "./figures";
  * Every part a price may have, by id (the toolbox's cards and the open case's lines): its main figure as a share of each action (`share`),
  * a sum for each unit (`perUnit`), a sum on each action (`perAction`), a share of what is held (`held`), a sum per period (`sum`), free
  * (`free`), a discount, a third party's fee, a later price (`until`); a minimum, a maximum, a percent maximum (`cap`), a flat price for a
- * small action (`flat`); an offset, a refund; notes on an order (`unfilled`, `unfilledClerk`, `partial`) and a sale priced apart (`sale`).
+ * small action (`flat`), a held share's maximum on each security (`maxPerSecurity`); an offset, a refund; notes on an order (`unfilled`,
+ * `unfilledClerk`, `partial`) and a sale priced apart (`sale`).
  */
 export type PartId =
   | "share"
@@ -29,6 +30,7 @@ export type PartId =
   | "max"
   | "cap"
   | "flat"
+  | "maxPerSecurity"
   | "offset"
   | "refund"
   | "unfilled"
@@ -61,7 +63,7 @@ export interface PartAt {
 }
 
 /** The field of a price a part is kept in: a note's is the price's list of notes, which every note shares. */
-type PartField = "min" | "max" | "cap" | "flat" | "discount" | "third" | "notes" | "offset" | "refund";
+type PartField = "min" | "max" | "cap" | "flat" | "perSecurity" | "discount" | "third" | "notes" | "offset" | "refund";
 
 /** A part's edit: of the one price it is on (with the fee's kind, which a form's fields follow), or of the fee's prices (a later price, a sale). */
 type PartEdit = { on: "price"; edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price } | { on: "fee"; edit: <F extends Fee>(fee: F, on: boolean, at: PartAt) => F };
@@ -172,6 +174,20 @@ export const PARTS: Readonly<Record<PartId, PartDef>> = {
   max: boundPart("max", "sum", formBoundsAction),
   cap: boundPart("cap", "pct", formOnAction),
   flat: { id: "flat", kind: "bound", field: "flat", carriesIn: formBoundsAction, needsField: "flat", figures: ["flat", "upTo"], holds: (kind, p) => hasFlat(p) && withField("flat")(kind, p), ask: null, used: (p) => hasFlat(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)), lost: true },
+  // a maximum on each security of a held share, stated and never computed (§10.6's stated parts): where the fee's capacity gives it
+  maxPerSecurity: {
+    id: "maxPerSecurity",
+    kind: "bound",
+    field: "perSecurity",
+    carriesIn: (form) => form === "held",
+    needsField: "perSecurity",
+    figures: ["perSecurity"],
+    holds: (kind, p) => p.form === "held" && withField("perSecurity")(kind, p),
+    ask: "sum",
+    used: (p) => p.form === "held" && p.perSecurity !== undefined,
+    apply: onPrice((p, on, at) => withFigure(p, "perSecurity", on ? at.value! : null)),
+    lost: true,
+  },
   offset: { id: "offset", kind: "link", field: "offset", carriesIn: formCharged, figures: [], holds: chargedPrice, ask: "fee", used: (p) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
   refund: { id: "refund", kind: "link", field: "refund", carriesIn: formCharged, figures: ["refund"], holds: chargedPrice, ask: null, used: (p) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
   unfilled: notePart("unfilled"),

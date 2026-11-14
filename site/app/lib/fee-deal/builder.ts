@@ -439,7 +439,7 @@ export interface Toolbox {
 /** The toolbox's groups in order, each with its parts in order; what the price changes by is the fee's things (`conditionsFor`). */
 const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
   { group: "price", kind: "price", parts: ["share", "perUnit", "perAction", "held", "sum", "discount", "third", "flat", "until"] },
-  { group: "bound", kind: "bound", parts: ["min", "max", "cap"] },
+  { group: "bound", kind: "bound", parts: ["min", "max", "cap", "maxPerSecurity"] },
   { group: "by", kind: "by", parts: [] },
   { group: "link", kind: "link", parts: ["offset", "refund"] },
   { group: "more", kind: "note", parts: ["unfilled", "partial", "sale"] },

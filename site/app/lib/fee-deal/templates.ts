@@ -132,6 +132,26 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
   return { sum: l.min, currency };
 }
 
+/**
+ * The custody lines whose maximum is on each security and not on the whole deposit, as their records' notes say ("₪ 7,500 לני״ע לרבעון";
+ * Leumi's and FIBI's notes name a larger maximum per deposit beside it, which no field of the record holds). A template fills that maximum
+ * as one on each security (`perSecurity`), which the page states and never reads as the holding's maximum (§10.6's stated parts). A line
+ * whose maximum per deposit is the same figure keeps it as the holding's maximum, which it then is. The records give no field for this, so
+ * the list is kept here, each id checked against its record's note by a test, until a data field does.
+ */
+export const MAX_PER_SECURITY: ReadonlySet<string> = new Set([
+  "discount-custody-israel",
+  "discount-custody-foreign",
+  "mercantile-custody-israel",
+  "mercantile-custody-foreign",
+  "leumi-custody-israel",
+  "leumi-custody-foreign",
+  "pepper-custody-israel",
+  "pepper-custody-foreign",
+  "fibi-custody-israel",
+  "fibi-custody-foreign",
+]);
+
 /** The deal's fees a price list line fills, and what of it is left (F-12 to F-17). */
 export function lineFees(l: Line, own: string, bank = false): Mapped {
   const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
@@ -175,7 +195,9 @@ export function lineFees(l: Line, own: string, bank = false): Mapped {
       const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
       const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
       const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      return { fees: [fee("custody", { form: "held", figures: { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { max: bound(l.max) } : {}) }, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
+      // a maximum on each security is said as one (`MAX_PER_SECURITY`), never as the holding's
+      const maxAs = MAX_PER_SECURITY.has(l.id) ? "perSecurity" : "max";
+      return { fees: [fee("custody", { form: "held", figures: { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) ? { [maxAs]: bound(l.max) } : {}) }, per: every, every, ...(asPrinted ? { boundsEvery: 1 as const } : {}) })], left: [] };
     }
     case "fixed_period":
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };

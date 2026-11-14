@@ -17,10 +17,10 @@ import { feeName, perActionWord } from "./words";
 const cp = copy.cases.parts;
 
 /** The icon before a part's first word: a minimum's, a maximum's (a percent maximum's too), a link's. */
-export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", offset: "link", refund: "link" };
+export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
 
 /** A part the toolbox added that cannot stand until it has what it asks for (`PARTS[id].ask`): a figure, a month or a fee. */
-export type PendingPart = "min" | "max" | "cap" | "until" | "offset";
+export type PendingPart = "min" | "max" | "cap" | "maxPerSecurity" | "until" | "offset";
 
 /** Where a pending part stands: its fee, its case (null for a slim fee), and the part. */
 export interface Pending {
@@ -51,6 +51,7 @@ export const SPOKEN: Readonly<Record<PartField["figure"], string>> = {
   thirdMin: copy.panel.parts.thirdMin,
   thirdMax: copy.panel.parts.thirdMax,
   refund: copy.panel.parts.refund,
+  perSecurity: copy.panel.parts.perSecurity,
 };
 
 /**
@@ -213,6 +214,7 @@ const BODIES: Readonly<Record<PartId, { Body: ComponentType<BodyProps>; lead?: s
   max: { Body: BoundBody },
   cap: { Body: CapBody },
   flat: { Body: FlatBody },
+  maxPerSecurity: { Body: CapBody },
   offset: { Body: OffsetBody, lead: cp.offsetOf.lead },
   refund: { Body: RefundBody },
   unfilled: { Body: QuietBody },
@@ -283,17 +285,19 @@ export function PendingEdit({ fee, caseId, side, k, part, deal, name, onFee, onD
   } else {
     lead = part === "min" ? bare(cp.min) : bare(cp.max);
     const pct = ask === "pct";
-    const tail = pct ? (copy.price.of[fee.kind] ?? copy.price.of.default) : price.form === "held" ? (price.boundsEvery ? copy.price.per[price.boundsEvery]! : copy.panel.perCharge) : (cp.boundPer[fee.kind] ?? cp.boundPer.default);
+    const period = price.form === "held" ? (price.boundsEvery ? copy.price.per[price.boundsEvery]! : copy.panel.perCharge) : (cp.boundPer[fee.kind] ?? cp.boundPer.default);
+    // a maximum on each security says so before its period
+    const tail = pct ? (copy.price.of[fee.kind] ?? copy.price.of.default) : part === "maxPerSecurity" ? `${bare(cp.perSecurity.each)} ${period}` : period;
     body = (
       <FigureField
         value={null}
-        label={label(pct ? copy.panel.cap : part === "min" ? copy.panel.min : copy.panel.max)}
+        label={label(pct ? copy.panel.cap : part === "min" ? copy.panel.min : part === "maxPerSecurity" ? copy.panel.parts.perSecurity : copy.panel.max)}
         unit={pct ? "%" : signText(copy.panel.signs[price.form === "held" ? "ILS" : cur] ?? "₪")}
         sign={pct ? "%" : (copy.panel.signs[cur] ?? "₪")}
         tight
         id={partFieldId(fee.id, `${part}-pending`)}
         words={<span className="text-muted-foreground">{tail}</span>}
-        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${part}`)}
+        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${PARTS[part].figures[0]}`)}
       />
     );
   }
