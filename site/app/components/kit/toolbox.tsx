@@ -9,7 +9,7 @@ import { ArrowDownToLine, Check, Link2, Plus, Split, X, type LucideIcon } from "
 import { dealCases as copy } from "../../copy";
 import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
-import { useCanDrag, useDragSource } from "./drag-drop";
+import { useCanDrag, useDragSource } from "./lift";
 
 /** A group's kind: a price (neutral), a bound (green), what the price changes by (the cases' blue), a link (yellow), a note (dashed). */
 export type ToolKind = "price" | "bound" | "when" | "link" | "note";
@@ -68,7 +68,6 @@ function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: To
       className={cx(
         "inline-flex min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border px-3 py-1.5 text-start text-sm transition-[filter] duration-[var(--duration-fast)]",
         p.used ? cx(USED_EDGE[kind], kind === "note" && "border-dashed", "text-muted-foreground", removes && "enabled:hover:brightness-125") : cx(CARD[kind], "enabled:hover:brightness-125"),
-        drag.draggable && "cursor-grab active:cursor-grabbing",
         p.off && "opacity-45",
       )}
     >

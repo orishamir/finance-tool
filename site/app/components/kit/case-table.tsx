@@ -8,15 +8,20 @@
 // table needs, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table squeezed anyway scrolls inside
 // itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
 // table, its column or cell outlined in the action colour.
-import { useId, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER } from "./choice";
+import { useCarried } from "./drag-drop";
 import { cx } from "./cx";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /** The open case's column head and cells: the action colour's outline, as the open case's own. */
 const OPEN = "outline-2 -outline-offset-2 outline-primary";
-const CELL = "flex min-h-target min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-sm";
+// a cell's lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the
+// cells beside it (`ROW_HEAD`)
+const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-0.5 rounded-md border border-border bg-background px-2.5 py-[calc(0.75rem-1px)] text-sm leading-5";
+/** A row's head: its words from the top, on the line a cell's first line stands on (the cell's border and padding over a 20 px line). */
+const ROW_HEAD = "pt-3 leading-5";
 
 /** A click on a cell opens its case, unless it fell on a control of its own (a figure's source, a field). */
 const opener = (onOpen?: () => void) => (onOpen ? (e: MouseEvent) => !(e.target as Element).closest("button, a, input, [data-lift]") && onOpen() : undefined);
@@ -179,13 +184,15 @@ function OpenHead({ label, onOpen, open, range, grip, children }: { label: strin
 
 /**
  * What a cell may carry beside its content: a grip that lifts it (`grip`), knobs on its edges that stretch it (`knobs`), the words that it
- * covers its whole row (`whole`), and whether a knob's stretch reaches it now (`lit`).
+ * covers its whole row (`whole`), and whether a knob's stretch reaches it now (`lit`), with what it would then show (`fill`).
  */
 export interface CellExtras {
   grip?: ReactNode;
   knobs?: ReactNode;
   whole?: ReactNode;
   lit?: boolean;
+  /** While a knob's stretch reaches the cell: the price it would take, shown in it as it would stand. */
+  fill?: ReactNode;
   /** Delete on the cell: what its grip's bin does. */
   onRemove?: () => void;
   /** Shift with an arrow on the cell: its knob's stretch by one column (1: on in reading order, -1: back). */
@@ -196,8 +203,13 @@ export interface CellExtras {
   zone?: (cell: ReactNode) => ReactNode;
 }
 
-/** A knob's stretch reaching a cell: the action colour's dashed outline. */
-const LIT = "outline-2 outline-dashed -outline-offset-2 outline-primary";
+/** A knob's stretch reaching a cell: the action colour's outline, the cell taking the price it would cover. */
+const LIT = "outline-2 -outline-offset-2 outline-primary bg-accent";
+
+/** What a cell shows: its own content, or, while a knob's stretch reaches it, the price it would take, faint until it is let go. */
+function CellBody({ content, fill, lit }: { content: ReactNode; fill?: ReactNode; lit?: boolean }) {
+  return lit && fill !== undefined ? <span className="contents [&>*]:opacity-80" data-reach-fill="">{fill}</span> : <>{content}</>;
+}
 
 /** A table's column: its case's id, its head's words, the head's spoken name and tap, whether its case is open, and its grip. */
 export interface CaseColumn {
@@ -207,37 +219,69 @@ export interface CaseColumn {
   onOpen: () => void;
   open?: boolean;
   grip?: ReactNode;
+  /** The item its grip lifts: while it is carried, the column's own cells stand as its gap too. */
+  liftItem?: string;
   /** Wraps the head (a `DropZone` for its case). */
   zone?: (head: ReactNode) => ReactNode;
 }
 
 /**
  * A part row of a table: its head ("שיעור", "מינימום") with its grip, and its cells, each spanning `span` columns from `from`, the case its
- * tap opens; a cell whose `content` is null (no such part) is an empty place, which still takes a drop (`zone`).
+ * tap opens; a cell whose `content` is null (no such part) is an empty place, which still takes a drop (`zone`). A cell's `id` keeps it the
+ * same cell when its column moves, so it slides there.
  */
 export interface CaseTableRow {
   id: string;
   head: ReactNode;
   grip?: ReactNode;
-  cells: ({ from: number; span: number; open?: boolean; onOpen?: () => void; content: ReactNode; label?: string } & CellExtras)[];
+  cells: ({ id?: string; from: number; span: number; open?: boolean; onOpen?: () => void; content: ReactNode; label?: string } & CellExtras)[];
 }
 
 /** A cell's place in a table or a grid: its columns, after the heads' column, in its row. */
 const placeOf = (from: number, span: number, row: number) => ({ gridColumn: `${from + 2} / span ${span}`, gridRow: row });
 
+/** The column whose grip lifted the thing carried now, by its place; -1 where none. */
+const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | null) => (carried === null ? -1 : heads.findIndex((h) => h.liftItem === carried));
+
+/**
+ * The slim strip under a row (or a table's last row) that adds a part to every case of it (`add`): drawn only while the pointer is over the
+ * row or the focus is in it (`data-row-add`, app.css), straddling the room under it, so it takes none and moves nothing. The keyboard and
+ * touch reach the same through the row head's menu.
+ */
+function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
+  return (
+    <div style={style} className="relative h-0 self-end">
+      <button
+        type="button"
+        tabIndex={-1}
+        data-row-add=""
+        aria-expanded={add.expanded}
+        aria-label={add.spoken}
+        onClick={(e) => add.onAdd(e.currentTarget)}
+        className="tap-area absolute inset-x-0 top-0.5 z-[5] inline-flex h-5 items-center justify-center gap-1 rounded-sm border border-dashed border-primary bg-card text-xs text-primary hover:bg-accent"
+      >
+        <Plus size={12} strokeWidth={2} aria-hidden />
+        {add.label}
+      </button>
+    </div>
+  );
+}
+
 /**
  * A fee that changes by one thing, as a table: the cases as columns (`columns`, heads that open their case), the parts as rows (`rows`),
  * a merged cell where neighbours are equal, and at the end of the heads the pill that adds a case or a step (`add`). `ladder`: the thing is
- * a range, its steps ascending, each head with the range's icon. `foot`: what stands under the table (the bin while something is lifted).
+ * a range, its steps ascending, each head with the range's icon. `addPart`: the strip under its last row that adds a part row across every
+ * column. `foot`: what stands under the table (the bin while something is lifted). Wider than its block, it scrolls inside itself.
  */
-export function CaseTable({ columns, rows, add, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
+export function CaseTable({ columns, rows, add, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
+  const gapCol = carriedAt(columns, useCarried());
   // a ladder's head holds a step's two bounds and its top's box, on one line where they fit, else wrapped inside the column
   const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " max-content" : ""}`;
   return (
     <div className="flex flex-col gap-2">
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {
@@ -261,7 +305,7 @@ export function CaseTable({ columns, rows, add, ladder, foot, label }: { columns
         </div>
         {rows.map((r, j) => (
           <div key={r.id} role="row" className="contents">
-            <div role="rowheader" id={keys.rowId(j)} data-liftable="" className="flex items-center gap-1 text-sm text-muted-foreground" style={{ gridColumn: 1, gridRow: j + 2 }}>
+            <div role="rowheader" id={keys.rowId(j)} data-liftable="" className={cx("flex items-start gap-1 text-sm text-muted-foreground", ROW_HEAD)} style={{ gridColumn: 1, gridRow: j + 2 }}>
               {r.grip}
               {r.head}
             </div>
@@ -269,44 +313,54 @@ export function CaseTable({ columns, rows, add, ladder, foot, label }: { columns
               const place = placeOf(cell.from, cell.span, j + 2);
               const cp = keys.cellProps(j, cell.from, cell.span, j === 0 && i === 0);
               const hands = { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch };
+              const gap = gapCol >= 0 && cell.from === gapCol && cell.span === 1;
               if (cell.content === null) {
-                // a case with no such part: an empty place, no cell drawn; it still takes a part dropped on it
-                const empty = <span {...cp} ref={(el) => cellEvents(el, hands)} className={cx("block h-full min-h-target rounded-md", CELL_FOCUS)}><span id={keys.wordsId(j, cell.from)} /></span>;
+                // a case with no such part: an empty place, no cell drawn; it still takes a part dropped on it, and shows the price a
+                // knob's stretch would give it
+                const empty = (
+                  <span {...cp} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-md", CELL_FOCUS, cell.lit && cx(CELL, LIT))}>
+                    <span id={keys.wordsId(j, cell.from)} className="contents">
+                      {cell.lit && cell.fill !== undefined && <CellBody content={null} fill={cell.fill} lit />}
+                    </span>
+                  </span>
+                );
                 return (
-                  <div key={cell.from} style={place} className="*:h-full">
+                  <div key={cell.id ?? `@${cell.from}`} style={place} className="*:h-full">
                     {cell.zone ? cell.zone(empty) : empty}
                   </div>
                 );
               }
               const el = (
-                <div {...cp} ref={(el) => cellEvents(el, hands)} data-liftable="" onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                <div {...cp} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
-                    {cell.content}
+                    <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
                     {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
                   </span>
                   {cell.knobs}
                 </div>
               );
               return (
-                <div key={cell.from} style={place} className="min-w-0 *:h-full">
+                <div key={cell.id ?? `@${cell.from}`} style={place} className="min-w-0 *:h-full">
                   {cell.zone ? cell.zone(el) : el}
                 </div>
               );
             })}
           </div>
         ))}
+        {addPart && rows.length > 0 && <RowAdd add={addPart} style={{ gridColumn: `2 / span ${n}`, gridRow: rows.length + 1 }} />}
       </div>
       {foot}
     </div>
   );
 }
 
-/** A grid's row or column head: its value's words, its grip and its drop zone. */
+/** A grid's row or column head: its value's words, its grip and its drop zone; `liftItem`, the item its grip lifts (its cells then stand as its gap too). */
 export interface GridHead {
   id: string;
   head: ReactNode;
   grip?: ReactNode;
+  liftItem?: string;
   zone?: (head: ReactNode) => ReactNode;
 }
 
@@ -322,9 +376,11 @@ export interface PartCellView extends CellExtras {
 
 /**
  * A grid's cell: the columns it spans; its case's parts (`content`), its spoken name and tap, whether it is open, and the words of a case
- * on any value across ("בכל ערוץ") after its parts; or, for a place no case holds, `empty`, the dashed slot that adds a case there.
+ * on any value across ("בכל ערוץ") after its parts; or, for a place no case holds, `empty`, the dashed slot that adds a case there. Its `id`
+ * keeps it the same cell when its row or column moves, so it slides there.
  */
 export interface GridCellView extends CellExtras {
+  id?: string;
   from: number;
   span: number;
   /** The rows it spans down, where more than its own; the cells it covers in the rows under it are not given. */
@@ -339,13 +395,13 @@ export interface GridCellView extends CellExtras {
 
 /**
  * A grid's head, its grip and its words, filling its place so the whole head is what is lifted and dropped on: a row's as tall as its row
- * and its lines, a column's as wide as its column, at the foot of its row over a hairline so the heads stand on one line; the words in its
- * middle.
+ * and its lines, its words from the top on its cells' first line; a column's as wide as its column, at the foot of its row over a hairline
+ * so the heads stand on one line, its words in its middle.
  */
 function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md text-center text-sm", end ? "justify-end border-b border-border pb-1.5" : "justify-center")}>
-      <div className="flex items-center justify-center gap-1 font-medium">
+    <div data-case-head="" data-liftable="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md text-center text-sm", end ? "justify-end border-b border-border pb-1.5" : cx("justify-start", ROW_HEAD))}>
+      <div className="flex items-center justify-center gap-1 px-1 font-medium">
         {grip}
         <span className="min-w-0">{head}</span>
       </div>
@@ -358,18 +414,23 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
  * one cell per case (equal neighbours one cell), a button over the whole cell that opens it, a case on any value across spanning its row;
  * under a row's cells, its `lines`, one per part row, each a cell of the parts two or more of its cells hold alike over them; at the end of
  * the column heads the pill that adds a value across (`addColumn`), and under the row heads the pill that adds a value down (`addRow`).
- * A row's head is as tall as its cells and its lines. `above`: the switch of a third thing. `steps`: the values across are a ladder's
- * steps, whose heads hold a box each, and take the room for it. `foot`: what stands under the grid.
+ * A row's head is as tall as its cells and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
+ * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each, and take the room for
+ * it. `foot`: what stands under the grid. Wider than its block, it scrolls inside itself.
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[] })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
+  const carried = useCarried();
+  const gapCol = carriedAt(columns, carried);
+  const gapRow = carriedAt(rows, carried);
   // a row's head wraps past 9 rem, so the values across keep their room
   const template = `minmax(6rem, 9rem) repeat(${n}, minmax(${steps ? "11rem" : "8rem"}, 1fr))${addColumn ? " max-content" : ""}`;
   // each row stands on its cells' line and its part lines under them: the line it starts on, after the heads' line
   const height = rows.map((r) => 1 + (r.lines?.length ?? 0));
   const start = height.reduce<number[]>((acc, _, j) => [...acc, j === 0 ? 0 : acc[j - 1]! + height[j - 1]!], []);
   const lines = start.at(-1)! + height.at(-1)!;
+  const gapOf = (j: number, from: number, span: number) => j === gapRow || (gapCol >= 0 && from === gapCol && span === 1);
   return (
     <div className="flex flex-col gap-2">
       {above}
@@ -393,8 +454,9 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
         {rows.map((r, j) => {
           const head = <HeadWords head={r.head} grip={r.grip} />;
           const line = start[j]!;
+          const filled = r.cells.filter((c) => !c.empty);
           return (
-            <div key={r.id} role="row" className="contents">
+            <div key={r.id} role="row" data-grid-row="" className="contents">
               <div role="rowheader" id={keys.rowId(j)} data-rowpos={j} style={{ gridColumn: 1, gridRow: `${line + 2} / span ${height[j]}` }} className="flex *:w-full">
                 {r.zone ? r.zone(head) : head}
               </div>
@@ -407,25 +469,31 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                 if (cell.empty) {
                   const add = cell.empty;
                   const el = (
-                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: () => x?.querySelector<HTMLElement>("[data-add-slot]")?.click() })} className={cx("h-full rounded-md", CELL_FOCUS, cell.lit && LIT)}>
+                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: () => x?.querySelector<HTMLElement>("[data-add-slot]")?.click() })} data-flip="" className={cx("h-full rounded-md", CELL_FOCUS)}>
                       <span id={keys.wordsId(line, cell.from)} className="contents">
-                        <AddSlot add={add} shape="row" className="h-full" />
+                        {cell.lit && cell.fill !== undefined ? (
+                          <div className={cx(CELL, LIT, "h-full")}>
+                            <CellBody content={null} fill={cell.fill} lit />
+                          </div>
+                        ) : (
+                          <AddSlot add={add} shape="row" className={cx("h-full", cell.lit && LIT)} />
+                        )}
                       </span>
                     </div>
                   );
                   return (
-                    <div key={cell.from} style={place} className="*:h-full">
+                    <div key={`@${cell.from}`} style={place} className="*:h-full">
                       {cell.zone ? cell.zone(el) : el}
                     </div>
                   );
                 }
                 const el = (
-                  <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" className={cx("group group/cell relative h-full cursor-pointer rounded-md", CELL_FOCUS, LIFT_INNER)}>
+                  <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} className={cx("group group/cell relative h-full cursor-pointer rounded-md", CELL_FOCUS, LIFT_INNER)}>
                     {cell.onOpen && <button type="button" tabIndex={-1} data-pick-card aria-label={cell.label} onClick={cell.onOpen} className="absolute inset-0 w-full rounded-md" />}
                     <div className={cx(CELL, "h-full group-hover:bg-accent", cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
-                        {cell.content}
+                        <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
                         {cell.across && <span className="text-muted-foreground">{cell.across}</span>}
                         {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
                       </span>
@@ -434,7 +502,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                   </div>
                 );
                 return (
-                  <div key={cell.from} style={place} className="min-w-0 *:h-full">
+                  <div key={cell.id ?? `@${cell.from}`} style={place} className="min-w-0 *:h-full">
                     {cell.zone ? cell.zone(el) : el}
                   </div>
                 );
@@ -444,10 +512,10 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                    <div {...cp} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
-                        {cell.content}
+                        <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
                         {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
                       </span>
                       {cell.knobs}
@@ -459,6 +527,9 @@ export function CaseGrid({ columns, rows, addRow, addColumn, above, steps, foot,
                     </div>
                   );
                 }),
+              )}
+              {r.addPart && filled.length > 0 && (
+                <RowAdd add={r.addPart} style={{ gridColumn: `${Math.min(...filled.map((c) => c.from)) + 2} / ${Math.max(...filled.map((c) => c.from + c.span)) + 2}`, gridRow: line + 1 + height[j]! }} />
               )}
             </div>
           );

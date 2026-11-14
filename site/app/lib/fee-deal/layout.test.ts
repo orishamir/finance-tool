@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { FEE_KIND_IDS } from "./shapes";
 import { CONDITIONS } from "./offers/conditions";
 import { PART_IDS } from "./offers/parts";
-import { layoutOf, MAX_COLUMNS, spanOf, valueKey, WHOLE, type FeeLayout, type LayoutCase, type LayoutPart } from "./layout";
+import { layoutOf, spanOf, valueKey, WHOLE, type FeeLayout, type LayoutCase, type LayoutPart } from "./layout";
 import type { When } from "./model";
 
 const ROWS = ["price", "min", "max", "notes"];
@@ -27,7 +27,6 @@ describe("one thing: a table", () => {
     expect(l.columns.map((x) => x.case)).toEqual(["a", "b"]);
     expect(l.rows.map((r) => r.row)).toEqual(["price", "max"]);
     expect(l.rows[1]!.cells).toEqual([{ from: 0, span: 1, cases: ["a"], key: "10" }, { from: 1, span: 1, cases: ["b"], key: null }]);
-    expect(l.fit).toBe("columns");
     expect(l.add).toEqual({ thing: 0, range: false });
   });
 
@@ -58,10 +57,9 @@ describe("one thing: a table", () => {
     expect(l.rows[0]!.cells.map((x) => x.span)).toEqual([1, 1, 1]);
   });
 
-  it("reads more cases than fit as rows", () => {
-    const cases = Array.from({ length: MAX_COLUMNS + 1 }, (_, k) => c(`k${k}`, [[`v${k}`]], p("price", String(k))));
-    expect(as(layoutOf({ things: one, rows: ROWS, cases }), "table").fit).toBe("rows");
-    expect(as(layoutOf({ things: one, rows: ROWS, cases: cases.slice(0, MAX_COLUMNS) }), "table").fit).toBe("columns");
+  it("keeps many cases a table, however many (a computer draws it, scrolling inside itself)", () => {
+    const cases = Array.from({ length: 8 }, (_, k) => c(`k${k}`, [[`v${k}`]], p("price", String(k))));
+    expect(as(layoutOf({ things: one, rows: ROWS, cases }), "table").columns).toHaveLength(8);
   });
 });
 
@@ -258,5 +256,27 @@ describe("the layout is blind to what the fee is", () => {
     const imports = [...code.matchAll(/from "([^"]+)"/g)].map((m) => m[1]);
     expect(imports).toEqual(["./model"]);
     for (const id of [...FEE_KIND_IDS, ...Object.keys(CONDITIONS), ...PART_IDS, ...productIds]) expect(code, id).not.toContain(`"${id}"`);
+  });
+});
+
+describe("two things whose first has one value left: a table along the second", () => {
+  // a custody grid (what is held down the side, a portfolio-size ladder across) with its second row taken away by the bin
+  const ranged = [{ range: false }, { range: true }];
+  const cases = [c("s0", [["tase"], 0], p("price", "0.2%")), c("s2", [["tase"], 2], p("price", "0.1%")), c("s1", [["tase"], 1], p("price", "0.15%"))];
+  it("is a ladder whose heads are the second thing's steps, ascending, its add slot a step", () => {
+    const l = as(layoutOf({ things: ranged, rows: ROWS, cases }), "table");
+    expect(l.thing).toBe(1);
+    expect(l.ladder).toBe(true);
+    expect(l.split).toBeNull();
+    expect(l.columns.map((x) => [x.case, x.when, x.sub])).toEqual([["s0", 0, undefined], ["s1", 1, undefined], ["s2", 2, undefined]]);
+    expect(l.add).toEqual({ thing: 1, range: true });
+  });
+  it("merges along the second thing's spans", () => {
+    const spanned = [c("a", [["x"], ["p"]], p("price", "1")), { ...c("b", [["x"], ["q"]], p("price", "1")), spans: [{ row: "price", along: 1, span: "s1" }] }];
+    expect(as(layoutOf({ things: two, rows: ROWS, cases: spanned }), "table").rows[0]!.cells.map((x) => x.span)).toEqual([1, 1]);
+    expect(as(layoutOf({ things: two, rows: ROWS, cases: spanned.map((x) => ({ ...x, spans: [] })) }), "table").rows[0]!.cells.map((x) => x.span)).toEqual([2]);
+  });
+  it("stays a grid, or rows, where a case holds any value of the second", () => {
+    expect(layoutOf({ things: two, rows: ROWS, cases: [c("a", [["x"], "any"], p("price", "1")), c("b", [["x"], ["q"]], p("price", "2"))] }).shape).not.toBe("table");
   });
 });

@@ -2,7 +2,7 @@
 // row or column moved, a value of a thing taken away with its cases, a ladder's step taken away into its neighbour, a row or column
 // duplicated, the two things of a grid swapped, and the deal's fees put in the person's order. A move sets ranks (`Rank`), the page's
 // order, and never the order the reading reads (F-114 reads a fee's cases and the deal's fees in their own order), so it changes no reading.
-import { byRank, copiedPriced, hasCases, isRange, NAME_MAX, namesPlaces, newCaseId, spansWithout, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Priced, type When } from "../model";
+import { byRank, copiedPriced, hasCases, isRange, NAME_MAX, namesPlaces, newCaseId, sameContent, spansWithout, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Priced, type When } from "../model";
 import { valueKey } from "../layout";
 import { WHAT_VALUES } from "../shapes";
 
@@ -182,4 +182,26 @@ export function swapThings(fee: Fee, a: number, b: number): Fee {
 export function orderFees(deal: FeeDeal, ids: readonly string[]): FeeDeal {
   if (ids.length !== deal.fees.length || new Set(ids).size !== ids.length || ids.some((id) => !deal.fees.some((f) => f.id === id))) return deal;
   return { ...deal, fees: deal.fees.map((f) => ({ ...f, rank: ids.indexOf(f.id) })) };
+}
+
+/** A fee with no ranks: what it holds, whatever the order the page shows it and its cases in. */
+const unranked = (fee: Fee): Fee => {
+  const { rank: _r, ...head } = fee as Fee & { rank?: number };
+  return (hasCases(fee) ? { ...head, cases: fee.cases.map(({ rank: _c, ...c }) => c) } : head) as Fee;
+};
+
+/** Whether two fees hold the same and differ at most in the order the page shows them and their cases in (`Rank`: a move). */
+export const sameButOrder = (a: Fee, b: Fee): boolean => sameContent(unranked(a), unranked(b));
+
+/**
+ * Fee `was` put back in the order `now` stands in on the page: its own rank and each of its cases' that `now` still has, so an undo of a
+ * change made before a move keeps the move.
+ */
+export function inOrderOf(was: Fee, now: Fee): Fee {
+  const { rank: _r, ...head } = was as Fee & { rank?: number };
+  const rank = (now as Fee & { rank?: number }).rank;
+  const ranked = { ...head, ...(rank !== undefined ? { rank } : {}) } as Fee;
+  if (!hasCases(ranked) || !hasCases(now)) return ranked;
+  const ranks = new Map(now.cases.map((c) => [c.id, c.rank]));
+  return { ...ranked, cases: ranked.cases.map((c) => (ranks.has(c.id) ? (({ rank: _c, ...x }) => ({ ...x, ...(ranks.get(c.id) !== undefined ? { rank: ranks.get(c.id)! } : {}) }))(c) : c)) };
 }

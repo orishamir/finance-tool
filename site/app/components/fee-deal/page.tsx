@@ -42,7 +42,7 @@ import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
-import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy } from "../../lib/fee-deal/lifted";
+import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -283,6 +283,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending, editingK) : null), [read, chosen, caseId, pending, editingK]);
+  // while a carried thing is over a place, the fees' column draws the deal as a drop there would leave it (lifted.ts); the reading below,
+  // the toolbox and the saved deal stay as they are until it is let go
+  const [preview, setPreview] = useState<FeeDeal | null>(null);
+  const previewRead = useMemo(() => (preview ? readDealFor(preview, data.kinds, today) : null), [preview, data.kinds, today]);
+  const shownBuilder = useMemo(() => (previewRead ? builder(previewRead, bar, chosen ? { fee: chosen, case: caseId } : null) : builderView), [previewRead, builderView, bar, chosen, caseId]);
+  const shownOpen = useMemo(() => (previewRead && chosen ? (panelOf(previewRead, chosen, caseId ?? undefined, pending, editingK)?.open ?? null) : (panel?.open ?? null)), [previewRead, chosen, caseId, pending, editingK, panel]);
   const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined, editingK) : null), [read, chosen, caseId, editingK]);
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
   // own toolbox offers it and the case has it not yet; dropped on another case than the open one, that case opens first
@@ -328,6 +334,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       if (r) kept(liftKept(deal, r, chosen));
     },
     onStretch: (next, words) => kept(liftKept(deal, { deal: updateFee(deal, next.id, () => next), ...(words ? { kept: { feeId: next.id, words } } : {}) }, chosen)),
+    preview: (x) => setPreview(x ? (liftDrop(deal, x.l, x.on, { copy: x.how.copy })?.deal ?? null) : null),
+    rowParts: (feeId, cases) => rowParts(read, feeId, cases),
     phone,
   };
   const menu = oc.menus.slot;
@@ -463,10 +471,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         fees={
           kind && (
             <FeesColumn
-              deal={deal}
-              view={builderView}
+              deal={preview ?? deal}
+              view={shownBuilder}
               groupOf={(fee: Fee) => feeGroup(read, fee, saves)}
-              open={{ fee: chosen, case: caseId, view: panel?.open ?? null, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
+              open={{ fee: chosen, case: caseId, view: shownOpen, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
               toolbox={panelColumn || phone ? null : panelView}
               line={lines.fee}
               caseLine={lines.case}

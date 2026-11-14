@@ -13,6 +13,10 @@ import { cellHolds, cellMovesTo, clearCells, moveCell, moveCellTo, moveNoteTo, w
 import type { Note } from "./core";
 import { removeCase, setWhen } from "./edits/case";
 import { updateFee } from "./edits/deal";
+import { toolbox } from "./toolbox";
+import type { DealRead } from "./deal-read";
+import { PARTS, isPending, type PartId } from "./offers/parts";
+import { ROW_OF } from "./part-rows";
 
 /** A thing lifted by its grip, with the words it is named by (`name`) where its undo line names it. */
 export type Lifted =
@@ -23,7 +27,8 @@ export type Lifted =
   | { k: "row"; fee: string; row: PartRow }
   /** A part of the open case's first price: its row's content, or one note alone (`note`), which leaves the case's other notes. */
   | { k: "part"; fee: string; case: string | null; row: PartRow; note?: Note }
-  | { k: "thing"; fee: string; t: number }
+  /** A thing of the band's head, by its place, with its words (so the pill a swap moves is not taken for the one now in its place). */
+  | { k: "thing"; fee: string; t: number; name?: string }
   | { k: "fee"; fee: string; group: string };
 
 /** A place a lifted thing may be dropped on. */
@@ -214,4 +219,27 @@ export function liftRemove(deal: FeeDeal, l: Lifted): LiftResult | null {
     default:
       return null;
   }
+}
+
+/**
+ * What a row's strip ("+ חלק לכל השורה", `partAcross`) offers for a fee's cases `cases`: the toolbox's parts that every one of them can take
+ * now and none holds yet, other than a form of the price, a thing to change by, and a part that asks a question first (a month, another
+ * fee); each with its words, its row's head ("מינימום"), or for a note its own words ("גם על הוראה שלא בוצעה").
+ */
+export function rowParts(r: DealRead, feeId: string, cases: readonly string[]): { id: PartId; label: string }[] {
+  const boxes = cases.map((id) => toolbox(r, feeId, id));
+  if (boxes.length === 0 || boxes.some((b) => !b)) return [];
+  const free = (b: NonNullable<(typeof boxes)[number]>) =>
+    new Set(b.groups.flatMap((g) => g.parts.filter((p) => !p.used && !p.off && !p.id.startsWith("by:") && !PARTS[p.id as PartId].form && !isPending(p.id as PartId)).map((p) => p.id as PartId)));
+  const sets = boxes.map((b) => free(b!));
+  const first = boxes[0]!;
+  return first.groups.flatMap((g) =>
+    g.parts.flatMap((p) => {
+      const id = p.id as PartId;
+      if (!sets.every((s) => s.has(id))) return [];
+      const row = ROW_OF[id];
+      const label = row === "notes" ? [p.words.lead, p.words.tail].filter(Boolean).join("").trim() : (copy.cases.rowHeads[row] ?? id);
+      return [{ id, label }];
+    }),
+  );
 }

@@ -4,9 +4,11 @@ import { feesData } from "../fees.server";
 import { addFee, setName, updateFee } from "./edits/deal";
 import { editPrice, setSaleApart, setUntil, splitAt } from "./edits/stage";
 import { withFigure } from "./edits/price";
-import { newDeal, typed, type FeeDeal , type SlimFee } from "./model";
+import { byRank, hasCases, newDeal, typed, type FeeDeal , type SlimFee } from "./model";
+import { moveCase, orderFees } from "./edits/arrange";
+import { removeCase } from "./edits/case";
 import { dataBar, feePriceLists, pickTrack } from "./templates";
-import { changeFormKept, deleteDealKept, formBack, fillFeeKept, removeChangeKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
+import { changeFormKept, deleteDealKept, formBack, fillFeeKept, removeCaseKept, removeChangeKept, removeFeeKept, setKindKept, standing, undo, undoDelete, undoWords } from "./undo";
 import { kindById } from "./kinds";
 import { feeDeal as copy } from "../../copy";
 
@@ -320,5 +322,40 @@ describe("a price put in another form from the toolbox", () => {
     expect(r.undo).toBeNull();
     expect(r.deal.fees[0]!.stages![0]!.price.form).toBe("perUnit");
     expect(changeFormKept(us(), "fee-trade", "perUnit", null, "c2")).toBeNull();
+  });
+});
+
+describe("an undo through a move of its own fee", () => {
+  // a fee whose price changes by one list: four columns
+  const cased = (): FeeDeal => ({
+    ...account(),
+    fees: [
+      {
+        id: "fee-trade",
+        kind: "trade",
+        by: [{ kind: "channel" }],
+        cases: ["a", "b", "c", "d"].map((v, k) => ({ id: `case-${v}`, when: [[v]], stages: [{ price: { form: "action", rate: typed(0.1 * (k + 1)) } }] })),
+      } as FeeDeal["fees"][number],
+    ],
+  });
+  it("still stands after a column of that fee is moved, and puts the case back keeping the move", () => {
+    const d = cased();
+    const removed = removeCaseKept(d, "fee-trade", "case-b", null)!;
+    const fee = removed.deal.fees[0]!;
+    const moved = updateFee(removed.deal, "fee-trade", () => moveCase(fee, "case-d", "case-a"));
+    expect(standing(removed.undo, moved)).toBe(true);
+    const back = undo(moved, removed.undo, null)!;
+    const f = back.deal.fees[0]!;
+    if (!hasCases(f)) throw new Error("cases");
+    expect(f.cases.map((c) => c.id).sort()).toEqual(["case-a", "case-b", "case-c", "case-d"]);
+    // the move stands: d before a
+    expect(byRank(f.cases).map((c) => c.id).filter((id) => id !== "case-b")).toEqual(["case-d", "case-a", "case-c"]);
+  });
+  it("still stands after the fee is moved among its group, and goes once the fee itself changes", () => {
+    const d = cased();
+    const removed = removeCaseKept(d, "fee-trade", "case-b", null)!;
+    expect(standing(removed.undo, orderFees(removed.deal, ["fee-trade"]))).toBe(true);
+    const fee = removed.deal.fees[0]!;
+    expect(standing(removed.undo, updateFee(removed.deal, "fee-trade", () => removeCase(fee, "case-c")))).toBe(false);
   });
 });

@@ -13,7 +13,7 @@ import type { Note, Price } from "../core";
 import { WHOLE } from "../layout";
 import { addCaseAt, removeCase } from "./case";
 import { PART_ROWS, ROW_OF, isPartRow, type PartRow } from "../part-rows";
-import { PARTS, PART_IDS, fitted, partsSaid, type PartId } from "../offers/parts";
+import { PARTS, PART_IDS, fitted, partsSaid, setPart, type PartId } from "../offers/parts";
 import { KEY_FORMS, type PartKey } from "../offers/capabilities";
 import type { FeeKindId } from "../shapes";
 
@@ -313,4 +313,20 @@ export function figureToAll(fee: Fee, from: string | undefined, others: readonly
 export function figuresBack(fee: Fee, was: Fee, cases: readonly string[] | null, k: number, figure: Figure): Fee {
   const back = (x: Fee, c?: string) => editPrice(x, "buy", k, (p) => setFigure(p, figure, figureOf(pricesOn(was, "buy", c)[k]!.price, figure)), c);
   return cases ? cases.reduce((x, c) => back(x, c), fee) : back(fee);
+}
+
+/**
+ * A fee whose cases `ids` each take part `part` on their first price, all alike, as one cell stretched over them (a grid row's strip or a
+ * table's foot, "+ חלק לכל השורה"): the first case takes it as the toolbox adds it (`setPart`), and the cell is stretched over the others
+ * along thing `along` (`stretch`). Refused where a case holds that part row already (nothing the person gave is overwritten) or where the
+ * first cannot take it.
+ */
+export function partAcross(fee: Fee, ids: readonly string[], part: PartId, along: number): Fee {
+  if (!hasCases(fee) || ids.length === 0 || !fee.by[along]) return fee;
+  const row = ROW_OF[part];
+  const cases = ids.map((id) => fee.cases.find((c) => c.id === id));
+  if (cases.some((c) => !c || cellHolds(c, row))) return fee;
+  const first = setPart(fee, part, true, { k: 0, caseId: ids[0]! });
+  if (first === fee) return fee;
+  return ids.length > 1 ? stretch(first, ids[0]!, ids.slice(1), row, along) : first;
 }

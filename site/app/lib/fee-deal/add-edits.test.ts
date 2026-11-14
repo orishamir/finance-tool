@@ -1,7 +1,7 @@
 // The edits the workbench's add slots make (method §10.6, F-114): a ladder's step added by its boundary alone, a boundary moved, a case put
 // in a grid's empty place, and a grid's new row or column of values.
 import { describe, expect, it } from "vitest";
-import { addCaseAt, addStep, addValues, setTop } from "./edits/case";
+import { addCaseAt, addStep, addValues, nameTaken, setTop } from "./edits/case";
 import { readDeal, typed, type CasesFee, type Price } from "./model";
 
 const held = (rate: number): Price => ({ form: "held", rate: typed(rate), per: 12, every: 12 });
@@ -123,5 +123,31 @@ describe("a grid's new row or column", () => {
     const f = addValues(grid(), 0, ["אג״ח בלונדון"], [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }]) as CasesFee;
     expect(f.by[0]).toEqual({ kind: "what", own: [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }] });
     expect(f.cases.at(-1)!.when[0]).toEqual(["אג״ח בלונדון"]);
+  });
+});
+
+describe("a value the list has already is not added twice", () => {
+  /** A trade fee by the channel, on the internet and at the branch. */
+  const channels = (): CasesFee => ({
+    id: "fee-c",
+    kind: "trade",
+    by: [{ kind: "channel" }],
+    cases: [
+      { id: "net", when: [["internet"]], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+      { id: "branch", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(0.5) } }] },
+    ],
+  });
+  it("adds none of the values the cases name, its spaces trimmed", () => {
+    const f = channels();
+    expect(addValues(f, 0, ["branch", " internet "])).toBe(f);
+    expect((addValues(f, 0, ["branch", "phone"]) as CasesFee).cases.map((c) => c.when[0])).toEqual([["internet"], ["branch"], ["phone"]]);
+  });
+  it("refuses a name of the person's own that the list has by its id or its words, its spaces trimmed", () => {
+    const known = ["branch", "בסניף", "internet", "באינטרנט"];
+    expect(nameTaken(known, "בסניף")).toBe(true);
+    expect(nameTaken(known, "  בסניף ")).toBe(true);
+    expect(nameTaken(known, "branch")).toBe(true);
+    expect(nameTaken(known, "בטלפון")).toBe(false);
+    expect(nameTaken(known, "   ")).toBe(false);
   });
 });

@@ -15,13 +15,14 @@ import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, Grip, SlimFee, type DropHow } from "../kit";
+import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
 import { OpenParts, type PartGrip } from "./open-case";
 import { EditHere } from "./edit-here";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
+import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { Note } from "../../lib/fee-deal/core";
 import { type PendingHands } from "./part-edit";
 import { UnreadWords, feeColour, feeName } from "./words";
@@ -81,6 +82,10 @@ export interface LiftHands {
   onBinItem: (item: string) => void;
   /** A knob's stretch: the fee after it, kept for the undo where it took a price (`words`, its line). */
   onStretch: (next: Fee, words: string | null) => void;
+  /** What a drop of `l` on `on` would do, drawn on the page while the thing is over it; null: the deal as it is again. */
+  preview: (drop: { l: Lifted; on: LiftTarget; how: DropHow } | null) => void;
+  /** The parts every one of a fee's cases `cases` can take and none holds yet, each by its id and its toolbox words: what a row's strip adds across it. */
+  rowParts: (feeId: string, cases: readonly string[]) => { id: PartId; label: string }[];
   /** The bin stands at the foot of the screen. */
   phone: boolean;
 }
@@ -88,8 +93,11 @@ export interface LiftHands {
 /** The thing to change by whose question stands in the open fee's block, and the case it splits alone; null where none is asked. */
 export type AskOf = { kind: ByKind; split?: string } | null;
 
-/** A drop zone around `el` for places `on` of one fee: the first that takes a carried thing gets it; a case also takes toolbox cards. */
-export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode) => ReactNode;
+/**
+ * A drop zone around `el` for places `on` of one fee: the first that takes a carried thing gets it, and shows what it would do while the
+ * thing is over it; a case also takes toolbox cards. `sort`: the place is a member of a sortable list (a table's columns, a grid's rows).
+ */
+export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode, sort?: SortOf) => ReactNode;
 
 /**
  * A toolbox card dropped in the fees' column (its id, `ToolPart.id`): whether the open fee's case `caseId` (null for a slim fee, or the fee
@@ -173,12 +181,18 @@ export function FeeBlockView({
   // a case of the band takes a part, and a thing to change by, which splits it alone; the slim fee takes a part or a thing; the band's
   // block takes a thing, for the whole fee. Every place takes the things lifted by a grip it takes (`LiftHands.takes`).
   const lift = actions.lift;
-  const zone: ZoneOf = (on, key, el) => {
+  const zone: ZoneOf = (on, key, el, sort) => {
     const card = on.find((t): t is Extract<LiftTarget, { k: "case" }> => t.k === "case");
     const first = (l: Lifted) => on.find((t) => lift.takes(l, t));
     return (
       <DropZone
         key={key}
+        {...(sort ? { sort } : {})}
+        onPreview={(it, how) => {
+          const l = it === null ? null : liftedOf(it);
+          const t = l && first(l);
+          lift.preview(l && t ? { l, on: t, how } : null);
+        }}
         accepts={(it) => {
           const l = liftedOf(it);
           if (l) return !!first(l);
@@ -206,6 +220,10 @@ export function FeeBlockView({
     return (
       <div className="flex flex-col gap-1.5">
         <DropZone
+          onPreview={(it, how) => {
+            const l = it === null ? null : liftedOf(it);
+            lift.preview(l && lift.takes(l, slimTarget) ? { l, on: slimTarget, how } : null);
+          }}
           accepts={(it) => {
             const l = liftedOf(it);
             return l ? lift.takes(l, slimTarget) : drop.accepts(fee.id, null, it);
@@ -234,7 +252,7 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeBlock dot={dot} name={name} remove={remove} grip={grip}>
+      <FeeBlock dot={dot} name={name} remove={remove} open={isOpen} grip={grip}>
         {question}
         <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken) => openParts(spoken)} />
       </FeeBlock>
