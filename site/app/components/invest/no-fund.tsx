@@ -9,9 +9,9 @@ import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
-import { Num, Term } from "../provenance";
+import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, OwnBankField, whyNoKindAt, type WhyNone } from "./pair";
+import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, OwnBankField, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
 import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -147,9 +147,9 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           </span>
           <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs text-muted-foreground @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             {/* the words that say why are what opens it: no tag, no "?" and no separate source link (the link's title, a hover, held the reason) */}
-            <Term id={[]} name={c.pair.noPriceAt.other(h.provider.short)} parts={told.parts} rules={told.rules}>
+            <NoFundWords told={told} name={c.pair.noPriceAt.other(h.provider.short)}>
               {c.pair.noFund[told.state]}
-            </Term>
+            </NoFundWords>
           </span>
           <span className="col-end-[-1] text-end font-semibold">—</span>
           {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}

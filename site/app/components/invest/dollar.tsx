@@ -9,7 +9,7 @@ import { monthEndRate, type FxHistory } from "../../lib/fx";
 import { gapListFor, kindMoney, kindOf, planInputs, reportFigure, reportsInShekels, type InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
-import { Num, RuleRef } from "../provenance";
+import { Num, Ruled } from "../provenance";
 import { MixedName, Callout, ChartLegend, DocLink, PanelHead, FixedTable, LongestCase, PairBars, SourceLine, StatRow, StatTile, Swatch, Tpl, YearBars, gershayim, useChartPick, useHeldHeight } from "../kit";
 import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
@@ -242,7 +242,8 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
       <div className="flex flex-col gap-2">
         <PanelHead kicker={c.dollar.title}>{c.dollar.bottomHead}</PanelHead>
         <p className="max-w-[60rem]">
-          {c.dollar.bottomLine} <RuleRef id="ETF-75" titled />
+          {c.dollar.bottomLine.before} <Ruled id="ETF-75">{c.dollar.bottomLine.stated}</Ruled>
+          {c.dollar.bottomLine.after}
         </p>
         <p className="max-w-[60rem] text-sm text-muted-foreground">
           {c.dollar.lead} {many ? c.kinds.hedgedMany : ""}

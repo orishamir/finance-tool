@@ -1,6 +1,6 @@
 // Provenance: the number component and the sheet behind it (design-system 3.2, design-spec 1.3 and 3).
-// Every figure on the site is a Num; a tap opens where it comes from. Rule and term chips open their cards
-// in the same sheet, with a back arrow when they were reached from a number. What the sheet shows (the cards) is in
+// Every figure on the site is a Num; a tap opens where it comes from. The words a rule states (Ruled), glossary terms (Term) and the
+// rule chips open their cards in the same sheet, with a back arrow when they were reached from a number. What the sheet shows (the cards) is in
 // provenance-sheets.tsx, fetched while the page hydrates, so the script a page needs to show itself holds only the figures and chips.
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, useSyncExternalStore, type MouseEvent, type ReactNode } from "react";
 import { Link } from "react-router";
@@ -155,7 +155,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       <StatesCtx.Provider value={states}>
       <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
-      {children}
+      <OpenAnchorCtx.Provider value={open ? anchor : null}>{children}</OpenAnchorCtx.Provider>
       <PushCtx.Provider value={push}>
        <CloseCtx.Provider value={close}>
         <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
@@ -208,6 +208,8 @@ export function TermFromAddress({ hash }: { hash: string }) {
 }
 
 export const InsideSheetCtx = createContext(false);
+/** The element whose tap opened the sheet, while the sheet is open (null when it is closed): words that opened it show so (`TapWords`). */
+const OpenAnchorCtx = createContext<HTMLElement | null>(null);
 /**
  * A page about one company (its company page, a track's page): every company-sourced figure on it is that company's own (D31), so
  * none carries "לפי החברה" or its caution.
@@ -531,7 +533,7 @@ export function idKind(id: string): IdKind | null {
 
 /**
  * One chip for any id the site has: a rule opens its card, a formula its sheet, an open question its sheet, a proof its sheet,
- * a parameter goes to its card on the parameters page. The chip says words, never the code (D48): a rule's chip is
+ * a parameter goes to its card on the parameters page. The chip says words, never the code (D101): a rule's chip is
  * "חוקים וכללים · 1" (`RulesChip`), or with `titled` the rule's title; a formula's says its name, a parameter's its name,
  * an open question's "פרטים", a proof's "הוכחה" (`ProofsChip`). The code stays in the card or sheet it opens and in the chip's address. A 44px tap area.
  * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
@@ -626,7 +628,7 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
 /**
  * The rule chip: `IdRef` for a rule id. A company's term (scope `institution`, or `unsettled` seen at named companies) shows the
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
- * "ועוד" and the count of the others. A general rule's chip is D48's "חוקים וכללים · 1", which opens its card at once. The code stays in
+ * "ועוד" and the count of the others. A general rule's chip is "חוקים וכללים · 1", which opens its card at once. The code stays in
  * the card it opens and in the chip's spoken name.
  */
 export function RuleRef({ id, className, titled, end }: { id: string; className?: string; /** A general rule's chip says its title (`IdRef`'s `titled`): where it stands for the rule in a list of them. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
@@ -684,9 +686,12 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, end, clas
   return <CompanyLinks lead={lead} items={items} size={size} end={end} className={className} />;
 }
 
+/** What words or a chip resting on rules open: one rule's card at once, or the list of their titles under `name`. */
+const rulesItem = (ids: readonly string[], name?: string): Item => (ids.length === 1 ? { kind: "rule", id: ids[0]! } : { kind: "rules", ids, ...(name ? { name } : {}) });
+
 /**
- * The rules behind one fact, as one chip with their count: a code says nothing to the reader, and a block
- * could carry 25 of them. It opens the list of their titles; one rule opens its card at once. No ids, no chip: a control with nothing behind it cannot exist.
+ * The rules behind one fact, as one chip with their count, on the pages not yet converted to the words a rule states (`Ruled`, D116):
+ * a code says nothing to the reader, and a block could carry 25 of them. It opens the list of their titles; one rule opens its card at once. No ids, no chip: a control with nothing behind it cannot exist.
  */
 export function RulesChip({ ids, name, className }: { ids: readonly string[]; /** The fact it closes, under the title of the list. */ name?: string; className?: string }) {
   const open = useOpen();
@@ -694,7 +699,7 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
   if (ids.length === 0) return null;
   // a line that cites one formula or open question keeps that id's own chip
   if (only && idKind(only) !== "rule") return <IdRef id={only} className={className} />;
-  const item: Item = only ? { kind: "rule", id: only } : { kind: "rules", ids, ...(name ? { name } : {}) };
+  const item = rulesItem(ids, name);
   return (
     <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={`${ruleCopy.set}, ${ids.length}`}>
       {ruleCopy.set}
@@ -707,7 +712,7 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
 
 /**
  * The statements math proves that a fact rests on (docs/method.md section 14), as one chip in the rules chip's look: "הוכחה" for one,
- * which opens its sheet at once, and "הוכחות · N" for several, which opens the list of their titles. Never the code (D48). No ids, no chip.
+ * which opens its sheet at once, and "הוכחות · N" for several, which opens the list of their titles. Never the code (D101). No ids, no chip.
  */
 export function ProofsChip({ ids, className }: { ids: readonly string[]; className?: string }) {
   const open = useOpen();
@@ -729,7 +734,7 @@ export function ProofsChip({ ids, className }: { ids: readonly string[]; classNa
   );
 }
 
-/** `RulesChip` as the last line of its block, never inside a sentence; `proofs`, the statements math proves that the block also rests on, add their chip after it. */
+/** `RulesChip` as the last line of its block, never inside a sentence, on the pages not yet converted to `Ruled` (D116); `proofs`, the statements math proves that the block also rests on, add their chip after it. */
 export function RulesLine({ ids, proofs = [], lead, name, className }: { ids: readonly string[]; proofs?: readonly ProofId[]; lead?: ReactNode; name?: string; className?: string }) {
   if (ids.length === 0 && proofs.length === 0 && !lead) return null;
   return (
@@ -776,20 +781,25 @@ export function TitleRow({ children, under, onClick, className }: { children: Re
 }
 
 /**
- * A glossary term in running text: dashed underline, opens its card. The content decides which use is the first.
- * `prefix` is the one-letter Hebrew prefix of the word ("ה", "ו", "ב", "ל", "מ", "ש", "כ"; "וה" and the like too): it is
- * rendered inside the same non-breaking span, so a line never breaks between the letter and the term.
+ * Words in running text that open where they come from (`Term`, `Ruled`): an inline element, not a <button>, since a line may break after
+ * a button, which left a sentence's full stop alone at the start of the next line; inline, the mark that closes the sentence follows the
+ * words on their line with nothing between (`</Ruled>.`). `prefix`, a one-letter Hebrew prefix ("ה", "ו", "ב", "ל", "מ", "ש", "כ"; "וה" and
+ * the like too), stays outside the control, in one non-breaking span with it, so a line never breaks between the letter and the words.
+ * `aria-expanded` is true while the sheet it opened is open, which the look reads (teal while open).
  */
-export function Term({ id, children, prefix, name, lead, parts, rules, className }: { /** Several ids open one sheet of them all, titled `name` (`HelpMark`'s too). */ id: string | readonly string[]; children?: ReactNode; prefix?: string; name?: string; lead?: string; /** With several ids or none: the sheet's own sentences, each with its document (a status word in a row that opens why and the source). */ parts?: readonly SheetPart[]; /** The word rests on rules, not on a glossary term: it opens the rule's card, or the list of them under `name` (a row's status words open the rule that says so, with its sources). */ rules?: readonly string[]; /** Added to the term's own classes (a mark that is an icon widens its touch area). */ className?: string }) {
+function TapWords({ item, look, prefix, data, children }: { item: Item; look: string; prefix?: string; /** `data-term`, where a search hit for a term finds its first use (`TermFromAddress`). */ data?: string; children: ReactNode }) {
   const open = useOpen();
-  const item: Item = rules?.length ? (rules.length === 1 ? { kind: "rule", id: rules[0]! } : { kind: "rules", ids: rules, ...(name ? { name } : {}) }) : typeof id === "string" ? { kind: "term", id } : { kind: "terms", ids: id, name: name ?? "", lead, ...(parts ? { parts } : {}) };
-  // An inline element, not a <button>: a line may break after a button, which left a sentence's full stop alone at the start of the next line.
+  const tap = useId();
+  const expanded = useContext(OpenAnchorCtx)?.dataset.tap === tap;
   const button = (
     <span
       role="button"
       tabIndex={0}
-      className={className ? `term ${className}` : "term"}
-      data-term={typeof id === "string" ? id : undefined}
+      aria-haspopup="dialog"
+      aria-expanded={expanded}
+      className={look}
+      data-tap={tap}
+      data-term={data}
       onClick={(e) => open(item, e.currentTarget)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -798,23 +808,53 @@ export function Term({ id, children, prefix, name, lead, parts, rules, className
         }
       }}
     >
-      {children ?? (typeof id === "string" ? id : name)}
+      {children}
     </span>
   );
-  return prefix ? (
-    <span className="whitespace-nowrap">
+  // The prefix touches the words with no space between them, so a line can never break there; no no-wrap span is needed, and
+  // without one a long phrase of `Ruled` wraps with its sentence (a glossary term stays whole by its own `.term` style).
+  return (
+    <>
       {prefix}
       {button}
-    </span>
-  ) : (
-    button
+    </>
+  );
+}
+
+/**
+ * A glossary term in running text: a dotted grey underline (`.term`), opens its card. The content decides which use is the first.
+ * `prefix`: the word's one-letter Hebrew prefix, outside the term and held to it (`TapWords`).
+ */
+export function Term({ id, children, prefix, name, lead, parts, rules, className }: { /** Several ids open one sheet of them all, titled `name` (`HelpMark`'s too). */ id: string | readonly string[]; children?: ReactNode; prefix?: string; name?: string; lead?: string; /** With several ids or none: the sheet's own sentences, each with its document (a status word in a row that opens why and the source). */ parts?: readonly SheetPart[]; /** The word rests on rules, not on a glossary term: it opens the rule's card, or the list of them under `name` (a row's status words open the rule that says so, with its sources). */ rules?: readonly string[]; /** Added to the term's own classes (a mark that is an icon widens its touch area). */ className?: string }) {
+  const item: Item = rules?.length ? rulesItem(rules, name) : typeof id === "string" ? { kind: "term", id } : { kind: "terms", ids: id, name: name ?? "", lead, ...(parts ? { parts } : {}) };
+  return (
+    <TapWords item={item} look={className ? `term ${className}` : "term"} prefix={prefix} data={typeof id === "string" ? id : undefined}>
+      {children ?? (typeof id === "string" ? id : name)}
+    </TapWords>
+  );
+}
+
+/**
+ * The words of a sentence that state what a rule says ("מוגבל בצו", "מנכה מס הכנסה"): they are the link to the rule, the way a figure is
+ * its own citation. A solid grey underline (`.ruled`), the line of a sourced figure, so a solid grey line means "tap to see where this comes
+ * from" for a figure or for words. A tap opens the rule's card, or with several rules the list of their titles (`name` heads it), in the
+ * sheet a figure opens. The words are the shortest phrase that states the rule; a rule marks one phrase in a block, and a figure from the
+ * rule needs no words marked, since it opens the rule itself. `prefix` and the closing mark as in `TapWords`. No ids: the words, plain.
+ */
+export function Ruled({ id, prefix, name, children }: { /** The rule or rules the words state. */ id: string | readonly string[]; prefix?: string; /** With several rules: what they back, under the list's title. */ name?: string; children: ReactNode }) {
+  const ids = typeof id === "string" ? [id] : id;
+  if (ids.length === 0) return <>{prefix}{children}</>;
+  return (
+    <TapWords item={rulesItem(ids, name)} look="ruled" prefix={prefix}>
+      {children}
+    </TapWords>
   );
 }
 
 /**
  * The key to the number styles (copy 2). Samples are marks, not figures. The fourth item is the mark a figure
  * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
- * adds the glossary-term sample (dashed teal underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages; wp6, A78).
+ * adds the glossary-term sample (dotted grey underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages).
  */
 const noSubscribe = () => () => {};
 const yes = () => true;

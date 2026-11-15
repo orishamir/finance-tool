@@ -83,7 +83,7 @@ describe("strongestStrength and moreSourcesLabel", () => {
   });
 });
 
-describe("a title as shown carries no rule code (D48)", () => {
+describe("a title as shown carries no rule code (D101)", () => {
   it("drops a code in brackets, and keeps an index's name", () => {
     expect(withoutCodes("אינטראקטיב ישראל: בורסה ישראלית (BRK-41)")).toBe("אינטראקטיב ישראל: בורסה ישראלית");
     expect(withoutCodes("עמוד (BRK-41, BRK-44) של החברה")).toBe("עמוד של החברה");

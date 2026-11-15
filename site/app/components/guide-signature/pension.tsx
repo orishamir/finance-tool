@@ -16,7 +16,7 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
-import { IdRef, Num, ReadingTag, RulesLine, Term } from "../provenance";
+import { IdRef, Num, ReadingTag, Ruled, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
@@ -47,8 +47,10 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   if (employment === "self-employed") {
     return (
       <div className="flex flex-col gap-3">
-        <Callout tone="info">{copy.pension.selfEmployed}</Callout>
-        <RulesLine ids={["TXP-05", "TXP-06", "PEN-03"]} />
+        <Callout tone="info">
+          {copy.pension.selfEmployed.before} <Ruled id={["TXP-05", "TXP-06", "TXP-02", "TXP-04"]}>{copy.pension.selfEmployed.stated}</Ruled>
+          {copy.pension.selfEmployed.after}
+        </Callout>
       </div>
     );
   }
@@ -117,7 +119,10 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="max-w-measure">{copy.pension.lead}</p>
+      <p className="max-w-measure">
+        {copy.pension.lead.before} <Ruled prefix={copy.pension.lead.prefix} id="PEN-05">{copy.pension.lead.stated}</Ruled>
+        {copy.pension.lead.after}
+      </p>
       <div className="grid gap-4 sm:grid-cols-2">
         <NumberField
           label={copy.pension.salary}
@@ -181,11 +186,12 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         <Sentence measure>
           {model.general.toGeneral > 0 && v.toGeneral ? (
             <>
-              {copy.pension.general.split.before} <Num value={ceiling} /> {copy.pension.general.split.middle} <Num value={v.toGeneral} /> {copy.pension.general.split.after}
+              {copy.pension.general.split.before} <Num value={ceiling} /> {copy.pension.general.split.middle} <Ruled id="PEN-10">{copy.pension.general.split.moves}</Ruled> <Num value={v.toGeneral} /> {copy.pension.general.split.after}
             </>
           ) : (
             <>
-              {copy.pension.general.below.before}<Term id="תקרת הפקדה">{copy.pension.general.below.term}</Term> {copy.pension.general.below.middle} <Num value={ceiling} /> {copy.pension.general.below.after}
+              {copy.pension.general.below.before}<Term id="תקרת הפקדה">{copy.pension.general.below.term}</Term> {copy.pension.general.below.middle} <Num value={ceiling} /> {copy.pension.general.below.after} <Ruled id="PEN-10">{copy.pension.general.below.moves}</Ruled>
+              {copy.pension.general.below.end}
             </>
           )}
         </Sentence>
@@ -214,12 +220,13 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         {employeePct && employerPct && severancePct && avgWage && (
           <p>
-            {copy.pension.ratesLine.before} <Num value={employeePct} /> {copy.pension.ratesLine.middle} <Num value={employerPct} /> {copy.pension.ratesLine.severance} <Num value={severancePct} /> {copy.pension.ratesLine.wage} <Num value={avgWage} /> {copy.pension.ratesLine.after}
+            {copy.pension.ratesLine.before} <Ruled id={["PEN-01", "PEN-03"]}>{copy.pension.ratesLine.stated}</Ruled>
+            {copy.pension.ratesLine.colon} <Num value={employeePct} /> {copy.pension.ratesLine.middle} <Num value={employerPct} /> {copy.pension.ratesLine.severance} <Num value={severancePct} /> {copy.pension.ratesLine.wage} <Num value={avgWage} /> {copy.pension.ratesLine.after}
           </p>
         )}
         {creditPct && (
           <p>
-            {copy.pension.creditLine.before} <Term id="זיכוי ממס">{copy.pension.creditLine.term}</Term> {copy.pension.creditLine.middle} <Num value={creditPct} /> {copy.pension.creditLine.after}
+            {copy.pension.creditLine.before} <Term id="זיכוי ממס">{copy.pension.creditLine.term}</Term> {copy.pension.creditLine.middle} <Num value={creditPct} /> {copy.pension.creditLine.after} <Ruled id={["TXP-02", "TXP-04"]}>{copy.pension.creditLine.capped}</Ruled> {copy.pension.creditLine.end}
             {model.relief.beneficiary && threshold ? (
               <>
                 {" "}
@@ -228,7 +235,17 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             ) : null}
           </p>
         )}
-        {hasInsurance ? <p className="text-muted-foreground">{copy.pension.insuranceNote}</p> : !generalOnly && <p className="text-muted-foreground">{copy.pension.noInsurance}</p>}
+        {hasInsurance ? (
+          <p className="text-muted-foreground">
+            {copy.pension.insuranceNote.before} <Ruled id="PEN-15">{copy.pension.insuranceNote.stated}</Ruled>
+            {copy.pension.insuranceNote.after}
+          </p>
+        ) : !generalOnly && (
+          <p className="text-muted-foreground">
+            {copy.pension.noInsurance.before} <Ruled id="PEN-35">{copy.pension.noInsurance.stated}</Ruled>
+            {copy.pension.noInsurance.after}
+          </p>
+        )}
         {trackName && trackFee ? (
           <Sentence tone="muted">
             {copy.pension.feesLine.before} ״<bdi>{String(trackName.value)}</bdi>״: <Num value={trackFee} /> {copy.pension.feesLine.balance}
@@ -270,7 +287,6 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           />
         )}
       </div>
-      <RulesLine ids={[...data.ruleIds, ...model.rules.filter((r) => /^(PEN|TXP)-/.test(r))].filter((r, i, a) => a.indexOf(r) === i)} />
     </div>
   );
 }

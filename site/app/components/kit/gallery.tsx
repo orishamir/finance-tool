@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
 import { IconAlert, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
-import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, RulesLine, StaleSaid, StrengthLabel } from "../provenance";
+import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, Ruled, RulesLine, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
@@ -583,10 +583,13 @@ function Chips() {
   );
 }
 
-/** The gallery's page carries no rule records: the demos of a rule's title (a titled chip, a title row) get one sample record of their own. */
+/** The gallery's page carries no rule records and no glossary rows: the demos of a rule's title (a titled chip, a title row, the words a
+ *  rule states) get one sample record of their own, and one sample term to stand beside them. */
 function SampleRules({ today, children }: { today: string; children: ReactNode }) {
   const rules = { "TXS-05": { id: "TXS-05", title: "Capital gains tax withheld at source", title_he: "ניכוי מס רווח הון במקור", scope: "general", strength: "primary", dimensions: [], figures: {} } };
-  return <ProvenanceProvider data={{ rules: rules as never, terms: {}, dimensions: {}, today }}>{children}</ProvenanceProvider>;
+  const r = g.sample.ruled;
+  const terms = { [r.besideTerm]: { he: r.besideTerm, explanation: r.termExplanation, variants: [], ruleIds: [], source: null, where: [], wrapperIds: [], exposureIds: [] } };
+  return <ProvenanceProvider data={{ rules: rules as never, terms, dimensions: {}, today }}>{children}</ProvenanceProvider>;
 }
 
 /** AbroadNote: three made-up countries, the note opening on the second; the third has nothing like the page's product. */
@@ -616,7 +619,7 @@ function Words({ today }: { today: string }) {
       <AbroadDemo today={today} />
       <Demo name="IdRef" use={g.uses.IdRef}>
         <Grid>
-          <State label="rule: D48's chip, opens the rule card at once"><div><IdRef id="TXS-05" /></div></State>
+          <State label="rule: the chip, on a page not yet converted to Ruled; opens the rule card at once"><div><IdRef id="TXS-05" /></div></State>
           <State label="rule, titled: in a list of rules, the chip is the rule's title"><SampleRules today={today}><div><IdRef id="TXS-05" titled /></div></SampleRules></State>
           <State label="formula: its name, opens the formula sheet"><div><IdRef id="F-80" /></div></State>
           <State label="parameter: its name, goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
@@ -653,6 +656,17 @@ function Words({ today }: { today: string }) {
           <State label="in a line of a row (the account list)"><div className="text-xs"><AlsoChanged what={investWords.pair.movedFund} back={investWords.pair.moveBackTo("פסגות")} onBack={() => undefined} /></div></State>
           <State label="stacked at the end of a narrow cell (the fund list)"><div className="text-xs"><AlsoChanged stack what={investWords.pair.movedHouse("IBKR")} back={investWords.pair.moveBackTo("IBI")} onBack={() => undefined} /></div></State>
         </Grid>
+      </Demo>
+      <Demo name="Ruled" use={g.uses.Ruled}>
+        <SampleRules today={today}>
+          <Grid>
+            <State label="one rule: the words that state it open its card; the full stop follows the words directly"><p className="w-56">{g.sample.ruled.before} <Ruled id="TXS-05">{g.sample.ruled.words}</Ruled>.</p></State>
+            <State label="several rules on one phrase: open the list of their titles, under name"><p className="w-56"><Ruled id={["TXS-05", "TXS-06", "TXS-09"]} name={g.sample.ruled.severalName}>{g.sample.ruled.several}</Ruled> {g.sample.ruled.severalAfter}.</p></State>
+            <State label="a one-letter prefix stays outside the link, on one line with it"><p className="w-56">{g.sample.ruled.prefixBefore} <Ruled id="TXS-05" prefix="ב">{g.sample.ruled.prefixWords}</Ruled>.</p></State>
+            <State label={`beside a sourced figure and a glossary term: solid grey for a figure and for words a rule states, dotted grey for a term; teal under the pointer, on focus and while the sheet is open, ${g.states.interactive}`}><p className="w-56">{g.sample.ruled.beside} <Num value={s.sourced} /> {g.sample.ruled.besideMid} <Term id={g.sample.ruled.besideTerm}>{g.sample.ruled.besideTerm}</Term> {g.sample.ruled.besideAfter} <Ruled id="TXS-05">{g.sample.ruled.besideWords}</Ruled>.</p></State>
+            <State label="no ids: the words, plain"><p className="w-56">{g.sample.ruled.before} <Ruled id={[]}>{g.sample.ruled.words}</Ruled>.</p></State>
+          </Grid>
+        </SampleRules>
       </Demo>
       <Demo name="RulesLine, RulesChip" use={g.uses.RulesLine}>
         <Grid>
@@ -1561,7 +1575,7 @@ function Lists({ today }: { today: string }) {
   return (
     <LabelSheetHost>
       <Demo name="FeeFigure, FeeWordsNote" use={g.uses.ProductTable}>
-        <State label="a fee: its number, one the fund does not have, one not collected; the note says what the two words mean" wide>
+        <State label="a fee: its number, one the fund does not have, one not collected; the note says what the two words mean, and its words that state a rule open it (Ruled)" wide>
           <ProductFigures items={[{ id: "a", figure: <FeeFigure value={s.rate} />, word: p.figure }, { id: "b", figure: <FeeFigure value={null} absent />, word: p.figure }, { id: "c", figure: <FeeFigure value={null} />, word: p.figure }]} />
           <FeeWordsNote />
         </State>

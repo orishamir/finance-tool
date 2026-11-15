@@ -12,7 +12,7 @@ import { fmt } from "../lib/format";
 import { InstitutionPage } from "../components/decoder/institutions/page";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
-import { IdRef, Num, NumAfter, OwnCompanyPage, StaleSaid } from "../components/provenance";
+import { Num, NumAfter, OwnCompanyPage, Ruled, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { CompanyTracks } from "../components/tracks/company-browser";
 import { CapLead, type ProductCaps } from "../components/tracks/list";
@@ -380,7 +380,7 @@ function FeeFoot({ caps: all, depositCapAbove }: { caps: ProductCaps | null; /**
         </span>
       )}
       <span>
-        {copy.fees.direct} <IdRef id="PF-10" />
+        <Ruled id="PF-10">{copy.fees.direct.stated}</Ruled> {copy.fees.direct.after}
       </span>
     </div>
   );

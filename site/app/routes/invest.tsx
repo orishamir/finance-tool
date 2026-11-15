@@ -24,7 +24,7 @@ import { Callout, EmptyState, useSwapGlide } from "../components/kit";
 import { IconCoins } from "../components/icons";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
-import { Num, RulesLine, Term } from "../components/provenance";
+import { Num, Term } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { enteredPlan } from "../lib/entered-plan";
@@ -282,10 +282,6 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
-  // on a foreign index, the rules behind the "?" beside a foreign fund's fees ("אין" by a line of the Israeli law for funds), cited here
-  // since that "?" opens a text of its own
-  const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22", ...(index && !index.israeli ? ["ETF-71", "ETF-14", "MF-20"] : [])].filter((id) => wb.rules.some((r) => r.id === id));
-
   // another index replaces what lies below the title, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
   const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "");
   const go = (p: string) => swap.begin(() => navigate(p));
@@ -404,7 +400,6 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
                   onPick={onPick}
                 />
               )}
-              <RulesLine ids={rules} />
             </>
           )}
         </div>

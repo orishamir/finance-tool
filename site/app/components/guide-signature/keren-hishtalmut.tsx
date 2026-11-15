@@ -13,9 +13,9 @@ import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
-import { Num, ReadingTag, RulesLine, Term } from "../provenance";
+import { Num, ReadingTag, Ruled, Term } from "../provenance";
 import { text } from "./g2-parts";
-import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, rulesOfRuns, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
 const YEARS = 12;
 const story = copy.hishtalmut.story;
@@ -110,9 +110,14 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const extraIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry), ...yearEntry };
   // the tax paid from the salary on the employer's money above the limit: the limit stays while the salary follows prices (F-96)
   const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : {}), ...inflationEntry, ...yearEntry };
-  const rules = rulesOfBundle(base);
-  const nis = (value: number, about: string, inputs: Record<string, SiteValue> = common) => figure(value, "nis", "F-96", inputs, today, about, rules);
-  const paidValue = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-106", inputs, today, about, rules);
+  // each figure carries the rules of the runs it comes from: the year picked, the lock's end, the year before it, the strip's last year
+  const runsAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.runs ?? []) : []);
+  const rules = rulesOfRuns(picked.runs);
+  const lockRules = rulesOfRuns(runsAt(lock));
+  const bothRules = rulesOfRuns([...picked.runs, ...runsAt(lock)]);
+  const nis = (value: number, about: string, inputs: Record<string, SiteValue> = common, ran = rules) => figure(value, "nis", "F-96", inputs, today, about, ran);
+  // what was paid in is the deposits in today's money (F-106, A-04): no rule decides it
+  const paidValue = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-106", inputs, today, about);
   // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
   const ranValue = (value: number, about: string, isTax: boolean, formula = "F-96", inputs = common) => {
     const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
@@ -153,7 +158,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // same at the year picked, and the income tax at the withdrawal that waiting saves. The deposits of the years between are paid either way
   // (after an early withdrawal they go on into the fund), and so is the tax the salary pays on the employer's money above the limit (TXH-03),
   // so neither counts for or against waiting.
-  const lockNet = lockSlice ? nis(lockSlice.net, story.about.lockNet, lockIn) : null;
+  const lockNet = lockSlice ? nis(lockSlice.net, story.about.lockNet, lockIn, lockRules) : null;
   const paidIn = (s: NonNullable<typeof slice>) => s.own + s.extra;
   const atWithdrawal = (s: NonNullable<typeof slice>) => s.tax - s.taxFromSalary;
   const wait = slice && lockSlice ? waitFigures(slice, lockSlice) : null;
@@ -162,13 +167,13 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       ? {
           more: nis(wait.more, story.about.waitMore, {
             [story.inputs.lockNet]: lockNet,
-            [story.inputs.lockPaid]: nis(paidIn(lockSlice), story.about.lockPaid, lockIn),
-            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockIn),
+            [story.inputs.lockPaid]: paidValue(paidIn(lockSlice), story.about.lockPaid, lockIn),
+            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockIn, lockRules),
             [story.inputs.left]: leftValue,
-            [story.inputs.paid]: nis(paidIn(slice), story.about.paid),
+            [story.inputs.paid]: paidValue(paidIn(slice), story.about.paid, common),
             [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary),
-          }),
-          saved: nis(wait.saved, story.about.taxSaved, { [story.inputs.tax]: nis(atWithdrawal(slice), story.about.taxAtWithdrawal), [story.inputs.lockTax]: nis(atWithdrawal(lockSlice), story.about.lockTax, lockIn) }),
+          }, bothRules),
+          saved: nis(wait.saved, story.about.taxSaved, { [story.inputs.tax]: nis(atWithdrawal(slice), story.about.taxAtWithdrawal), [story.inputs.lockTax]: nis(atWithdrawal(lockSlice), story.about.lockTax, lockIn, lockRules) }, bothRules),
           at: lockNet,
         }
       : null;
@@ -186,7 +191,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         )
       : slice.tax < 1
         ? (
-            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <Num value={nis(beforeLock.tax, story.about.taxBefore, lockIn)} display={fmt.nisWhole} />.</span>}>
+            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <Num value={nis(beforeLock.tax, story.about.taxBefore, lockIn, rulesOfRuns(runsAt(lock - 1)))} display={fmt.nisWhole} />.</span>}>
               <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
             </StatTile>
           )
@@ -228,7 +233,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const limitEntry: Record<string, SiteValue> = isEmployee ? (cap && income > Number(cap.value) ? capEntry : {}) : selfBenefited ? { [copy.hishtalmut.inputNames.selfBenefited]: selfBenefited } : {};
   const standingIn: Record<string, SiteValue> = { ...deposits, ...limitEntry };
   const crossIn: Record<string, SiteValue> = { ...deposits, ...(isEmployee ? capEntry : limitEntry), ...inflationEntry };
-  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn, flags: string[] = []) => figure(value, unit, "F-97", inputs, today, about, rules, flags);
+  // F-97 reads the strip's last year, whose runs hold every deposit (studyStanding)
+  const standingRules = rulesOfRuns(runsAt(YEARS));
+  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn, flags: string[] = []) => figure(value, unit, "F-97", inputs, today, about, standingRules, flags);
   const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
   const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
@@ -354,7 +361,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           {/* F-47 taxes the whole nominal gain, its linkage part too: for an employee that part is the site's reading (TXH-13) */}
           {n.e && (
             <Sentence size="sm">
-              {story.early.linkage} <ReadingTag />
+              {story.early.linkage.before} <Ruled id="TXH-13">{story.early.linkage.stated}</Ruled>
+              {story.early.linkage.after} <ReadingTag />
             </Sentence>
           )}
         </div>
@@ -378,7 +386,6 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           </p>
         )}
       </div>
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
   // the notes follow one another and only the card keeps its size: its room is the longest notes of either kind of work, so what is under the card stays where it is
@@ -472,7 +479,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           names={{ own: story.bar.own, extra: isEmployee ? story.bar.employer : story.bar.refund, gain: story.bar.gain, loss: story.bar.loss, fees: story.bar.fees, salary: story.bar.salary, tax: slice && slice.taxFromSalary > 1 ? story.bar.taxWithdrawal : story.bar.tax }}
           number={partNumber}
           left={{ words: story.bar.left, number: leftValue && <Num value={leftValue} display={fmt.nisWhole} /> }}
-          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <Num value={nis(account.net, story.about.account, accountIn)} display={fmt.nisWhole} /> } } : {})}
+          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <Num value={nis(account.net, story.about.account, accountIn, accountBundle ? rulesOfBundle(accountBundle) : [])} display={fmt.nisWhole} /> } } : {})}
           gap={gapWords}
           label={story.aria}
         />

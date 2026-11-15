@@ -224,7 +224,8 @@
      them): a figure's or a term's area at 0, a control's that stands alone (a rule chip, the kit's tap-area) at 1, and every
      own box at 2, so a control keeps its 44 px over the figures in the text beside it and nobody's area takes another's own box. */
   .num::after,
-  .term::after {
+  .term::after,
+  .ruled::after {
     content: "";
     position: absolute;
     z-index: 0;
@@ -234,7 +235,8 @@
     translate: 0 -50%;
   }
   .num::before,
-  .term::before {
+  .term::before,
+  .ruled::before {
     content: "";
     position: absolute;
     z-index: 2;
@@ -352,9 +354,11 @@
   .chip-end {
     margin-inline-start: -0.2em;
   }
-  /* A glossary term: a dashed teal underline, a third pattern next to the solid grey (sourced) and dotted violet
-     (computed) of numbers (audit 2026-10-24, A78). */
-  .term {
+  /* Words in running text that open where they come from: a glossary term (Term) and the words that state a rule (Ruled). A thin grey
+     line at rest, so they sit quietly in the prose; teal, the action colour, only under a computer's pointer, on keyboard focus and while
+     the sheet they opened is open (aria-expanded). Nothing on a phone depends on the hover. */
+  .term,
+  .ruled {
     font: inherit;
     color: inherit;
     background: none;
@@ -362,11 +366,36 @@
     padding: 0;
     cursor: pointer;
     position: relative;
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--num-underline-thickness);
+    text-underline-offset: var(--num-underline-offset);
+    text-decoration-skip-ink: none;
+  }
+  /* a glossary term: dotted grey, kept on one line */
+  .term {
     white-space: nowrap;
-    text-decoration: underline dashed;
-    text-decoration-color: var(--primary);
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 0.25em;
+    text-decoration-style: dotted;
+    text-decoration-color: var(--term-line);
+  }
+  /* the words a rule states: the solid grey line of a sourced figure (.num-sourced), so a solid grey line means "where this comes from"
+     for a figure or for words; a phrase of several words wraps like the sentence around it */
+  .ruled {
+    text-decoration-style: solid;
+    text-decoration-color: var(--sourced);
+  }
+  .term:focus-visible,
+  .ruled:focus-visible,
+  .term[aria-expanded="true"],
+  .ruled[aria-expanded="true"] {
+    color: var(--link);
+    text-decoration-color: var(--link);
+  }
+  @media (hover: hover) {
+    .term:hover,
+    .ruled:hover {
+      color: var(--link);
+      text-decoration-color: var(--link);
+    }
   }
   /* ---- a number the reader sets, inside a sentence (kit InputSlot, 2026-10-26): a room of fixed width, so the line never jumps. The
      number in it is plain (founder, 2026-11-08): no blue, no line under it, nothing to tap; the field beside the sentence changes it. */

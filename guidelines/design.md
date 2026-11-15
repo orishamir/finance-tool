@@ -74,6 +74,13 @@ What goes on a page is his call. When he asks for a change, build it this way:
     its own product, shown on that product, is plain sourced.
   - `blocked`, red with a lock: the rule behind it is open.
   - `positive`, green: a dimension considered.
+- **Words.**
+  - Words that state a rule: the same solid grey underline as a sourced
+    number; a tap opens the rule. No chip beside them, and none at the end
+    of the block.
+  - A glossary term: a dotted grey underline; a tap opens its explanation.
+  - Both turn teal only under a computer's pointer, on keyboard focus and
+    while their sheet is open.
 
   Each state also has a pattern, an icon or a word, never colour alone. In a
   list of products, a column whose figures all share one state carries the

@@ -1,5 +1,5 @@
 // Screen 1: the product guide page (design-spec 2).
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { guidePath, rulesPath, trackBrowserPath } from "../lib/site-paths";
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
@@ -7,7 +7,7 @@ import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePre
 import { pageMeta } from "../lib/page-meta";
 import { feeRowKind, type FeeFacts } from "../lib/guide-fees";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, RelatedProducts, RuleRows, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type RuleRowItem, type TaxStep } from "../components/guide/sections";
-import { IdRef, Num, NumberLegend, ReadingTag, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
+import { IdRef, Num, NumberLegend, ReadingTag, Ruled, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
@@ -66,6 +66,8 @@ export default function GuidePage() {
   const figure = (ruleId: string, name: string): SiteValue | null => (rules[ruleId] ? ruleFigure(rules[ruleId]!, name, today) : null);
   // a guide is a product context (D30): every list of rules on it holds general rules only; a company's own term is on its page
   const gen = (ids: readonly string[]) => generalOnly(ids, rules);
+  // words of a row, a cell or a step that state the general rules behind them open those rules (D116); a figure opens its own from its sheet
+  const stated = (words: ReactNode, ids: readonly string[]) => <Ruled id={gen(ids)}>{words}</Ruled>;
   const strengthOfRules = (ids: readonly string[]) => (ids.map((id) => rules[id]?.strength).some((s) => s === "institution") ? "institution" : ids.map((id) => rules[id]?.strength).some((s) => s === "secondary") ? "secondary" : null);
   const weakTag = (ids: readonly string[]) => {
     const s = strengthOfRules(ids);
@@ -79,41 +81,37 @@ export default function GuidePage() {
   const exitCopy = blocks.exit as Record<string, string | { before: string; after: string }>;
   const lockUp = exit.kind === "after_years" || exit.kind === "at_age" || exit.kind === "at_child_age";
   const exitRules = (...vs: (SiteValue | undefined)[]) => [...new Set(vs.flatMap((v) => v?.rule_ids ?? []))];
-  const exitValue = (): { value: ReactNode; rules: string[] } => {
+  // the rules the record's sentence cites join the fact's own, so its detail is read in their cards
+  const exitTextRules = exit.kind === "any_time" ? [] : data.exitTextRules.filter((id) => isGeneral(rules[id]));
+  // a value with a figure: the figure opens the rules behind it; a value in words: the words state the fact's rules and those of the record's sentence
+  const exitValue = (): ReactNode => {
     const years = exit.years as SiteValue | undefined;
     const age = exit.age as SiteValue | undefined;
     const term = exit.term_months as SiteValue | undefined;
     const days = exit.payout_business_days as SiteValue | undefined;
+    const other = stated(exitCopy.otherKind as string, exitTextRules);
     switch (exit.kind) {
       case "any_time":
-        return { value: blocks.exit.anyTime, rules: days?.rule_ids ?? [] };
+        return stated(blocks.exit.anyTime, exitRules(days));
       case "trading_day":
-        return { value: exitCopy.tradingDay as string, rules: exitRules(days) };
+        return stated(exitCopy.tradingDay as string, [...exitRules(days), ...exitTextRules]);
       case "at_maturity":
-        return term
-          ? { value: <>{(exitCopy.atMaturityTerm as { before: string }).before} <Num value={term} display={fmt.months(term.value as number)} /></>, rules: exitRules(term) }
-          : { value: exitCopy.atMaturity as string, rules: [] };
+        return term ? <>{(exitCopy.atMaturityTerm as { before: string }).before} <Num value={term} display={fmt.months(term.value as number)} /></> : stated(exitCopy.atMaturity as string, exitTextRules);
       case "after_years":
-        return years ? { value: <>{(exitCopy.afterYears as { before: string }).before} <Num value={years} display={fmt.years(years.value as number)} /></>, rules: exitRules(years) } : { value: exitCopy.otherKind as string, rules: [] };
+        return years ? <>{(exitCopy.afterYears as { before: string }).before} <Num value={years} display={fmt.years(years.value as number)} /></> : other;
       case "at_age":
-        return age ? { value: <>{(exitCopy.atAge as { before: string }).before} <Num value={age} /></>, rules: exitRules(age) } : { value: exitCopy.otherKind as string, rules: [] };
+        return age ? <>{(exitCopy.atAge as { before: string }).before} <Num value={age} /></> : other;
       case "at_child_age":
-        return age ? { value: <>{(exitCopy.atChildAge as { before: string }).before} <Num value={age} /></>, rules: exitRules(age) } : { value: exitCopy.otherKind as string, rules: [] };
+        return age ? <>{(exitCopy.atChildAge as { before: string }).before} <Num value={age} /></> : other;
       default:
-        return { value: exitCopy.otherKind as string, rules: [] };
+        return other;
     }
   };
-  // the rules the record's sentence cites join the fact's own, so its detail is read in their cards
-  const exitTextRules = exit.kind === "any_time" ? [] : data.exitTextRules.filter((id) => isGeneral(rules[id]));
-  const exitItem = (): RuleRowItem => {
-    const v = exitValue();
-    return {
-      id: "withdraw",
-      label: exit.kind === "at_age" ? blocks.exit.labelAtAge : lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
-      value: v.value,
-      rules: [...new Set([...v.rules, ...exitTextRules])],
-    };
-  };
+  const exitItem = (): RuleRowItem => ({
+    id: "withdraw",
+    label: exit.kind === "at_age" ? blocks.exit.labelAtAge : lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
+    value: exitValue(),
+  });
   const inout: RuleRowItem[] = [];
   if (lockUp && !content?.omitFreeRow) inout.push(exitItem());
   if (record.ceiling) {
@@ -126,7 +124,6 @@ export default function GuidePage() {
           <Num value={amount} /> {blocks.ceiling.per[record.ceiling.per] ?? <bdi dir="ltr">{record.ceiling.per}</bdi>}
         </>
       ),
-      rules: amount.rule_ids ?? [],
       lead: amount.tax_year ? (
         <span>
           {blocks.ceiling.taxYear} <bdi dir="ltr">{amount.tax_year}</bdi>
@@ -148,24 +145,24 @@ export default function GuidePage() {
           {blocks.exit.upTo} <Num value={days} /> {blocks.exit.businessDays}
         </>
       ),
-      rules: days.rule_ids ?? [],
       lead: onlyAt ? <span>{blocks.exit.onlyAt.before} {onlyAt}{blocks.exit.onlyAt.after}</span> : undefined,
     });
   }
   // the same three rows on every guide they apply to
   // when the days start counting means something only beside how many days there are
-  if (exit.payout_business_days && withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: blocks.withdrawal.daysCount.value, rules: ["PF-46"] });
+  if (exit.payout_business_days && withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: <>{stated(blocks.withdrawal.daysCount.value, ["PF-46"])}{blocks.withdrawal.daysCount.after}</> });
   const messageCeiling = withdrawalRules(record.id).includes("PF-45") ? figure("PF-45", "digital_message_ceiling") : null;
-  if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</>, rules: ["PF-45"] });
+  if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</> });
   const lowOne = withdrawalRules(record.id).includes("TXP-18") ? figure("TXP-18", "low_income_one") : null;
   const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
-  if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after} {blocks.withdrawal.lowIncome.wageBefore}{lowOne.effective_from ? <> <When iso={lowOne.effective_from.slice(0, 7)} lead={blocks.withdrawal.lowIncome.wageFrom} /></> : null}{blocks.withdrawal.lowIncome.wageAfter}</>, rules: ["TXP-18"] });
+  if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after} {blocks.withdrawal.lowIncome.wageBefore}{lowOne.effective_from ? <> <When iso={lowOne.effective_from.slice(0, 7)} lead={blocks.withdrawal.lowIncome.wageFrom} /></> : null}{blocks.withdrawal.lowIncome.wageAfter}</> });
   if (content?.switchLine && record.switch_is_tax_event.value === false) {
     inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: typeof content.switchLine === "function" ? content.switchLine(cp) : content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...(content.switchRules ?? []).filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
   inout.push(...(content?.inoutRows?.(cp) ?? []));
 
-  for (const it of inout) it.rules = gen(it.rules);
+  // the rows whose words a guide's content file writes keep their chip until those words mark their rules
+  for (const it of inout) if (it.rules) it.rules = gen(it.rules);
   // where each company sets a fee, the record's company_terms name the companies' own terms under the checklist dimension of that fee
   const feeDimension: Record<string, string> = { balance: "fee-management-balance", deposit: "fee-deposit", trade: "fee-trade", custody: "fee-custody", fx: "fee-fx", fixed_period: "fee-account", exit: "fee-exit" };
   const feeVaries = (base: string) => {
@@ -227,7 +224,7 @@ export default function GuidePage() {
             {discount && (
               <>
                 {" "}
-                {n.discountFor} <Num value={discount} display={typeof discount.value === "number" ? fmt.years(discount.value) : undefined} /> {n.discountFrom}{" "}
+                {n.discountFor} <Num value={discount} display={typeof discount.value === "number" ? fmt.years(discount.value) : undefined} /> {n.discountFrom.before} {stated(n.discountFrom.except, ["PF-14"])}{n.discountFrom.after}{" "}
                 {n.lumpSum.before} <IdRef id="PF OQ18" end={n.lumpSum.after} /> {n.discountEnd}
               </>
             )}
@@ -297,18 +294,17 @@ export default function GuidePage() {
         capCore
       ),
       ...(capNote.length > 0 ? { capNote: <>{capNote.flatMap((n, i) => (i ? [" ", n] : [n]))}</> } : {}),
-      // the note under the table says how long a discount lasts and when it can end earlier (D83): its rules sit on the fee's row
+      // the cap's figure opens its rules; how long a discount lasts and when it can end earlier is the note under the table's (D83)
       kind,
-      rules: gen([...(cap?.rule_ids ?? []), ...(kind === "allowed" && data.listRange?.[base as "balance" | "deposit"]?.lowKind === "discount" ? ["PF-13", "PF-14"] : [])]),
       // a barred fee has no company's rate and no range of the managers' documents
       ...(kind === "allowed" ? { varies: feeVaries(base), range: listRangeLine(base) } : {}),
       // a provident product's figure is a cap of the management-fee regulations (PF-02 to PF-06); "no cap" and the provider's own tariff are not caps
       regsCap: provident && !!cap && cap.value !== null,
     });
   }
-  if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
+  if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: stated(blocks.fees.direct_expenses.cap, ["PF-10"]) });
   // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag
-  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
+  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: stated(blocks.fees.exit.cap, ["PF-01"]), tag: weakTag(["PF-01"]) });
 
 
   // ---- tax steps
@@ -325,19 +321,19 @@ export default function GuidePage() {
         )}
       </>
     ) : null;
-  // a formula with no sentence of its own shows its Hebrew name, the code after it
-  const formulaHeadline = (formula: string): ReactNode => (
+  // a formula with no sentence of its own shows its Hebrew name, the code after it; the name states the step's rules
+  const formulaHeadline = (formula: string, ids: readonly string[]): ReactNode => (
     <>
-      {formulaNames[formula] ?? formulaNames._other} <bdi dir="ltr" className="text-xs text-muted-foreground">{formula}</bdi>
+      {stated(formulaNames[formula] ?? formulaNames._other, ids)} <bdi dir="ltr" className="text-xs text-muted-foreground">{formula}</bdi>
     </>
   );
+  // a step's headline is the words that state the rules its record cites for it (D116)
   const plainStep = (id: string, when: string, step: { formula: string; rule_ids: string[] }): TaxStep => ({
     id,
     when,
-    headline: stepCopy(step.formula)?.headline ?? formulaHeadline(step.formula),
+    headline: stepCopy(step.formula)?.headline ? stated(stepCopy(step.formula)!.headline!, step.rule_ids) : formulaHeadline(step.formula, step.rule_ids),
     // a line that says moving is not taxed shows only where the record knows it (child savings' bank route does not, TXK OQ1)
     text: pendingLine(step.formula) ?? (record.switch_is_tax_event?.value !== false ? stepCopy(step.formula)?.textSwitchOpen : undefined) ?? stepCopy(step.formula)?.text ?? "",
-    rules: step.rule_ids,
   });
   // the exit formula's rates: only a rate the record itself cites, never another rule's number
   const citedExit = new Set(record.tax_at_exit.rule_ids);
@@ -351,6 +347,9 @@ export default function GuidePage() {
   // the step's mark: a cited rule's own strength, or a rate the step shows whose source is weaker than its rule; else a rate that is
   // the site's reading (the child-savings bank route's rates are the Ordinance's, but no official text says they reach it, TXK-29)
   const exitMark = exitStepMark(strengthOfRules(record.tax_at_exit.rule_ids), rateLines);
+  // the exit rules a figure in the step opens from its sheet; the headline's words state the rest
+  const exitShown = new Set([...(exitFigure?.rule_ids ?? []), ...rateLines.flatMap((r) => r.value.rule_ids ?? [])]);
+  const exitRest = record.tax_at_exit.rule_ids.filter((id) => !exitShown.has(id));
   // the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
   // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05).
   // A self-directed study fund is taxed as a study fund (TXK-17), so its page has the same row.
@@ -364,11 +363,11 @@ export default function GuidePage() {
   );
   const hishtalmutDeposit = (employment: "employee" | "self-employed" | null): TaxStep => {
     const own = { id: "deposit", when: copy.taxSteps.deposit };
-    if (employment === "employee") return { ...own, headline: hd.employee.headline, text: hd.employee.text, rules: ["TXH-04", "TXH-01", "TXH-03"] };
-    if (employment === "self-employed") return { ...own, headline: hd.selfEmployed.headline, text: selfText, rules: ["TXH-05"] };
+    if (employment === "employee") return { ...own, headline: stated(hd.employee.headline, ["TXH-04", "TXH-01", "TXH-03"]), text: hd.employee.text };
+    if (employment === "self-employed") return { ...own, headline: stated(hd.selfEmployed.headline, ["TXH-05"]), text: selfText };
     return {
       ...own,
-      headline: hd.unknown.headline,
+      headline: stated(hd.unknown.headline, ["TXH-04", "TXH-01", "TXH-03", "TXH-05"]),
       text: (
         <span className="flex flex-col gap-1">
           <span>
@@ -379,7 +378,6 @@ export default function GuidePage() {
           </span>
         </span>
       ),
-      rules: ["TXH-04", "TXH-01", "TXH-03", "TXH-05"],
     };
   };
   const byEmployment = (record.id === "keren-hishtalmut" || record.id === "ira-hishtalmut") && record.deposit_side_tax.formula === "F-33" && ["TXH-04", "TXH-01", "TXH-03", "TXH-05"].every((r) => rules[r]);
@@ -395,10 +393,12 @@ export default function GuidePage() {
       headline:
         exitStepCopy && exitFigure && "before" in exitStepCopy ? (
           <>
-            {exitStepCopy.before} <Num value={exitFigure} /> {exitStepCopy.after}
+            {exitStepCopy.before} <Num value={exitFigure} /> {stated(exitStepCopy.after, exitRest)}
           </>
+        ) : exitStepCopy?.headline ? (
+          stated(exitStepCopy.headline, exitRest)
         ) : (
-          exitStepCopy?.headline ?? formulaHeadline(exitFormula)
+          formulaHeadline(exitFormula, exitRest)
         ),
       text: pendingLine(exitFormula) ?? exitStepCopy?.text ?? "",
       tag: exitMark === "reading" ? <ReadingTag /> : exitMark ? <StrengthLabel strength={exitMark} /> : undefined,
@@ -415,10 +415,8 @@ export default function GuidePage() {
             })}
           </span>
         ) : undefined,
-      rules: record.tax_at_exit.rule_ids,
     },
   ];
-  for (const st of steps) st.rules = gen(st.rules);
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: rulesPath({ product: record.id }) } }; // the rules page's product filter: the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
@@ -459,16 +457,17 @@ export default function GuidePage() {
             <div className="flex flex-col gap-1 max-w-measure">
               <Sentence
                 tone="muted"
-                t={copy.heldIn}
+                t={data.heldIn.accounts.length > 1 ? copy.heldIn.many : copy.heldIn.one}
                 vars={{
-                  account: (
-                    <TextLink to={guidePath(data.heldIn.id)}>
-                      {data.heldIn.name}
-                    </TextLink>
-                  ),
+                  held: stated(copy.heldInWords, data.heldIn.ruleIds),
+                  accounts: data.heldIn.accounts.map((a, i, all) => (
+                    <Fragment key={a.id}>
+                      {i === 0 ? null : i === all.length - 1 ? ` ${copy.heldInOr} ` : ", "}
+                      <TextLink to={guidePath(a.id)}>{a.name}</TextLink>
+                    </Fragment>
+                  )),
                 }}
               />
-              <RulesLine ids={gen(data.heldIn.ruleIds)} />
             </div>
           )}
         </GuideHeader>
@@ -551,9 +550,8 @@ export default function GuidePage() {
           {content?.risks(cp) ?? (
             <>
               <p className="max-w-measure">
-                <bdi dir="ltr">{record.protection.text}</bdi>
+                <bdi dir="ltr">{stated(record.protection.text, record.protection.rule_ids)}</bdi>
               </p>
-              <RulesLine ids={gen(record.protection.rule_ids)} />
             </>
           )}
         </GuideSection>

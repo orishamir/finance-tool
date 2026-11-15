@@ -13,7 +13,7 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
-import { Num } from "../provenance";
+import { Num, Ruled, Term, type SheetPart } from "../provenance";
 import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, type GroupChoice } from "../kit";
 import { isGroupPrice } from "../../lib/group-pick";
 import { optionClass, reasonText } from "./parts";
@@ -159,6 +159,22 @@ export function whyNoKindAt(bundle: { snapshots: IndicesBundle["snapshots"] }, h
   // a rule's card replaces the reasons, so it opens only where every reason has a rule behind it: a kind with none would lose its reason
   const rules = told.every((r) => r.at?.rule_ids?.length) ? [...new Set(told.flatMap((r) => entryRules(r.at!)))] : [];
   return { state, why: why || c.funds.cannot, parts: parts.length ? parts : [{ text: c.funds.cannot }], rules };
+}
+
+/**
+ * The words that say why an account sells no such fund (`whyNoFundAt`, or the reasons of several rows), which open why: the rules that say
+ * so, as words that state a rule (D116), where every reason has one; else the reasons themselves, each with its document.
+ */
+export function NoFundWords({ told, name, children }: { told: { parts: readonly SheetPart[]; rules: readonly string[] }; /** What the sheet is about: the title over the reasons, or under the rules' list. */ name: string; children: ReactNode }) {
+  return told.rules.length > 0 ? (
+    <Ruled id={told.rules} name={name}>
+      {children}
+    </Ruled>
+  ) : (
+    <Term id={[]} name={name} parts={told.parts}>
+      {children}
+    </Term>
+  );
 }
 
 /** The short line in a fund's last cell when the house gives it no price, naming the house, in `whyNoPrice`'s order. */

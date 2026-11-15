@@ -1,6 +1,6 @@
 // Guard over the built pages: no internal code in a line the reader reads. A rule's code (`KH-19`, `TXI-03`), a site parameter's
-// (`P-05`), a formula's (`F-21`), an assumption's of the method (`A-01`) or a proof's (`M-01`) tells a reader nothing; the words carry it (D48: the rules
-// behind a fact are one chip, "חוקים וכללים · N"; a row that is the rule itself has its title as the link). A code stays where it is the
+// (`P-05`), a formula's (`F-21`), an assumption's of the method (`A-01`) or a proof's (`M-01`) tells a reader nothing; the words carry it (D101: the words
+// that state a rule open its card, D116; a row that is the rule itself has its title as the link). A code stays where it is the
 // point: inside a rule's own card or sheet, whose heading reads "id · title" (D25), marked in the markup with `data-code-ok`; on the
 // rules page, the catalogue, where a code typed in the field opens its rule; and in addresses and anchors, which are not text.
 // What it reads: each pre-rendered page's text and its title, alt and placeholder attributes (not aria-label, which is spoken, not

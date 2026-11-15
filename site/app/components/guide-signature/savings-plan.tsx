@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 
 import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
-import { IdText, Num, RulesLine } from "../provenance";
+import { IdText, Num, Ruled } from "../provenance";
 import { figure, inputSite, rulesOfBundle, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
 
 const TOP = 22;
@@ -144,10 +144,12 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
             {copy.plan.alt.before}{lumpRate.own && <> {copy.plan.alt.ofBank} <bdi>{lumpRate.own}</bdi></>} {copy.plan.alt.forTerm} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle}
           </p>
         )}
-        <p className="text-muted-foreground">{copy.plan.onlyCollected}</p>
+        <p className="text-muted-foreground">
+          {copy.plan.onlyCollected.before} <Ruled prefix={copy.plan.onlyCollected.prefix} id="BANK-28">{copy.plan.onlyCollected.stated}</Ruled>
+          {copy.plan.onlyCollected.after}
+        </p>
       </div>
       <Callout tone="caution"><IdText text={copy.common.gaps.planLockPerDeposit ?? ""} /></Callout>
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
 }

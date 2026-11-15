@@ -11,9 +11,9 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { LeadTail, Num, Term, type SheetPart } from "../provenance";
+import { LeadTail, Num, type SheetPart } from "../provenance";
 import { Button, wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
-import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, whyNoFundAt } from "./pair";
+import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 /** The lock after a name, held to its last word by `LeadTail` so it never stands alone on a line. */
@@ -370,9 +370,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
             <GreyLine
               key={why}
               why={
-                <Term id={[]} name={words} parts={told.parts} rules={told.rules}>
+                <NoFundWords told={told} name={words}>
                   {words}
-                </Term>
+                </NoFundWords>
               }
             >
               {these.map(titleOf).join(", ")}
