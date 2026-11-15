@@ -9,7 +9,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { provenance as copy } from "../copy";
-import { IdRef, ProvenanceProvider, RulesLine, idKind } from "../components/provenance";
+import { IdRef, ProofsChip, ProvenanceProvider, idKind } from "../components/provenance";
 import { SheetContent } from "../components/provenance-sheets";
 import { proofs } from "./proofs";
 
@@ -47,7 +47,7 @@ describe("the proofs the content files cite", () => {
     expect(cited.filter((c) => !ids.includes(c.id)).map((c) => `${c.file}: ${c.id}`)).toEqual([]);
   });
   it("the scan finds a cited id", () => {
-    expect([...code(`<RulesLine ids={[]} proofs={["M-03"]} />\n  // M-99, a whole-line comment\n/* M-98 */`).matchAll(/(?<![A-Za-z0-9-])M-\d+(?![0-9])/g)].map((m) => m[0])).toEqual(["M-03"]);
+    expect([...code(`<ProofsChip ids={["M-03"]} />\n  // M-99, a whole-line comment\n/* M-98 */`).matchAll(/(?<![A-Za-z0-9-])M-\d+(?![0-9])/g)].map((m) => m[0])).toEqual(["M-03"]);
   });
 });
 
@@ -62,7 +62,7 @@ describe("a proof as a kind of source", () => {
     const one = draw(IdRef, { id: "M-01" });
     expect(one).toContain(copy.proofChip.one);
     expect(one).not.toContain("M-01");
-    const line = draw(RulesLine, { ids: ["TXI-03"], proofs: ["M-01", "M-04"] });
+    const line = draw(ProofsChip, { ids: ["M-01", "M-04"] });
     expect(line).toContain(copy.proofChip.many);
     expect(line).not.toMatch(/M-0\d/);
   });

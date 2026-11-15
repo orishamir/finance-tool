@@ -9,6 +9,9 @@
 // Runs after the build (`npm run build -w site`); prints each hit with its page and the words around it, and fails. Pages that must
 // keep a code are listed in rule-codes-leftovers.json with their count and the reason; the list only shrinks, as hebrew-quotes'.
 // `tools/code-scan.mjs` uses the same reading to count the codes per kind of page.
+// The same reading also fails on a rule chip, rules named by their count ("חוקים וכללים · 3") instead of by the words that state them or
+// by their titles (D116), on any page, the rules page among them, with no leftovers. Before it trusts a clean result it plants one such
+// chip, as the chip was drawn, in the kit page's markup (/kit) and fails if the reading does not catch it.
 // Usage: node scripts/rule-codes.mjs [build/client]
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -88,6 +91,40 @@ export function codesIn(text, rules) {
   return hits;
 }
 
+/** A rule chip: "חוקים וכללים", a middle dot and a count. Its parts stood in separate elements, so the shown text spaces them. */
+const RULE_CHIP = /חוקים\s+וכללים\s*·\s*\d+/g;
+
+/** Each rule chip in a text, with up to 30 characters on each side. */
+export function chipsIn(text) {
+  return [...text.matchAll(RULE_CHIP)].map((m) => ({ chip: m[0].replace(/\s+/g, " "), around: text.slice(Math.max(0, m.index - 30), m.index + m[0].length + 30).replace(/\s+/g, " ").trim() }));
+}
+
+/** The rule chips each built page shows, and those in the search results' lines. */
+export function scanChips(root) {
+  const found = new Map();
+  for (const p of pages(root)) {
+    const hits = chipsIn(shownText(readFileSync(p, "utf8")));
+    if (hits.length) found.set(relative(root, p), hits);
+  }
+  const index = join(root, "search-index.json");
+  if (existsSync(index)) {
+    const hits = JSON.parse(readFileSync(index, "utf8")).flatMap((e) => chipsIn(`${e.name} \n ${e.line ?? ""}`));
+    if (hits.length) found.set("search-index.json", hits);
+  }
+  return found;
+}
+
+/** The chip as it was drawn: its words, the separator in an element of its own, the count isolated. */
+export const PLANTED_CHIP = '<button type="button" class="rule-chip">חוקים וכללים<span aria-hidden="true" class="mx-1 text-muted-foreground">·</span><bdi dir="ltr">3</bdi></button>';
+
+/** Whether the reading catches a chip planted in a page's markup, at the end of its <main>: one more hit than the page has without it. */
+export function catchesPlanted(html) {
+  const at = html.lastIndexOf("</main>");
+  if (at < 0) return false;
+  const planted = `${html.slice(0, at)}<p>${PLANTED_CHIP}</p>${html.slice(at)}`;
+  return chipsIn(shownText(planted)).length === chipsIn(shownText(html)).length + 1;
+}
+
 export function pages(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
@@ -120,10 +157,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const left = existsSync(LEFT) ? JSON.parse(readFileSync(LEFT, "utf8")) : {};
   const found = scan(root);
   const problems = [];
+  const kit = join(root, "kit/index.html");
+  if (!existsSync(kit)) problems.push("kit/index.html: not built, so the rule chip check cannot prove itself on the chip it plants there");
+  else if (!catchesPlanted(readFileSync(kit, "utf8"))) problems.push("self-test: the rule chip check did not catch the chip planted on /kit");
+  for (const [page, hits] of scanChips(root)) {
+    problems.push(`${page}: ${hits.length} rule chips; the words that state a rule open it (Ruled), and a list of rules shows their titles (RuleTitleList) (D116):`);
+    for (const h of hits.slice(0, 8)) problems.push(`    ${h.chip}: …${h.around}…`);
+  }
   for (const [page, hits] of found) {
     const allowed = left[page]?.count ?? 0;
     if (hits.length <= allowed) continue;
-    problems.push(`${page}: ${hits.length} codes in what the reader reads, ${allowed} allowed; let the words carry it (a rule's title, "חוקים וכללים · N"), or mark the rule's own card data-code-ok:`);
+    problems.push(`${page}: ${hits.length} codes in what the reader reads, ${allowed} allowed; let the words carry it (the words that state the rule, a rule's title), or mark the rule's own card data-code-ok:`);
     for (const h of hits.slice(0, 8)) problems.push(`    ${h.code}: …${h.around}…`);
   }
   for (const [page, { count }] of process.env.QUICK ? [] : Object.entries(left)) {
@@ -136,5 +180,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(1);
   }
   const total = [...found.values()].reduce((a, h) => a + h.length, 0);
-  console.log(`rule-codes: no internal code in what the built pages show${total ? ` (${total} listed leftovers)` : ""}`);
+  console.log(`rule-codes: no internal code and no rule chip in what the built pages show${total ? ` (${total} listed leftover codes)` : ""}; the chip planted on /kit was caught`);
 }

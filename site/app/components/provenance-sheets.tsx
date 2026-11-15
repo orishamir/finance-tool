@@ -19,10 +19,10 @@ import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
-import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleRow, RulesLine, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
+import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
 
-/** What words that state several rules (`Ruled`), or a `RulesChip`, open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
+/** What words that state several rules (`Ruled`) open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
 function RulesListSheet({ ids, name, headId }: { ids: readonly string[]; name?: string; headId: string }) {
   return (
     <div className="flex flex-col gap-3">
@@ -515,7 +515,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         <dl className="sheet-dl">
           <Row label={copy.sourced.rule}>
             <span className="flex flex-wrap gap-2">
-              {value.rule_ids.map((id) => <RuleRef key={id} id={id} titled />)}
+              {value.rule_ids.map((id) => <RuleRef key={id} id={id} />)}
             </span>
           </Row>
         </dl>
@@ -560,7 +560,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {value.rule_ids && value.rule_ids.length > 0 && (
             <Row label={copy.sourced.rule}>
               <span className="flex flex-wrap gap-2">
-                {value.rule_ids.map((id) => <RuleRef key={id} id={id} titled />)}
+                {value.rule_ids.map((id) => <RuleRef key={id} id={id} />)}
               </span>
             </Row>
           )}
@@ -604,7 +604,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                     must see here */}
                 {value.rulesUsed.map((r) => (
                   <span key={r.id} className="flex flex-wrap items-center gap-1.5 min-w-0">
-                    <RuleRef id={r.id} titled />
+                    <RuleRef id={r.id} />
                     {r.strength !== "primary" && <StrengthLabel strength={r.strength} />}
                   </span>
                 ))}
@@ -900,7 +900,7 @@ function RulePointers({ rule }: { rule: RuleRecord }) {
         <div className="flex flex-col gap-1">
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>{ruleCardMore.derivedFrom}</span>
-            {derived.map((d) => <RuleRef key={d} id={d} titled />)}
+            {derived.map((d) => <RuleRef key={d} id={d} />)}
           </p>
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
         </div>
@@ -908,7 +908,7 @@ function RulePointers({ rule }: { rule: RuleRecord }) {
       {examples.length > 0 && (
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>{ruleCardMore.examples}</span>
-          {examples.map((d) => <RuleRef key={d} id={d} titled />)}
+          {examples.map((d) => <RuleRef key={d} id={d} />)}
         </p>
       )}
     </>
@@ -1247,8 +1247,9 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
           </Row>
         </dl>
       )}
-      {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page */}
-      {generalOnly(term.ruleIds, data.rules).length > 0 && <RulesLine ids={generalOnly(term.ruleIds, data.rules)} />}
+      {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page; the rules are
+          a list whose rows are the rules, each by its title (D116) */}
+      <RuleTitleList ids={generalOnly(term.ruleIds, data.rules)} />
     </div>
   );
 }
@@ -1274,8 +1275,9 @@ function TermsSheet({ ids, name, lead, rules, parts, data, headId }: { ids: read
           {name}
         </h2>
         {lead && <p className="text-muted-foreground">{lead}</p>}
-        {rules && rules.length > 0 && <RulesLine ids={rules} name={name} className="pt-1" />}
       </div>
+      {/* the rules the text rests on, under it: a list whose rows are the rules, each by its title (D116) */}
+      {rules && <RuleTitleList ids={rules} />}
       {/* the sheet's own sentences, each with the document it rests on right under it; then each group under its heading, where a part
           with no head and no document is a line of a list */}
       {parts?.filter((p) => p.group === undefined).map(sheetPart)}

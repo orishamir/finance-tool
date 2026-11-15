@@ -207,7 +207,7 @@ function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
   };
 }
 
-export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {
+export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {
   const record = loadProducts().find((w) => w.id === id);
   if (!record) return null;
   const allRules = loadRules();
@@ -271,7 +271,6 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // the rules the exit sentence names: their Hebrew texts stand in for its English wording
   const exitTextRules = [...new Set(record.lawful_exit.text?.match(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g) ?? [])].filter((r) => !!allRules[r]?.text_he);
   exitTextRules.forEach((r) => cited.add(r));
-  extraRuleIds.forEach((r) => cited.add(r));
   // the companies' own terms the record names where a property is each company's (D30): their records give the guide's "תלוי בחברה" links
   for (const refs of Object.values(record.company_terms ?? {})) refs.forEach((r) => cited.add(companyTermRule(r)));
   // rules the prose module cites (<Ruled>, figure(...), and any chip still there): found in its source so the cards are not empty

@@ -16,7 +16,6 @@ import { cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
-import type { ProofId } from "../content/proofs";
 
 // ---------------------------------------------------------------- context
 
@@ -533,8 +532,8 @@ export function idKind(id: string): IdKind | null {
 
 /**
  * One chip for any id the site has: a rule opens its card, a formula its sheet, an open question its sheet, a proof its sheet,
- * a parameter goes to its card on the parameters page. The chip says words, never the code (D101): a rule's chip is
- * "חוקים וכללים · 1" (`RulesChip`), or with `titled` the rule's title; a formula's says its name, a parameter's its name,
+ * a parameter goes to its card on the parameters page. The chip says words, never the code (D101): a rule's chip is the rule's
+ * title, or "חוק או כלל" for a record the page does not hold; a formula's says its name, a parameter's its name,
  * an open question's "פרטים", a proof's "הוכחה" (`ProofsChip`). The code stays in the card or sheet it opens and in the chip's address. A 44px tap area.
  * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind renders as plain text; a parameter or an `A-nn` no card has, nothing.
@@ -554,7 +553,7 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
   );
 }
 
-export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its title, where the chip stands for the rule in a list of them. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }
 
@@ -567,9 +566,8 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
   if (!kind) return plain;
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
-  // a rule's chip says "חוקים וכללים · 1", or its title where the chip stands for the rule in a list (`titled`)
+  // a rule's chip says its title; a record the page does not hold says "חוק או כלל", and its card says the page does not hold it
   const rule = kind === "rule" ? ruleOf(data, shown) : undefined;
-  if (kind === "rule" && !(titled && rule) && !asLabel) return <RulesChip ids={[shown]} className={className} />;
   // a proof's chip says "הוכחה"; its title is in the sheet's script (content/proofs.ts), which a page's own script does not carry
   if (kind === "proof" && !asLabel) return <ProofsChip ids={[id]} className={className} />;
   // an open question's chip says a word, not its code: the sentence around it says "שאלה פתוחה", the sheet says which
@@ -580,7 +578,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   if (kind === "assumption") card = data?.parameters?.[id];
   if ((kind === "parameter" || kind === "assumption") && !card) return null;
   const formulaName = kind === "formula" ? formulaNames[id] || data?.formulas?.[id]?.name || formulaNames._other : undefined;
-  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : formulaName ?? (kind === "question" ? copy.idRef.questionChip : kind === "proof" ? copy.proofChip.one : ruleCopy.set));
+  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : formulaName ?? (kind === "question" ? copy.idRef.questionChip : kind === "proof" ? copy.proofChip.one : ruleCopy.title));
   // a short word stays on one line; a title or a name wraps inside the chip
   const long = !!(title || ruleName || formulaName || (card && parametersPage.names[card]));
   const chip = ruleName?.english ? <bdi dir="ltr" className="text-start">{words}</bdi> : <span className={long ? "text-start" : "whitespace-nowrap"}>{words}</span>;
@@ -592,7 +590,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
       </Link>
     );
   }
-  const aria = kind === "rule" ? `${ruleCopy.title}: ${words}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed}: ${words}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula}: ${words}`;
+  const aria = kind === "rule" ? (rule ? `${ruleCopy.title}: ${words}` : ruleCopy.title) : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed}: ${words}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula}: ${words}`;
   const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: kind as "rule" | "formula", id: shown };
   return (
     <button type="button" className={cx("rule-chip", long && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
@@ -626,17 +624,17 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
 }
 
 /**
- * The rule chip: `IdRef` for a rule id. A company's term (scope `institution`, or `unsettled` seen at named companies) shows the
- * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
- * "ועוד" and the count of the others. A general rule's chip is "חוקים וכללים · 1", which opens its card at once. The code stays in
- * the card it opens and in the chip's spoken name.
+ * The rule chip, where the chip names the rule itself (a figure's sheet's "rules used", the rule a run stopped on): `IdRef` for a rule
+ * id, the rule's title. A company's term (scope `institution`, or `unsettled` seen at named companies) shows the company's name instead
+ * (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with "ועוד" and the count of the others.
+ * The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className, titled, end }: { id: string; className?: string; /** A general rule's chip says its title (`IdRef`'s `titled`): where it stands for the rule in a list of them. */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function RuleRef({ id, className, end }: { id: string; className?: string; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  if (!name) return <IdRef id={id} className={className} titled={titled} end={end} />;
+  if (!name) return <IdRef id={id} className={className} end={end} />;
   return (
     <ChipEnd
       end={end}
@@ -686,33 +684,13 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, end, clas
   return <CompanyLinks lead={lead} items={items} size={size} end={end} className={className} />;
 }
 
-/** What words or a chip resting on rules open: one rule's card at once, or the list of their titles under `name`. */
+/** What words resting on rules open: one rule's card at once, or the list of their titles under `name`. */
 const rulesItem = (ids: readonly string[], name?: string): Item => (ids.length === 1 ? { kind: "rule", id: ids[0]! } : { kind: "rules", ids, ...(name ? { name } : {}) });
 
 /**
- * The rules behind one fact, as one chip with their count, on the pages not yet converted to the words a rule states (`Ruled`, D116):
- * a code says nothing to the reader, and a block could carry 25 of them. It opens the list of their titles; one rule opens its card at once. No ids, no chip: a control with nothing behind it cannot exist.
- */
-export function RulesChip({ ids, name, className }: { ids: readonly string[]; /** The fact it closes, under the title of the list. */ name?: string; className?: string }) {
-  const open = useOpen();
-  const only = ids.length === 1 ? ids[0]! : null;
-  if (ids.length === 0) return null;
-  // a line that cites one formula or open question keeps that id's own chip
-  if (only && idKind(only) !== "rule") return <IdRef id={only} className={className} />;
-  const item = rulesItem(ids, name);
-  return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={`${ruleCopy.set}, ${ids.length}`}>
-      {ruleCopy.set}
-      {/* the chip lays its children out as flex items, so the separator carries its own space */}
-      <span aria-hidden="true" className="mx-1 text-muted-foreground">·</span>
-      <bdi dir="ltr">{ids.length}</bdi>
-    </button>
-  );
-}
-
-/**
- * The statements math proves that a fact rests on (docs/method.md section 14), as one chip in the rules chip's look: "הוכחה" for one,
- * which opens its sheet at once, and "הוכחות · N" for several, which opens the list of their titles. Never the code (D101). No ids, no chip.
+ * The statements math proves that a fact rests on (docs/method.md section 14), as one chip: "הוכחה" for one, which opens its sheet at
+ * once, and "הוכחות · N" for several, which opens the list of their titles. Never the code (D101). No ids, no chip. It stands after the
+ * sentence it backs first (`IdRef` for one proof in a sentence).
  */
 export function ProofsChip({ ids, className }: { ids: readonly string[]; className?: string }) {
   const open = useOpen();
@@ -734,18 +712,6 @@ export function ProofsChip({ ids, className }: { ids: readonly string[]; classNa
   );
 }
 
-/** `RulesChip` as the last line of its block, never inside a sentence, on the pages not yet converted to `Ruled` (D116); `proofs`, the statements math proves that the block also rests on, add their chip after it. */
-export function RulesLine({ ids, proofs = [], lead, name, className }: { ids: readonly string[]; proofs?: readonly ProofId[]; lead?: ReactNode; name?: string; className?: string }) {
-  if (ids.length === 0 && proofs.length === 0 && !lead) return null;
-  return (
-    <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
-      {lead}
-      <RulesChip ids={ids} name={name} />
-      <ProofsChip ids={proofs} />
-    </p>
-  );
-}
-
 /**
  * A row that is a rule itself (a list of rules, a company's terms from its documents): the rule's title is the link, and opens its card;
  * a company's term says whose it is under the title (`scope`). No code: it stays in the card. The whole row is one button, at least 44 px.
@@ -754,13 +720,30 @@ export function RuleTitleRow({ id, scope = true, className }: { id: string; /** 
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
-  // a record the page does not hold: its chip still opens the card, which says so
-  if (!rule) return <span className={cx("flex min-h-target items-center", className)}><RulesChip ids={[id]} /></span>;
+  // a record the page does not hold: the row still opens the card, which says so
+  if (!rule) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className={className}>{ruleCopy.title}</TitleRow>;
   const title = ruleTitle(rule);
   return (
     <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} under={scope && !isGeneral(rule) ? scopeTag(rule, data?.ownDocs, { company: data?.company }) : undefined} className={className}>
       {title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}
     </TitleRow>
+  );
+}
+
+/**
+ * A list whose items are rules (a text's rules under it in a sheet, a checklist row's "מאיפה זה"): one `RuleTitleRow` per rule, each
+ * opening the rule's card (inside a sheet with the back arrow), divided by a line. No chip and no count (D116). No ids, nothing.
+ */
+export function RuleTitleList({ ids, className }: { ids: readonly string[]; className?: string }) {
+  if (ids.length === 0) return null;
+  return (
+    <ul className={cx("flex flex-col", className)}>
+      {ids.map((id) => (
+        <li key={id} className="border-t border-border first:border-t-0">
+          <RuleTitleRow id={id} />
+        </li>
+      ))}
+    </ul>
   );
 }
 
