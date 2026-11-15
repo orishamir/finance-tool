@@ -1,5 +1,5 @@
 // The Hebrew words of each statement math proves (docs/method.md section 14, the `M-nn` entries), for its sheet on the site: a page cites
-// one through `RulesLine`'s `proofs` or an `IdRef`, and the sheet shows its title, what it says, when it holds and what it leaves out.
+// one through a `ProofsChip` or an `IdRef`, and the sheet shows its title, what it says, when it holds and what it leaves out.
 // The proof itself, with the math, stays in method.md, in English; the sheet links to it. `proofs.test.ts` keeps the ids here and the
 // entries there in step, and every proof a content file cites present here.
 

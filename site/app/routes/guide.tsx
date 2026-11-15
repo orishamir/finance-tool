@@ -33,7 +33,7 @@ const isProvidentFamily = (id: string) => providentIds.includes(id);
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildGuidePage } = await import("../lib/guide.server");
   const content = guideContent[params.id];
-  const data = buildGuidePage(params.id, content ? [...(content.switchRules ?? [])] : [], content ? [...content.termIds] : [], content?.relatedIds);
+  const data = buildGuidePage(params.id, content ? [...content.termIds] : [], content?.relatedIds);
   if (!data) throw new Response("Not found", { status: 404 });
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
   const { loadAbroad, loadPinnedRules, loadProducts, loadRules, pointedWithFlagSlots } = await import("../lib/data.server");
@@ -157,12 +157,10 @@ export default function GuidePage() {
   const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
   if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after} {blocks.withdrawal.lowIncome.wageBefore}{lowOne.effective_from ? <> <When iso={lowOne.effective_from.slice(0, 7)} lead={blocks.withdrawal.lowIncome.wageFrom} /></> : null}{blocks.withdrawal.lowIncome.wageAfter}</> });
   if (content?.switchLine && record.switch_is_tax_event.value === false) {
-    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: typeof content.switchLine === "function" ? content.switchLine(cp) : content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...(content.switchRules ?? []).filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
+    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: typeof content.switchLine === "function" ? content.switchLine(cp) : content.switchLine });
   }
   inout.push(...(content?.inoutRows?.(cp) ?? []));
 
-  // the rows whose words a guide's content file writes keep their chip until those words mark their rules
-  for (const it of inout) if (it.rules) it.rules = gen(it.rules);
   // where each company sets a fee, the record's company_terms name the companies' own terms under the checklist dimension of that fee
   const feeDimension: Record<string, string> = { balance: "fee-management-balance", deposit: "fee-deposit", trade: "fee-trade", custody: "fee-custody", fx: "fee-fx", fixed_period: "fee-account", exit: "fee-exit" };
   const feeVaries = (base: string) => {
@@ -174,7 +172,7 @@ export default function GuidePage() {
   const companyTerms = (): RuleRowItem[] =>
     Object.entries(record.company_terms ?? {})
       .filter(([dim, ids]) => ids.length > 0 && !content?.omitCompanyTerms?.includes(dim) && !(!omitted("cost") && fees.some((f) => feeDimension[f.id] === dim)))
-      .map(([dim, ids]) => ({ id: dim, label: copy.companyTermTitles[record.id]?.[dim] ?? data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} lead={scopeWords.variesExamples} size="xs" />, rules: Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(dim)).map((r) => r.id) }));
+      .map(([dim, ids]) => ({ id: dim, label: copy.companyTermTitles[record.id]?.[dim] ?? data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} lead={scopeWords.variesExamples} size="xs" /> }));
 
   // F-105: on a provident guide with several managers' lists collected, each fee says how many write only the cap (under the cap), and the
   // note under the table says once, for both fees, the lowest rates the others write, what kind they are and how long a discount lasts

@@ -80,11 +80,11 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
   },
 };
 
-// The rules behind a fact are one chip with a count, never a row or a column of codes. Left: the lists
+// A list whose items are rules is one row per rule, each by its title (`RuleTitleList`), never a row of chips. Left: the lists
 // inside a figure's sheet, already one tap from the reading, and the open questions of a held product, whose codes are what the reader is told.
 patterns["a row of rule chips"] = {
   count: (s) => (s.match(/\.map\(\([^)]*\)\s*=>\s*\(?\s*(?:<span key=\{\w+\}>\s*)?<RuleRef\b/g) ?? []).length,
-  kit: "RulesLine or RulesChip (provenance.tsx)",
+  kit: "RuleTitleList (provenance.tsx)",
   allowed: { "components/provenance-sheets.tsx": 4, "routes/exposure.tsx": 2 },
 };
 

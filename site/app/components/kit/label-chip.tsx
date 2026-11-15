@@ -74,7 +74,7 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
               <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
                 {c.labelsSheet.rules}:
                 {open.label.rules.map((r) => (
-                  <RuleRef key={r} id={r} titled />
+                  <RuleRef key={r} id={r} />
                 ))}
               </p>
             )}

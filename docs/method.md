@@ -125,7 +125,7 @@ Values are the site's own judgements, each with its rationale, shown as "site pa
 | Provident | `fees` (F-11 deposit, F-15 balance, A-18 direct expenses, A-19 discount); for `keren-hishtalmut` also `hishtalmut` (A-12) | none |
 | Deposit | `deposit` (A-15 term, A-16 linkage; within it, optionally, the current account's balance ceiling, F-26, and the exit points, F-41: the age of a piece at the first one and the interval after it) | none |
 | Securities | `fund` (kind and A-06 to A-11), `tariff` (F-12 to F-17); for `ira-hishtalmut` also `ira` (manager's balance fee, clock start; F-51) | `broker`, `currency` (A-03, quote currency of A-01) |
-| Pension | `fees` (F-11 deposit, F-15 balance, A-18 direct expenses, A-19 discount on either), `pension` (A-12: employment, salary or income, existing deposits, employer rates) | `insurance` (A-17, entered; required for the two pension funds, refused for a provident fund for annuity, which has no pooled insurance, PEN-35) |
+| Pension | `fees` (F-11 deposit, F-15 balance, A-18 direct expenses, A-19 discount on either), `pension` (A-12: employment, salary or income, existing deposits, employer rates) | `insurance` (A-17, entered; required for the two pension funds, refused for a provident fund for annuity: whether it has insurance cover depends on the company, PEN-35, and the site does not model it) |
 | Makam | `tariff` (buy and sell lines only) | `makam` (series term) |
 | Bond | `bond` (linkage, coupon frequency, A-27), `tariff` (buy, sell, custody) | none |
 

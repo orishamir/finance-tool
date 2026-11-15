@@ -64,9 +64,9 @@ describe("guide and exposure prose cites general rules only", () => {
     expect(notRuleAllowedIn("MKT-01", "site/app/content/guide/brokerage-account.tsx")).toBe(false);
   });
   it("a company's term inside VariesByCompany is not counted", () => {
-    expect(citedOutsideVaries(`<VariesByCompany ids={["CS-30"]} lead="x" /> <RulesLine ids={["CS-18"]} />`)).toEqual(["CS-18"]);
+    expect(citedOutsideVaries(`<VariesByCompany ids={["CS-30"]} lead="x" /> <Ruled id="CS-18">x</Ruled>`)).toEqual(["CS-18"]);
     expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead="x" />`)).toEqual([]);
-    expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead={<>x <Term id="y">y</Term></>} /> <RulesLine ids={["CS-18"]} />`)).toEqual(["CS-18"]);
+    expect(citedOutsideVaries(`<VariesByCompany ids={[{ rule: "CS-30", companies: ["harel"] }]} lead={<>x <Term id="y">y</Term></>} /> <Ruled id="CS-18">x</Ruled>`)).toEqual(["CS-18"]);
   });
   // the validator's rule for a wrapper's company_terms, in the prose: a record that names several companies rarely
   // states the property for all of them, so its entry names those it does ({ rule, companies })

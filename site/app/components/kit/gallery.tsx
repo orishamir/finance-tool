@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
 import { IconAlert, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
-import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleRow, Ruled, RulesLine, StaleSaid, StrengthLabel, Term } from "../provenance";
+import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
@@ -619,12 +619,12 @@ function Words({ today }: { today: string }) {
       <AbroadDemo today={today} />
       <Demo name="IdRef" use={g.uses.IdRef}>
         <Grid>
-          <State label="rule: the chip, on a page not yet converted to Ruled; opens the rule card at once"><div><IdRef id="TXS-05" /></div></State>
-          <State label="rule, titled: in a list of rules, the chip is the rule's title"><SampleRules today={today}><div><IdRef id="TXS-05" titled /></div></SampleRules></State>
+          <State label="rule: its title, where the chip names the rule itself (a figure's sheet's rules, the rule a run stopped on); opens its card"><SampleRules today={today}><div><IdRef id="TXS-05" /></div></SampleRules></State>
+          <State label="rule the page does not hold: 'חוק או כלל', and its card says so"><div><IdRef id="TXS-05" /></div></State>
           <State label="formula: its name, opens the formula sheet"><div><IdRef id="F-80" /></div></State>
           <State label="parameter: its name, goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
-          <State label="ends a sentence: the full stop is passed as end and stays on the chip's line, with no gap before it (guard 20)"><p className="w-56">{g.sample.chipSentence} <IdRef id="TXS-05" end="." /></p></State>
+          <State label="ends a sentence: the full stop is passed as end and stays on the chip's line, with no gap before it (guard 20)"><p className="w-56">{g.sample.chipSentence} <IdRef id="TX2 OQ6" end="." /></p></State>
         </Grid>
       </Demo>
       <Demo name="StrengthLabel, ReadingTag" use={g.uses.StrengthLabel}>
@@ -668,21 +668,22 @@ function Words({ today }: { today: string }) {
           </Grid>
         </SampleRules>
       </Demo>
-      <Demo name="RulesLine, RulesChip" use={g.uses.RulesLine}>
+      <Demo name="RuleTitleRow, RuleTitleList" use={g.uses.RuleTitleRow}>
         <Grid>
-          <State label="several rules: opens the list of their titles"><RulesLine ids={["TXS-05", "TXS-06", "TXS-09"]} name="מס על הרווח במכירה" /></State>
-          <State label="one rule: opens its card at once"><RulesLine ids={["TXS-05"]} /></State>
-          <State label="one open question: keeps its own chip"><RulesLine ids={["TX2 OQ6"]} /></State>
-          <State label="no rules: renders nothing"><div><RulesLine ids={[]} /></div></State>
-        </Grid>
-      </Demo>
-      <Demo name="RuleTitleRow" use={g.uses.RuleTitleRow}>
-        <Grid>
-          <State label="a row that is the rule itself: its title is the link and opens its card; no code (the sheet of a RulesChip, a company page's terms)">
+          <State label="a row that is the rule itself: its title is the link and opens its card; no code (the list several rules' words open, a company page's terms)">
             <SampleRules today={today}>
               <ul className="flex flex-col border-y border-border"><li><RuleTitleRow id="TXS-05" /></li></ul>
             </SampleRules>
           </State>
+          <State label="a rule the page does not hold: 'חוק או כלל', still opening its card">
+            <ul className="flex flex-col border-y border-border"><li><RuleTitleRow id="TXS-05" /></li></ul>
+          </State>
+          <State label="RuleTitleList: the rules under a text whose words cannot open them (a '?' sheet, a glossary card, a checklist row's 'מאיפה זה'), one row each; no chip, no count">
+            <SampleRules today={today}>
+              <div className="flex flex-col gap-2"><p className="text-sm text-muted-foreground">{g.sample.helpText.text}</p><RuleTitleList ids={["TXS-05", "TXS-06"]} /></div>
+            </SampleRules>
+          </State>
+          <State label="no ids: renders nothing"><div><RuleTitleList ids={[]} /></div></State>
         </Grid>
       </Demo>
       <Demo name="Sentence, Tpl" use={g.uses.Sentence}>

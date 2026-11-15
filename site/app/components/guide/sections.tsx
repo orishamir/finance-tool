@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router";
 import { feePageLink, guide as copy, guideIndex, trackBrowser } from "../../copy";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
-import { IdRef, RuleTitleRow, RulesLine, StrengthLabel } from "../provenance";
+import { IdRef, RuleTitleList, StrengthLabel } from "../provenance";
 import { Breadcrumb } from "../shell";
 import { Card, cx, Disclosure, gershayim, GoLink, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink } from "../kit";
 
@@ -144,19 +144,17 @@ export function GuideFold({ label, children }: { label: string; children: ReactN
 export interface RuleRowItem {
   id: string;
   label: ReactNode;
+  /** The row's words, carrying its rules: the phrase that states each rule is a `Ruled`, and a figure from a rule opens it from its
+   *  sheet (D116). A rule no words and no figure in the row state is not shown in it. */
   value: ReactNode;
   line?: ReactNode;
-  /** The rules chip that closes the row, where no words in it state its rules and no figure in it opens them: a company's terms under
-   *  "who offers it", and a row whose words a guide's content file writes before it marks them (D116). A row whose words state its rules
-   *  marks them with `Ruled`, and a figure from a rule opens it from its sheet. */
-  rules?: readonly string[];
   tag?: ReactNode;
   lead?: ReactNode;
 }
 
 /** The guide page's facts as the kit's key/value rows (design-spec 2); the words of a row that state a rule open it (`Ruled`, D116). */
 export function RuleRows({ items }: { items: RuleRowItem[] }) {
-  return <KeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, ...(it.rules?.length ? { footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> } : {}) }))} />;
+  return <KeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead }))} />;
 }
 
 export interface FeeRow {
@@ -335,13 +333,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         {r.rules.length > 0 && (
           <Disclosure look="link" label={copy.checklist.expand} summaryClassName="text-xs [&>svg]:size-4">
             {/* a list whose rows are the rules themselves: each by its title (D101) */}
-            <ul className="flex flex-col pb-2">
-              {r.rules.map((id) => (
-                <li key={id} className="border-t border-border first:border-t-0">
-                  <RuleTitleRow id={id} />
-                </li>
-              ))}
-            </ul>
+            <RuleTitleList ids={r.rules} className="pb-2" />
           </Disclosure>
         )}
       </div>

@@ -60,7 +60,8 @@ describe("the note on other countries", () => {
       }
     }
     const kupat = abroadPlaces(abroadView(loadAbroad("kupat-gemel-lehashkaa")!), guideContent["kupat-gemel-lehashkaa"]!.abroad!, cp)!;
-    expect(kupat.filter((p) => p.rules).map((p) => p.id)).toEqual(["gb", "us"]);
+    // the comparison with the page's own product carries its rules in the words that state them (D116)
+    expect(kupat.filter((p) => html(createElement("p", null, p.body)).includes('class="ruled"')).map((p) => p.id)).toEqual(["gb", "us"]);
   });
 
   it("ends a foreign fact's sheet at its own page, with no link to the Israeli rules, and keeps that link on any other figure's sheet", () => {
