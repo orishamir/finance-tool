@@ -64,9 +64,10 @@ describe("the words a rule states (Ruled)", () => {
     expect(controls(html, "ruled")).toHaveLength(1);
     expect(html).not.toMatch(/TXS-0[56]/);
   });
-  it("keeps a one-letter prefix outside the control, on one line with it", () => {
+  it("keeps a one-letter prefix outside the control, touching it, with no no-wrap span so a long phrase wraps", () => {
     const html = render(createElement(Ruled, { id: "TXS-05", prefix: "ב", children: "ניכוי במקור" }));
-    expect(html).toMatch(/<span class="whitespace-nowrap">ב<span[^>]*class="ruled"[^>]*>ניכוי במקור<\/span><\/span>/);
+    expect(html).toMatch(/ב<span[^>]*class="ruled"[^>]*>ניכוי במקור<\/span>/);
+    expect(html).not.toContain("whitespace-nowrap");
   });
   it("with no rules, is the words alone: no control with nothing behind it", () => {
     const html = render(createElement(Ruled, { id: [], children: "מנכה מס" }));
