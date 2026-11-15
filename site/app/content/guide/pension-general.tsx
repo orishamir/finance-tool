@@ -31,27 +31,27 @@ export const content: GuideContent = {
     </>
   ),
   switchRules: ["PEN-17", "PF-23", "SW-22"],
-  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קופת גמל לקצבה", "קרן פנסיה", "עמית", "משיכה", "גיל הפרישה", "תגמולי מעסיק", "מרכיב הפיצויים", "רשות שוק ההון ביטוח וחיסכון", "השלמת תשואה", "קצבה", "חברה מנהלת", "אינפלציה", "תקרת הפקדה"],
+  termIds: ["קרן נבחרת", "זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קופת גמל לקצבה", "קרן פנסיה", "עמית", "משיכה", "גיל הפרישה", "תגמולי מעסיק", "מרכיב הפיצויים", "רשות שוק ההון ביטוח וחיסכון", "השלמת תשואה", "קצבה", "חברה מנהלת", "אינפלציה", "תקרת הפקדה"],
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        <Ruled id="TXP-24" prefix="ה">כללים זהים למקיפה</Ruled>, כי בחוק שתיהן <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term>. ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled> ועד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
+        <Ruled id="TXP-24" prefix="ה">כללים זהים למקיפה</Ruled>, כי בתקנות מס הכנסה שתיהן <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term>. ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled>, ולפי הנחה של האתר עד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
       </p>
       <EmployerUntaxed figure={figure} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>.</span> שאלה פתוחה <IdRef id="PEN OQ7" end="." />
       </Callout>
       <p className="max-w-measure">
-        <Ruled id="PEN-27">קצבה אפשר לקבל</Ruled> מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל <Ruled id="TXP-14" prefix="ה">פטור ממס</Ruled> מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל <Ruled id="PEN-26">מדורג לפי שנת הלידה</Ruled>. {disabilityRetirement}
+        <Ruled id="PEN-27">קצבה אפשר לקבל</Ruled> מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל <Ruled id="TXP-14" prefix="ה">פטור ממס</Ruled> מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד <N v={figure("PEN-26", "graded_women_born_until")} /> הגיל <Ruled id="PEN-26">מדורג לפי שנת הלידה</Ruled>. {disabilityRetirement}
       </p>
       <ExemptShare figure={figure} />
       <LumpSums figure={figure} />
     </>
   ),
-  risks: () => (
+  risks: ({ figure }) => (
     <>
       <p className="max-w-measure">הנכסים <Ruled id="PF-29">מוחזקים בנאמנות</Ruled>, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית <Ruled id="REG-18">אפשר לעקל רק לפי כללים שהשר קובע</Ruled>. אם החברה המנהלת קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>.</p>
-      <p className="max-w-measure"><Ruled id="PEN-18">אין כאן את המסלול</Ruled> עם השלמת <Term prefix="ה" id="תשואה">תשואה</Term> של המדינה: כל היתרה עולה ויורדת עם המסלול שבחרתם. <Ruled id="PEN-19">כל רבעון היא מתעדכנת</Ruled> גם לפי <Term id="איזון אקטוארי">איזון אקטוארי</Term>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות.</p>
+      <p className="max-w-measure"><Ruled id="PEN-18">אין כאן את המסלול</Ruled> עם השלמת <Term prefix="ה" id="תשואה">תשואה</Term> של המדינה: כל היתרה עולה ויורדת עם המסלול שבחרתם. כל <N v={figure("PEN-19", "balancing_every_months")} /> חודשים <Ruled id="PEN-19">היא מתעדכנת</Ruled> גם לפי <Term id="איזון אקטוארי">איזון אקטוארי</Term>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות.</p>
     </>
   ),
   use: () => (
@@ -60,7 +60,7 @@ export const content: GuideContent = {
         הכסף מגיע לכאן אוטומטית כשההפקדה עוברת את התקרה של המקיפה. דמי הניהול על הכסף הזה <Ruled id="PEN-10">לא יכולים להיות גבוהים מדמי הניהול שלכם במקיפה</Ruled>, אלא אם סוכם אחרת במפורש. החברה מודיעה בכתב, בתוך שבועיים מההעברה הראשונה, על ההעברה, על דמי הניהול ועל הכיסוי הביטוחי.
       </p>
       <p className="max-w-measure">
-        מה שכן בוחרים הוא המסלול. <Ruled id="PEN-23">תנאי המכרז של הקרנות הנבחרות</Ruled> לא חלים כאן, ולכן שווה לבדוק את דמי הניהול.
+        מה שכן בוחרים הוא המסלול. <Term prefix="ה" id="קרן נבחרת">קרנות הנבחרות</Term> <Ruled id="PEN-23">הן קרנות מקיפות</Ruled>. לפי קריאה של האתר, תנאי המכרז שלהן לא חלים כאן, ולכן שווה לבדוק את דמי הניהול.
       </p>
     </>
   ),

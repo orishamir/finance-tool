@@ -12,6 +12,7 @@ export const content: GuideContent = {
   what: ({ figure }) => {
     const monthly = figure("CS-03", "monthly_deposit");
     const until = figure("CS-14", "withdrawal_age");
+    const depositsUntil = figure("CS-02", "deposits_until_age");
     const parentUntil = figure("CS-14", "parent_signature_until_age");
     const grantYoung = figure("CS-13", "grant_age_3");
     const ageFirst = figure("CS-13", "age_first_grant");
@@ -21,7 +22,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד בכל חודש</Ruled> {monthly ? <Num value={monthly} /> : null}<YearOf v={monthly} /> עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להורות להכפיל אותם מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
+          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד בכל חודש</Ruled> {monthly ? <Num value={monthly} /> : null}<YearOf v={monthly} /> עד גיל {depositsUntil ? <Num value={depositsUntil} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להורות להכפיל אותם מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
         </Sentence>
         <Sentence measure>
           בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>. ילדים שנולדו מאז תחילת התוכנית מקבלים {grantYoung ? <Num value={grantYoung} /> : null}<YearOf v={grantYoung} /> בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה. ילדים שנולדו לפני כן מקבלים מענק אחד <Term prefix="ב" id="גיל הפדיון">גיל הפדיון</Term>. כולם מקבלים עוד {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null}, אבל <Ruled id="CS-13">רק אם לא משכו כלום קודם</Ruled>: גם <Term id="משיכה חלקית">משיכה חלקית</Term> מבטלת את המענק הזה.
@@ -50,10 +51,10 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <span className="font-medium">במשיכה משלמים מס הכנסה <Ruled id="TXK-23">כמו במשיכה מקופת גמל להשקעה</Ruled>.</span> החוק מחזיק את הכסף בקופת גמל להשקעה, ורשות שוק ההון, ביטוח וחיסכון ומשרד האוצר קובעים שחלים עליה כל הכללים של קופה כזאת. <Term id="רשות המסים">רשות המסים</Term> לא כתבה זאת על <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, <Ruled id="TXK-20">בלי לומר על איזה רווח</Ruled>.
+          <span className="font-medium">במשיכה משלמים מס הכנסה <Ruled id="TXK-23">כמו במשיכה מקופת גמל להשקעה</Ruled>.</span> החוק מחזיק את הכסף בקופת גמל להשקעה, ורשות שוק ההון, ביטוח וחיסכון ומשרד האוצר כותבים שחלים עליה כל הכללים של קופה כזאת. <Term id="רשות המסים">רשות המסים</Term> לא כתבה זאת על <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, <Ruled id="TXK-20">בלי לומר על איזה רווח</Ruled>.
         </p>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק <Ruled id="TXK-25">לא נמצא</Ruled>, והאתר לא מחשב אותו.
+          <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס רווחי הון. הבסיס לכך בחוק <Ruled id="TXK-25">לא נמצא</Ruled>, והאתר לא מחשב אותו.
         </Callout>
         <OpenLossOffset />
       </>
@@ -68,7 +69,7 @@ export const content: GuideContent = {
   use: ({ figure }) => {
     // D30: the cap after 21 is the law's (CS-18); each company's own rate is its term (CS-30), on the companies' pages
     const balanceCap = figure("CS-18", "balance_cap_after_21");
-    const ageLast = figure("CS-13", "age_last_grant");
+    const niiUntil = figure("CS-18", "nii_pays_until_age");
     const until = figure("CS-14", "withdrawal_age");
     return (
     <>
@@ -76,7 +77,7 @@ export const content: GuideContent = {
         החיסכון נפתח ממילא, וההחלטות שלכם הן שתיים: אם <Ruled id="CS-04">להכפיל את ההפקדה מקצבת הילדים</Ruled>, ובאיזו רמת סיכון. בלי בחירה הכסף <Ruled id="CS-07">הולך למסלול הסיכון המוגבר</Ruled>, או לקופה ולמסלול של אח גדול.
       </Sentence>
       <Sentence measure>
-        מי שלא צריך את הכסף עד שהילד מתבגר מרוויח משני דברים: הביטוח הלאומי משלם את <Term id="דמי ניהול">דמי הניהול</Term> עד גיל {ageLast ? <Num value={ageLast} /> : null}, והמענק האחרון <Ruled id="CS-13">ניתן רק למי שלא משך</Ruled>. אחרי הגיל הזה <Ruled id="CS-18">דמי הניהול יורדים מהחיסכון</Ruled>. כל חברה קובעת שיעור משלה, עד התקרה שבתקנות{balanceCap ? <>: <Num value={balanceCap} /> בשנה מהיתרה</> : null}.
+        מי שלא צריך את הכסף עד שהילד מתבגר מרוויח משני דברים: הביטוח הלאומי משלם את <Term id="דמי ניהול">דמי הניהול</Term> עד גיל {niiUntil ? <Num value={niiUntil} /> : null}, והמענק האחרון <Ruled id="CS-13">ניתן רק למי שלא משך</Ruled>. אחרי הגיל הזה <Ruled id="CS-18">דמי הניהול יורדים מהחיסכון</Ruled>. כל חברה קובעת שיעור משלה, עד התקרה שבתקנות{balanceCap ? <>: <Num value={balanceCap} /> בשנה מהיתרה</> : null}.
       </Sentence>
       <p className="max-w-measure">
         <VariesByCompany ids={[{ rule: "CS-30", companies: ["harel", "altshuler-shaham"] }]} lead="דמי הניהול אחרי הגיל הזה תלויים בחברה" />

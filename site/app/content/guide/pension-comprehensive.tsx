@@ -4,10 +4,10 @@
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
-import { Callout, When } from "../../components/kit";
+import { Callout } from "../../components/kit";
 import { disabilityRetirement, EmployerUntaxed, ExemptShare, LumpSums } from "./pension-parts";
 
-const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
+const N = ({ v, prefix }: { v: SiteValue | null; prefix?: string }) => (v ? <Num value={v} prefix={prefix} /> : null);
 
 export const content: GuideContent = {
   what: ({ figure }) => (
@@ -19,7 +19,7 @@ export const content: GuideContent = {
         ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, ומהמעסיק <N v={figure("PEN-03", "employer_pct")} /> ועוד <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, <Ruled id="PEN-04" prefix="מ">השכר עד</Ruled> <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
       </p>
       <p className="max-w-measure">
-        הכסף נחסך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן <Ruled id="PEN-11">כוללת גם ביטוח נכות</Ruled> וביטוח <Term id="שאירים">שאירים</Term>, ודמי הביטוח <Ruled id="PEN-15">יורדים מהחשבון</Ruled>. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה, ולמי שהיה זכאי לפני המועד שבחוק החלק <Ruled id="PEN-18">גדול יותר</Ruled>.
+        הכסף נחסך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן <Ruled id="PEN-08">כוללת גם ביטוח נכות</Ruled> וביטוח <Term id="שאירים">שאירים</Term>, ודמי הביטוח <Ruled id="PEN-15">באים מההפקדות</Ruled>. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה, ולמי שהיה זכאי לפני המועד שבחוק החלק <Ruled id="PEN-18">גדול יותר</Ruled>.
       </p>
     </>
   ),
@@ -29,7 +29,7 @@ export const content: GuideContent = {
         <Term id="חברה מנהלת">חברות מנהלות</Term> של <Term id="קרן פנסיה">קרנות פנסיה</Term>, <Ruled id="REG-17" prefix="ב">פיקוח</Ruled> <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון, ביטוח וחיסכון</Term>. מי שלא בוחר קרן מצורף לאחת מארבע <Term prefix="ה" id="קרן נבחרת">קרנות הנבחרות</Term>, <Term prefix="ב" id="דמי ניהול">דמי ניהול</Term> של <N v={figure("PEN-23", "selected_deposit_fee")} /> מההפקדה ו־<N v={figure("PEN-23", "selected_balance_fee")} /> מהחיסכון, שמובטחים לפחות <N v={figure("PEN-23", "guarantee_years")} /> שנים. <Ruled id="PEN-06">מעסיק יכול גם לבחור קרן</Ruled> <Term prefix="ב" id="הליך תחרותי">הליך תחרותי</Term> משלו.
       </p>
       <p className="max-w-measure">
-        <When iso="2025-06-01" lead="מ־" /> עד <When iso="2028-10-31" /> הקרן הנבחרת <Ruled id="PEN-23">נקבעת לפי ספרת הביקורת בתעודת הזהות</Ruled>: <bdi>7, 8, 9</bdi> אינפיניטי; <bdi>4, 5, 6</bdi> מור; <bdi>2, 3</bdi> אלטשולר שחם; <bdi>0, 1</bdi> מיטב.
+        <N v={figure("PEN-23", "digits_from")} prefix="מ־" /> עד <N v={figure("PEN-23", "period_to")} /> הקרן הנבחרת <Ruled id="PEN-23">נקבעת לפי ספרת הביקורת בתעודת הזהות</Ruled>: <N v={figure("PEN-23", "digits_infinity")} /> אינפיניטי; <N v={figure("PEN-23", "digits_mor")} /> מור; <N v={figure("PEN-23", "digits_altshuler")} /> אלטשולר שחם; <N v={figure("PEN-23", "digits_meitav")} /> מיטב.
       </p>
     </>
   ),
@@ -40,14 +40,14 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled> ועד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
+        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled>, ולפי הנחה של האתר עד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
       </p>
       <EmployerUntaxed figure={figure} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>.</span> שאלה פתוחה <IdRef id="PEN OQ7" end="." />
       </Callout>
       <p className="max-w-measure">
-        <Ruled id="PEN-27">קצבה אפשר לקבל</Ruled> מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל <Ruled id="TXP-14" prefix="ה">פטור ממס</Ruled> מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל <Ruled id="PEN-26">מדורג לפי שנת הלידה</Ruled>. {disabilityRetirement}
+        <Ruled id="PEN-27">קצבה אפשר לקבל</Ruled> מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל <Ruled id="TXP-14" prefix="ה">פטור ממס</Ruled> מתחיל רק <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד <N v={figure("PEN-26", "graded_women_born_until")} /> הגיל <Ruled id="PEN-26">מדורג לפי שנת הלידה</Ruled>. {disabilityRetirement}
       </p>
       <ExemptShare figure={figure} />
       <LumpSums figure={figure} />
@@ -58,10 +58,10 @@ export const content: GuideContent = {
     <>
       <p className="max-w-measure">הנכסים <Ruled id="PF-29">מוחזקים בנאמנות</Ruled>, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של <Term id="עמית">עמית</Term> <Ruled id="REG-18">אפשר לעקל רק לפי כללים שהשר קובע</Ruled>. אם החברה המנהלת קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>.</p>
       <p className="max-w-measure">
-        היתרה שלכם משתנה גם בלי קשר להשקעות. כל רבעון הקרן <Ruled id="PEN-19">מעדכנת את כל החשבונות לפי איזון אקטוארי</Ruled>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם <Ruled id="PEN-15">דמי הביטוח יורדים מהחיסכון</Ruled> כל חודש.
+        היתרה שלכם משתנה גם בלי קשר להשקעות. כל <N v={figure("PEN-19", "balancing_every_months")} /> חודשים הקרן <Ruled id="PEN-19">מעדכנת את כל החשבונות לפי איזון אקטוארי</Ruled>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם <Ruled id="PEN-15">דמי הביטוח יורדים מההפקדות</Ruled>, כל עוד אתם מבוטחים.
       </p>
       <p className="max-w-measure">
-        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, <Ruled id="REG-21">המדינה משלימה</Ruled> <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>, <Ruled id="PEN-18" prefix="ו">היעד נבדק</Ruled> כל חמש שנים. השאר עולה ויורד עם המסלול.
+        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, <Ruled id="REG-21">המדינה משלימה</Ruled> <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>, <Ruled id="PEN-18" prefix="ו">היעד נבדק</Ruled> כל <N v={figure("PEN-18", "check_period_months")} /> חודשים. השאר עולה ויורד עם המסלול.
       </p>
     </>
   ),
@@ -71,7 +71,7 @@ export const content: GuideContent = {
         הבסיס של החיסכון לפרישה של שכירים: <Term id="תגמולי מעסיק">תגמולי המעסיק</Term> לפנסיה <Ruled id="PEN-05">מגיעים רק לכאן או לקופת גמל לקצבה</Ruled>, ההפקדה שלכם <Ruled id="TXP-01">מורידה את מס ההכנסה</Ruled>, וחלק מהנכסים <Ruled id="PEN-18" prefix="ב">השלמת תשואה</Ruled>. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד <Ruled id={["PEN-30", "PEN-28"]}>אפשרית רק במקרים שבחוק</Ruled> <Term prefix="וב" id="תקנון">תקנון</Term>.
       </p>
       <p className="max-w-measure">
-        לעומת קופת גמל לקצבה יש כאן ביטוח <Term prefix="ו" id="איזון אקטוארי">איזון אקטוארי</Term>. <Ruled id="PEN-35">תקרת דמי הניהול מהחיסכון נמוכה יותר</Ruled>, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.
+        לעומת קופת גמל לקצבה, הביטוח כאן הוא חלק מהקרן, ויש <Term id="איזון אקטוארי">איזון אקטוארי</Term>. <Ruled id="PEN-35">תקרת דמי הניהול מהחיסכון נמוכה יותר</Ruled>, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.
       </p>
     </>
   ),

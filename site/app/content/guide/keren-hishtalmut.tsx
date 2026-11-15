@@ -23,13 +23,13 @@ export const content: GuideContent = {
         <Ruled id="KH-03">אם הסכם העבודה כולל קרן השתלמות</Ruled>, <Term id="הפקדות המעסיק">המעסיק</Term> מפקיד לקרן כל חודש כסף בנוסף לשכר הברוטו, ואתם מפקידים חלק מהשכר שלכם. האחוז שכל צד מעביר לקרן <Ruled id="KH-04">כתוב בהסכם העבודה</Ruled>. <Term id="עמית-עצמאי">עצמאים</Term> <Ruled id="KH-02">מפקידים בעצמם</Ruled>.
       </p>
       <p className="max-w-measure">
-        אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף <Ruled id="TXH-09">בלי מס הכנסה</Ruled> ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים <Ruled id="TXH-10">כדי לשלם על לימודים</Ruled> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא ״השתלמות״, ומכאן שם הקרן. אילו לימודים נחשבים נקבע גם <Term prefix="ב" id="תקנון">תקנון</Term> של כל קרן.
+        אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף <Ruled id="TXH-09">בלי מס הכנסה</Ruled> ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים <Ruled id="TXH-10">כדי לשלם על לימודים</Ruled> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא ״השתלמות״, ומכאן שם הקרן. אילו אישורים הקרן דורשת על הלימודים כתוב <Term prefix="ב" id="תקנון">תקנון</Term> של כל קרן.
       </p>
       <p className="max-w-measure">
         הפטור לא חל על כל סכום. לשכירים הוא חל על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר שלכם, ורק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים הוא חל על הפקדות של עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
       </p>
       <p className="max-w-measure">
-        <Ruled id="TXH-03">אפשר להפקיד גם יותר</Ruled>, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. אפשר למשוך גם לפני שעברו <N v={figure("TXH-09", "lock_years")} /> השנים, <Ruled id="KH-10">אבל אז משלמים מס הכנסה</Ruled>. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
+        <Ruled id="TXH-03">אפשר להפקיד גם יותר</Ruled>, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. הפקדת המעסיק שמעל הגבול ממוסה כמו שכר כבר כשהיא מופקדת. אפשר למשוך גם לפני שעברו <N v={figure("TXH-09", "lock_years")} /> השנים, <Ruled id="KH-10">אבל אז משלמים מס הכנסה</Ruled>. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
       </p>
     </>
   ),
