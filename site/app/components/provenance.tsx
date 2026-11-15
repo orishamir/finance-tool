@@ -811,13 +811,13 @@ function TapWords({ item, look, prefix, data, children }: { item: Item; look: st
       {children}
     </span>
   );
-  return prefix ? (
-    <span className="whitespace-nowrap">
+  // The prefix touches the words with no space between them, so a line can never break there; no no-wrap span is needed, and
+  // without one a long phrase of `Ruled` wraps with its sentence (a glossary term stays whole by its own `.term` style).
+  return (
+    <>
       {prefix}
       {button}
-    </span>
-  ) : (
-    button
+    </>
   );
 }
 
