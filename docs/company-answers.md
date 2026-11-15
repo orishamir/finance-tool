@@ -6,6 +6,22 @@ What may go here is in `guidelines/research.md`, "Privacy": the company's own wo
 
 One section per answer, named by the company and the day.
 
+## Interactive Israel 2026-11-15
+
+**Who answered.** Interactive Israel (מקסם בע"מ, אינטראקטיב ישראל), its customer service, in writing by mail on 15.11.2026, to a mail sent on 12.11.2026.
+
+**What was asked,** in neutral words, about the account of a private customer resident in Israel (not a company, with no exemption from tax withholding): whether units of an Israeli mutual fund, a tracking fund (קרן מחקה) included, can be bought there; whether an ETF traded on the Tel Aviv Stock Exchange can be bought there; and which of two of the company's pages is right today, the world-markets page ("המסחר בישראל מתאפשר לחברות או לפרטים עם פטור מתשלום מס בניירות ערך במקור בלבד") or the Israeli-market page ("ללקוחות מוסדיים בלבד"), and who counts as a private person with such an exemption.
+
+### The answer
+
+In Interactive Israel's own words:
+
+"מסחר בבורסה הישראלית דרך אינטראקטיב ברוקרז אפשרית רק לחשבונות חברה (חברה בע"מ בלבד!)"
+
+"בכדיי לקבל הרשאה לסחור בבורסה הישראלית עליך לספק לנו טופס פטור מניקוי מס במקור, טופס מסוג זה קיים רק לישראלים עם חברה בע"מ ומנפיקים אותו דרך רשות המיסים בישראל."
+
+The answer does not speak separately of Israeli mutual funds. Who the Tax Authority gives a withholding exemption to is the Tax Authority's to say, not the company's; the site keeps the company's sentence about the form as the company's own statement.
+
 ## Psagot 2026-11-10
 
 **Who answered.** Psagot Trade (פסגות ניירות ערך בע"מ, מערך טרייד), its trade customer relations, in writing by mail on 10.11.2026, to two mails sent on 4.11 and 8.11.2026.
