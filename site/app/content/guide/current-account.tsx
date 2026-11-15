@@ -30,12 +30,12 @@ export const content: GuideContent = {
           {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי <Ruled id="BANK-17">מוגבל בצו</Ruled>{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null}.
         </Sentence>
         <Sentence measure>
-          חוץ מבנק חדש: בשנים הראשונות אחרי שקיבל רישיון הוא <Ruled id="BANK-51">לא כפוף לתעריפון המלא</Ruled> ומפרסם תעריפון משלו, ולכן ייתכן שגם חובת המסלולים לא חלה עליו. גם בנק קטן <Ruled id="BANK-52">מקבל הקלות</Ruled> בחלק מהכללים של <Term id="בנק ישראל">בנק ישראל</Term> ללקוחות, למשל בשירותי התשלום שהוא חייב להציע בחשבון.
+          חוץ מבנק חדש: בשנים הראשונות אחרי שקיבל רישיון הוא <Ruled id="BANK-51">לא כפוף לתעריפון המלא</Ruled> ומפרסם תעריפון משלו, אבל תקרה שהנגיד קבע לשירות בפיקוח חלה גם עליו. גם בנק קטן <Ruled id="BANK-52">מקבל הקלות</Ruled> בחלק מהכללים של <Term id="בנק ישראל">בנק ישראל</Term> ללקוחות, למשל בשירותי התשלום שהוא חייב להציע בחשבון.
         </Sentence>
         {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
         <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
           <Sentence size="sm">
-            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו <Ruled id="BANK-35">מבטל את המסלולים</Ruled> וקובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null}.
+            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>, ואותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null}.
           </Sentence>
         </Callout>
       </>
@@ -45,16 +45,17 @@ export const content: GuideContent = {
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
     const notice = figure("BANK-19", "notice_days");
+    const benefitMonths = figure("BANK-19", "benefit_min_months");
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term> ולהעביר את נכסיו והתחייבויותיו, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
+          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, שבאישור הנגיד יכול להעביר את נכסי הבנק והתחייבויותיו, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
         </p>
         <Sentence measure>
           חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה <When iso="2026-11-10" lead="ב־" />.
         </Sentence>
         <Sentence measure>
-          כסף שיושב בעו״ש בלי ריבית לא גדל. <Term id="הטבה בנקאית">הטבה</Term> בריבית או <Term prefix="ב" id="עמלה">עמלה</Term> שנמשכת יותר משלושה חודשים <Ruled id="BANK-19">מסתיימת אחרי הודעה</Ruled>{notice ? <> של לפחות <Num value={notice} /> ימים</> : " מראש"}.
+          כסף שיושב בעו״ש בלי ריבית לא גדל. <Term id="הטבה בנקאית">הטבה</Term> בריבית או <Term prefix="ב" id="עמלה">עמלה</Term> שנמשכת יותר {benefitMonths ? <><Num value={benefitMonths} prefix="מ־" /> חודשים</> : "מכמה חודשים"} <Ruled id="BANK-19">מסתיימת אחרי הודעה</Ruled>{notice ? <> של לפחות <Num value={notice} /> ימים</> : " מראש"}.
         </Sentence>
       </>
     );
