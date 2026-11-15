@@ -52,10 +52,10 @@ export interface GuidePageData {
    */
   listRange: Partial<Record<"balance" | "deposit", ListRange>> | null;
   /**
-   * A security's wrapper (D6): the first of its record's `held_in`, the account its run and its page sit in, with
-   * the rules that say it is held there. Null for a wrapper.
+   * A security's wrappers (D6): every wrapper its record's `held_in` names, the first being the account its run and its page sit in, with
+   * the rules that say it is held in them. Null for a wrapper.
    */
-  heldIn: { id: string; name: string; ruleIds: string[] } | null;
+  heldIn: { accounts: { id: string; name: string }[]; ruleIds: string[] } | null;
   /** On a wrapper's page, the securities whose record names it in `held_in` (D6), each with its own page. */
   securities: { href: string; label: string }[];
   today: string;
@@ -311,8 +311,9 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .map((to) => wrappers.find((w) => w.id === to))
     .filter((w): w is ProductRecord => !!w)
     .map((w) => ({ href: guidePath(w.id), label: w.names.he[0]! }));
-  const account = isSecurity(record) ? wrappers.find((w) => w.id === record.held_in.wrapper_ids[0]) : undefined;
-  const heldIn = isSecurity(record) && account ? { id: account.id, name: account.names.he[0]!, ruleIds: record.held_in.rule_ids } : null;
+  // the record's rules for where it is held speak of every wrapper it names, so the sentence that opens them names them all
+  const accounts = isSecurity(record) ? record.held_in.wrapper_ids.map((wid) => wrappers.find((w) => w.id === wid)).filter((w): w is ProductRecord => !!w).map((w) => ({ id: w.id, name: w.names.he[0]! })) : [];
+  const heldIn = accounts.length > 0 ? { accounts, ruleIds: isSecurity(record) ? record.held_in.rule_ids : [] } : null;
   const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: guidePath(w.id), label: w.names.he[0]! }));
   // an exposure that is this page, or a security the row above already links, is not linked twice
   const exposures = exposuresHeld.filter((e) => e.href !== guidePath(record.id) && !securities.some((x) => x.href === e.href));
