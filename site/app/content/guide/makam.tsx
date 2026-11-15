@@ -14,7 +14,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>, ובמועד <Term prefix="ה" id="פדיון">פדיון</Term> <Ruled id="GOV-03">המדינה משלמת את השווי הנקוב במלואו</Ruled>. ההפרש הוא הרווח שלכם, ובמס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, <Ruled id="TXI-01">כלומר ריבית</Ruled>.
+          המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>, ובמועד <Term prefix="ה" id="פדיון">פדיון</Term> <Ruled id={["GOV-03", "GOV-02"]}>המדינה משלמת את השווי הנקוב במלואו</Ruled>. ההפרש הוא הרווח שלכם, ובמס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, <Ruled id="TXI-01">כלומר ריבית</Ruled>.
         </p>
         <Sentence measure>
           <Ruled id="GOV-23">בכל חודש מונפקת סדרה חדשה לכשנה</Ruled>, ולכן בכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים. מי שמחזיק עד הסוף <Ruled id="GOV-22">יודע כבר ביום הקנייה</Ruled> מה <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> שלו: אין קופונים שצריך להשקיע מחדש בדרך, ולכן התשואה לפדיון <Ruled id="GOV-06">היא בדיוק הרווח לשנה עד הפדיון</Ruled>, לפני עמלות ומס הכנסה. <ProofsChip ids={["M-02"]} />
@@ -34,7 +34,7 @@ export const content: GuideContent = {
           בבורסה, במסחר הרציף, פקודה היא של {minOrder ? <Num value={minOrder} display={fmt.nisWhole(Number(minOrder.value))} /> : null} שווי נקוב לפחות. בשלבים אחרים של יום המסחר, כמו לפני הפתיחה ולפני הנעילה, הכללים מאפשרים פקודה של יחידת מסחר אחת, אבל גודל היחידה של המק״מ לא כתוב במדריך המסחר. שאלה פתוחה <IdRef id="GOV OQ7" end="." /> הבנק או בית ההשקעות <Ruled id="GOV-24">יכולים לקבוע בתעריפון מינימום משלהם</Ruled>. יום המסחר האחרון בסדרה הוא {lastDays ? <Num value={lastDays} /> : null} ימי מסחר לפני הפדיון.
         </Sentence>
         <p className="max-w-measure">
-          <Term prefix="ה" id="מנפיק">מנפיק</Term> של המק״מ הוא <Term id="בנק ישראל">בנק ישראל</Term>, והוא גם מנהל אותו. במכרז עצמו <Ruled id="GOV-05">מציעים ישירות רק חברי</Ruled> <Term id="מסלקת הבורסה">מסלקת הבורסה</Term>. איך הזמנה של אדם פרטי מגיעה אליו, באיזה סכום מינימלי ובאיזו עמלה, עוד לא מתועד. שאלה פתוחה <IdRef id="GOV OQ2" end="." />
+          <Term prefix="ה" id="מנפיק">מנפיק</Term> של המק״מ לציבור הוא <Term id="בנק ישראל">בנק ישראל</Term>, <Ruled id="GOV-01">שקונה אותו מהממשלה ומנהל אותו</Ruled>. במכרז עצמו <Ruled id="GOV-05">מציעים ישירות רק חברי</Ruled> <Term id="מסלקת הבורסה">מסלקת הבורסה</Term>. איך הזמנה של אדם פרטי מגיעה אליו, באיזה סכום מינימלי ובאיזו עמלה, עוד לא מתועד. שאלה פתוחה <IdRef id="GOV OQ2" end="." />
         </p>
       </>
     );
@@ -64,7 +64,7 @@ export const content: GuideContent = {
           מי שמוכר לפני הפדיון משלם {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי ניכוי של <Term prefix="ה" id="אינפלציה">אינפלציה</Term>: הרווח כולו נחשב <Term id="רווח הון ריאלי">רווח הון ריאלי</Term>. <Ruled id="TXI-12">בחוק השיעור הזה הוא תקרה</Ruled>, וזה גם השיעור שהבנק מנכה מהרווח. איך מחיר המכירה מתחלק בין ניכיון <Term prefix="ל" id="רווח הון">רווח הון</Term>, עוד לא נמצא. שאלה פתוחה <IdRef id="TXI OQ3" end="." />
         </Sentence>
         <Sentence measure>
-          בשני המקרים <Ruled id="TXS-05">הבנק או חבר הבורסה מבצעים</Ruled> <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, <Ruled id="TXG-17">לא חייב</Ruled> <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}<YearOf v={interestCeiling ?? ceiling} plural />.
+          בפדיון המס <Ruled id="TXI-11">מנוכה במקור</Ruled>, ובמכירה <Ruled id="TXS-05">הבנק או חבר הבורסה מבצעים</Ruled> <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>. מי שכל המס שלו נוכה במקור, והסכומים מתחת לתקרות, <Ruled id="TXG-17">לא חייב</Ruled> <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> רק בגלל המק״מ: {interestCeiling ? <>עד <Num value={interestCeiling} display={fmt.nisWhole(Number(interestCeiling.value))} /> ריבית בשנה</> : null}{ceiling ? <> ועד <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> תמורת מכירות בשנה</> : null}<YearOf v={interestCeiling ?? ceiling} plural />.
         </Sentence>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null}.</span> ההקלה במס לפי מדרגות נמוכות <Ruled id="TXG-04">חלה על שיעורים שהם תקרה</Ruled>. השיעור על רווח ממכירה לפני הפדיון הוא תקרה, ובהכנסה נמוכה המס עליו יכול להיות נמוך יותר, אבל האתר עוד לא מחשב את זה. השיעור על ריבית לא צמודה <Ruled id="TXI-19">מנוסח כשיעור קבוע</Ruled>, ולא נמצאה הכרעה של <Term id="רשות המסים">רשות המסים</Term>, ולכן האתר לא מפחית אותו. שאלה פתוחה <IdRef id="TXI OQ9" end="." />
@@ -75,10 +75,10 @@ export const content: GuideContent = {
   risks: () => (
     <>
       <p className="max-w-measure">
-        את השווי הנקוב <Ruled id="GOV-02">משלמת המדינה מהכנסותיה הכלליות</Ruled>, לא הבנק ולא <Term prefix="ה" id="ברוקר">ברוקר</Term>. בנק ישראל מתאר את המק״מ כהשקעה שנחשבת <Ruled id="GOV-22">חסרת סיכון, עם תשואה ידועה מראש</Ruled>, למי שמחזיק עד הפדיון.
+        את השווי הנקוב <Ruled id="GOV-02">משלמת המדינה מהכנסותיה הכלליות</Ruled>, לא הבנק ולא <Term prefix="ה" id="ברוקר">ברוקר</Term>. בנק ישראל מתאר את המק״מ כהשקעה שנחשבת <Ruled id="GOV-22">חסרת סיכון, עם תשואה ידועה מראש</Ruled>. זה נכון למי שמחזיק עד הפדיון.
       </p>
       <p className="max-w-measure">
-        מי שמוכר קודם <Ruled id="GOV-17">מקבל את מחיר השוק של אותו יום</Ruled>. <Ruled id="BND-01">המחיר הזה זז הפוך לריבית</Ruled>: כשהריבית במשק עולה, המחיר יורד, כי מק״מ חדש נותן תשואה גבוהה יותר. אבל כי <Ruled id="GOV-03">נשארה לכל היותר שנה עד הפדיון</Ruled>, שינוי בריבית מזיז את המחיר רק מעט, <Ruled id={["BND-04", "GOV-06"]}>בערך השינוי בריבית כפול החלק מהשנה שנשאר</Ruled>. באיגרת חוב ארוכה אותו שינוי מזיז את המחיר הרבה יותר, כמו שמוסבר <TextLink to="/guide/government-bond">בעמוד על האיגרות של המדינה</TextLink>. <ProofsChip ids={["M-01", "M-03"]} />
+        מי שמוכר קודם <Ruled id="GOV-17">מקבל את מחיר השוק של אותו יום</Ruled>. <Ruled id="BND-01">המחיר הזה זז הפוך לריבית</Ruled>: כשהריבית במשק עולה, המחיר יורד, כי מק״מ חדש נותן תשואה גבוהה יותר. אבל כי <Ruled id="GOV-23">כל סדרה מונפקת לכשנה</Ruled>, שינוי בריבית מזיז את המחיר רק מעט, <Ruled id={["BND-04", "GOV-06"]}>בערך השינוי בריבית כפול החלק מהשנה שנשאר</Ruled>. באיגרת חוב ארוכה אותו שינוי מזיז את המחיר הרבה יותר, כמו שמוסבר <TextLink to="/guide/government-bond">בעמוד על האיגרות של המדינה</TextLink>. <ProofsChip ids={["M-01", "M-03"]} />
       </p>
       <p className="max-w-measure">
         <Ruled id="GOV-03">המק״מ לא צמוד למדד</Ruled>: אם המחירים עולים יותר מהתשואה, הכסף שווה פחות בסוף.
@@ -102,7 +102,7 @@ export const content: GuideContent = {
         <span className="font-medium">לחדש כל שנה.</span> <Ruled id="GOV-23">אפשר לקנות מק״מ חדש בכל פדיון</Ruled>, ולהחזיק כך כסף לאורך שנים. אז המחיר כמעט לא זז בדרך, אבל הריבית לא ננעלת: <Ruled id="BND-08">בכל חידוש מקבלים את התשואה של אותו יום</Ruled>, גבוהה יותר אם הריבית עלתה ונמוכה יותר אם ירדה. מי שרוצה לדעת מראש מה ירוויח לכמה שנים צריך <Term id="איגרת חוב">איגרת חוב</Term> ארוכה יותר, שהמחיר שלה <Ruled id="BND-12">זז יותר בדרך</Ruled>. <ProofsChip ids={["M-08"]} />
       </p>
       <p className="max-w-measure">
-        מול <Term id="פיקדון">פיקדון</Term> <Term id="לא צמוד">לא צמוד</Term> בבנק: כשמחזיקים עד הסוף, <Ruled id={["TXI-03", "TXI-11"]}>בשניהם המס הוא שיעור קבוע מהריבית הנומינלית</Ruled>. מק״מ שנמכר לפני הפדיון ממוסה על <Term prefix="ה" id="רווח הון">רווח הון</Term>, <Ruled id="TXI-12">בשיעור שהוא תקרה</Ruled>, ובפיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> <Ruled id="TXI-05">המס הוא רק על הריבית שמעל עליית המדד</Ruled>. במק״מ <Ruled id="GOV-17">אין נעילה</Ruled> ואין <Term id="קנס שבירה">קנס שבירה</Term>, ובנק <Ruled id="BANK-18">לא יכול לגבות עליו</Ruled> <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term>; <Ruled id="BRK-17">הכלל הזה חל על בנקים בלבד</Ruled>. מצד שני יש עמלת קנייה, ועמלת מכירה למי שלא מחכה לפדיון. <Term prefix="ה" id="תשואה ברוטו">תשואה ברוטו</Term> שמוצגת בבנק היא לפני <Term prefix="ה" id="עמלה">עמלות</Term> והמס.
+        מול <Term id="פיקדון">פיקדון</Term> <Term id="לא צמוד">לא צמוד</Term> בבנק: כשמחזיקים עד הסוף, <Ruled id={["TXI-03", "TXI-11"]}>בשניהם המס הוא שיעור קבוע מהריבית הנומינלית</Ruled>. מק״מ שנמכר לפני הפדיון ממוסה על <Term prefix="ה" id="רווח הון">רווח הון</Term>, <Ruled id="TXI-12">בשיעור שהוא תקרה</Ruled>, ובפיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> <Ruled id="TXI-05">המס הוא רק על הריבית שמעל עליית המדד</Ruled>. במק״מ <Ruled id="GOV-17">אין נעילה</Ruled> ואין <Term id="קנס שבירה">קנס שבירה</Term>, ובנק <Ruled id="BANK-18">לא יכול לגבות עליו</Ruled> <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term>; <Ruled id="BRK-17">הכלל הזה חל על בנקים בלבד</Ruled>. מצד שני <Ruled id="BANK-18">מותר לגבות עליו עמלות קנייה, מכירה ופדיון</Ruled>. <Term prefix="ה" id="תשואה ברוטו">תשואה ברוטו</Term> שמוצגת בבנק היא לפני <Term prefix="ה" id="עמלה">עמלות</Term> והמס.
       </p>
       <p className="max-w-measure">
         מול <Term id="קרן כספית">קרן כספית</Term>: כשיש לבנק הסכם הפצה עם <Term id="מנהל קרן">מנהל הקרן</Term>, <Ruled id="MF-26">הבנק לא גובה עמלת קנייה על הקרן</Ruled>. <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> פטורה נזילה בכל יום מסחר, והמס בה <Ruled id="TXS-12">נגבה רק בפדיון</Ruled> ורק על <Term id="הרווח הריאלי">הרווח הריאלי</Term>. מי מנצח תלוי <Term prefix="ב" id="אינפלציה">אינפלציה</Term> ובעלויות. מי שמחזיק מק״מ עד הפדיון משלם מס הכנסה של {rate ? <Num value={rate} /> : null} מכל ההפרש, ובקרן כספית פטורה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term> של עד {fundRate ? <Num value={fundRate} /> : null} רק מהרווח שמעבר לאינפלציה. כשהאינפלציה נמוכה, המס במק״מ נמוך יותר, וכשהיא גבוהה, בקרן. מעבר למס, בקרן יורדים דמי הניהול שלה, ובמק״מ העמלות של החשבון. בסכומים קטנים או בתקופות קצרות מאוד, עמלת המינימום במק״מ יכולה להכריע.
@@ -111,7 +111,7 @@ export const content: GuideContent = {
         <Term prefix="ל" id={'אג"ח ממשלתית קצרה'}>אג״ח ממשלתית קצרה</Term> <Ruled id="GOV-15">של משרד האוצר יש מבנה דומה</Ruled>, אבל היא <Term id={'אג"ח סחיר'}>נייר סחיר</Term> נפרד, בלי הפטור מדמי ניהול הפיקדון.
       </p>
       <p className="max-w-measure">
-        <Term id="עמלת קנייה ומכירה">עמלות הקנייה והמכירה</Term>, <Term prefix="ו" id="דמי חשבון קבועים">דמי חשבון קבועים</Term> אם החברה גובה אותם, <Ruled id="BRK-16">נקבעים בתעריפון של כל חברה</Ruled>. ראו במדריך: <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
+        <Term id="עמלת קנייה ומכירה">עמלות הקנייה והמכירה</Term>, <Term prefix="ו" id="דמי חשבון קבועים">דמי חשבון קבועים</Term> אם החברה גובה אותם, <Ruled id={["BRK-16", "BRK-24"]}>נקבעים בידי כל חברה</Ruled>. ראו במדריך: <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
       {/* D6: makam's exposure page folded into this one; what it said about holding makam without buying it */}
       <Sentence measure>
