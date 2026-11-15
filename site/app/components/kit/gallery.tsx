@@ -3081,18 +3081,22 @@ function PhoneFrame({ children }: { children: ReactNode }) {
 const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit, today)} {...(unit.startsWith("pct") ? { display: fmt.pctPrinted } : {})} />;
 const rh = dealWords.cases.rowHeads;
 
-/** Custody by what is held: two cases with one price, so each row is one merged cell; "+ מקרה" at the end. */
+/**
+ * Custody by what is held: two cases with one price, so each row is one merged cell; a value no case names, a column with no case whose
+ * slot adds one; "+ מקרה" at the end.
+ */
 function CustodyTable({ today }: { today: string }) {
   const [open, setOpen] = useState<string | null>(null);
   const cols = [
     { id: "ta", head: sc.heldValues.ta },
     { id: "abroad", head: sc.heldValues.abroad },
   ];
+  const unnamed = { id: "makam", head: sc.what.makam, label: sc.what.makam, onOpen: () => undefined, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam}`, onAdd: () => undefined } };
   return (
     <FeeBlock dot="bg-fee-custody" name={sc.custody}>
       <ConditionHead bare things={[{ id: "held", name: sc.things.held }]} />
       <CaseTable
-        columns={cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id }))}
+        columns={[...cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id })), unnamed]}
         rows={[
           { id: "price", head: rh.rate!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(0.15, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}</span> }] },
           { id: "max", head: rh.max!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(10000, "nis", today)} {sc.perCharge}</span> }] },

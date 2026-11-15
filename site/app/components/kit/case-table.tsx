@@ -201,16 +201,22 @@ function BetweenAdd({ add, axis, style }: { add: AddSpec; axis: "x" | "y"; style
 }
 
 /**
+ * A head's room for its grip: the grip stands over the head's start edge, centred down it (app.css, `data-grip-box`, 2 px in and 20 px
+ * wide), and the head's words start 28 px in, so at any length the grip covers none of them.
+ */
+const GRIP_ROOM = "ps-7";
+
+/**
  * A column's head that opens its case: one button over the whole head (`label`, its spoken name), the words drawn on it; a control inside
  * (a step's top typed in place, marked `data-lift`) keeps its own tap.
  */
 function OpenHead({ label, onOpen, open, range, grip, children }: { label: string; onOpen: () => void; open?: boolean; range?: boolean; grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", LIFT_INNER, open && OPEN)}>
+    <div data-case-head="" data-liftable="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", grip ? GRIP_ROOM : "ps-1.5", LIFT_INNER, open && OPEN)}>
       <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {grip}
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
-      <div className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto">{children}</div>
+      <div data-head-words="" className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto">{children}</div>
     </div>
   );
 }
@@ -218,9 +224,9 @@ function OpenHead({ label, onOpen, open, range, grip, children }: { label: strin
 /** A column's head that opens nothing (a value no case names): its words at its foot, as an `OpenHead`'s, and its grip. */
 function StillHead({ grip, children }: { grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className="relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium">
+    <div data-case-head="" data-liftable="" className={cx("relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium", grip ? GRIP_ROOM : "ps-1.5")}>
       {grip}
-      <div className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
+      <div data-head-words="" className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
     </div>
   );
 }
@@ -474,14 +480,15 @@ export interface GridCellView extends CellExtras {
 /**
  * A grid's head, its grip and its words, filling its place so the whole head is what is lifted and dropped on: a row's as tall as its row
  * and its lines, its words from the top on its cells' first line; a column's as wide as its column, at the foot of its row over a hairline
- * so the heads stand on one line, its words in its middle.
+ * so the heads stand on one line. Its grip stands at its start edge, centred down it, and its words in the middle of the width left
+ * beside the grip's room (`GRIP_ROOM`), so the grip covers none of them.
  */
 function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md text-center text-sm", end ? "justify-end border-b border-border pb-1.5" : cx("justify-start", ROW_HEAD))}>
-      <div className="flex items-center justify-center gap-1 px-1 font-medium">
-        {grip}
-        <span className="min-w-0">{head}</span>
+    <div data-case-head="" data-liftable="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end border-b border-border pb-1.5" : cx("justify-start", ROW_HEAD))}>
+      {grip}
+      <div data-head-words="" className="min-w-0 max-w-full font-medium">
+        {head}
       </div>
     </div>
   );

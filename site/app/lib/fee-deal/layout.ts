@@ -223,15 +223,16 @@ const without = (shows: Record<string, string[]>, said: readonly { row: string; 
 
 /**
  * Two things where only one value of the first is split by the second: every other value has one case, for any value of the second, and
- * the split value's cases name values of the second, one case each. The split value's key; null for any other fee.
+ * the split value's cases name values of the second, one case each, and each thing's every value has a case. The split value's key; null
+ * for any other fee.
  */
 function splitValue(input: LayoutInput): string | null {
-  // a value of the second no case names stands in a grid, which has a column for it
-  if (input.things.length !== 2 || emptyHeads(input, 1).length > 0) return null;
+  // a value no case names stands in a grid, which has a row or a column of places for it
+  if (input.things.length !== 2 || emptyHeads(input, 0).length > 0 || emptyHeads(input, 1).length > 0) return null;
   let split: string | null = null;
   for (const h of headsOf(input, input.cases, 0)) {
     const here = input.cases.filter((c) => h.cases.includes(c.id));
-    if (here.length === 0 || (here.length === 1 && here[0]!.when[1] === "any")) continue;
+    if (here.length === 1 && here[0]!.when[1] === "any") continue;
     if (split !== null || here.some((c) => c.when[1] === "any") || new Set(here.map((c) => valueKey(c.when[1]!))).size !== here.length) return null;
     split = h.key;
   }
