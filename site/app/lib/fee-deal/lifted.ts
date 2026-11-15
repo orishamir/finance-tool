@@ -1,8 +1,9 @@
 // What the fee page's grips lift, where each can be dropped, and what a drop does (method §10.6, F-114): a table's column, a ladder's step,
 // a grid's row or column, a cell, a table's part row, a part of the open case, a thing of the band's head, and a fee's card. Dropped on a
 // place, a thing moves there (a column or a row among its own, a part onto another case or another fee, a case into a grid's empty place),
-// or swaps (two things of a head); a part dropped on a head (a grid's row or column, the fee's condition) goes into every case of it; a
-// cell takes no other cell. Dropped in the bin, it is taken away. Each drop is one of the pure edits
+// or swaps (two things of a head, two cases of a grid); a part dropped on a head (a grid's row or column, the fee's condition) goes into
+// every case of it; a grid's case alone in its row or its column, dropped on another head of that side, moves its row or column there; a
+// part cell takes no other cell. Dropped in the bin, it is taken away. Each drop is one of the pure edits
 // (edits/arrange.ts, edits/cells.ts, edits/case.ts) and says, where it took something the person gave, what it did, for the undo line.
 // Pure.
 import { feeDeal as copy } from "../../copy";
@@ -116,13 +117,17 @@ export function liftDrop(deal: FeeDeal, l: Lifted, on: LiftTarget, opts: { copy?
       return oneFee(deal, fee, moveValue(fee, l.t, l.key, on.key));
     case "cell": {
       if (!hasCases(fee)) return null;
-      // onto a cell of its own row: the cell's price goes to it, and they merge
-      // a cell takes no other cell: a neighbour takes its price only by a stretch over a place left empty (reach.ts)
+      const whole = l.row === WHOLE && l.cases.length === 1 && on.fee === l.fee;
+      // a grid's case onto another's cell: the two swap places, each taking the other's row and column
+      if (whole && on.k === "cell" && on.row === WHOLE && on.cases.length === 1) return on.cases[0] === l.cases[0] ? null : oneFee(deal, fee, swapPlaces(fee, l.cases[0]!, on.cases[0]!), copy.cases.lifted.swappedCases);
+      // a part cell takes no other cell: a neighbour takes its price only by a stretch over a place left empty (reach.ts)
       if (on.k === "cell") return null;
       // a whole case into a grid's place no case holds: it takes the place's row and its column, so it stands there alone
-      if (l.row === WHOLE && on.k === "place" && on.fee === l.fee && l.cases.length === 1) return oneFee(deal, fee, intoPlace(fee, l.cases[0]!, on), copy.cases.lifted.movedCase);
+      if (whole && on.k === "place") return oneFee(deal, fee, intoPlace(fee, l.cases[0]!, on), copy.cases.lifted.movedCase);
+      // a case alone on its value of a side, onto another head of that side: its row or column moves there, as the head's own grip moves it
+      if (whole && on.k === "value") return oneFee(deal, fee, aloneMoved(fee, l.cases[0]!, on.t, on.key));
       if (l.row !== WHOLE && isPartRow(l.row) && on.k === "cases") return headDrop(deal, fee, l.cases, l.row, on, !!opts.copy);
-      if (l.row !== WHOLE && isPartRow(l.row)) return partDrop(deal, fee, l.cases[0]!, l.row, on, !!opts.copy);
+      if (l.row !== WHOLE && isPartRow(l.row)) return partDrop(deal, fee, l.cases[0]!, l.row, on, !!opts.copy, l.cases.slice(1));
       return null;
     }
     case "part":
@@ -152,22 +157,51 @@ function intoPlace(fee: Fee, id: string, on: Extract<LiftTarget, { k: "place" }>
   return [0, 1].reduce((x, j) => setWhen(x, id, j, j === on.t ? on.when : other), fee);
 }
 
+/**
+ * A fee whose cases `a` and `b` swap places in its grid: each takes the other's values of the grid's two things (its first down the side,
+ * its second across), so each stands where the other stood, over the same places; their prices and any third thing's value stay theirs.
+ * Left as it is where either is gone.
+ */
+function swapPlaces(fee: Fee, a: string, b: string): Fee {
+  const ca = caseIn(fee, a), cb = caseIn(fee, b);
+  if (!hasCases(fee) || !ca || !cb) return fee;
+  return [0, 1].reduce<Fee>((x, j) => (fee.by[j] ? setWhen(setWhen(x, a, j, cb.when[j]!), b, j, ca.when[j]!) : x), fee);
+}
+
+/**
+ * A fee whose case `id`, the only case on its value of thing `t`, has that value moved to where value `at` stands (`moveValue`): its row or
+ * column moved. Left as it is where another case shares the value, where it is any value, or where the value is `at` already.
+ */
+function aloneMoved(fee: Fee, id: string, t: number, at: string): Fee {
+  const c = caseIn(fee, id);
+  if (!hasCases(fee) || !c || c.when[t] === undefined) return fee;
+  const key = valueKey(c.when[t]!);
+  if (key === at || fee.cases.some((o) => o.id !== id && valueKey(o.when[t]!) === key)) return fee;
+  return moveValue(fee, t, key, at);
+}
+
 const caseIn = (fee: Fee, id: string) => (hasCases(fee) ? fee.cases.find((c) => c.id === id) : undefined);
 
-/** A part row dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that fee takes it). */
-function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean): LiftResult | null {
+/**
+ * A part row dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that fee takes it).
+ * A line over several cases (`from` and `also`) leaves every one of them unless copied, so the part stands only where it was dropped.
+ */
+function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean, also: readonly string[] = []): LiftResult | null {
   if (on.k !== "case" && on.k !== "cell") return null;
   const to = on.k === "case" ? on.case : on.cases[0]!;
   if (on.fee === fee.id) {
     if (!hasCases(fee) || from === null || to === null || to === from) return null;
     // the case it lands on had that row's part: kept for the undo, which says what was replaced
     const had = cellHolds(caseIn(fee, to)!, row);
-    return oneFee(deal, fee, moveCell(fee, from, to, row, keep), had ? copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined);
+    const moved = moveCell(fee, from, to, row, keep);
+    return oneFee(deal, fee, keep ? moved : partOut(moved, also.filter((id) => id !== to), row), had ? copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined);
   }
   const other = feeOf(deal, on.fee);
   if (!other) return null;
   const moved = moveCellTo(fee, from, other, to, row, keep);
-  return moved ? { deal: updateFee(updateFee(deal, fee.id, () => moved.from), other.id, () => moved.to) } : null;
+  if (!moved) return null;
+  const left = keep ? moved.from : partOut(moved.from, also, row);
+  return { deal: updateFee(updateFee(deal, fee.id, () => left), other.id, () => moved.to) };
 }
 
 /** One note dropped on another case, of its fee or another: added to its notes, taken from its own case unless copied (`moveNoteTo`). */

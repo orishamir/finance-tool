@@ -2,7 +2,7 @@
 // ends is a landing, picked by the pointer's place along the list (no member has to be hit), across in the page's right-to-left reading
 // order or down; the members between the thing's place and its landing slide one place toward where it was, by its size.
 import { describe, expect, it } from "vitest";
-import { around, inside, landing, readingOrder, shifts, type Box } from "./sortable";
+import { around, inside, landing, placeAt, readingOrder, shifts, type Box } from "./sortable";
 
 /** Boxes down the page: each of `heights`, with `gap` between. */
 const down = (heights: number[], gap = 10, top = 100): Box[] => {
@@ -67,5 +67,28 @@ describe("what slides to open the gap", () => {
     expect(around(boxes)).toEqual({ left: 0, right: 300, top: 100, bottom: 190 });
     expect(inside(around(boxes), { x: 310, y: 120 })).toBe(false);
     expect(inside(around(boxes), { x: 310, y: 120 }, 20)).toBe(true);
+  });
+});
+
+describe("the place a carried thing is over", () => {
+  const cell = { key: "cell", box: { left: 100, right: 300, top: 100, bottom: 200 }, depth: 1, fixed: false };
+  const card = { key: "card", box: { left: 0, right: 1000, top: 0, bottom: 1000 }, depth: 0, fixed: false };
+  const bin = { key: "bin", box: { left: 0, right: 1000, top: 800, bottom: 850 }, depth: 0, fixed: true };
+  it("is the innermost place whose box holds the point", () => {
+    expect(placeAt([card, cell], { x: 150, y: 150 }, { x: 150, y: 150 })).toBe("cell");
+    expect(placeAt([card, cell], { x: 500, y: 150 }, { x: 500, y: 150 })).toBe("card");
+    expect(placeAt([cell], { x: 500, y: 150 }, { x: 500, y: 150 })).toBeNull();
+  });
+  it("reads a place fixed on the screen by the screen's point, over what the page has under it", () => {
+    // the page scrolled 1,000 px: the cell is at the screen's foot, under the bin
+    expect(placeAt([card, cell, bin], { x: 150, y: 1820 }, { x: 150, y: 820 })).toBe("bin");
+    expect(placeAt([card, cell, bin], { x: 150, y: 150 }, { x: 150, y: 150 })).toBe("cell");
+  });
+  it("puts a place laid over the page over the places under it, however deep they stand", () => {
+    // a computer's bin drawn over the top of the block under its own
+    const laid = { key: "laid", box: { left: 0, right: 1000, top: 180, bottom: 230 }, depth: 0, fixed: false, over: true };
+    expect(placeAt([card, cell, laid], { x: 150, y: 190 }, { x: 150, y: 190 })).toBe("laid");
+    expect(placeAt([card, cell, laid], { x: 150, y: 150 }, { x: 150, y: 150 })).toBe("cell");
+    expect(placeAt([card, cell, laid, bin], { x: 150, y: 1820 }, { x: 150, y: 820 })).toBe("bin");
   });
 });

@@ -6,11 +6,14 @@
 // columns, a grid's rows, a fee's cases read as rows) and among liftable things that stand side by side with a place each that takes it
 // (the fees of a group), the pointer's place picks where it lands, every place between two and both ends, and the others slide aside to
 // open the gap there; over a plain place (a case for a part, an empty place for a case, a thing of the head to swap with) the place shows
-// what a drop would do (`onPreview`), and moving away or Esc puts it back. Over the bin the picture dims and the bin says what goes. Let
-// go, the thing settles where it lands; let go anywhere else, it goes back. Near the screen's top or foot the page scrolls, once the
-// pointer moves that way. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things moving there the same
-// way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its edge following the
-// pointer. Every grip and knob takes a 44 px press and no room of its own: it stands over the start of what it lifts.
+// what a drop would do (`onPreview`), and moving away or Esc puts it back. Which place the pointer is over is read from the page as it
+// stood when the thing was lifted, so what a place shows never moves the target under a still pointer. What a place shows never moves the
+// page either: the blocks marked `data-carry-hold` keep the height they had when the thing was lifted, a shorter drawing leaving room in
+// them and a taller one drawn over what follows, and the bin is laid over the page, so the page's height, its scrollbar and its scroll
+// stay as they were. Over the bin the picture dims and the bin says what goes. Let go, the thing settles where it lands; let go anywhere else, it goes back. Near the screen's top or foot the
+// page scrolls, once the pointer moves that way. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things
+// moving there the same way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its
+// edge following the pointer. Every grip and knob takes a 44 px press and no room of its own: it stands over the start of what it lifts.
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
 import { createPortal, flushSync } from "react-dom";
 import { GripVertical, MoveHorizontal, MoveVertical } from "lucide-react";
@@ -18,7 +21,7 @@ import { dealCases as copy } from "../../copy";
 import { useMedia } from "../../lib/hooks";
 import { allZones, carry, listMembers, useCarried, useCarriedName, useOver, zoneElement, DropZone, type DropHow, type Zone } from "./drag-drop";
 import { atRest, easing, flip, measure, motionMs, play } from "./flip";
-import { around, inside, landing, readingOrder, shifts, type Axis, type Box } from "./sortable";
+import { around, inside, landing, placeAt, readingOrder, shifts, type Axis, type Box } from "./sortable";
 import { cx } from "./cx";
 import { BinIcon } from "./remove-button";
 
@@ -32,11 +35,18 @@ const SCROLL = 16;
 /** How far around a list's members the pointer still picks a place among them, in px. */
 const LIST_MARGIN = 28;
 
-/** A place as it stood when the thing was lifted: its hands then (so a drop does what the page showed before any preview), and its box. */
+/**
+ * A place as it stood when the thing was lifted: its hands then (so a drop does what the page showed before any preview), and its box,
+ * which says alone whether the pointer is over it (`placeAt`): in the page's coordinates, or the screen's where it is fixed on the screen
+ * (`fixed`, a phone's bin); `depth`, how many places stand around it; `over`, it is laid over the page (a computer's bin).
+ */
 interface Frozen {
   hands: Zone;
   takes: boolean;
   box: Box;
+  depth: number;
+  fixed: boolean;
+  over: boolean;
 }
 /** A sortable list as it stood when the thing was lifted: its members in reading order, the carried thing's place among them, its area. */
 interface List {
@@ -77,6 +87,8 @@ interface Lifting {
   collapsed: string | null;
   /** The elements marked as the gap now. */
   gaps: HTMLElement[];
+  /** Lets go of the blocks held at their height (`holdBlocks`). */
+  release: () => void;
 }
 let lifting: Lifting | null = null;
 
@@ -117,17 +129,15 @@ function markGap(l: Lifting, previewing: boolean) {
   for (const el of l.gaps) el.setAttribute("data-lifted", "");
 }
 
-/** The place under the pointer that takes the thing and is no member of a list (a list picks by the pointer's place, `listTarget`). */
+/**
+ * The place under the pointer that takes the thing and is no member of a list (a list picks by the pointer's place, `listTarget`): the
+ * innermost whose box held the point when the thing was lifted. Never read from the page as it is drawn now: a place shown (`onPreview`)
+ * moves what stands under a still pointer, and a target read from that would change, take the preview away, and change back.
+ */
 function plainAt(l: Lifting, x: number, y: number): string | null {
-  let el = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-drop-key]") ?? null;
   const members = new Set(l.lists.flatMap((s) => s.keys));
-  while (el) {
-    const key = el.dataset.dropKey!;
-    const z = l.zones.get(key);
-    if (z && z.takes && !z.hands.sort && !members.has(key)) return key;
-    el = el.parentElement?.closest<HTMLElement>("[data-drop-key]") ?? null;
-  }
-  return null;
+  const places = [...l.zones].filter(([key, z]) => z.takes && !z.hands.sort && !members.has(key)).map(([key, z]) => ({ key, box: z.box, depth: z.depth, fixed: z.fixed, over: z.over }));
+  return placeAt(places, pagePoint(x, y), { x, y });
 }
 
 /** Where in a list the pointer would land the thing: the first list whose area holds it. */
@@ -182,16 +192,9 @@ function moveGhost(x: number, y: number) {
   l.y = y;
   l.ghost.style.transform = `translate(${x - l.dx}px, ${y - l.dy}px)`;
   l.note.style.transform = `translate(${x + 12}px, ${y + 16}px)`;
-  let t: Target | null;
+  // where it would land follows the pointer alone, over the page as it stood when the thing was lifted (`plainAt`, `listTarget`)
   const plain = plainAt(l, x, y);
-  if (plain) t = { key: plain };
-  else {
-    // a place shown changes the page under the pointer: while the pointer stays on the place it shows at, it stays the target
-    const cur = l.target?.key && l.target.list === undefined ? l.target.key : null;
-    const curEl = cur ? zoneElement(cur) : null;
-    const p = pagePoint(x, y);
-    t = cur && ((curEl && inside(pageBox(curEl), p)) || inside(l.zones.get(cur)!.box, p)) ? l.target : listTarget(l, x, y);
-  }
+  const t = plain ? { key: plain } : listTarget(l, x, y);
   aim(l, t);
   // over a place that does not take it and says why, the why stands under the pointer
   const why = t ? null : (document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-drop-why]")?.dataset.dropWhy ?? null);
@@ -229,6 +232,7 @@ function endLift(drop: boolean) {
   const shown = l.target?.key ? l.zones.get(l.target.key) : undefined;
   // what slid and the gap measured where they stand on the screen, then put back and the drop made: each slides from there to its place
   const before = measure();
+  l.release();
   for (const s of l.lists) for (const el of s.slide ?? []) Object.assign(el.style, { transition: "", transform: "" });
   for (const el of l.gaps) el.removeAttribute("data-lifted");
   l.from.removeAttribute("data-lifted");
@@ -292,6 +296,19 @@ function edgeScroll() {
   l.frame = requestAnimationFrame(edgeScroll);
 }
 
+/** Whether `el` stands fixed on the screen, itself or inside something that does (a phone's bin): the page scrolls under it. */
+function onScreen(el: Element): boolean {
+  for (let x: Element | null = el; x; x = x.parentElement) if (getComputedStyle(x).position === "fixed") return true;
+  return false;
+}
+
+/** How many places stand around `el`. */
+function countAround(el: Element): number {
+  let n = 0;
+  for (let x = el.parentElement?.closest("[data-drop-key]"); x; x = x.parentElement?.closest("[data-drop-key]")) n++;
+  return n;
+}
+
 /** Every place on the page as it stands now, and the lists its members make (declared, `sort`, or liftable things side by side). */
 function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; lists: List[] } {
   const zones = new Map<string, Frozen>();
@@ -299,7 +316,11 @@ function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; 
   for (const [key, z] of allZones()) {
     const el = zoneElement(key);
     if (!el) continue;
-    zones.set(key, { hands: z, takes: z.accepts(item), box: pageBox(el) });
+    const fixed = onScreen(el);
+    const r = el.getBoundingClientRect();
+    const depth = countAround(el);
+    const over = !fixed && getComputedStyle(el).position === "absolute";
+    zones.set(key, { hands: z, takes: z.accepts(item), box: fixed ? { left: r.left, top: r.top, right: r.right, bottom: r.bottom } : pageBox(el), depth, fixed, over });
     els.set(key, el);
   }
   const lists: List[] = [];
@@ -335,6 +356,20 @@ function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; 
   return { zones, lists };
 }
 
+/**
+ * Holds every block marked `data-carry-hold` at the height it has now, until the returned function lets go: what a place shows while the
+ * thing is over it draws inside, a shorter drawing leaving room at the block's foot and a taller one drawn over what follows it (app.css
+ * draws the block after it while something is carried), so nothing after the block moves and the page keeps its height and its scrollbar.
+ */
+function holdBlocks(): () => void {
+  const els = [...document.querySelectorAll<HTMLElement>("[data-carry-hold]")];
+  // read every height before setting any, the used height to the fraction of a pixel (a rounded one would move the page by it)
+  const heights = els.map((el) => getComputedStyle(el).height);
+  const was = els.map((el) => el.style.height);
+  els.forEach((el, i) => (el.style.height = heights[i]!));
+  return () => els.forEach((el, i) => (el.style.height = was[i]!));
+}
+
 /** What the page tells `lift` about the thing: its words, for the bin to say what goes; `keep`, it stays where it was (a chip, which adds a copy of itself). */
 export interface LiftAbout {
   name?: string;
@@ -364,10 +399,11 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
     play(before);
   } else if (!about.keep) from.setAttribute("data-lifted", "");
   flushSync(() => carry(item, null, about.name ?? null));
+  const release = holdBlocks();
   const { zones, lists } = atRest(() => freeze(item, from));
   // the members of a list that slides by itself are places of their own (a fee's card): they draw no frame, the gap shows where it lands
   flushSync(() => listMembers(lists.flatMap((s) => (s.slide ? s.keys.filter((k): k is string => k !== null) : []))));
-  lifting = { item, name: about.name ?? null, from, ghost, note, dx: x - box.left, dy: Math.max(0, Math.min(y - box.top, box.height)), x, y, lastY: y, frame: 0, zones, lists, target: null, copy: false, armed: null, collapsed, gaps: about.keep ? [] : [from] };
+  lifting = { item, name: about.name ?? null, from, ghost, note, dx: x - box.left, dy: Math.max(0, Math.min(y - box.top, box.height)), x, y, lastY: y, frame: 0, zones, lists, target: null, copy: false, armed: null, collapsed, gaps: about.keep ? [] : [from], release };
   moveGhost(x, y);
   window.addEventListener("pointermove", onMove, { passive: false });
   window.addEventListener("pointerup", onUp);
@@ -649,17 +685,18 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
 
 /**
  * The bin a carried thing is taken away in: shown only while something it takes (`accepts`) is carried, at the foot of its block on a
- * computer, and on a phone (`phone`) fixed at the foot of the screen, over the carried thing's picture. One frame, the zone's own outline:
+ * computer, laid over what follows the block (the nearest positioned element around it) so it adds no height to the page, and on a phone
+ * (`phone`) fixed at the foot of the screen, over the carried thing's picture. One frame, the zone's own outline:
  * red and dashed while something is carried, solid and filled while it is over the bin, which then says what goes ("משחררים כדי למחוק:
- * המקרה בסניף", the thing's words from its grip); "גוררים לכאן כדי למחוק" before that. On a phone it stands on the card's fill, so it reads
- * over the page under it.
+ * המקרה בסניף", the thing's words from its grip); "גוררים לכאן כדי למחוק" before that. It stands on the card's fill, so it reads
+ * over what it is laid on.
  */
 export function DropBin({ accepts, onDrop, phone }: { accepts: (item: string) => boolean; onDrop: (item: string) => void; phone?: boolean }) {
   const item = useCarried();
   const name = useCarriedName();
   if (item === null || !accepts(item)) return null;
   return (
-    <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx("come-in z-[61]", phone ? "fixed inset-x-3 bottom-3 rounded-md bg-card shadow-lg" : "relative")}>
+    <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx("come-in z-[61] bg-card shadow-lg", phone ? "fixed inset-x-3 bottom-3" : "absolute inset-x-0 top-full mt-2")}>
       <BinWords name={name} />
     </DropZone>
   );

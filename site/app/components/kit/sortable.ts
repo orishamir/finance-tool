@@ -1,8 +1,9 @@
 // Where a carried thing lands among the things of a sortable list, and how far each of them slides aside to open its gap (design-system
 // 11, `Grip`). A list is its members' boxes as they stood when the thing was lifted, in reading order, along one axis: across (right to
 // left, the page's reading order) or down. The thing carried is one of them (`source`), or comes from outside (null). The pointer's place
-// along the axis picks the landing: every place between two members and both ends is one, so no member has to be hit. Pure: it reads
-// boxes and a point, and touches no page.
+// along the axis picks the landing: every place between two members and both ends is one, so no member has to be hit. The place a carried
+// thing is over outside any list (`placeAt`) is read from the boxes the places had when it was lifted too. Pure: it reads boxes and a point,
+// and touches no page.
 
 /** A box on the page, in the page's coordinates (scrolling moves none of them). */
 export interface Box {
@@ -75,4 +76,36 @@ export function shifts(boxes: readonly Box[], source: number, to: number, axis: 
   }
   // reading order across is right to left: a step on in reading order is a step to the left on the screen
   return axis === "y" ? moved : moved.map((d) => (d === 0 ? 0 : -d));
+}
+
+/**
+ * A place as the page stood when the thing was lifted: its box, how many places stand around it (`depth`), whether it stands on the
+ * screen rather than the page (`fixed`: a phone's bin, fixed at the screen's foot), its box then in the screen's coordinates, and whether
+ * it is laid over the page where it stands (`over`: a computer's bin, drawn over what follows its block).
+ */
+export interface Place {
+  key: string;
+  box: Box;
+  depth: number;
+  fixed: boolean;
+  over?: boolean;
+}
+
+/** How far a place stands over the page: fixed on the screen, laid over the page, or in it. */
+const layer = (p: Place) => (p.fixed ? 2 : p.over ? 1 : 0);
+
+/**
+ * The place the pointer is over, by the boxes the places had when the thing was lifted, never by the page as a preview has drawn it since:
+ * a preview moves things under a still pointer, and a target read from the page then would change with it, and the preview back, without
+ * end. A place fixed on the screen stands over the page and comes first, then a place laid over the page; of places one inside the other,
+ * the innermost. `page` is the
+ * pointer in the page's coordinates, `screen` in the screen's. Null where none holds it.
+ */
+export function placeAt(places: readonly Place[], page: { x: number; y: number }, screen: { x: number; y: number }): string | null {
+  let best: Place | null = null;
+  for (const p of places) {
+    if (!inside(p.box, p.fixed ? screen : page)) continue;
+    if (!best || layer(p) > layer(best) || (layer(p) === layer(best) && p.depth > best.depth)) best = p;
+  }
+  return best?.key ?? null;
 }
