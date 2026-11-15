@@ -5,7 +5,8 @@
   "text_he": "הצעת חוק פרטית לביטוח פיקדונות בתאגיד בנקאי הייתה נותנת ללקוח שהפקיד 'חיסכון' בבנק או באגודת חיסכון ואשראי ערבות מדינה עד סכום הערבות המוצע; זו הייתה הצעת חוק בלבד, והיא פקעה. כפי שנוסחה: 'חיסכון' הוא כל הפקדה מראש ליותר משבעה ימים שלא מיועדת לחשבון עובר ושב; הכיסוי רק בבנקים שנתח השוק שלהם לא עולה על הנתח המרבי; התשלום בתוך שלושה חודשים מהתביעה, בתנאי שמונה מנהל מורשה; תאגידים בנקאיים ומנהלי תיקים לא יכולים לתבוע. ההצעה הונחה על שולחן הכנסת לדיון מוקדם ולא התקדמה. כשהכנסת החדשה התכנסה ב־10.11.2026 היא פקעה, כי רק הצעה שעברה קריאה ראשונה יכולה להמשיך בכנסת הבאה. האתר לא מציג אותה כהגנה.",
   "figure_names_he": {
     "proposed_guarantee": "סכום הערבות המוצע ללקוח (הצעת חוק בלבד)",
-    "small_bank_market_share_max": "נתח השוק המרבי של בנק מכוסה (הצעת חוק בלבד)"
+    "small_bank_market_share_max": "נתח השוק המרבי של בנק מכוסה (הצעת חוק בלבד)",
+    "new_knesset_convened": "היום שבו הכנסת החדשה התכנסה וההצעה פקעה"
   },
   "strength": "primary",
   "dimensions": [
@@ -53,6 +54,26 @@
       ],
       "state": "sourced",
       "notes": "A LAPSED BILL, NEVER LAW. The proposed guarantee covers only banks whose market share does not exceed 5%."
+    },
+    "new_knesset_convened": {
+      "value": "2026-11-10",
+      "unit": "text",
+      "source": {
+        "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_KnessetDates()?$filter=KnessetNum%20ge%2026&$format=json",
+        "title": "Knesset OData KNS_KnessetDates, the 26th Knesset's first sitting (KnessetNum 26, Assembly 1, Plenum 1, PlenumStart 2026-11-10)",
+        "publisher": "הכנסת",
+        "strength": "primary"
+      },
+      "checked": "2026-11-15",
+      "effective_from": "2026-11-10",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "REG-05"
+      ],
+      "state": "sourced",
+      "notes": "The day the 26th Knesset first sat. Under the Continuity of Debate on Bills Law, a private bill that has not passed a first reading lapses when a new Knesset convenes, so the deposit-insurance bill lapsed on this day."
     }
   },
   "il_finance_file": "regulators-and-protection.md",

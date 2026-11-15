@@ -44,6 +44,7 @@ export const content: GuideContent = {
   termIds: ["חשבון עובר ושב", "יתרת זכות בחשבון", "ריבית על יתרת זכות", "מסלול בסיסי", "מסלול מורחב", "הטבה בנקאית", "מנהל מורשה", "ביטוח פיקדונות", "פיקדון", "קרן כספית", "יחידה", "התעריפון המלא", "ריבית", "קרנות כספיות יומיות", "תשואה"],
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
+    const lapsed = figure("REG-05", "new_knesset_convened");
     const notice = figure("BANK-19", "notice_days");
     const benefitMonths = figure("BANK-19", "benefit_min_months");
     return (
@@ -52,7 +53,7 @@ export const content: GuideContent = {
           אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, שבאישור הנגיד יכול להעביר את נכסי הבנק והתחייבויותיו, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
         </p>
         <Sentence measure>
-          חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה <When iso="2026-11-10" lead="ב־" />.
+          חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה{lapsed ? <> <Num value={lapsed} prefix="ב־" /></> : null}.
         </Sentence>
         <Sentence measure>
           כסף שיושב בעו״ש בלי ריבית לא גדל. <Term id="הטבה בנקאית">הטבה</Term> בריבית או <Term prefix="ב" id="עמלה">עמלה</Term> שנמשכת יותר {benefitMonths ? <><Num value={benefitMonths} prefix="מ־" /> חודשים</> : "מכמה חודשים"} <Ruled id="BANK-19">מסתיימת אחרי הודעה</Ruled>{notice ? <> של לפחות <Num value={notice} /> ימים</> : " מראש"}.
