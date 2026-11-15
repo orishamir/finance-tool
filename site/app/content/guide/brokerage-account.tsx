@@ -149,7 +149,7 @@ export const content: GuideContent = {
   use: () => (
     <>
       <p className="max-w-measure">
-        כסף שרוצים להשקיע בקרן על מדד בלי נעילה. זה מתאים במיוחד כשעוברים את <Ruled id="KGL-02">תקרת ההפקדה השנתית</Ruled> של <Term id="קופת גמל להשקעה">קופת גמל להשקעה</Term>, או כשמתכוונים לקנות קרן אחת ולהחזיק אותה שנים. משלמים <Ruled id="BRK-16">עמלות על פעולות ועל ההחזקה</Ruled> לפי התעריפון, ועוד <Ruled id="ETF-13" prefix="ה">עלות שבתוך הקרן</Ruled>. הממוצע לקרנות הסל ולקרנות המחקות <Ruled id="ETF-17">מתפרסם פעם בשנה</Ruled>, ומה ששילמו בממוצע ב<Term id="קופת גמל להשקעה">קופת גמל להשקעה</Term> כתוב בעמוד שלה.
+        כסף שרוצים להשקיע בקרן על מדד בלי נעילה, למשל כשמתכוונים לקנות קרן אחת ולהחזיק אותה שנים. משלמים <Ruled id="BRK-16">עמלות על פעולות ועל ההחזקה</Ruled> לפי התעריפון, ועוד <Ruled id="ETF-13" prefix="ה">עלות שבתוך הקרן</Ruled>. הממוצע לקרנות הסל ולקרנות המחקות <Ruled id="ETF-17">מתפרסם פעם בשנה</Ruled>, ומה ששילמו בממוצע ב<Term id="קופת גמל להשקעה">קופת גמל להשקעה</Term> כתוב בעמוד שלה.
       </p>
       {/* the costs in the example chart above, from the records the example reads (P-05's fund 5139282; the tariff is the site's pick, F-80, named in the terms block) */}
       <p className="max-w-measure text-sm text-muted-foreground">

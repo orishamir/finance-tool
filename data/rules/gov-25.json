@@ -1,0 +1,118 @@
+{
+  "id": "GOV-25",
+  "title": "Galil (גליל): a CPI-linked tradable government bond with a fixed coupon of at least 1%",
+  "title_he": "גליל: איגרת חוב ממשלתית סחירה צמודה למדד בריבית קבועה של 1% לפחות",
+  "text_he": "\"גליל\" הוא סוג נפרד של איגרת חוב ממשלתית סחירה צמודה למדד, שהונפקה לראשונה ב-31.12.1984, ואינו השם הקודם של \"אג\"ח ממשלתית צמודה\". לפי טבלת המאפיינים של החשב הכללי הריבית קבועה, לפי תשואת איגרות חוב צמודות בריבית קבועה לפי טווח הפדיון של הסדרה ולכל הפחות 1% לשנה, ומשולמת פעם בשנה. לפי תיקון התקנות משנת 2006 האיגרות נמכרות לעושי השוק הראשיים ולציבור במכרז או בהליך תחרותי ושוויוני אחר, ופדיון מוקדם נעשה בהליך תחרותי במחיר השוק. אם סדרת גליל עדיין נסחרת לא נאמר בדוחות החוב של 2024 ו-2025, ונוסח היסוד של התקנות מ-1980 לא נמצא.",
+  "figure_names_he": {
+    "coupon_min": "ריבית שנתית מזערית",
+    "interest_payments_per_year": "מספר תשלומי ריבית בשנה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "coupon_min": {
+      "value": 1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.gov.il/he/pages/govermental-bonds",
+        "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו, tab מאפייני אג״ח סחיר (updated 02.01.2011), row גליל",
+        "publisher": "Ministry of Finance (Accountant General)",
+        "strength": "primary",
+        "quote": "לכל הפחות 1% לשנה"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "GOV-25"
+      ],
+      "state": "sourced",
+      "notes": "Fixed coupon set by the yield of fixed-rate CPI-linked bonds for the series' term, at least 1% a year."
+    },
+    "interest_payments_per_year": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://www.gov.il/he/pages/govermental-bonds",
+        "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו, tab מאפייני אג״ח סחיר (updated 02.01.2011), row גליל",
+        "publisher": "Ministry of Finance (Accountant General)",
+        "strength": "primary",
+        "quote": "אחת לשנה"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "GOV-25"
+      ],
+      "state": "sourced",
+      "notes": "Interest is paid once a year."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "tab מאפייני אג״ח סחיר, table אג״ח צמוד מדד, row גליל",
+      "quote": "קבועה: על פי תשואת איגרות חוב צמודות למדד בריבית קבועה, בהתאם לטווח הפדיון של הסדרה. לכל הפחות 1% לשנה",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=10",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.408), reg. 2",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 408), תקנה 2",
+      "page": 10,
+      "quote": "איגרות החוב יימכרו לעושי השוק הראשיים ולכלל הציבור במכרז",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=10",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.408), reg. 5",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 408), תקנה 5",
+      "page": 10,
+      "quote": "ובמחיר השוק של האיגרת במועד שבו יתבצע הפדיון בפועל",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=10",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.408), regs. 3, 6-9",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 408), תקנות 3, 6-9",
+      "page": 10,
+      "checked": "2026-11-15"
+    }
+  ]
+}

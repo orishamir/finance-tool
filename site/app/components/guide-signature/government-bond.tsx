@@ -132,6 +132,10 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         <p className="text-muted-foreground">
+          {copy.bond.note.lead}{" "}
+          <Ruled prefix={copy.bond.note.prefix} id="BND-04">
+            {copy.bond.note.stated}
+          </Ruled>
           {copy.bond.note.before} <Term id="עמלה">{copy.bond.note.term}</Term> {copy.bond.note.after}
         </p>
         {every && linkage && (

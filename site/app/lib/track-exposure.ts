@@ -48,8 +48,11 @@ export function compactHoldings(h: Holdings | undefined, template: HoldingsTempl
   return out;
 }
 
-/** The rule both shares rest on (CAT-24: the exposure in plain words comes from the regulator's dated fields); a page that shows a share loads it for the share's sheet. */
-export const EXPOSURE_RULE_IDS = ["CAT-24"] as const;
+/**
+ * The rules both shares rest on (CAT-24: the exposure in plain words comes from the regulator's dated fields; CAT-44: those fields are total
+ * exposure, derivatives included, as the share's note says); a page that shows a share loads them for the share's sheet.
+ */
+export const EXPOSURE_RULE_IDS = ["CAT-24", "CAT-44"] as const;
 
 /**
  * One share as a computed site value over two sourced amounts. A share that cannot be computed is a value of null whose note says why:

@@ -38,7 +38,7 @@ export const content: GuideContent = {
         {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
         <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
           <Sentence size="sm">
-            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>, ואותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew && bandLowMax ? <>עד <Num value={feeFew} /> למי שעושה עד <Num value={bandLowMax} /> פעולות, </> : null}{feeMost && bandMidMin && bandMidMax ? <>עד <Num value={feeMost} /> מ־<Num value={bandMidMin} /> עד <Num value={bandMidMax} /> פעולות</> : null}{feeEach && bandMidMax ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל <Num value={bandMidMax} /></> : null}. <Ruled id="BANK-35">התקרות חלות על ״לקוח״ כפי שהחוק מגדיר אותו</Ruled>, ומי נחשב לקוח לעניין הזה, האתר לא מצא בכללים שקרא.
+            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>, ואותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew && bandLowMax ? <>עד <Num value={feeFew} /> למי שעושה עד <Num value={bandLowMax} /> פעולות, </> : null}{feeMost && bandMidMin && bandMidMax ? <>עד <Num value={feeMost} /> מ־<Num value={bandMidMin} /> עד <Num value={bandMidMax} /> פעולות</> : null}{feeEach && bandMidMax ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל <Num value={bandMidMax} /></> : null}. <Ruled id="BANK-54">התקרות חלות על כל יחיד שמחזיק חשבון</Ruled>, וגם על תאגיד שהוא עסק כפי שקבע הנגיד בכללים, לפי מחזור העסקים שלו.
           </Sentence>
         </Callout>
       </>
@@ -53,7 +53,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. המנהל המורשה יכול, באישור הנגיד, להעביר את נכסי הבנק והתחייבויותיו. אלה סמכויות שלהם, לא זכויות שלכם.
+          <Ruled id="BANK-23">אין בישראל חוק שמקים</Ruled> <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term> או ערבות של המדינה לפיקדונות בבנקים. אם בנק קורס, נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. המנהל המורשה יכול, באישור הנגיד, להעביר את נכסי הבנק והתחייבויותיו. אלה סמכויות שלהם, לא זכויות שלכם.
         </p>
         <Sentence measure>
           חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה{lapsed ? <> <Num value={lapsed} prefix="ב־" /></> : null}.
