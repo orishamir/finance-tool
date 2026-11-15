@@ -121,7 +121,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="TXK-10">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
+          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="TXK-10">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
         </Sentence>
       </>
     );
