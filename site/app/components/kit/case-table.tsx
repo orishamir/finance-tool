@@ -173,7 +173,8 @@ export function AddSlot({ add, className }: { add: AddSpec; className?: string }
 
 /**
  * The plus at the end of the column heads, or under the row heads, that adds a case, a step, a row or a column (`add`, its words spoken and
- * in its title): a knob always drawn, standing alone, so its press reaches 44 px both ways.
+ * in its title): a knob always drawn, standing alone, so its press reaches 44 px both ways. At the heads' end its column is that press's
+ * width: a press reaching past the table's edge would make the table scroll sideways by it.
  */
 function HeadAdd({ add, style, className }: { add: AddSpec; style: CSSProperties; className: string }) {
   return (
@@ -377,7 +378,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
               </div>
             );
           })}
-          {add && <HeadAdd add={add} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex items-center px-1" />}
+          {add && <HeadAdd add={add} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex min-w-target items-center justify-center" />}
           {insert && betweenOf(n, insert).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => (
@@ -531,7 +532,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
               </div>
             );
           })}
-          {addColumn && <HeadAdd add={addColumn} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex items-center px-1" />}
+          {addColumn && <HeadAdd add={addColumn} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex min-w-target items-center justify-center" />}
           {insertColumn && betweenOf(n, insertColumn).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => {

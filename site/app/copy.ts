@@ -2034,6 +2034,8 @@ export const feeDeal = {
       replacedIn: "{where}: מה שהיה ב״{what}״ הוחלף.",
       /** A case dropped on a grid's place no case holds. */
       movedCase: "המקרה עבר למקום הריק.",
+      /** Two cases of a grid that swapped places, one dropped on the other's cell. */
+      swappedCases: "שני המקרים החליפו מקומות.",
       /** A cell stretched back: where it left, and the line of what it took there ("בסניף: המינימום נמחק."). */
       shrunk: "{where}: {what}",
       part: { price: "המחיר נמחק.", min: "המינימום נמחק.", max: "המקסימום נמחק.", cap: "המקסימום באחוזים נמחק.", flat: "המחיר הקבוע לפעולה קטנה נמחק.", maxPerSecurity: "המקסימום לכל נייר ערך נמחק.", discount: "ההנחה נמחקה.", third: "העמלה של הצד השלישי נמחקה.", until: "השינוי במחיר נמחק.", offset: "הקיזוז נמחק.", refund: "ההחזר נמחק.", notes: "ההערות על המחיר נמחקו." },
