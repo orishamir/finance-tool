@@ -127,7 +127,7 @@ export function liftDrop(deal: FeeDeal, l: Lifted, on: LiftTarget, opts: { copy?
       // a case alone on its value of a side, onto another head of that side: its row or column moves there, as the head's own grip moves it
       if (whole && on.k === "value") return oneFee(deal, fee, aloneMoved(fee, l.cases[0]!, on.t, on.key));
       if (l.row !== WHOLE && isPartRow(l.row) && on.k === "cases") return headDrop(deal, fee, l.cases, l.row, on, !!opts.copy);
-      if (l.row !== WHOLE && isPartRow(l.row)) return partDrop(deal, fee, l.cases[0]!, l.row, on, !!opts.copy);
+      if (l.row !== WHOLE && isPartRow(l.row)) return partDrop(deal, fee, l.cases[0]!, l.row, on, !!opts.copy, l.cases.slice(1));
       return null;
     }
     case "part":
@@ -182,20 +182,26 @@ function aloneMoved(fee: Fee, id: string, t: number, at: string): Fee {
 
 const caseIn = (fee: Fee, id: string) => (hasCases(fee) ? fee.cases.find((c) => c.id === id) : undefined);
 
-/** A part row dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that fee takes it). */
-function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean): LiftResult | null {
+/**
+ * A part row dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that fee takes it).
+ * A line over several cases (`from` and `also`) leaves every one of them unless copied, so the part stands only where it was dropped.
+ */
+function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean, also: readonly string[] = []): LiftResult | null {
   if (on.k !== "case" && on.k !== "cell") return null;
   const to = on.k === "case" ? on.case : on.cases[0]!;
   if (on.fee === fee.id) {
     if (!hasCases(fee) || from === null || to === null || to === from) return null;
     // the case it lands on had that row's part: kept for the undo, which says what was replaced
     const had = cellHolds(caseIn(fee, to)!, row);
-    return oneFee(deal, fee, moveCell(fee, from, to, row, keep), had ? copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined);
+    const moved = moveCell(fee, from, to, row, keep);
+    return oneFee(deal, fee, keep ? moved : partOut(moved, also.filter((id) => id !== to), row), had ? copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined);
   }
   const other = feeOf(deal, on.fee);
   if (!other) return null;
   const moved = moveCellTo(fee, from, other, to, row, keep);
-  return moved ? { deal: updateFee(updateFee(deal, fee.id, () => moved.from), other.id, () => moved.to) } : null;
+  if (!moved) return null;
+  const left = keep ? moved.from : partOut(moved.from, also, row);
+  return { deal: updateFee(updateFee(deal, fee.id, () => left), other.id, () => moved.to) };
 }
 
 /** One note dropped on another case, of its fee or another: added to its notes, taken from its own case unless copied (`moveNoteTo`). */

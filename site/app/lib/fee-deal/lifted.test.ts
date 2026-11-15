@@ -97,6 +97,17 @@ describe("a lifted thing", () => {
     expect(undo(kept.deal, kept.undo!, null)!.deal).toEqual(deal());
   });
 
+  it("moves a part cell over several cases out of every one of them onto the case it drops on, and leaves them where copied", () => {
+    const l: Lifted = { k: "cell", fee: "fee-fx", cases: ["d1", "d2"], row: "min", along: 1 };
+    const on = { k: "case", fee: "fee-fx", case: "b1" } as const;
+    const priceOf = (d: FeeDeal, id: string) => fxOf(d).cases.find((c) => c.id === id)!.stages[0]!.price;
+    const r = liftDrop(deal(), l, on)!;
+    expect(priceOf(r.deal, "b1")).toEqual(action(0.175, 5));
+    expect([priceOf(r.deal, "d1"), priceOf(r.deal, "d2")]).toEqual([action(0.0875), action(0.1)]);
+    const c = liftDrop(deal(), l, on, { copy: true })!;
+    expect([priceOf(c.deal, "d1"), priceOf(c.deal, "d2")]).toEqual([action(0.0875, 5), action(0.1, 5)]);
+  });
+
   it("moves a grid's row among its rows, and swaps two things", () => {
     expect(byRank(fxOf(liftDrop(deal(), { k: "value", fee: "fee-fx", t: 0, key: '["branch"]', name: "בסניף" }, { k: "value", fee: "fee-fx", t: 0, key: '["direct"]' })!.deal).cases)[0]!.id).toBe("b0");
     expect(fxOf(liftDrop(deal(), { k: "thing", fee: "fee-fx", t: 0 }, { k: "thing", fee: "fee-fx", t: 1 })!.deal).by[0]!.kind).toBe("actionSize");
