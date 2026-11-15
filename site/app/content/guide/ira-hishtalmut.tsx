@@ -61,7 +61,7 @@ export const content: GuideContent = {
         <p className="max-w-measure">הסיכון כולו שלכם: אין ועדת השקעות, ורשות שוק ההון כותבת שהגמישות <Ruled id="IRA-26">עלולה לחשוף לסיכוני השקעה גדולים יותר</Ruled>.</p>
         <Sentence measure>התקנות <Ruled id="IRA-12">מגבילות ריכוז</Ruled>: עד {issuer ? <Num value={issuer} /> : null} מהקופה בתאגיד אחד, לא כולל <Term id="תעודות סל">תעודות סל</Term>, <Term id="קרן חוץ">קרנות חוץ</Term> <Term prefix="ו" id="איגרות חוב ממשלתיות">איגרות חוב ממשלתיות</Term>. החברה המנהלת <Ruled id="IRA-13">לא נוטלת אשראי</Ruled>, ואין מסחר במינוף מעבר למגבלת הבטוחות. חריגה שלא תוקנה <Ruled id="IRA-14">חוסמת את החשבון</Ruled>.</Sentence>
         <p className="max-w-measure">נכסי הקופה <Ruled id="REG-18">מוחזקים בנאמנות</Ruled>, בנפרד מרכוש החברה המנהלת, ואם היא קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>. מה קורה לניירות אם החברה או הברוקר קורסים, לא נמצא במקור.</p>
-        <p className="max-w-measure">היו אירועים: רשות שוק ההון מינתה <Term id="מנהל מורשה">מנהל מורשה</Term> לסלייס גמל, שמנהלת קופות אישיות, <Ruled id="IRA-28">אחרי כשלים שמצאה בביקורת</Ruled>.</p>
+        <p className="max-w-measure">האתר מצא מקרה אחד: רשות שוק ההון מינתה <Term id="מנהל מורשה">מנהל מורשה</Term> לסלייס גמל, שמנהלת קופות אישיות, <Ruled id="IRA-28">אחרי כשלים שמצאה בביקורת</Ruled>.</p>
         <p className="max-w-measure">מס זר שנוכה על דיבידנדים בתוך הקופה <Ruled id="TXK-18">הוא עלות</Ruled>.</p>
       </>
     );
