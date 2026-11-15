@@ -1,0 +1,70 @@
+{
+  "id": "BANK-42",
+  "title": "A bank may end a savings plan to set off your debt only on five conditions",
+  "title_he": "בנק רשאי לסיים תוכנית חיסכון כדי לקזז חוב רק בחמישה תנאים",
+  "text_he": "לפי הוראת ניהול בנקאי תקין 438 של בנק ישראל, גם כשלבנק יש זכות בחוזה לסיים תוכנית חיסכון, הוא משתמש בה בתום לב ובודק דרכים שמקטינות את הנזק ללקוח. הבנק רשאי לסיים תוכנית חיסכון כדי לקזז חוב רק כשמתקיימים כל התנאים: הזכות ניתנה בהסכם מפורש עם החוסך; בהסכם הובהר שסיום מוקדם עלול לגרום לאובדן ההטבות של התוכנית; הגיע המועד שבו מותר לחוסך למשוך לפי תנאי התוכנית; ללקוח ניתנה הזדמנות לפרוע את החוב בדרך אחרת; והבנק מימש קודם את הבטחונות הנזילים של הלקוח ודחייה עלולה להזיק לו, גם אם ייגרם ללקוח נזק של ממש. ההוראה עוסקת בקיזוז כנגד פיקדונות בתוכניות חיסכון, לא בשעבוד שלהם.",
+  "figure_names_he": {
+    "conditions_count": "מספר התנאים לסיום התוכנית לצורך קיזוז"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "conditions_count": {
+      "value": 5,
+      "unit": "count",
+      "source": {
+        "url": "https://www.boi.org.il/media/ekyp14cn/438.pdf#page=1",
+        "title": "הוראת ניהול בנקאי תקין 438: קיזוז כנגד תכניות חסכון, גרסה 2 (12/95), p.1, s.2(ב)",
+        "publisher": "Bank of Israel",
+        "strength": "primary",
+        "quote": "הזכות לסיים את התכנית הוקנתה לתאגיד הבנקאי בהסכם מפורש עם החוסך"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-42"
+      ],
+      "state": "sourced",
+      "notes": "All five conditions of s.2(ב)(1)-(5) must hold before a bank ends a savings plan to set off a debt."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/ekyp14cn/438.pdf",
+      "title": "הוראת ניהול בנקאי תקין 438: קיזוז כנגד תכניות חסכון, גרסה 2 (12/95)",
+      "title_he": "הוראת ניהול בנקאי תקין 438: קיזוז כנגד תכניות חסכון, גרסה 2 (12/95)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1, s.2(ב)",
+      "locator_he": "עמוד 1, סעיף 2(ב)",
+      "page": 1,
+      "quote": "הזכות לסיים את התכנית הוקנתה לתאגיד הבנקאי בהסכם מפורש עם החוסך",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.boi.org.il/media/ekyp14cn/438.pdf",
+      "title": "הוראת ניהול בנקאי תקין 438: קיזוז כנגד תכניות חסכון, גרסה 2 (12/95)",
+      "title_he": "הוראת ניהול בנקאי תקין 438: קיזוז כנגד תכניות חסכון, גרסה 2 (12/95)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1, s.2(ב)(5)",
+      "locator_he": "עמוד 1, סעיף 2(ב)(5)",
+      "page": 1,
+      "quote": "וזאת אפילו אם ייגרם נזק של ממש ללקוח",
+      "checked": "2026-11-15"
+    }
+  ]
+}

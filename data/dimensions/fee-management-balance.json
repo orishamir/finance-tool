@@ -10,6 +10,7 @@
     "checked": "2026-10-23"
   },
   "rule_ids": [
+    "BANK-54",
     "CAT-03",
     "CAT-04",
     "CAT-06",
