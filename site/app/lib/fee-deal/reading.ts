@@ -498,7 +498,8 @@ export function pickLine(r: DealRead): PickLine | null {
         add(stepPick(b.tops.at(-1)!.v, true), whenWords(fee, b.tops.length, t, r.today));
         return;
       }
-      // every value the thing keeps, in the page's order, one no case names among them: the fee is then not read (F-114)
+      // every value the thing keeps, in the page's order, one no case names among them: the fee is then not read, unless a case on any
+      // value of the thing holds it (F-114)
       for (const v of thingValues(fee, t)) add(v, whenWords(fee, [v], t, r.today));
     });
   }

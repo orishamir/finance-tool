@@ -97,11 +97,12 @@ export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: st
   });
   const kept = (id: string) => !banned.some((b) => b.fee === id);
   const copied = houses ? copiedFees(deal, houses) : {};
-  const fees = read.fees.filter((f) => kept(feeOf(f)) && feeInOrder(f) && feePriced(f, from)).map((f) => (copied[feeOf(f)] ? { ...f, from: copied[feeOf(f)] } : f));
-  const engine = engineDeal(deal, fees, read.picks);
   const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))].filter(kept);
   const unread = ids(read.fees.filter((f) => !feeInOrder(f)));
   const unpriced = ids(read.fees.filter((f) => feeInOrder(f) && !feePriced(f, from))).filter((id) => !unread.includes(id));
+  // a fee is read whole or not at all: a size read across sizes with one step out of order or not priced reads none of its steps (§10.6)
+  const fees = read.fees.filter((f) => kept(feeOf(f)) && !unread.includes(feeOf(f)) && !unpriced.includes(feeOf(f))).map((f) => (copied[feeOf(f)] ? { ...f, from: copied[feeOf(f)] } : f));
+  const engine = engineDeal(deal, fees, read.picks);
   return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month, copied };
 }
 

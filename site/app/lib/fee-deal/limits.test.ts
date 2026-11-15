@@ -1,7 +1,9 @@
 // What one deal may hold (limits.ts): every edit that would pass a limit refuses, leaves its fee as it was and says which limit it met;
 // a deal at every limit still opens (`readDeal`), and its link is refused where it would be too long to open.
 import { describe, expect, it } from "vitest";
-import { addBy, addCase, addCaseAt, addOwnPlace, addStep, addValues, copyCase, setStep, splitCase } from "./edits/case";
+import { addBy, addCase, addCaseAt, addOwnPlace, addStep, addValues, copyCase, removeCase, setStep, setWhen, splitCase } from "./edits/case";
+import { removeValue } from "./edits/arrange";
+import { valueKey } from "./layout";
 import { splitAt } from "./edits/stage";
 import { addFee, setPick } from "./edits/deal";
 import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX, dealBreach, feeBreach, held, metLimit, takeRefusal } from "./limits";
@@ -92,8 +94,18 @@ describe("an edit at a limit refuses", () => {
     const at = addValues(few, 0, ["עוד אחד"]) as CasesFee;
     expect(at.by[0]).toMatchObject({ values: { length: VALUES_MAX } });
     refused(at, addValues(at, 0, ["ועוד"]), "values");
-    // a saved deal that keeps more values with no case than that is not one the page wrote
-    expect(readDeal(JSON.parse(JSON.stringify(dealOf({ ...few, by: [{ kind: "own" as const, label: "ערוץ", values: [...Array.from({ length: VALUES_MAX + 1 }, (_, k) => `x${k}`)] }] }))))).toBeNull();
+  });
+  it("lets a deal whose cases name more than VALUES_MAX values take a case away or move one among its values, never keep one more", () => {
+    const many = withNamed(cases(VALUES_MAX + 2));
+    // a case taken away leaves its value kept with no case: the count stays, and the deal opens again
+    const fewer = removeCase(many, "c0") as CasesFee;
+    expect(fewer.by[0]).toMatchObject({ values: { length: VALUES_MAX + 2 } });
+    expect(roundTrip(dealOf(fewer))).not.toBeNull();
+    // a case moved to a value the thing keeps goes through; to a new value, the thing would keep one more
+    expect((setWhen(fewer, "c1", 0, ["v0"]) as CasesFee).cases.find((c) => c.id === "c1")!.when).toEqual([["v0"]]);
+    refused(fewer, setWhen(fewer, "c1", 0, ["חדש"]), "values");
+    // a value taken away by its head lowers the count, and goes through
+    expect((removeValue(fewer, 0, valueKey(["v0"])) as CasesFee).by[0]).toMatchObject({ values: { length: VALUES_MAX + 1 } });
   });
   it("adds no fee past FEES_MAX, and no pick past PICKS_MAX", () => {
     const full = dealOf(...Array.from({ length: FEES_MAX }, (_, k) => ({ ...newFee("own", `עמלה ${k}`), id: `fee-${k}` })));

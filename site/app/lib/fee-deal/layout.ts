@@ -11,7 +11,8 @@
 // cells hold alike, as one cell of that part row over them (`PartCell`). Down a grid's column only cells the person stretched there merge.
 // Read as rows (a band), a part one cell holds for every case of a table, or of a grid's row, is said once above them (`once`).
 // A list thing's values stand in the order it keeps them (`values`), a head of several values at the first of them, any value last; a
-// value no case names is a column of a table with no case, or a row or a column of a grid whose places no case holds.
+// value no case names is a column of a table with no case, or a row or a column of a grid whose places no case names (a case on any value
+// across still spans its row there).
 // The places where a case or a step is added are part of the layout. Pure, and blind to what the fee, its things and its parts are: it
 // reads only each case's values, each thing's values or whether it is a range, and each part's row and content.
 import type { When } from "./model";

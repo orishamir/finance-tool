@@ -161,7 +161,49 @@ describe("the reading of a value no case names (F-114)", () => {
   });
 });
 
+describe("a value no case names beside a case on any value (F-114)", () => {
+  it("is read at the price of the case on any value, which holds every pick", () => {
+    const fee: CasesFee = {
+      id: "fee-trade",
+      kind: "trade",
+      by: [{ kind: "channel", values: ["direct", "branch"] }],
+      cases: [
+        { id: "net", when: [["direct"]], stages: [{ price: rate(0.1) }] },
+        { id: "rest", when: ["any"], stages: [{ price: rate(0.4) }] },
+      ],
+    };
+    const r = readDealFor(dealOf(fee, [{ by: "channel", is: "branch" }]), data.kinds, TODAY);
+    expect(r.unmatched).toEqual([]);
+    expect(r.fees.map((f) => f.read?.case)).toEqual(["rest"]);
+  });
+});
+
+describe("a size read across sizes with a step whose price is not given (§10.6, F-115)", () => {
+  it("is not read at all, and is named once as not priced", () => {
+    const fee: CasesFee = {
+      id: "fee-trade",
+      kind: "trade",
+      by: [{ kind: "actionSize", unit: "ILS", tops: [typed(1000)] }],
+      cases: [
+        { id: "small", when: [0], stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] },
+        { id: "big", when: [1], stages: [{ price: rate(0.1) }] },
+      ],
+    };
+    const r = readDealFor(dealOf(fee), data.kinds, TODAY);
+    expect(r.fees).toEqual([]);
+    expect(r.unpriced).toEqual(["fee-trade"]);
+    expect(r.engine.fees).toEqual([]);
+  });
+});
+
 describe("the values on the device and in a link", () => {
+  it("leave out a value no case names that the site does not know any more, and keep refusing a case that names one", () => {
+    const raw = JSON.parse(JSON.stringify(dealOf(trade())));
+    raw.fees[0].by[0].values = ["tase", "gone", "makam", "us"];
+    expect(thingValues(feeIn(readDeal(raw)!), 0)).toEqual(["tase", "makam", "us"]);
+    raw.fees[0].cases[0].when[0] = ["gone"];
+    expect(readDeal(raw)).toBeNull();
+  });
   it("open a deal saved before things kept them with its cases' values, in the order the page showed them", () => {
     const old = JSON.parse(JSON.stringify(dealOf(trade())));
     for (const b of old.fees[0].by) delete b.values;
@@ -189,7 +231,6 @@ describe("the values on the device and in a link", () => {
   });
   it("refuse a value the thing cannot name, or one named twice", () => {
     const bad = (by: unknown) => readDeal({ ...JSON.parse(JSON.stringify(dealOf(trade()))), fees: [{ ...JSON.parse(JSON.stringify(trade())), by }] });
-    expect(bad([{ kind: "what", values: ["tase", "nowhere"] }, { kind: "channel", values: [] }])).toBeNull();
     expect(bad([{ kind: "what", values: ["tase", "tase"] }, { kind: "channel", values: [] }])).toBeNull();
     expect(bad([{ kind: "what", values: [] }, { kind: "channel", values: [""] }])).toBeNull();
   });

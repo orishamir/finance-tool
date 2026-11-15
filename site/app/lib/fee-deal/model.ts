@@ -14,7 +14,7 @@ import { BY_MAX, CONDITIONS, conditionsFor, isPlaceKind, isRangeKind, LIST_IDS, 
 
 export * from "./core";
 import { PART_ROWS } from "./part-rows";
-import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX, valuesOver } from "./limits";
+import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX } from "./limits";
 import { BOUND_CURRENCIES, MONTHS, NOTES, type BoundCurrency, type Discount, type Flat, type MonthKey, type Months, type Note, type Num, type Price, type Priced, type Side, type Sourced, type Stage, type Strength, type Third } from "./core";
 
 /** A value of what is bought or held that the person named, with where it is bought and its currency (null: a foreign one not named). */
@@ -27,7 +27,8 @@ export interface OwnPlace {
 /**
  * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency, a track, a condition) keeps its
  * values (`values`), in the order the page shows them, as the site's ids or in the person's words, apart from its cases: a value no case
- * names is a row or a column of places no case holds, and the reading prints no price for it. Every value a case names is among them. What
+ * names is a row or a column of places no case names, and the reading prints no price for it unless a case on any value of the thing
+ * holds it (F-114). Every value a case names is among them. What
  * is bought or held keeps where each value of the person's own is bought and its currency (`own`); a condition has a name (`label`). A
  * range has its tops (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps. Each thing's shape follows how
  * the conditions registry names its values (`ValuesOf`), so a new thing has one.
@@ -718,9 +719,11 @@ function readBy(raw: unknown, kind: FeeKindId): By | null {
           own.push(x);
         }
       }
-      const values = readValues(raw.values);
-      // what is bought or held names the site's values and those of the person's own it keeps (`own`)
-      if (!values || (isPlaceKind(k) && !values.every((v) => LIST_IDS[k].includes(v) || !!own?.some((o) => o.name === v)))) return null;
+      const read = readValues(raw.values);
+      if (!read) return null;
+      // what is bought or held names the site's values and those of the person's own it keeps (`own`): one it does not know any more is
+      // left out, as it holds no price (a value a case names keeps the case's rule, `readWhen`)
+      const values = isPlaceKind(k) ? read.filter((v) => LIST_IDS[k].includes(v) || !!own?.some((o) => o.name === v)) : read;
       return { kind: k, values, ...(own ? { own } : {}) } as By;
     }
   }
@@ -728,7 +731,8 @@ function readBy(raw: unknown, kind: FeeKindId): By | null {
 
 /**
  * A list thing's values as saved: absent in a deal saved before a thing kept its values (its cases then give them, `readFee`), else names
- * each once, none blank. Null where it is anything else. How many there may be is checked with the cases (`valuesOver`).
+ * each once, none blank, no more than its cases could name. Null where it is anything else. An edit keeps no more than `VALUES_MAX` past
+ * what the thing kept before it (`held`), so a deal saved with more, from its cases, opens with them.
  */
 function readValues(raw: unknown): string[] | null {
   if (raw === undefined) return [];
@@ -827,8 +831,7 @@ function readFee(raw: unknown): Fee | null {
     cases.push(x);
   }
   // a deal saved before a thing kept its values has them from its cases, in the order the page showed them (`withNamed`)
-  const fee = withNamed({ id: raw.id, kind, ...name, ...readRank(raw.rank), ...readHouse(raw.house), by, cases } as CasesFee);
-  return fee.by.some((_, t) => valuesOver(fee, t)) ? null : fee;
+  return withNamed({ id: raw.id, kind, ...name, ...readRank(raw.rank), ...readHouse(raw.house), by, cases } as CasesFee);
 }
 
 /** The reading's picks: each a thing's key and a value, no key twice; a pick of what is bought with its place and currency, both or neither. */
