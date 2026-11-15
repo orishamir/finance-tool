@@ -5286,19 +5286,19 @@ export const kit = {
       /** Ruled: sentences whose words state the sample rule (a capital gains tax withheld at source), with the words that open it. */
       ruled: {
         before: "במכירת ניירות ערך הבנק או חבר הבורסה",
-        words: "מנכים מס רווח הון במקור",
+        words: "מנכים מס רווחי הון במקור",
         prefixBefore: "הבנק גובה את המס",
         prefixWords: "ניכוי במקור",
         several: "שיעור המס",
         severalAfter: "תלוי בסוג הנכס ובמי שמחזיק בו",
-        severalName: "שיעור מס רווח הון",
+        severalName: "שיעור מס רווחי הון",
         beside: "על רווח של",
         besideMid: "גובים",
         /** A glossary row's name, so the sample term is one the site has. */
         besideTerm: "מס רווחי הון",
         besideAfter: "והבנק",
         besideWords: "מנכה אותו במקור",
-        termExplanation: "מס על הרווח ממכירה של נכס, כמו נייר ערך. דוגמה לעיצוב בלבד.",
+        termExplanation: "מס רווחי הון הוא המס על הרווח ממכירה של נכס, כמו נייר ערך. דוגמה לעיצוב בלבד.",
       },
       docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
       receipt: { title: "קבלה לדוגמה", stubNames: "חשבון לדוגמה + קרן לדוגמה", paid: "הפקדתם", added: "צמיחה לדוגמה", tax: "מס רווחי הון לדוגמה", account: "החשבון: חשבון לדוגמה", accountLine: "עמלה לדוגמה", rate: "0.1% מכל פעולה (דוגמה)", fund: "הקרן: קרן לדוגמה", fundFee: "דמי ניהול לדוגמה", left: "נשאר לכם", gain: "מה שנשאר, פחות מה שהפקדתם", bar: "מה ירד בדרך, לדוגמה" },
