@@ -10,6 +10,15 @@
     "by": [
      {
       "kind": "what",
+      "values": [
+       "tase",
+       "makam",
+       "mutualFunds",
+       "קרנות נאמנות מסורתיות",
+       "us",
+       "europe",
+       "world"
+      ],
       "own": [
        {
         "name": "קרנות נאמנות מסורתיות",
@@ -19,7 +28,11 @@
       ]
      },
      {
-      "kind": "track"
+      "kind": "track",
+      "values": [
+       "3 סנט למניה, מינימום 8$",
+       "11$ פיקס לעסקה"
+      ]
      }
     ],
     "cases": [
@@ -407,6 +420,14 @@
     "by": [
      {
       "kind": "what",
+      "values": [
+       "tase",
+       "makam",
+       "mutualFunds",
+       "us",
+       "europe",
+       "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל"
+      ],
       "own": [
        {
         "name": "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל",
@@ -416,7 +437,11 @@
       ]
      },
      {
-      "kind": "track"
+      "kind": "track",
+      "values": [
+       "סנט למניה, מינימום 7.5$ לעסקה",
+       "פיקס 12$ לעסקה"
+      ]
      }
     ],
     "cases": [
@@ -846,7 +871,11 @@
     "kind": "trade",
     "by": [
      {
-      "kind": "what"
+      "kind": "what",
+      "values": [
+       "us",
+       "europe"
+      ]
      }
     ],
     "cases": [
@@ -974,7 +1003,12 @@
     "kind": "custody",
     "by": [
      {
-      "kind": "held"
+      "kind": "held",
+      "values": [
+       "us",
+       "europe",
+       "world"
+      ]
      }
     ],
     "cases": [
@@ -1021,7 +1055,12 @@
     "kind": "fixed_period",
     "by": [
      {
-      "kind": "held"
+      "kind": "held",
+      "values": [
+       "us",
+       "europe",
+       "world"
+      ]
      }
     ],
     "cases": [
@@ -1124,7 +1163,12 @@
     "kind": "trade",
     "by": [
      {
-      "kind": "what"
+      "kind": "what",
+      "values": [
+       "tase",
+       "mutualFunds",
+       "us"
+      ]
      }
     ],
     "cases": [
@@ -1265,7 +1309,14 @@
     "kind": "custody",
     "by": [
      {
-      "kind": "held"
+      "kind": "held",
+      "values": [
+       "tase",
+       "mutualFunds",
+       "us",
+       "europe",
+       "world"
+      ]
      }
     ],
     "cases": [
@@ -1346,7 +1397,14 @@
     "kind": "transfer_out",
     "by": [
      {
-      "kind": "what"
+      "kind": "what",
+      "values": [
+       "tase",
+       "mutualFunds",
+       "us",
+       "europe",
+       "world"
+      ]
      }
     ],
     "cases": [
@@ -1393,7 +1451,12 @@
     "kind": "corporate_event",
     "by": [
      {
-      "kind": "what"
+      "kind": "what",
+      "values": [
+       "us",
+       "europe",
+       "world"
+      ]
      }
     ],
     "cases": [

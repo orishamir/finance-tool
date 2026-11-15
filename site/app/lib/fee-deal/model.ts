@@ -25,22 +25,63 @@ export interface OwnPlace {
 }
 
 /**
- * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency) names its values in the
- * cases, as the site's ids or in the person's words; what is bought or held keeps where each value of the person's own is bought and its
- * currency (`own`). A track's and a condition's values are the person's words; a condition has a name (`label`). A range has its tops
- * (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps. Each thing's shape follows how the conditions
- * registry names its values (`ValuesOf`), so a new thing has one.
+ * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency, a track, a condition) keeps its
+ * values (`values`), in the order the page shows them, as the site's ids or in the person's words, apart from its cases: a value no case
+ * names is a row or a column of places no case names, and the reading prints no price for it unless a case on any value of the thing
+ * holds it (F-114). Every value a case names is among them. What
+ * is bought or held keeps where each value of the person's own is bought and its currency (`own`); a condition has a name (`label`). A
+ * range has its tops (`tops`, in order, each above the one before) in a unit (`unit`); its cases name steps. Each thing's shape follows how
+ * the conditions registry names its values (`ValuesOf`), so a new thing has one.
  */
 export type By = { [K in ByKind]: ByOf<K> }[ByKind];
 type ByOf<K extends ByKind> =
   ValuesOf<K> extends { kind: "range" } ? { kind: K; unit: RangeUnit; tops: Num[] }
-  : ValuesOf<K> extends { kind: "own" } ? { kind: K; label: string }
-  : ValuesOf<K> extends { places: true } ? { kind: K; own?: OwnPlace[] }
-  : { kind: K };
+  : ValuesOf<K> extends { kind: "own" } ? { kind: K; label: string; values: string[] }
+  : ValuesOf<K> extends { places: true } ? { kind: K; values: string[]; own?: OwnPlace[] }
+  : { kind: K; values: string[] };
 
 /** A range thing of a fee. */
 export type RangeBy = Extract<By, { tops: Num[] }>;
 export const isRange = (b: By): b is RangeBy => isRangeKind(b.kind);
+
+/** A list thing of a fee: one whose values are named (`values`), every thing but a range. */
+export type ListBy = Exclude<By, RangeBy>;
+export const isList = (b: By): b is ListBy => !isRange(b);
+
+/** The values cases name of thing `t`, each once, in the order the cases as the page shows them (`byRank`) first name them. */
+export function namedValues(cases: readonly Case[], t: number): string[] {
+  const out: string[] = [];
+  for (const c of byRank(cases)) {
+    const w = c.when[t];
+    if (Array.isArray(w)) for (const v of w) if (!out.includes(v)) out.push(v);
+  }
+  return out;
+}
+
+/** Values in order with `more` after them, each once: a thing's values and those its cases name that it lacks. */
+const withMore = (values: readonly string[], more: readonly string[]): string[] => [...new Set([...values, ...more])];
+
+/**
+ * A fee whose list things hold every value its cases name (`values`): a value a case names that its thing lacks stands after the thing's
+ * values, in the order the cases name them. An edit that makes a case name a new value keeps the fee so.
+ */
+export function withNamed<F extends CasesFee>(fee: F): F {
+  let changed = false;
+  const by = fee.by.map((b, t) => {
+    if (!isList(b)) return b;
+    const values = withMore(b.values, namedValues(fee.cases, t));
+    if (values.length === b.values.length) return b;
+    changed = true;
+    return { ...b, values };
+  }) as By[];
+  return changed ? { ...fee, by } : fee;
+}
+
+/** The values of a fee's thing `t` in the page's order: a list thing's, with any its cases name that it lacks; none for a range. */
+export const thingValues = (fee: CasesFee, t: number): string[] => {
+  const b = fee.by[t];
+  return b && isList(b) ? withMore(b.values, namedValues(fee.cases, t)) : [];
+};
 
 /** A thing whose values say where they are bought and their currency: what is bought or held, with the values the person named (`own`). */
 export type PlaceBy = Extract<By, { kind: PlaceKind }>;
@@ -659,22 +700,44 @@ function readBy(raw: unknown, kind: FeeKindId): By | null {
       }
       return { kind: r, unit: raw.unit as RangeUnit, tops };
     }
-    case "own":
-      return str(raw.label, NAME_MAX) && raw.label.trim() !== "" ? { kind: "own", label: raw.label } : null;
-    case "track":
-      return { kind: "track" };
+    case "own": {
+      const values = readValues(raw.values);
+      return values && str(raw.label, NAME_MAX) && raw.label.trim() !== "" ? { kind: "own", label: raw.label, values } : null;
+    }
+    case "track": {
+      const values = readValues(raw.values);
+      return values ? { kind: "track", values } : null;
+    }
     case "list": {
-      if (!isPlaceKind(k) || raw.own === undefined) return { kind: k } as By;
-      if (!Array.isArray(raw.own) || raw.own.length === 0 || raw.own.length > VALUES_MAX) return null;
-      const own: OwnPlace[] = [];
-      for (const o of raw.own) {
-        const x = readOwnPlace(o);
-        if (!x || own.some((y) => y.name === x.name)) return null;
-        own.push(x);
+      let own: OwnPlace[] | undefined;
+      if (isPlaceKind(k) && raw.own !== undefined) {
+        if (!Array.isArray(raw.own) || raw.own.length === 0 || raw.own.length > VALUES_MAX) return null;
+        own = [];
+        for (const o of raw.own) {
+          const x = readOwnPlace(o);
+          if (!x || own.some((y) => y.name === x.name)) return null;
+          own.push(x);
+        }
       }
-      return { kind: k, own };
+      const read = readValues(raw.values);
+      if (!read) return null;
+      // what is bought or held names the site's values and those of the person's own it keeps (`own`): one it does not know any more is
+      // left out, as it holds no price (a value a case names keeps the case's rule, `readWhen`)
+      const values = isPlaceKind(k) ? read.filter((v) => LIST_IDS[k].includes(v) || !!own?.some((o) => o.name === v)) : read;
+      return { kind: k, values, ...(own ? { own } : {}) } as By;
     }
   }
+}
+
+/**
+ * A list thing's values as saved: absent in a deal saved before a thing kept its values (its cases then give them, `readFee`), else names
+ * each once, none blank, no more than its cases could name. Null where it is anything else. An edit keeps no more than `VALUES_MAX` past
+ * what the thing kept before it (`held`), so a deal saved with more, from its cases, opens with them.
+ */
+function readValues(raw: unknown): string[] | null {
+  if (raw === undefined) return [];
+  if (!Array.isArray(raw) || raw.length > CASES_MAX * VALUES_MAX || new Set(raw).size !== raw.length) return null;
+  return raw.every((v) => str(v, NAME_MAX) && v.trim() !== "") ? (raw as string[]) : null;
 }
 
 /**
@@ -767,7 +830,8 @@ function readFee(raw: unknown): Fee | null {
     if (!x || cases.some((y) => y.id === x.id)) return null;
     cases.push(x);
   }
-  return { id: raw.id, kind, ...name, ...readRank(raw.rank), ...readHouse(raw.house), by, cases };
+  // a deal saved before a thing kept its values has them from its cases, in the order the page showed them (`withNamed`)
+  return withNamed({ id: raw.id, kind, ...name, ...readRank(raw.rank), ...readHouse(raw.house), by, cases } as CasesFee);
 }
 
 /** The reading's picks: each a thing's key and a value, no key twice; a pick of what is bought with its place and currency, both or neither. */

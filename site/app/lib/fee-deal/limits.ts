@@ -15,7 +15,11 @@ export const STAGES_MAX = 12;
 export const CASES_MAX = 120;
 /** Tops of one range: thirteen steps. */
 export const TOPS_MAX = 12;
-/** Values a case names of one thing, and values of the person's own that a thing names. */
+/**
+ * Values a case names of one thing, values of the person's own that a thing names, and values a list thing keeps (`By.values`): an edit
+ * that makes a thing keep more than this, and more than it kept before (`held`), is refused. A deal saved before a thing kept its values
+ * may name more in its cases; it opens with them all, and an edit that keeps or lowers their count goes through.
+ */
 export const VALUES_MAX = 20;
 /** The reading's picks: one for each thing the deal's fees change by. */
 export const PICKS_MAX = 12;
@@ -27,6 +31,19 @@ export type Limit = "fees" | "stages" | "cases" | "tops" | "values" | "picks";
 export const LIMITS: Readonly<Record<Limit, number>> = { fees: FEES_MAX, stages: STAGES_MAX, cases: CASES_MAX, tops: TOPS_MAX, values: VALUES_MAX, picks: PICKS_MAX };
 
 const stagesOver = (x: { stages: readonly unknown[]; sale?: readonly unknown[] }): boolean => x.stages.length > STAGES_MAX || (x.sale?.length ?? 0) > STAGES_MAX;
+
+/**
+ * Whether `after` makes a list thing keep more values than it may: more than `VALUES_MAX`, and more than the same thing (by its place and
+ * kind) kept in `before`. A change that keeps or lowers a thing's count goes through, whatever it is.
+ */
+export function valuesGrew(before: Fee, after: Fee): boolean {
+  if (after.cases === undefined) return false;
+  return after.by.some((b, t) => {
+    if (!("values" in b) || b.values.length <= VALUES_MAX) return false;
+    const was = before.cases !== undefined ? before.by[t] : undefined;
+    return b.values.length > (was && was.kind === b.kind && "values" in was ? was.values.length : 0);
+  });
+}
 
 /** The first limit a fee passes, or null. */
 export function feeBreach(fee: Fee): Limit | null {
@@ -82,5 +99,6 @@ export const metLimit = (fee: Fee): Limit | null => marks.get(fee) ?? null;
 export function held<F extends Fee>(before: F, after: F): F {
   if (after === before) return after;
   const limit = feeBreach(after);
-  return limit && limit !== feeBreach(before) ? refuse(before, limit) : after;
+  if (limit && limit !== feeBreach(before)) return refuse(before, limit);
+  return valuesGrew(before, after) ? refuse(before, "values") : after;
 }

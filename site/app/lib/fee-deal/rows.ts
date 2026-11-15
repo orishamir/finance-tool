@@ -2,7 +2,7 @@
 // and its parts in short, a price that changes with time in one line; the fees to suggest; and each fee's facts beside its prices and its
 // standing against the cap now (the prices against the cap are the reading's law row, reading.ts). A component only lays them out.
 import { feeOf, inCurrency, picked, tradeCurrency } from "./cases";
-import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, type BoundCurrency, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
+import { feeInOrder, feePriced, hasCases, monthKey, pricedOf, thingValues, type BoundCurrency, type Case, type CasesFee, type Fee, type MonthKey, type Priced, type Stage } from "./model";
 import { feesOffered, type DataBar } from "./offers/offer";
 import type { BanSaid } from "./kinds";
 import { priceView, refOf, standingView, type DealRead, type FeeRef, type PriceView, type StandingView } from "./deal-read";
@@ -11,6 +11,7 @@ import { BY_MAX, type ByKind } from "./offers/conditions";
 import { insideFund } from "./values";
 import type { SiteValue } from "../value";
 import { stepBounds, type StepBounds } from "./band-layout";
+import { valueKey } from "./layout";
 import { firstCase, slimParts, thingName, whenWords, type SlimPart, type WhenWords } from "./case-words";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
@@ -85,7 +86,14 @@ export interface ThingPill {
  */
 export type FeeBlock =
   | { kind: "slim"; parts: SlimPart[]; open: boolean }
-  | { kind: "band"; things: ThingPill[]; rows: CaseRow[]; canAdd: boolean };
+  | {
+      kind: "band";
+      things: ThingPill[];
+      rows: CaseRow[];
+      canAdd: boolean;
+      /** Each thing's values no case names (`By.values`), by their key (`valueKey`), in words: the heads of a row or a column no case holds. */
+      unnamed: Record<string, WhenWords>[];
+    };
 
 export interface Builder {
   rows: BuilderRow[];
@@ -131,6 +139,12 @@ function lineParts(r: DealRead, fee: Fee, priced: Priced, caseId: string | undef
   return parts.map((x) => ({ ...x, words: { ...x.words, ...(x.words.figure ? { figure: signless(x.words.figure) } : {}), ...(x.words.second ? { second: signless(x.words.second) } : {}) } }));
 }
 
+/** The values of thing `t` no case names, by their key, in words (`FeeBlock`'s `unnamed`). */
+function unnamedOf(r: DealRead, fee: CasesFee, t: number): Record<string, WhenWords> {
+  const named = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) ? (c.when[t] as string[]) : [])));
+  return Object.fromEntries(thingValues(fee, t).filter((v) => !named.has(v)).map((v) => [valueKey([v]), whenWords(fee, [v], t, r.today)]));
+}
+
 /** A fee's things as the band's pills. */
 const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: thingName(fee.kind, b), picked: picked(fee, b) }));
 
@@ -145,7 +159,7 @@ function blockOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null
   const isOpen = open?.fee === fee.id;
   if (!hasCases(fee)) return { kind: "slim", parts: lineParts(r, fee, fee, undefined), open: isOpen };
   const openCase = isOpen ? (open!.case ?? fee.cases[0]!.id) : null;
-  return { kind: "band", things: pillsOf(fee), rows: fee.cases.map((c) => caseRow(r, fee, c, openCase)), canAdd: fee.by.length < BY_MAX };
+  return { kind: "band", things: pillsOf(fee), rows: fee.cases.map((c) => caseRow(r, fee, c, openCase)), canAdd: fee.by.length < BY_MAX, unnamed: fee.by.map((_, t) => unnamedOf(r, fee, t)) };
 }
 
 

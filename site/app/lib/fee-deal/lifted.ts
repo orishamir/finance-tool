@@ -7,9 +7,9 @@
 // Pure.
 import { feeDeal as copy } from "../../copy";
 import { hasCases, sameContent, type Fee, type FeeDeal, type When } from "./model";
-import { WHOLE } from "./layout";
+import { valueKey, WHOLE } from "./layout";
 import { isPartRow, type PartRow } from "./part-rows";
-import { moveCase, moveValue, orderFees, removeStep, removeValue, swapThings } from "./edits/arrange";
+import { moveCase, moveValue, orderFees, removeColumn, removeStep, removeValue, swapThings } from "./edits/arrange";
 import { cellHolds, cellMovesTo, clearCells, currencyClash, type CurrencyClash, type SumsIn, moveCell, moveCellTo, moveNoteTo, noteToCases, partAcross, partToCases, pricesOf, withPrices, withoutCell, withoutNote, type CellRow } from "./edits/cells";
 import type { Note } from "./core";
 import { removeCase, setWhen } from "./edits/case";
@@ -42,8 +42,11 @@ export type LiftTarget =
   | { k: "col"; fee: string; case: string }
   /** A grid's row or column head, by its value of thing `t`. */
   | { k: "value"; fee: string; t: number; key: string }
-  /** A grid's place no case holds: the value of thing `t` it is at, in the row of case `row`. */
-  | { k: "place"; fee: string; row: string; t: number; when: When }
+  /**
+   * A grid's place no case holds: the value of thing `t` it is at, and of the grid's other thing the value of case `row`'s, or `other`
+   * where it is given (a row or a column no case holds, whose value no case names).
+   */
+  | { k: "place"; fee: string; row: string; t: number; when: When; other?: When }
   /** A thing of a fee's band head. */
   | { k: "thing"; fee: string; t: number }
   /** A fee's card, by its group. */
@@ -100,9 +103,14 @@ export function liftDrop(deal: FeeDeal, l: Lifted, on: LiftTarget, opts: { copy?
   const fee = feeOf(deal, l.fee);
   if (!fee) return null;
   switch (l.k) {
-    case "col":
-      if (on.k !== "col" || on.fee !== l.fee || on.case === l.case || !hasCases(fee)) return null;
+    case "col": {
+      if (on.fee !== l.fee || !hasCases(fee)) return null;
+      // onto a column with no case (a value no case names): the column's value moves there
+      const c = fee.cases.find((x) => x.id === l.case);
+      if (on.k === "value" && c && on.t === 0 && fee.by.length === 1) return oneFee(deal, fee, moveValue(fee, 0, valueKey(c.when[0]!), on.key));
+      if (on.k !== "col" || on.case === l.case) return null;
       return oneFee(deal, fee, moveCase(fee, l.case, on.case));
+    }
     case "value":
       if (on.k !== "value" || on.fee !== l.fee || on.t !== l.t || on.key === l.key || !hasCases(fee)) return null;
       return oneFee(deal, fee, moveValue(fee, l.t, l.key, on.key));
@@ -135,12 +143,13 @@ export function liftDrop(deal: FeeDeal, l: Lifted, on: LiftTarget, opts: { copy?
 
 /**
  * A fee whose case `id` stands at a grid's place no case holds (`on`): its value of the place's thing is the place's, and of the other
- * of the grid's two things the row's (the case `on.row`'s). Left as it is where the case or the row's case is gone.
+ * of the grid's two things the place's `other`, else the row's (the case `on.row`'s). Left as it is where the case, or the row's case
+ * that gives the other value, is gone.
  */
 function intoPlace(fee: Fee, id: string, on: Extract<LiftTarget, { k: "place" }>): Fee {
-  const row = caseIn(fee, on.row);
-  if (!row || !caseIn(fee, id)) return fee;
-  return [0, 1].reduce((x, j) => (j === on.t ? setWhen(x, id, j, on.when) : setWhen(x, id, j, row.when[j]!)), fee);
+  const other = on.other ?? caseIn(fee, on.row)?.when[1 - on.t];
+  if (other === undefined || !caseIn(fee, id)) return fee;
+  return [0, 1].reduce((x, j) => setWhen(x, id, j, j === on.t ? on.when : other), fee);
 }
 
 const caseIn = (fee: Fee, id: string) => (hasCases(fee) ? fee.cases.find((c) => c.id === id) : undefined);
@@ -286,7 +295,7 @@ export function liftRemove(deal: FeeDeal, l: Lifted): LiftResult | null {
   const w = copy.cases.lifted;
   switch (l.k) {
     case "col":
-      return oneFee(deal, fee, removeCase(fee, l.case), copy.cases.caseRemoved);
+      return oneFee(deal, fee, removeColumn(fee, l.case), copy.cases.caseRemoved);
     case "step":
       return oneFee(deal, fee, removeStep(fee, l.t, l.step), w.step.replace("{name}", l.name));
     case "value":

@@ -19,7 +19,7 @@ const action = (rate: number, max?: Num): Price => ({ form: "action", rate: list
 const trade = (): CasesFee => ({
   id: "fee-t",
   kind: "trade",
-  by: [{ kind: "what" }, { kind: "channel" }],
+  by: [{ kind: "what", values: [] }, { kind: "channel", values: [] }],
   cases: [
     { id: "mw", when: [["makam"], ["direct"]], stages: [{ price: action(0.1, listed(6900)) }] },
     { id: "mb", when: [["makam"], ["branch"]], stages: [{ price: action(0.5, listed(7000)) }] },

@@ -1,7 +1,7 @@
 // Adding a thing a fee changes by, and a case's slot or a thing of the band opened (method §10.6, F-114): the question a thing asks once,
 // what adding it does to the cases, a slot's choices, and a thing's menu. Every word is from the copy; a component only lays them out.
 import { feeDeal as copy } from "../../copy";
-import { hasCases, isRange, namesPlaces, type Fee } from "./model";
+import { hasCases, isRange, namesPlaces, thingValues, type Fee } from "./model";
 import { canAddBy, ownKept, removeBy } from "./edits/case";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, CONDITIONS, isPlaceKind, isRangeKind, isWordsKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
@@ -97,8 +97,8 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
       return { kind: "own", title: thing, name: named[0] ?? null, any };
     case "list": {
       const ids = [...values.ids, ...(namesPlaces(b) && b.own ? b.own.map((o) => o.name) : [])];
-      // a value of the person's own a case names that the thing's list does not (a channel, a currency) is a choice too
-      for (const v of fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : []))) if (!ids.includes(v)) ids.push(v);
+      // a value of the person's own the thing keeps that its list does not (a channel, a currency) is a choice too
+      for (const v of thingValues(fee, t)) if (!ids.includes(v)) ids.push(v);
       return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: copy.cases.otherBy[b.kind] ?? copy.cases.otherValue };
     }
   }
@@ -107,7 +107,8 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
 // ---------------------------------------------------------------- a thing of the band's head, opened
 
 /**
- * A thing of a fee's band head, opened while the fee is open: its spoken name, its values as the cases name them, each once in the cases' order; the action
+ * A thing of a fee's band head, opened while the fee is open: its spoken name, its values as the cases name them, each once in the cases' order,
+ * then each value it keeps that no case names (`By.values`); the action
  * that stops the price changing by it (`removeBy`); and what that does to the cases (`after`): how many there are before and after where
  * cases merge, that they stay as they are where none merge, or that the fee keeps one case's price where it was its only thing; whose
  * price a merged case keeps, the person's track's or the first case's, as `removeBy` keeps it (`ownKept`).
@@ -135,6 +136,8 @@ export function thingMenu(r: DealRead, feeId: string, t: number): ThingMenu | nu
     seen.add(key);
     values.push(whenWords(fee, c.when[t]!, t, r.today));
   }
+  const named = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) ? (c.when[t] as string[]) : [])));
+  for (const v of thingValues(fee, t)) if (!named.has(v)) values.push(whenWords(fee, [v], t, r.today));
   const left = removeBy(fee, t);
   const from = fee.cases.length;
   const to = hasCases(left) ? left.cases.length : 1;
