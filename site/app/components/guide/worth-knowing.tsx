@@ -1,5 +1,6 @@
-// "שווה לדעת" (synthesis 3.7): two or three pinned facts per wrapper guide page, each the rule's Hebrew title,
-// its first figure, D48's chip ("חוקים וכללים · 1", which opens the rule's card) and the weak-strength tag, as cards side by side with the figure as the card's headline.
+// "שווה לדעת" (synthesis 3.7): two or three pinned facts per wrapper guide page, each the rule's Hebrew title, its first figure and
+// the weak-strength tag, as cards side by side with the figure as the card's headline. The figure opens the rule from its sheet; a card
+// with no figure has its title open the rule's card (D116).
 // Nothing renders when no row can be shown.
 //
 // current-account page: a row can also be a fact computed from the published records, not a rule
@@ -11,7 +12,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { guideWorth as copy, provenance as provCopy } from "../../copy";
 import { figureYear, ruleFigure, type SiteValue } from "../../lib/value";
 import { wordUnits } from "../../lib/rule-row";
-import { Num, RuleRef, StrengthLabel } from "../provenance";
+import { Num, Ruled, StrengthLabel } from "../provenance";
 import { Card } from "../kit";
 import { GuideSection } from "./sections";
 
@@ -95,11 +96,12 @@ export function WorthKnowing({ rows, facts = [], abroad }: { rows: WorthRow[]; f
                   )}
                 </span>
               )}
-              <span>{r.title}</span>
-              <span className="mt-auto flex flex-wrap items-center gap-x-2">
-                <RuleRef id={r.id} />
-                {r.weak && <StrengthLabel strength={r.weak} />}
-              </span>
+              <span>{r.figure ? r.title : <Ruled id={r.id}>{r.title}</Ruled>}</span>
+              {r.weak && (
+                <span className="mt-auto flex flex-wrap items-center gap-x-2">
+                  <StrengthLabel strength={r.weak} />
+                </span>
+              )}
             </Card>
           </li>
         ))}

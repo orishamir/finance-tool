@@ -13,7 +13,7 @@ import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
-import { Num, ReadingTag, RulesLine, Term } from "../provenance";
+import { Num, ReadingTag, Ruled, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
@@ -354,7 +354,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           {/* F-47 taxes the whole nominal gain, its linkage part too: for an employee that part is the site's reading (TXH-13) */}
           {n.e && (
             <Sentence size="sm">
-              {story.early.linkage} <ReadingTag />
+              {story.early.linkage.before} <Ruled id="TXH-13">{story.early.linkage.stated}</Ruled>
+              {story.early.linkage.after} <ReadingTag />
             </Sentence>
           )}
         </div>
@@ -378,7 +379,6 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           </p>
         )}
       </div>
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
   // the notes follow one another and only the card keeps its size: its room is the longest notes of either kind of work, so what is under the card stays where it is

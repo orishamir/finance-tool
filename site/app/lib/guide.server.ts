@@ -274,7 +274,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   extraRuleIds.forEach((r) => cited.add(r));
   // the companies' own terms the record names where a property is each company's (D30): their records give the guide's "תלוי בחברה" links
   for (const refs of Object.values(record.company_terms ?? {})) refs.forEach((r) => cited.add(companyTermRule(r)));
-  // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
+  // rules the prose module cites (<Ruled>, figure(...), and any chip still there): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   bundle?.rules.forEach((r) => cited.add(r.id));
   // the rules the visual cites and the ones the other wrappers' runs it shows read (their number sheets list them)

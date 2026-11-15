@@ -5,7 +5,7 @@
 import { useLoaderData } from "react-router";
 import { notCovered as copy, provenance } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
+import { Ruled, RuleTitleRow, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Disclosure, DocLink, LinkButton, PageHead, RowList, Section, Tpl, fill, gershayim, When } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
@@ -44,6 +44,19 @@ function OpenLine({ s, titles }: { s: GraduationStatusView; titles: Record<strin
   return <p className="text-sm text-muted-foreground max-w-measure">{text}</p>;
 }
 
+/** A list whose rows are the rules themselves, each by its title (D101). */
+function RuleList({ ids }: { ids: readonly string[] }) {
+  return (
+    <ul className="flex flex-col">
+      {ids.map((id) => (
+        <li key={id} className="border-t border-border first:border-t-0">
+          <RuleTitleRow id={id} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /** The fold: the questions still open when there are several, what part of a question is answered, the questions already answered, the
  * sentence's source in full and the rules collected. No date of when an answer was found: that is the work's record, not the reader's. */
 function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; titles: Record<string, string> }) {
@@ -62,15 +75,15 @@ function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; ti
         </section>
       )}
       {narrowed.map((o) => (
-        <p key={o.code} className="text-sm flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>{copy.narrowed}</span>
-          <RulesChip ids={[o.narrowedBy!]} />
-        </p>
+        <section key={o.code} className="flex flex-col gap-1 text-sm">
+          <p>{copy.narrowed}</p>
+          <RuleList ids={[o.narrowedBy!]} />
+        </section>
       ))}
       {institution.map((o) => (
-        <p key={o.code} className="text-sm text-caution-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>{copy.institution}</span>
-          <RuleRef id={o.institutionAnswer!.ruleId} />
+        <p key={o.code} className="text-sm text-caution-foreground">
+          <Ruled id={o.institutionAnswer!.ruleId}>{copy.institution.stated}</Ruled>
+          {copy.institution.after}
         </p>
       ))}
       {s.closed.length > 0 && (
@@ -78,9 +91,8 @@ function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; ti
           <h3 className="text-sm text-muted-foreground">{copy.answeredHeading}</h3>
           <ul className="flex flex-col gap-1">
             {s.closed.map((c, i) => (
-              <li key={`${c.ruleIds.join(" ")}-${i}`} className="text-sm flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span>{copy.answeredTopics[s.id]?.[c.ruleIds.join(" ")] ?? ""}</span>
-                <RulesChip ids={c.ruleIds} />
+              <li key={`${c.ruleIds.join(" ")}-${i}`} className="text-sm">
+                <Ruled id={c.ruleIds}>{copy.answeredTopics[s.id]?.[c.ruleIds.join(" ")] ?? ""}</Ruled>
               </li>
             ))}
           </ul>
@@ -100,7 +112,12 @@ function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; ti
           </span>
         </section>
       )}
-      {r.ruleIds.length > 0 && <RulesLine ids={r.ruleIds} lead={copy.rulesLead} />}
+      {r.ruleIds.length > 0 && (
+        <section className="flex flex-col gap-1 text-sm">
+          <h3 className="text-muted-foreground">{copy.rulesLead}</h3>
+          <RuleList ids={r.ruleIds} />
+        </section>
+      )}
     </div>
   );
 }

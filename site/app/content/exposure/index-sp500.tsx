@@ -1,11 +1,11 @@
 // Exposure prose for מדד S&P 500 (flows 6.6). Written from the rule base (ETF, TXS, TXF, CAT, IRA,
 // BRK). The index itself is explained from S&P Dow Jones Indices' own index page and methodology (ETF-37 to
-// ETF-40; product.md D18). Each block ends with the rules it rests on. The index maker's entry conditions and a
+// ETF-40; product.md D18). The words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet. The index maker's entry conditions and a
 // fund's tracking asset are behind folds: only a specialist needs them. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import type { GlanceItem } from "../../components/guide/sections";
 import { GuideFold as Fold, RuleRows } from "../../components/guide/sections";
-import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { KeyValueList, ProseList, Section, Sentence, Tag, When } from "../../components/kit";
 import { fmt } from "../../lib/format";
 
@@ -27,15 +27,14 @@ export const content: ExposureContent = {
     const versions = figure("ETF-40", "return_versions");
     return (
       <>
-        <p className="max-w-measure">עורך המדד, S&P Dow Jones Indices, מתאר את S&P 500 כמדד הייחוס הטוב ביותר למניות הגדולות בארצות הברית.</p>
+        <p className="max-w-measure">עורך המדד, S&P Dow Jones Indices, מתאר את S&P 500 <Ruled prefix="כ" id="ETF-37">מדד הייחוס הטוב ביותר</Ruled> למניות הגדולות בארצות הברית.</p>
         <Sentence measure>
           במדד {companies ? <Num value={companies} /> : null} חברות מובילות. יחד הן מכסות בערך {coverage ? <Num value={coverage} /> : null} משווי השוק הזמין להשקעה.
         </Sentence>
-        <p className="max-w-measure">משקל כל חברה הוא שווי השוק של מניותיה שבידי הציבור, בלי תקרה למניה אחת. המדד מחושב בדולרים.</p>
+        <p className="max-w-measure">משקל כל חברה הוא שווי השוק של מניותיה שבידי הציבור, <Ruled id="ETF-39">בלי תקרה למניה אחת</Ruled>. המדד מחושב בדולרים.</p>
         <p className="max-w-measure">
-          הכסף מושקע, דרך קרן, במניות של חברות אמריקאיות לפי המדד, ובדולר, אלא אם הקרן <Term id="מגודרות מט&quot;ח">מנוטרלת מט״ח</Term>.
+          הכסף מושקע, דרך קרן, במניות של חברות אמריקאיות לפי המדד, <Ruled prefix="ו" id="ETF-10">בדולר</Ruled>, אלא אם הקרן <Term id="מגודרות מט&quot;ח">מנוטרלת מט״ח</Term>.
         </p>
-        <RulesLine ids={["ETF-37", "ETF-39", "ETF-10"]} />
 
         <Section as="div" level="card" heading="h3" title="הגרסאות של המדד">
           <Sentence measure>
@@ -59,12 +58,10 @@ export const content: ExposureContent = {
               },
             ]}
           />
-          <RulesLine ids={["ETF-40"]} />
           <Fold label="אחרי מה בדיוק עוקבת קרן ישראלית">
             <p className="max-w-measure">
-              <Term prefix="ה" id="נכס מעקב">נכס המעקב</Term> של קרן ישראלית על המדד הוא ״S&P 500 100%, דולר ארה״ב 100%״, בגרסת תשואה כוללת נטו, אלא אם הקרן מנוטרלת מט״ח.
+              <Term prefix="ה" id="נכס מעקב">נכס המעקב</Term> של קרן ישראלית על המדד הוא ״S&P 500 100%, דולר ארה״ב 100%״, בגרסת תשואה כוללת נטו, <Ruled id="ETF-10">אלא אם הקרן מנוטרלת מט״ח</Ruled>.
             </p>
-            <RulesLine ids={["ETF-10"]} />
           </Fold>
         </Section>
 
@@ -83,11 +80,10 @@ export const content: ExposureContent = {
               "רווח חשבונאי חיובי ברבעון האחרון ובארבעת הרבעונים האחרונים יחד",
             ]}
           />
-          <p className="max-w-measure">ועדת מדדים בוחרת את ההרכב לפי התנאים האלה ולפי איזון בין ענפים. מספר החברות קבוע.</p>
+          <p className="max-w-measure">ועדת מדדים בוחרת את ההרכב לפי התנאים האלה ולפי איזון בין ענפים. <Ruled id="ETF-38">מספר החברות קבוע</Ruled>.</p>
           <Sentence measure>
-            הוועדה מחליפה חברות לפי הצורך, בהודעה של לפחות {notice ? <Num value={notice} /> : null} ימי עסקים מראש. מספרי המניות מתעדכנים פעם ברבעון.
+            הוועדה מחליפה חברות לפי הצורך, בהודעה של לפחות {notice ? <Num value={notice} /> : null} ימי עסקים מראש. מספרי המניות <Ruled id="ETF-39">מתעדכנים פעם ברבעון</Ruled>.
           </Sentence>
-          <RulesLine ids={["ETF-38", "ETF-39"]} />
         </Fold>
       </>
     );
@@ -108,8 +104,7 @@ export const content: ExposureContent = {
                   <Term prefix="ב" id="חשבון ניירות ערך">חשבון ניירות ערך</Term> <Term prefix="וב" id="קופת גמל בניהול אישי">ניהול אישי</Term>
                 </>
               ),
-              value: "בוחרים את הקרן בעצמכם.",
-              rules: ["IRA-11", "TXK-17"],
+              value: <><Ruled id="IRA-11">בוחרים את הקרן בעצמכם</Ruled>.</>,
             },
             {
               id: "track",
@@ -121,10 +116,9 @@ export const content: ExposureContent = {
               ),
               line: (
                 <>
-                  בתוך קופה, רווחים ודיבידנדים של המסלול פטורים ממס בישראל כל עוד הכסף בפנים. המס נקבע <Term prefix="ב" id="משיכה">משיכה</Term> לפי סוג הקופה. בקרן השתלמות המשיכה פטורה אחרי {lock ? <Num value={lock} /> : null} שנים על רווחי ההפקדות עד התקרה. רווח על הפקדה מעל התקרה ממוסה במס הכנסה של עד {top ? <Num value={top} /> : null} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>, כלומר מהרווח <Term prefix="ה" id="נומינלי">נומינלי</Term> בניכוי <Term prefix="ה" id="אינפלציה">אינפלציה</Term> <RuleRef id="TXH-11" end="." /> מס אמריקאי שנוכה מדיבידנד בתוך קופה הוא עלות, ואין מקור שאומר אם אפשר להקטין אותו <IdRef id="TXK OQ7" end="." />
+                  בתוך קופה, רווחים ודיבידנדים של המסלול <Ruled id={["TXK-03", "TXH-18", "TXP-13"]}>פטורים ממס בישראל כל עוד הכסף בפנים</Ruled>. המס נקבע <Term prefix="ב" id="משיכה">משיכה</Term> לפי סוג הקופה. בקרן השתלמות <Ruled id="TXH-09">המשיכה פטורה</Ruled> אחרי {lock ? <Num value={lock} /> : null} שנים על רווחי ההפקדות עד התקרה. רווח על הפקדה מעל התקרה <Ruled id="TXH-11">ממוסה במס הכנסה</Ruled> של עד {top ? <Num value={top} /> : null} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>, כלומר מהרווח <Term prefix="ה" id="נומינלי">נומינלי</Term> בניכוי <Term prefix="ה" id="אינפלציה">אינפלציה</Term>. מס אמריקאי שנוכה מדיבידנד בתוך קופה <Ruled id="TXK-18">הוא עלות</Ruled>, ואין מקור שאומר אם אפשר להקטין אותו <IdRef id="TXK OQ7" end="." />
                 </>
               ),
-              rules: ["CAT-10", "CAT-17", "CAT-18", "CAT-24", "TXK-03", "TXK-18", "TXH-09", "TXH-11", "TXH-18", "TXP-13"],
             },
           ]}
         />
@@ -141,15 +135,14 @@ export const content: ExposureContent = {
                 ),
                 value: (
                   <>
-                    שתיהן <Term id="קרן נאמנות">קרנות נאמנות</Term> ישראליות. קרן ישראלית על מדד זר משיגה את החשיפה בדרך כלל דרך <Term id="עסקת החלף שאינה במימון">עסקת החלף</Term>.
+                    שתיהן <Term id="קרן נאמנות">קרנות נאמנות</Term> ישראליות. קרן ישראלית על מדד זר <Ruled id="ETF-11">משיגה את החשיפה בדרך כלל</Ruled> דרך <Term id="עסקת החלף שאינה במימון">עסקת החלף</Term>.
                   </>
                 ),
                 line: (
                   <>
-                    בקרן ישראלית <Term id="קרן נאמנות פטורה">פטורה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term> של עד {rate ? <Num value={rate} /> : null} מהרווח הריאלי <Term prefix="ב" id="מכירה">מכירה</Term>. הרווח הריאלי של קרן שקלית נמדד מול <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>, כך שגם עליית הדולר ממוסה.
+                    בקרן ישראלית <Term id="קרן נאמנות פטורה">פטורה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term> של עד {rate ? <Num value={rate} /> : null} מהרווח הריאלי <Term prefix="ב" id="מכירה">מכירה</Term>. הרווח הריאלי של קרן שקלית נמדד מול <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>, <Ruled id="TXS-14">כך שגם עליית הדולר ממוסה</Ruled>.
                   </>
                 ),
-                rules: ["ETF-01", "ETF-04", "ETF-11", "TXS-09", "TXS-13", "TXS-14"],
               },
               {
                 id: "foreign-tase",
@@ -158,8 +151,7 @@ export const content: ExposureContent = {
                     <Term id="קרן חוץ">קרן חוץ</Term> שרשומה למסחר בתל אביב
                   </>
                 ),
-                value: <Sentence as="span">אחת מ־{onTase ? <Num value={onTase} /> : null} קרנות החוץ שנסחרו בתל אביב{onTase?.effective_from ? <> <When iso={onTase.effective_from} lead="ב־" /></> : null}, על מדדים שונים. קונים אותה רק בבורסה.</Sentence>,
-                rules: ["ETF-32", "ETF-26"],
+                value: <Sentence as="span">אחת מ־{onTase ? <Num value={onTase} /> : null} קרנות החוץ שנסחרו בתל אביב{onTase?.effective_from ? <> <When iso={onTase.effective_from} lead="ב־" /></> : null}, על מדדים שונים. <Ruled id="ETF-26">קונים אותה רק בבורסה</Ruled>.</Sentence>,
               },
               {
                 id: "foreign",
@@ -173,15 +165,17 @@ export const content: ExposureContent = {
                     קונים אותה דרך <Term id="ברוקר">ברוקר</Term>. היא מחזיקה את המניות עצמן.
                   </>
                 ),
-                line: "בקרן זרה הרווח נמדד מול שער הדולר. דיבידנד מחברה אמריקאית נושא מס אמריקאי שמתקזז מהמס בישראל.",
-                rules: ["ETF-11", "ETF-28", "TXF-03", "TXF-04", "TXF-08", "TXF-12", "TXF-13", "TXF-16"],
+                line: (
+                  <>
+                    בקרן זרה <Ruled id="TXF-03">הרווח נמדד מול שער הדולר</Ruled>. דיבידנד מחברה אמריקאית <Ruled id="TXF-12">נושא מס אמריקאי</Ruled> <Ruled id="TXF-08">שמתקזז מהמס בישראל</Ruled>.
+                  </>
+                ),
               },
             ]}
           />
           <p className="max-w-measure">
-            <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> מפרסמת ממוצע שנתי של דמי הניהול של קרנות סל על מניות חו״ל. הוא מופיע בקישור שבכרטיס הכלל. כל קרן קובעת לעצמה את דמי הניהול, ויש גם <Term id="עמלת יצירה ופדיון">עמלת יצירה ופדיון</Term>, <Term id="דמי ניהול משתנים">דמי ניהול משתנים</Term> <Term prefix="ו" id="הפרש עקיבה">הפרש עקיבה</Term>.
+            <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> <Ruled id="ETF-17">מפרסמת ממוצע שנתי של דמי הניהול</Ruled> של קרנות סל על מניות חו״ל. הוא מופיע בקישור שבכרטיס הכלל. <Ruled id="ETF-13">כל קרן קובעת לעצמה את דמי הניהול</Ruled>, ויש גם <Term id="עמלת יצירה ופדיון">עמלת יצירה ופדיון</Term>, <Term id="דמי ניהול משתנים">דמי ניהול משתנים</Term> <Term prefix="ו" id="הפרש עקיבה">הפרש עקיבה</Term>.
           </p>
-          <RulesLine ids={["ETF-17", "ETF-05", "ETF-13", "ETF-14", "ETF-09"]} />
         </Section>
       </>
     );
@@ -189,18 +183,17 @@ export const content: ExposureContent = {
   risks: () => (
     <>
       <p className="max-w-measure">
-        השווי עולה ויורד עם מניות החברות שבמדד ועם שער הדולר. שני הדברים יכולים לרדת יחד. מחיר קרן סל בבורסה במהלך היום יכול להיות שונה משווי הנכסים שלה, ובמסחר בתל אביב כשוול סטריט סגורה הפער גדל.
+        השווי עולה ויורד עם מניות החברות שבמדד ועם שער הדולר. שני הדברים יכולים לרדת יחד. מחיר קרן סל בבורסה במהלך היום <Ruled id="ETF-06">יכול להיות שונה משווי הנכסים שלה</Ruled>, ובמסחר בתל אביב כשוול סטריט סגורה הפער גדל.
       </p>
       <p className="max-w-measure">
-        קרן ישראלית שמחזיקה חוזי החלף נושאת סיכון של הצד השני לעסקה. קרן יכולה להתפרק בהודעה מראש, ומנהל רשאי להעלות <Term id="דמי ניהול">דמי ניהול</Term> בתחילת שנה.
+        קרן ישראלית שמחזיקה חוזי החלף <Ruled id="ETF-11">נושאת סיכון של הצד השני לעסקה</Ruled>. קרן יכולה <Ruled id="ETF-21">להתפרק בהודעה מראש</Ruled>, ומנהל <Ruled id="ETF-14">רשאי להעלות</Ruled> <Term id="דמי ניהול">דמי ניהול</Term> בתחילת שנה.
       </p>
       <p className="max-w-measure">
-        קרן חוץ וקרן זרה אינן בפיקוח רשות ניירות ערך. הנספח הישראלי של קרן חוץ חייב לומר זאת. קרן זרה הרשומה בארצות הברית חושפת את העיזבון למס עיזבון אמריקאי.
+        קרן חוץ וקרן זרה <Ruled id="ETF-24">אינן בפיקוח רשות ניירות ערך</Ruled>. הנספח הישראלי של קרן חוץ חייב לומר זאת. קרן זרה הרשומה בארצות הברית <Ruled id="TXF-27">חושפת את העיזבון למס עיזבון אמריקאי</Ruled>.
       </p>
       <p className="max-w-measure">
-        קרן זרה צוברת, שאינה מחלקת, ממוסה לפי קריאה שעוד לא אושרה במקור רשמי, וזו שאלה פתוחה <IdRef id="TXF OQ1" end="." /> מגבלות אירופיות על קנייה של קרנות אמריקאיות אצל ברוקר באירופה לא נבדקו, וזו שאלה פתוחה <IdRef id="ETF OQ11" end="." />
+        קרן זרה צוברת, שאינה מחלקת, <Ruled id="TXF-11">ממוסה לפי קריאה שעוד לא אושרה במקור רשמי</Ruled>, וזו שאלה פתוחה <IdRef id="TXF OQ1" end="." /> מגבלות אירופיות על קנייה של קרנות אמריקאיות אצל ברוקר באירופה לא נבדקו, וזו שאלה פתוחה <IdRef id="ETF OQ11" end="." />
       </p>
-      <RulesLine ids={["ETF-06", "ETF-11", "ETF-21", "ETF-14", "ETF-22", "ETF-24", "TXF-27", "TXF-11"]} />
     </>
   ),
   termIds: ["נכס מעקב", "דיבידנד", "מגודרות מט\"ח", "קרן סל", "קרן מחקה פתוחה", "קרן חוץ", "קרן זרה", "עסקת החלף שאינה במימון", "דמי ניהול משתנים", "הפרש עקיבה", "קרן נאמנות פטורה", "מס רווחי הון", "מדד המחירים לצרכן", "S&P 500", "עוקב מדד S&P 500", "פרופיל חשיפה", "מספר בורסה", "ISIN", "TER", "UCITS", "קרן שאינה מחלקת", "קרן מחלקת", "טופס W-8BEN", "רשות ניירות ערך", "דמי ניהול", "נומינלי", "משיכה", "הרווח הריאלי", "חברה מנהלת", "קרן פנסיה", "קרן השתלמות", "קופת גמל להשקעה", "תגמולים ואישית לפיצויים", "קופת גמל בניהול אישי", "עמלת יצירה ופדיון", "קרן נאמנות", "חשבון ניירות ערך", "ניכוי מס במקור", "בורסה", "מכירה"],

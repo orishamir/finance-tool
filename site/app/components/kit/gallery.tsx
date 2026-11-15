@@ -1575,7 +1575,7 @@ function Lists({ today }: { today: string }) {
   return (
     <LabelSheetHost>
       <Demo name="FeeFigure, FeeWordsNote" use={g.uses.ProductTable}>
-        <State label="a fee: its number, one the fund does not have, one not collected; the note says what the two words mean" wide>
+        <State label="a fee: its number, one the fund does not have, one not collected; the note says what the two words mean, and its words that state a rule open it (Ruled)" wide>
           <ProductFigures items={[{ id: "a", figure: <FeeFigure value={s.rate} />, word: p.figure }, { id: "b", figure: <FeeFigure value={null} absent />, word: p.figure }, { id: "c", figure: <FeeFigure value={null} />, word: p.figure }]} />
           <FeeWordsNote />
         </State>

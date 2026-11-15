@@ -26,14 +26,14 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num, Term } from "../provenance";
+import { Num, Ruled } from "../provenance";
 import { AlsoChanged, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, type Moved, type OnPick, type Pick } from "./pair";
+import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the chosen pair's card has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -290,10 +290,10 @@ export function PairLists(props: ListsProps) {
           <>
             {nameOf(p, false)}
             <span className="text-xs text-muted-foreground whitespace-nowrap">
-              <Term id={[]} name={c.pair.noPriceAt.other(p.short)} parts={told.parts} rules={told.rules}>
+              <NoFundWords told={told} name={c.pair.noPriceAt.other(p.short)}>
                 {/* the words follow the reason's own order (a doubt in the record first), so they never differ from the card they open */}
                 {c.pair.noFund[told.state]}
-              </Term>
+              </NoFundWords>
             </span>
             <span aria-hidden="true" className="w-[9px]" />
             {p.custom && underRow(<BrokerTerms id={p.id} />)}
@@ -449,9 +449,9 @@ export function PairLists(props: ListsProps) {
     const typedNo = under.every((f) => { const at = f.byHouse[pick.house]; return !!at && "availability" in at && at.availability?.source.url === "local"; });
     const told = typedNo ? { parts: [{ text: c.customEntries.notSold }], rules: [] } : whyNoFundAt(bundle, pick.house, under);
     const said = (
-      <Term id={[]} name={line} parts={told.parts} rules={told.rules}>
+      <NoFundWords told={told} name={line}>
         {line}
-      </Term>
+      </NoFundWords>
     );
     return to ? (
       <>
@@ -524,9 +524,7 @@ export function PairLists(props: ListsProps) {
               t={c.beforeTax.note[id] ?? c.beforeTax.noteOther}
               vars={{
                 term: (
-                  <Term id={[]} name={c.beforeTax.heading} rules={[id]}>
-                    {c.beforeTax.noteTerm}
-                  </Term>
+                  <Ruled id={id}>{c.beforeTax.noteTerm}</Ruled>
                 ),
               }}
             />

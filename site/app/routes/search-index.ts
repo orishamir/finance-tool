@@ -101,7 +101,7 @@ export async function loader() {
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title. The id is the row's key,
-  // which a typed code finds (lib/search.ts `idForms`); the row's line never prints it: the words carry the rule (D48)
+  // which a typed code finds (lib/search.ts `idForms`); the row's line never prints it: the words carry the rule (D101)
   const { ruleTitle } = await import("../lib/rule-title");
   const strengthRank: Record<string, number> = { primary: 0, entered: 1, institution: 2, secondary: 3, open: 4 };
   // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed

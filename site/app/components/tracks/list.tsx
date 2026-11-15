@@ -287,7 +287,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
     return (
       <span className="inline-flex items-start gap-1">
         {head(id, label, undefined, average, true)}
-        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} lead={side === "savings" ? companyCopy.fees.direct : undefined} />
+        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} lead={side === "savings" ? `${companyCopy.fees.direct.stated} ${companyCopy.fees.direct.after}` : undefined} />
       </span>
     );
   };

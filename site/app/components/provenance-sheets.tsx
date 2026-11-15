@@ -22,7 +22,7 @@ import type { SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleRow, RulesLine, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
 
-/** What a `RulesChip` opens: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
+/** What words that state several rules (`Ruled`), or a `RulesChip`, open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
 function RulesListSheet({ ids, name, headId }: { ids: readonly string[]; name?: string; headId: string }) {
   return (
     <div className="flex flex-col gap-3">
