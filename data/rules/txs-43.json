@@ -1,0 +1,77 @@
+{
+  "id": "TXS-43",
+  "title": "A renewable (fixed-date) money-market fund: the automatic renewal at the fixed date is not a redemption; the holder keeps his units and is taxed when he redeems",
+  "title_he": "קרן כספית מתחדשת: החידוש האוטומטי במועד הקבוע הוא לא פדיון",
+  "text_he": "בקרן כספית מתחדשת יחידות נפדות רק לפי הוראת פדיון, שמבוצעת במועד הקבוע, ומי שלא נותן הוראה ממשיך להחזיק באותן יחידות. לכן החידוש במועד הקבוע הוא לא פדיון ולא מכירה, ואין בו מס. בקרן פטורה המס על הרווח הריאלי משולם כשפודים בפועל, כמו בכל פדיון. זו מסקנה מצירוף כללי רשות ניירות ערך, הוראת בנק ישראל ופקודת מס הכנסה; רשות המסים לא כתבה על החידוש במפורש.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F11476%2Fheb#page=6",
+      "title": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024, קובץ התקנות 11476",
+      "title_he": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024, קובץ התקנות 11476",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.3700), reg. 2(ב)",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 3700), תקנה 2(ב)",
+      "page": 6,
+      "quote": "ומנהל הקרן יבצען במועד הקבוע המתאים",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F11476%2Fheb#page=6",
+      "title": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024, קובץ התקנות 11476",
+      "title_he": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024, קובץ התקנות 11476",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.3700), reg. 2(ג)",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 3700), תקנה 2(ג)",
+      "page": 6,
+      "quote": "או להמשיך ולהחזיק ביחידות הקרן עד שהמזמין ימסור הודעת פדיון מטעמו",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://boi.org.il/media/gcmk52bw/447a.pdf#page=2",
+      "title": "הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (04/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, s.13",
+      "locator_he": "עמוד 2, סעיף 13",
+      "page": 2,
+      "quote": "אחזקת היחידות בקרנות אלו מתחדשת מדי סיום תקופה, למעט אם ניתנה הוראת פדיון על ידי הלקוח",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.148, s.88, definition מכירה",
+      "locator_he": "עמוד 148, סעיף 88, הגדרת מכירה",
+      "page": 148,
+      "quote": "וכן כל פעולה או אירוע אחרים שבעקבותם יצא נכס בדרך כל שהיא מרשותו של אדם",
+      "checked": "2026-11-15"
+    }
+  ],
+  "derived_from": [
+    "TXS-09",
+    "TXS-12"
+  ]
+}

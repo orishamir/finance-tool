@@ -1,0 +1,133 @@
+{
+  "id": "TXI-26",
+  "title": "A break penalty that takes part of the principal: only interest paid is taxed; no provision read names the lost principal, and whether it is a capital loss is open",
+  "title_he": "קנס שבירה שלוקח מהקרן: רק ריבית ששולמה ממוסה, ואם הקרן שאבדה היא הפסד הון לא ידוע",
+  "text_he": "הבנק מנכה מס מהריבית שהוא משלם. כששבירת פיקדון לוקחת את כל הריבית וגם חלק מהקרן, הבנק לא משלם ריבית ולכן אין ממה לנכות מס, והחלק שאבד מהקרן לא מקטין מס בבנק. אף מקור שנקרא לא אומר אם הקרן שאבדה היא הפסד הון; גם אם כן, היא הייתה מתקזזת רק מול רווח הון, לא מול ריבית, ורק בדוח שנתי. כשהשבירה עדיין משלמת קצת ריבית, הבנק מנכה מס מהריבית ששולמה.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "loss-offset",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.289), reg. 4",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 289), תקנה 4",
+      "page": 7,
+      "quote": "תאגיד בנקאי המשלם ליחיד ריבית ינכה ממנה מס",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=269",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.269, s.245(א)",
+      "locator_he": "עמוד 269, סעיף 245(א)",
+      "page": 269,
+      "quote": "לא יותרו ניכויים או קיזוזים, ולא יינתנו פטורים",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=146",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.146, s.88, definition נכס",
+      "locator_he": "עמוד 146, סעיף 88, הגדרת נכס",
+      "page": 146,
+      "quote": "וכן כל זכות או טובת הנאה ראויות או מוחזקות",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.148, s.88, definition מכירה",
+      "locator_he": "עמוד 148, סעיף 88, הגדרת מכירה",
+      "page": 148,
+      "quote": "לרבות חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.150, s.88, definition הפסד הון",
+      "locator_he": "עמוד 150, סעיף 88, הגדרת הפסד הון",
+      "page": 150,
+      "quote": "הסכום שבו עולה יתרת המחיר המקורי על התמורה",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=155",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.155, s.92(א)(1)",
+      "locator_he": "עמוד 155, סעיף 92(א)(1)",
+      "page": 155,
+      "quote": "סכום הפסד הון שהיה לאדם בשנת מס פלונית",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf#page=4",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, s.3",
+      "locator_he": "עמוד 4, סעיף 3",
+      "page": 4,
+      "quote": "יהיה ניתן לקיזוז כנגד רווח הון או שבח בלבד",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf#page=5",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.3.7",
+      "locator_he": "עמוד 5, סעיף 3.7",
+      "page": 5,
+      "quote": "הפסדי הון מניירות ערך לא ניתנים לקיזוז כנגד ריבית ששולמה על תכנית חיסכון",
+      "checked": "2026-11-15"
+    }
+  ],
+  "derived_from": [
+    "TXI-25"
+  ]
+}
