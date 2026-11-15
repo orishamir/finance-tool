@@ -11,7 +11,7 @@ const action = (rate: number, min?: number): Price => ({ form: "action", rate: t
 const fx = (): CasesFee => ({
   id: "fee-fx",
   kind: "fx",
-  by: [{ kind: "channel" }, { kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }],
+  by: [{ kind: "channel", values: [] }, { kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }],
   cases: [
     { id: "d0", when: [["direct"], 0], stages: [{ price: { form: "free" } }] },
     { id: "d1", when: [["direct"], 1], stages: [{ price: action(0.0875, 5) }] },
@@ -64,7 +64,7 @@ describe("a lifted thing", () => {
   });
 
   it("moves a row to where the row it drops on stands now, after an earlier move too", () => {
-    const three: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what" }, { kind: "channel" }], cases: ["tase", "us", "uk", "makam"].map((w) => ({ id: w, when: [[w], ["direct"]], stages: [{ price: action(0.1) }] })) };
+    const three: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what", values: [] }, { kind: "channel", values: [] }], cases: ["tase", "us", "uk", "makam"].map((w) => ({ id: w, when: [[w], ["direct"]], stages: [{ price: action(0.1) }] })) };
     const d: FeeDeal = { id: "deal-m", name: "", kind: "brokerage-account", fees: [three] };
     const rows = (x: FeeDeal) => byRank((x.fees[0] as CasesFee).cases).map((c) => c.id);
     const row = (w: string): Lifted => ({ k: "value", fee: "fee-t", t: 0, key: JSON.stringify([w]), name: w });
@@ -78,7 +78,7 @@ describe("a lifted thing", () => {
   });
 
   it("moves a table's column to where the column it drops on stands now, after an earlier move too", () => {
-    const table: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "channel" }], cases: ["a", "b", "c", "e"].map((id) => ({ id, when: [[id]], stages: [{ price: action(0.1) }] })) };
+    const table: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "channel", values: [] }], cases: ["a", "b", "c", "e"].map((id) => ({ id, when: [[id]], stages: [{ price: action(0.1) }] })) };
     const d: FeeDeal = { id: "deal-m", name: "", kind: "brokerage-account", fees: [table] };
     const cols = (x: FeeDeal) => byRank((x.fees[0] as CasesFee).cases).map((c) => c.id);
     const col = (id: string): Lifted => ({ k: "col", fee: "fee-t", case: id });

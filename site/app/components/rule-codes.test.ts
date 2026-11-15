@@ -1,4 +1,4 @@
-// The built-pages guard (site/scripts/rule-codes.mjs, run after the build): a rule's, a parameter's, a formula's or an assumption's code
+// The built-pages guard (site/scripts/rule-codes.mjs, run after the build): a rule's, a parameter's, a formula's, an assumption's or a proof's code
 // in what a page shows fails, except inside a rule's own card (`data-code-ok`); and the chips the pages draw say words, not codes.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -13,8 +13,8 @@ const rules: Set<string> = ruleIds();
 const codes = (html: string) => (codesIn(shownText(html), rules) as { code: string }[]).map((h) => h.code);
 
 describe("the built-pages guard", () => {
-  it("finds a rule's, a parameter's, a formula's and an assumption's code in text and in a title", () => {
-    expect(codes(`<p>מס על ריבית KH-19.</p><span title="P-05">x</span><p>F-21 · A-01</p>`)).toEqual(["KH-19", "P-05", "F-21", "A-01"]);
+  it("finds a rule's, a parameter's, a formula's, an assumption's and a proof's code in text and in a title", () => {
+    expect(codes(`<p>מס על ריבית KH-19.</p><span title="P-05">x</span><p>F-21 · A-01 · M-03</p>`)).toEqual(["KH-19", "P-05", "F-21", "A-01", "M-03"]);
   });
   it("leaves an index's name, an address, a script and a rule's own card alone", () => {
     expect(codes(`<p>מדד TA-35 ו־TA-125</p><a href="/rules#KH-19" aria-label="KH-19">לחוק</a><script>"KH-19"</script>`)).toEqual([]);

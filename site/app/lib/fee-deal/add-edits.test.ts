@@ -2,7 +2,9 @@
 // in a grid's empty place, and a grid's new row or column of values.
 import { describe, expect, it } from "vitest";
 import { addCaseAt, addStep, addValues, addValuesAt, nameTaken, setTop } from "./edits/case";
-import { byRank } from "./model";
+import { thingValues } from "./model";
+import { bandLayout } from "./band-layout";
+import type { CaseRow } from "./rows";
 import { valueKey } from "./layout";
 import { readDeal, typed, type CasesFee, type Price } from "./model";
 
@@ -50,7 +52,7 @@ describe("a ladder's step added by its boundary", () => {
     const two: CasesFee = {
       id: "fee-g",
       kind: "fx",
-      by: [{ kind: "actionSize", unit: "USD", tops: [typed(100)] }, { kind: "channel" }],
+      by: [{ kind: "actionSize", unit: "USD", tops: [typed(100)] }, { kind: "channel", values: [] }],
       cases: [
         { id: "a", when: [0, ["branch"]], stages: [{ price: { form: "action", rate: typed(0.2) } }] },
         { id: "b", when: [0, ["direct"]], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
@@ -86,7 +88,7 @@ describe("a ladder's boundary moved in place", () => {
 const grid = (): CasesFee => ({
   id: "fee-t",
   kind: "trade",
-  by: [{ kind: "what" }, { kind: "channel" }],
+  by: [{ kind: "what", values: ["tase", "makam"] }, { kind: "channel", values: ["direct", "branch"] }],
   cases: [
     { id: "t1", when: [["tase"], ["direct"]], stages: [{ price: { form: "action", rate: typed(0.5) } }] },
     { id: "t2", when: [["tase"], ["branch"]], stages: [{ price: { form: "action", rate: typed(0.55) } }] },
@@ -109,12 +111,19 @@ describe("a case put in a grid's empty place", () => {
 });
 
 describe("a grid's new row or column", () => {
-  it("copies the last value's cases to each new value, with their prices", () => {
+  it("keeps each new value with no case, after the thing's values, so every place of it is one no case holds", () => {
     const f = addValues(grid(), 0, ["us", "europe"]) as CasesFee;
-    expect(f.cases.slice(3).map((c) => c.when)).toEqual([[["us"], ["direct"]], [["europe"], ["direct"]]]);
+    expect(f.cases).toEqual(grid().cases);
+    expect(f.by[0]).toEqual({ kind: "what", values: ["tase", "makam", "us", "europe"] });
     const col = addValues(grid(), 1, ["phone"]) as CasesFee;
-    // the last channel the cases name for the first time is the branch
-    expect(col.cases.slice(3).map((c) => c.when)).toEqual([[["tase"], ["phone"]]]);
+    expect(col.cases).toEqual(grid().cases);
+    expect(col.by[1]).toEqual({ kind: "channel", values: ["direct", "branch", "phone"] });
+    // the grid draws the new row with a place no case holds under each column
+    const g = bandLayout(f, f.cases.map((c) => ({ case: c.id, parts: [] }) as unknown as CaseRow));
+    expect(g.shape).toBe("grid");
+    if (g.shape !== "grid") return;
+    expect(g.rows.map((r) => r.key)).toEqual([valueKey(["tase"]), valueKey(["makam"]), valueKey(["us"]), valueKey(["europe"])]);
+    expect(g.rows[2]!.cells.map((c) => c.case)).toEqual([null, null]);
   });
 
   it("leaves out a value the cases name already, and one the thing does not know", () => {
@@ -123,20 +132,18 @@ describe("a grid's new row or column", () => {
 
   it("names a value of the person's own with where it is bought and its currency", () => {
     const f = addValues(grid(), 0, ["אג״ח בלונדון"], [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }]) as CasesFee;
-    expect(f.by[0]).toEqual({ kind: "what", own: [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }] });
-    expect(f.cases.at(-1)!.when[0]).toEqual(["אג״ח בלונדון"]);
+    expect(f.by[0]).toEqual({ kind: "what", values: ["tase", "makam", "אג״ח בלונדון"], own: [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }] });
+    expect(f.cases).toHaveLength(3);
   });
 });
 
 describe("a row or a column added between two", () => {
-  /** The values of thing `t` in the order the page stands them. */
-  const order = (f: CasesFee, t: number) => [...new Set(byRank(f.cases).map((c) => valueKey(c.when[t]!)))];
   it("stands its new values right before the value it was added before, in the order given, the other thing's order kept", () => {
-    const f = addValuesAt(grid(), 0, ["us", "europe"], [], valueKey(["tase"])) as CasesFee;
-    expect(order(f, 0)).toEqual([valueKey(["us"]), valueKey(["europe"]), valueKey(["tase"]), ...order(grid(), 0).filter((k) => k !== valueKey(["tase"]))]);
-    expect(order(f, 1)).toEqual(order(grid(), 1));
-    // what is added is what addValues adds
-    expect(f.cases.length).toBe((addValues(grid(), 0, ["us", "europe"]) as CasesFee).cases.length);
+    const f = addValuesAt(grid(), 0, ["us", "europe"], [], valueKey(["makam"])) as CasesFee;
+    expect(thingValues(f, 0)).toEqual(["tase", "us", "europe", "makam"]);
+    expect(thingValues(f, 1)).toEqual(thingValues(grid(), 1));
+    // what is added is what addValues adds: values, no case
+    expect(f.cases).toEqual(grid().cases);
   });
   it("is addValues without a place, or where nothing was added", () => {
     const whens = (f: unknown) => (f as CasesFee).cases.map((c) => c.when);
@@ -150,7 +157,7 @@ describe("a value the list has already is not added twice", () => {
   const channels = (): CasesFee => ({
     id: "fee-c",
     kind: "trade",
-    by: [{ kind: "channel" }],
+    by: [{ kind: "channel", values: [] }],
     cases: [
       { id: "net", when: [["internet"]], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
       { id: "branch", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(0.5) } }] },
@@ -159,7 +166,7 @@ describe("a value the list has already is not added twice", () => {
   it("adds none of the values the cases name, its spaces trimmed", () => {
     const f = channels();
     expect(addValues(f, 0, ["branch", " internet "])).toBe(f);
-    expect((addValues(f, 0, ["branch", "phone"]) as CasesFee).cases.map((c) => c.when[0])).toEqual([["internet"], ["branch"], ["phone"]]);
+    expect(thingValues(addValues(f, 0, ["branch", "phone"]) as CasesFee, 0)).toEqual(["internet", "branch", "phone"]);
   });
   it("refuses a name of the person's own that the list has by its id or its words, its spaces trimmed", () => {
     const known = ["branch", "בסניף", "internet", "באינטרנט"];

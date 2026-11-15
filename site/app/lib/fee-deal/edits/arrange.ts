@@ -1,15 +1,19 @@
 // The changes the fee page makes to how a fee's cases and a deal's fees stand (F-114), each a pure function: a table's column or a grid's
 // row or column moved, a value of a thing taken away with its cases, a ladder's step taken away into its neighbour, a row or column
-// duplicated, the two things of a grid swapped, and the deal's fees put in the person's order. A move sets ranks (`Rank`), the page's
-// order, and never the order the reading reads (F-114 reads a fee's cases and the deal's fees in their own order), so it changes no reading.
-import { byRank, copiedPriced, hasCases, isRange, NAME_MAX, namesPlaces, newCaseId, sameContent, spansWithout, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Priced, type When } from "../model";
-import { valueKey } from "../layout";
+// duplicated, the two things of a grid swapped, and the deal's fees put in the person's order. A move sets a list thing's values' order
+// (`By.values`) and ranks (`Rank`), the page's order, and never the order the reading reads (F-114 reads a fee's cases and the deal's fees
+// in their own order), so it changes no reading.
+import { byRank, copiedPriced, hasCases, isList, isRange, NAME_MAX, namesPlaces, newCaseId, sameContent, spansWithout, thingValues, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Priced, type When } from "../model";
+import { thingHeads, valueKey, type Head } from "../layout";
 import { WHAT_VALUES } from "../shapes";
 
-/** The values of thing `t` in the order a grid stands them: the order the cases, as the page shows them (`byRank`), first name them. */
-function valuesOf(fee: CasesFee, t: number): string[] {
-  return [...new Set(byRank(fee.cases).map((c) => valueKey(c.when[t]!)))];
+/** The heads of thing `t` in the order the page stands them (layout.ts): its values as the cases name them, and those no case names. */
+function headsOf(fee: CasesFee, t: number): Head[] {
+  return thingHeads({ things: fee.by.map((x, j) => (isRange(x) ? { range: true } : { range: false, values: thingValues(fee, j) })), cases: byRank(fee.cases).map((c) => ({ id: c.id, when: c.when, parts: [] })), rows: [] }, t);
 }
+
+/** A fee whose list thing `t` keeps `values` (in that order). */
+const withValues = (fee: CasesFee, t: number, values: readonly string[]): CasesFee => ({ ...fee, by: fee.by.map((b, j) => (j === t && isList(b) ? { ...b, values: [...values] } : b)) as By[] });
 
 /** A fee whose cases stand on the page in the order of `shown` (case ids): each takes its place there as its rank. */
 const ranked = (fee: CasesFee, shown: readonly string[]): CasesFee => ({ ...fee, cases: fee.cases.map((c) => ({ ...c, rank: shown.indexOf(c.id) })) });
@@ -31,38 +35,69 @@ export function moveCase(fee: Fee, caseId: string, at: string): Fee {
   const shown = byRank(fee.cases).map((c) => c.id);
   const from = shown.indexOf(caseId), to = shown.indexOf(at);
   if (from < 0 || to < 0 || from === to) return fee;
+  // a column on another value moves its value (the columns stand in their values' order); one on the same value, among its value's columns
+  const key = valueKey(fee.cases.find((c) => c.id === caseId)!.when[0]!), atKey = valueKey(fee.cases.find((c) => c.id === at)!.when[0]!);
+  if (key !== atKey) return moveValue(fee, 0, key, atKey);
   return ranked(fee, moved(shown, from, to));
 }
 
 /**
- * A fee whose value `key` (`valueKey`) of thing `t` stands where its value `at` stands on the page now (`valuesOf`), the values between
- * them moving one place toward where it was: a grid's row or column moved. The cases
- * are put in order by each thing's values in turn (the first thing's first), the moved thing's in its new order, so every other thing's
- * values keep theirs where each row names every column. A range's values keep their order (they ascend).
+ * A fee whose value `key` (`valueKey`) of list thing `t` stands where its value `at` stands on the page now (`headsOf`), the values between
+ * them moving one place toward where it was: a grid's row or column moved, the thing's values (`By.values`) in their new order, a value
+ * of several at the place of the first of them. The cases are put in order by each thing's values in turn (the first thing's first), the
+ * moved thing's in its new order, so every other thing's values keep theirs where each row names every column. A range's values keep
+ * their order (they ascend), and so does any value (always last).
  */
 export function moveValue(fee: Fee, t: number, key: string, at: string): Fee {
-  if (!hasCases(fee) || !fee.by[t] || isRange(fee.by[t]!)) return fee;
-  const orders = fee.by.map((_, j) => valuesOf(fee, j));
+  if (!hasCases(fee) || !fee.by[t] || isRange(fee.by[t]!) || key === valueKey("any") || at === valueKey("any")) return fee;
+  const heads = fee.by.map((_, j) => headsOf(fee, j));
+  const orders = heads.map((hs) => hs.map((h) => h.key));
   const from = orders[t]!.indexOf(key), to = orders[t]!.indexOf(at);
   if (from < 0 || to < 0 || from === to) return fee;
   orders[t] = moved(orders[t]!, from, to);
+  const was = thingValues(fee, t);
+  const inHead = (k: string) => {
+    const w = heads[t]!.find((h) => h.key === k)!.when;
+    return Array.isArray(w) ? [...w].sort((a, b) => was.indexOf(a) - was.indexOf(b)) : [];
+  };
+  const values = [...new Set([...orders[t]!.flatMap(inHead), ...was])];
   const place = (c: Case) => fee.by.map((_, j) => orders[j]!.indexOf(valueKey(c.when[j]!)));
   const shown = byRank(fee.cases).map((c, i) => ({ c, i, r: place(c) })).sort((a, b) => {
     for (let j = 0; j < a.r.length; j++) if (a.r[j] !== b.r[j]) return a.r[j]! - b.r[j]!;
     return a.i - b.i;
   });
-  return ranked(fee, shown.map((x) => x.c.id));
+  return ranked(withValues(fee, t, values), shown.map((x) => x.c.id));
 }
 
 /**
- * A fee without value `key` of thing `t`: a grid's row or column taken away with the cases on it. A value whose cases are all the fee's
- * is never taken away: a fee needs a price. The undo keeps what this takes (undo.ts).
+ * A fee without value `key` of thing `t`: a grid's row or column, or a table's column with no case, taken away with the cases on it, and a
+ * list thing's values that then no case names (`By.values`). A value whose cases are all the fee's is never taken away: a fee needs a
+ * price. The undo keeps what this takes (undo.ts).
  */
 export function removeValue(fee: Fee, t: number, key: string): Fee {
   if (!hasCases(fee) || !fee.by[t]) return fee;
   const cases = fee.cases.filter((c) => valueKey(c.when[t]!) !== key);
-  if (cases.length === 0 || cases.length === fee.cases.length) return fee;
-  return { ...fee, cases };
+  if (cases.length === 0) return fee;
+  const w = JSON.parse(key) as When;
+  return withoutUnnamed({ ...fee, cases }, t, Array.isArray(w) ? w : [], fee);
+}
+
+/** A fee whose list thing `t` no longer keeps those of `values` its cases no longer name; `was` itself where nothing changed. */
+function withoutUnnamed(fee: CasesFee, t: number, values: readonly string[], was: CasesFee): Fee {
+  const b = fee.by[t]!;
+  const named = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) ? (c.when[t] as string[]) : [])));
+  const next = isList(b) ? withValues(fee, t, b.values.filter((v) => !values.includes(v) || named.has(v))) : fee;
+  return next.cases.length === was.cases.length && sameContent(next.by, was.by) ? was : next;
+}
+
+/**
+ * A fee without the case of a table's column (`caseId`), taken away by its head, with the values of its one thing that then no case names:
+ * the head of a column is its value's. The only case is never taken away. The undo keeps what this takes (undo.ts).
+ */
+export function removeColumn(fee: Fee, caseId: string): Fee {
+  const c = hasCases(fee) ? fee.cases.find((x) => x.id === caseId) : undefined;
+  if (!hasCases(fee) || !c || fee.cases.length < 2) return fee;
+  return withoutUnnamed({ ...fee, cases: fee.cases.filter((x) => x.id !== caseId) }, 0, Array.isArray(c.when[0]) ? (c.when[0] as string[]) : [], fee);
 }
 
 /** A case with its prices replaced (its id, values, mark and spans kept). */
@@ -137,11 +172,11 @@ export function duplicateValue(fee: Fee, t: number, key: string, name: string): 
   // a value is no longer than a name may be (readWhen, readOwnPlace)
   const words = name.trim().slice(0, NAME_MAX).trim();
   if (!hasCases(fee) || !b || isRange(b) || !words) return fee;
-  if (fee.cases.some((c) => Array.isArray(c.when[t]) && (c.when[t] as string[]).includes(words))) return fee;
+  if (thingValues(fee, t).includes(words)) return fee;
   let by = fee.by;
   if (namesPlaces(b)) {
     if (Object.hasOwn(WHAT_VALUES, words) || b.own?.some((o) => o.name === words)) return fee;
-    const first = fee.cases.find((c) => valueKey(c.when[t]!) === key)?.when[t];
+    const first = fee.cases.find((c) => valueKey(c.when[t]!) === key)?.when[t] ?? (JSON.parse(key) as When);
     const v = Array.isArray(first) ? first[0]! : null;
     const own = v ? b.own?.find((o) => o.name === v) : undefined;
     const site = v && Object.hasOwn(WHAT_VALUES, v) ? WHAT_VALUES[v] : undefined;
@@ -158,9 +193,12 @@ export function duplicateValue(fee: Fee, t: number, key: string, name: string): 
     copies.set(c.id, id);
     return [c, withPriced({ ...rest, id, when: c.when.map((w, k): When => (k === t ? [words] : w)) }, copiedPriced(pricedOf(c)))];
   });
-  // on the page each copy stands right after its original
+  // on the page each copy stands right after its original, and the new value right after the value's last
   const shown = byRank(fee.cases).flatMap((c) => (copies.has(c.id) ? [c.id, copies.get(c.id)!] : [c.id]));
-  return ranked({ ...fee, by, cases }, shown);
+  const values = thingValues(fee, t);
+  const of = JSON.parse(key) as When;
+  const after = Array.isArray(of) ? Math.max(...of.map((v) => values.indexOf(v))) + 1 : values.length;
+  return ranked(withValues({ ...fee, by, cases }, t, [...values.slice(0, after), words, ...values.slice(after)]), shown);
 }
 
 /** A fee whose things `a` and `b` swap places: a grid's rows become its columns. Every case keeps its values and prices. */
@@ -184,18 +222,20 @@ export function orderFees(deal: FeeDeal, ids: readonly string[]): FeeDeal {
   return { ...deal, fees: deal.fees.map((f) => ({ ...f, rank: ids.indexOf(f.id) })) };
 }
 
-/** A fee with no ranks: what it holds, whatever the order the page shows it and its cases in. */
+/** A fee with no ranks and its list things' values in one order: what it holds, whatever the order the page shows it and its cases in. */
 const unranked = (fee: Fee): Fee => {
   const { rank: _r, ...head } = fee as Fee & { rank?: number };
-  return (hasCases(fee) ? { ...head, cases: fee.cases.map(({ rank: _c, ...c }) => c) } : head) as Fee;
+  if (!hasCases(fee)) return head as Fee;
+  return { ...head, by: fee.by.map((b) => (isList(b) ? { ...b, values: [...b.values].sort() } : b)), cases: fee.cases.map(({ rank: _c, ...c }) => c) } as Fee;
 };
 
 /** Whether two fees hold the same and differ at most in the order the page shows them and their cases in (`Rank`: a move). */
 export const sameButOrder = (a: Fee, b: Fee): boolean => sameContent(unranked(a), unranked(b));
 
 /**
- * Fee `was` put back in the order `now` stands in on the page: its own rank and each of its cases' that `now` still has, so an undo of a
- * change made before a move keeps the move.
+ * Fee `was` put back in the order `now` stands in on the page: its own rank, each of its cases' that `now` still has, and its list things'
+ * values in `now`'s order, a value `now` lacks right after the value it followed in `was`, so an undo of a change made before a move keeps
+ * the move.
  */
 export function inOrderOf(was: Fee, now: Fee): Fee {
   const { rank: _r, ...head } = was as Fee & { rank?: number };
@@ -203,5 +243,20 @@ export function inOrderOf(was: Fee, now: Fee): Fee {
   const ranked = { ...head, ...(rank !== undefined ? { rank } : {}) } as Fee;
   if (!hasCases(ranked) || !hasCases(now)) return ranked;
   const ranks = new Map(now.cases.map((c) => [c.id, c.rank]));
-  return { ...ranked, cases: ranked.cases.map((c) => (ranks.has(c.id) ? (({ rank: _c, ...x }) => ({ ...x, ...(ranks.get(c.id) !== undefined ? { rank: ranks.get(c.id)! } : {}) }))(c) : c)) };
+  const by = ranked.by.map((b, t) => {
+    const n = now.by[t];
+    return isList(b) && n && isList(n) && n.kind === b.kind ? { ...b, values: valuesInOrder(b.values, n.values) } : b;
+  }) as By[];
+  return { ...ranked, by, cases: ranked.cases.map((c) => (ranks.has(c.id) ? (({ rank: _c, ...x }) => ({ ...x, ...(ranks.get(c.id) !== undefined ? { rank: ranks.get(c.id)! } : {}) }))(c) : c)) };
+}
+
+/** Values `was` in the order of `now`: those both hold as `now` has them, each `now` lacks right after the value before it in `was`. */
+function valuesInOrder(was: readonly string[], now: readonly string[]): string[] {
+  const out = now.filter((v) => was.includes(v));
+  was.forEach((v, i) => {
+    if (out.includes(v)) return;
+    const before = was.slice(0, i).reverse().find((x) => out.includes(x));
+    out.splice(before === undefined ? 0 : out.indexOf(before) + 1, 0, v);
+  });
+  return out;
 }

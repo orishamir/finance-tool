@@ -45,9 +45,13 @@ export function reachEdits(slots: readonly Slot[], from: number, to: number, a: 
   };
 }
 
-/** A table's part row as places (`cells`, its cells): a case with that part is its cell's own, one without takes it. */
+/** A table's part row as places (`cells`, its cells): a case with that part is its cell's own, one without takes it; a column with no case, none. */
 export const tableSlots = (t: Table, cells: readonly TableCell[]): Slot[] =>
-  t.columns.map((col, k) => (cells.find((x) => x.from <= k && k < x.from + x.span)!.key === null ? { take: col.case } : { own: col.case }));
+  t.columns.map((col, k) => {
+    // a column with no case, a value no case names: nothing stretches over it
+    if (col.case === null) return null;
+    return cells.find((x) => x.from <= k && k < x.from + x.span)!.key === null ? { take: col.case } : { own: col.case };
+  });
 
 const cellAt = (cells: readonly GridCell[], k: number) => cells.find((x) => x.from <= k && k < x.from + x.span)!;
 

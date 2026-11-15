@@ -394,6 +394,14 @@ export const provenance = {
     // the status line, from data/open-questions.json (an answered question is deleted from the rule base)
     statuses: { open: "פתוחה", narrowed: "פתוחה בחלקה: חלק ממנה כבר נענה" } as Record<string, string>,
   },
+  // what math proves (docs/method.md section 14): the chip says a word, never the code; several make one chip with their count, as the
+  // rules' chip ("הוכחות · 2"). The sheet's own words are in content/proofs.ts.
+  proofChip: { one: "הוכחה", many: "הוכחות" },
+  proofSheet: {
+    when: "מתי זה נכון",
+    notCovered: "מה זה לא מכסה",
+    full: "ההוכחה המלאה, באנגלית",
+  },
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
   // `more` folds the parameter file's general line away from the clicked number's own line
   parameter: { why: "למה הערך הזה", more: "עוד על הפרמטר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },
@@ -1930,7 +1938,7 @@ export const feeDeal = {
     actionSize: { default: "גודל הפעולה", fx: "גודל ההמרה", fx_spread: "גודל ההמרה", deposit: "גודל ההפקדה", insurance_premium: "גודל ההפקדה", exit: "גודל המשיכה", transfer_out: "גודל ההעברה", distribution_handling: "גודל התשלום" } as Record<string, string>,
     /** The values the site names, by thing (shapes.ts, `LIST_IDS`). */
     values: {
-      what: { tase: "ניירות ערך בתל אביב", mutualFunds: "קרנות נאמנות", moneyMarket: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם" } as Record<string, string>,
+      what: { tase: "ניירות ערך בתל אביב", mutualFunds: "קרנות נאמנות", moneyMarket: "קרנות כספיות", makam: "מק״מ", us: "ניירות ערך בחו״ל, בארה״ב", europe: "ניירות ערך בחו״ל, באירופה", world: "ניירות ערך בחו״ל, בשאר העולם" } as Record<string, string>,
       channel: { branch: "בסניף", phone: "בטלפון", direct: "באינטרנט ובאפליקציה" } as Record<string, string>,
       currency: { USD: "מדולר או לדולר", EUR: "מאירו או לאירו", GBP: "מלירה שטרלינג או ללירה שטרלינג", other: "ממטבע אחר או למטבע אחר" } as Record<string, string>,
     },
@@ -1989,7 +1997,7 @@ export const feeDeal = {
     pastedWhole: "{where}: המחיר הוחלף.",
     feeCorner: { duplicate: "לשכפל את העמלה", menuDuplicate: "שכפול העמלה", grip: "לשכפל או למחוק את העמלה: " },
     addStep: { ask: "{thing}: איפה הגבול של המדרגה החדשה?", note: "המדרגה שהגבול נופל בה תתפצל לשתיים, ושתיהן יישארו במחיר שלה עד שתשנו אותו.", field: "הגבול החדש", taken: "יש כבר מדרגה שמתחילה כאן." },
-    addValues: "כל ערך שתסמנו יקבל את המחירים של {last}, עד שתשנו אותם.",
+    addValues: "כל ערך שתסמנו יתווסף בלי מחיר, עד שתוסיפו לו מקרה.",
     /** The switch above a grid of a fee that changes by three things, spoken. */
     switchLabel: "המקרים של",
     /** The line an undone case or thing leaves (undo.ts). */
@@ -5198,9 +5206,9 @@ export const kit = {
         custody: "דמי ניהול פיקדון ניירות ערך",
         fixed: "דמי חשבון קבועים",
         things: { what: "מה קונים", track: "המסלול שבחרתם", channel: "הערוץ", size: "גודל ההמרה", held: "מה מחזיקים", portfolio: "גודל התיק" },
-        heldValues: { ta: "ניירות ערך בתל אביב, קרנות נאמנות", abroad: "בחו״ל" },
+        heldValues: { ta: "ניירות ערך בתל אביב, קרנות נאמנות", abroad: "ניירות ערך בחו״ל" },
         perCharge: "לכל חיוב",
-        what: { ta: "ניירות ערך בתל אביב", mutual: "קרנות נאמנות מסורתיות", money: "קרנות כספיות", makam: "מק״מ", us: "בחו״ל, בארה״ב", europe: "בחו״ל, באירופה", world: "בחו״ל, בשאר העולם", notUs: "בחו״ל, מחוץ לארה״ב" },
+        what: { ta: "ניירות ערך בתל אביב", mutual: "קרנות נאמנות מסורתיות", money: "קרנות כספיות", makam: "מק״מ", us: "ניירות ערך בחו״ל, בארה״ב", europe: "ניירות ערך בחו״ל, באירופה", world: "ניירות ערך בחו״ל, בשאר העולם", notUs: "ניירות ערך בחו״ל, מחוץ לארה״ב" },
         tracks: ["מסלול 1", "מסלול 2", "מסלול 3"],
         anyTrack: "בכל מסלול",
         anyChannel: "בכל ערוץ",

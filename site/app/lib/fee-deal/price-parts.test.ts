@@ -256,7 +256,7 @@ describe("the templates", () => {
   });
   it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars, on what is bought abroad alone", () => {
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
-    expect(event.by).toEqual([{ kind: "what" }]);
+    expect(event.by).toEqual([{ kind: "what", values: ["us", "europe", "world"] }]);
     expect(event.cases!.map((c) => c.when)).toEqual([[["us", "europe", "world"]]]);
     expect(event.cases![0]!.stages[0]!.price).toMatchObject({ form: "perAction", amount: { v: 50 }, currency: "USD" });
     expect(filledFor("one-zero", [{ by: "what", is: "us" }])("corporate_event")).toMatchObject({ amount: { v: 50 } });
@@ -271,12 +271,12 @@ describe("the templates", () => {
       const row = builder(read(deal)).rows.find((r) => deal.fees.find((f) => f.id === r.fee)!.kind === "trade")!;
       return row.block.kind === "band" ? row.block.rows.map((r) => r.when[0]!.text ?? "") : [];
     };
-    // Excellence: the US's two tracks, and Europe with the rest of the world: "בחו״ל, מחוץ לארה״ב", as drawn
-    expect(texts("excellence")).toContain("בחו״ל, מחוץ לארה״ב");
-    expect(texts("excellence")).not.toContain("בחו״ל, באירופה, בחו״ל, בשאר העולם");
+    // Excellence: the US's two tracks, and Europe with the rest of the world: "ניירות ערך בחו״ל, מחוץ לארה״ב", as drawn
+    expect(texts("excellence")).toContain("ניירות ערך בחו״ל, מחוץ לארה״ב");
+    expect(texts("excellence")).not.toContain("ניירות ערך בחו״ל, באירופה, ניירות ערך בחו״ל, בשאר העולם");
     // Hapoalim: one case for every value abroad and nothing else, said as abroad alone
-    expect(texts("hapoalim")).toContain("בחו״ל");
-    expect(texts("hapoalim")).not.toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
+    expect(texts("hapoalim")).toContain("ניירות ערך בחו״ל");
+    expect(texts("hapoalim")).not.toContain("ניירות ערך בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
   it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>
@@ -493,14 +493,14 @@ describe("the templates", () => {
     expect(house("excellence").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
     // Interactive Israel's custody line names foreign securities alone: the fee keeps what is held, with one case for them
     const custody = house("interactive-israel").fees.find((f) => f.kind === "custody")!;
-    expect(custody.by).toEqual([{ kind: "held" }]);
+    expect(custody.by).toEqual([{ kind: "held", values: ["us", "europe", "world"] }]);
     expect(custody.cases!.map((c) => c.when)).toEqual([[["us", "europe", "world"]]]);
   });
   it("read a mutual fund in F-63's line, the standard one over a banded one, and the band for traditional funds as a value of its own", () => {
     // Excellence: a mutual fund reads its exchange line, 0.4% with at least 10 ₪; the 16 ₪ line is "קרנות נאמנות מסורתיות"
     expect(filledFor("excellence", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.4 }, min: { v: 10 } });
     const trade = house("excellence").fees.find((f) => f.kind === "trade")!;
-    expect(trade.by![0]).toEqual({ kind: "what", own: [{ name: "קרנות נאמנות מסורתיות", place: "israel", currency: "ILS" }] });
+    expect(trade.by![0]).toEqual({ kind: "what", values: ["tase", "makam", "mutualFunds", "קרנות נאמנות מסורתיות", "us", "europe", "world"], own: [{ name: "קרנות נאמנות מסורתיות", place: "israel", currency: "ILS" }] });
     expect(filledFor("excellence", [{ by: "what", is: "קרנות נאמנות מסורתיות" }])("trade")).toMatchObject({ form: "perAction", amount: { v: 16 } });
     // IBI: a mutual fund, tracking or not, reads the mutual-fund line's 5 ₪ minimum, not the exchange's 2.35 ₪
     expect(filledFor("ibi", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ rate: { v: 0.08 }, min: { v: 5 } });
@@ -522,7 +522,7 @@ describe("the templates", () => {
   it("read IBI's line outside the United States, Canada and Israel for Europe and a value of its own, never for the rest of the world", () => {
     const band = "מסחר בשווקים נוספים, מחוץ לארה״ב, לקנדה ולישראל";
     const trade = house("ibi").fees.find((f) => f.kind === "trade")!;
-    expect(trade.by![0]).toEqual({ kind: "what", own: [{ name: band, place: "abroad", currency: null }] });
+    expect(trade.by![0]).toEqual({ kind: "what", values: ["tase", "makam", "mutualFunds", "us", "europe", band], own: [{ name: band, place: "abroad", currency: null }] });
     // its minimum is in the trade's currency (BRK-48): 30 euros in Europe; on a value of its own whose currency is not named, not read
     expect(filledFor("ibi", [{ by: "what", is: "europe" }])("trade")).toMatchObject({ rate: { v: 0.3 }, min: { v: 30 }, currency: "EUR" });
     expect(filledFor("ibi", [{ by: "what", is: band }])("trade")).toBeUndefined();

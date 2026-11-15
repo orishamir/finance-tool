@@ -6,8 +6,8 @@ import { feeDeal as copy } from "../../copy";
 import { byQuestion, copiesWords } from "../../lib/fee-deal/things";
 import { addBy, addStep, addValuesAt, nameTaken, newBy, splitCase } from "../../lib/fee-deal/edits/case";
 import { metLimit } from "../../lib/fee-deal/limits";
-import { isRange, NAME_MAX, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
-import { lastValueWords, rangeSign } from "../../lib/fee-deal/band-layout";
+import { isRange, NAME_MAX, thingValues, type CasesFee, type Fee, type OwnPlace } from "../../lib/fee-deal/model";
+import { rangeSign } from "../../lib/fee-deal/band-layout";
 import { thingName } from "../../lib/fee-deal/case-words";
 import type { ByKind, RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { AskValues, FigureField, InlineSelect, TextField } from "../kit";
@@ -214,16 +214,16 @@ export function AskStep({ fee, t, within, onFee, onDone }: { fee: CasesFee; t: n
 }
 
 /**
- * A grid's new row or column: the values of thing `t` the cases name not yet, to tick, and one of the person's own; each new value starts
- * with the prices of the value the cases name last (`addValues`), as the line under them says, and stands at the end, or right before
- * value `before` where it is added between two (`addValuesAt`).
+ * A new row or column of a grid, or a new column of a table: the values thing `t` does not keep yet, to tick, and one of the person's own;
+ * each new value starts with no case, every place of it "+ מקרה" (`addValuesAt`), as the line under them says, and stands at the end, or
+ * right before value `before` where it is added between two.
  */
 export function AskValuesOf({ fee, t, before, onFee, onDone }: { fee: CasesFee; t: number; before?: string; onFee: (f: Fee) => void; onDone: (added: boolean) => void }) {
   const root = useAskFocus();
   const c = copy.cases;
   const b = fee.by[t]!;
   const q = byQuestion(fee, b.kind);
-  const named = new Set(fee.cases.flatMap((x) => (Array.isArray(x.when[t]) ? (x.when[t] as string[]) : [])));
+  const named = new Set(thingValues(fee, t));
   const [chosen, setChosen] = useState<string[]>([]);
   const [extra, setExtra] = useState<string[]>([]);
   const [own, setOwn] = useState<OwnPlace[]>([]);
@@ -249,7 +249,7 @@ export function AskValuesOf({ fee, t, before, onFee, onDone }: { fee: CasesFee; 
         onToggle={(id) => setChosen((x) => (x.includes(id) ? x.filter((v) => v !== id) : [...x, id]))}
         {...(q.other ? { other: { label: q.other, open: !!typing, onClick: () => setTyping(typing ? null : NEW_OWN) } } : {})}
         otherField={typing && <OwnValueForm value={typing} nameLabel={q.typed?.name ?? c.slot.ownName} place={place} add={c.addValue} onChange={setTyping} onAdd={typed} taken={taken} />}
-        note={c.addValues.replace("{last}", lastValueWords(fee, t))}
+        note={c.addValues}
         onAdd={() => {
           if (chosen.length === 0) return;
           onFee(addValuesAt(fee, t, chosen, own, before));

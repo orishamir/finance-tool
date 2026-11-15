@@ -3,7 +3,7 @@
 // and the undo's lines arrange them.
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
-import { hasCases, isRange, namesPlaces, type CasesFee, type Fee, type Price, type Priced, type When } from "./model";
+import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee, type Price, type Priced, type When } from "./model";
 import { FIGURES, type Figure } from "./offers/figures";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
@@ -112,7 +112,7 @@ export function whenWords(fee: CasesFee, w: When, t: number, today: string): Whe
   return { thing: t, any: false, text: listWords(fee, t, w as string[]) };
 }
 
-/** Words that share a lead ending in ", " say it once: "בחו״ל, באירופה, בשאר העולם". */
+/** Words that share a lead ending in ", " say it once: "ניירות ערך בחו״ל, באירופה, בשאר העולם". */
 function sharedLead(words: readonly string[]): string {
   const cut = words[0]?.indexOf(", ") ?? -1;
   const lead = cut > 0 ? words[0]!.slice(0, cut + 2) : "";
@@ -122,7 +122,7 @@ function sharedLead(words: readonly string[]): string {
 
 /**
  * A case's values of a list thing in words. Where the case names every value abroad and nothing else, the lead they share alone
- * ("בחו״ל"); where it names every value abroad but those the fee's other cases name, "מחוץ ל" theirs after that lead ("בחו״ל, מחוץ
+ * ("ניירות ערך בחו״ל"); where it names every value abroad but those the fee's other cases name, "מחוץ ל" theirs after that lead ("ניירות ערך בחו״ל, מחוץ
  * לארה״ב"); else its values, a lead they share said once (`sharedLead`).
  */
 function listWords(fee: CasesFee, t: number, values: readonly string[]): string {
@@ -130,9 +130,10 @@ function listWords(fee: CasesFee, t: number, values: readonly string[]): string 
   const words = values.map((v) => valueWords(b.kind, v));
   if (!namesPlaces(b)) return sharedLead(words);
   const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
-  // every value abroad and nothing else: the lead they share alone ("בחו״ל")
+  // every value abroad and nothing else: the lead they share alone ("ניירות ערך בחו״ל")
   if (values.length > 1 && values.length === abroad.length && abroad.every((v) => values.includes(v))) return valueWords(b.kind, abroad[0]!).split(", ")[0]!;
-  const others = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) && c.when[t] !== values ? (c.when[t] as string[]).filter((v) => abroad.includes(v) && !values.includes(v)) : [])));
+  // the thing's other values abroad, a row or a column no case holds among them
+  const others = new Set(thingValues(fee, t).filter((v) => abroad.includes(v) && !values.includes(v)));
   const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
   if (!all) return sharedLead(words);
   const o = copy.cases.outside;
