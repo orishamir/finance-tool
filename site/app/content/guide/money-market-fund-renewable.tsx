@@ -2,7 +2,7 @@
 // kupat-gemel-lehashkaa.tsx: every figure is a Num over a rule figure; the words that state a rule open it (Ruled, D116), and a
 // figure from a rule opens it from its sheet (il-finance MF, TXS, TXI, BANK, BRK, REG). NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { IdRef, Num, Ruled, Term } from "../../components/provenance";
+import { IdRef, Num, ProofsChip, Ruled, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
 import { fmt } from "../../lib/format";
 
@@ -113,7 +113,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Ruled id="TXS-24">רוב הקרנות הכספיות הן</Ruled> <Term id="קרן נאמנות פטורה">קרנות נאמנות פטורות</Term>: <Ruled id="TXS-08">הקרן עצמה לא משלמת מס</Ruled>, ואתם משלמים מס רווחי הון <Ruled id="TXS-12">רק בפדיון</Ruled>, של עד {rate ? <Num value={rate} /> : null} <Term prefix="מ" id="רווח הון ריאלי">הרווח הריאלי</Term>, <Ruled id="TXS-09">כלומר מהרווח שמעבר לעליית</Ruled> <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Ruled id="MF-37">התשואה הצפויה שמוצגת היא לפני המס הזה</Ruled>. לפי מסקנת האתר, <Term id="חידוש אוטומטי">חידוש אוטומטי</Term> במועד הקבוע הוא לא פדיון, ולכן המס נדחה עד שפודים בפועל.
+          <Ruled id="TXS-24">רוב הקרנות הכספיות הן</Ruled> <Term id="קרן נאמנות פטורה">קרנות נאמנות פטורות</Term>: <Ruled id="TXS-08">הקרן עצמה לא משלמת מס</Ruled>, ואתם משלמים מס רווחי הון <Ruled id="TXS-12">רק בפדיון</Ruled>, של עד {rate ? <Num value={rate} /> : null} <Term prefix="מ" id="רווח הון ריאלי">הרווח הריאלי</Term>, <Ruled id="TXS-09">כלומר מהרווח שמעבר לעליית</Ruled> <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Ruled id="MF-37">התשואה הצפויה שמוצגת היא לפני המס הזה</Ruled>. אם <Term id="חידוש אוטומטי">חידוש אוטומטי</Term> במועד הקבוע נחשב פדיון לעניין המס, האתר לא מצא בכללים שקרא.
         </Sentence>
         <p className="max-w-measure">
           הבנק או בית ההשקעות מנכים את המס <Term id="ניכוי מס במקור">במקור</Term>. <Ruled id="TXS-05">אם הוא נוכה במלואו, אין צורך בדיווח נפרד</Ruled> על <Term prefix="ה" id="מכירה">מכירה</Term>. <Term id="מס נוסף">מס נוסף</Term> <Ruled id="TXG-09">על הכנסות גבוהות</Ruled>, אם הוא חל, מוסדר בדוח השנתי.
@@ -161,13 +161,13 @@ export const content: GuideContent = {
           לכסף שצריך להישאר זמין מתאימה קרן כספית יומית, <Ruled id="MF-34" prefix="ש">נפדית בכל יום מסחר</Ruled> ושהתשואה שלה זזה עם <Term prefix="ה" id="ריבית">ריבית</Term>.
         </p>
         <p className="max-w-measure">
-          מול <Term id="פיקדון">פיקדון</Term> לאותה תקופה שניהם נעולים, אבל בפיקדון הריבית או <Term prefix="ה" id="מרווח">מרווח</Term> קבועים בהסכם, <Ruled id="BANK-06" prefix="ו">הבנק יכול להסכים</Ruled> <Term prefix="ל" id="שבירת פיקדון">שבירה</Term> במחיר. בקרן אין פדיון לפני המועד, והתשואה היא הערכה.
+          מול <Term id="פיקדון">פיקדון</Term> לאותה תקופה שניהם נעולים, אבל בפיקדון <Ruled id="BANK-25">ההסכם קובע את הריבית</Ruled> או את <Term prefix="ה" id="מרווח">מרווח</Term>, ואם הבנק רשאי לשנות אותם, גם באילו תנאים, <Ruled id="BANK-06" prefix="ו">הבנק יכול להסכים</Ruled> <Term prefix="ל" id="שבירת פיקדון">שבירה</Term> במחיר. בקרן אין פדיון לפני המועד, והתשואה היא הערכה.
         </p>
         <Sentence measure>
-          במס, על ריבית מפיקדון שקלי <Term id="לא צמוד">לא צמוד</Term> משלמים מס הכנסה של {depositRate ? <Num value={depositRate} /> : null} מכל הריבית, ובקרן כספית פטורה <Term id="מס רווחי הון">מס רווחי הון</Term> של עד {fundRate ? <Num value={fundRate} /> : null} רק מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>. כשהאינפלציה גבוהה, בקרן משלמים פחות מס, וכשהיא נמוכה, בפיקדון. מי מנצח תלוי באינפלציה, בריבית ובתקופה. <Ruled id="TXS-17">הפסד בקרן אפשר לקזז</Ruled>. בפיקדון זה לא ברור: בית המשפט המחוזי <Ruled id="TXI-25">לא התיר לקזז הפסד מירידת השער</Ruled> בפיקדון צמוד <Term prefix="ל" id="מטבע חוץ">מטבע חוץ</Term>, ובית המשפט העליון השאיר את השאלה פתוחה.
+          במס, על ריבית מפיקדון שקלי <Term id="לא צמוד">לא צמוד</Term> משלמים מס הכנסה של {depositRate ? <Num value={depositRate} /> : null} מכל הריבית, ובקרן כספית פטורה <Term id="מס רווחי הון">מס רווחי הון</Term> של עד {fundRate ? <Num value={fundRate} /> : null} רק מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>. באותה תשואה לפני מס, כשהאינפלציה גבוהה, בקרן משלמים פחות מס, וכשהיא נמוכה, בפיקדון. מי מנצח תלוי באינפלציה, בריבית ובתקופה. <Ruled id="TXS-17">הפסד בקרן אפשר לקזז</Ruled>. בפיקדון, <Ruled id="TXI-07">שבירה יכולה לפגוע גם בקרן</Ruled>, ואם להפסד כזה יש משמעות במס, האתר לא מצא בכללים שקרא <IdRef id="TXI OQ14" end="." /> <Ruled id="TXI-17">הפסד מניירות ערך לא מתקזז מריבית על פיקדון</Ruled>. <ProofsChip ids={["M-10"]} />
         </Sentence>
         <p className="max-w-measure">
-          <Ruled id="BANK-15">הבנק חייב להציג</Ruled> פיקדונות, קרנות כספיות <Term prefix="ו" id={'מק"מ'}>מק״מ</Term> זה ליד זה, מסוננים לפי תקופה. התשואה הצפויה שמוצגת שם היא אחרי דמי הניהול ולפני מס רווחי הון ועמלות בנק.
+          בנק שאפשר לקנות דרכו קרנות כספיות או <Term id={'מק"מ'}>מק״מ</Term> <Ruled id="BANK-15">חייב להציג אותם ליד הפיקדונות</Ruled>, מסוננים לפי תקופה. התשואה הצפויה שמוצגת שם היא אחרי דמי הניהול ולפני מס רווחי הון ועמלות בנק.
         </p>
         <p className="max-w-measure">
           בעמוד הזה אין חישוב לאורך זמן, כי בהפקדה חודשית לא נקבע איזו סדרה קונה כל הפקדה.

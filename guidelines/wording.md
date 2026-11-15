@@ -34,6 +34,15 @@ professional. Not a bank, not a blog, not a TV financial adviser.
    העמלה הזו". Never present a complicated answer as certain.
 6. **Say what can't be answered**, plainly and where the reader is: "האתר לא
    מנחש תשואה, ולכן אין כאן תחזית. מה שאפשר להשוות: העמלות והמס."
+7. **State only what the rule base holds.** A sentence about a law, a tax,
+   a duty, a term or how a product works says what a rule in the rule base
+   says, no more and no less, and the words that state it open that rule
+   (`Ruled`). A reading the rule base itself records as a reading may be
+   said, as the site's reading, opening that rule. An inference the rule
+   base does not record is never written, not even as "לפי קריאה של
+   האתר". Where the rule base lacks the fact, the page says the site didn't
+   find it ("האתר לא מצא בכללים שקרא"), and the fact is researched into the
+   rule base before it is said.
 
 ## Word choice
 

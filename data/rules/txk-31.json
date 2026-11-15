@@ -2,18 +2,105 @@
   "id": "TXK-31",
   "title": "IRA provident fund: capital money the rules already let the member withdraw leaves as a lump sum, and a lawful payment of it is not taxed",
   "title_he": "קופת גמל בניהול אישי: כספים הוניים שמותר כבר למשוך יוצאים בסכום חד־פעמי, ומשיכה כדין שלהם לא ממוסה",
-  "text_he": "לקופת גמל בניהול אישי מותר להכניס כספים של קופת גמל לתגמולים שהעמית כבר רשאי למשוך לפי תקנות מס הכנסה, כספים הוניים שהופקדו לפני 2008. כספים כאלה יוצאים בסכום חד־פעמי, לא כקצבה. במשיכה כדין שלהם הפקודה פוטרת את הריבית, הפרשי ההצמדה והרווחים שמקורם בהפקדות של העמית או של המעסיק, ואת מה שהעובד מקבל עד גובה תשלומי המעסיק בגבולות שנקבעו. ההפקדות של העמית עצמו הן החזר של מה שהפקיד. שזה מצטרף למשיכה בלי מס היא קריאה של הסעיפים יחד, לא משפט אחד במקור; הפקדות מעסיק מעל הגבולות שלא מוסו בהפקדה לא נבדקו. משיכה שהכללים לא מתירים ממוסה כמשיכה שלא כדין. כספי קצבה באותה קופה יוצאים לפי כללי הקצבה.",
+  "text_he": "לקופת גמל בניהול אישי מותר להכניס כספים של קופת גמל לתגמולים שהעמית כבר רשאי למשוך לפי תקנות מס הכנסה, כספים הוניים שהופקדו לפני 2008; עמית שכיר רשאי למשוך אותם מגיל 60, אם עברו חמש שנים מאז שהתחיל להפקיד לאותו חשבון. כספים כאלה יוצאים בסכום חד־פעמי, לא כקצבה. במשיכה כדין שלהם הפקודה פוטרת את הריבית, הפרשי ההצמדה והרווחים שמקורם בהפקדות של העמית או של המעסיק, ואת מה שהעובד מקבל עד גובה תשלומי המעסיק בגבולות שנקבעו. ההפקדות של העמית עצמו הן החזר של מה שהפקיד. שזה מצטרף למשיכה בלי מס היא קריאה של הסעיפים יחד, לא משפט אחד במקור; הפקדות מעסיק מעל הגבולות שלא מוסו בהפקדה לא נבדקו. משיכה שהכללים לא מתירים ממוסה כמשיכה שלא כדין. כספי קצבה באותה קופה יוצאים לפי כללי הקצבה.",
+  "figure_names_he": {
+    "capital_withdrawal_age_employee": "הגיל שממנו עמית שכיר רשאי למשוך",
+    "capital_withdrawal_min_years_in_account": "שנים מתחילת ההפקדה לאותו חשבון"
+  },
   "strength": "primary",
   "dimensions": [
     "tax-at-exit",
-    "liquidity-lockup"
+    "liquidity-lockup",
+    "age-or-use-exemption"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-03-31",
+  "figures": {
+    "capital_withdrawal_age_employee": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 3), התשס\"ד-2004, קובץ התקנות 6332, file p.10 (gazette p.864), reg. 16(1): reg. 34(ב)(1) \"בהגיעו לגיל 60 שנים\"",
+        "publisher": "רשומות",
+        "strength": "primary"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXK-31"
+      ],
+      "state": "sourced",
+      "notes": "Reg. 34(ב)(1) of the 1964 provident-fund rules: a provident fund for benefits pays an employee member his benefits money on reaching 60, if five years have passed since he began to deposit into that account (capital_withdrawal_min_years_in_account). Wording from ק\"ת 6332 (2004), 6377 (2005) and 6433 (2005); later booklets to ק\"ת 10716 (2023) do not amend it; 2023-2024 after 10716 not checked (TXK-31 conditions)."
+    },
+    "capital_withdrawal_min_years_in_account": {
+      "value": 5,
+      "unit": "years",
+      "source": {
+        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6377%2Fheb#page=3",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 2), התשס\"ה-2005, קובץ התקנות 6377, file p.3 (gazette p.563), reg. 5(1)(ב): \"אם עברו חמש שנים מיום שהחל להפקיד כספים באותו חשבון\"",
+        "publisher": "רשומות",
+        "strength": "primary"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXK-31"
+      ],
+      "state": "sourced",
+      "notes": "The condition joined to age 60 in reg. 34(ב)(1): five years since the member began to deposit into that account."
+    }
+  },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-11-14",
+  "checked": "2026-11-15",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 3), התשס\"ד-2004, קובץ התקנות 6332",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 3), התשס\"ד-2004, קובץ התקנות 6332",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.864), reg. 16(1), new reg. 34(ב)(1)",
+      "page": 10,
+      "quote": "בהגיעו לגיל 60 שנים",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6377%2Fheb#page=3",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 2), התשס\"ה-2005, קובץ התקנות 6377",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 2), התשס\"ה-2005, קובץ התקנות 6377",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.3 (gazette p.563), reg. 5(1)(ב)",
+      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 563), תקנה 5(1)(ב)",
+      "page": 3,
+      "quote": "אם עברו חמש שנים מיום שהחל להפקיד כספים באותו חשבון",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6433%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשס\"ו-2005, קובץ התקנות 6433",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשס\"ו-2005, קובץ התקנות 6433",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.58), reg. 3",
+      "locator_he": "עמוד הקובץ 2 (עמוד הרשומות 58), תקנה 3",
+      "page": 2,
+      "checked": "2026-11-15"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=44",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",

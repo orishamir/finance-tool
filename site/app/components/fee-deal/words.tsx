@@ -278,7 +278,7 @@ export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
   );
 }
 
-/** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, for the ban's rules chip. */
+/** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, heading the list the ban's words open. */
 export function UnreadWords({ banned, noCurrency, notPrinted, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; notPrinted?: boolean; unmatched?: boolean; fee?: string }) {
   const why = unreadReason({ banned, noCurrency, notPrinted, unmatched });
   if (why === "banned") return <BannedWords ban={banned!} {...(fee ? { fee } : {})} />;
@@ -288,7 +288,7 @@ export function UnreadWords({ banned, noCurrency, notPrinted, unmatched, fee }: 
 /**
  * The cap's line: its figure with its caveat, that the law sets none (F-113), or that it bans the fee here; nothing where the kind has no
  * line for the fee. The figure, or the words "לא נמצאה תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so
- * the line carries no rules chip of its own; a ban's words carry one. `fee`: the fee's name, which the control's spoken name says with what
+ * the line carries no rules of its own; a ban's words open the ban's rules. `fee`: the fee's name, which the control's spoken name says with what
  * it opens.
  */
 export function CapRules({ cap, fee }: { cap: CapLine; fee: string }) {

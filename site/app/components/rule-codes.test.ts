@@ -1,11 +1,12 @@
 // The built-pages guard (site/scripts/rule-codes.mjs, run after the build): a rule's, a parameter's, a formula's, an assumption's or a proof's code
-// in what a page shows fails, except inside a rule's own card (`data-code-ok`); and the chips the pages draw say words, not codes.
+// in what a page shows fails, except inside a rule's own card (`data-code-ok`), and so does a rule chip with a count on any page; the chips the pages
+// draw say words, not codes.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 // @ts-expect-error a plain ES module script, without types
-import { codesIn, ruleIds, shownText } from "../../scripts/rule-codes.mjs";
+import { PLANTED_CHIP, catchesPlanted, chipsIn, codesIn, ruleIds, shownText } from "../../scripts/rule-codes.mjs";
 import { ProvenanceProvider, RuleRef, RuleTitleRow } from "./provenance";
 import { RuleCard } from "./provenance-sheets";
 
@@ -26,12 +27,27 @@ describe("the built-pages guard", () => {
   });
 });
 
+describe("the rule chip guard (D116)", () => {
+  const chips = (html: string) => (chipsIn(shownText(html)) as { chip: string }[]).map((h) => h.chip);
+  it("finds a chip whose words, dot and count stand in separate elements, and one written as text", () => {
+    expect(chips(`<p>מנכים מס ${PLANTED_CHIP}</p><p>חוקים וכללים · 12</p>`)).toEqual(["חוקים וכללים · 3", "חוקים וכללים · 12"]);
+  });
+  it("leaves the words without a count alone: a page's title, a link to all of them, a spoken name", () => {
+    expect(chips(`<h1>חוקים וכללים</h1><a href="/rules">לכל החוקים והכללים</a><button aria-label="חוקים וכללים, 3">x</button>`)).toEqual([]);
+  });
+  it("catches the chip it plants in a page's main, and needs a main to plant it in", () => {
+    expect(catchesPlanted(`<html><body><main><p>טקסט</p></main></body></html>`)).toBe(true);
+    expect(catchesPlanted(`<html><body><div>טקסט</div></body></html>`)).toBe(false);
+  });
+});
+
 describe("the chips and rows a page draws", () => {
   const record = { id: "KH-19", title: "Default track", title_he: "מסלול ברירת המחדל", scope: "general", strength: "primary", dimensions: [], figures: {}, sources: [], checked: "2026-11-01" };
   const draw = (el: unknown, props: object) =>
     renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: { "KH-19": record }, terms: {}, dimensions: {}, today: "2026-11-11" } } as never, createElement(el as (p: object) => null, props))));
   it("a rule's chip and a rule's row print no code; its card does, inside data-code-ok", () => {
     expect(codes(draw(RuleRef, { id: "KH-19" }))).toEqual([]);
+    expect(draw(RuleRef, { id: "KH-19" })).toContain("מסלול ברירת המחדל");
     expect(codes(draw(RuleTitleRow, { id: "KH-19" }))).toEqual([]);
     expect(draw(RuleTitleRow, { id: "KH-19" })).toContain("מסלול ברירת המחדל");
     const card = draw(RuleCard, { id: "KH-19", data: { rules: { "KH-19": record }, terms: {}, dimensions: {}, today: "2026-11-11" } });

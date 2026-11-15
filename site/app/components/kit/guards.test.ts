@@ -581,17 +581,6 @@ describe("the page frame", () => {
   });
 });
 
-// 12. a rule id never stands alone: a chip in a list of rules (a sheet's "חוק או כלל", "נגזר מ") has no words beside it, so it
-//     carries the rule's own title (`titled`). A chip after a sentence that states the rule is its citation and stays short.
-describe("a rule chip in a list of rules", () => {
-  it("says the rule's title beside its id", () => {
-    const bare = files
-      .filter((f) => /\.tsx$/.test(f))
-      .flatMap((f) => [...code(read(f)).matchAll(/\.map\(\(?\w+\)? => \(?\s*<RuleRef\b[^>]*\/>/g)].filter((m) => !/\btitled\b/.test(m[0])).map((m) => `${rel(f)}: ${m[0].replace(/\s+/g, " ")}`));
-    expect(bare).toEqual([]);
-  });
-});
-
 // 13. Hebrew addressed to one gender (copy.md 1 and 10.2; on wording addressed to one reader): the site speaks in
 //     the plural or impersonally. A scan of the copy, the guide and exposure prose and the Hebrew fields of the records for the words
 //     that can only address one person ("אתה", "שלך", "לך", "עליך", "אליך", "ממך", "הזן"). Words that also have a third-person sense

@@ -118,14 +118,13 @@ describe("the pension visuals", () => {
     // a provident fund for annuity has no insurance, so the line does not say it is left out
     expect(text).not.toContain("בלי דמי ביטוח");
   });
-  it("says payroll gives the credit only on a direction or a notice (reg. 9(א)), that a general notice is open (TXP OQ6), and that the year's tax otherwise is a reading", () => {
+  it("says whether payroll gives the credit monthly is open (TXP OQ6), states no payroll route the rule base lacks, and says the credit is computed in the annual return (TXP-02)", () => {
     for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
       const text = textOf(id);
-      expect(text, id).toContain("רק אם רשות המסים הורתה כך למעסיק לבקשתכם");
-      expect(text, id).toContain("אם יש הודעה כזו, עוד לא ידוע");
-      expect(text, id).toContain("בלי אחת מהשתיים, הוא מגיע כשמחושב מס ההכנסה של השנה");
-      expect(text, id).toContain("קריאה של האתר");
-      expect(text, id).not.toContain("שמחושב בדוח השנתי");
+      expect(text, id).toContain("אם הוא מגיע כבר עם המשכורת");
+      expect(text, id).toContain("האתר לא מצא בכללים שקרא");
+      expect(text, id).toContain("הזיכוי מחושב בדוח השנתי, לפי הטופס השנתי מהמעסיק");
+      expect(text, id).not.toContain("רשות המסים הורתה");
     }
   });
 });

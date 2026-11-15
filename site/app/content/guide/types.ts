@@ -17,10 +17,9 @@ export type AbroadFacts = (key: string) => SiteValue;
 export interface AbroadCountryWords {
   /** The heading, "ב{מדינה}: …", with the product's name as its pages write it. */
   title: (product: string) => ReactNode;
-  /** Two or three sentences: what it is, who may open it, and how it differs from this guide's product, whose figures `p` gives. */
+  /** Two or three sentences: what it is, who may open it, and how it differs from this guide's product, whose figures `p` gives. The
+   *  words that state a rule of this guide's product carry it (`Ruled`, D116). */
   body: (f: AbroadFacts, p: ContentProps) => ReactNode;
-  /** The rules of this guide's product the comparison rests on, shown under the sentences. */
-  rules?: readonly string[];
   /** The three facts, under `AbroadWords.heads`. */
   tiles: (f: AbroadFacts) => readonly [ReactNode, ReactNode, ReactNode];
 }
@@ -39,10 +38,10 @@ export interface GuideContent {
   what: (p: ContentProps) => ReactNode;
   /** Left out where the guide has no such section (lib/guide-nav.ts). */
   who?: (p: ContentProps) => ReactNode;
-  /** The "מעבר בין מסלולים וקופות" line of the money-in-and-out list, and its rules; only a guide with that section has them. */
+  /** The "מעבר בין מסלולים וקופות" line of the money-in-and-out list; only a guide with that section has it. The words that state a
+   *  rule carry it (`Ruled`, D116), and the rules the record's switch fact cites show only where these words state them. */
   switchLine?: ReactNode | ((p: ContentProps) => ReactNode);
-  switchRules?: string[];
-  /** More rows of that list, after the shared ones. A rule named here ships with the page, as any rule its prose names. */
+  /** More rows of that list, after the shared ones, whose words carry their rules (`Ruled`). A rule named here ships with the page, as any rule its prose names. */
   inoutRows?: (p: ContentProps) => RuleRowItem[];
   /** A company-terms row left off this page, where general rules also apply and the company names would mislead. */
   omitCompanyTerms?: readonly string[];

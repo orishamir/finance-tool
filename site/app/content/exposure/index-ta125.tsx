@@ -34,7 +34,7 @@ export const content: ExposureContent = {
           <Term prefix="ה" id="בורסה">בורסה</Term> מתארת את <Term id="ת&quot;א-125">ת״א-125</Term> <Ruled prefix="כ" id="ETF-33">מדד הייחוס החשוב ביותר שלה</Ruled>, שמשקף את הכלכלה הישראלית. הוא כולל את מניות <Term id="ת&quot;א-35">ת״א-35</Term> <Term prefix="ו" id="ת&quot;א-90">ת״א-90</Term>.
         </p>
         <Sentence measure>
-          הכסף מושקע, דרך קרן, במניות של {n ? <Num value={n} /> : null} מהחברות הגדולות בבורסה בתל אביב, בשקלים.
+          הכסף חשוף, דרך קרן, למניות של {n ? <Num value={n} /> : null} מהחברות הגדולות בבורסה בתל אביב, בשקלים.
         </Sentence>
         <Sentence measure>
           משקל כל מניה <Ruled id="ETF-36">נקבע לפי שווי החזקות הציבור</Ruled>, עם מדרגת נזילות ותקרת משקל. ועדת המדדים קבעה תקרה של {cap ? <Num value={cap} /> : null} למניה אחת, מתוך גבול של {ceiling ? <Num value={ceiling} /> : null} שהנחיות הבורסה מתירות. הרכב המדד מתעדכן {updates ? <Num value={updates} /> : null} פעמים בשנה, בתחילת מאי ונובמבר.
@@ -134,7 +134,7 @@ export const content: ExposureContent = {
         השווי עולה ויורד עם מניות החברות שבמדד. מחיר קרן סל בבורסה במהלך היום <Ruled id="ETF-06">יכול להיות שונה משווי הנכסים שלה</Ruled>, אף שיש <Term id="עושה שוק">עושה שוק</Term>.
       </p>
       <p className="max-w-measure">
-        קרן יכולה <Ruled id="ETF-21">להתפרק בהודעה מראש</Ruled>, ומנהל רשאי להעלות <Term id="דמי ניהול">דמי ניהול</Term>. מנהל שהתחייב לכך <Term prefix="ב" id="תשקיף">תשקיף</Term> שלו <Ruled id="MF-17">מעלה רק בתחילת שנה</Ruled>. הרכב המדד <Ruled id="ETF-35">משתנה בכל עדכון</Ruled>, וקרן שעוקבת אחריו קונה ומוכרת מניות בהתאם.
+        קרן יכולה <Ruled id="ETF-21">להתפרק בהודעה מראש</Ruled>, ומנהל רשאי להעלות <Term id="דמי ניהול">דמי ניהול</Term>. מנהל שהתחייב לכך <Term prefix="ב" id="תשקיף">תשקיף</Term> שלו <Ruled id="MF-17">מעלה רק בתחילת שנה</Ruled>. הרכב המדד <Ruled id="ETF-35">משתנה בכל עדכון</Ruled>.
       </p>
       <Sentence measure>
         <Ruled id="ETF-67">יחידת המסחר בקרן סל</Ruled> היא <Term id="יחידה">יחידה</Term> אחת. בשלב המסחר הרציף, פקודה בקרן על מדד מניות צריכה להיות בשווי של {minOrder ? <Num value={minOrder} /> : null} לפחות.

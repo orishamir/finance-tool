@@ -63,14 +63,14 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "held-tase-foreign": { icon: "landmark", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
   "held-abroad": { icon: "globe", tone: "neutral", rules: ["ETF-24"] },
   "trade-etf": { icon: "pulse", tone: "neutral", rules: ["ETF-04"] },
-  "trade-tracking": { icon: "calendarClock", tone: "neutral", rules: ["ETF-04"] },
+  "trade-tracking": { icon: "calendarClock", tone: "neutral", rules: ["ETF-04", "MF-09"] },
   "follow-physical": { icon: "box", tone: "neutral", rules: ["ETF-52"] },
   "follow-swap": { icon: "swap", tone: "neutral", rules: ["ETF-51", "ETF-52", "ETF-53"] },
   "follow-futures": { icon: "fileClock", tone: "neutral", rules: ["ETF-52"] },
   "follow-mixed": { icon: "blend", tone: "neutral", rules: ["ETF-52", "ETF-53"] },
   currency: { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
-  hedged: { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
-  "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
+  hedged: { icon: "shield", tone: "neutral", rules: ["ETF-12", "ETF-10", "ETF-75"] },
+  "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12", "ETF-10", "ETF-75"] },
   "currency-many": { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   "currency-foreign": { icon: "currency", tone: "neutral", rules: ["ETF-12"] },
   "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09", "TXS-14"] },
@@ -85,7 +85,7 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "ask-estate": { icon: "scroll", tone: "caution", rules: ["TXF-27"] },
   "risk-unsupervised": { icon: "eyeOff", tone: "caution", rules: ["BRK-06", "ETF-24"] },
   "ask-w8": { icon: "fileSignature", tone: "caution", rules: ["TXF-13"] },
-  unavailable: { icon: "ban", tone: "caution", rules: ["BRK-40"] },
+  unavailable: { icon: "ban", tone: "caution", rules: ["BRK-64", "BRK-65"] },
 };
 
 /** A currency's own sign for its label; a currency without one in the set, or none known, takes the general currency sign. */

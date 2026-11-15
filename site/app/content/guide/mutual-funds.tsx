@@ -26,7 +26,7 @@ export function What() {
         הקרן מחולקת ל<Term id="יחידה">יחידות</Term>, וכל יחידה נותנת זכות שווה בקרן. <Ruled id="MF-04">יחידות מוצעות לציבור רק לפי</Ruled> <Term id="תשקיף">תשקיף</Term> שהרשות התירה לפרסם.
       </Sentence>
       <Callout tone="info" className="max-w-measure" title={<><Term id="קרן סל">קרן סל</Term> <Term prefix="ו" id="קרן מחקה פתוחה">קרן מחקה פתוחה</Term> הן קרנות נאמנות</>}>
-        המילים ״קרן נאמנות״ לא אומרות איך הקרן נסחרת ובמה היא משקיעה. את זה קובעים שני הבדלים: אם הקרן מחקה מדד, ואם היא פתוחה או סגורה.
+        המילים ״קרן נאמנות״ לא אומרות איך הקרן נסחרת ובמה היא משקיעה. את זה <Ruled id="MF-01">קובע הסכם הקרן</Ruled>: אם היא פתוחה או סגורה, ומה מדיניות ההשקעה שלה, למשל אם הקרן מחקה מדד.
       </Callout>
     </>
   );
@@ -37,7 +37,7 @@ export function Kinds({ figure }: ContentProps) {
   return (
     <>
       <Sentence measure>
-        <Term id="קרן מחקה">קרן מחקה</Term> עוקבת אחרי מדד או אחרי מחיר של סחורה: היא מנסה לעלות ולרדת כמוהו.
+        <Term id="קרן מחקה">קרן מחקה</Term> עוקבת אחרי מדד או אחרי מחיר של סחורה: <Ruled id="ETF-01">היא מכוונת לתוצאות שנגזרות מהשינוי במחיר שלו</Ruled>.
       </Sentence>
       <FixedTable
         measure
@@ -83,7 +83,7 @@ export function Trade({ figure }: ContentProps) {
         ]}
         rows={[
           { key: "where", head: "ממי קונים", cells: [<Fragment key="open">מהקרן, דרך <Term id="מפיץ">מפיץ</Term></Fragment>, "ממוכר בבורסה"] },
-          { key: "when", head: "מתי", cells: [<Fragment key="open"><Ruled id="MF-09">פעם ביום</Ruled>, לפי <Term id="השעה היעודה">השעה היעודה</Term></Fragment>, <Fragment key="etf"><Ruled id="ETF-04">לאורך יום המסחר</Ruled></Fragment>] },
+          { key: "when", head: "מתי", cells: [<Fragment key="open"><Ruled id="MF-09">בימים שהקרן מחשבת בהם מחיר</Ruled>, לפי <Term id="השעה היעודה">השעה היעודה</Term></Fragment>, <Fragment key="etf"><Ruled id="ETF-04">לאורך יום המסחר</Ruled></Fragment>] },
           { key: "price", head: "באיזה מחיר", cells: [<Fragment key="open"><Ruled id="MF-05">לפי שווי הנכסים</Ruled></Fragment>, <Fragment key="etf">בבורסה, <Ruled id="ETF-06">לא תמיד שווי היחידה</Ruled></Fragment>] },
           { key: "order", head: "מה מזמינים", cells: [<Fragment key="open"><Ruled id="MF-11">סכום כסף</Ruled></Fragment>, "מספר יחידות"] },
         ]}

@@ -30,16 +30,20 @@ export const content: GuideContent = {
       </p>
     </>
   ),
-  switchLine: "בלי מס הכנסה. אפשר גם לעבור לקופת גמל להשקעה אחרת, עם כל היתרה או עם חלק ממנה.",
-  switchRules: ["TXK-04", "PF-23", "KGL-10"],
+  switchLine: (
+    <>
+      בלי מס הכנסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>. אפשר גם לעבור לקופת גמל להשקעה אחרת, <Ruled id="KGL-10">עם כל היתרה או עם חלק ממנה</Ruled>.
+    </>
+  ),
   omitSwitchInTax: true,
   companiesOpen: true,
-  termIds: ["מסלול השקעה", "תקופת ההנחה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך", "דמי ניהול מהפקדה", "דוח שנתי", "החזר מס"],
+  termIds: ["מסלול השקעה", "תקופת ההנחה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך", "דמי ניהול מהפקדה", "דוח שנתי", "החזר מס", "רשות המסים"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
     const rate = figure("TXK-06", "rate");
     const withheld = figure("TXK-26", "withholding_on_gains");
+    const regulationRate = figure("TXK-26", "regulation_text_rate");
     const proposedCap = figure("TXK-21", "proposed_cap");
     const reportDate = figure("TXK-21", "report_date");
     return (
@@ -56,7 +60,7 @@ export const content: GuideContent = {
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא <Ruled id="TXG-07">תקרה, לא שיעור קבוע</Ruled>. מגיל {sixty ? <Num value={sixty} /> : null} <Ruled id="TXG-04">חלות על ההכנסה מדרגות המס הנמוכות</Ruled>, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח <Ruled id="TXK-06">נספר כחלק העליון של ההכנסה</Ruled>, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
         </Callout>
         <Sentence measure>
-          החברה המנהלת <Ruled id="TXK-26">מנכה במקור</Ruled> {withheld ? <Num value={withheld} /> : "מס"} מהרווח, בכל גיל, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. זו מקדמה: את מה שנוכה יותר מדי מקבלים בחזרה רק <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> או בבקשה <Term prefix="ל" id="החזר מס">החזר מס</Term>.
+          החברה המנהלת <Ruled id="TXK-26">מנכה במקור</Ruled> {withheld ? <Num value={withheld} /> : "מס"} מהרווח, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. השיעור הזה כתוב בקובץ <Term prefix="ש" id="רשות המסים">רשות המסים</Term> מפרסמת לגופים שמנכים במקור; בתקנות, כפי שפורסמו, השיעור {regulationRate ? <Num value={regulationRate} /> : "נמוך יותר"}, והאתר לא מצא את ההוראה שקובעת את השיעור שבקובץ. זו מקדמה: את מה שנוכה יותר מדי מקבלים בחזרה רק <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> או בבקשה <Term prefix="ל" id="החזר מס">החזר מס</Term>.
         </Sentence>
         {/* whether a deposit fee is part of the principal the gain is measured from is open (TXK-05 does not settle it); the ledger
             records each deposit after its fee (F-08), so the fee is taxed as gain */}
@@ -77,11 +81,10 @@ export const content: GuideContent = {
           const age = figure("TXK-10", "early_retirement_age");
           return (
             <>
-              חשבון חיסכון והשקעה עם הטבת מס, <AbroadSaid v={f("who")}>לתושבי בריטניה</AbroadSaid> מגיל <AbroadFigure v={f("min_age")} />. ההבדל מקופת גמל להשקעה: משיכה בכל גיל, גם של הכול בבת אחת, פטורה ממס על הרווח. בקופת גמל להשקעה משלמים מס הכנסה על הרווח במשיכה חד־פעמית בכל גיל, ומגיל {age ? <Num value={age} /> : null} הוא פטור רק כשהכסף עובר לקצבה.
+              חשבון חיסכון והשקעה עם הטבת מס, <AbroadSaid v={f("who")}>לתושבי בריטניה</AbroadSaid> מגיל <AbroadFigure v={f("min_age")} />. ההבדל מקופת גמל להשקעה: משיכה בכל גיל, גם של הכול בבת אחת, פטורה ממס על הרווח. בקופת גמל להשקעה <Ruled id="TXK-05">משלמים מס הכנסה על הרווח במשיכה חד־פעמית בכל גיל</Ruled>, ומגיל {age ? <Num value={age} /> : null} הוא <Ruled id={["TXK-12", "TXK-09"]}>פטור רק כשהכסף עובר לקצבה</Ruled>.
             </>
           );
         },
-        rules: ["TXK-05", "TXK-07", "TXK-09", "TXK-10", "TXK-12"],
         tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנת המס <AbroadPeriod v={f("deposit_limit")} /></>, <AbroadSaid v={f("tax_on_gain")}>אין</AbroadSaid>, <AbroadSaid v={f("withdraw")}>בכל עת</AbroadSaid>],
       },
       us: {
@@ -90,11 +93,10 @@ export const content: GuideContent = {
           const age = figure("TXK-10", "early_retirement_age");
           return (
             <>
-              חשבון חיסכון לפרישה. מפקידים בו <AbroadSaid v={f("who")}>עד גובה ההכנסה מעבודה באותה שנה</AbroadSaid>, ולפי ההכנסה ואופן הגשת הדוח לפעמים פחות. כמו בקופת גמל להשקעה, ההפקדה לא מורידה את מס ההכנסה. ההבדל: מגיל <AbroadFigure v={f("withdraw")} />, אחרי <AbroadFigure v={f("account_years")} /> שנים לפחות מתחילת השנה של ההפקדה הראשונה, גם משיכה של הכול בבת אחת פטורה ממס הכנסה, כולל הרווח. בקופת גמל להשקעה, מגיל {age ? <Num value={age} /> : null} הרווח פטור ממס הכנסה רק כשהכסף עובר לקצבה.
+              חשבון חיסכון לפרישה. מפקידים בו <AbroadSaid v={f("who")}>עד גובה ההכנסה מעבודה באותה שנה</AbroadSaid>, ולפי ההכנסה ואופן הגשת הדוח לפעמים פחות. כמו בקופת גמל להשקעה, <Ruled id="TXK-01">ההפקדה לא מורידה את מס ההכנסה</Ruled>. ההבדל: מגיל <AbroadFigure v={f("withdraw")} />, אחרי <AbroadFigure v={f("account_years")} /> שנים לפחות מתחילת השנה של ההפקדה הראשונה, גם משיכה של הכול בבת אחת פטורה ממס הכנסה, כולל הרווח. בקופת גמל להשקעה, מגיל {age ? <Num value={age} /> : null} הרווח <Ruled id={["TXK-12", "TXK-09"]}>פטור ממס הכנסה רק כשהכסף עובר לקצבה</Ruled>.
             </>
           );
         },
-        rules: ["TXK-01", "TXK-05", "TXK-07", "TXK-09", "TXK-10", "TXK-12"],
         tiles: (f) => [<>עד <AbroadAmount v={f("deposit_limit")} /> בשנת <AbroadPeriod v={f("deposit_limit")} /></>, <AbroadSaid v={f("tax_on_gain")}>אין, בתנאים</AbroadSaid>, <>בלי מס הכנסה מגיל <AbroadFigure v={f("withdraw")} /></>],
       },
       fr: {
@@ -119,7 +121,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> <Ruled id="TXK-04">לא ממוסה</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="TXK-10">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
+          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="TXK-10">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
         </Sentence>
       </>
     );

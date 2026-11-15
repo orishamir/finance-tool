@@ -4,7 +4,6 @@ import { abroad as copy } from "../../copy";
 import type { AbroadWords, ContentProps } from "../../content/guide/types";
 import type { AbroadView } from "../../lib/abroad";
 import { AbroadNote, type AbroadPlace } from "../kit";
-import { RulesLine } from "../provenance";
 
 export function abroadPlaces(view: AbroadView, words: AbroadWords, cp: ContentProps): AbroadPlace[] | null {
   const places: AbroadPlace[] = [];
@@ -22,7 +21,7 @@ export function abroadPlaces(view: AbroadView, words: AbroadWords, cp: ContentPr
       if (!v) throw new Error(`data/abroad: ${c.country} has no fact "${key}"`);
       return v;
     };
-    places.push({ id: c.country, name, product: c.product, title: w.title(c.product), body: w.body(f, cp), ...(w.rules?.length ? { rules: <RulesLine ids={[...w.rules]} /> } : {}), source: { publishers: c.publishers, href: c.href }, facts: w.tiles(f), checked: c.checked });
+    places.push({ id: c.country, name, product: c.product, title: w.title(c.product), body: w.body(f, cp), source: { publishers: c.publishers, href: c.href }, facts: w.tiles(f), checked: c.checked });
   }
   return places;
 }

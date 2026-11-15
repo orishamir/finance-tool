@@ -454,8 +454,9 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // the freeze (TXG OQ17), and what a fall of the CPI does to the gemel lehashkaa deposit ceiling (KGL OQ15); later that day one more,
     // which currency's 2.5 minimum Interactive Israel charges on a USD-traded listing on the LSE (BRK OQ25); 2026-11-15 eleven more,
     // the new file on how bonds behave (BND OQ1 to OQ11); later that day seven of those answered by the proofs in method.md section 14
-    // and deleted (BND OQ1, 3, 4, 7, 8, 9, 11) and two more asking for research (BND OQ12, 13)
-    expect(items.length).toBe(439);
+    // and deleted (BND OQ1, 3, 4, 7, 8, 9, 11) and two more asking for research (BND OQ12, 13); later that day one more, amendments
+    // of the 1964 provident-fund rules from ק"ת 10716 (2023) to the end of 2024, a gap in the reading of reg. 34(ב)(1) (TXK OQ15)
+    expect(items.length).toBe(440);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
