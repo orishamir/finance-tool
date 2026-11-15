@@ -59,7 +59,7 @@ interface LabelDef {
 
 /** Structure only: the words are in copy.ts. */
 export const labelDefs: Record<LabelId, LabelDef> = {
-  "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31"] },
+  "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31", "ETF-52"] },
   "held-tase-foreign": { icon: "landmark", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
   "held-abroad": { icon: "globe", tone: "neutral", rules: ["ETF-24"] },
   "trade-etf": { icon: "pulse", tone: "neutral", rules: ["ETF-04"] },
@@ -73,9 +73,9 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
   "currency-many": { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   "currency-foreign": { icon: "currency", tone: "neutral", rules: ["ETF-12"] },
-  "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09"] },
+  "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09", "TXS-14"] },
   "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
-  "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08"] },
+  "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
