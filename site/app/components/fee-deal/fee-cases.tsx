@@ -39,7 +39,7 @@ import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
 import { PART_MARK } from "./part-edit";
 import { PARTS, setPart } from "../../lib/fee-deal/offers/parts";
-import { pasteOn, type PastePlace } from "../../lib/fee-deal/paste";
+import { clipOf, pasteOn, type PastePlace } from "../../lib/fee-deal/paste";
 import { clipboard } from "./clipboard";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import { EditHere, PartFig } from "./edit-here";
@@ -428,9 +428,10 @@ export function FeeCases({
     const cellKey = t.closest<HTMLElement>("[data-copy-key]")?.dataset.copyKey;
     const here = cellKey !== undefined ? cellsByKey.get(cellKey) : undefined;
     if (e.code === "KeyC" || e.key.toLowerCase() === "c") {
-      if (!here) return;
+      const clip = here && clipOf(fee, here.l);
+      if (!clip) return;
       e.preventDefault();
-      clipboard.set(here.l);
+      clipboard.set(clip);
       return;
     }
     if (e.code === "KeyV" || e.key.toLowerCase() === "v") {

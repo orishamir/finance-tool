@@ -649,7 +649,7 @@ describe("a thing of the band's head, opened", () => {
     expect(track.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "4"));
     const what = thingMenu(r, "fee-trade", 0)!;
     // the case of Europe and the rest of the world names every value abroad but the US case's: "outside the US", the lead said once
-    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, "בחו״ל, מחוץ לארה״ב"]);
+    expect(what.values.map((w) => w.text)).toEqual([copy.cases.values.what.tase, copy.cases.values.what.mutualFunds, copy.cases.values.what.us, "ניירות ערך בחו״ל, מחוץ לארה״ב"]);
     expect(what.after).toBe(copy.cases.thingMenu.merge.replace("{from}", "5").replace("{to}", "3"));
     const size = thingMenu(r, "fee-fx", 0)!;
     expect(size.values.map((w) => [w.lead, w.figure?.value])).toEqual([
