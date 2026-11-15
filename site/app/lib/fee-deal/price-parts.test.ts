@@ -271,12 +271,12 @@ describe("the templates", () => {
       const row = builder(read(deal)).rows.find((r) => deal.fees.find((f) => f.id === r.fee)!.kind === "trade")!;
       return row.block.kind === "band" ? row.block.rows.map((r) => r.when[0]!.text ?? "") : [];
     };
-    // Excellence: the US's two tracks, and Europe with the rest of the world: "בחו״ל, מחוץ לארה״ב", as drawn
-    expect(texts("excellence")).toContain("בחו״ל, מחוץ לארה״ב");
-    expect(texts("excellence")).not.toContain("בחו״ל, באירופה, בחו״ל, בשאר העולם");
+    // Excellence: the US's two tracks, and Europe with the rest of the world: "ניירות ערך בחו״ל, מחוץ לארה״ב", as drawn
+    expect(texts("excellence")).toContain("ניירות ערך בחו״ל, מחוץ לארה״ב");
+    expect(texts("excellence")).not.toContain("ניירות ערך בחו״ל, באירופה, ניירות ערך בחו״ל, בשאר העולם");
     // Hapoalim: one case for every value abroad and nothing else, said as abroad alone
-    expect(texts("hapoalim")).toContain("בחו״ל");
-    expect(texts("hapoalim")).not.toContain("בחו״ל, בארה״ב, באירופה, בשאר העולם");
+    expect(texts("hapoalim")).toContain("ניירות ערך בחו״ל");
+    expect(texts("hapoalim")).not.toContain("ניירות ערך בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
   it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>

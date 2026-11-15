@@ -13,7 +13,7 @@ import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 import { Tag } from "./tag";
 
-/** One thing a case says, for one of the things the price changes by: a value ("בחו״ל, בארה״ב"), or any value ("בכל מסלול"). */
+/** One thing a case says, for one of the things the price changes by: a value ("ניירות ערך בחו״ל, בארה״ב"), or any value ("בכל מסלול"). */
 export interface CaseWord {
   text: ReactNode;
   /** Any value of the thing: fainter, as it narrows nothing. */
