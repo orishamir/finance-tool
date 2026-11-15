@@ -2,7 +2,7 @@
 // Every figure on the site is a Num; a tap opens where it comes from. Rule and term chips open their cards
 // in the same sheet, with a back arrow when they were reached from a number. What the sheet shows (the cards) is in
 // provenance-sheets.tsx, fetched while the page hydrates, so the script a page needs to show itself holds only the figures and chips.
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, useSyncExternalStore, type MouseEvent, type ReactNode } from "react";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
@@ -16,10 +16,11 @@ import { cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
+import type { ProofId } from "../content/proofs";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "formula"; id: string } | { kind: "question"; id: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "formula"; id: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
 
 /** One sentence of a sheet's own text (`Item` "terms", `parts`): what it is about, the sentence, and the document it rests on. */
 export interface SheetPart {
@@ -504,7 +505,7 @@ export function ReadingTag({ held = false, shown = true }: { held?: boolean; sho
   return <LongestCase cases={[tag]}>{shown ? tag : null}</LongestCase>;
 }
 
-export type IdKind = "rule" | "formula" | "parameter" | "assumption" | "question";
+export type IdKind = "rule" | "formula" | "parameter" | "assumption" | "question" | "proof";
 const QUESTION_ID = /^([A-Z0-9]+)[ -]OQ(\d+)$/;
 /** The open question an open value cites (`TXI OQ19`), in its source's title or its notes; null when it names none. */
 export const openQuestionOf = (v: SiteValue): string | null => {
@@ -513,12 +514,14 @@ export const openQuestionOf = (v: SiteValue): string | null => {
   return m ? `${m[1]} OQ${m[2]}` : null;
 };
 /**
- * What an id is, from its shape: `TX2 OQ6` a question; `F-80`, and any id `formulaNames` names (`A-06`, which is a method
+ * What an id is, from its shape: `TX2 OQ6` a question; `M-01` a statement math proves (docs/method.md section 14), which has the
+ * shape of a rule's code and is told apart first; `F-80`, and any id `formulaNames` names (`A-06`, which is a method
  * assumption that has a formula of its own), a formula; `P-01` a site parameter; any other `A-nn` an assumption of the
  * method (a parameter card links to it only when the card has it as an input); `ABC-12` a rule. Anything else is null: no chip.
  */
 export function idKind(id: string): IdKind | null {
   if (QUESTION_ID.test(id)) return "question";
+  if (/^M-\d+$/.test(id)) return "proof";
   if (/^F-\d+$/.test(id) || (id !== "_other" && Object.hasOwn(formulaNames, id))) return "formula";
   if (/^P-\d+$/.test(id)) return "parameter";
   if (/^A-\d+$/.test(id)) return "assumption";
@@ -527,10 +530,10 @@ export function idKind(id: string): IdKind | null {
 }
 
 /**
- * One chip for any id the site has: a rule opens its card, a formula its sheet, an open question its sheet,
+ * One chip for any id the site has: a rule opens its card, a formula its sheet, an open question its sheet, a proof its sheet,
  * a parameter goes to its card on the parameters page. The chip says words, never the code (D48): a rule's chip is
  * "חוקים וכללים · 1" (`RulesChip`), or with `titled` the rule's title; a formula's says its name, a parameter's its name,
- * an open question's "פרטים". The code stays in the card or sheet it opens and in the chip's address. A 44px tap area.
+ * an open question's "פרטים", a proof's "הוכחה" (`ProofsChip`). The code stays in the card or sheet it opens and in the chip's address. A 44px tap area.
  * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind renders as plain text; a parameter or an `A-nn` no card has, nothing.
  */
@@ -565,6 +568,8 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   // a rule's chip says "חוקים וכללים · 1", or its title where the chip stands for the rule in a list (`titled`)
   const rule = kind === "rule" ? ruleOf(data, shown) : undefined;
   if (kind === "rule" && !(titled && rule) && !asLabel) return <RulesChip ids={[shown]} className={className} />;
+  // a proof's chip says "הוכחה"; its title is in the sheet's script (content/proofs.ts), which a page's own script does not carry
+  if (kind === "proof" && !asLabel) return <ProofsChip ids={[id]} className={className} />;
   // an open question's chip says a word, not its code: the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
   const ruleName = rule ? ruleTitle(rule) : undefined;
@@ -573,7 +578,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   if (kind === "assumption") card = data?.parameters?.[id];
   if ((kind === "parameter" || kind === "assumption") && !card) return null;
   const formulaName = kind === "formula" ? formulaNames[id] || data?.formulas?.[id]?.name || formulaNames._other : undefined;
-  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : formulaName ?? (kind === "question" ? copy.idRef.questionChip : ruleCopy.set));
+  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : formulaName ?? (kind === "question" ? copy.idRef.questionChip : kind === "proof" ? copy.proofChip.one : ruleCopy.set));
   // a short word stays on one line; a title or a name wraps inside the chip
   const long = !!(title || ruleName || formulaName || (card && parametersPage.names[card]));
   const chip = ruleName?.english ? <bdi dir="ltr" className="text-start">{words}</bdi> : <span className={long ? "text-start" : "whitespace-nowrap"}>{words}</span>;
@@ -700,13 +705,38 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
   );
 }
 
-/** `RulesChip` as the last line of its block, never inside a sentence. */
-export function RulesLine({ ids, lead, name, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; className?: string }) {
-  if (ids.length === 0 && !lead) return null;
+/**
+ * The statements math proves that a fact rests on (docs/method.md section 14), as one chip in the rules chip's look: "הוכחה" for one,
+ * which opens its sheet at once, and "הוכחות · N" for several, which opens the list of their titles. Never the code (D48). No ids, no chip.
+ */
+export function ProofsChip({ ids, className }: { ids: readonly string[]; className?: string }) {
+  const open = useOpen();
+  const only = ids.length === 1 ? ids[0]! : null;
+  if (ids.length === 0) return null;
+  const item: Item = only ? { kind: "proof", id: only } : { kind: "proofs", ids };
+  return (
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={only ? copy.proofChip.one : `${copy.proofChip.many}, ${ids.length}`}>
+      {only ? (
+        copy.proofChip.one
+      ) : (
+        <>
+          {copy.proofChip.many}
+          <span aria-hidden="true" className="mx-1 text-muted-foreground">·</span>
+          <bdi dir="ltr">{ids.length}</bdi>
+        </>
+      )}
+    </button>
+  );
+}
+
+/** `RulesChip` as the last line of its block, never inside a sentence; `proofs`, the statements math proves that the block also rests on, add their chip after it. */
+export function RulesLine({ ids, proofs = [], lead, name, className }: { ids: readonly string[]; proofs?: readonly ProofId[]; lead?: ReactNode; name?: string; className?: string }) {
+  if (ids.length === 0 && proofs.length === 0 && !lead) return null;
   return (
     <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
       {lead}
       <RulesChip ids={ids} name={name} />
+      <ProofsChip ids={proofs} />
     </p>
   );
 }
@@ -723,10 +753,22 @@ export function RuleTitleRow({ id, scope = true, className }: { id: string; /** 
   if (!rule) return <span className={cx("flex min-h-target items-center", className)}><RulesChip ids={[id]} /></span>;
   const title = ruleTitle(rule);
   return (
-    <button type="button" onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className={cx("group flex w-full min-h-target items-center gap-3 py-2 text-start text-sm", className)}>
+    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} under={scope && !isGeneral(rule) ? scopeTag(rule, data?.ownDocs, { company: data?.company }) : undefined} className={className}>
+      {title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}
+    </TitleRow>
+  );
+}
+
+/**
+ * A row of a list whose row is the thing itself (a rule, a proof): its title in the link colour opens it, with a drill-in arrow and an
+ * optional line under the title. The whole row is one button, at least 44 px.
+ */
+export function TitleRow({ children, under, onClick, className }: { children: ReactNode; under?: string; onClick: (e: MouseEvent<HTMLButtonElement>) => void; className?: string }) {
+  return (
+    <button type="button" onClick={onClick} className={cx("group flex w-full min-h-target items-center gap-3 py-2 text-start text-sm", className)}>
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="text-link group-hover:underline leading-snug [overflow-wrap:anywhere]">{title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}</span>
-        {scope && !isGeneral(rule) && <span className="text-xs text-muted-foreground">{scopeTag(rule, data?.ownDocs, { company: data?.company })}</span>}
+        <span className="text-link group-hover:underline leading-snug [overflow-wrap:anywhere]">{children}</span>
+        {under && <span className="text-xs text-muted-foreground">{under}</span>}
       </span>
       <IconDrillIn size={16} className="shrink-0 text-muted-foreground" />
     </button>

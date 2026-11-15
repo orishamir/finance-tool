@@ -22,6 +22,8 @@ export function What() {
       <RulesLine ids={["MF-59", "MF-60"]} />
       <Sentence measure>בקרנות שנמצאו, הקרן עוקבת אחרי מדד של <Term id="איגרת חוב">איגרות חוב</Term> שנפרעות בערך באותה שנה. אצל ילין לפידות, ככל שהן נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, ואחרי סוף השנה למזומן.</Sentence>
       <RulesLine ids={["MF-61", "MF-62", "MF-63"]} />
+      <Sentence measure>כך הקרן מתנהגת בערך כמו איגרת חוב אחת שנגמרת במועד ידוע, אבל עם הרבה <Term id="מנפיק">מנפיקים</Term>. ככל שהסוף מתקרב, נשאר פחות זמן עד שהאיגרות בקרן נפרעות, ולכן שינוי <Term prefix="ב" id="ריבית">ריבית</Term> מזיז את <Term id="מחיר קנייה">מחיר היחידה</Term> פחות ופחות. בקרן אג״ח בלי מועד סיום אין רגע כזה: כמה מחיר היחידה זז תלוי באיגרות שהיא מחזיקה באותו זמן. מי שיודע מתי יצטרך את הכסף יכול לבחור קרן ששנת הסיום שלה קרובה למועד הזה, כמו שבוחרים איגרת חוב לפי המועד שבו היא נגמרת.</Sentence>
+      <RulesLine ids={["MF-61", "MF-59", "BND-04", "BND-13", "BND-14"]} proofs={["M-03"]} />
       <Sentence measure>בחוק ובמסמכים של <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> שנבדקו לא נמצא שם לסוג הקרן הזה, והאתר משתמש במילים של החוק. המילה ״בולט״ היא מילה של <Term prefix="ה" id="בורסה">בורסה</Term> לסוג מדד, והיא מופיעה גם בשמות של קרנות. ילין לפידות כותבת במקומה ״אג״ח <Term prefix="ל" id="פדיון">פדיון</Term>״.</Sentence>
       <RulesLine ids={["MF-59", "MF-61", "MF-62", "MF-63"]} />
       <Callout tone="info" className="max-w-measure" title="שנה בשם הקרן לא אומרת שהקרן נגמרת">
@@ -60,6 +62,15 @@ export function Compare() {
           },
           { key: "sell", head: "מכירה לפני הסוף", cells: ["במחיר בבורסה", "במחיר של יום התמחור", "במחיר של יום התמחור"] },
           {
+            key: "rates",
+            head: "כשהריבית במשק עולה",
+            cells: [
+              "המחיר יורד, ובפדיון חוזר לסכום שהמנפיק התחייב לו",
+              "מחיר היחידה יורד, ופחות ככל שהסוף קרוב",
+              "מחיר היחידה יורד, ואין פדיון שמחזיר אותו",
+            ],
+          },
+          {
             key: "tax",
             head: (
               <>
@@ -68,7 +79,7 @@ export function Compare() {
             ),
             cells: [
               <Fragment key="bond">
-                על <Term prefix="ה" id="ריבית">ריבית</Term> כשהיא משולמת, ועל <Term id="רווח הון">רווח הון</Term> במכירה או בפדיון
+                על הריבית כשהיא משולמת, ועל <Term id="רווח הון">רווח הון</Term> במכירה או בפדיון
               </Fragment>,
               <Fragment key="limited">
                 {/* two words in a column 64 px wide on a 320 px phone: the term breaks between them there rather than run out of its cell */}
@@ -81,7 +92,14 @@ export function Compare() {
           },
         ]}
       />
-      <RulesLine ids={["CORP-01", "CORP-23", "TX2-06", "TXI-12", "TXS-03", "MF-05", "MF-10", "MF-11", "MF-16", "MF-20", "MF-60", "TXS-09", "TXS-33"]} />
+      <RulesLine ids={["CORP-01", "CORP-23", "TX2-06", "TXI-12", "TXS-03", "MF-05", "MF-10", "MF-11", "MF-16", "MF-20", "MF-60", "TXS-09", "TXS-33", "BND-01", "BND-02", "BND-13"]} proofs={["M-01", "M-03"]} />
+      <Sentence measure>
+        <span className="font-medium">קרן אג״ח רגילה אחרי עליית ריבית.</span> מחיר היחידה יורד מיד, בערך לפי <Term prefix="ה" id={'מח"מ'}>מח״מ</Term> של האיגרות בקרן. קרן ששומרת על אותו מח״מ קונה כל הזמן איגרות חדשות, ואלה משלמות עכשיו יותר, ולכן היא מרוויחה יותר בכל שנה. בחשבון, אחרי בערך מספר שנים כמו המח״מ הירידה וההכנסה הגבוהה מתקזזות: מי שמחזיק פחות זמן מזה נשאר מאחור, ומי שמחזיק יותר יוצא לפני. החשבון מניח שהריבית זזה פעם אחת ונשארת, ושאין דמי ניהול ואין מנפיק שלא משלם.
+      </Sentence>
+      <Sentence measure>
+        קרן שרוב החשיפה שלה לאיגרות חוב חייבת לפרסם בדוח השנתי את המח״מ של האיגרות שבה, ולפיו אפשר להעריך כמה מחיר היחידה יזוז כשהריבית זזה.
+      </Sentence>
+      <RulesLine ids={["BND-13", "MF-59"]} proofs={["M-05"]} />
     </>
   );
 }
@@ -178,7 +196,7 @@ export function Risks({ figure }: ContentProps) {
       <RulesLine ids={["MF-61", "MF-63"]} />
       <Sentence measure>מכירה לפני הסוף נעשית במחיר של אותו יום, שיכול להיות נמוך ממה ששולם.</Sentence>
       <RulesLine ids={["MF-10", "MF-11"]} />
-      <Sentence measure>חדלות פירעון של מנפיק פוגעת בחלק מהקרן, והפגיעה מגיעה למחזיק דרך <Term id="מחיר קנייה">מחיר היחידה</Term>.</Sentence>
+      <Sentence measure>חדלות פירעון של מנפיק פוגעת בחלק מהקרן, והפגיעה מגיעה למחזיק דרך מחיר היחידה.</Sentence>
       <RulesLine ids={["MF-10", "TXS-37"]} />
       <Sentence measure>
         קרוב לסוף יכולות להישאר פחות החזקות. זו מסקנה מדיווח אחד: במדד של קרן 5138565 של קסם, שמסתיימת ב־{kesem("MF-62", "end_first")}, היו ב־{kesem("MF-66", "index_date")} רק {kesem("MF-66", "holdings")} <Term id="נייר ערך">ניירות ערך</Term>, וחמשת הגדולים שקלו {kesem("MF-66", "top_five")}.
@@ -194,6 +212,7 @@ export function Risks({ figure }: ContentProps) {
 
 /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */
 export const termIds = [
+  'מח"מ',
   "נייר ערך",
   "מנפיק",
   "עמלה",
