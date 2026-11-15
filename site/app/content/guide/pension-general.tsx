@@ -46,7 +46,6 @@ export const content: GuideContent = {
       </p>
       <ExemptShare figure={figure} />
       <LumpSums figure={figure} />
-      {/* the page holds only the rules this file names by id: EmployerUntaxed states TXP-10 and TXP-11, LumpSums PEN-30, PEN-31, TXP-15, TXP-17, TXP-18 and TXP-19 */}
     </>
   ),
   risks: () => (

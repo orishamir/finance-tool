@@ -63,7 +63,6 @@ export const content: GuideContent = {
           אם <Term id="דמי ניהול מהפקדה">דמי הניהול מההפקדה</Term> נחשבים חלק מהסכום שהופקד, לא ידוע. בחישוב בעמוד הם לא נחשבים חלק ממנו, ולכן מס ההכנסה מחושב גם עליהם, כמו על רווח.
         </p>
         <OpenLossOffset />
-        {/* the page holds only the rules this file names by id: OpenLossOffset states TXK-30 */}
       </>
     );
   },

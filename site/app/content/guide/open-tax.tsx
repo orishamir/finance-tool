@@ -7,8 +7,8 @@ import { Callout, Sentence } from "../../components/kit";
  * comes first, as plain prose: no income tax and nothing withheld (TXK-30, the site's reading; a partial withdrawal is split pro rata,
  * TXK-13, which TXK-30 cites and which has no site record, so it carries no gain either). Its condition is the balance, never the amount taken out (checker). The open
  * question, whether the shortfall offsets other gains (TXK OQ10), follows in its own blocked callout. TXK-30 is the provident fund for
- * investing's rule, so no other guide shows this. Its words open TXK-30 (Ruled); a page holds only the rules its own file names by id,
- * so each page that shows this names TXK-30 in a comment beside it.
+ * investing's rule, so no other guide shows this. Its words open TXK-30 (Ruled); every guide that imports this part ships the
+ * rules it names (scanRuleIds follows a guide's imports).
  */
 export const OpenLossOffset = () => (
   <>

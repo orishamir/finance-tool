@@ -2,13 +2,12 @@
 // the engine bundle and its first run on P-05, the terms and the companies that offer it.
 import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { exposurePath, guidePath } from "./site-paths";
-import { join } from "node:path";
 import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
 import { shortName } from "./providers";
 import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
-import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
+import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
@@ -17,7 +16,7 @@ import { loadInstitutionRegistry } from "./institutions.server";
 import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
-import { readTextCached } from "./read-cache.server";
+import { scanRuleIds } from "./scan-rule-ids.server";
 import { heCollator } from "./format";
 
 export interface GuidePageData {
@@ -183,31 +182,6 @@ export function depositBreakTerms(t: string): BreakTerms | null {
 }
 
 /** Every rule id a prose module names, found in its source (a name is kept only when a rule record has that id). */
-/**
- * The rule ids a content file names, and those named by the content files beside it that it imports (`from "./pension-parts"`),
- * followed in turn: a part shared by several guides (a sentence that marks its rules with `Ruled`) ships those rules on every
- * page that renders it, so its words never open an empty card.
- */
-function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>, seen = new Set<string>()): string[] {
-  if (seen.has(relPath)) return [];
-  seen.add(relPath);
-  let src = "";
-  try {
-    src = readTextCached(join(root, relPath));
-  } catch {
-    return [];
-  }
-  const found = new Set<string>();
-  for (const m of src.matchAll(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g)) if (allRules[m[0]]) found.add(m[0]);
-  // "TXI OQ3" is written with a space in prose; the record id has a hyphen
-  for (const m of src.matchAll(/\b([A-Z0-9]{2,6}) OQ(\d{1,3})\b/g)) if (allRules[`${m[1]}-OQ${m[2]}`]) found.add(`${m[1]}-OQ${m[2]}`);
-  const dir = relPath.slice(0, relPath.lastIndexOf("/") + 1);
-  for (const m of src.matchAll(/from\s+"\.\/([\w-]+)(?:\.tsx?)?"/g)) {
-    // a missing file reads as no ids, so both spellings are tried
-    for (const ext of [".tsx", ".ts"]) for (const id of scanRuleIds(`${dir}${m[1]}${ext}`, allRules, seen)) found.add(id);
-  }
-  return [...found];
-}
 
 
 /** The lowest and highest fee the regulator reports on the wrapper's tracks, without self-directed tracks, which have a guide of their own (F-64). */

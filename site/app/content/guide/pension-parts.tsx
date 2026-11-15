@@ -44,8 +44,8 @@ export const disabilityRetirement = "מי שפרש בגלל נכות קבועה 
  * Which lump sums the law allows from a pension fund or a provident fund for annuity and how each is taxed, then the one it does not:
  * severance money when the job with that employer has ended (PEN-31), a retirement grant exempt per year of work (TXP-19) that lowers
  * the later annuity exemption (TXP-15); a commutation (TXP-17) and the other cases of PEN-30; and only a payment against s.23 is
- * "משיכה שלא כדין" (TXP-18). The words that state each rule open it (Ruled); a page holds only the rules its own file names by id,
- * so each page that shows this names them in a comment beside it.
+ * "משיכה שלא כדין" (TXP-18). The words that state each rule open it (Ruled); every guide that imports this part
+ * ships the rules it names (scanRuleIds follows a guide's imports).
  */
 export function LumpSums({ figure }: ContentProps) {
   const perYear = figure("TXP-19", "exempt_grant_per_year_of_work");
@@ -65,8 +65,8 @@ export function LumpSums({ figure }: ContentProps) {
 /**
  * What the employer deposits without income tax at deposit, each part by its own rule: the employer's contribution component up to TXP-10's
  * rate of salary and salary ceiling, and severance up to TXP-11's ceiling, applied each month as the lower of the salary times the highest
- * severance rate and a twelfth of the yearly figure (TXP-11's record says it so, with the yearly figure). Each page names both rules
- * in a comment beside it, since a page holds only the rules its own file names by id.
+ * severance rate and a twelfth of the yearly figure (TXP-11's record says it so, with the yearly figure). Every guide that imports
+ * this part ships both rules (scanRuleIds follows a guide's imports).
  */
 export function EmployerUntaxed({ figure }: ContentProps) {
   const pct = figure("TXP-10", "employer_exempt_pct");

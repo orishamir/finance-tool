@@ -56,7 +56,6 @@ export const content: GuideContent = {
           <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק <Ruled id="TXK-25">לא נמצא</Ruled>, והאתר לא מחשב אותו.
         </Callout>
         <OpenLossOffset />
-        {/* the page holds only the rules this file names by id: OpenLossOffset states TXK-30 */}
       </>
     );
   },
