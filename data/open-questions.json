@@ -222,6 +222,10 @@
     "title_he": "באיזה מטבע עמלת המינימום של אינטראקטיב ישראל על קרן שנסחרת בדולרים בבורסת לונדון"
   },
   {
+    "id": "BRK OQ26",
+    "status": "open"
+  },
+  {
     "id": "CS OQ2",
     "status": "narrowed"
   },
@@ -899,6 +903,14 @@
     "status": "open"
   },
   {
+    "id": "PEN OQ32",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ33",
+    "status": "open"
+  },
+  {
     "id": "PF OQ1",
     "status": "open"
   },
@@ -1150,6 +1162,10 @@
   },
   {
     "id": "INS OQ17",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ18",
     "status": "open"
   },
   {
