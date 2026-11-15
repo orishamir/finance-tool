@@ -7,7 +7,7 @@ import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { guidePath } from "../../lib/site-paths";
 import { guideSignature as copy } from "../../copy";
 import { fact, ladderRows, slowerPayNoMore, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
-import { Num, RulesLine, Term } from "../provenance";
+import { Num, Ruled, Term } from "../provenance";
 import { ChartLegend, CompareTable, NoteList, Sentence, StepTag, Swatch, Tag, TextLink, ValueBar } from "../kit";
 import { CommonRateLine, type VisualProps } from "./kit";
 
@@ -107,7 +107,8 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                   ) : (
                     <>
                       {copy.ladder.notes.exit.before}
-                      <Num value={noExit} /> {copy.ladder.notes.exit.of} <Num value={deposit.range.count} /> {copy.ladder.notes.exit.after}
+                      <Num value={noExit} /> {copy.ladder.notes.exit.of} <Num value={deposit.range.count} /> {copy.ladder.notes.exit.after} <Ruled id="BANK-06">{copy.ladder.notes.exit.byBank}</Ruled>
+                      {copy.ladder.notes.exit.end}
                     </>
                   )}
                 </span>,
@@ -115,18 +116,26 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
             : []),
         ]}
       />
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
 }
 
-/** The line under a tag, where the word alone leaves out how: the fund's set hour (MF-10, MF-11), the longest wait between fixed dates (MF-08). */
+/**
+ * The line under a tag, where the word alone leaves out how: the fund's set hour and the money the same day, whose words open the rules
+ * of a daily fund (MF-34, MF-10, MF-11); the longest wait between fixed dates, whose figure opens MF-08 and whose words open a
+ * renewable fund's rule (MF-35).
+ */
 function WhenNote({ speed, interval }: { speed: Speed; interval: ReturnType<typeof fact> }) {
-  if (speed === "trading-day") return <span className="text-sm text-muted-foreground">{copy.ladder.tradingDay}</span>;
+  if (speed === "trading-day")
+    return (
+      <span className="text-sm text-muted-foreground">
+        <Ruled id={["MF-34", "MF-10", "MF-11"]}>{copy.ladder.tradingDay}</Ruled>
+      </span>
+    );
   if (speed === "fixed-dates" && interval)
     return (
       <span className="text-sm text-muted-foreground">
-        {copy.ladder.interval.before} <Num value={interval} display={String(interval.value)} /> {copy.ladder.interval.after}
+        {copy.ladder.interval.before} <Num value={interval} display={String(interval.value)} /> <Ruled id="MF-35">{copy.ladder.interval.after}</Ruled>
       </span>
     );
   return null;

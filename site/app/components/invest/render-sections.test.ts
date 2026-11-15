@@ -97,7 +97,7 @@ describe("the index page's sections render", () => {
     const from = out.indexOf('data-pick-key="interactive-israel"');
     const next = out.indexOf("data-pick-key=", from + 1);
     const row = out.slice(from, next < 0 ? undefined : next);
-    expect(row).toMatch(new RegExp(`class="term"[^>]*>${invest.pair.noFund.notSold}<`));
+    expect(row).toMatch(new RegExp(`class="(?:term|ruled)"[^>]*>${invest.pair.noFund.notSold}<`));
     expect(row).not.toContain("<a ");
     expect(shown(row)).not.toContain("אין נתון");
     expect(shown(row)).not.toContain(invest.pair.notPossibleSource);
@@ -149,7 +149,7 @@ describe("an account that prices no fund on an index says why, over every kind o
     const row = out.slice(from, out.indexOf("</div>", from));
     expect(row).not.toContain("help-mark");
     expect(row).not.toContain("<a ");
-    expect(row).toMatch(new RegExp(`class="term"[^>]*>${invest.pair.noFund.notSold}<`));
+    expect(row).toMatch(new RegExp(`class="(?:term|ruled)"[^>]*>${invest.pair.noFund.notSold}<`));
     expect(fundRow(out, "interactive-brokers")).toContain(invest.pair.noFund.notSold);
     expect(fundRow(out, "interactive-brokers")).not.toContain(invest.pair.noFund.doubt);
     expect(fundRow(out, "interactive-brokers")).not.toContain("אין נתון");
@@ -167,7 +167,7 @@ describe("an account that prices no fund on an index says why, over every kind o
         const words = [invest.pair.noPriceAt.doubt(short), invest.pair.noPriceAt.notSold(short), invest.pair.noPriceAt.missing(short), invest.pair.noPriceAt.other(short)].map((w) => w.replace(/"/g, "&quot;"));
         const said = words.filter((w) => o.includes(`>${w}</span>`));
         expect(said.length, `${idx.id} ${house}`).toBeGreaterThan(0);
-        for (const w of said) expect(o, `${idx.id} ${house}`).toMatch(new RegExp(`class="term"[^>]*>${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<`));
+        for (const w of said) expect(o, `${idx.id} ${house}`).toMatch(new RegExp(`class="(?:term|ruled)"[^>]*>${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<`));
         seen++;
       }
     }
@@ -595,7 +595,7 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       const lane = seen.split(invest.stairs.lanes.account.title)[1]?.split(/<h5/)[0] ?? "";
       // the line's words are a button that opens why (D105): the tags inside the bold are left out
       const lines = [...lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)].map((m) => m[1]!.replace(/<[^>]+>/g, "").replace(/[\u2066-\u2069]/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\""));
-      for (const m of lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)) expect(m[1], `${index.id}: a grey line's words open why`).toContain('class="term"');
+      for (const m of lane.matchAll(/<b class="font-medium[^"]*">([\s\S]*?):<\/b>/g)) expect(m[1], `${index.id}: a grey line's words open why`).toMatch(/class="(?:term|ruled)"/);
       const names = [...new Set(allFunds(v).map((f) => f.name))];
       for (const line of lines) {
         grey++;

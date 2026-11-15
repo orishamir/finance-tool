@@ -11,7 +11,7 @@ import { brands, invest, kit, trackBrowser } from "../../copy";
 import { MQ, useMedia } from "../../lib/hooks";
 import type { SiteValue } from "../../lib/value";
 import { IconAlert, IconChevronDown, IconDrillIn, IconExternal } from "../icons";
-import { LeadTail, Num, RulesLine, Term } from "../provenance";
+import { LeadTail, Num, Ruled, Term } from "../provenance";
 import { Card } from "./card";
 import { HelpMark } from "./help-mark";
 import { cx } from "./cx";
@@ -545,13 +545,27 @@ export function FundFeesPhoneHelp() {
   );
 }
 
-/** What "אין" and "לא נאסף" say, under a list of funds that may hold a foreign fund, with the rules behind it. */
+/** The rules behind what "אין" and "לא נאסף" say: the lines of the Israeli law for funds, and that it does not apply to a foreign fund. */
+const FEE_WORDS_RULES = { lines: ["ETF-14", "MF-20"], foreign: ["ETF-71"] } as const;
+
+/** What "אין" and "לא נאסף" say, as a "?" opens it beside a fund's fees: the sheet's text, a string, and the rules it rests on at its end. */
+export const FEE_WORDS_HELP = (() => {
+  const w = invest.funds.feeWordsNote;
+  return { text: `${w.before} ${w.lines}${w.mid}${w.prefix}${w.foreign}${w.after}`, rules: [...FEE_WORDS_RULES.lines, ...FEE_WORDS_RULES.foreign] };
+})();
+
+/** What "אין" and "לא נאסף" say, under a list of funds that may hold a foreign fund: the words that state a rule open it (D116). */
 export function FeeWordsNote({ className }: { className?: string }) {
+  const w = invest.funds.feeWordsNote;
   return (
-    <div className={cx("flex flex-col gap-1", className)}>
-      <span className="text-sm text-muted-foreground">{invest.funds.feeWordsNote}</span>
-      <RulesLine ids={["ETF-71", "ETF-14", "MF-20"]} />
-    </div>
+    <p className={cx("text-sm text-muted-foreground", className)}>
+      {w.before} <Ruled id={FEE_WORDS_RULES.lines}>{w.lines}</Ruled>
+      {w.mid}
+      <Ruled id={FEE_WORDS_RULES.foreign} prefix={w.prefix}>
+        {w.foreign}
+      </Ruled>
+      {w.after}
+    </p>
   );
 }
 

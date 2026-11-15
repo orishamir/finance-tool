@@ -26,6 +26,8 @@ export interface PartWords {
   second?: SiteValue;
   month?: MonthKey;
   tail?: string;
+  /** In a stated part's sentence, after `lead`: the words that state the part's rules (`StatedPart.rules`), which open them (D116). */
+  stated?: string;
   quiet?: string;
   /** Open questions the part rests on, each a chip after its words (a reading the site took where the list leaves it open, D56). */
   questions?: readonly string[];
@@ -146,8 +148,8 @@ export const STATED: Readonly<Record<StatedPartId, (c: StatedContext) => PartWor
   offset: ({ p }) => (charged(p) && p.offset ? { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail } : null),
   refund: ({ p, figures }) => (charged(p) && p.refund && !p.refund.blank ? { lead: st.refund.lead, ...fig(figures.refund), tail: st.refund.tail } : null),
   unfilled: () => ({ lead: st.unfilled }),
-  unfilledClerk: () => ({ lead: st.unfilledClerk }),
-  unfilledClerkAbroad: () => ({ lead: st.unfilledClerkAbroad }),
+  unfilledClerk: () => ({ ...st.unfilledClerk }),
+  unfilledClerkAbroad: () => ({ ...st.unfilledClerkAbroad }),
   capRead: () => ({ lead: st.capRead }),
   partial: () => ({ lead: st.partial }),
 };

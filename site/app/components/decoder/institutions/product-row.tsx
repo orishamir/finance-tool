@@ -4,36 +4,30 @@ import type { ReactNode } from "react";
 import { guidePath } from "../../../lib/site-paths";
 import { r4catalogue as copy } from "../../../copy";
 import { IconAlert } from "../../icons";
-import { Num, RuleRef, RulesLine } from "../../provenance";
+import { Num, Ruled } from "../../provenance";
 import { AmountRange, AnchorSpread, Card, Disclosure, DoubtNote, GoLink, KeyValueList, LabelRow, MixedName, PrintedQuotes, PrintedText, Tag, When, type KeyValueItem } from "../../kit";
 import { breakText, depositLabels, exitsText, renewText, taxWord, termWords } from "../../../lib/deposit-kind";
 import type { ProductRowData } from "./types";
 
-function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<string> }) {
-  const shown = [...new Set(ids)].filter((id) => known.has(id));
-  return shown.length ? <RulesLine ids={shown} /> : null;
-}
+/** Words that state the rules behind them, those the page holds (D116): a figure opens its own rules from its sheet, so a term in words carries them. */
+export const statedKnown = (words: ReactNode, ids: readonly string[], known: ReadonlySet<string>) => <Ruled id={[...new Set(ids)].filter((id) => known.has(id))}>{words}</Ruled>;
 
-/** One term of the card: its label and value, then what stands under the value (a doubt, the bank's words) and the rules behind it. */
-const item = (id: string, label: string, value: ReactNode, known: ReadonlySet<string>, more: { rules?: readonly string[]; tag?: ReactNode; after?: ReactNode } = {}): KeyValueItem => ({
+/** One term of the card: its label and value, then what stands under the value (a doubt, the bank's words). */
+const item = (id: string, label: ReactNode, value: ReactNode, more: { tag?: ReactNode; after?: ReactNode } = {}): KeyValueItem => ({
   id,
   label,
   value,
   ...(more.tag ? { tag: more.tag } : {}),
-  footer: (more.after || more.rules) && (
-    <>
-      {more.after}
-      {more.rules && <Chips ids={more.rules} known={known} />}
-    </>
-  ),
+  ...(more.after ? { footer: more.after } : {}),
 });
 
 export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; known: ReadonlySet<string>; wrapperName: string }) {
   const l = copy.labels;
   const term = termWords(p.term);
   const items: KeyValueItem[] = [
-    item("type", l.type447, <MixedName>{p.type447}</MixedName>, known, { rules: ["BANK-13"] }),
-    item("term", l.term, p.currentAccount || term === null ? copy.term.none : <Num value={p.term} display={term} />, known, { rules: p.term.rule_ids ?? [] }),
+    // the row's name says which directive the bank's own word for the type answers to
+    item("type", statedKnown(l.type447, ["BANK-13"], known), <MixedName>{p.type447}</MixedName>),
+    item("term", l.term, p.currentAccount || term === null ? copy.term.none : <Num value={p.term} display={term} />),
     item(
       "rateType",
       l.rateType,
@@ -44,16 +38,14 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
       ) : (
         copy.rateType.fixed
       ),
-      known,
     ),
-    item("rate", l.rate, <Num value={p.rate} size="cell" />, known, { rules: p.rate.rule_ids ?? [], after: p.doubt ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined }),
-    item("asOf", l.asOf, <Num value={p.asOf} />, known, { tag: p.asOfAfterRead && <Tag tone="caution" icon={<IconAlert size={14} />}>{copy.asOfAfterRead}</Tag> }),
-    item("linkage", l.linkage, <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />, known),
+    item("rate", l.rate, <Num value={p.rate} size="cell" />, { after: p.doubt ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined }),
+    item("asOf", l.asOf, <Num value={p.asOf} />, { tag: p.asOfAfterRead && <Tag tone="caution" icon={<IconAlert size={14} />}>{copy.asOfAfterRead}</Tag> }),
+    item("linkage", l.linkage, <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />),
     // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
-    item("tax", l.tax, <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} />, known, { rules: p.taxBucket.rule_ids ?? [] }),
-    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} edges={p.amountEdges} />, known, { rules: p.amountMin.rule_ids ?? [] }),
-    item("break", l.breakTerms, breakText(p.breakTerms.penalty, p.exitPoints.exists), known, {
-      rules: p.breakTerms.rules,
+    item("tax", l.tax, <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} />),
+    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} edges={p.amountEdges} />),
+    item("break", l.breakTerms, statedKnown(breakText(p.breakTerms.penalty, p.exitPoints.exists), p.breakTerms.rules, known), {
       after: p.breakTerms.quotes.length > 0 && (
         <Disclosure look="link" label={copy.breakDisclosure} summaryClassName="text-sm">
           <PrintedQuotes quotes={p.breakTerms.quotes} />
@@ -61,8 +53,8 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
       ),
     }),
     // exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing)
-    item("exits", l.exits, exitsText(p.exitPoints, p.conditions), known),
-    item("renew", l.autoRenew, renewText(p.autoRenew.value, p.autoRenew.maxRenewals), known),
+    item("exits", l.exits, exitsText(p.exitPoints, p.conditions)),
+    item("renew", l.autoRenew, renewText(p.autoRenew.value, p.autoRenew.maxRenewals)),
   ];
   return (
     <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 anchor-target target:outline-2 target:outline-ring target:outline-offset-2">
@@ -112,7 +104,8 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
         </Disclosure>
       )}
       <p className="text-sm text-muted-foreground max-w-measure">
-        {copy.notAnOffer} {known.has("BANK-13") && <RuleRef id="BANK-13" />}
+        {copy.notAnOffer.before} {statedKnown(copy.notAnOffer.stated, ["BANK-13"], known)}
+        {copy.notAnOffer.after}
       </p>
       <GoLink to={guidePath(p.wrapperId)} className="self-start">
         {copy.rowLinks.whatIs} {wrapperName}

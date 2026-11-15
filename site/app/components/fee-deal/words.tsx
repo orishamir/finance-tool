@@ -11,7 +11,7 @@ import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
-import { Num, RulesChip } from "../provenance";
+import { Num, Ruled } from "../provenance";
 
 /**
  * A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's; and after it the house
@@ -264,10 +264,16 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
  */
 export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
   const w = copy.cases.ban;
+  const said = ban.reading ? w.reading : w.law;
+  // the ban's rules are one list (the rule table's `cite`), so the words that state the ban open them all
   return (
     <>
-      {ban.reading ? w.reading : w.law} {w.newBank}
-      {ban.distribution && <> {w.distribution}</>} <RulesChip ids={ban.rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})} />
+      {said.before}{" "}
+      <Ruled id={ban.rules} {...(fee ? { name: copy.standing.bannedRules(fee) } : {})}>
+        {said.stated}
+      </Ruled>
+      {said.after} {w.newBank}
+      {ban.distribution && <> {w.distribution}</>}
     </>
   );
 }

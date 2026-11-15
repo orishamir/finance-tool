@@ -6,6 +6,7 @@ import { customIdOf, indexSuggestions, matchKnownIndex, type CustomIndex, type I
 import { customIndexPath, indexPath } from "../../lib/site-paths";
 import type { IndicesBundle } from "../../lib/providers";
 import { Button, Card, MenuPicker, PageHead, Tag, type MenuItem } from "../kit";
+import { Ruled } from "../provenance";
 
 /** The index name in the picker: it follows the title's "במדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(new RegExp(`^${c.title.indexWord}\\s+`), "");
@@ -20,13 +21,22 @@ function IndexLine({ index }: { index: IndexRef | null }) {
         {c.custom.savedNote} · {c.chips.ownChoice}
       </p>
     );
-  const held = index.israeli ? c.header.israeliNote : c.header.foreignNote;
+  const il = c.header.israeliNote;
+  const held = index.israeli ? (
+    <>
+      {il.before} <Ruled id="ETF-31">{il.stated}</Ruled>
+      {il.after}
+    </>
+  ) : (
+    c.header.foreignNote
+  );
   return (
     <p className="text-sm text-muted-foreground">
       <Tag tone="outline" className="me-2 align-baseline">
         {index.israeli ? c.title.tag.israeli : c.title.tag.foreign}
       </Tag>
-      {index.oneLine ? `${index.oneLine} ${held}` : held} {c.chips.ownChoice}
+      {index.oneLine && <>{index.oneLine} </>}
+      {held} {c.chips.ownChoice}
     </p>
   );
 }

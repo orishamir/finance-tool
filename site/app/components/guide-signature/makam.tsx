@@ -10,7 +10,7 @@ import { fact, makamModel } from "../../lib/guide-signature";
 import type { SiteValue } from "../../lib/value";
 
 import { Callout, InputSlot, LongestCase, Marker, MarkerMark, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
-import { Num, RuleRef, RulesLine, Term } from "../provenance";
+import { Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, rulesOfBundle, SigAmountField, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 
 const HEIGHT = 230;
@@ -203,7 +203,7 @@ export function MakamVisual({ data, today }: VisualProps) {
           )}
           {model.blocked && (
             <Callout tone="blocked">
-              {copy.makam.blocked} <RuleRef id={model.blocked} />
+              <Ruled id={model.blocked}>{copy.makam.blocked.stated}</Ruled> {copy.makam.blocked.after}
             </Callout>
           )}
         </div>
@@ -211,9 +211,13 @@ export function MakamVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         <p>
-          {copy.makam.yieldLine.before} <Num value={cash} /> {copy.makam.yieldLine.after}
+          <Ruled id="GOV-06">{copy.makam.yieldLine.stated}</Ruled> {copy.makam.yieldLine.before} <Num value={cash} /> {copy.makam.yieldLine.after}
         </p>
-        <p className="text-muted-foreground">{copy.makam.redeem}</p>
+        <p className="text-muted-foreground">
+          {copy.makam.redeem.before} <Ruled id="GOV-03">{copy.makam.redeem.price}</Ruled>
+          {copy.makam.redeem.mid} <Ruled id="TXI-11">{copy.makam.redeem.taxed}</Ruled>
+          {copy.makam.redeem.after}
+        </p>
         {depositLo && depositHi && depositCount && noExit && (
           <p>
             {copy.makam.altDeposit.before}{" "}
@@ -231,7 +235,6 @@ export function MakamVisual({ data, today }: VisualProps) {
           </p>
         )}
       </div>
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
 }

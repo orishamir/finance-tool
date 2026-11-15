@@ -11,7 +11,7 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { groupPath, housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
-import { IdRef, Num, NumAfter, RuleRef, RulesLine, Term } from "../../provenance";
+import { IdRef, Num, NumAfter, Ruled, RuleTitleRow } from "../../provenance";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
@@ -292,15 +292,11 @@ function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
           {rows.map((a) => (
             <li key={a.classes.join()} className="flex flex-col items-start gap-1 px-1 py-2.5">
               <span className="flex flex-wrap items-center gap-2.5">
-                {/* where the record names the rule that settles it, the state's word opens the rule's card (D105) */}
+                {/* where the record names the rule that settles it, the state's word opens the rule's card (D105, D116) */}
                 <Tag tone={a.state === "yes" ? "positive" : a.state === "no" ? "blocked" : "caution"}>
-                  {a.rules?.length ? (
-                    <Term id={[]} rules={a.rules} name={classWords(a.classes)}>
-                      {copy.card.canBuy.state[a.state]}
-                    </Term>
-                  ) : (
-                    copy.card.canBuy.state[a.state]
-                  )}
+                  <Ruled id={a.rules ?? []} name={classWords(a.classes)}>
+                    {copy.card.canBuy.state[a.state]}
+                  </Ruled>
                 </Tag>
                 <bdi>{classWords(a.classes)}</bdi>
               </span>
@@ -358,7 +354,8 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
       label: copy.card.regulator,
       value: <bdi>{regulator}</bdi>,
       tag: tariff.tase ? <Tag>{copy.card.tase}</Tag> : undefined,
-      footer: tariff.notice.length > 0 ? <RulesLine ids={tariff.notice} lead={<span>{copy.card.notice}</span>} className="text-sm" /> : undefined,
+      // the words name what the rules say: the notice a provider gives before it changes its fees (D116)
+      footer: tariff.notice.length > 0 ? <p className="text-sm text-muted-foreground"><Ruled id={tariff.notice}>{copy.card.notice}</Ruled></p> : undefined,
     },
   ];
   return (
@@ -367,12 +364,11 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
       {tariff.protection.length > 0 && (
         <div className="flex flex-col gap-2">
           <h4 className="text-sm font-medium">{copy.card.protectionDisclosure}</h4>
-          {/* a rule's id first, then its title, between hairlines (the designer's mock) */}
+          {/* each row is the rule itself: its title is the link to its card (D101), between hairlines */}
           <RowList plain>
             {tariff.protection.map((r) => (
-              <li key={r.id} className="flex items-center gap-3 px-1 py-1.5 min-h-12">
-                <RuleRef id={r.id} />
-                <bdi className="max-w-measure leading-snug">{gershayim(r.title)}</bdi>
+              <li key={r.id} className="px-1">
+                <RuleTitleRow id={r.id} className="max-w-measure" />
               </li>
             ))}
           </RowList>

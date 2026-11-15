@@ -23,7 +23,7 @@ describe("the can-buy rows on a company's card", () => {
     expect(no.length).toBeGreaterThan(0);
     for (const a of no) expect(a.rules).toEqual(["BRK-64"]);
     expect(Object.keys(part.rules)).toContain("BRK-64");
-    expect(out).toMatch(new RegExp(`class="term"[^>]*>${r4catalogue.card.canBuy.state.no}<`));
+    expect(out).toMatch(new RegExp(`class="ruled"[^>]*>${r4catalogue.card.canBuy.state.no}<`));
   });
   it("a row whose record names no rule keeps its plain word; a doubt reads \"לא ברור\"", () => {
     const { part, out } = render("psagot");
