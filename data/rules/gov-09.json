@@ -2,7 +2,7 @@
   "id": "GOV-09",
   "title": "How tradable government bonds are issued",
   "title_he": "איך מונפקות אג״ח ממשלתיות סחירות",
-  "text_he": "הגיוס המקומי נעשה במכרזים שבועיים. יחידת ניהול החוב משתמשת גם במכרזי החלף, שמחליפים איגרות קצרות בארוכות, ובמכרזים הפוכים שבהם המדינה קונה איגרות בחזרה לפני הפדיון. לכל מכרז יש יחס כיסוי: הכמות המבוקשת חלקי הכמות שהונפקה, והממוצע כאן הוא נתון שנתי מהדוח של היחידה. במאגר הנתונים של משרד האוצר נראו רשומות קטנות נוספות לאותן סדרות ביום שאחרי המכרז, ומה הן לא הובהר.",
+  "text_he": "הגיוס המקומי נעשה במכרזים שבועיים, ולצדם מכרזי החלף, שמחליפים איגרות קצרות בארוכות, ומכרזים הפוכים שבהם המדינה קונה איגרות בחזרה לפני הפדיון. המחיר במכרז נקוב באגורות לכל שקל של שווי נקוב, והזוכה משלם את השווי הנקוב כפול המחיר חלקי 100: מחיר 100.72 הוא 100.72 ₪ לכל 100 ₪ שווי נקוב, וכל הצעה זוכה משלמת את המחיר שהציעה. לכל מכרז יש יחס כיסוי: הכמות המבוקשת חלקי הכמות שהונפקה, והממוצע כאן הוא נתון שנתי מהדוח של היחידה. במאגר הנתונים של משרד האוצר נראו רשומות קטנות נוספות לאותן סדרות ביום שאחרי המכרז, ומה הן לא הובהר.",
   "figure_names_he": {
     "cover_ratio_2025": "יחס הכיסוי הממוצע במכרזים (שנה אחרונה)"
   },
@@ -39,6 +39,78 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/policy/regulation-01/he/files_regulations_regulation-01-file1-heb.pdf#page=1",
+      "title": "משרד האוצר, יחידת ניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "title_he": "נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר, יחידת ניהול החוב הממשלתי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1, s.1.1.7; p.2, s.1.2; p.3, ss.1.7, 2.3",
+      "locator_he": "עמוד 1, סעיף 1.1.7; עמוד 2, סעיף 1.2; עמוד 3, סעיפים 1.7, 2.3",
+      "page": 1,
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page images)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/regulation-01/he/files_regulations_regulation-01-file1-heb.pdf#page=2",
+      "title": "משרד האוצר, יחידת ניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "title_he": "נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר, יחידת ניהול החוב הממשלתי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2, s.1.1.12",
+      "locator_he": "עמוד 2, סעיף 1.1.12",
+      "page": 2,
+      "quote": "השווי הנקוב כשהוא מוכפל במחיר ומחולק ב-100",
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page images)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/regulation-01/he/files_regulations_regulation-01-file1-heb.pdf#page=5",
+      "title": "משרד האוצר, יחידת ניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "title_he": "נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר, יחידת ניהול החוב הממשלתי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5, s.4.1.2",
+      "locator_he": "עמוד 5, סעיף 4.1.2",
+      "page": 5,
+      "quote": "מחיר מבוקש באגורות עבור 1 ש״ח ערך נקוב",
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page images)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/regulation-01/he/files_regulations_regulation-01-file1-heb.pdf#page=5",
+      "title": "משרד האוצר, יחידת ניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "title_he": "נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר, יחידת ניהול החוב הממשלתי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5, s.4.1.3",
+      "locator_he": "עמוד 5, סעיף 4.1.3",
+      "page": 5,
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page images)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/regulation-01/he/files_regulations_regulation-01-file1-heb.pdf#page=6",
+      "title": "משרד האוצר, יחידת ניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "title_he": "נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר, יחידת ניהול החוב הממשלתי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.6, ss.4.2.1, 4.2.2",
+      "locator_he": "עמוד 6, סעיפים 4.2.1, 4.2.2",
+      "page": 6,
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page images)"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
       "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2025",
       "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
@@ -63,6 +135,15 @@
       "locator_he": "עמודים 40 עד 41",
       "page": 40,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=2&sort=ISSUANCEDATE%20desc",
+      "title": "משרד האוצר (data.gov.il): הנפקת אג\"ח סחירות בשוק המקומי, מכרז 10.11.2026",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-15"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=40&sort=ISSUANCEDATE%20desc",
