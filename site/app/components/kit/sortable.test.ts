@@ -84,4 +84,11 @@ describe("the place a carried thing is over", () => {
     expect(placeAt([card, cell, bin], { x: 150, y: 1820 }, { x: 150, y: 820 })).toBe("bin");
     expect(placeAt([card, cell, bin], { x: 150, y: 150 }, { x: 150, y: 150 })).toBe("cell");
   });
+  it("puts a place laid over the page over the places under it, however deep they stand", () => {
+    // a computer's bin drawn over the top of the block under its own
+    const laid = { key: "laid", box: { left: 0, right: 1000, top: 180, bottom: 230 }, depth: 0, fixed: false, over: true };
+    expect(placeAt([card, cell, laid], { x: 150, y: 190 }, { x: 150, y: 190 })).toBe("laid");
+    expect(placeAt([card, cell, laid], { x: 150, y: 150 }, { x: 150, y: 150 })).toBe("cell");
+    expect(placeAt([card, cell, laid, bin], { x: 150, y: 1820 }, { x: 150, y: 820 })).toBe("bin");
+  });
 });

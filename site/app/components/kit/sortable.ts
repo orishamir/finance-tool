@@ -79,27 +79,33 @@ export function shifts(boxes: readonly Box[], source: number, to: number, axis: 
 }
 
 /**
- * A place as the page stood when the thing was lifted: its box, how many places stand around it (`depth`), and whether it stands on the
- * screen rather than the page (`fixed`: a phone's bin, fixed at the screen's foot), its box then in the screen's coordinates.
+ * A place as the page stood when the thing was lifted: its box, how many places stand around it (`depth`), whether it stands on the
+ * screen rather than the page (`fixed`: a phone's bin, fixed at the screen's foot), its box then in the screen's coordinates, and whether
+ * it is laid over the page where it stands (`over`: a computer's bin, drawn over what follows its block).
  */
 export interface Place {
   key: string;
   box: Box;
   depth: number;
   fixed: boolean;
+  over?: boolean;
 }
+
+/** How far a place stands over the page: fixed on the screen, laid over the page, or in it. */
+const layer = (p: Place) => (p.fixed ? 2 : p.over ? 1 : 0);
 
 /**
  * The place the pointer is over, by the boxes the places had when the thing was lifted, never by the page as a preview has drawn it since:
  * a preview moves things under a still pointer, and a target read from the page then would change with it, and the preview back, without
- * end. A place fixed on the screen stands over the page and comes first; of places one inside the other, the innermost. `page` is the
+ * end. A place fixed on the screen stands over the page and comes first, then a place laid over the page; of places one inside the other,
+ * the innermost. `page` is the
  * pointer in the page's coordinates, `screen` in the screen's. Null where none holds it.
  */
 export function placeAt(places: readonly Place[], page: { x: number; y: number }, screen: { x: number; y: number }): string | null {
   let best: Place | null = null;
   for (const p of places) {
     if (!inside(p.box, p.fixed ? screen : page)) continue;
-    if (!best || Number(p.fixed) > Number(best.fixed) || (p.fixed === best.fixed && p.depth > best.depth)) best = p;
+    if (!best || layer(p) > layer(best) || (layer(p) === layer(best) && p.depth > best.depth)) best = p;
   }
   return best?.key ?? null;
 }

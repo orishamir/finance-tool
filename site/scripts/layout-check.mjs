@@ -25,7 +25,11 @@
 //   drag     on the fee page's filled deal at 1440, a fee grid's cell carried by its grip: the place it would land on changing under a pointer
 //            that moves a pixel and back (a preview moving the page under the pointer, and the target read from the page with it), the page
 //            or a fee's table scrolling sideways while it is carried, and a case's cell that does not swap with the case it is dropped on to
-//            its left or above it, or by its grip's menu ("הזזה שמאלה").
+//            its left or above it, or by its grip's menu ("הזזה שמאלה"); and, on a 900 px screen and on one just as tall as the page, the
+//            page's height, its scroll, whether it has a scrollbar, or a fee's table having a scrollbar down changing while a case's cell
+//            or a part line is carried with the pointer still or moving a pixel and back (2026-11-15: the bin's room and each preview's
+//            height moved the page, and a cell sliding past a grid's foot gave the grid a scrollbar for the slide), a fee's table with a
+//            scrollbar down at rest, and the page scrolling by the screen's foot or top other than steadily toward that edge.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -217,6 +221,7 @@ async function dragCheck() {
   // the case cells of the grid (not a part line's, not an empty place), by line and column
   const caseCells = (grid) => grid.evaluate((g) => [...g.querySelectorAll("[role=gridcell][data-liftable]:not([data-part-cell])")].map((c) => ({ row: Number(c.dataset.row), from: Number(c.dataset.from) })));
 
+  for (const f of await steadyCheck(dealPath, cellAt, lift)) found.push(f);
   // a part line carried down the first column
   {
     const { ctx, page, grid } = await open();
@@ -312,6 +317,110 @@ async function dragCheck() {
       if (first !== alone.name) found.push(`the one cell of the row "${alone.name}", dropped on the first row's head, did not move its row there (the first row is "${first}")`);
     }
     await ctx.close();
+  }
+  return found;
+}
+
+/**
+ * The page under a carried grid cell on the fee page's deal (`drag` above): a case's cell and a part line, each lifted on a 900 px screen
+ * that scrolls (the grid 200 px from its top) and on one just as tall as the page (no scrollbar at rest: one that came would show). With
+ * the pointer moved over the grid a pixel aside and back at every step, away from the screen's edges, and held still, the page's height,
+ * its scroll, whether it has a scrollbar and whether any fee's table has a scrollbar down stay what they were at rest. A table with a
+ * scrollbar down at rest is a finding too. On the 900 px screen the pointer then moves into the screen's foot and into its top: the page
+ * scrolls toward that edge, steadily, never back, and keeps its height. Returns what failed.
+ */
+async function steadyCheck(dealPath, cellAt, lift) {
+  const found = [];
+  const EDGE = 100; // clear of the band where the page scrolls under a carried thing (kit/lift.tsx, 72 px)
+  const state = (page) =>
+    page.evaluate(() => {
+      const root = document.documentElement;
+      const downBar = (el) => /auto|scroll/.test(getComputedStyle(el).overflowY) && el.scrollHeight > el.clientHeight;
+      return { height: root.scrollHeight, y: Math.round(window.scrollY), bar: root.scrollHeight > window.innerHeight, tables: [...document.querySelectorAll("[data-span-table]")].filter(downBar).length };
+    });
+  const differs = (a, b) =>
+    [a.height !== b.height && `its height ${b.height} → ${a.height} px`, a.y !== b.y && `its scroll ${b.y} → ${a.y} px`, a.bar !== b.bar && (a.bar ? "a scrollbar came" : "its scrollbar went"), a.tables !== b.tables && `${a.tables} fee tables with a scrollbar down (${b.tables} at rest)`].filter(Boolean).join(", ");
+  for (const screen of ["900", "the page's height"]) {
+    for (const what of ["a case's cell", "a part line"]) {
+      const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+      const page = await ctx.newPage();
+      await page.goto(base + dealPath, { waitUntil: "networkidle" });
+      await page.evaluate(settled);
+      if (screen === "900") await page.locator("[data-case-grid]").first().evaluate((g) => window.scrollBy(0, g.getBoundingClientRect().top - 200));
+      else
+        for (let i = 0; i < 3; i++) {
+          const h = await page.evaluate(() => document.documentElement.scrollHeight);
+          if (h === (await page.evaluate(() => window.innerHeight))) break;
+          await page.setViewportSize({ width: 1440, height: h });
+          await page.evaluate(settled);
+        }
+      await page.evaluate(settled);
+      const grid = page.locator("[data-case-grid]").first();
+      const rest = await state(page);
+      const where = `${what} carried on a screen ${screen === "900" ? "900 px tall" : "as tall as the page"}`;
+      if (what === "a case's cell" && rest.tables) found.push(`${rest.tables} fee tables have a scrollbar down at rest (what is in one reaches past its foot), on a screen ${screen === "900" ? "900 px tall" : "as tall as the page"}`);
+      const el = what === "a part line" ? grid.locator("[data-part-cell]").first() : grid.locator("[role=gridcell][data-liftable]:not([data-part-cell])").first();
+      if (!(await el.count())) {
+        found.push(`the deal's first grid has no ${what === "a part line" ? "part line" : "case's cell"} to carry`);
+        await ctx.close();
+        continue;
+      }
+      await lift(page, el);
+      await page.waitForTimeout(200);
+      // each way the page moved, with where it first did, and how many times it was found moved
+      const moved = new Map();
+      let times = 0;
+      const note = async (at) => {
+        const d = differs(await state(page), rest);
+        if (!d) return;
+        times++;
+        if (!moved.has(d)) moved.set(d, at);
+      };
+      await note("once lifted");
+      const geo = await grid.evaluate((g) => {
+        const r = g.getBoundingClientRect();
+        const xs = [...g.querySelectorAll("[role=columnheader]")].map((h) => Math.round(h.getBoundingClientRect().left + h.getBoundingClientRect().width / 2));
+        return { xs, top: Math.round(r.top), bottom: Math.round(r.bottom + 80) };
+      });
+      const h = await page.evaluate(() => window.innerHeight);
+      const from = Math.max(geo.top, EDGE), to = Math.min(geo.bottom, h - EDGE);
+      for (let y = from; y <= to; y += 16)
+        for (const x of geo.xs)
+          for (const dx of [0, 1, 0]) {
+            await page.mouse.move(x + dx, y);
+            await note(`at ${y - geo.top} px down the grid`);
+          }
+      // held still where the pointer stopped, and over the first column's middle
+      for (const [x, y] of [[geo.xs.at(-1), to], [geo.xs[0], Math.round((from + to) / 2)]]) {
+        await page.mouse.move(x, y);
+        for (let i = 0; i < 5; i++) {
+          await page.waitForTimeout(100);
+          await note(`held still at ${y - geo.top} px down the grid`);
+        }
+      }
+      if (times) found.push(`the page moved while ${where}, ${times} times: ${[...moved].slice(0, 6).map(([d, at]) => `${d} (first ${at})`).join("; ")}`);
+      // into the screen's foot, then its top: the page scrolls toward that edge only, and keeps its height
+      if (screen === "900" && what === "a case's cell") {
+        for (const [edge, y0, y1, sign] of [["foot", h - 160, h - 12, 1], ["top", 160, 12, -1]]) {
+          await page.mouse.move(geo.xs[0], y0, { steps: 4 });
+          await page.mouse.move(geo.xs[0], y1, { steps: 8 });
+          const ys = [];
+          let height = true;
+          for (let i = 0; i < 12; i++) {
+            await page.waitForTimeout(50);
+            const s = await state(page);
+            ys.push(s.y);
+            height &&= s.height === rest.height;
+          }
+          const back = ys.some((y, i) => i > 0 && Math.sign(y - ys[i - 1]) === -sign);
+          if (back || Math.sign(ys.at(-1) - ys[0]) !== sign) found.push(`with ${what} carried into the screen's ${edge}, the page did not scroll steadily toward it: scrolls ${ys.join(", ")}`);
+          if (!height) found.push(`with ${what} carried into the screen's ${edge}, the page's height changed as it scrolled`);
+        }
+      }
+      await page.keyboard.press("Escape");
+      await page.mouse.up();
+      await ctx.close();
+    }
   }
   return found;
 }

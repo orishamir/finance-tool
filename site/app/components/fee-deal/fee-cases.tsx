@@ -613,7 +613,8 @@ export function FeeCases({
         );
 
   const question = asking ? (asking.range ? <AskStep key={`step:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.within ? { within: asking.within } : {})} onFee={addAndOpen} onDone={asked} /> : <AskValuesOf key={`values:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.before !== undefined ? { before: asking.before } : {})} onFee={addAndOpen} onDone={asked} />) : null;
-  // the bin, while something of this fee is lifted: under its table, grid or band; on a phone at the foot of the screen
+  // the bin, while something of this fee is lifted: under its table, grid or band, laid over what follows (its wrapper places it); on a
+  // phone at the foot of the screen
   const bin = <DropBin phone={lift.phone} accepts={(it) => lift.binTakesItem(fee.id, it)} onDrop={(it) => lift.onBinItem(it)} />;
   /** The menu a row's strip opens: the parts every case of the row can take. */
   const rowMenuView = rowMenu && rowMenu.at.isConnected ? <ActionMenu key={rowMenu.cases.join()} actions={partChoices(rowMenu.cases, rowMenu.along)} back={{ current: rowMenu.at }} onClose={() => setRowMenu(null)} /> : null;
@@ -944,7 +945,7 @@ export function FeeCases({
           <AddSlot add={asRow(slotOf(g.down.thing, g.down.range), rowWords(g.down.thing, g.down.range))} />
           <AddSlot add={asRow(slotOf(g.across.thing, g.across.range), rowWords(g.across.thing, g.across.range))} />
         </div>
-        <div className="px-3">{bin}</div>
+        <div className="relative mx-3">{bin}</div>
       </ConditionBand>
     );
   } else {
@@ -994,7 +995,7 @@ export function FeeCases({
         <div className="px-3 pt-1 pb-1">
           <AddSlot add={add} />
         </div>
-        <div className="px-3">{bin}</div>
+        <div className="relative mx-3">{bin}</div>
       </ConditionBand>
     );
   }

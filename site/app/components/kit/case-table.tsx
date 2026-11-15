@@ -348,7 +348,9 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
  * a merged cell where neighbours are equal, and at the end of the heads the plus knob that adds a case or a step (`add`); `insert`, the
  * plus on the line between column `k - 1` and column `k` that adds one there (none where it gives nothing). `ladder`: the thing is
  * a range, its steps ascending, each head with the range's icon. `addPart`: the strip under its last row that adds a part row across every
- * column. `foot`: what stands under the table (the bin while something is lifted). Wider than its block, it scrolls inside itself.
+ * column. `foot`: what stands under the table (the bin while something is lifted, laid over what follows: the table is the element it is
+ * placed by). Wider than its block, it scrolls inside itself, sideways only: what reaches past its foot for a moment (a cell sliding into
+ * place, the plus's press under its last row) never gives it a scrollbar down.
  */
 export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
@@ -357,8 +359,8 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
   // a ladder's head holds a step's two bounds and its top's box, on one line where they fit, else wrapped inside the column
   const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " max-content" : ""}`;
   return (
-    <div className="flex flex-col gap-2">
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
+    <div className="relative flex flex-col gap-2">
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto overflow-y-hidden px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {
@@ -503,7 +505,8 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
  * between two heads, the plus that adds one exactly there (`insertColumn`, `insertRow`).
  * A row's head is as tall as its cells and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
  * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each, and take the room for
- * it. `foot`: what stands under the grid. Wider than its block, it scrolls inside itself.
+ * it. `foot`: what stands under the grid (the bin while something is lifted, laid over what follows). Wider than its block, it scrolls
+ * inside itself, sideways only, as a table does.
  */
 export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
@@ -519,9 +522,9 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
   const lines = start.at(-1)! + height.at(-1)!;
   const gapOf = (j: number, from: number, span: number) => j === gapRow || (gapCol >= 0 && from === gapCol && span === 1);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="relative flex flex-col gap-2">
       {above}
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto overflow-y-hidden px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {

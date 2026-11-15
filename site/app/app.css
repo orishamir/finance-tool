@@ -888,6 +888,16 @@
   :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-corner] {
     visibility: hidden !important;
   }
+  /* While something is carried (kit/lift.tsx) only the pointer at the screen's edge scrolls the page: the browser does not scroll it to
+     keep what is on the screen in place as a preview redraws it. A block held at its height (`data-carry-hold`) is drawn after what
+     follows it, so a preview taller than the block reads over that rather than under it; it makes no layer of its own, so the bin
+     inside it still stands over the carried copy. */
+  :root:has([data-lift-ghost]) {
+    overflow-anchor: none;
+  }
+  :root:has([data-lift-ghost]) [data-carry-hold] {
+    position: relative;
+  }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */
   [data-lifted] {
