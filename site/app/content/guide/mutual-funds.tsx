@@ -33,6 +33,7 @@ export function What() {
 }
 
 export function Kinds({ figure }: ContentProps) {
+  const asOf = figure("ETF-18", "counts_as_of");
   return (
     <>
       <Sentence measure>
@@ -56,7 +57,7 @@ export function Kinds({ figure }: ContentProps) {
       />
       <Sentence measure>קרן מחקה סגורה היא קרן סל <Ruled id="ETF-01">רק כשהסכם הקרן קובע שהיא קרן סל</Ruled>.</Sentence>
       <Sentence measure>
-        לפי הדוח השנתי של רשות ניירות ערך, בסוף 2025 היו בישראל {n(figure("ETF-18", "etf_count"))} קרנות סל ו־{n(figure("ETF-18", "open_tracking_fund_count"))} קרנות מחקות פתוחות. <Ruled id="ETF-18">שתיהן עוקבות אחרי מדד באותה דרך</Ruled>, וההבדל ביניהן הוא איך ומתי קונים ומוכרים אותן.
+        לפי הדוח השנתי של רשות ניירות ערך, בסוף {asOf ? <Num value={asOf} display={String(asOf.value).slice(0, 4)} /> : null} היו בישראל {n(figure("ETF-18", "etf_count"))} קרנות סל ו־{n(figure("ETF-18", "open_tracking_fund_count"))} קרנות מחקות פתוחות. <Ruled id="ETF-18">שתיהן עוקבות אחרי מדד באותה דרך</Ruled>, וההבדל ביניהן הוא איך ומתי קונים ומוכרים אותן.
       </Sentence>
       <Sentence measure>
         <Term id="קרן כספית">קרן כספית</Term> היא סוג נפרד: קרן שהנכסים שלה <Term prefix="ב" id="סיכון אשראי">סיכון אשראי</Term> נמוך, והסכם הקרן שלה <Ruled id="MF-07">קובע שהיא קרן כספית</Ruled>.
@@ -82,8 +83,8 @@ export function Trade({ figure }: ContentProps) {
         ]}
         rows={[
           { key: "where", head: "ממי קונים", cells: [<Fragment key="open">מהקרן, דרך <Term id="מפיץ">מפיץ</Term></Fragment>, "ממוכר בבורסה"] },
-          { key: "when", head: "מתי", cells: [<Fragment key="open"><Ruled id="MF-10">פעם ביום</Ruled>, לפי <Term id="השעה היעודה">השעה היעודה</Term></Fragment>, <Fragment key="etf"><Ruled id="ETF-04">לאורך יום המסחר</Ruled></Fragment>] },
-          { key: "price", head: "באיזה מחיר", cells: [<Fragment key="open"><Ruled id={["MF-09", "MF-05"]}>לפי שווי הנכסים</Ruled></Fragment>, <Fragment key="etf">בבורסה, <Ruled id="ETF-06">לא תמיד שווי היחידה</Ruled></Fragment>] },
+          { key: "when", head: "מתי", cells: [<Fragment key="open"><Ruled id="MF-09">פעם ביום</Ruled>, לפי <Term id="השעה היעודה">השעה היעודה</Term></Fragment>, <Fragment key="etf"><Ruled id="ETF-04">לאורך יום המסחר</Ruled></Fragment>] },
+          { key: "price", head: "באיזה מחיר", cells: [<Fragment key="open"><Ruled id="MF-05">לפי שווי הנכסים</Ruled></Fragment>, <Fragment key="etf">בבורסה, <Ruled id="ETF-06">לא תמיד שווי היחידה</Ruled></Fragment>] },
           { key: "order", head: "מה מזמינים", cells: [<Fragment key="open"><Ruled id="MF-11">סכום כסף</Ruled></Fragment>, "מספר יחידות"] },
         ]}
       />

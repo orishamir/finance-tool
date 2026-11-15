@@ -1,5 +1,5 @@
 // Guide prose for חשבון ניירות ערך (architecture 3.5: prose lives in content files; every figure is a Num).
-// Written from the rule base (BRK, REG, TXS, TXF, TXG, ETF, KGL, TXK); the words that state a rule open it
+// Written from the rule base (BRK, REG, TXS, TXF, TXG, ETF, KGL, TXK, PF); the words that state a rule open it
 // (Ruled, D116), and a figure from a rule opens it from its sheet. Same shape and register as
 // kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
@@ -18,7 +18,7 @@ export const content: GuideContent = {
         </p>
         <p className="max-w-measure">אין <Term id="תקרת הפקדה">תקרת הפקדה</Term> ואין נעילה: מוכרים בכל יום מסחר, <Term prefix="וה" id="בורסה">בורסה</Term> <Ruled id="BRK-29">פתוחה מיום שני עד יום שישי</Ruled>.</p>
         <Sentence measure>
-          <Ruled id="TXS-01">על רווח</Ruled> <Term prefix="מ" id="מכירה">מכירה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, <Ruled id="TXF-11" prefix="ו">רק כשמוכרים</Ruled>. על <Term id="דיבידנד">דיבידנד</Term> או חלוקה מקרן משלמים כשהם משולמים. בבנק או אצל חבר בורסה בישראל המס <Ruled id="TXS-05">מנוכה במקור במכירה</Ruled>: {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>. בנייר ערך שנסחר בישראל ונקוב <Term prefix="ב" id="מטבע חוץ">מטבע חוץ</Term> או צמוד אליו, <Ruled id="TXS-04">זה הרווח שמעבר לשינוי בשער של המטבע</Ruled>. גם מכירה של קרן אחת כדי לקנות אחרת <Ruled id="TXS-21">ממוסה, אף שהכסף נשאר בחשבון</Ruled>.
+          <Ruled id="TXF-01">על רווח</Ruled> <Term prefix="מ" id="מכירה">מכירה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, <Ruled id={["TXS-13", "TXF-11"]} prefix="ו">רק כשמוכרים</Ruled>. על <Term id="דיבידנד">דיבידנד</Term> או חלוקה מקרן משלמים כשהם משולמים. בבנק או אצל חבר בורסה בישראל המס <Ruled id="TXS-05">מנוכה במקור במכירה</Ruled>: {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>. בנייר ערך שנסחר בישראל ונקוב <Term prefix="ב" id="מטבע חוץ">מטבע חוץ</Term> או צמוד אליו, <Ruled id="TXS-04">זה הרווח שמעבר לשינוי בשער של המטבע</Ruled>. גם מכירה של קרן אחת כדי לקנות אחרת <Ruled id="TXS-21">ממוסה, אף שהכסף נשאר בחשבון</Ruled>.
         </Sentence>
       </>
     );
@@ -91,12 +91,14 @@ export const content: GuideContent = {
     'מק"מ',
     "קרן מחקה",
     "קרן סל",
+    'מגודרות מט"ח',
   ],
   afterTax: ({ figure }) => {
     const unlinked = figure("TXS-05", "withholding_rate_unlinked");
     const ceiling = figure("TXG-17", "securities_proceeds_ceiling");
     const usTreaty = figure("TXF-12", "us_withholding");
     const usNoForm = figure("TXF-13", "us_withholding_without_form");
+    const reports = figure("TXS-05", "reports_per_year");
     return (
       <>
         <Sentence measure>
@@ -106,11 +108,11 @@ export const content: GuideContent = {
           הפסד ממכירה <Ruled id={["TXS-17", "TXS-19"]}>מתקזז מרווחים של אותה שנה באותו בנק או בית השקעות</Ruled>. <Term id="קיזוז הפסדים">קיזוז</Term> בין מוסדות, או <Term id="הפסד מועבר">העברת הפסד</Term> לשנים הבאות, <Ruled id="TXS-18">דורשים</Ruled> <Term id="דוח שנתי">דוח שנתי</Term>.
         </p>
         <Sentence measure>
-          מי שכל המס נוכה לו במקור, ותמורת המכירות שלו נמוכה מ־{ceiling ? <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> : null} בשנה<YearOf v={ceiling} />, <Ruled id="TXG-17">לא חייב בדוח שנתי</Ruled> רק בגלל החשבון.
+          מי שכל המס נוכה לו במקור, ותמורת המכירות שלו לא עולה על {ceiling ? <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> : null} בשנה<YearOf v={ceiling} />, <Ruled id="TXG-17">לא חייב בדוח שנתי</Ruled> רק בגלל החשבון.
         </Sentence>
-        <p className="max-w-measure">אצל ברוקר זר לא מנכים מס בישראל. <Ruled id={["TXG-20", "TXF-22"]}>מדווחים ומשלמים מקדמה פעמיים בשנה</Ruled>, ומגישים דוח שנתי.</p>
+        <p className="max-w-measure">בחשבון ישיר אצל ברוקר זר <Ruled id="BRK-27">לא מנכים מס בישראל</Ruled>. <Ruled id={["TXG-20", "TXF-22"]}>מדווחים ומשלמים מקדמה</Ruled> {reports ? <Num value={reports} /> : null} פעמים בשנה, ומגישים דוח שנתי.</p>
         <Sentence measure>
-          על דיבידנד מחברה אמריקאית יש גם מס בארצות הברית: עד {usTreaty ? <Num value={usTreaty} /> : null} למי שמסר <Term prefix="ל" id="ברוקר">ברוקר</Term> <Term id="טופס W-8BEN">טופס W-8BEN</Term>, ובלי הטופס הניכוי עשוי להיות {usNoForm ? <Num value={usNoForm} /> : null}. את המס הזה מקזזים מהמס בישראל, <Ruled id="TXF-18">עד גובה המס הישראלי על אותה הכנסה</Ruled>.
+          על דיבידנד מחברה אמריקאית יש גם מס בארצות הברית: עד {usTreaty ? <Num value={usTreaty} /> : null} למי שמסר <Term prefix="ל" id="ברוקר">ברוקר</Term> <Term id="טופס W-8BEN">טופס W-8BEN</Term>, ובלי הטופס הניכוי עשוי להיות {usNoForm ? <Num value={usNoForm} /> : null}. את המס הזה מורידים מהמס בישראל, <Ruled id="TXF-18">עד גובה המס הישראלי על אותה הכנסה</Ruled>.
         </Sentence>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">קרן זרה צוברת, שלא מחלקת דיבידנד.</span> חלק מהקרנות האלה מדווחות בנספח <Term prefix="ל" id="תשקיף">תשקיף</Term> הישראלי שלהן שקיבלו החלטת מיסוי <Term prefix="מ" id="רשות המסים">רשות המסים</Term>: מס רק במכירה ובחלוקה. קרן כזו האתר מחשב לפי ההחלטה ומדרג. על <Term id="קרן שאינה מחלקת">קרן צוברת</Term> בלי החלטה כזו <Ruled id="TXF-11">שום מקור רשמי לא אומר זאת במפורש</Ruled>: האתר מניח שמשלמים עליה מס רק במכירה, מסמן זאת ״מקור משני״ ולא מדרג אותה. שאלה פתוחה <IdRef id="TXF OQ1" end="." />
@@ -123,7 +125,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          השווי עולה ויורד כל יום עם מחירי ניירות הערך שבחשבון, <Ruled id="ETF-10" prefix="ו">בקרן על מדד זר</Ruled> גם עם <Term id="שער חליפין">שער המטבע</Term>. אין ערבות של המדינה, ולא נמצאה בישראל קרן פיצוי למשקיעים.
+          השווי עולה ויורד כל יום עם מחירי ניירות הערך שבחשבון, <Ruled id="ETF-10" prefix="ו">בקרן על מדד זר</Ruled> שלא <Term id={'מגודרות מט"ח'}>מגודרת מט״ח</Term>, גם עם <Term id="שער חליפין">שער המטבע</Term>. אין ערבות של המדינה, ולא נמצאה בישראל קרן פיצוי למשקיעים.
         </p>
         <p className="max-w-measure">
           בבית השקעות שהוא חש״ב, כללי הבורסה מחייבים להחזיק את ניירות הערך והכסף של הלקוחות <Ruled id={["REG-16", "BRK-07", "BRK-08"]}>בנפרד מרכוש החברה</Ruled>, בנאמנות, <Term prefix="ב" id="מסלקת הבורסה">מסלקת הבורסה</Term> ובבנקים, עם ביקורת שנתית. בבנק, <Term id="המפקח על הבנקים">המפקח על הבנקים</Term> <Ruled id="BRK-10">מחייב לרשום ולהפריד את נכסי הלקוחות</Ruled> כך שאפשר לזהות אותם בנפרד מנכסי הבנק, ולעבור ביקורת חיצונית לפחות פעם בשנה.
@@ -150,10 +152,10 @@ export const content: GuideContent = {
       </p>
       {/* the costs in the example chart above, from the records the example reads (P-05's fund 5139282; the tariff is the site's pick, F-80, named in the terms block) */}
       <p className="max-w-measure text-sm text-muted-foreground">
-        ההוצאות בדוגמה שלמעלה הן שתיים. האחת היא העלות בתוך הקרן שנבחרה לדוגמה, <bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi>, לפי הרשומה שנאספה על הקרן ולפי הדוח השנתי של <Term id="מנהל קרן">מנהל הקרן</Term>. בדוגמה העלות הזו נשארת כמו שפורסמה בכל השנים. קרן יכולה להעלות את דמי הניהול, ולפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> העלאות <Ruled id="MF-17">נעשות רק ב־1 בינואר</Ruled>. אפשר להחליף את הקרן בקרן אחרת בכרטיס ההשוואה. השנייה היא העמלות על קנייה, מכירה והחזקה, לפי התעריפון שהאתר בחר, ששמו מופיע בתנאי המוצר בדוגמה. בבנק או בבית השקעות אחר העמלות שונות. בתעריפונים של רוב בתי ההשקעות שנבדקו כתובים <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> גם על <Term id="יחידה">יחידות</Term> של קרנות, והדוגמה גובה אותם לפי התעריפון. לפי דוח משותף של הרגולטורים, בבתי השקעות מקובל שדמי משמרת <Ruled id="MF-70">לא נגבים בפועל</Ruled>, ולכן העלות שם יכולה להיות נמוכה מזו שבדוגמה. <Term prefix="ב" id="קופת גמל">קופת גמל</Term> אין להן שורה מקבילה בדמי הניהול, כי עלויות המסחר שם נכנסות להוצאות הישירות.
+        ההוצאות בדוגמה שלמעלה הן שתיים. האחת היא העלות בתוך הקרן שנבחרה לדוגמה, <bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi>, לפי הרשומה שנאספה על הקרן ולפי הדוח השנתי של <Term id="מנהל קרן">מנהל הקרן</Term>. בדוגמה העלות הזו נשארת כמו שפורסמה בכל השנים. קרן יכולה להעלות את דמי הניהול, ולפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> העלאות <Ruled id="MF-17">נעשות רק ב־1 בינואר</Ruled>. אפשר להחליף את הקרן בקרן אחרת בכרטיס ההשוואה. השנייה היא העמלות על קנייה, מכירה והחזקה, לפי התעריפון שהאתר בחר, ששמו מופיע בתנאי המוצר בדוגמה. בבנק או בבית השקעות אחר העמלות שונות. בתעריפונים של רוב בתי ההשקעות שנבדקו כתובים <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> גם על <Term id="יחידה">יחידות</Term> של קרנות, והדוגמה גובה אותם לפי התעריפון. לפי דוח משותף של הרגולטורים, בבתי השקעות מקובל שדמי משמרת <Ruled id="MF-70">לא נגבים בפועל</Ruled>, ולכן העלות שם יכולה להיות נמוכה מזו שבדוגמה. <Term prefix="ב" id="קופת גמל">קופת גמל</Term> אין להן שורה מקבילה בדמי הניהול, כי <Ruled id="PF-10">עלויות המסחר שם נכנסות להוצאות הישירות</Ruled>.
       </p>
       <p className="max-w-measure">
-        קופת גמל להשקעה עדיפה כשצפויים להחליף השקעה בדרך: שם <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> <Ruled id="TXK-04">לא נחשב מכירה</Ruled>, וכאן <Ruled id={["TXS-21", "TXS-09"]}>כל החלפת קרן ממוסה</Ruled> ומקטינה את הצבירה. היא עדיפה גם למי שרוצה את האפשרות, <Term prefix="מ" id="גיל פרישה מוקדמת">גיל פרישה מוקדמת</Term>, <Ruled id="TXK-10">להעביר את הכסף</Ruled> <Term prefix="ל" id="קצבה">קצבה</Term> <Ruled id="TXK-09">פטורה ממס</Ruled>.
+        קופת גמל להשקעה עדיפה כשצפויים להחליף השקעה בדרך: שם <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> <Ruled id="TXK-04">לא ממוסה</Ruled>, וכאן <Ruled id={["TXS-21", "TXS-09"]}>החלפת קרן ממוסה</Ruled> ומקטינה את הצבירה. היא עדיפה גם למי שרוצה את האפשרות, <Term prefix="מ" id="גיל פרישה מוקדמת">גיל פרישה מוקדמת</Term>, <Ruled id="TXK-10">להעביר את הכסף</Ruled> <Term prefix="ל" id="קצבה">קצבה</Term> <Ruled id="TXK-09">פטורה ממס</Ruled>.
       </p>
     </>
   ),
