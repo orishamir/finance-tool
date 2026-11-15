@@ -185,6 +185,8 @@
   --computed-line: var(--palette-violet-600); /* dotted underline under a computed number: a step darker than the mark, so the line
                                                  stays quiet under running text */
   --computed-subtle: var(--palette-violet-950);
+  /* A glossary term in running text (Term): its own role beside the number states, a dotted line where a sourced figure has a solid one */
+  --term-line: var(--palette-neutral-500); /* dotted hairline under a glossary term */
   /* A value the person entered outside a chart's fields (an offer, a custom entry). A chart field's value, its default or what the
      reader typed, is a plain number with no blue (founder, 2026-11-08, guidelines/charts.md). */
   --entered: var(--palette-blue-300); /* text of a value the person entered */

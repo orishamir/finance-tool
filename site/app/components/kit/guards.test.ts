@@ -24,7 +24,7 @@
 //     them can hide another that drops them).
 // 17. a price list's date line is the kit's TariffDate, and no copy string says only that a date is missing ("ללא תאריך פרסום" on three rows, where the documents date each part or print nothing).
 // 18. a fee cap the site names is the fee regulations' ("התקרה שבתקנות"), never "שבחוק" (copy.md 3; a repeat).
-// 19. a figure's and a term's tap area is at least 44 px, and its own box sits above every other figure's area.
+// 19. a figure's, a term's and rule words' tap area is at least 44 px, and its own box sits above every other figure's area.
 //     No rule at any depth (inside @layer, @media, @supports or a nested rule) turns the area off (content, display or pointer-events
 //     none, visibility hidden or collapse) or shrinks, moves or re-stacks it, but on .num-static and .num-sample, figures that are not
 //     buttons (the scan read top-level rules only and never looked for an area turned off).
@@ -32,6 +32,7 @@
 //     chip in text takes no brackets: "פרטים ." and "( פרטים )." read as stray marks.
 //     The scan reads the mark after the chip across spaces and lines and in a string ({"."}), and props with any braces; a chip in JS
 //     (a ternary's branch, an array, a call, after return) is left alone ("<IdRef/> ." and {"."} got through).
+//     The words a rule states (`Ruled`) are inline and take no `end`: the mark follows them with no space ("</Ruled>.").
 // 21. a date in a page's text is the kit's When (a repeat of copy.md 10): a month
 //     a document prints alone is said in words in the text's direction, never padded with an invented "-01" or isolated left to right,
 //     and the words before a date go in its `lead`, where a maqaf lead writes its letter on a month ("מנובמבר 2025"). A figure's own
@@ -350,14 +351,14 @@ function lastCompound(part: string): string {
 }
 /** Figures that are deliberately not buttons: the legend's samples and a sheet's head figure (provenance.tsx). Their area is off on purpose. */
 const AREA_OFF_ALLOWED = [".num-static", ".num-sample"];
-/** Whether a selector part reaches a figure's or a term's tap area (::after) or own box (::before): its last compound carries the pseudo-element
- *  and a `.num…` or `.term…` class, or nothing but the pseudo-element (which reaches every element). `allowed` when it is one of the
+/** Whether a selector part reaches a figure's, a term's or rule words' tap area (::after) or own box (::before): its last compound carries the
+ *  pseudo-element and a `.num…`, `.term…` or `.ruled…` class, or nothing but the pseudo-element (which reaches every element). `allowed` when it is one of the
  *  named figures that are not buttons. */
 function areaTarget(part: string): "no" | "allowed" | "yes" {
   const compound = lastCompound(part);
   if (!/::?(?:after|before)\b/.test(compound)) return "no";
   const universal = /^\*?::?(?:after|before)$/.test(compound);
-  if (!universal && !/\.(?:num|term)(?:-[\w-]+)?(?![\w-])/.test(compound)) return "no";
+  if (!universal && !/\.(?:num|term|ruled)(?:-[\w-]+)?(?![\w-])/.test(compound)) return "no";
   return AREA_OFF_ALLOWED.some((c) => new RegExp(`\\${c}(?![\\w-])`).test(compound)) ? "allowed" : "yes";
 }
 /** The declarations that turn a tap area off: no box at all, no box drawn, or a box that lets the click through. */
@@ -396,17 +397,17 @@ describe("the shared stylesheet", () => {
   //     area that grew only sideways took 44 px from about 1,200 lone figures on a phone). In running text its own box sits
   //     above every other figure's area, so the figure on the next line never takes its click ("0.7%"
   //     opened the "5 שנים" sheet of the figure under it).
-  it("a figure's and a term's tap area is at least 44 px tall, and its own box sits above every other figure's area", () => {
+  it("a figure's, a term's and rule words' tap area is at least 44 px tall, and its own box sits above every other figure's area", () => {
     const rules = cssRules(readFileSync(join(root, "app.css"), "utf8"));
     // the two rules that draw them hold whatever the screen size: inside a layer, never inside a @media or @supports
     const one = (sel: string) => rules.find((r) => r.sel === sel && r.at.every((a) => a.startsWith("@layer")));
-    const areaRule = one(".num::after, .term::after");
+    const areaRule = one(".num::after, .term::after, .ruled::after");
     const area = areaRule?.body ?? "";
     expect(area, "the area").toMatch(/height:\s*max\(calc\(100% \+ 22px\),\s*44px\);/);
     expect(area).toMatch(/top:\s*50%;/);
     expect(area).toMatch(/translate:\s*0 -50%;/);
     expect(area).toMatch(/z-index:\s*0;/);
-    const ownRule = one(".num::before, .term::before");
+    const ownRule = one(".num::before, .term::before, .ruled::before");
     const own = ownRule?.body ?? "";
     expect(own, "the own box").toMatch(/inset:\s*0;/);
     // at 2: above the figures' areas (0) and the areas of the controls that stand alone (1, a rule chip, a value pencil, tap-area)
@@ -424,6 +425,7 @@ describe("the shared stylesheet", () => {
       `.term::before { display: none }`,
       `.num-sourced::after { visibility: hidden }`,
       `.prose .term::after { visibility: collapse !important }`,
+      `.ruled::before { z-index: 0 }`,
       `@supports (translate: 0) { .num::after, .rule-chip::after { display: none; } }`,
       `@layer components { .x { color: red } @media (hover: hover) { .num::after { height: 20px } } }`,
       `@layer components { @media (min-width: 64rem) { .term::before { z-index: 0 } } }`,
@@ -537,7 +539,22 @@ describe("a chip at the end of a sentence (20)", () => {
     ])
       expect(chipFlaws(fine), fine).toEqual([]);
   });
+  it("the words a rule states are followed by the sentence's mark with no space between", () => {
+    const found = files.filter((f) => f.endsWith(".tsx")).flatMap((f) => ruledFlaws(read(f)).map((x) => `${rel(f)}${x}`));
+    expect(found).toEqual([]);
+    for (const broken of [`<p>ראו <Ruled id="A-03">מוגבל</Ruled> .</p>`, `<p>ראו <Ruled id="A-03">מוגבל</Ruled>{" ."}</p>`]) expect(ruledFlaws(broken), broken).toHaveLength(1);
+    for (const fine of [`<p>ראו <Ruled id="A-03">מוגבל</Ruled>.</p>`, `<p>ראו <Ruled id="A-03">מוגבל</Ruled>\n  .</p>`, `<p><Ruled id="A">מוגבל</Ruled> בצו, ועוד</p>`, `// <Ruled id="A">x</Ruled> .`]) expect(ruledFlaws(fine), fine).toEqual([]);
+  });
 });
+
+/** Each `</Ruled>` in a source followed by a space and then a sentence's mark, as text or in a string: the words are an inline element, so the
+ *  mark follows them directly and never starts a line, and a space before it reads as a stray mark (a line break in JSX source renders as
+ *  nothing, so it is no flaw). */
+function ruledFlaws(src: string): string[] {
+  const blank = (m: string) => m.replace(/[^\n]/g, " ");
+  const s = src.replace(/\/\*[\s\S]*?\*\//g, blank).replace(/^[ \t]*\/\/.*$/gm, blank);
+  return [...s.matchAll(/<\/Ruled>(?:[ \t]+|\{\s*(["'`])[ \t]+)[.,;:]/g)].map((m) => `:${s.slice(0, m.index).split("\n").length} ${m[0]}: the mark follows the words with no space`);
+}
 
 describe("the arrow that opens a page", () => {
   /** The source sheet's row arrow, and a rule's title row (`RuleTitleRow`), open a sheet on the same page, not a page: they stay grey. */
