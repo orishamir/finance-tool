@@ -1,11 +1,11 @@
 // Guard over the built pages: no internal code in a line the reader reads. A rule's code (`KH-19`, `TXI-03`), a site parameter's
-// (`P-05`), a formula's (`F-21`) or an assumption's of the method (`A-01`) tells a reader nothing; the words carry it (D48: the rules
+// (`P-05`), a formula's (`F-21`), an assumption's of the method (`A-01`) or a proof's (`M-01`) tells a reader nothing; the words carry it (D48: the rules
 // behind a fact are one chip, "חוקים וכללים · N"; a row that is the rule itself has its title as the link). A code stays where it is the
 // point: inside a rule's own card or sheet, whose heading reads "id · title" (D25), marked in the markup with `data-code-ok`; on the
 // rules page, the catalogue, where a code typed in the field opens its rule; and in addresses and anchors, which are not text.
 // What it reads: each pre-rendered page's text and its title, alt and placeholder attributes (not aria-label, which is spoken, not
 // shown), without scripts, styles or what lies inside a `data-code-ok` element; and the second line of every search result
-// (search-index.json), which the search draws as it is. A rule's code is any id in data/rules; P-, F- and A- codes go by their shape.
+// (search-index.json), which the search draws as it is. A rule's code is any id in data/rules; P-, F-, A- and M- codes go by their shape.
 // Runs after the build (`npm run build -w site`); prints each hit with its page and the words around it, and fails. Pages that must
 // keep a code are listed in rule-codes-leftovers.json with their count and the reason; the list only shrinks, as hebrew-quotes'.
 // `tools/code-scan.mjs` uses the same reading to count the codes per kind of page.
@@ -81,7 +81,7 @@ export function codesIn(text, rules) {
   const hits = [];
   for (const m of text.matchAll(CODE)) {
     const code = m[0];
-    const isOther = /^(?:P-\d{2}|F-\d+|A-\d{2})$/.test(code);
+    const isOther = /^(?:P-\d{2}|F-\d+|A-\d{2}|M-\d{2})$/.test(code);
     if (!isOther && !rules.has(code)) continue;
     hits.push({ code, around: text.slice(Math.max(0, m.index - 30), m.index + code.length + 30).replace(/\s+/g, " ").trim() });
   }

@@ -394,6 +394,14 @@ export const provenance = {
     // the status line, from data/open-questions.json (an answered question is deleted from the rule base)
     statuses: { open: "פתוחה", narrowed: "פתוחה בחלקה: חלק ממנה כבר נענה" } as Record<string, string>,
   },
+  // what math proves (docs/method.md section 14): the chip says a word, never the code; several make one chip with their count, as the
+  // rules' chip ("הוכחות · 2"). The sheet's own words are in content/proofs.ts.
+  proofChip: { one: "הוכחה", many: "הוכחות" },
+  proofSheet: {
+    when: "מתי זה נכון",
+    notCovered: "מה זה לא מכסה",
+    full: "ההוכחה המלאה, באנגלית",
+  },
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
   // `more` folds the parameter file's general line away from the clicked number's own line
   parameter: { why: "למה הערך הזה", more: "עוד על הפרמטר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },

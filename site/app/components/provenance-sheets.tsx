@@ -1,5 +1,5 @@
 // What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source and how it was computed, a rule's card,
-// a term's card, a formula, an open question, and the cards the rules page lays out. A script apart from the figures and chips
+// a term's card, a formula, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
 import { useContext, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
@@ -19,7 +19,8 @@ import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
-import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleRow, RulesLine, StateTag, StrengthLabel, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, type Item, type ProvenanceData } from "./provenance";
+import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleRow, RulesLine, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
+import { proofOf } from "../content/proofs";
 
 /** What a `RulesChip` opens: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
 function RulesListSheet({ ids, name, headId }: { ids: readonly string[]; name?: string; headId: string }) {
@@ -155,6 +156,8 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} rules={item.rules} parts={item.parts} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
+      {item.kind === "proof" && <ProofSheet id={item.id} headId={headId} />}
+      {item.kind === "proofs" && <ProofsListSheet ids={item.ids} headId={headId} />}
     </InsideSheetCtx.Provider>
   );
 }
@@ -195,6 +198,62 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
   );
 }
 const METHOD_URL = "https://github.com/orishamir/finance-tool/blob/main/docs/method.md";
+/** Section 14 of method.md, "What the math proves about bonds", by the anchor GitHub gives its heading. */
+const PROOFS_URL = `${METHOD_URL}#14-what-the-math-proves-about-bonds`;
+
+/**
+ * A proof's sheet: its Hebrew title with the code small beside it (as a formula's), what it shows, the assumptions under which it holds,
+ * what it leaves out where it says, and a link to the proof itself in docs/method.md, in English. The words are content/proofs.ts.
+ */
+function ProofSheet({ id, headId }: { id: string; headId: string }) {
+  const proof = proofOf(id);
+  return (
+    <div className="flex flex-col gap-4">
+      <h2 id={headId} data-code-ok className="text-lg font-semibold leading-snug">
+        {proof?.title ?? copy.proofChip.one} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
+      </h2>
+      {proof && (
+        <>
+          <p className="text-sm">{proof.holds}</p>
+          <section className="flex flex-col gap-2">
+            <h3 className="text-base font-semibold">{copy.proofSheet.when}</h3>
+            <ul className="flex list-disc flex-col gap-1 ps-5 text-sm">
+              {proof.when.map((w) => (
+                <li key={w}>{w}</li>
+              ))}
+            </ul>
+          </section>
+          {proof.notCovered && (
+            <section className="flex flex-col gap-2">
+              <h3 className="text-base font-semibold">{copy.proofSheet.notCovered}</h3>
+              <p className="text-sm">{proof.notCovered}</p>
+            </section>
+          )}
+        </>
+      )}
+      <DocLink href={PROOFS_URL} className="text-sm">{copy.proofSheet.full}</DocLink>
+    </div>
+  );
+}
+
+/** What a `ProofsChip` of several opens: each proof by its title, a row opening its sheet, with the sheet's back arrow to the list (as `RulesListSheet`). */
+function ProofsListSheet({ ids, headId }: { ids: readonly string[]; headId: string }) {
+  const open = useOpen();
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 id={headId} className="text-lg font-semibold">
+        {copy.proofChip.many} · <bdi dir="ltr">{ids.length}</bdi>
+      </h2>
+      <ul className="flex flex-col">
+        {ids.map((id) => (
+          <li key={id} className="border-t border-border">
+            <TitleRow onClick={(e) => open({ kind: "proof", id }, e.currentTarget)}>{proofOf(id)?.title ?? copy.proofChip.one}</TitleRow>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 
 /**
