@@ -15,7 +15,7 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
 import { differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
+import { FEE_WORDS_HELP, HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
 import { isGroupProvider } from "../../lib/group-pick";
 import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -104,7 +104,7 @@ function feeRows(rec: FundRecord, bundle: IndicesBundle, today: string) {
             {it.name.slice(0, it.name.lastIndexOf(" ") + 1)}
             <span className="whitespace-nowrap">
               {it.name.slice(it.name.lastIndexOf(" ") + 1)}
-              <HelpMark about={c.pair.colFees} text={c.funds.feeWordsNote} className="ms-1" />
+              <HelpMark about={c.pair.colFees} text={FEE_WORDS_HELP.text} rules={FEE_WORDS_HELP.rules} className="ms-1" />
             </span>
           </>
         ) : (

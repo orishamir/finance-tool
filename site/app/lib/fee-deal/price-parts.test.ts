@@ -296,12 +296,12 @@ describe("the templates", () => {
     expect(abroad.filter((c) => !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
     const foreign = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] };
     const said = readingOf(read(foreign), data.fx).stated.find((x) => x.part === "unfilledClerkAbroad")!;
-    expect(said.words.lead).toBe(copy.cases.stated.unfilledClerkAbroad);
+    expect(said.words).toEqual(copy.cases.stated.unfilledClerkAbroad);
     expect(said.rules).toEqual(["BRK-16"]);
     // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
     const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;
-    expect(stated.words.lead).toBe(copy.cases.stated.unfilledClerk);
+    expect(stated.words).toEqual(copy.cases.stated.unfilledClerk);
     expect(stated.rules).toEqual(["BRK-16"]);
     expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };

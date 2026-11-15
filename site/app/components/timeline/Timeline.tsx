@@ -1,5 +1,5 @@
 // The graph card of a guide page (design-spec 2, "מה זה"): headline, real/nominal switch, legend, chart,
-// assumption chips (phone), readout, table, rules used; the values sheet (phone) or panel (PC) beside it.
+// assumption chips (phone), readout, table (each figure opens the rules its run used); the values sheet (phone) or panel (PC) beside it.
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
 import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
@@ -12,7 +12,7 @@ import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear
 import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
-import { IdRef, Num, RuleRef, RulesLine, StateTag } from "../provenance";
+import { IdRef, Num, RuleRef, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
 
@@ -337,8 +337,6 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
                 ]}
               />
             )}
-
-            <RulesLine ids={timeline.rules.map((r) => r.id)} />
           </>
         ) : timeline.kind === "blocked" ? (
           <Callout tone="blocked">

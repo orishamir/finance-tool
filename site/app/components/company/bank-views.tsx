@@ -12,9 +12,10 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS as DEPOSIT_TERMS } from "../../lib/deposit-browser";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
-import { Num, NumAfter, RulesLine } from "../provenance";
+import { Num, NumAfter } from "../provenance";
 import { AmountRange, AnchorSpread, ChoiceChips, Disclosure, GoLink, HelpMark, SegmentedControl, DoubtNote, FigureLines, LabelRow, LabelSheetHost, MixedName, PrintedQuotes, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SharedFacts, Tag, When, cx, gershayim, type FoldMark, type ProductColumn, type ProductRow } from "../kit";
 import type { ProductRowData } from "../decoder/institutions/types";
+import { statedKnown } from "../decoder/institutions/product-row";
 
 const muted = "text-sm text-muted-foreground";
 const ALL = "all";
@@ -84,10 +85,11 @@ function rowDetail(row: TableRow, shared: Shared, known: ReadonlySet<string>): {
   const doubts = [...new Set(row.lines.map((x) => x.doubt).filter((x): x is string => !!x))];
   const late = row.lines.some((x) => x.asOfAfterRead);
   const note = !!p.conditions && !p.currentAccount && !shared.conditions;
-  const extras: { key: string; label: string; value: ReactNode; rules?: readonly string[] }[] = [
-    ...(!shared.breakTerms ? [{ key: "break", label: copy.labels.breakTerms, value: breakText(p.breakTerms.penalty, p.exitPoints.exists), rules: p.breakTerms.rules }] : []),
+  // a break in words carries its rules; the tax is a figure, which opens its own (D116)
+  const extras: { key: string; label: string; value: ReactNode }[] = [
+    ...(!shared.breakTerms ? [{ key: "break", label: copy.labels.breakTerms, value: statedKnown(breakText(p.breakTerms.penalty, p.exitPoints.exists), p.breakTerms.rules, known) }] : []),
     ...(!shared.autoRenew ? [{ key: "renew", label: copy.labels.autoRenew, value: renewText(p.autoRenew.value, p.autoRenew.maxRenewals) }] : []),
-    ...(!shared.tax && !shared.taxByLinkage ? [{ key: "tax", label: copy.labels.tax, value: <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} />, rules: p.taxBucket.rule_ids ?? [] }] : []),
+    ...(!shared.tax && !shared.taxByLinkage ? [{ key: "tax", label: copy.labels.tax, value: <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} /> }] : []),
   ];
   const quotes = !shared.breakQuotes ? p.breakTerms.quotes : [];
   if (!note && p.alsoCalled.length === 0 && extras.length === 0 && quotes.length === 0 && doubts.length === 0 && !late && !p.stale) return null;
@@ -116,7 +118,6 @@ function rowDetail(row: TableRow, shared: Shared, known: ReadonlySet<string>): {
       {extras.map((x) => (
         <span key={x.key} className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
           <span className="text-muted-foreground">{x.label}:</span> {x.value}
-          {x.rules && x.rules.filter((r) => known.has(r)).length > 0 && <RulesLine ids={x.rules.filter((r) => known.has(r))} />}
         </span>
       ))}
       {quotes.length > 0 && <BankWords quotes={quotes} />}
@@ -154,8 +155,9 @@ function BankWords({ quotes }: { quotes: readonly string[] }) {
 
 /**
  * What every row of the table shares, said once (kit SharedFacts), in plain sentences (the designer's mocks): the facts no row tells apart
- * and the tax, and that the rate is no offer (a caution, in sight at every width); the rules behind them as one quiet line of chips at the
- * end. What the rate figure is (nominal, yearly, before tax) is the "?" of the rate's head from md, and stays here on a phone.
+ * and the tax, and that the rate is no offer (a caution, in sight at every width). The words of a break and of "no offer" open the rules
+ * they state, and the tax's figure its own (D116). What the rate figure is (nominal, yearly, before tax) is the "?" of the rate's head
+ * from md, and stays here on a phone.
  */
 function SharedBox({ products, shared, known, title, deposits }: { products: readonly ProductRowData[]; shared: Shared; known: ReadonlySet<string>; title: string; deposits: boolean }) {
   const p = products[0];
@@ -164,16 +166,16 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? say.renew.upTo(fmt.number(p.autoRenew.maxRenewals)) : say.renew.yes) : say.renew.no;
   const brk = breakText(p.breakTerms.penalty, products.every((x) => onlyAtExits(x.breakTerms.penalty, x.exitPoints.exists)));
   // what the rate figure is stands in the "?" of the rate's head from md (RateHead); a phone, with no heads, keeps it here
-  const first = [shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? say.and(brk, renew) : shared.breakTerms ? `${brk}.` : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter(Boolean).join(" ");
-  const rules = [...(shared.tax ? (p.taxBucket.rule_ids ?? []) : []), ...(shared.taxByLinkage ? (taxPerLinkage(products) ?? []).flatMap((x) => x.taxBucket.rule_ids ?? []) : []), ...(shared.breakTerms ? p.breakTerms.rules : []), "BANK-13"];
-  const shown = [...new Set(rules)].filter((r) => known.has(r));
+  const brkWords = statedKnown(brk, p.breakTerms.rules, known);
+  const firstParts = [shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? <>{brkWords}{say.and.mid}{renew}{say.and.end}</> : shared.breakTerms ? <>{brkWords}.</> : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter((x) => x !== null);
+  const first = firstParts.length > 0 ? <>{firstParts.map((x, i) => <Fragment key={i}>{i > 0 && " "}{x}</Fragment>)}</> : null;
   const items: { key: string; text: ReactNode; className?: string }[] = [
     { key: "rate", text: say.rate, className: "md:hidden" },
     ...(first ? [{ key: "first", text: first }] : []),
     ...(shared.tax && taxWord(p.taxBucket.value) ? [{ key: "tax", text: <>{copy.labels.tax}: <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} /></> }] : []),
     ...(shared.taxByLinkage ? [{ key: "tax", text: <TaxByLinkage products={products} /> }] : []),
     ...(shared.conditions && p.conditions ? [{ key: "conditions", text: <><span>{copy.conditionsLead}</span> <PrintedText text={p.conditions} /></> }] : []),
-    { key: "offer", text: copy.notAnOffer },
+    { key: "offer", text: <>{copy.notAnOffer.before} {statedKnown(copy.notAnOffer.stated, ["BANK-13"], known)}{copy.notAnOffer.after}</> },
   ];
   const quotes = shared.breakTerms && shared.breakQuotes ? p.breakTerms.quotes : [];
   return (
@@ -182,14 +184,11 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
       title={title}
       items={items}
       foot={
-        (shown.length > 0 || quotes.length > 0) && (
+        quotes.length > 0 && (
           <span className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
-            {shown.length > 0 && <RulesLine ids={shown} />}
-            {quotes.length > 0 && (
-              <Disclosure look="link" label={copy.breakDisclosure} summaryClassName="text-sm">
-                <PrintedQuotes quotes={quotes} />
-              </Disclosure>
-            )}
+            <Disclosure look="link" label={copy.breakDisclosure} summaryClassName="text-sm">
+              <PrintedQuotes quotes={quotes} />
+            </Disclosure>
           </span>
         )
       }

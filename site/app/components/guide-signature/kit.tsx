@@ -2,7 +2,7 @@
 // the fields that set them, the run date and what a visual receives, and the lines that look their copy up (a gap, a common rate). The
 // parts any page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
 import type { ReactNode } from "react";
-import type { P05Input } from "@finance-tool/engine";
+import type { P05Input, RunResult } from "@finance-tool/engine";
 import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../../copy";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
@@ -75,11 +75,7 @@ export function figure(value: number, unit: SiteValue["unit"], formula: string, 
   return computed(value, unit, formula, inputs, { today, about, rules, ...(flags.length ? { flags } : {}) });
 }
 
-/**
- * A figure that is one engine run's own number: it carries the rules that run read, each at the weakest strength
- * it carried, and the run's flags and labels, so its sheet shows what that run rested on, not every rule the bundle holds. `keepFlag`
- * leaves out the flags that are about another figure of the run (a tax figure drops the fee flags, as the timeline does).
- */
+/** A tax figure leaves out the flags that are about another figure of its run (the fee flags), as the timeline does. */
 export const notFeeFlag = (code: string) => code !== "G-14" && code !== "PF-13";
 
 /**
@@ -110,6 +106,13 @@ export function termOf(bundle: Bundle | undefined): Record<string, SiteValue> {
 
 /** The rules a bundle's runs read, as the list a computed value carries. */
 export const rulesOfBundle = (b: Bundle): { id: string; strength: Strength }[] => b.rules.map((r) => ({ id: r.id, strength: r.strength as Strength }));
+
+/**
+ * The rules the given engine runs read, once each, as the list a computed value carries: a figure that is those runs' own number opens
+ * what they rested on, not every rule its bundle's other runs read (a withdrawal at the lock's end reads the exemption, one before it the
+ * early withdrawal's tax).
+ */
+export const rulesOfRuns = (runs: readonly RunResult[]): { id: string; strength: Strength }[] => [...new Map(runs.flatMap((r) => r.rules).map((r) => [r.id, { id: r.id, strength: r.strength as Strength }])).values()];
 
 /**
  * A guide input as a value object: P-05's own when untouched, else an entered one. Either way it is a field's value:

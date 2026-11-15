@@ -8,7 +8,7 @@ import { pagePreview, trackBrowser as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { TrackBrowser } from "../components/tracks/browser";
 import { CompanyTabs } from "../components/decoder/company-tabs";
-import { NumAfter, NumberLegend, RulesLine, StaleSaid } from "../components/provenance";
+import { NumAfter, NumberLegend, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Callout, PageHead, When } from "../components/kit";
 
@@ -24,10 +24,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (params.product && !(trackProductIds as readonly string[]).includes(params.product)) throw new Response("Not found", { status: 404 });
   const data = buildTrackBrowser();
   const all = loadRules();
-  const wanted = new Set<string>(["CAT-36", "CAT-37", "CAT-04", "CAT-05", "PF-06", ...templateRuleIds(data)]);
-  const lineIds = [...wanted].filter((id) => all[id]);
-  // the child-savings note's age opens its rule's sheet, outside the page's rules line
-  wanted.add("CS-18");
+  // the rules the figures name (a fee's year and its "actually charged", a yield's period and "before fees", a deposit fee no law allows:
+  // the CMA values' and templates' rule_ids), which their sheets open, and the child-savings note's age's (CS-18)
+  const wanted = new Set<string>(["CAT-36", "CAT-37", "CAT-04", "CAT-05", "PF-06", "CS-18", ...templateRuleIds(data)]);
   // the cards behind the column heads' "?" (and the phone's line of them), with the rules they cite
   const wantedTerms = new Set<string>(Object.values(HELP_TERMS));
   const terms = Object.fromEntries(loadTerms().filter((x) => wantedTerms.has(x.he)).map((x) => [x.he, x]));
@@ -36,7 +35,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const rules = Object.fromEntries(ids.map((id) => [id, all[id]!]));
   // the age until which National Insurance pays a child-savings fee, for the note over that list (CS-18, as the company page reads it)
   const childAge = (all["CS-18"]?.figures?.nii_pays_until_age ?? null) as SiteValue | null;
-  return { data, rules, pointed: pointedRecords(rules, all), ruleIds: lineIds, terms, childAge };
+  return { data, rules, pointed: pointedRecords(rules, all), terms, childAge };
 }
 
 export function meta({ location }: Route.MetaArgs) {
@@ -44,7 +43,7 @@ export function meta({ location }: Route.MetaArgs) {
 }
 
 export default function Tracks() {
-  const { data, rules, pointed, ruleIds, terms, childAge } = useLoaderData<typeof loader>();
+  const { data, rules, pointed, terms, childAge } = useLoaderData<typeof loader>();
   return (
     <PageShell current="decoder" data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6">
@@ -80,7 +79,6 @@ export default function Tracks() {
         <StaleSaid on={!!data.period.stale}>
           <TrackBrowser data={data} childAge={childAge} />
         </StaleSaid>
-        <RulesLine ids={ruleIds} />
       </div>
     </PageShell>
   );

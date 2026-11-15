@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router";
 import { feePageLink, guide as copy, guideIndex, trackBrowser } from "../../copy";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
-import { IdRef, RulesLine, StrengthLabel } from "../provenance";
+import { IdRef, RuleTitleRow, RulesLine, StrengthLabel } from "../provenance";
 import { Breadcrumb } from "../shell";
 import { Card, cx, Disclosure, gershayim, GoLink, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink } from "../kit";
 
@@ -146,14 +146,17 @@ export interface RuleRowItem {
   label: ReactNode;
   value: ReactNode;
   line?: ReactNode;
-  rules: readonly string[];
+  /** The rules chip that closes the row, where no words in it state its rules and no figure in it opens them: a company's terms under
+   *  "who offers it", and a row whose words a guide's content file writes before it marks them (D116). A row whose words state its rules
+   *  marks them with `Ruled`, and a figure from a rule opens it from its sheet. */
+  rules?: readonly string[];
   tag?: ReactNode;
   lead?: ReactNode;
 }
 
-/** The guide page's facts as the kit's key/value rows, each closed by its rule chips (design-spec 2). */
+/** The guide page's facts as the kit's key/value rows (design-spec 2); the words of a row that state a rule open it (`Ruled`, D116). */
 export function RuleRows({ items }: { items: RuleRowItem[] }) {
-  return <KeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
+  return <KeyValueList rows items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, ...(it.rules?.length ? { footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> } : {}) }))} />;
 }
 
 export interface FeeRow {
@@ -165,7 +168,6 @@ export interface FeeRow {
   cap: ReactNode;
   /** Under the cap: the case it holds in and what holds where it does not bind (a cap that binds banks only), from its record. */
   capNote?: ReactNode;
-  rules: readonly string[];
   tag?: ReactNode;
   /** "תלוי בחברה" and the companies whose own rate the site holds for this fee (D30), under the cap. */
   varies?: ReactNode;
@@ -199,7 +201,6 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
             {f.capNote && <span className="block text-sm text-muted-foreground">{f.capNote}</span>}
             {f.range && <span className="block text-sm text-muted-foreground">{f.range}</span>}
             {f.varies && <span className="block">{f.varies}</span>}
-            <RulesLine ids={f.rules} name={f.name} className="pt-1" />
           </div>
         ))}
       </Card>
@@ -226,7 +227,6 @@ export function FeeTable({ fees, note, feePage }: { fees: FeeRow[]; note: ReactN
                   {f.capNote && <span className="block pt-1 text-sm text-muted-foreground">{f.capNote}</span>}
                   {f.range && <span className="block pt-1 text-sm text-muted-foreground">{f.range}</span>}
                   {f.varies && <span className="block pt-1">{f.varies}</span>}
-                  <RulesLine ids={f.rules} name={f.name} className="pt-1" />
                 </td>
               </tr>
             ))}
@@ -251,13 +251,9 @@ export interface TaxStep {
   when: string;
   headline: ReactNode;
   text: ReactNode;
-  rules: readonly string[];
   tag?: ReactNode;
   alt?: ReactNode;
 }
-
-/** The step's name on the list of its rules: its headline when that is words alone, else when it happens. */
-const stepName = (s: TaxStep) => (typeof s.headline === "string" ? s.headline : s.when);
 
 /**
  * The three moments of the money as a rail of 28px circles: one under the other on a phone, the line at the start side and a down
@@ -284,7 +280,6 @@ export function TaxSteps({ steps }: { steps: TaxStep[] }) {
             <span className="text-sm">{s.text}</span>
             {s.tag}
             {s.alt && <span className="text-sm text-muted-foreground">{s.alt}</span>}
-            <RulesLine ids={s.rules} name={stepName(s)} className="lg:mt-auto" />
           </div>
         </li>
       ))}
@@ -339,7 +334,14 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
         {r.rules.length > 0 && (
           <Disclosure look="link" label={copy.checklist.expand} summaryClassName="text-xs [&>svg]:size-4">
-            <RulesLine ids={r.rules} className="pb-2" />
+            {/* a list whose rows are the rules themselves: each by its title (D101) */}
+            <ul className="flex flex-col pb-2">
+              {r.rules.map((id) => (
+                <li key={id} className="border-t border-border first:border-t-0">
+                  <RuleTitleRow id={id} />
+                </li>
+              ))}
+            </ul>
           </Disclosure>
         )}
       </div>

@@ -12,7 +12,7 @@ import { accountAxis, accountFact, bankYearlyMax, brokenCondition, currentAccoun
 import { differenceOf, type SiteValue } from "../../lib/value";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
-import { LeadTail, Num, RuleRef, RulesLine, Term } from "../provenance";
+import { LeadTail, Num, Ruled, Term } from "../provenance";
 import { CommonRateLine, Gap, isMajority, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
@@ -103,10 +103,11 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const f = copy.account.fold;
   // the rate's head opens where the rates come from (it was a sentence above the table)
   const rateHelp = <HelpMark term={["בנק ישראל"]} about={f.columns.rate} lead={f.rateHelp} className="ms-1" />;
-  const maxHead = (
+  // the head's "after tax" opens the rule on the bank taking the tax off; a phone, whose rows repeat the head, marks it on the first row only
+  const maxHead = (marked: boolean) => (
     <>
       {f.columns.max.before} <Num value={balanceValue} />
-      {f.columns.max.after}
+      {f.columns.max.after} <Ruled id={marked ? "TXI-08" : []}>{f.columns.max.tax}</Ruled>
     </>
   );
 
@@ -177,7 +178,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                   <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.bank}</th>
                   <th scope="col" className="font-medium text-start pb-2 pe-4 whitespace-nowrap">{f.columns.rate}{rateHelp}</th>
                   <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.who}</th>
-                  <th scope="col" className="font-medium text-start pb-2">{maxHead}</th>
+                  <th scope="col" className="font-medium text-start pb-2">{maxHead(true)}</th>
                 </tr>
               </thead>
               <tbody className="block md:table-row-group">
@@ -204,7 +205,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                         {b.conditions && <PrintedText text={b.conditions} />}
                       </td>
                       <td className="md:table-cell md:py-3 md:align-top basis-full">
-                        <span className="md:hidden text-xs text-muted-foreground">{maxHead}: </span>
+                        <span className="md:hidden text-xs text-muted-foreground">{maxHead(row === 0)}: </span>
                         {broken ? <BrokenCondition c={broken} /> : yearly ? <Num value={yearly} /> : null}
                       </td>
                     </tr>
@@ -217,7 +218,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                       <div className="flex flex-col gap-2">
                         {noOffer.length > 0 && (
                           <p>
-                            {joinHe(noOffer.map((b) => b.name))} {noOffer.length === 1 ? f.silent.sentence.one : f.silent.sentence.many} {f.silent.sentence.rest} {f.silent.sentence.quote} <RuleRef id="BANK-09" />
+                            {joinHe(noOffer.map((b) => b.name))} {noOffer.length === 1 ? f.silent.sentence.one : f.silent.sentence.many} {f.silent.sentence.rest.before} <Ruled id="BANK-09">{f.silent.sentence.rest.stated}</Ruled>{f.silent.sentence.rest.after} {f.silent.sentence.quote}
                           </p>
                         )}
                         {printedZero.map((b) => (
@@ -229,7 +230,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                       </div>
                     </td>
                     <td className="md:table-cell md:py-3 md:align-top basis-full">
-                      <span className="md:hidden text-xs text-muted-foreground">{maxHead}: </span>
+                      <span className="md:hidden text-xs text-muted-foreground">{maxHead(paying.length === 0)}: </span>
                       {f.silent.nothing}
                     </td>
                   </tr>
@@ -241,7 +242,6 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       ) : (
         <Gap id="accountBanks" />
       )}
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
 }

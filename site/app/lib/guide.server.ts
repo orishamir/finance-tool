@@ -2,13 +2,12 @@
 // the engine bundle and its first run on P-05, the terms and the companies that offer it.
 import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { exposurePath, guidePath } from "./site-paths";
-import { join } from "node:path";
 import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
 import { shortName } from "./providers";
 import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
-import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
+import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
@@ -17,7 +16,7 @@ import { loadInstitutionRegistry } from "./institutions.server";
 import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
-import { readTextCached } from "./read-cache.server";
+import { scanRuleIds } from "./scan-rule-ids.server";
 import { heCollator } from "./format";
 
 export interface GuidePageData {
@@ -53,10 +52,10 @@ export interface GuidePageData {
    */
   listRange: Partial<Record<"balance" | "deposit", ListRange>> | null;
   /**
-   * A security's wrapper (D6): the first of its record's `held_in`, the account its run and its page sit in, with
-   * the rules that say it is held there. Null for a wrapper.
+   * A security's wrappers (D6): every wrapper its record's `held_in` names, the first being the account its run and its page sit in, with
+   * the rules that say it is held in them. Null for a wrapper.
    */
-  heldIn: { id: string; name: string; ruleIds: string[] } | null;
+  heldIn: { accounts: { id: string; name: string }[]; ruleIds: string[] } | null;
   /** On a wrapper's page, the securities whose record names it in `held_in` (D6), each with its own page. */
   securities: { href: string; label: string }[];
   today: string;
@@ -183,19 +182,6 @@ export function depositBreakTerms(t: string): BreakTerms | null {
 }
 
 /** Every rule id a prose module names, found in its source (a name is kept only when a rule record has that id). */
-function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): string[] {
-  let src = "";
-  try {
-    src = readTextCached(join(root, relPath));
-  } catch {
-    return [];
-  }
-  const found = new Set<string>();
-  for (const m of src.matchAll(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g)) if (allRules[m[0]]) found.add(m[0]);
-  // "TXI OQ3" is written with a space in prose; the record id has a hyphen
-  for (const m of src.matchAll(/\b([A-Z0-9]{2,6}) OQ(\d{1,3})\b/g)) if (allRules[`${m[1]}-OQ${m[2]}`]) found.add(`${m[1]}-OQ${m[2]}`);
-  return [...found];
-}
 
 
 /** The lowest and highest fee the regulator reports on the wrapper's tracks, without self-directed tracks, which have a guide of their own (F-64). */
@@ -288,7 +274,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   extraRuleIds.forEach((r) => cited.add(r));
   // the companies' own terms the record names where a property is each company's (D30): their records give the guide's "תלוי בחברה" links
   for (const refs of Object.values(record.company_terms ?? {})) refs.forEach((r) => cited.add(companyTermRule(r)));
-  // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
+  // rules the prose module cites (<Ruled>, figure(...), and any chip still there): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   bundle?.rules.forEach((r) => cited.add(r.id));
   // the rules the visual cites and the ones the other wrappers' runs it shows read (their number sheets list them)
@@ -325,8 +311,9 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .map((to) => wrappers.find((w) => w.id === to))
     .filter((w): w is ProductRecord => !!w)
     .map((w) => ({ href: guidePath(w.id), label: w.names.he[0]! }));
-  const account = isSecurity(record) ? wrappers.find((w) => w.id === record.held_in.wrapper_ids[0]) : undefined;
-  const heldIn = isSecurity(record) && account ? { id: account.id, name: account.names.he[0]!, ruleIds: record.held_in.rule_ids } : null;
+  // the record's rules for where it is held speak of every wrapper it names, so the sentence that opens them names them all
+  const accounts = isSecurity(record) ? record.held_in.wrapper_ids.map((wid) => wrappers.find((w) => w.id === wid)).filter((w): w is ProductRecord => !!w).map((w) => ({ id: w.id, name: w.names.he[0]! })) : [];
+  const heldIn = accounts.length > 0 ? { accounts, ruleIds: isSecurity(record) ? record.held_in.rule_ids : [] } : null;
   const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: guidePath(w.id), label: w.names.he[0]! }));
   // an exposure that is this page, or a security the row above already links, is not linked twice
   const exposures = exposuresHeld.filter((e) => e.href !== guidePath(record.id) && !securities.some((x) => x.href === e.href));

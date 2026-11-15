@@ -179,7 +179,7 @@ export const mayaFundHref = (number: string) => `https://maya.tase.co.il/he/fund
 
 /**
  * A title as the reader sees it, without the rule codes a record's working title may carry in brackets ("אינטראקטיב ישראל: בורסה
- * ישראלית (BRK-41)"): a code tells the reader nothing, and stays in the rule's card (D48). An index's name ("TA-35") is not a code.
+ * ישראלית (BRK-41)"): a code tells the reader nothing, and stays in the rule's card (D101). An index's name ("TA-35") is not a code.
  */
 export const withoutCodes = (title: string): string => title.replace(/\s*\((?:(?!TA-)[A-Z][A-Z0-9]{0,4}-\d{1,3}(?:[,;]\s*)?)+\)/g, "").trim();
 

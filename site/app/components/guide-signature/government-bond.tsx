@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
 
 import { GainBars, RangeField, Sentence, Stat, StatRow, yearsCheck } from "../kit";
-import { Num, RulesLine, Term } from "../provenance";
+import { Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, SigAmountField, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 import { differenceOf } from "../../lib/value";
 
@@ -117,6 +117,15 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
           />
           <Sentence size="sm" measure>
             {copy.bond.holdLine.before} <Num value={v.redeem} /> {copy.bond.holdLine.middle} <Num value={v.coupons} /> {copy.bond.holdLine.after[linked ? "cpi" : "unlinked"]}
+            {linked && (
+              <>
+                {" "}
+                <Ruled prefix={copy.bond.holdLine.noFloor.prefix} id={["GOV-12", "TXI-14"]}>
+                  {copy.bond.holdLine.noFloor.stated}
+                </Ruled>
+                {copy.bond.holdLine.noFloor.end}
+              </>
+            )}
           </Sentence>
         </>
       )}
@@ -135,7 +144,6 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
           {copy.bond.couponLine.before} <Num value={cash} /> {copy.bond.couponLine.after}
         </p>
       </div>
-      <RulesLine ids={data.ruleIds} />
     </div>
   );
 }

@@ -19,6 +19,9 @@ export const content: GuideContent = {
     const feeFew = figure("BANK-35", "account_fee_up_to_2_actions");
     const feeMost = figure("BANK-35", "account_fee_3_to_100_actions");
     const feeEach = figure("BANK-35", "account_fee_per_action_above_100");
+    const bandLowMax = figure("BANK-35", "action_band_low_max");
+    const bandMidMin = figure("BANK-35", "action_band_mid_min");
+    const bandMidMax = figure("BANK-35", "action_band_mid_max");
     return (
       <>
         <p className="max-w-measure">
@@ -35,7 +38,7 @@ export const content: GuideContent = {
         {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
         <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
           <Sentence size="sm">
-            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>, ואותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null}.
+            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>, ואותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew && bandLowMax ? <>עד <Num value={feeFew} /> למי שעושה עד <Num value={bandLowMax} /> פעולות, </> : null}{feeMost && bandMidMin && bandMidMax ? <>עד <Num value={feeMost} /> מ־<Num value={bandMidMin} /> עד <Num value={bandMidMax} /> פעולות</> : null}{feeEach && bandMidMax ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל <Num value={bandMidMax} /></> : null}.
           </Sentence>
         </Callout>
       </>
@@ -50,7 +53,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, שבאישור הנגיד יכול להעביר את נכסי הבנק והתחייבויותיו, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
+          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. המנהל המורשה יכול, באישור הנגיד, להעביר את נכסי הבנק והתחייבויותיו. אלה סמכויות שלהם, לא זכויות שלכם.
         </p>
         <Sentence measure>
           חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה{lapsed ? <> <Num value={lapsed} prefix="ב־" /></> : null}.
@@ -63,13 +66,14 @@ export const content: GuideContent = {
   },
   use: ({ figure }) => {
     const threshold = figure("BANK-20", "credit_balance_threshold");
+    const period = figure("BANK-20", "continuous_period_months");
     return (
       <>
         <p className="max-w-measure">
           <Term prefix="ה" id="חשבון עובר ושב">עו״ש</Term> הוא המקום לכסף שצריך להיות זמין באותו יום: המשכורת, ההוצאות של החודש והתשלומים הקרובים. <Term id="יחידה">יחידות</Term> של <Term id="קרן כספית">קרן כספית</Term> <Ruled id="MF-34">נפדות רק ביום מסחר</Ruled>, <Term prefix="ו" id="פיקדון">פיקדון</Term> נפתח לתקופה, ולכן כסף שעשוי לצאת היום נשאר בעו״ש.
         </p>
         <Sentence measure>
-          כסף שלא צריכים באותו יום לא חייב לשבת שם. אם <Term prefix="ה" id="יתרת זכות בחשבון">יתרה</Term> נשארת {threshold ? <>מעל <Num value={threshold} /> </> : "מעל הסף שקבוע בחוק "}במשך רבעון שלם, החוק מחייב את הבנק <Ruled id="BANK-20">לשלוח הודעה שמפנה לחלופות</Ruled>.
+          כסף שלא צריכים באותו יום לא חייב לשבת שם. אם <Term prefix="ה" id="יתרת זכות בחשבון">יתרה</Term> נשארת {threshold ? <>מעל <Num value={threshold} /> </> : "מעל הסף שקבוע בחוק "}{period ? <>במשך <Num value={period} /> חודשים ברציפות</> : "ברציפות"}, החוק מחייב את הבנק <Ruled id="BANK-20">לשלוח הודעה שמפנה לחלופות</Ruled>.
         </Sentence>
       </>
     );
