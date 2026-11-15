@@ -20,6 +20,7 @@ import { addFee, updateFee } from "./edits/deal";
 import { withFigure } from "./edits/price";
 import { editPrice } from "./edits/stage";
 import { offerFor } from "./offers/offer";
+import { BAN_RULES } from "./offers/rules";
 import { latestSnapshots } from "../providers.server";
 import { loadTerms } from "../data.server";
 import { termKey, trackFees } from "../fee-page-data";
@@ -57,7 +58,7 @@ const provident = (): FeeDeal => ({
 const v = (x: SiteValue | null | undefined) => x?.value as number;
 
 describe("the page's data", () => {
-  it("ships the record of every rule its figures and caps cite, and no other", () => {
+  it("ships the record of every rule its figures, caps and bans cite, and no other", () => {
     const cited = new Set<string>();
     const walk = (x: unknown): void => {
       if (Array.isArray(x)) x.forEach(walk);
@@ -68,7 +69,10 @@ describe("the page's data", () => {
         }
     };
     walk([data.kinds, data.templates, data.houses, data.fx, data.terms]);
+    // a ban's words open its rules and show MF-71's figure
+    for (const id of BAN_RULES) cited.add(id);
     expect(cited.size).toBeGreaterThan(0);
+    expect(data.rules.map((r) => r.id)).toEqual(expect.arrayContaining(["MF-71", "BANK-51"]));
     expect(data.rules.map((r) => r.id).sort()).toEqual([...cited].sort());
   });
 });

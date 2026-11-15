@@ -2217,8 +2217,8 @@ export const feeDeal = {
       reading: { before: "לפי כללי הבנקאות, בקריאת האתר,", stated: "בנק לא גובה אותה על מה שבחרתם", after: ", ולכן היא לא עולה כלום." },
       /** BANK-51: a new bank, for five years from its licence, is outside the rules' closed list and tariffs (ss. 9ט, 9י). */
       newBank: "בנק חדש, בחמש השנים הראשונות מהרישיון שלו, לא כפוף לכללים האלה.",
-      /** MF-71: the distribution fee a bank may charge on money-market units where the fund's manager has no agreement with it. */
-      distribution: "על יחידות של קרן כספית בנק עדיין יכול לגבות עמלת הפצה של עד 0.1% בשנה, אם אין לו הסכם הפצה עם מנהל הקרן.",
+      /** MF-71: the distribution fee a bank may charge on money-market units where the fund's manager has no agreement with it, around its figure (`distribution_fee_max_without_agreement`). */
+      distribution: { before: "על יחידות של קרן כספית בנק עדיין יכול לגבות עמלת הפצה של עד", after: "בשנה, אם אין לו הסכם הפצה עם מנהל הקרן." },
     },
     /** What the reading states without computing (§10.6), after the fee's name and ": ". */
     stated: {
@@ -3433,7 +3433,8 @@ export const guideSignature = {
       // a linked series only: `stated`, after its one-letter prefix, is the words that state GOV-12 and TXI-14, no floor at face value (D116)
       noFloor: { prefix: "ו", stated: "יכולים לרדת גם מתחת לסכום הזה", end: "." },
     },
-    note: { before: "מחיר האג״ח זז בכיוון הפוך לריבית, והשינוי גדול יותר ככל שמשך החיים הממוצע שלה ארוך יותר. המחיר כאן לפני", term: "עמלה", after: "ומס." },
+    // `stated`, after its one-letter prefix, is the words that state BND-04, the longer the duration the more the price moves (D116)
+    note: { lead: "מחיר האג״ח זז בכיוון הפוך לריבית,", prefix: "ו", stated: "השינוי גדול יותר ככל שמשך החיים הממוצע שלה ארוך יותר", before: ". המחיר כאן לפני", term: "עמלה", after: "ומס." },
     linkage: { cpi: "צמודה למדד", unlinked: "לא צמודה" } as Record<string, string>,
     termsLine: { before: "הסדרה", middle: ", וקופון משולם כל" },
     couponLine: { before: "הקופון כאן הוא ההנחה של האתר,", after: "בשנה." },
@@ -3584,7 +3585,7 @@ export const guideSignature = {
     monthLead: "כל חודש מופקדים בסך הכול",
     parts: { you: "ממכם", employer: "מהמעסיק, תגמולים", severance: "מהמעסיק, פיצויים" },
     chart: { aria: "פס אחד שמחולק לשלושה חלקים: מה שהעובד מפקיד, מה שהמעסיק מפקיד לתגמולים, ומה שהמעסיק מפקיד לפיצויים" },
-    returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי ממס.", when: "אם הוא מגיע כבר עם המשכורת, בניכוי קטן יותר של מס הכנסה כל חודש, האתר לא מצא בכללים שקרא: שאלה פתוחה", otherwise: "הזיכוי מחושב בדוח השנתי, לפי הטופס השנתי מהמעסיק." },
+    returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי ממס.", when: "אם הוא מגיע כבר עם המשכורת, בניכוי קטן יותר של מס הכנסה כל חודש, האתר לא מצא בכללים שקרא: שאלה פתוחה", otherwise: "הזיכוי מחושב בדוח השנתי, לפי הטופס השנתי מהמעסיק" },
     // the general fund's page: only the deposit above the comprehensive fund's ceiling reaches it (PEN-10, PEN-08; method F-67)
     general: {
       // `moves`: the words that state PEN-10, the deposit above the ceiling going to the general fund

@@ -148,7 +148,11 @@ export const RULES: readonly RuleRow[] = [
   { id: "bank-custody-makam", when: { products: is("makam"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-18", "BANK-51"] },
   { id: "bank-custody-money-market-deal", when: { products: MONEY_MARKET, fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "MF-71", "BANK-51"] },
   // nor buy, sell or redeem money-market units on a line of its tariff, in the site's reading of the fee rules with the distribution fee
-  // regulations (MF-71): their only charge there is the distribution fee, up to 0.1% a year where the fund's manager has no agreement with it
+  // regulations (MF-71): their only charge there is the distribution fee, up to MF-71's `distribution_fee_max_without_agreement` a year
+  // where the fund's manager has no agreement with it
   { id: "bank-trade-money-market", when: { products: is("brokerage-account"), fees: ["trade"] }, verdict: { kind: "ban", provider: "bank", values: ["moneyMarket"], reading: true, distribution: true }, cite: ["MF-71", "BRK-16", "BANK-51"] },
   { id: "bank-trade-money-market-deal", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "ban", provider: "bank", reading: true, distribution: true }, cite: ["MF-71", "BRK-16", "BANK-51"] },
 ];
+
+/** The rules the bans cite: a ban's words open them and show their figures, so the fee page ships their records (fees.server.ts). */
+export const BAN_RULES: readonly string[] = [...new Set(RULES.flatMap((r) => (r.verdict.kind === "ban" ? r.cite : [])))];
