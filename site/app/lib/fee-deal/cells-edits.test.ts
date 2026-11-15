@@ -27,7 +27,7 @@ const rateOf = (c: Case) => (c.stages[0]!.price as { rate?: { v: number } }).rat
 const fx = (): CasesFee => ({
   id: "fee-fx",
   kind: "fx",
-  by: [{ kind: "channel" }, { kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }],
+  by: [{ kind: "channel", values: ["direct", "branch"] }, { kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }],
   cases: [
     { id: "d0", when: [["direct"], 0], stages: [{ price: { form: "free" } }] },
     { id: "d1", when: [["direct"], 1], stages: [{ price: action(0.0875, 5) }] },
@@ -79,7 +79,7 @@ describe("a cell stretched over its neighbours, and back", () => {
   });
 
   it("in a table, gives a neighbour one part row and leaves its other parts", () => {
-    const table: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel" }], cases: [
+    const table: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [
       { id: "a", when: [["direct"]], stages: [{ price: action(0.1, 15) }] },
       { id: "b", when: [["branch"]], stages: [{ price: action(0.3, 40) }] },
     ] };
@@ -93,7 +93,7 @@ describe("a cell stretched over its neighbours, and back", () => {
   });
 
   it("copies the later prices of the month row, and a sale priced apart with the notes", () => {
-    const table: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel" }], cases: [
+    const table: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [
       { id: "a", when: [["direct"]], stages: [{ price: { form: "free" }, until: "2027-01" }, { price: action(0.1) }], sale: [{ price: action(0.2) }] },
       { id: "b", when: [["branch"]], stages: [{ price: action(0.3) }] },
     ] };
@@ -185,7 +185,7 @@ describe("a cell stretched back takes from the places it leaves what the stretch
 });
 
 describe("a cell's content moved or taken away", () => {
-  const table = (): CasesFee => ({ id: "f", kind: "trade", by: [{ kind: "channel" }], cases: [
+  const table = (): CasesFee => ({ id: "f", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [
     { id: "a", when: [["direct"]], stages: [{ price: action(0.1, 15) }] },
     { id: "b", when: [["branch"]], stages: [{ price: action(0.3) }] },
   ] });
@@ -222,7 +222,7 @@ describe("a cell's content moved or taken away", () => {
 
 describe("how a fee's cases stand", () => {
   it("moves a table's column on the page by rank, the order the reading reads kept", () => {
-    const f: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel" }], cases: ["a", "b", "c"].map((id) => ({ id, when: [[id]], stages: [{ price: action(1) }] })) };
+    const f: CasesFee = { id: "f", kind: "trade", by: [{ kind: "channel", values: [] }], cases: ["a", "b", "c"].map((id) => ({ id, when: [[id]], stages: [{ price: action(1) }] })) };
     const moved = moveCase(f, "c", "a") as CasesFee;
     expect(moved.cases.map((c) => c.id)).toEqual(["a", "b", "c"]);
     expect(byRank(moved.cases).map((c) => c.id)).toEqual(["c", "a", "b"]);
@@ -275,7 +275,7 @@ describe("how a fee's cases stand", () => {
   });
 
   it("splits one case by a thing, every other case holding for any value of it", () => {
-    const f: CasesFee = { id: "f", kind: "trade", by: [{ kind: "what" }], cases: [
+    const f: CasesFee = { id: "f", kind: "trade", by: [{ kind: "what", values: [] }], cases: [
       { id: "ta", when: [["tase"]], stages: [{ price: action(0.1) }] },
       { id: "ab", when: [["us", "europe"]], stages: [{ price: action(0.2) }] },
     ] };
@@ -322,7 +322,7 @@ describe("what a deal keeps of these", () => {
   });
 
   it("reads the same case after a column is moved: the page's order is not the reading's", () => {
-    const f: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "channel" }], cases: [
+    const f: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [
       { id: "a", when: ["any"], stages: [{ price: action(0.1) }] },
       { id: "b", when: [["branch"]], stages: [{ price: action(0.3) }] },
     ] };
@@ -337,7 +337,7 @@ describe("what a deal keeps of these", () => {
 describe("sources on copies", () => {
   const src = { url: "https://example.org/list.pdf", title: "list", publisher: "p", strength: "institution" as const, checked: "2026-11-04" };
   const listed = (v: number) => ({ v, src });
-  const sourced = (): CasesFee => ({ id: "fee-t", kind: "trade", by: [{ kind: "channel" }], cases: [
+  const sourced = (): CasesFee => ({ id: "fee-t", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [
     { id: "a", when: [["direct"]], stages: [{ price: { form: "action", rate: listed(0.1), min: listed(15) } }] },
     { id: "b", when: [["branch"]], stages: [{ price: { form: "action", rate: listed(0.3), min: listed(15) } }] },
   ] });
@@ -405,7 +405,7 @@ describe("sources on copies", () => {
 
   it("carries nothing to a later price said whole or holding the part otherwise than its words show", () => {
     const held = (rate: number, per: 1 | 12, extra: Partial<Price> = {}): Case["stages"][number]["price"] => ({ form: "held", rate: listed(rate), per, every: 12, ...extra }) as Price;
-    const fee = (a: Price, b: Price): CasesFee => ({ id: "c", kind: "custody", by: [{ kind: "channel" }], cases: [{ id: "a", when: [["direct"]], stages: [{ price: a, until: "2027-03" }, { price: b }] }] });
+    const fee = (a: Price, b: Price): CasesFee => ({ id: "c", kind: "custody", by: [{ kind: "channel", values: [] }], cases: [{ id: "a", when: [["direct"]], stages: [{ price: a, until: "2027-03" }, { price: b }] }] });
     const carried = (a: Price, b: Price, figure: "rate" | "min") => {
       const was = fee(a, b);
       const next = figureOnward(editPrice(was, "buy", 0, (p) => withFigure(p, figure, 0.2), "a"), was, ["a"], 0, figure === "rate" ? "held" : "min", figure) as CasesFee;
@@ -418,7 +418,7 @@ describe("sources on copies", () => {
     // a later price without a part the one before holds is said whole, and takes no edit
     const withMin = (rate: number, min?: number): Price => ({ form: "action", rate: listed(rate), ...(min !== undefined ? { min: listed(min) } : {}) });
     const action2 = (a: Price, b: Price) => {
-      const was: CasesFee = { id: "t", kind: "trade", by: [{ kind: "channel" }], cases: [{ id: "a", when: [["direct"]], stages: [{ price: a, until: "2027-03" }, { price: b }] }] };
+      const was: CasesFee = { id: "t", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [{ id: "a", when: [["direct"]], stages: [{ price: a, until: "2027-03" }, { price: b }] }] };
       return figureOnward(editPrice(was, "buy", 0, (p) => withFigure(p, "rate", 0.2), "a"), was, ["a"], 0, "share", "rate") as CasesFee;
     };
     expect((action2(withMin(0.1, 5), withMin(0.1)).cases[0]!.stages[1]!.price as { rate: { v: number } }).rate.v).toBe(0.1);
@@ -442,7 +442,7 @@ describe("sources on copies", () => {
 
 describe("one case split, every other reading kept", () => {
   it("places the copies after a case they would tie with, so another value still reads its own case", () => {
-    const f: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "channel" }], cases: [
+    const f: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "channel", values: [] }], cases: [
       { id: "A", when: ["any"], stages: [{ price: action(0.1) }] },
       { id: "B", when: [["branch"]], stages: [{ price: action(0.3) }] },
     ] };
@@ -454,7 +454,7 @@ describe("one case split, every other reading kept", () => {
   });
 
   it("keeps the split case's place on the page, and the deal read for the same start picks", () => {
-    const f: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what" }, { kind: "channel" }], cases: [
+    const f: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what", values: [] }, { kind: "channel", values: [] }], cases: [
       { id: "A", when: [["tase"], "any"], stages: [{ price: action(0.1) }] },
       { id: "B", when: [["us"], ["branch"]], stages: [{ price: action(0.3) }] },
     ] };
@@ -476,7 +476,7 @@ describe("one case split, every other reading kept", () => {
 
 describe("a step taken away in a grid with places no case holds", () => {
   it("leaves no size without a case: the removed step's case moves onto the step it joins where that step has none", () => {
-    const f: CasesFee = { id: "fee-g", kind: "fx", by: [{ kind: "channel" }, { kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }], cases: [
+    const f: CasesFee = { id: "fee-g", kind: "fx", by: [{ kind: "channel", values: [] }, { kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }], cases: [
       { id: "d0", when: [["direct"], 0], stages: [{ price: { form: "free" } }] },
       { id: "d1", when: [["direct"], 1], stages: [{ price: action(0.1) }] },
       { id: "b1", when: [["branch"], 1], stages: [{ price: action(0.2) }] },
@@ -485,7 +485,7 @@ describe("a step taken away in a grid with places no case holds", () => {
     const g = removeStep(f, 1, 1) as CasesFee;
     // direct: its first step reads its joined sizes; branch had no first step, so its removed step's case is its first step now
     expect(g.cases.map((c) => [c.id, c.when[1]])).toEqual([["d0", 0], ["b1", 0], ["b2", 1]]);
-    const two: CasesFee = { ...f, by: [{ kind: "channel" }, { kind: "actionSize", unit: "USD", tops: [typed(10)] }], cases: [
+    const two: CasesFee = { ...f, by: [{ kind: "channel", values: [] }, { kind: "actionSize", unit: "USD", tops: [typed(10)] }], cases: [
       { id: "d0", when: [["direct"], 0], stages: [{ price: { form: "free" } }] },
       { id: "dA", when: [["direct"], "any"], stages: [{ price: action(0.5) }] },
       { id: "b1", when: [["branch"], 1], stages: [{ price: action(0.2) }] },
@@ -511,7 +511,7 @@ describe("a duplicated value's name", () => {
     expect((named.when[0] as string[])[0]!.length).toBe(NAME_MAX);
     const deal: FeeDeal = { id: "deal-x", name: "", kind: "brokerage-account", fees: [f] };
     expect(readDeal(JSON.parse(JSON.stringify(deal)))).not.toBeNull();
-    const held2: CasesFee = { id: "fee-h", kind: "custody", by: [{ kind: "held" }], cases: [{ id: "h", when: [["tase"]], stages: [{ price: held(0.1) }] }] };
+    const held2: CasesFee = { id: "fee-h", kind: "custody", by: [{ kind: "held", values: [] }], cases: [{ id: "h", when: [["tase"]], stages: [{ price: held(0.1) }] }] };
     const own = duplicateValue(held2, 0, valueKey(["tase"]), long) as CasesFee;
     expect(readDeal(JSON.parse(JSON.stringify({ ...deal, fees: [own] })))).not.toBeNull();
   });

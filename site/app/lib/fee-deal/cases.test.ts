@@ -37,7 +37,7 @@ const usd = (p: Omit<Extract<Price, { form: "action" }>, "form" | "currency">): 
 const trade = (): CasesFee => ({
   id: "fee-trade",
   kind: "trade",
-  by: [{ kind: "what" }, { kind: "track" }],
+  by: [{ kind: "what", values: ["tase", "mutualFunds", "us", "europe", "world"] }, { kind: "track", values: ["מסלול 1", "מסלול 2"] }],
   cases: [
     { id: "c1", when: [["tase"], "any"], stages: [{ price: { form: "action", rate: { v: 0.4, src }, min: { v: 10, src } } }] },
     { id: "c2", when: [["mutualFunds"], "any"], stages: [{ price: { form: "perAction", amount: typed(16) } }] },
@@ -51,7 +51,7 @@ const trade = (): CasesFee => ({
 const fx = (): CasesFee => ({
   id: "fee-fx",
   kind: "fx",
-  by: [{ kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }, { kind: "channel" }],
+  by: [{ kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }, { kind: "channel", values: ["branch", "direct"] }],
   cases: [
     { id: "x1", when: [0, "any"], stages: [{ price: { form: "free" } }] },
     { id: "x2", when: [1, "any"], stages: [{ price: { ...usd({ rate: typed(0.19), min: typed(6.8), max: typed(1075) }), discount: { pct: typed(50), alsoMin: true } } as Price }] },
@@ -91,8 +91,8 @@ describe("cases as the device and a link keep them", () => {
     ["tops out of order", (d: any) => (d.fees[1].by[0].tops = [{ v: 100 }, { v: 10 }])],
     ["a blank top", (d: any) => (d.fees[1].by[0].tops[0] = { v: 0, blank: true })],
     ["prices beside cases", (d: any) => (d.fees[0].stages = [{ price: { form: "free" } }])],
-    ["a fourth thing", (d: any) => d.fees[0].by.push({ kind: "channel" }, { kind: "count", unit: "actions", tops: [{ v: 3 }] })],
-    ["what is bought and what is held on one fee", (d: any) => (d.fees[2] = { id: "fee-custody", kind: "custody", by: [{ kind: "held" }, { kind: "held" }], cases: [{ id: "a", when: ["any", "any"], stages: [{ price: { form: "free" } }] }] })],
+    ["a fourth thing", (d: any) => d.fees[0].by.push({ kind: "channel", values: [] }, { kind: "count", unit: "actions", tops: [{ v: 3 }] })],
+    ["what is bought and what is held on one fee", (d: any) => (d.fees[2] = { id: "fee-custody", kind: "custody", by: [{ kind: "held", values: [] }, { kind: "held", values: [] }], cases: [{ id: "a", when: ["any", "any"], stages: [{ price: { form: "free" } }] }] })],
     ["two cases with one id", (d: any) => (d.fees[0].cases[1].id = "c1")],
     ["a discount above a hundred percent", (d: any) => (d.fees[1].cases[1].stages[0].price.discount.pct.v = 120)],
     ["a third party's figure of no form", (d: any) => (d.fees[0].cases[4].stages[0].price.third.price = { form: "held", rate: { v: 1 } })],
@@ -332,7 +332,7 @@ describe("the edits that make cases", () => {
   it("adds a thing: each case copied to each value with its prices, a range to its two steps, a fee with none gaining cases", () => {
     const custody = newFee("custody");
     const held = addBy(editPrice(custody, "buy", 0, (p) => withFigure(p, "rate", 0.2)), { kind: "held", values: ["tase", "us"] }) as CasesFee;
-    expect(held.by).toEqual([{ kind: "held" }]);
+    expect(held.by).toEqual([{ kind: "held", values: ["tase", "us"] }]);
     expect(held.cases.map((c) => [c.when, c.stages[0]!.price])).toEqual([
       [[["tase"]], { form: "held", rate: { v: 0.2 }, per: 12, every: 12 }],
       [[["us"]], { form: "held", rate: { v: 0.2 }, per: 12, every: 12 }],
@@ -470,13 +470,13 @@ describe("the conversion's currency is what is bought's (F-114)", () => {
     const conversion: CasesFee = {
       id: "fee-fx",
       kind: "fx",
-      by: [{ kind: "currency" }],
+      by: [{ kind: "currency", values: [] }],
       cases: [
         { id: "u", when: [["USD"]], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
         { id: "o", when: [["other"]], stages: [{ price: { form: "action", rate: typed(0.3) } }] },
       ],
     };
-    const tokyo: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what", own: [{ name: "טוקיו", place: "abroad", currency: "JPY" }] }], cases: [{ id: "t", when: [["טוקיו"]], stages: [{ price: { form: "action", rate: typed(0.2) } }] }] };
+    const tokyo: CasesFee = { id: "fee-t", kind: "trade", by: [{ kind: "what", values: [], own: [{ name: "טוקיו", place: "abroad", currency: "JPY" }] }], cases: [{ id: "t", when: [["טוקיו"]], stages: [{ price: { form: "action", rate: typed(0.2) } }] }] };
     const r = read({ ...deal(), fees: [tokyo, conversion] });
     expect(r.picks).toEqual([{ by: "what", is: "טוקיו" }, { by: "currency", is: "other" }]);
     expect(r.fees.find((f) => f.kind === "fx")!.read?.case).toBe("o");
@@ -604,7 +604,7 @@ describe("a case's standing against the cap, beside it in the builder (F-113)", 
       {
         id: "fee-deposit",
         kind: "deposit",
-        by: [{ kind: "channel" }],
+        by: [{ kind: "channel", values: [] }],
         cases: [
           { id: "d1", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(1) } }] },
           { id: "d2", when: [["direct"]], stages: [{ price: { form: "action", rate: typed(2), discount: { pct: typed(50) } } }] },
@@ -681,7 +681,7 @@ describe("a thing of the band's head, opened", () => {
     const byTrack: CasesFee = {
       id: "fee-trade",
       kind: "trade",
-      by: [{ kind: "track" }],
+      by: [{ kind: "track", values: [] }],
       cases: [
         { id: "t1", when: [["מסלול 1"]], stages: [{ price: { form: "free" } }] },
         { id: "t2", when: [["מסלול 2"]], mine: true, stages: [{ price: { form: "perAction", amount: typed(16) } }] },

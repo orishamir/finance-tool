@@ -6,7 +6,7 @@ import { splitAt } from "./edits/stage";
 import { addFee, setPick } from "./edits/deal";
 import { CASES_MAX, FEES_MAX, PICKS_MAX, STAGES_MAX, TOPS_MAX, VALUES_MAX, dealBreach, feeBreach, held, metLimit, takeRefusal } from "./limits";
 import { packDeal } from "./link";
-import { newDeal, newFee, readDeal, typed, type Case, type CasesFee, type Fee, type FeeDeal, type SlimFee, type Stage } from "./model";
+import { newDeal, newFee, readDeal, typed, withNamed, type Case, type CasesFee, type Fee, type FeeDeal, type SlimFee, type Stage } from "./model";
 
 const price = (v: number): Stage["price"] => ({ form: "action", rate: typed(v) });
 /** Prices over time: `n` of them, a month apart from 2027-01. */
@@ -16,7 +16,7 @@ const slim = (n: number): SlimFee => ({ id: "fee-trade", kind: "trade", stages: 
 const cases = (n: number): CasesFee => ({
   id: "fee-trade",
   kind: "trade",
-  by: [{ kind: "own", label: "ערוץ" }],
+  by: [{ kind: "own", label: "ערוץ", values: [] }],
   cases: Array.from({ length: n }, (_, k): Case => ({ id: `c${k}`, when: [[`v${k}`]], stages: [{ price: price(1) }] })),
 });
 /** A conversion fee whose price changes by the trade's size, with `tops` tops (a case on each step). */
@@ -30,7 +30,7 @@ const ranged = (tops: number): CasesFee => ({
 const owned = (n: number): CasesFee => ({
   id: "fee-trade",
   kind: "trade",
-  by: [{ kind: "what", own: Array.from({ length: n }, (_, k) => ({ name: `ני״ע ${k}`, place: "abroad" as const, currency: "USD" })) }],
+  by: [{ kind: "what", values: [], own: Array.from({ length: n }, (_, k) => ({ name: `ני״ע ${k}`, place: "abroad" as const, currency: "USD" })) }],
   cases: [{ id: "c0", when: [["tase"]], stages: [{ price: price(1) }] }],
 });
 const dealOf = (...fees: Fee[]): FeeDeal => ({ ...newDeal("brokerage-account"), id: "deal-a", fees });
@@ -59,7 +59,6 @@ describe("an edit at a limit refuses", () => {
     refused(full, addCase(full), "cases");
     refused(full, copyCase(full, "c0"), "cases");
     refused(full, addCaseAt(full, "c0", 0, ["new"]), "cases");
-    refused(full, addValues(full, 0, ["new"]), "cases");
     expect((addCase(cases(CASES_MAX - 1)) as CasesFee).cases).toHaveLength(CASES_MAX);
   });
   it("adds no thing that would make more than CASES_MAX cases", () => {
@@ -80,6 +79,21 @@ describe("an edit at a limit refuses", () => {
     const full = owned(VALUES_MAX);
     expect(roundTrip(dealOf(full))).not.toBeNull();
     refused(full, addOwnPlace(full, 0, { name: "עוד אחד", place: "abroad", currency: "USD" }), "values");
+  });
+  it("keeps no value with no case past VALUES_MAX values, and opens a deal whose cases name more", () => {
+    // a thing whose cases name more values than VALUES_MAX keeps them all, and takes no value no case names
+    const many = withNamed(cases(VALUES_MAX + 2));
+    expect(many.by[0]).toMatchObject({ values: { length: VALUES_MAX + 2 } });
+    expect(feeBreach(many)).toBeNull();
+    expect(roundTrip(dealOf(many))).not.toBeNull();
+    refused(many, addValues(many, 0, ["עוד אחד"]), "values");
+    // under VALUES_MAX values, a value with no case is kept up to it
+    const few = withNamed(cases(VALUES_MAX - 1));
+    const at = addValues(few, 0, ["עוד אחד"]) as CasesFee;
+    expect(at.by[0]).toMatchObject({ values: { length: VALUES_MAX } });
+    refused(at, addValues(at, 0, ["ועוד"]), "values");
+    // a saved deal that keeps more values with no case than that is not one the page wrote
+    expect(readDeal(JSON.parse(JSON.stringify(dealOf({ ...few, by: [{ kind: "own" as const, label: "ערוץ", values: [...Array.from({ length: VALUES_MAX + 1 }, (_, k) => `x${k}`)] }] }))))).toBeNull();
   });
   it("adds no fee past FEES_MAX, and no pick past PICKS_MAX", () => {
     const full = dealOf(...Array.from({ length: FEES_MAX }, (_, k) => ({ ...newFee("own", `עמלה ${k}`), id: `fee-${k}` })));

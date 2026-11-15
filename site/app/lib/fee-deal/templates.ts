@@ -11,7 +11,7 @@ import { HOUSE_CHANNELS } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { BOUND_CURRENCIES, feeSources, hasCases, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
+import { BOUND_CURRENCIES, feeSources, hasCases, withNamed, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 import { capLine, kindById } from "./kinds";
@@ -434,10 +434,11 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
     (x.channel === null ? channels : [x.channel]).forEach((c) => cell!.channels.add(c));
     cell.values.add(x.value);
   }
+  // each list thing keeps the values its cases name (`withNamed`, below)
   const by: By[] = [
-    ...(byValue ? [first === "currency" ? { kind: "currency" as const } : { kind: first, ...(own.length ? { own: [...own] } : {}) }] : []),
-    ...(byTrack ? [{ kind: "track" as const }] : []),
-    ...(byChannel ? [{ kind: "channel" as const }] : []),
+    ...(byValue ? [first === "currency" ? { kind: "currency" as const, values: [] } : { kind: first, values: [], ...(own.length ? { own: [...own] } : {}) }] : []),
+    ...(byTrack ? [{ kind: "track" as const, values: [] }] : []),
+    ...(byChannel ? [{ kind: "channel" as const, values: [] }] : []),
   ];
   if (by.length === 0) return { kind, stages: priceOf(lines[0]!)!.stages };
   const cases: Case[] = cells.map((c, k) => {
@@ -448,7 +449,8 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
     ];
     return { id: `c${k + 1}`, when, stages: structuredClone(priceOf(c.line)!.stages) };
   });
-  return { kind, by, cases };
+  const { id: _id, ...fee } = withNamed({ id: "", kind, by, cases });
+  return fee;
 }
 
 /**

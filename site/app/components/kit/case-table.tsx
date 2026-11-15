@@ -215,6 +215,16 @@ function OpenHead({ label, onOpen, open, range, grip, children }: { label: strin
   );
 }
 
+/** A column's head that opens nothing (a value no case names): its words at its foot, as an `OpenHead`'s, and its grip. */
+function StillHead({ grip, children }: { grip?: ReactNode; children: ReactNode }) {
+  return (
+    <div data-case-head="" data-liftable="" className="relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border px-1.5 pt-1 pb-1.5 text-sm font-medium">
+      {grip}
+      <div className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
+    </div>
+  );
+}
+
 /**
  * What a cell may carry beside its content: a grip that lifts it (`grip`), knobs on its edges that stretch it (`knobs`), the words that it
  * covers its whole row (`whole`), and whether a knob's stretch reaches it now (`lit`), with what it would then show (`fill`).
@@ -271,12 +281,16 @@ function CellBody({ content, fill, lit }: { content: ReactNode; fill?: ReactNode
   return lit && fill !== undefined ? <span className="contents [&>*]:opacity-80" data-reach-fill="">{fill}</span> : <>{content}</>;
 }
 
-/** A table's column: its case's id, its head's words, the head's spoken name and tap, whether its case is open, and its grip. */
+/**
+ * A table's column: its case's id, its head's words, the head's spoken name and tap, whether its case is open, and its grip. A column of a
+ * value no case names (`empty`) has a head that opens nothing and, under it, over every row, the dashed slot that adds its case.
+ */
 export interface CaseColumn {
   id: string;
   head: ReactNode;
   label: string;
   onOpen: () => void;
+  empty?: AddSpec;
   open?: boolean;
   grip?: ReactNode;
   /** The item its grip lifts: while it is carried, the column's own cells stand as its gap too. */
@@ -341,7 +355,11 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
         <div role="row" className="contents">
           <span aria-hidden />
           {columns.map((c, k) => {
-            const head = (
+            const head = c.empty ? (
+              <StillHead key={c.id} grip={c.grip}>
+                {c.head}
+              </StillHead>
+            ) : (
               <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} open={c.open} range={ladder} grip={c.grip}>
                 {c.head}
               </OpenHead>
@@ -402,6 +420,14 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
             })}
           </div>
         ))}
+        {columns.map((c, k) =>
+          c.empty ? (
+            // a value no case names: one slot over every row of its column, which adds its case
+            <div key={`empty:${c.id}`} style={{ gridColumn: k + 2, gridRow: `2 / span ${Math.max(rows.length, 1)}` }} data-flip="" className="*:h-full">
+              <AddSlot add={c.empty} />
+            </div>
+          ) : null,
+        )}
         {addPart && rows.length > 0 && <RowAdd add={addPart} style={{ gridColumn: `2 / span ${n}`, gridRow: rows.length + 1 }} />}
       </div>
       {foot}

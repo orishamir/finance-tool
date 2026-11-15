@@ -10,7 +10,7 @@ import { typed, type CasesFee, type FeeDeal } from "./model";
 const grid = (): CasesFee => ({
   id: "fee-t",
   kind: "trade",
-  by: [{ kind: "what" }, { kind: "channel" }],
+  by: [{ kind: "what", values: [] }, { kind: "channel", values: [] }],
   cases: [
     { id: "t1", when: [["tase"], ["direct"]], stages: [{ price: { form: "action", rate: typed(0.5), min: typed(20) } }] },
     { id: "t2", when: [["tase"], ["branch"]], stages: [{ price: { form: "action", rate: typed(0.55), min: typed(30) } }] },

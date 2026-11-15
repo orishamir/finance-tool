@@ -15,7 +15,10 @@ export const STAGES_MAX = 12;
 export const CASES_MAX = 120;
 /** Tops of one range: thirteen steps. */
 export const TOPS_MAX = 12;
-/** Values a case names of one thing, and values of the person's own that a thing names. */
+/**
+ * Values a case names of one thing, values of the person's own that a thing names, and values a list thing keeps (`By.values`), past those
+ * its cases name: a deal saved before a thing kept its values may name more in its cases, and opens with them all.
+ */
 export const VALUES_MAX = 20;
 /** The reading's picks: one for each thing the deal's fees change by. */
 export const PICKS_MAX = 12;
@@ -28,13 +31,22 @@ export const LIMITS: Readonly<Record<Limit, number>> = { fees: FEES_MAX, stages:
 
 const stagesOver = (x: { stages: readonly unknown[]; sale?: readonly unknown[] }): boolean => x.stages.length > STAGES_MAX || (x.sale?.length ?? 0) > STAGES_MAX;
 
+/** Whether a fee's list thing `t` keeps more values than it may: more than `VALUES_MAX`, and more than its cases name. */
+export function valuesOver(fee: Extract<Fee, { cases: unknown[] }>, t: number): boolean {
+  const b = fee.by[t];
+  if (!b || !("values" in b) || b.values.length <= VALUES_MAX) return false;
+  const named = new Set(fee.cases.flatMap((c) => (Array.isArray(c.when[t]) ? (c.when[t] as string[]) : [])));
+  return b.values.length > named.size;
+}
+
 /** The first limit a fee passes, or null. */
 export function feeBreach(fee: Fee): Limit | null {
   if (fee.cases === undefined) return stagesOver(fee) ? "stages" : null;
   if (fee.cases.length > CASES_MAX) return "cases";
-  for (const b of fee.by) {
+  for (const [t, b] of fee.by.entries()) {
     if ("tops" in b && b.tops.length > TOPS_MAX) return "tops";
     if ("own" in b && b.own && b.own.length > VALUES_MAX) return "values";
+    if (valuesOver(fee, t)) return "values";
   }
   for (const c of fee.cases) {
     if (stagesOver(c)) return "stages";

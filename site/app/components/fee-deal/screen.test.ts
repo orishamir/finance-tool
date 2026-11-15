@@ -225,7 +225,7 @@ describe("the question that adds a thing to change by", () => {
     expect(drawToolbox(d, "fee-trade")).not.toContain(q);
     expect(markup(toolboxOf(d, "fee-trade"))).toContain('data-part="by:what"');
     // a fee with cases: the question before its band
-    d.fees = [{ id: "fee-trade", kind: "trade", by: [{ kind: "what" }], cases: [{ id: "c1", when: [["tase"]], stages: [{ price: { form: "action", rate: typed(0.4) } }] }, { id: "c2", when: ["any"], stages: [{ price: { form: "action", rate: typed(0.1) } }] }] }];
+    d.fees = [{ id: "fee-trade", kind: "trade", by: [{ kind: "what", values: [] }], cases: [{ id: "c1", when: [["tase"]], stages: [{ price: { form: "action", rate: typed(0.4) } }] }, { id: "c2", when: ["any"], stages: [{ price: { form: "action", rate: typed(0.1) } }] }] }];
     const banded = markup(builderOf(d, "fee-trade", "channel"));
     expect(banded.indexOf(feeDeal.cases.ask.channel!)).toBeLessThan(banded.indexOf(dealCases.changesBy));
   });
@@ -243,7 +243,7 @@ describe("the toolbox", () => {
   });
   it("takes a thing the fee changes by away on a second tap, named by what it does", () => {
     const d = account();
-    d.fees = [{ id: "fee-trade", kind: "trade", by: [{ kind: "track" }], cases: [{ id: "c1", when: [["מסלול 1"]], stages: [{ price: { form: "action", rate: typed(0.4) } }] }] }];
+    d.fees = [{ id: "fee-trade", kind: "trade", by: [{ kind: "track", values: [] }], cases: [{ id: "c1", when: [["מסלול 1"]], stages: [{ price: { form: "action", rate: typed(0.4) } }] }] }];
     const html = markup(toolboxOf(d, "fee-trade"));
     const stop = feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!);
     expect(html).toMatch(new RegExp(`<button[^>]*data-part="by:track"[^>]*aria-label="${stop}"`));
@@ -284,7 +284,7 @@ describe("the fees' column", () => {
       {
         id: "fee-trade",
         kind: "trade",
-        by: [{ kind: "what" }, { kind: "track" }],
+        by: [{ kind: "what", values: [] }, { kind: "track", values: [] }],
         cases: [
           { id: "c1", when: [["tase"], "any"], stages: [{ price: { form: "action", rate: typed(0.4), min: typed(10) } }] },
           { id: "c2", when: [["us"], ["מסלול 1"]], mine: true, stages: [{ price: { form: "perUnit", amount: typed(0.03), currency: "USD", min: typed(8) } }] },
@@ -324,7 +324,7 @@ describe("the fees' column", () => {
       {
         id: "fee-deposit",
         kind: "deposit",
-        by: [{ kind: "channel" }],
+        by: [{ kind: "channel", values: [] }],
         cases: [
           { id: "d1", when: [["branch"]], stages: [{ price: { form: "action", rate: typed(1) } }] },
           { id: "d2", when: [["direct"]], stages: [{ price: { form: "action", rate: typed(9) } }] },

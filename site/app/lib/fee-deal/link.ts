@@ -26,9 +26,10 @@ export function parseSubject(search: string): { kind: "wrapper"; wrapperId: stri
 // ---------------------------------------------------------------- a deal in the address
 
 /**
- * The version the link's payload starts with. Version 2 carries cases, a price's parts and the reading's picks; a link of version 1 (a deal
- * before cases, which said what it held) is read the same way and opens as it was (`readDeal`). A link of another version opens an empty
- * deal.
+ * The version the link's payload starts with. Version 2 carries cases, a price's parts and the reading's picks, and a list thing's values
+ * (`Vs`); a link of version 2 written before things kept their values has none, and its things take them from their cases (`readDeal`). A
+ * link of version 1 (a deal before cases, which said what it held) is read the same way and opens as it was. A link of another version
+ * opens an empty deal.
  */
 const LINK_VERSION = 2;
 const READ_VERSIONS: readonly number[] = [1, 2];
@@ -67,7 +68,7 @@ const SHORT: Record<string, string> = {
   url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
   by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
   alsoMin: "Am", who: "Wh", boundsEvery: "Be", src: "Sr", questions: "Qs",
-  spans: "Sp", row: "Rw", along: "Al", span: "Sn", rank: "Rk", house: "Ho",
+  spans: "Sp", row: "Rw", along: "Al", span: "Sn", rank: "Rk", house: "Ho", values: "Vs",
   ...PART_SHORT,
   ...FIGURE_SHORT,
 };

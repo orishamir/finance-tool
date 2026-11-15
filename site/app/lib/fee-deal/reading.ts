@@ -11,7 +11,7 @@ import { isPicked, pickKind } from "./offers/conditions";
 import { PARTS, partsSaid, type PartId, type StatedPartId } from "./offers/parts";
 import { picked, stepPick, type ReadFee } from "./cases";
 import { capLine, type CapLine } from "./kinds";
-import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, type MonthKey, type Months, type Stage } from "./model";
+import { hasCases, isRange, mainFigure, monthKey, pickKey, pickedPlace, pricesFrom, thingValues, type MonthKey, type Months, type Stage } from "./model";
 import { charged, hasBounds } from "./offers/capabilities";
 import { chargeBound, groupRateValue, markView, monthsValue, priceAt, priceView, refOf, stageIn, standingView, sumsLargest, type DealRead, type FeeRef, type MarkView, type PriceView, type StandingView } from "./deal-read";
 import { holdsFunds } from "./shapes";
@@ -498,10 +498,8 @@ export function pickLine(r: DealRead): PickLine | null {
         add(stepPick(b.tops.at(-1)!.v, true), whenWords(fee, b.tops.length, t, r.today));
         return;
       }
-      for (const c of fee.cases) {
-        const w = c.when[t]!;
-        if (Array.isArray(w)) for (const v of w) add(v, whenWords(fee, [v], t, r.today));
-      }
+      // every value the thing keeps, in the page's order, one no case names among them: the fee is then not read (F-114)
+      for (const v of thingValues(fee, t)) add(v, whenWords(fee, [v], t, r.today));
     });
   }
   // a range's steps across fees in order of their tops, "מעל" last

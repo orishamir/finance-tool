@@ -4,11 +4,11 @@
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { currencyOfUnit } from "../format";
-import { byRank, isRange, type CasesFee, type When } from "./model";
+import { byRank, isRange, thingValues, type CasesFee, type When } from "./model";
 import { layoutOf, type FeeLayout } from "./layout";
 import { PART_ROWS, rowOf, type PartRow } from "./part-rows";
 import { figure, sumUnit } from "./values";
-import { valueWords, whenWords, type SlimPart, type WhenWords } from "./case-words";
+import { whenWords, type SlimPart, type WhenWords } from "./case-words";
 import type { CaseRow } from "./rows";
 
 export { PART_ROWS, rowOf, type PartRow };
@@ -94,7 +94,7 @@ export function laterChanges(parts: readonly SlimPart[]): SlimPart[] {
 export function bandLayout(fee: CasesFee, rows: readonly CaseRow[], switchTo: string | null = null): FeeLayout {
   const caseOf = new Map(fee.cases.map((c) => [c.id, c]));
   return layoutOf({
-    things: fee.by.map((b) => ({ range: isRange(b) })),
+    things: fee.by.map((b, t) => (isRange(b) ? { range: true } : { range: false, values: thingValues(fee, t) })),
     rows: PART_ROWS,
     switchTo,
     // the cases in the order the page shows them (`byRank`), which the person may have set apart from the order the reading reads
@@ -138,10 +138,3 @@ export const rangeSign = (unit: string): string => (unit === "units" || unit ===
 
 /** A value of thing `t` as a grid's row, column or switch names it. */
 export const headWords = (fee: CasesFee, w: When, t: number, today: string): WhenWords => whenWords(fee, w, t, today);
-
-/** The words of the value the cases name last on thing `t`, which a new row or column starts from (`addValues`). */
-export function lastValueWords(fee: CasesFee, t: number): string {
-  const last = [...new Set(fee.cases.map((c) => JSON.stringify(c.when[t])))].at(-1)!;
-  const w = JSON.parse(last) as When;
-  return Array.isArray(w) ? w.map((v) => valueWords(fee.by[t]!.kind, v)).join(", ") : (copy.cases.any[fee.by[t]!.kind] ?? "");
-}

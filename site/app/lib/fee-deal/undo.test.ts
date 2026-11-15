@@ -293,7 +293,7 @@ describe("a price put in another form from the toolbox", () => {
       {
         id: "fee-trade",
         kind: "trade",
-        by: [{ kind: "what" }],
+        by: [{ kind: "what", values: [] }],
         cases: [
           { id: "c1", when: [["tase"]], stages: [{ price: { form: "action", rate: typed(0.4), min: typed(10) } }] },
           { id: "c2", when: [["us"]], stages: [{ price: { form: "perUnit", amount: typed(0.03), min: typed(8), cap: typed(2), currency: "USD" } }] },
@@ -370,7 +370,7 @@ describe("an undo through a move of its own fee", () => {
       {
         id: "fee-trade",
         kind: "trade",
-        by: [{ kind: "channel" }],
+        by: [{ kind: "channel", values: ["a", "b", "c", "d"] }],
         cases: ["a", "b", "c", "d"].map((v, k) => ({ id: `case-${v}`, when: [[v]], stages: [{ price: { form: "action", rate: typed(0.1 * (k + 1)) } }] })),
       } as FeeDeal["fees"][number],
     ],
