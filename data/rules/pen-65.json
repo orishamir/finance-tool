@@ -1,0 +1,206 @@
+{
+  "id": "PEN-65",
+  "title": "General pension fund: actuarial balancing (circular 2017-3-3)",
+  "title_he": "קרן פנסיה כללית: האיזון האקטוארי (חוזר 2017-3-3)",
+  "text_he": "גם בקרן פנסיה כללית יש איזון אקטוארי, לפי חוזר הדיווח הכספי של רשות שוק ההון לקרנות הפנסיה החדשות. עודף או גירעון מנכות או מתמותה של עמיתים פעילים נזקף רק לעמיתים במסלולי ביטוח שיש בהם כיסוי לנכות או לשאירים, ולכן לא לעמיתים במסלול פנסיית יסוד; עודף או גירעון מגורם דמוגרפי אחר נזקף לעמיתים דרך היתרות ולפנסיונרים דרך הקצבאות. עודף או גירעון מתשואות ומריבית ההיוון חל רק על מקבלי הקצבה, דרך עתודה של 1% מההתחייבויות כלפיהם, והעדכון בקצבאות נעשה מאפריל של השנה שאחרי ואפשר לפרוס אותו עד שלוש שנים. הזקיפה נעשית בכל תקופת דיווח כספי, רבעונית או שנתית; אם בקרן כללית היא רבעונית לא נמצא בטקסט רשמי.",
+  "figure_names_he": {
+    "pensioners_reserve_band_pct": "גבול העתודה לפנסיונרים (אחוז מההתחייבויות כלפיהם)",
+    "update_spread_max_years": "פריסה מרבית של עדכון הקצבאות (שנים)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "insurance-cover",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "pensioners_reserve_band_pct": {
+      "value": 1,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=14",
+        "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017), p.14, annex 2 s.ד(1)",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "על 1.00% מסך התחייבויות הקרן כלפי פנסיונרים"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-65"
+      ],
+      "state": "sourced",
+      "notes": "When the pensioners' reserve passes 1.00% of liabilities to pensioners, pensions are updated so that it stands at 1.00% (annex 2 s.ד(1)-(2))."
+    },
+    "update_spread_max_years": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=14",
+        "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017), p.14, annex 2 s.ד(1)(ד)",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary",
+        "quote": "של עד שלוש שנים ממועד המאזן"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-65"
+      ],
+      "state": "sourced",
+      "notes": "The manager may spread the pension update over up to three years from the balance-sheet date."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=2",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.2, s.1(טז)",
+      "locator_he": "עמוד 2, סעיף 1(טז)",
+      "page": 2,
+      "quote": "כל אחת מתקופות הדיווח בסעיפים 2 ו-3 לתקנות הפיקוח על שירותים פיננסיים (ביטוח) (דינים וחשבונות כספיים)",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=3",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, s.4(א)(2)",
+      "locator_he": "עמוד 3, סעיף 4(א)(2)",
+      "page": 3,
+      "quote": "מנכות או מתמותת מבוטחים פעילים ייזקף למבוטחים במסלולי ביטוח הכוללים כיסוי ביטוחי לנכות או לשאירים",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=3",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, s.4(א)(3)",
+      "locator_he": "עמוד 3, סעיף 4(א)(3)",
+      "page": 3,
+      "quote": "הנובע מכל גורם דמוגרפי למעט נכות או תמותת מבוטחים פעילים",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=4",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, s.4(ב)(4)",
+      "locator_he": "עמוד 4, סעיף 4(ב)(4)",
+      "page": 4,
+      "quote": "מבוטחים לא תיצור עודף אקטוארי או גירעון אקטוארי",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=5",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, ss.7-8",
+      "locator_he": "עמוד 5, סעיפים 7-8",
+      "page": 5,
+      "quote": "תחילתן של הוראות חוזר זה ביום 1 בינואר 2018",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=12",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.12, annex 2 s.ב(3)",
+      "locator_he": "עמוד 12, נספח 2 סעיף ב(3)",
+      "page": 12,
+      "quote": "עדכון הפנסיות למקבלי הקצבה יבוצע בשל החודש העוקב למועד הדיווח הכספי (רבעוני או שנתי, לפי העניין)",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=14",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.14, annex 2 s.ד(1)",
+      "locator_he": "עמוד 14, נספח 2 סעיף ד(1)",
+      "page": 14,
+      "quote": "על 1.00% מסך התחייבויות הקרן כלפי פנסיונרים",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=14",
+      "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "title_he": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.14, annex 2 s.ד(1)(ד)",
+      "locator_he": "עמוד 14, נספח 2 סעיף ד(1)(ד)",
+      "page": 14,
+      "quote": "של עד שלוש שנים ממועד המאזן",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/Gate5_Part2_Chapter1-signC-version9.pdf#page=19",
+      "title": "חוזר מאוחד – שער 5 חלק 2 פרק 1 סימן ג' (מדידה – עתודות ומאזן אקטוארי), מהדורה 9 (27.7.2022)",
+      "title_he": "חוזר מאוחד – שער 5 חלק 2 פרק 1 סימן ג' (מדידה – עתודות ומאזן אקטוארי), מהדורה 9 (27.7.2022)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.19, definition 'ריבית שנתית להיוון'",
+      "locator_he": "עמוד 19, הגדרת 'ריבית שנתית להיוון'",
+      "page": 19,
+      "quote": "ריבית שנתית אפקטיבית בשיעור של 4% או בשיעור אחר כפי שיקבע הממונה",
+      "checked": "2026-11-15"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/Gate5_Part2_Chapter1-signC-version9.pdf#page=26",
+      "title": "חוזר מאוחד – שער 5 חלק 2 פרק 1 סימן ג' (מדידה – עתודות ומאזן אקטוארי), מהדורה 9 (27.7.2022)",
+      "title_he": "חוזר מאוחד – שער 5 חלק 2 פרק 1 סימן ג' (מדידה – עתודות ומאזן אקטוארי), מהדורה 9 (27.7.2022)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.26, note 96",
+      "locator_he": "עמוד 26, הערה 96",
+      "page": 26,
+      "quote": "עד לעדכון חלק זה, יחולו הוראות סעיף 4א בחוזר 2017-3-3",
+      "checked": "2026-11-15"
+    }
+  ]
+}

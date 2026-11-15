@@ -42,7 +42,7 @@ export function Compare() {
           { id: "open", head: "קרן אג״ח רגילה" },
         ]}
         rows={[
-          { key: "end", head: "מתי זה נגמר", cells: [<Fragment key="bond">במועד <Term prefix="שה" id="מנפיק">מנפיק</Term> קבע</Fragment>, <Fragment key="limited"><Ruled id="MF-60">בסוף התקופה של הקרן</Ruled></Fragment>, "לא נמצא בכללים שהאתר קרא"] },
+          { key: "end", head: "מתי זה נגמר", cells: [<Fragment key="bond">במועד <Term prefix="שה" id="מנפיק">מנפיק</Term> קבע</Fragment>, <Fragment key="limited"><Ruled id="MF-60">בסוף התקופה של הקרן</Ruled></Fragment>, <Fragment key="open">לפי קריאה של האתר, <Ruled id="MF-59">אין מועד סיום בחוק</Ruled>, רק פירוק מסיבה אחרת</Fragment>] },
           { key: "back", head: "מה חוזר", cells: [<Fragment key="bond"><Ruled id="CORP-01">מה שהמנפיק התחייב לשלם</Ruled>, אם ישלם</Fragment>, <Fragment key="limited"><Ruled id="MF-60">המפרק פודה את היחידות</Ruled>; אצל ילין לפידות <Ruled id="MF-63">״אין בכך התחייבות״</Ruled></Fragment>, <Fragment key="open"><Term prefix="ב" id="קרן פתוחה">קרן פתוחה</Term>, <Ruled id="MF-05">לפי שווי הנכסים</Ruled> ביום הפדיון; <Term prefix="ב" id="קרן סל">קרן סל</Term>, <Ruled id="ETF-06">המחיר בבורסה</Ruled></Fragment>] },
           { key: "issuers", head: "כמה מנפיקים", cells: ["אחד", <Fragment key="limited">כמה, ו<Ruled id="MF-66">לפי דיווח אחד יכולים להישאר פחות</Ruled> קרוב לסוף</Fragment>, "תלוי בקרן"] },
           { key: "cost", head: "עלות שוטפת", cells: [

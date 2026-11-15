@@ -9,9 +9,9 @@ import { unreadReason, type FeeRef, type MarkView, type PriceView, type Standing
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
-import type { SiteValue } from "../../lib/value";
+import { ruleFigure, type SiteValue } from "../../lib/value";
 import { Swatch, Tag, When, cx } from "../kit";
-import { Num, Ruled } from "../provenance";
+import { Num, Ruled, useProvenanceData } from "../provenance";
 
 /**
  * A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's; and after it the house
@@ -273,7 +273,26 @@ export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
         {said.stated}
       </Ruled>
       {said.after} {w.newBank}
-      {ban.distribution && <> {w.distribution}</>}
+      {ban.distribution && (
+        <>
+          {" "}
+          <DistributionWords />
+        </>
+      )}
+    </>
+  );
+}
+
+/** The distribution fee a bank may still charge on money-market units where the fund's manager has no agreement with it, around MF-71's figure; nothing where the page holds no MF-71. */
+function DistributionWords() {
+  const data = useProvenanceData();
+  const rule = data?.rules["MF-71"];
+  const cap = data && rule ? ruleFigure(rule, "distribution_fee_max_without_agreement", data.today) : null;
+  if (!cap) return null;
+  const w = copy.cases.ban.distribution;
+  return (
+    <>
+      {w.before} <Num value={cap} /> {w.after}
     </>
   );
 }

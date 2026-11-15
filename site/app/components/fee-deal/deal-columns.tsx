@@ -12,7 +12,12 @@ export function DealColumns({ setup, fees, toolbox }: { setup: ReactNode; fees: 
     <div className="grid grid-cols-1 items-start gap-4 min-[80rem]:grid-cols-[minmax(0,1fr)_28rem]">
       <Card className="flex flex-col gap-4 min-[80rem]:col-start-1 min-[80rem]:row-start-1">
         {setup}
-        {fees && <div className="border-t border-border pt-4">{fees}</div>}
+        {/* while something is carried the fees keep their height (`data-carry-hold`, kit/lift.tsx): what a drop would leave draws inside */}
+        {fees && (
+          <div data-carry-hold="" className="border-t border-border pt-4">
+            {fees}
+          </div>
+        )}
       </Card>
       {toolbox}
     </div>

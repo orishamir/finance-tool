@@ -39,12 +39,53 @@ describe("a lifted thing", () => {
     expect(binTakes(deal(), { k: "thing", fee: "fee-fx", t: 0 })).toBe(false);
   });
 
-  it("takes no cell dropped on another cell, of its row, its column or anywhere", () => {
+  it("swaps a grid's case with the case whose cell it drops on, beside it or above it, and keeps an undo", () => {
     const l: Lifted = { k: "cell", fee: "fee-fx", cases: ["d1"], row: WHOLE, along: 1 };
-    expect(liftDrop(deal(), l, { k: "cell", fee: "fee-fx", cases: ["d2"], row: WHOLE, along: 1 })).toBeNull();
-    expect(liftTakes(deal(), l, { k: "cell", fee: "fee-fx", cases: ["b1"], row: WHOLE, along: 1 })).toBe(false);
+    const whenOf = (x: FeeDeal, id: string) => fxOf(x).cases.find((c) => c.id === id)!.when;
+    const priceOf = (x: FeeDeal, id: string) => fxOf(x).cases.find((c) => c.id === id)!.stages[0]!.price;
+    // onto the next column of its row (to its left on the page): the two sizes swap, each case keeping its price
+    const left = liftDrop(deal(), l, { k: "cell", fee: "fee-fx", cases: ["d2"], row: WHOLE, along: 1 })!;
+    expect([whenOf(left.deal, "d1"), whenOf(left.deal, "d2")]).toEqual([[["direct"], 2], [["direct"], 1]]);
+    expect([priceOf(left.deal, "d1"), priceOf(left.deal, "d2")]).toEqual([priceOf(deal(), "d1"), priceOf(deal(), "d2")]);
+    expect(left.kept?.words).toBe(copy.cases.lifted.swappedCases);
+    const kept = liftKept(deal(), left, null);
+    expect(undo(kept.deal, kept.undo!, null)!.deal).toEqual(deal());
+    // onto the row above it: the two channels swap
+    const up = liftDrop(deal(), { ...l, cases: ["b1"] }, { k: "cell", fee: "fee-fx", cases: ["d1"], row: WHOLE, along: 1 })!;
+    expect([whenOf(up.deal, "b1"), whenOf(up.deal, "d1")]).toEqual([[["direct"], 1], [["branch"], 1]]);
+    // onto its own cell, nothing
+    expect(liftTakes(deal(), l, { k: "cell", fee: "fee-fx", cases: ["d1"], row: WHOLE, along: 1 })).toBe(false);
+  });
+
+  it("takes no part cell dropped on another cell: a neighbour takes a price only by a stretch", () => {
     const min: Lifted = { k: "cell", fee: "fee-fx", cases: ["d1"], row: "min", along: 1 };
     expect(liftTakes(deal(), min, { k: "cell", fee: "fee-fx", cases: ["d2"], row: "min", along: 1 })).toBe(false);
+    expect(liftTakes(deal(), min, { k: "cell", fee: "fee-fx", cases: ["d2"], row: WHOLE, along: 1 })).toBe(false);
+  });
+
+  it("moves the row of a case alone in its row onto the row head it drops on, and no row whose other cases would go with it", () => {
+    const what: CasesFee = {
+      id: "fee-t",
+      kind: "trade",
+      by: [{ kind: "what", values: [] }, { kind: "channel", values: [] }],
+      cases: [
+        { id: "ta-d", when: [["tase"], ["direct"]], stages: [{ price: action(0.1) }] },
+        { id: "ta-b", when: [["tase"], ["branch"]], stages: [{ price: action(0.2) }] },
+        { id: "mk-d", when: [["makam"], ["direct"]], stages: [{ price: action(0.05) }] },
+        { id: "mk-b", when: [["makam"], ["branch"]], stages: [{ price: action(0.06) }] },
+        { id: "us", when: [["us"], "any"], stages: [{ price: action(0.3) }] },
+      ],
+    };
+    const d: FeeDeal = { id: "deal-r", name: "", kind: "brokerage-account", fees: [what] };
+    const rows = (x: FeeDeal) => [...new Set(byRank((x.fees[0] as CasesFee).cases).map((c) => JSON.stringify(c.when[0])))];
+    const cell = (id: string): Lifted => ({ k: "cell", fee: "fee-t", cases: [id], row: WHOLE, along: 1 });
+    const head = (w: string) => ({ k: "value" as const, fee: "fee-t", t: 0, key: JSON.stringify([w]) });
+    // the foreign row's one cell, over every channel, onto the row above: it stands above it
+    expect(rows(liftDrop(d, cell("us"), head("makam"))!.deal)).toEqual(['["tase"]', '["us"]', '["makam"]']);
+    // a cell beside another of its row moves no row
+    expect(liftTakes(d, cell("mk-d"), head("tase"))).toBe(false);
+    // and a case on any channel moves no column
+    expect(liftTakes(d, cell("us"), { k: "value", fee: "fee-t", t: 1, key: JSON.stringify(["direct"]) })).toBe(false);
   });
 
   it("takes a part cell over several cases away from each of them in the bin, and the undo puts every one back", () => {
@@ -54,6 +95,17 @@ describe("a lifted thing", () => {
     expect(r.kept?.words).toBe(copy.cases.lifted.part.min);
     const kept = liftKept(deal(), r, null);
     expect(undo(kept.deal, kept.undo!, null)!.deal).toEqual(deal());
+  });
+
+  it("moves a part cell over several cases out of every one of them onto the case it drops on, and leaves them where copied", () => {
+    const l: Lifted = { k: "cell", fee: "fee-fx", cases: ["d1", "d2"], row: "min", along: 1 };
+    const on = { k: "case", fee: "fee-fx", case: "b1" } as const;
+    const priceOf = (d: FeeDeal, id: string) => fxOf(d).cases.find((c) => c.id === id)!.stages[0]!.price;
+    const r = liftDrop(deal(), l, on)!;
+    expect(priceOf(r.deal, "b1")).toEqual(action(0.175, 5));
+    expect([priceOf(r.deal, "d1"), priceOf(r.deal, "d2")]).toEqual([action(0.0875), action(0.1)]);
+    const c = liftDrop(deal(), l, on, { copy: true })!;
+    expect([priceOf(c.deal, "d1"), priceOf(c.deal, "d2")]).toEqual([action(0.0875, 5), action(0.1, 5)]);
   });
 
   it("moves a grid's row among its rows, and swaps two things", () => {

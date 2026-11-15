@@ -83,12 +83,12 @@ export const content: GuideContent = {
           <>על כסף שהפקדתם מהשכר: <Ruled id="TXH-04">לא משלמים שוב</Ruled>, כי כבר שילמתם עליו מס הכנסה כשקיבלתם את השכר.</>,
         ]}
       />
-      <p className="max-w-measure">עצמאים משלמים מס הכנסה, כמו על הכנסה מהעסק, על הרווח ועל ההפקדות שקיבלו עליהן <Term id="ניכוי">ניכוי</Term> ממס.</p>
+      <p className="max-w-measure">עצמאים <Ruled id="TXH-07">משלמים מס הכנסה, כמו על הכנסה מהעסק</Ruled>, על הרווח ועל ההפקדות שקיבלו עליהן <Term id="ניכוי">ניכוי</Term> ממס.</p>
       <Callout tone="caution" className="max-w-measure">
         <span className="font-medium">לא כל הסכום מגיע לחשבון.</span> במשיכה לפני הזמן, מהכסף שחייב במס הקרן מעבירה <N v={figure("TXH-15", "withholding_early")} /> ישירות למס הכנסה. הניכוי הזה <Ruled id="TXH-15">לא בהכרח המס הסופי שלכם</Ruled>: מי שהמס שלו נמוך יותר מקבל את ההפרש בחזרה <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term>. לשכירים הסכומים מופיעים למעלה, ב״{sectionTitle("keren-hishtalmut", "different")}״, כשבוחרים פחות מ־<N v={figure("TXH-09", "lock_years")} /> שנים; לעצמאים האתר עוד לא מחשב אותם.
       </Callout>
       <p className="max-w-measure text-sm text-muted-foreground">
-        הכלכלן הראשי במשרד האוצר <Ruled id="TXH-22">המליץ לצמצם את ההטבה</Ruled>, בעיקר בהורדת תקרת השכר, ובדק גם ביטול של הפטור על הרווח, או הגבלה שלו לרווח של <N v={figure("TXH-09", "lock_years")} /> השנים הראשונות. זו המלצה, לא החלטה: לא נמצאה הצעת חוק, וכרגע הפטור בתוקף.
+        הכלכלן הראשי במשרד האוצר <Ruled id="TXH-22">המליץ לצמצם את ההטבה</Ruled>, בעיקר בהורדת תקרת השכר, ובדק גם ביטול של הפטור על הרווח, או הגבלה שלו לרווח של <N v={figure("TXH-22", "option_gains_exemption_years")} /> השנים הראשונות. זו המלצה, לא החלטה: לא נמצאה הצעת חוק, וכרגע הפטור בתוקף.
       </p>
     </>
   ),
