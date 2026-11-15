@@ -1,9 +1,10 @@
 // Guide prose for קופת גמל להשקעה (architecture 3.5: prose lives in content files; every figure is a
-// Num). Wording follows the approved mockup of 2026-10-23, checked against the rule base; each block
-// ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
+// Num). Wording follows the approved mockup of 2026-10-23, checked against the rule base; the words that
+// state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet. NEW copy for the
+// founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { fmt } from "../../lib/format";
-import { IdRef, Num, RuleRef, RuleStrengthTag, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 import { OpenLossOffset } from "./open-tax";
 import { AbroadAmount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } from "./abroad-parts";
@@ -12,23 +13,21 @@ export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        בחוק ובכללים לא נמצא תנאי גיל או תושבות לפתיחה. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
+        בחוק ובכללים <Ruled id="KGL-06">לא נמצא תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
       </p>
       <p className="max-w-measure">
-        הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. על הרווחים בתוך הקופה לא משלמים מס. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, ורק על הרווח.
+        הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>.
       </p>
       <p className="max-w-measure">
-        בגרף שלמטה דמי הניהול הם אלה שכתובים במסמכים של החברה שבדוגמה: השיעור המוזל <Term prefix="ב" id="תקופת ההנחה">תקופת ההנחה</Term> <RuleRef id="PF-13" end="," /> ואחריה התקרה שבתקנות, שעד אליה מותר לחברה לגבות <RuleRef id="PF-02" end="." /> כמה <Term prefix="ה" id="עמית">עמיתים</Term> שילמו בממוצע בכל מסלול כתוב בחלק על העלויות.
+        בגרף שלמטה דמי הניהול הם אלה שכתובים במסמכים של החברה שבדוגמה: <Ruled id="PF-13" prefix="ה">שיעור המוזל</Ruled> <Term prefix="ב" id="תקופת ההנחה">תקופת ההנחה</Term>, ואחריה התקרה שבתקנות, שעד אליה <Ruled id="PF-02">מותר לחברה לגבות</Ruled>. כמה <Term prefix="ה" id="עמית">עמיתים</Term> שילמו בממוצע בכל מסלול כתוב בחלק על העלויות.
       </p>
-      <RulesLine ids={["KGL-01", "KGL-06", "TXK-03", "TXK-05", "PF-13", "PF-02"]} />
     </>
   ),
   who: () => (
     <>
       <p className="max-w-measure">
-        חברות מנהלות של <Term id="קופת גמל">קופות גמל</Term>, בפיקוח <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון, ביטוח וחיסכון</Term>. לכל חברה יש עמוד עם כל המסלולים שלה.
+        חברות מנהלות של <Term id="קופת גמל">קופות גמל</Term>, <Ruled id="REG-17" prefix="ב">פיקוח</Ruled> <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון, ביטוח וחיסכון</Term>. לכל חברה יש עמוד עם כל המסלולים שלה.
       </p>
-      <RulesLine ids={["REG-17"]} />
     </>
   ),
   switchLine: "בלי מס הכנסה. אפשר גם לעבור לקופת גמל להשקעה אחרת, עם כל היתרה או עם חלק ממנה.",
@@ -45,30 +44,26 @@ export const content: GuideContent = {
     return (
       <>
         {proposedCap ? (
-          <>
-            <Callout tone="caution" className="max-w-measure">
-              <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ ביולי 2026 על חשבון השקעות עם הטבת מס, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל לא נמצאה הצעת חוק.
-            </Callout>
-            <RulesLine ids={["TXK-21"]} lead={<RuleStrengthTag id="TXK-21" />} />
-          </>
+          <Callout tone="caution" className="max-w-measure">
+            <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ ביולי 2026 על <Ruled id="TXK-21">חשבון השקעות עם הטבת מס</Ruled>, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל לא נמצאה הצעת חוק.
+          </Callout>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, לקבלת קצבה בלבד. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה אי אפשר לבטל את הבחירה בקצבה, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, <Ruled id="TXK-10" prefix="ל">קבלת קצבה בלבד</Ruled>. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-63">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
         </Callout>
-        <RulesLine ids={["TXK-10", "KGL-09", "PEN-63"]} />
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא תקרה, לא שיעור קבוע. מגיל {sixty ? <Num value={sixty} /> : null} חלות על ההכנסה מדרגות המס הנמוכות, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח נספר כחלק העליון של ההכנסה, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא <Ruled id="TXG-07">תקרה, לא שיעור קבוע</Ruled>. מגיל {sixty ? <Num value={sixty} /> : null} <Ruled id="TXG-04">חלות על ההכנסה מדרגות המס הנמוכות</Ruled>, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח <Ruled id="TXK-06">נספר כחלק העליון של ההכנסה</Ruled>, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
         </Callout>
         <Sentence measure>
-          החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "מס"} מהרווח, בכל גיל, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. זו מקדמה: המס הסופי נקבע בדוח השנתי, ושם מקבלים בחזרה את מה שנוכה יותר מדי.
+          החברה המנהלת <Ruled id="TXK-26">מנכה במקור</Ruled> {withheld ? <Num value={withheld} /> : "מס"} מהרווח, בכל גיל, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. זו מקדמה: המס הסופי נקבע בדוח השנתי, ושם מקבלים בחזרה את מה שנוכה יותר מדי.
         </Sentence>
         {/* whether a deposit fee is part of the principal the gain is measured from is open (TXK-05 does not settle it); the ledger
             records each deposit after its fee (F-08), so the fee is taxed as gain */}
         <p className="max-w-measure">
           אם <Term id="דמי ניהול מהפקדה">דמי הניהול מההפקדה</Term> נחשבים חלק מהסכום שהופקד, לא ידוע. בחישוב בעמוד הם לא נחשבים חלק ממנו, ולכן מס ההכנסה מחושב גם עליהם, כמו על רווח.
         </p>
-        <RulesLine ids={["TXK-06", "TXG-04", "TXG-07", "TXK-26"]} />
         <OpenLossOffset />
+        {/* the page holds only the rules this file names by id: OpenLossOffset states TXK-30 */}
       </>
     );
   },
@@ -116,8 +111,7 @@ export const content: GuideContent = {
   },
   risks: () => (
     <>
-      <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית אפשר לעקל רק לפי כללים שהשר קובע. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת. המדינה לא ערבה לשווי הקופה, והוא עולה ויורד עם ההשקעות של המסלול שבחרתם.</p>
-      <RulesLine ids={["PF-29", "REG-18", "REG-19"]} />
+      <p className="max-w-measure">הנכסים <Ruled id="PF-29">מוחזקים בנאמנות</Ruled>, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית <Ruled id="REG-18">אפשר לעקל רק לפי כללים שהשר קובע</Ruled>. אם החברה המנהלת קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>. המדינה לא ערבה לשווי הקופה, והוא עולה ויורד עם ההשקעות של המסלול שבחרתם.</p>
     </>
   ),
   use: ({ figure }) => {
@@ -125,12 +119,9 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          חיסכון שצריך להישאר זמין: אין נעילה, ומושכים בכל עת. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס על הרווח. מגיל {age ? <Num value={age} /> : null} אפשר גם להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
+          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> <Ruled id="TXK-04">לא ממוסה</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="TXK-10">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
         </Sentence>
-        <RulesLine ids={["KGL-08", "TXK-04", "TXK-10"]} />
       </>
     );
   },
 };
-
-export { RuleRef };
