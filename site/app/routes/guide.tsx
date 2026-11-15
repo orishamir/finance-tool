@@ -1,5 +1,5 @@
 // Screen 1: the product guide page (design-spec 2).
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { guidePath, rulesPath, trackBrowserPath } from "../lib/site-paths";
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
@@ -457,14 +457,15 @@ export default function GuidePage() {
             <div className="flex flex-col gap-1 max-w-measure">
               <Sentence
                 tone="muted"
-                t={copy.heldIn}
+                t={data.heldIn.accounts.length > 1 ? copy.heldIn.many : copy.heldIn.one}
                 vars={{
                   held: stated(copy.heldInWords, data.heldIn.ruleIds),
-                  account: (
-                    <TextLink to={guidePath(data.heldIn.id)}>
-                      {data.heldIn.name}
-                    </TextLink>
-                  ),
+                  accounts: data.heldIn.accounts.map((a, i, all) => (
+                    <Fragment key={a.id}>
+                      {i === 0 ? null : i === all.length - 1 ? ` ${copy.heldInOr} ` : ", "}
+                      <TextLink to={guidePath(a.id)}>{a.name}</TextLink>
+                    </Fragment>
+                  )),
                 }}
               />
             </div>

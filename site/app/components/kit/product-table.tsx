@@ -545,7 +545,8 @@ export function FundFeesPhoneHelp() {
   );
 }
 
-/** The rules behind what "אין" and "לא נאסף" say: the lines of the Israeli law for funds, and that it does not apply to a foreign fund. */
+/** The rules behind what "אין" and "לא נאסף" say: the lines of an Israeli fund, the variable fee set by the regulations and the trustee's pay by
+ *  the fund's agreement, and that the Israeli law for funds does not apply to a foreign fund. */
 const FEE_WORDS_RULES = { lines: ["ETF-14", "MF-20"], foreign: ["ETF-71"] } as const;
 
 /** What "אין" and "לא נאסף" say, as a "?" opens it beside a fund's fees: the sheet's text, a string, and the rules it rests on at its end. */

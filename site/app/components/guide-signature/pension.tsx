@@ -48,7 +48,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
     return (
       <div className="flex flex-col gap-3">
         <Callout tone="info">
-          {copy.pension.selfEmployed.before} <Ruled id={["TXP-05", "TXP-06"]}>{copy.pension.selfEmployed.stated}</Ruled>
+          {copy.pension.selfEmployed.before} <Ruled id={["TXP-05", "TXP-06", "TXP-02", "TXP-04"]}>{copy.pension.selfEmployed.stated}</Ruled>
           {copy.pension.selfEmployed.after}
         </Callout>
       </div>
@@ -240,7 +240,12 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             {copy.pension.insuranceNote.before} <Ruled id="PEN-15">{copy.pension.insuranceNote.stated}</Ruled>
             {copy.pension.insuranceNote.after}
           </p>
-        ) : !generalOnly && <p className="text-muted-foreground">{copy.pension.noInsurance}</p>}
+        ) : !generalOnly && (
+          <p className="text-muted-foreground">
+            {copy.pension.noInsurance.before} <Ruled id="PEN-35">{copy.pension.noInsurance.stated}</Ruled>
+            {copy.pension.noInsurance.after}
+          </p>
+        )}
         {trackName && trackFee ? (
           <Sentence tone="muted">
             {copy.pension.feesLine.before} ״<bdi>{String(trackName.value)}</bdi>״: <Num value={trackFee} /> {copy.pension.feesLine.balance}
