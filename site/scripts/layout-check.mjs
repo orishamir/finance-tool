@@ -19,6 +19,13 @@
 //   keys     on the kit page at 1440, a fee's table or grid (`role=grid`) whose cells the keys do not walk as a spreadsheet's: the left
 //            arrow to the next column in reading order and the right arrow back, Home and End to the row's ends, the down arrow to the
 //            next row, Tab to the next cell; and a cell not named by its row's and its column's heads.
+//   poke     a box with a scrollbar that scrolls sideways (a wide table's own scroller) further than the boxes of what is in it reach,
+//            with its own padding, at every width: what it scrolls for is a press area or a frame drawn past them (a ::after), not content too wide, and it draws a
+//            scrollbar for nothing (a 44 px press past a fee grid's edge).
+//   drag     on the fee page's filled deal at 1440, a fee grid's cell carried by its grip: the place it would land on changing under a pointer
+//            that moves a pixel and back (a preview moving the page under the pointer, and the target read from the page with it), the page
+//            or a fee's table scrolling sideways while it is carried, and a case's cell that does not swap with the case it is dropped on to
+//            its left or above it, or by its grip's menu ("הזזה שמאלה").
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -59,6 +66,7 @@ const browser = await chromium.launch();
 // each check must catch a failure planted on the kit page before its passing on the site counts
 const missed = await selfTest();
 const keyFindings = await keysCheck();
+const dragFindings = await dragCheck();
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
@@ -68,6 +76,10 @@ let failed = missed.length;
 for (const f of keyFindings) {
   failed++;
   console.log(`FAIL  /kit at 1440\n      keys: ${f.where}: ${f.detail}`);
+}
+for (const f of dragFindings) {
+  failed++;
+  console.log(`FAIL  the fee page's deal at 1440\n      drag: ${f}`);
 }
 let sheets = 0;
 let known = 0;
@@ -165,6 +177,146 @@ async function keysCheck() {
 }
 
 /**
+ * A fee grid's cells carried by their grips on the fee page's filled deal at 1440 (`drag` above), on a screen tall enough that the page
+ * never scrolls under the carried thing. A part line carried down the grid's first column, the pointer moved a pixel aside and back at
+ * every step: the place it would land on (`data-drop-over`) is one place at each point, and neither the page nor a fee's table scrolls
+ * sideways meanwhile. A case's cell dropped on the cell to its left, one dropped on the cell above it, and one moved by its grip's menu
+ * ("הזזה שמאלה") swap with the case there; the one cell of a row, dropped on the first row's head, moves its row there. Returns what failed.
+ */
+async function dragCheck() {
+  const file = join(here, "layout-check-deal.txt");
+  if (!existsSync(file)) return [];
+  const dealPath = readFileSync(file, "utf8").trim();
+  const found = [];
+  const open = async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 2400 }, colorScheme: "dark", locale: "he-IL" });
+    const page = await ctx.newPage();
+    await page.goto(base + dealPath, { waitUntil: "networkidle" });
+    await page.evaluate(settled);
+    // the grid 200 px from the screen's top, far from both edges, where the page would scroll under the carried thing
+    await page.locator("[data-case-grid]").first().evaluate((g) => window.scrollBy(0, g.getBoundingClientRect().top - 200));
+    await page.evaluate(settled);
+    return { ctx, page, grid: page.locator("[data-case-grid]").first() };
+  };
+  const cellAt = (grid, row, from) => grid.locator(`[role=gridcell][data-row="${row}"][data-from="${from}"]`).first();
+  const words = async (el) => (await el.innerText()).trim().replace(/\s+/g, " ").slice(0, 40);
+  const lift = async (page, el) => {
+    await el.hover();
+    const b = await el.locator("[data-grip]").first().boundingBox();
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(b.x + b.width / 2 - 12, b.y + b.height / 2 + 4, { steps: 4 });
+  };
+  const dropOn = async (page, el) => {
+    const b = await el.boundingBox();
+    await page.mouse.move(b.x + b.width / 2, b.y + Math.min(b.height / 2, 24), { steps: 8 });
+    await page.mouse.up();
+    await page.waitForTimeout(500);
+    await page.evaluate(settled);
+  };
+  // the case cells of the grid (not a part line's, not an empty place), by line and column
+  const caseCells = (grid) => grid.evaluate((g) => [...g.querySelectorAll("[role=gridcell][data-liftable]:not([data-part-cell])")].map((c) => ({ row: Number(c.dataset.row), from: Number(c.dataset.from) })));
+
+  // a part line carried down the first column
+  {
+    const { ctx, page, grid } = await open();
+    const line = grid.locator("[data-part-cell]").first();
+    if (!(await line.count())) found.push("the deal's first grid has no part line to carry");
+    else {
+      await lift(page, line);
+      const geo = await grid.evaluate((g) => {
+        const h = g.querySelector("[role=columnheader]").getBoundingClientRect();
+        const r = g.getBoundingClientRect();
+        return { x: Math.round(h.left + h.width / 2), top: Math.round(r.top), bottom: Math.round(r.bottom + 80) };
+      });
+      const over = () => page.evaluate(() => document.querySelector("[data-drop-over]")?.getAttribute("data-drop-key") ?? "-");
+      const sideways = () => page.evaluate(() => Math.max(document.documentElement.scrollWidth - document.documentElement.clientWidth, ...[...document.querySelectorAll("[data-span-table]")].map((t) => t.scrollWidth - t.clientWidth)));
+      const moved = [];
+      let wide = 0;
+      for (let y = geo.top; y <= geo.bottom; y += 4) {
+        const seen = [];
+        for (const dx of [0, 1, 0]) {
+          await page.mouse.move(geo.x + dx, y);
+          seen.push(await over());
+        }
+        if (new Set(seen).size > 1) moved.push(y - geo.top);
+        wide = Math.max(wide, await sideways());
+      }
+      if (moved.length) found.push(`a carried part line's landing place changed under a pointer that moved a pixel and back, ${moved.length} times (at ${moved.slice(0, 6).join(", ")} px down the grid)`);
+      if (wide > 0) found.push(`the page or a fee's table scrolled sideways by ${wide} px while a part line was carried`);
+      await page.keyboard.press("Escape");
+      await page.mouse.up();
+    }
+    await ctx.close();
+  }
+  // a case's cell dropped on the cell to its left, and on the cell above it
+  for (const way of ["left", "above"]) {
+    const { ctx, page, grid } = await open();
+    const cells = await caseCells(grid);
+    const pair =
+      way === "left"
+        ? cells.filter((c) => c.from === 0 && cells.some((o) => o.row === c.row && o.from === 1)).map((c) => [c, { row: c.row, from: 1 }])[0]
+        : (() => {
+            const first = cells.filter((c) => c.from === 0).sort((a, b) => a.row - b.row);
+            return first.length > 1 ? [first[1], first[0]] : undefined;
+          })();
+    if (!pair) found.push(`the deal's first grid has no two cases side by side to swap ${way === "left" ? "across" : "down"}`);
+    else {
+      const [from, to] = pair;
+      const a = await words(cellAt(grid, from.row, from.from));
+      const b = await words(cellAt(grid, to.row, to.from));
+      await lift(page, cellAt(grid, from.row, from.from));
+      await dropOn(page, cellAt(grid, to.row, to.from));
+      const a2 = await words(cellAt(grid, from.row, from.from));
+      const b2 = await words(cellAt(grid, to.row, to.from));
+      if (a2 !== b || b2 !== a) found.push(`a case's cell dropped on the cell ${way === "left" ? "to its left" : "above it"} did not swap with it: "${a}" and "${b}" became "${a2}" and "${b2}"`);
+    }
+    await ctx.close();
+  }
+  // the same by the grip's menu, and the one cell of a row moving its row onto the first row's head
+  {
+    const { ctx, page, grid } = await open();
+    const cells = await caseCells(grid);
+    const c = cells.find((x) => x.from === 0 && cells.some((o) => o.row === x.row && o.from === 1));
+    if (c) {
+      const a = await words(cellAt(grid, c.row, 0));
+      const b = await words(cellAt(grid, c.row, 1));
+      await cellAt(grid, c.row, 0).locator("[data-grip]").first().focus();
+      await page.keyboard.press("Enter");
+      const item = page.getByRole("menuitem", { name: "הזזה שמאלה" });
+      if (!(await item.count())) found.push(`a case's grip menu offers no "הזזה שמאלה" where the case beside it can swap with it`);
+      else {
+        await item.click();
+        await page.waitForTimeout(500);
+        if ((await words(cellAt(grid, c.row, 0))) !== b || (await words(cellAt(grid, c.row, 1))) !== a) found.push(`"הזזה שמאלה" in a case's grip menu did not swap it with the case to its left`);
+      }
+    }
+    await ctx.close();
+  }
+  {
+    const { ctx, page, grid } = await open();
+    const rows = await grid.evaluate((g) =>
+      [...g.querySelectorAll("[role=rowheader]")].map((h) => {
+        const j = Number(h.dataset.rowpos);
+        // the row's own line: its head's first line in the grid
+        const line = Number(getComputedStyle(h).gridRowStart) - 2;
+        const cells = [...g.querySelectorAll(`[role=gridcell][data-liftable]:not([data-part-cell])[data-row="${line}"]`)];
+        return { j, line, name: h.innerText.trim(), cases: cells.length, from: cells[0] ? Number(cells[0].dataset.from) : -1 };
+      }),
+    );
+    const alone = rows.find((r) => r.j > 0 && r.cases === 1);
+    if (alone) {
+      await lift(page, cellAt(grid, alone.line, alone.from));
+      await dropOn(page, grid.locator("[role=rowheader]").first());
+      const first = (await grid.locator("[role=rowheader]").first().innerText()).trim();
+      if (first !== alone.name) found.push(`the one cell of the row "${alone.name}", dropped on the first row's head, did not move its row there (the first row is "${first}")`);
+    }
+    await ctx.close();
+  }
+  return found;
+}
+
+/**
  * Plants one failure of each kind on the kit page at 320 × 568 and runs the check on it: a block 600 px wide, a "?" pushed onto a line of its
  * own, a long term in a 160 px column, and the caution callout of a doubted figure's sheet pushed below the sheet's fold. Returns the checks that did not catch theirs.
  */
@@ -207,6 +359,18 @@ async function selfTest() {
   });
   if (!(await page.evaluate(wideHeads)).some((h) => h.where === "planted-head")) missed.push("head");
   await page.evaluate(() => document.getElementById("planted-head").remove());
+  await page.evaluate(() => {
+    const box = Object.assign(document.createElement("div"), { id: "planted-poke", className: "overflow-x-auto" });
+    box.style.cssText = "width:200px";
+    const knob = Object.assign(document.createElement("div"), { id: "planted-poke-knob" });
+    knob.style.cssText = "position:relative;width:200px;height:20px";
+    box.append(knob);
+    const style = Object.assign(document.createElement("style"), { id: "planted-poke-style", textContent: '#planted-poke-knob::after{content:"";position:absolute;inset-block:0;inset-inline:-12px}' });
+    document.head.append(style);
+    document.querySelector("main").append(box);
+  });
+  if (!(await page.evaluate(pokes)).some((x) => x.id === "planted-poke")) missed.push("poke");
+  await page.evaluate(() => ["planted-poke", "planted-poke-style"].forEach((id) => document.getElementById(id).remove()));
   const doubted = page.locator("main button.num-doubt").first();
   if (await doubted.count()) {
     await doubted.scrollIntoViewIfNeeded();
@@ -307,6 +471,7 @@ async function checkPage(page, path, width) {
     for (const m of await page.evaluate(lonelyMarks)) add({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
     for (const t of await page.evaluate(wideTerms)) add({ check: "term", id: t.text, detail: `the term "${t.text}" is ${t.width} px wide in a ${t.column} px column (${t.where})` });
     for (const h of await page.evaluate(wideHeads)) add({ check: "head", id: h.text, detail: `the head "${h.text}" runs ${h.by} px past its column` });
+    for (const x of await page.evaluate(pokes)) add({ check: "poke", id: x.id, detail: `${x.where} scrolls sideways ${x.by} px past what is in it: a press area or a frame pokes out of it` });
   };
   await look();
   // a closed tab card's panel is not in the page (the index page's "לפני שמחליטים"): each is opened in turn and the page looked at again,
@@ -529,6 +694,33 @@ function warningsOutOfSight() {
     if (!/\bbg-(caution|blocked)-subtle\b/.test(note.className)) continue;
     const r = note.getBoundingClientRect();
     if (r.top + 24 > bottom) out.push({ title: note.innerText.trim().replace(/\s+/g, " ").slice(0, 40), top: Math.round(r.top), bottom: Math.round(bottom) });
+  }
+  return out;
+}
+
+// Runs in the page. Every visible box in the page's main part that draws a scrollbar (a strip that hides its own is left out), at rest at
+// its start, and scrolls sideways further than the boxes inside it reach from its start edge (the right one, right to left) with its padding
+// at the end: by how much, and its tag and first classes, or its id. Content too wide reaches as far as the box scrolls; a pseudo-element's
+// area (a 44 px press) has no box of its own to read, and is what is left.
+function pokes() {
+  const out = [];
+  for (const el of document.querySelectorAll('main [class*="overflow-x-"], main [class*="overflow-auto"], main [class*="overflow-scroll"], main [id^="planted-"]')) {
+    const cs = getComputedStyle(el);
+    if (!["auto", "scroll"].includes(cs.overflowX) || cs.scrollbarWidth === "none" || !el.checkVisibility() || el.scrollLeft !== 0 || el.scrollWidth <= el.clientWidth) continue;
+    const rtl = cs.direction === "rtl";
+    const r = el.getBoundingClientRect();
+    const start = rtl ? r.right - parseFloat(cs.borderRightWidth) : r.left + parseFloat(cs.borderLeftWidth);
+    let reach = 0;
+    for (const d of el.querySelectorAll("*")) {
+      const b = d.getBoundingClientRect();
+      if (b.width || b.height) reach = Math.max(reach, rtl ? start - b.left : b.right - start);
+    }
+    const by = Math.round(el.scrollWidth - (reach + parseFloat(rtl ? cs.paddingLeft : cs.paddingRight)));
+    if (by < 1) continue;
+    const cls = typeof el.className === "string" ? el.className.split(/\s+/).filter(Boolean).slice(0, 3).join(".") : "";
+    const id = el.id || `${el.tagName.toLowerCase()}${cls ? "." + cls : ""}`;
+    const words = (el.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 30);
+    out.push({ id, by, where: `<${id}>${words ? ` "${words}"` : ""}` });
   }
   return out;
 }

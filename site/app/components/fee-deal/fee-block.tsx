@@ -206,10 +206,11 @@ export function FeeBlockView({
     const first = (l: Lifted) => on.find((t) => lift.takes(l, t));
     // a toolbox card: a case takes it, else a head, for each of its cases
     const toolTakes = (it: string) => (card ? card.case !== null && drop.accepts(fee.id, card.case, it) : !!heads && drop.acceptsCases(fee.id, heads.cases, heads.along, it));
-    // a member of its list only for what its first place takes (a row among the rows); anything else drops on it as a plain place
+    // a member of its list only for the heads its first place takes (a row among the rows); anything else, a part or a cell (a case alone
+    // in its row moves its row onto the head it drops on), drops on it as a plain place
     const sortFor = sort && ((it: string) => {
       const l = liftedOf(it);
-      return l && lift.takes(l, on[0]!) ? sort : null;
+      return l && l.k !== "cell" && lift.takes(l, on[0]!) ? sort : null;
     });
     return (
       <DropZone

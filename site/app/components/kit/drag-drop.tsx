@@ -119,6 +119,7 @@ export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounde
     <div
       data-drop-key={key}
       data-drop-zone={framed ? "" : undefined}
+      data-drop-over={over ? "" : undefined}
       data-sort-list={sort?.list}
       title={refused ?? undefined}
       data-drop-why={refused ?? undefined}

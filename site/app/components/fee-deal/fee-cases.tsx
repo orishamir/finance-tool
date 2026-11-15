@@ -777,6 +777,27 @@ export function FeeCases({
     const headsOf = (hs: readonly Head[], t: number) => hs.map((h) => ({ key: h.key, bounds: h.cases[0] ? (byCase.get(h.cases[0])!.bounds[t] ?? null) : null, words: headName(h, t) }));
     const colHeads = headsOf(g.columns, 1);
     const rowHeads = headsOf(g.rows, 0);
+    /** The place a whole case dropped at row `j`, column `k` lands on: another case's cell (the two swap) or a place no case holds; none off the grid or under a cell spanning down over it. */
+    const placeAtCell = (j: number, k: number): LiftTarget | null => {
+      const row = g.rows[j];
+      const x = row?.cells.find((c) => c.from <= k && k < c.from + c.span);
+      if (!row || !x || x.covered) return null;
+      if (!x.case) return emptyPlace(row, g.columns[x.from]!).target;
+      return x.cases.length === 1 ? { k: "cell", fee: fee.id, cases: [x.case], row: WHOLE, along: 1 } : null;
+    };
+    /**
+     * A case's cell moved by its grip's menu one place to each side where something takes it, as a drop there does: into a place no case
+     * holds, or swapped with the case there (before and after across, the page right to left; up and down).
+     */
+    const cellMoves = (l: Lifted, j: number, cell: GridRow["cells"][number]): GripAction[] =>
+      (
+        [
+          [lw.menu.before, placeAtCell(j, cell.from - 1)],
+          [lw.menu.after, placeAtCell(j, cell.from + cell.span)],
+          [lw.menu.up, placeAtCell(j - 1, cell.from)],
+          [lw.menu.down, placeAtCell(j + (cell.down ?? 1), cell.from)],
+        ] as const
+      ).flatMap(([label, on]) => (on && lift.takes(l, on) ? [{ label, onPick: () => lift.onDrop(l, on, { copy: false }) }] : []));
     // a paste on a column's or a row's head goes into the cases it covers; on the fee's own head, into every case
     headPlace = (el) => {
       const col = el.closest<HTMLElement>("[role=columnheader]");
@@ -852,7 +873,7 @@ export function FeeCases({
                   open: !!openCase && cell.cases.includes(openCase),
                   content,
                   ...(cell.whole ? { across: <WhenText words={r.when[1]!} /> } : {}),
-                  grip: grip(cl, `${lw.grip.cell}${caseText(r.when)}`, [], { name: lw.name.case.replace("{name}", caseText(r.when)), place: "outside" }),
+                  grip: grip(cl, `${lw.grip.cell}${caseText(r.when)}`, cellMoves(cl, j, cell), { name: lw.name.case.replace("{name}", caseText(r.when)), place: "outside" }),
                   ...(acrossKnobs || downward
                     ? {
                         knobs: (
@@ -904,7 +925,9 @@ export function FeeCases({
                 if (cell.case)
                   return cell.cases.filter((id) => row.cases.includes(id)).map((id) => {
                     const r = byCase.get(id)!;
-                    return <div key={id}>{bandRow(r, caseWords([r.when[1]!], r.mine, band.things, r.bounds), { k: "cell", fee: fee.id, cases: [id], row: WHOLE, along: 1 }, `${lw.grip.cell}${caseText(r.when)}`, { name: lw.name.case.replace("{name}", caseText(r.when)) })}</div>;
+                    // a case carried onto another's row swaps with it, as on the grid
+                    const cl: Lifted = { k: "cell", fee: fee.id, cases: [id], row: WHOLE, along: 1 };
+                    return <div key={id}>{bandRow(r, caseWords([r.when[1]!], r.mine, band.things, r.bounds), cl, `${lw.grip.cell}${caseText(r.when)}`, { name: lw.name.case.replace("{name}", caseText(r.when)), also: [cl as LiftTarget] })}</div>;
                   });
                 const col = g.columns[cell.from]!;
                 const p = emptyPlace(row, col);
