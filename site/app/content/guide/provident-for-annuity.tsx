@@ -30,19 +30,19 @@ export const content: GuideContent = {
     </>
   ),
   switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקופה וגם במעבר לקופה אחרת או לקרן פנסיה. חוץ מכספי פיצויים שעוברים ל״חשבון חדש״, חשבון שאי אפשר להפקיד אליו עוד: לפני ההעברה מנכים מהם מס הכנסה על החלק שלא פטור.",
-  switchRules: ["PF-23", "SW-23"],
+  switchRules: ["PF-23", "SW-23", "SW-22"],
   termIds: ["תקרת הפקדה", "קופת גמל לקצבה", "זיכוי ממס", "הכנסה מזכה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "מקדם המרה", "קרן פנסיה", "עמית", "משיכה", "גיל הפרישה", "תגמולי מעסיק", "מרכיב הפיצויים", "גמל נט", "רשות שוק ההון ביטוח וחיסכון", "קופת גמל", "קרן חדשה מקיפה", "קצבה", "השלמת תשואה", "חברה מנהלת", "ניכוי", "תשואה", "אינפלציה"],
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled> ועד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה. <Ruled id="TXP-06">עצמאים שמפקידים יותר</Ruled> מקבלים גם <Term id="ניכוי">ניכוי</Term>.
+        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled>, ולפי הנחה של האתר עד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה. <Ruled id="TXP-06">עצמאים שמפקידים יותר</Ruled> מקבלים גם <Term id="ניכוי">ניכוי</Term>.
       </p>
       <EmployerUntaxed figure={figure} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב.</span> הקופה <Ruled id="PEN-34">לא משלמת אותה בעצמה</Ruled>: מעבירים את הכסף לקרן פנסיה או לחברת ביטוח. בקרן פנסיה הכסף <Ruled id="PEN-63">מצטרף ליתרה</Ruled> ומומר לקצבה לפי <Term id="מקדם המרה">מקדמי ההמרה</Term> של אותה קרן. לא נמצא חוק או הוראה שמחייבים קרן פנסיה או חברת ביטוח לקבל את הכסף, וקרן פנסיה רשאית לדחות בקשת הצטרפות. באילו מקדמים חברת ביטוח ממירה את הכסף, עוד לא נמצא. שאלה פתוחה <IdRef id="PEN OQ19" end="." />
       </Callout>
       <p className="max-w-measure">
-        <Ruled id="TXP-14" prefix="ה">פטור ממס</Ruled> מתחיל <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל <Ruled id="PEN-26">מדורג לפי שנת הלידה</Ruled>. {disabilityRetirement}
+        <Ruled id="TXP-14" prefix="ה">פטור ממס</Ruled> מתחיל <Term prefix="ב" id="גיל הפרישה">גיל הפרישה</Term> לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד <N v={figure("PEN-26", "graded_women_born_until")} /> הגיל <Ruled id="PEN-26">מדורג לפי שנת הלידה</Ruled>. {disabilityRetirement}
       </p>
       <ExemptShare figure={figure} />
       <LumpSums figure={figure} />

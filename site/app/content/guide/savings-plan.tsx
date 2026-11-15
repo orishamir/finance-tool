@@ -4,7 +4,7 @@
 import type { GuideContent } from "./types";
 import { YearOf } from "./year";
 import { IdRef, Num, Ruled, Term, VariesByCompany } from "../../components/provenance";
-import { Callout, Sentence, When } from "../../components/kit";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: () => (
@@ -20,7 +20,7 @@ export const content: GuideContent = {
       </p>
       {/* D30: the anchor (BANK-34) and the exit points (BPN-10) are each bank's own terms; the guide names no bank's as the product's */}
       <div className="max-w-measure flex flex-col gap-1">
-        <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק <Ruled id="BANK-46">מגדיר אותה בתנאים שלו</Ruled></>} end="." />
+        <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, ולכל בנק <Ruled id="BANK-46">פריים משלו</Ruled></>} end="." />
         <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
       </div>
     </>
@@ -52,13 +52,14 @@ export const content: GuideContent = {
   },
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
+    const lapsed = figure("REG-05", "new_knesset_convened");
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term> ולהעביר את הפיקדונות לבנק אחר, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
+          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, שבאישור הנגיד יכול להעביר את נכסי הבנק והתחייבויותיו, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
         </p>
         <Sentence measure>
-          חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה <When iso="2026-11-10" lead="ב־" />.
+          חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה{lapsed ? <> <Num value={lapsed} prefix="ב־" /></> : null}.
         </Sentence>
         <p className="max-w-measure">תוכנית בריבית משתנה <Ruled id="BANK-25">זזה עם ריבית העוגן שלה</Ruled> לאורך כל השנים. תוכנית לא צמודה לא מגינה מפני עליית מחירים, ובתקופה ארוכה זה מורגש יותר.</p>
       </>

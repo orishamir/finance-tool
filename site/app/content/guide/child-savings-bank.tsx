@@ -11,6 +11,7 @@ export const content: GuideContent = {
   what: ({ figure }) => {
     const monthly = figure("CS-03", "monthly_deposit");
     const until = figure("CS-14", "withdrawal_age");
+    const depositsUntil = figure("CS-02", "deposits_until_age");
     const parentUntil = figure("CS-14", "parent_signature_until_age");
     const grantLast = figure("CS-13", "grant_age_21");
     const ageLast = figure("CS-13", "age_last_grant");
@@ -19,7 +20,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד</Ruled> {monthly ? <Num value={monthly} /> : null} בחודש<YearOf v={monthly} /> עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להכפיל את הסכום מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null} <Ruled id="CS-13">למי שלא משך כלום קודם</Ruled>.
+          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד</Ruled> {monthly ? <Num value={monthly} /> : null} בחודש<YearOf v={monthly} /> עד גיל {depositsUntil ? <Num value={depositsUntil} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), וההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להכפיל את הסכום מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null} <Ruled id="CS-13">למי שלא משך כלום קודם</Ruled>.
         </Sentence>
         <Sentence measure>
           הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן <Ruled id="CS-15">מושכים רק למימון צרכים רפואיים של הילד</Ruled>, כשמצב רפואי מסכן את חייו, גופו או נפשו ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד <Ruled id="CS-14">מושך לבד</Ruled>. כסף שלא נמשך נשאר בבנק, <Ruled id="CS-16" prefix="ו">אי אפשר להוסיף</Ruled> אליו כסף חדש. העלות של שבירת תקופה נקבעת בהסכם של כל בנק.
