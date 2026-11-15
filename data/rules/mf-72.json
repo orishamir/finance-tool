@@ -1,0 +1,67 @@
+{
+  "id": "MF-72",
+  "title": "Kesem: bond ETFs whose fund agreement sets no end (\"לתקופה בלתי מוגבלת\")",
+  "title_he": "קסם: קרנות סל של אג״ח שהוקמו לתקופה בלתי מוגבלת",
+  "text_he": "בהסכמי הקרן של שתי קרנות סל של קסם, שעוקבות אחרי מדדים של איגרות חוב של ממשלת ארה״ב, כתוב תחת הכותרת ״תקופת קיום הקרן״ שהקרן הוקמה לתקופה בלתי מוגבלת. לפי ההסכמים, הקרן תפורק במקרים שהחוק קובע, או אם מנהל הקרן יחליט לפרק אותה. אלה שני הסכמים של חברה אחת, לא ספירה של כל הקרנות; אם הקרנות עדיין נסחרות ואם ההסכמים תוקנו מאז, לא נבדק.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-15",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "kesem",
+      "name_he": "קסם קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1231001-1232000/P1231424-00.pdf#page=2",
+      "title": "קסם S&P U.S. Treasury Bond 7-10 Year (0D) ETF: הסכם קרן, 19.5.2019",
+      "title_he": "הסכם קרן: קסם S&P U.S. Treasury Bond 7-10 Year (0D) ETF, 19.5.2019",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "קסם קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, s.4",
+      "locator_he": "עמוד 2, סעיף 4",
+      "page": 2,
+      "quote": "הקרן הוקמה לתקופה בלתי מוגבלת והיא תפורק בנסיבות אלה",
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page image)"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730245-00.pdf#page=2",
+      "title": "קסם iBoxx $ Treasuries 10Y+ (0A) ETF מנוטרלת מט\"ח: הסכם קרן, 18.3.2026",
+      "title_he": "הסכם קרן: קסם iBoxx $ Treasuries 10Y+ (0A) ETF מנוטרלת מט\"ח, 18.3.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "קסם קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, s.4",
+      "locator_he": "עמוד 2, סעיף 4",
+      "page": 2,
+      "quote": "הקרן הוקמה לתקופה בלתי מוגבלת והיא תפורק בנסיבות אלה",
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page image)"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730245-00.pdf#page=2",
+      "title": "קסם iBoxx $ Treasuries 10Y+ (0A) ETF מנוטרלת מט\"ח: הסכם קרן, 18.3.2026",
+      "title_he": "הסכם קרן: קסם iBoxx $ Treasuries 10Y+ (0A) ETF מנוטרלת מט\"ח, 18.3.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "קסם קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, s.7",
+      "locator_he": "עמוד 2, סעיף 7",
+      "page": 2,
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page image)"
+    }
+  ]
+}

@@ -29,7 +29,7 @@ export const content: GuideContent = {
           בבנק הכסף נכנס <Term prefix="ל" id="תוכנית חיסכון">תוכנית חיסכון</Term> <Ruled id="CS-10" prefix="ב">אחד משלושה מסלולים</Ruled>: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>. כל אחד מהם בא בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד <Term id="גיל הפדיון">גיל הפדיון</Term>, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים.
         </Sentence>
         <p className="max-w-measure">
-          <Term prefix="ה" id="ריבית">ריבית</Term> ידועה מראש לפי המסלול שנבחר. איך כל בנק קובע אותה כתוב בהסכם שלו.
+          <Term prefix="ה" id="ריבית">ריבית</Term> <Ruled id="CS-10">ידועה מראש לפי המסלול שנבחר</Ruled>. איך כל בנק קובע אותה כתוב בהסכם שלו.
         </p>
         <Sentence measure>
           את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה. <Ruled id="CS-07">בלי בחירה הכסף הולך</Ruled> <Term prefix="ל" id="קופת גמל">קופת גמל</Term>.
@@ -42,7 +42,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          {banks ? <Num value={banks} /> : null} בנקים <Ruled id="CS-22" prefix="ש">זכו במכרז</Ruled> של משרד האוצר, <Ruled id="REG-01" prefix="ב">פיקוח</Ruled> <Term id="בנק ישראל">בנק ישראל</Term>. את הבחירה עושים דרך הביטוח הלאומי, ואת המשיכה דרך הבנק.
+          {banks ? <Num value={banks} /> : null} בנקים <Ruled id="CS-22" prefix="ש">זכו במכרז</Ruled> של משרד האוצר, <Ruled id="REG-01" prefix="ב">פיקוח</Ruled> <Term id="בנק ישראל">בנק ישראל</Term>. את הבחירה הראשונה <Ruled id="CS-06">עושים דרך הביטוח הלאומי</Ruled>, ואת <Ruled id="CS-14">המשיכה דרך הבנק</Ruled>.
         </Sentence>
       </>
     );

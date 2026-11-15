@@ -3,6 +3,9 @@
   "title": "Money-market fund units at a bank: no buy, sell or redemption line, no custody, and the distribution fee only where the regulations allow it",
   "title_he": "יחידות בקרן כספית בבנק: בלי עמלת קנייה ופדיון, בלי דמי משמרת, ועמלת הפצה רק כשהתקנות מתירות",
   "text_he": "בתעריפון המלא של בנק אין שורת עמלה לקנייה, למכירה או לפדיון של יחידות בקרן כספית שאינה קרן מחקה ואינה רשומה למסחר בבורסה, ואסור לגבות עליהן דמי ניהול פיקדון. השורה היחידה בתעריפון שמופנית לרוכש יחידות היא עמלת הפצה, ורק במקרים שתקנות עמלת ההפצה מתירות. אם למנהל הקרן אין הסכם הפצה עם הבנק, הבנק רשאי לגבות מהמחזיק עד 0.1% לשנה משווי היחידות; אם יש הסכם כזה, אסור לו לגבות דבר על קנייה, החזקה או פדיון. אם בנק רשאי לגבות על יחידות כאלה עמלת העברת ניירות ערך או עמלת קסטודיאן, הכללים לא אומרים.",
+  "figure_names_he": {
+    "distribution_fee_max_without_agreement": "עמלת הפצה מרבית על יחידות קרן כספית, כשלמנהל הקרן אין הסכם הפצה עם הבנק"
+  },
   "strength": "primary",
   "dimensions": [
     "fee-trade",
@@ -10,8 +13,30 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-05-14",
+  "figures": {
+    "distribution_fee_max_without_agreement": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236, עמוד 2 (עמוד הרשומות 900), תקנה 2(4) לתקנות המתקנות: בתקנה 3(4), \"0.1%/365\" (קרן מסוג 4)",
+        "publisher": "רשומות (משרד המשפטים)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-15",
+      "effective_from": "2016-09-30",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-71"
+      ],
+      "state": "sourced",
+      "notes": "The most a bank may charge the holder of money-market fund (type 4) units each year where the fund's manager has no distribution agreement with it. Reg. 2(ב)(1) as replaced in 2016 (ק\"ת 7653, file p.10, gazette p.1098, in force 30.9.2016) lets the distributor charge the holder 'עמלה בסכום עמלת ההפצה שהיה רשאי לגבות ממנהל הקרן ... או בסכום נמוך ממנו'; reg. 3(4) as amended in 2013 (this source) sets that fee for a type-4 fund at 0.1%/365 a day of the units' value, 0.1% a year (MF-24's distribution_fee_cap_money_market). Under an agreement the holder pays nothing for buying, holding or redeeming (reg. 2(ד); MF-26's zero figure). Both gazettes read 2026-11-15."
+    }
+  },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-11-14",
+  "checked": "2026-11-15",
   "scope": "general",
   "sources": [
     {

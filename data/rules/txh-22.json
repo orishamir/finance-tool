@@ -3,6 +3,9 @@
   "title": "Proposals to narrow the benefit (not law), including the 2027 budget (Q18)",
   "title_he": "הצעות לצמצם את ההטבה, שאינן חוק",
   "text_he": "לא נמצאה הצעת חוק או תזכיר לצמצום הטבת המס בקרן השתלמות לשנת התקציב הבאה. נייר מדיניות של הכלכלן הראשי במשרד האוצר ממליץ לצמצם את ההטבה באופן משמעותי, בעדיפות להורדת תקרת השכר, ובוחן גם ביטול הפטור על רווחי הון והגבלתו לשש השנים הראשונות; זה פרסום של משרד האוצר, לא מחייב, ניתוח ולא החלטה. ניסיונות קודמים לצמצם את ההטבה לא חוקקו.",
+  "figure_names_he": {
+    "option_gains_exemption_years": "השנים שבהן הרווח היה נשאר פטור לפי ההצעה"
+  },
   "strength": "primary",
   "dimensions": [
     "tax-at-exit",
@@ -12,10 +15,47 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
+  "figures": {
+    "option_gains_exemption_years": {
+      "value": 6,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf#page=20",
+        "title": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025), p.20, item 3: \"כל רווח ריאלי שנצבר לאחר חלוף 6 שנים מאז מועד ההפקדה הראשון בקרן\" יהיה חייב במס רווחי הון במועד המשיכה",
+        "publisher": "משרד האוצר",
+        "strength": "primary"
+      },
+      "checked": "2026-11-15",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXH-22"
+      ],
+      "state": "sourced",
+      "notes": "A proposal in a Ministry of Finance policy paper, not law: option 3 would limit the capital-gains exemption to real gains accrued in the first 6 years from the first deposit (p.20 item 3; footnote 32 on p.22). The paper counts from the first deposit (מועד ההפקדה הראשון), not explicitly the law's first payment date (TXH-09). The figure equals TXH-09's lock_years but is the paper's own."
+    }
+  },
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-15",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf#page=20",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.20, item 3",
+      "locator_he": "עמוד 20, פרט 3",
+      "page": 20,
+      "quote": "כל רווח ריאלי שנצבר לאחר חלוף 6 שנים מאז מועד ההפקדה הראשון בקרן",
+      "checked": "2026-11-15",
+      "qualifier": "(policy analysis, not law)"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
       "title": "Chief Economist paper Oct 2025",
