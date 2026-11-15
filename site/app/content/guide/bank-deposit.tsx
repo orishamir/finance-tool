@@ -8,7 +8,7 @@ import type { BreakTerms } from "../../lib/guide-signature";
 import { IdRef, Num, Ruled, Term, VariesByCompany } from "../../components/provenance";
 import { Link } from "react-router";
 import { depositBrowser } from "../../copy";
-import { Callout, MixedName, Sentence, TextLink, When } from "../../components/kit";
+import { Callout, MixedName, Sentence, TextLink } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -23,7 +23,7 @@ export const content: GuideContent = {
           <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק <Ruled id="BANK-46">מגדיר אותה בתנאים שלו</Ruled></>} end="." />
         </p>
         <p className="max-w-measure">
-          פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, <Ruled id="BANK-26">מה שקורה לקרן תלוי בתנאי המוצר</Ruled> (<Term id="הבטחת קרן">הבטחת קרן</Term>); החוק לא קובע זאת.
+          פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, <Ruled id="BANK-26">מה שקורה לקרן תלוי בתנאי המוצר</Ruled> (<Term id="הבטחת קרן">הבטחת קרן</Term>), וההסכם שלו חייב לציין זאת.
         </p>
         <Sentence measure>
           כדי שאפשר יהיה להשוות, <Ruled id="BANK-13">כל בנק חייב לפרסם טבלה אחידה</Ruled> של {types ? <Num value={types} /> : null} <Term id="סוגי הפיקדונות השקליים המקובלים">סוגי פיקדון מקובלים</Term>. לכל סוג מופיעים <Term id="שיעור הריבית המוצעת">הריבית המוצעת</Term>, לשנה ולפני מס, אפשרות <Term prefix="ה" id="שבירת פיקדון">שבירה</Term>, ובסוגים של שנה ומעלה גם <Term id="תחנת יציאה">תחנות היציאה</Term>.
@@ -117,13 +117,14 @@ export const content: GuideContent = {
   },
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
+    const lapsed = figure("REG-05", "new_knesset_convened");
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term> ולהעביר את הפיקדונות לבנק אחר, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. אלה סמכויות שלו, לא זכויות שלכם.
+          אין בישראל <Term id="ביטוח פיקדונות">ביטוח פיקדונות</Term>: אם בנק קורס, <Ruled id="BANK-23">אין חוק שמחזיר לכם את הכסף</Ruled>. נגיד בנק ישראל יכול למנות לבנק <Term id="מנהל מורשה">מנהל מורשה</Term>, ובאישור הממשלה גם <Ruled id="REG-06">להכריז על ערבות לפיקדונות</Ruled>. המנהל המורשה יכול, באישור הנגיד, להעביר את נכסי הבנק והתחייבויותיו. אלה סמכויות שלהם, לא זכויות שלכם.
         </p>
         <Sentence measure>
-          חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה <When iso="2026-11-10" lead="ב־" />.
+          חוק משנת 2026 <Ruled id="REG-04">מחייב את שר האוצר ואת הנגיד לבחון</Ruled> {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית לביטוח פיקדונות <Ruled id="REG-05">פקעה</Ruled> כשהכנסת החדשה התכנסה{lapsed ? <> <Num value={lapsed} prefix="ב־" /></> : null}.
         </Sentence>
         <p className="max-w-measure">פיקדון בריבית משתנה <Ruled id="BANK-25">זז עם ריבית העוגן שלו</Ruled>. פיקדון לא צמוד לא מגן מפני עליית מחירים.</p>
       </>
@@ -132,7 +133,7 @@ export const content: GuideContent = {
   use: () => (
     <>
       <p className="max-w-measure">
-        כסף שיודעים מתי יצטרכו אותו, ורוצים עליו ריבית בלי תנודות. בוחרים תקופה שמתאימה למועד, או פיקדון עם תחנות יציאה אם המועד לא בטוח. כדי להשוות, <Ruled id="BANK-15">בבנק הפיקדונות מוצגים יחד עם</Ruled> <Term id="קרן כספית">קרנות כספיות</Term> <Term prefix="ו" id={'מק"מ'}>מק״מ</Term> תחת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term>, בלי העדפה של אף מוצר.
+        כסף שיודעים מתי יצטרכו אותו, ורוצים עליו ריבית בלי תנודות. בוחרים תקופה שמתאימה למועד, או פיקדון עם תחנות יציאה אם המועד לא בטוח. כדי להשוות, בבנק שאפשר לקנות דרכו <Term id="קרן כספית">קרנות כספיות</Term> או <Term id={'מק"מ'}>מק״מ</Term>, <Ruled id="BANK-15">הפיקדונות מוצגים יחד איתם</Ruled> תחת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term>, בלי העדפה של אף מוצר.
       </p>
       <p className="max-w-measure">
         פיקדון עדיף על <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> כשרוצים לדעת את הריבית ביום ההפקדה: בפיקדון בריבית קבועה <Ruled id="BANK-25">היא ננעלת לכל התקופה</Ruled>, ובקרן היומית <Term prefix="ה" id="תשואה">תשואה</Term> <Ruled id={["MF-34", "MF-41"]}>לא ידועה מראש וזזה עם</Ruled> <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>.
