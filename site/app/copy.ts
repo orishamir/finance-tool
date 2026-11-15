@@ -3585,7 +3585,15 @@ export const guideSignature = {
     monthLead: "כל חודש מופקדים בסך הכול",
     parts: { you: "ממכם", employer: "מהמעסיק, תגמולים", severance: "מהמעסיק, פיצויים" },
     chart: { aria: "פס אחד שמחולק לשלושה חלקים: מה שהעובד מפקיד, מה שהמעסיק מפקיד לתגמולים, ומה שהמעסיק מפקיד לפיצויים" },
-    returns: { before: "מהחלק שלכם חוזר אליכם", after: "בחודש כזיכוי ממס.", when: "אם הוא מגיע כבר עם המשכורת, בניכוי קטן יותר של מס הכנסה כל חודש, האתר לא מצא בכללים שקרא: שאלה פתוחה", otherwise: "הזיכוי מחושב בדוח השנתי, לפי הטופס השנתי מהמעסיק" },
+    // `when.stated`: the words that state TXP-34, the only two ways an employer gives the credit through payroll; whether the second exists
+    // today is TXP OQ6. `otherwise.stated`: the words that state TXP-02, the credit computed in the annual return.
+    returns: {
+      before: "מהחלק שלכם חוזר אליכם",
+      after: "בחודש כזיכוי ממס.",
+      when: { before: "המעסיק", stated: "מוריד אותו מהמס שהוא מנכה מהמשכורת רק בשתי דרכים", after: ": רשות המסים הורתה לו לבקשתכם, או שמנהל רשות המסים הודיע למעסיקים שעליהם לתת אותו." },
+      notice: "אם יש היום הודעה כזו על הפקדות לפנסיה, האתר לא מצא בכללים שקרא: שאלה פתוחה",
+      otherwise: { before: "בלי אחת מהשתיים,", stated: "הזיכוי מחושב בדוח השנתי, לפי הטופס השנתי מהמעסיק" },
+    },
     // the general fund's page: only the deposit above the comprehensive fund's ceiling reaches it (PEN-10, PEN-08; method F-67)
     general: {
       // `moves`: the words that state PEN-10, the deposit above the ceiling going to the general fund
