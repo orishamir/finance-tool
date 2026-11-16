@@ -203,7 +203,9 @@ export function FeeBlockView({
   const zone: ZoneOf = (on, key, el, sort) => {
     const card = on.find((t): t is Extract<LiftTarget, { k: "case" }> => t.k === "case");
     const heads = on.find((t): t is Extract<LiftTarget, { k: "cases" }> => t.k === "cases");
-    const first = (l: Lifted) => on.find((t) => lift.takes(l, t));
+    // the cell a thing was lifted from takes nothing of it: its case under it would take a line over several cases as a drop on that case
+    const own = (l: Lifted) => l.k === "cell" && on[0]?.k === "cell" && on[0].fee === l.fee && on[0].row === l.row && on[0].cases.join() === l.cases.join();
+    const first = (l: Lifted) => (own(l) ? undefined : on.find((t) => lift.takes(l, t)));
     // a toolbox card: a case takes it, else a head, for each of its cases
     const toolTakes = (it: string) => (card ? card.case !== null && drop.accepts(fee.id, card.case, it) : !!heads && drop.acceptsCases(fee.id, heads.cases, heads.along, it));
     // a member of its list only for the heads its first place takes (a row among the rows); anything else, a part or a cell (a case alone

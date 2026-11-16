@@ -184,13 +184,15 @@ const caseIn = (fee: Fee, id: string) => (hasCases(fee) ? fee.cases.find((c) => 
 
 /**
  * A part row dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that fee takes it).
- * A line over several cases (`from` and `also`) leaves every one of them unless copied, so the part stands only where it was dropped.
+ * A line over several cases (`from` and `also`) leaves every one of them unless copied, so the part stands only where it was dropped: on
+ * one of its own cases, it stays there alone (copied, nothing changes).
  */
 function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean, also: readonly string[] = []): LiftResult | null {
   if (on.k !== "case" && on.k !== "cell") return null;
   const to = on.k === "case" ? on.case : on.cases[0]!;
   if (on.fee === fee.id) {
-    if (!hasCases(fee) || from === null || to === null || to === from) return null;
+    if (!hasCases(fee) || from === null || to === null) return null;
+    if (to === from) return keep ? null : oneFee(deal, fee, partOut(fee, also, row));
     // the case it lands on had that row's part: kept for the undo, which says what was replaced
     const had = cellHolds(caseIn(fee, to)!, row);
     const moved = moveCell(fee, from, to, row, keep);
