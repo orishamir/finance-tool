@@ -390,6 +390,20 @@ async function previewCheck(open) {
       { w: words, p },
     );
     if (p.role === "gridcell" && !r.over && !r.why) found.push(`a part line ("${words}") carried over ${p.at} found no place there to land and no why`);
+    // a cell that takes nothing keeps its resting look under the pointer: no hover fill, so it never looks like a place to land
+    if (p.role === "gridcell" && !r.over) {
+      const lit = await page.evaluate((p) => {
+        const probe = document.createElement("div");
+        probe.style.background = "var(--accent)";
+        document.body.append(probe);
+        const accent = getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        const cell = document.elementFromPoint(p.x, p.y)?.closest("[role=gridcell]");
+        if (!cell) return false;
+        return [cell, ...cell.querySelectorAll("*")].some((el) => el.matches(":hover") && !el.matches("[data-lifted], .bg-accent") && getComputedStyle(el).backgroundColor === accent);
+      }, p);
+      if (lit) found.push(`a part line ("${words}") carried over ${p.at}, which takes nothing, lit its hover fill`);
+    }
     else if (r.missing.length) found.push(`a part line ("${words}") carried over ${p.at} did not show in the preview of ${r.missing.map((m) => `"${m}"`).join(", ")}`);
   }
   await page.keyboard.press("Escape");

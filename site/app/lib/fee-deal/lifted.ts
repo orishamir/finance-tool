@@ -194,7 +194,8 @@ function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on
     if (!hasCases(fee) || from === null || to === null) return null;
     if (to === from) return keep ? null : oneFee(deal, fee, partOut(fee, also, row));
     // the case it lands on had that row's part: kept for the undo, which says what was replaced
-    const had = cellHolds(caseIn(fee, to)!, row);
+    // a case the line already covered held this very part: nothing the person gave there is replaced
+    const had = cellHolds(caseIn(fee, to)!, row) && !also.includes(to);
     const moved = moveCell(fee, from, to, row, keep);
     return oneFee(deal, fee, keep ? moved : partOut(moved, also.filter((id) => id !== to), row), had ? copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined);
   }
