@@ -104,8 +104,20 @@ describe("a lifted thing", () => {
     const r = liftDrop(deal(), l, on)!;
     expect(priceOf(r.deal, "b1")).toEqual(action(0.175, 5));
     expect([priceOf(r.deal, "d1"), priceOf(r.deal, "d2")]).toEqual([action(0.0875), action(0.1)]);
+    // onto the second case it covered: it stays there alone, and nothing of the person's is replaced
+    const onSecond = liftDrop(deal(), l, { k: "case", fee: "fee-fx", case: "d2" })!;
+    expect([priceOf(onSecond.deal, "d1"), priceOf(onSecond.deal, "d2")]).toEqual([action(0.0875), action(0.1, 5)]);
+    expect(onSecond.kept?.words).toBeUndefined();
     const c = liftDrop(deal(), l, on, { copy: true })!;
     expect([priceOf(c.deal, "d1"), priceOf(c.deal, "d2")]).toEqual([action(0.0875, 5), action(0.1, 5)]);
+    // onto one of its own cases, the first or another, it stays there alone; copied there, nothing changes
+    const first = liftDrop(deal(), l, { k: "case", fee: "fee-fx", case: "d1" })!;
+    expect([priceOf(first.deal, "d1"), priceOf(first.deal, "d2")]).toEqual([action(0.0875, 5), action(0.1)]);
+    const second = liftDrop(deal(), l, { k: "case", fee: "fee-fx", case: "d2" })!;
+    expect([priceOf(second.deal, "d1"), priceOf(second.deal, "d2")]).toEqual([action(0.0875), action(0.1, 5)]);
+    expect(liftDrop(deal(), l, { k: "case", fee: "fee-fx", case: "d1" }, { copy: true })).toBeNull();
+    // a part of one case onto its own case: nothing
+    expect(liftTakes(deal(), { ...l, cases: ["d1"] }, { k: "case", fee: "fee-fx", case: "d1" })).toBe(false);
   });
 
   it("moves a grid's row among its rows, and swaps two things", () => {

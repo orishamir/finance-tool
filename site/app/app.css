@@ -1549,3 +1549,13 @@
     position: static;
   }
 }
+
+/* While something is carried, a cell of a fee table or grid keeps its resting look under the pointer: only a place that takes the
+   carried thing answers it (its dashed frame and preview, DropZone), so a cell that takes nothing never looks like one. Outside the layers, so it wins over the utilities' hover fill. */
+:root:has([data-lift-ghost]) [data-span-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]),
+:root:has([data-lift-ghost]) [data-span-table] .group:hover .group-hover\:bg-accent:not(.bg-accent, [data-pick-card]) {
+  background-color: var(--color-background);
+}
+:root:has([data-lift-ghost]) [data-span-table] .group:hover [data-pick-card] {
+  background-color: transparent;
+}

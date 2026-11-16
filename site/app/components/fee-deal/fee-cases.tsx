@@ -245,7 +245,15 @@ export function FeeCases({
     </>
   );
   const label = (r: CaseRowView) => `${c.openCase}${caseText(r.when)}`;
-  const openIt = (caseId: string) => () => onOpen(fee.id, caseId, "pointer");
+  /** What the person tapped to open the case: only that is outlined, not every cell and line its price stands in. */
+  const [picked, setPicked] = useState<{ key: string; case: string } | null>(null);
+  const openIt = (caseId: string, key?: string) => () => {
+    setPicked(key ? { key, case: caseId } : null);
+    onOpen(fee.id, caseId, "pointer");
+  };
+  /** Whether a cell or line over `cases` shows as the open case's: the one tapped, or, where the case was opened otherwise, its own cell. */
+  const shownOpen = (cases: readonly string[], key: string | null) =>
+    !!openCase && cases.includes(openCase) && (picked?.case === openCase ? picked.key === key : key === null);
   // a case or a step added opens: the first case the fee did not have
   const addAndOpen = (next: Fee) => {
     onFee(next);
@@ -687,7 +695,7 @@ export function FeeCases({
               head: col.sub !== undefined ? <SubHead r={r} sub={layout.split!} head={headOf(r, t)} /> : headOf(r, t),
               label: label(r),
               onOpen: openIt(caseCol),
-              open: caseCol === openCase,
+              open: shownOpen([caseCol], null),
               ...(cg ? { grip: cg } : {}),
               ...(l ? { liftItem: liftId(l) } : {}),
               zone: (h: ReactNode) => zone([target, ...(listThing && l?.k !== "value" ? [valueTarget] : []), caseTarget(caseCol)], caseCol, h, listThing ? list("cols", "x") : undefined),
@@ -716,8 +724,8 @@ export function FeeCases({
                   id: cell.cases.join("+"),
                   from: cell.from,
                   span: cell.span,
-                  open: !!openCase && cell.cases.includes(openCase),
-                  onOpen: openIt(cell.cases[0]!),
+                  open: shownOpen(cell.cases, `part:${row.row}:${cell.from}`),
+                  onOpen: openIt(cell.cases[0]!, `part:${row.row}:${cell.from}`),
                   content,
                   grip: grip(cl, `${lw.grip.cell}${rowHeadWords}`, applyActions(cl, applyTo([allHead])), { name: rowHeadWords, place: "outside" }),
                   ...knobsOf(row.row, slots, cell.from, cell.span, pr, t, "x", content),
@@ -758,8 +766,8 @@ export function FeeCases({
             return {
               from: cell.from,
               span: cell.span,
-              open: !!openCase && cell.cases.includes(openCase),
-              onOpen: openIt(cell.cases[0]!),
+              open: shownOpen(cell.cases, `line:${lineKey}:${cell.from}`),
+              onOpen: openIt(cell.cases[0]!, `line:${lineKey}:${cell.from}`),
               content,
               grip: grip(l, `${lw.grip.cell}${words}`, applyActions(l, applyTo([[lw.menu.applyRow, row.cases, 1], allHead])), { name: words, place: "outside" }),
               ...knobsOf(lineKey, slots, cell.from, cell.span, pr, 1, "x", content),
@@ -871,7 +879,7 @@ export function FeeCases({
                   span: cell.span,
                   ...(down > 1 ? { down } : {}),
                   onOpen: openIt(cell.case),
-                  open: !!openCase && cell.cases.includes(openCase),
+                  open: shownOpen(cell.cases, null),
                   content,
                   ...(cell.whole ? { across: <WhenText words={r.when[1]!} /> } : {}),
                   grip: grip(cl, `${lw.grip.cell}${caseText(r.when)}`, cellMoves(cl, j, cell), { name: lw.name.case.replace("{name}", caseText(r.when)), place: "outside" }),
