@@ -25,7 +25,9 @@
 //   drag     on the fee page's filled deal at 1440, a fee grid's cell carried by its grip: the place it would land on changing under a pointer
 //            that moves a pixel and back (a preview moving the page under the pointer, and the target read from the page with it), the page
 //            or a fee's table scrolling sideways while it is carried, and a case's cell that does not swap with the case it is dropped on to
-//            its left or above it, or by its grip's menu ("הזזה שמאלה"); and, on a 900 px screen and on one just as tall as the page, the
+//            its left or above it, or by its grip's menu ("הזזה שמאלה"); a part line carried over a case's cell that neither shows the
+//            line in its preview nor says why it does not take it (its own first case's cell among them), or over a head that takes it
+//            without the line in each case's cell of its column or row; and, on a 900 px screen and on one just as tall as the page, the
 //            page's height, its scroll, whether it has a scrollbar, or a fee's table having a scrollbar down changing while a case's cell
 //            or a part line is carried with the pointer still or moving a pixel and back (2026-11-15: the bin's room and each preview's
 //            height moved the page, and a cell sliding past a grid's foot gave the grid a scrollbar for the slide), a fee's table with a
@@ -254,6 +256,7 @@ async function dragCheck() {
     }
     await ctx.close();
   }
+  for (const f of await previewCheck(open)) found.push(f);
   // a case's cell dropped on the cell to its left, and on the cell above it
   for (const way of ["left", "above"]) {
     const { ctx, page, grid } = await open();
@@ -318,6 +321,94 @@ async function dragCheck() {
     }
     await ctx.close();
   }
+  return found;
+}
+
+/**
+ * What a carried part line shows over the places it would land on (`drag` above): the first grid's first part line over several cases,
+ * carried over each case's cell and each head of the grid (`open`, from `dragCheck`). A cell takes it and its preview shows the line's
+ * words in it, or it says why it does not (`data-drop-why`); its own cases' cells among them, where a drop leaves it in that case alone. A
+ * head that takes it shows the words in each case's cell inside its column or its row. Returns what failed.
+ */
+async function previewCheck(open) {
+  const found = [];
+  const { ctx, page, grid } = await open();
+  const line = grid.locator("[data-part-cell]").filter({ has: page.locator("[data-grip]") }).first();
+  if (!(await line.count())) {
+    await ctx.close();
+    return ["the deal's first grid has no part line to carry"];
+  }
+  const words = (await line.innerText()).split("\n")[0].replace(/\s+/g, " ").trim();
+  await line.hover();
+  const b = await line.locator("[data-grip]").first().boundingBox();
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(b.x + b.width / 2 - 12, b.y + b.height / 2 + 4, { steps: 4 });
+  // the places as they stood once it was lifted: what decides where it lands (kit/lift.tsx)
+  const places = await grid.evaluate((g) =>
+    [...g.querySelectorAll("[role=gridcell][data-liftable]:not([data-part-cell]), [role=columnheader], [role=rowheader]")].map((el) => {
+      const r = el.getBoundingClientRect();
+      const role = el.getAttribute("role");
+      return { role, at: role === "gridcell" ? `the cell "${el.innerText.trim().replace(/\s+/g, " ").slice(0, 30)}"` : `the head "${el.innerText.trim().replace(/\s+/g, " ")}"`, x: Math.round(r.left + r.width / 2), y: Math.round(r.top + Math.min(r.height / 2, 24)) };
+    }),
+  );
+  for (const p of places) {
+    await page.mouse.move(p.x, p.y, { steps: 6 });
+    await page.waitForTimeout(150);
+    const r = await page.evaluate(
+      ({ w, p }) => {
+        const flat = (el) => el.innerText.replace(/\s+/g, " ");
+        const over = document.querySelector("[data-drop-over]");
+        const why = !!document.elementFromPoint(p.x, p.y)?.closest("[data-drop-why]");
+        if (!over) return { over: false, why, missing: [] };
+        const g = over.closest("[data-case-grid]");
+        // a case's cell shows the words in itself, or in a line of its row over its column that several cases share; never in the carried
+        // line's own place (`data-lifted`), which stands where it was until a preview draws the deal without it
+        const holds = (c) => {
+          if (flat(c).includes(w)) return true;
+          const r = c.getBoundingClientRect();
+          const x = (r.left + r.right) / 2, y = (r.top + r.bottom) / 2;
+          const head = [...g.querySelectorAll("[role=rowheader]")].map((h) => h.getBoundingClientRect()).find((h) => h.top <= y && y <= h.bottom);
+          return (
+            !!head &&
+            [...g.querySelectorAll("[data-part-cell]:not([data-lifted])")].some((l) => {
+              const b = l.getBoundingClientRect();
+              return b.left <= x && x <= b.right && b.top >= head.top - 2 && b.bottom <= head.bottom + 2 && flat(l).includes(w);
+            })
+          );
+        };
+        if (p.role === "gridcell") return { over: true, why, missing: holds(over.querySelector("[role=gridcell]") ?? over) ? [] : [flat(over).slice(0, 40)] };
+        // a head's cases: the case cells inside its column or its row, as the preview draws them
+        const h = over.getBoundingClientRect();
+        const col = p.role === "columnheader";
+        const inside = [...g.querySelectorAll("[role=gridcell][data-liftable]:not([data-part-cell])")].filter((c) => {
+          const r = c.getBoundingClientRect();
+          return col ? r.left >= h.left - 2 && r.right <= h.right + 2 : r.top >= h.top - 2 && r.bottom <= h.bottom + 2;
+        });
+        return { over: true, why, missing: inside.filter((c) => !holds(c)).map((c) => flat(c).slice(0, 40)) };
+      },
+      { w: words, p },
+    );
+    if (p.role === "gridcell" && !r.over && !r.why) found.push(`a part line ("${words}") carried over ${p.at} found no place there to land and no why`);
+    // a cell that takes nothing keeps its resting look under the pointer: no hover fill, so it never looks like a place to land
+    if (p.role === "gridcell" && !r.over) {
+      const lit = await page.evaluate((p) => {
+        const probe = document.createElement("div");
+        probe.style.background = "var(--accent)";
+        document.body.append(probe);
+        const accent = getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        const cell = document.elementFromPoint(p.x, p.y)?.closest("[role=gridcell]");
+        if (!cell) return false;
+        return [cell, ...cell.querySelectorAll("*")].some((el) => el.matches(":hover") && !el.matches("[data-lifted], .bg-accent") && getComputedStyle(el).backgroundColor === accent);
+      }, p);
+      if (lit) found.push(`a part line ("${words}") carried over ${p.at}, which takes nothing, lit its hover fill`);
+    }
+    else if (r.missing.length) found.push(`a part line ("${words}") carried over ${p.at} did not show in the preview of ${r.missing.map((m) => `"${m}"`).join(", ")}`);
+  }
+  await page.keyboard.press("Escape");
+  await page.mouse.up();
+  await ctx.close();
   return found;
 }
 
