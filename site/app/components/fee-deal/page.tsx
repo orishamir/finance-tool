@@ -362,7 +362,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       if (r) kept(liftKept(deal, r, chosen));
     },
     onStretch: (next, words) => kept(liftKept(deal, { deal: updateFee(deal, next.id, () => next), ...(words ? { kept: { feeId: next.id, words } } : {}) }, chosen)),
-    preview: (x) => setPreview(x ? (liftDrop(deal, x.l, x.on, { copy: x.how.copy })?.deal ?? null) : null),
+    // the drop shown as a copy: a part moved keeps its own place, the gap, until it lands, so nothing above or under it moves while it
+    // is carried (founder, 2026-11-17)
+    preview: (x) => setPreview(x ? (liftDrop(deal, x.l, x.on, { copy: true })?.deal ?? null) : null),
     rowParts: (feeId, cases) => rowParts(read, feeId, cases),
     onResult: (make) => {
       const r = make(deal);

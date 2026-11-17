@@ -446,9 +446,17 @@ async function previewCheck(open) {
       return { role, at: role === "gridcell" ? `the cell "${el.innerText.trim().replace(/\s+/g, " ").slice(0, 30)}"` : `the head "${el.innerText.trim().replace(/\s+/g, " ")}"`, x: Math.round(r.left + r.width / 2), y: Math.round(r.top + Math.min(r.height / 2, 24)) };
     }),
   );
+  // the carried line's own place, the gap: it keeps its box while a preview draws the drop elsewhere, so nothing around it moves
+  const gapBox = () => grid.evaluate((g) => {
+    const r = g.querySelector("[data-lifted]")?.getBoundingClientRect();
+    return r ? [r.left, r.top, r.width, r.height].map(Math.round).join(",") : "none";
+  });
+  const gap0 = await gapBox();
+  const gapMoved = [];
   for (const p of places) {
     await page.mouse.move(p.x, p.y, { steps: 6 });
     await page.waitForTimeout(150);
+    if ((await gapBox()) !== gap0) gapMoved.push(p.at);
     const r = await page.evaluate(
       ({ w, p }) => {
         const flat = (el) => el.innerText.replace(/\s+/g, " ");
@@ -457,7 +465,7 @@ async function previewCheck(open) {
         if (!over) return { over: false, why, missing: [] };
         const g = over.closest("[data-case-grid]");
         // a case's cell shows the words in itself, or in a line of its row over its column that several cases share; never in the carried
-        // line's own place (`data-lifted`), which stands where it was until a preview draws the deal without it
+        // line's own place (`data-lifted`), which stands where it was, the gap, while a preview is drawn
         const holds = (c) => {
           if (flat(c).includes(w)) return true;
           const r = c.getBoundingClientRect();
@@ -471,7 +479,12 @@ async function previewCheck(open) {
             })
           );
         };
-        if (p.role === "gridcell") return { over: true, why, missing: holds(over.querySelector("[role=gridcell]") ?? over) ? [] : [flat(over).slice(0, 40)] };
+        // a cell of the line's own row (the cases it already covers) shows no preview, only its frame: drawn, the line's row would close
+        const gap = g.querySelector("[data-lifted]")?.getBoundingClientRect();
+        const ownHead = gap && [...g.querySelectorAll("[role=rowheader]")].map((h) => h.getBoundingClientRect()).find((h) => h.top <= gap.top + 2 && gap.bottom <= h.bottom + 2);
+        const oc = over.getBoundingClientRect();
+        const own = !!ownHead && oc.top >= ownHead.top - 2 && oc.bottom <= ownHead.bottom + 2;
+        if (p.role === "gridcell") return { over: true, why, missing: own || holds(over.querySelector("[role=gridcell]") ?? over) ? [] : [flat(over).slice(0, 40)] };
         // a head's cases: the case cells inside its column or its row, as the preview draws them
         const h = over.getBoundingClientRect();
         const col = p.role === "columnheader";
@@ -500,6 +513,7 @@ async function previewCheck(open) {
     }
     else if (r.missing.length) found.push(`a part line ("${words}") carried over ${p.at} did not show in the preview of ${r.missing.map((m) => `"${m}"`).join(", ")}`);
   }
+  if (gapMoved.length) found.push(`a carried part line's own place moved or closed while a preview was drawn over ${gapMoved.slice(0, 3).join(", ")}`);
   await page.keyboard.press("Escape");
   await page.mouse.up();
   await ctx.close();
