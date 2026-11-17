@@ -7,7 +7,12 @@ import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
 import { invest as words } from "../copy";
 
-const bundle = buildIndicesBundle();
+// The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
+// the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
+// 16.11.2026), and never read as stale. Re-pin with the data, never to fit.
+const FROZEN_PER_EUR = { USD: 1.1014, ILS: 3.5509, GBP: 0.8345, CHF: 0.9244, JPY: 175.78, CAD: 1.5734, AUD: 1.6301 };
+const live = buildIndicesBundle();
+const bundle: typeof live = live.fx ? { ...live, fx: { ...live.fx, date: live.today, perEur: { ...live.fx.perEur, ...FROZEN_PER_EUR } } } : live;
 const t = bundle.today;
 const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => ({
   amountNow: 6000,
@@ -229,8 +234,8 @@ describe("invest page computation", () => {
 
   it("pins one fund's figures before tax: the S&P 500's Tel Aviv line at Psagot on the plan (F-118, F-91)", () => {
     // 6,000 NIS now and 400 a month for 20 years at 7% and CPI 2%; 1159250's record of 2026-11-07 (0.07% a year, F-107's US tax) and
-    // Psagot's price list as the bundle holds it, its dollar sums at the ECB rate of the latest refresh (16.11.2026). A change of any of
-    // them moves these figures: re-pin them with the data, never to fit.
+    // Psagot's price list as the bundle holds it, its dollar sums at the frozen rates above. A change of either moves these figures:
+    // re-pin them with the data, never to fit.
     const v = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan() });
     const f = v.options.find((o) => o.id === "tase-foreign")!.funds.find((x) => x.rec.id === "1159250")!;
     const at = f.beforeTax!.byHouse.psagot!;
