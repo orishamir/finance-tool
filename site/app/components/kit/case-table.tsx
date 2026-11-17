@@ -489,7 +489,7 @@ export interface GridCellView extends CellExtras {
  */
 function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end border-b border-border pb-1.5" : cx("justify-start", ROW_HEAD))}>
+    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end pb-1.5" : cx("justify-start", ROW_HEAD))}>
       {grip}
       <div data-head-words="" className="min-w-0 max-w-full font-medium">
         {head}
@@ -497,6 +497,30 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
     </div>
   );
 }
+
+/** A hairline of a grid: in the gap beside or under its place, in the border's colour, taking no press, never over a cell or words. */
+type Hairline = { key: string; kind: "head" | "row" | "column"; gridRow: string; gridColumn: string };
+
+/** Where a grid's hairline is drawn in its place: down its inline start edge (a column's), else along its foot. */
+const HAIRLINE: Record<Hairline["kind"], string> = {
+  // the 8 px gap between two columns, the line in its middle
+  column: "inset-y-0 start-[-4.5px] w-px",
+  // the 6 px gap under a row or under the heads, the line in its middle
+  row: "inset-x-0 top-[calc(100%+2.5px)] h-px",
+  head: "inset-x-0 top-[calc(100%+2.5px)] h-px",
+};
+
+/** The runs of the places `0 .. n - 1` that `open` says are open: each its first and last place. */
+const openRuns = (n: number, open: (i: number) => boolean): [number, number][] => {
+  const out: [number, number][] = [];
+  for (let i = 0; i < n; i++) {
+    if (!open(i)) continue;
+    const last = out.at(-1);
+    if (last && last[1] === i - 1) last[1] = i;
+    else out.push([i, i]);
+  }
+  return out;
+};
 
 /**
  * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`);
@@ -507,7 +531,9 @@ function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?:
  * A row's head is as tall as its cells and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
  * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each, and take the room for
  * it. `foot`: what stands under the grid (the bin while something is lifted, laid over what follows). Wider than its block, it scrolls
- * inside itself, sideways only, as a table does.
+ * inside itself, sideways only, as a table does. Quiet hairlines in the gaps (founder, 2026-11-17): one under the heads across the grid,
+ * one between the row heads and the first column and between each two columns, from the heads down and broken where a row's line or a
+ * cell over several columns runs across, and one under each row but the last, broken under a cell down over the next row.
  */
 export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
@@ -522,12 +548,44 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
   const start = height.reduce<number[]>((acc, _, j) => [...acc, j === 0 ? 0 : acc[j - 1]! + height[j - 1]!], []);
   const lines = start.at(-1)! + height.at(-1)!;
   const gapOf = (j: number, from: number, span: number) => j === gapRow || (gapCol >= 0 && from === gapCol && span === 1);
+  // ---------------------------------------------------------------- the hairlines
+  /** The lines a row's cell covers: its own, or, down over rows, theirs and their part lines. */
+  const linesOf = (j: number, cell: { down?: number }) => {
+    const last = j + (cell.down ?? 1) - 1;
+    return cell.down ? start[last]! + height[last]! - start[j]! : 1;
+  };
+  // what stands on each line of the rows over two columns or more: a cell (down over its lines too), or a row's line
+  const wide = rows.flatMap((r, j) => [
+    ...r.cells.filter((c) => c.span > 1).map((c) => ({ from: start[j]!, to: start[j]! + linesOf(j, c) - 1, col: c.from, span: c.span })),
+    ...(r.lines ?? []).flatMap((pl, L) => pl.cells.filter((c) => c.span > 1).map((c) => ({ from: start[j]! + 1 + L, to: start[j]! + 1 + L, col: c.from, span: c.span }))),
+  ]);
+  /** Whether line `line` of the rows has something over the boundary at column `k`'s inline start (between columns `k - 1` and `k`). */
+  const crossed = (line: number, k: number) => wide.some((w) => w.from <= line && line <= w.to && w.col < k && k < w.col + w.span);
+  const hairlines: Hairline[] = [
+    { key: "head", kind: "head", gridRow: "1", gridColumn: `1 / ${n + 2}` },
+    // between the row heads and the first column from the first line under the heads; between two columns from the heads down
+    ...Array.from({ length: n }, (_, k) =>
+      openRuns(1 + lines, (v) => (k > 0 || v > 0) && (v === 0 || !crossed(v - 1, k))).map(([a, b]) => ({ key: `column:${k}:${a}`, kind: "column" as const, gridRow: `${a + 1} / ${b + 2}`, gridColumn: String(k + 2) })),
+    ).flat(),
+    // under each row but the last, its cells' and its lines' foot, broken under a cell down over the next row
+    ...rows.slice(0, -1).flatMap((_, j) => {
+      const down = rows.flatMap((r, i) => r.cells.filter((c) => c.down && i <= j && j + 1 <= i + c.down - 1));
+      return openRuns(n + 1, (i) => i === 0 || !down.some((c) => c.from <= i - 1 && i - 1 < c.from + c.span)).map(([a, b]) => ({ key: `row:${j}:${a}`, kind: "row" as const, gridRow: String(start[j]! + height[j]! + 1), gridColumn: `${a + 1} / ${b + 2}` }));
+    }),
+  ];
   return (
     <div className="relative flex flex-col gap-2">
       {above}
       <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto overflow-y-hidden px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
+        {/* first, so every head, cell and line stands over them */}
+        {hairlines.map((h) => (
+          <div key={`hairline:${h.key}`} aria-hidden style={{ gridRow: h.gridRow, gridColumn: h.gridColumn }} className="pointer-events-none relative min-h-0 min-w-0">
+            <span data-hairline={h.kind} className={cx("absolute bg-border", HAIRLINE[h.kind])} />
+          </div>
+        ))}
         <div role="row" className="contents">
-          <span aria-hidden />
+          {/* placed, since the heads' hairline takes its place first */}
+          <span aria-hidden style={{ gridColumn: 1, gridRow: 1 }} />
           {columns.map((c, k) => {
             const head = <HeadWords head={c.head} end grip={c.grip} />;
             return (
@@ -577,7 +635,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                 }
                 const el = (
                   <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lift-body="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
-                    <div className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
+                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />

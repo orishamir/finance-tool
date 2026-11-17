@@ -34,6 +34,8 @@
 //            or a part line is carried with the pointer still or moving a pixel and back (2026-11-15: the bin's room and each preview's
 //            height moved the page, and a cell sliding past a grid's foot gave the grid a scrollbar for the slide), a fee's table with a
 //            scrollbar down at rest, and the page scrolling by the screen's foot or top other than steadily toward that edge.
+//   lines    on the kit page and the fee page's deal at 1440, a fee grid's hairline (`data-hairline`, kit/case-table.tsx) over a cell, a
+//            part line or a head's words, or one that takes a press (2026-11-17: the grid's hairlines between its rows and columns).
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -74,6 +76,7 @@ const browser = await chromium.launch();
 // each check must catch a failure planted on the kit page before its passing on the site counts
 const missed = await selfTest();
 const keyFindings = await keysCheck();
+const lineFindings = await linesCheck();
 const dragFindings = await dragCheck();
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
@@ -84,6 +87,10 @@ let failed = missed.length;
 for (const f of keyFindings) {
   failed++;
   console.log(`FAIL  /kit at 1440\n      keys: ${f.where}: ${f.detail}`);
+}
+for (const f of lineFindings) {
+  failed++;
+  console.log(`FAIL  ${f.where} at 1440\n      lines: ${f.detail}`);
 }
 for (const f of dragFindings) {
   failed++;
@@ -185,6 +192,71 @@ async function keysCheck() {
 }
 
 /**
+ * The hairlines of the fee grids (`lines` above), on the kit page and the fee page's deal at 1440, after a grid with a hairline over its
+ * cells is planted on the kit page (a copy of the kit's first grid) and caught. Returns what failed, each with the page it was found on,
+ * the planted grid's catch among them as a miss where it was not caught.
+ */
+async function linesCheck() {
+  const found = [];
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+  const page = await ctx.newPage();
+  await page.goto(base + "/kit", { waitUntil: "networkidle" });
+  await page.evaluate(settled);
+  const kit = await page.evaluate(gridLines, "[data-case-grid]");
+  if (!kit.hairlines) found.push({ where: "/kit", detail: "no fee grid draws a hairline" });
+  for (const detail of kit.findings) found.push({ where: "/kit", detail });
+  await page.evaluate(() => {
+    const grid = [...document.querySelectorAll("[data-case-grid]")].find((g) => g.querySelector('[data-hairline="column"]'));
+    if (!grid) return;
+    const copy = grid.cloneNode(true);
+    copy.id = "planted-lines";
+    for (const el of copy.querySelectorAll("[id]")) el.id = `planted-${el.id}`;
+    document.querySelector("main").append(copy);
+    // the tallest hairline between two columns, moved from the gap into the cells of the column after it
+    const line = [...copy.querySelectorAll('[data-hairline="column"]')].sort((a, b) => b.getBoundingClientRect().height - a.getBoundingClientRect().height)[0];
+    if (line) line.style.insetInlineStart = "24px";
+  });
+  const planted = await page.evaluate(gridLines, "#planted-lines");
+  if (!planted.findings.some((f) => f.includes("a hairline"))) found.push({ where: "/kit", detail: "self-test: the lines check did not catch the hairline planted over a grid's cells" });
+  await ctx.close();
+  const file = join(here, "layout-check-deal.txt");
+  if (existsSync(file)) {
+    const deal = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+    const p = await deal.newPage();
+    await p.goto(base + readFileSync(file, "utf8").trim(), { waitUntil: "networkidle" });
+    await p.evaluate(settled);
+    const on = await p.evaluate(gridLines, "[data-case-grid]");
+    if (!on.hairlines) found.push({ where: "the fee page's deal", detail: "no fee grid draws a hairline" });
+    for (const detail of on.findings) found.push({ where: "the fee page's deal", detail });
+    await deal.close();
+  }
+  return found;
+}
+
+// Runs in the page. The hairlines of the fee grids in `within` (kit/case-table.tsx, `data-hairline`), each against every cell, part line
+// and head's words of its grid, and its pointer events. Returns how many hairlines there were and what failed.
+function gridLines(within) {
+  const findings = [];
+  let hairlines = 0;
+  const box = (el) => el.getBoundingClientRect();
+  const crosses = (a, b) => a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5;
+  const words = (el) => el.innerText.trim().replace(/\s+/g, " ").slice(0, 30);
+  for (const grid of document.querySelectorAll(within)) {
+    const name = grid.id || grid.getAttribute("aria-label") || "a fee grid";
+    const lines = [...grid.querySelectorAll("[data-hairline]")].filter((h) => box(h).width > 0 && box(h).height > 0);
+    hairlines += lines.length;
+    const things = [...grid.querySelectorAll("[role=gridcell], [data-part-cell], [data-head-words]")];
+    for (const h of lines) {
+      const r = box(h);
+      const over = things.filter((t) => crosses(box(t), r));
+      if (over.length) findings.push(`${name}: a hairline (${h.dataset.hairline}) runs over ${over.length} cells, lines or heads' words (${over.slice(0, 2).map(words).join(" | ")})`);
+      if (getComputedStyle(h).pointerEvents !== "none") findings.push(`${name}: a hairline (${h.dataset.hairline}) takes a press`);
+    }
+  }
+  return { hairlines, findings };
+}
+
+/**
  * A fee grid's cells carried by their grips on the fee page's filled deal at 1440 (`drag` above), on a screen tall enough that the page
  * never scrolls under the carried thing. A part line carried down the grid's first column, the pointer moved a pixel aside and back at
  * every step: the place it would land on (`data-drop-over`) is one place at each point, and neither the page nor a fee's table scrolls
@@ -257,6 +329,20 @@ async function dragCheck() {
     if (!(await line.count())) found.push("the deal's first grid has no part line to carry");
     else {
       await lift(page, line);
+      // every place that takes it shows so: its frame drawn on what it wraps, or on the filled face inside that would cover it
+      const hidden = await page.evaluate(() =>
+        [...document.querySelectorAll("[data-span-table] [data-drop-zone]")].flatMap((z) => {
+          const box = z.getBoundingClientRect();
+          const face = [...z.querySelectorAll(":scope > *, :scope > * > *")].filter((e) => {
+            const r = e.getBoundingClientRect();
+            return r.width >= box.width - 2 && r.height >= box.height - 2;
+          }).at(-1);
+          const filled = (e) => !/rgba\(0, 0, 0, 0\)|transparent/.test(getComputedStyle(e).backgroundColor);
+          const top = face && filled(face) ? face : z.firstElementChild;
+          return top && getComputedStyle(top).outlineStyle === "none" ? [z.innerText.trim().replace(/\s+/g, " ").slice(0, 30)] : [];
+        }),
+      );
+      if (hidden.length) found.push(`${hidden.length} places that take a carried part line show no frame under their filled face (${hidden.slice(0, 3).join(" | ")})`);
       const geo = await grid.evaluate((g) => {
         const h = g.querySelector("[role=columnheader]").getBoundingClientRect();
         const r = g.getBoundingClientRect();
@@ -432,9 +518,17 @@ async function previewCheck(open) {
       return { role, at: role === "gridcell" ? `the cell "${el.innerText.trim().replace(/\s+/g, " ").slice(0, 30)}"` : `the head "${el.innerText.trim().replace(/\s+/g, " ")}"`, x: Math.round(r.left + r.width / 2), y: Math.round(r.top + Math.min(r.height / 2, 24)) };
     }),
   );
+  // the carried line's own place, the gap: it keeps its box while a preview draws the drop elsewhere, so nothing around it moves
+  const gapBox = () => grid.evaluate((g) => {
+    const r = g.querySelector("[data-lifted]")?.getBoundingClientRect();
+    return r ? [r.left, r.top, r.width, r.height].map(Math.round).join(",") : "none";
+  });
+  const gap0 = await gapBox();
+  const gapMoved = [];
   for (const p of places) {
     await page.mouse.move(p.x, p.y, { steps: 6 });
     await page.waitForTimeout(150);
+    if ((await gapBox()) !== gap0) gapMoved.push(p.at);
     const r = await page.evaluate(
       ({ w, p }) => {
         const flat = (el) => el.innerText.replace(/\s+/g, " ");
@@ -443,7 +537,7 @@ async function previewCheck(open) {
         if (!over) return { over: false, why, missing: [] };
         const g = over.closest("[data-case-grid]");
         // a case's cell shows the words in itself, or in a line of its row over its column that several cases share; never in the carried
-        // line's own place (`data-lifted`), which stands where it was until a preview draws the deal without it
+        // line's own place (`data-lifted`), which stands where it was, the gap, while a preview is drawn
         const holds = (c) => {
           if (flat(c).includes(w)) return true;
           const r = c.getBoundingClientRect();
@@ -457,7 +551,12 @@ async function previewCheck(open) {
             })
           );
         };
-        if (p.role === "gridcell") return { over: true, why, missing: holds(over.querySelector("[role=gridcell]") ?? over) ? [] : [flat(over).slice(0, 40)] };
+        // a cell of the line's own row (the cases it already covers) shows no preview, only its frame: drawn, the line's row would close
+        const gap = g.querySelector("[data-lifted]")?.getBoundingClientRect();
+        const ownHead = gap && [...g.querySelectorAll("[role=rowheader]")].map((h) => h.getBoundingClientRect()).find((h) => h.top <= gap.top + 2 && gap.bottom <= h.bottom + 2);
+        const oc = over.getBoundingClientRect();
+        const own = !!ownHead && oc.top >= ownHead.top - 2 && oc.bottom <= ownHead.bottom + 2;
+        if (p.role === "gridcell") return { over: true, why, missing: own || holds(over.querySelector("[role=gridcell]") ?? over) ? [] : [flat(over).slice(0, 40)] };
         // a head's cases: the case cells inside its column or its row, as the preview draws them
         const h = over.getBoundingClientRect();
         const col = p.role === "columnheader";
@@ -486,6 +585,7 @@ async function previewCheck(open) {
     }
     else if (r.missing.length) found.push(`a part line ("${words}") carried over ${p.at} did not show in the preview of ${r.missing.map((m) => `"${m}"`).join(", ")}`);
   }
+  if (gapMoved.length) found.push(`a carried part line's own place moved or closed while a preview was drawn over ${gapMoved.slice(0, 3).join(", ")}`);
   await page.keyboard.press("Escape");
   await page.mouse.up();
   await ctx.close();
