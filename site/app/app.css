@@ -1553,9 +1553,34 @@
 /* While something is carried, a cell of a fee table or grid keeps its resting look under the pointer: only a place that takes the
    carried thing answers it (its dashed frame and preview, DropZone), so a cell that takes nothing never looks like one. Outside the layers, so it wins over the utilities' hover fill. */
 :root:has([data-lift-ghost]) [data-span-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]),
-:root:has([data-lift-ghost]) [data-span-table] .group:hover .group-hover\:bg-accent:not(.bg-accent, [data-pick-card]) {
+:root:has([data-lift-ghost]) [data-span-table] .group:hover .group-hover\:bg-accent:not(.bg-accent, [data-pick-card], [data-drop-over] > * > *) {
   background-color: var(--color-background);
 }
 :root:has([data-lift-ghost]) [data-span-table] .group:hover [data-pick-card] {
   background-color: transparent;
+}
+
+/* A grid's case cell is drawn by its face (kit/case-table.tsx, `data-cell-face`), a filled card that would cover the frame its drop
+   place draws on the cell (DropZone): while something is carried, the face wears that frame, dashed, and with the thing over it the
+   frame solid and the fill, as a table's cell does. Outside the layers, so it wins over the utilities. */
+:root:has([data-lift-ghost]) [data-drop-zone] > * > [data-cell-face] {
+  outline: inherit;
+  outline-offset: inherit;
+}
+:root:has([data-lift-ghost]) [data-drop-zone][data-drop-over] > * > [data-cell-face] {
+  background-color: var(--color-accent);
+}
+
+/* A thing a mouse press on its own surface lifts (kit/lift.tsx, `data-lift-grab`: a fee table's or grid's cell, line or head, a part
+   of the open case) shows the grab hand over its padding and its plain words; a figure, a field or a button inside keeps its own. While
+   something is carried the hand is closed everywhere. Outside the layers, so it wins over the utilities' pointer. */
+@media (pointer: fine) {
+  [data-lift-grab],
+  [data-lift-grab] > [data-pick-card] {
+    cursor: grab;
+  }
+}
+:root:has([data-lift-ghost]),
+:root:has([data-lift-ghost]) * {
+  cursor: grabbing;
 }

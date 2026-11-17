@@ -75,7 +75,7 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
   return (
     <div
       id={id}
-      data-liftable=""
+      data-liftable="" data-lift-body=""
       {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
       className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", PART_LOOK[kind])}
     >
