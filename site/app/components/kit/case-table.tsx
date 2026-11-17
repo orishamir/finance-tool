@@ -577,7 +577,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                 }
                 const el = (
                   <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lift-body="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
-                    <div className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
+                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />

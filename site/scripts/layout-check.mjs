@@ -257,6 +257,20 @@ async function dragCheck() {
     if (!(await line.count())) found.push("the deal's first grid has no part line to carry");
     else {
       await lift(page, line);
+      // every place that takes it shows so: its frame drawn on what it wraps, or on the filled face inside that would cover it
+      const hidden = await page.evaluate(() =>
+        [...document.querySelectorAll("[data-span-table] [data-drop-zone]")].flatMap((z) => {
+          const box = z.getBoundingClientRect();
+          const face = [...z.querySelectorAll(":scope > *, :scope > * > *")].filter((e) => {
+            const r = e.getBoundingClientRect();
+            return r.width >= box.width - 2 && r.height >= box.height - 2;
+          }).at(-1);
+          const filled = (e) => !/rgba\(0, 0, 0, 0\)|transparent/.test(getComputedStyle(e).backgroundColor);
+          const top = face && filled(face) ? face : z.firstElementChild;
+          return top && getComputedStyle(top).outlineStyle === "none" ? [z.innerText.trim().replace(/\s+/g, " ").slice(0, 30)] : [];
+        }),
+      );
+      if (hidden.length) found.push(`${hidden.length} places that take a carried part line show no frame under their filled face (${hidden.slice(0, 3).join(" | ")})`);
       const geo = await grid.evaluate((g) => {
         const h = g.querySelector("[role=columnheader]").getBoundingClientRect();
         const r = g.getBoundingClientRect();
