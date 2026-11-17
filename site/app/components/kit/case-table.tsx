@@ -3,7 +3,8 @@
 // ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
 // cells a cell for each part its cells hold alike), and beside the heads a small plus knob that adds a case, a step, a row or a column:
 // always at the end of the column heads and under the row heads, and on the line between two heads while the pointer rests there, adding
-// exactly there. Each head, row and cell may carry a grip (⋮⋮, lift.tsx) and stand in a drop zone, each cell a knob on its edges that
+// exactly there. Each head, row and cell may carry a grip (⋮⋮, lift.tsx), which also lifts it from a mouse press on its own surface
+// moved a few pixels (`data-lift-body`), and stand in a drop zone, each cell a knob on its edges that
 // stretches it over its neighbours and, where it can be taken away, a small bin in its top end corner; a cell covering its whole row says
 // so under its parts. A
 // part every case holds alike is one cell over every column, not a line of its own. Under a row a slim strip drawn while the pointer is
@@ -213,7 +214,7 @@ const GRIP_ROOM = "ps-7";
  */
 function OpenHead({ label, onOpen, open, range, grip, children }: { label: string; onOpen: () => void; open?: boolean; range?: boolean; grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", grip ? GRIP_ROOM : "ps-1.5", LIFT_INNER, open && OPEN)}>
+    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", grip ? GRIP_ROOM : "ps-1.5", LIFT_INNER, open && OPEN)}>
       <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {grip}
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
@@ -225,7 +226,7 @@ function OpenHead({ label, onOpen, open, range, grip, children }: { label: strin
 /** A column's head that opens nothing (a value no case names): its words at its foot, as an `OpenHead`'s, and its grip. */
 function StillHead({ grip, children }: { grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium", grip ? GRIP_ROOM : "ps-1.5")}>
+    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium", grip ? GRIP_ROOM : "ps-1.5")}>
       {grip}
       <div data-head-words="" className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
     </div>
@@ -385,7 +386,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
         </div>
         {rows.map((r, j) => (
           <div key={r.id} role="row" className="contents">
-            <div role="rowheader" id={keys.rowId(j)} data-liftable="" className={cx("flex items-start gap-1 text-sm text-muted-foreground", ROW_HEAD)} style={{ gridColumn: 1, gridRow: j + 2 }}>
+            <div role="rowheader" id={keys.rowId(j)} data-liftable="" data-lift-body="" className={cx("flex items-start gap-1 text-sm text-muted-foreground", ROW_HEAD)} style={{ gridColumn: 1, gridRow: j + 2 }}>
               {r.grip}
               {r.head}
             </div>
@@ -411,7 +412,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
                 );
               }
               const el = (
-                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
                     <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
@@ -488,7 +489,7 @@ export interface GridCellView extends CellExtras {
  */
 function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end border-b border-border pb-1.5" : cx("justify-start", ROW_HEAD))}>
+    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end border-b border-border pb-1.5" : cx("justify-start", ROW_HEAD))}>
       {grip}
       <div data-head-words="" className="min-w-0 max-w-full font-medium">
         {head}
@@ -575,7 +576,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   );
                 }
                 const el = (
-                  <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
+                  <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lift-body="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
                     <div className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
@@ -599,7 +600,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />

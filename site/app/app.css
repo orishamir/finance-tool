@@ -1559,3 +1559,17 @@
 :root:has([data-lift-ghost]) [data-span-table] .group:hover [data-pick-card] {
   background-color: transparent;
 }
+
+/* A thing a mouse press on its own surface lifts (kit/lift.tsx, `data-lift-grab`: a fee table's or grid's cell, line or head, a part
+   of the open case) shows the grab hand over its padding and its plain words; a figure, a field or a button inside keeps its own. While
+   something is carried the hand is closed everywhere. Outside the layers, so it wins over the utilities' pointer. */
+@media (pointer: fine) {
+  [data-lift-grab],
+  [data-lift-grab] > [data-pick-card] {
+    cursor: grab;
+  }
+}
+:root:has([data-lift-ghost]),
+:root:has([data-lift-ghost]) * {
+  cursor: grabbing;
+}
