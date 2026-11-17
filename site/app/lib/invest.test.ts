@@ -229,13 +229,14 @@ describe("invest page computation", () => {
 
   it("pins one fund's figures before tax: the S&P 500's Tel Aviv line at Psagot on the plan (F-118, F-91)", () => {
     // 6,000 NIS now and 400 a month for 20 years at 7% and CPI 2%; 1159250's record of 2026-11-07 (0.07% a year, F-107's US tax) and
-    // Psagot's price list as the bundle holds it. A change of either moves these figures: re-pin them with the data, never to fit.
+    // Psagot's price list as the bundle holds it, its dollar sums at the ECB rate of the latest refresh (16.11.2026). A change of any of
+    // them moves these figures: re-pin them with the data, never to fit.
     const v = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan() });
     const f = v.options.find((o) => o.id === "tase-foreign")!.funds.find((x) => x.rec.id === "1159250")!;
     const at = f.beforeTax!.byHouse.psagot!;
-    expect(Math.round(at.leftN)).toBe(165_137);
-    // the account's fees: its whole part (F-91, 6,859) less what the cash waiting for a whole unit did (F-109), as the receipt writes them
-    expect(at.accountCost.value).toBe(2_750);
+    expect(Math.round(at.leftN)).toBe(165_162);
+    // the account's fees: its whole part (F-91) less what the cash waiting for a whole unit did (F-109), as the receipt writes them
+    expect(at.accountCost.value).toBe(2_751);
     // what it rests on: the fund's US tax (TXF-16) and that nothing is taxed before the sale (TXF-11, the fund's own ruling); never TXF-04
     const used = at.left.rulesUsed!.map((r) => r.id);
     expect(used).toEqual(expect.arrayContaining(["TXF-16", "TXF-11"]));
