@@ -25,7 +25,9 @@
 //   drag     on the fee page's filled deal at 1440, a fee grid's cell carried by its grip: the place it would land on changing under a pointer
 //            that moves a pixel and back (a preview moving the page under the pointer, and the target read from the page with it), the page
 //            or a fee's table scrolling sideways while it is carried, and a case's cell that does not swap with the case it is dropped on to
-//            its left or above it, or by its grip's menu ("הזזה שמאלה"); a part line carried over a case's cell that neither shows the
+//            its left or above it, or by its grip's menu ("הזזה שמאלה"), or carried from its own surface rather than its grip (2026-11-17:
+//            "drag from the empty space too, not just the icon"), with the grab hand there and no words selected meanwhile; a click on a
+//            cell's own surface that does not open its case, and a press on a figure in a cell that carries the cell; a part line carried over a case's cell that neither shows the
 //            line in its preview nor says why it does not take it (its own first case's cell among them), or over a head that takes it
 //            without the line in each case's cell of its column or row; and, on a 900 px screen and on one just as tall as the page, the
 //            page's height, its scroll, whether it has a scrollbar, or a fee's table having a scrollbar down changing while a case's cell
@@ -187,7 +189,9 @@ async function keysCheck() {
  * never scrolls under the carried thing. A part line carried down the grid's first column, the pointer moved a pixel aside and back at
  * every step: the place it would land on (`data-drop-over`) is one place at each point, and neither the page nor a fee's table scrolls
  * sideways meanwhile. A case's cell dropped on the cell to its left, one dropped on the cell above it, and one moved by its grip's menu
- * ("הזזה שמאלה") swap with the case there; the one cell of a row, dropped on the first row's head, moves its row there. Returns what failed.
+ * ("הזזה שמאלה") swap with the case there, and so does one carried from its own surface (its padding or its plain words, not its grip),
+ * which shows the grab hand and selects no words; a click there without moving opens its case, and a press on a figure in a cell carries
+ * nothing. The one cell of a row, dropped on the first row's head, moves its row there. Returns what failed.
  */
 async function dragCheck() {
   const file = join(here, "layout-check-deal.txt");
@@ -212,6 +216,28 @@ async function dragCheck() {
     await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
     await page.mouse.down();
     await page.mouse.move(b.x + b.width / 2 - 12, b.y + b.height / 2 + 4, { steps: 4 });
+  };
+  // a point on a cell's own surface, its padding or its plain words, away from its grip, figures, fields, buttons and knobs (kit/choice.tsx,
+  // `onOwnSurface`): from its foot up, from its start in, the first such point under the pointer
+  const surface = (el) =>
+    el.evaluate((c) => {
+      const own = "a, button:not([data-pick-card]), input, select, textarea, label, summary, [role=button], [role=slider], [data-lift], [data-grip-box], [data-knob-strip]";
+      const r = c.getBoundingClientRect();
+      for (let y = r.bottom - 6; y > r.top + 4; y -= 3)
+        for (let x = r.right - 34; x > r.left + 14; x -= 3) {
+          const t = document.elementFromPoint(x, y);
+          if (t && c.contains(t) && !t.closest(own)) return { x, y };
+        }
+      return null;
+    });
+  // carried from its own surface, not its grip, the pointer moving as `lift` moves it
+  const liftBody = async (page, el) => {
+    const p = await surface(el);
+    if (!p) return null;
+    await page.mouse.move(p.x, p.y);
+    await page.mouse.down();
+    await page.mouse.move(p.x - 12, p.y + 4, { steps: 4 });
+    return p;
   };
   const dropOn = async (page, el) => {
     const b = await el.boundingBox();
@@ -257,8 +283,9 @@ async function dragCheck() {
     await ctx.close();
   }
   for (const f of await previewCheck(open)) found.push(f);
-  // a case's cell dropped on the cell to its left, and on the cell above it
-  for (const way of ["left", "above"]) {
+  // a case's cell dropped on the cell to its left, and on the cell above it, carried by its grip; and one carried from its own surface
+  // (a press on its padding or its plain words, moved), the grab hand over it, no words selected while it is carried
+  for (const [way, how] of [["left", "grip"], ["above", "grip"], ["left", "surface"]]) {
     const { ctx, page, grid } = await open();
     const cells = await caseCells(grid);
     const pair =
@@ -270,14 +297,67 @@ async function dragCheck() {
           })();
     if (!pair) found.push(`the deal's first grid has no two cases side by side to swap ${way === "left" ? "across" : "down"}`);
     else {
-      const [from, to] = pair;
-      const a = await words(cellAt(grid, from.row, from.from));
+      const [at, to] = pair;
+      const a = await words(cellAt(grid, at.row, at.from));
       const b = await words(cellAt(grid, to.row, to.from));
-      await lift(page, cellAt(grid, from.row, from.from));
-      await dropOn(page, cellAt(grid, to.row, to.from));
-      const a2 = await words(cellAt(grid, from.row, from.from));
+      const by = how === "surface" ? " carried from its own surface, not its grip," : "";
+      if (how === "surface") {
+        const cell = cellAt(grid, at.row, at.from);
+        const p = await surface(cell);
+        const hand = p && (await page.evaluate(({ x, y }) => getComputedStyle(document.elementFromPoint(x, y)).cursor, p));
+        if (!p) found.push(`a case's cell ("${a}") has no point of its own surface to press`);
+        else if (hand !== "grab") found.push(`the pointer over a case's cell's own surface ("${a}") is "${hand}", not the grab hand`);
+        await liftBody(page, cell);
+        const carried = await page.evaluate(() => !!document.querySelector("[data-lift-ghost]"));
+        if (!carried) found.push(`a case's cell ("${a}") pressed on its own surface and moved was not carried`);
+        // the words under the pointer's way are not selected while it is carried
+        const t = await cellAt(grid, to.row, to.from).boundingBox();
+        await page.mouse.move(t.x + t.width / 2, t.y + Math.min(t.height / 2, 24), { steps: 8 });
+        const picked = await page.evaluate(() => String(getSelection()).trim());
+        if (picked) found.push(`carrying a case's cell from its own surface selected words: "${picked.replace(/\s+/g, " ").slice(0, 40)}"`);
+        // let go where it is: the cell there, measured again, would be its preview's
+        await page.mouse.up();
+        await page.waitForTimeout(500);
+        await page.evaluate(settled);
+      } else {
+        await lift(page, cellAt(grid, at.row, at.from));
+        await dropOn(page, cellAt(grid, to.row, to.from));
+      }
+      const a2 = await words(cellAt(grid, at.row, at.from));
       const b2 = await words(cellAt(grid, to.row, to.from));
-      if (a2 !== b || b2 !== a) found.push(`a case's cell dropped on the cell ${way === "left" ? "to its left" : "above it"} did not swap with it: "${a}" and "${b}" became "${a2}" and "${b2}"`);
+      if (a2 !== b || b2 !== a) found.push(`a case's cell${by} dropped on the cell ${way === "left" ? "to its left" : "above it"} did not swap with it: "${a}" and "${b}" became "${a2}" and "${b2}"`);
+    }
+    await ctx.close();
+  }
+  // a click on a case's cell's own surface, unmoved, opens its case and carries nothing; a press on a figure in a cell, moved as far as a
+  // carry needs, carries nothing either (the figure keeps its own tap)
+  {
+    const { ctx, page, grid } = await open();
+    // the cell by its place, since a filter on its outline would find another cell once it opens
+    const place = await grid.evaluate((g) => {
+      const c = [...g.querySelectorAll("[role=gridcell][data-liftable]:not([data-part-cell])")].find((x) => !x.querySelector(".outline-primary"));
+      return c ? { row: Number(c.dataset.row), from: Number(c.dataset.from) } : null;
+    });
+    const shut = place && cellAt(grid, place.row, place.from);
+    const p = shut ? await surface(shut) : null;
+    if (!p) found.push("the deal's first grid has no case's cell, not open, with a point of its own surface to click");
+    else {
+      const a = await words(shut);
+      await page.mouse.click(p.x, p.y);
+      await page.waitForTimeout(300);
+      const opened = await shut.evaluate((c) => [c, ...c.children].some((e) => e.matches(".outline-primary, .border-primary")));
+      if (!opened) found.push(`a click on a case's cell's own surface ("${a}") did not open its case`);
+    }
+    const figure = grid.locator("[role=gridcell][data-liftable] :is([data-edit-in-place], button.num)").first();
+    if (!(await figure.count())) found.push("the deal's first grid has no figure in a cell to press");
+    else {
+      const b = await figure.boundingBox();
+      await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(b.x + b.width / 2 - 24, b.y + b.height / 2 + 8, { steps: 6 });
+      if (await page.evaluate(() => !!document.querySelector("[data-lift-ghost]"))) found.push(`a press on a figure in a cell ("${(await figure.innerText()).trim()}"), moved, carried the cell`);
+      await page.keyboard.press("Escape");
+      await page.mouse.up();
     }
     await ctx.close();
   }

@@ -1,5 +1,6 @@
 // Carrying a thing by the pointer, and stretching a cell by its knob (design-system 11, `Grip`). A grip (⋮⋮, `Grip`) lifts what it stands
-// in (the nearest `data-liftable`): with a mouse once it moves a few pixels, on a phone after a long press anywhere on the thing. A chip
+// in (the nearest `data-liftable`): with a mouse once it moves a few pixels, on a phone after a long press anywhere on the thing; a thing
+// marked `data-lift-body` lifts the same way from a mouse press on its own surface, away from what has a tap of its own. A chip
 // whose tap acts is carried the same way where the pointer is fine (`useDragSource`). The thing follows the pointer as a clean copy of
 // itself, upright and on the card's surface; a thing that has a head (`data-lift-head`, a fee's card) is carried as its head alone, and
 // its place closes to that size. Its own place becomes the gap. Among the members of a sortable list (`DropZone`'s `sort`: a table's
@@ -22,6 +23,7 @@ import { useMedia } from "../../lib/hooks";
 import { allZones, carry, listMembers, useCarried, useCarriedName, useOver, zoneElement, DropZone, type DropHow, type Zone } from "./drag-drop";
 import { atRest, easing, flip, measure, motionMs, play } from "./flip";
 import { around, inside, landing, placeAt, readingOrder, shifts, type Axis, type Box } from "./sortable";
+import { onOwnSurface } from "./choice";
 import { cx } from "./cx";
 import { BinIcon } from "./remove-button";
 
@@ -424,6 +426,40 @@ const swallowClick = () => {
   setTimeout(() => window.removeEventListener("click", swallow, { capture: true }), 600);
 };
 
+/**
+ * A mouse press on the surface of a thing that lifts from it (`data-lift-body`, the grip's thing `from`): moved past `MOUSE_SLOP`, it lifts
+ * the thing as its grip does, words the press had begun to select let go; let go before, it is a plain click (a cell opens its case).
+ * Meanwhile the browser drags no selected words away, and the click the carry's release makes is swallowed. Returns what lets go of it
+ * while it has not lifted.
+ */
+function bodyPress(e: PointerEvent, item: string, from: HTMLElement, name: string | undefined): () => void {
+  const x0 = e.clientX, y0 = e.clientY, id = e.pointerId;
+  let lifted = false;
+  const noDrag = (d: DragEvent) => d.preventDefault();
+  const move = (m: PointerEvent) => {
+    if (lifted || m.pointerId !== id || Math.hypot(m.clientX - x0, m.clientY - y0) <= MOUSE_SLOP) return;
+    lifted = true;
+    getSelection()?.removeAllRanges();
+    lift(item, from, m.clientX, m.clientY, { ...(name ? { name } : {}) });
+  };
+  const stop = () => {
+    window.removeEventListener("pointermove", move);
+    window.removeEventListener("pointerup", up);
+    window.removeEventListener("pointercancel", stop);
+    window.removeEventListener("dragstart", noDrag, true);
+  };
+  const up = () => {
+    if (lifted) swallowClick();
+    stop();
+  };
+  window.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", up);
+  window.addEventListener("pointercancel", stop);
+  window.addEventListener("dragstart", noDrag, true);
+  // once lifted, the press is kept until its release, whose click it swallows, though the grip that began it is drawn again meanwhile
+  return () => !lifted && stop();
+}
+
 /** What a chip that can be carried spreads on its element: nothing where the pointer is coarse or `item` is null (a chip that can't be). */
 export type DragSourceProps = { "data-drag-source"?: ""; onPointerDown?: (e: ReactPointerEvent<HTMLElement>) => void };
 
@@ -476,7 +512,8 @@ export interface GripAction {
 }
 
 /**
- * A grip (⋮⋮): pressed and moved (on a phone, a long press anywhere on what it lifts), it lifts the nearest element marked `data-liftable`
+ * A grip (⋮⋮): pressed and moved (on a phone, a long press anywhere on what it lifts; with a mouse, a press on the surface of a thing
+ * marked `data-lift-body`, moved, which shows the grab hand by `data-lift-grab`), it lifts the nearest element marked `data-liftable`
  * around it as `item`, `name` the thing's words (the bin says them); tapped or pressed with Enter, it opens its menu (`actions`), where there
  * is one. `still`: it lifts nothing (nothing would take the thing), its menu alone. `label` is its spoken name. Delete takes the thing
  * away where the menu can (`onRemove`). It takes no room: it stands over the start of the element around it (`inside`), or just before
@@ -517,18 +554,27 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
       if (far > TOUCH_SLOP) clear();
     } else if (far > MOUSE_SLOP) start(e.clientX, e.clientY);
   };
-  // on touch a long press anywhere on what it lifts lifts it (on what is inside it that lifts itself, that alone)
+  // on touch a long press anywhere on what it lifts lifts it (on what is inside it that lifts itself, that alone); with a mouse, on a
+  // thing marked `data-lift-body`, a press on its own surface moved a few pixels (`bodyPress`)
   useEffect(() => {
     const from = btn.current?.closest<HTMLElement>("[data-liftable]");
     if (!from || still) return;
+    const body = from.hasAttribute("data-lift-body");
+    if (body) from.setAttribute("data-lift-grab", "");
     let hold: { x: number; y: number; id: number; timer: number } | null = null;
+    let press: (() => void) | null = null;
     const stop = () => {
       if (hold) clearTimeout(hold.timer);
       hold = null;
     };
     const down = (e: PointerEvent) => {
       const t = e.target as Element;
-      if (e.pointerType !== "touch" || t.closest("[data-liftable]") !== from || t.closest("input, select, textarea, [data-grip], [data-span-knob]")) return;
+      if (t.closest("[data-liftable]") !== from) return;
+      if (e.pointerType === "mouse") {
+        if (body && e.button === 0 && onOwnSurface(t, from)) press = bodyPress(e, item, from, name);
+        return;
+      }
+      if (e.pointerType !== "touch" || t.closest("input, select, textarea, [data-grip], [data-span-knob]")) return;
       const x = e.clientX, y = e.clientY;
       hold = {
         x,
@@ -548,6 +594,8 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
     from.addEventListener("pointercancel", stop);
     return () => {
       stop();
+      press?.();
+      from.removeAttribute("data-lift-grab");
       from.removeEventListener("pointerdown", down);
       from.removeEventListener("pointermove", move);
       from.removeEventListener("pointerup", stop);

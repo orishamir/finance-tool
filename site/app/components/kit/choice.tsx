@@ -270,6 +270,16 @@ export function onSurface(e: { target: EventTarget; currentTarget: EventTarget }
 }
 
 /**
+ * Whether a press on `t` fell on `root`'s own surface (its padding, its plain words) and not on something inside it with a tap of its
+ * own: a control, a field, a figure, a grip, a knob. The button stretched over a card or a head (`data-pick-card`) is its surface. What a
+ * thing lifted by a press on itself starts from (lift.tsx, `data-lift-body`).
+ */
+export function onOwnSurface(t: Element, root: Element): boolean {
+  for (let x: Element | null = t; x && x !== root; x = x.parentElement) if (x.matches(OWN_TAP) && !x.matches("[data-pick-card]")) return false;
+  return root.contains(t);
+}
+
+/**
  * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by
  * tapping the option itself"), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
  * figure that opens its source, a fund number that opens its page, a figure typed in place): they lie above the card's button. The button
