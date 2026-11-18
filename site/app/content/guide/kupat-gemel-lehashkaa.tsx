@@ -11,13 +11,14 @@ import { AbroadAmount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } fro
 export const content: GuideContent = {
   what: ({ figure }) => {
     const ceiling = figure("KGL-03", "ceiling");
+    const rate = figure("TXK-06", "rate");
     return (
     <>
       <p className="max-w-measure">
         אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-04">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
       </p>
       <p className="max-w-measure">
-        <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>.
+        <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: <Ruled id={["TXK-06", "TXK-07"]}>עד</Ruled> {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
       </p>
       <p className="max-w-measure">
         בחוק ובכללים <Ruled id="KGL-06">לא נמצא תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
@@ -42,7 +43,7 @@ export const content: GuideContent = {
   ),
   omitSwitchInTax: true,
   companiesOpen: true,
-  termIds: ["מסלול השקעה", "מסלול ברירת מחדל", "תקופת ההנחה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך", "דמי ניהול מהפקדה", "דוח שנתי", "החזר מס", "רשות המסים"],
+  termIds: ["מסלול השקעה", "מסלול ברירת מחדל", "הרווח הריאלי", "תקופת ההנחה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך", "דמי ניהול מהפקדה", "דוח שנתי", "החזר מס", "רשות המסים"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
