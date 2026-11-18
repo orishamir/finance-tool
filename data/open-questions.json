@@ -303,10 +303,6 @@
     "status": "open"
   },
   {
-    "id": "CORP OQ8",
-    "status": "open"
-  },
-  {
     "id": "CORP OQ9",
     "status": "open"
   },
@@ -357,6 +353,10 @@
     "id": "CORP OQ20",
     "status": "open",
     "title_he": "האם הפיקדונות שמגבים תעודת פיקדון משועבדים למחזיקים"
+  },
+  {
+    "id": "CORP OQ21",
+    "status": "open"
   },
   {
     "id": "ETF OQ3",
@@ -470,6 +470,18 @@
   },
   {
     "id": "ETF OQ37",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ38",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ39",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ40",
     "status": "open"
   },
   {
@@ -1573,11 +1585,13 @@
   },
   {
     "id": "TXF OQ13",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "האם מס אמריקאי חל על ריבית שקרן אג״ח אמריקאית משלמת למשקיע ישראלי"
   },
   {
     "id": "TXF OQ14",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "האם חלוקה מקרן אג״ח זרה ממוסה כריבית או כדיבידנד"
   },
   {
     "id": "TXF OQ15",
@@ -1701,6 +1715,11 @@
     "id": "TXS OQ26",
     "status": "open",
     "title_he": "האם התקנות על המדד של קרן נאמנות להשקעות חוץ עדיין בתוקף"
+  },
+  {
+    "id": "TXS OQ27",
+    "status": "open",
+    "title_he": "האם הפטור על הפרשי הצמדה ושער חל גם על קרן נאמנות חייבת"
   },
   {
     "id": "TX2 OQ2",
