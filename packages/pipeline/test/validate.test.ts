@@ -458,8 +458,11 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // of the 1964 provident-fund rules from ק"ת 10716 (2023) to the end of 2024, a gap in the reading of reg. 34(ב)(1) (TXK OQ15);
     // later that day four more, what a provident fund for annuity pays on death without insurance and its standard bylaw's base text
     // (PEN OQ32), how often a general pension fund credits its demographic surplus (PEN OQ33), an insurer's minimum age for an
-    // annuity from provident money (INS OQ18), and a deposit ceiling on a brokerage account (BRK OQ26)
-    expect(items.length).toBe(444);
+    // annuity from provident money (INS OQ18), and a deposit ceiling on a brokerage account (BRK OQ26); 2026-11-18 from the bond-domain
+    // pass four more and one answered: the TASE bond-index methodology files (ETF OQ38), when a Tel-Gov index drops a bond near its
+    // redemption (ETF OQ39), whether Israeli bond ETFs pay out (ETF OQ40) and a bond's removal within the month on default (CORP OQ21);
+    // CORP OQ8 deleted, the Tel-Bond and Tel-Gov rules now read on TASE's own pages and board decisions (ETF-84 to ETF-88)
+    expect(items.length).toBe(447);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
