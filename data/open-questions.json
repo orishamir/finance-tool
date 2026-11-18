@@ -303,10 +303,6 @@
     "status": "open"
   },
   {
-    "id": "CORP OQ8",
-    "status": "open"
-  },
-  {
     "id": "CORP OQ9",
     "status": "open"
   },
@@ -357,6 +353,10 @@
     "id": "CORP OQ20",
     "status": "open",
     "title_he": "האם הפיקדונות שמגבים תעודת פיקדון משועבדים למחזיקים"
+  },
+  {
+    "id": "CORP OQ21",
+    "status": "open"
   },
   {
     "id": "ETF OQ3",
@@ -470,6 +470,18 @@
   },
   {
     "id": "ETF OQ37",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ38",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ39",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ40",
     "status": "open"
   },
   {
