@@ -18,7 +18,10 @@ and family make saving and investing decisions in Israel.
 - No religious-law products: no Halacha tracks (מסלולי הלכה, "כשר"), no
   Sharia tracks (שריעה), and nothing else defined by religious law. They are
   not shown, not kept in `data/` (a pipeline that reads a source drops them),
-  not in the rule base or the glossary, and not researched.
+  not in the rule base or the glossary, and not researched. Being kosher is
+  fine when it isn't the product's whole purpose: an ordinary fund that also
+  carries a kosher certificate (Maya's "קרן כשרה" flag on an index fund, for
+  example) stays.
 
 ## What exists
 
