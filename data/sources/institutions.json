@@ -775,6 +775,9 @@
     "own_hosts": [
       "blackrock.com",
       "ishares.com"
+    ],
+    "filing_names": [
+      "נספח לתשקיף קרן חוץ נסחרת, iShares II plc"
     ]
   },
   {
@@ -961,6 +964,9 @@
     "deposit_bank_id": null,
     "own_hosts": [
       "invesco.com"
+    ],
+    "filing_names": [
+      "נספח לתשקיף קרן חוץ נסחרת, Invesco Markets II plc"
     ]
   },
   {
