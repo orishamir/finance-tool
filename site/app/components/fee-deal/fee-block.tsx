@@ -308,10 +308,14 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
-        {question}
-        <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)} />
-      </FeeBlock>
+      <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
+        {(by, cases) => (
+          <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner} by={by}>
+            {question}
+            {cases}
+          </FeeBlock>
+        )}
+      </FeeCases>
     </DropZone>
   );
 }

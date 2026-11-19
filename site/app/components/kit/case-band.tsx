@@ -1,6 +1,6 @@
-// A fee whose price changes by one to three things (what is bought, the channel, the track, a range): its head in the cases' blue naming the
-// things (`ConditionHead`), over a table or a grid of its cases (case-table.tsx), or, read as rows, one band in that blue, its head then one
-// flat row per case (design-system 11, "Cases and parts"). Never a band inside a band. A case's condition is
+// A fee whose price changes by one to three things (what is bought, the channel, the track, a range): its head in the cases' colour naming
+// the things (`ConditionHead`), on the fee's name's line over a table or a grid of its cases (case-table.tsx), or, read as rows, one band in
+// that colour, its head then one flat row per case (design-system 11, "Cases and parts"). Never a band inside a band. A case's condition is
 // words in the band at the row's start (a fixed column where the band is wide, above the parts where it is narrow, by the band's own
 // width: from 25 rem, a computer's column), its parts in the dark cell beside them. One case may be open, in place: its condition's values as slots, its parts with their
 // boxes, and the actions on the case as icons in its head.
@@ -42,22 +42,23 @@ export interface HeadThing {
 }
 
 /**
- * The condition's head alone, in the cases' blue: the cases' icon, `label` ("המחיר משתנה לפי") and one pill per thing, nothing else. With
+ * The condition's head alone, in the cases' colour: the cases' icon, `label` ("המחיר משתנה לפי") and one pill per thing, nothing else. With
  * `onThing` the pills are slots, buttons with a chevron whose menu the page opens (`ThingMenu`: the thing's values, and the action that
  * drops it), `openThing` the one whose menu is open, ringed; without `onThing` they are words at rest. With `onRemoveThing` a bin beside
  * each pill, a slot or words, drops its thing at once (`removeLabel` its spoken name), so a thing can be taken away with its fee closed
  * too. Each pill and its bin stand in one element marked `data-thing-place` with the thing's id, where the page gives the focus back to
- * the first control after an undo. `bare`: the head stands alone over a table or a grid, rounded; else it heads a band's rows. `zone` wraps
- * the whole head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone inside it takes
- * what the pill takes.
+ * the first control after an undo. `inline`: the head stands on its fee's name's line (`FeeBlock`'s `by`), over a table or a grid, with no
+ * frame or fill of its own and its words in the regular weight (founder, 2026-11-19); else it heads a band's rows. `zone` wraps the whole
+ * head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone inside it takes what the pill
+ * takes.
  */
-export function ConditionHead({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, bare, zone }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; bare?: boolean; zone?: (head: ReactNode) => ReactNode }) {
+export function ConditionHead({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, inline, zone }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; inline?: boolean; zone?: (head: ReactNode) => ReactNode }) {
   const head = (
-    // 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
-    // wrapped lines, so two bins' areas never meet
-    <div className={cx("flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink", bare && "rounded-lg border border-when-edge bg-when-fill")}>
+    // in a band, 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px
+    // between wrapped lines, so two bins' areas never meet
+    <div className={cx("flex min-h-target flex-wrap items-center gap-y-3 text-sm text-when-ink", inline ? "gap-x-1.5" : "gap-x-2 px-3 py-2")}>
       <Split {...icon} />
-      <span className="font-medium">{label}</span>
+      <span className={inline ? undefined : "font-medium"}>{label}</span>
       {things.map((t) => {
         const pill = (
         <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-full">

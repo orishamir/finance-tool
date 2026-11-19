@@ -29,7 +29,7 @@ describe("a fee's band", () => {
   it("heads with what the price changes by and its things alone: adding stands where the new case will", () => {
     const out = band(null);
     expect(out).toContain(words.changesBy);
-    expect(bare(h(ConditionHead, { things: [{ id: "a", name: "א" }], bare: true }))).not.toContain("<button");
+    expect(bare(h(ConditionHead, { things: [{ id: "a", name: "א" }], inline: true }))).not.toContain("<button");
   });
   it("says the person's own track in words beside its value", () => {
     const out = band(h(CaseRow, { when: [{ text: "ערך" }, { text: "מסלול", mine: true }], label: "לפתוח", onOpen: () => undefined, children: null }));
@@ -53,15 +53,21 @@ describe("a fee's band", () => {
 
 describe("a fee's table and grid", () => {
   const add = { label: "הוספת מקרה", onAdd: () => undefined };
-  it("a table's column head opens its case, named for it; its add is a plus knob whose spoken name and title say what it adds", () => {
-    const out = html(h(CaseTable, { columns: [{ id: "a", head: "ערך", label: "לפתוח את המקרה: ערך", onOpen: () => undefined }], rows: [{ id: "price", head: "שיעור", cells: [{ from: 0, span: 1, content: "1%" }] }], add }));
+  it("a table's case is a tile whose head opens it, named for it; its add is a bare plus whose spoken name and title say what it adds", () => {
+    const out = html(h(CaseTable, { columns: [{ id: "a", head: "ערך", label: "לפתוח את המקרה: ערך", onOpen: () => undefined }], rows: [{ id: "price", cells: [{ from: 0, span: 1, content: "1%" }] }], add }));
+    expect(out.match(/data-case-tile=""/g)).toHaveLength(1);
     expect(out).toMatch(/<button[^>]*aria-label="לפתוח את המקרה: ערך"/);
-    expect(out).toMatch(/<button[^>]*aria-label="הוספת מקרה"[^>]*title="הוספת מקרה"[^>]*data-head-add=""/);
-    expect(out).toContain("שיעור");
+    expect(out).toMatch(/<button[^>]*aria-label="הוספת מקרה"[^>]*title="הוספת מקרה"[^>]*data-head-add=""[^>]*class="[^"]*text-muted-foreground/);
+    expect(out).not.toMatch(/data-head-add=""[^>]*class="[^"]*border/);
+  });
+  it("the open case's whole tile has the action colour's outline, and no head or cell of it another", () => {
+    const out = html(h(CaseTable, { columns: [{ id: "a", head: "א", label: "א", onOpen: () => undefined, open: true }, { id: "b", head: "ב", label: "ב", onOpen: () => undefined }], rows: [{ id: "price", cells: [{ from: 0, span: 1, content: "1" }, { from: 1, span: 1, content: "2" }] }] }));
+    expect(out.match(/outline-primary/g)).toHaveLength(1);
+    expect(out).toMatch(/class="pointer-events-none relative rounded-md outline-2 -outline-offset-2 outline-primary" style="grid-column:1;grid-row:1 \/ span 2"/);
   });
   it("a table's empty place draws no cell", () => {
-    const out = html(h(CaseTable, { columns: [{ id: "a", head: "א", label: "א", onOpen: () => undefined }, { id: "b", head: "ב", label: "ב", onOpen: () => undefined }], rows: [{ id: "max", head: "מקסימום", cells: [{ from: 0, span: 1, content: "10" }, { from: 1, span: 1, content: null }] }] }));
-    expect(out.match(/rounded-md border border-transparent bg-background/g)).toHaveLength(1);
+    const out = html(h(CaseTable, { columns: [{ id: "a", head: "א", label: "א", onOpen: () => undefined }, { id: "b", head: "ב", label: "ב", onOpen: () => undefined }], rows: [{ id: "price", cells: [{ from: 0, span: 1, content: "10" }, { from: 1, span: 1, content: null }] }] }));
+    expect(out.match(/min-h-target min-w-0 flex-wrap content-start/g)).toHaveLength(1);
   });
   it("a grid's cell opens its case from anywhere on it, named by its row and column; a place no case holds is a slot that adds one there, named for the place", () => {
     const out = html(h(CaseGrid, { columns: [{ id: "x", head: "x" }, { id: "y", head: "y" }], rows: [{ id: "r", head: "r", cells: [{ from: 0, span: 1, content: "1%", onOpen: () => undefined }, { from: 1, span: 1, empty: { label: "מקרה", spoken: "להוסיף מקרה כאן: r · y", onAdd: () => undefined } }] }], addRow: add }));

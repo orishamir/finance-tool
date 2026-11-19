@@ -1568,6 +1568,10 @@
 :root:has([data-lift-ghost]) [data-span-table] .group:hover [data-pick-card] {
   background-color: transparent;
 }
+/* a table's cell rests on its tile, with no fill of its own */
+:root:has([data-lift-ghost]) [data-case-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]) {
+  background-color: transparent;
+}
 
 /* A grid's case cell is drawn by its face (kit/case-table.tsx, `data-cell-face`), a filled card that would cover the frame its drop
    place draws on the cell (DropZone): while something is carried, the face wears that frame, dashed, and with the thing over it the

@@ -3117,28 +3117,35 @@ function PhoneFrame({ children }: { children: ReactNode }) {
 /** A sample figure in the cases' tables: a price list's, sourced. */
 /** A sample figure written whole, its unit with it as the page writes it ("0.15%", "20 ₪"): a rate with every decimal it has. */
 const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit, today)} {...(unit.startsWith("pct") ? { display: fmt.pctPrinted } : {})} />;
-const rh = dealWords.cases.rowHeads;
-
 /**
- * Custody by what is held: two cases with one price, so each row is one merged cell; a value no case names, a column with no case whose
- * slot adds one; "+ מקרה" at the end.
+ * Custody by what is held: each case a tile, its whole price in its cell a part a line, the condition on the fee's name's line; a value
+ * no case names, a tile whose slot adds its case; the bare "+" after the tiles.
  */
 function CustodyTable({ today }: { today: string }) {
   const [open, setOpen] = useState<string | null>(null);
   const cols = [
-    { id: "ta", head: sc.heldValues.ta },
-    { id: "abroad", head: sc.heldValues.abroad },
+    { id: "ta", head: sc.heldValues.ta, rate: 0.15 },
+    { id: "abroad", head: sc.heldValues.abroad, rate: 0.2 },
   ];
   const unnamed = { id: "makam", head: sc.what.makam, label: sc.what.makam, onOpen: () => undefined, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam}`, onAdd: () => undefined } };
+  const price = (rate: number) => (
+    <>
+      <span className="basis-full">
+        <KindDot kind="charge" />
+        {fig(rate, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}
+      </span>
+      <span className="basis-full">
+        <KindDot kind="bound" />
+        {dealWords.cases.parts.max}
+        {fig(10000, "nis", today)} {sc.perCharge}
+      </span>
+    </>
+  );
   return (
-    <FeeBlock dot="bg-fee-custody" name={sc.custody}>
-      <ConditionHead bare things={[{ id: "held", name: sc.things.held }]} />
+    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "held", name: sc.things.held }]} />}>
       <CaseTable
         columns={[...cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id })), unnamed]}
-        rows={[
-          { id: "price", head: rh.rate!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(0.15, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}</span> }] },
-          { id: "max", head: rh.max!, cells: [{ from: 0, span: 2, onOpen: () => setOpen("ta"), content: <span>{fig(10000, "nis", today)} {sc.perCharge}</span> }] },
-        ]}
+        rows={[{ id: "price", cells: cols.map((c, k) => ({ from: k, span: 1, onOpen: () => setOpen(c.id), content: price(c.rate) })) }]}
         add={{ label: dealWords.cases.addKnob.case, onAdd: () => undefined }}
         insert={() => ({ label: dealWords.cases.addKnob.case, spoken: dealWords.cases.addKnob.between.replace("{add}", dealWords.cases.addKnob.value.held!).replace("{a}", sc.heldValues.ta).replace("{b}", sc.heldValues.abroad), onAdd: () => undefined })}
       />
@@ -3178,12 +3185,11 @@ function LadderTable({ today }: { today: string }) {
 
 
   return (
-    <FeeBlock dot="bg-fee-custody" name={sc.custody}>
-      <ConditionHead bare things={[{ id: "size", name: sc.things.portfolio }]} />
+    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "size", name: sc.things.portfolio }]} />}>
       <CaseTable
         ladder
         columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => undefined }))}
-        rows={[{ id: "price", head: rh.rate!, cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
+        rows={[{ id: "price", cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
         add={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
       />
     </FeeBlock>
@@ -3199,8 +3205,7 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   const [track, setTrack] = useState("1");
   const cell = (id: string, rate: number, more?: ReactNode) => ({ onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)} {perAction}{more}</span> });
   return (
-    <FeeBlock dot="bg-fee-trade" name={sc.trade}>
-      <ConditionHead bare things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />
+    <FeeBlock dot="bg-fee-trade" name={sc.trade} by={<ConditionHead inline things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />}>
       <CaseGrid
         above={three && <SegmentedControl fit label={sc.things.track} options={sc.tracks.slice(0, 2).map((t, k) => ({ value: String(k + 1), label: t }))} value={track} onChange={setTrack} />}
         columns={[
@@ -3306,17 +3311,22 @@ function LiftDemo({ today }: { today: string }) {
     </EditInPlace>
   );
   return (
-    <FeeBlock dot="bg-fee-fx" name={sc.fx}>
-      {/* the condition's head takes a cell for every case: dropped there, each row's price covers its whole row */}
-      <ConditionHead
-        bare
-        things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
-        zone={(h) => (
-          <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
-            {h}
-          </DropZone>
-        )}
-      />
+    <FeeBlock
+      dot="bg-fee-fx"
+      name={sc.fx}
+      by={
+        // the condition's head takes a cell for every case: dropped there, each row's price covers its whole row
+        <ConditionHead
+          inline
+          things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
+          zone={(h) => (
+            <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
+              {h}
+            </DropZone>
+          )}
+        />
+      }
+    >
       <CaseGrid
         steps
         label={sc.fx}
@@ -3458,7 +3468,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="CaseTable, CaseGrid, SharedLine, AddSlot" use={g.uses.CaseTable}>
-        <State label={`one thing: the cases as columns, the parts as rows, equal neighbours one cell; "+ מקרה" beside the heads; ${g.states.interactive}: a column's head opens its case`} wide>
+        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; what the price changes by on the fee's name's line; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
           <div className="max-w-2xl">
             <CustodyTable today={today} />
           </div>
