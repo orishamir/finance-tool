@@ -15,7 +15,7 @@ import type { SiteValue } from "../../lib/value";
 import { useAddressSort } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
-import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, TextLink, useFlip } from "../kit";
+import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, TextLink, gershayim, useFlip } from "../kit";
 
 /** The kind chip that stands for every kind (the regulator never names a kind so). */
 const ALL_KINDS = "*";
@@ -117,7 +117,7 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
           child={{
             label: t.controls.kind,
             ids: view.hasKinds ? [ALL_KINDS, ...view.kinds.map((k) => k.sub)] : [],
-            labels: { [ALL_KINDS]: t.controls.kindAll, ...Object.fromEntries(view.kinds.map((k) => [k.sub, k.sub])) },
+            labels: { [ALL_KINDS]: t.controls.kindAll, ...Object.fromEntries(view.kinds.map((k) => [k.sub, gershayim(k.sub)])) },
             value: kind || ALL_KINDS,
             counts: { [ALL_KINDS]: view.tracks.length, ...Object.fromEntries(view.kinds.map((k) => [k.sub, k.count])) },
             onChange: (id) => setKind(id === ALL_KINDS ? "" : id),
