@@ -23,9 +23,9 @@ import { RemoveButton } from "./remove-button";
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /** The open case's column head and cells: the action colour's outline, as the open case's own. */
 const OPEN = "outline-2 -outline-offset-2 outline-primary";
-// a cell's lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the
+// a cell is a dark tile with no edge of its own (its 1 px border is kept clear so an open cell's edge moves nothing); its lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the
 // cells beside it (`ROW_HEAD`)
-const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-0.5 rounded-md border border-border bg-background px-2.5 py-[calc(0.75rem-1px)] text-sm leading-5";
+const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-0.5 rounded-md border border-transparent bg-background px-2.5 py-[calc(0.75rem-1px)] text-sm leading-5";
 /** A row's head: its words from the top, on the line a cell's first line stands on (the cell's border and padding over a 20 px line). */
 const ROW_HEAD = "pt-3 leading-5";
 
@@ -212,23 +212,23 @@ const GRIP_ROOM = "ps-7";
  * A column's head that opens its case: one button over the whole head (`label`, its spoken name), the words drawn on it; a control inside
  * (a step's top typed in place, marked `data-lift`) keeps its own tap.
  */
-function OpenHead({ label, onOpen, open, range, grip, children }: { label: string; onOpen: () => void; open?: boolean; range?: boolean; grip?: ReactNode; children: ReactNode }) {
+function OpenHead({ label, onOpen, onRename, open, range, grip, children }: { label: string; onOpen: () => void; onRename?: (() => void) | undefined; open?: boolean; range?: boolean; grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", grip ? GRIP_ROOM : "ps-1.5", LIFT_INNER, open && OPEN)}>
-      <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
+    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", grip ? GRIP_ROOM : "ps-1.5", LIFT_INNER, open && OPEN, "has-[input]:outline-none")}>
+      <button type="button" data-pick-card aria-label={label} onClick={onOpen} onDoubleClick={onRename} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {grip}
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
-      <div data-head-words="" className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto">{children}</div>
+      <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto [&_input]:pointer-events-auto">{children}</div>
     </div>
   );
 }
 
 /** A column's head that opens nothing (a value no case names): its words at its foot, as an `OpenHead`'s, and its grip. */
-function StillHead({ grip, children }: { grip?: ReactNode; children: ReactNode }) {
+function StillHead({ grip, onRename, children }: { grip?: ReactNode; onRename?: (() => void) | undefined; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium", grip ? GRIP_ROOM : "ps-1.5")}>
+    <div onDoubleClick={onRename} data-case-head="" data-liftable="" data-lift-body="" className={cx("relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium", grip ? GRIP_ROOM : "ps-1.5")}>
       {grip}
-      <div data-head-words="" className="relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
+      <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
     </div>
   );
 }
@@ -305,6 +305,8 @@ export interface CaseColumn {
   liftItem?: string;
   /** Wraps the head (a `DropZone` for its case). */
   zone?: (head: ReactNode) => ReactNode;
+  /** A double-click on the head: its value renamed in place (the page puts the field in `head`). */
+  onRename?: () => void;
 }
 
 /**
@@ -366,11 +368,11 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
           <span aria-hidden />
           {columns.map((c, k) => {
             const head = c.empty ? (
-              <StillHead key={c.id} grip={c.grip}>
+              <StillHead key={c.id} grip={c.grip} onRename={c.onRename}>
                 {c.head}
               </StillHead>
             ) : (
-              <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} open={c.open} range={ladder} grip={c.grip}>
+              <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} onRename={c.onRename} open={c.open} range={ladder} grip={c.grip}>
                 {c.head}
               </OpenHead>
             );
@@ -452,6 +454,8 @@ export interface GridHead {
   grip?: ReactNode;
   liftItem?: string;
   zone?: (head: ReactNode) => ReactNode;
+  /** A double-click on the head: its value renamed in place (the page puts the field in `head`). */
+  onRename?: () => void;
 }
 
 /** A cell of one part row under a grid's row: the columns it spans, the parts its cases hold alike there, and its tap. */
@@ -487,11 +491,11 @@ export interface GridCellView extends CellExtras {
  * so the heads stand on one line. Its grip stands at its start edge, centred down it, and its words in the middle of the width left
  * beside the grip's room (`GRIP_ROOM`), so the grip covers none of them.
  */
-function HeadWords({ head, end, grip }: { head: ReactNode; end?: boolean; grip?: ReactNode }) {
+function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boolean; grip?: ReactNode; onRename?: (() => void) | undefined }) {
   return (
-    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end pb-1.5" : cx("justify-start", ROW_HEAD))}>
+    <div onDoubleClick={onRename} data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end pb-1.5" : cx("justify-start", ROW_HEAD))}>
       {grip}
-      <div data-head-words="" className="min-w-0 max-w-full font-medium">
+      <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 min-w-0 max-w-full font-medium">
         {head}
       </div>
     </div>
@@ -587,7 +591,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
           {/* placed, since the heads' hairline takes its place first */}
           <span aria-hidden style={{ gridColumn: 1, gridRow: 1 }} />
           {columns.map((c, k) => {
-            const head = <HeadWords head={c.head} end grip={c.grip} />;
+            const head = <HeadWords head={c.head} end grip={c.grip} onRename={c.onRename} />;
             return (
               <div key={c.id} role="columnheader" id={keys.headId(k)} data-col={k} style={{ gridColumn: k + 2, gridRow: 1 }} className="flex *:w-full">
                 {c.zone ? c.zone(head) : head}
@@ -598,7 +602,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
           {insertColumn && betweenOf(n, insertColumn).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => {
-          const head = <HeadWords head={r.head} grip={r.grip} />;
+          const head = <HeadWords head={r.head} grip={r.grip} onRename={r.onRename} />;
           const line = start[j]!;
           const filled = r.cells.filter((c) => !c.empty);
           return (

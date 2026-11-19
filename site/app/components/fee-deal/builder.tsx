@@ -143,6 +143,20 @@ export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, fil
               </Button>
             ),
           },
+          ...(onTemplates
+            ? [
+                {
+                  id: "house",
+                  title: b.house,
+                  value: house ? house.name : b.houseNone,
+                  action: (
+                    <Button variant="quiet" size="sm" flush data-next-step="" onClick={(e) => onTemplates(e.currentTarget)}>
+                      {house ? b.houseOther : b.housePick}
+                    </Button>
+                  ),
+                },
+              ]
+            : []),
           ...(!holdsFunds(kind.id) && onPickTrack
             ? [
                 {
@@ -158,13 +172,6 @@ export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, fil
               ]
             : []),
         ]}
-        end={
-          onTemplates && (
-            <Button variant="quiet" size="sm" flush data-next-step="" onClick={(e) => onTemplates(e.currentTarget)}>
-              {copy.end.template}
-            </Button>
-          )
-        }
       >
         {picking && kindChips}
         {kindLine && (
@@ -172,7 +179,7 @@ export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, fil
             {kindLine.words}
           </UndoLine>
         )}
-        {template && filled && <TemplateNote template={template} left={filled.left} leftOut={house ? filled.leftOut : null} {...(house && filled.averages ? { averages: filled.averages } : {})} row />}
+        {template && filled && <TemplateNote template={template} left={filled.left} leftOut={house ? filled.leftOut : null} {...(house && filled.averages ? { averages: filled.averages } : {})} />}
       </StepStrip>
     </div>
   );
@@ -450,7 +457,7 @@ export function FeesColumn({
           const fees = items.filter((it): it is { fee: Fee; i: number } => it !== "line");
           return (
           <div key={key} className="flex flex-col gap-3">
-            <GroupHead as="h3" plain>
+            <GroupHead as="h3">
               {copy.on[key]}
             </GroupHead>
             <ul className="flex flex-col gap-3">

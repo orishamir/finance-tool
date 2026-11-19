@@ -7,18 +7,19 @@
 // pick fills. On opening, the focus is
 // in the box, and the arrow keys go from it down the rows and back. A pick is the page's: opened from the bar it opens a new deal from the template and never
 // changes the one on screen; opened from the builder's track step it sets the track on the deal on screen (`pickTrack`).
-// The deal a template filled says so in the builder (`TemplateNote`), with what the house's record says its price leaves out (D106), and
-// each line the template left out, by its name, under why.
+// Under the builder's strip, which names the template, the deal a template filled says what its price leaves out (`TemplateNote`): what the
+// house's record says (D106), and each line the template left out, by its name, under why, in a sheet.
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
-import { Disclosure, GroupHead, HouseAverageLine, LeftOutLine, ListRow, RowList, SearchField, Tag, cx, gershayim } from "../kit";
+import { Term, type SheetPart } from "../provenance";
+import { GroupHead, HouseAverageTerm, LeftOutLine, ListRow, RowList, SearchField, Tag, gershayim } from "../kit";
+import type { HouseAverages } from "../../lib/house-averages";
 import type { LeftOutView } from "../../lib/left-out";
 import type { SiteValue } from "../../lib/value";
 import { feeName } from "./words";
-import type { HouseAverages } from "../../lib/house-averages";
 
 const w = copy.picker;
 const f = copy.filled;
@@ -123,66 +124,41 @@ const lineText = (l: { line: string; name?: string; channel?: string; house?: st
   return `${gershayim(l.name ?? l.line)}${channel ? `${copy.cases.sep}${channel}` : ""}${l.house ? `${dealCases.copyFee.houseSep}${gershayim(l.house)}` : ""}`;
 };
 
-/**
- * The template a deal was filled from, and what it left out: what a house's record says its price leaves out that can change what some
- * reader pays (`leftOut`, the kit's line that opens each with its reason and page, D106); a price list's lines, each by its name under
- * why it is left; a price list with nothing for what the deal holds; a track's fee the product does not charge by rule or the regulator's
- * data has no figure for.
- */
-/**
- * The deal a template filled: its name, what the house's record says its price leaves out, and the lines it left out under a fold. One
- * under the other by default; `row` lays the three on one line where it has the room (under the builder's strip), each at the fold's
- * height, the fold opening under its own words.
- */
-export function TemplateNote({ template, left, leftOut = null, averages, row = false }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null; /** What the house charged on average (F-122), for reference only. */ averages?: HouseAverages; row?: boolean }) {
-  const lines = new Map<string, string[]>();
-  const rest: { key: string; fee?: string; why: string }[] = [];
+/** The sheet of what a template left out: a track's fee with why, then a price list's lines, each by its name under why (a group). */
+export function leftParts(left: readonly LeftOut[]): SheetPart[] {
+  const parts: SheetPart[] = [];
+  const lines = new Map<string, Set<string>>();
   for (const l of left) {
-    if ("line" in l) lines.set(l.why, [...(lines.get(l.why) ?? []), lineText(l)]);
-    else rest.push({ key: l.fee, ...(l.why === "no-value" ? { fee: feeName(l.fee) } : {}), why: f.why[l.why === "no-value" ? "track-no-value" : l.why]! });
+    if ("line" in l) lines.set(l.why, (lines.get(l.why) ?? new Set()).add(lineText(l)));
+    else parts.push({ ...(l.why === "no-value" ? { head: feeName(l.fee) } : {}), text: f.why[l.why === "no-value" ? "track-no-value" : l.why]! });
   }
+  for (const [why, names] of lines) for (const name of names) parts.push({ group: f.why[why]!, text: name });
+  return parts;
+}
+
+/**
+ * What the price of a deal a template filled leaves out, on one line: what the house's record says its price leaves out that can change what
+ * some reader pays (`leftOut`, the kit's line that opens each with its reason and page, D106), then the template's own lines or fees that
+ * stayed out of the deal, whose words open them: a price list's lines by their names under why each is left, a track's fee the product does
+ * not charge by rule or the regulator's data has no figure for; then the words that open what the house charged on average (F-122). The
+ * template's name is the strip's step, not said here.
+ */
+export function TemplateNote({ template, left, leftOut = null, averages }: { template: { id: string; name: string }; left: readonly LeftOut[]; leftOut?: LeftOutView | null; /** What the house charged on average (F-122), for reference only. */ averages?: HouseAverages }) {
+  const source = templateSource(template.id);
+  const parts = leftParts(left);
+  const name = gershayim(template.name);
+  const more = [
+    parts.length > 0 && (
+      <Term key="lines" id={[]} name={f.title[source](name)} lead={f.lead[source]} parts={parts}>
+        {f.count[source](parts.length)}
+      </Term>
+    ),
+    averages && averages.columns.length > 0 && <HouseAverageTerm key="averages" averages={averages.columns} house={name} from={averages.from} to={averages.to} page={averages.page} />,
+  ].filter(Boolean);
+  if (!leftOut && more.length === 0) return null;
   return (
-    <div className={row ? "flex flex-wrap items-start gap-x-6 text-sm" : "flex flex-col gap-1 text-sm"}>
-      <div className={cx(row && "flex min-h-target items-center")}>
-        <p className="text-muted-foreground">
-          {f.from[templateSource(template.id)]}
-          {template.name}
-        </p>
-      </div>
-      {leftOut && (
-        <div className={cx(row && "flex min-h-target items-center")}>
-          <LeftOutLine view={leftOut} house={gershayim(template.name)} className="text-sm" />
-        </div>
-      )}
-      {averages && (
-        <div className={cx(row && "flex min-h-target basis-full items-center")}>
-          <HouseAverageLine averages={averages.columns} house={gershayim(template.name)} from={averages.from} to={averages.to} page={averages.page} />
-        </div>
-      )}
-      {left.length > 0 && (
-        <Disclosure label={f.left} className={cx(row && "min-w-[16rem] flex-1")} summaryClassName="text-sm">
-          <ul className="flex flex-col gap-2 pt-1">
-            {rest.map((r) => (
-              <li key={r.key}>
-                {r.fee && <span className="font-medium">{r.fee}: </span>}
-                {r.why}
-              </li>
-            ))}
-            {[...lines].map(([why, names]) => (
-              <li key={why} className="flex flex-col gap-1">
-                <span>{f.why[why]}</span>
-                <ul className="flex flex-col gap-0.5 ps-4 text-muted-foreground">
-                  {[...new Set(names)].map((name) => (
-                    <li key={name} className="list-disc">
-                      {name}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </Disclosure>
-      )}
+    <div className="flex min-h-target items-center">
+      <LeftOutLine view={leftOut} house={name} className="text-sm" more={more.length > 0 && more.flatMap((m, i) => (i ? [" · ", m] : [m]))} />
     </div>
   );
 }

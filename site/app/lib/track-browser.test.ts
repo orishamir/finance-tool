@@ -1,4 +1,4 @@
-// The track browser's pure logic over the real September 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
+// The track browser's pure logic over the real October 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
 import { HELP_TERMS, SORTS, assetsText, feeMarkTerms, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
@@ -14,11 +14,11 @@ describe("the data the loader ships", () => {
   it("has the eight products, the default among them, and every company's name", () => {
     expect(data.products.map((p) => p.id)).toEqual([...trackProductIds]);
     expect(trackProductIds).toContain(defaultProduct);
-    expect(gemel.tracks).toHaveLength(133);
+    expect(gemel.tracks).toHaveLength(134);
     expect(gemel.companies).toHaveLength(12);
     // a self-directed fund is a product of its own (IRA-03): 8 provident and 7 study funds, out of their regulator types' lists; the nine
     // guaranteed-yield tracks and 923, closed on their companies' own terms (CAT-55, CAT-54), are left out (D51)
-    expect(view("provident-for-annuity").tracks).toHaveLength(154);
+    expect(view("provident-for-annuity").tracks).toHaveLength(155);
     for (const id of [120, 528, 529, 530, 531, 532, 533, 536, 539, 923]) expect(data.products.flatMap((p) => p.rows).some((r) => r.f === id), `${id}`).toBe(false);
     for (const id of [119, 260, 263]) expect(view("provident-for-annuity").tracks.some((t) => t.id === id), `${id}`).toBe(true);
     // their joining is open (CAT OQ36): each carries the question, from its reading, for the note beside its name; no other track does
@@ -59,14 +59,14 @@ describe("the order of the groups", () => {
     const assets = gemel.companies.map((c) => c.assets!.value as number);
     expect([...assets].sort((a, b) => b - a)).toEqual(assets);
     const harel = gemel.companies.find((c) => c.name === "הראל")!;
-    expect(harel.assets!.value as number).toBeCloseTo(18972.9, 2);
+    expect(harel.assets!.value as number).toBeCloseTo(19217.38, 2);
     expect(harel.assets!.computed_from?.formula).toBe("F-99");
     expect(harel.tracks).toHaveLength(15);
   });
 
   it("kinds by the median stock share, the highest first, ties by size (F-100)", () => {
     expect(gemel.kinds[0]!.sub).toBe("עוקב מדד S&P 500");
-    expect(gemel.kinds[0]!.median!).toBeCloseTo(99.49, 2);
+    expect(gemel.kinds[0]!.median!).toBeCloseTo(99.53, 2);
     const names = gemel.kinds.map((k) => k.sub);
     expect(names.slice(-3)).toEqual(["כספי (שקלי)", "אג\"ח ממשלות", "אג\"ח ממשלתי סחיר"]);
     const medians = gemel.kinds.map((k) => k.median ?? -1);
@@ -79,7 +79,7 @@ describe("filter and search", () => {
     expect(filterTracks(gemel, { kind: "מניות", q: "" })).toHaveLength(12);
     expect(filterTracks(gemel, { kind: "", q: "הראל" }).length).toBe(15);
     expect(filterTracks(gemel, { kind: "", q: "xyz-nothing" })).toEqual([]);
-    expect(filterTracks(gemel, { kind: "", q: "" })).toHaveLength(133);
+    expect(filterTracks(gemel, { kind: "", q: "" })).toHaveLength(134);
   });
 
   it("quotes, dashes and spaces do not matter in the search", () => {

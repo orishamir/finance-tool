@@ -360,6 +360,9 @@ export function RenameInput({ initial, placeholder, label, onDone }: { initial: 
           e.preventDefault();
           ref.current?.blur();
         } else if (e.key === "Escape") {
+          // the field's own Escape: what holds it (an open case, a sheet) does not close on it too
+          e.preventDefault();
+          e.stopPropagation();
           cancelled.current = true;
           ref.current?.blur();
         }

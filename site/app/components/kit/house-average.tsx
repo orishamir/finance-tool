@@ -4,8 +4,9 @@
 import { houseAverage as copy } from "../../copy";
 import type { ColumnAverage } from "../../lib/house-averages";
 import { fmt } from "../../lib/format";
+import { sourceHref } from "../../lib/sources";
 import type { SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
+import { Num, Term, type SheetPart } from "../provenance";
 import { DocLink } from "./doc-link";
 import { DotLine } from "./notes";
 
@@ -52,5 +53,24 @@ export function HouseAverageLine({ averages, house, from, to, page, className }:
         </DocLink>,
       ]}
     />
+  );
+}
+
+/**
+ * The words that open a house's averages in a sheet ("מה נגבה בפועל בממוצע", on /deal's line of what the price leaves out): each column by
+ * its short name with its lowest and highest figure, then the period and the calculator's page. For reference only, as the sheet's lead says.
+ */
+export function HouseAverageTerm({ averages, house, from, to, page }: { averages: readonly ColumnAverage[]; house: string; from: string; to: string; page: { url: string } }) {
+  if (averages.length === 0) return null;
+  const figures = (a: ColumnAverage) =>
+    [fmt.pctNonZero(a.lo.value as number), ...(a.lo.value === a.hi.value ? [] : [copy.to, fmt.pctNonZero(a.hi.value as number)]), ...(a.column.fee === "custody" ? [copy.perYear] : [])].join(" ");
+  const parts: SheetPart[] = [
+    ...averages.map((a) => ({ head: copy.columns[`${a.column.fee}_${a.column.securities}`]!, text: figures(a) })),
+    { text: copy.periodLine(fmt.date(from), fmt.date(to)), doc: { href: sourceHref({ url: page.url }), title: copy.linkTitle } },
+  ];
+  return (
+    <Term id={[]} name={copy.about(house)} lead={copy.sheetLead} parts={parts}>
+      {copy.tap}
+    </Term>
   );
 }

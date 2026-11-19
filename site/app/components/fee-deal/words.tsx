@@ -69,6 +69,35 @@ const COLOUR: Record<FeeKindId, { bg: string; fill: string; stroke: string }> = 
   own: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
 };
 
+/**
+ * Each fee's mark beside its name in the builder: one emoji of its own, no two fees alike (founder, 2026-11-19: "not everything needs an
+ * emoji", and none that conflict). Only a fee's name takes one; its parts, groups and heads do not.
+ */
+export const FEE_MARK: Record<FeeKindId, string> = {
+  trade: "🛒",
+  spread: "📏",
+  creation_redemption: "🔄",
+  load: "📥",
+  redemption_deduction: "✂️",
+  fx: "💱",
+  fx_spread: "💹",
+  deposit: "💰",
+  distribution_handling: "📬",
+  corporate_event: "🏢",
+  transfer_out: "📤",
+  exit: "🚪",
+  balance: "🧮",
+  custody: "🗄️",
+  variable_management: "📊",
+  trustee: "🛡️",
+  direct_expenses: "🧾",
+  fund_management: "🧺",
+  fixed_period: "📅",
+  current_account: "🏦",
+  insurance_premium: "☂️",
+  own: "✏️",
+};
+
 /** The colour of a fee copied from another house's price list (`DealRead.copied`): its own, so it never shares a dot with the deal's fee of its kind. */
 const COPIED = { bg: "bg-fee-copy", fill: "fill-fee-copy", stroke: "stroke-fee-copy" };
 

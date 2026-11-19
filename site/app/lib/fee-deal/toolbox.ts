@@ -4,10 +4,10 @@ import { feeDeal as copy } from "../../copy";
 import { hasCases, monthKey, monthOf, pricedOf, toolPrice, type Case, type Fee, type MonthKey } from "./model";
 import { fmt, joinLead } from "../format";
 import { offerFor } from "./offers/offer";
-import { PARTS, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
+import { PARTS, isFormPart, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
 import { OFFERED, feeNameOf, type PartWords, type ToolBox } from "./part-words";
 import { type DealRead } from "./deal-read";
-import { BY_MAX, isOwnKind, pickKind, type ByKind } from "./offers/conditions";
+import { BY_MAX, isOwnKind, isRangeKind, pickKind, type ByKind } from "./offers/conditions";
 import { firstCase, thingName, whenWords, type WhenWords } from "./case-words";
 
 // ---------------------------------------------------------------- the toolbox
@@ -23,6 +23,10 @@ export interface ToolPart {
   used: boolean;
   /** It cannot be added, with why (a fourth thing to change by). */
   off?: string;
+  /** A form of the price: the forms are one choice, the one the price has chosen. */
+  form?: true;
+  /** Where the price changes by it: what is bought and where (`what`, a sale priced apart among them), or a size or an amount (`size`, a range). */
+  row?: "what" | "size";
 }
 
 /** The thing to change by that a toolbox card adds (its id `by:<thing>`), or null where the card is a part. */
@@ -30,14 +34,15 @@ export const cardThing = (id: string): ByKind | null => (id.startsWith("by:") ? 
 
 /** A toolbox group: its kind and head, and its parts in order. */
 export interface ToolGroup {
-  group: "price" | "bound" | "by" | "link" | "more";
+  group: ToolGroupId;
   head: string;
   parts: ToolPart[];
 }
 
 /**
  * The toolbox for the case open in place: the line naming what it adds to (the case's values, joined; a slim fee's own name), and its
- * groups in order: the price, minimum and maximum, what the price changes by, a link to another fee, and more on the price;
+ * groups in order, by what a card does to the price: what is charged, what comes off it, its floor and ceiling, what it changes by, and the
+ * rules of the charge;
  * each part's words follow the fee (a conversion's "לכל המרה", "מההמרה"), and a part the case already has is `used`. A group shows what the
  * product's fee is offered (`offerFor`, narrowed by the rule table) that its price can hold now; what a deal already holds beyond the offer
  * still opens and reads.
@@ -56,21 +61,23 @@ export interface Toolbox {
 /**
  * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`). The compiler checks that no other
  * part stands in a group, and offers/parts.test.ts that every one of them does. Free stands beside the price's forms, for the price the
- * toolbox acts on. A flat price stands among the price's cards, though a line says it among the bounds.
+ * toolbox acts on. A sale priced apart stands with the fee's things, as what the price changes by. A flat price for a small action has
+ * no card: it is the price of the first size of the action (§10.6, a size of the action's first range).
  */
 export const TOOL_ORDER = {
-  price: ["share", "perUnit", "perAction", "held", "sum", "free", "discount", "third", "flat"],
+  charge: ["share", "perUnit", "perAction", "held", "sum", "free", "third"],
+  off: ["discount", "offset", "refund"],
   bound: ["min", "max", "cap", "maxPerSecurity"],
-  link: ["offset", "refund"],
-  more: ["unfilled", "partial", "inTrade", "sale"],
+  by: ["sale"],
+  rule: ["unfilled", "partial", "inTrade"],
 } as const satisfies { [G in ToolGroupId]: readonly ToolPartIn<G>[] };
-/** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`). */
-const TOOLBOX: readonly { group: ToolGroup["group"]; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
-  { group: "price", kind: "price", parts: TOOL_ORDER.price },
+/** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`), then its parts. */
+const TOOLBOX: readonly { group: ToolGroupId; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
+  { group: "charge", kind: "charge", parts: TOOL_ORDER.charge },
+  { group: "off", kind: "off", parts: TOOL_ORDER.off },
   { group: "bound", kind: "bound", parts: TOOL_ORDER.bound },
-  { group: "by", kind: "by", parts: [] },
-  { group: "link", kind: "link", parts: TOOL_ORDER.link },
-  { group: "more", kind: "note", parts: TOOL_ORDER.more },
+  { group: "by", kind: "by", parts: TOOL_ORDER.by },
+  { group: "rule", kind: "rule", parts: TOOL_ORDER.rule },
 ];
 
 export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number): Toolbox | null {
@@ -82,10 +89,11 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number
   const p = priced.stages[k]!.price;
   // what the product's fee is offered (the rule table narrows it), of which the parts its price can hold now
   const offer = offerFor(r.kind, fee.kind);
-  const parts = (g: (typeof TOOLBOX)[number]): ToolPart[] =>
-    g.group === "by"
-      ? byParts(fee, offer.conditions)
-      : g.parts.filter((id) => offer.parts.includes(id) && PARTS[id].holds(fee.kind, p)).map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced) }));
+  const own = (g: (typeof TOOLBOX)[number]): ToolPart[] =>
+    g.parts
+      .filter((id) => offer.parts.includes(id) && PARTS[id].holds(fee.kind, p))
+      .map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced), ...(isFormPart(id) ? { form: true as const } : {}), ...(g.group === "by" ? { row: "what" as const } : {}) }));
+  const parts = (g: (typeof TOOLBOX)[number]): ToolPart[] => (g.group === "by" ? [...byParts(fee, offer.conditions), ...own(g)] : own(g));
   const c = hasCases(fee) ? (priced as Case) : null;
   const base = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
   const addTo = priced.stages.length > 1 ? { ...base, price: priceWords(priced.stages, k), periods: priced.stages.map((_, j) => periodWords(priced.stages, j)) } : base;
@@ -123,6 +131,6 @@ function byParts(fee: Fee, offered: readonly ByKind[]): ToolPart[] {
   const full = (fee.by?.length ?? 0) >= BY_MAX;
   return offered.map((k) => {
     const used = !isOwnKind(k) && have.has(pickKind(k));
-    return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, ...(full && !used ? { off: copy.cases.full } : {}) };
+    return { id: `by:${k}` as const, kind: "by" as const, words: { lead: thingName(fee.kind, { kind: k }) }, used, row: isRangeKind(k) ? ("size" as const) : ("what" as const), ...(full && !used ? { off: copy.cases.full } : {}) };
   });
 }

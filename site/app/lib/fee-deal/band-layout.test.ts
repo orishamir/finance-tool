@@ -39,7 +39,7 @@ describe("two parts that read the same", () => {
 
 describe("a later price in a table, a grid or its rows", () => {
   it("leaves out each part its price holds as the price before it, and nothing else", () => {
-    const part = (id: string, stage?: number, alike?: true): SlimPart => ({ id, kind: "price", words: {}, ...(stage ? { stage } : {}), ...(alike ? { alike } : {}) } as SlimPart);
+    const part = (id: string, stage?: number, alike?: true): SlimPart => ({ id, kind: "charge", words: {}, ...(stage ? { stage } : {}), ...(alike ? { alike } : {}) } as SlimPart);
     const parts = [part("share"), part("cap"), part("until", 1), part("share", 1), part("cap", 1, true)];
     expect(laterChanges(parts).map((p) => `${p.id}@${p.stage ?? 0}`)).toEqual(["share@0", "cap@0", "until@1", "share@1"]);
   });

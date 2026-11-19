@@ -306,7 +306,7 @@ describe("a price after a free one", () => {
     expect(fee.stages!.map((s) => s.price.form)).toEqual(["free", "free"]);
     // the toolbox acts on the last price, and offers only the forms the product's fee is offered in
     const t = toolbox(readDealFor({ ...deal, fees: [fee] }, data.kinds, "2026-11-14"), "fee-i")!;
-    const forms = t.groups.find((g) => g.group === "price")!.parts.map((x) => x.id);
+    const forms = t.groups.find((g) => g.group === "charge")!.parts.map((x) => x.id);
     const usual = offerFor(kind("pension-general"), "insurance_premium").usual;
     expect(forms.some((id) => PARTS[id as PartId].form === usual)).toBe(true);
     expect(forms).not.toContain("sum");

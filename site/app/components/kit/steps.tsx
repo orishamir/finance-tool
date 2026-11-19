@@ -40,12 +40,12 @@ export interface StripStep {
 
 /**
  * The steps of such a page once they are made, on one line over what they built, where they are seldom changed again: each step's name and
- * what was chosen ("סוג המוצר: חשבון ניירות ערך"), a dot, and the way to change it; the line's own action at its end (`end`); and under the
+ * what was chosen ("סוג המוצר: חשבון ניירות ערך"), a dot, and the way to change it; and under the
  * line what a step opens to be changed (its chips) or says about what was chosen (`children`). The line wraps where the width runs out,
- * each step and the end 44 px tall, so the tap areas of actions on wrapped lines never meet. `heading` names the strip for a screen reader,
+ * each step 44 px tall, so the tap areas of actions on wrapped lines never meet. `heading` names the strip for a screen reader,
  * as the steps' section would: the line shows each step's own name.
  */
-export function StepStrip({ heading, steps, end, children }: { heading: string; steps: readonly StripStep[]; end?: ReactNode; children?: ReactNode }) {
+export function StepStrip({ heading, steps, children }: { heading: string; steps: readonly StripStep[]; children?: ReactNode }) {
   return (
     <section className="flex flex-col gap-2">
       <h2 className="sr-only">{heading}</h2>
@@ -64,7 +64,6 @@ export function StepStrip({ heading, steps, end, children }: { heading: string; 
             )}
           </span>
         ))}
-        {end && <span className="ms-auto inline-flex min-h-target items-center">{end}</span>}
       </div>
       {children}
     </section>

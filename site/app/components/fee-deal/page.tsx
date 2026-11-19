@@ -1,11 +1,11 @@
-// The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about as a line over
-// its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
+// The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about, over the
+// cards of its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
 // on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal in `#d=`, or in `?d=` as links
 // were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
 // pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end opens another saved deal
 // or a new one, and copies the deal's link. A link pasted into the address while the page is open opens as a fresh load would. A link
-// that does not open says why above the kind chooser, and one whose fees do not all open opens the rest and names the ones left out. The line's "לבחור תבנית" opens the template picker, where a price list opens a new deal
+// that does not open says why above the kind chooser, and one whose fees do not all open opens the rest and names the ones left out. The strip's "לבחור תעריפון" opens the template picker, where a price list opens a new deal
 // beside this one; its track's button opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
 // kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first fee moves
 // nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
@@ -26,7 +26,7 @@ import { dealCases, feeDeal as copy } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
-import { slotEdit, thingMenu } from "../../lib/fee-deal/things";
+import { slotEdit, thingMenu, usualBy } from "../../lib/fee-deal/things";
 import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
 import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
@@ -41,7 +41,7 @@ import { feeRoom } from "../../lib/fee-deal/limits";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
-import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
+import { addByKept, fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolToCases } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -260,6 +260,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (menuOpen) menuOpen.addEventListener("close", () => kept(r), { once: true });
     else kept(r);
   };
+  // a thing added from the toolbox: a list or a track splits the fee at once into its usual values, kept for the undo, whose line says
+  // what it split into, and its heads rename them; a range or a condition of the person's own asks first, as does a split of one case
+  const onAddBy = (feeId: string, kind: ByKind) => {
+    const n = usualBy(kind);
+    const r = n ? addByKept(deal, feeId, n, chosen) : null;
+    if (r) kept(r);
+    else oc.ask.onAsk(kind);
+  };
   // a thing the fee changes by, tapped again in the toolbox: as its bin in the band
   const onStopBy = (feeId: string, kind: ByKind) => {
     const fee = deal.fees.find((f) => f.id === feeId);
@@ -332,7 +340,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const on = at ?? caseId;
       if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
       applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined), on === caseId ? editingK : undefined), {
-        onAsk: oc.ask.onAsk,
+        onAsk: (kind) => onAddBy(feeId, kind),
         onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
         onForm: (part) => onForm(feeId, part, on),
         onPart: onPart(fee),
@@ -402,7 +410,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         line={lines.fill}
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
-        onAsk={oc.ask.onAsk}
+        onAsk={(kind) => onAddBy(chosenFee.id, kind)}
         onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k })}
         onFee={onFee}
         onPart={onPart(chosenFee)}

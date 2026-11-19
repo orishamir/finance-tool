@@ -21,6 +21,7 @@ import { buildPrice, type PriceSpec } from "./offers/build";
 import { withOffset } from "./edits/price";
 import type { HouseAverages } from "../house-averages";
 import { feeRoom } from "./limits";
+import { foldFlat } from "./fold-flat";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
 export type SlimTemplateFee = Omit<SlimFee, "id">;
@@ -550,7 +551,8 @@ export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));
     for (const kind of [...new Set([...mapped.values()].flatMap((m) => m.fees.map((f) => f.kind)))]) {
       const fee = feeOfRaws(kind, first, raws, (l) => mapped.get(l)?.fees.find((f) => f.kind === kind), own);
-      if (fee) fees.push(fee);
+      // a flat price for a small action is filled as the first size of the action (fold-flat.ts)
+      if (fee) fees.push(foldFlat(fee));
     }
   }
   // every other line is listed with why it fills nothing, so no line is left out unsaid
