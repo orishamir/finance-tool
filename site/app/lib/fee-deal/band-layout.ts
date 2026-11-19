@@ -23,10 +23,6 @@ export function partsByRow(parts: readonly SlimPart[]): Map<PartRow, SlimPart[]>
   return out;
 }
 
-/** The rows whose head says the first word of their parts ("מינימום"), which a cell under that head then leaves out. */
-const HEAD_SAYS_LEAD: ReadonlySet<PartRow> = new Set(["min", "max", "cap", "maxPerSecurity"]);
-export const headSaysLead = (row: PartRow): boolean => HEAD_SAYS_LEAD.has(row);
-
 /**
  * A figure's content: equal for the same number in the same unit, whatever its state. Two cases that print the same figure read the same
  * to the person and share one cell, also where one holds it from the price list and the other as the person's own (a copy the list does
