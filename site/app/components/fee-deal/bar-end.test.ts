@@ -3,12 +3,12 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { feeDeal, leftOut as leftOutWords } from "../../copy";
+import { feeDeal, houseAverage, leftOut as leftOutWords } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { newDeal } from "../../lib/fee-deal/model";
 import { dealFromTemplate, templateOf, templateSource } from "../../lib/fee-deal/templates";
 import { dealLabel, dealMeta } from "./bar-end";
-import { leavesText, TemplateNote } from "./picker";
+import { leavesText, leftParts, TemplateNote } from "./picker";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -36,23 +36,30 @@ describe("what a template leaves out", () => {
     expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBe("3 שורות לא נכנסות");
     expect(leavesText([])).toBeUndefined();
   });
-  it("names the template a new deal was filled from, what its record says the price leaves out, and each line it left out by name under why", () => {
+  it("says on one line what its record says the price leaves out and how many lines it left out, each line in the sheet by name under why", () => {
     const deal = dealFromTemplate(probe, "house:leumi", data, TODAY)!;
     expect(templateSource(deal.template!.id)).toBe("house");
     const t = templateOf(deal, deal.template!.id, data, TODAY)!;
+    const parts = leftParts(t.left);
     const note = text(createElement(TemplateNote, { template: deal.template!, left: t.left, leftOut: t.leftOut ?? null }));
-    expect(note).toContain(`${feeDeal.filled.from.house}${deal.template!.name}`);
-    expect(note).toContain(feeDeal.filled.why["set-aside"]);
-    // the standing order's line by its own name, and the caveats' line (D106)
-    expect(note).toContain("הוראת קבע");
+    // the caveats' line (D106), then the count of the lines left out; the template's name is the strip's step, not the note's
     expect(note).toContain(leftOutWords.lead);
+    expect(note).toContain(` · ${feeDeal.filled.count.house(parts.length)}`);
+    expect(note).not.toContain(deal.template!.name);
+    // what the house charged on average, its own words on the same line (F-122)
+    const withAverages = text(createElement(TemplateNote, { template: deal.template!, left: t.left, leftOut: t.leftOut ?? null, averages: t.averages! }));
+    expect(withAverages).toContain(` · ${feeDeal.filled.count.house(parts.length)} · ${houseAverage.tap}`);
+    expect(parts.some((p) => p.group === feeDeal.filled.why["set-aside"])).toBe(true);
+    // the standing order's line by its own name
+    expect(parts.some((p) => p.text.includes("הוראת קבע"))).toBe(true);
   });
   it("says a track's deposit fee is none by rule where the product's fee regulation has none", () => {
     const deal = dealFromTemplate(newDeal("keren-hishtalmut"), "track:154", data, TODAY)!;
     expect(templateSource(deal.template!.id)).toBe("track");
     expect(deal.fees.map((f) => f.kind)).toEqual(["balance"]);
-    const note = text(createElement(TemplateNote, { template: deal.template!, left: templateOf(deal, deal.template!.id, data, TODAY)!.left }));
-    expect(note).toContain(feeDeal.filled.from.track);
-    expect(note).toContain(feeDeal.filled.why["none-by-rule"]);
+    const left = templateOf(deal, deal.template!.id, data, TODAY)!.left;
+    const note = text(createElement(TemplateNote, { template: deal.template!, left }));
+    expect(note).toBe(`${leftOutWords.lead} ${feeDeal.filled.count.track(1)}`);
+    expect(leftParts(left)).toEqual([{ text: feeDeal.filled.why["none-by-rule"] }]);
   });
 });

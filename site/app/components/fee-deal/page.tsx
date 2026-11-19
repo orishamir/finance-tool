@@ -5,7 +5,7 @@
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
 // pre-rendered page shows the head and the words that it is loading, never a deal of another day. The bar's end opens another saved deal
 // or a new one, and copies the deal's link. A link pasted into the address while the page is open opens as a fresh load would. A link
-// that does not open says why above the kind chooser, and one whose fees do not all open opens the rest and names the ones left out. The line's "לבחור תבנית" opens the template picker, where a price list opens a new deal
+// that does not open says why above the kind chooser, and one whose fees do not all open opens the rest and names the ones left out. The strip's "לבחור תעריפון" opens the template picker, where a price list opens a new deal
 // beside this one; its track's button opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A deal with no
 // kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first fee moves
 // nothing; the toolbox comes with a fee open, and the reading with the first fee. One fee is open at a time, and one case of it: a tap on
