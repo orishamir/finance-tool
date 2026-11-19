@@ -23,7 +23,7 @@ import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal
 import { readDealFor, sumsLargest } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
-import { addByKept, removeByKept, removeCaseKept, undo, undoWords } from "./undo";
+import { addByKept, changeFormKept, removeByKept, removeCaseKept, undo, undoWords } from "./undo";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -664,6 +664,19 @@ describe("a thing of the band's head, opened", () => {
     expect(thingMenu(read(one), "fee-trade", 0)!.after).toBe(copy.cases.thingMenu.slim);
     const apart: CasesFee = { ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") };
     expect(thingMenu(read({ ...deal(), fees: [apart] }), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.kept);
+  });
+  it("follows a sale priced apart once the person is in it: the toolbox's line says so, and a form chosen changes the sale alone", () => {
+    const d: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "free" } }] }] };
+    const tb = toolbox(read(d), "f", undefined, undefined, "sell")!;
+    expect(tb.side).toBe("sell");
+    expect(tb.addTo.lead).toBe(copy.cases.addToSale);
+    const r = changeFormKept(d, "f", "share", null, undefined, undefined, undefined, "sell")!;
+    const f = r.deal.fees[0] as SlimFee;
+    expect(f.stages[0]!.price).toEqual({ form: "action", rate: typed(0.25) });
+    expect(f.sale![0]!.price.form).toBe("action");
+    // a fee with no sale apart: the toolbox follows the purchase
+    const plain: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }] }] };
+    expect(toolbox(read(plain), "f", undefined, undefined, "sell")!.side).toBe("buy");
   });
   it("adds the next value at a head's plus with no question, and renames a value of the person's words in every case", () => {
     const slim: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] }] };

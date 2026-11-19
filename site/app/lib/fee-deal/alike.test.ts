@@ -44,4 +44,11 @@ describe("a later price holding a part alike", () => {
     const parts = slimParts({ kind: "trade" }, { stages: [{ price: action(listed(0.25), listed(39)), until: "2027-03" }, { price: action(listed(0.5), listed(39)) }] }, { today: "2026-11-14" });
     expect(parts.filter((p) => p.alike).map((p) => `${p.id}@${p.stage}`)).toEqual(["min@1"]);
   });
+  it("says a price's action once: its bounds say none on a price per action, and their period on a share of what is held", () => {
+    const line = slimParts({ kind: "fx" }, { stages: [{ price: action(listed(0.0875), listed(5)) }] }, { today: "2026-11-19" });
+    expect(line.find((p) => p.id === "share")!.words.tail).toContain("המרה");
+    expect(line.find((p) => p.id === "min")!.words.tail).toBeUndefined();
+    const custody = slimParts({ kind: "custody" }, { stages: [{ price: { ...held(listed(0.1), 12, 3), min: listed(5) } as Price }] }, { today: "2026-11-19" });
+    expect(custody.find((p) => p.id === "min")!.words.tail).toBeTruthy();
+  });
 });

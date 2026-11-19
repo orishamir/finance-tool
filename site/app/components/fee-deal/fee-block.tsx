@@ -1,8 +1,8 @@
 // One fee's block in the fees' column (method §10.6, `builder`'s `block`): a fee whose price changes by nothing is one slim line, its parts
 // after its name, a later price's after the month the first ends; a fee whose price changes holds its cases laid out by its shape
 // (fee-cases.tsx), every case shown. The fee or case open shows its slots, its parts with their
-// boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name, and the things of its head open
-// their values. Each thing of the head has a bin beside it, the fee open or not. The question of a thing being added stands in the open
+// boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name. Each thing of the head opens its
+// menu, the fee open or not: its values, and the action that stops the price changing by it. The question of a thing being added stands in the open
 // fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee,
 // and a thing to change by on the open fee's block, or on one case's head, which splits that case alone (`ToolDrop`). A thing lifted by
 // its grip drops on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.
@@ -15,7 +15,7 @@ import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
+import { DropZone, FeeBlock, Grip, SlimFee, cx, type DropHow, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
@@ -39,8 +39,8 @@ export interface OpenHere {
   view: OpenCaseView | null;
   /** The slot whose menu is open: its thing's place among the fee's things. */
   menu: number | null;
-  /** The thing of the band's head whose menu is open: its place among the fee's things. */
-  thing: number | null;
+  /** The thing of a band's head whose menu is open, the fee open or not: its fee, and its place among the fee's things. */
+  thing: { fee: string; t: number } | null;
 }
 
 /** What a fee's block hands to the page: a fee or a case opened, a slot or a thing tapped, a case or a later price taken away, a part asked. */
@@ -49,19 +49,17 @@ export interface BlockActions {
   onOpen: (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => void;
   /** A slot of the open case tapped, at the pill it opens from; again, its menu closes. */
   onSlot: (t: number, at: HTMLElement) => void;
-  /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
-  onThing: (t: number, at: HTMLElement) => void;
+  /** A thing of a fee's band head tapped, at its pill, the fee open or not; again, its menu closes. */
+  onThing: (feeId: string, t: number, at: HTMLElement) => void;
   onRemoveCase: (feeId: string, caseId: string) => void;
   /** The open fee's bin: the fee taken away, kept for the undo. */
   onRemoveFee: (feeId: string) => void;
-  /** A thing's bin in a fee's band head: the price stops changing by it, kept for the undo. */
-  onRemoveBy: (feeId: string, t: number) => void;
   /** Where a part or a thing dragged from the toolbox drops. */
   drop: ToolDrop;
   /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
   onRemoveChange: (feeId: string, side: Side, k: number, caseId: string | undefined) => void;
   /** The person is in price `k` of the open case's prices over time (its parts took the focus or a press): the toolbox adds to it. */
-  onEditPrice: (feeId: string, caseId: string | undefined, k: number) => void;
+  onEditPrice: (feeId: string, caseId: string | undefined, k: number, side?: Side) => void;
   /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
   pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
@@ -183,7 +181,7 @@ export function FeeBlockView({
   const openParts = (spoken: string, heads: readonly HeadApply[] = []) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId) => onEditPrice(fee.id, caseId, k)} pendingHands={pendingHands} grip={partGrip(heads)} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId, side) => onEditPrice(fee.id, caseId, k, side)} pendingHands={pendingHands} grip={partGrip(heads)} />
         {formLine}
       </>
     );
@@ -288,7 +286,7 @@ export function FeeBlockView({
                 {row.block.parts.map((p) =>
                   // a price among several over time opens the fee at that price, the toolbox adding to it, above the card's own button
                   timed ? (
-                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className="inline-flex max-w-full" onClick={() => openAt(p.stage ?? 0)}>
+                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className={cx("inline-flex max-w-full", p.kind === "when" && "basis-full")} onClick={() => openAt(p.stage ?? 0)}>
                       <RestPart part={p} />
                     </span>
                   ) : (
@@ -308,10 +306,14 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
-        {question}
-        <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)} />
-      </FeeBlock>
+      <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
+        {(by, cases) => (
+          <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner} by={by}>
+            {question}
+            {cases}
+          </FeeBlock>
+        )}
+      </FeeCases>
     </DropZone>
   );
 }

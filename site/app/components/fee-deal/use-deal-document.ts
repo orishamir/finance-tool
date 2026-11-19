@@ -18,6 +18,7 @@ import { NAME_MAX, newDeal, type FeeDeal } from "../../lib/fee-deal/model";
 import { dealStore, lastOpenId, rememberOpen, reopened, sameDeal, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { changeFormKept, deleteDealKept, formBack, freedCurrency, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
+import type { Side } from "../../lib/fee-deal/model";
 import type { FeesData } from "../../lib/fee-page-data";
 import { dealLabel } from "./bar-end";
 import type { FeeFocus } from "./builder";
@@ -188,14 +189,14 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
    * under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there, except a free price,
    * which has none: the focus stays on "חינם" in the toolbox. False where nothing changed.
    */
-  const changeForm = (feeId: string, part: PartId, caseId: string | null, at?: number): boolean => {
+  const changeForm = (feeId: string, part: PartId, caseId: string | null, at?: number, side: Side = "buy"): boolean => {
     // a form chosen again right after "חינם" puts the price back as it was, with its parts
-    if (undoing && "dealId" in undoing && formBack(undoing, deal, feeId, part, caseId ?? undefined)) {
+    if (side === "buy" && undoing && "dealId" in undoing && formBack(undoing, deal, feeId, part, caseId ?? undefined)) {
       onUndo();
       setFocus({ fee: feeId, on: "box" });
       return true;
     }
-    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at, undoing && "dealId" in undoing ? freedCurrency(undoing, deal, feeId, caseId ?? undefined) : undefined);
+    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at, undoing && "dealId" in undoing && side === "buy" ? freedCurrency(undoing, deal, feeId, caseId ?? undefined) : undefined, side);
     if (!r) return false;
     if (r.undo) {
       if (!keep(r.deal)) return false;

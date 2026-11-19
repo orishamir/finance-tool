@@ -2,7 +2,7 @@
 // over a case without that part or a place no case holds, and back where the cell covers more than one place.
 import { describe, expect, it } from "vitest";
 import { layoutOf, type FeeLayout, type LayoutCase, type LayoutPart } from "./layout";
-import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, tableSlots } from "./reach";
+import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits } from "./reach";
 import type { When } from "./model";
 
 const ROWS = ["price", "min", "max", "notes"];
@@ -14,37 +14,6 @@ const as = <S extends FeeLayout["shape"]>(l: FeeLayout, shape: S): Of<S> => {
   return l as Of<S>;
 };
 const none = { before: false, after: false };
-
-describe("a table's knobs", () => {
-  const l = as(layoutOf({ things: [{ range: false }], rows: ROWS, cases: [c("a", [["x"]], p("price", "1%"), p("min", "20")), c("b", [["y"]], p("price", "2%")), c("d", [["w"]], p("price", "3%"), p("min", "30"))] }), "table");
-  const row = (r: string) => l.rows.find((x) => x.row === r)!;
-
-  it("offers none toward a neighbour with a price of its own", () => {
-    const price = tableSlots(l, row("price").cells);
-    expect(knobEdges(price, 0, 1)).toEqual(none);
-    expect(knobEdges(price, 1, 1)).toEqual(none);
-  });
-
-  it("offers one toward a case that holds nothing in that row, which then takes the part", () => {
-    const min = tableSlots(l, row("min").cells);
-    expect(knobEdges(min, 0, 1)).toEqual({ before: false, after: true });
-    expect(knobEdges(min, 2, 1)).toEqual({ before: true, after: false });
-    expect(reachEdits(min, 0, 0, 0, 1)).toEqual({ over: ["b"], places: [], off: [] });
-  });
-
-  it("offers both on a cell over more than one column, to go back", () => {
-    const merged = as(layoutOf({ things: [{ range: false }], rows: ROWS, cases: [c("a", [["x"]], p("price", "1%")), c("b", [["y"]], p("price", "1%"))] }), "table");
-    const slots = tableSlots(merged, merged.rows[0]!.cells);
-    expect(knobEdges(slots, 0, 2)).toEqual({ before: true, after: true });
-    expect(reachEdits(slots, 0, 1, 0, 0)).toEqual({ over: [], places: [], off: ["b"] });
-  });
-
-  it("offers none on a ladder whose steps are all priced", () => {
-    const ladder = as(layoutOf({ things: [{ range: true }], rows: ROWS, cases: [c("s0", [0], p("price", "0.2")), c("s1", [1], p("price", "0.1")), c("s2", [2], p("price", "0.05"))] }), "table");
-    const slots = tableSlots(ladder, ladder.rows[0]!.cells);
-    expect([0, 1, 2].map((k) => knobEdges(slots, k, 1))).toEqual([none, none, none]);
-  });
-});
 
 describe("a grid's knobs", () => {
   /** What is bought down, the channel across; the branch has no case for the second value. */

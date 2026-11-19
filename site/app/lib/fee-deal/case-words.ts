@@ -3,7 +3,8 @@
 // and the undo's lines arrange them.
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
-import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee, type Price, type Priced, type When } from "./model";
+import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee, type Price, type Priced, type Stage, type When } from "./model";
+import { amountWords, formatValue } from "../format";
 import { FIGURES, type Figure } from "./offers/figures";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
@@ -67,21 +68,40 @@ export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }):
   b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
 /**
  * A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its bounds, its links and its notes; where it changes with
- * time, after each price the month the next starts ("ומינואר 2027", `SAID.until`) and then that price's parts (`stage`, its place among
- * the prices), so a closed fee reads its whole sequence on one line: "חינם · ומינואר 2027 · 20 ₪ בחודש".
+ * time, after each price the month the next starts ("מינואר 2027", `SAID.until`, of the kind `when`, which a line draws across the place)
+ * and then that price's parts (`stage`, its place among the prices), so a closed fee reads its whole sequence in time: "חינם", the line
+ * "מינואר 2027", "20 ₪ בחודש".
  */
 export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
+  const sale = priced.sale ? saleWords(fee, priced.sale, r) : null;
   return priced.stages.flatMap((stage, k) => {
     const view = priceView([fee], 0, stage.price, r.today);
     const said = saidParts({ kind: fee.kind, p: stage.price, view, ...(stage.until ? { until: stage.until } : {}) }, k === 0 && !!priced.sale);
     const before = k ? priced.stages[k - 1]!.price : null;
     const parts = said.filter((x) => x.id !== "until").map((x) => {
+      if (x.id === "sale" && sale) return { ...x, words: { lead: sale } };
       const fields = figureFields(x.id, stage.price, view);
       return { ...x, ...(k ? { stage: k } : {}), ...(fields.length ? { fields } : {}), ...(before && heldAlike(before, stage.price, x.id) ? { alike: true as const } : {}) };
     });
+    // with a sale priced apart, the purchase's price says it is the purchase's, "בקנייה:", as the sale says "במכירה:"
+    if (sale && k === 0 && parts[0]) parts[0] = { ...parts[0], words: { ...parts[0].words, lead: `${copy.cases.buySaid}${parts[0].words.lead ?? ""}` } };
     const change = said.find((x) => x.id === "until");
     return change ? [...parts, { ...change, stage: k + 1 }] : parts;
   });
+}
+
+/** A part's words as plain text: its words and figures in order. */
+const wordsText = (w: PartWords): string =>
+  [w.lead, w.figure && amountWords(formatValue(w.figure.value as number, w.figure.unit)), w.mid, w.second && amountWords(formatValue(w.second.value as number, w.second.unit)), w.tail].filter(Boolean).join("");
+
+/**
+ * A sale priced apart, as a line says it in place of "מכירה במחיר אחר" (founder, 2026-11-19: the note read as a fee of its own): "במכירה:"
+ * and its first price's parts, "במכירה: חינם", "במכירה: 0.1% לכל פעולה, מינימום 10 ₪".
+ */
+function saleWords(fee: Pick<Fee, "kind">, stages: readonly Stage[], r: Pick<DealRead, "today">): string {
+  const p = stages[0]!.price;
+  const said = saidParts({ kind: fee.kind, p, view: priceView([fee], 0, p, r.today) }, false).filter((x) => x.id !== "until");
+  return `${copy.cases.saleSaid}${said.map((x) => wordsText(x.words).trim()).join(", ")}`;
 }
 
 /** The parts a price says, each with its words, and a sale priced apart where the line has one; a part with nothing to say yet is left out. */

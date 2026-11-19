@@ -106,7 +106,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: () => [], onResult: () => undefined, phone: false } },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: () => [], onResult: () => undefined, phone: false } },
     ask: ask ? { kind: ask } : null,
     adding: "line",
   });
@@ -191,21 +191,26 @@ describe("the case open in place", () => {
     expect(count(html, `>${feeDeal.builder.fieldName(name, feeDeal.panel.currency)}</label>`)).toBe(1);
     expect(text(builderOf(account(), "fee-trade"))).toContain(dealCases.chosen);
   });
-  it("opens a price that changes with time as its prices in order, a divider with the change's month and its bin between them, and the slot that adds a change after them", () => {
+  it("opens a price that changes with time as its prices in order, a divider with the change's month and its bin between them, and no slot that adds a change after them", () => {
     const d = provident();
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) }, until: "2027-06" }, { price: { form: "action", rate: { v: 0, blank: true } } }] }];
     const html = markup(builderOf(d, "fee-deposit"));
     expect(count(html, "data-change-divider")).toBe(1);
     expect(html).toContain(`aria-label="${feeDeal.builder.fieldName(feeName("deposit"), feeDeal.panel.change.month)}"`);
     expect(html).toContain(`aria-label="${feeDeal.builder.fieldName(`${feeName("deposit")}, 06.2027`, feeDeal.panel.change.remove)}"`);
-    expect(text(builderOf(d, "fee-deposit"))).toContain(feeDeal.panel.change.add);
+    expect(html).not.toContain("data-add-change");
     expect(html).toMatch(/aria-label="[^"]*, 06\.2027[^"]*, כמה"[^>]*value=""|value=""[^>]*aria-label="[^"]*, כמה"/);
   });
-  it("opens a sale priced apart under its own head, and says it at rest as a note", () => {
+  it("opens a sale priced apart under its own head with its bin, never as a part of the purchase, and says its price at rest", () => {
     const d = account();
     d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "action", rate: typed(0.3) } }] }];
-    expect(text(builderOf(d, null))).toContain(feeDeal.cases.parts.notes.sale!);
-    expect(text(builderOf(d, "fee-trade"))).toContain(feeDeal.panel.salePrices);
+    expect(text(builderOf(d, null))).toContain(`${feeDeal.cases.buySaid.trim()}0.25%`);
+    expect(text(builderOf(d, null))).toContain(`${feeDeal.cases.saleSaid}0.3% לכל פעולה`);
+    const open = text(builderOf(d, "fee-trade"));
+    expect(open).toContain(feeDeal.panel.salePrices);
+    expect(open).toContain(feeDeal.panel.buyPrices);
+    expect(open).not.toContain(feeDeal.cases.parts.notes.sale!);
+    expect(markup(builderOf(d, "fee-trade"))).toContain(`aria-label="${feeDeal.panel.saleRemove}"`);
   });
 });
 
@@ -301,26 +306,24 @@ describe("the fees' column", () => {
     for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!])
       expect(shown).toContain(w);
     // one value of what is bought split by the track: a table, a case added beside its heads, the fee's head holding no add of its own;
-    // the open case ends with its own slot, a change of its price with time
-    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(2);
-    expect(text(builderOf(d, "fee-trade"))).toContain(feeDeal.panel.change.add);
-    // the open case's actions, the open fee's bin and each thing's bin are icons, named by what they do
+    // the open case ends with no slot of its own (a change of its price with time is the toolbox's line)
+    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(1);
+    // the open case's actions and the open fee's bin are icons, named by what they do; no bin stands beside a thing
     const html = drawBuilder(d, "fee-trade");
-    for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove, feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.what!), feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!)])
-      expect(count(html, `aria-label="${w}"`), w).toBe(1);
+    for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(count(html, `aria-label="${w}"`), w).toBe(1);
+    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(html, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(0);
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(shown).not.toContain(w);
     // the person's track is the open case here, its rows' words said once in its slots; the other track is a case like any other, never
     // folded away for not being theirs
     expect(count(shown, "מסלול 1")).toBe(1);
     expect(count(shown, "מסלול 2")).toBe(1);
-    // the fee open, each thing of its band's head is a slot that opens its menu; closed, the things are words
+    // open or closed, each thing of its band's head is a pill that opens its menu, where it is taken away; the open fee adds its case's slots
     const pills = (html: string) => count(html, 'aria-haspopup="dialog" aria-expanded="false"');
     const open = drawBuilder(d, "fee-trade");
     const closed = drawBuilder(d, null);
-    expect(pills(open) - pills(closed)).toBe(2 + 2);
-    expect(count(closed, `>${feeDeal.cases.things.what}</span>`)).toBe(1);
-    // closed too, each thing has its bin, which takes it away without opening the fee
-    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(closed, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(1);
+    expect(pills(open) - pills(closed)).toBe(2);
+    expect(count(closed, "data-thing=")).toBe(2);
+    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(closed, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(0);
   });
   it("says each case's standing against the cap beside it, as a slim line's", () => {
     const d = provident();
@@ -464,12 +467,14 @@ describe("a fee read across sizes", () => {
 });
 
 describe("the workbench's closed fees and the fees to add", () => {
-  it("a closed fee with a later price reads its sequence on one line, in its card: the first price, the month the next starts, the next", () => {
+  it("a closed fee with a later price reads its sequence in its card: the first price, the line with the month the next starts, the next", () => {
     const html = markup(builderOf(account(), null));
     const card = html.slice(html.indexOf(feeName("fixed_period")));
     const shown = card.replace(/<[^>]+>/g, " ").replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\s+/g, " ");
     // the account fee: free, and from March 2027 10 ₪ a month
     const from = `${feeDeal.cases.parts.from.replace("־", "")}${fmt.date("2027-03")}`;
+    expect(count(card, "data-when-rule")).toBeGreaterThan(0);
+    expect(shown).not.toContain(`ו${from}`);
     expect(shown.indexOf(feeDeal.price.free)).toBeLessThan(shown.indexOf(from));
     expect(shown.indexOf(from)).toBeLessThan(shown.indexOf("10"));
     // the line says it all: no note of the change under or after the card

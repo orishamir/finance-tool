@@ -2,7 +2,7 @@
 // currency chooser beside its first sum, a part the toolbox added that asks for what it needs on the price the toolbox acts on, and what
 // the case can do (be copied, be taken away).
 import { feeOf } from "./cases";
-import { anySourced, hasCases, pricedOf, toolPrice, type BoundCurrency, type Case, type Fee, type MonthKey, type Price, type Stage } from "./model";
+import { anySourced, hasCases, pricedOf, toolPrice, toolStages, type BoundCurrency, type Case, type Fee, type MonthKey, type Price, type Side, type Stage } from "./model";
 import { boundsAction } from "./offers/capabilities";
 import { keeps, sumCurrency } from "./offers/capacity";
 import { type Figure } from "./offers/figures";
@@ -68,6 +68,8 @@ export interface OpenPending extends PendingWords {
   part: PendingPart;
   ask: Exclude<Ask, null>;
   k: number;
+  /** The side of the price it asks on: the purchase's, or a sale priced apart. */
+  side: Side;
   figure?: Figure;
 }
 
@@ -120,14 +122,14 @@ function withChooser(fee: Fee, p: Price, parts: OpenPart[]): { parts: OpenPart[]
 }
 
 /** A pending part as the open case asks it, on the price the toolbox acts on. */
-function pendingOn(fee: Fee, stages: readonly Stage[], k: number, part: PendingPart): OpenPending {
+function pendingOn(fee: Fee, stages: readonly Stage[], k: number, part: PendingPart, side: Side): OpenPending {
   const ask = PARTS[part].ask;
   const figure = ask === "sum" || ask === "pct" ? PARTS[part].figures[0] : undefined;
-  return { part, ask, k, ...PENDING[part]({ kind: fee.kind, p: stages[k]!.price }), ...(figure ? { figure } : {}) };
+  return { part, ask, k, side, ...PENDING[part]({ kind: fee.kind, p: stages[k]!.price }), ...(figure ? { figure } : {}) };
 }
 
 /** The case open in place: the fee's slots for the case, its prices' parts, and the part `pending` asking on the toolbox's price (`at`, the price being edited, else the last). */
-export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pending: PendingPart | null = null, at?: number): OpenCase {
+export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pending: PendingPart | null = null, at?: number, on: Side = "buy"): OpenCase {
   const priced = pricedOf(fee, caseId);
   const c = hasCases(fee) ? (priced as Case) : null;
   const stagesOf = (stages: readonly Stage[], apart: boolean): OpenStage[] =>
@@ -135,9 +137,10 @@ export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pend
   return {
     case: c?.id ?? null,
     slots: c && hasCases(fee) ? fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: whenWords(fee, c.when[t]!, t, r.today), ...(b.kind === "track" ? { mine: !!c.mine } : {}) })) : [],
-    buy: stagesOf(priced.stages, !!priced.sale),
+    // a sale priced apart is said by its own head over its prices, with its bin, never as a part of the purchase's
+    buy: stagesOf(priced.stages, false),
     ...(priced.sale ? { sell: stagesOf(priced.sale, false) } : {}),
-    pending: pending ? pendingOn(fee, priced.stages, toolPrice(priced, at), pending) : null,
+    pending: pending ? pendingOn(fee, toolStages(priced, on), toolPrice({ stages: toolStages(priced, on) }, at), pending, on === "sell" && priced.sale ? "sell" : "buy") : null,
     canCopy: !!c,
     canRemove: !!c && hasCases(fee) && fee.cases.length > 1,
   };
@@ -149,12 +152,12 @@ export function openCase(r: DealRead, fee: Fee, caseId: string | undefined, pend
  * the open case edits them all. `pending`: a part the toolbox added that asks for what it needs in the case open, on the price being edited
  * (`editing`, its place among the purchase's prices; the last where none is).
  */
-export function panel(r: DealRead, feeId: string, caseId?: string, pending: PendingPart | null = null, editing?: number): Panel | null {
+export function panel(r: DealRead, feeId: string, caseId?: string, pending: PendingPart | null = null, editing?: number, side: Side = "buy"): Panel | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
   // a fee not read (prices out of order, not given, no case for the picks) is named on its own
   const at = r.fees.findIndex((x) => feeOf(x) === fee.id && (!hasCases(fee) || x.read?.case === (priced as Case).id));
-  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}), ...(r.copied[fee.id] ? { house: r.copied[fee.id] } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown, pending, editing) };
+  return { ...refOf(at >= 0 ? r.fees[at]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}), ...(r.copied[fee.id] ? { house: r.copied[fee.id] } : {}) }, r.today), fee: fee.id, open: openCase(r, fee, shown, pending, editing, side) };
 }

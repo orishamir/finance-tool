@@ -376,6 +376,8 @@ export function pricedOf(fee: Fee, caseId?: string): Priced {
  * prices have it), else the last, the one that runs on with no end. The toolbox offers what it can hold, and adds a part, asks for a
  * pending part and changes the form there.
  */
+/** The prices the toolbox acts on: a sale priced apart where it follows the sale (`side`), else the purchase's. */
+export const toolStages = (x: Priced, side: Side = "buy"): Stage[] => (side === "sell" && x.sale ? x.sale : x.stages);
 export const toolPrice = (x: Priced, at?: number): number => (at !== undefined && at >= 0 && at < x.stages.length ? at : x.stages.length - 1);
 
 /** A fee's prices on a side (of a case, where `caseId` names one): the sale's where it is priced apart, else the fee's own. */
@@ -628,8 +630,19 @@ export function stageFault(stages: readonly { until?: MonthKey }[], k: number): 
  * offers only these.
  */
 export function untilRange(stages: readonly { until?: MonthKey }[], k: number): { earliest?: MonthKey; latest?: MonthKey } {
-  const before = k > 0 ? stages[k - 1]!.until : undefined;
-  const after = k + 1 < stages.length - 1 ? stages[k + 1]!.until : undefined;
+  return openMonths(k > 0 ? stages[k - 1]!.until : undefined, k + 1 < stages.length - 1 ? stages[k + 1]!.until : undefined);
+}
+
+/**
+ * The months price `k` of a list can be split at (`splitAt`), its later part starting there: after the month the price before it ends, and
+ * before the month it ends itself (the last has no end), so the split falls inside that price. A month picker offers only these.
+ */
+export function splitRange(stages: readonly { until?: MonthKey }[], k: number): { earliest?: MonthKey; latest?: MonthKey } {
+  return openMonths(k > 0 ? stages[k - 1]!.until : undefined, stages[k]?.until);
+}
+
+/** The months strictly between `before` and `after`, as a month box's first and last (either open where it is not given). */
+function openMonths(before: MonthKey | undefined, after: MonthKey | undefined): { earliest?: MonthKey; latest?: MonthKey } {
   const shift = (key: MonthKey, by: number) => {
     const c = monthOf(key);
     const t = c.y * 12 + c.m - 1 + by;
