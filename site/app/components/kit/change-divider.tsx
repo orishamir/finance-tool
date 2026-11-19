@@ -10,9 +10,9 @@ import { cx } from "./cx";
 export function WhenRule({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <span data-when-rule="" className={cx("flex w-full basis-full items-center gap-2 text-sm text-when", className)}>
-      <span aria-hidden className="h-px min-w-3 flex-1 bg-when" />
-      <span className="inline-flex items-center gap-1.5">{children}</span>
-      <span aria-hidden className="h-px min-w-3 flex-1 bg-when" />
+      <span aria-hidden className="h-px min-w-2 flex-1 bg-when" />
+      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">{children}</span>
+      <span aria-hidden className="h-px min-w-2 flex-1 bg-when" />
     </span>
   );
 }
