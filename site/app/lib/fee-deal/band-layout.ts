@@ -84,6 +84,14 @@ export function laterChanges(parts: readonly SlimPart[]): SlimPart[] {
 }
 
 /**
+ * A case's parts read by rows, put back in time where one cell or row says them all: each price's parts, whatever their rows, before the
+ * month the next price starts and that price's parts, so a first price's note stands above the line between them, never under the later.
+ */
+export function inTime(parts: readonly SlimPart[]): SlimPart[] {
+  return [...parts].sort((a, b) => (a.stage ?? 0) - (b.stage ?? 0));
+}
+
+/**
  * A fee's cases laid out by its shape (`layoutOf`), the cases being the builder's rows of it (`rows`, in the fee's order), with three things
  * the switch on `switchTo`.
  */

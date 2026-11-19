@@ -32,11 +32,25 @@ export interface ToolPart {
 /** The thing to change by that a toolbox card adds (its id `by:<thing>`), or null where the card is a part. */
 export const cardThing = (id: string): ByKind | null => (id.startsWith("by:") ? (id.slice(3) as ByKind) : null);
 
-/** A toolbox group: its kind and head, and its parts in order. */
+/**
+ * A toolbox card drawn as the line it adds to the open case, across its group: the month the price it acts on changes from (F-110). A tap
+ * asks for the month on that price, which then splits in two there (`until`, a part that asks for its month); it splits the price in time,
+ * never the fee into cases, so it is no thing's card.
+ */
+export interface ToolLine {
+  id: LinePartId;
+  words: string;
+}
+
+/** The parts the toolbox draws as lines. */
+type LinePartId = "until";
+
+/** A toolbox group: its kind and head, its parts in order, and its lines after them. */
 export interface ToolGroup {
   group: ToolGroupId;
   head: string;
   parts: ToolPart[];
+  lines: ToolLine[];
 }
 
 /**
@@ -73,14 +87,20 @@ export const TOOL_ORDER = {
   by: ["sale"],
   rule: ["unfilled", "partial", "inTrade"],
 } as const satisfies { [G in ToolGroupId]: readonly ToolPartIn<G>[] };
-/** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`), then its parts. */
-const TOOLBOX: readonly { group: ToolGroupId; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
+/**
+ * The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`), then its parts,
+ * then the month the price changes from, drawn as a line.
+ */
+const TOOLBOX: readonly { group: ToolGroupId; kind: ToolPart["kind"]; parts: readonly ToolPartId[]; lines?: readonly LinePartId[] }[] = [
   { group: "charge", kind: "charge", parts: TOOL_ORDER.charge },
   { group: "off", kind: "off", parts: TOOL_ORDER.off },
   { group: "bound", kind: "bound", parts: TOOL_ORDER.bound },
-  { group: "by", kind: "by", parts: TOOL_ORDER.by },
+  { group: "by", kind: "by", parts: TOOL_ORDER.by, lines: ["until"] },
   { group: "rule", kind: "rule", parts: TOOL_ORDER.rule },
 ];
+
+/** Each line's words on its card. */
+const LINE_WORDS: Readonly<Record<LinePartId, string>> = { until: copy.cases.dateLine };
 
 export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number, on: Side = "buy"): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
@@ -102,8 +122,9 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number
   const lead = side === "sell" ? copy.cases.addToSale : copy.cases.addTo;
   const base = c && hasCases(fee) ? { lead, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead, name: feeNameOf(fee.kind, fee.name) };
   const addTo = stages.length > 1 ? { ...base, price: priceWords(stages, k), periods: stages.map((_, j) => periodWords(stages, j)) } : base;
-  const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g) }));
-  return { addTo, k, side, groups: groups.filter((g) => g.parts.length > 0) };
+  const lines = (g: (typeof TOOLBOX)[number]): ToolLine[] => (g.lines ?? []).filter((id) => offer.parts.includes(id)).map((id) => ({ id, words: LINE_WORDS[id] }));
+  const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g), lines: lines(g) }));
+  return { addTo, k, side, groups: groups.filter((g) => g.parts.length > 0 || g.lines.length > 0) };
 }
 
 /** The month before `m`: a price that ends at the start of `m` holds through it. */

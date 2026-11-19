@@ -191,14 +191,14 @@ describe("the case open in place", () => {
     expect(count(html, `>${feeDeal.builder.fieldName(name, feeDeal.panel.currency)}</label>`)).toBe(1);
     expect(text(builderOf(account(), "fee-trade"))).toContain(dealCases.chosen);
   });
-  it("opens a price that changes with time as its prices in order, a divider with the change's month and its bin between them, and the slot that adds a change after them", () => {
+  it("opens a price that changes with time as its prices in order, a divider with the change's month and its bin between them, and no slot that adds a change after them", () => {
     const d = provident();
     d.fees = [{ id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) }, until: "2027-06" }, { price: { form: "action", rate: { v: 0, blank: true } } }] }];
     const html = markup(builderOf(d, "fee-deposit"));
     expect(count(html, "data-change-divider")).toBe(1);
     expect(html).toContain(`aria-label="${feeDeal.builder.fieldName(feeName("deposit"), feeDeal.panel.change.month)}"`);
     expect(html).toContain(`aria-label="${feeDeal.builder.fieldName(`${feeName("deposit")}, 06.2027`, feeDeal.panel.change.remove)}"`);
-    expect(text(builderOf(d, "fee-deposit"))).toContain(feeDeal.panel.change.add);
+    expect(html).not.toContain("data-add-change");
     expect(html).toMatch(/aria-label="[^"]*, 06\.2027[^"]*, כמה"[^>]*value=""|value=""[^>]*aria-label="[^"]*, כמה"/);
   });
   it("opens a sale priced apart under its own head with its bin, never as a part of the purchase, and says its price at rest", () => {
@@ -306,9 +306,8 @@ describe("the fees' column", () => {
     for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!])
       expect(shown).toContain(w);
     // one value of what is bought split by the track: a table, a case added beside its heads, the fee's head holding no add of its own;
-    // the open case ends with its own slot, a change of its price with time
-    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(2);
-    expect(text(builderOf(d, "fee-trade"))).toContain(feeDeal.panel.change.add);
+    // the open case ends with no slot of its own (a change of its price with time is the toolbox's line)
+    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(1);
     // the open case's actions, the open fee's bin and each thing's bin are icons, named by what they do
     const html = drawBuilder(d, "fee-trade");
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove, feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.what!), feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!)])
@@ -469,12 +468,14 @@ describe("a fee read across sizes", () => {
 });
 
 describe("the workbench's closed fees and the fees to add", () => {
-  it("a closed fee with a later price reads its sequence on one line, in its card: the first price, the month the next starts, the next", () => {
+  it("a closed fee with a later price reads its sequence in its card: the first price, the line with the month the next starts, the next", () => {
     const html = markup(builderOf(account(), null));
     const card = html.slice(html.indexOf(feeName("fixed_period")));
     const shown = card.replace(/<[^>]+>/g, " ").replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\s+/g, " ");
     // the account fee: free, and from March 2027 10 ₪ a month
     const from = `${feeDeal.cases.parts.from.replace("־", "")}${fmt.date("2027-03")}`;
+    expect(count(card, "data-when-rule")).toBeGreaterThan(0);
+    expect(shown).not.toContain(`ו${from}`);
     expect(shown.indexOf(feeDeal.price.free)).toBeLessThan(shown.indexOf(from));
     expect(shown.indexOf(from)).toBeLessThan(shown.indexOf("10"));
     // the line says it all: no note of the change under or after the card

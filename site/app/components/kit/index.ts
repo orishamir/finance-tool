@@ -89,7 +89,7 @@ export { flip } from "./flip";
 export { KnobButton } from "./knob-button";
 export { EditInPlace } from "./edit-in-place";
 export { FeePalette, type PaletteItem } from "./fee-palette";
-export { ChangeDivider } from "./change-divider";
+export { ChangeDivider, WhenRule } from "./change-divider";
 export { FeeBlock, SlimFee, type FeeRemove } from "./fee-block";
 export { RemoveButton } from "./remove-button";
 export { DropZone, useCarried, type DropHow, type SortOf } from "./drag-drop";

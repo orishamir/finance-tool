@@ -49,11 +49,12 @@ export type PartId =
 
 /**
  * The kind of a part, by what it does to the price, which gives its colour (design-system 2.2): `charge`, what is charged (a form of the
- * price, a third party's fee, a later price); `off`, what comes off it (a discount, an offset, a refund); `bound`, its floor and ceiling (a
- * minimum, a maximum, a percent maximum, a flat price for a small action, a held share's maximum on each security); `rule`, how it is
- * charged (words on an order, sums in the action's currency, a sale priced apart).
+ * price, a third party's fee); `off`, what comes off it (a discount, an offset, a refund); `bound`, its floor and ceiling (a minimum, a
+ * maximum, a percent maximum, a flat price for a small action, a held share's maximum on each security); `when`, the month the price
+ * changes from, in the colour of what the price changes by, drawn as a line between the price before and the price after; `rule`, how it
+ * is charged (words on an order, sums in the action's currency, a sale priced apart).
  */
-export type PartKind = "charge" | "off" | "bound" | "rule";
+export type PartKind = "charge" | "off" | "bound" | "when" | "rule";
 
 /**
  * The toolbox's groups a part may show in, by what it does to the price: what is charged, what comes off it, its floor and ceiling, what it
@@ -61,8 +62,8 @@ export type PartKind = "charge" | "off" | "bound" | "rule";
  */
 export type ToolGroupId = "charge" | "off" | "bound" | "by" | "rule";
 
-/** What a part asks for before it can stand, where it asks: a percent, a sum or a fee (an offset's). */
-export type Ask = "pct" | "sum" | "fee" | null;
+/** What a part asks for before it can stand, where it asks: a percent, a sum, a fee (an offset's) or a month (a later price's). */
+export type Ask = "pct" | "sum" | "fee" | "month" | null;
 
 /**
  * Where a part goes, and what it needs: the case (`caseId`; a fee with cases is edited in its first where none is named), the side and the
@@ -153,13 +154,13 @@ const SPECS = {
   free: { kind: "charge", form: "free", figures: [], ask: null, tool: "charge", ...formEdit("free") },
   discount: { kind: "off", lost: true, field: "discount", figures: ["discount"], ask: null, tool: "off", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
   third: { kind: "charge", lost: true, field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "charge", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
-  // the month a price changes from (F-110): never a card of the toolbox; the page adds it at the end of the prices, by its month alone, and
-  // takes it away at its divider
+  // the month a price changes from (F-110): the toolbox draws it as the line it adds, not as a card of a group's (toolbox.ts `TOOLBOX`
+  // lines); it asks its month on the price the toolbox acts on, and is taken away at its divider
   until: {
-    kind: "charge",
+    kind: "when",
     feeHolds: () => true,
     figures: [],
-    ask: null,
+    ask: "month",
     tool: null,
     used: (_p: Price, x?: Priced) => !!x && x.stages.length > 1,
     // on, the price in force at the month splits in two there (nothing without a month); off, change `k` goes, the later price merging back
@@ -250,10 +251,11 @@ export function partsSaid(p: Price, line: { until?: MonthKey; sale?: boolean }):
   return out;
 }
 
-/** Whether `at` gives what a part asks for: a percent's or a sum's figure, a fee. */
+/** Whether `at` gives what a part asks for: a percent's or a sum's figure, a fee, a month. */
 function gives(at: PartAt, ask: Ask): boolean {
   if (ask === "pct" || ask === "sum") return at.value !== undefined;
   if (ask === "fee") return !!at.against;
+  if (ask === "month") return !!at.month;
   return true;
 }
 

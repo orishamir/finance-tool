@@ -68,8 +68,9 @@ export const thingName = (kind: FeeKindId, b: { kind: ByKind; label?: string }):
   b.kind === "own" ? (b.label ?? copy.cases.things.own!) : b.kind === "actionSize" ? (copy.cases.actionSize[kind] ?? copy.cases.actionSize.default!) : copy.cases.things[b.kind]!;
 /**
  * A price's parts as a slim line says them (`partsSaid`, `SAID`): its price, its bounds, its links and its notes; where it changes with
- * time, after each price the month the next starts ("ומינואר 2027", `SAID.until`) and then that price's parts (`stage`, its place among
- * the prices), so a closed fee reads its whole sequence on one line: "חינם · ומינואר 2027 · 20 ₪ בחודש".
+ * time, after each price the month the next starts ("מינואר 2027", `SAID.until`, of the kind `when`, which a line draws across the place)
+ * and then that price's parts (`stage`, its place among the prices), so a closed fee reads its whole sequence in time: "חינם", the line
+ * "מינואר 2027", "20 ₪ בחודש".
  */
 export function slimParts(fee: Pick<Fee, "kind">, priced: Priced, r: Pick<DealRead, "today">): SlimPart[] {
   const sale = priced.sale ? saleWords(fee, priced.sale, r) : null;

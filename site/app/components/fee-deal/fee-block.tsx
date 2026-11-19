@@ -15,7 +15,7 @@ import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
+import { DropZone, FeeBlock, Grip, SlimFee, cx, type DropHow, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
@@ -288,7 +288,7 @@ export function FeeBlockView({
                 {row.block.parts.map((p) =>
                   // a price among several over time opens the fee at that price, the toolbox adding to it, above the card's own button
                   timed ? (
-                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className="inline-flex max-w-full" onClick={() => openAt(p.stage ?? 0)}>
+                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className={cx("inline-flex max-w-full", p.kind === "when" && "basis-full")} onClick={() => openAt(p.stage ?? 0)}>
                       <RestPart part={p} />
                     </span>
                   ) : (

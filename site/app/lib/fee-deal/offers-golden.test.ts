@@ -56,7 +56,8 @@ describe("what each fee offers today (golden)", () => {
             const price = state === "plain" ? blankPrice(form) : fullPrice(fee, form);
             const deal = dealOf(kind.id, { id: "fee-g", kind: fee, stages: [{ price }] });
             const t = toolbox(readDealFor(deal, data.kinds, TODAY), "fee-g")!;
-            rows[`${kind.id} · ${fee} · ${form} · ${state}`] = t.groups.map((g) => `${g.group}: ${g.parts.map((x) => `${x.id}${x.used ? "✓" : ""}${x.off ? "⊘" : ""}`).join(" ")}`);
+            // a group's parts, then its lines after "|"
+            rows[`${kind.id} · ${fee} · ${form} · ${state}`] = t.groups.map((g) => [`${g.group}:`, ...g.parts.map((x) => `${x.id}${x.used ? "✓" : ""}${x.off ? "⊘" : ""}`), ...(g.lines.length ? ["|", ...g.lines.map((l) => l.id)] : [])].join(" "));
           }
         }
       }

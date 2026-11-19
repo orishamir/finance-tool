@@ -313,3 +313,28 @@ describe("a price after a free one", () => {
   });
 });
 
+describe("the toolbox's line for the month a price changes from", () => {
+  const custody: FeeDeal = { ...newDeal("brokerage-account"), fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 }, until: "2027-04" }, { price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }] };
+  it("stands after what the price changes by, as a line of its own, no thing's card nor a part's", () => {
+    const by = toolbox(readDealFor(custody, data.kinds, "2026-11-19"), "fee-c")!.groups.find((g) => g.group === "by")!;
+    expect(by.lines).toEqual([{ id: "until", words: expect.any(String) }]);
+    expect(by.parts.map((x) => x.id)).not.toContain("until");
+  });
+  it("stands where the product's fee is offered nothing else to change by, and not where its price cannot change with time", () => {
+    for (const kind of data.kinds)
+      for (const fee of FEE_KIND_IDS.filter((f) => f !== "own" && kindHas(kind.id, kind.bases, f))) {
+        const deal: FeeDeal = { ...newDeal(kind.id), fees: [{ id: "fee-x", kind: fee, stages: [{ price: { form: "free" } }] }] };
+        const by = toolbox(readDealFor(deal, data.kinds, "2026-11-19"), "fee-x")!.groups.find((g) => g.group === "by");
+        expect(!!by?.lines.length, `${kind.id} ${fee}`).toBe(offerFor(kind, fee).parts.includes("until"));
+      }
+  });
+  it("asks its month, and splits the price it acts on there, the later a copy; with no month it changes nothing", () => {
+    const fee = custody.fees[0]!;
+    expect(PARTS.until.ask).toBe("month");
+    expect(setPart(fee, "until", true, { side: "buy", k: 0 })).toBe(fee);
+    const split = setPart(fee, "until", true, { side: "buy", k: 0, month: "2027-01" });
+    expect(split.stages!.map((s) => s.until)).toEqual(["2027-01", "2027-04", undefined]);
+    expect(split.stages![1]!.price).toEqual(fee.stages![0]!.price);
+  });
+});
+

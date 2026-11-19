@@ -4,10 +4,11 @@
 // `DropZone`s), which does what its tap does there. A part the case already has shows a ✓ in the action colour and is muted, and stays
 // where it is; one the page lets a tap take away again (`removeLabel`) still takes a tap. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
 // at a time, its groups as a row of chips that scrolls sideways and fades at its end, always whole above the group's parts, which scroll
-// under it.
+// under it. A card that splits the price in time is drawn as the line it adds (`ToolLine`), across its group.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Check, Plus, X } from "lucide-react";
 import { dealCases as copy } from "../../copy";
+import { WhenRule } from "./change-divider";
 import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
 import { useCanDrag, useDragSource } from "./lift";
@@ -33,11 +34,24 @@ export interface ToolPart {
   row?: string;
 }
 
+/**
+ * A card drawn as the line it adds to the open case, across its group's width after its other cards: a "+", then the line of a price
+ * that changes with time, its icon and words centred on it (`WhenRule`). It adds no part beside the others: it splits the price in time (the month a price
+ * changes from). A tap adds it, as a part's card does (`onAdd` with its id).
+ */
+export interface ToolLine {
+  id: string;
+  label: string;
+  icon?: ReactNode;
+}
+
 export interface ToolGroup {
   id: string;
   kind: ToolKind;
   name: string;
   parts: ToolPart[];
+  /** Its cards drawn as lines (`ToolLine`), after its parts. */
+  lines?: ToolLine[];
   /** Why the parts marked `off` cannot be added, one sentence under the group. */
   offWhy?: ReactNode;
 }
@@ -85,7 +99,26 @@ function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: To
   );
 }
 
-/** The group's cards: its forms of the price as one segmented control, then its other cards two to a row, under their rows' names. */
+/** A line's card: a "+" and the line it adds, its words centred on it, the whole card the button. */
+function LineCard({ kind, line, onAdd }: { kind: ToolKind; line: ToolLine; onAdd: () => void }) {
+  return (
+    <button
+      type="button"
+      data-part={line.id}
+      data-kind={kind}
+      onClick={onAdd}
+      className="flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-kind-tile"
+    >
+      <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-kind" />
+      <WhenRule className="text-foreground">
+        {line.icon && <span aria-hidden className="inline-flex text-kind">{line.icon}</span>}
+        {line.label}
+      </WhenRule>
+    </button>
+  );
+}
+
+/** The group's cards: its forms of the price as one segmented control, then its other cards two to a row, under their rows' names, then its lines. */
 function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: string, part: string) => void; onRemove?: ((group: string, part: string) => void) | undefined }) {
   const card = (p: ToolPart) => <PartCard key={p.id} kind={group.kind} part={p} onAdd={() => onAdd(group.id, p.id)} onRemove={onRemove && (() => onRemove(group.id, p.id))} />;
   const forms = group.parts.filter((p) => p.form);
@@ -104,6 +137,7 @@ function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: st
           <div className="grid grid-cols-2 gap-2">{rest.filter((p) => p.row === row).map(card)}</div>
         </div>
       ))}
+      {group.lines?.map((l) => <LineCard key={l.id} kind={group.kind} line={l} onAdd={() => onAdd(group.id, l.id)} />)}
       {group.offWhy && group.parts.some((p) => p.off) && <p className="text-sm text-muted-foreground">{group.offWhy}</p>}
     </>
   );

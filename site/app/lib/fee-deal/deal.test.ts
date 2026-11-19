@@ -5,7 +5,7 @@ import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } f
 import { decodeDeal, dealOfAddress, encodeDeal, packDeal, parseSubject, unpackDeal } from "./link";
 import { blankPrice, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Price, type Sourced } from "./model";
 import { engineDeal } from "./to-engine";
-import { stageFault, untilRange } from "./model";
+import { splitRange, stageFault, untilRange } from "./model";
 import { DEALS_KEY, parseDeals, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "./store";
 import { engineBase, FEE_KIND_IDS } from "./shapes";
 import { feesOffered } from "./offers/offer";
@@ -327,5 +327,15 @@ describe("the months a price may end in", () => {
   });
   it("of a last price just being given an end (a later price will follow) start after the price before it", () => {
     expect(untilRange([{ until: "2027-03" }, {}], 1)).toEqual({ earliest: "2027-04" });
+  });
+});
+
+describe("the months a price may be split at", () => {
+  const stages = [{ until: "2026-12" }, { until: "2027-06" }, {}];
+  it("fall inside the price: after the month the price before it ends, before the month it ends itself, and open after the last's start", () => {
+    expect(splitRange(stages, 0)).toEqual({ latest: "2026-11" });
+    expect(splitRange(stages, 1)).toEqual({ earliest: "2027-01", latest: "2027-05" });
+    expect(splitRange(stages, 2)).toEqual({ earliest: "2027-07" });
+    expect(splitRange([{}], 0)).toEqual({});
   });
 });

@@ -630,8 +630,19 @@ export function stageFault(stages: readonly { until?: MonthKey }[], k: number): 
  * offers only these.
  */
 export function untilRange(stages: readonly { until?: MonthKey }[], k: number): { earliest?: MonthKey; latest?: MonthKey } {
-  const before = k > 0 ? stages[k - 1]!.until : undefined;
-  const after = k + 1 < stages.length - 1 ? stages[k + 1]!.until : undefined;
+  return openMonths(k > 0 ? stages[k - 1]!.until : undefined, k + 1 < stages.length - 1 ? stages[k + 1]!.until : undefined);
+}
+
+/**
+ * The months price `k` of a list can be split at (`splitAt`), its later part starting there: after the month the price before it ends, and
+ * before the month it ends itself (the last has no end), so the split falls inside that price. A month picker offers only these.
+ */
+export function splitRange(stages: readonly { until?: MonthKey }[], k: number): { earliest?: MonthKey; latest?: MonthKey } {
+  return openMonths(k > 0 ? stages[k - 1]!.until : undefined, stages[k]?.until);
+}
+
+/** The months strictly between `before` and `after`, as a month box's first and last (either open where it is not given). */
+function openMonths(before: MonthKey | undefined, after: MonthKey | undefined): { earliest?: MonthKey; latest?: MonthKey } {
   const shift = (key: MonthKey, by: number) => {
     const c = monthOf(key);
     const t = c.y * 12 + c.m - 1 + by;
