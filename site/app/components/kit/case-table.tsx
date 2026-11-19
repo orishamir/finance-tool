@@ -23,9 +23,9 @@ import { RemoveButton } from "./remove-button";
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /** The open case's column head and cells: the action colour's outline, as the open case's own. */
 const OPEN = "outline-2 -outline-offset-2 outline-primary";
-// a cell's lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the
+// a cell is a dark tile with no edge of its own (its 1 px border is kept clear so an open cell's edge moves nothing); its lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the
 // cells beside it (`ROW_HEAD`)
-const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-0.5 rounded-md border border-border bg-background px-2.5 py-[calc(0.75rem-1px)] text-sm leading-5";
+const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-0.5 rounded-md border border-transparent bg-background px-2.5 py-[calc(0.75rem-1px)] text-sm leading-5";
 /** A row's head: its words from the top, on the line a cell's first line stands on (the cell's border and padding over a 20 px line). */
 const ROW_HEAD = "pt-3 leading-5";
 

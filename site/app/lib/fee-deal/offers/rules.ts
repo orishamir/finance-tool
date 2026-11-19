@@ -131,7 +131,7 @@ export const RULES: readonly RuleRow[] = [
   { id: "account-fee", when: { products: is("brokerage-account", "makam", "government-bond"), fees: ["fixed_period"] }, verdict: { kind: "only", forms: ["sum"], parts: ["until", "offset"], conditions: ["track", "own"] }, cite: [], records: true },
   { id: "current-account", when: { fees: ["current_account"] }, verdict: CURRENT_ACCOUNT, cite: [], records: true },
   { id: "current-account-fee", when: { products: is("current-account"), fees: ["fixed_period"] }, verdict: CURRENT_ACCOUNT, cite: [], records: true },
-  { id: "conversion", when: { products: is("brokerage-account"), fees: ["fx"] }, verdict: { kind: "only", forms: ["action"], parts: ["discount", "flat", "min", "max", "refund"], conditions: ["currency", "track", "channel", "actionSize", "portfolioSize", "own"] }, cite: [], records: true },
+  { id: "conversion", when: { products: is("brokerage-account"), fees: ["fx"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["discount", "flat", "min", "max", "refund"], conditions: ["currency", "track", "channel", "actionSize", "portfolioSize", "own"] }, cite: [], records: true },
   { id: "conversion-spread", when: { products: is("brokerage-account"), fees: ["fx_spread"] }, verdict: { kind: "only", forms: ["action"], parts: [], conditions: ["track", "actionSize"] }, cite: [], records: true },
   { id: "distribution", when: { products: is("brokerage-account"), fees: ["distribution_handling"] }, verdict: { kind: "only", forms: ["action"], parts: [], conditions: ["what", "own"] }, cite: [], records: true },
   { id: "transfer-out", when: { products: is("brokerage-account"), fees: ["transfer_out"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["third", "min", "max"], conditions: ["what", "own"] }, cite: [], records: true },
@@ -139,8 +139,8 @@ export const RULES: readonly RuleRow[] = [
   { id: "securities-own", when: { products: is("brokerage-account", "makam", "government-bond"), fees: ["own"] }, verdict: { kind: "only", parts: ["third", "min", "max"], conditions: ["what", "count", "own"] }, cite: [], records: true },
   { id: "current-account-own", when: { products: is("current-account"), fees: ["own"] }, verdict: { kind: "only", forms: ["perAction", "sum"], parts: [], conditions: [] }, cite: [], records: true },
   // a Tel Aviv bond or makam trades as a share of the trade on its own line, and Interactive Brokers sells neither to a resident
-  { id: "bond-trade", when: { products: is("government-bond"), fees: ["trade"] }, verdict: { kind: "only", forms: ["action"], parts: ["third", "flat", "until", "min", "max", "cap", "unfilled", "partial"], conditions: ["channel", "actionSize", "portfolioSize", "count", "own"] }, cite: ["BRK-64"], records: true },
-  { id: "makam-trade", when: { products: is("makam"), fees: ["trade"] }, verdict: { kind: "only", forms: ["action"], parts: ["flat", "min", "max", "cap", "unfilled", "partial", "sale"], conditions: ["channel", "actionSize"] }, cite: ["BANK-18", "BRK-64"], records: true },
+  { id: "bond-trade", when: { products: is("government-bond"), fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["third", "flat", "until", "min", "max", "cap", "unfilled", "partial"], conditions: ["channel", "actionSize", "portfolioSize", "count", "own"] }, cite: ["BRK-64"], records: true },
+  { id: "makam-trade", when: { products: is("makam"), fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["flat", "min", "max", "cap", "unfilled", "partial", "sale"], conditions: ["channel", "actionSize"] }, cite: ["BANK-18", "BRK-64"], records: true },
 
   // ---- fees the law bans at a bank; a new bank, for five years from its licence, is outside these rules (BANK-51), which each ban says
   // a bank may not charge custody on makam or on money-market units

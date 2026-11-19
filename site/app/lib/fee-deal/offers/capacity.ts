@@ -72,7 +72,8 @@ export const CAPACITY: Readonly<Record<FeeKindId, Capacity>> = {
   creation_redemption: { ...action(RATE, true), base: "creation_redemption" },
   load: { ...action(RATE), base: "load", oneSide: "buy" },
   redemption_deduction: { ...action(RATE), base: "redemption_deduction", oneSide: "sell" },
-  fx: { ...action(FX), base: "fx" },
+  // a small conversion's flat price is a sum on each conversion, up to its size (fold-flat.ts)
+  fx: { base: "fx", forms: ["action", "perAction"], usual: "action", fields: { action: FX, perAction: AMOUNT_IN }, saleApart: false },
   fx_spread: { ...action(RATE), base: null },
   deposit: { ...action(RATE), base: "deposit" },
   distribution_handling: { base: "distribution_handling", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },

@@ -186,8 +186,6 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   free: () => ({ words: { lead: copy.price.free } }),
   discount: () => ({ words: { lead: pp.discount.lead, tail: pp.discount.tail }, box: "pct" }),
   third: () => ({ words: { lead: pp.third } }),
-  // a flat price for a small action, where the fee's price list may print one (a trade, a conversion)
-  flat: (c) => ({ words: { lead: pp.flatSmall[c.kind] ?? pp.flatSmall.default! }, box: inPrice(c) }),
   min: (c) => ({ words: { lead: pp.min }, box: inPrice(c) }),
   max: (c) => ({ words: { lead: pp.max }, box: inPrice(c) }),
   cap: ({ kind }) => ({ words: { lead: pp.max, tail: ` ${shareOf(kind)}` }, box: "pct" }),

@@ -1,39 +1,39 @@
-// A part of a fee's price (a price, a bound, a link to another fee, a note), at rest and in edit (design-system 11, "Cases and parts").
-// A part's kind is told by the icon before its first word and that word itself ("מינימום", "מתקזזת מול"); a note by its dashed edge. A
-// bound and a link take the price's neutral look, as a table's cell writes them in plain words: green and amber on this site mean a
-// state (a dimension considered, a figure used outside its context), never a kind of part (design.md, the number states). Its
-// figures keep their own number state (the sourced line, the entered blue), as everywhere on the site. Parts keep a fixed order: there is
-// no grip and nothing to drag.
+// A part of a fee's price, at rest and in edit (design-system 11, "Cases and parts"). A part's kind is what it does to the price: what is
+// charged, what comes off it, its floor and ceiling, a rule of the charge. At rest, in a slim line, it is told by the icon before its first
+// word and that word itself ("מינימום", "מתקזזת מול"), a rule by its dashed edge; in edit, in the open case, also by its kind's colour
+// (theme.css, `data-kind`): a colour edge at its start, a faint fill of it, and its first word in it (founder, 2026-11-19), the same colour
+// as the toolbox's card that adds it and the dot before it in a cell. Its figures keep their own number state (the sourced line, the
+// entered blue), as everywhere on the site. Parts keep a fixed order.
 import type { ReactNode } from "react";
 import { ArrowDownToLine, ArrowUpToLine, Link2, type LucideIcon } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 
-/** What a part is: a price, a minimum or a maximum, a link to another fee (each neutral, a bound's and a link's told by their icon), a note (a dashed edge, no fill). */
-export type PartKind = "price" | "bound" | "link" | "note";
+/** What a part does to the price: what is charged, what comes off it, its floor and ceiling (a bound's told by its icon too), a rule of the charge. */
+export type PartKind = "charge" | "off" | "bound" | "rule";
 /** The icon before a part's first word: a minimum's, a maximum's, a link's. A price and a note have none. */
 export type PartMark = "min" | "max" | "link";
 
 const ICONS: Record<PartMark, LucideIcon> = { min: ArrowDownToLine, max: ArrowUpToLine, link: Link2 };
 
-/** A part's fill and edge by its kind: one neutral look for a price, a bound and a link; a note's dashed edge with no fill. */
+/** A part's fill and edge at rest by its kind: one neutral look for what is charged, what comes off and a bound; a rule's dashed edge with no fill. */
 const PART_LOOK: Record<PartKind, string> = {
-  price: "bg-secondary border-input",
+  charge: "bg-secondary border-input",
+  off: "bg-secondary border-input",
   bound: "bg-secondary border-input",
-  link: "bg-secondary border-input",
-  note: "border-dashed border-input",
+  rule: "border-dashed border-input",
 };
 
-/** The ink of a part's icon and first word ("מינימום", "ועוד", "הנחה"): the muted ink, whatever the kind. */
-const LEAD_INK: Record<PartKind, string> = { price: "text-muted-foreground", bound: "text-muted-foreground", link: "text-muted-foreground", note: "text-muted-foreground" };
+/** A part in edit (`PartEdit`): its kind's colour edge at its start over a faint fill of it, a rule's over the plain secondary surface. */
+const EDIT_LOOK = "rounded-md border-s-[3px] border-s-kind bg-kind-row";
 
-/** The icon and the first word, in the kind's ink. */
-function Lead({ kind, mark, lead }: { kind: PartKind; mark?: PartMark; lead?: ReactNode }) {
+/** The icon and the first word: in the muted ink at rest, in the kind's colour in edit (`inked`). */
+function Lead({ mark, lead, inked }: { mark?: PartMark; lead?: ReactNode; inked?: boolean }) {
   if (!mark && !lead) return null;
   const Icon = mark ? ICONS[mark] : null;
   return (
-    <span className={cx("inline-flex items-center gap-1", LEAD_INK[kind])}>
+    <span className={cx("inline-flex items-center gap-1", inked ? "text-kind" : "text-muted-foreground")}>
       {Icon && <Icon size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
       {lead}
     </span>
@@ -49,7 +49,7 @@ function Lead({ kind, mark, lead }: { kind: PartKind; mark?: PartMark; lead?: Re
 export function PartChip({ kind, mark, lead, figure, unit, words, children }: { kind: PartKind; mark?: PartMark; lead?: ReactNode; figure?: ReactNode; unit?: ReactNode; words?: ReactNode; children?: ReactNode }) {
   return (
     <span className={cx("inline-flex min-h-[30px] max-w-full flex-wrap items-center gap-x-1 gap-y-0.5 rounded-md border px-2.5 py-0.5 text-sm", PART_LOOK[kind])}>
-      <Lead kind={kind} mark={mark} lead={lead} />
+      <Lead mark={mark} lead={lead} />
       {(figure !== undefined || unit !== undefined) && (
         // the figure and its unit as the page writes a figure, one left-to-right group with a sign on the number's right ("0.25%")
         <span dir="ltr" className="inline-flex items-baseline gap-1 whitespace-nowrap text-[15px] tabular-nums">
@@ -77,11 +77,12 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
       id={id}
       data-liftable="" data-lift-body=""
       {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
-      className={cx("flex min-h-12 items-start gap-2 rounded-md border py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", PART_LOOK[kind])}
+      data-kind={kind}
+      className={cx("flex min-h-12 items-start gap-2 py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", EDIT_LOOK)}
     >
       {grip}
       <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
-        <Lead kind={kind} mark={mark} lead={lead} />
+        <Lead mark={mark} lead={lead} inked />
         {children}
       </div>
       {onRemove && (
@@ -89,6 +90,11 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
       )}
     </div>
   );
+}
+
+/** The small dot of a part's kind before its words in a table's or a grid's cell, in place of the " · " between parts; `after` a part, spaced from it. */
+export function KindDot({ kind, after }: { kind: PartKind; after?: boolean }) {
+  return <span aria-hidden data-kind={kind} className={cx("me-1.5 inline-block size-1.5 rounded-full bg-kind align-middle", after && "ms-2")} />;
 }
 
 /**

@@ -34,7 +34,7 @@ import { isRange, NAME_MAX, type CasesFee, type Fee, type When } from "../../lib
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, tableSlots, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { ActionMenu, AddSlot, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
+import { ActionMenu, AddSlot, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
@@ -119,7 +119,8 @@ function PartText({ part, bare }: { part: SlimPart; bare?: boolean }) {
 type PartOff = { label: string; onOff: () => void };
 
 /**
- * Parts as words, one after the other with " · " between them. `off`: each part that can be taken away alone carries a ✕ at its line's
+ * Parts as words, one after the other, each after a small dot of its kind's colour (theme.css, `data-kind`), the colour of the toolbox's
+ * card that adds it and of its line in the open case; " · " between them is said, not drawn. `off`: each part that can be taken away alone carries a ✕ at its line's
  * end, drawn only after a fine pointer has rested on that line a while and gone at once when it leaves (app.css, `data-part-line`), on
  * a zero-wide place after its words, so it moves nothing and takes no room.
  */
@@ -130,7 +131,8 @@ function Joined({ parts, bare, off }: { parts: readonly SlimPart[]; bare?: boole
         const x = off?.(p) ?? null;
         return (
           <span key={`${p.stage ?? 0}:${p.id}`} {...(x ? { "data-part-line": "" } : {})}>
-            {k > 0 && <span className="text-muted-foreground">{sep}</span>}
+            {k > 0 && <span className="sr-only">{sep}</span>}
+            <KindDot kind={p.kind} after={k > 0} />
             <PartText part={p} bare={bare} />
             {x && (
               <span data-part-off="" className="relative inline-block h-[1lh] w-0 align-top">

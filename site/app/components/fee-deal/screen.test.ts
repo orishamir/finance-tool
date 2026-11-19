@@ -232,10 +232,13 @@ describe("the question that adds a thing to change by", () => {
 });
 
 describe("the toolbox", () => {
-  it("names the fee and offers the parts in their groups with the flat price among the price's; taking the fee away is not its", () => {
+  it("names the fee and offers the parts in their five groups, a small action's flat price not among them; taking the fee away is not its", () => {
     const shown = drawToolbox(account(), "fee-trade");
-    for (const g of ["price", "bound", "by", "link", "more"]) expect(shown).toContain(feeDeal.cases.groups[g]!);
-    expect(shown).toContain(feeDeal.cases.parts.flatSmall.default!.trim());
+    for (const g of ["charge", "off", "bound", "by", "rule"]) expect(shown).toContain(feeDeal.cases.groups[g]!);
+    // a small action's own price is the first size of the action, not a card of its own
+    expect(markup(toolboxOf(account(), "fee-trade"))).not.toContain('data-part="flat"');
+    expect(shown).toContain(feeDeal.cases.byRows.what);
+    expect(shown).toContain(feeDeal.cases.byRows.size);
     expect(shown).toContain(feeDeal.cases.actionSize.default!);
     expect(shown).toContain(feeDeal.cases.things.own!);
     expect(shown).toContain(dealCases.toolbox.hint);
@@ -251,10 +254,12 @@ describe("the toolbox", () => {
   });
   it("words a conversion's parts and its size by the conversion, never by a purchase", () => {
     const shown = drawToolbox(account(), "fee-fx");
-    expect(shown).toContain("מחיר קבוע להמרה קטנה, עד");
+    // a sum on each conversion is one of its forms, which a small conversion's flat price is filled as (fold-flat.ts)
+    expect(markup(toolboxOf(account(), "fee-fx"))).toContain('data-part="perAction"');
+    expect(shown).toContain(feeDeal.price.perAction.fx!);
     expect(shown).toContain("גודל ההמרה");
     expect(shown).not.toContain("גודל הפעולה");
-    expect(shown).not.toContain("לפעולה קטנה");
+    expect(shown).not.toContain("לפעולה");
   });
   it("names a fee of the person's own once, in the heading typed in place, with its spoken name", () => {
     const d = account();

@@ -457,7 +457,7 @@ export function FeesColumn({
           const fees = items.filter((it): it is { fee: Fee; i: number } => it !== "line");
           return (
           <div key={key} className="flex flex-col gap-3">
-            <GroupHead as="h3" plain>
+            <GroupHead as="h3">
               {copy.on[key]}
             </GroupHead>
             <ul className="flex flex-col gap-3">

@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -2797,17 +2797,17 @@ const pct: Pick<Part, "unit" | "sign"> = { unit: "pct_of_trade", sign: "%" };
 const nis: Pick<Part, "unit" | "sign"> = { unit: "nis_per_trade", sign: "₪" };
 const usd: Pick<Part, "unit" | "sign"> = { unit: "usd_per_trade", sign: "$" };
 const perAction = dealWords.price.perAction.default!;
-const unexecuted: Part = { id: "unexecuted", kind: "note", text: sc.unexecuted };
+const unexecuted: Part = { id: "unexecuted", kind: "rule", text: sc.unexecuted };
 
 const TRADE: Case[] = [
-  { id: "ta", when: [{ text: sc.what.ta }, { text: sc.anyTrack, any: true }], slots: [{ text: sc.what.ta, menu: "what" }, { text: sc.anyTrack, menu: "track" }], parts: [{ id: "rate", kind: "price", n: 0.4, ...pct, words: perAction }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 10, ...nis, words: sc.toAction }] },
-  { id: "mutual", when: [{ text: sc.what.mutual }, { text: sc.anyTrack, any: true }], slots: [{ text: sc.what.mutual, menu: "what" }, { text: sc.anyTrack, menu: "track" }], parts: [{ id: "sum", kind: "price", n: 16, ...nis, words: perAction }] },
+  { id: "ta", when: [{ text: sc.what.ta }, { text: sc.anyTrack, any: true }], slots: [{ text: sc.what.ta, menu: "what" }, { text: sc.anyTrack, menu: "track" }], parts: [{ id: "rate", kind: "charge", n: 0.4, ...pct, words: perAction }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 10, ...nis, words: sc.toAction }] },
+  { id: "mutual", when: [{ text: sc.what.mutual }, { text: sc.anyTrack, any: true }], slots: [{ text: sc.what.mutual, menu: "what" }, { text: sc.anyTrack, menu: "track" }], parts: [{ id: "sum", kind: "charge", n: 16, ...nis, words: perAction }] },
   {
     id: "us1",
     when: [{ text: sc.what.us }, { text: sc.tracks[0]!, mine: true }],
     slots: [{ text: sc.what.us, menu: "what" }, { text: sc.tracks[0]!, menu: "track" }],
     mine: true,
-    parts: [{ id: "unit", kind: "price", n: 0.03, unit: "usd_per_share", sign: "$", words: dealWords.price.perUnit }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 8, ...usd, words: sc.toAction }, { id: "cap", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 2, ...pct, words: sc.capWords }, unexecuted],
+    parts: [{ id: "unit", kind: "charge", n: 0.03, unit: "usd_per_share", sign: "$", words: dealWords.price.perUnit }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 8, ...usd, words: sc.toAction }, { id: "cap", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 2, ...pct, words: sc.capWords }, unexecuted],
   },
 ];
 /** The tracks that are not the person's: cases like any other. */
@@ -2815,13 +2815,13 @@ const OTHER_TRACKS: Case[] = [1, 2].map((k) => ({
   id: `us${k + 1}`,
   when: [{ text: sc.what.us }, { text: sc.tracks[k]! }],
   slots: [{ text: sc.what.us, menu: "what" }, { text: sc.tracks[k]!, menu: "track" }],
-  parts: [{ id: "unit", kind: "price", n: k === 1 ? 0.02 : 0.01, unit: "usd_per_share", sign: "$", words: dealWords.price.perUnit }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: k === 1 ? 5 : 3, ...usd, words: sc.toAction }],
+  parts: [{ id: "unit", kind: "charge", n: k === 1 ? 0.02 : 0.01, unit: "usd_per_share", sign: "$", words: dealWords.price.perUnit }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: k === 1 ? 5 : 3, ...usd, words: sc.toAction }],
 }));
 const LAST: Case = {
   id: "notUs",
   when: [{ text: sc.what.notUs }, { text: sc.anyTrack, any: true }],
   slots: [{ text: sc.what.notUs, menu: "what" }, { text: sc.anyTrack, menu: "track" }],
-  parts: [{ id: "rate", kind: "price", n: 0.4, ...pct, words: perAction }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 35, words: sc.inActionCurrency }, { id: "third", kind: "price", lead: sc.andAlso, text: sc.thirdParty, words: sc.noSum }, unexecuted],
+  parts: [{ id: "rate", kind: "charge", n: 0.4, ...pct, words: perAction }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 35, words: sc.inActionCurrency }, { id: "third", kind: "charge", lead: sc.andAlso, text: sc.thirdParty, words: sc.noSum }, unexecuted],
 };
 
 /** A sample part at rest: its figure through `Num`, bare, its sign beside it. */
@@ -2948,13 +2948,13 @@ function Conversion({ today }: { today: string }) {
   const over = (n: number): CaseWord => ({ text: <>{sc.over} <bdi dir="ltr">{fmt.number(n)} $</bdi></>, range: true });
   const said = (side: string, n: number, channel: string) => sc.open(`${side} ${fmt.number(n)} $, ${channel}`);
   const cases: { id: string; when: CaseWord[]; say: string; parts: Part[] }[] = [
-    { id: "a", when: [upTo(10), { text: sc.anyChannel, any: true }], say: said(sc.upTo, 10, sc.anyChannel), parts: [{ id: "free", kind: "price", text: dealWords.price.free }] },
-    { id: "b", when: [upTo(100), { text: sc.anyChannel, any: true }], say: said(sc.upTo, 100, sc.anyChannel), parts: [{ id: "off", kind: "price", lead: sc.discount, n: 50, ...pct, words: sc.ofPrice }] },
+    { id: "a", when: [upTo(10), { text: sc.anyChannel, any: true }], say: said(sc.upTo, 10, sc.anyChannel), parts: [{ id: "free", kind: "charge", text: dealWords.price.free }] },
+    { id: "b", when: [upTo(100), { text: sc.anyChannel, any: true }], say: said(sc.upTo, 100, sc.anyChannel), parts: [{ id: "off", kind: "off", lead: sc.discount, n: 50, ...pct, words: sc.ofPrice }] },
     {
       id: "c",
       when: [over(100), { text: sc.channels.branch }],
       say: said(sc.over, 100, sc.channels.branch),
-      parts: [{ id: "rate", kind: "price", n: 0.19, ...pct, words: dealWords.price.perAction.fx }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 6.8, ...usdFx, words: sc.toConversion }, { id: "max", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 1075, ...usdFx, words: sc.toConversion }],
+      parts: [{ id: "rate", kind: "charge", n: 0.19, ...pct, words: dealWords.price.perAction.fx }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 6.8, ...usdFx, words: sc.toConversion }, { id: "max", kind: "bound", mark: "max", lead: dealWords.builder.maxWord, n: 1075, ...usdFx, words: sc.toConversion }],
     },
   ];
   return (
@@ -2976,9 +2976,9 @@ function Conversion({ today }: { today: string }) {
 function SlimFees({ today }: { today: string }) {
   const [open, setOpen] = useState<string | null>(null);
   const fees: { id: string; dot: string; name: string; parts: Part[] }[] = [
-    { id: "fx", dot: "bg-fee-fx", name: sc.fx, parts: [{ id: "rate", kind: "price", n: 0.1, ...pct, words: dealWords.price.perAction.fx }] },
-    { id: "custody", dot: "bg-fee-custody", name: sc.custody, parts: [{ id: "rate", kind: "price", n: 0.6, unit: "pct_of_balance_per_period", sign: "%", words: dealWords.price.per[3] }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 40, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }] },
-    { id: "fixed", dot: "bg-fee-fixed", name: sc.fixed, parts: [{ id: "sum", kind: "price", n: 99, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }] },
+    { id: "fx", dot: "bg-fee-fx", name: sc.fx, parts: [{ id: "rate", kind: "charge", n: 0.1, ...pct, words: dealWords.price.perAction.fx }] },
+    { id: "custody", dot: "bg-fee-custody", name: sc.custody, parts: [{ id: "rate", kind: "charge", n: 0.6, unit: "pct_of_balance_per_period", sign: "%", words: dealWords.price.per[3] }, { id: "min", kind: "bound", mark: "min", lead: dealWords.builder.minWord, n: 40, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }] },
+    { id: "fixed", dot: "bg-fee-fixed", name: sc.fixed, parts: [{ id: "sum", kind: "charge", n: 99, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }] },
   ];
   return (
     <div className="flex flex-col gap-2">
@@ -2995,17 +2995,30 @@ function SlimFees({ today }: { today: string }) {
 function toolGroups(used: string[], full = false): ToolGroup[] {
   const u = (id: string) => used.includes(id);
   const w = (t: string) => <span className="text-muted-foreground">{t}</span>;
+  const rows = dealWords.cases.byRows;
+  // the things a price changes by in two rows: what is bought and where, a size or an amount
+  const sizes = new Set(["action", "portfolio", "volume", "count"]);
   return [
     {
-      id: "price",
-      kind: "price",
-      name: sc.groups.price,
+      id: "charge",
+      kind: "charge",
+      name: sc.groups.charge,
       parts: [
-        { id: "pct", label: <><ToolBlank /> % {w(perAction)}</>, spoken: `% ${perAction}`, used: u("pct") },
-        { id: "unit", label: <>{!u("unit") && <ToolBlank />} $ {w(dealWords.price.perUnit)}</>, spoken: `$ ${dealWords.price.perUnit}`, used: u("unit") },
-        { id: "sum", label: <><ToolBlank /> $ {w(perAction)}</>, spoken: `$ ${perAction}`, used: u("sum") },
-        { id: "discount", label: <>{w(sc.discount)} <ToolBlank /> % {w(sc.ofPrice.split(",")[0]!)}</>, spoken: sc.discount, used: u("discount") },
+        { id: "pct", label: <><ToolBlank /> % {w(perAction)}</>, spoken: `% ${perAction}`, used: u("pct"), form: true },
+        { id: "unit", label: <><ToolBlank /> $ {w(dealWords.price.perUnit)}</>, spoken: `$ ${dealWords.price.perUnit}`, used: u("unit"), form: true },
+        { id: "sum", label: <><ToolBlank /> $ {w(perAction)}</>, spoken: `$ ${perAction}`, used: u("sum"), form: true },
+        { id: "free", label: dealWords.price.free, used: u("free"), form: true },
         { id: "third", label: sc.thirdPartyPart, used: u("third") },
+      ],
+    },
+    {
+      id: "off",
+      kind: "off",
+      name: sc.groups.off,
+      parts: [
+        { id: "discount", label: <>{sc.discount} <ToolBlank /> % {w(sc.ofPrice.split(",")[0]!)}</>, spoken: sc.discount, used: u("discount") },
+        { id: "offset", label: sc.offset, used: u("offset") },
+        { id: "refund", label: <>{sc.refund} <ToolBlank /></>, spoken: sc.refund, used: u("refund") },
       ],
     },
     {
@@ -3013,20 +3026,22 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
       kind: "bound",
       name: sc.groups.bound,
       parts: [
-        { id: "min", label: u("min") ? dealWords.builder.minWord : <>{dealWords.builder.minWord} <ToolBlank /> <ToolBlank wide /></>, spoken: dealWords.builder.minWord, used: u("min") },
+        { id: "min", label: <>{dealWords.builder.minWord} <ToolBlank /> <ToolBlank wide /></>, spoken: dealWords.builder.minWord, used: u("min") },
         { id: "max", label: <>{dealWords.builder.maxWord} <ToolBlank /> <ToolBlank wide /></>, spoken: dealWords.builder.maxWord, used: u("max") },
-        { id: "cap", label: <>{dealWords.builder.maxWord} {!u("cap") && <ToolBlank />} % {sc.capWords}</>, spoken: `${dealWords.builder.maxWord} % ${sc.capWords}`, used: u("cap") },
+        { id: "cap", label: <>{dealWords.builder.maxWord} <ToolBlank /> % {sc.capWords}</>, spoken: `${dealWords.builder.maxWord} % ${sc.capWords}`, used: u("cap") },
       ],
     },
     {
       id: "when",
       kind: "when",
       name: sc.groups.when,
-      parts: Object.entries(sc.whenParts).map(([id, label]) => ({ id, label, used: u(id), off: full && !u(id), ...(u(id) ? { removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", label) } : {}) })),
+      parts: [
+        ...Object.entries(sc.whenParts).map(([id, label]) => ({ id, label, used: u(id), off: full && !u(id), row: sizes.has(id) ? rows.size : rows.what, ...(u(id) ? { removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", label) } : {}) })),
+        { id: "sale", label: sc.saleApart, used: u("sale"), row: rows.what },
+      ],
       offWhy: sc.fourth,
     },
-    { id: "link", kind: "link", name: sc.groups.link, parts: [{ id: "offset", label: sc.offset }, { id: "refund", label: <>{sc.refund} <ToolBlank /></>, spoken: sc.refund }] },
-    { id: "note", kind: "note", name: sc.groups.note, parts: [{ id: "unexecuted", label: sc.unexecuted, used: u("unexecuted") }, { id: "partial", label: sc.partial, used: u("partial") }, { id: "sale", label: sc.saleApart, used: u("sale") }] },
+    { id: "rule", kind: "rule", name: sc.groups.rule, parts: [{ id: "unexecuted", label: sc.unexecuted, used: u("unexecuted") }, { id: "partial", label: sc.partial, used: u("partial") }] },
   ];
 }
 
@@ -3059,7 +3074,7 @@ function DragDemo({ today }: { today: string }) {
   );
   return (
     <div className="grid items-start gap-4 lg:grid-cols-2">
-      <Toolbox target={sc.target} groups={toolGroups(used).filter((gr) => gr.kind === "price" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
+      <Toolbox target={sc.target} groups={toolGroups(used).filter((gr) => gr.kind === "charge" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
       <FeeBlock dot="bg-fee-trade" name={sc.trade}>
         <ConditionBand things={[{ id: "what", name: sc.things.what }]}>
           <div className="px-3 pt-1">
@@ -3213,7 +3228,7 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
 
 /** The same grid read as rows, as a phone shows it: a group per value of what is bought, its channels as rows. */
 function TradeGroups({ today }: { today: string }) {
-  const part = (rate: number) => <PartChip kind="price" figure={fig(rate, "pct_of_trade", today)} words={perAction} />;
+  const part = (rate: number) => <PartChip kind="charge" figure={fig(rate, "pct_of_trade", today)} words={perAction} />;
   return (
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
       <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }]}>
@@ -3239,13 +3254,13 @@ function ChangeDemo({ today }: { today: string }) {
   const [gone, setGone] = useState(false);
   return (
     <SlimFee dot="bg-fee-fixed" name={sc.fixed} label={sc.openFee(sc.fixed)} open onOpen={() => undefined}>
-      <PartEdit kind="price">
+      <PartEdit kind="charge">
         <span>{dealWords.price.free}</span>
       </PartEdit>
       {!gone && (
         <>
           <ChangeDivider lead={dealWords.panel.change.from} month={<MonthField value={month} label={dealWords.panel.change.month} tight onCommit={setMonth} />} removeLabel={dealWords.panel.change.remove} onRemove={() => setGone(true)} />
-          <Edit part={{ id: "sum", kind: "price", n: 20, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }} today={today} onRemove={() => undefined} />
+          <Edit part={{ id: "sum", kind: "charge", n: 20, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }} today={today} onRemove={() => undefined} />
         </>
       )}
       <AddSlot add={{ label: dealWords.panel.change.add, onAdd: () => setGone(false) }} />
@@ -3385,16 +3400,24 @@ function CaseDemos({ today }: { today: string }) {
   const [track, setTrack] = useState("1");
   return (
     <>
-      <Demo name="PartChip, PartEdit" use={g.uses.PartChip}>
+      <Demo name="PartChip, PartEdit, KindDot" use={g.uses.PartChip}>
         <State label="at rest, slim: a price, a minimum, a percent maximum, a third party's fee with no figure, a link, a note">
           <div className="flex flex-wrap gap-1.5">
             <Rest part={TRADE[0]!.parts[0]!} today={today} />
             <Rest part={TRADE[0]!.parts[1]!} today={today} />
             <Rest part={TRADE[2]!.parts[2]!} today={today} />
             <Rest part={LAST.parts[2]!} today={today} />
-            <PartChip kind="link" mark="link" lead={sc.offset} />
+            <PartChip kind="off" mark="link" lead={sc.offset} />
             <Rest part={unexecuted} today={today} />
           </div>
+        </State>
+        <State label="in a cell: each part after a dot of its kind's colour, what is charged, a bound, what comes off, a rule">
+          <p className="text-sm">
+            <KindDot kind="charge" />0.3% {perAction}
+            <KindDot kind="bound" after />{dealWords.builder.minWord} 39 ₪
+            <KindDot kind="off" after />{sc.discount} 10%
+            <KindDot kind="rule" after />{sc.unexecuted}
+          </p>
         </State>
         <State label={`in edit: the full width, the figure in its box, a bin at the end; on a phone the boxes wrap and the bin stays in the corner, ${g.states.interactive}`} wide>
           <div className="flex max-w-lg flex-col gap-2" data-figures>

@@ -1,5 +1,5 @@
-// The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about as a line over
-// its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
+// The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about, over the
+// cards of its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
 // on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal in `#d=`, or in `?d=` as links
 // were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the

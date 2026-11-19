@@ -25,7 +25,7 @@ import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { Note } from "../../lib/fee-deal/core";
 import { type PendingHands } from "./part-edit";
-import { UnreadWords, feeColour, feeName } from "./words";
+import { FEE_MARK, UnreadWords, feeColour, feeName } from "./words";
 import { WHOLE } from "../../lib/fee-deal/layout";
 
 const b = copy.builder;
@@ -279,7 +279,7 @@ export function FeeBlockView({
             return l ? lift.why(l, slimTarget) : null;
           }}
         >
-          <SlimFee dot={dot} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} corner={corner} onOpen={() => onOpen(fee.id, null, "pointer")}>
+          <SlimFee dot={dot} mark={FEE_MARK[fee.kind]} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} corner={corner} onOpen={() => onOpen(fee.id, null, "pointer")}>
             {question}
             {isOpen ? (
               openParts(name)
@@ -308,7 +308,7 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeBlock dot={dot} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
+      <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
         {question}
         <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)} />
       </FeeBlock>

@@ -260,10 +260,10 @@ describe("the builder's blocks", () => {
     expect(Object.keys(block)).not.toContain("folded");
     // parts by kind, with their words
     expect(block.rows[2]!.parts.map((p) => [p.id, p.kind])).toEqual([
-      ["perUnit", "price"],
+      ["perUnit", "charge"],
       ["min", "bound"],
       ["cap", "bound"],
-      ["unfilled", "note"],
+      ["unfilled", "rule"],
     ]);
     expect(block.rows[4]!.parts.find((p) => p.id === "third")!.words).toEqual({ lead: `${copy.cases.parts.thirdOf}הברוקר`, quiet: ` ${copy.cases.parts.thirdNone}` });
     // a fee read across sizes names its range's steps in its rows
@@ -302,7 +302,7 @@ describe("the builder's blocks", () => {
   });
   it("gives the toolbox's groups in order for the open case, with the parts it has marked", () => {
     const t = toolbox(r, "fee-trade", "c3")!;
-    expect(t.groups.map((g) => g.group)).toEqual(["price", "bound", "by", "link", "more"]);
+    expect(t.groups.map((g) => g.group)).toEqual(["charge", "off", "bound", "by", "rule"]);
     const used = t.groups.flatMap((g) => g.parts.filter((x) => x.used).map((x) => x.id));
     expect(used).toEqual(["perUnit", "min", "cap", "by:what", "by:track", "unfilled"]);
     expect(t.addTo.when!.map((w) => w.text)).toEqual([copy.cases.values.what.us, "מסלול 1"]);
@@ -739,19 +739,19 @@ describe("a provident-family product's management fees", () => {
       { id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-dep")).toEqual([["price", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "free"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-dep")).toEqual([["charge", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held", "free"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
     // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
     expect(data.kinds.filter(providentFamily).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
-    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["price", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["charge", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
   });
   it("leave an IRA's brokerage fees the parts its annexes print, and its management fee no track: an IRA is a fund of its own (IRA-17)", () => {
     const deal = of("ira-provident", [
       { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-trade")).toEqual([["price", ["share", "perUnit", "perAction", "free", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["more", ["unfilled", "partial"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["price", ["held", "free"]], ["by", ["by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-trade")).toEqual([["charge", ["share", "perUnit", "perAction", "free", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["rule", ["unfilled", "partial"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held", "free"]], ["by", ["by:portfolioSize", "by:own"]]]);
     // a brokerage account's custody keeps its bounds and its conditions
     const custody = of("brokerage-account", [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }]);
     expect(ids(custody, "fee-c").map(([g]) => g)).toContain("bound");

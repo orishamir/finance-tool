@@ -81,7 +81,7 @@ export { Step, StepStrip, type StripStep } from "./steps";
 export { TypedPlain } from "./typed-plain";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { AmountChart, type AmountBand, type AmountMark } from "./amount-chart";
-export { PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
+export { KindDot, PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
 export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
 export { AddSlot, CaseGrid, CaseTable, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type GridCellView, type GridHead } from "./case-table";
 export { ActionMenu, DropBin, Grip, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
