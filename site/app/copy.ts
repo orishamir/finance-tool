@@ -2079,6 +2079,12 @@ export const feeDeal = {
      */
     /** A thing added at one tap from the toolbox, split at once into its usual values (things.ts `usualBy`), on its undo line. */
     byAdded: "המחיר משתנה עכשיו לפי {thing}: {values}. את הערכים משנים ומוסיפים בכותרות.",
+    /** A value the "+" beside a thing's heads adds in the person's words, renamed in its head: "מסלול 3". */
+    newValue: "{noun} {n}",
+    /** A head's grip menu: its value's name typed again in place (a double-click on the head does the same). */
+    renameValue: "לשנות שם",
+    /** The field a head's name is typed in. */
+    renameLabel: "שם חדש: {name}",
     /** The two tracks a fee is split into at one tap, renamed in their heads. */
     usualTracks: ["מסלול 1", "מסלול 2"],
     byRemoved: {

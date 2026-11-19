@@ -1,7 +1,7 @@
 // Adding a thing a fee changes by, and a case's slot or a thing of the band opened (method §10.6, F-114): the question a thing asks once,
 // what adding it does to the cases, a slot's choices, and a thing's menu. Every word is from the copy; a component only lays them out.
 import { feeDeal as copy } from "../../copy";
-import { hasCases, isRange, namesPlaces, thingValues, type Fee } from "./model";
+import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee } from "./model";
 import { canAddBy, newBy, ownKept, removeBy, type NewBy } from "./edits/case";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, CONDITIONS, isPlaceKind, isRangeKind, isWordsKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
@@ -17,6 +17,26 @@ const USUAL: Partial<Record<ByKind, readonly string[]>> = {
   currency: ["USD", "EUR"],
   track: copy.cases.usualTracks,
 };
+
+/**
+ * The value the "+" beside a thing's heads adds at once (founder, 2026-11-19: no question): the first the site names that the cases name
+ * not yet, else a name of the person's to rename in its head ("מסלול 3", "ערך 3"); null where only a value with its place would do (what
+ * is bought or held, every one the site names already there), which asks.
+ */
+export function nextValue(fee: CasesFee, t: number): string | null {
+  const b = fee.by[t];
+  if (!b || isRange(b)) return null;
+  const had = thingValues(fee, t);
+  const how = CONDITIONS[b.kind].values;
+  const site = how.kind === "list" ? how.ids.find((id) => !had.includes(id)) : undefined;
+  if (site) return site;
+  if (isPlaceKind(b.kind)) return null;
+  const noun = copy.cases.copyNoun[b.kind] ?? copy.cases.copyNoun.own!;
+  for (let n = had.length + 1; ; n++) {
+    const name = copy.cases.newValue.replace("{noun}", noun).replace("{n}", String(n));
+    if (!had.includes(name)) return name;
+  }
+}
 
 /**
  * The thing a tap in the toolbox adds at once, split into its usual values, each renamed or added to in its head afterwards; null for a

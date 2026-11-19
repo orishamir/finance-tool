@@ -71,7 +71,8 @@ export function FeeBlock({ dot, mark, name, remove, open, grip, corner, children
 export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions, grip, corner, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; remove?: FeeRemove | undefined; actions?: ReactNode; /** A grip before its name that lifts the fee (lift.tsx). */ grip?: ReactNode; /** Closed: the knobs in its corner (its bin, its duplicate). */ corner?: ReactNode; children: ReactNode }) {
   return (
     <PickCard label={label} onPick={onOpen} chosen={open} className={cx("bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1")}>
-      <Stripe dot={dot} />
+      {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners (founder, 2026-11-19) */}
+      {!open && <Stripe dot={dot} />}
       {open ? (
         <div data-open-fee="" className="contents">
           <span data-fee-head="" data-lift-head="" className="flex flex-wrap items-center gap-2">
