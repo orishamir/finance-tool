@@ -1,8 +1,10 @@
 // The parts that can be added to the open case (design-system 11, "Cases and parts"), in groups by what they do to the price, each group
-// headed by a small square of its kind's colour and each card a quiet tile of it with a colour edge at its start, two to a row (founder,
-// 2026-11-19). The forms of the price are one choice, drawn as one segmented control, the form the price has tinted. A tap on a part adds it; on a computer a part can also be dragged onto the place it goes (`useDragSource`, the page's
-// `DropZone`s), which does what its tap does there. A part the case already has shows a ✓ in the action colour and is muted, and stays
-// where it is; one the page lets a tap take away again (`removeLabel`) still takes a tap. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
+// headed by a small square of its kind's colour, the only colour the group's cards carry: each card is a plain raised card with a "+" in
+// the action colour and its words, a figure it asks for said in them ("הנחה % מהמחיר"), two to a row (founder, 2026-11-20). The forms of
+// the price are one choice, drawn as one segmented control, the form the price has tinted. A tap on a part adds it; on a computer a part
+// can also be dragged onto the place it goes (`useDragSource`, the page's `DropZone`s), which does what its tap does there. A part the
+// case already has is on: a ✓ in the action colour, an outline and a faint fill of its kind's colour, and it stays where it is; one the
+// page lets a tap take away again (`removeLabel`) still takes a tap. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
 // at a time, its groups as a row of chips that scrolls sideways and fades at its end, always whole above the group's parts, which scroll
 // under it. A card that splits the price in time is drawn as the line it adds (`ToolLine`), across its group.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
@@ -18,11 +20,9 @@ export type ToolKind = "charge" | "off" | "bound" | "when" | "rule";
 
 export interface ToolPart {
   id: string;
-  /** The part as it will read, its boxes drawn empty (`ToolBlank`): "☐ % לכל פעולה". */
+  /** The part in words, a figure it asks for said by its sign: "% לכל פעולה", "הנחה % מהמחיר", "החזר ₪". */
   label: ReactNode;
-  /** The spoken name, where the label's boxes leave its words unclear. */
-  spoken?: string;
-  /** The case already has it: a ✓, muted, and no tap unless a tap takes it away (`removeLabel`). */
+  /** The case already has it: on (a ✓, an outline and a faint fill of its kind's colour), and no tap unless a tap takes it away (`removeLabel`). */
   used?: boolean;
   /** Where the case has it and a tap takes it away again: the spoken name of that tap ("להפסיק להבחין לפי המסלול שבחרתם"). */
   removeLabel?: string;
@@ -56,20 +56,15 @@ export interface ToolGroup {
   offWhy?: ReactNode;
 }
 
-/** A card: a quiet tile of its kind's colour (theme.css, `data-kind`) with a colour edge at its start; a part the case has, a deeper tile. */
-const CARD = "flex w-full justify-start rounded-lg border border-kind-frame border-s-[3px] border-s-kind";
-
-/** An empty box in a part's label, where its figure will go; `wide` for a sum with its unit, a month. */
-export function ToolBlank({ wide }: { wide?: boolean }) {
-  return <span aria-hidden className={cx("inline-block h-6 border border-dashed border-input bg-card", wide ? "w-11 rounded-full" : "w-6 rounded-sm")} />;
-}
+/** A card: a plain raised card, no edge; one the case has, outlined and faintly filled in its kind's colour (theme.css, `data-kind`). */
+const CARD = "flex w-full justify-start rounded-lg";
 
 /**
  * One part's card: a tap adds it (or, where the case has it and `onRemove` is given, takes it away); one that can be added can be dragged.
  * A part the case has whose tap does nothing is `aria-disabled`, not disabled, so a card tapped that becomes so ("חינם") keeps the focus.
  */
 function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: ToolPart; onAdd: () => void; onRemove?: (() => void) | undefined }) {
-  // a form of the price is a segment of its control: no frame of its own, centred, the chosen one tinted and underlined
+  // a form of the price is a segment of its control: no frame of its own, centred, the chosen one tinted
   const seg = !!p.form;
   const removes = !!(p.used && p.removeLabel && onRemove);
   const inert = !!p.used && !removes;
@@ -80,19 +75,19 @@ function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: To
       data-part={p.id}
       disabled={p.off}
       aria-disabled={inert || undefined}
-      aria-label={removes ? p.removeLabel : p.spoken}
+      aria-label={removes ? p.removeLabel : undefined}
       title={removes ? p.removeLabel : undefined}
       onClick={inert ? undefined : removes ? onRemove : onAdd}
       {...drag}
       data-kind={kind}
       className={cx(
-        "min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-[var(--duration-fast)]",
+        "min-h-target max-w-full flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-[var(--duration-fast)]",
         seg ? "flex justify-center" : CARD,
-        p.used ? cx("bg-kind-tile-on", seg && "shadow-[inset_0_-2px_0_var(--kind)]", removes ? "enabled:hover:bg-kind-tile" : "cursor-default") : cx(seg ? "enabled:hover:bg-kind-tile" : "bg-kind-tile enabled:hover:bg-kind-tile-on"),
+        p.used ? cx("bg-kind-tile-on", !seg && "outline outline-1 -outline-offset-1 outline-kind", removes ? "enabled:hover:bg-kind-tile" : "cursor-default") : seg ? "enabled:hover:bg-kind-tile" : "bg-popover enabled:hover:bg-accent",
         p.off && "opacity-45",
       )}
     >
-      {p.used ? <Check size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-kind" /> : !seg && <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-kind" />}
+      {p.used ? <Check size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" /> : !seg && <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />}
       {p.label}
       {p.used && !removes && <span className="sr-only">{copy.toolbox.used}</span>}
     </button>
@@ -109,7 +104,7 @@ function LineCard({ kind, line, onAdd }: { kind: ToolKind; line: ToolLine; onAdd
       onClick={onAdd}
       className="flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-kind-tile"
     >
-      <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-kind" />
+      <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />
       <WhenRule className="text-foreground">
         {line.icon && <span aria-hidden className="inline-flex text-kind">{line.icon}</span>}
         {line.label}
@@ -127,7 +122,7 @@ function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: st
   return (
     <>
       {forms.length > 0 && (
-        <div data-kind={group.kind} className="grid grid-cols-2 overflow-hidden rounded-lg border border-kind-frame bg-card [&>*:nth-child(even)]:border-s [&>*:nth-child(n+3)]:border-t [&>*]:border-border">
+        <div data-kind={group.kind} className="grid grid-cols-2 overflow-hidden rounded-lg border border-input bg-card [&>*:nth-child(even)]:border-s [&>*:nth-child(n+3)]:border-t [&>*]:border-border">
           {forms.map(card)}
         </div>
       )}

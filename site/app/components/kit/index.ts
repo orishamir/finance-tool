@@ -93,7 +93,7 @@ export { ChangeDivider, WhenRule } from "./change-divider";
 export { FeeBlock, SlimFee, type FeeRemove } from "./fee-block";
 export { RemoveButton } from "./remove-button";
 export { DropZone, useCarried, type DropHow, type SortOf } from "./drag-drop";
-export { ToolBlank, Toolbox, type ToolGroup, type ToolKind, type ToolPart } from "./toolbox";
+export { Toolbox, type ToolGroup, type ToolKind, type ToolPart } from "./toolbox";
 export { AskValues } from "./ask-values";
 export { RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
 export { ReadForBand, type ReadPick } from "./read-for-band";

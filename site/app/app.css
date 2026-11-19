@@ -1563,9 +1563,13 @@
    carried thing answers it (its dashed frame and preview, DropZone), so a cell that takes nothing never looks like one. Outside the layers, so it wins over the utilities' hover fill. */
 :root:has([data-lift-ghost]) [data-span-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]),
 :root:has([data-lift-ghost]) [data-span-table] .group:hover .group-hover\:bg-accent:not(.bg-accent, [data-pick-card], [data-drop-over] > * > *) {
-  background-color: var(--color-background);
+  background-color: var(--color-popover);
 }
 :root:has([data-lift-ghost]) [data-span-table] .group:hover [data-pick-card] {
+  background-color: transparent;
+}
+/* a table's cell rests on its tile, with no fill of its own */
+:root:has([data-lift-ghost]) [data-case-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]) {
   background-color: transparent;
 }
 

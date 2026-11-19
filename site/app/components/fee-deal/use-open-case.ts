@@ -135,8 +135,8 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
       thing: thingOpen,
       /** A slot of the open case tapped, at its pill; again, its menu closes. */
       onSlot: (t: number, at: HTMLElement) => setMenu((m) => (m && m.t === t && m.fee === chosen && m.case === caseId ? null : chosen && caseId ? { fee: chosen, case: caseId, t, at } : null)),
-      /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
-      onThing: (t: number, at: HTMLElement) => setThingOpen((m) => (m && m.t === t && m.fee === chosen ? null : chosen ? { fee: chosen, t, at } : null)),
+      /** A thing of a fee's band head tapped, at its pill, the fee open or not; again, its menu closes. */
+      onThing: (feeId: string, t: number, at: HTMLElement) => setThingOpen((m) => (m && m.t === t && m.fee === feeId ? null : { fee: feeId, t, at })),
       closeSlot: () => setMenu(null),
       closeThing: () => setThingOpen(null),
     },

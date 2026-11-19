@@ -106,7 +106,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, onRemoveBy: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: () => [], onResult: () => undefined, phone: false } },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: () => [], onResult: () => undefined, phone: false } },
     ask: ask ? { kind: ask } : null,
     adding: "line",
   });
@@ -308,23 +308,22 @@ describe("the fees' column", () => {
     // one value of what is bought split by the track: a table, a case added beside its heads, the fee's head holding no add of its own;
     // the open case ends with no slot of its own (a change of its price with time is the toolbox's line)
     expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(1);
-    // the open case's actions, the open fee's bin and each thing's bin are icons, named by what they do
+    // the open case's actions and the open fee's bin are icons, named by what they do; no bin stands beside a thing
     const html = drawBuilder(d, "fee-trade");
-    for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove, feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.what!), feeDeal.cases.thingMenu.stop.replace("{thing}", feeDeal.cases.things.track!)])
-      expect(count(html, `aria-label="${w}"`), w).toBe(1);
+    for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(count(html, `aria-label="${w}"`), w).toBe(1);
+    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(html, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(0);
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(shown).not.toContain(w);
     // the person's track is the open case here, its rows' words said once in its slots; the other track is a case like any other, never
     // folded away for not being theirs
     expect(count(shown, "מסלול 1")).toBe(1);
     expect(count(shown, "מסלול 2")).toBe(1);
-    // the fee open, each thing of its band's head is a slot that opens its menu; closed, the things are words
+    // open or closed, each thing of its band's head is a pill that opens its menu, where it is taken away; the open fee adds its case's slots
     const pills = (html: string) => count(html, 'aria-haspopup="dialog" aria-expanded="false"');
     const open = drawBuilder(d, "fee-trade");
     const closed = drawBuilder(d, null);
-    expect(pills(open) - pills(closed)).toBe(2 + 2);
-    expect(count(closed, `>${feeDeal.cases.things.what}</span>`)).toBe(1);
-    // closed too, each thing has its bin, which takes it away without opening the fee
-    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(closed, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(1);
+    expect(pills(open) - pills(closed)).toBe(2);
+    expect(count(closed, "data-thing=")).toBe(2);
+    for (const t of [feeDeal.cases.things.what!, feeDeal.cases.things.track!]) expect(count(closed, `aria-label="${feeDeal.cases.thingMenu.stop.replace("{thing}", t)}"`), t).toBe(0);
   });
   it("says each case's standing against the cap beside it, as a slim line's", () => {
     const d = provident();

@@ -111,7 +111,7 @@ export function RangeMenu({ title, side, onSide, figure, before }: { title: Reac
 }
 
 /**
- * What a thing of a band's head opens while its fee is open: the values the cases name for it (`values`, each once, in the muted ink where
+ * What a thing of a band's head opens, its fee open or not: the values the cases name for it (`values`, each once, in the muted ink where
  * it is any value), the action that stops the price changing by it (`stop`, its words naming the thing), and one line under it on what that
  * does to the cases (`after`).
  */

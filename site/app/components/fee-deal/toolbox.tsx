@@ -15,7 +15,7 @@ import { capacity } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { termKey } from "../../lib/fee-page-data";
 import { IconCalendar, IconClose, IconPencil } from "../icons";
-import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
+import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
 import { useProvenanceData } from "../provenance";
 import { UndoLine } from "./undo-line";
 import { caseText } from "./fee-cases";
@@ -27,44 +27,17 @@ const p = copy.panel;
 const KIND: Record<ToolboxView["groups"][number]["group"], ToolKind> = { charge: "charge", off: "off", bound: "bound", by: "when", rule: "rule" };
 
 /**
- * A part's card as it will read, its boxes drawn empty: "☐% לכל פעולה", "מינימום ☐ ☐", also once the case has it, so a card always shows
- * what it asks for (founder, 2026-11-19). The empty box and its sign are one left-to-right group, the sign on the box's right, as the page
- * writes a figure ("0.3%", "39 ₪") and as the open case's box draws it.
+ * A part's card in words, a figure it asks for said by its sign where its words would not: "% לכל פעולה", "הנחה % מהמחיר", "החזר ₪"; a
+ * minimum's and a maximum's sum come with the choice of its currency, so they say no sign (founder, 2026-11-20).
  */
-function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
+function partLabel(part: ToolPartView): string {
   const w = part.words;
-  const lead = w.lead?.trim();
-  const tail = w.tail?.trim();
-  const sign = part.box === "pct" ? "%" : typeof part.box === "object" ? part.box.sign : "";
-  // a minimum's and a maximum's sum come with the choice of its currency, drawn as a second, wider box
   const bound = part.id === "min" || part.id === "max";
-  const box = part.box ? (
-    <>
-      {bound ? (
-        <>
-          <ToolBlank /> <ToolBlank wide />
-        </>
-      ) : (
-        <span dir="ltr" className="inline-flex items-center gap-1 whitespace-nowrap">
-          <ToolBlank />
-          {sign}
-        </span>
-      )}
-    </>
-  ) : null;
-  return {
-    label: (
-      <>
-        {lead && <span>{lead}</span>}
-        {box}
-        {tail && <span className="text-muted-foreground">{tail}</span>}
-      </>
-    ),
-    spoken: [lead, sign, tail].filter(Boolean).join(" "),
-  };
+  const sign = bound ? "" : part.box === "pct" ? "%" : typeof part.box === "object" ? part.box.sign : "";
+  return [w.lead?.trim(), sign, w.tail?.trim()].filter(Boolean).join(" ");
 }
 
-/** The view's groups as the kit's: each part's card and spoken name, its lines (the month the price changes from, with the calendar's mark), and why a part that cannot be added cannot. */
+/** The view's groups as the kit's: each part's card in words, its lines (the month the price changes from, with the calendar's mark), and why a part that cannot be added cannot. */
 function kitGroups(view: ToolboxView): ToolGroup[] {
   return view.groups.map((g) => {
     const why = g.parts.find((x) => x.off)?.off;
@@ -73,7 +46,7 @@ function kitGroups(view: ToolboxView): ToolGroup[] {
       kind: KIND[g.group]!,
       name: g.head,
       // a thing the fee changes by already is taken away by a tap, as its bin in the band does
-      parts: g.parts.map((x) => ({ id: x.id, ...partLabel(x), used: x.used, off: !!x.off, ...(x.form ? { form: true } : {}), ...(x.row ? { row: copy.cases.byRows[x.row] } : {}), ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
+      parts: g.parts.map((x) => ({ id: x.id, label: partLabel(x), used: x.used, off: !!x.off, ...(x.form ? { form: true } : {}), ...(x.row ? { row: copy.cases.byRows[x.row] } : {}), ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
       ...(g.lines.length ? { lines: g.lines.map((l) => ({ id: l.id, label: l.words, icon: <IconCalendar size={16} /> })) } : {}),
       ...(why ? { offWhy: why } : {}),
     };

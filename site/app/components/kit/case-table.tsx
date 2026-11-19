@@ -1,17 +1,18 @@
-// A fee's cases laid out by the fee's shape (design-system 11, "Cases and parts"; the layout is lib/fee-deal/layout.ts): under the
-// condition's head, a table for a fee that changes by one thing (its cases as columns, its parts as rows, a range's steps ascending as a
-// ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
-// cells a cell for each part its cells hold alike), and beside the heads a small plus knob that adds a case, a step, a row or a column:
-// always at the end of the column heads and under the row heads, and on the line between two heads while the pointer rests there, adding
-// exactly there. Each head, row and cell may carry a grip (⋮⋮, lift.tsx), which also lifts it from a mouse press on its own surface
+// A fee's cases laid out by the fee's shape (design-system 11, "Cases and parts"; the layout is lib/fee-deal/layout.ts): under the fee's
+// name's line, which says what the price changes by, a table for a fee that changes by one thing (each case a column tile, its head over
+// its whole price, a range's steps ascending as a ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
+// cells a cell for each part its cells hold alike), and beside the heads a plus that adds a case, a step, a row or a column: a bare one
+// after a table's tiles, at the end of a grid's column heads and under its row heads, and a small knob on the line between two heads while
+// the pointer rests there, adding exactly there. Each head, row and cell may carry a grip (⋮⋮, lift.tsx), which also lifts it from a mouse press on its own surface
 // moved a few pixels (`data-lift-body`), and stand in a drop zone, each cell a knob on its edges that
 // stretches it over its neighbours and, where it can be taken away, a small bin in its top end corner; a cell covering its whole row says
 // so under its parts. A
 // part every case holds alike is one cell over every column, not a line of its own. Under a row a slim strip drawn while the pointer is
 // there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
-// wider than its block scrolls inside itself, never widening the page. The cells are dark cells on the fee's card, outside the cases' blue; the case open stands under the
-// table, its column or cell outlined in the action colour. A cell with a `copyKey` is one the page copies and pastes on.
+// wider than its block scrolls inside itself, never widening the page. A table's and a grid's cases are tiles raised on the fee's card. The
+// case open stands under the table or the grid, its tile outlined in the action colour. A cell with a
+// `copyKey` is one the page copies and pastes on.
 import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER, onSurface } from "./choice";
@@ -21,12 +22,13 @@ import { KnobButton } from "./knob-button";
 import { RemoveButton } from "./remove-button";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
-/** The open case's column head and cells: the action colour's outline, as the open case's own. */
+/** The open case's tile or cell: the action colour's outline, as the open case's own. */
 const OPEN = "outline-2 -outline-offset-2 outline-primary";
-// a cell is a dark tile with no edge of its own (its 1 px border is kept clear so an open cell's edge moves nothing); its lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the
-// cells beside it (`ROW_HEAD`)
-const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-0.5 rounded-md border border-transparent bg-background px-2.5 py-[calc(0.75rem-1px)] text-sm leading-5";
-/** A row's head: its words from the top, on the line a cell's first line stands on (the cell's border and padding over a 20 px line). */
+// a grid's case is a tile raised on the fee's card (`popover`, 8 px corners, no edge), 12 px in on every side, 6 px between two lines; its
+// lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the tiles
+// beside it (`ROW_HEAD`)
+const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-1.5 rounded-md bg-popover p-3 text-sm leading-5";
+/** A grid row's head: its words from the top, on the line a tile's first line stands on (the tile's 12 px padding over a 20 px line). */
 const ROW_HEAD = "pt-3 leading-5";
 
 /** A click on a cell opens its case, its padding too, unless it fell on something with a tap of its own (a figure, a field, a grip, a knob). */
@@ -149,8 +151,8 @@ export interface AddSpec {
 
 /**
  * What adds a new case, row or column where it stands in the table's own room (a grid's place no case holds, the cases read as rows): a
- * dashed frame as wide as what it is under, a plus and its words in the action colour. Beside the heads
- * the add is a plus knob (`HeadAdd`, `BetweenAdd`).
+ * dashed frame as wide as what it is under, a plus and its words in the action colour. Beside the heads the add is a bare plus
+ * (`TileAdd`), or, on the line between two heads, a plus knob (`BetweenAdd`).
  */
 export function AddSlot({ add, className }: { add: AddSpec; className?: string }) {
   return (
@@ -173,14 +175,25 @@ export function AddSlot({ add, className }: { add: AddSpec; className?: string }
 }
 
 /**
- * The plus at the end of the column heads, or under the row heads, that adds a case, a step, a row or a column (`add`, its words spoken and
- * in its title): a knob always drawn, standing alone, so its press reaches 44 px both ways. At the heads' end its column is that press's
- * width: a press reaching past the table's edge would make the table scroll sideways by it.
+ * A bare muted plus, no frame, that adds a case, a step, a row or a column (`add`, its words spoken and in its title): after a table's
+ * tiles level with their heads (founder, 2026-11-19), at the end of a grid's column heads level with their words, and under a grid's row
+ * heads at their start (founder, 2026-11-20). Its press is 44 px both ways, in a place at least that wide, so it pokes past nothing;
+ * `className` places the plus in that place (default: in its middle).
  */
-function HeadAdd({ add, style, className }: { add: AddSpec; style: CSSProperties; className: string }) {
+function TileAdd({ add, style, className = "items-center justify-center" }: { add: AddSpec; style: CSSProperties; className?: string }) {
   return (
-    <div style={style} className={className}>
-      <KnobButton icon={Plus} label={add.spoken ?? add.label} wide expanded={add.expanded} data-head-add="" onClick={(e) => add.onAdd(e.currentTarget)} />
+    <div style={style} className={cx("flex min-w-target", className)}>
+      <button
+        type="button"
+        aria-label={add.spoken ?? add.label}
+        title={add.spoken ?? add.label}
+        aria-expanded={add.expanded}
+        data-head-add=""
+        onClick={(e) => add.onAdd(e.currentTarget)}
+        className={cx("tap-wide flex size-5 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", add.expanded && "text-foreground")}
+      >
+        <Plus size={14} strokeWidth={2} aria-hidden />
+      </button>
     </div>
   );
 }
@@ -188,14 +201,14 @@ function HeadAdd({ add, style, className }: { add: AddSpec; style: CSSProperties
 /**
  * The plus on the line between two heads that adds a new column (`axis` x, the line at the inline end of the head it stands with) or a
  * new row (`axis` y, the line under it) exactly there (`add`). It takes no room: a zero-wide place at that edge holds a strip 16 px across
- * straddling the gap between the heads, and the knob is drawn only while a fine pointer rests on that strip (app.css,
+ * straddling the gap between the heads (a grid's row's: centred on the line in the room between two rows), and the knob is drawn only while a fine pointer rests on that strip (app.css,
  * `data-between-add`); the keyboard and touch reach the same through the head's menu ("הוספה לפני", "הוספה אחרי"). Under a figure's own
  * box: a figure in a head beside it keeps its press.
  */
 function BetweenAdd({ add, axis, style }: { add: AddSpec; axis: "x" | "y"; style: CSSProperties }) {
   return (
-    <div style={style} className={cx("pointer-events-none relative", axis === "x" ? "w-0 justify-self-end" : "h-0 self-end")}>
-      <div data-between-add={axis} className={cx("absolute flex items-center justify-center", axis === "x" ? "inset-y-0 -end-3 w-4" : "inset-x-0 -bottom-[11px] h-4")}>
+    <div style={style} className={cx("pointer-events-none relative", axis === "x" ? "w-0 justify-self-end" : "h-0 self-center")}>
+      <div data-between-add={axis} className={cx("absolute flex items-center justify-center", axis === "x" ? "inset-y-0 -end-3 w-4" : "inset-x-0 -top-2 h-4")}>
         <KnobButton icon={Plus} label={add.spoken ?? add.label} tabIndex={-1} expanded={add.expanded} onClick={(e) => add.onAdd(e.currentTarget)} />
       </div>
     </div>
@@ -209,13 +222,20 @@ function BetweenAdd({ add, axis, style }: { add: AddSpec; axis: "x" | "y"; style
 const GRIP_ROOM = "ps-7";
 
 /**
- * A column's head that opens its case: one button over the whole head (`label`, its spoken name), the words drawn on it; a control inside
- * (a step's top typed in place, marked `data-lift`) keeps its own tap.
+ * A tile's head: 40 px at least, 9 px over and under its words and 12 px beside them (the grip's room at its start, `GRIP_ROOM`), over a
+ * 1 px line across the tile; its words at its foot, so the heads of a row stand on one line, a head that wraps growing the row for all.
  */
-function OpenHead({ label, onOpen, onRename, open, range, grip, children }: { label: string; onOpen: () => void; onRename?: (() => void) | undefined; open?: boolean; range?: boolean; grip?: ReactNode; children: ReactNode }) {
+const TILE_HEAD = "relative flex h-full min-h-10 min-w-0 items-end gap-1.5 rounded-t-md border-b border-border pe-3 py-[9px] text-sm font-medium leading-5";
+
+/**
+ * A column's head that opens its case: one button over the whole head (`label`, its spoken name), its press reaching 2 px past the head
+ * above and below, so a head 40 px tall takes a 44 px press; the words drawn on it; a control inside (a step's top typed in place, marked
+ * `data-lift`) keeps its own tap.
+ */
+function OpenHead({ label, onOpen, onRename, range, grip, children }: { label: string; onOpen: () => void; onRename?: (() => void) | undefined; range?: boolean; grip?: ReactNode; children: ReactNode }) {
   return (
-    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("group relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium cursor-pointer", grip ? GRIP_ROOM : "ps-1.5", LIFT_INNER, open && OPEN, "has-[input]:outline-none")}>
-      <button type="button" data-pick-card aria-label={label} onClick={onOpen} onDoubleClick={onRename} className="absolute inset-0 w-full rounded-md group-hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
+    <div data-case-head="" data-liftable="" data-lift-body="" className={cx("group cursor-pointer", TILE_HEAD, grip ? GRIP_ROOM : "ps-3", LIFT_INNER)}>
+      <button type="button" data-pick-card aria-label={label} onClick={onOpen} onDoubleClick={onRename} className="absolute inset-0 w-full rounded-t-md group-hover:bg-accent after:absolute after:inset-x-0 after:-inset-y-0.5 after:z-[1] after:content-[''] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {grip}
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
       <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto [&_input]:pointer-events-auto">{children}</div>
@@ -226,7 +246,7 @@ function OpenHead({ label, onOpen, onRename, open, range, grip, children }: { la
 /** A column's head that opens nothing (a value no case names): its words at its foot, as an `OpenHead`'s, and its grip. */
 function StillHead({ grip, onRename, children }: { grip?: ReactNode; onRename?: (() => void) | undefined; children: ReactNode }) {
   return (
-    <div onDoubleClick={onRename} data-case-head="" data-liftable="" data-lift-body="" className={cx("relative flex h-full min-h-target min-w-0 items-end gap-1.5 rounded-md border-b border-border pe-1.5 pt-1 pb-1.5 text-sm font-medium", grip ? GRIP_ROOM : "ps-1.5")}>
+    <div onDoubleClick={onRename} data-case-head="" data-liftable="" data-lift-body="" className={cx(TILE_HEAD, grip ? GRIP_ROOM : "ps-3")}>
       {grip}
       <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">{children}</div>
     </div>
@@ -310,19 +330,17 @@ export interface CaseColumn {
 }
 
 /**
- * A part row of a table: its head ("שיעור", "מינימום") with its grip, and its cells, each spanning `span` columns from `from`, the case its
- * tap opens; a cell whose `content` is null (no such part) is an empty place, which still takes a drop (`zone`). A cell's `id` keeps it the
- * same cell when its column moves, so it slides there.
+ * A row of a table's cells, under the tiles' heads: each cell spanning `span` columns from `from`, the case its tap opens; a cell whose
+ * `content` is null (a case with no price yet) is an empty place, which still takes a drop (`zone`). A cell's `id` keeps it the same cell
+ * when its column moves, so it slides there.
  */
 export interface CaseTableRow {
   id: string;
-  head: ReactNode;
-  grip?: ReactNode;
-  cells: ({ id?: string; from: number; span: number; open?: boolean; onOpen?: () => void; content: ReactNode } & CellExtras)[];
+  cells: ({ id?: string; from: number; span: number; onOpen?: () => void; content: ReactNode } & CellExtras)[];
 }
 
-/** A cell's place in a table or a grid: its columns, after the heads' column, in its row. */
-const placeOf = (from: number, span: number, row: number) => ({ gridColumn: `${from + 2} / span ${span}`, gridRow: row });
+/** A cell's place in a grid: its columns, after the row heads' column, on its track. */
+const placeOf = (from: number, span: number, track: number) => ({ gridColumn: `${from + 2} / span ${span}`, gridRow: track });
 
 /** The column whose grip lifted the thing carried now, by its place; -1 where none. */
 const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | null) => (carried === null ? -1 : heads.findIndex((h) => h.liftItem === carried));
@@ -346,62 +364,69 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
   );
 }
 
+/** A table's cell on its tile: no fill or edge of its own, 12 px beside its lines and 10 px over and under them, 6 px between two lines. */
+const TILE_CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-1.5 rounded-b-md px-3 py-2.5 text-sm leading-5";
+
 /**
- * A fee that changes by one thing, as a table: the cases as columns (`columns`, heads that open their case), the parts as rows (`rows`),
- * a merged cell where neighbours are equal, and at the end of the heads the plus knob that adds a case or a step (`add`); `insert`, the
- * plus on the line between column `k - 1` and column `k` that adds one there (none where it gives nothing). `ladder`: the thing is
- * a range, its steps ascending, each head with the range's icon. `addPart`: the strip under its last row that adds a part row across every
- * column. `foot`: what stands under the table (the bin while something is lifted, laid over what follows: the table is the element it is
- * placed by). Wider than its block, it scrolls inside itself, sideways only: what reaches past its foot for a moment (a cell sliding into
- * place, the plus's press under its last row) never gives it a scrollbar down.
+ * A fee that changes by one thing, as a table (founder, 2026-11-19): each case a column tile, raised on the fee's card (`popover`, 8 px
+ * corners, no edge), 8 px apart and all as tall as the tallest, flush with the card's padding (the 2 px over them, where their heads'
+ * presses reach, stands in the room above); a tile's head (`columns`, a head that opens its case) over a 1 px line
+ * across it, then its cells (`rows`); the open case's whole tile outlined in the action colour. After the tiles, level with their heads,
+ * a bare plus that adds a case or a step (`add`); `insert`, the plus on the line between column `k - 1` and column `k` that adds one there
+ * (none where it gives nothing). `ladder`: the thing is a range, its steps ascending, each head with the range's icon. `addPart`: the
+ * strip under its last row that adds a part across every column. `foot`: what stands under the table (the bin while something is lifted,
+ * laid over what follows: the table is the element it is placed by). Wider than its block, it scrolls inside itself, sideways only: what
+ * reaches past its foot for a moment (a cell sliding into place, the plus's press under its last row) never gives it a scrollbar down.
  */
 export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
   const gapCol = carriedAt(columns, useCarried());
   // a ladder's head holds a step's two bounds and its top's box, on one line where they fit, else wrapped inside the column
-  const template = `minmax(5.5rem, max-content) repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " max-content" : ""}`;
+  const template = `repeat(${n}, minmax(${ladder ? "11rem" : "7.5rem"}, 1fr))${add ? " max-content" : ""}`;
+  /** A tile's place: its column, from the heads' line down over every row. */
+  const tile = (k: number) => ({ gridColumn: k + 1, gridRow: `1 / span ${rows.length + 1}` });
+  const at = (from: number, span: number, row: number) => ({ gridColumn: `${from + 1} / span ${span}`, gridRow: row });
   return (
     <div className="relative flex flex-col gap-2">
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto overflow-y-hidden px-0.5 pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table -mt-0.5 grid items-stretch gap-x-2 overflow-x-auto overflow-y-hidden pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
+        {/* first, so every head and cell stands on its tile */}
+        {columns.map((c, k) => (
+          <span key={`tile:${c.id}`} aria-hidden data-flip="" data-case-tile="" className="rounded-md bg-popover" style={tile(k)} />
+        ))}
         <div role="row" className="contents">
-          <span aria-hidden />
           {columns.map((c, k) => {
             const head = c.empty ? (
               <StillHead key={c.id} grip={c.grip} onRename={c.onRename}>
                 {c.head}
               </StillHead>
             ) : (
-              <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} onRename={c.onRename} open={c.open} range={ladder} grip={c.grip}>
+              <OpenHead key={c.id} label={c.label} onOpen={c.onOpen} onRename={c.onRename} range={ladder} grip={c.grip}>
                 {c.head}
               </OpenHead>
             );
             return (
-              // every head fills the row's height, its words at its foot: the heads stand on one line, a head that wraps growing the row
-              <div key={c.id} role="columnheader" id={keys.headId(k)} data-col={k} className="flex min-w-0 *:w-full" style={{ gridColumn: k + 2, gridRow: 1 }}>
+              // every head fills the row's height: the heads of all the tiles are as tall as the tallest
+              <div key={c.id} role="columnheader" id={keys.headId(k)} data-col={k} className="flex min-w-0 *:w-full" style={{ gridColumn: k + 1, gridRow: 1 }}>
                 {c.zone ? c.zone(head) : head}
               </div>
             );
           })}
-          {add && <HeadAdd add={add} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex min-w-target items-center justify-center" />}
-          {insert && betweenOf(n, insert).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
+          {add && <TileAdd add={add} style={{ gridColumn: n + 1, gridRow: 1 }} />}
+          {insert && betweenOf(n, insert).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => (
           <div key={r.id} role="row" className="contents">
-            <div role="rowheader" id={keys.rowId(j)} data-liftable="" data-lift-body="" className={cx("flex items-start gap-1 text-sm text-muted-foreground", ROW_HEAD)} style={{ gridColumn: 1, gridRow: j + 2 }}>
-              {r.grip}
-              {r.head}
-            </div>
             {r.cells.map((cell, i) => {
-              const place = placeOf(cell.from, cell.span, j + 2);
+              const place = at(cell.from, cell.span, j + 2);
               const cp = keys.cellProps(j, cell.from, cell.span, j === 0 && i === 0);
               const hands = { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch };
               const gap = gapCol >= 0 && cell.from === gapCol && cell.span === 1;
               if (cell.content === null) {
-                // a case with no such part: an empty place, no cell drawn; it still takes a part dropped on it, and shows the price a
+                // a case with no price yet: an empty place, no cell drawn; it still takes a part dropped on it, and shows the price a
                 // knob's stretch would give it
                 const empty = (
-                  <span {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-md", CELL_FOCUS, cell.lit && cx(CELL, LIT))}>
+                  <span {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-flip="" className={cx("flex h-full min-h-target rounded-b-md", CELL_FOCUS, cell.lit && cx(TILE_CELL, LIT))}>
                     <span id={keys.wordsId(j, cell.from)} className="contents">
                       {cell.lit && cell.fill !== undefined && <CellBody content={null} fill={cell.fill} lit />}
                     </span>
@@ -414,7 +439,7 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
                 );
               }
               const el = (
-                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(TILE_CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.lit && LIT)}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
                     <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
@@ -434,13 +459,15 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
         ))}
         {columns.map((c, k) =>
           c.empty ? (
-            // a value no case names: one slot over every row of its column, which adds its case
-            <div key={`empty:${c.id}`} style={{ gridColumn: k + 2, gridRow: `2 / span ${Math.max(rows.length, 1)}` }} data-flip="" className="*:h-full">
+            // a value no case names: under its head, over every row of its tile, the slot that adds its case
+            <div key={`empty:${c.id}`} style={{ gridColumn: k + 1, gridRow: `2 / span ${Math.max(rows.length, 1)}` }} data-flip="" className="px-3 py-2.5 *:h-full">
               <AddSlot add={c.empty} />
             </div>
           ) : null,
         )}
-        {addPart && rows.length > 0 && <RowAdd add={addPart} style={{ gridColumn: `2 / span ${n}`, gridRow: rows.length + 1 }} />}
+        {/* last, so the open tile's outline is drawn over its head and cells, which take no press of it */}
+        {columns.map((c, k) => (c.open && !c.empty ? <span key={`open:${c.id}`} aria-hidden data-flip="" className={cx("pointer-events-none relative rounded-md", OPEN)} style={tile(k)} /> : null))}
+        {addPart && rows.length > 0 && <RowAdd add={addPart} style={{ gridColumn: `1 / span ${n}`, gridRow: rows.length + 1 }} />}
       </div>
       {foot}
     </div>
@@ -486,14 +513,14 @@ export interface GridCellView extends CellExtras {
 }
 
 /**
- * A grid's head, its grip and its words, filling its place so the whole head is what is lifted and dropped on: a row's as tall as its row
- * and its lines, its words from the top on its cells' first line; a column's as wide as its column, at the foot of its row over a hairline
- * so the heads stand on one line. Its grip stands at its start edge, centred down it, and its words in the middle of the width left
- * beside the grip's room (`GRIP_ROOM`), so the grip covers none of them.
+ * A grid's head, its grip and its words, filling its place so the whole head is what is lifted and dropped on, its words at its start: a
+ * row's as tall as its row and its lines, its words from the top on its tiles' first line; a column's as wide as its column, its words at
+ * the foot of its row over a 1 px line in the border's colour, so the heads stand on one line (founder, 2026-11-20). Its grip stands at its
+ * start edge, centred down it, and its words start beside the grip's room (`GRIP_ROOM`), so the grip covers none of them.
  */
 function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boolean; grip?: ReactNode; onRename?: (() => void) | undefined }) {
   return (
-    <div onDoubleClick={onRename} data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-center gap-0.5 rounded-md pe-1 text-center text-sm", grip ? GRIP_ROOM : "ps-1", end ? "justify-end pb-1.5" : cx("justify-start", ROW_HEAD))}>
+    <div onDoubleClick={onRename} data-case-head="" data-liftable="" data-lift-body="" className={cx("flex h-full min-w-0 flex-col items-start gap-0.5 text-start text-sm", end ? cx("justify-end rounded-t-md border-b border-border pt-1 pb-2 pe-3 leading-5", grip ? GRIP_ROOM : "ps-3") : cx("justify-start rounded-md pe-1", ROW_HEAD, grip ? GRIP_ROOM : "ps-1"))}>
       {grip}
       <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 min-w-0 max-w-full font-medium">
         {head}
@@ -502,42 +529,19 @@ function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boole
   );
 }
 
-/** A hairline of a grid: in the gap beside or under its place, in the border's colour, taking no press, never over a cell or words. */
-type Hairline = { key: string; kind: "head" | "row" | "column"; gridRow: string; gridColumn: string };
-
-/** Where a grid's hairline is drawn in its place: down its inline start edge (a column's), else along its foot. */
-const HAIRLINE: Record<Hairline["kind"], string> = {
-  // the 8 px gap between two columns, the line in its middle
-  column: "inset-y-0 start-[-4.5px] w-px",
-  // the 6 px gap under a row or under the heads, the line in its middle
-  row: "inset-x-0 top-[calc(100%+2.5px)] h-px",
-  head: "inset-x-0 top-[calc(100%+2.5px)] h-px",
-};
-
-/** The runs of the places `0 .. n - 1` that `open` says are open: each its first and last place. */
-const openRuns = (n: number, open: (i: number) => boolean): [number, number][] => {
-  const out: [number, number][] = [];
-  for (let i = 0; i < n; i++) {
-    if (!open(i)) continue;
-    const last = out.at(-1);
-    if (last && last[1] === i - 1) last[1] = i;
-    else out.push([i, i]);
-  }
-  return out;
-};
-
 /**
- * A fee that changes by two things, as a grid: the first thing's values down the side (`rows`), the second's across the top (`columns`);
- * one cell per case (equal neighbours one cell), a press anywhere on it opening it, a case on any value across spanning its row;
- * under a row's cells, its `lines`, one per part row, each a cell of the parts two or more of its cells hold alike over them; at the end of
- * the column heads the plus knob that adds a value across (`addColumn`), and under the row heads the one that adds a value down (`addRow`);
+ * A fee that changes by two things, as a grid (founder, 2026-11-20): the first thing's values down the side (`rows`), the second's across
+ * the top (`columns`); one tile per case (equal neighbours one tile), raised on the fee's card as a table's, 8 px apart, a press anywhere on
+ * it opening it, a case on any value across spanning its row and one down over several rows spanning them; the open case's tile outlined
+ * in the action colour. Under a row's tiles, its `lines`, one per part row, each a tile of the parts two or more of its tiles hold alike
+ * over them. The column heads are plain words over a 1 px line; the row heads stand at the start, from their row's top; between two rows,
+ * in the row heads' column only, a 1 px line in the border's colour in the middle of the room between them, never across the tiles. A
+ * bare plus at the end of the column heads adds a value across (`addColumn`), and one under the row heads a value down (`addRow`);
  * between two heads, the plus that adds one exactly there (`insertColumn`, `insertRow`).
- * A row's head is as tall as its cells and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
- * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each, and take the room for
- * it. `foot`: what stands under the grid (the bin while something is lifted, laid over what follows). Wider than its block, it scrolls
- * inside itself, sideways only, as a table does. Quiet hairlines in the gaps (founder, 2026-11-17): one under the heads across the grid,
- * one between the row heads and the first column and between each two columns, from the heads down and broken where a row's line or a
- * cell over several columns runs across, and one under each row but the last, broken under a cell down over the next row.
+ * A row's head is as tall as its tiles and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
+ * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each while their fee is
+ * open, and take the room for it. `foot`: what stands under the grid (the bin while something is lifted, laid over what follows). Wider
+ * than its block, it scrolls inside itself, sideways only, as a table does.
  */
 export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
@@ -545,51 +549,26 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
   const carried = useCarried();
   const gapCol = carriedAt(columns, carried);
   const gapRow = carriedAt(rows, carried);
-  // a row's head wraps past 9 rem, so the values across keep their room
-  const template = `minmax(6rem, 9rem) repeat(${n}, minmax(${steps ? "11rem" : "8rem"}, 1fr))${addColumn ? " max-content" : ""}`;
-  // each row stands on its cells' line and its part lines under them: the line it starts on, after the heads' line
+  // a row's head wraps past 7.5 rem, so the values across keep their room
+  const template = `minmax(6rem, 7.5rem) repeat(${n}, minmax(${steps ? "11rem" : "8rem"}, 1fr))${addColumn ? " max-content" : ""}`;
+  // each row stands on its tiles' line and its part lines under them: the line it starts on
   const height = rows.map((r) => 1 + (r.lines?.length ?? 0));
   const start = height.reduce<number[]>((acc, _, j) => [...acc, j === 0 ? 0 : acc[j - 1]! + height[j - 1]!], []);
   const lines = start.at(-1)! + height.at(-1)!;
+  /** The track line `line` of row `j` stands on: after the heads' track, and after the track of the line between each two rows above it. */
+  const track = (line: number, j: number) => line + 2 + j;
+  /** The track of the line under row `j`, between it and the next. */
+  const between = (j: number) => track(start[j]! + height[j]!, j);
   const gapOf = (j: number, from: number, span: number) => j === gapRow || (gapCol >= 0 && from === gapCol && span === 1);
-  // ---------------------------------------------------------------- the hairlines
-  /** The lines a row's cell covers: its own, or, down over rows, theirs and their part lines. */
-  const linesOf = (j: number, cell: { down?: number }) => {
-    const last = j + (cell.down ?? 1) - 1;
-    return cell.down ? start[last]! + height[last]! - start[j]! : 1;
-  };
-  // what stands on each line of the rows over two columns or more: a cell (down over its lines too), or a row's line
-  const wide = rows.flatMap((r, j) => [
-    ...r.cells.filter((c) => c.span > 1).map((c) => ({ from: start[j]!, to: start[j]! + linesOf(j, c) - 1, col: c.from, span: c.span })),
-    ...(r.lines ?? []).flatMap((pl, L) => pl.cells.filter((c) => c.span > 1).map((c) => ({ from: start[j]! + 1 + L, to: start[j]! + 1 + L, col: c.from, span: c.span }))),
-  ]);
-  /** Whether line `line` of the rows has something over the boundary at column `k`'s inline start (between columns `k - 1` and `k`). */
-  const crossed = (line: number, k: number) => wide.some((w) => w.from <= line && line <= w.to && w.col < k && k < w.col + w.span);
-  const hairlines: Hairline[] = [
-    { key: "head", kind: "head", gridRow: "1", gridColumn: `1 / ${n + 2}` },
-    // between the row heads and the first column from the first line under the heads; between two columns from the heads down
-    ...Array.from({ length: n }, (_, k) =>
-      openRuns(1 + lines, (v) => (k > 0 || v > 0) && (v === 0 || !crossed(v - 1, k))).map(([a, b]) => ({ key: `column:${k}:${a}`, kind: "column" as const, gridRow: `${a + 1} / ${b + 2}`, gridColumn: String(k + 2) })),
-    ).flat(),
-    // under each row but the last, its cells' and its lines' foot, broken under a cell down over the next row
-    ...rows.slice(0, -1).flatMap((_, j) => {
-      const down = rows.flatMap((r, i) => r.cells.filter((c) => c.down && i <= j && j + 1 <= i + c.down - 1));
-      return openRuns(n + 1, (i) => i === 0 || !down.some((c) => c.from <= i - 1 && i - 1 < c.from + c.span)).map(([a, b]) => ({ key: `row:${j}:${a}`, kind: "row" as const, gridRow: String(start[j]! + height[j]! + 1), gridColumn: `${a + 1} / ${b + 2}` }));
-    }),
-  ];
   return (
     <div className="relative flex flex-col gap-2">
       {above}
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-x-2 gap-y-1.5 overflow-x-auto overflow-y-hidden px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
-        {/* first, so every head, cell and line stands over them */}
-        {hairlines.map((h) => (
-          <div key={`hairline:${h.key}`} aria-hidden style={{ gridRow: h.gridRow, gridColumn: h.gridColumn }} className="pointer-events-none relative min-h-0 min-w-0">
-            <span data-hairline={h.kind} className={cx("absolute bg-border", HAIRLINE[h.kind])} />
-          </div>
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-2 overflow-x-auto overflow-y-hidden px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
+        {/* the line between two rows, in the row heads' column: its own 1 px track, the 8 px gaps of the grid over and under it */}
+        {rows.slice(0, -1).map((r, j) => (
+          <div key={`hairline:${r.id}`} aria-hidden data-hairline="row" style={{ gridColumn: 1, gridRow: between(j) }} className="pointer-events-none h-px self-center bg-border" />
         ))}
         <div role="row" className="contents">
-          {/* placed, since the heads' hairline takes its place first */}
-          <span aria-hidden style={{ gridColumn: 1, gridRow: 1 }} />
           {columns.map((c, k) => {
             const head = <HeadWords head={c.head} end grip={c.grip} onRename={c.onRename} />;
             return (
@@ -598,7 +577,8 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
               </div>
             );
           })}
-          {addColumn && <HeadAdd add={addColumn} style={{ gridColumn: n + 2, gridRow: 1 }} className="flex min-w-target items-center justify-center" />}
+          {/* level with the heads' words: the plus's 20 px over the 8 px under them */}
+          {addColumn && <TileAdd add={addColumn} style={{ gridColumn: n + 2, gridRow: 1 }} className="items-end justify-center pb-2" />}
           {insertColumn && betweenOf(n, insertColumn).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="x" style={{ gridColumn: k + 1, gridRow: 1 }} />)}
         </div>
         {rows.map((r, j) => {
@@ -607,14 +587,14 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
           const filled = r.cells.filter((c) => !c.empty);
           return (
             <div key={r.id} role="row" data-grid-row="" className="contents">
-              <div role="rowheader" id={keys.rowId(j)} data-rowpos={j} style={{ gridColumn: 1, gridRow: `${line + 2} / span ${height[j]}` }} className="flex *:w-full">
+              <div role="rowheader" id={keys.rowId(j)} data-rowpos={j} style={{ gridColumn: 1, gridRow: `${track(line, j)} / span ${height[j]}` }} className="flex *:w-full">
                 {r.zone ? r.zone(head) : head}
               </div>
               {r.cells.map((cell, i) => {
-                // a cell down over several rows spans their lines too
+                // a cell down over several rows spans their lines too, and the lines between them
                 const last = j + (cell.down ?? 1) - 1;
                 const spanned = start[last]! + height[last]! - line;
-                const place = { ...placeOf(cell.from, cell.span, line + 2), ...(cell.down ? { gridRow: `${line + 2} / span ${spanned}` } : {}) };
+                const place = { ...placeOf(cell.from, cell.span, track(line, j)), ...(cell.down ? { gridRow: `${track(line, j)} / span ${spanned + last - j}` } : {}) };
                 const cp = keys.cellProps(line, cell.from, cell.span, j === 0 && i === 0, cell.down ? spanned : 1, j);
                 if (cell.empty) {
                   const add = cell.empty;
@@ -662,7 +642,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && "border-primary", cell.lit && LIT)}>
+                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && OPEN, cell.lit && LIT)}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
@@ -673,25 +653,21 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                     </div>
                   );
                   return (
-                    <div key={`${pl.id}:${cell.from}`} style={placeOf(cell.from, cell.span, at + 2)} className="min-w-0 *:h-full">
+                    <div key={`${pl.id}:${cell.from}`} style={placeOf(cell.from, cell.span, track(at, j))} className="min-w-0 *:h-full">
                       {cell.zone ? cell.zone(el) : el}
                     </div>
                   );
                 }),
               )}
               {r.addPart && filled.length > 0 && (
-                <RowAdd add={r.addPart} style={{ gridColumn: `${Math.min(...filled.map((c) => c.from)) + 2} / ${Math.max(...filled.map((c) => c.from + c.span)) + 2}`, gridRow: line + 1 + height[j]! }} />
+                <RowAdd add={r.addPart} style={{ gridColumn: `${Math.min(...filled.map((c) => c.from)) + 2} / ${Math.max(...filled.map((c) => c.from + c.span)) + 2}`, gridRow: track(line + height[j]! - 1, j) }} />
               )}
             </div>
           );
         })}
-        {addRow && <HeadAdd add={addRow} style={{ gridColumn: 1, gridRow: lines + 2 }} className="flex justify-center py-1" />}
-        {insertRow &&
-          betweenOf(rows.length, insertRow).map(({ k, add: a }) => {
-            // the line under row k - 1: the foot of its last part line
-            const last = start[k - 1]! + height[k - 1]!;
-            return <BetweenAdd key={`between:${k}`} add={a} axis="y" style={{ gridColumn: 1, gridRow: last + 1 }} />;
-          })}
+        {/* under the row heads, at their start: its press 44 px across 12 px in, and as tall as the room under the last row and the grid's foot */}
+        {addRow && <TileAdd add={addRow} style={{ gridColumn: 1, gridRow: track(lines, rows.length - 1) }} className="h-7 items-center justify-start ps-3" />}
+        {insertRow && betweenOf(rows.length, insertRow).map(({ k, add: a }) => <BetweenAdd key={`between:${k}`} add={a} axis="y" style={{ gridColumn: 1, gridRow: between(k - 1) }} />)}
       </div>
       {foot}
     </div>
