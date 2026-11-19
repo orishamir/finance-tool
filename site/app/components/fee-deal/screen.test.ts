@@ -201,11 +201,16 @@ describe("the case open in place", () => {
     expect(text(builderOf(d, "fee-deposit"))).toContain(feeDeal.panel.change.add);
     expect(html).toMatch(/aria-label="[^"]*, 06\.2027[^"]*, כמה"[^>]*value=""|value=""[^>]*aria-label="[^"]*, כמה"/);
   });
-  it("opens a sale priced apart under its own head, and says it at rest as a note", () => {
+  it("opens a sale priced apart under its own head with its bin, never as a part of the purchase, and says its price at rest", () => {
     const d = account();
     d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "action", rate: typed(0.3) } }] }];
-    expect(text(builderOf(d, null))).toContain(feeDeal.cases.parts.notes.sale!);
-    expect(text(builderOf(d, "fee-trade"))).toContain(feeDeal.panel.salePrices);
+    expect(text(builderOf(d, null))).toContain(`${feeDeal.cases.buySaid.trim()}0.25%`);
+    expect(text(builderOf(d, null))).toContain(`${feeDeal.cases.saleSaid}0.3% לכל פעולה`);
+    const open = text(builderOf(d, "fee-trade"));
+    expect(open).toContain(feeDeal.panel.salePrices);
+    expect(open).toContain(feeDeal.panel.buyPrices);
+    expect(open).not.toContain(feeDeal.cases.parts.notes.sale!);
+    expect(markup(builderOf(d, "fee-trade"))).toContain(`aria-label="${feeDeal.panel.saleRemove}"`);
   });
 });
 

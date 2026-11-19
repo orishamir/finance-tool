@@ -1934,6 +1934,10 @@ export const feeDeal = {
       removed: "השינוי במחיר הוסר: המחיר שאחריו חזר להיות המחיר שלפניו.",
     },
     salePrices: "המחיר במכירה",
+    /** Over the purchase's prices where the sale is priced apart. */
+    buyPrices: "המחיר בקנייה",
+    /** The bin beside it: the sale priced as the purchase again. */
+    saleRemove: "להסיר את המחיר הנפרד למכירה",
     oneSide: { buy: "נגבית רק בקנייה", sell: "נגבית רק במכירה" } as Record<string, string>,
     remove: "להסיר את העמלה",
     /** Opens the site's explanation of the fee (its glossary card). */
@@ -2079,6 +2083,14 @@ export const feeDeal = {
      */
     /** A thing added at one tap from the toolbox, split at once into its usual values (things.ts `usualBy`), on its undo line. */
     byAdded: "המחיר משתנה עכשיו לפי {thing}: {values}. את הערכים משנים ומוסיפים בכותרות.",
+    /** The toolbox's line while it follows a sale priced apart, in place of `addTo`. */
+    addToSale: "להוסיף למחיר במכירה: ",
+    /** After a sale's price among several over time, in the toolbox's line: "להוסיף למחיר עד דצמבר 2026 במכירה:". */
+    inSale: " במכירה",
+    /** The purchase's price in a line where the sale is priced apart, before it: "בקנייה: 0.25% לכל פעולה". */
+    buySaid: "בקנייה: ",
+    /** A sale priced apart in a line, before its price: "במכירה: חינם". */
+    saleSaid: "במכירה: ",
     /** A value the "+" beside a thing's heads adds in the person's words, renamed in its head: "מסלול 3". */
     newValue: "{noun} {n}",
     /** A head's grip menu: its value's name typed again in place (a double-click on the head does the same). */

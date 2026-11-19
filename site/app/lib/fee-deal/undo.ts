@@ -38,7 +38,7 @@ export type UndoWhat =
   | { kind: "chain"; feeId: string; side: Side; k: number; caseId?: string }
   | { kind: "case"; feeId: string; caseId: string }
   | { kind: "by"; feeId: string; t: number }
-  | { kind: "form"; feeId: string; k: number; caseId?: string }
+  | { kind: "form"; feeId: string; k: number; caseId?: string; side?: "sell" }
   /** A change made by a drag or a knob (lifted.ts) that took something: its words, said when it was made. */
   | { kind: "said"; feeId: string; words: string };
 
@@ -139,20 +139,21 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
  * (`currency`: what the price was in before it was made free, `freedCurrency`; else its other prices'), never the shekel by default. Null
  * where the part sets no form, or the price is in it already.
  */
-export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string, at?: number, currency?: BoundCurrency): MaybeUndoable | null {
+export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string, at?: number, currency?: BoundCurrency, on: Side = "buy"): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   const form = PARTS[part].form;
   if (!fee || !form) return null;
-  const k = toolPrice(pricedOf(fee, caseId), at);
-  const was = pricesOn(fee, "buy", caseId)[k]!.price;
+  const side: Side = on === "sell" && pricedOf(fee, caseId).sale ? "sell" : "buy";
+  const k = toolPrice({ stages: pricesOn(fee, side, caseId) }, at);
+  const was = pricesOn(fee, side, caseId)[k]!.price;
   if (was.form === form) return null;
-  const set = setPart(fee, part, true, { k, ...(caseId ? { caseId } : {}) });
-  const own = was.form === "free" ? (currency ?? pricesOn(fee, "buy", caseId).map((s) => pricedCurrency(s.price)).find(Boolean)) : undefined;
-  const now = pricesOn(set, "buy", caseId)[k]?.price;
-  const changed = own && now && onAction(now) && !now.currency && keeps(fee.kind, now.form, "currency") ? editPrice(set, "buy", k, (p) => withCurrency(p, own), caseId) : set;
+  const set = setPart(fee, part, true, { side, k, ...(caseId ? { caseId } : {}) });
+  const own = was.form === "free" ? (currency ?? pricesOn(fee, side, caseId).map((s) => pricedCurrency(s.price)).find(Boolean)) : undefined;
+  const now = pricesOn(set, side, caseId)[k]?.price;
+  const changed = own && now && onAction(now) && !now.currency && keeps(fee.kind, now.form, "currency") ? editPrice(set, side, k, (p) => withCurrency(p, own), caseId) : set;
   if (changed === fee || sameContent(changed, fee)) return null;
   if (was.form === "free" || sameContent(was, blankPrice(was.form))) return { deal: updateFee(deal, feeId, () => changed), chosen, undo: null };
-  return feeChange(deal, fee, changed, { kind: "form", feeId, k, ...(caseId ? { caseId } : {}) }, chosen);
+  return feeChange(deal, fee, changed, { kind: "form", feeId, k, ...(caseId ? { caseId } : {}), ...(side === "sell" ? { side } : {}) }, chosen);
 }
 
 /**
@@ -164,7 +165,7 @@ export function formBack(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string
   if (!u || u.what.kind !== "form" || !standing(u, deal)) return false;
   const f = u as Undo;
   const w = f.what as Extract<UndoWhat, { kind: "form" }>;
-  if (w.feeId !== feeId || w.caseId !== caseId) return false;
+  if (w.feeId !== feeId || w.caseId !== caseId || w.side) return false;
   const now = deal.fees.find((x) => x.id === feeId);
   const was = pricesOn(f.before, "buy", caseId)[w.k]?.price;
   return !!now && pricesOn(now, "buy", caseId)[w.k]?.price.form === "free" && !!was && was.form === PARTS[part].form;
@@ -177,7 +178,7 @@ export function formBack(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string
 export function freedCurrency(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, caseId?: string): BoundCurrency | undefined {
   if (!u || u.what.kind !== "form" || !standing(u, deal)) return undefined;
   const w = (u as Undo).what as Extract<UndoWhat, { kind: "form" }>;
-  if (w.feeId !== feeId || w.caseId !== caseId) return undefined;
+  if (w.feeId !== feeId || w.caseId !== caseId || w.side) return undefined;
   const was = pricesOn((u as Undo).before, "buy", caseId)[w.k]?.price;
   return was && onAction(was) && was.currency && was.currency !== "ILS" ? was.currency : undefined;
 }
@@ -348,10 +349,10 @@ const LOST_WORDS: Readonly<Record<LostPart, string>> = copy.cases.formChanged.pa
  */
 function formWords(u: Undo): string {
   const w = copy.cases.formChanged;
-  const { caseId, k } = u.what.kind === "form" ? u.what : { caseId: undefined, k: 0 };
+  const { caseId, k, side } = u.what.kind === "form" ? u.what : { caseId: undefined, k: 0, side: undefined };
   const before = pricedOf(u.before, caseId);
-  const after = u.after ? pricesOn(u.after, "buy", caseId)[k]!.price : null;
-  const lost = lostParts(before.stages[k]!.price, after, before).map((id) => LOST_WORDS[id]);
+  const after = u.after ? pricesOn(u.after, side ?? "buy", caseId)[k]!.price : null;
+  const lost = lostParts(pricesOn(u.before, side ?? "buy", caseId)[k]!.price, after, before).map((id) => LOST_WORDS[id]);
   if (lost.length === 0) return w.plain;
   const list = lost.length === 1 ? lost[0]! : `${lost.slice(0, -1).join(", ")} ${w.and}${lost.at(-1)!}`;
   return w.lost.replace("{parts}", list).replace("{verb}", lost.length === 1 ? w.one : w.many);

@@ -93,14 +93,13 @@ export interface ToolHands {
  * change by asks its question; a part that needs its figure, month or fee asks for it there; a form of the price puts the price in it;
  * any other part goes on the price at once. A tap and a drop both do this.
  */
-export function applyTool(item: string, fee: Fee, caseId: string | null, k: number, hands: ToolHands): void {
+export function applyTool(item: string, fee: Fee, caseId: string | null, k: number, hands: ToolHands, side: Side = "buy"): void {
   const thing = cardThing(item);
   if (thing) return hands.onAsk(thing);
   const id = item as PartId;
   if (isPending(id)) return hands.onPending(id);
   if (isFormPart(id)) return hands.onForm(id);
-  // the toolbox adds to the purchase's prices, or the only ones
-  const side: Side = "buy";
+  // the toolbox adds to the purchase's prices, or to a sale priced apart while the person is in it
   hands.onPart(setPart(fee, id, true, { side, k, ...(caseId ? { caseId } : {}) }), { part: id, side, k });
 }
 
@@ -173,14 +172,16 @@ export function ToolboxColumn({
   onClose: () => void;
 }) {
   const terms = useProvenanceData()?.terms;
-  const onAdd = (_group: string, part: string) => applyTool(part, fee, caseId, view.k, { onAsk, onPending, onForm, onPart });
+  const onAdd = (_group: string, part: string) => applyTool(part, fee, caseId, view.k, { onAsk, onPending, onForm, onPart }, view.side);
   const onRemove = (_group: string, part: string) => {
     const thing = cardThing(part);
     if (thing) onStopBy(thing);
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
-  // one price of several over time: the heading names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee
-  const priceLead = view.addTo.price ? `${view.addTo.price}:` : undefined;
+  // one price of several over time: the heading names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee; a sale priced apart
+  // that the toolbox follows says so, "להוסיף למחיר במכירה:"
+  const sale = view.side === "sell";
+  const priceLead = view.addTo.price ? `${view.addTo.price}${sale ? copy.cases.inSale : ""}:` : sale ? view.addTo.lead.trim() : undefined;
   // filling the fee from a price list, or the undo line of a fill just made; nothing, and no line above it, where neither stands
   const foot = line || (fill && fill.houses.length > 0) ? (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">

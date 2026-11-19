@@ -260,8 +260,7 @@ export interface PendingHands {
  */
 export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   const onDone = hands.onDone;
-  const { part, ask, k, words, field, sign, figure } = pending;
-  const side = "buy";
+  const { part, ask, k, side, words, field, sign, figure } = pending;
   const at = { side, k, ...(caseId ? { caseId } : {}) } as const;
   const label = copy.builder.fieldName(name, field);
   const asksFigure = figure !== undefined;

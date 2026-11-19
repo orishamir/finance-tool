@@ -61,7 +61,7 @@ export interface BlockActions {
   /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
   onRemoveChange: (feeId: string, side: Side, k: number, caseId: string | undefined) => void;
   /** The person is in price `k` of the open case's prices over time (its parts took the focus or a press): the toolbox adds to it. */
-  onEditPrice: (feeId: string, caseId: string | undefined, k: number) => void;
+  onEditPrice: (feeId: string, caseId: string | undefined, k: number, side?: Side) => void;
   /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
   pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
@@ -183,7 +183,7 @@ export function FeeBlockView({
   const openParts = (spoken: string, heads: readonly HeadApply[] = []) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId) => onEditPrice(fee.id, caseId, k)} pendingHands={pendingHands} grip={partGrip(heads)} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId, side) => onEditPrice(fee.id, caseId, k, side)} pendingHands={pendingHands} grip={partGrip(heads)} />
         {formLine}
       </>
     );

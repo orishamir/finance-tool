@@ -69,8 +69,13 @@ interface BoundContext {
   p: { form: FormId; boundsEvery?: number };
 }
 
-/** A bound's period: per action (or per the fee's own unit), per charge for a share of what is held, or as the price list prints it. */
-const boundTail = ({ kind, p }: BoundContext): string => ` ${p.form === "held" ? (p.boundsEvery ? copy.price.per[p.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
+/**
+ * A bound's period: per action (or per the fee's own unit), per charge for a share of what is held, or as the price list prints it. A
+ * price on each action says its action once (founder, 2026-11-19: "להמרה" need not be repeated), so its bounds say none: they are per
+ * action as it is.
+ */
+const boundTail = ({ kind, p }: BoundContext): string | undefined =>
+  p.form === "action" || p.form === "perAction" ? undefined : ` ${p.form === "held" ? (p.boundsEvery ? copy.price.per[p.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
 
 /** A maximum on each security's period: the price list's where it prints the bounds per month, else each charge. */
 const perSecurityTail = ({ p }: BoundContext): string => `${pp.perSecurity.each}${p.form === "held" && p.boundsEvery ? ` ${copy.price.per[p.boundsEvery]}` : pp.perSecurity.charge}`;

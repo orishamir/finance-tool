@@ -7,7 +7,7 @@ import { feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, OpenPending, OpenStage } from "../../lib/fee-deal/panel";
 import type { SlotEdit } from "../../lib/fee-deal/things";
 import { addOwnPlace, nameTaken, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
-import { editPrice, moveChange, splitAt } from "../../lib/fee-deal/edits/stage";
+import { editPrice, moveChange, setSaleApart, splitAt } from "../../lib/fee-deal/edits/stage";
 import { withCurrency } from "../../lib/fee-deal/edits/price";
 import { BOUND_CURRENCIES, namesPlaces, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
@@ -15,7 +15,7 @@ import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { amountWords, fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { AddSlot, AskValues, ChangeDivider, FigureField, InlineSelect, MonthField, RangeMenu, TextField, TickMenu, TrackMenu, monthText } from "../kit";
+import { AddSlot, AskValues, ChangeDivider, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText } from "../kit";
 import { bringIntoView } from "./in-view";
 import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
@@ -132,7 +132,7 @@ export function OpenParts({
   onFee: (f: Fee) => void;
   onRemoveChange: (side: Side, k: number, caseId: string | undefined) => void;
   /** The person is in one of the purchase's prices (its parts took the focus or a press), where there are several: the toolbox adds to it. */
-  onEditing: (k: number, caseId: string | undefined) => void;
+  onEditing: (k: number, caseId: string | undefined, side: Side) => void;
   pendingHands: PendingHands;
   /** A part's grip, which lifts it onto another case or fee, or into the bin (a part of the purchase's first price; none elsewhere). */
   grip?: PartGrip;
@@ -154,8 +154,8 @@ export function OpenParts({
                 onRemove={() => onRemoveChange(s, j - 1, caseId)}
               />
             )}
-            <div className="flex flex-col gap-2" {...(from ? { "data-stage-from": `${s}:${from}` } : {})} {...(s === "buy" && stages.length > 1 ? { onFocusCapture: () => onEditing(st.k, caseId), onPointerDownCapture: () => onEditing(st.k, caseId) } : {})}>
-              <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={s === "buy" && open.pending?.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
+            <div className="flex flex-col gap-2" {...(from ? { "data-stage-from": `${s}:${from}` } : {})} {...(stages.length > 1 || open.sell ? { onFocusCapture: () => onEditing(st.k, caseId, s), onPointerDownCapture: () => onEditing(st.k, caseId, s) } : {})}>
+              <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={open.pending?.side === s && open.pending.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
             </div>
           </div>
         );
@@ -165,10 +165,14 @@ export function OpenParts({
   );
   return (
     <>
+      {open.sell && <p className="text-sm font-medium">{copy.panel.buyPrices}</p>}
       {side("buy", open.buy)}
       {open.sell && (
         <>
-          <p className="text-sm font-medium">{copy.panel.salePrices}</p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-sm font-medium">{copy.panel.salePrices}</p>
+            <RemoveButton label={copy.panel.saleRemove} tabIndex={0} onRemove={() => onFee(setSaleApart(fee, false, caseId))} />
+          </div>
           {side("sell", open.sell)}
         </>
       )}
