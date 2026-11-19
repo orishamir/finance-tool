@@ -9,13 +9,13 @@
 // here too.
 import { feeDeal as copy } from "../../copy";
 import type { ProductId } from "@finance-tool/schema";
-import { thingName } from "./case-words";
+import { thingName, valueWords } from "./case-words";
 import { changeUntouched, editPrice, removeChange } from "./edits/stage";
 import { withCurrency } from "./edits/price";
 import { onAction, pricedCurrency } from "./offers/capabilities";
 import { keeps } from "./offers/capacity";
 import type { BoundCurrency } from "./core";
-import { ownKept, removeBy, removeCase } from "./edits/case";
+import { addBy, ownKept, removeBy, removeCase, type NewBy } from "./edits/case";
 import { setKind, updateFee } from "./edits/deal";
 import { inOrderOf, sameButOrder } from "./edits/arrange";
 import { type Side } from "./model";
@@ -106,6 +106,21 @@ export function removeCaseKept(deal: FeeDeal, feeId: string, caseId: string, cho
   const changed = removeCase(fee, caseId);
   if (changed === fee) return null;
   return feeChange(deal, fee, changed, { kind: "case", feeId, caseId }, chosen);
+}
+
+/**
+ * The deal with a thing added to a fee at one tap (`addBy`, its usual values), kept for the undo so the line says what it split into and one
+ * action takes it back. Null where the fee cannot take it.
+ */
+export function addByKept(deal: FeeDeal, feeId: string, n: NewBy, chosen: string | null): Undoable | null {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  if (!fee) return null;
+  const changed = addBy(fee, n);
+  if (changed === fee || !hasCases(changed)) return null;
+  const b = changed.by[changed.by.length - 1]!;
+  const values = "values" in b ? b.values.map((v) => valueWords(b.kind, v)).join(" · ") : "";
+  const words = copy.cases.byAdded.replace("{thing}", thingName(fee.kind, b)).replace("{values}", values);
+  return feeChange(deal, fee, changed, { kind: "said", feeId, words }, chosen);
 }
 
 /** The deal with thing `t` of a fee taken away and its cases merged (`removeBy`), the fee as it was kept for the undo. */

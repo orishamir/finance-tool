@@ -1,18 +1,19 @@
-// The parts that can be added to the open case (design-system 11, "Cases and parts"), in groups by kind, each group headed by its kind's
-// colour and icon. A tap on a part adds it; on a computer a part can also be dragged onto the place it goes (`useDragSource`, the page's
+// The parts that can be added to the open case (design-system 11, "Cases and parts"), in groups by what they do to the price, each group
+// headed by a small square of its kind's colour and each card a quiet tile of it with a colour edge at its start, two to a row (founder,
+// 2026-11-19). The forms of the price are one choice, drawn as one segmented control, the form the price has tinted. A tap on a part adds it; on a computer a part can also be dragged onto the place it goes (`useDragSource`, the page's
 // `DropZone`s), which does what its tap does there. A part the case already has shows a ✓ in the action colour and is muted, and stays
 // where it is; one the page lets a tap take away again (`removeLabel`) still takes a tap. On a computer the toolbox is a column; on a phone a short sheet at the foot of the screen with one group
 // at a time, its groups as a row of chips that scrolls sideways and fades at its end, always whole above the group's parts, which scroll
 // under it.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { ArrowDownToLine, Check, Link2, Plus, Split, X, type LucideIcon } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
 import { useCanDrag, useDragSource } from "./lift";
 
-/** A group's kind: a price, a bound, a link (neutral, a bound's and a link's told by their icon), what the price changes by (the cases' blue), a note (dashed). */
-export type ToolKind = "price" | "bound" | "when" | "link" | "note";
+/** A group's kind, by what its cards do to the price: what is charged, what comes off it, its floor and ceiling, what it changes by (the band's colour), a rule of the charge. */
+export type ToolKind = "charge" | "off" | "bound" | "when" | "rule";
 
 export interface ToolPart {
   id: string;
@@ -26,6 +27,10 @@ export interface ToolPart {
   removeLabel?: string;
   /** The case cannot take it (a fourth thing to change by): faint, no tap; the group says why (`offWhy`). */
   off?: boolean;
+  /** A form of the price: the group's forms stand first, as one segmented control, the one the price has (`used`) tinted. */
+  form?: boolean;
+  /** The name of the row it stands in, under its group's head ("מה ואיפה"); cards of one row stand together, in the order they come. */
+  row?: string;
 }
 
 export interface ToolGroup {
@@ -37,15 +42,8 @@ export interface ToolGroup {
   offWhy?: ReactNode;
 }
 
-const ICONS: Partial<Record<ToolKind, LucideIcon>> = { bound: ArrowDownToLine, when: Split, link: Link2 };
-/** A group's head: its icon and name in its kind's ink. */
-const HEAD_INK: Record<ToolKind, string> = { price: "text-foreground", bound: "text-foreground", when: "text-when-ink", link: "text-foreground", note: "text-foreground" };
-/** A part's card: neutral for a price, a bound and a link (green and amber mean a state on this site, never a kind); the cases' blue for what the price changes by; dashed for a note. */
-const CARD: Record<ToolKind, string> = { price: "bg-card border-input", bound: "bg-card border-input", when: "bg-when-part border-when-part-edge", link: "bg-card border-input", note: "border-dashed border-input" };
-/** A used part keeps its kind's edge, solid, with no fill. */
-const USED_EDGE: Record<ToolKind, string> = { price: "border-input", bound: "border-input", when: "border-when-part-edge", link: "border-input", note: "border-input" };
-/** The phone's chip for a group: a small square of its kind's colour. */
-const SWATCH: Record<ToolKind, string> = { price: "bg-muted-foreground", bound: "bg-muted-foreground", when: "bg-when", link: "bg-muted-foreground", note: "border border-dashed border-muted-foreground" };
+/** A card: a quiet tile of its kind's colour (theme.css, `data-kind`) with a colour edge at its start; a part the case has, a deeper tile. */
+const CARD = "flex w-full justify-start rounded-lg border border-kind-frame border-s-[3px] border-s-kind";
 
 /** An empty box in a part's label, where its figure will go; `wide` for a sum with its unit, a month. */
 export function ToolBlank({ wide }: { wide?: boolean }) {
@@ -57,6 +55,8 @@ export function ToolBlank({ wide }: { wide?: boolean }) {
  * A part the case has whose tap does nothing is `aria-disabled`, not disabled, so a card tapped that becomes so ("חינם") keeps the focus.
  */
 function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: ToolPart; onAdd: () => void; onRemove?: (() => void) | undefined }) {
+  // a form of the price is a segment of its control: no frame of its own, centred, the chosen one tinted and underlined
+  const seg = !!p.form;
   const removes = !!(p.used && p.removeLabel && onRemove);
   const inert = !!p.used && !removes;
   const drag = useDragSource(p.used || p.off ? null : p.id);
@@ -70,27 +70,40 @@ function PartCard({ kind, part: p, onAdd, onRemove }: { kind: ToolKind; part: To
       title={removes ? p.removeLabel : undefined}
       onClick={inert ? undefined : removes ? onRemove : onAdd}
       {...drag}
+      data-kind={kind}
       className={cx(
-        "inline-flex min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border px-3 py-1.5 text-start text-sm transition-[filter] duration-[var(--duration-fast)]",
-        p.used ? cx(USED_EDGE[kind], kind === "note" && "border-dashed", "text-muted-foreground", removes ? "enabled:hover:brightness-125" : "cursor-default") : cx(CARD[kind], "enabled:hover:brightness-125"),
+        "min-h-target max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-[var(--duration-fast)]",
+        seg ? "flex justify-center" : CARD,
+        p.used ? cx("bg-kind-tile-on", seg && "shadow-[inset_0_-2px_0_var(--kind)]", removes ? "enabled:hover:bg-kind-tile" : "cursor-default") : cx(seg ? "enabled:hover:bg-kind-tile" : "bg-kind-tile enabled:hover:bg-kind-tile-on"),
         p.off && "opacity-45",
       )}
     >
-      {p.used ? <Check size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" /> : <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
+      {p.used ? <Check size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-kind" /> : !seg && <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-kind" />}
       {p.label}
       {p.used && !removes && <span className="sr-only">{copy.toolbox.used}</span>}
     </button>
   );
 }
 
+/** The group's cards: its forms of the price as one segmented control, then its other cards two to a row, under their rows' names. */
 function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: string, part: string) => void; onRemove?: ((group: string, part: string) => void) | undefined }) {
+  const card = (p: ToolPart) => <PartCard key={p.id} kind={group.kind} part={p} onAdd={() => onAdd(group.id, p.id)} onRemove={onRemove && (() => onRemove(group.id, p.id))} />;
+  const forms = group.parts.filter((p) => p.form);
+  const rest = group.parts.filter((p) => !p.form);
+  const rows = [...new Set(rest.map((p) => p.row))];
   return (
     <>
-      <div className="flex flex-wrap gap-2">
-        {group.parts.map((p) => (
-          <PartCard key={p.id} kind={group.kind} part={p} onAdd={() => onAdd(group.id, p.id)} onRemove={onRemove && (() => onRemove(group.id, p.id))} />
-        ))}
-      </div>
+      {forms.length > 0 && (
+        <div data-kind={group.kind} className="grid grid-cols-2 overflow-hidden rounded-lg border border-kind-frame bg-card [&>*:nth-child(even)]:border-s [&>*:nth-child(n+3)]:border-t [&>*]:border-border">
+          {forms.map(card)}
+        </div>
+      )}
+      {rows.map((row) => (
+        <div key={row ?? ""} className="flex flex-col gap-1.5">
+          {row && <span className="text-sm text-muted-foreground">{row}</span>}
+          <div className="grid grid-cols-2 gap-2">{rest.filter((p) => p.row === row).map(card)}</div>
+        </div>
+      ))}
       {group.offWhy && group.parts.some((p) => p.off) && <p className="text-sm text-muted-foreground">{group.offWhy}</p>}
     </>
   );
@@ -213,7 +226,7 @@ export function Toolbox({ target, targetLead = copy.toolbox.target, prices, grou
               groups.map((g) => [
                 g.id,
                 <span key={g.id} className="inline-flex items-center gap-2">
-                  <span aria-hidden className={cx("size-2.5 shrink-0 rounded-[3px]", SWATCH[g.kind])} />
+                  <span aria-hidden data-kind={g.kind} className="size-2.5 shrink-0 rounded-[3px] bg-kind" />
                   {g.name}
                 </span>,
               ]),
@@ -247,11 +260,10 @@ export function Toolbox({ target, targetLead = copy.toolbox.target, prices, grou
         <p className="text-sm text-muted-foreground">{canDrag ? copy.toolbox.hintDrag : copy.toolbox.hint}</p>
       </div>
       {groups.map((g) => {
-        const Icon = ICONS[g.kind];
         return (
           <div key={g.id} role="group" aria-labelledby={`${id}-${g.id}`} className="flex flex-col gap-2">
-            <p id={`${id}-${g.id}`} className={cx("flex items-center gap-2 text-sm font-semibold", HEAD_INK[g.kind])}>
-              {Icon && <Icon size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />}
+            <p id={`${id}-${g.id}`} className="flex items-center gap-2 text-sm font-semibold">
+              <span aria-hidden data-kind={g.kind} className="size-2 shrink-0 rounded-[2px] bg-kind" />
               {g.name}
             </p>
             <Parts group={g} onAdd={onAdd} onRemove={onRemove} />

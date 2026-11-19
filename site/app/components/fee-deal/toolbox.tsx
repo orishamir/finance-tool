@@ -23,12 +23,13 @@ import { FeeName, feeColour, feeName } from "./words";
 
 const p = copy.panel;
 
-/** The kit's kind of each of the view's groups. */
-const KIND: Record<string, ToolKind> = { price: "price", bound: "bound", by: "when", link: "link", more: "note" };
+/** The kit's kind of each of the view's groups: what the price changes by takes the band's colour. */
+const KIND: Record<ToolboxView["groups"][number]["group"], ToolKind> = { charge: "charge", off: "off", bound: "bound", by: "when", rule: "rule" };
 
 /**
- * A part's card as it will read, its boxes drawn empty: "☐% לכל פעולה", "מינימום ☐ ☐". The empty box and its sign are one left-to-right
- * group, the sign on the box's right, as the page writes a figure ("0.3%", "39 ₪") and as the open case's box draws it.
+ * A part's card as it will read, its boxes drawn empty: "☐% לכל פעולה", "מינימום ☐ ☐", also once the case has it, so a card always shows
+ * what it asks for (founder, 2026-11-19). The empty box and its sign are one left-to-right group, the sign on the box's right, as the page
+ * writes a figure ("0.3%", "39 ₪") and as the open case's box draws it.
  */
 function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const w = part.words;
@@ -37,7 +38,7 @@ function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   const sign = part.box === "pct" ? "%" : typeof part.box === "object" ? part.box.sign : "";
   // a minimum's and a maximum's sum come with the choice of its currency, drawn as a second, wider box
   const bound = part.id === "min" || part.id === "max";
-  const box = part.used ? null : part.box ? (
+  const box = part.box ? (
     <>
       {bound ? (
         <>
@@ -56,7 +57,6 @@ function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
       <>
         {lead && <span>{lead}</span>}
         {box}
-        {part.used && sign && !bound && <span>{sign}</span>}
         {tail && <span className="text-muted-foreground">{tail}</span>}
       </>
     ),
@@ -73,7 +73,7 @@ function kitGroups(view: ToolboxView): ToolGroup[] {
       kind: KIND[g.group]!,
       name: g.head,
       // a thing the fee changes by already is taken away by a tap, as its bin in the band does
-      parts: g.parts.map((x) => ({ id: x.id, ...partLabel(x), used: x.used, off: !!x.off, ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
+      parts: g.parts.map((x) => ({ id: x.id, ...partLabel(x), used: x.used, off: !!x.off, ...(x.form ? { form: true } : {}), ...(x.row ? { row: copy.cases.byRows[x.row] } : {}), ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
       ...(why ? { offWhy: why } : {}),
     };
   });
@@ -256,7 +256,7 @@ export function ToolboxCard({ cardRef, onClose, children }: { cardRef: RefObject
     <div
       ref={cardRef}
       data-keep-clear=""
-      className="come-in col-start-2 row-start-1 sticky top-20 rounded-lg"
+      className="come-in col-start-2 row-start-1 sticky top-20 rounded-lg scrollbar-quiet"
       onKeyDown={(e) => {
         if (e.key === "Escape" && !e.defaultPrevented) {
           e.preventDefault();

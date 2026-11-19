@@ -329,6 +329,30 @@ export function addValuesAt(fee: Fee, t: number, values: readonly string[], own:
   return held(fee, { ...next, by: next.by.map((x, j) => (j === t && isList(x) ? { ...x, values: kept } : x)) as By[] });
 }
 
+/**
+ * Value `from` of thing `t` renamed `to` in the thing and in every case that names it (a column's or a row's head typed again, F-114): only
+ * a value in the person's words (a track's, a condition's, a channel or a currency typed), never one the site names (`LIST_IDS`), which the
+ * reading picks by, nor one of what is bought or held, which carries its place. An empty name, or one the thing has already, leaves it.
+ */
+export function renameValue(fee: Fee, t: number, from: string, to: string): Fee {
+  const b = fee.by?.[t];
+  const name = to.trim();
+  if (!hasCases(fee) || !b || !isList(b) || !canRename(b, from) || !name || nameTaken(thingValues(fee, t), name)) return fee;
+  const swap = (w: When): When => (Array.isArray(w) ? w.map((v) => (v === from ? name : v)) : w);
+  return {
+    ...fee,
+    by: fee.by.map((x, j) => (j === t && isList(x) ? { ...x, values: x.values.map((v) => (v === from ? name : v)) } : x)) as By[],
+    cases: fee.cases.map((c) => (Array.isArray(c.when[t]) && (c.when[t] as string[]).includes(from) ? { ...c, when: c.when.map((w, j) => (j === t ? swap(w) : w)) } : c)),
+  };
+}
+
+/** Whether value `v` of a thing is the person's words, which a head may rename (`renameValue`). */
+export function canRename(b: By, v: string): boolean {
+  if (!isList(b) || namesPlaces(b)) return false;
+  const how = CONDITIONS[b.kind].values;
+  return how.kind !== "list" || !how.ids.includes(v);
+}
+
 /** New values of list thing `t` at the end of its values (`addValuesAt`). */
 export const addValues = (fee: Fee, t: number, values: readonly string[], own: readonly OwnPlace[] = []): Fee => addValuesAt(fee, t, values, own);
 

@@ -18,7 +18,7 @@ const bare = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, el
 describe("the gallery's cases and parts", () => {
   const out = html(h(KitGallery, { today }));
   it("names every piece", () => {
-    for (const name of ["PartChip, PartEdit", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, SharedLine, AddSlot", "ChangeDivider", "FeePalette", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
+    for (const name of ["PartChip, PartEdit, KindDot", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, SharedLine, AddSlot", "ChangeDivider", "FeePalette", "SlimFee, FeeBlock", "Toolbox, ToolBlank", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -61,7 +61,7 @@ describe("a fee's table and grid", () => {
   });
   it("a table's empty place draws no cell", () => {
     const out = html(h(CaseTable, { columns: [{ id: "a", head: "א", label: "א", onOpen: () => undefined }, { id: "b", head: "ב", label: "ב", onOpen: () => undefined }], rows: [{ id: "max", head: "מקסימום", cells: [{ from: 0, span: 1, content: "10" }, { from: 1, span: 1, content: null }] }] }));
-    expect(out.match(/rounded-md border border-border bg-background/g)).toHaveLength(1);
+    expect(out.match(/rounded-md border border-transparent bg-background/g)).toHaveLength(1);
   });
   it("a grid's cell opens its case from anywhere on it, named by its row and column; a place no case holds is a slot that adds one there, named for the place", () => {
     const out = html(h(CaseGrid, { columns: [{ id: "x", head: "x" }, { id: "y", head: "y" }], rows: [{ id: "r", head: "r", cells: [{ from: 0, span: 1, content: "1%", onOpen: () => undefined }, { from: 1, span: 1, empty: { label: "מקרה", spoken: "להוסיף מקרה כאן: r · y", onAdd: () => undefined } }] }], addRow: add }));
@@ -97,7 +97,7 @@ describe("a part", () => {
     expect(bare(h(PartChip, { kind: "bound", mark: "min", lead: "מינימום", figure: "8", unit: "$" }))).not.toContain("<button");
   });
   it("in edit has its ✕, named", () => {
-    expect(html(h(PartEdit, { kind: "note", onRemove: () => undefined, children: "גם על הוראה שלא בוצעה" }))).toContain(`aria-label="${words.removePart}"`);
+    expect(html(h(PartEdit, { kind: "rule", onRemove: () => undefined, children: "גם על הוראה שלא בוצעה" }))).toContain(`aria-label="${words.removePart}"`);
   });
 });
 
@@ -109,7 +109,7 @@ describe("the toolbox", () => {
     expect(out.match(/<button[^>]*disabled/g)).toHaveLength(1);
   });
   it("on a phone shows one group at a time, under a row of the groups", () => {
-    const two = [...groups, { id: "h", kind: "note" as const, name: "עוד על המחיר", parts: [{ id: "n", label: "הערה" }] }];
+    const two = [...groups, { id: "h", kind: "rule" as const, name: "כללי הגבייה", parts: [{ id: "n", label: "הערה" }] }];
     const out = html(h(Toolbox, { target: "מקרה", groups: two, onAdd: () => undefined, sheet: true }));
     expect(out).toContain(`aria-label="${words.toolbox.groups}"`);
     expect(out).not.toContain("הערה");

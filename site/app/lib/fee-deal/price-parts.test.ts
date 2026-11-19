@@ -243,12 +243,16 @@ describe("the templates", () => {
     const r = read(deal);
     return (kind: string) => r.fees.find((f) => f.kind === kind)?.stages[0]!.price;
   };
-  it("fill a bank's whole list, the trade by what is bought and by channel, with its percent maximum and its flat price for a small conversion, sourced", () => {
+  it("fill a bank's whole list, the trade by what is bought and by channel, with its percent maximum and its flat price for a small conversion as the conversion's first size, sourced", () => {
     const price = filledFor("mizrahi-tefahot", [{ by: "what", is: "us" }, { by: "channel", is: "direct" }]);
     const t = price("trade")!;
     expect(t).toMatchObject({ form: "action", rate: { v: 0.3 }, min: { v: 25 }, max: { v: 6750 }, cap: { v: 25 }, currency: "USD" });
     if (t.form === "action") expect(t.cap!.src).toBeDefined();
-    expect(price("fx")).toMatchObject({ form: "action", flat: { amount: { v: 2.85 }, upTo: { v: 50 } }, currency: "USD" });
+    // the flat price up to 50 $ is the conversion's price up to 50 $: a sum on each conversion, the share above it (fold-flat.ts)
+    expect(price("fx")).toMatchObject({ form: "perAction", amount: { v: 2.85 }, currency: "USD" });
+    const fx = house("mizrahi-tefahot").fees.find((f) => f.kind === "fx")!;
+    expect(fx.by!.at(-1)).toMatchObject({ kind: "actionSize", unit: "USD", tops: [{ v: 50 }] });
+    expect(fx.cases!.map((c) => c.stages[0]!.price.form)).toContain("action");
     expect(filledFor("mizrahi-tefahot", [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }])("trade")).toMatchObject({ rate: { v: 0.64 }, min: { v: 50 } });
     // what stays out is makam's redemption, mutual funds on the exchange's line, the spread its conversion does not limit, and the yearly
     // distribution fees
@@ -624,7 +628,7 @@ describe("the reading", () => {
 describe("a filled figure's source", () => {
   it("carries the page of the price list it stands on, through the device and a link", () => {
     const fee = data.houses.find((h) => h.id === "mizrahi-tefahot")!.fees.find((f) => f.kind === "fx")!;
-    const fx = fee.cases![0]!.stages![0]!.price;
+    const fx = fee.cases!.find((c) => c.stages[0]!.price.form === "action")!.stages[0]!.price;
     const page = fx.form === "action" ? fx.rate.src?.page : undefined;
     expect(page).toBeGreaterThan(0);
     const d = account([{ id: "fee-fx", kind: "fx", stages: [{ price: fx }] }]);

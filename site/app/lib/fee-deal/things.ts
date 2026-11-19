@@ -1,13 +1,51 @@
 // Adding a thing a fee changes by, and a case's slot or a thing of the band opened (method §10.6, F-114): the question a thing asks once,
 // what adding it does to the cases, a slot's choices, and a thing's menu. Every word is from the copy; a component only lays them out.
 import { feeDeal as copy } from "../../copy";
-import { hasCases, isRange, namesPlaces, thingValues, type Fee } from "./model";
-import { canAddBy, ownKept, removeBy } from "./edits/case";
+import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee } from "./model";
+import { canAddBy, newBy, ownKept, removeBy, type NewBy } from "./edits/case";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, CONDITIONS, isPlaceKind, isRangeKind, isWordsKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { thingName, valueWords, whenWords, type WhenWords } from "./case-words";
 
 // ---------------------------------------------------------------- adding a thing, and a case's slot opened
+
+/** The values a thing of a list or a track is split into at one tap (the founder's choice, 2026-11-19): the two most price lists name first. */
+const USUAL: Partial<Record<ByKind, readonly string[]>> = {
+  channel: ["direct", "branch"],
+  what: ["tase", "us"],
+  held: ["tase", "us"],
+  currency: ["USD", "EUR"],
+  track: copy.cases.usualTracks,
+};
+
+/**
+ * The value the "+" beside a thing's heads adds at once (founder, 2026-11-19: no question): the first the site names that the cases name
+ * not yet, else a name of the person's to rename in its head ("מסלול 3", "ערך 3"); null where only a value with its place would do (what
+ * is bought or held, every one the site names already there), which asks.
+ */
+export function nextValue(fee: CasesFee, t: number): string | null {
+  const b = fee.by[t];
+  if (!b || isRange(b)) return null;
+  const had = thingValues(fee, t);
+  const how = CONDITIONS[b.kind].values;
+  const site = how.kind === "list" ? how.ids.find((id) => !had.includes(id)) : undefined;
+  if (site) return site;
+  if (isPlaceKind(b.kind)) return null;
+  const noun = copy.cases.copyNoun[b.kind] ?? copy.cases.copyNoun.own!;
+  for (let n = had.length + 1; ; n++) {
+    const name = copy.cases.newValue.replace("{noun}", noun).replace("{n}", String(n));
+    if (!had.includes(name)) return name;
+  }
+}
+
+/**
+ * The thing a tap in the toolbox adds at once, split into its usual values, each renamed or added to in its head afterwards; null for a
+ * range (it needs its top) and a condition of the person's own (it needs its name), which ask first (`byQuestion`).
+ */
+export function usualBy(kind: ByKind): NewBy | null {
+  const values = USUAL[kind];
+  return values ? newBy(kind, { values: [...values], own: [], label: "", top: null, unit: null }) : null;
+}
 
 /** A range's unit as a choice says it: a currency's sign, or the words for units or actions. */
 const unitWords = (u: RangeUnit): string => (u === "units" || u === "actions" ? copy.cases.units[u]! : (copy.panel.signs[u] ?? u));

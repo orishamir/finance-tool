@@ -319,12 +319,12 @@
   /* a fee copied from another house's price list into a securities account's deal, beside the deal's own fee of its kind: an apricot of its
      own, apart from every securities account's fee by the same check */
   --fee-copy: oklch(0.85 0.13 45);
-  /* A fee's cases and the kinds of its parts (design-system 2.2, "Cases and parts"). A fee whose price changes by something (what is bought,
-     the channel, the track, a range) holds one band in this calm blue; each kind of part takes its own hue: a bound green, a link to
-     another fee yellow. A price is neutral and a note only dashed. Every fill and edge is its colour mixed over the card, so a kind reads
-     the same wherever it sits; the inks are mixed toward white, so words of the kind stay light on its fill. No fee's dot takes these. */
-  --when: oklch(0.74 0.075 255);
-  --when-fill: color-mix(in oklab, var(--when) 16%, var(--card)); /* the band */
+  /* A fee's cases and the kinds of its parts (design-system 2.2, "Cases and parts"; founder, 2026-11-19). A fee whose price changes by
+     something (what is bought, the channel, the track, a range) holds one band in this quiet yellow; each kind of part, by what it does to
+     the price, takes its own hue (`--part-*`). Every fill and edge is its colour mixed over the card, so a kind reads the same wherever it
+     sits; the inks are mixed toward white, so words of the kind stay light on its fill. No fee's dot takes these. */
+  --when: oklch(0.8 0.11 88);
+  --when-fill: color-mix(in oklab, var(--when) 8%, var(--card)); /* the band */
   --when-edge: color-mix(in oklab, var(--when) 34%, var(--card));
   --when-ink: color-mix(in oklab, var(--when) 55%, var(--palette-neutral-0)); /* the band's head: its icon and words */
   --when-words: color-mix(in oklab, var(--when) 22%, var(--palette-neutral-0)); /* a case's condition in words */
@@ -332,6 +332,12 @@
   --when-pill: color-mix(in oklab, var(--when) 40%, var(--card)); /* the edge of a pill on the band */
   --when-part: color-mix(in oklab, var(--when) 10%, var(--card)); /* a part of the kind outside the band (the toolbox's card) */
   --when-part-edge: color-mix(in oklab, var(--when) 45%, var(--card));
+  /* what a part does to the price: what is charged orange, what comes off green, its floor and ceiling blue, how it is charged grey; the
+     same on the toolbox's card, the open case's line and the dot before it in a cell (`data-kind`, below) */
+  --part-charge: oklch(0.74 0.12 55);
+  --part-off: oklch(0.74 0.11 155);
+  --part-bound: oklch(0.72 0.1 245);
+  --part-rule: oklch(0.7 0.012 80);
   /* a fund label's family (founder, 2026-10-27: "i want all labels to have a nice icon with nice distinct color"): the icon and the
      words take the colour, the chip a faint fill of it. A caution label keeps the caution role and an open-rule label the blocked role */
   --label-held: var(--palette-neutral-200);
@@ -378,6 +384,20 @@
   --z-sticky: 20;
   --z-popover: 30; /* the search results under the page field (audit 2026-10-24, A5) */
 }
+
+/* A part's kind on an element (`data-kind`) sets its hue (`--kind`) and the fills and edges mixed from it: a toolbox card's tile, a chosen
+   card's, their frame, and the open case's line over the secondary surface. */
+[data-kind] {
+  --kind-tile: color-mix(in oklab, var(--kind) 8%, var(--card));
+  --kind-tile-on: color-mix(in oklab, var(--kind) 18%, var(--card));
+  --kind-frame: color-mix(in oklab, var(--kind) 30%, var(--border));
+  --kind-row: color-mix(in oklab, var(--kind) 9%, var(--secondary));
+}
+[data-kind="charge"] { --kind: var(--part-charge); }
+[data-kind="off"] { --kind: var(--part-off); }
+[data-kind="bound"] { --kind: var(--part-bound); }
+[data-kind="when"] { --kind: var(--when); }
+[data-kind="rule"] { --kind: var(--part-rule); --kind-row: var(--secondary); }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
@@ -562,6 +582,11 @@
   --color-when-pill: var(--when-pill);
   --color-when-part: var(--when-part);
   --color-when-part-edge: var(--when-part-edge);
+  --color-kind: var(--kind);
+  --color-kind-tile: var(--kind-tile);
+  --color-kind-tile-on: var(--kind-tile-on);
+  --color-kind-frame: var(--kind-frame);
+  --color-kind-row: var(--kind-row);
   --color-label-held: var(--label-held);
   --color-label-trade: var(--label-trade);
   --color-label-follow: var(--label-follow);

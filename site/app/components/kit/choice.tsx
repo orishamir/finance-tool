@@ -51,7 +51,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
             onClick={() => onChange(o.value)}
             className={cx(
               "flex-1 inline-flex items-center justify-center gap-1 min-h-[30px] tap-area px-3 text-sm rounded-[9px]",
-              long ? "min-w-0 text-center" : "whitespace-nowrap",
+              long ? cx("min-w-0 text-center", fit && "sm:flex-auto") : "whitespace-nowrap",
               "transition-colors duration-[var(--duration-fast)] disabled:opacity-40 disabled:cursor-not-allowed",
               on ? "bg-primary-subtle text-foreground" : "text-muted-foreground enabled:hover:bg-accent/60 enabled:hover:text-foreground",
             )}

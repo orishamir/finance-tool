@@ -7,6 +7,7 @@
  "load · action": "kept",
  "redemption_deduction · action": "kept",
  "fx · action": "kept",
+ "fx · perAction": "kept",
  "fx_spread · action": "kept",
  "deposit · action": "kept",
  "distribution_handling · action": "kept",
