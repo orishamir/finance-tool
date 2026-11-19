@@ -69,9 +69,10 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
 }
 
 /**
- * A part in edit, in the open case: the full width, its icon and first word, then its boxes and choices as `children` (the kit's
- * `FigureField`, `InlineSelect`, words between them), and a bin at its end, which removes it (none where there is nothing to remove: a
- * free price). 48 px tall at least; on a narrow screen its boxes wrap and the bin stays in the corner. With an `id` the page can give it
+ * A part in edit, in the open case: as wide as its content (founder, 2026-11-20), its icon and first word, then its boxes and choices as
+ * `children` (the kit's `FigureField`, `InlineSelect`, words between them), and right after them a bin, which removes it (none where there
+ * is nothing to remove: a free price). 48 px tall at least; where its content runs out of the width (a phone) it takes the full width, its
+ * boxes wrap and the bin stays in the corner. With an `id` the page can give it
  * the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box or
  * choice.
  */
@@ -83,7 +84,7 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
       data-liftable="" data-lift-body=""
       {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
       data-kind={kind}
-      className={cx("flex min-h-12 items-start gap-2 py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", EDIT_LOOK)}
+      className={cx("flex w-fit max-w-full min-h-12 items-start gap-2 py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", EDIT_LOOK)}
     >
       {grip}
       <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">

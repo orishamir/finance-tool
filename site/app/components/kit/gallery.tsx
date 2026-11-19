@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -2678,8 +2678,8 @@ function DealDemos({ today }: { today: string }) {
         </div>
       </Demo>
       <Demo name="StepStrip" use={g.uses.StepStrip}>
-        <State label="three steps made, and a line about what was chosen under it" wide>
-          <Card className="max-w-3xl">
+        <State label='three steps made, and a line about what was chosen under it, in a low card (pad="strip")' wide>
+          <Card pad="strip" className="max-w-3xl">
             <StepStrip
               heading={dealWords.builder.title}
               steps={[
@@ -2994,7 +2994,6 @@ function SlimFees({ today }: { today: string }) {
 /** The toolbox's groups for a case of a trade fee; `used` are the parts the case has. */
 function toolGroups(used: string[], full = false): ToolGroup[] {
   const u = (id: string) => used.includes(id);
-  const w = (t: string) => <span className="text-muted-foreground">{t}</span>;
   const rows = dealWords.cases.byRows;
   // the things a price changes by in two rows: what is bought and where, a size or an amount
   const sizes = new Set(["action", "portfolio", "volume", "count"]);
@@ -3004,9 +3003,9 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
       kind: "charge",
       name: sc.groups.charge,
       parts: [
-        { id: "pct", label: <><ToolBlank /> % {w(perAction)}</>, spoken: `% ${perAction}`, used: u("pct"), form: true },
-        { id: "unit", label: <><ToolBlank /> $ {w(dealWords.price.perUnit)}</>, spoken: `$ ${dealWords.price.perUnit}`, used: u("unit"), form: true },
-        { id: "sum", label: <><ToolBlank /> $ {w(perAction)}</>, spoken: `$ ${perAction}`, used: u("sum"), form: true },
+        { id: "pct", label: `% ${perAction}`, used: u("pct"), form: true },
+        { id: "unit", label: `$ ${dealWords.price.perUnit}`, used: u("unit"), form: true },
+        { id: "sum", label: `$ ${perAction}`, used: u("sum"), form: true },
         { id: "free", label: dealWords.price.free, used: u("free"), form: true },
         { id: "third", label: sc.thirdPartyPart, used: u("third") },
       ],
@@ -3016,9 +3015,9 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
       kind: "off",
       name: sc.groups.off,
       parts: [
-        { id: "discount", label: <>{sc.discount} <ToolBlank /> % {w(sc.ofPrice.split(",")[0]!)}</>, spoken: sc.discount, used: u("discount") },
+        { id: "discount", label: `${sc.discount.trim()} % ${sc.ofPrice.split(",")[0]!}`, used: u("discount") },
         { id: "offset", label: sc.offset, used: u("offset") },
-        { id: "refund", label: <>{sc.refund} <ToolBlank /></>, spoken: sc.refund, used: u("refund") },
+        { id: "refund", label: `${sc.refund.trim()} $`, used: u("refund") },
       ],
     },
     {
@@ -3026,9 +3025,9 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
       kind: "bound",
       name: sc.groups.bound,
       parts: [
-        { id: "min", label: <>{dealWords.builder.minWord} <ToolBlank /> <ToolBlank wide /></>, spoken: dealWords.builder.minWord, used: u("min") },
-        { id: "max", label: <>{dealWords.builder.maxWord} <ToolBlank /> <ToolBlank wide /></>, spoken: dealWords.builder.maxWord, used: u("max") },
-        { id: "cap", label: <>{dealWords.builder.maxWord} <ToolBlank /> % {sc.capWords}</>, spoken: `${dealWords.builder.maxWord} % ${sc.capWords}`, used: u("cap") },
+        { id: "min", label: dealWords.builder.minWord, used: u("min") },
+        { id: "max", label: dealWords.builder.maxWord, used: u("max") },
+        { id: "cap", label: `${dealWords.builder.maxWord} % ${sc.capWords}`, used: u("cap") },
       ],
     },
     {
@@ -3518,7 +3517,7 @@ function CaseDemos({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
-      <Demo name="Toolbox, ToolBlank" use={g.uses.Toolbox}>
+      <Demo name="Toolbox" use={g.uses.Toolbox}>
         <State label={`the column on a computer: the case already has the parts with a ✓; ${g.states.interactive}: a tap adds a part, "הערוץ" asks for the channels first, a thing with its ✓ is taken away by a tap`} wide>
           <ToolboxDemo />
         </State>

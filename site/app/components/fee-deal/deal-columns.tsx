@@ -11,7 +11,8 @@ export function DealColumns({ setup, fees, toolbox }: { setup: ReactNode; fees: 
   return (
     <div className="grid grid-cols-1 items-start gap-4 min-[80rem]:grid-cols-[minmax(0,1fr)_28rem]">
       <div className="flex flex-col gap-6 min-[80rem]:col-start-1 min-[80rem]:row-start-1">
-        <Card>{setup}</Card>
+        {/* once the deal has a kind (it has fees), what it is about is a strip of two lines, in a low card (founder, 2026-11-20) */}
+        <Card pad={fees ? "strip" : "default"}>{setup}</Card>
         {/* the fees' cards stand on the page, not in a card of the same surface; while something is carried they keep their height
             (`data-carry-hold`, kit/lift.tsx): what a drop would leave draws inside */}
         {fees && <div data-carry-hold="">{fees}</div>}

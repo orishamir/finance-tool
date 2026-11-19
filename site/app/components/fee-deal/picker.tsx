@@ -157,7 +157,7 @@ export function TemplateNote({ template, left, leftOut = null, averages }: { tem
   ].filter(Boolean);
   if (!leftOut && more.length === 0) return null;
   return (
-    <div className="flex min-h-target items-center">
+    <div className="flex items-center">
       <LeftOutLine view={leftOut} house={name} className="text-sm" more={more.length > 0 && more.flatMap((m, i) => (i ? [" · ", m] : [m]))} />
     </div>
   );
