@@ -1,22 +1,30 @@
 // What a house's documents hold that its price leaves out (D106, lib/left-out): a line under the house's price whose words open the sheet
 // (each thing that can change what some reader pays, its reason and the price list at its page; then the rest by name), and a quiet mark
 // beside an account's name in a list, which opens the same sheet, so the reader sees it before choosing. Nothing on hover alone.
+import type { ReactNode } from "react";
 import { leftOut as c } from "../../copy";
 import type { LeftOutView } from "../../lib/left-out";
 import { IconFile } from "../icons";
 import { Term } from "../provenance";
 import { cx } from "./cx";
 
-/** "לא נכלל במחיר: 2 דברים שיכולים לשנות אותו" (or, where the record marks nothing so, "7 דברים מהמסמכים"); null with nothing left out. */
-export function LeftOutLine({ view, house, className }: { view: LeftOutView | null; house: string; className?: string }) {
-  if (!view) return null;
+/**
+ * "לא נכלל במחיר: 2 דברים שיכולים לשנות אותו" (or, where the record marks nothing so, "7 דברים מהמסמכים"); `more`, after a dot, is another
+ * thing the price leaves out (the deal's lines a price list did not fill). Null with nothing left out.
+ */
+export function LeftOutLine({ view, house, more, className }: { view: LeftOutView | null; house: string; more?: ReactNode; className?: string }) {
+  if (!view && !more) return null;
   return (
     // the words wrap as the line does: a term keeps itself on one line elsewhere
-    <p className={cx("text-xs text-muted-foreground [&_.term]:whitespace-normal", className)} data-left-out={view.warn}>
+    <p className={cx("text-xs text-muted-foreground [&_.term]:whitespace-normal", className)} data-left-out={view?.warn ?? 0}>
       {c.lead}{" "}
-      <Term id={[]} name={c.title(house)} lead={view.lead} parts={view.parts}>
-        {view.warn > 0 ? c.canChange(view.warn) : c.some(view.other)}
-      </Term>
+      {view && (
+        <Term id={[]} name={c.title(house)} lead={view.lead} parts={view.parts}>
+          {view.warn > 0 ? c.canChange(view.warn) : c.some(view.other)}
+        </Term>
+      )}
+      {view && more && " · "}
+      {more}
     </p>
   );
 }

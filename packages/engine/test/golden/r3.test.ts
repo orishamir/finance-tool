@@ -663,7 +663,8 @@ describe("F-64 track workbench", () => {
   it("on the real files every track of the wrapper is accounted for once", () => {
     const real = readdirSync(new URL("cma/", dataDir)).filter((f) => f.endsWith(".json")).map((f) => readJson(`cma/${f}`) as unknown as CmaPeriodFile);
     const out = trackWorkbench("keren-hishtalmut", real, { horizonYears: 10 }, p04, { classificationToWrapper: map });
-    const expected = real.filter((f) => f.dataset === "gemelnet").flatMap((f) => f.funds).filter((f) => f.fund_classification.trim() === "קרנות השתלמות").length;
+    // the latest month of each source, as the workbench reads them (older months stay in data/cma/ beside it)
+    const expected = latestTracks(real).filter((f) => f.dataset === "gemelnet" && f.fund_classification.trim() === "קרנות השתלמות").length;
     expect(out.coverage.considered).toBe(expected);
     expect(out.coverage.shown).toBe(expected);
     expect(out.coverage.invariant.ok).toBe(true);
