@@ -173,7 +173,7 @@ export function OpenParts({
       {side("buy", open.buy)}
       {open.sell && (
         <>
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
             <p className="text-sm font-medium">{copy.panel.salePrices}</p>
             <RemoveButton label={copy.panel.saleRemove} tabIndex={0} onRemove={() => onFee(setSaleApart(fee, false, caseId))} />
           </div>

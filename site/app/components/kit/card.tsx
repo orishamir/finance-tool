@@ -2,10 +2,10 @@
 import { useId, type ElementType, type HTMLAttributes, type ReactNode, type Ref } from "react";
 import { cx } from "./cx";
 
-/** Padding of a card: `default` for a card on its own, `snug` for a row inside a list, `roomy` for the headline card of a page, `aside` for a side panel, `tight` for a small card, `none` when the body brings its own. */
-export type CardPad = "default" | "snug" | "roomy" | "aside" | "tight" | "none";
+/** Padding of a card: `default` for a card on its own, `snug` for a row inside a list, `roomy` for the headline card of a page, `aside` for a side panel, `tight` for a small card, `strip` for a card of one or two lines of a strip (`StepStrip`: 14 px above and below, 18 px beside), `none` when the body brings its own. */
+export type CardPad = "default" | "snug" | "roomy" | "aside" | "tight" | "strip" | "none";
 /** The padding classes of each `CardPad`, shared with the other raised pieces that take Card's choices (`PickCard`). */
-export const CARD_PAD: Record<CardPad, string> = { default: "p-4 md:p-6", snug: "p-4 md:p-5", roomy: "p-5 lg:p-6", aside: "p-5", tight: "p-4", none: "" };
+export const CARD_PAD: Record<CardPad, string> = { default: "p-4 md:p-6", snug: "p-4 md:p-5", roomy: "p-5 lg:p-6", aside: "p-5", tight: "p-4", strip: "px-4.5 py-3.5", none: "" };
 
 type CardProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   children: ReactNode;
@@ -29,7 +29,7 @@ export function Card({ children, className, as = "div", pad = "default", edge, .
 
 /**
  * Heading sizes: `page` for a section of a page, `card` for the title of a card, `form` for a card of a form, `kick` for the small name in
- * the action colour over a column of a tool, whose parts carry their own headings under it (the fee page's fees and toolbox).
+ * the action colour over a column of a tool, whose parts carry their own headings under it (the fee page's toolbox).
  */
 export type SectionLevel = "page" | "card" | "form" | "kick";
 const HEADING: Record<SectionLevel, string> = { page: "text-xl lg:text-2xl font-semibold", card: "text-lg font-semibold", form: "text-xl font-semibold", kick: "text-sm font-medium text-primary" };

@@ -450,7 +450,7 @@ export function FeesColumn({
   };
 
   return (
-    <Section title={b.fees} level="kick" heading="h2">
+    <Section title={b.fees} heading="h2">
       <DropZone accepts={(it) => draggedFee(it) !== null} onDrop={(it) => onAdd(draggedFee(it)!)}>
       <div ref={root} className="flex flex-col gap-6">
         {groups.map(([key, items]) => {
