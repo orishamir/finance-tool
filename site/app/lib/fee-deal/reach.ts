@@ -1,10 +1,10 @@
-// How far a cell's knob may stretch it (F-114, the fee page's tables and grids): the places of the line it stands in (a table's part row,
-// a grid's row, a part row under a grid's row, a grid's column), each as a knob may treat it, and the edits a new reach makes. A knob
+// How far a cell's knob may stretch it (F-114, the fee page's grids): the places of the line it stands in
+// (a grid's row, a part row under a grid's row, a grid's column), each as a knob may treat it, and the edits a new reach makes. A knob
 // moves only where nothing is overwritten: over a case that holds nothing in that part row (it takes the cell's part), over a grid's place
 // no case holds (it is filled with a copy of the case), or back where the cell covers more than one place. A neighbour that holds a price
 // of its own is taken only by dropping the cell on it (lifted.ts). Pure.
 import type { When } from "./model";
-import type { FeeLayout, GridCell, GridRow, TableCell } from "./layout";
+import type { FeeLayout, GridCell, GridRow } from "./layout";
 
 /**
  * A place of a line, as a knob may stretch over it: a case that holds a price there (`own`), the cell's own or a neighbour's that no knob
@@ -14,7 +14,6 @@ import type { FeeLayout, GridCell, GridRow, TableCell } from "./layout";
 export type Slot = { own: string } | { take: string } | { place: When } | null;
 
 type Grid = Extract<FeeLayout, { shape: "grid" }>;
-type Table = Extract<FeeLayout, { shape: "table" }>;
 
 const free = (x: Slot | undefined): boolean => !!x && !("own" in x);
 
@@ -44,14 +43,6 @@ export function reachEdits(slots: readonly Slot[], from: number, to: number, a: 
     off: slots.slice(from, to + 1).flatMap((x, k) => (x && "own" in x && (from + k < a || from + k > b) ? [x.own] : [])),
   };
 }
-
-/** A table's part row as places (`cells`, its cells): a case with that part is its cell's own, one without takes it; a column with no case, none. */
-export const tableSlots = (t: Table, cells: readonly TableCell[]): Slot[] =>
-  t.columns.map((col, k) => {
-    // a column with no case, a value no case names: nothing stretches over it
-    if (col.case === null) return null;
-    return cells.find((x) => x.from <= k && k < x.from + x.span)!.key === null ? { take: col.case } : { own: col.case };
-  });
 
 const cellAt = (cells: readonly GridCell[], k: number) => cells.find((x) => x.from <= k && k < x.from + x.span)!;
 

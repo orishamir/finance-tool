@@ -43,7 +43,7 @@ export const signOf = (currency: string | undefined): string => copy.panel.signs
 export const signOfUnit = (u: FigureUnit): "pct" | string => ("pct" in u ? "pct" : signOf(u.currency));
 
 const pp = copy.cases.parts;
-/** The month a later price starts, in words, with "ומ־" held to it: "ומינואר 2027". */
+/** The month a later price starts, in words, with "מ־" held to it: "מינואר 2027". */
 const fromMonth = (m: MonthKey): string => {
   const words = fmt.date(m);
   return `${joinLead(pp.from, words)}${words}`;
@@ -69,8 +69,13 @@ interface BoundContext {
   p: { form: FormId; boundsEvery?: number };
 }
 
-/** A bound's period: per action (or per the fee's own unit), per charge for a share of what is held, or as the price list prints it. */
-const boundTail = ({ kind, p }: BoundContext): string => ` ${p.form === "held" ? (p.boundsEvery ? copy.price.per[p.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
+/**
+ * A bound's period: per action (or per the fee's own unit), per charge for a share of what is held, or as the price list prints it. A
+ * price on each action says its action once (founder, 2026-11-19: "להמרה" need not be repeated), so its bounds say none: they are per
+ * action as it is.
+ */
+const boundTail = ({ kind, p }: BoundContext): string | undefined =>
+  p.form === "action" || p.form === "perAction" ? undefined : ` ${p.form === "held" ? (p.boundsEvery ? copy.price.per[p.boundsEvery] : copy.panel.perCharge) : boundPer(kind)}`;
 
 /** A maximum on each security's period: the price list's where it prints the bounds per month, else each charge. */
 const perSecurityTail = ({ p }: BoundContext): string => `${pp.perSecurity.each}${p.form === "held" && p.boundsEvery ? ` ${copy.price.per[p.boundsEvery]}` : pp.perSecurity.charge}`;
@@ -112,7 +117,7 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
     const lead = p.third.who ? `${pp.thirdOf}${p.third.who}` : pp.third;
     return p.third.price ? { lead: `${lead} `, ...fig(view.figures.third) } : { lead, quiet: ` ${pp.thirdNone}` };
   },
-  // the month the next price starts, said as the closed line says it before that price: "ומינואר 2027"
+  // the month the next price starts, said on the line between that price and the one before it: "מינואר 2027"
   until: ({ until }) => (until ? { lead: fromMonth(until) } : null),
   min: ({ kind, view }) => (view.figures.min ? { lead: pp.min, figure: view.figures.min, tail: boundTail({ kind, p: view }) } : null),
   max: ({ kind, view }) => (view.figures.max ? { lead: pp.max, figure: view.figures.max, tail: boundTail({ kind, p: view }) } : null),
@@ -219,4 +224,5 @@ export const PENDING: Readonly<Record<PendingPart, (c: ToolContext) => PendingWo
   max: (c) => ({ words: { lead: pp.max, tail: boundTail(c) }, field: SPOKEN.max, sign: sumSign(c) }),
   cap: ({ kind }) => ({ words: { lead: pp.max, tail: ` ${shareOf(kind)}` }, field: SPOKEN.cap, sign: "pct" }),
   maxPerSecurity: (c) => ({ words: { lead: pp.max, tail: perSecurityTail(c) }, field: SPOKEN.perSecurity, sign: sumSign(c) }),
+  until: () => ({ words: { lead: copy.panel.change.from }, field: copy.panel.change.month }),
 };

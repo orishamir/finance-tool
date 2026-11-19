@@ -15,7 +15,7 @@ import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
+import { DropZone, FeeBlock, Grip, SlimFee, cx, type DropHow, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
@@ -61,7 +61,7 @@ export interface BlockActions {
   /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
   onRemoveChange: (feeId: string, side: Side, k: number, caseId: string | undefined) => void;
   /** The person is in price `k` of the open case's prices over time (its parts took the focus or a press): the toolbox adds to it. */
-  onEditPrice: (feeId: string, caseId: string | undefined, k: number) => void;
+  onEditPrice: (feeId: string, caseId: string | undefined, k: number, side?: Side) => void;
   /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
   pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
@@ -183,7 +183,7 @@ export function FeeBlockView({
   const openParts = (spoken: string, heads: readonly HeadApply[] = []) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId) => onEditPrice(fee.id, caseId, k)} pendingHands={pendingHands} grip={partGrip(heads)} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId, side) => onEditPrice(fee.id, caseId, k, side)} pendingHands={pendingHands} grip={partGrip(heads)} />
         {formLine}
       </>
     );
@@ -288,7 +288,7 @@ export function FeeBlockView({
                 {row.block.parts.map((p) =>
                   // a price among several over time opens the fee at that price, the toolbox adding to it, above the card's own button
                   timed ? (
-                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className="inline-flex max-w-full" onClick={() => openAt(p.stage ?? 0)}>
+                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className={cx("inline-flex max-w-full", p.kind === "when" && "basis-full")} onClick={() => openAt(p.stage ?? 0)}>
                       <RestPart part={p} />
                     </span>
                   ) : (

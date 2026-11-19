@@ -11,7 +11,7 @@ import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTit
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import { depositLabels } from "../../lib/deposit-kind";
-import { fmt } from "../../lib/format";
+import { fmt, joinLead } from "../../lib/format";
 import { sourceHref } from "../../lib/sources";
 import { PileBar, PileYears } from "./pile-story";
 import { MixedName, NameLine } from "./name";
@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, ToolBlank, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -2775,7 +2775,7 @@ function listed(value: number, unit: Unit, today: string): SiteValue {
 /** One part of a sample case: its kind and icon, its first word, its figure with the figure's sign, and the words after it. */
 interface Part {
   id: string;
-  kind: PartKind;
+  kind: Exclude<PartKind, "when">;
   mark?: PartMark;
   lead?: string;
   n?: number;
@@ -3039,6 +3039,7 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
         ...Object.entries(sc.whenParts).map(([id, label]) => ({ id, label, used: u(id), off: full && !u(id), row: sizes.has(id) ? rows.size : rows.what, ...(u(id) ? { removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", label) } : {}) })),
         { id: "sale", label: sc.saleApart, used: u("sale"), row: rows.what },
       ],
+      lines: [{ id: "until", label: dealWords.cases.dateLine, icon: <CalendarDays size={16} strokeWidth={1.75} /> }],
       offWhy: sc.fourth,
     },
     { id: "rule", kind: "rule", name: sc.groups.rule, parts: [{ id: "unexecuted", label: sc.unexecuted, used: u("unexecuted") }, { id: "partial", label: sc.partial, used: u("partial") }] },
@@ -3248,23 +3249,35 @@ function TradeGroups({ today }: { today: string }) {
   );
 }
 
-/** A fee open whose price changes with time: free, then from a month a sum, the divider between them, and the slot that adds a change. */
+/**
+ * A fee open whose price changes with time: free, then from a month a sum, the divider between them. Its bin takes the change away, and
+ * the divider then stands as the toolbox's line "+ התאריך" draws it, its month box empty: a month typed or picked splits the price again.
+ */
 function ChangeDemo({ today }: { today: string }) {
-  const [month, setMonth] = useState("2027-01");
-  const [gone, setGone] = useState(false);
+  const [month, setMonth] = useState<string | null>("2027-01");
+  const c = dealWords.panel.change;
   return (
     <SlimFee dot="bg-fee-fixed" name={sc.fixed} label={sc.openFee(sc.fixed)} open onOpen={() => undefined}>
       <PartEdit kind="charge">
         <span>{dealWords.price.free}</span>
       </PartEdit>
-      {!gone && (
-        <>
-          <ChangeDivider lead={dealWords.panel.change.from} month={<MonthField value={month} label={dealWords.panel.change.month} tight onCommit={setMonth} />} removeLabel={dealWords.panel.change.remove} onRemove={() => setGone(true)} />
-          <Edit part={{ id: "sum", kind: "charge", n: 20, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }} today={today} onRemove={() => undefined} />
-        </>
-      )}
-      <AddSlot add={{ label: dealWords.panel.change.add, onAdd: () => setGone(false) }} />
+      <ChangeDivider key={month ?? "asking"} lead={c.from} month={<MonthField value={month} label={c.month} tight waits onCommit={setMonth} />} removeLabel={c.remove} onRemove={() => setMonth(null)} />
+      {month && <Edit part={{ id: "sum", kind: "charge", n: 20, unit: "nis_per_month", sign: "₪", words: dealWords.price.per[1] }} today={today} onRemove={() => undefined} />}
     </SlimFee>
+  );
+}
+
+/** The same price at rest in a table's cell: the free price, the line with the month the sum starts centred on it, the sum under it. */
+function ChangeRestDemo({ today }: { today: string }) {
+  const from = fmt.date("2027-01");
+  return (
+    <div className="flex w-44 flex-col gap-1 rounded-md bg-card p-3 text-sm">
+      <span>{dealWords.price.free}</span>
+      <WhenRule>{`${joinLead(dealWords.cases.parts.from, from)}${from}`}</WhenRule>
+      <span>
+        <Num value={listed(20, "nis_per_month", today)} display={fmt.number} /> ₪ {dealWords.price.per[1]}
+      </span>
+    </div>
   );
 }
 
@@ -3471,11 +3484,14 @@ function CaseDemos({ today }: { today: string }) {
           </PhoneFrame>
         </State>
       </Demo>
-      <Demo name="ChangeDivider" use={g.uses.ChangeDivider}>
-        <State label={`a price that changes with time, open: its prices in time order, the divider with the month the later starts and its bin, "+ המחיר משתנה מתאריך" at the end; ${g.states.interactive}`} wide>
+      <Demo name="ChangeDivider, WhenRule" use={g.uses.ChangeDivider}>
+        <State label={`a price that changes with time, open: its prices in time order, the divider with the month the later starts and its bin; ${g.states.interactive}: the bin leaves the divider as the toolbox's "+ התאריך" draws it, its month box empty, and a month splits the price again`} wide>
           <div className="max-w-xl">
             <ChangeDemo today={today} />
           </div>
+        </State>
+        <State label="the same price at rest in a table's cell: the line with the month centred on it, the earlier price above and the later under it">
+          <ChangeRestDemo today={today} />
         </State>
       </Demo>
       <Demo name="FeePalette" use={g.uses.FeePalette}>

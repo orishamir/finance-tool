@@ -29,14 +29,14 @@ import { addBlankCase, addCase, addCaseAt, addValuesAt, canRename, copyCase, ren
 import { nextValue } from "../../lib/fee-deal/things";
 import { duplicateValue, moveCase, moveValue, swapThings } from "../../lib/fee-deal/edits/arrange";
 import { currencyClash, partAcross, shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
-import { bandLayout, headSaysLead, laterChanges, mergedParts, partsByRow, rangeSign, rowHead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
+import { bandLayout, inTime, laterChanges, mergedParts, partsByRow, rangeSign, rowHead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
 import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
 import { clashWords, liftId, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { isRange, NAME_MAX, type CasesFee, type Fee, type When } from "../../lib/fee-deal/model";
-import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, tableSlots, type Slot } from "../../lib/fee-deal/reach";
+import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
+import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
@@ -86,9 +86,14 @@ export function RowStanding({ fee, priced, standing }: { fee: string; priced: bo
   return null;
 }
 
-/** A part at rest, in a slim line or a case's row: its icon and first word, its figure in its own state, and the words after it. */
+/**
+ * A part at rest, in a slim line or a case's row: its icon and first word, its figure in its own state, and the words after it; the month a
+ * later price starts, a line across the whole width with the month centred on it (`WhenRule`), the earlier price's parts before it and the
+ * later's after it.
+ */
 export function RestPart({ part }: { part: SlimPart }) {
   const w = part.words;
+  if (part.kind === "when") return <WhenRule>{w.lead}</WhenRule>;
   const tail = [w.tail, w.quiet].filter(Boolean).join("").trim();
   return (
     <PartChip kind={part.kind} mark={PART_MARK[part.id]} lead={w.lead?.trim()} figure={w.figure ? <PartFig part={part} n={0} value={w.figure} /> : undefined} words={tail || undefined}>
@@ -122,19 +127,27 @@ type PartOff = { label: string; onOff: () => void };
 
 /**
  * Parts as words, one after the other, each after a small dot of its kind's colour (theme.css, `data-kind`), the colour of the toolbox's
- * card that adds it and of its line in the open case; " · " between them is said, not drawn. `off`: each part that can be taken away alone carries a ✕ at its line's
+ * card that adds it and of its line in the open case; " · " between them is said, not drawn. The month a later price starts is a line
+ * across the whole width with the month centred on it (`WhenRule`), the earlier price's parts above it and the later's under it. `off`: each part that can be taken away alone carries a ✕ at its line's
  * end, drawn only after a fine pointer has rested on that line a while and gone at once when it leaves (app.css, `data-part-line`), on
  * a zero-wide place after its words, so it moves nothing and takes no room.
  */
-function Joined({ parts, bare, off }: { parts: readonly SlimPart[]; bare?: boolean; off?: (p: SlimPart) => PartOff | null }) {
+function Joined({ parts, bare, lines, off }: { parts: readonly SlimPart[]; bare?: boolean; lines?: boolean; off?: (p: SlimPart) => PartOff | null }) {
   return (
     <>
       {parts.map((p, k) => {
+        if (p.kind === "when")
+          return (
+            <WhenRule key={`${p.stage ?? 0}:${p.id}`}>
+              {k > 0 && <span className="sr-only">{sep}</span>}
+              {p.words.lead}
+            </WhenRule>
+          );
         const x = off?.(p) ?? null;
         return (
-          <span key={`${p.stage ?? 0}:${p.id}`} {...(x ? { "data-part-line": "" } : {})}>
+          <span key={`${p.stage ?? 0}:${p.id}`} {...(x ? { "data-part-line": "" } : {})} className={lines ? "basis-full" : undefined}>
             {k > 0 && <span className="sr-only">{sep}</span>}
-            <KindDot kind={p.kind} after={k > 0} />
+            <KindDot kind={p.kind} after={k > 0 && !lines} />
             <PartText part={p} bare={bare} />
             {x && (
               <span data-part-off="" className="relative inline-block h-[1lh] w-0 align-top">
@@ -226,7 +239,7 @@ export function FeeCases({
 
   const partsOf = (caseId: string, row: PartRow) => partsByRow(byCase.get(caseId)!.parts).get(row) ?? [];
   /** The parts a case's row shows, read as rows (a band); a grid's cell, what no part cell under its row holds (`cellParts`). */
-  const shownParts = (caseId: string) => layout.shows[caseId]!.flatMap((row) => partsOf(caseId, row as PartRow));
+  const shownParts = (caseId: string) => inTime(layout.shows[caseId]!.flatMap((row) => partsOf(caseId, row as PartRow)));
   const cellParts = (caseId: string) => (layout.shape === "grid" ? layout.cellShows[caseId]! : []).flatMap((row) => partsOf(caseId, row as PartRow));
   /** Of several cases, each one's value of the first thing they differ by, in words: what tells them apart in a cell over them all. */
   const namedAmong = (cases: readonly string[]) => (id: string) => {
@@ -677,7 +690,6 @@ export function FeeCases({
   let body: ReactNode;
   if (wide && layout.shape === "table") {
     const t = layout.thing;
-    const all = rows.flatMap((r) => r.parts);
     const n = layout.columns.length;
     const listThing = !layout.ladder && layout.split === null && !isRange(fee.by[t]!);
     const allCases = layout.columns.flatMap((x) => (x.case ? [x.case] : []));
@@ -750,44 +762,33 @@ export function FeeCases({
               zone: (h: ReactNode) => zone([target, ...(listThing && l?.k !== "value" ? [valueTarget] : []), caseTarget(caseCol)], caseCol, h, listThing ? list("cols", "x") : undefined),
             };
           })}
-          rows={layout.rows.map((row) => {
-            const pr = row.row as PartRow;
-            const rowHeadWords = rowHead(pr, all);
-            const slots = tableSlots(layout, row.cells);
-            const rl: Lifted = { k: "row", fee: fee.id, row: pr };
-            return {
-              id: row.row,
-              head: rowHeadWords,
-              grip: grip(rl, `${lw.grip.partRow}${rowHeadWords}`, across.menu, { name: lw.name.partRow.replace("{name}", rowHeadWords), still: !lift.binTakes(rl) }),
-              cells: row.cells.map((cell) => {
-                const target: LiftTarget = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t };
-                const cellZone = (el: ReactNode) => zone([target, caseTarget(cell.cases[0]!)], `${row.row}:${cell.from}`, el);
-                const sk = copyable(`${row.row}:${cell.from}`, { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t });
-                if (cell.key === null) return { id: cell.cases.join("+"), from: cell.from, span: cell.span, content: null, zone: cellZone, ...sk, ...fillAt(row.row, cell.from, cell.span) };
-                const ww = wholeWords(cell.span, n, t);
-                const shownHere = mergedParts(cell.cases, (id) => partsOf(id, pr));
-                // a cell stretched over several cases is taken away whole, by its bin: a ✕ only in a cell of one case
-                const content = here(cell.cases, <Joined parts={shownHere} bare={headSaysLead(pr)} {...(cell.cases.length === 1 ? { off: partOff(cell.cases, shownHere.length) } : {})} />);
-                const cl: Lifted = { k: "cell", fee: fee.id, cases: cell.cases, row: pr, along: t };
-                return {
-                  id: cell.cases.join("+"),
-                  from: cell.from,
-                  span: cell.span,
-                  open: shownOpen(cell.cases, `part:${row.row}:${cell.from}`),
-                  onOpen: openIt(cell.cases[0]!, `part:${row.row}:${cell.from}`),
-                  content,
-                  grip: grip(cl, `${lw.grip.cell}${rowHeadWords}`, applyActions(cl, applyTo([allHead])), { name: rowHeadWords, place: "outside" }),
-                  ...knobsOf(row.row, slots, cell.from, cell.span, pr, t, "x", content),
-                  onRemove: () => lift.onBin(cl),
-                  ...(lift.binTakes(cl) ? { removeLabel: binWords(ww ? rowHeadWords : `${rowHeadWords}${sep}${cell.cases.map((id) => caseText(byCase.get(id)!.when)).join(", ")}`) } : {}),
-                  ...fillAt(row.row, cell.from, cell.span),
-                  ...(ww ? { whole: ww } : {}),
-                  zone: cellZone,
-                  ...sk,
-                };
+          rows={[
+            {
+              // one row: each case's whole price in its cell, a part a line, its own words (no part row heads, no "בכל …")
+              id: "price",
+              head: null,
+              cells: layout.columns.flatMap((col, k) => {
+                if (!col.case) return [];
+                const id = col.case;
+                const r = byCase.get(id)!;
+                const parts = inTime(layout.rows.flatMap((row) => partsOf(id, row.row as PartRow)));
+                const cl: Lifted = { k: "cell", fee: fee.id, cases: [id], row: WHOLE, along: t };
+                return [
+                  {
+                    id,
+                    from: k,
+                    span: 1,
+                    open: shownOpen([id], null),
+                    onOpen: openIt(id),
+                    content: parts.length ? here([id], <Joined parts={parts} lines off={partOff([id], parts.length)} />) : null,
+                    ...(lift.binTakes(cl) ? { onRemove: () => lift.onBin(cl), removeLabel: binWords(caseText(r.when)) } : {}),
+                    zone: (el: ReactNode) => zone([caseTarget(id)], `case:${id}`, el),
+                    ...copyable(`case:${id}`, cl as Extract<Lifted, { k: "cell" }>),
+                  },
+                ];
               }),
-            };
-          })}
+            },
+          ]}
           add={layout.ladder ? stepSlot(t) : listThing ? valuesSlot(t, undefined, c.addKnob.case) : addOne}
           {...(inserts ? { insert: insertAt(t, heads) } : {})}
           {...(across.strip ? { addPart: across.strip } : {})}

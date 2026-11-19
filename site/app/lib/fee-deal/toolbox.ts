@@ -1,7 +1,7 @@
 // The toolbox for the case open in place (method §10.6): the parts the product's fee is offered that the price it acts on can hold now (the
 // purchase's last, `toolPrice`), in the toolbox's groups and order, each with its words and its box, and the things the fee may change by.
 import { feeDeal as copy } from "../../copy";
-import { hasCases, monthKey, monthOf, pricedOf, toolPrice, type Case, type Fee, type MonthKey } from "./model";
+import { hasCases, monthKey, monthOf, pricedOf, toolPrice, toolStages, type Case, type Fee, type MonthKey, type Side } from "./model";
 import { fmt, joinLead } from "../format";
 import { offerFor } from "./offers/offer";
 import { PARTS, isFormPart, type PartId, type PartKind, type ToolGroupId, type ToolPartId, type ToolPartIn } from "./offers/parts";
@@ -32,11 +32,25 @@ export interface ToolPart {
 /** The thing to change by that a toolbox card adds (its id `by:<thing>`), or null where the card is a part. */
 export const cardThing = (id: string): ByKind | null => (id.startsWith("by:") ? (id.slice(3) as ByKind) : null);
 
-/** A toolbox group: its kind and head, and its parts in order. */
+/**
+ * A toolbox card drawn as the line it adds to the open case, across its group: the month the price it acts on changes from (F-110). A tap
+ * asks for the month on that price, which then splits in two there (`until`, a part that asks for its month); it splits the price in time,
+ * never the fee into cases, so it is no thing's card.
+ */
+export interface ToolLine {
+  id: LinePartId;
+  words: string;
+}
+
+/** The parts the toolbox draws as lines. */
+type LinePartId = "until";
+
+/** A toolbox group: its kind and head, its parts in order, and its lines after them. */
 export interface ToolGroup {
   group: ToolGroupId;
   head: string;
   parts: ToolPart[];
+  lines: ToolLine[];
 }
 
 /**
@@ -53,8 +67,10 @@ export interface Toolbox {
    * its prices the toolbox adds to (`price`), and each price's months (`periods`, in time order), to switch to another.
    */
   addTo: { lead: string; when?: WhenWords[]; name?: string; price?: string; periods?: string[] };
-  /** The price it acts on, by its place among the purchase's prices (`toolPrice`): a part tapped goes on it, a form of the price changes it. */
+  /** The price it acts on, by its place among its side's prices (`toolPrice`): a part tapped goes on it, a form of the price changes it. */
   k: number;
+  /** The side it acts on: the purchase's prices, or a sale priced apart, once the person is in it (founder, 2026-11-19). */
+  side: Side;
   groups: ToolGroup[];
 }
 
@@ -71,22 +87,30 @@ export const TOOL_ORDER = {
   by: ["sale"],
   rule: ["unfilled", "partial", "inTrade"],
 } as const satisfies { [G in ToolGroupId]: readonly ToolPartIn<G>[] };
-/** The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`), then its parts. */
-const TOOLBOX: readonly { group: ToolGroupId; kind: ToolPart["kind"]; parts: readonly ToolPartId[] }[] = [
+/**
+ * The toolbox's groups in order, each with its cards' kind; what the price changes by is the fee's things (`conditionsFor`), then its parts,
+ * then the month the price changes from, drawn as a line.
+ */
+const TOOLBOX: readonly { group: ToolGroupId; kind: ToolPart["kind"]; parts: readonly ToolPartId[]; lines?: readonly LinePartId[] }[] = [
   { group: "charge", kind: "charge", parts: TOOL_ORDER.charge },
   { group: "off", kind: "off", parts: TOOL_ORDER.off },
   { group: "bound", kind: "bound", parts: TOOL_ORDER.bound },
-  { group: "by", kind: "by", parts: TOOL_ORDER.by },
+  { group: "by", kind: "by", parts: TOOL_ORDER.by, lines: ["until"] },
   { group: "rule", kind: "rule", parts: TOOL_ORDER.rule },
 ];
 
-export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number): Toolbox | null {
+/** Each line's words on its card. */
+const LINE_WORDS: Readonly<Record<LinePartId, string>> = { until: copy.cases.dateLine };
+
+export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number, on: Side = "buy"): Toolbox | null {
   const fee = r.deal.fees.find((f) => f.id === feeId);
   if (!fee) return null;
   const shown = caseId ?? firstCase(fee);
   const priced = pricedOf(fee, shown);
-  const k = toolPrice(priced, at);
-  const p = priced.stages[k]!.price;
+  const side: Side = on === "sell" && priced.sale ? "sell" : "buy";
+  const stages = toolStages(priced, side);
+  const k = toolPrice({ stages }, at);
+  const p = stages[k]!.price;
   // what the product's fee is offered (the rule table narrows it), of which the parts its price can hold now
   const offer = offerFor(r.kind, fee.kind);
   const own = (g: (typeof TOOLBOX)[number]): ToolPart[] =>
@@ -95,10 +119,12 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string, at?: number
       .map((id) => ({ id, kind: g.kind, ...OFFERED[id]({ kind: fee.kind, p }), used: PARTS[id].used(p, priced), ...(isFormPart(id) ? { form: true as const } : {}), ...(g.group === "by" ? { row: "what" as const } : {}) }));
   const parts = (g: (typeof TOOLBOX)[number]): ToolPart[] => (g.group === "by" ? [...byParts(fee, offer.conditions), ...own(g)] : own(g));
   const c = hasCases(fee) ? (priced as Case) : null;
-  const base = c && hasCases(fee) ? { lead: copy.cases.addTo, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead: copy.cases.addTo, name: feeNameOf(fee.kind, fee.name) };
-  const addTo = priced.stages.length > 1 ? { ...base, price: priceWords(priced.stages, k), periods: priced.stages.map((_, j) => periodWords(priced.stages, j)) } : base;
-  const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g) }));
-  return { addTo, k, groups: groups.filter((g) => g.parts.length > 0) };
+  const lead = side === "sell" ? copy.cases.addToSale : copy.cases.addTo;
+  const base = c && hasCases(fee) ? { lead, when: c.when.map((w, t) => whenWords(fee, w, t, r.today)) } : { lead, name: feeNameOf(fee.kind, fee.name) };
+  const addTo = stages.length > 1 ? { ...base, price: priceWords(stages, k), periods: stages.map((_, j) => periodWords(stages, j)) } : base;
+  const lines = (g: (typeof TOOLBOX)[number]): ToolLine[] => (g.lines ?? []).filter((id) => offer.parts.includes(id)).map((id) => ({ id, words: LINE_WORDS[id] }));
+  const groups = TOOLBOX.map((g) => ({ group: g.group, head: copy.cases.groups[g.group]!, parts: parts(g), lines: lines(g) }));
+  return { addTo, k, side, groups: groups.filter((g) => g.parts.length > 0 || g.lines.length > 0) };
 }
 
 /** The month before `m`: a price that ends at the start of `m` holds through it. */

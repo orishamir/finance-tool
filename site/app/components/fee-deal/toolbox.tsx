@@ -1,7 +1,7 @@
 // The toolbox for the case open in place (method §10.6, `toolbox`): on a computer the column "העמלה שבחרתם", the fee's name as its head and
 // the parts to add to the open case in groups by kind, and at its end filling the fee from a price list; on a phone the same in the short
 // sheet pinned to the foot of the screen. A thing to change by asks its question in the fee's block (`AskThing`), and a tap on one the fee
-// changes by already stops it, as its bin in the band does. A tap on a part adds it to the price the toolbox acts on (`view.k`); a part
+// changes by already stops it, as its bin in the band does. The line "+ התאריך" asks, under the price it acts on, the month it changes from. A tap on a part adds it to the price the toolbox acts on (`view.k`); a part
 // that needs its figure, month or fee first asks for it in the open case (`onPending`), and a form of the price puts the price in that form
 // through the page (`onForm`), which keeps what it replaces for the undo. A card dragged onto the fees' column does the same there
 // (`applyTool`).
@@ -14,7 +14,7 @@ import { NAME_MAX, type Fee, type Side } from "../../lib/fee-deal/model";
 import { capacity } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { termKey } from "../../lib/fee-page-data";
-import { IconClose, IconPencil } from "../icons";
+import { IconCalendar, IconClose, IconPencil } from "../icons";
 import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, ToolBlank, Toolbox, cx, useStickyColumn, type ToolGroup, type ToolKind } from "../kit";
 import { useProvenanceData } from "../provenance";
 import { UndoLine } from "./undo-line";
@@ -64,7 +64,7 @@ function partLabel(part: ToolPartView): { label: ReactNode; spoken: string } {
   };
 }
 
-/** The view's groups as the kit's: each part's card and spoken name, and why a part that cannot be added cannot. */
+/** The view's groups as the kit's: each part's card and spoken name, its lines (the month the price changes from, with the calendar's mark), and why a part that cannot be added cannot. */
 function kitGroups(view: ToolboxView): ToolGroup[] {
   return view.groups.map((g) => {
     const why = g.parts.find((x) => x.off)?.off;
@@ -74,6 +74,7 @@ function kitGroups(view: ToolboxView): ToolGroup[] {
       name: g.head,
       // a thing the fee changes by already is taken away by a tap, as its bin in the band does
       parts: g.parts.map((x) => ({ id: x.id, ...partLabel(x), used: x.used, off: !!x.off, ...(x.form ? { form: true } : {}), ...(x.row ? { row: copy.cases.byRows[x.row] } : {}), ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
+      ...(g.lines.length ? { lines: g.lines.map((l) => ({ id: l.id, label: l.words, icon: <IconCalendar size={16} /> })) } : {}),
       ...(why ? { offWhy: why } : {}),
     };
   });
@@ -93,14 +94,13 @@ export interface ToolHands {
  * change by asks its question; a part that needs its figure, month or fee asks for it there; a form of the price puts the price in it;
  * any other part goes on the price at once. A tap and a drop both do this.
  */
-export function applyTool(item: string, fee: Fee, caseId: string | null, k: number, hands: ToolHands): void {
+export function applyTool(item: string, fee: Fee, caseId: string | null, k: number, hands: ToolHands, side: Side = "buy"): void {
   const thing = cardThing(item);
   if (thing) return hands.onAsk(thing);
   const id = item as PartId;
   if (isPending(id)) return hands.onPending(id);
   if (isFormPart(id)) return hands.onForm(id);
-  // the toolbox adds to the purchase's prices, or the only ones
-  const side: Side = "buy";
+  // the toolbox adds to the purchase's prices, or to a sale priced apart while the person is in it
   hands.onPart(setPart(fee, id, true, { side, k, ...(caseId ? { caseId } : {}) }), { part: id, side, k });
 }
 
@@ -173,14 +173,16 @@ export function ToolboxColumn({
   onClose: () => void;
 }) {
   const terms = useProvenanceData()?.terms;
-  const onAdd = (_group: string, part: string) => applyTool(part, fee, caseId, view.k, { onAsk, onPending, onForm, onPart });
+  const onAdd = (_group: string, part: string) => applyTool(part, fee, caseId, view.k, { onAsk, onPending, onForm, onPart }, view.side);
   const onRemove = (_group: string, part: string) => {
     const thing = cardThing(part);
     if (thing) onStopBy(thing);
   };
   const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
-  // one price of several over time: the heading names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee
-  const priceLead = view.addTo.price ? `${view.addTo.price}:` : undefined;
+  // one price of several over time: the heading names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee; a sale priced apart
+  // that the toolbox follows says so, "להוסיף למחיר במכירה:"
+  const sale = view.side === "sell";
+  const priceLead = view.addTo.price ? `${view.addTo.price}${sale ? copy.cases.inSale : ""}:` : sale ? view.addTo.lead.trim() : undefined;
   // filling the fee from a price list, or the undo line of a fill just made; nothing, and no line above it, where neither stands
   const foot = line || (fill && fill.houses.length > 0) ? (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">

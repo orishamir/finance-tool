@@ -1,5 +1,5 @@
 // What a toolbox card does (`applyTool`), by tap or drop alike: a thing to change by asks its question, a part that needs its figure asks
-// for it, a form of the price goes through the page, and any other part goes on the price at once, handed to `onPart` with the fee as it
+// for it (a later price its month), a form of the price goes through the page, and any other part goes on the price at once, handed to `onPart` with the fee as it
 // now is and the part and the price it went on, where the page puts the focus.
 import { describe, expect, it } from "vitest";
 import { newFee, type Fee } from "../../lib/fee-deal/model";
@@ -41,8 +41,8 @@ describe("applyTool", () => {
     expect(at).toEqual({ part: "partial", side: "buy", k: 1 });
   });
 
-  it("asks a thing's question, a part's figure, and a form through the page, none of them through onPart", () => {
-    for (const [item, hand, arg] of [["by:track", "onAsk", "track"], ["min", "onPending", "min"], ["perUnit", "onForm", "perUnit"]] as const) {
+  it("asks a thing's question, a part's figure or month, and a form through the page, none of them through onPart", () => {
+    for (const [item, hand, arg] of [["by:track", "onAsk", "track"], ["min", "onPending", "min"], ["until", "onPending", "until"], ["perUnit", "onForm", "perUnit"]] as const) {
       const { h, calls } = hands();
       applyTool(item, trade, null, 0, h);
       expect(calls, item).toEqual([{ hand, args: [arg] }]);

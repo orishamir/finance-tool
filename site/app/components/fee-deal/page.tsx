@@ -28,7 +28,7 @@ import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
 import { slotEdit, thingMenu, usualBy } from "../../lib/fee-deal/things";
 import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
-import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
+import { hasCases, newDeal, pricedOf, toolPrice, toolStages, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
@@ -240,10 +240,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const onRemoveChange = (feeId: string, side: Side, k: number, caseId: string | undefined) => kept(removeChangeKept(deal, feeId, side, k, chosen, caseId));
   // the price of the open case the person is in, where the case has several over time: the toolbox adds to it, the panel's question asks
   // on it, a form changes it; it belongs to the fee and case it was set in, and any other open goes back to the last price
-  const [editing, setEditing] = useState<{ fee: string; case: string | null; k: number } | null>(null);
-  const editingK = editing && editing.fee === chosen && editing.case === caseId ? editing.k : undefined;
+  // the price the toolbox follows: its place among its side's prices, and the side (a sale priced apart, once the person is in it)
+  const [editing, setEditing] = useState<{ fee: string; case: string | null; k: number; side: Side } | null>(null);
+  const editingHere = !!editing && editing.fee === chosen && editing.case === caseId;
+  const editingK = editingHere ? editing!.k : undefined;
+  const editingSide: Side = editingHere ? editing!.side : "buy";
   const onForm = (feeId: string, part: PartId, caseId: string | null) => {
-    if (doc.changeForm(feeId, part, caseId, feeId === chosen && caseId === oc.caseId ? editingK : undefined)) oc.pending.set(null);
+    const here = feeId === chosen && caseId === oc.caseId;
+    if (doc.changeForm(feeId, part, caseId, here ? editingK : undefined, here ? editingSide : "buy")) oc.pending.set(null);
   };
   const onRemoveCase = (feeId: string, caseId: string) => {
     oc.menus.closeSlot();
@@ -305,14 +309,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
-  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending, editingK) : null), [read, chosen, caseId, pending, editingK]);
+  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending, editingK, editingSide) : null), [read, chosen, caseId, pending, editingK, editingSide]);
   // while a carried thing is over a place, the fees' column draws the deal as a drop there would leave it (lifted.ts); the reading below,
   // the toolbox and the saved deal stay as they are until it is let go
   const [preview, setPreview] = useState<FeeDeal | null>(null);
   const previewRead = useMemo(() => (preview ? readDealFor(preview, data.kinds, today) : null), [preview, data.kinds, today]);
   const shownBuilder = useMemo(() => (previewRead ? builder(previewRead, bar, chosen ? { fee: chosen, case: caseId } : null) : builderView), [previewRead, builderView, bar, chosen, caseId]);
-  const shownOpen = useMemo(() => (previewRead && chosen ? (panelOf(previewRead, chosen, caseId ?? undefined, pending, editingK)?.open ?? null) : (panel?.open ?? null)), [previewRead, chosen, caseId, pending, editingK, panel]);
-  const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined, editingK) : null), [read, chosen, caseId, editingK]);
+  const shownOpen = useMemo(() => (previewRead && chosen ? (panelOf(previewRead, chosen, caseId ?? undefined, pending, editingK, editingSide)?.open ?? null) : (panel?.open ?? null)), [previewRead, chosen, caseId, pending, editingK, editingSide, panel]);
+  const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined, editingK, editingSide) : null), [read, chosen, caseId, editingK, editingSide]);
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
   // own toolbox offers it and the case has it not yet; dropped on another case than the open one, that case opens first
   const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : at === null || at === caseId ? tools : toolboxOf(read, feeId, at));
@@ -339,12 +343,13 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       if (thing && at !== null && hasCases(fee)) return oc.ask.onAsk(thing, at);
       const on = at ?? caseId;
       if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
-      applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined), on === caseId ? editingK : undefined), {
+      const side = on === caseId ? editingSide : "buy";
+      applyTool(item, fee, on, toolPrice({ stages: toolStages(pricedOf(fee, on ?? undefined), side) }, on === caseId ? editingK : undefined), {
         onAsk: (kind) => onAddBy(feeId, kind),
         onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
         onForm: (part) => onForm(feeId, part, on),
         onPart: onPart(fee),
-      });
+      }, side);
     },
   };
   // a thing lifted by its grip (lifted.ts): dropped on a place, or in a fee's bin, kept for the undo where it took something
@@ -411,7 +416,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
         onAsk={(kind) => onAddBy(chosenFee.id, kind)}
-        onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k })}
+        onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k, side: editingSide })}
         onFee={onFee}
         onPart={onPart(chosenFee)}
         onForm={(part) => onForm(chosenFee.id, part, caseId)}
@@ -537,7 +542,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onRemoveBy,
                 drop,
                 onRemoveChange,
-                onEditPrice: (feeId, caseId, k) => setEditing({ fee: feeId, case: caseId ?? null, k }),
+                onEditPrice: (feeId, caseId, k, side = "buy") => setEditing({ fee: feeId, case: caseId ?? null, k, side }),
                 pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
                 lift: liftHands,

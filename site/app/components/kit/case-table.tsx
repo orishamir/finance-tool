@@ -148,8 +148,8 @@ export interface AddSpec {
 }
 
 /**
- * What adds a new case, row or column where it stands in the table's own room (a grid's place no case holds, the cases read as rows, a
- * price's "+ המחיר משתנה מתאריך"): a dashed frame as wide as what it is under, a plus and its words in the action colour. Beside the heads
+ * What adds a new case, row or column where it stands in the table's own room (a grid's place no case holds, the cases read as rows): a
+ * dashed frame as wide as what it is under, a plus and its words in the action colour. Beside the heads
  * the add is a plus knob (`HeadAdd`, `BetweenAdd`).
  */
 export function AddSlot({ add, className }: { add: AddSpec; className?: string }) {
