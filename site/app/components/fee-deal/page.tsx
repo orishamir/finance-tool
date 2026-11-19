@@ -272,7 +272,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (r) kept(r);
     else oc.ask.onAsk(kind);
   };
-  // a thing the fee changes by, tapped again in the toolbox: as its bin in the band
+  // a thing the fee changes by, tapped again in the toolbox: as its pill's menu stops it
   const onStopBy = (feeId: string, kind: ByKind) => {
     const fee = deal.fees.find((f) => f.id === feeId);
     const t = fee && hasCases(fee) ? fee.by.findIndex((x) => pickKind(x.kind) === pickKind(kind)) : -1;
@@ -388,7 +388,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const menu = oc.menus.slot;
   const thingOpen = oc.menus.thing;
   const slot = menu && menu.fee === chosen && menu.case === caseId ? slotEdit(read, menu.fee, menu.case, menu.t) : null;
-  const thingView = thingOpen && thingOpen.fee === chosen ? thingMenu(read, thingOpen.fee, thingOpen.t) : null;
+  const thingView = thingOpen ? thingMenu(read, thingOpen.fee, thingOpen.t) : null;
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
   const nameOf = (feeId: string) => {
@@ -526,7 +526,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               deal={preview ?? deal}
               view={shownBuilder}
               groupOf={(fee: Fee) => feeGroup(read, fee, saves)}
-              open={{ fee: chosen, case: caseId, view: shownOpen, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? thingOpen.t : null }}
+              open={{ fee: chosen, case: caseId, view: shownOpen, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? { fee: thingOpen.fee, t: thingOpen.t } : null }}
               line={lines.fee}
               caseLine={lines.case}
               focus={doc.focus}
@@ -539,7 +539,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onThing: oc.menus.onThing,
                 onRemoveCase,
                 onRemoveFee,
-                onRemoveBy,
                 drop,
                 onRemoveChange,
                 onEditPrice: (feeId, caseId, k, side = "buy") => setEditing({ fee: feeId, case: caseId ?? null, k, side }),
@@ -560,7 +559,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       <ValueMenuSheet open={!!slot} onClose={oc.menus.closeSlot} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
         {slot && menu && chosenFee && <SlotMenu key={`${menu.fee}:${menu.case}:${menu.t}`} edit={slot} fee={chosenFee} caseId={menu.case} t={menu.t} top={panel?.open.slots[menu.t]?.words.figure ?? null} onFee={onFee} />}
       </ValueMenuSheet>
-      {/* a thing of the open fee's band head: its values in the cases, and the action that stops the price changing by it */}
+      {/* a thing of a fee's band head, the fee open or not: its values in the cases, and the action that stops the price changing by it */}
       <ValueMenuSheet open={!!thingView} onClose={oc.menus.closeThing} anchor={thingView ? thingOpen!.at : null} label={thingView?.name ?? ""}>
         {thingView && thingOpen && <ThingMenu title={thingView.title} values={thingView.values.map((w) => ({ text: <WhenText words={w} />, any: w.any }))} stop={thingView.stop} onStop={() => onRemoveBy(thingOpen.fee, thingOpen.t)} after={thingView.after} />}
       </ValueMenuSheet>

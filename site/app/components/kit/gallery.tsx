@@ -2922,11 +2922,10 @@ function TradeFee({ today }: { today: string }) {
       <FeeBlock dot="bg-fee-trade" name={sc.trade} remove={{ label: dealWords.panel.remove, onRemove: () => undefined }}>
         <ConditionBand
           things={[
-            { id: "what", name: sc.things.what, removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", sc.things.what) },
-            { id: "track", name: sc.things.track, removeLabel: dealWords.cases.thingMenu.stop.replace("{thing}", sc.things.track) },
+            { id: "what", name: sc.things.what },
+            { id: "track", name: sc.things.track },
           ]}
           onThing={(_id, at) => setMenu({ kind: "thing", at })}
-          onRemoveThing={() => undefined}
           openThing={menu?.kind === "thing" ? "track" : null}
         >
           {TRADE.map(row)}
@@ -3077,7 +3076,7 @@ function DragDemo({ today }: { today: string }) {
     <div className="grid items-start gap-4 lg:grid-cols-2">
       <Toolbox target={sc.target} groups={toolGroups(used).filter((gr) => gr.kind === "charge" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
       <FeeBlock dot="bg-fee-trade" name={sc.trade}>
-        <ConditionBand things={[{ id: "what", name: sc.things.what }]}>
+        <ConditionBand things={[{ id: "what", name: sc.things.what }]} onThing={() => undefined}>
           <div className="px-3 pt-1">
             <SharedLine lead={dealWords.cases.onceLead.replace("{any}", dealWords.cases.any.what!)}>
               <span>
@@ -3142,7 +3141,7 @@ function CustodyTable({ today }: { today: string }) {
     </>
   );
   return (
-    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "held", name: sc.things.held }]} />}>
+    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "held", name: sc.things.held }]} onThing={() => undefined} />}>
       <CaseTable
         columns={[...cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id })), unnamed]}
         rows={[{ id: "price", cells: cols.map((c, k) => ({ from: k, span: 1, onOpen: () => setOpen(c.id), content: price(c.rate) })) }]}
@@ -3153,17 +3152,27 @@ function CustodyTable({ today }: { today: string }) {
   );
 }
 
-/** Custody by the size of the portfolio, as a ladder: three steps, each top typed in place, the steps meeting at it; "+ מדרגה" at the end. */
+/**
+ * Custody by the size of the portfolio, as a ladder: three steps meeting at their tops, the figures plain at rest and each top typed in
+ * place while a case is open; "+ מדרגה" at the end.
+ */
 function LadderTable({ today }: { today: string }) {
   const [tops, setTops] = useState([100_000, 500_000]);
+  const [open, setOpen] = useState<number | null>(null);
   const rates = [0.2, 0.15, 0.1];
-  const top = (k: number) => (
-    <span data-lift="" className="inline-block">
-      <FigureField value={entered(tops[k]!, "nis", today, g.sampleAbout)} label={dealWords.cases.stepTop} unit="₪" sign="₪" tight onCommit={(n) => setTops((t) => t.map((x, j) => (j === k ? n : x)))} />
-    </span>
-  );
-  // each head on one line where its column has the room, else wrapped inside it: "עד" with the step before's top as plain words, and the
-  // step's own top in its box with its sign
+  const value = (k: number) => entered(tops[k]!, "nis", today, g.sampleAbout);
+  // at rest a step's figures are drawn as a cell's; while a case is open, the step's own top is a box typed in place, with its sign
+  const top = (k: number) =>
+    open === null ? (
+      <span className="whitespace-nowrap">
+        <Num value={value(k)} />
+      </span>
+    ) : (
+      <span data-lift="" className="inline-block">
+        <FigureField value={value(k)} label={dealWords.cases.stepTop} unit="₪" sign="₪" tight onCommit={(n) => setTops((t) => t.map((x, j) => (j === k ? n : x)))} />
+      </span>
+    );
+  // each head on one line where its column has the room, else wrapped inside it: "עד" with the step before's top, and the step's own top
   const line = "flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1";
   const heads = [
     <div className={line}>
@@ -3172,24 +3181,24 @@ function LadderTable({ today }: { today: string }) {
     </div>,
     <div className={line}>
       <span className="whitespace-nowrap">
-        <bdi dir="ltr">{fmt.number(tops[0]!)}</bdi>
+        {open === null ? <Num value={value(0)} display={(n) => fmt.number(n)} /> : <bdi dir="ltr">{fmt.number(tops[0]!)}</bdi>}
         {dealWords.cases.stepBetween}
       </span>
       {top(1)}
     </div>,
     <div className={line}>
       <span className="whitespace-nowrap">{dealWords.cases.over.trim()}</span>
-      <bdi dir="ltr" className="whitespace-nowrap">{fmt.nisWhole(tops[1]!)}</bdi>
+      {open === null ? <span className="whitespace-nowrap"><Num value={value(1)} /></span> : <bdi dir="ltr" className="whitespace-nowrap">{fmt.nisWhole(tops[1]!)}</bdi>}
     </div>,
   ];
 
 
   return (
-    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "size", name: sc.things.portfolio }]} />}>
+    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "size", name: sc.things.portfolio }]} onThing={() => undefined} />}>
       <CaseTable
         ladder
-        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => undefined }))}
-        rows={[{ id: "price", cells: rates.map((r, k) => ({ from: k, span: 1, content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
+        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => setOpen((o) => (o === k ? null : k)), open: open === k }))}
+        rows={[{ id: "price", cells: rates.map((r, k) => ({ from: k, span: 1, onOpen: () => setOpen((o) => (o === k ? null : k)), content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
         add={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
       />
     </FeeBlock>
@@ -3205,7 +3214,7 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   const [track, setTrack] = useState("1");
   const cell = (id: string, rate: number, more?: ReactNode) => ({ onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)} {perAction}{more}</span> });
   return (
-    <FeeBlock dot="bg-fee-trade" name={sc.trade} by={<ConditionHead inline things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} />}>
+    <FeeBlock dot="bg-fee-trade" name={sc.trade} by={<ConditionHead inline things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} onThing={() => undefined} />}>
       <CaseGrid
         above={three && <SegmentedControl fit label={sc.things.track} options={sc.tracks.slice(0, 2).map((t, k) => ({ value: String(k + 1), label: t }))} value={track} onChange={setTrack} />}
         columns={[
@@ -3237,7 +3246,7 @@ function TradeGroups({ today }: { today: string }) {
   const part = (rate: number) => <PartChip kind="charge" figure={fig(rate, "pct_of_trade", today)} words={perAction} />;
   return (
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
-      <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }]}>
+      <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }]} onThing={() => undefined}>
         <CaseGroup head={sc.what.ta} shared={<span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} {sc.toAction}</span>}>
           <CaseRow when={[{ text: sc.channels.web }]} label={sc.open(sc.channels.web)} onOpen={() => undefined}>{part(0.5)}</CaseRow>
           <CaseRow when={[{ text: sc.channels.branch }]} label={sc.open(sc.channels.branch)} onOpen={() => undefined}>{part(0.55)}</CaseRow>
@@ -3319,6 +3328,7 @@ function LiftDemo({ today }: { today: string }) {
         <ConditionHead
           inline
           things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
+          onThing={() => undefined}
           zone={(h) => (
             <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
               {h}
@@ -3451,7 +3461,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
-        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name, a bin beside each thing; ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
+        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name; each thing a pill with its chevron, whose menu takes it away, no bin beside it (founder, 2026-11-20); ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
           <div className="max-w-xl">
             <TradeFee today={today} />
           </div>
@@ -3461,7 +3471,7 @@ function CaseDemos({ today }: { today: string }) {
             <TradeFee today={today} />
           </PhoneFrame>
         </State>
-        <State label="a range's cases, each with the range's icon; the things in the head editable (a pill with a chevron)" wide>
+        <State label="a range's cases, each with the range's icon; each thing in the head a pill with its chevron that opens its menu" wide>
           <div className="max-w-xl">
             <Conversion today={today} />
           </div>
@@ -3473,12 +3483,12 @@ function CaseDemos({ today }: { today: string }) {
             <CustodyTable today={today} />
           </div>
         </State>
-        <State label={`a range as a ladder: the steps ascending, each top typed in place and the next step starting at it; "+ מדרגה" at the end of the heads asks only for a boundary; ${g.states.interactive}`} wide>
+        <State label={`a range as a ladder: the steps ascending, the next step starting at each top; the heads' figures plain at rest, each top a box typed in place while a case is open (founder, 2026-11-20); "+ מדרגה" at the end of the heads asks only for a boundary; ${g.states.interactive}: a tile opens its case`} wide>
           <div className="max-w-2xl">
             <LadderTable today={today} />
           </div>
         </State>
-        <State label={`two things: a grid, the shekel minimum said once above it, a row's common maximum under its head, abroad on any channel spanning its row, a place no case holds as a slot; "+" a column at the end of the heads and a row under the row heads; ${g.states.interactive}: a cell opens its case`} wide>
+        <State label={`two things: a grid, each case a tile (founder, 2026-11-20), the column heads plain words over a line, a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
           <div className="max-w-2xl">
             <TradeGrid today={today} />
           </div>
@@ -3574,7 +3584,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet" use={g.uses.ValueMenus}>
-        <State label={`drawn in place; on the page each opens in ValueMenuSheet from its slot, ThingMenu from a thing of the band's head while its fee is open (the band above opens them), ${g.states.interactive}`} wide>
+        <State label={`drawn in place; on the page each opens in ValueMenuSheet from its slot, ThingMenu from a thing of a fee's head, the fee open or not (the band above opens them), ${g.states.interactive}`} wide>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {(["what", "track", "range", "thing"] as const).map((k) => (
               <Card key={k} pad="tight" className="min-w-0 bg-popover">

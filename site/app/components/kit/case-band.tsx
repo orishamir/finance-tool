@@ -31,31 +31,29 @@ const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shr
  */
 const pillEdge = (open: boolean) => (open ? "border-primary outline-1 outline-offset-0 outline-primary" : "border-when-pill");
 
-/** A thing of the band's head: its id, its name, and its bin's spoken name (a bin stands beside it where the head takes `onRemoveThing`). */
+/** A thing of the band's head: its id and its name. */
 export interface HeadThing {
   id: string;
   name: string;
-  removeLabel?: string;
   /** A grip that lifts the pill (two of a grid's things swap by a drop of one on the other), and the drop zone it stands in. */
   grip?: ReactNode;
   zone?: (pill: ReactNode) => ReactNode;
 }
 
 /**
- * The condition's head alone, in the cases' colour: the cases' icon, `label` ("המחיר משתנה לפי") and one pill per thing, nothing else. With
- * `onThing` the pills are slots, buttons with a chevron whose menu the page opens (`ThingMenu`: the thing's values, and the action that
- * drops it), `openThing` the one whose menu is open, ringed; without `onThing` they are words at rest. With `onRemoveThing` a bin beside
- * each pill, a slot or words, drops its thing at once (`removeLabel` its spoken name), so a thing can be taken away with its fee closed
- * too. Each pill and its bin stand in one element marked `data-thing-place` with the thing's id, where the page gives the focus back to
- * the first control after an undo. `inline`: the head stands on its fee's name's line (`FeeBlock`'s `by`), over a table or a grid, with no
- * frame or fill of its own and its words in the regular weight (founder, 2026-11-19); else it heads a band's rows. `zone` wraps the whole
- * head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone inside it takes what the pill
- * takes.
+ * The condition's head alone, in the cases' colour: the cases' icon, `label` ("המחיר משתנה לפי") and one pill per thing, nothing else.
+ * Each pill is a button with its chevron whose menu the page opens (`onThing`; `ThingMenu`: the thing's values, and the action that
+ * drops it), the fee open or not, so a thing is taken away from its own menu and no bin stands beside it (founder, 2026-11-20);
+ * `openThing` the one whose menu is open, ringed. Each pill stands in one element marked `data-thing-place` with the thing's id, where
+ * the page gives the focus back to its button after an undo. `inline`: the head stands on its fee's name's line (`FeeBlock`'s `by`), over
+ * a table or a grid, with no frame or fill of its own and its words in the regular weight (founder, 2026-11-19); else it heads a band's
+ * rows. `zone` wraps the whole head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone
+ * inside it takes what the pill takes.
  */
-export function ConditionHead({ things, onThing, openThing, onRemoveThing, label = copy.changesBy, inline, zone }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; inline?: boolean; zone?: (head: ReactNode) => ReactNode }) {
+export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, inline, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; inline?: boolean; zone?: (head: ReactNode) => ReactNode }) {
   const head = (
     // in a band, 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px
-    // between wrapped lines, so two bins' areas never meet
+    // between wrapped lines, so two pills' tap areas never meet
     <div className={cx("flex min-h-target flex-wrap items-center gap-y-3 text-sm text-when-ink", inline ? "gap-x-1.5" : "gap-x-2 px-3 py-2")}>
       <Split {...icon} />
       <span className={inline ? undefined : "font-medium"}>{label}</span>
@@ -63,15 +61,10 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
         const pill = (
         <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-full">
           {t.grip}
-          {onThing ? (
-            <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", pillEdge(openThing === t.id))}>
-              {t.name}
-              <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
-            </button>
-          ) : (
-            <span className="inline-flex min-h-[30px] items-center rounded-full border border-when-pill bg-card px-3 text-sm text-foreground">{t.name}</span>
-          )}
-          {onRemoveThing && t.removeLabel && <RemoveButton label={t.removeLabel} onRemove={() => onRemoveThing(t.id)} />}
+          <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", pillEdge(openThing === t.id))}>
+            {t.name}
+            <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
+          </button>
         </span>
         );
         return t.zone ? <span key={t.id}>{t.zone(pill)}</span> : pill;
@@ -85,7 +78,7 @@ export function ConditionHead({ things, onThing, openThing, onRemoveThing, label
  * The band, for cases read as rows (a phone, or a grid whose cases do not fall one to a place): its head (`ConditionHead`) and its rows as `children`
  * (`CaseRow`, `CaseGroup`, `OpenCase`, an `AddSlot` row), 4 px apart, in the cases' blue.
  */
-export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing?: (id: string, at: HTMLElement) => void; openThing?: string | null; onRemoveThing?: (id: string) => void; label?: ReactNode; zone?: (head: ReactNode) => ReactNode; children: ReactNode }) {
+export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode; children: ReactNode }) {
   return (
     <div className="@container overflow-hidden rounded-lg border border-when-edge bg-when-fill pb-1">
       <ConditionHead {...head} />

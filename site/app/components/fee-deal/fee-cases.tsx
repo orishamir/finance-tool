@@ -2,8 +2,8 @@
 // block has the room, its condition's head on the fee's name's line (`FeeBlock`'s `by`) and under it a table of its cases (one thing; a range as a ladder whose step tops are typed in
 // place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the case open
 // under them; on a block narrower than a computer's, the same cases as rows in the cases' band, a grid's in one group per value of its first thing,
-// a part one cell holds for every case said once above them. Each add is a plus knob beside the heads (at the end of the column heads,
-// under the row heads, and on the line between two heads, which adds exactly there; the head's menu adds before or after it), a row of
+// a part one cell holds for every case said once above them. Each add is a bare plus beside the heads (at the end of the column heads,
+// under the row heads), a plus knob on the line between two heads, which adds exactly there (the head's menu adds before or after it), a row of
 // its own after a band's rows: on a list thing's table and a grid's row and column it adds one value at once (`nextValue`: the site's
 // next, else one in the person's words, whose head opens for its name; what is bought or held asks once the site's run out,
 // `AskValuesOf`), and a head in the person's words is renamed by a double-click or its menu; on a split table it copies the open case (else the last); on a ladder it asks only the new boundary (`AskStep`),
@@ -38,6 +38,7 @@ import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
 import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
+import { Fig } from "./words";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
@@ -169,7 +170,7 @@ function Joined({ parts, bare, lines, off }: { parts: readonly SlimPart[]; bare?
  * the cases read as rows.
  */
 function fits(layout: FeeLayout, width: number): boolean {
-  const need = layout.shape === "table" ? 96 + layout.columns.length * (layout.ladder ? STEP_COLUMN : 128) + 96 : layout.shape === "grid" ? 152 + layout.columns.length * (layout.across.range ? STEP_COLUMN : 136) + 96 : Infinity;
+  const need = layout.shape === "table" ? 96 + layout.columns.length * (layout.ladder ? STEP_COLUMN : 128) + 96 : layout.shape === "grid" ? 128 + layout.columns.length * (layout.across.range ? STEP_COLUMN : 136) + 96 : Infinity;
   return layout.shape !== "rows" && (width >= need || width >= TABLE_ROOM);
 }
 
@@ -223,7 +224,7 @@ export function FeeCases({
    */
   children: (by: ReactNode, cases: ReactNode) => ReactNode;
 }) {
-  const { onOpen, onSlot, onThing, onRemoveCase, onRemoveBy, lift } = actions;
+  const { onOpen, onSlot, onThing, onRemoveCase, lift } = actions;
   const isOpen = open.fee === fee.id;
   const openCase = isOpen ? open.case : null;
   // the switch starts on the person's own case's value, where a case is theirs (their track), else on the first
@@ -585,7 +586,7 @@ export function FeeCases({
   /** A value's words in a head: a range's step as its bounds, its top typed in place; any other value as its words. */
   const headOf = (r: CaseRowView, t: number): ReactNode => {
     const b = r.bounds[t];
-    if (b) return <StepHead fee={fee} t={t} bounds={b} onFee={onFee} />;
+    if (b) return <StepHead fee={fee} t={t} bounds={b} open={isOpen} onFee={onFee} />;
     return (
       <>
         <WhenText words={r.when[t]!} />
@@ -618,7 +619,6 @@ export function FeeCases({
   const headThings = band.things.map((th) => ({
     id: String(th.thing),
     name: th.words,
-    removeLabel: c.thingMenu.stop.replace("{thing}", th.words),
     ...(fee.by.length > 1
       ? {
           grip: grip(
@@ -633,7 +633,8 @@ export function FeeCases({
         }
       : {}),
   }));
-  const head = { things: headThings, zone: (h: ReactNode) => zone([everyCase], `all:${fee.id}`, h), ...(isOpen ? { onThing: (id: string, at: HTMLElement) => onThing(Number(id), at), openThing: open.thing === null ? null : String(open.thing) } : {}), onRemoveThing: (id: string) => onRemoveBy(fee.id, Number(id)) };
+  // each pill opens its thing's menu, the fee open or not: its values, and the action that stops the price changing by it
+  const head = { things: headThings, zone: (h: ReactNode) => zone([everyCase], `all:${fee.id}`, h), onThing: (id: string, at: HTMLElement) => onThing(fee.id, Number(id), at), openThing: open.thing?.fee === fee.id ? String(open.thing.t) : null };
 
   /** A one-thing table read as rows: the parts one cell holds over every column, said once above the rows, led by the thing's any-words. */
   const onceLine = (once: readonly Shared[], t: number) => (once.length ? <SharedLine lead={c.onceLead.replace("{any}", c.any[fee.by[t]!.kind] ?? "")}>{saidJoined(once)}</SharedLine> : null);
@@ -1103,11 +1104,12 @@ function ThingSwitch({ fee, values, chosen, words, mine, onChange }: { fee: Case
 
 /**
  * A ladder's step as its head says it: "עד {top}", "{bottom} עד {top}", or "מעל {bottom}", on one line where its column has the room, else
- * wrapped inside it, each number held to its currency's sign and "עד" to the number before it, never past the column. The top is a box
- * typed in place, its sign inside it on the number's right, kept above the top before it and below the one after; the bottom is plain words, the step before's top, so moving that
- * top moves it too and the steps keep no gap or overlap.
+ * wrapped inside it, each number held to its currency's sign and "עד" to the number before it, never past the column. At rest its figures
+ * are drawn as a cell's are, each in its own state (founder, 2026-11-20); while its fee is open (`open`) the top is a box typed in place,
+ * its sign inside it on the number's right, kept above the top before it and below the one after, and the bottom is plain words, the step
+ * before's top, so moving that top moves it too and the steps keep no gap or overlap.
  */
-function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; onFee: (f: Fee) => void }) {
+function StepHead({ fee, t, bounds, open, onFee }: { fee: CasesFee; t: number; bounds: StepBounds; open: boolean; onFee: (f: Fee) => void }) {
   const b = fee.by[t]!;
   const c = copy.cases;
   if (!isRange(b)) return null;
@@ -1116,7 +1118,7 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
     return (
       <div className="flex min-w-0 flex-wrap items-center gap-x-1">
         <span className="whitespace-nowrap">{c.over.trim()}</span>
-        <bdi className="whitespace-nowrap">{numText(bounds.from!)}</bdi>
+        {open ? <bdi className="whitespace-nowrap">{numText(bounds.from!)}</bdi> : <span className="whitespace-nowrap"><Fig value={bounds.from!} /></span>}
       </div>
     );
   const next = b.tops[bounds.step + 1]?.v ?? null;
@@ -1126,24 +1128,29 @@ function StepHead({ fee, t, bounds, onFee }: { fee: CasesFee; t: number; bounds:
       <span className="whitespace-nowrap">
         {bounds.from ? (
           <>
-            <bdi dir="ltr">{fmt.number(low)}</bdi>
+            {open ? <bdi dir="ltr">{fmt.number(low)}</bdi> : <Num value={bounds.from} display={(n) => fmt.number(n)} />}
             {c.stepBetween}
           </>
         ) : (
           c.upTo
         )}
       </span>
-      {/* the top's sign in its box, on the number's right, as every figure writes its unit (design-system 2.7) */}
-      <FigureField
-        value={bounds.to}
-        label={c.stepTop}
-        unit={sign}
-        sign={sign}
-        tight
-        validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
-        onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
-      />
+      {open ? (
+        // the top's sign in its box, on the number's right, as every figure writes its unit (design-system 2.7)
+        <FigureField
+          value={bounds.to}
+          label={c.stepTop}
+          unit={sign}
+          sign={sign}
+          tight
+          validate={(n) => (n > low && (next === null || n < next) ? null : c.stepTopRange(fmt.number(low), next === null ? null : fmt.number(next)))}
+          onCommit={(n) => onFee(setTop(fee, t, bounds.step, n))}
+        />
+      ) : (
+        <span className="whitespace-nowrap">
+          <Fig value={bounds.to} />
+        </span>
+      )}
     </div>
   );
 }
-

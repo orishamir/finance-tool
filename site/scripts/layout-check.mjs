@@ -34,8 +34,8 @@
 //            or a part line is carried with the pointer still or moving a pixel and back (2026-11-15: the bin's room and each preview's
 //            height moved the page, and a cell sliding past a grid's foot gave the grid a scrollbar for the slide), a fee's table with a
 //            scrollbar down at rest, and the page scrolling by the screen's foot or top other than steadily toward that edge.
-//   lines    on the kit page and the fee page's deal at 1440, a fee grid's hairline (`data-hairline`, kit/case-table.tsx) over a cell, a
-//            part line or a head's words, or one that takes a press (2026-11-17: the grid's hairlines between its rows and columns).
+//   lines    on the kit page and the fee page's deal at 1440, a fee grid's line between two rows (`data-hairline`, kit/case-table.tsx)
+//            over a tile, a part line or a head's words, or one that takes a press (2026-11-20: the line between two rows' heads only).
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -192,8 +192,8 @@ async function keysCheck() {
 }
 
 /**
- * The hairlines of the fee grids (`lines` above), on the kit page and the fee page's deal at 1440, after a grid with a hairline over its
- * cells is planted on the kit page (a copy of the kit's first grid) and caught. Returns what failed, each with the page it was found on,
+ * The hairlines of the fee grids (`lines` above), on the kit page and the fee page's deal at 1440, after a grid with a hairline over a
+ * row's head is planted on the kit page (a copy of the kit's first grid) and caught. Returns what failed, each with the page it was found on,
  * the planted grid's catch among them as a miss where it was not caught.
  */
 async function linesCheck() {
@@ -206,18 +206,19 @@ async function linesCheck() {
   if (!kit.hairlines) found.push({ where: "/kit", detail: "no fee grid draws a hairline" });
   for (const detail of kit.findings) found.push({ where: "/kit", detail });
   await page.evaluate(() => {
-    const grid = [...document.querySelectorAll("[data-case-grid]")].find((g) => g.querySelector('[data-hairline="column"]'));
+    const grid = [...document.querySelectorAll("[data-case-grid]")].find((g) => g.querySelector('[data-hairline="row"]'));
     if (!grid) return;
     const copy = grid.cloneNode(true);
     copy.id = "planted-lines";
     for (const el of copy.querySelectorAll("[id]")) el.id = `planted-${el.id}`;
     document.querySelector("main").append(copy);
-    // the tallest hairline between two columns, moved from the gap into the cells of the column after it
-    const line = [...copy.querySelectorAll('[data-hairline="column"]')].sort((a, b) => b.getBoundingClientRect().height - a.getBoundingClientRect().height)[0];
-    if (line) line.style.insetInlineStart = "24px";
+    // the line between the first two rows, moved from the room between them down onto the second row's head's words
+    const line = copy.querySelector('[data-hairline="row"]');
+    const words = line && copy.querySelectorAll("[role=rowheader] [data-head-words]")[1];
+    if (words) line.style.translate = `0 ${words.getBoundingClientRect().top + 10 - line.getBoundingClientRect().top}px`;
   });
   const planted = await page.evaluate(gridLines, "#planted-lines");
-  if (!planted.findings.some((f) => f.includes("a hairline"))) found.push({ where: "/kit", detail: "self-test: the lines check did not catch the hairline planted over a grid's cells" });
+  if (!planted.findings.some((f) => f.includes("a hairline"))) found.push({ where: "/kit", detail: "self-test: the lines check did not catch the hairline planted over a grid's row head" });
   await ctx.close();
   const file = join(here, "layout-check-deal.txt");
   if (existsSync(file)) {

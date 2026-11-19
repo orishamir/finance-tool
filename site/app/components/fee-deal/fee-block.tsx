@@ -1,8 +1,8 @@
 // One fee's block in the fees' column (method §10.6, `builder`'s `block`): a fee whose price changes by nothing is one slim line, its parts
 // after its name, a later price's after the month the first ends; a fee whose price changes holds its cases laid out by its shape
 // (fee-cases.tsx), every case shown. The fee or case open shows its slots, its parts with their
-// boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name, and the things of its head open
-// their values. Each thing of the head has a bin beside it, the fee open or not. The question of a thing being added stands in the open
+// boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name. Each thing of the head opens its
+// menu, the fee open or not: its values, and the action that stops the price changing by it. The question of a thing being added stands in the open
 // fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee,
 // and a thing to change by on the open fee's block, or on one case's head, which splits that case alone (`ToolDrop`). A thing lifted by
 // its grip drops on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.
@@ -39,8 +39,8 @@ export interface OpenHere {
   view: OpenCaseView | null;
   /** The slot whose menu is open: its thing's place among the fee's things. */
   menu: number | null;
-  /** The thing of the band's head whose menu is open: its place among the fee's things. */
-  thing: number | null;
+  /** The thing of a band's head whose menu is open, the fee open or not: its fee, and its place among the fee's things. */
+  thing: { fee: string; t: number } | null;
 }
 
 /** What a fee's block hands to the page: a fee or a case opened, a slot or a thing tapped, a case or a later price taken away, a part asked. */
@@ -49,13 +49,11 @@ export interface BlockActions {
   onOpen: (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => void;
   /** A slot of the open case tapped, at the pill it opens from; again, its menu closes. */
   onSlot: (t: number, at: HTMLElement) => void;
-  /** A thing of the open fee's band head tapped, at its pill; again, its menu closes. */
-  onThing: (t: number, at: HTMLElement) => void;
+  /** A thing of a fee's band head tapped, at its pill, the fee open or not; again, its menu closes. */
+  onThing: (feeId: string, t: number, at: HTMLElement) => void;
   onRemoveCase: (feeId: string, caseId: string) => void;
   /** The open fee's bin: the fee taken away, kept for the undo. */
   onRemoveFee: (feeId: string) => void;
-  /** A thing's bin in a fee's band head: the price stops changing by it, kept for the undo. */
-  onRemoveBy: (feeId: string, t: number) => void;
   /** Where a part or a thing dragged from the toolbox drops. */
   drop: ToolDrop;
   /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
