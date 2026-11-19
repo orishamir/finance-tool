@@ -26,7 +26,7 @@ import { dealCases, feeDeal as copy } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
-import { slotEdit, thingMenu } from "../../lib/fee-deal/things";
+import { slotEdit, thingMenu, usualBy } from "../../lib/fee-deal/things";
 import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
 import { hasCases, newDeal, pricedOf, toolPrice, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
@@ -41,7 +41,7 @@ import { feeRoom } from "../../lib/fee-deal/limits";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
-import { fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
+import { addByKept, fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
 import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolToCases } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -260,6 +260,14 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (menuOpen) menuOpen.addEventListener("close", () => kept(r), { once: true });
     else kept(r);
   };
+  // a thing added from the toolbox: a list or a track splits the fee at once into its usual values, kept for the undo, whose line says
+  // what it split into, and its heads rename them; a range or a condition of the person's own asks first, as does a split of one case
+  const onAddBy = (feeId: string, kind: ByKind) => {
+    const n = usualBy(kind);
+    const r = n ? addByKept(deal, feeId, n, chosen) : null;
+    if (r) kept(r);
+    else oc.ask.onAsk(kind);
+  };
   // a thing the fee changes by, tapped again in the toolbox: as its bin in the band
   const onStopBy = (feeId: string, kind: ByKind) => {
     const fee = deal.fees.find((f) => f.id === feeId);
@@ -332,7 +340,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const on = at ?? caseId;
       if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
       applyTool(item, fee, on, toolPrice(pricedOf(fee, on ?? undefined), on === caseId ? editingK : undefined), {
-        onAsk: oc.ask.onAsk,
+        onAsk: (kind) => onAddBy(feeId, kind),
         onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
         onForm: (part) => onForm(feeId, part, on),
         onPart: onPart(fee),
@@ -402,7 +410,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         line={lines.fill}
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
-        onAsk={oc.ask.onAsk}
+        onAsk={(kind) => onAddBy(chosenFee.id, kind)}
         onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k })}
         onFee={onFee}
         onPart={onPart(chosenFee)}

@@ -256,7 +256,7 @@ export function ToolboxCard({ cardRef, onClose, children }: { cardRef: RefObject
     <div
       ref={cardRef}
       data-keep-clear=""
-      className="come-in col-start-2 row-start-1 sticky top-20 rounded-lg"
+      className="come-in col-start-2 row-start-1 sticky top-20 rounded-lg scrollbar-quiet"
       onKeyDown={(e) => {
         if (e.key === "Escape" && !e.defaultPrevented) {
           e.preventDefault();

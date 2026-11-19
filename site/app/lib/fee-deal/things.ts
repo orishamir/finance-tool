@@ -2,12 +2,30 @@
 // what adding it does to the cases, a slot's choices, and a thing's menu. Every word is from the copy; a component only lays them out.
 import { feeDeal as copy } from "../../copy";
 import { hasCases, isRange, namesPlaces, thingValues, type Fee } from "./model";
-import { canAddBy, ownKept, removeBy } from "./edits/case";
+import { canAddBy, newBy, ownKept, removeBy, type NewBy } from "./edits/case";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, CONDITIONS, isPlaceKind, isRangeKind, isWordsKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { thingName, valueWords, whenWords, type WhenWords } from "./case-words";
 
 // ---------------------------------------------------------------- adding a thing, and a case's slot opened
+
+/** The values a thing of a list or a track is split into at one tap (the founder's choice, 2026-11-19): the two most price lists name first. */
+const USUAL: Partial<Record<ByKind, readonly string[]>> = {
+  channel: ["direct", "branch"],
+  what: ["tase", "us"],
+  held: ["tase", "us"],
+  currency: ["USD", "EUR"],
+  track: copy.cases.usualTracks,
+};
+
+/**
+ * The thing a tap in the toolbox adds at once, split into its usual values, each renamed or added to in its head afterwards; null for a
+ * range (it needs its top) and a condition of the person's own (it needs its name), which ask first (`byQuestion`).
+ */
+export function usualBy(kind: ByKind): NewBy | null {
+  const values = USUAL[kind];
+  return values ? newBy(kind, { values: [...values], own: [], label: "", top: null, unit: null }) : null;
+}
 
 /** A range's unit as a choice says it: a currency's sign, or the words for units or actions. */
 const unitWords = (u: RangeUnit): string => (u === "units" || u === "actions" ? copy.cases.units[u]! : (copy.panel.signs[u] ?? u));

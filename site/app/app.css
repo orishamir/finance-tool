@@ -1529,6 +1529,15 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
+  /* A column that scrolls inside itself (the toolbox beside the fees): a thin thumb in the fields' edge grey on no track, lighter under
+     the pointer, in place of the browser's wide grey bar (founder, 2026-11-19). */
+  .scrollbar-quiet {
+    scrollbar-width: thin;
+    scrollbar-color: var(--input) transparent;
+  }
+  .scrollbar-quiet:hover {
+    scrollbar-color: var(--muted-foreground) transparent;
+  }
 }
 
 /* Under a table's caption row (ProductTable `band`), a head's "?" takes its 44 px from 4 px over its line downward, as a sorting head's

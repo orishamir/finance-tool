@@ -8,7 +8,7 @@ import { actionCost, dealMarks } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
 import { nisPerNumber } from "../fx";
 import { builder } from "./rows";
-import { byQuestion, copiesWords, slotEdit, thingMenu } from "./things";
+import { byQuestion, copiesWords, slotEdit, thingMenu, usualBy } from "./things";
 import { panel } from "./panel";
 import { toolbox } from "./toolbox";
 import { picksOf, readFee, readFees } from "./cases";
@@ -23,7 +23,7 @@ import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal
 import { readDealFor, sumsLargest } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
-import { removeByKept, removeCaseKept, undo, undoWords } from "./undo";
+import { addByKept, removeByKept, removeCaseKept, undo, undoWords } from "./undo";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -664,6 +664,21 @@ describe("a thing of the band's head, opened", () => {
     expect(thingMenu(read(one), "fee-trade", 0)!.after).toBe(copy.cases.thingMenu.slim);
     const apart: CasesFee = { ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") };
     expect(thingMenu(read({ ...deal(), fees: [apart] }), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.kept);
+  });
+  it("splits a fee at one tap into a list's or a track's usual values, kept for the undo; a range or an own condition asks first", () => {
+    expect(usualBy("actionSize")).toBeNull();
+    expect(usualBy("own")).toBeNull();
+    const slim: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] }] };
+    const r = addByKept(slim, "f", usualBy("channel")!, null)!;
+    const split = r.deal.fees[0] as CasesFee;
+    expect(split.by).toEqual([{ kind: "channel", values: ["direct", "branch"] }]);
+    expect(split.cases.map((c) => c.when)).toEqual([[["direct"]], [["branch"]]]);
+    expect(undoWords(r.undo, () => "", data)).toMatch(/^המחיר משתנה עכשיו לפי .+: .+ · .+\./);
+    expect(undo(r.deal, r.undo, null)!.deal).toEqual(slim);
+    // a track is named by the copy's two names, renamed later in its heads; a fee that changes by it already takes nothing
+    const t = addByKept(r.deal, "f", usualBy("track")!, null)!;
+    expect((t.deal.fees[0] as CasesFee).cases).toHaveLength(4);
+    expect(addByKept(t.deal, "f", usualBy("track")!, null)).toBeNull();
   });
   it("leaves an undo line that names the thing and says what the change did, with the count of cases as its menu did", () => {
     const words = (d: FeeDeal, t: number) => {

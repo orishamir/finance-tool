@@ -2077,6 +2077,10 @@ export const feeDeal = {
      * The line a thing taken away leaves (undo.ts), naming it as the menu did: how many cases merged into how many, that none merged, or
      * that the fee kept one case's price, the person's track's where a case is theirs (`slimOwn`), else the first case's.
      */
+    /** A thing added at one tap from the toolbox, split at once into its usual values (things.ts `usualBy`), on its undo line. */
+    byAdded: "המחיר משתנה עכשיו לפי {thing}: {values}. את הערכים משנים ומוסיפים בכותרות.",
+    /** The two tracks a fee is split into at one tap, renamed in their heads. */
+    usualTracks: ["מסלול 1", "מסלול 2"],
     byRemoved: {
       merged: "המחיר כבר לא משתנה לפי {thing}: {from} מקרים הם עכשיו {to}.",
       kept: "המחיר כבר לא משתנה לפי {thing}. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.",
