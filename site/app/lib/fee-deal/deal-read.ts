@@ -1,20 +1,20 @@
 // What every view of a deal is built from (method §10.6): the deal read once by the engine (F-110) for the reading's picks (F-114), each
-// price as the page shows it with its figures in their number states, each price's standing against the cap (F-113), the marks (F-112) and
-// what a fee is charged on (F-111). The views (glance.ts, rows.ts, panel.ts, reading.ts) only arrange these.
-import { chargedOn, dealPeriods, groupAction, holdingCost, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealGroup, type DealMark, type DealPeriod, type DealReading, type DealSide } from "@finance-tool/engine";
+// price as the page shows it with its figures in their number states, each price's standing against the cap (F-113) and what a fee is
+// charged on (F-111). The views (rows.ts, panel.ts, reading.ts, charts.ts) only arrange these.
+import { chargedOn, dealPeriods, groupAction, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealReading } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type BanSaid, type DealKind, type Standing } from "./kinds";
-import { feeInOrder, feePriced, fraction, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
-import { boundsAction, charged, onAction } from "./offers/capabilities";
+import { feeInOrder, feePriced, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
+import { charged, onAction } from "./offers/capabilities";
 import { banFor, type Ban } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
-import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures, type Unit } from "./values";
+import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures } from "./values";
 
 /**
  * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, its sums printed for
- * other currencies than the trade's, no case for the picks, or a price not given yet. Its card and its line in the glance both say this one reason.
+ * other currencies than the trade's, no case for the picks, or a price not given yet. Its card and its line in what the reading leaves out both say this one reason.
  */
 export const unreadReason = (x: { banned?: BanSaid | undefined; noCurrency?: boolean; notPrinted?: boolean; unmatched?: boolean }): "banned" | "noCurrency" | "notPrinted" | "unmatched" | "noPrice" =>
   x.banned ? "banned" : x.noCurrency ? "noCurrency" : x.notPrinted ? "notPrinted" : x.unmatched ? "unmatched" : "noPrice";
@@ -104,13 +104,6 @@ export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: st
   const fees = read.fees.filter((f) => kept(feeOf(f)) && !unread.includes(feeOf(f)) && !unpriced.includes(feeOf(f))).map((f) => (copied[feeOf(f)] ? { ...f, from: copied[feeOf(f)] } : f));
   const engine = engineDeal(deal, fees, read.picks);
   return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month, copied };
-}
-
-/** The read deal restricted to some of its fees (by index), for a reading of those alone (what holds throughout, F-111 on them). */
-export function subRead(r: DealRead, idx: readonly number[]): { engine: Deal; period: DealPeriod; fees: ReadFee[] } {
-  const engine: Deal = { ...r.engine, fees: idx.map((i) => r.engine.fees[i]!) };
-  const p = r.reading.periods[0]!;
-  return { engine, period: { ...p, prices: idx.map((i) => p.prices[i]!) }, fees: idx.map((i) => r.fees[i]!) };
 }
 
 // ---------------------------------------------------------------- one price
@@ -271,111 +264,6 @@ export function groupOn(r: Pick<DealRead, "engine">, fee: ReadFee, p: Price): Gr
 
 export const groupKey = (g: GroupOn): string => (g.on === "action" ? `action:${g.action ?? "none"}` : g.on);
 
-// ---------------------------------------------------------------- the marks
-
-/**
- * A mark of F-112 as the page states it, each part on the stretch of the amount where it decides the fee's price (in the price's
- * currency, `currency`; a sum is said in it, and a count of units where `units` is set). `min`: the minimum (`bound`) decides on every
- * action up to `amount`, measured against the rate (`rate`: a share, or a sum per unit, whose minimum is then reached at a number of units),
- * from `from` where a flat price or a percent maximum decides before it. `max`: the maximum decides above `amount`. `cap`: the percent
- * maximum (`bound`, a share of the action) decides up to `amount`, where it meets the bound it caps (`meets`: the minimum, or the maximum
- * where the cap is below the rate), from `from` where a flat price decides before it; on a sum per action (`sum`), up to where it meets
- * the sum, above which the sum is charged. `flat`: the flat price (`bound`) decides on every
- * action up to its sum (`amount`, the figure as typed or filled). `meet`: the yearly sums on the account added, the custody fees' yearly
- * rates added, the value held on which the two are equal, and whether below it the sums are the largest cost of holding (`sumsLargest`).
- * `edge` (F-115): the top of a step of a price that changes by size (`amount`, the range's figure), above which the next step's price
- * takes over; `fee` is the step's.
- */
-export type MarkView =
-  | { kind: "min" | "max"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; rate: SiteValue; amount: SiteValue; from?: SiteValue; units?: true }
-  | { kind: "edge"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; amount: SiteValue }
-  | { kind: "cap"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; meets: SiteValue; amount: SiteValue; from?: SiteValue; sum?: true }
-  | { kind: "flat"; on: "action" | "held"; fee: FeeRef; side: DealSide; currency: string; bound: SiteValue; amount: SiteValue }
-  | { kind: "meet"; on: "held"; fees: FeeRef[]; against: FeeRef[]; sum: SiteValue; rate: SiteValue; amount: SiteValue; largest: boolean };
-
-/** A mark that names one fee's part: a minimum, a maximum, a percent maximum or a flat price. */
-export type FeeMark = Exclude<MarkView, { kind: "meet" | "edge" }>;
-
-/**
- * Whether the sums per period of a meet mark (F-112 (3)) are the largest cost of holding on every value below its sum `B`: F-112 says
- * only that they are larger than custody there, and the other shares of what is held (a fund's own fee, a manager's) may cost more. Each
- * such share's yearly cost rises with the value or stays (a rate with its bounds), and the sums stay, so it holds below `B` exactly where
- * each other share, priced at `B` as the holding curve prices it (its bounds included, and a step of the value held in another currency at
- * the curve's rates, `rates`, F-115), costs no more than the sums.
- */
-export function sumsLargest(engine: Deal, period: DealPeriod, m: Extract<DealMark, { kind: "meet" }>, rates: Readonly<Record<string, number>> = {}): boolean {
-  const cost = holdingCost(engine, period, m.amount, rates);
-  const sums = cost.parts.filter((x) => m.fees.includes(x.fee)).reduce((a, x) => a + x.cost, 0);
-  return cost.parts.every((x) => m.fees.includes(x.fee) || m.against.includes(x.fee) || x.cost <= sums);
-}
-
-/**
- * A mark of the engine on fees `fees` (the engine's indices into them) in a period, as the page states it; `largest`, for a meet mark,
- * whether its sums are the largest cost of holding below it (`sumsLargest`, read by the caller over the periods the mark is said for).
- */
-export function markView(m: DealMark, fees: readonly ReadFee[], period: DealPeriod, today: string, largest = false): MarkView {
-  if (m.kind === "edge") {
-    const fee = fees[m.fee]!;
-    const top = fee.read?.step?.to;
-    return { kind: "edge", on: m.on, fee: refOf(fee, today), side: m.side, currency: m.currency, amount: top ? figure(top, sumUnit(m.currency), today) : reading(m.amount, sumUnit(m.currency), "F-115", {}, today) };
-  }
-  if (m.kind === "meet") {
-    const yearly = (i: number) => priceView(fees, i, priceAt(fees[i]!, period.from), today).yearly!;
-    const sumIn = Object.fromEntries(m.fees.map((i) => [inputKey(fees, i, "yearly"), yearly(i)]));
-    const rateIn = Object.fromEntries(m.against.map((i) => [inputKey(fees, i, "yearly"), yearly(i)]));
-    const sum = m.fees.length === 1 ? yearly(m.fees[0]!) : reading(m.sum, "nis", "F-111", sumIn, today);
-    const rate = m.against.length === 1 ? yearly(m.against[0]!) : reading(m.rate * 100, "pct_per_year", "F-111", rateIn, today);
-    return { kind: "meet", on: "held", fees: m.fees.map((i) => refOf(fees[i]!, today)), against: m.against.map((i) => refOf(fees[i]!, today)), sum, rate, amount: reading(m.amount, "nis", "F-112", { account_sums: sum, custody_rate: rate }, today), largest };
-  }
-  const fee = fees[m.fee]!;
-  const price = priceAt(fee, period.from, m.side === "sell");
-  const figures = priceFigures(fee, price, today);
-  const sums = m.on === "held" ? "nis" : sumUnit(m.currency);
-  const head = { on: m.on, fee: refOf(fee, today), side: m.side, currency: m.currency };
-  const key = (field: "min" | "max" | "cap" | "flat" | "upTo") => inputKey(fees, m.fee, field);
-  if (m.kind === "flat") return { kind: "flat", ...head, bound: figures.flat!, amount: figures.upTo! };
-  // where the stretch starts: the flat price's sum as given, or the cap's stretch's end, worked out as its own mark is
-  const from = m.from === undefined ? {} : { from: boundsAction(price) && price.flat && near(m.from, price.flat.upTo.v) ? figures.upTo! : capEnd(figures, m.from, sums, (f) => key(f), today) };
-  // a sum per action's percent maximum decides up to where it meets the sum the engine charges, after a discount off it (F-116):
-  // `(1 − d) × amount / cap`, in the sum's currency
-  if (m.kind === "cap" && price.form === "perAction") {
-    const d = price.discount ? figures.discount : undefined;
-    const off = d ? { [inputKey(fees, m.fee, "discount")]: d } : {};
-    const charged = d ? reading(price.amount.v * (1 - (d.value as number) / 100), figures.amount!.unit as Unit, "F-116", { [inputKey(fees, m.fee)]: figures.amount!, ...off }, today) : figures.amount!;
-    return { kind: "cap", ...head, bound: figures.cap!, meets: charged, amount: reading(m.amount, sums, "F-112", { [inputKey(fees, m.fee)]: figures.amount!, [key("cap")]: figures.cap!, ...off }, today), sum: true };
-  }
-  if (m.kind === "cap") {
-    // the cap meets the minimum where it gives way to it, or the maximum where it gives way to that: the minimum the engine charges, after a
-    // discount off it (F-116)
-    const charged = m.side === "sell" ? (period.prices[m.fee]!.sale ?? period.prices[m.fee]!.price) : period.prices[m.fee]!.price;
-    const min = "min" in charged ? charged.min : undefined;
-    const meets = figures.min && min !== undefined && near(m.amount * fraction(figures.cap!.value as number), min) ? { field: "min" as const, v: figures.min } : { field: "max" as const, v: figures.max ?? figures.min! };
-    const discount = meets.field === "min" && figures.discount && onAction(price) && price.discount?.alsoMin ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {};
-    return { kind: "cap", ...head, bound: figures.cap!, meets: meets.v, amount: reading(m.amount, sums, "F-112", { [key(meets.field)]: meets.v, [key("cap")]: figures.cap!, ...discount }, today), ...from };
-  }
-  const bound = chargeBound(price, (m.kind === "min" ? figures.min : figures.max)!, key(m.kind), today);
-  // a held share's bound is per charge, so its mark is where one charge's share meets it: the rate of a charge, `rate × every / per`
-  const rate = price.form === "held" && price.per !== price.every ? reading((price.rate.v * price.every) / price.per, "pct_of_balance_per_period", "F-111", { [inputKey(fees, m.fee)]: figures.rate! }, today) : (figures.rate ?? figures.amount)!;
-  const inputs = { [key(m.kind)]: bound, [inputKey(fees, m.fee)]: rate, ...(figures.cap ? { [key("cap")]: figures.cap } : {}), ...(figures.discount ? { [inputKey(fees, m.fee, "discount")]: figures.discount } : {}) };
-  return { kind: m.kind, ...head, bound, rate, amount: reading(m.amount, m.units ? "count" : sums, "F-112", inputs, today), ...from, ...(m.units ? { units: true as const } : {}) };
-}
-
-/**
- * A held share's bound as one charge's (F-14): where the list prints it per month and the share is charged every few months, the months of
- * a charge times it, a figure worked out from the printed one (keyed `key`); else the bound as given.
- */
-export function chargeBound(price: Price, given: SiteValue, key: string, today: string): SiteValue {
-  if (price.form !== "held" || !price.boundsEvery || price.boundsEvery === price.every) return given;
-  return reading(((given.value as number) * price.every) / price.boundsEvery, "nis", "F-14", { [key]: given }, today);
-}
-
-const near = (a: number, b: number): boolean => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b));
-
-/** The end of a percent maximum's stretch as a reading (F-112): the minimum over the cap. */
-function capEnd(figures: PriceFigures, amount: number, unit: Unit, key: (f: "min" | "cap") => string, today: string): SiteValue {
-  return reading(amount, unit, "F-112", { ...(figures.min ? { [key("min")]: figures.min } : {}), ...(figures.cap ? { [key("cap")]: figures.cap } : {}) }, today);
-}
-
 /** A fee's price (or its sale's) in the month `at`. */
 export function priceAt(fee: Pick<SlimFee, "stages" | "sale">, at: CalendarMonth, sale = false): Price {
   const stages = sale && fee.sale ? fee.sale : fee.stages;
@@ -384,32 +272,6 @@ export function priceAt(fee: Pick<SlimFee, "stages" | "sale">, at: CalendarMonth
 
 /** Whole months from `a` to `b` as a reading of F-110 (how far a change point is, how long a period lasts). */
 export const monthsValue = (a: CalendarMonth, b: CalendarMonth, today: string): SiteValue => reading(monthsBetween(a, b), "months", "F-110", {}, today);
-
-// ---------------------------------------------------------------- what adds
-
-/** The key of a group of F-111 as the views key their groups. */
-export const engineGroupKey = (g: DealGroup): string => (g.on === "held" ? "held" : `action:${g.action}`);
-
-/**
- * A group's rate of F-111 in the period from `at` (fees are the engine's fees, by index): the one fee's own figure where only one adds and
- * its price has no discount or third party's share, else their sum, computed from each fee's figure (a share of what is held as its yearly
- * rate, a share of an action as its rate) and each discount's share and third party's rate (F-116, F-117).
- */
-export function groupRateValue(fees: readonly ReadFee[], g: DealGroup, at: CalendarMonth, today: string): SiteValue {
-  const side = g.on === "action" ? g.side : "all";
-  const viewOf = (i: number) => priceView(fees, i, priceAt(fees[i]!, at, side === "sell"), today);
-  const plain = (i: number) => !viewOf(i).figures.discount && !viewOf(i).figures.third;
-  if (g.fees.length === 1 && plain(g.fees[0]!)) return mainOf(viewOf(g.fees[0]!))!;
-  const unit: Unit = g.on === "held" ? "pct_per_year" : g.action === "deposit" ? "pct_of_deposit" : "pct_of_trade";
-  const inputs: Record<string, SiteValue> = {};
-  for (const i of g.fees) {
-    const v = viewOf(i);
-    inputs[inputKey(fees, i)] = mainOf(v)!;
-    if (v.figures.discount) inputs[inputKey(fees, i, "discount")] = v.figures.discount;
-    if (v.figures.third && v.parts?.third?.form === "action") inputs[inputKey(fees, i, "third")] = v.figures.third;
-  }
-  return reading(g.rate * 100, unit, g.fees.length === 1 ? (viewOf(g.fees[0]!).figures.discount ? "F-116" : "F-117") : "F-111", inputs, today);
-}
 
 /** The month before `m`. */
 export const monthBefore = (m: CalendarMonth): CalendarMonth => (m.m === 1 ? { y: m.y - 1, m: 12 } : { y: m.y, m: m.m - 1 });

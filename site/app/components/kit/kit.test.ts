@@ -13,7 +13,7 @@ import { KitGallery } from "./gallery";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
 import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
-import { markLabels } from "./amount-chart";
+import { markLabels } from "./share-chart";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -338,7 +338,7 @@ describe("AbroadNote", () => {
   });
 });
 
-describe("AmountChart's mark labels", () => {
+describe("ShareChart's mark labels", () => {
   it("go a row higher, joined to their point, where moving past the value axis's words would put one on the label before it", () => {
     const axis = [{ right: 30, top: -1000, bottom: 1000 }];
     const [a, b] = markLabels([{ cx: 5, cy: 200, half: 20 }, { cx: 60, cy: 200, half: 20 }], axis, 600);

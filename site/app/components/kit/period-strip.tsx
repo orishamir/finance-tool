@@ -65,3 +65,21 @@ export function PeriodStrip({ years, segments, today, word, label }: { years: nu
     </div>
   );
 }
+
+/**
+ * A deal's periods as stops on one line, a stop a period at the start of its column (`stops` columns, in reading order): the stop of the
+ * period today is in (`current`) filled, and the line through that period lit; the last period's line runs on to the end, as it has none.
+ * Not a control. The columns under it hold the periods' words, as many as its stops.
+ */
+export function PeriodTrack({ stops, current }: { stops: number; current: number }) {
+  return (
+    <div aria-hidden="true" className="grid items-center" style={{ gridTemplateColumns: `repeat(${stops}, minmax(0, 1fr))` }}>
+      {Array.from({ length: stops }, (_, k) => (
+        <span key={k} className="relative flex h-4 items-center">
+          <span className={cx("absolute inset-x-0 h-0.5 rounded-full", k === current ? "bg-primary" : "bg-border")} />
+          <span className={cx("relative size-3 rounded-full border-2", k === current ? "border-primary bg-primary" : "border-muted-foreground bg-card")} />
+        </span>
+      ))}
+    </div>
+  );
+}

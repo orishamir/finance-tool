@@ -17,10 +17,10 @@ import { editPrice } from "./edits/stage";
 import { withFigure } from "./edits/price";
 import { setPart } from "./offers/parts";
 import { providentFamily } from "./offers/rules";
-import { glance } from "./glance";
+import { leftOut } from "./left-out";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
-import { readDealFor, sumsLargest } from "./deal-read";
+import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
 import { addByKept, changeFormKept, removeByKept, removeCaseKept, undo, undoWords } from "./undo";
@@ -144,7 +144,7 @@ describe("F-114 the case each fee is read in", () => {
     expect(readFee(trade(), picks("makam"))).toBeNull();
     const r = read(deal([{ by: "what", is: "makam" }]));
     expect(r.unmatched).toEqual(["fee-trade"]);
-    expect(glance(r).unmatched.map((f) => f.fee)).toEqual(["fee-trade"]);
+    expect(leftOut(r).unmatched.map((f) => f.fee)).toEqual(["fee-trade"]);
     expect(readingOf(r, data.fx).unmatched.map((f) => f.fee)).toEqual(["fee-trade"]);
     expect(builder(r).rows[0]).toMatchObject({ fee: "fee-trade", priced: false, unmatched: true });
   });
@@ -178,27 +178,31 @@ describe("F-115 a size read across sizes", () => {
     const marks = dealMarks(r.engine, p).filter((m) => m.kind === "edge");
     expect(marks.map((m) => m.amount)).toEqual([10, 100]);
   });
-  it("states each step's top as a mark with the range's own figure, and the curve reads it and just above it", () => {
+  it("ends each step's part of its lane at the range's own figure, and the curve reads the top and just above it", () => {
     const reading = readingOf(r, data.fx, 50);
-    const edges = reading.statements.flatMap((s) => (s.kind === "mark" && s.mark.kind === "edge" ? [s.mark] : []));
-    expect(edges.map((m) => [m.amount.value, m.amount.state, m.fee.step?.to?.value])).toEqual([
-      [10, "entered", 10],
-      [100, "entered", 100],
-    ]);
-    const curve = reading.curves.find((c) => c.marks.some((m) => m.kind === "edge"));
-    expect(curve).toBeDefined();
-    const at = curve!.at[curve!.marks.findIndex((m) => m.kind === "edge" && m.amount.value === 100)]!;
-    const k = curve!.amounts.indexOf(at);
-    expect(curve!.amounts[k + 1]! / at).toBeCloseTo(1, 6);
-    expect(curve!.total[k + 1]!).toBeGreaterThan(curve!.total[k]!);
+    const chart = reading.panels.actions.flatMap((t) => t.views).flatMap((v) => ("chart" in v ? [v.chart] : []))[0]!;
+    const parts = chart.lanes.flatMap((l) => l.parts ?? []);
+    const top = (v: number) => parts.find((x) => x.end?.value === v && x.end.state === "entered");
+    expect(top(10)).toBeDefined();
+    expect(top(100)).toBeDefined();
+    const at = top(100)!.to!;
+    const pts = chart.sample({ lo: at / 2, hi: at * 2 });
+    const k = pts.findIndex((x) => Math.abs(x.at - at) < 1e-9 * at);
+    expect(pts[k + 1]!.at / at).toBeCloseTo(1, 6);
+    expect(pts[k + 1]!.share * pts[k + 1]!.at).toBeGreaterThan(pts[k]!.share * at);
   });
 });
 
 describe("a price's parts", () => {
-  it("adds a third party's share to the group's rate, and a discounted share with its own formula", () => {
-    const share = (price: Price) => glance(read({ ...deal(), fees: [{ id: "fee-t", kind: "trade", stages: [{ price }] }] })).throughout[0]!.rates[0]!.rate;
-    expect(share({ form: "action", rate: typed(0.1), third: { price: { form: "action", rate: typed(0.05) } } })).toMatchObject({ value: 0.15, computed_from: { formula: "F-117" } });
-    expect(share({ form: "action", rate: typed(0.2), discount: { pct: typed(25) } })).toMatchObject({ computed_from: { formula: "F-116" } });
+  it("adds a third party's share to the action's rate, and takes a discount off it (F-123 on F-116, F-117)", () => {
+    // a price with nothing that varies by size is one number on its action's panel
+    const share = (price: Price) => {
+      const v = readingOf(read({ ...deal(), fees: [{ id: "fee-t", kind: "trade", stages: [{ price }] }] }), data.fx).panels.actions[0]!.views[0]!;
+      return ("one" in v ? v.one.one?.value : undefined)!;
+    };
+    expect(share({ form: "action", rate: typed(0.1), third: { price: { form: "action", rate: typed(0.05) } } })).toMatchObject({ computed_from: { formula: "F-123" } });
+    expect(share({ form: "action", rate: typed(0.1), third: { price: { form: "action", rate: typed(0.05) } } }).value).toBeCloseTo(0.15, 12);
+    expect(share({ form: "action", rate: typed(0.2), discount: { pct: typed(25) } })).toMatchObject({ computed_from: { formula: "F-123" } });
     expect(share({ form: "action", rate: typed(0.2), discount: { pct: typed(25) } }).value).toBeCloseTo(0.15, 12);
   });
   it("states what it does not compute (§10.6's stated parts): a third party's fee with no figure, an offset, a note on an order", () => {
@@ -505,21 +509,22 @@ describe("a third party's fee on the curve (F-117)", () => {
     const r = withThird({ price: { form: "perUnit", amount: typed(0.01), currency: "USD" } });
     const without = readingOf(r, data.fx);
     expect(without.unitPrice).toMatchObject({ currency: "ILS", value: null });
-    expect(without.undrawn).toContainEqual(expect.objectContaining({ action: "trade", why: "unit-price" }));
-    const drawn = readingOf(r, data.fx, 100).curves.find((c) => c.action === "trade")!;
-    expect(drawn.rates.map((x) => x.currency)).toEqual(["USD"]);
+    const trade = (x: ReturnType<typeof readingOf>) => x.panels.actions.find((t) => t.action === "trade")!.views[0]!;
+    expect(trade(without)).toMatchObject({ undrawn: { why: "unit-price" } });
+    const drawn = trade(readingOf(r, data.fx, 100));
+    expect("chart" in drawn && drawn.chart.rates.map((x) => x.currency)).toEqual(["USD"]);
     // 1,000 ₪ of units at 100 ₪ is 10 units: 1 ₪ of the fee's own minimum and 10 × 0.01 $
     const usd = nisPerNumber(data.fx!, "USD")!;
     expect(actionCost(r.engine, r.reading.periods[0]!, "trade", 1000, "buy", { USD: usd }, 100).total).toBeCloseTo(10 + 0.1 * usd, 9);
   });
   it("converts a bound in another currency at its rate", () => {
-    const drawn = readingOf(withThird({ price: { form: "action", rate: typed(0.05), min: typed(2), currency: "EUR" } }), data.fx).curves.find((c) => c.action === "trade")!;
-    expect(drawn.rates.map((x) => x.currency)).toEqual(["EUR"]);
+    const drawn = readingOf(withThird({ price: { form: "action", rate: typed(0.05), min: typed(2), currency: "EUR" } }), data.fx).panels.actions.find((t) => t.action === "trade")!.views[0]!;
+    expect("chart" in drawn && drawn.chart.rates.map((x) => x.currency)).toEqual(["EUR"]);
   });
 });
 
-describe("the largest cost of holding with a step of the value held in another currency (F-112, F-115)", () => {
-  it("prices the step at the curve's rate", () => {
+describe("the crossover with a step of the value held in another currency (F-124, F-115)", () => {
+  it("prices the step at the chart's rate", () => {
     const manager: CasesFee = {
       id: "fee-m",
       kind: "fund_management",
@@ -537,14 +542,9 @@ describe("the largest cost of holding with a step of the value held in another c
         manager,
       ],
     });
-    const p = r.reading.periods[0]!;
-    const meet = dealMarks(r.engine, p).find((m) => m.kind === "meet")!;
-    expect(meet.amount).toBeCloseTo(180_000, 6);
-    expect(() => sumsLargest(r.engine, p, meet)).toThrow(RangeError);
-    // at 180,000 ₪ the manager's fee is on the upper step, 0.01%: 18 ₪, under the 180 ₪ of sums
-    expect(sumsLargest(r.engine, p, meet, { USD: 3.5 })).toBe(true);
-    const stated = readingOf(r, data.fx).statements.find((s) => s.kind === "mark" && s.mark.kind === "meet");
-    expect(stated?.kind === "mark" && stated.mark.kind === "meet" && stated.mark.largest).toBe(true);
+    // 180 ₪ of sums a year against every share: above the step's top (10,000 $), custody's 0.1% and the manager's 0.01%
+    const held = readingOf(r, data.fx).panels.held[0]!;
+    expect("chart" in held && held.chart.cross).toBeCloseTo(180 / 0.0011, 3);
   });
 });
 
@@ -553,10 +553,11 @@ describe("the cap's mark beside a discount off the minimum (F-112, F-116)", () =
     // 0.3%, at least 25 $ and at most 6,750 $, at most 25% of the action, half off with the minimum: the cap meets 12.5 $ at 50 $
     const price: Price = { form: "action", rate: typed(0.3), min: typed(25), max: typed(6750), cap: typed(25), currency: "USD", discount: { pct: typed(50), alsoMin: true } };
     const r = read({ ...deal([{ by: "what", is: "us" }]), fees: [{ id: "fee-t", kind: "trade", stages: [{ price }] }] });
-    const cap = readingOf(r, data.fx).statements.flatMap((s) => (s.kind === "mark" && s.mark.kind === "cap" ? [s.mark] : []))[0]!;
-    expect(cap.amount.value).toBeCloseTo(50, 9);
-    expect(cap.meets.value).toBe(25);
-    expect(Object.values(cap.amount.computed_from!.inputs).map((x) => (x as { value: unknown }).value)).toEqual(expect.arrayContaining([25, 25, 50]));
+    const v = readingOf(r, data.fx).panels.actions[0]!.views[0]!;
+    const parts = "chart" in v ? v.chart.lanes[0]!.parts! : [];
+    expect(parts.map((x) => x.part)).toEqual(["cap", "min", "rate", "max"]);
+    expect(parts[0]!.end!.value).toBeCloseTo(50, 9);
+    expect(parts[1]!.figure!.value).toBeCloseTo(12.5, 9);
   });
 });
 

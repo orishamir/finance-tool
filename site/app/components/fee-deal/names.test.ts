@@ -1,13 +1,25 @@
 // The value sheet names every input of a deal's reading, however many fees of one kind the deal holds (values.ts, `inputKey`), and the
-// rate a curve converts a bound in another currency at (reading.ts, `rateKey`).
+// rate a chart converts a bound in another currency at (charts.ts, `rateKey`).
 import { describe, expect, it } from "vitest";
 import { inputName } from "../provenance-sheets";
 import { feesData } from "../../lib/fees.server";
 import { BOUND_CURRENCIES, newDeal, typed, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
-import { rateKey, readingOf } from "../../lib/fee-deal/reading";
+import { readingOf } from "../../lib/fee-deal/reading";
+import { rateKey } from "../../lib/fee-deal/charts";
 import { inputKey } from "../../lib/fee-deal/values";
 import { feeName } from "./words";
+
+/**
+ * The input keys of every computed figure inside a value. An input's own inputs are its formula's, named where it is made, and so are a
+ * chart's exchange rates' (F-84, lib/fx.ts): the walk keeps to the deal's.
+ */
+function inputKeys(x: unknown, seen = new Set<unknown>()): string[] {
+  if (!x || typeof x !== "object" || seen.has(x)) return [];
+  seen.add(x);
+  const own = (x as { computed_from?: { inputs?: Record<string, unknown> } }).computed_from?.inputs ?? {};
+  return [...Object.keys(own), ...Object.entries(x as Record<string, unknown>).flatMap(([k, v]) => (k === "computed_from" || k === "rates" ? [] : inputKeys(v, seen)))];
+}
 
 describe("a deal's input names", () => {
   it("names the fifth custody fee of a deal, its bounds and its yearly figure, by the fee's name and its number", () => {
@@ -19,7 +31,7 @@ describe("a deal's input names", () => {
     expect(inputName(inputKey(fees, 4, "yearly"))).toBe(`${name} 5, בשנה`);
     expect(inputName(inputKey(fees.slice(0, 1), 0, "max"))).toBe(`${name}: המקסימום`);
   });
-  it("names every input of every curve, the rate of each currency a bound may be typed in among them", () => {
+  it("names every input of every chart and reading, the rate of each currency a bound may be typed in among them", () => {
     const data = feesData();
     const deal: FeeDeal = {
       ...newDeal("brokerage-account"),
@@ -32,7 +44,11 @@ describe("a deal's input names", () => {
       ],
     };
     const r = readingOf(readDealFor(deal, data.kinds, "2026-11-12"), data.fx);
-    const keys = r.curves.flatMap((c) => Object.keys(c.inputs));
+    // every computed figure of the panels and the timeline, and of each chart's reading at its start and across its range
+    const readings: unknown[] = [r.panels, r.timeline];
+    for (const t of r.panels.actions) for (const v of t.views) if ("chart" in v) readings.push(v.chart.readAt(v.chart.start), v.chart.readAt(v.chart.range.hi));
+    for (const v of r.panels.held) if ("chart" in v) readings.push(v.chart.readAt(v.chart.range.lo), v.chart.readAt(v.chart.range.hi));
+    const keys = [...new Set(readings.flatMap((x) => inputKeys(x)))];
     expect(keys.length).toBeGreaterThan(0);
     if (data.fx) expect(keys).toContain(rateKey("USD"));
     for (const k of keys) expect(inputName(k), k).not.toBe(k);

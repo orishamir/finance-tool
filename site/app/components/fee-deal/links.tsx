@@ -1,10 +1,9 @@
 // The fee page's columns as one thing (method §10.6 reads one deal, and each column shows it another way): a fee under the pointer or the
-// focus in the glance marks its card in the builder, and a card marks the fee's lines in the glance; pressing a fee's name in the glance or
-// in the reading chooses it and brings its card and panel into view; a fee's standing tag on its card or in the glance brings its row of
-// the reading's law card into view. Each column reads the page's `FeeLinks` from here.
+// focus in the reading's list of fees left out marks its card in the builder, and a card marks the fee's lines there; pressing a fee's name
+// in the reading chooses it and brings its card and panel into view; a fee's standing tag on its card brings its row of the reading's law
+// card into view. Each column reads the page's `FeeLinks` from here.
 import { createContext, useContext, type HTMLAttributes, type ReactNode } from "react";
 import type { FeeRef, StandingView } from "../../lib/fee-deal/deal-read";
-import type { LawRow } from "../../lib/fee-deal/reading";
 import { cx } from "../kit";
 import { feeDeal as copy } from "../../copy";
 import { FeeName, StandingTag } from "./words";
@@ -100,9 +99,4 @@ export function LawTag({ fee, standing }: { fee: string; standing: StandingView 
       <span className="sr-only">{copy.standing.toLaw}</span>
     </button>
   );
-}
-
-/** The tag of a fee's law row, as `CapBlock` draws it: of its standing now. */
-export function LawRowTag({ row }: { row: LawRow }) {
-  return row.now ? <LawTag fee={row.fee} standing={row.now} /> : null;
 }

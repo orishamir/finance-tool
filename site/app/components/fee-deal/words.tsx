@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { dealCases, feeDeal as copy, guideBlocks } from "../../copy";
 import type { BanSaid, CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import { unreadReason, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
+import { unreadReason, type FeeRef, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -257,7 +257,7 @@ export function StandingTag({ standing }: { standing: StandingView }) {
  * charged; above it, that the law allows less and the typed price stays; not judged, why. `binds` says whom a cap binds where it binds
  * some providers only. A cap with a caveat says nothing per price: the cap's line says it once, in the caveat's words (`CapCaveat`).
  */
-export function StandingWords({ standing, binds }: { standing: StandingView; binds?: string }) {
+function StandingWords({ standing, binds }: { standing: StandingView; binds?: string }) {
   const s = standing.standing;
   const w = copy.standing;
   if (s.judged) {
@@ -288,7 +288,7 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
 /**
  * That a bank may not charge a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: as the rules' words,
  * or as the site's reading of them (`reading`); that a new bank is outside those rules for its first five years (BANK-51, among each ban's rules); and, where the
- * rules leave one, the distribution fee a bank may still charge on the units (MF-71). What a fee's card, its line in the glance and the law
+ * rules leave one, the distribution fee a bank may still charge on the units (MF-71). What a fee's card, its line in what the reading leaves out and the law
  * card say in place of "no price".
  */
 export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
@@ -326,7 +326,7 @@ function DistributionWords() {
   );
 }
 
-/** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, heading the list the ban's words open. */
+/** Why a fee is not read (`unreadReason`), as its card and its line in what the reading leaves out say it. `fee`: its name, heading the list the ban's words open. */
 export function UnreadWords({ banned, noCurrency, notPrinted, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; notPrinted?: boolean; unmatched?: boolean; fee?: string }) {
   const why = unreadReason({ banned, noCurrency, notPrinted, unmatched });
   if (why === "banned") return <BannedWords ban={banned!} {...(fee ? { fee } : {})} />;
@@ -388,12 +388,12 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
 }
 
 /**
- * A fee against its cap (F-113), the one block the glance and the law card draw: its name and the tag of its standing now (a later price's
+ * A fee against its cap (F-113), the block the law card draws for a fee with a cap: its name and the tag of its standing now (a later price's
  * standing is said with that price), then `children` (its price or prices in words, and the cap's line where the place says it). It
  * reads the fee's law row of the reading, so the two never disagree. The standing is said in words only: no bar. Its container lays the
  * pieces out as a column. Nothing where the cap has no figure.
  */
-export function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's name as the place draws it (one that chooses the fee); its plain name otherwise. */ name?: ReactNode; /** The standing's tag as the place draws it (one that leads to the law card); the plain tag otherwise. */ tag?: ReactNode; children?: ReactNode }) {
+function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's name as the place draws it (one that chooses the fee); its plain name otherwise. */ name?: ReactNode; /** The standing's tag as the place draws it (one that leads to the law card); the plain tag otherwise. */ tag?: ReactNode; children?: ReactNode }) {
   if (row.cap.state !== "value") return null;
   return (
     <>
@@ -414,29 +414,6 @@ export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: bool
       <CapRules cap={row.cap} fee={refName(row)} />
     </CapBlock>
   );
-}
-
-/** The value held at which the yearly sums on the account and the custody rate cost the same (F-112), as a sentence's words and figures. */
-export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" }> }) {
-  const m = copy.marks.meet;
-  return (
-    <>
-      {m.before}
-      <Fig value={mark.sum} />
-      {m.sum}
-      <Fig value={mark.rate} />
-      {m.rate}
-      <Fig value={mark.amount} />
-      {mark.largest ? m.after : `${m.smaller}${custodyName(mark.against)}.`}
-    </>
-  );
-}
-
-/** The custody fees a meet mark weighs the sums against, by name with the article where the deal has one ("דמי ניהול פיקדון ניירות הערך"). */
-export function custodyName(against: readonly FeeRef[]): string {
-  if (against.length !== 1) return copy.marks.meet.custody;
-  const one = against[0]!;
-  return (one.kind !== "own" && copy.nameForms[one.kind]?.the) || refName(one);
 }
 
 /** A cap's figure with its unit's words ("1.05% בשנה"), as the guide writes a cap. */
