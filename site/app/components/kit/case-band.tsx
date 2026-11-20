@@ -8,6 +8,7 @@
 import type { ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Split } from "lucide-react";
 import { dealCases as copy } from "../../copy";
+import { IconCheck } from "../icons";
 import { Button } from "./button";
 import { LIFT_INNER, onSurface } from "./choice";
 import { RemoveButton } from "./remove-button";
@@ -186,7 +187,7 @@ export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: R
         {slots}
         {mine && <Tag tone="primary">{copy.mine}</Tag>}
         <span className="ms-auto inline-flex items-center gap-2">
-          <Tag tone="primary">{copy.chosen}</Tag>
+          <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />}>{copy.chosen}</Tag>
           {onCopy && (
             <Button variant="icon" size="sm" aria-label={copy.copyCase} title={copy.copyCase} onClick={onCopy} className="max-md:size-target">
               <Copy {...icon} />

@@ -106,7 +106,7 @@ const familyClass: Partial<Record<Label["family"], string>> = {
   payout: "text-label-payout bg-label-payout/12",
 };
 
-const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-muted text-foreground") : toneClass[label.tone]);
+const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-secondary text-foreground") : toneClass[label.tone]);
 /** A tinted fill and no outline, 6 px corners, 26 px high: 13 px words on an 18 px line, 4 px above and below, 8 px at the sides. */
 const chipShape = "inline-flex items-center gap-[5px] text-xs leading-[18px] font-medium rounded-[6px] px-2 py-1 min-h-[26px] whitespace-nowrap";
 

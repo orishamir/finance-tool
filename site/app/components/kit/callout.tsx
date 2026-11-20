@@ -2,6 +2,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { IconAlert, IconCalendar, IconInfo, IconLock } from "../icons";
 import { cx } from "./cx";
+import { Tag } from "./tag";
 
 /** Inside an `upcoming` callout: the box already says what it holds starts later, so a figure leaves out its "starts on" mark (the sheet still says it). */
 const AheadSaidCtx = createContext(false);
@@ -33,7 +34,7 @@ export function Callout({ tone, title, tag, children, className }: { tone: "caut
         {(title || tag) && (
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
             {title && <span className="font-medium">{title}</span>}
-            {tag && <span className="inline-flex items-center rounded-[6px] border border-info-border px-2 text-xs text-info-foreground tabular-nums">{tag}</span>}
+            {tag && <Tag tone="info" className="tabular-nums">{tag}</Tag>}
           </span>
         )}
         <div>{children}</div>
