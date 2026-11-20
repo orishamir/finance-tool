@@ -9,6 +9,7 @@ import { unpackDeal } from "./link";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { openingRange, roundAmount, settleRange, type ActionView, type HeldView } from "./charts";
+import { nisPerNumber } from "../fx";
 
 const data = feesData();
 const link = readFileSync(new URL("../../../scripts/layout-check-deal.txt", import.meta.url), "utf8").trim();
@@ -63,11 +64,13 @@ describe("what a purchase or sale costs", () => {
     expect(c.head).toMatchObject({ kind: "below", below: { value: expect.closeTo(15_600, 6), unit: "usd" }, rate: { value: expect.closeTo(0.3375, 10) } });
     if (c.head.kind === "below") expect(c.head.adds.map((a) => a.rate.value)).toEqual([0.25, 0.0875]);
   });
-  it("reads the first mark: 144 ₪, 0.77% of it, the minimums deciding, and what the trade's rate alone would charge", async () => {
+  it("reads the first mark: the two minimums, $44 at the day's ECB rate, 0.77% of it, and what the trade's rate alone would charge", async () => {
     const c = chartOf((await reading()).panels.actions.find((t) => t.key === "trade:all")!.views[0]!);
     const r = c.readAt(c.start);
-    expect(r.total.value).toBeCloseTo(143.61, 2);
-    expect(r.share.value).toBeCloseTo(0.77, 4);
+    // the minimums are set in dollars, so the shekel sum moves with each data/series/ecb-fx.json refresh
+    expect(r.total.value).toBeCloseTo(44 * nisPerNumber(data.fx!, "USD")!, 6);
+    expect(r.share.value).toBeCloseTo((r.total.value / c.start) * 100, 9);
+    expect(r.share.value).toBeCloseTo(0.77, 3);
     expect(r.parts.map((p) => p.part?.part)).toEqual(["min", "min"]);
     expect(r.parts[0]!.rateAlone!.value).toBeCloseTo(c.start * 0.0025, 9);
   });
