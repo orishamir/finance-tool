@@ -357,10 +357,10 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const held = oc.hold.here;
   const heldCard = held && tools ? cardOf(tools, held.card) : null;
   const heldPlaces = heldCard?.places ?? [];
-  const letGo = () => {
+  const letGo = (refocus = true) => {
     if (!held) return;
     oc.hold.set(null);
-    requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-part="${CSS.escape(held.card)}"]`)?.focus({ preventScroll: true }));
+    if (refocus) requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-part="${CSS.escape(held.card)}"]`)?.focus({ preventScroll: true }));
   };
   useLetGo(!!held && heldPlaces.length > 0, letGo);
   const onTap = (item: string) => {
@@ -368,7 +368,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (several) return onCasesCard(several, item);
     const t = tapCard(held, { fee: chosenFee.id, case: caseId, card: item }, placesOf(chosenFee.id, caseId, item));
     if (t.k === "letGo") return letGo();
-    if (t.k === "hold") return oc.hold.set(t.held);
+    if (t.k === "hold") {
+      oc.hold.set(t.held);
+      // the focus goes to the earliest place's "+", so Enter adds there and Tab goes round the others (use-let-go.ts)
+      requestAnimationFrame(() => document.querySelector<HTMLElement>("button[data-add-here]")?.focus({ preventScroll: true }));
+      return;
+    }
     oc.hold.set(null);
     if (t.k === "add") applyAt(item, chosenFee, caseId, t.place);
   };
