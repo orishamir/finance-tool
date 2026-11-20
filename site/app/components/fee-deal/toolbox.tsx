@@ -119,7 +119,7 @@ export interface FillUndoLine {
  * The toolbox for the open case of `fee`, or for several of its cases at once: the column on a computer (`sheet` false), the pinned short
  * sheet on a phone. `view` is the toolbox's view (`toolbox`, `casesToolbox`); `product` the deal's product, whose sense of the fee's name
  * "מה זה" opens; `fill` the price lists that can fill it; `line` the undo line of a fill just made; `folded`, whether the phone's sheet is
- * folded to its groups' names, which the page holds (`onFold`); `held`, the card held while the person picks its place, and its words.
+ * folded to its groups' names, which the page holds (`onFold`); `held`, the card held while the person picks its place, and its line.
  * `onCard` hands a tapped card to the page; `onLetGo` lets the held card go ("ביטול"); `onStopBy` stops the price changing by a thing it
  * changes by; `onClose` un-chooses the fee.
  */
@@ -150,7 +150,7 @@ export function ToolboxColumn({
   line: FillUndoLine | null;
   folded: boolean;
   onFold: (folded: boolean) => void;
-  /** The card held, by its id, and its words; null where none is. */
+  /** The card held, by its id, and the line that says so (places.ts `holdWords`); null where none is. */
   held: { card: string; words: string } | null;
   /** A card tapped (its id): the page adds it at its one place, holds it, or does what `casesTool` says. */
   onCard: (item: string) => void;
@@ -170,7 +170,7 @@ export function ToolboxColumn({
   };
   // what it adds to: a case's values after "להוסיף למקרה:", several cases' "להוסיף לכל המקרים" or a row's; nothing for a slim fee
   const addTo = view.addTo ? { lead: view.addTo.lead.trim(), ...(view.addTo.when ? { target: caseText(view.addTo.when) } : {}) } : null;
-  const hold = held ? { part: held.card, words: copy.cases.hold.replace("{card}", held.words), onCancel: onLetGo } : null;
+  const hold = held ? { part: held.card, words: held.words, onCancel: onLetGo } : null;
   // filling the fee from a price list, or the undo line of a fill just made; nothing, and no line above it, where neither stands
   const foot = line || (fill && fill.houses.length > 0) ? (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">

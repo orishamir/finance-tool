@@ -3268,7 +3268,7 @@ function HoldDemo({ today }: { today: string }) {
           </div>
         ))}
       </SlimFee>
-      <Toolbox addTo={null} held={held ? { part: card!.id, words: dealWords.cases.hold.replace("{card}", label), onCancel: () => setHeld(false) } : null} groups={groups} onAdd={tap} />
+      <Toolbox addTo={null} held={held ? { part: card!.id, words: dealWords.cases.hold.price.replace("{card}", label), onCancel: () => setHeld(false) } : null} groups={groups} onAdd={tap} />
     </div>
   );
 }
@@ -3780,7 +3780,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
         <State label="the phone's sheet while a card is held: its handle and the line that says so alone, so the places above it stay in view; it opens again as it was once the card is let go" wide>
           <PhoneFrame>
-            <Toolbox sheet addTo={caseLine} held={{ part: "discount", words: dealWords.cases.hold.replace("{card}", `${sc.discount.trim()} % ${sc.ofPrice.split(",")[0]!}`), onCancel: () => undefined }} groups={toolGroups(["unit"])} onAdd={() => undefined} />
+            <Toolbox sheet addTo={caseLine} held={{ part: "discount", words: dealWords.cases.hold.price.replace("{card}", `${sc.discount.trim()} % ${sc.ofPrice.split(",")[0]!}`), onCancel: () => undefined }} groups={toolGroups(["unit"])} onAdd={() => undefined} />
           </PhoneFrame>
         </State>
       </Demo>

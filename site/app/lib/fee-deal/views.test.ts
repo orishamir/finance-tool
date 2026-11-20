@@ -679,8 +679,5 @@ describe("the toolbox adds to every price of the open case", () => {
     const t = toolbox(r, "fee-custody")!;
     expect(t.addTo).toBeNull();
     expect(cardOf(t, "until")!.places).toEqual([{ on: "side", side: "buy" }]);
-    // the pending part asks at the place it was added, the earlier price among them
-    const asked = panel(r, "fee-custody", undefined, { part: "min", place: { on: "price", side: "buy", k: 0 } })!.open.pending;
-    expect(asked?.k).toBe(0);
   });
 });

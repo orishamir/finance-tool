@@ -2176,10 +2176,16 @@ export const feeDeal = {
     /** The round "+" of a place a held card can go, spoken: "להוסיף ״הנחה % מהמחיר״ למחיר מינואר 2027". */
     addHere: "להוסיף ״{card}״ {place}",
     /**
-     * The toolbox's line while a card is held, in place of its hint: what is being added (the card's words), and what to do (its button,
-     * `dealCases.toolbox.letGo`, lets the card go).
+     * The toolbox's line while a card is held, in place of its hint: what is being added (the card's words), and what to do, by the kind of
+     * place it goes (places.ts `Place`): a price; each side's prices as a whole, whose "+" stands in the side's head (the month a price
+     * changes from); the case as a whole (a card has one such place, so it is added at once, and these words stand for the kind's sake).
+     * Its button, `dealCases.toolbox.letGo`, lets the card go.
      */
-    hold: "מוסיפים {card}: מקישים על המחיר שאליו להוסיף.",
+    hold: {
+      price: "מוסיפים {card}: מקישים על המחיר שאליו להוסיף.",
+      side: "מוסיפים {card}: מקישים על ה־+ שליד המחיר בקנייה או שליד המחיר במכירה.",
+      fee: "מוסיפים {card}: מקישים על ה־+ של המקרה.",
+    },
     /** The line "+ התאריך" in the line above, while it is held: "מוסיפים תאריך שהמחיר משתנה בו: …". */
     dateHeld: "תאריך שהמחיר משתנה בו",
     /** Why a charge's card is off: every price of the case already charges, in another way; the bin of what a price charges makes it free. */
@@ -5103,8 +5109,8 @@ export const dealCases = {
     /** Before the open case's condition in words: "להוסיף למקרה: בחו״ל, בארה״ב · מסלול 1". */
     target: "להוסיף למקרה:",
     hint: "מקישים על חלק כדי להוסיף אותו.",
-    /** The hint where a part can also be dragged (a computer's fine pointer). */
-    hintDrag: "מקישים על חלק, או גוררים אותו אל העמלה, כדי להוסיף אותו.",
+    /** The hint where a part can also be dragged (a computer's fine pointer): while it is dragged, each place that takes it is marked. */
+    hintDrag: "מקישים על חלק כדי להוסיף אותו, או גוררים אותו אל אחד המקומות שמסומנים בזמן הגרירה.",
     /** In place of the hint where the fee takes no part at all (a fee its product only ever has free): nothing to tap. */
     none: "לעמלה הזו אין חלקים להוסיף.",
     /** Said, not shown, of a part the case already has: its ✓ shows it. */

@@ -14,7 +14,7 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { useAskThing } from "./ask-thing";
 import { bringIntoView } from "./in-view";
 import type { FeeLinks } from "./links";
-import { pendingAfter, pendingFresh, type Pending } from "./part-edit";
+import { pendingAfter, pendingFresh, pendingStands, type Pending } from "./part-edit";
 
 /** A fee's card in the fees' column, by its id. */
 const feeCard = (feeId: string) => document.querySelector(`li[data-fee="${CSS.escape(feeId)}"]`);
@@ -37,6 +37,11 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   // the part asking for what it needs whose box has had the focus: drawn again (left waiting while the fee changed by something, or its
   // card tapped or dropped again, which keeps it as it is: `pendingAfter`), it takes it no more
   const pendingShown = useRef<Pending | null>(null);
+  // a change that leaves the part asking no place (its side's prices changed, its side or its price gone, a price that can no longer hold
+  // it) drops it, so it never asks on another price, nor comes back with an undo; any other change leaves it asking
+  useEffect(() => {
+    if (pending && !pendingStands(deal, pending)) setPending(null);
+  }, [deal, pending]);
   // whether a phone's toolbox sheet is folded to its groups' names: folded as the page loads, so nothing covers it, and unfolded when a
   // fee or a case is opened, or at its handle
   const [sheetFolded, setSheetFolded] = useState(true);

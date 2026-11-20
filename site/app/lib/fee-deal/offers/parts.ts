@@ -79,8 +79,15 @@ export interface PartAt {
   against?: FeeKindId;
 }
 
-/** A part's edit: of the one price it is on (with the fee's kind, which a form's fields follow), or of the fee's prices (a later price, a sale). */
-type PartEdit = { on: "price"; edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price } | { on: "fee"; edit: <F extends Fee>(fee: F, on: boolean, at: PartAt) => F };
+/**
+ * A part's edit, by where the part goes: on the one price it is on (`price`, with the fee's kind, which a form's fields follow); on one
+ * side's prices as a whole (`side`: the purchase's, or a sale priced apart's; the month a price changes from, which splits whichever of
+ * that side's prices holds in the month it asks); or on the fee's prices, or a case's, as a whole (`fee`: a sale priced apart).
+ */
+type FeeEdit = <F extends Fee>(fee: F, on: boolean, at: PartAt) => F;
+type PartEdit = { on: "price"; edit: (p: Price, on: boolean, at: PartAt, kind: FeeKindId) => Price } | { on: "side"; edit: FeeEdit } | { on: "fee"; edit: FeeEdit };
+/** Where a part goes, by its edit (`PartEdit`): on one price, on one side's prices as a whole, or on the fee or a case as a whole. */
+export type PartGoes = PartEdit["on"];
 
 /** A part as the registry defines it; `holds` is derived from it (`PartDef`). */
 interface PartSpec {
@@ -99,11 +106,6 @@ interface PartSpec {
   capField?: PartFieldId;
   /** Whether a fee can hold it, for a part of the fee's prices (a later price, a sale) rather than of one price. */
   feeHolds?: (kind: FeeKindId) => boolean;
-  /**
-   * A part of the fee's prices that goes on one side's prices as a whole (the purchase's, or a sale priced apart's) rather than on the
-   * fee: the month a price changes from, which splits whichever of that side's prices holds in the month it asks.
-   */
-  onSide?: true;
   /** The figures it holds, in the order its boxes stand. */
   figures: readonly Figure[];
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
@@ -165,14 +167,13 @@ const SPECS = {
   // divider
   until: {
     kind: "when",
-    onSide: true,
     feeHolds: () => true,
     figures: [],
     ask: "month",
     tool: null,
     used: (_p: Price, x?: Priced) => !!x && x.stages.length > 1,
     // on, the price in force at the month splits in two there (nothing without a month); off, change `k` goes, the later price merging back
-    apply: { on: "fee", edit: (fee, on, at) => (!on ? removeChange(fee, at.side ?? "buy", at.k ?? 0, at.caseId) : at.month ? splitAt(fee, at.side ?? "buy", at.month, at.caseId) : fee) },
+    apply: { on: "side", edit: (fee, on, at) => (!on ? removeChange(fee, at.side ?? "buy", at.k ?? 0, at.caseId) : at.month ? splitAt(fee, at.side ?? "buy", at.month, at.caseId) : fee) },
   },
 
   min: { kind: "bound", field: "min", carriesIn: formBoundsAction, capField: "min", figures: ["min"], ask: "sum", tool: "bound", lost: true, ...figureEdit("min") },
@@ -254,7 +255,7 @@ export const isFormPart = (id: PartId): id is FormPart => PARTS[id].form !== und
  * Where a part goes (places.ts): on one price (`price`, a part the price keeps, or the form it charges in), on one side's prices as a whole
  * (`side`, the month a price changes from), or on the fee, or the case, as a whole (`fee`, a sale priced apart).
  */
-export const partGoes = (id: PartId): "price" | "side" | "fee" => (PARTS[id].apply.on === "price" ? "price" : (PARTS[id] as PartDef).onSide ? "side" : "fee");
+export const partGoes = (id: PartId): PartGoes => PARTS[id].apply.on;
 
 /**
  * The parts a price says, in the registry's order (its price, its end, its bounds, its links, its notes): the parts it has, its notes in
@@ -288,7 +289,7 @@ function gives(at: PartAt, ask: Ask): boolean {
  */
 export function putPart(kind: FeeKindId, p: Price, part: PartId, on: boolean, at: PartAt = {}): Price {
   const a = PARTS[part].apply;
-  if (a.on === "fee" || (on && !PARTS[part].holds(kind, p))) return p;
+  if (a.on !== "price" || (on && !PARTS[part].holds(kind, p))) return p;
   return a.edit(p, on, at, kind);
 }
 
@@ -299,7 +300,7 @@ export function putPart(kind: FeeKindId, p: Price, part: PartId, on: boolean, at
 export function setPart<F extends Fee>(fee: F, part: PartId, on: boolean, at: PartAt = {}): F {
   const def = PARTS[part];
   if (on && !gives(at, def.ask)) return fee;
-  if (def.apply.on === "fee") return def.apply.edit(fee, on, at);
+  if (def.apply.on !== "price") return def.apply.edit(fee, on, at);
   return editPrice(fee, at.side ?? "buy", at.k ?? 0, (p) => putPart(fee.kind, p, part, on, at), at.caseId);
 }
 

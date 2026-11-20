@@ -151,11 +151,16 @@ export function toolbox(r: DealRead, feeId: string, caseId?: string): Toolbox | 
   return { addTo, groups: groups.filter((g) => g.parts.length > 0 || g.lines.length > 0) };
 }
 
+/** A card of the toolbox, told by what it is: a part's card (`part`), or a line's (`line`). */
+export type ToolCard = ({ k: "part" } & ToolPart) | ({ k: "line" } & ToolLine);
+
 /** A card of the toolbox by its id (a part's or a line's), with its places; null where the toolbox has none. */
-export function cardOf(box: Toolbox, id: string): ToolPart | ToolLine | null {
+export function cardOf(box: Toolbox, id: string): ToolCard | null {
   for (const g of box.groups) {
-    const x = g.parts.find((p) => p.id === id) ?? g.lines.find((l) => l.id === id);
-    if (x) return x;
+    const part = g.parts.find((p) => p.id === id);
+    if (part) return { k: "part", ...part };
+    const line = g.lines.find((l) => l.id === id);
+    if (line) return { k: "line", ...line };
   }
   return null;
 }
