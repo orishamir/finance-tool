@@ -186,7 +186,7 @@ function Joined({ parts, bare, lines, off }: { parts: readonly SlimPart[]; bare?
 
 /**
  * Whether a table or a grid is drawn: where its block has the room it needs inside the cases' band (a head column, each case's or value's,
- * and the add pill), or a computer's room (`TABLE_ROOM`), where a table wider than its block scrolls inside itself rather than falling back
+ * and the add chip), or a computer's room (`TABLE_ROOM`), where a table wider than its block scrolls inside itself rather than falling back
  * to rows; narrower, the cases read as rows.
  */
 function fits(layout: FeeLayout, width: number): boolean {
@@ -698,7 +698,7 @@ export function FeeCases({
   };
 
   // the things of the head: each a grip that swaps it with another where the fee has two or more (by a drop, or "החלפה" in its menu), and
-  // a drop zone that shows the swap while a pill is over it
+  // a drop zone that shows the swap while a chip is over it
   const headThings = band.things.map((th) => ({
     id: String(th.thing),
     name: th.words,
@@ -716,7 +716,7 @@ export function FeeCases({
         }
       : {}),
   }));
-  // each pill opens its thing's menu, the fee open or not: its values, and the action that stops the price changing by it
+  // each chip opens its thing's menu, the fee open or not: its values, and the action that stops the price changing by it
   const head = { things: headThings, zone: (h: ReactNode) => zone([everyCase], `all:${fee.id}`, h), onThing: (id: string, at: HTMLElement) => onThing(fee.id, Number(id), at), openThing: open.thing?.fee === fee.id ? String(open.thing.t) : null };
 
   /** A one-thing table read as rows: the parts one cell holds over every column, said once above the rows, led by the thing's any-words. */

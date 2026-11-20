@@ -1,5 +1,5 @@
-// What can be added to a list the person builds, as one quiet line under it: a dashed frame, a plus and a lead ("אפשר להוסיף:"), then a
-// small chip for each thing. The only place the page speaks of what the list lacks.
+// What can be added to a list the person builds, as one quiet line under it, with no frame: a teal plus and a lead ("אפשר להוסיף:"),
+// then a small chip for each thing. The only place the page speaks of what the list lacks.
 import { useRef, type ReactNode } from "react";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Plus } from "lucide-react";
@@ -8,7 +8,7 @@ import { cx } from "./cx";
 export interface AddItem {
   id: string;
   label: ReactNode;
-  /** One of the usual things for this list, set apart from the rarer ones by full-strength words and edge. */
+  /** One of the usual things for this list, set apart from the rarer ones by full-strength words and fill. */
   usual?: boolean;
 }
 
@@ -22,10 +22,10 @@ export function chipAfterAdd(at: number | null, count: number, focusElsewhere: b
 }
 
 /**
- * The chips are buttons that add their thing at once (the page then opens it). The usual ones come first in full ink, the rarer ones after
- * them in muted ink: the order and the ink set them apart, never colour alone. Each chip is 32 px tall with a 44 px tap area, which the
- * frame's 6 px above and below just holds; rows of
- * chips stand 12 px apart, so two areas never meet. A chip that added its thing leaves the line; the focus goes to the chip now in its
+ * The chips are buttons that add their thing at once (the page then opens it): a soft fill, 8 px corners, a teal plus before the words.
+ * The usual ones come first, words of medium weight in full ink on the `secondary` fill; the rarer ones after them, words of normal weight
+ * in muted ink on the quieter `muted` fill: the order and the ink set them apart, never colour alone. Each chip is 32 px tall with a 44 px
+ * tap area, which the line's 6 px above and below just holds; rows of chips stand 12 px apart, so two areas never meet. A chip that added its thing leaves the line; the focus goes to the chip now in its
  * place (or the last one), so the keyboard stays in the line.
  */
 export function AddLine({ lead, items, onAdd, className }: { lead: ReactNode; items: AddItem[]; onAdd: (id: string) => void; className?: string }) {
@@ -40,8 +40,8 @@ export function AddLine({ lead, items, onAdd, className }: { lead: ReactNode; it
   }, [items]);
   if (items.length === 0) return null;
   return (
-    <div ref={line} className={cx("flex flex-wrap items-center gap-x-2 gap-y-3 rounded-lg border border-dashed border-input px-3 py-1.5", className)}>
-      <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+    <div ref={line} className={cx("flex flex-wrap items-center gap-x-2 gap-y-3 py-1.5", className)}>
+      <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
         <Plus size={16} strokeWidth={1.75} aria-hidden className="text-primary" />
         {lead}
       </span>
@@ -53,8 +53,9 @@ export function AddLine({ lead, items, onAdd, className }: { lead: ReactNode; it
             added.current = k;
             onAdd(it.id);
           }}
-          className={cx("tap-area inline-flex h-8 items-center rounded-full border px-3 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-accent", it.usual ? "border-input text-foreground font-medium" : "border-border text-muted-foreground")}
+          className={cx("tap-area inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-sm transition-colors duration-[var(--duration-fast)]", it.usual ? "bg-secondary text-foreground font-medium hover:bg-secondary-hover" : "bg-muted text-muted-foreground hover:bg-accent")}
         >
+          <Plus size={14} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />
           {it.label}
         </button>
       ))}

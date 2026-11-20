@@ -171,7 +171,7 @@ export interface PickOption {
   words: Omit<WhenWords, "thing">;
 }
 
-/** One thing the reading picks: its key, its words (the pill's name), its values in the order the fees name them, and the one picked. */
+/** One thing the reading picks: its key, its words (the chip's name), its values in the order the fees name them, and the one picked. */
 export interface PickThing {
   by: string;
   words: string;
@@ -180,7 +180,7 @@ export interface PickThing {
 }
 
 /**
- * The reading's first line: its head, one pill per thing the deal's fees change by that the reading picks, and the line under them.
+ * The reading's first line: its head, one chip per thing the deal's fees change by that the reading picks, and the line under them.
  * Null for a deal with no fee that changes by a thing picked.
  */
 export interface PickLine {

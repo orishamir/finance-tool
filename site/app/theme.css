@@ -166,6 +166,7 @@
   --secondary: var(--palette-neutral-850);
   --secondary-foreground: var(--foreground);
   --accent: var(--palette-neutral-850); /* hover and pressed wash on rows and menu items */
+  --secondary-hover: var(--palette-neutral-800); /* a thing filled in secondary (a chip, a menu, an add chip) under a computer's pointer or while what it opens is open: one step lighter, since accent is the secondary grey itself */
   --accent-foreground: var(--foreground);
   --border: var(--palette-neutral-850); /* dividers and card edges (decorative) */
   --input: var(--palette-neutral-600); /* field and control edges (3:1 or more) */
@@ -329,7 +330,6 @@
   --when-ink: color-mix(in oklab, var(--when) 55%, var(--palette-neutral-0)); /* the band's head: its icon and words */
   --when-words: color-mix(in oklab, var(--when) 22%, var(--palette-neutral-0)); /* a case's condition in words */
   --when-any: color-mix(in oklab, var(--when) 50%, var(--muted-foreground)); /* a value that is any ("בכל מסלול"), fainter */
-  --when-pill: color-mix(in oklab, var(--when) 40%, var(--card)); /* the edge of a pill on the band */
   /* what a part does to the price: what is charged orange, what comes off green, its floor and ceiling blue, how it is charged grey; the
      same on the square before a toolbox group's name and a card of it the case has, the open case's line and the dot before it in a cell (`data-kind`, below) */
   --part-charge: oklch(0.74 0.12 55);
@@ -469,6 +469,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
@@ -577,7 +578,6 @@
   --color-when-ink: var(--when-ink);
   --color-when-words: var(--when-words);
   --color-when-any: var(--when-any);
-  --color-when-pill: var(--when-pill);
   --color-kind: var(--kind);
   --color-kind-tile: var(--kind-tile);
   --color-kind-tile-on: var(--kind-tile-on);

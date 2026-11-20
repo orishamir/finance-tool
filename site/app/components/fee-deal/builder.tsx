@@ -210,7 +210,7 @@ export function feeGroup(read: Pick<DealRead, "engine">, fee: Fee, saved: boolea
  * The page's undo line of a change to one fee's cases or prices (a case, a thing, a price taken away): it stands under the fee's block.
  * A price put in another form (`inCase`) leaves it in the open case, under its parts, where the change was made, while that case is open
  * (`caseId`, none for a fee whose price changes by nothing). A thing taken away (`thing`, its place) gives the focus back, on "ביטול", to
- * its place in the band's head (its pill where the fee is open, else its bin), else to the open case, brought into view.
+ * its place in the band's head (its chip where the fee is open, else its bin), else to the open case, brought into view.
  */
 export type CaseUndoLine = KindUndoLine & { feeId: string; inCase?: { caseId: string | null }; thing?: number };
 

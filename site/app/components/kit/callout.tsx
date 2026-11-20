@@ -33,7 +33,7 @@ export function Callout({ tone, title, tag, children, className }: { tone: "caut
         {(title || tag) && (
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
             {title && <span className="font-medium">{title}</span>}
-            {tag && <span className="inline-flex items-center rounded-full border border-info-border px-2 text-xs text-info-foreground tabular-nums">{tag}</span>}
+            {tag && <span className="inline-flex items-center rounded-[6px] border border-info-border px-2 text-xs text-info-foreground tabular-nums">{tag}</span>}
           </span>
         )}
         <div>{children}</div>

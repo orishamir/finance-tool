@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { AbroadNote, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { AbroadNote, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -152,12 +152,16 @@ describe("the shared pieces' choices are props, never an overriding class", () =
     expect(flush).not.toContain("px-2");
     // the piece alone, before the provenance sheet the test frame draws after it
     const own = (h: string) => h.split("<dialog")[0]!;
-    for (const el of [flush, html(createElement(Tag, { tone: "primary", children: "x" })), html(createElement(Tag, { tone: "outline", children: "x" })), html(createElement(Tag, { shape: "pill", size: "sm", children: "x" }))]) expect(own(el)).not.toMatch(/class="[^"]*(?<=["\s])!/);
+    for (const el of [flush, html(createElement(Tag, { tone: "primary", children: "x" })), html(createElement(Tag, { tone: "outline", children: "x" })), html(createElement(Tag, { shape: "roomy", size: "sm", children: "x" }))]) expect(own(el)).not.toMatch(/class="[^"]*(?<=["\s])!/);
   });
-  it("a pill is round, and a tag of the primary tone is a pill by default", () => {
-    expect(html(createElement(Tag, { shape: "pill", children: "x" }))).toContain("rounded-full");
-    expect(html(createElement(Tag, { tone: "primary", children: "x" }))).toContain("rounded-full");
+  it("a roomy tag has 6 px corners and no round ends, a tag of the primary tone is roomy by default with semibold words, and a framed tone keeps its frame", () => {
+    expect(html(createElement(Tag, { shape: "roomy", children: "x" }))).toContain("rounded-[6px] px-2 py-[3px]");
+    const primary = html(createElement(Tag, { tone: "primary", children: "x" }));
+    expect(primary).toContain("rounded-[6px]");
+    expect(primary).toContain("font-semibold");
+    expect(html(createElement(Tag, { tone: "outline", children: "x" }))).toMatch(/rounded-\[6px\][^"]*border border-input/);
     expect(html(createElement(Tag, { children: "x" }))).toContain("rounded-sm");
+    for (const t of ["neutral", "primary", "outline", "info"] as const) expect(html(createElement(Tag, { tone: t, children: "x" })).split("<dialog")[0]).not.toContain("rounded-full");
   });
   it("a fold with the link look draws its label in the link colour", () => {
     expect(html(createElement(Disclosure, { look: "link", label: "more", children: "body" }))).toMatch(/<span class="text-link">more<\/span>/);
@@ -297,6 +301,13 @@ describe("the third kit job's options", () => {
 });
 
 describe("AddLine", () => {
+  it("stands with no frame, each chip a soft fill with a teal plus before its words, the rarer ones on the quieter fill", () => {
+    const out = html(createElement(AddLine, { lead: "lead", items: [{ id: "a", label: "AAA", usual: true }, { id: "b", label: "BBB" }], onAdd: () => {} })).split("<dialog")[0]!;
+    expect(out).not.toContain("border");
+    expect(out.match(/lucide-plus/g)).toHaveLength(3);
+    expect(out).toMatch(/rounded-md [^"]*bg-secondary text-foreground font-medium[^>]*>.*?AAA/);
+    expect(out).toMatch(/rounded-md [^"]*bg-muted text-muted-foreground[^>]*>.*?BBB/);
+  });
   it("hands the focus, once a chip added its thing and left, to the chip now in its place, else the last, and never takes it from where the page put it", () => {
     expect(chipAfterAdd(1, 3, false)).toBe(1);
     expect(chipAfterAdd(3, 3, false)).toBe(2);
@@ -307,6 +318,15 @@ describe("AddLine", () => {
 });
 
 describe("ChoiceChips", () => {
+  it("marks the chosen chip by its fill, a check before its words and its words held at the chosen weight; the others carry no check", () => {
+    const out = html(createElement(ChoiceChips, { ids: ["a", "b"], labels: { a: "חוק", b: "תקנות" }, value: "a", onChange: () => {}, ariaLabel: "x" }));
+    const [on, off] = out.split('role="radio"').slice(1);
+    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on ps-2\.5"/);
+    expect(on).toContain("lucide-check");
+    expect(on).toContain("invisible font-semibold");
+    expect(off).not.toContain("sec-chip-on");
+    expect(off).not.toContain("lucide-check");
+  });
   it("names each chip by its words and, where the row counts, its count, as the eye reads it", () => {
     expect(chipName("אג\"ח", 12)).toBe(`${gershayim("אג\"ח")} 12`);
     expect(chipName("מניות", undefined)).toBe("מניות");
@@ -330,7 +350,7 @@ describe("AbroadNote", () => {
     for (const w of ["TITLE-GB", "BODY-GB", "H1", "F3", "PUB-A וPUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
   });
   it("keeps a chip for a country with nothing like the product, dashed and saying so in words", () => {
-    expect(out).toMatch(/border-dashed text-muted-foreground[^>]*>.*?ארצות הברית.*?לא נמצא/);
+    expect(out).toMatch(/chip-dashed text-muted-foreground[^>]*>.*?ארצות הברית.*?לא נמצא/);
   });
   it("lays out every country unseen, the one with nothing found headed by it", () => {
     expect(out).toContain("בארצות הברית: לא נמצא מוצר דומה");

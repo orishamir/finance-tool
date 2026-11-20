@@ -13,7 +13,7 @@ import { Button } from "./button";
 import { cx } from "./cx";
 import { KnobButton } from "./knob-button";
 
-/** The bin's icon, for a picture of the control that is not itself a button (a pill drawn under the pointer while it is dragged). */
+/** The bin's icon, for a picture of the control that is not itself a button (a chip drawn under the pointer while it is dragged). */
 export const BinIcon = () => <Trash2 size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />;
 
 export function RemoveButton({ label, onRemove, expanded, knob, cell, keepsFocus, tabIndex = -1, className }: {

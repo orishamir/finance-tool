@@ -1,6 +1,6 @@
 // One item of a list chosen from a drop-down that sits in a line of text (the indices page's title: "… להשקיע במדד [S&P 500 ⌄] לאורך
 // זמן"): a 44 px button that shows the chosen item and a chevron, and under it the list. The items are links (a page each) or buttons;
-// an item the person added can be renamed in place or deleted after a question, as `ChipList` does for pills (or at once, where the page
+// an item the person added can be renamed in place or deleted after a question, as `ChipList` does for chips (or at once, where the page
 // can undo it); the last row adds one. A row may carry a muted line under its name that tells two rows apart. The list opens upward where
 // the window below the site's header (or a box around it that clips) has no room for it below the button, and scrolls inside where
 // neither side holds it.

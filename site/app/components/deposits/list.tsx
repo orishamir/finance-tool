@@ -31,7 +31,7 @@ function Access({ o, plain, only }: { o: DbOffer; /** The phone's words, without
             {a.words}
           </span>
         ) : (
-          <Tag key={a.kind} tone={a.kind === "exits" ? "primary" : "neutral"} shape="pill" size="sm">
+          <Tag key={a.kind} tone={a.kind === "exits" ? "primary" : "neutral"} shape="roomy" size="sm">
             {a.words}
           </Tag>
         ),

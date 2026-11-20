@@ -88,7 +88,7 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
             <h2 id={headId} className="text-lg font-semibold">
               {head.title}
             </h2>
-            {tracks && product && <Tag tone="outline" shape="pill">{product}</Tag>}
+            {tracks && product && <Tag tone="outline" shape="roomy">{product}</Tag>}
           </div>
           <p className="text-sm text-muted-foreground">{newDeal ? `${head.lede} ${w.newDeal}` : head.lede}</p>
         </div>

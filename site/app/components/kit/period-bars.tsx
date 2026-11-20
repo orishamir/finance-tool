@@ -1,6 +1,6 @@
 // A choice of one period drawn as a bar chart (the deposits page's terms): each column is one button that picks its period, with the
-// figure as text, a bar, a pill with the period's name and a short note under it (who pays it). All bars share one scale from zero; there
-// are no gridlines and no value axis, since every bar carries its figure (charts.md). The chosen column is framed and tinted, its pill
+// figure as text, a bar, a chip with the period's name and a short note under it (who pays it). All bars share one scale from zero; there
+// are no gridlines and no value axis, since every bar carries its figure (charts.md). The chosen column is framed and tinted, its chip
 // filled and its bar at full strength; the others stand on a faint band and light up on hover. A column with no figure says so and has no
 // bar, and can still be chosen. Bars ease to new heights, except for a reader who asks for less motion.
 import type { ReactNode } from "react";
@@ -8,9 +8,9 @@ import { cx } from "./cx";
 
 export interface PeriodBar {
   id: string;
-  /** The pill's words from md. */
+  /** The chip's words from md. */
   label: string;
-  /** The pill's words where the chart is narrower than 42rem (a phone: eight across its width); `tiny` under 23rem. */
+  /** The chip's words where the chart is narrower than 42rem (a phone: eight across its width); `tiny` under 23rem. */
   short?: string;
   tiny?: string;
   /** The bar's height on the shared scale; null: no bar, and `empty` in place of the figure. */
@@ -18,7 +18,7 @@ export interface PeriodBar {
   /** The figure written over the bar ("3.25%"); `unit` after it, dropped where the chart is under 23rem and eight figures barely fit. */
   figure?: string;
   unit?: string;
-  /** Under the pill where the chart is 42rem or wider (the bank that pays it); a phone leaves it out. */
+  /** Under the chip where the chart is 42rem or wider (the bank that pays it); a phone leaves it out. */
   note?: ReactNode;
   /** The column's spoken name in full ("שנה: 3.25% בבנק ירושלים"). */
   spoken: string;
@@ -67,7 +67,7 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
               {/* the bars' zero line, for the chart check: unseen, as the chart draws none */}
               {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-x-0 bottom-0 h-px opacity-0" />}
             </span>
-            <span aria-hidden="true" className={cx("w-full inline-flex items-center justify-center min-h-8 md:min-h-9 rounded-full border text-[13px] md:text-sm font-semibold whitespace-nowrap px-0.5 md:px-3", on ? "bg-foreground text-background border-foreground" : "border-input text-foreground")}>
+            <span aria-hidden="true" className={cx("w-full inline-flex items-center justify-center min-h-8 md:min-h-9 rounded-md border text-[13px] md:text-sm font-semibold whitespace-nowrap px-0.5 md:px-3", on ? "bg-foreground text-background border-foreground" : "border-input text-foreground")}>
               <span className="hidden @2xl:inline">{b.label}</span>
               <span className="@2xl:hidden @max-[23rem]:hidden">{b.short ?? b.label}</span>
               <span className="hidden @max-[23rem]:inline">{b.tiny ?? b.short ?? b.label}</span>

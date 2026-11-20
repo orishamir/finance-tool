@@ -92,22 +92,23 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
 }
 
 const toneClass: Record<Exclude<Label["tone"], "neutral">, string> = {
-  caution: "bg-caution-subtle text-caution-foreground border-caution/40",
-  open: "bg-blocked-subtle text-blocked-foreground border-blocked/40",
+  caution: "bg-caution-subtle text-caution-foreground",
+  open: "bg-blocked-subtle text-blocked-foreground",
 };
 
-/** A neutral label takes its family's colour: the icon and words in it, a faint fill and edge of it. */
+/** A neutral label takes its family's colour: the icon and words in it, a faint fill of it. */
 const familyClass: Partial<Record<Label["family"], string>> = {
-  held: "text-label-held bg-label-held/10 border-label-held/35",
-  trade: "text-label-trade bg-label-trade/12 border-label-trade/40",
-  follow: "text-label-follow bg-label-follow/14 border-label-follow/45",
-  currency: "text-label-currency bg-label-currency/12 border-label-currency/40",
-  tax: "text-label-tax bg-label-tax/12 border-label-tax/40",
-  payout: "text-label-payout bg-label-payout/12 border-label-payout/40",
+  held: "text-label-held bg-label-held/10",
+  trade: "text-label-trade bg-label-trade/12",
+  follow: "text-label-follow bg-label-follow/14",
+  currency: "text-label-currency bg-label-currency/12",
+  tax: "text-label-tax bg-label-tax/12",
+  payout: "text-label-payout bg-label-payout/12",
 };
 
-const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-muted text-foreground border-border") : toneClass[label.tone]);
-const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 min-h-6 whitespace-nowrap";
+const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-muted text-foreground") : toneClass[label.tone]);
+/** A tinted fill and no outline, 6 px corners, 26 px high: 13 px words on an 18 px line, 4 px above and below, 8 px at the sides. */
+const chipShape = "inline-flex items-center gap-[5px] text-xs leading-[18px] font-medium rounded-[6px] px-2 py-1 min-h-[26px] whitespace-nowrap";
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
  *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height. */
@@ -127,7 +128,7 @@ export function LabelChip({ label, still = false, words = false }: { label: Labe
       </span>
     );
   return (
-    <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "relative before:absolute before:inset-x-0 before:-inset-y-[11px] hover:brightness-110", chipClass(label))} data-label={label.id}>
+    <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "relative before:absolute before:inset-x-0 before:-inset-y-[9px] hover:brightness-110", chipClass(label))} data-label={label.id}>
       <LabelIcon name={label.icon} />
       {label.text}
     </button>
