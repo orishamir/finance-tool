@@ -1,7 +1,7 @@
 {
   "id": "SW-42",
   "title": "Transfer information passes through the pension clearing house (ממשק ניוד) since 23.2.2020; the regulator may defer the ten-business-day transfer deadline by up to twenty more business days",
-  "title_he": "המידע על ניוד עובר במסלקה הפנסיונית; הממונה רשאי לדחות את מועד ההעברה",
+  "title_he": "המידע על ניוד עובר במסלקה הפנסיונית, והממונה רשאי לדחות את מועד ההעברה",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
