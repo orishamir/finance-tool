@@ -1,7 +1,7 @@
 {
   "id": "fee-custody",
   "he": "דמי ניהול פיקדון ניירות ערך",
-  "one_line": "עמלה קבועה על החזקת ניירות הערך בחשבון, גם כשלא מבצעים בו פעולות",
+  "one_line": "עמלה קבועה על החזקת ניירות הערך בחשבון, גם כשאין בו פעולות",
   "source": {
     "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
     "title": "product.md 3.3 and glossary.md section 2",
