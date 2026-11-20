@@ -108,25 +108,36 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
   };
 }
 
-/** A lane's parts under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." */
-function UnderLine({ fee, parts }: { fee: ChartFee; parts: LanePart[] }) {
-  const u = w.action.under;
-  const of = copy.price.of[fee.ref.kind] ?? copy.price.of.default;
+/**
+ * A lane's parts under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." On the action chart
+ * (`action`) they are said of the action, "בקנייה של עד 130 ₪: לכל היותר 30% ממנה.", and the fee is named only where it has several.
+ */
+function UnderLine({ fee, parts, action }: { fee: ChartFee; parts: LanePart[]; action?: { tab: ActionTab; named: boolean } }) {
+  const a = w.action;
+  const u = a.under;
+  const named = !action || action.named;
+  const of = action ? (a.male[action.tab.action] ? a.below.of.m : a.below.of.f) : ` ${copy.price.of[fee.ref.kind] ?? copy.price.of.default}`;
+  const lead = action ? `${u.at}${tabWord(a.noun, action.tab)}${u.upToOf}` : u.upTo;
   return (
     <li className="flex items-baseline gap-2">
-      <Swatch shape="box" className={cx("translate-y-px", colourOf(fee).bg)} />
+      {named && <Swatch shape="box" className={cx("translate-y-px", colourOf(fee).bg)} />}
       <p>
-        {refName(fee.ref)}
-        {copy.price.sep}
+        {named && (
+          <>
+            {refName(fee.ref)}
+            {copy.price.sep}
+          </>
+        )}
         {parts.map((p, k) => (
           <span key={k}>
             {k > 0 && u.sep}
-            {p.end && <FigAfter value={p.end} lead={u.upTo} />}{" "}
+            {p.end && <FigAfter value={p.end} lead={lead} />}
+            {action ? copy.price.sep : " "}
             {p.part === "free" ? copy.price.free : p.figure ? (
               <>
                 {p.part === "cap" ? u.capLead : p.part === "min" ? u.minLead : ""}
                 <Fig value={p.figure} />
-                {p.part === "cap" ? ` ${of}` : ""}
+                {p.part === "cap" ? of : ""}
               </>
             ) : null}
           </span>
@@ -266,13 +277,20 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
   const h = view.head;
   const a = w.action;
   if (h.kind === "below") {
-    const g = a.male[tab.action] ? a.below.m : a.below.f;
+    // an action at the axis's start: below `below` every action costs more than the rate, and this one the most on the chart
+    const small = view.readAt(view.range.lo);
     return (
       <>
         {tabWord(a.noun, tab)}
-        <FigAfter value={h.below} lead={g.small} />
-        <NumAfter value={h.rate} lead={g.more} display={fmt.pctPrinted} />
-        {g.of}
+        {a.of}
+        <Num value={small.amount} display={fmt.nisWhole} />
+        {a.below.costs}
+        <Fig value={small.total} />
+        {a.below.which}
+        <Num value={small.share} />
+        {a.male[tab.action] ? a.below.of.m : a.below.of.f}
+        <FigAfter value={h.below} lead={a.below.only} />
+        <NumAfter value={h.rate} lead={a.below.falls} display={fmt.pctPrinted} />
       </>
     );
   }
@@ -286,49 +304,45 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
   return <>{countPhrase(h.n, a.marks)}</>;
 }
 
-/** The sub of an action's headline: the part that decides up to its sum, the rate above it and the fees it adds, a maximum, and the sale. */
+/** The sub of an action's headline: the fees its rate adds up from, where several; a maximum; and the sale. */
 function ActionSub({ view, tab }: { view: ActionView; tab: ActionTab }) {
   const h = view.head;
   const a = w.action;
   const sale = tab.action === "trade" && tab.side === "all" ? a.sameSale : "";
-  if (h.kind !== "below") return sale ? <p className="text-muted-foreground">{sale}</p> : null;
+  if (h.kind !== "below" || (h.adds.length < 2 && !h.max)) return sale ? <p className="text-muted-foreground">{sale}</p> : null;
   return (
     <p className="text-muted-foreground">
-      {a.upTo.lead}
-      {a.part[h.by.part.part]}
-      {a.upTo.of}
-      {refName(h.by.fee.ref)}
-      {h.by.part.figure && (
-        <>
-          {a.why.sep}
-          <Fig value={h.by.part.figure} />
-        </>
-      )}
-      {a.upTo.decides}
-      {a.above.lead}
-      {tabWord(a.noun, tab)}
-      {a.above.costs}
-      <Num value={h.rate} display={fmt.pctPrinted} />
       {h.adds.length > 1 && (
         <>
-          {a.above.list}
+          <NumAfter value={h.rate} lead={a.above.lead} display={fmt.pctPrinted} />
+          {a.above.are}
           {h.adds.map((x, k) => (
             <span key={x.fee.ref.fee}>
               {k > 0 && a.above.and}
               {refName(x.fee.ref)} <Fig value={x.rate} />
             </span>
           ))}
+          {a.above.end}
         </>
       )}
-      {a.above.end}
       {h.max && (
         <>
-          {" "}
+          {h.adds.length > 1 && " "}
           <FigAfter value={h.max.at} lead={a.maxAt.lead} />
-          {a.maxAt.the}
-          {refName(h.by.fee.ref)}
-          {a.maxAt.sep}
-          <Fig value={h.max.figure} />
+          {view.lanes.length === 1 ? (
+            <>
+              {a.maxAt.stops}
+              <Fig value={h.max.figure} />
+              {a.maxAt.falls}
+            </>
+          ) : (
+            <>
+              {a.maxAt.of}
+              {refName(h.max.fee.ref)}
+              {a.maxAt.feeStops}
+              <Fig value={h.max.figure} />
+            </>
+          )}
           {a.maxAt.end}
         </>
       )}
@@ -345,6 +359,18 @@ function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; 
   if (p.part === "free") return <>{copy.price.free}</>;
   if (p.part === "rate") return p.figure ? <><Fig value={p.figure} /> {share}</> : null;
   const rate = lane?.parts?.find((x) => x.part === "rate")?.figure;
+  // what the part adds to its rate alone, or saves off it, where both are known and differ
+  if (rate && part.rateAlone && part.apart && (part.apart.value as number) > 0)
+    return (
+      <>
+        {a.part[p.part]}
+        <FigAfter value={part.apart} lead={(part.cost.value as number) > (part.rateAlone.value as number) ? a.why.adds : a.why.saves} />
+        {a.why.alone}
+        <Fig value={rate} />
+        <FigAfter value={part.rateAlone} lead={a.why.would} />
+        {a.why.end}
+      </>
+    );
   return (
     <>
       {a.part[p.part]}
@@ -355,13 +381,6 @@ function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; 
         </>
       )}
       {a.why.decides}
-      {rate && part.rateAlone && (
-        <>
-          {a.why.alone}
-          <Fig value={rate} />
-          <FigAfter value={part.rateAlone} lead={a.why.would} />
-        </>
-      )}
     </>
   );
 }
@@ -462,7 +481,7 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
   const first = shareAt(points, view.start);
   const top = first > 0 ? Math.min(most, first * 6) : most;
   const yTop = shareTicks(top).at(-1) ?? top;
-  const over = points[0] && points[0].share > yTop ? w.action.over(fmt.pct(points[0].share >= 10 ? Math.round(points[0].share * 10) / 10 : points[0].share), fmt.number(range.lo)) : undefined;
+  const over = points[0] && points[0].share > yTop ? w.action.over(fmt.pct(points[0].share >= 10 ? Math.round(points[0].share * 10) / 10 : points[0].share), fmt.nisWhole(range.lo)) : undefined;
   const share = read.share.value as number;
   const marks: ShareMark[] = view.marks.filter((m) => Math.abs(Math.log(m.at / at)) > 0.01).map((m, k) => ({ id: String(k), at: m.at, label: textOf(m.label) }));
   const move = (a: number) => setAt(Math.max(range.lo, Math.min(range.hi, roundAmount(a))));
@@ -472,7 +491,7 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
         <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
       ))}
       {view.below.map((b) => (
-        <UnderLine key={b.fee.ref.fee} fee={b.fee} parts={b.parts} />
+        <UnderLine key={b.fee.ref.fee} fee={b.fee} parts={b.parts} action={{ tab, named: view.lanes.length > 1 }} />
       ))}
       {view.rates.map((r) => (
         <li key={r.currency}>
@@ -499,7 +518,7 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
             spoken={w.action.point}
             xTitle={tabWord(w.action.x, tab)}
           />
-          <AmountLanes title={w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
+          <AmountLanes title={view.lanes.length > 1 ? w.action.lanesEach : w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
         </ShareStack>
       </div>
       <ActionCard read={read} view={view} tab={tab} strong={strong} onStrong={setStrong} notes={notes} />

@@ -167,11 +167,23 @@ describe("the panels' headlines", () => {
     ];
     const shown = drawReading(d);
     const r = feeDeal.read;
-    // the minimum of 15 ₪ meets 0.25% at 6,000 ₪; above it a purchase costs 0.25% and 0.2%
-    expect(shown).toContain(`${r.action.noun.trade}${r.action.below.f.small}6,000 ₪${r.action.below.f.more}0.45%${r.action.below.f.of}`);
-    expect(shown).toContain(`${r.action.above.lead}${r.action.noun.trade}${r.action.above.costs}0.45%`);
+    // the minimum of 15 ₪ meets 0.25% at 6,000 ₪: a purchase at the axis's start costs more, and from 6,000 ₪ 0.25% and 0.2%
+    expect(shown).toContain(`${r.action.noun.trade}${r.action.of}`);
+    expect(shown).toContain(`${r.action.below.of.f}${r.action.below.only}6,000 ₪${r.action.below.falls}0.45%`);
+    expect(shown).toContain(`${r.action.above.lead}0.45%${r.action.above.are}`);
     // 120 ₪ a year against 0.4% meet at 30,000 ₪
     expect(shown).toContain(`${r.held.cross.lead}30,000 ₪${r.held.cross.after}`);
+  });
+  it("say of one fee what a small action costs, where the rate starts, and where the maximum stops the price", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.3), min: typed(39), max: typed(6900) } }] }];
+    const shown = drawReading(d);
+    const r = feeDeal.read.action;
+    // 39 ₪ meets 0.3% at 13,000 ₪, and 0.3% meets 6,900 ₪ at 2,300,000 ₪
+    expect(shown).toContain(`${r.below.of.f}${r.below.only}13,000 ₪${r.below.falls}0.3%`);
+    expect(shown).toContain(`${r.maxAt.lead}2,300,000 ₪${r.maxAt.stops}6,900 ₪${r.maxAt.falls}${r.maxAt.end}`);
+    expect(shown).toContain(r.lanes);
+    expect(shown).not.toContain(r.lanesEach);
   });
 });
 
@@ -424,7 +436,7 @@ describe("the reading on screen", () => {
     expect(shown).toContain(r.periods.here);
     expect(shown).toContain("לעמלות שבעסקה לא נמצאה תקרה בחוק");
     // past the minimum, a trade costs the group's rate: the trade fee's 0.25% and the conversion's 0.2%
-    expect(shown).toContain(`${r.action.above.costs}0.45%`);
+    expect(shown).toContain(`${r.action.below.falls}0.45%`);
   });
   it("offers the holding chart a tab per run of periods whose prices differ", () => {
     const html = markup(createElement(ReadingCards, { reading: readingOf(readDealFor(account(), data.kinds, TODAY), data.fx), saved: false, fx: data.fx }));

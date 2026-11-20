@@ -288,6 +288,8 @@ export interface ActionPart {
   part: LanePart | undefined;
   /** `rate × a` in shekels, where a minimum or a maximum decides instead (F-123). */
   rateAlone?: SiteValue;
+  /** How far the cost is from `rateAlone`, in shekels: what the minimum adds or the maximum saves (F-123). */
+  apart?: SiteValue;
 }
 
 /** What one action of the reader's amount costs (F-112, F-123): the amount, in the curve's currency too, its cost, its share and its parts. */
@@ -324,7 +326,7 @@ export interface CurvePoint {
 /** What the headline of an action's chart says (F-123), from the deal's marks. */
 export type ActionHead =
   /** An action under `below` costs more than `rate` of it: the part that ends there and its fee, the fees that add to the rate, and the maximum where one fee's is. */
-  | { kind: "below"; below: SiteValue; rate: SiteValue; by: { fee: ChartFee; part: LanePart }; adds: { fee: ChartFee; rate: SiteValue }[]; max?: { at: SiteValue; figure: SiteValue } }
+  | { kind: "below"; below: SiteValue; rate: SiteValue; by: { fee: ChartFee; part: LanePart }; adds: { fee: ChartFee; rate: SiteValue }[]; max?: { at: SiteValue; figure: SiteValue; fee: ChartFee } }
   /** Above `at` a maximum decides. */
   | { kind: "max"; at: SiteValue }
   /** The cost changes behaviour at `n` amounts. */
@@ -569,7 +571,9 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
         const ePrice = part ? pricesOf(r, p, part.i, side).e : null;
         const alone = part && (part.part === "min" || part.part === "max") && ePrice?.kind === "action" ? reading(ePrice.rate * a, "nis", "F-123", { ...amountIn, ...endInputs(r, part.i, ePrice, priceAt(r.fees[part.i]!, p.from, side === "sell")) }, r.today) : undefined;
         if (!(v > 0) && part?.part !== "free") return [];
-        return [{ fee, cost: reading(v, "nis", "F-112", { ...inputs, ...amountIn }, r.today), part, ...(alone ? { rateAlone: alone } : {}) }];
+        const feeCost = reading(v, "nis", "F-112", { ...inputs, ...amountIn }, r.today);
+        const apart = alone ? reading(Math.abs(v - (alone.value as number)), "nis", "F-123", { "deal:cost": feeCost, "deal:rate-alone": alone }, r.today) : undefined;
+        return [{ fee, cost: feeCost, part, ...(alone ? { rateAlone: alone } : {}), ...(apart ? { apart } : {}) }];
       }),
     };
   };
@@ -659,7 +663,7 @@ function actionHead(r: DealRead, p: DealPeriod, action: DealAction, side: "buy" 
         rate,
         by: { fee: by.lane.fee, part: by.part },
         adds: rIn.length > 1 ? rIn : [],
-        ...(maxPart && maxPart.figure ? { max: { at: maxes[0]!.part.end!, figure: maxPart.figure } } : {}),
+        ...(maxPart && maxPart.figure ? { max: { at: maxes[0]!.part.end!, figure: maxPart.figure, fee: maxes[0]!.lane.fee } } : {}),
       };
     }
   }
