@@ -13,16 +13,16 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        כל חודש נכנסות לקרן הפקדות מהשכר, שלכם ושל המעסיק. הן נצברות בחשבון שלכם בקרן ומושקעות <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. <Ruled id="PEN-17">מי שלא בוחר מסלול נכנס למסלול לפי הגיל שלו</Ruled>. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה, ולמי שהיה זכאי לפני המועד שבחוק החלק <Ruled id="PEN-18">גדול יותר</Ruled>.
+        כל חודש נכנסות לקרן הפקדות מהשכר, שלכם ושל המעסיק. הן נצברות בחשבון שלכם בקרן ומושקעות <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. <Ruled id="PEN-17">מי שלא בוחר מסלול נכנס למסלול לפי הגיל שלו</Ruled>. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. למי שהיה זכאי לפני המועד שבחוק החלק <Ruled id="PEN-18">גדול יותר</Ruled>.
       </p>
       <p className="max-w-measure">
-        בפרישה החיסכון הופך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Term id="קצבת זקנה">קצבת זקנה</Term>. <Ruled id="PEN-27">היא שווה ליתרה שצברתם חלקי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> שהקרן קובעת, ואפשר להתחיל לקבל אותה מגיל <N v={figure("PEN-26", "early_retirement_age")} />.
+        בפרישה החיסכון הופך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Term id="קצבת זקנה">קצבת זקנה</Term>. <Ruled id="PEN-27">היא שווה ליתרה שצברתם חלקי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> שהקרן קובעת. אפשר להתחיל לקבל אותה מגיל <N v={figure("PEN-26", "early_retirement_age")} />.
       </p>
       <p className="max-w-measure">
-        הקרן היא גם ביטוח. <Term id="דמי ביטוח">דמי הביטוח</Term> <Ruled id="PEN-15">באים מההפקדות</Ruled>, כל עוד אתם מבוטחים, ובזכותם הקרן <Ruled id="PEN-08">משלמת עוד שתי קצבאות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Ruled id="PEN-12">למי שאיבד חלק מכושר העבודה או את כולו</Ruled>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> <Ruled id="PEN-13">למשפחה אחרי מוות</Ruled>.
+        הקרן היא גם ביטוח. <Term id="דמי ביטוח">דמי הביטוח</Term> <Ruled id="PEN-15">באים מההפקדות</Ruled>, כל עוד אתם מבוטחים. בזכותם הקרן <Ruled id="PEN-08">משלמת עוד שתי קצבאות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Ruled id="PEN-12">למי שאיבד חלק מכושר העבודה או את כולו</Ruled>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> <Ruled id="PEN-13">למשפחה אחרי מוות</Ruled>.
       </p>
       <p className="max-w-measure">
-        צו ההרחבה <Ruled id="PEN-01">מחייב חיסכון לפנסיה לכל עובד</Ruled> מגיל <N v={figure("PEN-01", "minimum_age_men")} /> לגברים ומגיל <N v={figure("PEN-01", "minimum_age_women")} /> לנשים, חוץ ממי שיש לו הסדר טוב לפחות כמו זה. ההפקדות מתחילות בתום <N v={figure("PEN-02", "waiting_months")} /> חודשים מתחילת העבודה, ומי שכבר מבוטח כשהוא מתחיל לעבוד <Ruled id="PEN-02">זכאי להן מהיום הראשון</Ruled>. העובד בוחר קרן מקיפה או <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term> <Ruled id="PEN-05">עם כיסוי גם למקרה מוות וגם למקרה נכות, באותה קופה או בקופה אחרת</Ruled>. מי שלא בוחר, המעסיק מבטח אותו בקרן מקיפה.
+        צו ההרחבה <Ruled id="PEN-01">מחייב חיסכון לפנסיה לכל עובד</Ruled> מגיל <N v={figure("PEN-01", "minimum_age_men")} /> לגברים ומגיל <N v={figure("PEN-01", "minimum_age_women")} /> לנשים, חוץ ממי שיש לו הסדר טוב לפחות כמו זה. ההפקדות מתחילות בתום <N v={figure("PEN-02", "waiting_months")} /> חודשים מתחילת העבודה. מי שכבר מבוטח כשהוא מתחיל לעבוד <Ruled id="PEN-02">זכאי להן מהיום הראשון</Ruled>. העובד בוחר קרן מקיפה או <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term> <Ruled id="PEN-05">עם כיסוי גם למקרה מוות וגם למקרה נכות, באותה קופה או בקופה אחרת</Ruled>. מי שלא בוחר, המעסיק מבטח אותו בקרן מקיפה.
       </p>
       <p className="max-w-measure">
         ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, ומהמעסיק <N v={figure("PEN-03", "employer_pct")} /> ועוד <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, <Ruled id="PEN-04" prefix="מ">השכר עד</Ruled> <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
@@ -49,7 +49,7 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled>, ולפי הנחה של האתר עד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>. למי שאינו <Term id="עמית מוטב">עמית מוטב</Term> הוא <Ruled id="TXP-02">חל על הפקדה של עד</Ruled> <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה, ועמית מוטב <Ruled id="TXP-03">עובר לתקרת זיכוי אחרת</Ruled>.
+        ההפקדה שלכם מורידה את מס ההכנסה ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, <Ruled id="TXP-01">בלי קשר למדרגת המס שלכם</Ruled>. לפי הנחה של האתר, ההפחתה היא עד גובה המס שאתם משלמים באותה שנה. זה <Term id="זיכוי ממס">זיכוי ממס</Term>. למי שהוא לא <Term id="עמית מוטב">עמית מוטב</Term> הוא <Ruled id="TXP-02">חל על הפקדה של עד</Ruled> <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה. עמית מוטב <Ruled id="TXP-03">עובר לתקרת זיכוי אחרת</Ruled>.
       </p>
       <EmployerUntaxed figure={figure} />
       <Callout tone="blocked" className="max-w-measure">
@@ -70,14 +70,14 @@ export const content: GuideContent = {
         היתרה שלכם משתנה גם בלי קשר להשקעות. כל <N v={figure("PEN-19", "balancing_every_months")} /> חודשים הקרן <Ruled id="PEN-19">מעדכנת את כל החשבונות</Ruled> לפי <Term id="איזון אקטוארי">איזון אקטוארי</Term>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם <Ruled id="PEN-15">דמי הביטוח יורדים מההפקדות</Ruled>, כל עוד אתם מבוטחים.
       </p>
       <p className="max-w-measure">
-        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, <Ruled id="REG-21">המדינה משלימה</Ruled> <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>, <Ruled id="PEN-18" prefix="ו">היעד נבדק</Ruled> כל <N v={figure("PEN-18", "check_period_months")} /> חודשים. השאר עולה ויורד עם המסלול.
+        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, <Ruled id="REG-21">המדינה משלימה</Ruled> <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>. <Ruled id="PEN-18">היעד נבדק</Ruled> כל <N v={figure("PEN-18", "check_period_months")} /> חודשים. השאר עולה ויורד עם המסלול.
       </p>
     </>
   ),
   use: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        הבסיס של החיסכון לפרישה של שכירים: לפי צו ההרחבה, <Term id="תגמולי מעסיק">תגמולי המעסיק</Term> לפנסיה <Ruled id="PEN-05">מגיעים לכאן או לקופת גמל לקצבה, לפי בחירת העובד</Ruled>, ההפקדה שלכם <Ruled id="TXP-01">מורידה את מס ההכנסה</Ruled>, וחלק מהנכסים <Ruled id="PEN-18" prefix="ב">השלמת תשואה</Ruled>. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד <Ruled id={["PEN-30", "PEN-28"]}>אפשרית רק במקרים שבחוק</Ruled> <Term prefix="וב" id="תקנון">תקנון</Term>.
+        הבסיס של החיסכון לפרישה של שכירים. לפי צו ההרחבה, <Term id="תגמולי מעסיק">תגמולי המעסיק</Term> לפנסיה <Ruled id="PEN-05">מגיעים לכאן או לקופת גמל לקצבה, לפי בחירת העובד</Ruled>. ההפקדה שלכם <Ruled id="TXP-01">מורידה את מס ההכנסה</Ruled>, וחלק מהנכסים <Ruled id="PEN-18" prefix="ב">השלמת תשואה</Ruled>. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד <Ruled id={["PEN-30", "PEN-28"]}>אפשרית רק במקרים שבחוק</Ruled> <Term prefix="וב" id="תקנון">תקנון</Term>.
       </p>
       <p className="max-w-measure">
         לעומת קופת גמל לקצבה, הביטוח כאן הוא חלק מהקרן. <Ruled id="PEN-35">תקרת דמי הניהול מהחיסכון נמוכה יותר</Ruled>, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.
