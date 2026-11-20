@@ -455,8 +455,8 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
   const byValue = unpricedValue || !covers || differ((x) => `${x.channel}|${x.track}`);
   const byChannel = channels.length > 1 && differ((x) => `${x.value}|${x.track}`);
   // one case per line and track, naming the values and channels it prices; the values the same lines, tracks and channels price stand
-  // together (`group`), so where one line prices more values than another of the fee (Mercantile's branch price abroad, its internet price
-  // in the US alone) its case is cut where the other's ends, and every value of a row of the table has the same cases
+  // together (`group`), so where one line prices more values than another of the fee (a branch price on every place abroad, an internet
+  // price on the US alone) its case is cut where the other's ends, and every value of a row of the table has the same cases
   const group = (v: string) => JSON.stringify(priced.filter((x) => x.value === v).map((x) => [x.line.id, x.track, x.channel]).sort());
   type Cell = { line: Line; track: string | null; group: string; channels: Set<string>; values: Set<string> };
   const cells: Cell[] = [];

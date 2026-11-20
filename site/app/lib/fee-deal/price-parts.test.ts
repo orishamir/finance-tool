@@ -19,9 +19,9 @@ import type { ActionView, HeldView } from "./charts";
 import { CAPACITY } from "./offers/capacity";
 import { builder } from "./rows";
 import { panel } from "./panel";
-import { chargesUnfilled, fillDeal, houseName, houseTemplateRead, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, houseTemplate, houseTemplateRead, templateOf, templateOptions } from "./templates";
 import { onlyWhatCanBeDone } from "../providers";
-import { latestSnapshots } from "../providers.server";
+import { latestOf, latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
 
 const data = feesData();
@@ -528,13 +528,20 @@ describe("the templates", () => {
     expect(event.by).toEqual([{ kind: "what", values: ["us", "europe", "world"] }]);
     expect(event.cases!.map((c) => c.when)).toEqual([[["us", "europe", "world"]]]);
   });
-  it("price Mercantile's internet line abroad in the US alone, and cut its branch case where the internet one ends", () => {
-    // annex E: "השרות ניתן עבור מניות בארה"ב בלבד"
-    expect(filledFor("mercantile", [{ by: "what", is: "us" }, { by: "channel", is: "direct" }])("trade")).toMatchObject({ rate: { v: 0.59 } });
-    expect(filledFor("mercantile", [{ by: "what", is: "europe" }, { by: "channel", is: "direct" }])("trade")).toBeUndefined();
-    expect(filledFor("mercantile", [{ by: "what", is: "europe" }, { by: "channel", is: "branch" }])("trade")).toMatchObject({ rate: { v: 0.79 } });
-    const abroad = house("mercantile").fees.find((f) => f.kind === "trade")!.cases!.filter((c) => (c.when[0] as string[]).some((v) => ["us", "europe", "world"].includes(v)));
-    expect(abroad.map((c) => c.when)).toEqual([[["us"], ["direct"]], [["us"], ["branch"]], [["europe", "world"], ["branch"]]]);
+  it("price a fund abroad at Mercantile by its general line on any channel, its internet price for US shares alone left out with why", () => {
+    // annex E: "השרות ניתן עבור מניות בארה"ב בלבד", and the bank's documents count ETFs apart from shares
+    for (const channel of ["direct", "branch"]) expect(filledFor("mercantile", [{ by: "what", is: "us" }, { by: "channel", is: channel }])("trade"), channel).toMatchObject({ rate: { v: 0.79 }, min: { v: 25 } });
+    expect(latestOf("mercantile")!.left_out!.some((e) => e.could_change_price && e.what.includes("0.59%"))).toBe(true);
+  });
+  it("cut a case where another case of the fee stops, so every value of a row has the same cases", () => {
+    // a branch line on every place abroad beside an internet line on the US alone (a list's venue-limited direct price)
+    const snap = structuredClone(latestOf("mercantile")!);
+    const general = snap.lines.find((l) => l.id === "mercantile-buy-sell-foreign-branch")!;
+    general.channel = "branch";
+    snap.lines.push({ ...structuredClone(general), id: "x-foreign-direct-us", channel: "direct", band: "מניות בארה\"ב" });
+    const trade = houseTemplate(snap).fees.find((f) => f.kind === "trade")!;
+    const abroad = trade.cases!.filter((c) => (c.when[0] as string[]).some((v) => ["us", "europe", "world"].includes(v)));
+    expect(abroad.map((c) => JSON.stringify(c.when)).sort()).toEqual([[["europe", "world"], ["branch"]], [["us"], ["branch"]], [["us"], ["direct"]]].map((w) => JSON.stringify(w)).sort());
   });
   it("need no line for a value the law bans the fee on at the house: Jerusalem's one custody price is general", () => {
     // its two custody lines are alike; makam and money-market units, which a bank may not charge custody on (BRK-17, MF-71), have none
