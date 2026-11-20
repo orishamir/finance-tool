@@ -813,6 +813,11 @@ export const formulaNames: Record<string, string> = {
   "F-118": "מה שנשאר לפני מס רווחי הון, כשהמס תלוי בשאלה פתוחה",
   "F-121": "עמלה של קרן שהורדה לתקופה קצובה",
   "F-122": "העמלה שנגבתה בפועל בממוצע, לידיעה בלבד",
+  "F-123": "העלות באחוזים מהסכום",
+  "F-124": "הסכום שבו הסכומים הקבועים שווים לאחוזים",
+  "F-125": "שנה ממש מתחת למדרגה וממש מעליה",
+  "F-126": "חודש בלי פעולה ובלי החזקה",
+  "F-127": "הפעולה שמכסה עמלה שמתקזזת",
   "F-08": "חשבון הכסף חודש אחרי חודש",
   "F-09": "השווי במשיכה",
   "F-10": "העלות בתוך הקרן",
@@ -1762,45 +1767,13 @@ export const feeDeal = {
     each: " · ",
   },
   /** The deal at a glance (F-110 to F-113). */
-  glance: {
-    title: "העסקה במבט אחד",
-    throughout: "לאורך כל העסקה",
-    changes: "מה משתנה ומתי",
-    /** Before the months to the nearest change (a computed figure). */
-    inMonths: "בעוד ",
-    /** Before the rate a group's fees add to (F-111). */
-    together: "יחד: ",
-    /** After that rate: what it is a share of, by the group. */
-    of: { "action:trade": "מהפעולה", "action:conversion": "מההמרה", "action:deposit": "מההפקדה", "action:distribution": "מכל תשלום", "action:transfer_out": "מההעברה", "action:none": "מהפעולה", held: "בשנה ממה שמוחזק", heldSaved: "בשנה ממה שנצבר" } as Record<string, string>,
-    /** A change of a fee's price at a date: the new price, then the one it replaces. */
-    instead: ", במקום ",
-    /** A fee that starts after a free time, before its name, by the name's gender and number ("מתחילים דמי חשבון קבועים, 10 ₪ בחודש"). */
-    starts: { m: "מתחיל ", f: "מתחילה ", mp: "מתחילים ", fp: "מתחילות " } as Record<string, string>,
+  /** The fees the reading leaves out, above its panels. */
+  /** What the reading leaves out, above it. */
+  leftOut: {
     /** Fees left out of every reading until their prices' months are in order, by name. */
     unread: "לא נקראות עד שהתאריכים שלהן מסודרים: ",
     /** The deal has fees, and none has its price yet. */
     noneRead: "עוד אין בעסקה עמלה עם מחיר.",
-  },
-  /** The sums a deal's own prices mark (F-112), as the points say them. `noun` is the action a bound is on. */
-  marks: {
-    noun: { trade: "פעולה", conversion: "המרה", deposit: "הפקדה", distribution: "תשלום", transfer_out: "העברה", none: "פעולה" } as Record<string, string>,
-    /** The action a fee's mark is said on, by the fee: a conversion's on each conversion, any other fee's on each action. */
-    feeNoun: { fx: "המרה", fx_spread: "המרה" } as Record<string, string>,
-    /** A count of units a price per unit's minimum or maximum is reached at (F-112). */
-    units: { one: "יחידה אחת", two: "שתי יחידות", many: "יחידות" },
-    /**
-     * The yearly sums on the account against custody's yearly rate (F-112 (3)). `after` where they are the largest cost of holding below
-     * that value; else `smaller` and custody's name ("…. על פחות מזה הם גדולים מ{custody}."), `custody` where the deal has several
-     * custody fees.
-     */
-    meet: {
-      before: "הסכומים הקבועים, ",
-      sum: " בשנה, שווים ל־",
-      rate: " על ",
-      after: ". על פחות מזה הם העלות הגדולה בהחזקה.",
-      smaller: ". על פחות מזה הם גדולים מ",
-      custody: "דמי ניהול הפיקדון",
-    },
   },
   /** A price against its legal cap (F-113). */
   standing: {
@@ -2273,22 +2246,20 @@ export const feeDeal = {
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
   read: {
-    /** The periods of F-110 as cards. */
+    /** The periods of F-110: the timeline's stops and its headline. */
     periods: {
-      kicker: "העסקה, תקופה אחרי תקופה",
       today: "היום",
       here: "אתם כאן",
-      /** Before a period's first month in its title ("ממרץ 2027"), and before the month it ends. */
+      /** Before a period's first month in its title ("ממרץ 2027"), and before the month it ends; before a change's month in the headline ("בינואר 2027"). */
       from: "מ־",
+      at: "ב־",
       until: "עד ",
       /** Before the months left in today's period (a computed figure). */
       left: "עוד ",
-      noEnd: "מכאן והלאה",
-      sep: " · ",
       /** Before a price that changed at the period's start, by how it changed. */
       change: { starts: "מתחיל: ", ends: "נגמר: ", rises: "עולה: ", falls: "יורד: ", changes: "משתנה: " } as Record<string, string>,
-      /** The headline: one change, after its month ("ממרץ 2028 …"), with the fee's name. */
-      one: { starts: "נגמרת תקופת הפטור של {name}", ends: "המחיר של {name} יורד לאפס", rises: "המחיר של {name} עולה", falls: "המחיר של {name} יורד", changes: "המחיר של {name} משתנה" } as Record<string, string>,
+      /** The headline: one change, after its month ("בינואר 2027 …"), with the fee's name. */
+      one: { starts: "נגמר הפטור מ{name}", ends: "המחיר של {name} יורד לאפס", rises: "המחיר של {name} עולה", falls: "המחיר של {name} יורד", changes: "המחיר של {name} משתנה" } as Record<string, string>,
       /** After a rise to or past the cap. */
       toCap: { at: " עד התקרה", above: " אל מעל התקרה" } as Record<string, string>,
       /** Several fees that all start after a free time. */
@@ -2298,91 +2269,127 @@ export const feeDeal = {
       /** Changes at several months: up to three by month, more by their count and the first. */
       months: { lead: "העסקה משתנה ", at: "ב־", and: "וב־", sep: ", ", count: { one: "פעם אחת", two: "פעמיים", many: "{n} פעמים" }, first: ", הראשונה ב־" },
     },
-    /** The two curves of F-112. */
-    curves: {
-      /** The kicker of a curve, by the action it prices (and its side, where a sale is priced apart), or holding. */
-      kicker: {
-        trade: "מה עולה קנייה או מכירה, לפי הגודל שלה",
-        "trade:buy": "מה עולה קנייה, לפי הגודל שלה",
-        "trade:sell": "מה עולה מכירה, לפי הגודל שלה",
-        conversion: "מה עולה המרה, לפי הגודל שלה",
-        deposit: "מה עולה הפקדה, לפי הגודל שלה",
-        distribution: "מה עולה תשלום של ריבית או דיבידנד, לפי הגודל שלו",
-        transfer_out: "מה עולה העברה החוצה, לפי הגודל שלה",
-        held: "מה עולה להחזיק שנה, לפי הסכום",
-        heldSaved: "מה עולה שנה של חיסכון, לפי הסכום שנצבר",
-      } as Record<string, string>,
-      /** The amount under the chart. */
-      x: { trade: "גודל הפעולה", conversion: "גודל ההמרה", deposit: "גודל ההפקדה", distribution: "גודל התשלום", transfer_out: "גודל ההעברה", held: "הסכום שמוחזק", heldSaved: "הסכום שנצבר" } as Record<string, string>,
-      /** The head of the reading at an amount: "{the action} של {amount}", or a year on what is held. */
-      tipAction: (noun: string, amount: string) => `${noun} של ${amount}`,
-      tipHeld: (amount: string) => `שנה על ${amount}`,
-      total: "יחד",
-      /** The periods to choose between where the curves differ by period, as a control's spoken name. */
-      choose: "התקופה",
-      /** The headline, around the sum a mark falls on (a computed figure). `{noun}` is the action. */
-      head: {
-        min: { before: "עד {noun} של ", after: " המינימום קובע, ומעל הסכום הזה משלמים אחוז" },
-        max: { before: "מעל {noun} של ", after: " המקסימום קובע, ומתחת לסכום הזה משלמים אחוז" },
-        minHeld: { before: "על פחות מ־", after: " המינימום קובע, ומעל הסכום הזה משלמים אחוז" },
-        maxHeld: { before: "על יותר מ־", after: " המקסימום קובע, ומתחת לסכום הזה משלמים אחוז" },
-        minMax: { before: "המינימום קובע עד ", middle: ", והמקסימום מעל ", after: ". ביניהם משלמים אחוז" },
-        meet: { before: "מתחת ל־", sums: " הסכומים הקבועים", largest: " הם העלות הגדולה בהחזקה" },
-        /** Where one fee is the sum per period: its name with the article, and the words that agree with it. */
-        meetOne: { m: " הוא העלות הגדולה בהחזקה", f: " היא העלות הגדולה בהחזקה", mp: " הם העלות הגדולה בהחזקה", fp: " הן העלות הגדולה בהחזקה" } as Record<string, string>,
-        /**
-         * After a minimum's headline where the curve's fees are their whole group (F-111): the rate above the minimum's sum, between "מעליה"
-         * (by the action's noun, or the sum held) and what the rate is a share of (the glance's words).
-         */
-        minRate: { lead: " המינימום קובע. ", above: { trade: "מעליה", conversion: "מעליה", deposit: "מעליה", distribution: "מעליו", transfer_out: "מעליה", none: "מעליה", held: "מעליו" } as Record<string, string>, cost: " העלות " },
-        marks: { one: "העלות משנה התנהגות בסכום אחד", two: "העלות משנה התנהגות בשני סכומים", many: "העלות משנה התנהגות ב־{n} סכומים" },
-      },
-      /** Under a trade's curve that includes a conversion (F-111); the second where a sale costs the same. */
-      conversion: "קנייה שלא בשקלים כוללת המרת מטבע.",
+    /** What one action costs by its size (F-112, F-123): a tab per action and side the deal prices, by the key `{action}:{side}`. */
+    action: {
+      kicker: "מה עולה כל פעולה, לפי הגודל שלה",
+      tabs: { "trade:all": "קנייה או מכירה", "trade:buy": "קנייה", "trade:sell": "מכירה", "conversion:all": "המרה", "conversion:buy": "המרה בקנייה", "conversion:sell": "המרה במכירה", "deposit:all": "הפקדה", "distribution:all": "תשלום של ריבית או דיבידנד", "transfer_out:all": "העברה החוצה" } as Record<string, string>,
+      /** The tabs' spoken name. */
+      tabsName: "הפעולה",
+      /** The action in a sentence, by its tab's key or its action, and the gender the words after it take (`f` where not listed). */
+      noun: { trade: "קנייה", "trade:sell": "מכירה", conversion: "המרה", deposit: "הפקדה", distribution: "תשלום", transfer_out: "העברה", none: "פעולה" } as Record<string, string>,
+      male: { distribution: true } as Record<string, boolean>,
+      /** The headline where a minimum, a cap or a flat price decides below a sum: "קנייה קטנה מ־15,600 $ עולה יותר מ־0.3375% ממנה". */
+      below: { f: { small: " קטנה מ־", more: " עולה יותר מ־", of: " ממנה" }, m: { small: " קטן מ־", more: " עולה יותר מ־", of: " ממנו" } },
+      /** The headline where a maximum decides above a sum. */
+      max: { before: "מעל ", after: " המקסימום קובע" },
+      marks: { one: "העלות משנה התנהגות בסכום אחד", two: "העלות משנה התנהגות בשני סכומים", many: "העלות משנה התנהגות ב־{n} סכומים" },
+      /** The sub: "עד שם המינימום של {fee}, 39 $, קובע. מעל זה קנייה עולה 0.3375%: {fee} 0.25% ועוד {fee} 0.0875%." */
+      upTo: { lead: "עד שם ", of: " של ", decides: ", קובע. " },
+      part: { min: "המינימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע", sum: "המחיר", free: "הפטור", max: "המקסימום", rate: "האחוז" } as Record<string, string>,
+      above: { lead: "מעל זה ", costs: " עולה ", list: ": ", and: " ועוד ", end: "." },
+      /** A maximum of one fee above a sum: "מעל 312,000 ₪ קובע המקסימום של {fee}, 780 ₪." */
+      maxAt: { lead: "מעל ", the: " קובע המקסימום של ", sep: ", ", end: "." },
       sameSale: "מכירה עולה אותו דבר.",
-      /** Beside a curve with a bound in another currency (F-112, F-84): "סכום בדולרים נכנס לגרף בשקלים: {rate} לדולר, לפי השער של {date}." */
+      /** The amount under the chart, by the tab's key or its action. */
+      x: { trade: "גודל הקנייה (₪)", "trade:sell": "גודל המכירה (₪)", conversion: "גודל ההמרה (₪)", deposit: "גודל ההפקדה (₪)", distribution: "גודל התשלום (₪)", transfer_out: "גודל ההעברה (₪)" } as Record<string, string>,
+      /** The zones over the chart: which part decides there. */
+      zones: { min: "המינימום קובע", cap: "המקסימום באחוזים קובע", flat: "המחיר הקבוע קובע", sum: "הסכום קובע", rate: "האחוזים", max: "המקסימום" } as Record<string, string>,
+      /** Over the value axis where the curve leaves its top: its value at the axis's start. */
+      over: (share: string, at: string) => `↑ ${share} ב־${at}`,
+      /** The reader's point, as a control's spoken name. */
+      point: "גודל הפעולה בגרף",
+      /** The reading beside the chart: "{noun} של {amount}", and the share's words after it, by the tab's key or its action. */
+      of: " של ",
+      share: { trade: "מהקנייה", "trade:sell": "מהמכירה", conversion: "מההמרה", deposit: "מההפקדה", distribution: "מהתשלום", transfer_out: "מההעברה" } as Record<string, string>,
+      /** Why a part costs what it does: "המינימום, 39 $, קובע: 0.25% היו 47 ₪". */
+      why: { sep: ", ", decides: ", קובע", alone: ": ", would: " היו " },
+      bar: "העלות לפי עמלה",
+      lanes: "מה קובע את המחיר של כל עמלה, לפי הגודל",
+      /** A part's words on its lane, before its figure; a part free of charge. */
+      lane: { min: "מינימום ", max: "מקסימום ", cap: "עד ", flat: "", sum: "", rate: "", free: "חינם" } as Record<string, string>,
+      /** On a phone, between a lane's name and the period its parts are per: "דמי ניהול פיקדון ניירות ערך · ברבעון". */
+      lanePer: " · ",
+      /** The reading at the point on one line, over the chart where the card stands under it: "קנייה של 18,650 ₪ (5,714 $): 144 ₪, 0.77% מהקנייה". */
+      line: { sep: ": ", and: ", " },
+      /** The parts of a lane under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." */
+      under: { upTo: "עד ", sep: "; ", end: ".", capLead: "לכל היותר ", minLead: "מינימום " },
+      /** Where nothing varies: one number, a share or a sum, in every size. */
+      one: { share: " מכל {noun}, בכל גודל", sum: " לכל {noun}, בכל גודל" },
+    },
+    /** What a year of holding costs by the amount held (F-112, F-123, F-124, F-125). */
+    held: {
+      kicker: "מה עולה להחזיק, לפי הסכום",
+      kickerSaved: "מה עולה שנה של חיסכון, לפי הסכום שנצבר",
+      today: "היום",
+      /** The periods' spoken name. */
+      periodsName: "התקופה",
+      /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
+      cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
+      falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
+      fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
+      /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
+      bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
+      /** A fee that starts in a later period, after its name and price, by the name's gender and number. */
+      joins: { m: " מצטרף לסכומים הקבועים. ", f: " מצטרפת לסכומים הקבועים. ", mp: " מצטרפים לסכומים הקבועים. ", fp: " מצטרפות לסכומים הקבועים. " } as Record<string, string>,
+      /** A fee offset against an action's fee: the chart shows a year without that action. */
+      offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
+      x: "הסכום שמוחזק (₪) · כל הגרף: שנה שלמה, באחוזים ממה שמוחזק",
+      xSaved: "הסכום שנצבר (₪) · כל הגרף: שנה שלמה, באחוזים ממה שנצבר",
+      /** The axis's name on a phone. */
+      xShort: "הסכום שמוחזק (₪)",
+      xShortSaved: "הסכום שנצבר (₪)",
+      /** The layers' groups, named on the chart. */
+      groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
+      lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
+      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", fixed: "סכומים קבועים, בכל סכום" } as Record<string, string>,
+      /** Over the crossover's point. */
+      crossMark: "כאן הקבועים שווים לאחוזים",
+      /** At a drop: "האחוז החדש חל על כל הסכום:" and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪". */
+      drop: { lead: "האחוז החדש חל על כל הסכום:", costs: " עולים ", year: " בשנה, ו־" },
+      /** The reading at an amount: "שנה על 60,000 ₪", and its share "1.28% ממה שמוחזק". */
+      box: { head: "שנה על ", share: " ממה שמוחזק", shareSaved: " ממה שנצבר", sep: " · " },
+      range: { lead: "הסכומים בגרף:", from: "מ־", to: "עד", unit: "₪", reset: "חזרה לטווח שבפתיחה", hint: "אפשר גם לגרור על הגרף כדי להתקרב לטווח", fromName: "הסכום הקטן בגרף", toName: "הסכום הגדול בגרף" },
+      /** Where nothing varies: one number, a share or a sum, at every amount; and a period in which every fee on what is held is free. */
+      one: { share: " בשנה ממה שמוחזק, בכל סכום", sum: " בשנה, בכל סכום" },
+      free: "בתקופה הזאת אף עמלה לא נגבית על ההחזקה",
+    },
+    /** Around a chart: the rate a sum in another currency enters it at, a chart that cannot be drawn, and the unit's price a sum per unit needs. */
+    chart: {
       rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
-      /** A curve the site cannot draw: a bound in a currency it has no rate for. */
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
-      /** A curve with a price per unit (F-112): the unit's price, a chart's field, and beside it why the chart needs it. */
       unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
     },
-    /** The statements of F-112 and the reading. */
-    points: {
-      kicker: "נקודות בעסקה",
-      title: "איפה העסקה משנה התנהגות",
-      /** Before a statement that holds only in some periods: from a month, until one. */
-      from: "מ־",
-      until: "עד ",
-      untilAfter: " עד ",
-      spanEnd: ": ",
-      spanSep: ", ",
+    /** The deal's periods on a line (F-110, F-126, F-127). */
+    timeline: {
+      kicker: "מה משתנה ומתי",
+      noEnd: "בלי סוף",
+      /** What a month with nothing in it costs: "חודש בלי פעולה ובלי החזקה עולה 19 ₪: חשבון עובר ושב 9 ₪ ומנוי לנתוני מסחר 10 ₪." */
+      idle: { lead: "חודש בלי פעולה ובלי החזקה עולה ", parts: ": ", sep: ", ", and: " ו", end: "." },
+      rest: "שאר העמלות נשארות כמו היום.",
+      /** A price that changed: from, an arrow, to. */
+      arrow: " ← ",
       /**
-       * A part of an action's price and the stretch it decides (F-112): "{the part} של {name}, {its figure}, קובע בכל {noun} עד {amount}.",
-       * from where it starts where that is above nothing ("מ־100 $ עד 8,333 $"), above the maximum's sum, and in units for a price per
-       * unit ("של עד 200 יחידות"; past the sum where another part stops, "מעל 100 $ של עד 200 יחידות").
+       * An offset fee and the action that covers it, by the offset fee's gender and number: "{fee} מתקזזים מול {fee} של אותו חודש, עד
+       * הסכום שלה: קנייה או מכירה של 67 ₪ ומעלה מכסה אותם." The sum it is offset up to is the other fee's: its word, by that fee's (`theirs`).
        */
-      part: { min: "המינימום של {name}{side}, ", max: "המקסימום של {name}{side}, ", cap: "המקסימום באחוזים של {name}{side}, ", flat: "המחיר הקבוע של {name}{side}, " } as Record<string, string>,
-      decides: ", קובע בכל {noun} ",
-      upTo: "עד ",
-      above: "מעל ",
-      unitsUpTo: "של עד ",
-      unitsAbove: "של יותר מ־",
-      /** A bound in units whose stretch starts where a percent maximum's or a flat price's sum ends: "בכל פעולה מעל 100 $ של עד 200 יחידות". */
-      unitsFrom: { above: "מעל ", upTo: " של עד " },
-      end: ".",
-      minHeld: { before: "המינימום של {name}, ", middle: " לכל חיוב, קובע על פחות מ־", after: "." },
-      maxHeld: { before: "המקסימום של {name}, ", middle: " לכל חיוב, קובע על יותר מ־", after: "." },
-      /** A share of what is held charged more often than its rate's period: "{name}, 0.4% בשנה, נגבה כל חודש: חלק אחד מ־12 בכל פעם." */
-      every: { before: "{name}, ", part: ": חלק אחד מ־{k} בכל פעם." },
-      /** A share with a minimum and no maximum. */
-      noMax: "{name}{side}: יש מינימום ואין מקסימום, ולכן מעל המינימום העמלה גדלה עם הסכום בלי גבול.",
+      covers: {
+        m: { offsets: " מתקזז מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותו.", any: " מכסה אותו." },
+        f: { offsets: " מתקזזת מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותה.", any: " מכסה אותה." },
+        mp: { offsets: " מתקזזים מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותם.", any: " מכסה אותם." },
+        fp: { offsets: " מתקזזות מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותן.", any: " מכסה אותן." },
+      } as Record<string, { offsets: string; own: string; from: string; any: string }>,
+      theirs: { m: "שלו: ", f: "שלה: ", mp: "שלהם: ", fp: "שלהן: " } as Record<string, string>,
       /**
-       * A sum per unit with a minimum and no maximum: "{name}: מעל 200 יחידות העמלה גדלה עם מספר היחידות", and where a percent maximum caps
-       * it ", ולא עוברת 1% מהפעולה".
+       * Beside a month with nothing in it where the deal's provider is a bank (method F-126): directive 415's bound on a deposit account
+       * with no activity, stated, and that the rules do not say whether it reaches such a month.
        */
-      noMaxUnits: { before: "{name}{side}: מעל ", grows: " העמלה גדלה עם מספר היחידות", cap: ", ולא עוברת ", end: "." },
+      bank: { lead: "בבנק, ", stated: "עמלת ניהול של חשבון פיקדון שאין בו תנועה לא תעלה על יתרת הזכות בחשבון", tail: ". הכללים לא אומרים אם זה חל על חודש בלי פעולה ובלי החזקה, ולכן האתר לא מחשב את זה." },
+      /** The action that covers it: "קנייה או מכירה של", or any one of them ("כל קנייה או מכירה"). */
+      coverOf: " של ",
+      any: "כל ",
+      /** The action in the cover's sentence, by the action and side. */
+      coverNoun: { "trade:all": "קנייה או מכירה", "trade:buy": "קנייה", "trade:sell": "מכירה", "conversion:all": "המרה", "deposit:all": "הפקדה", "transfer_out:all": "העברה", "distribution:all": "תשלום" } as Record<string, string>,
     },
     /** The law rows of F-113. */
     law: {
@@ -2397,6 +2404,8 @@ export const feeDeal = {
       banned: { one: "עמלה אחת בעסקה בנק לא גובה, לפי כללי הבנקאות", several: "יש בעסקה עמלות שבנק לא גובה, לפי כללי הבנקאות" },
       /** Before a price after the first: the month it starts. */
       from: "מ־",
+      /** Between a fee's name and its one price on the name's line: "העברה החוצה · 0.25% מההעברה". */
+      priceSep: " · ",
     },
   },
   /** The bar's end: the deals this device keeps, a link to the deal, and the template picker. */
@@ -2526,6 +2535,10 @@ function dealInputNames(): Record<string, string> {
     for (const part of ["cap", "flat", "upTo", "discount", "third", "thirdMin", "thirdMax", "refund", "perSecurity"] as const) out[`deal:${k}.${part}`] = `${name}: ${feeDeal.panel.parts[part]}`;
   }
   out["deal:unit-price"] = feeDeal.panel.parts.unitPrice;
+  // the amount a chart reads at, what it costs there, and the top of a step a drop is at (charts.ts)
+  out["deal:amount"] = "הסכום שבגרף";
+  out["deal:cost"] = "העלות בסכום הזה";
+  out["deal:step-top"] = "הסכום שבו המדרגה נגמרת";
   return out;
 }
 for (const [key, name] of Object.entries(dealInputNames())) computedInputs.names[key] ??= name;
@@ -5170,7 +5183,7 @@ export const kit = {
       PhoneFold: "הבחירות של עמוד לפני רשימה, מקופלות בטלפון: שורה אחת אומרת מה נבחר ופותחת אותן, כדי שהרשימה תתחיל במסך הראשון. במחשב הן פתוחות תמיד, בלי השורה.",
       SegmentedControl: "שתיים עד ארבע תשובות קצרות, אחת תמיד נבחרת: לבחירה שמשנה איך אותו תוכן מוצג (כסף של היום או נומינלי, קיבוץ, סדר, גרף או טבלה), או לשאלה שהחישוב צריך (שכיר או עצמאי). התשובות קצרות מספיק כדי לעמוד זו ליד זו גם בטלפון. הבחירה נעשית לפי מה שהבחירה עושה, לא לפי מספר האפשרויות.",
       MenuPicker: "בחירה של פריט אחד מרשימה, בתוך שורת טקסט: כפתור שמראה את הנבחר וחץ, ומתחתיו הרשימה. הנבחר מסומן בווי ובכתב מודגש. פריט שהוספתם מקבל עיפרון ופח, והשורה האחרונה מוסיפה. החצים עוברים בין השורות, ו־Escape או הקשה מחוץ לרשימה סוגרים אותה.",
-      ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. מעל הפס מקרא אחד, בסדר של הפס: לכל חלק הצבע, השם והאחוז שלו, תמיד באותו מקום. הסכומים עצמם כתובים ליד הפס.",
+      ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. מעל הפס מקרא אחד, בסדר של הפס: לכל חלק הצבע, השם והאחוז שלו, תמיד באותו מקום. הסכומים עצמם כתובים ליד הפס. בלי מקרא (`bare`), כשהשורות לידו כבר נותנות שם לכל חלק: פס של 24 פיקסלים, והסכום של החלק הגדול כתוב בתוכו.",
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
       FactTile: "אריח קטן של עובדות על דבר אחד: שורת כותרת עם קישור בסופה, שם, ושורות של שם וערך ב־13 פיקסלים. הקצה שלו בצבע של מה שהדבר גובה, כמו השורה שלו בקבלה. שני אריחים מחוברים ב־+ עגול על התפר.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
@@ -5247,7 +5260,11 @@ export const kit = {
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
       StepStrip: "השלבים אחרי שנעשו, בשורה אחת מעל מה שנבנה בהם, כשכמעט לא חוזרים לשנות אותם: השם של כל שלב ומה נבחר, נקודה, והדרך לשנות. מתחת לשורה מה ששלב פותח כדי לשנות אותו או מה שנאמר על הבחירה, צמוד אליה. כשאין מקום, השורה נשברת.",
-      AmountChart: "מה משהו עולה בכל סכום: החלקים כשטחים זה על זה מאפס, הסכום משמאל לימין, השם של כל חלק בסוף הרצועה שלו, והסכומים שבהם העלות משנה התנהגות כנקודות על הקו העליון עם קו מקווקו עד הציר. מצביע או הקשה על הגרף קוראים כל חלק ואת הסכום שלהם. המילים של הציר בצד, מחוץ לגרף, ותוויות הנקודות לא עומדות על קווים. כשהשמות בסוף היו משאירים לגרף מעט מדי מקום, הם עוברים למקרא מעל הגרף.",
+      ShareChart: "מה משהו עולה באחוזים מסכום, והסכום על ציר לוגריתמי. העקומה היא קו אחד (מה עולה פעולה אחת) או שכבות זו על זו מאפס והסכום שלהן כקו מעליהן (מה עולה שנה של החזקה), עם שם של כל קבוצת שכבות בתוך אחת השכבות שלה, איפה שיש לשם מקום שלם. מעל הגרף אזורים עם השם שלהם, ובסכומים שבהם העלות משנה התנהגות נקודות עם המילים שלהן צמודות אליהן, בלי קו מחבר. כשהעקומה יוצאת מראש הציר, הערך שלה בתחילת הציר כתוב מעל ציר הערכים. נקודה שגוררים קוראת סכום אחד; בלעדיה המצביע קורא את הסכום שמתחתיו, הקשה בטלפון, וגרירה בעכבר בוחרת טווח להתקרב אליו.",
+      AmountLanes: "הרצועות מתחת לגרף לפי גודל, על אותו ציר: רצועה לכל עמלה, והחלקים שלה לאורך הסכומים עם המילים שלהם בתוכם, כשהן נכנסות. חלק צר מדי למילים שלו כותב אותן מתחת לרצועה, באמצע החלק או צמוד לקצה הרצועה, עם קו קטן בצבע של העמלה. עמלה שהמחיר שלה זהה בכל סכום היא קו שקט אחד עד השם והמחיר שלה. הסכום שבקריאה עובר דרך הרצועות כקו, והחלק שמחזיק אותו מודגש; הקשה על חלק מעבירה את הקריאה אליו.",
+      RangeFields: "הטווח של גרף בשתי תיבות: ״מ־ … עד … ₪״. כל תיבה מקבלת את הסכום כשיוצאים ממנה או ב־Enter, אף פעם לא תוך כדי הקלדה. כשהטווח של הקורא, הסכומים בכחול ולידם כפתור חזרה לטווח שבפתיחה.",
+      PeriodTrack: "התקופות של עסקה כתחנות על קו אחד, תחנה בתחילת כל עמודה: התחנה של התקופה שבה נמצאים היום מלאה, והקו של התקופה הזאת מודגש. עמודה של תקופה שמשהו משתנה בה רחבה יותר מעמודה שיש בה רק מילים. לא כפתור.",
+      ShareStack: "גרף לפי גודל והרצועות שמתחתיו על אותו ציר, והסכום שבקריאה כקו אחד רציף מראש הגרף ועד הרצועה האחרונה.",
       AddLine: "שורה שקטה מתחת לרשימה שהאדם בונה: מסגרת מקווקוות, פלוס ושבב קטן לכל דבר שאפשר להוסיף. הרגילים קודם בדיו מלאה, הנדירים אחריהם בדיו מעומעמת. המקום היחיד בעמוד שמדבר על מה שחסר.",
       PeriodStrip: "שנות התוכנית ברצועה אחת, לכל תקופה גוון משלה ומה שמחזיק בה כתוב עליה: שנים במחיר של קבוצה, ואז שנים בתעריפון. הזמן רץ משמאל לימין והקצוות כתובים מתחת. רצועה לקריאה בלבד, לא כפתור.",
       Stretch: "שתי רשימות משני צדי סרגל של כסף: חשבון הוא קטע בסרגל, מהקרן היקרה בו עד הזולה, וקרן היא נקודה בקטע של החשבון שנבחר. השורה של החשבון שנבחר נפתחת אל הקטע שלו, פס על הסרגל, והפס נפתח אל רשימת הקרנות, עם קו ישר מהנקודה של כל קרן לשורה שלה. הזוג שנבחר הוא נקודה אחת בקטע, וקו ישר עולה ממנה אל מה שמעליה. הכול נמדד מהמקום של השורות, מחדש בכל שינוי. StretchBar: עותק קטן של הסרגל ליד שורה, באותו סולם לכל השורות, עם הקטע של השורה, ונקודה כשהשורה היא קרן. שורות הרשימות בסגנון line: שורה אחת, בלי עיגול בחירה, 32 פיקסלים זו מזו עם עכבר ולפחות 44 במגע ומתחת ל־1280 פיקסלים.",
@@ -5356,8 +5373,24 @@ export const kit = {
       /** TabCards: three made-up questions, their answers and the panel's words. */
       tabCards: { label: "שאלות לדוגמה", questions: ["שאלה ראשונה לדוגמה?", "שאלה שנייה לדוגמה?", "שאלה שלישית לדוגמה?"], answers: ["תשובה לדוגמה", "עוד תשובה", "תשובה שלישית"], note: "שורה מתחת לתשובה, לדוגמה", open: "פתוח למטה", kicker: "שם הניתוח, לדוגמה", head: "המסקנה של הניתוח, לדוגמה", body: "כאן הניתוח של השאלה שנפתחה." },
       /** PhoneFold: what is chosen, the line's two words, the chips it folds. */
-      /** AmountChart: two made-up parts of a cost against an amount, and the words around the chart. */
-      amount: { a: "עמלה לדוגמה", b: "עמלה נוספת לדוגמה", x: "הסכום, לדוגמה", tip: (a: string) => `סכום של ${a}`, total: "יחד" },
+      /** ShareChart, AmountLanes and RangeFields: made-up fees of a cost against an amount, and the words around them. */
+      amount: {
+        a: "עמלה לדוגמה",
+        b: "עמלה נוספת לדוגמה",
+        x: "הסכום, לדוגמה (₪)",
+        tip: (a: string) => `סכום של ${a}`,
+        zones: { min: "המינימום קובע", rate: "האחוזים" },
+        groups: { share: "אחוזים", fixed: "סכומים קבועים" },
+        laneGroups: { share: "אחוזים, לדוגמה", fixed: "סכומים קבועים, לדוגמה" },
+        crossSub: "נקודה לדוגמה",
+        note: ["משפט לדוגמה,", "בשתי שורות"],
+        point: "הסכום בגרף, לדוגמה",
+        lanes: "מה קובע את המחיר, לדוגמה",
+        parts: { min: "מינימום 20 ₪", rate: "0.2%", max: "מקסימום 500 ₪", held: "0.25% בשנה", short: "0.25%", per: ", בשנה" },
+        price: "10 ₪ בחודש",
+        range: { lead: "הסכומים בגרף:", from: "מ־", to: "עד", unit: "₪", reset: "חזרה לטווח שבפתיחה", hint: "אפשר גם לגרור על הגרף", fromName: "הסכום הקטן, לדוגמה", toName: "הסכום הגדול, לדוגמה" },
+        over: (share: string, at: string) => `↑ ${share} ב־${at}`,
+      },
       /** MenuPicker with words of its own on the button: the list's name and a count. */
       menuFace: "הרשימה שלכם · 3",
       phoneFold: { summary: "בחירה לדוגמה · עוד בחירה לדוגמה", more: "שינוי", less: "סגירה", chips: ["אפשרות א", "אפשרות ב", "אפשרות ג"] },

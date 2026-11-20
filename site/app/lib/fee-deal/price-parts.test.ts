@@ -8,14 +8,14 @@ import { nisPerNumber } from "../fx";
 import type { SiteValue } from "../value";
 import { withCurrency, withFigure, withFlat, figureOf, setFigure } from "./edits/price";
 import { setPart, withForm } from "./offers/parts";
-import { glance } from "./glance";
+import { leftOut } from "./left-out";
 import { inCapUnit, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal } from "./link";
 import { feePriced, newDeal, readDeal, typed, untouched, type Fee, type FeeDeal, type Num, type Price } from "./model";
 import { engineDeal, enginePrice } from "./to-engine";
-import { readDealFor, type FeeMark } from "./deal-read";
-import { readingOf, UNIT_PRICE_KEY } from "./reading";
-import { curveHead } from "./reading-heads";
+import { readDealFor } from "./deal-read";
+import { readingOf } from "./reading";
+import type { ActionView, HeldView } from "./charts";
 import { CAPACITY } from "./offers/capacity";
 import { builder } from "./rows";
 import { panel } from "./panel";
@@ -39,6 +39,17 @@ const mizrahi: Price = { form: "action", rate: typed(0.3), min: typed(25), max: 
 const mizrahiFx: Price = { form: "action", rate: typed(0.133), min: typed(5.4), max: typed(2250), flat: { amount: typed(2.85), upTo: typed(50) }, currency: "USD" };
 /** Interactive Brokers, IBKR Pro Fixed, US: 0.005 $ a unit, at least 1 $, at most 1% of the action. */
 const ibFixed: Price = { form: "perUnit", amount: typed(0.005), min: typed(1), cap: typed(1), currency: "USD" };
+
+/** A deal's first action chart (F-112, F-123), with the unit's price where one is given; null where the panel draws no chart. */
+const actionChart = (d: FeeDeal, unit?: number): ActionView | null => {
+  const v = readingOf(read(d), data.fx, unit).panels.actions[0]?.views[0];
+  return v && "chart" in v ? v.chart : null;
+};
+/** A deal's first holding chart. */
+const heldChart = (d: FeeDeal): HeldView | null => {
+  const v = readingOf(read(d), data.fx).panels.held[0];
+  return v && "chart" in v ? v.chart : null;
+};
 
 describe("the price parts as the device keeps them", () => {
   it("gives the trade fee a sum per unit, a percent maximum and a flat price, and the conversion a flat price but no percent maximum", () => {
@@ -127,7 +138,7 @@ describe("sums in the trade's currency", () => {
     expect(r.fees).toHaveLength(0);
     expect(r.unmatched).toEqual(["fee-trade"]);
     expect(r.noCurrency).toEqual(["fee-trade"]);
-    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
+    expect(leftOut(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
     expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
   });
   it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", () => {
@@ -152,7 +163,7 @@ describe("sums in the trade's currency printed for some currencies only (trade_c
     expect(r.unmatched).toEqual(["fee-trade"]);
     expect(r.notPrinted).toEqual(["fee-trade"]);
     expect(r.noCurrency).toEqual([]);
-    expect(glance(r).unmatched[0]).toMatchObject({ fee: "fee-trade", notPrinted: true });
+    expect(leftOut(r).unmatched[0]).toMatchObject({ fee: "fee-trade", notPrinted: true });
     expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, notPrinted: true });
   });
   it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
@@ -348,7 +359,7 @@ describe("the templates", () => {
     expect(said.figure).toMatchObject({ value: "free", unit: "text", state: "sourced", source: { strength: "institution" } });
     const open = panel(r, custody.id)!.open.buy[0]!.parts.find((p) => p.id === "free")!;
     expect(open.words.figure?.state).toBe("sourced");
-    // the reading's price, which the glance, the period cards and the law card say
+    // the reading's price, which the panels, the timeline and the law card say
     const read0 = readingOf(r, data.fx).periods[0]!.rows.find((x) => x.fee === custody.id);
     expect(read0?.price.free?.state).toBe("sourced");
     // the person's own free price has no source: the word alone
@@ -370,7 +381,8 @@ describe("the templates", () => {
     const stated = reading.stated.find((x) => x.part === "maxPerSecurity")!;
     expect(stated.words.figure?.value).toBe(7500);
     expect(stated.words.tail).toBe(copy.cases.stated.maxPerSecurity.tail);
-    expect(reading.statements.some((x) => x.kind === "mark" && x.mark.kind === "max" && x.mark.on === "held")).toBe(false);
+    const held = reading.panels.held.flatMap((x) => ("chart" in x ? x.chart.lanes : []));
+    expect(held.some((l) => l.parts?.some((x) => x.part === "max"))).toBe(false);
     // each line whose maximum is on each security says so in its record (max_per), and its maximum on the deposit quotes the list
     const lines = latestSnapshots().flatMap((x) => x.lines);
     for (const l of lines.filter((x) => x.max_per === "security")) expect(`${l.max?.notes} ${l.max_deposit?.source.quote ?? ""}`, l.id).toMatch(/לני"ע|לנייר/);
@@ -435,13 +447,15 @@ describe("the templates", () => {
     expect(back.fees[0]!.stages![0]!.price).toEqual(capped);
     // the cap decides up to where it meets the sum, 11 $ / 2% = 550 $, a mark in the sum's own currency; the price changes there
     expect(dealMarks(engine, period)).toEqual([expect.objectContaining({ kind: "cap", on: "action", amount: 550, currency: "USD" })]);
-    const mark = readingOf(read(deal), data.fx).statements.flatMap((x) => (x.kind === "mark" ? [x.mark] : []));
-    expect(mark).toHaveLength(1);
-    expect(mark[0]).toMatchObject({ kind: "cap", sum: true, amount: { value: 550, unit: "usd", state: "computed" } });
+    const lane = actionChart(deal)!.lanes[0]!.parts!;
+    expect(lane.map((x) => x.part)).toEqual(["cap", "sum"]);
+    expect(lane[0]!.end).toMatchObject({ unit: "usd", state: "computed" });
+    expect(v(lane[0]!.end!)).toBeCloseTo(550, 9);
     // a discount off the sum moves the turn as F-116 lowers the sum: (1 − 50%) × 11 / 2% = 275 $, the sum it meets 5.50 $
     const offDeal = account([trade({ ...capped, discount: { pct: typed(50) } } as Price)]);
-    const offMark = readingOf(read(offDeal), data.fx).statements.flatMap((x) => (x.kind === "mark" ? [x.mark] : []))[0]!;
-    expect(offMark).toMatchObject({ kind: "cap", sum: true, amount: { value: 275 }, meets: { value: 5.5, state: "computed" } });
+    const off = actionChart(offDeal)!.lanes[0]!.parts!;
+    expect(v(off[0]!.end!)).toBeCloseTo(275, 9);
+    expect(off[1]!.figure).toMatchObject({ value: 5.5, state: "computed" });
     // a sum per action with no cap marks nothing
     const plain = engineDeal(account([trade({ form: "perAction", amount: { v: 11, src }, currency: "USD" })]));
     expect(dealMarks(plain, dealPeriods(plain, { y: 2026, m: 11 }).periods[0]!)).toEqual([]);
@@ -483,14 +497,10 @@ describe("the templates", () => {
     expect(readDeal(JSON.parse(JSON.stringify(held(1))))).not.toBeNull();
     expect(readDeal(JSON.parse(JSON.stringify(held(3))))).toBeNull();
     expect(readDeal(JSON.parse(JSON.stringify(held(12))))).toBeNull();
-    // the holding curve's inputs show the charge's minimum, 120 ₪, worked out from the 40 ₪ a month (F-14)
-    const curveMin = readingOf(read(deal), data.fx).curves.flatMap((c) => Object.values(c.inputs)).find((x) => x.value === 120 && x.state === "computed");
-    expect(curveMin).toMatchObject({ unit: "nis", state: "computed" });
-    expect(JSON.stringify(curveMin)).toContain("F-14");
-    // its mark says a charge's minimum, worked out from the month's (F-14), and where it binds: below 120 / 0.6% = 20,000 ₪
-    const mark = readingOf(read(deal), data.fx).statements.flatMap((x) => (x.kind === "mark" && x.mark.kind === "min" && x.mark.on === "held" ? [x.mark] : []))[0]!;
-    expect(mark.kind === "min" && mark.bound).toMatchObject({ value: 120, state: "computed" });
-    expect(v(mark.amount)).toBeCloseTo(20_000, 6);
+    // the holding lane's minimum is a charge's, 120 ₪, worked out from the 40 ₪ a month (F-14), and it decides below 120 / 0.6% = 20,000 ₪
+    const lane = heldChart(deal)!.lanes.find((l) => l.fee.ref.kind === "custody")!.parts!;
+    expect(lane[0]).toMatchObject({ part: "min", figure: { value: 120, state: "computed", computed_from: { formula: "F-14" } } });
+    expect(lane[0]!.to).toBeCloseTo(20_000, 6);
   });
   it("fill a base read from one line as a fee whose price changes by nothing only where the line prices every value", () => {
     // Excellence's custody line names the account: every value
@@ -583,45 +593,40 @@ describe("the templates", () => {
 });
 
 describe("the reading", () => {
-  const marksOf = (d: FeeDeal) => readingOf(read(d), data.fx).statements.flatMap((s) => (s.kind === "mark" && s.mark.kind !== "meet" ? [s.mark as FeeMark] : []));
-  it("states where the percent maximum decides, and the minimum from where it stops", () => {
-    const [cap, min, max] = marksOf(account([trade(mizrahi)]));
-    expect(cap).toMatchObject({ kind: "cap", currency: "USD", bound: { value: 25, unit: "pct_of_trade" }, meets: { value: 25, unit: "usd_per_trade" } });
-    expect(v(cap!.amount)).toBeCloseTo(100, 10);
-    expect(cap!.amount).toMatchObject({ unit: "usd", state: "computed", computed_from: { formula: "F-112" } });
-    expect(min).toMatchObject({ kind: "min", from: { value: 100 } });
-    expect(v(min!.amount)).toBeCloseTo(8333.33, 2);
-    expect(max).toMatchObject({ kind: "max" });
+  const partsOf = (d: FeeDeal, unit?: number) => actionChart(d, unit)!.lanes.flatMap((l) => l.parts ?? []);
+  it("ends the percent maximum's part where it meets the minimum, and the minimum's where the rate takes over", () => {
+    const [cap, min, , max] = partsOf(account([trade(mizrahi)]));
+    expect(cap).toMatchObject({ part: "cap", figure: { value: 25, unit: "pct_of_trade" }, end: { unit: "usd", state: "computed", computed_from: { formula: "F-112" } } });
+    expect(v(cap!.end!)).toBeCloseTo(100, 10);
+    expect(min).toMatchObject({ part: "min", figure: { value: 25, unit: "usd_per_trade" } });
+    expect(v(min!.end!)).toBeCloseTo(8333.33, 2);
+    expect(max).toMatchObject({ part: "max" });
   });
-  it("states the flat price's stretch with the figure as filled, and the minimum from there", () => {
-    const [flat, min] = marksOf(account([fx(mizrahiFx)]));
-    expect(flat).toMatchObject({ kind: "flat", bound: { value: 2.85, unit: "usd_per_trade" }, amount: { value: 50, unit: "usd", state: "entered" } });
-    expect(min).toMatchObject({ kind: "min", from: { value: 50, unit: "usd" } });
+  it("ends the flat price's part at its sum as filled, and the minimum's after it", () => {
+    const [flat, min] = partsOf(account([fx(mizrahiFx)]));
+    expect(flat).toMatchObject({ part: "flat", figure: { value: 2.85, unit: "usd_per_trade" }, end: { value: 50, unit: "usd", state: "entered" } });
+    expect(min).toMatchObject({ part: "min" });
   });
-  it("states a sum per unit's minimum in units, and draws its curve only with the unit's price", () => {
+  it("draws a sum per unit only with the unit's price, which its figures rest on", () => {
     const d = account([trade(ibFixed)]);
-    const [, min] = marksOf(d);
-    expect(min).toMatchObject({ kind: "min", units: true, amount: { value: 200, unit: "count" }, rate: { value: 0.005, unit: "usd_per_share" } });
     const without = readingOf(read(d), data.fx);
     expect(without.unitPrice).toEqual({ currency: "USD", value: null });
-    expect(without.curves).toEqual([]);
-    expect(without.undrawn).toEqual([{ on: "action", action: "trade", side: "all", periods: ["2026-11"], why: "unit-price", currency: "USD" }]);
+    expect(without.panels.actions[0]!.views).toEqual([{ undrawn: { periods: ["2026-11"], why: "unit-price", currency: "USD" } }]);
     const usd = nisPerNumber(data.fx!, "USD")!;
-    const r = readingOf(read(d), data.fx, 50);
-    expect(r.unitPrice).toMatchObject({ currency: "USD", value: { value: 50, unit: "usd", state: "entered" } });
-    expect(r.undrawn).toEqual([]);
-    const curve = r.curves[0]!;
-    expect(curve.inputs[UNIT_PRICE_KEY]).toMatchObject({ value: 50 });
+    expect(readingOf(read(d), data.fx, 50).unitPrice).toMatchObject({ currency: "USD", value: { value: 50, unit: "usd", state: "entered" } });
+    const chart = actionChart(d, 50)!;
+    const [cap, min] = chart.lanes.find((l) => l.fee.ref.kind === "trade")!.parts!;
     // the cap's stretch ends at 100 $, the minimum's at 200 units of 50 $: 10,000 $
-    expect(curve.at[0]).toBeCloseTo(100 * usd, 6);
-    expect(curve.at[1]).toBeCloseTo(10000 * usd, 6);
+    expect(cap!.to).toBeCloseTo(100 * usd, 6);
+    expect(min!.to).toBeCloseTo(10000 * usd, 6);
     // at 10,000 $ the units' 1 $ is the minimum
-    expect(curve.total[curve.amounts.indexOf(curve.at[1]!)]).toBeCloseTo(usd, 6);
-    expect(curveHead(curve)).toEqual({ kind: "marks", n: 2 });
+    const at = chart.readAt(10000 * usd);
+    expect(at.total.value).toBeCloseTo(usd, 6);
+    expect(at.total.computed_from?.inputs?.["deal:unit-price"]).toMatchObject({ value: 50 });
   });
-  it("gives the summary the rates' sum", () => {
-    const g = glance(read(account([trade(mizrahi), fx(mizrahiFx)])));
-    expect(v(g.throughout[0]!.rates[0]!.rate)).toBeCloseTo(0.433, 10);
+  it("gives the headline the rates' sum above the minimum", () => {
+    const head = actionChart(account([trade(mizrahi), fx(mizrahiFx)]))!.head;
+    expect(head.kind === "below" && v(head.rate)).toBeCloseTo(0.433, 10);
   });
 });
 

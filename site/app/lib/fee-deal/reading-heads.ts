@@ -1,11 +1,9 @@
-// What the reading's cards say in their headlines, and how its curves are grouped, worked out from the library's reading (reading.ts) so
-// the components only word and draw it: the main change of the periods, the finding of a curve, what the law rows hold, the periods a
-// statement holds in, and which curve each period shows.
-import type { ChangeKind, DealAction, DealSide } from "@finance-tool/engine";
-import type { Curve, LawRow, PeriodCard, Reading, Undrawn } from "./reading";
+// What the timeline and the law card say in their headlines, worked out from the library's reading (reading.ts) so the components only
+// word and draw it: the main change of the periods, and what the law rows hold.
+import type { ChangeKind, DealSide } from "@finance-tool/engine";
+import type { LawRow, PeriodCard } from "./reading";
 import type { MonthKey } from "./model";
-import { refOf, type FeeRef, type MarkView } from "./deal-read";
-import type { SiteValue } from "../value";
+import { refOf, type FeeRef } from "./deal-read";
 
 // ---------------------------------------------------------------- the periods
 
@@ -55,114 +53,6 @@ export function periodsHead(periods: readonly PeriodCard[]): PeriodsHead | null 
   if (months.length === 1) return { kind: "one-month", at: months[0]!, n: changes.length };
   return { kind: "months", months, n: months.length };
 }
-
-// ---------------------------------------------------------------- the curves
-
-/** The curves of one action on one side, or of holding, with the periods (by their first month) each shows. */
-export interface CurveGroup {
-  key: string;
-  on: "action" | "held";
-  action?: DealAction;
-  side: DealSide;
-  curves: Curve[];
-  undrawn: Undrawn[];
-}
-
-const ORDER: readonly string[] = ["trade", "conversion", "deposit", "distribution", "transfer_out"];
-const SIDES: readonly DealSide[] = ["all", "buy", "sell"];
-
-const groupKeyOf = (on: "action" | "held", action: DealAction | undefined, side: DealSide) => `${on}:${action ?? ""}:${side}`;
-
-/** The reading's curves and the ones it cannot draw, grouped by what they price: the actions in the page's order, a purchase before a sale, then holding. */
-export function curveGroups(reading: Pick<Reading, "curves" | "undrawn">): CurveGroup[] {
-  const groups = new Map<string, CurveGroup>();
-  const take = (on: "action" | "held", action: DealAction | undefined, side: DealSide) => {
-    const key = groupKeyOf(on, action, side);
-    let g = groups.get(key);
-    if (!g) groups.set(key, (g = { key, on, ...(action ? { action } : {}), side, curves: [], undrawn: [] }));
-    return g;
-  };
-  for (const c of reading.curves) take(c.on, c.action, c.side).curves.push(c);
-  for (const u of reading.undrawn) take("action", u.action, u.side).undrawn.push(u);
-  const rank = (g: CurveGroup) => (g.on === "held" ? 100 : ORDER.indexOf(g.action ?? "") * 3) + SIDES.indexOf(g.side);
-  return [...groups.values()].sort((a, b) => rank(a) - rank(b));
-}
-
-/**
- * The periods a group of curves can show, in the reading's order, each with the curve it shows there: one choice per period where its
- * curves differ by period, none where one curve holds in every period it is drawn in.
- */
-export function curveChoices(group: CurveGroup, periods: readonly Pick<PeriodCard, "from">[]): { from: MonthKey; curve: Curve }[] {
-  return periods.flatMap((p) => {
-    const curve = group.curves.find((c) => c.periods.includes(p.from));
-    return curve ? [{ from: p.from, curve }] : [];
-  });
-}
-
-/** The period a group's chart opens on: today's where the group has a curve in it, else the first it has. */
-export function firstChoice(choices: readonly { from: MonthKey }[], current: MonthKey | null): MonthKey | null {
-  return choices.find((c) => c.from === current)?.from ?? choices[0]?.from ?? null;
-}
-
-/**
- * What a curve's headline says: where one minimum, or one maximum, or one of each binds, at its sum (a minimum with the rate above it,
- * where the curve has one, `Curve.rate`), where no percent maximum, flat price or bound in units marks the curve too; where the sums per period stop being
- * larger than custody (and whether they are the largest cost of holding below it, the mark's `largest`); otherwise how many sums the cost
- * bends at.
- */
-export type CurveHead =
-  | { kind: "min"; mark: MarkView; rate?: SiteValue }
-  | { kind: "max"; mark: MarkView }
-  | { kind: "min-max"; min: MarkView; max: MarkView }
-  | { kind: "meet"; mark: Extract<MarkView, { kind: "meet" }> }
-  | { kind: "marks"; n: number };
-
-export function curveHead(curve: Pick<Curve, "marks" | "at" | "rate">): CurveHead {
-  const meet = curve.marks.find((m): m is Extract<MarkView, { kind: "meet" }> => m.kind === "meet");
-  if (meet) return { kind: "meet", mark: meet };
-  const mins = curve.marks.filter((m) => m.kind === "min");
-  const maxes = curve.marks.filter((m) => m.kind === "max");
-  // a percent maximum, a flat price, or a bound reached at a number of units (a price per unit, which no rate states) is said by its count
-  if (curve.marks.some((m) => m.kind === "cap" || m.kind === "flat" || ((m.kind === "min" || m.kind === "max") && m.units))) return { kind: "marks", n: new Set(curve.at).size };
-  if (mins.length === 1 && maxes.length === 0) return { kind: "min", mark: mins[0]!, ...(curve.rate ? { rate: curve.rate } : {}) };
-  if (maxes.length === 1 && mins.length === 0) return { kind: "max", mark: maxes[0]! };
-  if (mins.length === 1 && maxes.length === 1) {
-    const at = (m: MarkView) => curve.at[curve.marks.indexOf(m)] ?? 0;
-    if (at(mins[0]!) < at(maxes[0]!)) return { kind: "min-max", min: mins[0]!, max: maxes[0]! };
-  }
-  return { kind: "marks", n: new Set(curve.at).size };
-}
-
-/** Whether a purchase or sale on a curve includes a conversion: a conversion fee has a part in the curve of a trade (F-111). */
-export const withConversion = (curve: Pick<Curve, "action" | "series">): boolean => curve.action === "trade" && curve.series.some((s) => s.fee.kind === "fx" || s.fee.kind === "fx_spread");
-
-// ---------------------------------------------------------------- the statements
-
-/** A stretch of the reading's periods: from the start of one (null where it is the reading's first) to the start of another (null: on). */
-export interface Span {
-  from: MonthKey | null;
-  to: MonthKey | null;
-}
-
-/** The stretches of periods a statement holds in; none where it holds in all of them. */
-export function spansOf(held: readonly MonthKey[], periods: readonly Pick<PeriodCard, "from" | "to">[]): Span[] {
-  if (periods.every((p) => held.includes(p.from))) return [];
-  const spans: Span[] = [];
-  let open: Span | null = null;
-  periods.forEach((p, k) => {
-    if (held.includes(p.from)) {
-      if (!open) open = { from: k === 0 ? null : p.from, to: p.to };
-      else open.to = p.to;
-    } else if (open) {
-      spans.push(open);
-      open = null;
-    }
-  });
-  if (open) spans.push(open);
-  return spans;
-}
-
-// ---------------------------------------------------------------- the law
 
 /**
  * What the law card's headline says, by what its rows hold: a price above the cap first, then one at it, then a fee the law bans here, then

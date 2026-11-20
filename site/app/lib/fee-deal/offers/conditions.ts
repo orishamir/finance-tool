@@ -41,6 +41,12 @@ export interface ConditionDef {
    * by its prices' form) or not. Every other thing is picked.
    */
   readAcross?: (onHoldingFee: boolean) => boolean;
+  /**
+   * What a month's activity a range counts, where it counts one: the trading in the month, or the number of actions in it. A month the
+   * method reads as it is, not as the reading picks it (F-126's month with nothing in it, F-127's month of one action), sets such a
+   * thing to what that month holds (`MonthHeld`).
+   */
+  month?: "trading" | "actions";
 }
 
 const SUMS: readonly RangeUnit[] = ["ILS", "USD", "EUR", "GBP"];
@@ -57,8 +63,8 @@ export const CONDITIONS = {
   channel: { values: { kind: "list", ids: CHANNEL_IDS }, fits: always },
   actionSize: { values: { kind: "range", units: SUMS }, fits: actionFee, readAcross: always },
   portfolioSize: { values: { kind: "range", units: SUMS }, fits: always, readAcross: (onHoldingFee: boolean) => onHoldingFee },
-  volume: { values: { kind: "range", units: [...SUMS, "units"] }, fits: always },
-  count: { values: { kind: "range", units: ["actions"] }, fits: always },
+  volume: { values: { kind: "range", units: [...SUMS, "units"] }, fits: always, month: "trading" },
+  count: { values: { kind: "range", units: ["actions"] }, fits: always, month: "actions" },
   own: { values: { kind: "own" }, fits: always },
 } as const satisfies Record<ByKind, ConditionDef>;
 
@@ -116,6 +122,9 @@ export const RANGE_UNITS = Object.fromEntries(RANGE_KINDS.map((k) => [k, (CONDIT
 
 /** The values the site names for each list thing, in the order a list shows them. */
 export const LIST_IDS = Object.fromEntries(BY_KINDS.filter(isListKind).map((k) => [k, (CONDITIONS[k].values as Extract<ConditionValues, { kind: "list" }>).ids])) as Readonly<Record<ListKind, readonly string[]>>;
+
+/** What a month's activity a thing counts (`month`): the trading in it, the number of actions in it, or none. */
+export const monthOf = (by: ByKind): "trading" | "actions" | undefined => def(by).month;
 
 /** Whether a range is read across sizes rather than picked (F-115): the size of the action always, the size of the portfolio on a holding. */
 export const readAcross = (onHoldingFee: boolean, by: ByKind): boolean => !!def(by).readAcross?.(onHoldingFee);

@@ -13,7 +13,7 @@ import { KitGallery } from "./gallery";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
 import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
-import { markLabels } from "./amount-chart";
+import { markLabels } from "./share-chart";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -338,44 +338,68 @@ describe("AbroadNote", () => {
   });
 });
 
-describe("AmountChart's mark labels", () => {
-  it("go a row higher, joined to their point, where moving past the value axis's words would put one on the label before it", () => {
-    const axis = [{ right: 30, top: -1000, bottom: 1000 }];
-    const [a, b] = markLabels([{ cx: 5, cy: 200, half: 20 }, { cx: 60, cy: 200, half: 20 }], axis, 600);
-    expect(a).toEqual({ lx: 54, by: 190, joined: true });
-    expect(b!.by).toBeLessThan(190);
-  });
-  it("stay over their points in one row where nothing is in the way, and inside the plot", () => {
+describe("ShareChart's mark labels", () => {
+  it("stand centred over their points where nothing is in the way, inside the plot", () => {
     expect(markLabels([{ cx: 200, cy: 100, half: 20 }, { cx: 400, cy: 100, half: 20 }, { cx: 598, cy: 100, half: 20 }], [], 600)).toEqual([
-      { lx: 200, by: 90, joined: false },
-      { lx: 400, by: 90, joined: false },
-      { lx: 580, by: 90, joined: false },
+      { lx: 200, by: 90, side: "over" },
+      { lx: 400, by: 90, side: "over" },
+      { lx: 580, by: 90, side: "over" },
     ]);
   });
-  it("never stand on another mark's point or label, rising past them, and give way where no row is free", () => {
-    // the second point sits just over the first one's label: the first label rises over it
-    const [a, b] = markLabels([{ cx: 200, cy: 100, half: 30 }, { cx: 210, cy: 88, half: 30 }], [], 600);
-    expect(a!.by).toBeLessThan(88 - 7 - 3);
-    expect(b).not.toBeNull();
-    expect(Math.abs(a!.by - b!.by) >= 14 || Math.abs(a!.lx - b!.lx) >= 64).toBe(true);
-    // a label that would hang far from its point gives way rather than run a long line to it
-    expect(markLabels([{ cx: 5, cy: 200, half: 20 }], [{ right: 100, top: -1000, bottom: 1000 }], 600)).toEqual([null]);
-    // near the chart's top a label with its way blocked has nowhere to go
-    expect(markLabels([{ cx: 200, cy: 24, half: 30 }, { cx: 205, cy: 24, half: 30 }], [], 600)[1]).toBeNull();
+  it("with a line over their words, stand above and to the right of their point", () => {
+    const [a] = markLabels([{ cx: 200, cy: 100, half: 40, up: 14, kind: "sub" }], [], 600);
+    expect(a).toEqual({ lx: 248, by: 88, side: "right" });
   });
-  it("never stand on a band's line or another mark's drop, nor left of the plot's start", () => {
-    // a line rising through the point, and a flat one just over it: neither runs through the label
-    const rising = { y: (x: number) => 200 - (x - 200) };
-    const flat = { y: () => 186 };
-    const [a] = markLabels([{ cx: 200, cy: 200, half: 30 }], [], 600, [rising, flat], 0);
-    expect(a).not.toBeNull();
-    const box = { left: a!.lx - 30, right: a!.lx + 30, top: a!.by - 11, bottom: a!.by + 3 };
-    for (let x = box.left; x <= box.right; x += 1) for (const l of [rising, flat]) expect(l.y(x) <= box.top - 2 || l.y(x) >= box.bottom + 2).toBe(true);
-    // a mark's drop beside it keeps the label off it; the plot's start holds it in
-    const [b] = markLabels([{ cx: 100, cy: 100, half: 20 }], [], 600, [{ x: 100, top: 100, bottom: 200 }, { x: 125, top: 50, bottom: 200 }]);
+  it("move to their point's side where the curve runs through the place over it, and never further", () => {
+    // the curve falls from the left onto the point and runs on flat: the label stands just to the point's right
+    const curve = { y: (x: number) => (x < 200 ? 100 - (200 - x) * 0.5 : 100) };
+    const [a] = markLabels([{ cx: 200, cy: 100, half: 30 }], [], 600, [curve]);
+    expect(a).toEqual({ lx: 232, by: 90, side: "right" });
+    // past the value axis's words a label would stand off its point: it gives way instead of joining it by a line
+    expect(markLabels([{ cx: 5, cy: 200, half: 20 }], [{ right: 100, top: -1000, bottom: 1000 }], 600)).toEqual([null]);
+  });
+  it("beside a point where the curve jumps up, stand clear of the jump", () => {
+    const step = { y: (x: number) => (x < 200 ? 100 : 84) };
+    const [a] = markLabels([{ cx: 200, cy: 100, half: 30 }], [], 600, [step]);
+    expect(a).toEqual({ lx: 168, by: 90, side: "left" });
+  });
+  it("never stand on another mark's point or label: the later one gives way", () => {
+    const [a, b] = markLabels([{ cx: 200, cy: 100, half: 30 }, { cx: 205, cy: 100, half: 30 }], [], 600);
+    expect(a).toEqual({ lx: 200, by: 90, side: "over" });
+    expect(b).toBeNull();
+    // near the chart's top a label has no room over its point
+    expect(markLabels([{ cx: 200, cy: 12, half: 30 }], [], 600)).toEqual([null]);
+  });
+  it("never stand on a mark's drop or the reader's line, nor left of the plot's start", () => {
+    const [b] = markLabels([{ cx: 100, cy: 100, half: 20 }], [], 600, [{ x: 100, top: 100, bottom: 200 }, { x: 115, top: 0, bottom: 200 }]);
     expect(b).not.toBeNull();
-    expect(b!.lx - 20 > 127 || b!.lx + 20 < 123).toBe(true);
-    const [c] = markLabels([{ cx: 10, cy: 100, half: 20 }], [], 600, [], 40);
+    expect(b!.lx - 20 > 117 || b!.lx + 20 < 113).toBe(true);
+    const [c] = markLabels([{ cx: 50, cy: 100, half: 20 }], [], 600, [], 40);
     expect(c!.lx - 20).toBeGreaterThanOrEqual(40);
+  });
+  it("set a drop's sentence beside the drop, after it and past the mark's own words, never tucked under another label", () => {
+    const [own, note] = markLabels(
+      [
+        { cx: 300, cy: 200, half: 30 },
+        { cx: 300, cy: 200, half: 80, up: 14, kind: "note" },
+      ],
+      [],
+      800,
+    );
+    expect(own).toEqual({ lx: 300, by: 190, side: "over" });
+    // its left edge starts past the mark's label, on the drop's right
+    expect(note!.lx - 80).toBeGreaterThanOrEqual(300 + 30 + 4);
+    expect(note!.lx - 80).toBeLessThanOrEqual(300 + 90);
+    // a tall label just over the place after the drop: the sentence does not stand under it, it stands before the drop
+    const [, , n2] = markLabels(
+      [
+        { cx: 500, cy: 160, half: 200, up: 60 },
+        { cx: 300, cy: 200, half: 30 },
+        { cx: 300, cy: 200, half: 60, kind: "note" },
+      ],
+      [],
+      800,
+    );
+    expect(n2!.lx + 60).toBeLessThanOrEqual(300);
   });
 });
