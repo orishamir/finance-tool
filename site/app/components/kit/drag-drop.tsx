@@ -96,9 +96,11 @@ export function useOver(key: string): boolean {
  * a member only for the things its list sorts, and a plain place for the others (a grid's row head: a row lands among the rows, a part
  * drops on the row). A plain place that takes the thing draws its
  * frame on what it wraps, on that element's own edge and rounding, over its border: one frame, dashed, solid and filled while the thing is
- * over it. `tone="danger"`: a bin, in the danger colour. `className` is the zone's own layout, `rounded` its rounding.
+ * over it. `children` given as a function of whether the place takes the carried thing and whether the thing is over it draws its own sign
+ * of both, and the zone draws no frame (a price of the open case, whose round "+" shows it takes a toolbox card, `AddHere`). `tone="danger"`:
+ * a bin, in the danger colour. `className` is the zone's own layout, `rounded` its rounding.
  */
-export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; onPreview?: (item: string | null, how: DropHow) => void; sort?: SortOf | ((item: string) => SortOf | null); why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode }) {
+export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; onPreview?: (item: string | null, how: DropHow) => void; sort?: SortOf | ((item: string) => SortOf | null); why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode | ((at: { takes: boolean; over: boolean }) => ReactNode) }) {
   const item = useCarried();
   // lift.tsx reads the hands once the thing is carried, after this place has drawn for it, so a list that sorts some things only is known
   const sort = typeof sortOf === "function" ? (item === null ? undefined : (sortOf(item) ?? undefined)) : sortOf;
@@ -114,7 +116,8 @@ export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounde
   const refused = item !== null && !takes && why ? why(item) : null;
   const ink = tone === "danger" ? "*:outline-destructive" : "*:outline-primary";
   const member = useMember(key);
-  const framed = takes && !sort && !member;
+  const signs = typeof children === "function";
+  const framed = takes && !sort && !member && !signs;
   return (
     <div
       data-drop-key={key}
@@ -125,7 +128,7 @@ export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounde
       data-drop-why={refused ?? undefined}
       className={cx(rounded, framed && cx("*:outline-2 *:-outline-offset-2 *:transition-[background-color] *:duration-[var(--duration-fast)]", ink, over ? "*:bg-accent *:outline-solid" : "*:outline-dashed"), className)}
     >
-      {children}
+      {signs ? children({ takes, over }) : children}
     </div>
   );
 }

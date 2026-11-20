@@ -133,27 +133,42 @@ describe("a part", () => {
 describe("the toolbox", () => {
   const groups = [{ id: "g", kind: "bound" as const, name: "מינימום ומקסימום", parts: [{ id: "min", label: "מינימום", used: true }, { id: "max", label: "מקסימום" }] }];
   it("keeps a used part in place, says it in words and takes no tap on it", () => {
-    const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined }));
+    const out = html(h(Toolbox, { addTo: { lead: words.toolbox.target, target: "מקרה" }, groups, onAdd: () => undefined }));
     expect(out).toContain(words.toolbox.used);
     expect(out.match(/<button[^>]*disabled/g)).toHaveLength(1);
   });
   it("on a phone shows one group at a time, under a row of the groups", () => {
     const two = [...groups, { id: "h", kind: "rule" as const, name: "כללי הגבייה", parts: [{ id: "n", label: "הערה" }] }];
-    const out = html(h(Toolbox, { target: "מקרה", groups: two, onAdd: () => undefined, sheet: true }));
+    const out = html(h(Toolbox, { addTo: { lead: words.toolbox.target, target: "מקרה" }, groups: two, onAdd: () => undefined, sheet: true }));
     expect(out).toContain(`aria-label="${words.toolbox.groups}"`);
     expect(out).not.toContain("הערה");
   });
   it("on a phone, with `onClose`, has a ✕ that closes the open fee, named by what it does", () => {
-    const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, onClose: () => undefined }));
+    const out = html(h(Toolbox, { addTo: { lead: words.toolbox.target, target: "מקרה" }, groups, onAdd: () => undefined, sheet: true, onClose: () => undefined }));
     expect(out).toMatch(new RegExp(`data-sheet-close=""[^>]*aria-label="${words.toolbox.close}"`));
-    expect(html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true }))).not.toContain("data-sheet-close");
+    expect(html(h(Toolbox, { addTo: { lead: words.toolbox.target, target: "מקרה" }, groups, onAdd: () => undefined, sheet: true }))).not.toContain("data-sheet-close");
   });
   it("on a phone, held folded by the page, shows its row of groups and hides its parts and the case it adds to", () => {
-    const out = html(h(Toolbox, { target: "מקרה", groups, onAdd: () => undefined, sheet: true, folded: true, onFold: () => undefined }));
+    const out = html(h(Toolbox, { addTo: { lead: words.toolbox.target, target: "מקרה" }, groups, onAdd: () => undefined, sheet: true, folded: true, onFold: () => undefined }));
     expect(out).toContain(`aria-label="${words.toolbox.unfold}"`);
     expect(out).toContain('aria-expanded="false"');
     expect(out).not.toContain(words.toolbox.target);
     expect(out).toMatch(/<div[^>]*hidden=""/);
+  });
+  it("holding a card draws it held and says what is being added, with ביטול, in place of the hint; on a phone, its handle and that line alone", () => {
+    const held = { part: "max", words: "מוסיפים מקסימום", onCancel: () => undefined };
+    const out = html(h(Toolbox, { addTo: null, held, groups, onAdd: () => undefined }));
+    expect(out).toMatch(/data-part="max"[^>]*aria-pressed="true"/);
+    expect(out).toContain("מוסיפים מקסימום");
+    expect(out).toContain(words.toolbox.letGo);
+    expect(out).not.toContain(words.toolbox.hint);
+    const sheet = html(h(Toolbox, { addTo: null, held, groups, onAdd: () => undefined, sheet: true }));
+    expect(sheet).toContain("מוסיפים מקסימום");
+    expect(sheet).not.toContain(`aria-label="${words.toolbox.groups}"`);
+    expect(sheet).not.toContain("data-part=");
+  });
+  it("names no case where it has no line to add to (a slim fee's)", () => {
+    expect(html(h(Toolbox, { addTo: null, groups, onAdd: () => undefined }))).not.toContain(words.toolbox.target);
   });
 });
 

@@ -10,7 +10,7 @@ import { nisPerNumber } from "../fx";
 import { builder } from "./rows";
 import { byQuestion, copiesWords, nextValue, slotEdit, thingMenu, usualBy } from "./things";
 import { panel } from "./panel";
-import { toolbox } from "./toolbox";
+import { cardOf, toolbox } from "./toolbox";
 import { picksOf, readFee, readFees } from "./cases";
 import { addBy, addCase, addValuesAt, canAddBy, canRename, renameValue, setOwnPlace, copyCase, keptOf, ownKept, removeBy, removeCase, setMine, setStep, setTop, setWhen } from "./edits/case";
 import { editPrice } from "./edits/stage";
@@ -287,7 +287,7 @@ describe("the builder's blocks", () => {
     expect(b.rows[0]!.stages[0]!.price).toMatchObject({ form: "action", figures: { rate: { value: 0.4 } } });
     expect(b.rows[0]!.priced).toBe(true);
     expect(panel(r, "fee-trade")!.open!.case).toBe("c1");
-    expect(toolbox(r, "fee-trade")!.addTo.when![0]!.text).toBe(copy.cases.values.what.tase);
+    expect(toolbox(r, "fee-trade")!.addTo!.when![0]!.text).toBe(copy.cases.values.what.tase);
     const edited = editPrice(trade(), "buy", 0, (p) => withFigure(p, "rate", 0.5));
     expect(edited.cases[0]!.stages[0]!.price).toMatchObject({ rate: { v: 0.5 } });
   });
@@ -299,7 +299,7 @@ describe("the builder's blocks", () => {
       ["track", "מסלול 1", true],
     ]);
     expect(p.open!.buy[0]!.parts.map((x) => [x.id, x.fields.map((f) => f.figure), x.remove])).toEqual([
-      ["perUnit", ["amount"], "part"],
+      ["perUnit", ["amount"], "charge"],
       ["min", ["min"], "part"],
       ["cap", ["cap"], "part"],
       ["unfilled", [], "part"],
@@ -311,7 +311,7 @@ describe("the builder's blocks", () => {
     expect(t.groups.map((g) => g.group)).toEqual(["charge", "off", "bound", "by", "rule"]);
     const used = t.groups.flatMap((g) => g.parts.filter((x) => x.used).map((x) => x.id));
     expect(used).toEqual(["perUnit", "min", "cap", "by:what", "by:track", "unfilled"]);
-    expect(t.addTo.when!.map((w) => w.text)).toEqual([copy.cases.values.what.us, "מסלול 1"]);
+    expect(t.addTo!.when!.map((w) => w.text)).toEqual([copy.cases.values.what.us, "מסלול 1"]);
     // a conversion's words follow it
     const conv = toolbox(r, "fee-fx", "x2")!;
     expect(conv.groups[0]!.parts[0]!.words.tail).toBe(` ${copy.price.perAction.fx}`);
@@ -668,18 +668,20 @@ describe("a thing of the band's head, opened", () => {
     const apart: CasesFee = { ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") };
     expect(thingMenu(read({ ...deal(), fees: [apart] }), "fee-trade", 1)!.after).toBe(copy.cases.thingMenu.kept);
   });
-  it("follows a sale priced apart once the person is in it: the toolbox's line says so, and a form chosen changes the sale alone", () => {
+  it("takes a sale priced apart's prices as places: a charge goes on the sale's free price alone, the purchase charging already", () => {
     const d: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "free" } }] }] };
-    const tb = toolbox(read(d), "f", undefined, undefined, "sell")!;
-    expect(tb.side).toBe("sell");
-    expect(tb.addTo.lead).toBe(copy.cases.addToSale);
-    const r = changeFormKept(d, "f", "share", null, undefined, undefined, undefined, "sell")!;
+    const tb = toolbox(read(d), "f")!;
+    expect(tb.addTo).toBeNull();
+    expect(cardOf(tb, "share")!.places).toEqual([{ on: "price", side: "sell", k: 0 }]);
+    expect(cardOf(tb, "share")).toMatchObject({ used: false });
+    const r = changeFormKept(d, "f", "share", null, undefined, 0, undefined, "sell")!;
     const f = r.deal.fees[0] as SlimFee;
     expect(f.stages[0]!.price).toEqual({ form: "action", rate: typed(0.25) });
     expect(f.sale![0]!.price.form).toBe("action");
-    // a fee with no sale apart: the toolbox follows the purchase
-    const plain: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }] }] };
-    expect(toolbox(read(plain), "f", undefined, undefined, "sell")!.side).toBe("buy");
+    // both sides charging a share: the card has its ✓; a sum on each action has no place, and says why
+    const both = toolbox(read(r.deal), "f")!;
+    expect(cardOf(both, "share")).toMatchObject({ used: true, places: [] });
+    expect(cardOf(both, "perAction")).toMatchObject({ used: false, off: copy.cases.charging, places: [] });
   });
   it("adds the next value at a head's plus with no question, and renames a value of the person's words in every case", () => {
     const slim: FeeDeal = { ...deal(), fees: [{ id: "f", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] }] };
@@ -813,19 +815,19 @@ describe("a provident-family product's management fees", () => {
       { id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-dep")).toEqual([["charge", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held", "free"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-dep")).toEqual([["charge", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
     // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
     expect(data.kinds.filter(providentFamily).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
-    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["charge", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["charge", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
   });
   it("leave an IRA's brokerage fees the parts its annexes print, and its management fee no track: an IRA is a fund of its own (IRA-17)", () => {
     const deal = of("ira-provident", [
       { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-trade")).toEqual([["charge", ["share", "perUnit", "perAction", "free", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["rule", ["unfilled", "partial"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held", "free"]], ["by", ["by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-trade")).toEqual([["charge", ["share", "perUnit", "perAction", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["rule", ["unfilled", "partial"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held"]], ["by", ["by:portfolioSize", "by:own"]]]);
     // a brokerage account's custody keeps its bounds and its conditions
     const custody = of("brokerage-account", [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }]);
     expect(ids(custody, "fee-c").map(([g]) => g)).toContain("bound");

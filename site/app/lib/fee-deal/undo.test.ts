@@ -301,33 +301,33 @@ describe("a price put in another form from the toolbox", () => {
       },
     ],
   });
-  it("keeps what carries over, and the price as it was for the undo, saying what it left behind", () => {
+  it("never swaps one charge for another: a price that charges takes no other charge", () => {
     const d = us();
-    const r = changeFormKept(d, "fee-trade", "share", "fee-trade", "c2")!;
-    const fee = r.deal.fees[0]!;
-    // a share keeps the bounds, the percent maximum and their currency; the other case is untouched
-    expect(fee.cases![1]!.stages[0]!.price).toMatchObject({ form: "action", rate: { blank: true }, min: { v: 8 }, cap: { v: 2 }, currency: "USD" });
-    expect(fee.cases![0]).toEqual(d.fees[0]!.cases![0]);
-    expect(undoWords(r.undo!, names, data)).toBe(copy.cases.formChanged.plain);
-    expect(undo(r.deal, r.undo!, "fee-trade")!.deal).toEqual(d);
+    expect(changeFormKept(d, "fee-trade", "share", "fee-trade", "c2")).toBeNull();
+    expect(changeFormKept(d, "fee-trade", "perAction", null, "c2")).toBeNull();
   });
-  it("names the bound a trade's sum per action has no place for, keeps its currency and its percent maximum, and puts them back", () => {
-    const d = us();
-    const r = changeFormKept(d, "fee-trade", "perAction", null, "c2")!;
-    expect(r.deal.fees[0]!.cases![1]!.stages[0]!.price).toEqual({ form: "perAction", amount: { v: 0, blank: true }, cap: { v: 2 }, currency: "USD" });
-    expect(undoWords(r.undo!, names, data)).toBe("המחיר הוחלף, והמינימום הוסר.");
-    expect(standing(r.undo!, r.deal)).toBe(true);
-    expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
-  });
-  it("makes a price free from the toolbox, and puts it back with its parts when its form is chosen again", () => {
+  it("makes a price free by its charge's bin, kept for the undo and naming what went with it, and puts it back with its parts when its charge is added again", () => {
     const d = us();
     const r = changeFormKept(d, "fee-trade", "free", null, "c2")!;
     expect(r.deal.fees[0]!.cases![1]!.stages[0]!.price).toEqual({ form: "free" });
-    expect(undoWords(r.undo!, names, data)).toBe("המחיר הוחלף, והמינימום והמקסימום באחוזים הוסרו.");
-    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c2")).toBe(true);
-    // another form, or another case, starts afresh
-    expect(formBack(r.undo, r.deal, "fee-trade", "share", "c2")).toBe(false);
-    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c1")).toBe(false);
+    expect(r.deal.fees[0]!.cases![0]).toEqual(d.fees[0]!.cases![0]);
+    expect(undoWords(r.undo!, names, data)).toBe("המחיר עכשיו חינם, והמינימום והמקסימום באחוזים הוסרו.");
+    expect(standing(r.undo!, r.deal)).toBe(true);
+    expect(undo(r.deal, r.undo!, null)!.deal).toEqual(d);
+    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c2", 0)).toBe(true);
+    // another charge, another price, another side or another case starts afresh
+    expect(formBack(r.undo, r.deal, "fee-trade", "share", "c2", 0)).toBe(false);
+    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c2", 1)).toBe(false);
+    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c2", 0, "sell")).toBe(false);
+    expect(formBack(r.undo, r.deal, "fee-trade", "perUnit", "c1", 0)).toBe(false);
+  });
+  it("says a price made free that left nothing behind plainly", () => {
+    const d = us();
+    const r = changeFormKept(d, "fee-trade", "free", null, "c1")!;
+    const plain: FeeDeal = { ...d, fees: [{ id: "fee-plain", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.4) } }] }] };
+    const bare = changeFormKept(plain, "fee-plain", "free", null)!;
+    expect(undoWords(r.undo!, names, data)).toBe("המחיר עכשיו חינם, והמינימום הוסר.");
+    expect(undoWords(bare.undo!, names, data)).toBe(copy.cases.formChanged.plain);
   });
   it("names every line a free price leaves behind: a third party's fee, an offset, a note, sums in the action's currency", () => {
     const d = us();
@@ -344,9 +344,9 @@ describe("a price put in another form from the toolbox", () => {
   it("prices a dollar case made free in dollars again, from what it was before it was made free", () => {
     const d = us();
     const free = changeFormKept(d, "fee-trade", "free", null, "c2")!;
-    const currency = freedCurrency(free.undo, free.deal, "fee-trade", "c2");
+    const currency = freedCurrency(free.undo, free.deal, "fee-trade", "c2", 0);
     expect(currency).toBe("USD");
-    expect(freedCurrency(free.undo, free.deal, "fee-trade", "c1")).toBeUndefined();
+    expect(freedCurrency(free.undo, free.deal, "fee-trade", "c1", 0)).toBeUndefined();
     const again = changeFormKept(free.deal, "fee-trade", "perAction", null, "c2", undefined, currency)!;
     expect(again.deal.fees[0]!.cases![1]!.stages[0]!.price).toMatchObject({ form: "perAction", currency: "USD" });
     // with nothing to say its currency, a free price priced again is in shekels, the shekel left unsaid
@@ -355,7 +355,9 @@ describe("a price put in another form from the toolbox", () => {
   });
   it("changes a price nobody gave yet silently, and a price already in the form not at all", () => {
     const blank = addFee(newDeal("brokerage-account"), "trade")!;
-    const r = changeFormKept(blank.deal, blank.fee.id, "perUnit", null)!;
+    const free = changeFormKept(blank.deal, blank.fee.id, "free", null)!;
+    expect(free.undo).toBeNull();
+    const r = changeFormKept(free.deal, blank.fee.id, "perUnit", null)!;
     expect(r.undo).toBeNull();
     expect(r.deal.fees[0]!.stages![0]!.price.form).toBe("perUnit");
     expect(changeFormKept(us(), "fee-trade", "perUnit", null, "c2")).toBeNull();

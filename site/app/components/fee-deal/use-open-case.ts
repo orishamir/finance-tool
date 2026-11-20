@@ -1,13 +1,14 @@
 // The fee open in place on the fee page (method §10.6) and everything that belongs to it: the case open (its first where none is named, or
 // where the one named is gone), the slot whose menu is open, the thing of its band's head whose menu is open, a part the toolbox added that
-// asks for its figure, month or fee, the question of a thing being added (ask-thing.tsx), whether a phone's toolbox sheet is folded, the
-// fee marked in every column, and where the focus and the view go when a fee or a case opens. Each of these belongs to the fee and case
-// it was opened on. In place of one case, the toolbox may add to several of the fee's cases at once (`CasesTarget`: every case, or a grid
+// asks for its figure, month or fee, a toolbox card held while the person picks where it goes (places.ts), the question of a thing being
+// added (ask-thing.tsx), whether a phone's toolbox sheet is folded, the fee marked in every column, and where the focus and the view go
+// when a fee or a case opens. Each of these belongs to the fee and case it was opened on. In place of one case, the toolbox may add to several of the fee's cases at once (`CasesTarget`: every case, or a grid
 // row's), with what a part it added asks of them all (`CasesAsk`); opening one case brings it back to that case.
 import { useEffect, useRef, useState } from "react";
 import { hasCases, type FeeDeal } from "../../lib/fee-deal/model";
 import type { CasesTarget } from "../../lib/fee-deal/toolbox";
 import type { CasesAsk } from "../../lib/fee-deal/every-case";
+import { heldOn, type Held } from "../../lib/fee-deal/places";
 import type { DealRead } from "../../lib/fee-deal/deal-read";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { useAskThing } from "./ask-thing";
@@ -31,6 +32,8 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
   const [thingOpen, setThingOpen] = useState<{ fee: string; t: number; at: HTMLElement } | null>(null);
   const [pending, setPending] = useState<Pending | null>(null);
+  // a toolbox card held while the person picks one of its places: it belongs to the fee and case it was tapped for
+  const [held, setHeld] = useState<Held | null>(null);
   // the part asking for what it needs whose box has had the focus: drawn again (left waiting while the fee changed by something, or its
   // card tapped or dropped again, which keeps it as it is: `pendingAfter`), it takes it no more
   const pendingShown = useRef<Pending | null>(null);
@@ -89,6 +92,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     setMenu(null);
     if (thingOpen && thingOpen.fee !== feeId) setThingOpen(null);
     if (pending && (pending.fee !== feeId || pending.case !== caseId)) setPending(null);
+    if (held && (held.fee !== feeId || held.case !== caseId)) setHeld(null);
     if (asking && asking.fee !== feeId) dropAsk();
   };
   // the toolbox opened on several of a fee's cases at once: the fee open, no case of it open, a phone's sheet unfolded
@@ -100,6 +104,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     setSheetFolded(false);
     setMenu(null);
     setPending(null);
+    setHeld(null);
     if (thingOpen && thingOpen.fee !== target.fee) setThingOpen(null);
     if (asking && asking.fee !== target.fee) dropAsk();
   };
@@ -112,6 +117,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     setMenu(null);
     setThingOpen(null);
     setPending(null);
+    setHeld(null);
     dropAsk();
     if (was) requestAnimationFrame(() => document.querySelector<HTMLElement>(`li[data-fee="${CSS.escape(was)}"] :is([data-pick-card], input)`)?.focus());
   };
@@ -163,6 +169,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     reset: () => {
       setSheetFolded(true);
       setThingOpen(null);
+      setHeld(null);
     },
     /** The menus of the open case's slot and of a thing of its band's head, each with the chip it opened from. */
     menus: {
@@ -177,7 +184,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     },
     /** A part the toolbox added that asks for what it needs, on the case open (`here`, where it stands); null when given or dropped. */
     pending: {
-      here: pending && pending.fee === chosen && pending.case === caseId ? pending.part : null,
+      here: pending && pending.fee === chosen && pending.case === caseId ? pending : null,
       set: (next: Pending | null) => setPending((now) => pendingAfter(now, next)),
       /** Whether the part asking is drawn for the first time, so its box takes the focus; `onShown` once it is. */
       fresh: () => pendingFresh(pending, pendingShown.current),
@@ -185,6 +192,8 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
         pendingShown.current = pending;
       },
     },
+    /** The toolbox card held on the case open (`here`), and the hold set or ended (`set`). */
+    hold: { here: several && several.fee === chosen ? null : heldOn(held, chosen, caseId), set: setHeld },
     /** The question of a thing being added, in the open fee's block. */
     ask: { asking, onAsk, onAskDone },
     /** Whether a phone's toolbox sheet is folded; `unfold` for a fee just added. */

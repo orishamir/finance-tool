@@ -304,7 +304,7 @@ describe("a price after a free one", () => {
     const deal: FeeDeal = { ...newDeal("pension-general"), fees: [{ id: "fee-i", kind: "insurance_premium", stages: [{ price: { form: "free" } }] }] };
     const fee = setPart(deal.fees[0]!, "until", true, { month: "2028-01" });
     expect(fee.stages!.map((s) => s.price.form)).toEqual(["free", "free"]);
-    // the toolbox acts on the last price, and offers only the forms the product's fee is offered in
+    // the toolbox offers only the charges the product's fee is offered in, each going on either free price
     const t = toolbox(readDealFor({ ...deal, fees: [fee] }, data.kinds, "2026-11-14"), "fee-i")!;
     const forms = t.groups.find((g) => g.group === "charge")!.parts.map((x) => x.id);
     const usual = offerFor(kind("pension-general"), "insurance_premium").usual;
@@ -317,7 +317,7 @@ describe("the toolbox's line for the month a price changes from", () => {
   const custody: FeeDeal = { ...newDeal("brokerage-account"), fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 }, until: "2027-04" }, { price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }] };
   it("stands after what the price changes by, as a line of its own, no thing's card nor a part's", () => {
     const by = toolbox(readDealFor(custody, data.kinds, "2026-11-19"), "fee-c")!.groups.find((g) => g.group === "by")!;
-    expect(by.lines).toEqual([{ id: "until", words: expect.any(String) }]);
+    expect(by.lines).toEqual([{ id: "until", words: expect.any(String), held: expect.any(String), places: [{ on: "side", side: "buy" }] }]);
     expect(by.parts.map((x) => x.id)).not.toContain("until");
   });
   it("stands where the product's fee is offered nothing else to change by, and not where its price cannot change with time", () => {

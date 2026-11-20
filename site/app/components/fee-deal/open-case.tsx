@@ -1,7 +1,8 @@
 // The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit (part-edit.tsx), in time order
-// with a divider between two prices saying the month the later starts (F-110), and a sale priced apart under its own head; a part the
-// toolbox added that still needs its figure, its fee or its month, asking for it on the price it goes on; and the menu a slot of the case
-// opens (`slotEdit`), which the page holds open.
+// with a divider between two prices saying the month the later starts (F-110), and a sale priced apart under its own head; while a card
+// from the toolbox is held or carried, a round "+" at the end of each place it can go (places.ts, `AddHere`); a part the toolbox added
+// that still needs its figure, its fee or its month, asking for it where it goes; and the menu a slot of the case opens (`slotEdit`),
+// which the page holds open.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { OpenCase, OpenPart, OpenPending, OpenStage } from "../../lib/fee-deal/panel";
@@ -9,13 +10,14 @@ import type { SlotEdit } from "../../lib/fee-deal/things";
 import { addOwnPlace, nameTaken, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
 import { editPrice, moveChange, setSaleApart } from "../../lib/fee-deal/edits/stage";
 import { withCurrency } from "../../lib/fee-deal/edits/price";
-import { BOUND_CURRENCIES, namesPlaces, pricesOn, splitRange, untilRange, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, namesPlaces, pricedOf, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
+import { placeWords, samePlace, type Place } from "../../lib/fee-deal/places";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { amountWords, fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { ChangeDivider, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText } from "../kit";
+import { AddHere, ChangeDivider, DropZone, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText } from "../kit";
 import { bringIntoView } from "./in-view";
 import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
@@ -23,8 +25,9 @@ import { PartLine, PendingEdit, type PartPlace, type PendingHands } from "./part
 
 /**
  * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's bin
- * takes it away (`setPart`), the main price's makes the price free. The price's currency, where the fee may take another, is chosen beside the part the panel marks (`stage.chooser`),
- * whose box then draws no sign of its own, so the currency shows once; every other sum shows it as its sign.
+ * takes it away (`setPart`), and the charge's bin makes the price free through the page (`onRemoveCharge`, kept for the undo). The price's
+ * currency, where the fee may take another, is chosen beside the part the panel marks (`stage.chooser`), whose box then draws no sign of
+ * its own, so the currency shows once; every other sum shows it as its sign.
  */
 function PriceParts({
   fee,
@@ -35,6 +38,7 @@ function PriceParts({
   deal,
   pending,
   onFee,
+  onRemoveCharge,
   pendingHands,
   grip,
 }: {
@@ -44,9 +48,10 @@ function PriceParts({
   stage: OpenStage;
   name: string;
   deal: FeeDeal;
-  /** The part asking for its figure or fee here, where it asks on this price (the toolbox's). */
+  /** The part asking for its figure or fee here, where it was added on this price. */
   pending: OpenPending | null;
   onFee: (f: Fee) => void;
+  onRemoveCharge: () => void;
   pendingHands: PendingHands;
   grip?: PartGrip;
 }) {
@@ -91,6 +96,7 @@ function PriceParts({
   };
   const remove = (p: OpenPart) => {
     if (p.remove === "part") return () => onFee(setPart(fee, p.id, false, { side, k, ...(caseId ? { caseId } : {}) }));
+    if (p.remove === "charge") return onRemoveCharge;
     return undefined;
   };
   return (
@@ -98,12 +104,7 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} grip={grip?.(p.id, side, k)} />
       ))}
-      {pending &&
-        (pending.ask === "month" ? (
-          <AskChange key={pending.part} fee={fee} caseId={caseId} pending={pending} name={name} onFee={onFee} hands={pendingHands} />
-        ) : (
-          <PendingEdit key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />
-        ))}
+      {pending && pending.ask !== "month" && <PendingEdit key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />}
     </>
   );
 }
@@ -112,11 +113,37 @@ function PriceParts({
 export type PartGrip = (part: PartId, side: Side, k: number) => ReactNode;
 
 /**
+ * Where the open case's places take toolbox cards (places.ts): the card held and its places, each drawn with a round "+" whose tap adds it
+ * there (`onPlace`), its words for the "+"'s spoken name; and a card carried by the pointer, which each place that takes it (`takes`)
+ * shows by the same "+", filled while the card is over it, and takes where it is let go (`onDrop`).
+ */
+export interface PlaceHands {
+  held: { words: string; places: readonly Place[] } | null;
+  onPlace: (place: Place) => void;
+  takes: (item: string, place: Place) => boolean;
+  onDrop: (item: string, place: Place) => void;
+}
+
+/**
+ * A place of the open case, as a drop zone for a carried card (drawing no frame: its round "+" shows it takes the card), around what
+ * `children` draws with the place's "+" (`plus`): the held card's button, or the carried card's mark, where the place takes either.
+ */
+function PlaceZone({ place, hands, label, children }: { place: Place; hands: PlaceHands; label: string; children: (plus: ReactNode) => ReactNode }) {
+  const held = !!hands.held?.places.some((p) => samePlace(p, place));
+  return (
+    <DropZone accepts={(it) => hands.takes(it, place)} onDrop={(it) => hands.onDrop(it, place)}>
+      {({ takes, over }) => children(held ? <AddHere label={label} onAdd={() => hands.onPlace(place)} /> : takes ? <AddHere over={over} /> : null)}
+    </DropZone>
+  );
+}
+
+/**
  * The open case's prices in edit, each with its parts, in time order: between two prices a divider with the month the later starts, typed
  * in place and kept between its neighbours (`moveChange`), and its bin, which takes the change away (`onRemoveChange`, kept for the undo);
- * then a sale priced apart under its head, the same way. A press or the focus in one of the purchase's prices makes it the one the toolbox
- * adds to (`onEditing`). A part the toolbox added that asks for its figure, fee or month asks on the price it goes on (`open.pending`), the
- * month as a divider under that price (`AskChange`).
+ * then a sale priced apart under its head, the same way. Each price is a place a toolbox card can go, and so is each side's prices where
+ * the sale is priced apart (the month a price changes from), its "+" at the end of the side's head (`places`). A part the toolbox added
+ * that asks for its figure, fee or month asks where it was added (`open.pending`), the month as a divider at the foot of its side's
+ * prices (`AskChange`).
  */
 export function OpenParts({
   fee,
@@ -125,7 +152,8 @@ export function OpenParts({
   name,
   onFee,
   onRemoveChange,
-  onEditing,
+  onRemoveCharge,
+  places,
   pendingHands,
   grip,
 }: {
@@ -136,19 +164,23 @@ export function OpenParts({
   name: string;
   onFee: (f: Fee) => void;
   onRemoveChange: (side: Side, k: number, caseId: string | undefined) => void;
-  /** The person is in one of the purchase's prices (its parts took the focus or a press), where there are several: the toolbox adds to it. */
-  onEditing: (k: number, caseId: string | undefined, side: Side) => void;
+  /** A price's charge taken away by its bin: the price free, kept for the undo. */
+  onRemoveCharge: (side: Side, k: number, caseId: string | undefined) => void;
+  places: PlaceHands;
   pendingHands: PendingHands;
   /** A part's grip, which lifts it onto another case or fee, or into the bin (a part of the purchase's first price; none elsewhere). */
   grip?: PartGrip;
 }) {
   const caseId = open.case ?? undefined;
   const c = copy.panel.change;
+  const priced = pricedOf(fee, caseId);
+  const plusLabel = (place: Place) => copy.cases.addHere.replace("{card}", places.held?.words ?? "").replace("{place}", placeWords(priced, place, !open.case));
   const side = (s: Side, stages: readonly OpenStage[]) => (
     <>
       {stages.map((st, j) => {
         const from = j > 0 ? stages[j - 1]!.until : undefined;
         const stageName = from ? `${name}, ${monthText(from)}` : name;
+        const place: Place = { on: "price", side: s, k: st.k };
         return (
           <div key={`${s}-${st.k}`} className="flex flex-col gap-2">
             {j > 0 && (
@@ -159,41 +191,67 @@ export function OpenParts({
                 onRemove={() => onRemoveChange(s, j - 1, caseId)}
               />
             )}
-            <div className="flex flex-col gap-2" {...(from ? { "data-stage-from": `${s}:${from}` } : {})} {...(stages.length > 1 || open.sell ? { onFocusCapture: () => onEditing(st.k, caseId, s), onPointerDownCapture: () => onEditing(st.k, caseId, s) } : {})}>
-              <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={open.pending?.side === s && open.pending.k === st.k ? open.pending : null} onFee={onFee} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
-            </div>
+            <PlaceZone place={place} hands={places} label={plusLabel(place)}>
+              {(plus) => (
+                // the price's parts, and at their end, while a card can go on it, its round "+"
+                <div className="flex items-center gap-3" {...(from ? { "data-stage-from": `${s}:${from}` } : {})}>
+                  <div className="flex min-w-0 flex-col gap-2">
+                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={open.pending?.side === s && open.pending.k === st.k ? open.pending : null} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
+                  </div>
+                  {plus}
+                </div>
+              )}
+            </PlaceZone>
           </div>
         );
       })}
+      {/* the month a price changes from, asked at the foot of the side's prices */}
+      {open.pending?.ask === "month" && open.pending.side === s && <AskChange key={open.pending.part} fee={fee} caseId={caseId} pending={open.pending} name={name} onFee={onFee} hands={pendingHands} />}
     </>
   );
+  // a side's prices under its head, where the sale is priced apart: the side is a place for the month a price changes from, its "+" in the head
+  const headed = (s: Side, head: ReactNode, stages: readonly OpenStage[]) => {
+    const place: Place = { on: "side", side: s };
+    return (
+      <PlaceZone place={place} hands={places} label={plusLabel(place)}>
+        {(plus) => (
+          <div className="flex flex-col gap-2">
+            <div className="flex min-h-target items-center gap-2">
+              {head}
+              {plus}
+            </div>
+            {side(s, stages)}
+          </div>
+        )}
+      </PlaceZone>
+    );
+  };
+  if (!open.sell) return side("buy", open.buy);
   return (
     <>
-      {open.sell && <p className="text-sm font-medium">{copy.panel.buyPrices}</p>}
-      {side("buy", open.buy)}
-      {open.sell && (
+      {headed("buy", <p className="text-sm font-medium">{copy.panel.buyPrices}</p>, open.buy)}
+      {headed(
+        "sell",
         <>
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-medium">{copy.panel.salePrices}</p>
-            <RemoveButton label={copy.panel.saleRemove} tabIndex={0} onRemove={() => onFee(setSaleApart(fee, false, caseId))} />
-          </div>
-          {side("sell", open.sell)}
-        </>
+          <p className="text-sm font-medium">{copy.panel.salePrices}</p>
+          <RemoveButton label={copy.panel.saleRemove} tabIndex={0} onRemove={() => onFee(setSaleApart(fee, false, caseId))} />
+        </>,
+        open.sell,
       )}
     </>
   );
 }
 
 /**
- * The month a price changes from, asked on the price the toolbox acts on (its line "+ התאריך", `OpenPending.ask` "month"): under that price
- * a divider with "מ־" and an empty month box, which takes the focus as it appears. A month committed (Enter, the picker, or leaving the
- * box) splits that price in two there, the later a copy the person then changes (`splitAt`), and the focus goes to the later price's first
- * box. The box takes only the price's own months (`splitRange`), so a month the prices change in already is refused at it. Escape or the
- * bin closes it and nothing changes, the focus back on the toolbox's line.
+ * The month a price changes from, asked at the foot of a side's prices (the toolbox's line "+ התאריך", `OpenPending.ask` "month"): a
+ * divider with "מ־" and an empty month box, which takes the focus as it appears. A month committed (Enter, the picker, or leaving the box)
+ * splits the price in force that month in two there, the later a copy the person then changes (`splitAt`), and the focus goes to the
+ * later price's first box. A month the prices change in already is refused at the box (`taken`). Escape or the bin closes it and nothing
+ * changes, the focus back on the toolbox's line.
  */
 function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; caseId: string | undefined; pending: OpenPending; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   const c = copy.panel.change;
-  const { side, k } = pending;
+  const { side } = pending;
   const root = useRef<HTMLDivElement>(null);
   const [fresh] = useState(hands.fresh);
   useEffect(() => {
@@ -220,6 +278,7 @@ function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; cas
       bringIntoView(box.closest<HTMLElement>("[data-stage-from]"));
     });
   };
+  const taken = pricesOn(fee, side, caseId).flatMap((s) => (s.until ? [s.until] : []));
   return (
     <div
       ref={root}
@@ -232,7 +291,7 @@ function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; cas
     >
       <ChangeDivider
         lead={c.from}
-        month={<MonthField value={null} label={copy.builder.fieldName(name, c.month)} tight waits {...splitRange(pricesOn(fee, side, caseId), k)} onCommit={add} />}
+        month={<MonthField value={null} label={copy.builder.fieldName(name, c.month)} tight waits taken={{ months: taken, why: c.taken }} onCommit={add} />}
         removeLabel={copy.builder.fieldName(name, c.remove)}
         onRemove={cancel}
       />

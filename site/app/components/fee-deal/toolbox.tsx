@@ -1,17 +1,20 @@
 // The toolbox for the case open in place (method §10.6, `toolbox`), or for several of the open fee's cases at once (`casesToolbox`): on a
 // computer the column "העמלה שבחרתם", the fee's name as its head and the parts to add in groups by kind, and at its end filling the fee
-// from a price list; on a phone the same in the short sheet pinned to the foot of the screen. Its line names what it adds to. A tap on a
-// card goes to the page (`onCard`), which does with it what it does to the open case (`applyTool`) or to the several cases (`casesTool`):
-// a thing to change by asks its question in the fee's block (`AskThing`), and a tap on one the fee changes by already stops it, as its bin
-// in the band does; the line "+ התאריך" asks, under the price it acts on, the month it changes from; a part goes on the price the toolbox
-// acts on (`view.k`); a part that needs its figure, month or fee first asks for it in the open case (`onPending`); a form of the price puts
-// the price in that form through the page (`onForm`), which keeps what it replaces for the undo. A card off there is greyed, its group
-// saying why. A card dragged onto the fees' column does the same there.
+// from a price list; on a phone the same in the short sheet pinned to the foot of the screen. A case's toolbox names it in its first line;
+// a slim fee's has none. A card only adds. A tap on one goes to the page (`onCard`): on the open case, a card with one place goes there at
+// once and one with several is held, the toolbox's line then saying what is being added with its "ביטול" (`held`), until a round "+" in
+// the block picks the place (places.ts); on several cases at once it does what `casesTool` says. At its place a card does what `applyTool`
+// says: a thing to change by asks its question in the fee's block (`AskThing`), and a tap on one the fee changes by already stops it, as
+// its bin in the band does; the line "+ התאריך" asks, at the foot of its side's prices, the month a price changes from; a part that needs
+// its figure, month or fee first asks for it there (`onPending`); a charge goes on a price that charges nothing, its figure blank and
+// focused (`onCharge`); any other part goes on the price at once. A card off there is greyed, its group saying why. A card dragged onto a
+// place does the same there.
 import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
 import { cardThing, type Toolbox as ToolboxView, type ToolPart as ToolPartView } from "../../lib/fee-deal/toolbox";
 import { setFeeName } from "../../lib/fee-deal/edits/deal";
-import { isFormPart, isPending, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import { isFormPart, isPending, setPart, type FormPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import { partAt, type Place } from "../../lib/fee-deal/places";
 import { NAME_MAX, type Fee, type Side } from "../../lib/fee-deal/model";
 import { capacity } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
@@ -32,7 +35,7 @@ const KIND: Record<ToolboxView["groups"][number]["group"], ToolKind> = { charge:
  * A part's card in words, a figure it asks for said by its sign where its words would not: "% לכל פעולה", "הנחה % מהמחיר", "החזר ₪"; a
  * minimum's and a maximum's sum come with the choice of its currency, so they say no sign (founder, 2026-11-20).
  */
-function partLabel(part: ToolPartView): string {
+export function partLabel(part: ToolPartView): string {
   const w = part.words;
   const bound = part.id === "min" || part.id === "max";
   const sign = bound ? "" : part.box === "pct" ? "%" : typeof part.box === "object" ? part.box.sign : "";
@@ -65,35 +68,36 @@ function kitGroups(view: ToolboxView): ToolGroup[] {
       kind: KIND[g.group]!,
       name: g.head,
       // a thing the fee changes by already is taken away by a tap, as its bin in the band does
-      parts: g.parts.map((x) => ({ id: x.id, label: partLabel(x), used: x.used, off: !!x.off, ...(x.form ? { form: true } : {}), ...(x.row ? { row: copy.cases.byRows[x.row] } : {}), ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
+      parts: g.parts.map((x) => ({ id: x.id, label: partLabel(x), used: x.used, off: !!x.off, ...(x.row ? { row: copy.cases.byRows[x.row] } : {}), ...(x.used && x.kind === "by" && x.words.lead ? { removeLabel: copy.cases.thingMenu.stop.replace("{thing}", x.words.lead) } : {}) })),
       ...(g.lines.length ? { lines: g.lines.map((l) => ({ id: l.id, label: l.words, icon: <IconCalendar size={16} />, ...(l.off ? { off: true } : {}) })) } : {}),
       ...(why ? { offWhy: why } : {}),
     };
   });
 }
 
-/** What a toolbox card does with the case it is for: a thing to change by asks its question, a form of the price goes through the page. */
+/** What a toolbox card does at its place: a thing to change by asks its question, a part that asks first asks there, a charge goes through the page. */
 export interface ToolHands {
   onAsk: (kind: ByKind) => void;
-  onPending: (part: PendingPart) => void;
-  onForm: (part: PartId) => void;
-  /** A part that goes on the price at once: the fee with it, and the part and the price it went on, which take the focus. */
+  onPending: (part: PendingPart, place: Place) => void;
+  /** A charge put on a price that charges nothing (a form of the price), through the page, which puts the focus in its blank figure. */
+  onCharge: (part: FormPart, place: Place) => void;
+  /** A part that goes on at once: the fee with it, and the part and the price it went on, which take the focus. */
   onPart: (next: Fee, at: { part: PartId; side: Side; k: number }) => void;
 }
 
 /**
- * What a toolbox card (`item`, its id) does on case `caseId` of `fee` (null for a slim fee), whose price it acts on is `k`: a thing to
- * change by asks its question; a part that needs its figure, month or fee asks for it there; a form of the price puts the price in it;
- * any other part goes on the price at once. A tap and a drop both do this.
+ * What a toolbox card (`item`, its id) does at place `place` of case `caseId` of `fee` (null for a slim fee): a thing to change by asks
+ * its question; a part that needs its figure, month or fee asks for it there; a charge goes on the price; any other part goes on at once.
+ * A tap and a drop both do this.
  */
-export function applyTool(item: string, fee: Fee, caseId: string | null, k: number, hands: ToolHands, side: Side = "buy"): void {
+export function applyTool(item: string, fee: Fee, caseId: string | null, place: Place, hands: ToolHands): void {
   const thing = cardThing(item);
   if (thing) return hands.onAsk(thing);
   const id = item as PartId;
-  if (isPending(id)) return hands.onPending(id);
-  if (isFormPart(id)) return hands.onForm(id);
-  // the toolbox adds to the purchase's prices, or to a sale priced apart while the person is in it
-  hands.onPart(setPart(fee, id, true, { side, k, ...(caseId ? { caseId } : {}) }), { part: id, side, k });
+  if (isPending(id)) return hands.onPending(id, place);
+  if (isFormPart(id)) return hands.onCharge(id, place);
+  const at = place.on === "price" ? { side: place.side, k: place.k } : { side: "buy" as const, k: 0 };
+  hands.onPart(setPart(fee, id, true, partAt(place, caseId)), { part: id, ...at });
 }
 
 /** The houses whose price list has a line for the fee, and what filling the fee from one does. */
@@ -115,8 +119,9 @@ export interface FillUndoLine {
  * The toolbox for the open case of `fee`, or for several of its cases at once: the column on a computer (`sheet` false), the pinned short
  * sheet on a phone. `view` is the toolbox's view (`toolbox`, `casesToolbox`); `product` the deal's product, whose sense of the fee's name
  * "מה זה" opens; `fill` the price lists that can fill it; `line` the undo line of a fill just made; `folded`, whether the phone's sheet is
- * folded to its groups' names, which the page holds (`onFold`). `onCard` hands a tapped card to the page; `onStopBy` stops the price
- * changing by a thing it changes by; `onClose` un-chooses the fee.
+ * folded to its groups' names, which the page holds (`onFold`); `held`, the card held while the person picks its place, and its words.
+ * `onCard` hands a tapped card to the page; `onLetGo` lets the held card go ("ביטול"); `onStopBy` stops the price changing by a thing it
+ * changes by; `onClose` un-chooses the fee.
  */
 export function ToolboxColumn({
   view,
@@ -128,10 +133,11 @@ export function ToolboxColumn({
   line,
   folded,
   onFold,
+  held,
   onCard,
+  onLetGo,
   onFee,
   onStopBy,
-  onPrice,
   onClose,
 }: {
   view: ToolboxView;
@@ -144,14 +150,16 @@ export function ToolboxColumn({
   line: FillUndoLine | null;
   folded: boolean;
   onFold: (folded: boolean) => void;
-  /** A card tapped (its id): the page does with it what it does to what the toolbox adds to (`applyTool`, `casesTool`). */
+  /** The card held, by its id, and its words; null where none is. */
+  held: { card: string; words: string } | null;
+  /** A card tapped (its id): the page adds it at its one place, holds it, or does what `casesTool` says. */
   onCard: (item: string) => void;
+  /** The held card let go, nothing changed ("ביטול"). */
+  onLetGo: () => void;
   /** The fee changed in the toolbox itself (a fee of the person's own renamed). */
   onFee: (f: Fee) => void;
   /** A thing the fee changes by tapped again: the page stops it, kept for the undo. */
   onStopBy: (kind: ByKind) => void;
-  /** Another of the case's prices over time chosen in the toolbox: the one it adds to now (`view.k`). */
-  onPrice?: (k: number) => void;
   onClose: () => void;
 }) {
   const terms = useProvenanceData()?.terms;
@@ -160,11 +168,9 @@ export function ToolboxColumn({
     const thing = cardThing(part);
     if (thing) onStopBy(thing);
   };
-  const target = view.addTo.when ? caseText(view.addTo.when) : view.addTo.name;
-  // what it adds to: one price of several over time names it, "להוסיף למחיר עד דצמבר 2026", before the case or the fee; else its line's
-  // own lead ("להוסיף למקרה:", a sale priced apart's "להוסיף למחיר במכירה:", several cases' "להוסיף לכל המקרים")
-  const sale = view.side === "sell";
-  const lead = view.addTo.price ? `${view.addTo.price}${sale ? copy.cases.inSale : ""}:` : view.addTo.lead.trim();
+  // what it adds to: a case's values after "להוסיף למקרה:", several cases' "להוסיף לכל המקרים" or a row's; nothing for a slim fee
+  const addTo = view.addTo ? { lead: view.addTo.lead.trim(), ...(view.addTo.when ? { target: caseText(view.addTo.when) } : {}) } : null;
+  const hold = held ? { part: held.card, words: copy.cases.hold.replace("{card}", held.words), onCancel: onLetGo } : null;
   // filling the fee from a price list, or the undo line of a fill just made; nothing, and no line above it, where neither stands
   const foot = line || (fill && fill.houses.length > 0) ? (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
@@ -182,9 +188,7 @@ export function ToolboxColumn({
       )}
     </div>
   ) : null;
-  const periods = view.addTo.periods;
-  const prices = periods && onPrice ? { label: copy.cases.toolPrice.which, options: periods.map((words, j) => ({ id: String(j), label: words })), value: String(view.k), onChange: (id: string) => onPrice(Number(id)) } : undefined;
-  const box = <Toolbox key={fee.id} target={target} targetLead={lead} {...(prices ? { prices } : {})} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
+  const box = <Toolbox key={fee.id} addTo={addTo} held={hold} groups={kitGroups(view)} onAdd={onAdd} onRemove={onRemove} foot={foot} sheet={sheet} docked={sheet} {...(sheet ? { folded, onFold, onClose } : {})} />;
   if (sheet) return box;
   // the site's own explanation of the fee: its glossary card by the fee's name, in the deal's product's sense where the glossary gives
   // that product one of its own

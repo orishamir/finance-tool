@@ -493,12 +493,13 @@ export function monthFault(month: string, { earliest, latest }: { earliest?: str
  * write. A box that holds no month takes the error look, and Escape puts back the last month. `earliest`, `latest`: the months the page
  * around the box would refuse fall outside them, and the picker offers none of those; a month typed outside them is refused, said under
  * the box (`monthFault`), and the box shows its month again, as it does where the page refuses a month for a reason of its own (the month
- * it holds after the commit is not the one typed). `lead`: words in the box before the month,
+ * it holds after the commit is not the one typed). `taken`: months inside them the page refuses, struck through in the picker and refused
+ * when typed, with the page's reason said under the box. `lead`: words in the box before the month,
  * so a price that holds until a month is one box ("[חינם עד 03.2028]"). `hang`: the message hangs under the box over what is below,
  * taking no room, for a box in a bar whose line must not grow. `autoFocus`: the box takes the focus as it appears, with its picker open,
  * so the month just asked for is one press away and typing still goes to the box.
  */
-export function MonthField({ value, label, lead, tight, earliest, latest, onCommit, onClear, waits, hang, autoFocus, className }: {
+export function MonthField({ value, label, lead, tight, earliest, latest, taken, onCommit, onClear, waits, hang, autoFocus, className }: {
   value: string | null;
   label: string;
   lead?: ReactNode;
@@ -508,6 +509,8 @@ export function MonthField({ value, label, lead, tight, earliest, latest, onComm
   earliest?: string;
   /** The last month the picker offers, `YYYY-MM`. */
   latest?: string;
+  /** Months between the first and the last that the page refuses, and why, in words, for the month typed (a month the prices change in already). */
+  taken?: { months: readonly string[]; why: (month: string) => string };
   onCommit: (month: string) => void;
   onClear?: () => void;
   /** An empty box is no error: the month is still to come (a later price waits for it). */
@@ -573,7 +576,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, onComm
     setRefused(null);
     toBox();
     // the box's own commit on leaving it, or Enter, sees the month already committed
-    const c = pickCommit(m, value, {});
+    const c = pickCommit(m, value, { ...(taken ? { taken: taken.months } : {}) });
     if (c !== null && c !== committed.current) onCommit(c);
     committed.current = m;
   };
@@ -587,7 +590,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, onComm
     const m = parseMonth(text);
     setError(m === null);
     if (m === null) return false;
-    const fault = monthFault(m, { earliest, latest });
+    const fault = monthFault(m, { earliest, latest }) ?? (taken?.months.includes(m) ? taken.why(monthText(m)) : null);
     if (fault) {
       setRefused(fault);
       setText(shown);
@@ -693,7 +696,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, onComm
           <IconCalendar size={16} />
         </span>
       </span>
-      {open && <MonthPicker id={grid} label={label} chosen={parseMonth(text) ?? value} bounds={{ earliest, latest }} anchor={box} onPick={pick} onClose={toBox} />}
+      {open && <MonthPicker id={grid} label={label} chosen={parseMonth(text) ?? value} bounds={{ earliest, latest, ...(taken ? { taken: taken.months } : {}) }} anchor={box} onPick={pick} onClose={toBox} />}
       {(error || refused) && (
         <span id={`${id}-err`} role={refused ? "status" : undefined} className={cx("text-xs text-destructive", hang && "absolute start-0 top-full z-10 mt-0.5 whitespace-nowrap rounded-sm bg-card")}>
           {refused ?? kitCopy.figure.monthError}

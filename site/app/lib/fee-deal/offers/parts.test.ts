@@ -11,7 +11,7 @@ import { changeFormKept, undoWords } from "../undo";
 import { capacity, keeps } from "./capacity";
 import { KEY_FORMS, PART_KEYS } from "./capabilities";
 import { FIGURE_IDS, FIGURES } from "./figures";
-import { isFormPart, isPending, PART_IDS, PARTS, putPart, type PartDef, type PartId } from "./parts";
+import { isFormPart, isPending, PART_IDS, PARTS, partGoes, putPart, type PartDef, type PartId } from "./parts";
 
 const data = feesData();
 
@@ -26,10 +26,12 @@ function priced(form: Price["form"]): Price {
 }
 
 describe("the part registry", () => {
-  it("derives which parts ask, which are forms and which the toolbox offers", () => {
+  it("derives which parts ask, which are forms, which the toolbox offers and where each goes", () => {
     expect(PART_IDS.filter(isPending)).toEqual(["until", "min", "max", "cap", "maxPerSecurity", "offset"]);
     expect(PART_IDS.filter(isFormPart)).toEqual(["share", "perUnit", "perAction", "held", "sum", "free"]);
-    expect(PART_IDS.filter((id) => PARTS[id].tool === null)).toEqual(["until", "flat", "unfilledClerk", "unfilledClerkAbroad", "capRead"]);
+    expect(PART_IDS.filter((id) => PARTS[id].tool === null)).toEqual(["free", "until", "flat", "unfilledClerk", "unfilledClerkAbroad", "capRead"]);
+    expect(PART_IDS.filter((id) => partGoes(id) !== "price")).toEqual(["until", "sale"]);
+    expect([partGoes("until"), partGoes("sale")]).toEqual(["side", "fee"]);
   });
 
   it("puts every part the registry gives a toolbox group in that group's order, once", () => {
@@ -44,11 +46,11 @@ describe("the part registry", () => {
     }
   });
 
-  it("names every part a change of form leaves behind in the undo's words", () => {
+  it("names every part a charge's bin leaves behind in the undo's words", () => {
     for (const id of PART_IDS.filter((x) => PARTS[x].lost)) expect((copy.cases.formChanged.parts as Record<string, string>)[id], id).toMatch(/\S/);
-    // a held share's maximum on each security, left behind by a sum per period
+    // a held share's maximum on each security, left behind when the price is made free
     const deal: FeeDeal = { ...newDeal("brokerage-account"), fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 3, perSecurity: typed(7500) } }] }] };
-    const r = changeFormKept(deal, "fee-c", "sum", null)!;
+    const r = changeFormKept(deal, "fee-c", "free", null)!;
     const words = undoWords(r.undo!, () => "", data);
     expect(words).toContain(copy.cases.formChanged.parts.maxPerSecurity);
     expect(words).not.toContain("undefined");
