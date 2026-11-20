@@ -43,7 +43,7 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
 export type Venue = "us" | "europe";
 const US_RE = /ארה["״]ב|ארצות הברית/;
 const EU_RE = /אירופה|לונדון|London|LSE/;
-const OUTSIDE_US_RE = /מחוץ לארה/;
+const OUTSIDE_US_RE = /מחוץ לארה|למעט ארה/;
 export const venueOfBand = (band: string | null | undefined): Venue | null => (!band ? null : OUTSIDE_US_RE.test(band) ? "europe" : US_RE.test(band) ? "us" : EU_RE.test(band) ? "europe" : null);
 
 /** The exchange a fund bought abroad trades on, from its tickers and domicile; null when the record does not say. */

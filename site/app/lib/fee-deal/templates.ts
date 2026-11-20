@@ -325,7 +325,7 @@ const convertsFree = (l: Line): boolean =>
  */
 const US_RE = /ארה["״]ב|ארצות הברית|United States/;
 const EU_RE = /אירופה|לונדון|London|LSE/;
-const ELSEWHERE_RE = /מחוץ לארה|שווקים נוספים|שאינם/;
+const ELSEWHERE_RE = /מחוץ לארה|למעט ארה|שווקים נוספים|שאינם/;
 const CANADA_RE = /קנדה|Canada/;
 const venueOf = (words: string | null): string[] | "elsewhere-but" | null =>
   !words ? null : ELSEWHERE_RE.test(words) ? (CANADA_RE.test(words) ? "elsewhere-but" : ["europe", "world"]) : US_RE.test(words) ? ["us"] : EU_RE.test(words) ? ["europe"] : null;
