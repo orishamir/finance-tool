@@ -1,5 +1,5 @@
-// A fee's cases laid out by the fee's shape (design-system 11, "Cases and parts"; the layout is lib/fee-deal/layout.ts): under the fee's
-// name's line, which says what the price changes by, a table for a fee that changes by one thing (each case a column tile, its head over
+// A fee's cases laid out by the fee's shape (design-system 11, "Cases and parts"; the layout is lib/fee-deal/layout.ts): inside the cases'
+// band, under its head, which says what the price changes by (`ConditionBand`), a table for a fee that changes by one thing (each case a column tile, its head over
 // its whole price, a range's steps ascending as a ladder), a grid for two (the first thing down the side, the second across the top, a third as a switch above it, and under a row's
 // cells a cell for each part its cells hold alike), and beside the heads a plus that adds a case, a step, a row or a column: a bare one
 // after a table's tiles, at the end of a grid's column heads and under its row heads, and a small knob on the line between two heads while
@@ -7,10 +7,10 @@
 // moved a few pixels (`data-lift-body`), and stand in a drop zone, each cell a knob on its edges that
 // stretches it over its neighbours and, where it can be taken away, a small bin in its top end corner; a cell covering its whole row says
 // so under its parts. A
-// part every case holds alike is one cell over every column, not a line of its own. Under a row a slim strip drawn while the pointer is
-// there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
+// part every case of the fee holds alike stands apart from the table, over it (`EveryCaseParts`); one some neighbouring cases hold alike is
+// one cell over their columns. Under a grid's row a slim strip drawn while the pointer is there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
-// wider than its block scrolls inside itself, never widening the page. A table's and a grid's cases are tiles raised on the fee's card. The
+// wider than its block scrolls inside itself, never widening the page. A table's and a grid's cases are tiles raised on the band. The
 // case open stands under the table or the grid, its tile outlined in the action colour. A cell with a
 // `copyKey` is one the page copies and pastes on.
 import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
@@ -24,7 +24,7 @@ import { RemoveButton } from "./remove-button";
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /** The open case's tile or cell: the action colour's outline, as the open case's own. */
 const OPEN = "outline-2 -outline-offset-2 outline-primary";
-// a grid's case is a tile raised on the fee's card (`popover`, 8 px corners, no edge), 12 px in on every side, 6 px between two lines; its
+// a grid's case is a tile raised on the cases' band (`popover`, 8 px corners, no edge), 12 px in on every side, 6 px between two lines; its
 // lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the tiles
 // beside it (`ROW_HEAD`)
 const CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-1.5 rounded-md bg-popover p-3 text-sm leading-5";
@@ -349,7 +349,7 @@ const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | nu
 const betweenOf = (n: number, insert: (k: number) => AddSpec | null) => Array.from({ length: Math.max(0, n - 1) }, (_, i) => ({ k: i + 1, add: insert(i + 1) })).filter((x): x is { k: number; add: AddSpec } => x.add !== null);
 
 /**
- * The plus under a row (or a table's last row) that adds a part to every case of it (`add`): a small knob like a cell's stretch knob, in the
+ * The plus under a grid's row that adds a part to every case of it (`add`): a small knob like a cell's stretch knob, in the
  * middle of the row's foot, its words only spoken and in its title; drawn only while the pointer is over the row or the focus is in it
  * (`data-row-add`, app.css), straddling the room under it, so it takes none and moves nothing. The keyboard and touch reach the same
  * through the row head's menu.
@@ -368,17 +368,16 @@ function RowAdd({ add, style }: { add: AddSpec; style: CSSProperties }) {
 const TILE_CELL = "flex min-h-target min-w-0 flex-wrap content-start items-center gap-x-1.5 gap-y-1.5 rounded-b-md px-3 py-2.5 text-sm leading-5";
 
 /**
- * A fee that changes by one thing, as a table (founder, 2026-11-19): each case a column tile, raised on the fee's card (`popover`, 8 px
+ * A fee that changes by one thing, as a table (founder, 2026-11-19): each case a column tile, raised on the cases' band (`popover`, 8 px
  * corners, no edge), 8 px apart and all as tall as the tallest, flush with the card's padding (the 2 px over them, where their heads'
  * presses reach, stands in the room above); a tile's head (`columns`, a head that opens its case) over a 1 px line
  * across it, then its cells (`rows`); the open case's whole tile outlined in the action colour. After the tiles, level with their heads,
  * a bare plus that adds a case or a step (`add`); `insert`, the plus on the line between column `k - 1` and column `k` that adds one there
- * (none where it gives nothing). `ladder`: the thing is a range, its steps ascending, each head with the range's icon. `addPart`: the
- * strip under its last row that adds a part across every column. `foot`: what stands under the table (the bin while something is lifted,
+ * (none where it gives nothing). `ladder`: the thing is a range, its steps ascending, each head with the range's icon. `foot`: what stands under the table (the bin while something is lifted,
  * laid over what follows: the table is the element it is placed by). Wider than its block, it scrolls inside itself, sideways only: what
- * reaches past its foot for a moment (a cell sliding into place, the plus's press under its last row) never gives it a scrollbar down.
+ * reaches past its foot for a moment (a cell sliding into place) never gives it a scrollbar down.
  */
-export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; addPart?: AddSpec; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
+export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
   const gapCol = carriedAt(columns, useCarried());
@@ -467,11 +466,72 @@ export function CaseTable({ columns, rows, add, insert, addPart, ladder, foot, l
         )}
         {/* last, so the open tile's outline is drawn over its head and cells, which take no press of it */}
         {columns.map((c, k) => (c.open && !c.empty ? <span key={`open:${c.id}`} aria-hidden data-flip="" className={cx("pointer-events-none relative rounded-md", OPEN)} style={tile(k)} /> : null))}
-        {addPart && rows.length > 0 && <RowAdd add={addPart} style={{ gridColumn: `1 / span ${n}`, gridRow: rows.length + 1 }} />}
       </div>
       {foot}
     </div>
   );
+}
+
+/** A part said once for every case of a fee (`EveryCaseParts`): its id, its words, and what a table's cell carries beside them. */
+export interface EveryCaseCell extends Pick<CellExtras, "grip" | "onRemove" | "removeLabel" | "copyKey"> {
+  id: string;
+  content: ReactNode;
+}
+
+/**
+ * The parts every case of a fee holds alike, standing apart from its table or grid, inside the fee's card under its name's line (founder,
+ * 2026-11-20): one cell each, with a table's cell's look (`popover`, 8 px corners, its kind's dot and words as a cell says them, figures
+ * edited in place), as wide as its words, in a row that wraps; each focusable, its grip before it, its small bin in its corner (`CellBin`),
+ * Delete taking it away and Enter editing its one figure, as a table's cell. No any-words under them: standing outside the table says they
+ * hold for every case. `asking`: a part being added to them all that asks its amount first (a `PartEdit`), after the cells. After them,
+ * `add`, a quiet button, its plus and words in the muted ink ("+ חלק לכל המקרים"), lit under the pointer, 44 px tall. `zone` wraps the
+ * whole row (a drop zone: what lands there goes into every case). `label` is the row's spoken name. Nothing is drawn with no cell, no ask
+ * and no add.
+ */
+export function EveryCaseParts({ label, cells, asking, add, zone }: { label: string; cells: EveryCaseCell[]; asking?: ReactNode; add?: AddSpec; zone?: (row: ReactNode) => ReactNode }) {
+  if (cells.length === 0 && !asking && !add) return null;
+  const onKeyDown = (cell: EveryCaseCell) => (e: KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const at = e.currentTarget;
+    // in a figure's field: Esc goes back to the cell once the field has put its figure back
+    if (target !== at) {
+      if (e.key === "Escape") requestAnimationFrame(() => at.isConnected && at.focus());
+      return;
+    }
+    if (e.key === "Enter" || e.key === "F2") {
+      const figures = target.querySelectorAll<HTMLElement>("[data-edit-in-place='']");
+      if (figures.length === 1) figures[0]!.click();
+      e.preventDefault();
+    } else if (e.key === "Delete" && cell.onRemove) {
+      cell.onRemove();
+      e.preventDefault();
+    }
+  };
+  const row = (
+    <div role="group" aria-label={label} data-every-case="" className="flex flex-wrap items-center gap-2">
+      {cells.map((cell) => (
+        <div key={cell.id} tabIndex={0} {...copyAttr(cell.copyKey)} data-liftable="" data-lift-body="" data-every-cell={cell.id} onKeyDown={onKeyDown(cell)} className={cx(CELL, CELL_FOCUS, "group/cell relative max-w-full", binRoom(cell))}>
+          {cell.grip}
+          {cell.content}
+          {binOf(cell)}
+        </div>
+      ))}
+      {asking}
+      {add && (
+        <button
+          type="button"
+          aria-label={add.spoken}
+          aria-expanded={add.expanded}
+          onClick={(e) => add.onAdd(e.currentTarget)}
+          className={cx("inline-flex min-h-target items-center gap-1.5 rounded-md px-3 text-sm text-muted-foreground transition-colors duration-[var(--duration-fast)] hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring", add.expanded && "bg-accent")}
+        >
+          <Plus {...icon} />
+          {add.label}
+        </button>
+      )}
+    </div>
+  );
+  return zone ? zone(row) : row;
 }
 
 /** A grid's row or column head: its value's words, its grip and its drop zone; `liftItem`, the item its grip lifts (its cells then stand as its gap too). */
@@ -531,7 +591,7 @@ function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boole
 
 /**
  * A fee that changes by two things, as a grid (founder, 2026-11-20): the first thing's values down the side (`rows`), the second's across
- * the top (`columns`); one tile per case (equal neighbours one tile), raised on the fee's card as a table's, 8 px apart, a press anywhere on
+ * the top (`columns`); one tile per case (equal neighbours one tile), raised on the cases' band as a table's, 8 px apart, a press anywhere on
  * it opening it, a case on any value across spanning its row and one down over several rows spanning them; the open case's tile outlined
  * in the action colour. Under a row's tiles, its `lines`, one per part row, each a tile of the parts two or more of its tiles hold alike
  * over them. The column heads are plain words over a 1 px line; the row heads stand at the start, from their row's top; between two rows,
@@ -563,7 +623,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
   return (
     <div className="relative flex flex-col gap-2">
       {above}
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" className="grid items-stretch gap-2 overflow-x-auto overflow-y-hidden px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-grid="" data-span-table="" data-carry-tracks="" className="grid items-stretch gap-2 overflow-x-auto overflow-y-hidden px-0.5 pt-2.5 pb-2" style={{ gridTemplateColumns: template }}>
         {/* the line between two rows, in the row heads' column: its own 1 px track, the 8 px gaps of the grid over and under it */}
         {rows.slice(0, -1).map((r, j) => (
           <div key={`hairline:${r.id}`} aria-hidden data-hairline="row" style={{ gridColumn: 1, gridRow: between(j) }} className="pointer-events-none h-px self-center bg-border" />

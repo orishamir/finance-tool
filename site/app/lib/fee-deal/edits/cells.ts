@@ -415,15 +415,16 @@ export function figureOnward(fee: Fee, was: Fee, cases: readonly string[] | null
 /**
  * A fee whose cases `ids` each take part `part` on their first price, all alike, as one cell stretched over them (a grid row's strip or a
  * table's foot, "+ חלק לכל השורה"): the first case takes it as the toolbox adds it (`setPart`), and the cell is stretched over the others
- * along thing `along` (`stretch`). Refused where a case holds that part row already (nothing the person gave is overwritten) or where the
- * first cannot take it.
+ * along thing `along` (`stretch`). A part that asks an amount (`asksAmount`) takes `value`, the amount the person typed for them all, and
+ * stands nowhere without it. Refused where a case holds that part row already (nothing the person gave is overwritten) or where the first
+ * cannot take it.
  */
-export function partAcross(fee: Fee, ids: readonly string[], part: PartId, along: number): Fee {
+export function partAcross(fee: Fee, ids: readonly string[], part: PartId, along: number, value?: number): Fee {
   if (!hasCases(fee) || ids.length === 0 || !fee.by[along]) return fee;
   const row = ROW_OF[part];
   const cases = ids.map((id) => fee.cases.find((c) => c.id === id));
   if (cases.some((c) => !c || cellHolds(c, row))) return fee;
-  const first = setPart(fee, part, true, { k: 0, caseId: ids[0]! });
+  const first = setPart(fee, part, true, { k: 0, caseId: ids[0]!, ...(value !== undefined ? { value } : {}) });
   if (first === fee) return fee;
   return ids.length > 1 ? stretch(first, ids[0]!, ids.slice(1), row, along) : first;
 }

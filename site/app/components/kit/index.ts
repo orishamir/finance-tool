@@ -75,7 +75,7 @@ export { SideNav, SidePage, type SideNavGroup, type SideNavItem } from "./side-n
 export { GoLink, TextLink } from "./go-link";
 export { MeterBar } from "./meter-bar";
 export { PeriodBars, type PeriodBar } from "./period-bars";
-export { FigureField, MonthField, monthText, parseMonth } from "./figure-field";
+export { FigureField, MonthField, monthText, parseMonth, type Settled } from "./figure-field";
 export { MonthPicker, type MonthBounds } from "./month-picker";
 export { Step, StepStrip, type StripStep } from "./steps";
 export { TypedPlain } from "./typed-plain";
@@ -86,7 +86,7 @@ export { RangeFields, type RangeWords } from "./range-fields";
 export { amountTick, logAt, logTicks, shareTicks, type LogRange } from "./log-axis";
 export { KindDot, PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
 export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
-export { AddSlot, CaseGrid, CaseTable, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type GridCellView, type GridHead } from "./case-table";
+export { AddSlot, CaseGrid, CaseTable, EveryCaseParts, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type EveryCaseCell, type GridCellView, type GridHead } from "./case-table";
 export { ActionMenu, DropBin, Grip, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
 export { flip } from "./flip";
 export { KnobButton } from "./knob-button";

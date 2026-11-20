@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { dealCases as words } from "../../copy";
 import { ProvenanceProvider } from "../provenance";
 import { KitGallery } from "./gallery";
-import { AddSlot, CaseGrid, CaseRow, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, PartChip, PartEdit, ReadForBand, Toolbox } from "./index";
+import { AddSlot, CaseGrid, CaseRow, CaseTable, ConditionBand, ConditionHead, EveryCaseParts, FeePalette, OpenCase, PartChip, PartEdit, ReadForBand, Toolbox } from "./index";
 
 const today = "2026-11-13";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -18,7 +18,7 @@ const bare = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, el
 describe("the gallery's cases and parts", () => {
   const out = html(h(KitGallery, { today }));
   it("names every piece", () => {
-    for (const name of ["PartChip, PartEdit, KindDot", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, SharedLine, AddSlot", "ChangeDivider, WhenRule", "FeePalette", "SlimFee, FeeBlock", "Toolbox", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
+    for (const name of ["PartChip, PartEdit, KindDot", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, EveryCaseParts, SharedLine, AddSlot", "ChangeDivider, WhenRule", "FeePalette", "SlimFee, FeeBlock", "Toolbox", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
@@ -30,7 +30,7 @@ describe("a fee's band", () => {
     const out = band(null);
     expect(out).toContain(words.changesBy);
     // a pill and nothing else: no bin beside it, its menu takes it away
-    expect(bare(h(ConditionHead, { things: [{ id: "a", name: "א" }], onThing: () => undefined, inline: true })).match(/<button/g)).toHaveLength(1);
+    expect(bare(h(ConditionHead, { things: [{ id: "a", name: "א" }], onThing: () => undefined })).match(/<button/g)).toHaveLength(1);
   });
   it("says the person's own track in words beside its value", () => {
     const out = band(h(CaseRow, { when: [{ text: "ערך" }, { text: "מסלול", mine: true }], label: "לפתוח", onOpen: () => undefined, children: null }));
@@ -93,6 +93,20 @@ describe("a fee's table and grid", () => {
     const out = html(h(CaseTable, { columns: cols, rows: [], insert: (k: number) => (k === 1 ? { label: "הוספת ערוץ", spoken: "הוספת ערוץ בין ״א״ ל״ב״", onAdd: () => undefined } : null) }));
     expect(out.match(/data-between-add="x"/g)).toHaveLength(1);
     expect(out).toMatch(/aria-label="הוספת ערוץ בין ״א״ ל״ב״"[^>]*tabindex="-1"|tabindex="-1"[^>]*aria-label="הוספת ערוץ בין ״א״ ל״ב״"/);
+  });
+});
+
+describe("the parts said once for every case", () => {
+  it("draw nothing with no part, no ask and no add", () => {
+    expect(bare(h(EveryCaseParts, { label: "חלקים", cells: [] }))).toBe("");
+  });
+  it("draw each part as a cell that takes the focus, its bin named, and the quiet add after them, a 44 px button with its words", () => {
+    const out = bare(h(EveryCaseParts, { label: "חלקים", cells: [{ id: "max", content: "מקסימום", onRemove: () => undefined, removeLabel: "למחוק" }], add: { label: "חלק לכל המקרים", spoken: "הוספת חלק", onAdd: () => undefined } }));
+    expect(out).toContain('role="group" aria-label="חלקים"');
+    expect(out).toMatch(/tabindex="0"[^>]*data-every-cell="max"/);
+    expect(out).toContain('aria-label="למחוק"');
+    expect(out).toMatch(/<button[^>]*aria-label="הוספת חלק"[^>]*class="[^"]*min-h-target[^"]*text-muted-foreground[^"]*hover:bg-accent/);
+    expect(out).toContain("חלק לכל המקרים");
   });
 });
 
