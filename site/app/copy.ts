@@ -2376,11 +2376,6 @@ export const feeDeal = {
       lanePer: " · ",
       /** The reading at the point on one line, over the chart where the card stands under it: "קנייה של 18,650 ₪ (5,714 $): 144 ₪, 0.77% מהקנייה". */
       line: { sep: ": ", and: ", " },
-      /**
-       * The parts of a lane under the axis's start, in words, by the action's noun after ב and its gender: "בקנייה של עד 130 ₪: לכל היותר
-       * 30% ממנה." The fee's name leads where the action has several fees. On the holding chart: "{fee}: עד 130 ₪ לכל היותר 30% מהסכום."
-       */
-      under: { at: "ב", upToOf: " של עד ", upTo: "עד ", sep: "; ", end: ".", capLead: "לכל היותר ", minLead: "מינימום " },
       /** Where nothing varies: one number, a share or a sum, in every size. */
       one: { share: " מכל {noun}, בכל גודל", sum: " לכל {noun}, בכל גודל" },
     },

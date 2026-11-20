@@ -360,8 +360,6 @@ export interface ChartView {
   /** The curve's samples over a range (F-123). */
   sample: (range: AmountRange, n?: number) => CurvePoint[];
   rates: CurveRate[];
-  /** The notes under the chart: each lane's parts below the range, in words. */
-  below: { fee: ChartFee; parts: LanePart[] }[];
 }
 
 /** An action's chart, or one number where nothing in it varies. */
@@ -590,10 +588,6 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
       range,
       sample,
       rates: values,
-      below: lanes.flatMap((l) => {
-        const parts = (l.parts ?? []).filter((x) => x.to !== null && x.to <= range.lo);
-        return parts.length ? [{ fee: l.fee, parts }] : [];
-      }),
       zones,
       head,
       readAt,
@@ -805,7 +799,6 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       range,
       sample,
       rates: values,
-      below: [],
       head: crossValue ? { kind: "cross", at: crossValue } : { kind: "marks", n: marks.length },
       cross,
       bands,

@@ -56,8 +56,6 @@ describe("what a purchase or sale costs", () => {
       ["cap", "min", "rate", "max"],
       ["free", "flat", "min", "rate", "max"],
     ]);
-    // the parts under the axis's start are said under the chart: the trade's cap, the conversion's free and flat stretches
-    expect(c.below.map((b) => b.parts.map((x) => x.part))).toEqual([["cap"], ["free", "flat"]]);
   });
   it("says the minimum decides below 15,600 $ and the rates above it add to 0.3375%", async () => {
     const c = chartOf((await reading()).panels.actions.find((t) => t.key === "trade:all")!.views[0]!);

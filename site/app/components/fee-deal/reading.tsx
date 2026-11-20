@@ -108,46 +108,6 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
   };
 }
 
-/**
- * A lane's parts under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." On the action chart
- * (`action`) they are said of the action, "בקנייה של עד 130 ₪: לכל היותר 30% ממנה.", and the fee is named only where it has several.
- */
-function UnderLine({ fee, parts, action }: { fee: ChartFee; parts: LanePart[]; action?: { tab: ActionTab; named: boolean } }) {
-  const a = w.action;
-  const u = a.under;
-  const named = !action || action.named;
-  const of = action ? (a.male[action.tab.action] ? a.below.of.m : a.below.of.f) : ` ${copy.price.of[fee.ref.kind] ?? copy.price.of.default}`;
-  const lead = action ? `${u.at}${tabWord(a.noun, action.tab)}${u.upToOf}` : u.upTo;
-  return (
-    <li className="flex items-baseline gap-2">
-      {named && <Swatch shape="box" className={cx("translate-y-px", colourOf(fee).bg)} />}
-      <p>
-        {named && (
-          <>
-            {refName(fee.ref)}
-            {copy.price.sep}
-          </>
-        )}
-        {parts.map((p, k) => (
-          <span key={k}>
-            {k > 0 && u.sep}
-            {p.end && <FigAfter value={p.end} lead={lead} />}
-            {action ? copy.price.sep : " "}
-            {p.part === "free" ? copy.price.free : p.figure ? (
-              <>
-                {p.part === "cap" ? u.capLead : p.part === "min" ? u.minLead : ""}
-                <Fig value={p.figure} />
-                {p.part === "cap" ? of : ""}
-              </>
-            ) : null}
-          </span>
-        ))}
-        {u.end}
-      </p>
-    </li>
-  );
-}
-
 // ---------------------------------------------------------------- around a chart
 
 /** The line beside a chart with a sum in another currency: the rate of F-84 it enters the chart at, and its day. */
@@ -490,9 +450,6 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
       {statedOf(stated, view.fees).map((s) => (
         <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
       ))}
-      {view.below.map((b) => (
-        <UnderLine key={b.fee.ref.fee} fee={b.fee} parts={b.parts} action={{ tab, named: view.lanes.length > 1 }} />
-      ))}
       {view.rates.map((r) => (
         <li key={r.currency}>
           <RateLine currency={r.currency} rate={r.rate} fx={fx} />
@@ -786,9 +743,6 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
       <ul className="grid gap-x-8 gap-y-1.5 border-t border-border pt-3 text-xs text-muted-foreground empty:hidden md:grid-cols-2">
         {notes.map((s) => (
           <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
-        ))}
-        {view.below.map((b) => (
-          <UnderLine key={b.fee.ref.fee} fee={b.fee} parts={b.parts} />
         ))}
         <LeftOutNotes left={left} />
       </ul>
