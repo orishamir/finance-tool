@@ -7,11 +7,11 @@
 // (entered, `retyped`).
 import { memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND } from "@finance-tool/engine";
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
-import { HOUSE_CHANNELS } from "../providers";
+import { HOUSE_CHANNELS, isFxToFx } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
-import { BOUND_CURRENCIES, feeSources, hasCases, withNamed, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When } from "./model";
+import { BOUND_CURRENCIES, feeSources, hasCases, withNamed, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When, type Price } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
 import { capLine, kindById } from "./kinds";
@@ -21,7 +21,9 @@ import { buildPrice, type PriceSpec } from "./offers/build";
 import { withOffset } from "./edits/price";
 import type { HouseAverages } from "../house-averages";
 import { feeRoom } from "./limits";
-import { foldFlat } from "./fold-flat";
+import { foldFlat, type SizeSteps } from "./fold-flat";
+import { offerFor } from "./offers/offer";
+import type { ProductFacts } from "./offers/rules";
 
 /** A fee a template fills whose price changes by nothing: a fee without its id in the deal. */
 export type SlimTemplateFee = Omit<SlimFee, "id">;
@@ -69,7 +71,19 @@ export type LeftWhy =
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
   | "distribution-yearly"
   /** A custody maximum the list prints with no scope (`max_per: unstated`): the price is filled without it, the cautious reading. */
-  | "max-scope-unstated";
+  | "max-scope-unstated"
+  /**
+   * Another line of the same base prices the same values at the same price (F-114): the deal holds that price once, from the first such
+   * line (Altshuler Trade's line for shares and bonds and its line for ETFs, both on the Tel Aviv exchange's value).
+   */
+  | "same-price"
+  /** A conversion between two foreign currencies (`isFxToFx`): no purchase in shekels makes one, so the shekel line is read, as the indices page reads it. */
+  | "fx-to-fx"
+  /**
+   * A line only for kinds of holdings the house's documents do not show a private customer can buy there (the record's `availability`,
+   * `onlyWhatCanBeDone`): the template reads the list as it can be done.
+   */
+  | "unavailable";
 
 /** A line a template leaves out, with why, its name as the price list prints it and its channel where it has one, for the reader. */
 export interface LeftLine {
@@ -99,9 +113,13 @@ export interface HouseTemplate {
   averages?: HouseAverages;
 }
 
-/** A line's name as the price list prints it: its first name, with its band where the name does not hold it. */
+/**
+ * A line's name as the price list prints it: its first name, with its band where the name does not hold it; where the first name is the
+ * band alone ("הוראת קבע"), the next name before it, so lines of one band are told apart.
+ */
 const lineName = (l: Line): string => {
-  const name = l.names.tariff[0] ?? l.id;
+  const [name = l.id, next] = l.names.tariff;
+  if (l.band && name === l.band && next) return `${next}, ${l.band}`;
   return l.band && !name.includes(l.band) ? `${name}, ${l.band}` : name;
 };
 
@@ -402,22 +420,32 @@ interface Raw {
  * A fee of one kind from the raw prices of its base (F-114): one case per line and track, naming every value and channel the line prices
  * (any value where it prices every one); the fee changes by what is bought (what is held, for custody; the currency, for a conversion) where
  * the list prints different prices by it or leaves a value unpriced, and by the track and by the channel only where the list prints
- * different prices by them. A base read from one line is a fee whose price changes by nothing only where that line prices every value of
- * the thing and every value of its own the house names (`own`); otherwise the fee keeps the thing, its one case naming the values the line
- * prices (One Zero's 50 dollars for each corporate event abroad), so the others have no case. A value a line prices that fills nothing
- * (a conversion priced per dollar) has no case either. The fee of `kind` that `lineFees` fills from each line is the case's price.
+ * different prices by them. The values counted are those the house's list prices anywhere (`sold`): a value no line of the house prices is
+ * not sold there, so a line on every value it sells (a foreign broker's custody on foreign securities, its one kind of holding) prices
+ * them all. A base read from one line is a fee whose price changes by nothing only where that line prices every such value and every value
+ * of its own the house names (`own`); otherwise the fee keeps the thing, its one case naming the values the line prices (One Zero's 50
+ * dollars for each corporate event abroad), so the others have no case. A value the law bans the fee on for the house's kind (`banned`, a
+ * bank's custody on makam) needs no line. A base read from several lines that charge the same price, on
+ * every such value and with no track, changes by nothing either: its price is the first line's, and the others are `merged`, said as the
+ * same price. A value a line prices that fills nothing (a conversion priced per dollar) has no case either. The fee of `kind` that
+ * `lineFees` fills from each line is the case's price.
  */
-function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: readonly Raw[], priceOf: (l: Line) => SlimTemplateFee | undefined, own: readonly OwnPlace[]): TemplateFee | null {
+function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: readonly Raw[], priceOf: (l: Line) => SlimTemplateFee | undefined, own: readonly OwnPlace[], sold: ReadonlySet<string>, banned: ReadonlySet<string>): { fee: TemplateFee; merged: Line[]; lineOf: (caseId: string | null) => Line | undefined } | null {
   const priced = raws.filter((x) => priceOf(x.line));
   if (priced.length === 0) return null;
   const lines = [...new Set(priced.map((x) => x.line))];
   // a value a line prices that fills nothing here (a conversion priced per dollar) keeps the fee changing by it, so it is read nowhere
   const unpricedValue = raws.some((x) => !priceOf(x.line) && !priced.some((y) => y.value === x.value));
-  const allValues = first === "currency" ? CURRENCY_IDS : WHAT_IDS;
+  const allValues = first === "currency" ? CURRENCY_IDS : WHAT_IDS.filter((v) => sold.has(v));
   const pricedValues = new Set(priced.map((x) => x.value));
-  const covers = allValues.every((v) => pricedValues.has(v)) && own.every((o) => pricedValues.has(o.name));
+  // a value the law bans the fee on at this house is read as nothing charged whatever the fee holds (§10.6), so it needs no price here
+  const covers = allValues.every((v) => pricedValues.has(v) || banned.has(v)) && own.every((o) => pricedValues.has(o.name));
   const byTrack = priced.some((x) => x.track !== null);
-  if (lines.length === 1 && !byTrack && !unpricedValue && covers) return { kind, stages: priceOf(lines[0]!)!.stages };
+  const general = (merged: Line[]) => ({ fee: { kind, stages: priceOf(lines[0]!)!.stages }, merged, lineOf: (id: string | null) => (id === null ? lines[0] : undefined) });
+  if (lines.length === 1 && !byTrack && !unpricedValue && covers) return general([]);
+  // several lines, one price on everything the house sells: the price is the same whatever the picks, so the fee changes by nothing
+  const terms = (l: Line) => priceTerms(priceOf(l)!.stages);
+  if (!byTrack && !unpricedValue && covers && lines.every((l) => terms(l) === terms(lines[0]!))) return general(lines.slice(1));
   const channels = [...new Set(priced.map((x) => x.channel))].filter((c): c is string => c !== null);
   const differ = (key: (x: Raw) => string) => {
     const groups = new Map<string, Set<Line>>();
@@ -426,12 +454,15 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
   };
   const byValue = unpricedValue || !covers || differ((x) => `${x.channel}|${x.track}`);
   const byChannel = channels.length > 1 && differ((x) => `${x.value}|${x.track}`);
-  // one case per line and track, naming the values and channels it prices
-  type Cell = { line: Line; track: string | null; channels: Set<string>; values: Set<string> };
+  // one case per line and track, naming the values and channels it prices; the values the same lines, tracks and channels price stand
+  // together (`group`), so where one line prices more values than another of the fee (Mercantile's branch price abroad, its internet price
+  // in the US alone) its case is cut where the other's ends, and every value of a row of the table has the same cases
+  const group = (v: string) => JSON.stringify(priced.filter((x) => x.value === v).map((x) => [x.line.id, x.track, x.channel]).sort());
+  type Cell = { line: Line; track: string | null; group: string; channels: Set<string>; values: Set<string> };
   const cells: Cell[] = [];
   for (const x of priced) {
-    let cell = cells.find((c) => c.line === x.line && c.track === x.track);
-    if (!cell) cells.push((cell = { line: x.line, track: x.track, channels: new Set(), values: new Set() }));
+    let cell = cells.find((c) => c.line === x.line && c.track === x.track && c.group === group(x.value));
+    if (!cell) cells.push((cell = { line: x.line, track: x.track, group: group(x.value), channels: new Set(), values: new Set() }));
     (x.channel === null ? channels : [x.channel]).forEach((c) => cell!.channels.add(c));
     cell.values.add(x.value);
   }
@@ -441,7 +472,7 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
     ...(byTrack ? [{ kind: "track" as const, values: [] }] : []),
     ...(byChannel ? [{ kind: "channel" as const, values: [] }] : []),
   ];
-  if (by.length === 0) return { kind, stages: priceOf(lines[0]!)!.stages };
+  if (by.length === 0) return general([]);
   const cases: Case[] = cells.map((c, k) => {
     const when: When[] = [
       ...(byValue ? [allValues.every((v) => c.values.has(v)) && !own.some((o) => !c.values.has(o.name)) ? ("any" as const) : [...c.values]] : []),
@@ -451,21 +482,26 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
     return { id: `c${k + 1}`, when, stages: structuredClone(priceOf(c.line)!.stages) };
   });
   const { id: _id, ...fee } = withNamed({ id: "", kind, by, cases });
-  return fee;
+  return { fee, merged: [], lineOf: (id: string | null) => cells[cases.findIndex((c) => c.id === id)]?.line };
 }
+
+/** A price's terms, whatever line its figures are from: two lines whose prices read the same have the same terms. */
+const priceTerms = (stages: SlimTemplateFee["stages"]): string => JSON.stringify(stages, (k, v) => (k === "src" ? undefined : v));
 
 /**
  * One base's raw prices (F-63, F-114): for each value of what is bought and each channel, the lines that price it, chosen as F-63 chooses:
  * the standard line (no band) wins over every banded one, and of several standard lines the narrowest (where two are left the list does not
- * say which prices it, `ambiguous`). Where no standard line prices the value, the narrowest banded lines are its tracks (a line with a band
- * is a plan of the list, F-63), or its one price where only one is left.
+ * say which prices it, `ambiguous`, unless they fill the same price, `alike`: then the first is read and the others say so, `same`). Where
+ * no standard line prices the value, the narrowest banded lines are its tracks (a line with a band is a plan of the list, F-63), or its one
+ * price where only one is left.
  */
-function rawsOf(lines: readonly Line[], valueOf: (l: Line) => string[]): { raws: Raw[]; ambiguous: Line[]; unread: Line[] } {
+function rawsOf(lines: readonly Line[], valueOf: (l: Line) => string[], alike: (a: Line, b: Line) => boolean): { raws: Raw[]; ambiguous: Line[]; same: Line[]; unread: Line[] } {
   // the channels in the order a house template reads them, the direct one first, so a deal starts on it (F-114: the first case's value)
   const rank = (c: string) => (HOUSE_CHANNELS as readonly string[]).indexOf(c) + 1 || HOUSE_CHANNELS.length + 1;
   const channels = [...new Set(lines.map((l) => l.channel).filter((c): c is string => c !== null))].sort((a, b) => rank(a) - rank(b));
   const raws: Raw[] = [];
   const ambiguous = new Set<Line>();
+  const same = new Set<Line>();
   const values = [...new Set(lines.flatMap(valueOf))];
   for (const value of values) {
     for (const channel of channels.length ? channels : [null]) {
@@ -474,17 +510,59 @@ function rawsOf(lines: readonly Line[], valueOf: (l: Line) => string[]): { raws:
       const standard = here.filter((l) => l.band === null);
       const pool = standard.length ? standard : here;
       const narrow = Math.min(...pool.map(breadth));
-      const ways = pool.filter((l) => breadth(l) === narrow);
+      let ways = pool.filter((l) => breadth(l) === narrow);
       if (standard.length && ways.length > 1) {
-        ways.forEach((l) => ambiguous.add(l));
-        continue;
+        // two standard lines that charge the same price the value alike: whichever is read, the deal is the same
+        if (!ways.every((l) => alike(l, ways[0]!))) {
+          ways.forEach((l) => ambiguous.add(l));
+          continue;
+        }
+        ways.slice(1).forEach((l) => same.add(l));
+        ways = [ways[0]!];
       }
       const tracks = ways.length > 1;
       for (const l of ways) raws.push({ line: l, value, channel: l.channel, track: tracks ? trackOf(l) : null });
     }
   }
   const used = new Set(raws.map((x) => x.line));
-  return { raws, ambiguous: [...ambiguous], unread: lines.filter((l) => !used.has(l) && !ambiguous.has(l)) };
+  const sameOnly = [...same].filter((l) => !used.has(l) && !ambiguous.has(l));
+  return { raws, ambiguous: [...ambiguous], same: sameOnly, unread: lines.filter((l) => !used.has(l) && !ambiguous.has(l) && !same.has(l)) };
+}
+
+/**
+ * A conversion's steps by its size as the line prints them (`size_tiers`, data-schema §3.6a item 3), for the fee `kind` fills from the line:
+ * the conversion fee's steps (`on: fee`) for `fx`, the spread's (`on: spread`) for `fx_spread`. Each step up to its top in dollars: nothing
+ * (`exempt`), the line's price with a share off it (`discount_pct`, on the minimum too where the words say so, F-116), a sum on each
+ * conversion (`flat`, the line's flat price for a small conversion), or the spread in that step (`rate`); above the last top, the step with
+ * no top, else the line's price without its flat price. Null where the line prints no step for the fee, or its price is no share of the
+ * conversion (then the fee is filled as it is).
+ */
+function sizeStepsOf(kind: FeeKindId, l: Line, price: Price | undefined, own: string): SizeSteps | null {
+  const on = kind === "fx" ? "fee" : kind === "fx_spread" ? "spread" : null;
+  const tiers = (l.size_tiers ?? []).filter((t) => t.on === on);
+  if (!on || tiers.length === 0 || !price || price.form !== "action") return null;
+  const num = (v: ValueObject): Num => ({ v: v.value as number, src: sourcedOf(v, own) });
+  const { flat: _flat, ...line } = price;
+  const priceOf = (t: (typeof tiers)[number]): Price | null => {
+    if (t.exempt) return t.up_to ? { form: "free", src: sourcedOf(t.up_to, own) } : null;
+    if (has(t.discount_pct)) return { ...line, discount: { pct: num(t.discount_pct), ...(t.minimum_included ? { alsoMin: true as const } : {}) } };
+    if (has(t.flat)) {
+      const { rate: _r, min: _min, max: _max, cap: _cap, currency: _c, ...parts } = line;
+      return { ...parts, form: "perAction", amount: num(t.flat), currency: "USD" };
+    }
+    if (has(t.rate)) return { ...line, rate: num(t.rate) };
+    return null;
+  };
+  const steps: SizeSteps["steps"] = [];
+  let above: Price = line;
+  for (const t of tiers) {
+    const p = priceOf(t);
+    if (!p) return null;
+    if (t.up_to === null) above = p;
+    else if (has(t.up_to)) steps.push({ upTo: num(t.up_to), price: p });
+    else return null;
+  }
+  return steps.length ? { unit: "USD", steps, above } : null;
 }
 
 /** The bases a house's price list fills a securities account's deal with, in the order the deal lists them. */
@@ -502,8 +580,12 @@ export function houseTemplate(snap: FeesSnapshot): HouseTemplate {
   return houseTemplateRead(snap).template;
 }
 
-/** `houseTemplate`, with the ids of the lines it filled a fee from (`read`), which the build reads and the page does not. */
-export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate; read: string[] } {
+/**
+ * `houseTemplate`, with the ids of the lines it filled a fee from (`read`), which the build reads and the page does not. `unavailable`
+ * holds the lines of the house's full record that reading it as it can be done took away (`onlyWhatCanBeDone`), listed with why; `product`
+ * is the securities account's kind, whose bans for the house's kind need no line (`feeOfRaws`).
+ */
+export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line[] = [], product: ProductFacts | null = null): { template: HouseTemplate; read: string[] } {
   const ownName = snap.provider.name_he;
   const bank = memberKindOf(snap.provider.class) === "bank";
   const left: LeftLine[] = [];
@@ -525,22 +607,36 @@ export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate
     funds: (l) => (another(l, (x) => x.band === null && x.applies_to.includes("mutual_fund_units") && (x.channel === null || l.channel === null || x.channel === l.channel)) ? ownPlace(l, "israel", "ILS") : null),
     abroad: (l) => ownPlace(l, "abroad", null),
   };
-  for (const base of HOUSE_BASES) {
+  for (const l of unavailable) leave(l, "unavailable");
+  // each base's lines and raw prices first, so the values the house's list prices anywhere (`sold`) are known before any fee is built
+  const bases = HOUSE_BASES.flatMap((base) => {
     let lines = snap.lines.filter((l) => l.base === base && regular(l) && (base !== "fixed_period" || l.band === null));
-    if (lines.length === 0) continue;
-    // F-63: a way to convert that charges nothing on any conversion is the cheapest whatever the plan, and the house converts that way
+    if (lines.length === 0) return [];
     if (base === "fx") {
+      // a conversion between two foreign currencies is not the one a purchase in shekels makes: the shekel line is read (`isFxToFx`)
+      for (const l of lines) if (isFxToFx(l)) leave(l, "fx-to-fx");
+      lines = lines.filter((l) => !isFxToFx(l));
+      // F-63: a way to convert that charges nothing on any conversion is the cheapest whatever the plan, and the house converts that way
       const free = lines.find((l) => l.band !== null && !l.conversion_currency && convertsFree(l));
       if (free) {
         for (const l of lines) if (l !== free && !l.conversion_currency && (l.channel === null || l.channel === free.channel)) leave(l, "another-line");
         lines = lines.filter((l) => l === free || !!l.conversion_currency);
       }
+      if (lines.length === 0) return [];
     }
     const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf, bank);
-    const { raws, ambiguous, unread } = rawsOf(lines, valueOf);
-    for (const l of ambiguous) leave(l, "ambiguous");
-    for (const l of unread) leave(l, "another-line");
     const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank, CAP_READ.has(snap.id))]));
+    // two lines alike fill the same fees at the same prices, whatever line each figure is from
+    const alike = (a: Line, b: Line) => JSON.stringify(mapped.get(a)!.fees.map((f) => [f.kind, priceTerms(f.stages)])) === JSON.stringify(mapped.get(b)!.fees.map((f) => [f.kind, priceTerms(f.stages)]));
+    return [{ base, lines, valueOf, mapped, ...rawsOf(lines, valueOf, alike) }];
+  });
+  // a line on the whole account ("all") says nothing of what the house sells; where every line is such, every value is counted
+  const named = bases.filter((b) => b.base !== "fx").flatMap((b) => b.lines.filter((l) => breadth(l) !== Infinity).flatMap(b.valueOf));
+  const sold = new Set(named.length ? named : WHAT_IDS);
+  for (const { base, mapped, raws, ambiguous, same, unread } of bases) {
+    for (const l of ambiguous) leave(l, "ambiguous");
+    for (const l of same) leave(l, "same-price");
+    for (const l of unread) leave(l, "another-line");
     for (const [l, m] of mapped) {
       if (!raws.some((x) => x.line === l)) continue;
       read.add(l.id);
@@ -550,9 +646,17 @@ export function houseTemplateRead(snap: FeesSnapshot): { template: HouseTemplate
     const first = base === "fx" ? "currency" : base === "custody" || base === "fixed_period" ? "held" : "what";
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));
     for (const kind of [...new Set([...mapped.values()].flatMap((m) => m.fees.map((f) => f.kind)))]) {
-      const fee = feeOfRaws(kind, first, raws, (l) => mapped.get(l)?.fees.find((f) => f.kind === kind), own);
-      // a flat price for a small action is filled as the first size of the action (fold-flat.ts)
-      if (fee) fees.push(foldFlat(fee));
+      const banned = new Set(offerFor(product, kind).bans.filter((b) => b.provider === memberKindOf(snap.provider.class)).flatMap((b) => b.values ?? []));
+      const made = feeOfRaws(kind, first, raws, (l) => mapped.get(l)?.fees.find((f) => f.kind === kind), own, sold, banned);
+      if (!made) continue;
+      // a line whose price another line of the fee charges alike on the rest of what the house sells: the fee holds it once
+      for (const l of made.merged) if (!left.some((x) => x.lineId === l.id && x.why === "same-price")) leave(l, "same-price");
+      // a flat price for a small action is filled as the first size of the action, and a conversion's steps by size as its sizes (fold-flat.ts)
+      const priceAt = (id: string | null) => (made.fee.stages ?? (made.fee as Omit<CasesFee, "id">).cases.find((c) => c.id === id)?.stages)?.[0]?.price;
+      fees.push(foldFlat(made.fee, (id) => {
+        const l = made.lineOf(id);
+        return l ? sizeStepsOf(kind, l, id === null ? made.fee.stages?.[0]?.price : priceAt(id), ownName) : null;
+      }));
     }
   }
   // every other line is listed with why it fills nothing, so no line is left out unsaid
