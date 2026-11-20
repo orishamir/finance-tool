@@ -19,6 +19,15 @@ Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות",
 
 const PRICED_ON_PREMISE = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
 
+/** A conversion between two foreign currencies is not the conversion a shekel investor pays: the shekel-to-currency line is read. */
+const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים/;
+/**
+ * The line is a conversion between two foreign currencies, by the price list's own words: the ranking leaves it out, a house's page names
+ * it, and a house's template on the fee page lists it with why (fee-deal/templates.ts). A stand-in while the records hold no field for what
+ * a conversion is from: one notion for every page.
+ */
+export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names">) => l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "));
+
 /** The kinds of provider a securities account is opened at: the snapshots the indices page and the brokerage pages price. */
 export const HOUSE_CLASSES: readonly string[] = ["bank", "broker", "foreign_broker"];
 

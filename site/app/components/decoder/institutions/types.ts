@@ -88,7 +88,7 @@ export interface TariffLineRow {
   channel: "direct" | "branch" | null;
   /** The price list's own name for a plan or sub-class (IBKR Pro Fixed or Tiered): what tells two lines of one fee apart; null on the standard line. */
   band: string | null;
-  /** A conversion between two foreign currencies, by the price list's words (the ranking reads the shekel line, lib/invest `isFxToFx`). */
+  /** A conversion between two foreign currencies, by the price list's words (the ranking reads the shekel line, lib/providers `isFxToFx`). */
   fxToFx: boolean;
   /** A distribution fee ("עמלת הפצה"), by the price list's words: the fund manager pays it under a distribution agreement (MF-24), and a bank may charge the holder without one (MF-26); grouped and named apart. */
   distribution: boolean;

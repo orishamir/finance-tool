@@ -20,6 +20,7 @@ import { providentFamily } from "./offers/rules";
 import { leftOut } from "./left-out";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
+import { whenWords } from "./case-words";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
@@ -855,5 +856,16 @@ describe("a month the method reads as it is (F-126, F-127)", () => {
     const trades: Fee = { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] };
     const fixed: Fee = { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(45), every: 3, offset: { kind: "trade" } } }] };
     expect(readingOf(read(local([trades, fixed])), data.fx).timeline[0]!.covers).toEqual([]);
+  });
+});
+
+describe("a case's values in words", () => {
+  const fee = (values: string[][]): CasesFee => ({ id: "f", kind: "transfer_out", by: [{ kind: "what", values: ["tase", "makam", "us", "europe", "world"] }], cases: values.map((v, k) => ({ id: `c${k}`, when: [v], stages: [{ price: { form: "free" } }] })) });
+  const words = (f: CasesFee, k: number) => whenWords(f, f.cases[k]!.when[0]!, 0, "2026-11-20").text;
+  it("say every value abroad as abroad alone, also beside a value in Israel, and a lead the values share once", () => {
+    const abroad = copy.cases.values.what.us!.split(", ")[0]!;
+    expect(words(fee([["tase", "us", "europe", "world"], ["makam"]]), 0)).toBe(`${copy.cases.values.what.tase}, ${abroad}`);
+    expect(words(fee([["tase", "us", "europe"], ["makam", "world"]]), 0)).toBe(`${copy.cases.values.what.tase}, ${abroad}, ${copy.cases.values.what.us!.split(", ")[1]}, ${copy.cases.values.what.europe!.split(", ")[1]}`);
+    expect(words(fee([["us", "europe", "world"], ["tase", "makam"]]), 0)).toBe(abroad);
   });
 });

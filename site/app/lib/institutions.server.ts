@@ -23,8 +23,7 @@ import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, po
 import { HELP_TERMS as DEPOSIT_TERMS } from "./deposit-browser";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
-import { isFxToFx } from "./invest";
-import { shortName } from "./providers";
+import { isFxToFx, shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
 import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";

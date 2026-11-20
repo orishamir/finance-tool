@@ -88,11 +88,16 @@ export function buildFeesData(): FeesData {
   }
   const kinds = dealKindsOf(loadProducts());
   // the houses a securities account's deal can start from: the ones the comparison ranks, each read as it can be done (providers.ts)
-  const houses = providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)
+  const latest = latestSnapshots();
+  const full = new Map(latest.map((s) => [s.id, s]));
+  const houses = providersOf({ snapshots: latest.map(onlyWhatCanBeDone) }, BROKERAGE)
     .filter((s) => !s.missing)
     .map((s) => {
+      // the lines reading the house as it can be done took away whole, which the template lists with why
+      const kept = new Set(s.lines.map((l) => l.id));
+      const unavailable = (full.get(s.id)?.lines ?? []).filter((l) => !kept.has(l.id));
       // F-122: what the house charged on average for the kinds its read lines are of, for reference only (never a price of the deal)
-      const { template: t, read } = houseTemplateRead(s);
+      const { template: t, read } = houseTemplateRead(s, unavailable);
       const rec = loadHouseAverages().get(s.id);
       const columns = s.lines.filter((l) => read.includes(l.id)).map(columnOf).filter((c): c is AverageColumn => c !== null);
       const averages = rec ? houseAverages(rec, columns) : null;
