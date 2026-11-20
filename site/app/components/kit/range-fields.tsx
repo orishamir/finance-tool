@@ -34,7 +34,8 @@ function AmountBox({ value, name, moved, onCommit }: { value: number; name: stri
   const key = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      settle();
+      // the box lets go, so it shows the amount the page settled (a floor, a wider range), not the one typed
+      e.currentTarget.blur();
     } else if (e.key === "Escape") setText(shown);
   };
   return (

@@ -428,13 +428,18 @@ function ActionLine({ read, tab }: { read: ActionReading; tab: ActionTab }) {
 }
 
 function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: ActionTab; stated: StatedPart[]; fx: FxSnapshot | null; left: LeftOut | undefined }) {
-  const [at, setAt] = useState(view.start);
+  const [held, setAt] = useState(view.start);
   const [strong, setStrong] = useState<string | null>(null);
   const range = view.range;
+  // an edit to the deal can narrow the axis under a point the reader left: the point stays inside it
+  const at = Math.max(range.lo, Math.min(range.hi, held));
   const points = useMemo(() => asPercents(view.sample(range, 480)), [view, range]);
   const read = view.readAt(at);
   // the value axis reaches six times the share at the deal's first mark, so the stretch where a percent decides is not a flat line on the floor
-  const top = Math.min(Math.max(...points.map((p) => p.share)) * 1.06, shareAt(points, view.start) * 6);
+  // (where the first mark ends a free stretch its share is nothing, and the axis takes the curve's highest)
+  const most = Math.max(...points.map((p) => p.share)) * 1.06;
+  const first = shareAt(points, view.start);
+  const top = first > 0 ? Math.min(most, first * 6) : most;
   const yTop = shareTicks(top).at(-1) ?? top;
   const over = points[0] && points[0].share > yTop ? w.action.over(fmt.pct(points[0].share >= 10 ? Math.round(points[0].share * 10) / 10 : points[0].share), fmt.number(range.lo)) : undefined;
   const share = read.share.value as number;
@@ -664,11 +669,14 @@ function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | 
 const sameRange = (a: AmountRange, b: AmountRange) => Math.abs(a.lo - b.lo) < 1e-6 * a.lo && Math.abs(a.hi - b.hi) < 1e-6 * a.hi;
 
 function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: StatedPart[]; saved: boolean; left: LeftOut | undefined }) {
-  const [range, setRange] = useState(view.range);
-  const [at, setAt] = useState<number | null>(null);
+  // the reader's own range, or none: then the view's, which follows an edit to the deal
+  const [own, setRange] = useState<AmountRange | null>(null);
+  const range = own ?? view.range;
+  const [point, setAt] = useState<number | null>(null);
+  const at = point !== null && point >= range.lo && point <= range.hi ? point : null;
   const [boxed, setBoxed] = useState(true);
   const [strong, setStrong] = useState<string | null>(null);
-  const moved = !sameRange(range, view.range);
+  const moved = own !== null && !sameRange(own, view.range);
   const points = useMemo(() => asPercents(view.sample(range, 480)), [view, range]);
   // the layers bottom up as the lanes stand: the shares, then the fixed sums
   const order = view.lanes.map((l) => view.fees.findIndex((f) => f.ref.fee === l.fee.ref.fee));
@@ -690,7 +698,7 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
   const notes = statedOf(stated, view.fees, view.offsets);
   return (
     <div className="flex flex-col gap-4">
-      <RangeFields lo={range.lo} hi={range.hi} moved={moved} onRange={setFrom} onReset={() => setRange(view.range)} words={r} />
+      <RangeFields lo={range.lo} hi={range.hi} moved={moved} onRange={setFrom} onReset={() => setRange(null)} words={r} />
       <ShareStack range={range} at={at}>
         <ShareChart
           range={range}
@@ -701,10 +709,9 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
           strong={strong}
           onStrong={setStrong}
           marks={marks}
-          onRead={(a, b) => {
-            setAt(a);
-            setBoxed(b);
-          }}
+          onRead={setAt}
+          readAt={at}
+          onBoxed={setBoxed}
           snap={roundAmount}
           tip={(a) => <HeldBox read={view.readAt(a)} strong={strong} saved={saved} />}
           onRange={setFrom}
@@ -749,8 +756,10 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
 
 function HeldPanel({ reading, saved, left }: { reading: Reading; saved: boolean; left: LeftOut | undefined }) {
   const views = reading.panels.held;
-  const [k, setK] = useState(0);
-  const view = views[Math.min(k, views.length - 1)]!;
+  const [chosen, setK] = useState(0);
+  // an edit can join the periods under the one chosen: the last one left stands
+  const k = Math.min(chosen, views.length - 1);
+  const view = views[k]!;
   const periods = views.map((v) => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : v.undrawn.periods)[0]!);
   return (
     <Card className="flex flex-col gap-4">

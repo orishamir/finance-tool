@@ -8,7 +8,7 @@
 // line over it, fewer amounts under it, a lower plot, and on a chart with a point no labels and no tag, the point held by a knob on the
 // amount axis. The lanes under the chart (`AmountLanes`) stand on the same plot: both keep `SHARE_PLOT`'s room at the sides, and inside a
 // `ShareStack` the reader's amount is one line from the chart's top down through the lanes. Own SVG.
-import { createContext, useContext, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { fmt } from "../../lib/format";
 import { ChartTip } from "./chart-interact";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
@@ -328,7 +328,8 @@ export const useInStack = () => useContext(StackCtx);
  * under it (`onRead`, null as it leaves; `boxed` where the chart shows `tip`'s box of values beside it, from 640 px), with a dot where its
  * line meets the curve, the amount read held to `snap` (a round amount); the drop's sentences, the group names it crosses and any mark's
  * words near the line give way to it, on a phone as on a computer. `onRange`, a mouse's drag across the plot, which shows only the range
- * and its two ends while it lasts. `xTitle` names the amount under the axis, `xShort` on a phone. `height`: the plot's, and
+ * and its two ends while it lasts. `readAt`: the amount read where the page holds it (a lane part pressed sets it too), so the dot and the box
+ * follow it; `onBoxed`, whether the box of values stands beside the pointer at the chart's width now. `xTitle` names the amount under the axis, `xShort` on a phone. `height`: the plot's, and
  * `narrowHeight` on a phone.
  */
 export function ShareChart({
@@ -346,6 +347,8 @@ export function ShareChart({
   onPoint,
   spoken,
   onRead,
+  readAt,
+  onBoxed,
   tip,
   onRange,
   xTitle,
@@ -369,6 +372,8 @@ export function ShareChart({
   onPoint?: (at: number) => void;
   spoken?: string;
   onRead?: (at: number | null, boxed: boolean) => void;
+  readAt?: number | null;
+  onBoxed?: (boxed: boolean) => void;
   tip?: (at: number) => ReactNode;
   onRange?: (lo: number, hi: number) => void;
   xTitle: string;
@@ -379,8 +384,10 @@ export function ShareChart({
   className?: string;
 }) {
   const stacked = useInStack();
+  const uid = useId();
   const [ref, w] = useWidth(560);
-  const [at, setAt] = useState<number | null>(null);
+  const [own, setAt] = useState<number | null>(null);
+  const at = readAt !== undefined ? readAt : own;
   const [brush, setBrush] = useState<{ a: number; b: number } | null>(null);
   const press = useRef<{ x: number; dragging: boolean; id: number } | null>(null);
 
@@ -388,6 +395,7 @@ export function ShareChart({
   const plotH = narrow ? narrowHeight : height;
   // the box of values beside the pointer stands over the plot where the chart is wide enough; narrower, the page puts it under the chart
   const boxed = !!tip && w >= 640;
+  useEffect(() => onBoxed?.(boxed), [boxed, onBoxed]);
   const ticks = shareTicks(top);
   const yTop = ticks.at(-1) || 1;
   const plotL = SHARE_PLOT.left;
@@ -592,7 +600,7 @@ export function ShareChart({
   // layer set apart turns near solid and the others step back to under half of that
   const opacity = (id: string) => (!strong ? 0.45 : strong === id ? 0.8 : 0.2);
   const hot = strong ? (layers ?? []).findIndex((l) => l.id === strong) : -1;
-  const clipId = `share-plot-${Math.round(w)}-${Math.round(plotH)}`;
+  const clipId = `share-plot-${uid.replace(/:/g, "")}`;
 
   return (
     <div className={cx("flex flex-col", className)}>

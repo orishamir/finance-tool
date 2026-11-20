@@ -58,7 +58,9 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
   const phone = w < PHONE;
   const plotW = Math.max(1, w - SHARE_PLOT.left - SHARE_PLOT.right);
   const sets = [{ id: "", label: "" }, ...groups].map((g) => ({ g, lanes: lanes.filter((l) => (l.group ?? "") === g.id) })).filter((s) => s.lanes.length > 0);
-  const lit = (p: AmountLanePart) => at !== null && at > p.from * (1 - 1e-9) && (p.to === null || at <= p.to * (1 + 1e-9));
+  // one part lit in a lane, at a boundary the earlier one (a part "up to" a sum takes its top in), as the reading picks it
+  const holds = (p: AmountLanePart) => at !== null && at > p.from * (1 - 1e-9) && (p.to === null || at <= p.to * (1 + 1e-9));
+  const lit = (p: AmountLanePart) => holds(p) && lanes.find((l) => l.parts?.includes(p))?.parts?.find(holds) === p;
   const inset = { marginLeft: SHARE_PLOT.left, marginRight: SHARE_PLOT.right };
 
   return (
