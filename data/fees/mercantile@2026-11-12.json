@@ -618,7 +618,7 @@
       },
       "period": null,
       "channel": "direct",
-      "band": null,
+      "band": "מניות בארה\"ב",
       "statement_code": null,
       "names": {
         "tariff": [

@@ -1959,7 +1959,7 @@ export const feeDeal = {
     /** The parts every case holds alike, said once over the cases' band: the row's spoken name, and where a cell of it stands, for its bin. */
     everyCase: { parts: "החלקים שבכל המקרים", where: "בכל המקרים" },
     rowHeads: { rate: "שיעור", sum: "סכום", price: "מחיר", min: "מינימום", max: "מקסימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע לפעולה קטנה", maxPerSecurity: "מקסימום לכל נייר ערך", discount: "הנחה", third: "צד שלישי", until: "שינוי במחיר", offset: "קיזוז", refund: "החזר", notes: "עוד על המחיר" } as Record<string, string>,
-    /** Read as rows, the line of the parts one cell holds for every case, led by the thing's any-words ("בכל מסלול:"). */
+    /** Read as rows, the line of the parts one cell holds for every case, led by the thing's any-words ("בכל מסלול:") where every value has a case, else by `everyCase.where` (case-words.ts, `onceLead`). */
     onceLead: "{any}:",
     stepBetween: " עד ",
     stepTop: "הגבול העליון של המדרגה",

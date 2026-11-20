@@ -10,7 +10,7 @@ import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
 import { priceView, type DealRead, type PriceView } from "./deal-read";
 import { WHAT_VALUES, type FeeKindId } from "./shapes";
-import { pickKind, type ByKind } from "./offers/conditions";
+import { CONDITIONS, pickKind, type ByKind } from "./offers/conditions";
 import { figure, sumUnit } from "./values";
 import { heldAlike } from "./alike";
 
@@ -180,6 +180,21 @@ function listWords(fee: CasesFee, t: number, values: readonly string[]): string 
   const lead = valueWords(b.kind, abroad[0]!).split(", ")[0]!;
   const names = abroad.filter((v) => others.has(v)).map((v) => o.names[v] ?? valueWords(b.kind, v));
   return `${lead}, ${o.lead}${names.join(o.and)}`;
+}
+
+/**
+ * The lead of a table's line of the parts every case of it holds: the thing's any-words where its cases name every value it can take (on a
+ * list the site closes, what is bought or held, the currency or the channel, every one of them and each value of the fee's own; a range's
+ * steps always), else "in every case", since some values have no case there ("בכל מה שקונים" would say a price for what has none).
+ */
+export function onceLead(fee: CasesFee, t: number): string {
+  const b = fee.by[t]!;
+  const def = CONDITIONS[b.kind].values;
+  const any = fee.cases.some((c) => c.when[t] === "any");
+  const named = (v: string) => fee.cases.some((c) => Array.isArray(c.when[t]) && (c.when[t] as string[]).includes(v));
+  const own = "own" in b && b.own ? b.own.map((o) => o.name) : [];
+  const every = any || def.kind === "range" || (def.kind === "list" ? [...def.ids, ...own].every(named) : thingValues(fee, t).every(named));
+  return copy.cases.onceLead.replace("{any}", every ? copy.cases.any[b.kind]! : copy.cases.everyCase.where);
 }
 
 /** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edits/stage.ts). */

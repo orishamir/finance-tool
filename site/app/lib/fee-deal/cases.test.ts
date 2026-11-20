@@ -20,7 +20,7 @@ import { providentFamily } from "./offers/rules";
 import { leftOut } from "./left-out";
 import { decodeDeal, encodeDeal } from "./link";
 import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
-import { whenWords } from "./case-words";
+import { onceLead, whenWords } from "./case-words";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
@@ -867,5 +867,11 @@ describe("a case's values in words", () => {
     expect(words(fee([["tase", "us", "europe", "world"], ["makam"]]), 0)).toBe(`${copy.cases.values.what.tase}, ${abroad}`);
     expect(words(fee([["tase", "us", "europe"], ["makam", "world"]]), 0)).toBe(`${copy.cases.values.what.tase}, ${abroad}, ${copy.cases.values.what.us!.split(", ")[1]}, ${copy.cases.values.what.europe!.split(", ")[1]}`);
     expect(words(fee([["us", "europe", "world"], ["tase", "makam"]]), 0)).toBe(abroad);
+  });
+  it("lead a table's line of what every case holds by the thing's any-words only where every value has a case", () => {
+    const some = fee([["tase"], ["us"]]);
+    expect(onceLead(some, 0)).toBe(copy.cases.onceLead.replace("{any}", copy.cases.everyCase.where));
+    const all = fee([["tase", "makam", "mutualFunds", "moneyMarket"], ["us", "europe", "world"]]);
+    expect(onceLead(all, 0)).toBe(copy.cases.onceLead.replace("{any}", copy.cases.any.what!));
   });
 });

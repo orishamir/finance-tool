@@ -27,7 +27,7 @@ import { X } from "lucide-react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
 import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
-import { thingName } from "../../lib/fee-deal/case-words";
+import { onceLead, thingName } from "../../lib/fee-deal/case-words";
 import { addBlankCase, addCase, addCaseAt, addValuesAt, canRename, copyCase, renameValue, setTop } from "../../lib/fee-deal/edits/case";
 import { nextValue } from "../../lib/fee-deal/things";
 import { duplicateValue, moveCase, moveValue, swapThings } from "../../lib/fee-deal/edits/arrange";
@@ -685,7 +685,7 @@ export function FeeCases({
   const head = { things: headThings, zone: (h: ReactNode) => zone([everyCase], `all:${fee.id}`, h), onThing: (id: string, at: HTMLElement) => onThing(fee.id, Number(id), at), openThing: open.thing?.fee === fee.id ? String(open.thing.t) : null };
 
   /** A one-thing table read as rows: the parts one cell holds over every column, said once above the rows, led by the thing's any-words. */
-  const onceLine = (once: readonly Shared[], t: number) => (once.length ? <SharedLine lead={c.onceLead.replace("{any}", c.any[fee.by[t]!.kind] ?? "")}>{saidJoined(once)}</SharedLine> : null);
+  const onceLine = (once: readonly Shared[], t: number) => (once.length ? <SharedLine lead={onceLead(fee, t)}>{saidJoined(once)}</SharedLine> : null);
 
   const openView = (r: CaseRowView) => {
     const ov = open.view!;

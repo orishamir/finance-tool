@@ -528,6 +528,26 @@ describe("the templates", () => {
     expect(event.by).toEqual([{ kind: "what", values: ["us", "europe", "world"] }]);
     expect(event.cases!.map((c) => c.when)).toEqual([[["us", "europe", "world"]]]);
   });
+  it("price Mercantile's internet line abroad in the US alone, and cut its branch case where the internet one ends", () => {
+    // annex E: "השרות ניתן עבור מניות בארה"ב בלבד"
+    expect(filledFor("mercantile", [{ by: "what", is: "us" }, { by: "channel", is: "direct" }])("trade")).toMatchObject({ rate: { v: 0.59 } });
+    expect(filledFor("mercantile", [{ by: "what", is: "europe" }, { by: "channel", is: "direct" }])("trade")).toBeUndefined();
+    expect(filledFor("mercantile", [{ by: "what", is: "europe" }, { by: "channel", is: "branch" }])("trade")).toMatchObject({ rate: { v: 0.79 } });
+    const abroad = house("mercantile").fees.find((f) => f.kind === "trade")!.cases!.filter((c) => (c.when[0] as string[]).some((v) => ["us", "europe", "world"].includes(v)));
+    expect(abroad.map((c) => c.when)).toEqual([[["us"], ["direct"]], [["us"], ["branch"]], [["europe", "world"], ["branch"]]]);
+  });
+  it("need no line for a value the law bans the fee on at the house: Jerusalem's one custody price is general", () => {
+    // its two custody lines are alike; makam and money-market units, which a bank may not charge custody on (BRK-17, MF-71), have none
+    expect(house("jerusalem").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
+    expect(house("jerusalem").left).toContainEqual(expect.objectContaining({ lineId: "jerusalem-custody-foreign", why: "same-price" }));
+    // the ban still reads: custody on makam at the bank is nothing charged
+    const r = read({ ...fillDeal(newDeal("brokerage-account"), "house:jerusalem", data, TODAY)!, readFor: [{ by: "what", is: "makam" }] });
+    expect(r.banned.map((b) => b.fee)).toContain(r.deal.fees.find((f) => f.kind === "custody")!.id);
+  });
+  it("name a left line whose first name is its band alone by the name after it too, so lines of one band are told apart", () => {
+    const names = house("fibi").left.filter((l) => l.lineId.startsWith("fibi-standing-order")).map((l) => `${l.name}|${l.channel}`);
+    expect(new Set(names).size).toBe(4);
+  });
   it("read two standard lines that charge one price alike, the first, and say the other holds the same price", () => {
     // Altshuler Trade prints shares and bonds, and ETFs, on two lines at 0.15% with at least 3.50 ₪: both the exchange's value
     expect(filledFor("altshuler-trade", [{ by: "what", is: "tase" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.15 }, min: { v: 3.5 } });

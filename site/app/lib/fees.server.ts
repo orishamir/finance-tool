@@ -97,7 +97,7 @@ export function buildFeesData(): FeesData {
       const kept = new Set(s.lines.map((l) => l.id));
       const unavailable = (full.get(s.id)?.lines ?? []).filter((l) => !kept.has(l.id));
       // F-122: what the house charged on average for the kinds its read lines are of, for reference only (never a price of the deal)
-      const { template: t, read } = houseTemplateRead(s, unavailable);
+      const { template: t, read } = houseTemplateRead(s, unavailable, kinds.find((k) => k.id === BROKERAGE) ?? null);
       const rec = loadHouseAverages().get(s.id);
       const columns = s.lines.filter((l) => read.includes(l.id)).map(columnOf).filter((c): c is AverageColumn => c !== null);
       const averages = rec ? houseAverages(rec, columns) : null;
