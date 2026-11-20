@@ -15,16 +15,21 @@ export const amountAt = ({ lo, hi }: LogRange, t: number): number => Math.exp(Ma
 
 /**
  * The amounts written under a log axis: each power of ten inside it, and where the range spans fewer than three powers of ten, the 2 and the
- * 5 of each too, so a narrowed range still carries several amounts.
+ * 5 of each too, so a narrowed range still carries several amounts. On a phone (`narrow`) the axis says less: the 2 and the 5 only where the
+ * range spans under 1.4 powers of ten, and over a range of more than three powers of ten every other power only, the even ones (10,000,
+ * 1 מיליון), so the amounts stand well apart on a narrow plot.
  */
-export function logTicks({ lo, hi }: LogRange): number[] {
-  const short = Math.log10(hi / lo) < 3;
+export function logTicks({ lo, hi }: LogRange, narrow = false): number[] {
+  const span = Math.log10(hi / lo);
+  const steps = span < (narrow ? 1.4 : 3) ? [1, 2, 5] : [1];
   const out: number[] = [];
-  for (let p = Math.floor(Math.log10(lo)); p <= Math.ceil(Math.log10(hi)); p++)
-    for (const k of short ? [1, 2, 5] : [1]) {
+  for (let p = Math.floor(Math.log10(lo)); p <= Math.ceil(Math.log10(hi)); p++) {
+    if (narrow && span > 3 && p % 2 !== 0) continue;
+    for (const k of steps) {
       const v = k * 10 ** p;
       if (v >= lo * (1 - 1e-9) && v <= hi * (1 + 1e-9)) out.push(v);
     }
+  }
   return out;
 }
 

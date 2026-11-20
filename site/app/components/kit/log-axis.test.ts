@@ -13,6 +13,12 @@ describe("the log axis", () => {
     expect(logTicks({ lo: 1000, hi: 50_000_000 })).toEqual([1000, 10_000, 100_000, 1_000_000, 10_000_000]);
     expect(logTicks({ lo: 10_000, hi: 2_000_000 })).toEqual([10_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000, 2_000_000]);
   });
+  it("on a phone writes the 2 and the 5 only under 1.4 powers of ten, and every other power over three", () => {
+    expect(logTicks({ lo: 1000, hi: 50_000_000 }, true)).toEqual([10_000, 1_000_000]);
+    expect(logTicks({ lo: 10_000, hi: 3_000_000 }, true)).toEqual([10_000, 100_000, 1_000_000]);
+    expect(logTicks({ lo: 1000, hi: 50_000 }, true)).toEqual([1000, 10_000]);
+    expect(logTicks({ lo: 20_000, hi: 200_000 }, true)).toEqual([20_000, 50_000, 100_000, 200_000]);
+  });
   it("writes a million and more by the word, in visual order for an SVG text", () => {
     expect(amountTick(20_000)).toBe("20,000");
     expect(amountTick(2_000_000)).toBe("⁦מיליון 2⁩");

@@ -1,15 +1,17 @@
 // The lanes under a chart by size (`ShareChart`), on the same amount axis: a lane a fee, its parts along the amounts each with its words
-// (which part decides there: "מינימום 39 $", "0.25%"), a part too narrow for its words with them under the lane at its place, joined by a
-// tick. A fee whose price is the same at every amount is one quiet line up to its name and price. Lanes stand in groups, each under its
+// (which part decides there: "מינימום 39 $", "0.25%") inside it wherever they fit, a part too narrow for its words with them under the lane,
+// centred under the part or held to the lane's end it reaches, joined to it by a tick in the fee's colour, and bold while the part holds the
+// reader's amount. A fee whose price is the same at every amount is one quiet line up to its name and price. Lanes stand in groups, each under its
 // small name. The reader's amount runs down through them as a line, and the part holding it is lit and outlined in its fee's colour; a
 // tap on a part hands it up (the chart's point moves into it), and the lane under the pointer is handed up too, so the page can set it
 // apart in the chart and the reading as well: the lane set apart has its name bold and every part outlined, and where the others step back
 // (`back`) their parts fade, the lit part staying as it is. A part takes a press 44 px tall and at least 44 px wide, however small it is
-// drawn. On a phone a lane's name takes its period (`per`) and its parts only their figures (`short`).
+// drawn. On a phone a lane's name takes its period (`per`) and its parts only their figures (`short`). Inside a `ShareStack` the stack draws
+// the reader's line through the chart and the lanes at once.
 import type { PointerEvent, ReactNode } from "react";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { logAt, type LogRange } from "./log-axis";
-import { SHARE_PLOT } from "./share-chart";
+import { SHARE_PLOT, useInStack } from "./share-chart";
 import { cx } from "./cx";
 import { useWidth } from "./marker";
 
@@ -40,8 +42,8 @@ export interface AmountLane {
 
 /** The narrowest container that still writes a part's whole words; narrower is a phone's. */
 const PHONE = 520;
-/** Room a part's words keep inside it at each side. */
-const PART_PAD = 12;
+/** Room a part's words keep inside it at each side: they stand inside wherever this much is left. */
+const PART_PAD = 4;
 
 const clip = (range: LogRange, a: number) => Math.max(0, Math.min(1, logAt(range, Math.max(a, range.lo * 1e-9))));
 
@@ -52,6 +54,7 @@ const clip = (range: LogRange, a: number) => Math.max(0, Math.min(1, logAt(range
  */
 export function AmountLanes({ title, range, lanes, groups = [], at = null, entered = false, strong = null, back = false, onPart, onLane, className }: { title: ReactNode; range: LogRange; lanes: AmountLane[]; groups?: { id: string; label: string }[]; at?: number | null; /** The reader's amount is one they set (the chart's point): its line is in the entered colour. */ entered?: boolean; strong?: string | null; back?: boolean; onPart?: (lane: string, part: AmountLanePart) => void; onLane?: (lane: string | null) => void; className?: string }) {
   const [ref, w] = useWidth(560);
+  const stacked = useInStack();
   const phone = w < PHONE;
   const plotW = Math.max(1, w - SHARE_PLOT.left - SHARE_PLOT.right);
   const sets = [{ id: "", label: "" }, ...groups].map((g) => ({ g, lanes: lanes.filter((l) => (l.group ?? "") === g.id) })).filter((s) => s.lanes.length > 0);
@@ -78,7 +81,7 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
                     {name}
                     {l.price && <span>· {l.price}</span>}
                   </span>
-                  <span aria-hidden="true" className={cx("flex-1 rounded-full transition-opacity", l.swatch, hot ? "h-[5px]" : "h-[3px]", hot ? "opacity-100" : dim ? "opacity-30" : "opacity-60")} style={{ marginLeft: SHARE_PLOT.left }} />
+                  <span data-lane-bar aria-hidden="true" className={cx("flex-1 rounded-full transition-opacity", l.swatch, hot ? "h-[5px]" : "h-[3px]", hot ? "opacity-100" : dim ? "opacity-30" : "opacity-60")} style={{ marginLeft: SHARE_PLOT.left }} />
                 </div>
               );
             const parts = l.parts
@@ -96,7 +99,7 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
                   <span aria-hidden="true" className={cx("size-2 rounded-full", l.swatch)} />
                   {name}
                 </span>
-                <div dir="ltr" className="relative h-7" style={inset}>
+                <div data-lane-bar dir="ltr" className="relative h-7" style={inset}>
                   {parts.map(({ p, s, e, words, fits }) => (
                     <button
                       key={p.id}
@@ -129,10 +132,12 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
                       .filter((x) => !x.fits)
                       .map(({ p, s, e, words }) => {
                         const mid = (s + e) / 2;
-                        const right = mid > 0.5;
+                        // centred under its part, or held to the lane's end where centred it would run past it
+                        const half = (chartTextWidth(words, CHART_TEXT_PX) / 2) / plotW;
+                        const place = mid + half > 1 ? { right: "0%", alignItems: "flex-end" } : mid - half < 0 ? { left: "0%", alignItems: "flex-start" } : { left: `${mid * 100}%`, transform: "translateX(-50%)", alignItems: "center" };
                         return [
-                          <span key={`${p.id}:tick`} className="absolute -top-1 h-1.5 w-px bg-muted-foreground" style={{ left: `${mid * 100}%` }} />,
-                          <span key={p.id} className="absolute top-1 flex flex-col text-xs text-muted-foreground" style={right ? { right: `${(1 - e) * 100}%`, alignItems: "flex-end" } : { left: `${s * 100}%`, alignItems: "flex-start" }}>
+                          <span key={`${p.id}:tick`} aria-hidden="true" className={cx("absolute -top-1 h-1.5 w-[1.5px]", l.swatch)} style={{ left: `${mid * 100}%` }} />,
+                          <span key={p.id} className={cx("absolute top-1 flex flex-col text-xs", lit(p) ? "font-semibold text-foreground" : "text-muted-foreground")} style={place}>
                             <span dir="rtl" className="whitespace-nowrap leading-4">
                               {words}
                             </span>
@@ -146,7 +151,7 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
           })}
         </div>
       ))}
-      {at !== null && at >= range.lo && at <= range.hi && (
+      {!stacked && at !== null && at >= range.lo && at <= range.hi && (
         <div aria-hidden="true" dir="ltr" className="pointer-events-none absolute inset-y-0 start-0 end-0 top-6" style={inset}>
           <span className={cx("absolute inset-y-0 w-px", entered ? "bg-entered" : "bg-chart-crosshair")} style={{ left: `${clip(range, at) * 100}%` }} />
         </div>

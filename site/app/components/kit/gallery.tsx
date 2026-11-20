@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, AmountLanes, RangeFields, PeriodTrack, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -116,8 +116,12 @@ function HeldShareDemo() {
   );
 }
 
-function LanesDemo() {
-  const [at, setAt] = useState(30_000);
+function LanesDemo({ start = 30_000 }: { start?: number }) {
+  const [at, setAt] = useState(start);
+  return <SampleLanes at={at} onAt={setAt} />;
+}
+
+function SampleLanes({ at, onAt }: { at: number; onAt: (a: number) => void }) {
   const s = g.sample.amount;
   return (
     <AmountLanes
@@ -144,8 +148,29 @@ function LanesDemo() {
       ]}
       at={at}
       entered
-      onPart={(_, p) => setAt(Math.sqrt(Math.max(p.from, 1000) * (p.to ?? 1_000_000)))}
+      onPart={(_, p) => onAt(Math.sqrt(Math.max(p.from, 1000) * (p.to ?? 1_000_000)))}
     />
+  );
+}
+
+function StackDemo() {
+  const [at, setAt] = useState(4_000);
+  const points = logSamples(ACTION_RANGE.lo, ACTION_RANGE.hi, 200, [10_000]).map((a) => ({ at: a, share: actionShare(a) }));
+  const s = g.sample.amount;
+  return (
+    <ShareStack range={ACTION_RANGE} at={at} entered>
+      <ShareChart
+        range={ACTION_RANGE}
+        points={points}
+        top={actionShare(10_000) * 6}
+        marks={[{ id: "m", at: 10_000, label: fmt.nisWhole(10_000) }]}
+        point={{ at, tag: `${fmt.nisWhole(at)} · ${fmt.pct(actionShare(at))}` }}
+        onPoint={(a) => setAt(Math.round(a))}
+        spoken={s.point}
+        xTitle={s.x}
+      />
+      <SampleLanes at={at} onAt={setAt} />
+    </ShareStack>
   );
 }
 
@@ -2800,6 +2825,13 @@ function DealDemos({ today }: { today: string }) {
           </Card>
         </State>
       </Demo>
+      <Demo name="ShareStack" use={g.uses.ShareStack}>
+        <State label={`a chart with its point and its lanes on one axis, the point's line unbroken from the plot's top through the last lane; ${g.states.interactive}: drag the point, or tap a part`} wide>
+          <Card className="max-w-3xl">
+            <StackDemo />
+          </Card>
+        </State>
+      </Demo>
       <Demo name="AmountLanes" use={g.uses.AmountLanes}>
         <State label={`a lane with three parts, the last too narrow for its words, a quiet lane, the reader's amount at 30,000; ${g.states.interactive}: tap a part`} wide>
           <Card className="max-w-3xl">
@@ -2813,10 +2845,10 @@ function DealDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="PeriodTrack" use={g.uses.PeriodTrack}>
-        <State label="two periods, the first today's; three periods, the second today's" wide>
+        <State label="two periods, the first today's and the second with a change; three periods, the second today's" wide>
           <div className="flex max-w-xl flex-col gap-4">
-            <PeriodTrack stops={2} current={0} />
-            <PeriodTrack stops={3} current={1} />
+            <PeriodTrack weights={[1, PERIOD_WIDE]} current={0} />
+            <PeriodTrack weights={[1, PERIOD_WIDE, PERIOD_WIDE]} current={1} />
           </div>
         </State>
       </Demo>

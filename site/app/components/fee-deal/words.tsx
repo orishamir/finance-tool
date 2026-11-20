@@ -418,8 +418,9 @@ function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's nam
 /**
  * A fee's law row whole, as the law card shows it: the block against its cap, each price from the reading's month on, and the cap's line.
  * A fee with one price on both sides whose standing says nothing more has its price on its name's line ("העברה החוצה · 0.25% מההעברה, …").
+ * `name`: the fee's name as the place draws it, told whether words run on after it on its line (`inLine`).
  */
-export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: boolean; first: MonthKey; name?: ReactNode }) {
+export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: boolean; first: MonthKey; name?: (inLine: boolean) => ReactNode }) {
   const one = row.prices.length === 1 && row.prices[0]!.side === "all" && !standingSays(row.prices[0]!.standing) ? row.prices[0]! : null;
   if (one)
     return (
@@ -427,7 +428,7 @@ export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: bool
         row={row}
         name={
           <span>
-            {name ?? <FeeName fee={row} className="font-medium" />}
+            {name ? name(true) : <FeeName fee={row} className="font-medium" />}
             <span className="text-sm text-muted-foreground">
               {copy.read.law.priceSep}
               <PriceWords price={one.price} kind={row.kind} saved={saved} />
@@ -439,7 +440,7 @@ export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: bool
       </CapBlock>
     );
   return (
-    <CapBlock row={row} name={name}>
+    <CapBlock row={row} name={name?.(false)}>
       <LawPrices row={row} saved={saved} first={first} />
       <CapRules cap={row.cap} fee={refName(row)} />
     </CapBlock>

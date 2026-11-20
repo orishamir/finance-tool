@@ -64,13 +64,13 @@ export function useLineOpen(feeId: string): ((e: { target: EventTarget }) => voi
  * A fee's name that chooses the fee (its swatch and name, as `FeeName` draws them), on the page; plain words outside it. `before` and
  * `after` are held to the name as `FeeName` holds them.
  */
-export function FeeOpen({ fee, className, before, after }: { fee: FeeRef; className?: string; before?: string; after?: string }) {
+export function FeeOpen({ fee, className, before, after, inLine = false }: { fee: FeeRef; className?: string; before?: string; after?: string; /** The name runs on into words on its line that may wrap: its target's height takes no room from that line, so the line under it keeps its usual spacing. */ inLine?: boolean }) {
   const links = useContext(FeeLinksCtx);
   if (!links) return <FeeName fee={fee} className={className} before={before} after={after} />;
   return (
     // a 44 px tap area round a name a line tall (`tap-area`); on a phone the name's line is the target's height, so the areas of names on
     // lines one under the other never take each other's room
-    <button type="button" data-fee-open="" onClick={() => links.open(fee.of ?? fee.fee)} className="tap-area inline-flex min-w-0 items-center rounded-sm text-start max-md:min-h-target hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring">
+    <button type="button" data-fee-open="" onClick={() => links.open(fee.of ?? fee.fee)} className={cx("tap-area inline-flex min-w-0 items-center rounded-sm text-start max-md:min-h-target hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring", inLine && "align-middle max-md:my-[calc((1lh-var(--target))/2)]")}>
       <FeeName fee={fee} className={className} before={before} after={after} />
     </button>
   );

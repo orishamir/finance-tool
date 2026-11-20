@@ -14,7 +14,7 @@ import type { FeeRef } from "../../lib/fee-deal/deal-read";
 import type { LawRow, PeriodCard, PeriodRow, Reading, StatedPart } from "../../lib/fee-deal/reading";
 import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView } from "../../lib/fee-deal/charts";
 import { lawHead, periodsHead, type PeriodsHead } from "../../lib/fee-deal/reading-heads";
-import { AmountLanes, Card, NumberField, PanelHead, PeriodTrack, RangeFields, SegmentedControl, ShareBar, ShareChart, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
+import { AmountLanes, Card, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
 import { Num, Ruled } from "../provenance";
 import { leftByPanel, type LeftOut } from "../../lib/fee-deal/left-out";
 import { FeeOpen } from "./links";
@@ -236,7 +236,7 @@ function Undrawn({ view }: { view: UndrawnView }) {
 /** The choice of period where a chart differs by period: "היום" for the one today is in, the others by their first month. */
 function PeriodChoice({ periods, reading, value, onChange }: { periods: MonthKey[]; reading: Reading; value: number; onChange: (k: number) => void }) {
   const label = (m: MonthKey) => (reading.periods.find((p) => p.from === m)?.current ? w.held.today : fromText(m));
-  return <SegmentedControl fit label={w.held.periodsName} options={periods.map((m, k) => ({ value: String(k), label: label(m) }))} value={String(value)} onChange={(v) => onChange(Number(v))} />;
+  return <SegmentedControl fit="always" label={w.held.periodsName} options={periods.map((m, k) => ({ value: String(k), label: label(m) }))} value={String(value)} onChange={(v) => onChange(Number(v))} />;
 }
 
 // ---------------------------------------------------------------- what an action costs
@@ -390,7 +390,9 @@ function ActionCard({ read, view, tab, strong, onStrong, notes }: { read: Action
                 {/* a figure that stands alone at its row's end: its tap area in the layer of a control (app.css), over the figures of the line under it */}
                 <Fig value={p.cost} className="font-semibold after:z-[1]" />
               </span>
-              <span className="ps-5 text-xs text-muted-foreground">
+              {/* the figures of the line under a fee's name take their tap areas in the layer of a control (app.css), so they reach their
+                  44 px over the empty foot of the name's own target above them */}
+              <span className="ps-5 text-xs text-muted-foreground [&_.num]:after:z-[1]">
                 <WhyLine part={p} lane={view.lanes.find((l) => l.fee.ref.fee === id)} share={share} />
               </span>
             </li>
@@ -458,19 +460,21 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
       <div className="flex min-w-0 flex-col gap-4">
         <ActionLine read={read} tab={tab} />
-        <ShareChart
-          range={range}
-          points={points}
-          top={top}
-          {...(over ? { over } : {})}
-          zones={view.zones.map((z) => ({ from: z.from, to: z.to, label: w.action.zones[z.kind] ?? "" }))}
-          marks={marks}
-          point={{ at, tag: `${fmt.nisWhole(at)} · ${fmt.pct(share)}` }}
-          onPoint={move}
-          spoken={w.action.point}
-          xTitle={tabWord(w.action.x, tab)}
-        />
-        <AmountLanes title={w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
+        <ShareStack range={range} at={at} entered>
+          <ShareChart
+            range={range}
+            points={points}
+            top={top}
+            {...(over ? { over } : {})}
+            zones={view.zones.map((z) => ({ from: z.from, to: z.to, label: w.action.zones[z.kind] ?? "" }))}
+            marks={marks}
+            point={{ at, tag: `${fmt.nisWhole(at)} · ${fmt.pct(share)}` }}
+            onPoint={move}
+            spoken={w.action.point}
+            xTitle={tabWord(w.action.x, tab)}
+          />
+          <AmountLanes title={w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
+        </ShareStack>
       </div>
       <ActionCard read={read} view={view} tab={tab} strong={strong} onStrong={setStrong} notes={notes} />
     </div>
@@ -512,7 +516,7 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
         end={
           tabs.length > 1 ? (
             <SegmentedControl
-              fit
+              fit="always"
               label={w.action.tabsName}
               options={tabs.map((t) => ({ value: t.key, label: w.action.tabs[t.key] ?? t.key }))}
               value={tab.key}
@@ -687,39 +691,43 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
   return (
     <div className="flex flex-col gap-4">
       <RangeFields lo={range.lo} hi={range.hi} moved={moved} onRange={setFrom} onReset={() => setRange(view.range)} words={r} />
-      <ShareChart
-        range={range}
-        points={layered}
-        top={top}
-        layers={view.lanes.map((l) => ({ id: l.fee.ref.fee, fill: colourOf(l.fee).fill, edge: colourOf(l.fee).stroke, group: l.group ?? "share" }))}
-        groups={(["share", "fixed"] as const).map((g) => ({ id: g, label: w.held.groups[g]! }))}
-        strong={strong}
-        onStrong={setStrong}
-        marks={marks}
-        onRead={(a, b) => {
-          setAt(a === null ? null : roundAmount(a));
-          setBoxed(b);
-        }}
-        tip={(a) => <HeldBox read={view.readAt(roundAmount(a))} strong={strong} saved={saved} />}
-        onRange={setFrom}
-        xTitle={saved ? w.held.xSaved : w.held.x}
-        xShort={saved ? w.held.xShortSaved : w.held.xShort}
-        height={300}
-      />
-      <AmountLanes
-        title={w.held.lanes}
-        range={range}
-        lanes={view.lanes.map((l) => laneOf(l, saved))}
-        groups={[
-          { id: "share", label: saved ? w.held.laneGroups.shareSaved! : w.held.laneGroups.share! },
-          { id: "fixed", label: w.held.laneGroups.fixed! },
-        ]}
-        at={at}
-        strong={strong}
-        back
-        onLane={setStrong}
-        onPart={(_, p) => setAt(middleOf(p, range))}
-      />
+      <ShareStack range={range} at={at}>
+        <ShareChart
+          range={range}
+          points={layered}
+          top={top}
+          layers={view.lanes.map((l) => ({ id: l.fee.ref.fee, fill: colourOf(l.fee).fill, edge: colourOf(l.fee).stroke, group: l.group ?? "share" }))}
+          groups={(["share", "fixed"] as const).map((g) => ({ id: g, label: w.held.groups[g]! }))}
+          strong={strong}
+          onStrong={setStrong}
+          marks={marks}
+          onRead={(a, b) => {
+            setAt(a);
+            setBoxed(b);
+          }}
+          snap={roundAmount}
+          tip={(a) => <HeldBox read={view.readAt(a)} strong={strong} saved={saved} />}
+          onRange={setFrom}
+          xTitle={saved ? w.held.xSaved : w.held.x}
+          xShort={saved ? w.held.xShortSaved : w.held.xShort}
+          height={300}
+          narrowHeight={220}
+        />
+        <AmountLanes
+          title={w.held.lanes}
+          range={range}
+          lanes={view.lanes.map((l) => laneOf(l, saved))}
+          groups={[
+            { id: "share", label: saved ? w.held.laneGroups.shareSaved! : w.held.laneGroups.share! },
+            { id: "fixed", label: w.held.laneGroups.fixed! },
+          ]}
+          at={at}
+          strong={strong}
+          back
+          onLane={setStrong}
+          onPart={(_, p) => setAt(middleOf(p, range))}
+        />
+      </ShareStack>
       {/* where the box of values has no room beside the pointer (a phone), it stands after the lanes, before the notes */}
       {at !== null && !boxed && (
         <Card pad="tight" className="bg-muted/40">
@@ -880,13 +888,16 @@ function ChangeRow({ row, before, covers, saved }: { row: PeriodRow; before: Per
   );
 }
 
+/** The prices that changed at a period's start, against the period before it (none for the first). */
+const changedRows = (stop: TimelinePeriod, before: TimelinePeriod | undefined) => (before ? stop.card.rows.filter((r) => r.change || r.sale?.change) : []);
+
 /** A period's column: under 768 px its own stop on the line (`track`) over it, as the columns stand one under the other there. */
 function TimelineStop({ stop, before, saved, track }: { stop: TimelinePeriod; before: TimelinePeriod | undefined; saved: boolean; track: ReactNode }) {
   const t = w.timeline;
-  const changed = before ? stop.card.rows.filter((r) => r.change || r.sale?.change) : [];
+  const changed = changedRows(stop, before);
   const idle = stop.idle;
   return (
-    <li className="flex min-w-0 flex-col gap-2 text-sm">
+    <li className="flex min-w-0 flex-col gap-2 text-sm md:pe-6">
       <div className="md:hidden">{track}</div>
       <StopHead period={stop.card} />
       {changed.length > 0 && (
@@ -897,7 +908,7 @@ function TimelineStop({ stop, before, saved, track }: { stop: TimelinePeriod; be
         </ul>
       )}
       {(idle || stop.rest) && (
-        <p>
+        <p className="text-pretty">
           {idle && (
             <>
               <FigAfter value={idle.total} lead={t.idle.lead} className="font-semibold" />
@@ -929,21 +940,24 @@ function TimelineCard({ reading, saved }: { reading: Reading; saved: boolean }) 
   const head = periodsHead(reading.periods);
   const stops = reading.timeline;
   const current = Math.max(0, stops.findIndex((s) => s.card.current));
+  // a period that holds a change takes a wide column, one with its words alone a narrow one
+  const weights = stops.map((s, k) => (changedRows(s, stops[k - 1]).length > 0 ? PERIOD_WIDE : 1));
   // the rules a month with nothing in it is stated beside (F-126, a bank's), said once under the periods
   const bank = stops.find((s) => s.idle && s.idle.bank.length > 0)?.idle?.bank ?? [];
   return (
     <Card className="flex min-w-0 flex-col gap-4">
       <PanelHead kicker={w.timeline.kicker}>{head && <PeriodsHeadline head={head} />}</PanelHead>
       <div className="hidden md:block">
-        <PeriodTrack stops={stops.length} current={current} />
+        <PeriodTrack weights={weights} current={current} />
       </div>
-      <ol className="flex flex-col gap-4 md:grid md:gap-6" style={{ gridTemplateColumns: `repeat(${stops.length}, minmax(0, 1fr))` }}>
+      {/* the columns stand edge to edge, as the track's do, each keeping its room at its end, so each stop stands at its column's start */}
+      <ol className="flex flex-col gap-4 md:grid md:gap-0" style={{ gridTemplateColumns: periodColumns(weights) }}>
         {stops.map((s, k) => (
-          <TimelineStop key={s.card.from} stop={s} before={k > 0 ? stops[k - 1] : undefined} saved={saved} track={<PeriodTrack stops={1} current={k === current ? 0 : -1} />} />
+          <TimelineStop key={s.card.from} stop={s} before={k > 0 ? stops[k - 1] : undefined} saved={saved} track={<PeriodTrack weights={[1]} current={k === current ? 0 : -1} />} />
         ))}
       </ol>
       {bank.length > 0 && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground text-pretty">
           {w.timeline.bank.lead}
           <Ruled id={bank}>{w.timeline.bank.stated}</Ruled>
           {w.timeline.bank.tail}
@@ -994,7 +1008,7 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
           {named.map((r) =>
             r.cap.state === "value" ? (
               <li key={r.fee} data-law-row={r.fee} tabIndex={-1} className="anchor-target flex flex-col gap-2 rounded-sm text-sm focus-visible:outline-2 focus-visible:outline-ring">
-                <LawBlock row={r} saved={saved} first={reading.from} name={<FeeOpen fee={r} className="font-semibold" />} />
+                <LawBlock row={r} saved={saved} first={reading.from} name={(inLine) => <FeeOpen fee={r} className="font-semibold" inLine={inLine} />} />
               </li>
             ) : (
               <li key={r.fee} data-law-row={r.fee} tabIndex={-1} className="anchor-target flex flex-wrap items-center gap-x-3 rounded-sm text-sm focus-visible:outline-2 focus-visible:outline-ring">
@@ -1048,7 +1062,7 @@ export function ReadingCards({ reading, saved, fx, left, foreign = false, read =
   const panels = read ? reading.panels : { actions: [], held: [] };
   const placed = left ? leftByPanel(left, { foreign }, panels) : null;
   return (
-    <TypedPlain className="flex flex-col gap-4">
+    <TypedPlain className="nums-wide flex flex-col gap-4">
       {left && placed && <LeftOutList left={placed.rest} empty={!read} />}
       {read && reading.panels.actions.length > 0 && <ActionPanel reading={reading} fx={fx} saved={saved} unitPrice={unitPrice} onUnitPrice={onUnitPrice} left={placed?.byPanel ?? {}} />}
       {read && reading.panels.held.length > 0 && <HeldPanel reading={reading} saved={saved} left={placed?.byPanel.held} />}
