@@ -25,7 +25,7 @@ import type { ProductId } from "@finance-tool/schema";
 import { dealCases, feeDeal as copy } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel as panelOf } from "../../lib/fee-deal/panel";
-import { toolbox as toolboxOf } from "../../lib/fee-deal/toolbox";
+import { casesTool, casesToolbox, targetCases, toolbox as toolboxOf, type CasesTarget } from "../../lib/fee-deal/toolbox";
 import { slotEdit, thingMenu, usualBy } from "../../lib/fee-deal/things";
 import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
 import { hasCases, newDeal, pricedOf, toolPrice, toolStages, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
@@ -42,7 +42,7 @@ import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { addByKept, fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
-import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolAsks, toolToCases } from "../../lib/fee-deal/lifted";
+import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -315,25 +315,41 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const previewRead = useMemo(() => (preview ? readDealFor(preview, data.kinds, today) : null), [preview, data.kinds, today]);
   const shownBuilder = useMemo(() => (previewRead ? builder(previewRead, bar, chosen ? { fee: chosen, case: caseId } : null) : builderView), [previewRead, builderView, bar, chosen, caseId]);
   const shownOpen = useMemo(() => (previewRead && chosen ? (panelOf(previewRead, chosen, caseId ?? undefined, pending, editingK, editingSide)?.open ?? null) : (panel?.open ?? null)), [previewRead, chosen, caseId, pending, editingK, editingSide, panel]);
-  const tools = useMemo(() => (chosen ? toolboxOf(read, chosen, caseId ?? undefined, editingK, editingSide) : null), [read, chosen, caseId, editingK, editingSide]);
+  // the several cases of the open fee the toolbox adds to at once, while the fee still has some of them; else it adds to the open case
+  const several = oc.cases.target && targetCases(read, oc.cases.target) ? oc.cases.target : null;
+  const tools = useMemo(() => (!chosen ? null : several ? casesToolbox(read, several) : toolboxOf(read, chosen, caseId ?? undefined, editingK, editingSide)), [read, chosen, several, caseId, editingK, editingSide]);
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
-  // own toolbox offers it and the case has it not yet; dropped on another case than the open one, that case opens first
-  const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : at === null || at === caseId ? tools : toolboxOf(read, feeId, at));
-  // a toolbox card on a head of the open fee: each head asks once per card while the deal stands (every place asks while a card is carried)
-  const onHeads = useMemo(() => new Map<string, Fee | null>(), [read]);
-  const toolOnHead = (feeId: string, cases: readonly string[], along: number, item: string): Fee | null => {
-    if (feeId !== chosen) return null;
-    const key = `${feeId}|${cases.join()}|${along}|${item}`;
-    if (!onHeads.has(key)) onHeads.set(key, toolToCases(read, feeId, cases, item, along));
-    return onHeads.get(key)!;
+  // own toolbox offers it and the case has it not yet; dropped on another case than the open one, or while the toolbox adds to several
+  // cases, that case opens first
+  const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : !several && (at === null || at === caseId) ? tools : toolboxOf(read, feeId, at ?? undefined));
+  /**
+   * A card tapped, or dropped, with the toolbox on several cases of a fee (`target`), each an edit of its own, one step of the undo: a
+   * thing to change by asks its question, for the whole fee; a part that asks for something asks it once where those cases stand; any
+   * other part goes into them (`casesTool`). Nothing where the card is had or off there.
+   */
+  const onCasesCard = (target: CasesTarget, item: string) => {
+    const t = casesTool(read, target, item);
+    if (!t) return;
+    if (t.k === "thing") return onAddBy(target.fee, t.kind);
+    if (t.k === "ask") return oc.cases.setAsk(t.ask);
+    onFee(t.fee);
+  };
+  // a toolbox card on several cases of the open fee: each place asks once per card while the deal stands (every place asks while a card is
+  // carried); a thing to change by is the fee block's, which takes it for the whole fee
+  const onCases = useMemo(() => new Map<string, boolean>(), [read]);
+  const casesTake = (target: CasesTarget, item: string): boolean => {
+    if (target.fee !== chosen || cardThing(item)) return false;
+    const key = `${target.fee}|${target.row ?? ""}|${target.cases.join()}|${item}`;
+    if (!onCases.has(key)) onCases.set(key, casesTool(read, target, item) !== null);
+    return onCases.get(key)!;
   };
   const drop: ToolDrop = {
-    acceptsCases: (feeId, cases, along, item) => !!toolOnHead(feeId, cases, along, item),
-    onDropCases: (feeId, cases, along, item) => {
-      const next = toolOnHead(feeId, cases, along, item);
-      if (next) onFee(next);
+    acceptsCases: casesTake,
+    onDropCases: (target, item) => {
+      if (!casesTake(target, item)) return;
+      oc.onOpenCases(target);
+      onCasesCard(target, item);
     },
-    asksCases: (feeId, cases, item) => (feeId === chosen ? toolAsks(read, feeId, cases, item) : null),
     accepts: (feeId, at, item) => !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off)),
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);
@@ -342,7 +358,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const thing = cardThing(item);
       if (thing && at !== null && hasCases(fee)) return oc.ask.onAsk(thing, at);
       const on = at ?? caseId;
-      if (on !== caseId) oc.onOpenCase(feeId, on, "pointer");
+      if (on !== caseId || several) oc.onOpenCase(feeId, on, "pointer");
       const side = on === caseId ? editingSide : "buy";
       applyTool(item, fee, on, toolPrice({ stages: toolStages(pricedOf(fee, on ?? undefined), side) }, on === caseId ? editingK : undefined), {
         onAsk: (kind) => onAddBy(feeId, kind),
@@ -378,7 +394,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     // the drop shown as a copy: a part moved keeps its own place, the gap, until it lands, so nothing above or under it moves while it
     // is carried (founder, 2026-11-17)
     preview: (x) => setPreview(x ? (liftDrop(deal, x.l, x.on, { copy: true })?.deal ?? null) : null),
-    rowParts: (feeId, cases) => rowParts(read, feeId, cases),
     onResult: (make) => {
       const r = make(deal);
       if (r) kept(liftKept(deal, r, chosen));
@@ -404,19 +419,19 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         view={tools}
         fee={chosenFee}
         {...(read.copied[chosenFee.id] ? { house: read.copied[chosenFee.id] } : {})}
-        caseId={caseId}
         sheet={sheeted}
         product={deal.kind}
         fill={priceLists.length > 0 ? { houses: priceLists, onFill: (h) => kept(fillFeeKept(deal, chosenFee.id, h, data, chosen)) } : null}
         line={lines.fill}
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
-        onAsk={(kind) => onAddBy(chosenFee.id, kind)}
+        onCard={(item) =>
+          several
+            ? onCasesCard(several, item)
+            : applyTool(item, chosenFee, caseId, tools.k, { onAsk: (kind) => onAddBy(chosenFee.id, kind), onPending: (part) => oc.pending.set({ fee: chosenFee.id, case: caseId, part }), onForm: (part) => onForm(chosenFee.id, part, caseId), onPart: onPart(chosenFee) }, tools.side)
+        }
         onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k, side: editingSide })}
         onFee={onFee}
-        onPart={onPart(chosenFee)}
-        onForm={(part) => onForm(chosenFee.id, part, caseId)}
-        onPending={(part) => oc.pending.set({ fee: chosenFee.id, case: caseId, part })}
         onStopBy={(kind) => onStopBy(chosenFee.id, kind)}
         onClose={oc.onClosePanel}
       />
@@ -522,7 +537,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               deal={preview ?? deal}
               view={shownBuilder}
               groupOf={(fee: Fee) => feeGroup(read, fee, saves)}
-              open={{ fee: chosen, case: caseId, view: shownOpen, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? { fee: thingOpen.fee, t: thingOpen.t } : null }}
+              open={{ fee: chosen, case: several ? null : caseId, view: several ? null : shownOpen, menu: slot && menu ? menu.t : null, thing: thingView && thingOpen ? { fee: thingOpen.fee, t: thingOpen.t } : null, several: several ? { target: several, ask: oc.cases.ask } : null }}
               line={lines.fee}
               caseLine={lines.case}
               focus={doc.focus}
@@ -541,6 +556,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
                 lift: liftHands,
+                cases: { onOpen: oc.onOpenCases, onAsk: oc.cases.setAsk },
               }}
               refusal={refusal}
               ask={oc.ask.asking && oc.ask.asking.fee === chosen ? { kind: oc.ask.asking.kind, ...(oc.ask.asking.split ? { split: oc.ask.asking.split } : {}) } : null}

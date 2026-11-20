@@ -138,9 +138,10 @@ function CaseWords({ when }: { when: CaseWord[] }) {
  * A case at rest: its condition in words (`when`) and its parts (`PartChip`s) in the dark cell. With `onOpen` the whole row is one button
  * that opens the case (`label` is its spoken name); a figure in it keeps its own tap. Under the pointer the cell lights up. The words stand
  * in a column of 8.5rem beside the cell, 12rem in a band of 44rem and more, where the parts have room to spare and a long condition (three
- * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell.
+ * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell. `open`: the case is among
+ * several the toolbox adds to at once, its cell outlined in the action colour as an open case's is.
  */
-export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; children: ReactNode }) {
+export function CaseRow({ when, label, onOpen, grip, open, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; children: ReactNode }) {
   return (
     // a press on the parts' cell, which stands over the row's button where it holds a grip, opens the case too
     <div data-liftable="" data-lift-body="" onClick={onOpen ? (e) => onSurface(e) && onOpen() : undefined} className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
@@ -149,7 +150,7 @@ export function CaseRow({ when, label, onOpen, grip, children }: { when: CaseWor
       {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge. Its
           parts' lines stand 44 px apart (a 30 px part and 14 px between), so a figure on one line and a figure on the next each keep a
           44 px press, the parts no bigger for it */}
-      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-x-1.5 gap-y-3.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent")}>
+      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-x-1.5 gap-y-3.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent", open && "outline-2 -outline-offset-2 outline-primary")}>
         {grip}
         {children}
       </div>

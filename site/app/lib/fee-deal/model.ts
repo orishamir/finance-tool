@@ -24,6 +24,9 @@ export interface OwnPlace {
   currency: string | null;
 }
 
+/** Where a value of what is bought or held in the person's words is bought, and its currency, until the person says: abroad, in dollars. */
+export const NEW_PLACE: Omit<OwnPlace, "name"> = { place: "abroad", currency: "USD" };
+
 /**
  * A thing a fee's price changes by (F-114). A list thing (what is bought or held, the channel, the currency, a track, a condition) keeps its
  * values (`values`), in the order the page shows them, as the site's ids or in the person's words, apart from its cases: a value no case

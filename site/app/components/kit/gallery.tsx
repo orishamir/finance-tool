@@ -3174,6 +3174,21 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
   ];
 }
 
+/**
+ * The toolbox on several cases at once: every case is in one form, has a maximum and keeps its sums in shekels or dollars, so the other
+ * forms, the sale priced apart and the date line are set in each case alone, and a minimum would ask two currencies; each group says why.
+ */
+function severalGroups(): ToolGroup[] {
+  const off = dealWords.cases.casesOff;
+  return toolGroups(["pct", "max", "what", "channel"]).map((gr) => {
+    if (gr.kind === "charge") return { ...gr, parts: gr.parts.map((p) => (p.form && !p.used ? { ...p, off: true } : p)), offWhy: off.perCase };
+    if (gr.kind === "bound") return { ...gr, parts: gr.parts.map((p) => (p.id === "min" ? { ...p, off: true } : p)), offWhy: off.currencies };
+    if (gr.kind === "when")
+      return { ...gr, parts: gr.parts.map((p) => (p.id === "sale" ? { ...p, off: true } : p)), lines: gr.lines?.map((l) => ({ ...l, off: true })), offWhy: off.perCase };
+    return gr;
+  });
+}
+
 /** A tap adds a part (its card takes the ✓); a tap on "הערוץ" asks for the channels first; a tap on a thing with its ✓ takes it away. */
 function ToolboxDemo() {
   const [used, setUsed] = useState(["unit", "min", "cap", "what", "track", "unexecuted"]);
@@ -3396,8 +3411,9 @@ function TradeGroups({ today }: { today: string }) {
     <FeeBlock dot="bg-fee-trade" name={sc.trade}>
       <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }]} onThing={() => undefined}>
         <CaseGroup head={sc.what.ta} shared={<span>{dealWords.cases.parts.max}{fig(20000, "nis_per_trade", today)} {sc.toAction}</span>}>
-          <CaseRow when={[{ text: sc.channels.web }]} label={sc.open(sc.channels.web)} onOpen={() => undefined}>{part(0.5)}</CaseRow>
-          <CaseRow when={[{ text: sc.channels.branch }]} label={sc.open(sc.channels.branch)} onOpen={() => undefined}>{part(0.55)}</CaseRow>
+          {/* the toolbox adding to this group's cases at once: each drawn open */}
+          <CaseRow when={[{ text: sc.channels.web }]} label={sc.open(sc.channels.web)} onOpen={() => undefined} open>{part(0.5)}</CaseRow>
+          <CaseRow when={[{ text: sc.channels.branch }]} label={sc.open(sc.channels.branch)} onOpen={() => undefined} open>{part(0.55)}</CaseRow>
         </CaseGroup>
         <CaseGroup head={sc.heldValues.abroad}>
           <CaseRow when={[{ text: sc.anyChannel, any: true }]} label={sc.open(sc.anyChannel)} onOpen={() => undefined}>{part(0.6)}</CaseRow>
@@ -3623,7 +3639,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="CaseTable, CaseGrid, EveryCaseParts, SharedLine, AddSlot" use={g.uses.CaseTable}>
-        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים" (founder, 2026-11-20); what the price changes by heading the band; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
+        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים" (founder, 2026-11-20), which opens the toolbox on every case; what the price changes by heading the band; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
           <div className="max-w-2xl">
             <CustodyTable today={today} />
           </div>
@@ -3676,6 +3692,11 @@ function CaseDemos({ today }: { today: string }) {
       <Demo name="Toolbox" use={g.uses.Toolbox}>
         <State label={`the column on a computer: the case already has the parts with a ✓; ${g.states.interactive}: a tap adds a part, "הערוץ" asks for the channels first, a thing with its ✓ is taken away by a tap`} wide>
           <ToolboxDemo />
+        </State>
+        <State label="several cases at once: the line names them all; a form, a sale priced apart and the date line are off (set in each case alone), a minimum is off where the cases keep two currencies; each group says why" wide>
+          <div className="max-w-lg">
+            <Toolbox target={undefined} targetLead={dealWords.cases.addToAll} groups={severalGroups()} onAdd={() => undefined} />
+          </div>
         </State>
         <State label="a fee that changes by three things: the fourth is off, and the group says why" wide>
           <div className="max-w-lg">

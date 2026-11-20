@@ -43,6 +43,8 @@ export interface ToolLine {
   id: string;
   label: string;
   icon?: ReactNode;
+  /** It cannot be added here: faint, no tap; the group says why (`offWhy`). */
+  off?: boolean;
 }
 
 export interface ToolGroup {
@@ -52,7 +54,7 @@ export interface ToolGroup {
   parts: ToolPart[];
   /** Its cards drawn as lines (`ToolLine`), after its parts. */
   lines?: ToolLine[];
-  /** Why the parts marked `off` cannot be added, one sentence under the group. */
+  /** Why the cards marked `off` cannot be added, under the group: a sentence, or one line per reason. */
   offWhy?: ReactNode;
 }
 
@@ -101,8 +103,9 @@ function LineCard({ kind, line, onAdd }: { kind: ToolKind; line: ToolLine; onAdd
       type="button"
       data-part={line.id}
       data-kind={kind}
+      disabled={line.off}
       onClick={onAdd}
-      className="flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-kind-tile"
+      className={cx("flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-[var(--duration-fast)] enabled:hover:bg-kind-tile", line.off && "opacity-45")}
     >
       <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />
       <WhenRule className="text-foreground">
@@ -133,7 +136,7 @@ function Parts({ group, onAdd, onRemove }: { group: ToolGroup; onAdd: (group: st
         </div>
       ))}
       {group.lines?.map((l) => <LineCard key={l.id} kind={group.kind} line={l} onAdd={() => onAdd(group.id, l.id)} />)}
-      {group.offWhy && group.parts.some((p) => p.off) && <p className="text-sm text-muted-foreground">{group.offWhy}</p>}
+      {group.offWhy && (group.parts.some((p) => p.off) || group.lines?.some((l) => l.off)) && <p className="text-sm text-muted-foreground">{group.offWhy}</p>}
     </>
   );
 }

@@ -1,7 +1,6 @@
 // The parts every case of a fee holds alike (every-case.ts), on a custody fee by what is held and the portfolio's size, read on the site's
 // own data: which part rows stand apart from the grid and which stay in it, editing and taking away such a part in every case, the part
-// going back into the grid once an edit makes the cases differ, and the strip that adds a part to every case offering the parts that ask
-// an amount first, asked once for all the cases.
+// going back into the grid once an edit makes the cases differ, and a part added to every case at once, its amount asked once for them all.
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { readDealFor } from "./deal-read";
@@ -9,7 +8,7 @@ import { builder } from "./rows";
 import { askAcross, everyCaseRows, withoutRows } from "./every-case";
 import { bandLayout, laterChanges } from "./band-layout";
 import { figureToAll, partAcross } from "./edits/cells";
-import { liftRemove, rowParts, toolAsks, toolToCases } from "./lifted";
+import { liftRemove } from "./lifted";
 import { editPrice } from "./edits/stage";
 import { withFigure } from "./edits/price";
 import { typed, type CasesFee, type FeeDeal, type Price } from "./model";
@@ -121,35 +120,23 @@ describe("the parts every case holds alike", () => {
   });
 });
 
-describe("a part added to several cases at once", () => {
+describe("a part added to every case at once", () => {
   const bare = custody(() => ({}));
-  const r = read(deal(bare));
 
-  it("offers the parts that ask an amount first: a minimum, a maximum and a maximum on each security", () => {
-    const offered = rowParts(r, bare.id, ids(bare)).map((p) => p.id);
-    // on custody every part it offers asks an amount: before, the strip offered nothing here
-    expect(offered).toEqual(["min", "max", "maxPerSecurity"]);
-    // never a part that asks a month or another fee, nor a form of the price
-    expect(offered.some((id) => PARTS[id].ask === "month" || PARTS[id].ask === "fee" || PARTS[id].form)).toBe(false);
-    // a grid's row is offered the same, through the same strip
-    expect(rowParts(r, bare.id, ["tase0", "tase1", "tase2"]).map((p) => p.id)).toEqual(expect.arrayContaining(["maxPerSecurity"]));
-  });
-
-  it("puts no figure in before the person types one, and the amount typed once in every case", () => {
+  it("puts no figure in before the person gives one, and the amount given once in every case, said once", () => {
     expect(partAcross(bare, ids(bare), "maxPerSecurity", 1)).toBe(bare);
-    expect(toolToCases(r, bare.id, ids(bare), "maxPerSecurity", 1)).toBeNull();
-    const added = partAcross(bare, ids(bare), "maxPerSecurity", 1, 4000) as CasesFee;
+    const added = partAcross(bare, ids(bare), "maxPerSecurity", 1, { value: 4000 }) as CasesFee;
     expect(added.cases.map((c) => (c.stages[0]!.price as { perSecurity?: { v: number } }).perSecurity?.v)).toEqual([4000, 4000, 4000, 4000, 4000, 4000]);
     expect(every(added)).toEqual(["maxPerSecurity"]);
-    expect((toolToCases(r, bare.id, ids(bare), "maxPerSecurity", 1, 4000) as CasesFee).cases).toEqual(added.cases);
   });
 
-  it("asks a toolbox card that asks an amount, dropped on them, for the cases that lack it, in the words the open case asks it", () => {
-    expect(toolAsks(r, bare.id, ids(bare), "maxPerSecurity")).toEqual(ids(bare));
-    expect(toolAsks(r, bare.id, ids(bare), "discount")).toBeNull();
-    const one = custody((what, step) => (what === "tase" && step === 0 ? { perSecurity: typed(7500) } : {}));
-    expect(toolAsks(read(deal(one)), one.id, ids(one), "maxPerSecurity")).toEqual(ids(one).slice(1));
+  it("asks once, in the words the open case asks it, where every case asks it alike", () => {
     expect(askAcross(bare, ids(bare), "maxPerSecurity")).toMatchObject({ sign: expect.any(String), words: { lead: expect.any(String) } });
     expect(askAcross(bare, ids(bare), "discount")).toBeNull();
+  });
+
+  it("is refused where a case holds that part already: nothing the person gave is overwritten", () => {
+    const one = custody((what, step) => (what === "tase" && step === 0 ? { perSecurity: typed(7500) } : {}));
+    expect(partAcross(one, ids(one), "maxPerSecurity", 1, { value: 4000 })).toBe(one);
   });
 });

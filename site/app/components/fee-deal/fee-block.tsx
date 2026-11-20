@@ -4,13 +4,15 @@
 // boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name. Each thing of the head opens its
 // menu, the fee open or not: its values, and the action that stops the price changing by it. The question of a thing being added stands in the open
 // fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee,
-// and a thing to change by on the open fee's block, or on one case's head, which splits that case alone (`ToolDrop`). A thing lifted by
-// its grip drops on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.
+// and a thing to change by on the open fee's block, or on one case's head, which splits that case alone (`ToolDrop`); a part dropped on
+// the parts said once for every case, or on a grid row's head, does what its tap does with the toolbox on those cases (`CasesTarget`). A
+// thing lifted by its grip drops on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { BuilderRow } from "../../lib/fee-deal/rows";
 import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/panel";
-import { cardThing } from "../../lib/fee-deal/toolbox";
+import { cardThing, type CasesTarget } from "../../lib/fee-deal/toolbox";
+import type { CasesAsk } from "../../lib/fee-deal/every-case";
 import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
@@ -22,7 +24,6 @@ import { FeeCases, RestPart, RowStanding } from "./fee-cases";
 import { OpenParts, type PartGrip } from "./open-case";
 import { EditHere } from "./edit-here";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
-import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { Note } from "../../lib/fee-deal/core";
 import { type PendingHands } from "./part-edit";
 import { FEE_MARK, UnreadWords, feeColour, feeName } from "./words";
@@ -41,6 +42,11 @@ export interface OpenHere {
   menu: number | null;
   /** The thing of a band's head whose menu is open, the fee open or not: its fee, and its place among the fee's things. */
   thing: { fee: string; t: number } | null;
+  /**
+   * The several cases of the open fee the toolbox adds to at once, in place of an open case (`case` and `view` then null), each drawn
+   * as open; and what a part it added still asks of them all, asked once in their place (`ask`).
+   */
+  several: { target: CasesTarget; ask: CasesAsk | null } | null;
 }
 
 /** What a fee's block hands to the page: a fee or a case opened, a slot or a thing tapped, a case or a later price taken away, a part asked. */
@@ -66,6 +72,8 @@ export interface BlockActions {
   onAskDone: (added: boolean) => void;
   /** What a thing lifted by its grip does where it drops, and in the bin. */
   lift: LiftHands;
+  /** The toolbox opened on several of a fee's cases at once (`onOpen`), and what a part it added asks of them, set or, given or dropped, cleared (`onAsk`). */
+  cases: { onOpen: (target: CasesTarget) => void; onAsk: (ask: CasesAsk | null) => void };
 }
 
 /** What the page does with a thing lifted by its grip (lifted.ts): where it drops, why a place does not take it, the bin, a knob's stretch. */
@@ -83,8 +91,6 @@ export interface LiftHands {
   onStretch: (next: Fee, words: string | null) => void;
   /** What a drop of `l` on `on` would do, drawn on the page while the thing is over it; null: the deal as it is again. */
   preview: (drop: { l: Lifted; on: LiftTarget; how: DropHow } | null) => void;
-  /** The parts every one of a fee's cases `cases` can take and none holds yet, each by its id and its toolbox words: what a row's strip adds across it. */
-  rowParts: (feeId: string, cases: readonly string[]) => { id: PartId; label: string }[];
   /** A change made of the deal as it is (a paste, the cells chosen taken away), kept for the undo where it took something (`kept`, its line). */
   onResult: (make: (deal: FeeDeal) => LiftResult | null) => void;
   /** The bin stands at the foot of the screen. */
@@ -96,9 +102,10 @@ export type AskOf = { kind: ByKind; split?: string } | null;
 
 /**
  * A drop zone around `el` for places `on` of one fee: the first that takes a carried thing gets it, and shows what it would do while the
- * thing is over it; a case also takes toolbox cards. `sort`: the place is a member of a sortable list (a table's columns, a grid's rows).
+ * thing is over it; a case also takes toolbox cards, and so does a head over several cases the toolbox can add to at once (`cases`, a
+ * grid's row). `sort`: the place is a member of a sortable list (a table's columns, a grid's rows).
  */
-export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode, sort?: SortOf) => ReactNode;
+export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode, sort?: SortOf, cases?: CasesTarget) => ReactNode;
 
 /**
  * A toolbox card dropped in the fees' column (its id, `ToolPart.id`): whether the open fee's case `caseId` (null for a slim fee, or the fee
@@ -107,11 +114,12 @@ export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode, sort?: SortO
 export interface ToolDrop {
   accepts: (feeId: string, caseId: string | null, item: string) => boolean;
   onDrop: (feeId: string, caseId: string | null, item: string) => void;
-  /** The same on a head of the open fee (its cases `cases`, standing along thing `along`): the part goes into each that lacks it (`toolToCases`). */
-  acceptsCases: (feeId: string, cases: readonly string[], along: number, item: string) => boolean;
-  onDropCases: (feeId: string, cases: readonly string[], along: number, item: string) => void;
-  /** The cases of `cases` a part that asks an amount, dropped on them, asks it for once (`toolAsks`); null for any other card, or none. */
-  asksCases: (feeId: string, cases: readonly string[], item: string) => string[] | null;
+  /**
+   * The same on several cases of the open fee (the parts said once for every case, a grid row's head): it takes a part its tap would add
+   * there with the toolbox on those cases (toolbox.ts `casesTool`), and its drop opens the toolbox on them and does what the tap does.
+   */
+  acceptsCases: (target: CasesTarget, item: string) => boolean;
+  onDropCases: (target: CasesTarget, item: string) => void;
 }
 
 /**
@@ -201,17 +209,17 @@ export function FeeBlockView({
   // a case of the band takes a part, and a thing to change by, which splits it alone; the slim fee takes a part or a thing; the band's
   // block takes a thing, for the whole fee. Every place takes the things lifted by a grip it takes (`LiftHands.takes`).
   const lift = actions.lift;
-  const zone: ZoneOf = (on, key, el, sort) => {
+  const zone: ZoneOf = (on, key, el, sort, cases) => {
     const card = on.find((t): t is Extract<LiftTarget, { k: "case" }> => t.k === "case");
-    const heads = on.find((t): t is Extract<LiftTarget, { k: "cases" }> => t.k === "cases");
     // the cell a thing was lifted from takes nothing of it: its case under it would take a line over several cases as a drop on that case
     const own = (l: Lifted) => l.k === "cell" && on[0]?.k === "cell" && on[0].fee === l.fee && on[0].row === l.row && on[0].cases.join() === l.cases.join();
-    // a part, a cell's part line or a toolbox card lands only where it is dropped, in a case's own cell: a head or the band, which would put
-    // it in every case under it, takes none of them while carried (the grip's menu applies a part to a row or a column instead)
+    // a part or a cell's part line lands only where it is dropped, in a case's own cell: a head or the band, which would put it in every
+    // case under it, takes neither while carried (the grip's menu applies a part to a row or a column instead); a toolbox card a grid row's
+    // head takes adds only what then stands in every case of the row alike (`cases`)
     const partLike = (l: Lifted) => l.k === "part" || (l.k === "cell" && l.row !== WHOLE);
     const first = (l: Lifted) => (own(l) ? undefined : on.find((t) => !(t.k === "cases" && partLike(l)) && lift.takes(l, t)));
-    // a toolbox card: a case's cell takes it
-    const toolTakes = (it: string) => !!card && card.case !== null && drop.accepts(fee.id, card.case, it);
+    // a toolbox card: a case's cell takes it, and a head over several cases the toolbox can add to at once
+    const toolTakes = (it: string) => (!!card && card.case !== null && drop.accepts(fee.id, card.case, it)) || (!!cases && drop.acceptsCases(cases, it));
     // a member of its list only for the heads its first place takes (a row among the rows); anything else, a part or a cell (a case alone
     // in its row moves its row onto the head it drops on), drops on it as a plain place
     const sortFor = sort && ((it: string) => {
@@ -237,7 +245,7 @@ export function FeeBlockView({
           const t = l && first(l);
           if (l && t) lift.onDrop(l, t, how);
           else if (!l && card) drop.onDrop(fee.id, card.case, it);
-          else if (!l && heads) drop.onDropCases(fee.id, heads.cases, heads.along, it);
+          else if (!l && cases) drop.onDropCases(cases, it);
         }}
         why={(it) => {
           const l = liftedOf(it);
@@ -308,7 +316,7 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
+      <FeeCases fee={fee} band={band} open={open} name={name} deal={deal} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
         {(cases) => (
           <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
             {question}
