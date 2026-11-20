@@ -128,6 +128,9 @@ export class Tally {
   private waits = false;
 
   fee(type: FeeType, amount: number) {
+    // nothing to add: a total that starts at 0 never becomes -0, so adding 0 leaves it as it is, and 0 over a growth that is a number other
+    // than 0 is 0 (over 0 or NaN it is NaN, which is added as before). Most months charge several kinds of fee nothing.
+    if (amount === 0 && this.growth !== 0 && this.growth === this.growth) return;
     this.fees[type] += amount;
     this.carried[type] += amount / this.growth;
   }
@@ -154,9 +157,10 @@ export class Tally {
   }
 
   point(month: number, index: number, balance: number) {
-    let fees = 0;
-    for (const type in this.fees) fees += this.fees[type as FeeType];
-    const providerFees = this.fees.trade + this.fees.custody + this.fees.fx + this.fees.fixed + this.fees.account;
+    // every kind, added in the order `emptyFees` lists them (as a loop over the keys added them)
+    const f = this.fees;
+    const fees = 0 + f.deposit + f.balance + f.direct + f.trade + f.spread + f.custody + f.fixed + f.account + f.fund + f.fx + f.manager;
+    const providerFees = f.trade + f.custody + f.fx + f.fixed + f.account;
     this.series.push({ month, index, paidIn: this.paidIn, balance, fees, providerFees, taxDuring: this.taxDuring });
   }
 

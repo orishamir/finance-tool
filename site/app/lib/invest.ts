@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { BlockedError, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -1401,7 +1401,12 @@ export interface InvestArgs {
   assumptions?: FundAssumptions;
 }
 
+/** The index page's view of one plan. Its runs are worked out once each while it builds (`withRunMemo`): about a quarter repeat. */
 export function buildInvest(a: InvestArgs): InvestView {
+  return withRunMemo(() => build(a));
+}
+
+function build(a: InvestArgs): InvestView {
   const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
   const yourBroker = a.yourBroker && ctx.snaps.some((s) => s.id === a.yourBroker) ? a.yourBroker : null;
   const options = core(ctx, a.index, yourBroker);

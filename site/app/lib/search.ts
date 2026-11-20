@@ -415,21 +415,50 @@ function textDocs(texts: SearchTexts): Map<string, TextDoc> {
 
 const matchesForms = (token: string, wordForms: string[]) => forms(token).some((f) => wordForms.includes(f));
 
+/** The forms of each token of a text, worked out once per text (its token list is kept, `textDocs`, `wordsOf`), not on every query. */
+const tokenFormsMemo = new WeakMap<readonly string[], string[][]>();
+function tokenForms(tokens: readonly string[]): string[][] {
+  let f = tokenFormsMemo.get(tokens);
+  if (!f) tokenFormsMemo.set(tokens, (f = tokens.map(forms)));
+  return f;
+}
+
+/**
+ * Whether the text holds the words in a row, each by one of its forms. `doc.forms` holds every form of the text's tokens (or more), so a
+ * word none of whose forms it holds is nowhere in the text, and the phrase cannot be: most texts are passed over by that alone.
+ */
 function phraseIn(doc: TextDoc, wf: string[][]): boolean {
+  for (const f of wf) if (!f.some((x) => doc.forms.has(x))) return false;
+  const tf = tokenForms(doc.tokens);
   const L = wf.length;
-  for (let i = 0; i + L <= doc.tokens.length; i++) {
+  for (let i = 0; i + L <= tf.length; i++) {
     let ok = true;
-    for (let j = 0; j < L && ok; j++) ok = matchesForms(doc.tokens[i + j]!, wf[j]!);
+    for (let j = 0; j < L && ok; j++) {
+      const w = wf[j]!;
+      ok = tf[i + j]!.some((f) => w.includes(f));
+    }
     if (ok) return true;
   }
   return false;
 }
 
 /** Tier 5 (the phrase in the text) and tier 6 (enough of the content words in title and text); null when neither. */
+/** The words of a variant `textScore` looks for, with their forms; null when too few. The same for every entry, so worked out once a variant. */
+const textWordsMemo = new WeakMap<Variant, { ws: string[]; wf: string[][] } | null>();
+function textWordsOf(v: Variant): { ws: string[]; wf: string[][] } | null {
+  let t = textWordsMemo.get(v);
+  if (t === undefined) {
+    const ws = v.words.filter((w) => !stopWords.has(w) && !softWords.has(w) && w.length >= 2);
+    t = ws.length === 0 || ws.join("").length < 3 ? null : { ws, wf: ws.map(forms) };
+    textWordsMemo.set(v, t);
+  }
+  return t;
+}
+
 function textScore(entry: SearchEntry, doc: TextDoc, v: Variant): { score: number; title: boolean } | null {
-  const ws = v.words.filter((w) => !stopWords.has(w) && !softWords.has(w) && w.length >= 2);
-  if (ws.length === 0 || ws.join("").length < 3) return null;
-  const wf = ws.map(forms);
+  const words = textWordsOf(v);
+  if (!words) return null;
+  const { ws, wf } = words;
   if (phraseIn(doc, wf)) return { score: 5 + v.pen, title: false };
   const title = entryTokens(entry).forms;
   let weight = 0;
@@ -458,10 +487,21 @@ interface Raw {
   ids?: string[];
 }
 
+/** What `tiers` reads of a query, worked out once for the query rather than once for each entry it is held against (a search holds a few). */
+const tierQueries = new Map<string, { digits: boolean; spaced: string; words: string[] }>();
+function tierQueryOf(q: string) {
+  let t = tierQueries.get(q);
+  if (!t) {
+    if (tierQueries.size >= 256) tierQueries.clear();
+    tierQueries.set(q, (t = { digits: /^\d+$/.test(q), spaced: ` ${q}`, words: q.split(" ") }));
+  }
+  return t;
+}
+
 /** 0 exact, 1 starts with, 2 a word starts with, 3 contained, 4 every word contained; null when it does not match. */
 function tiers(entry: Raw, q: string): number | null {
   if (!q) return null;
-  const digits = /^\d+$/.test(q);
+  const { digits, spaced, words } = tierQueryOf(q);
   if (entry.ids && !q.includes(" ")) {
     if (entry.ids.includes(q)) return 0;
     if ((digits || q.length >= 4) && entry.ids.some((id) => id.startsWith(q))) return 1;
@@ -469,11 +509,19 @@ function tiers(entry: Raw, q: string): number | null {
   const n = entry.norm;
   if (n === q) return 0;
   if (n.startsWith(q)) return 1;
-  if (` ${n}`.includes(` ${q}`)) return 2;
+  // a word of the name starts with q: " " + n holds " " + q, which at the name's start is the case above
+  if (n.includes(spaced)) return 2;
   if (n.includes(q)) return 3;
-  const words = q.split(" ");
   if (words.length > 1 && words.every((w) => n.includes(w))) return 4;
   return null;
+}
+
+/** The forms of a variant's words that are not soft words, worked out once a variant (`nameTier` holds them against every entry). */
+const contentFormsMemo = new WeakMap<Variant, string[][]>();
+function contentFormsOf(v: Variant): string[][] {
+  let c = contentFormsMemo.get(v);
+  if (!c) contentFormsMemo.set(v, (c = v.words.filter((w) => !softWords.has(w)).map(forms)));
+  return c;
 }
 
 /** The tiers of a phrase against a name, plus a single word read without its prefix (one tier lower) and every word by its forms (4.5). */
@@ -487,8 +535,8 @@ function nameTier(entry: Raw, set: Set<string>, v: Variant): number | null {
     }
   }
   if (best === null && v.words.length >= 1 && set.size > 0) {
-    const content = v.words.filter((w) => !softWords.has(w));
-    if (content.length > 0 && content.every((w) => forms(w).some((f) => set.has(f)))) best = 4.5;
+    const content = contentFormsOf(v);
+    if (content.length > 0 && content.every((f) => f.some((x) => set.has(x)))) best = 4.5;
   }
   return best;
 }
@@ -566,8 +614,10 @@ function scoreFull(entry: SearchEntry, a: Analysis, docs: Map<string, TextDoc> |
 }
 
 /** Order inside the rules group (synthesis 3.6): the rule-uses rank when the index carries it, then strength, then title length, then id. */
+/** `localeCompare(…, "en", { numeric: true })` made once: the method builds this collator on every call. */
+const idCollator = new Intl.Collator("en", { numeric: true });
 function ruleOrder(a: SearchHit, b: SearchHit): number {
-  const byId = (a.entry.key ?? "").localeCompare(b.entry.key ?? "", "en", { numeric: true });
+  const byId = idCollator.compare(a.entry.key ?? "", b.entry.key ?? "");
   if (a.score === ID_PREFIX_SCORE) return byId;
   return (
     (b.entry.rank ?? 0) - (a.entry.rank ?? 0) ||
@@ -897,9 +947,17 @@ const wordsOf = (norm: string): string[] => {
   return w;
 };
 
+/** A claim member's words with their forms, worked out once a member: the claim holds each against every rule. */
+const memberFormsMemo = new WeakMap<string[], string[][]>();
+function memberForms(m: string[]): string[][] {
+  let f = memberFormsMemo.get(m);
+  if (!f) memberFormsMemo.set(m, (f = m.map(forms)));
+  return f;
+}
+
 function memberIn(tokens: string[], set: Set<string>, m: string[]): boolean {
-  if (m.length === 1) return forms(m[0]!).some((f) => set.has(f));
-  const wf = m.map(forms);
+  const wf = memberForms(m);
+  if (m.length === 1) return wf[0]!.some((f) => set.has(f));
   if (!wf.every((f) => f.some((x) => set.has(x)))) return false;
   return phraseIn({ tokens, forms: set }, wf);
 }

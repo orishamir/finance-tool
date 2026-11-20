@@ -8,9 +8,10 @@ import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOf
 import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
+import { memoRun } from "../run-memo.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
-import { indexedCost, removeFifo, totalUnits, type Lot } from "./lots.ts";
+import { indexedCost, LotQueue } from "./lots.ts";
 
 export interface Fund {
   /**
@@ -270,6 +271,10 @@ export interface BeforeTaxRun extends Omit<RunResult, "nominal" | "real" | "taxA
  * `runSecurities`'s, unchanged.
  */
 export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTaxRun {
+  return memoRun("securities-before-tax", ctx, input, () => securitiesBeforeTax(input, ctx));
+}
+
+function securitiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTaxRun {
   const rule = beforeTaxPathOf(input.fund, ctx);
   if (rule === null) {
     if (input.fund.distribution && securitiesBlockedBy(input.fund, ctx) !== null) throw new NotEvaluatedError("TXF-OQ19");
@@ -308,7 +313,7 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
-  return acrossReadings(ctx, (c) => securitiesLedger(input, c, null), RUN_RESULT_FIELDS);
+  return memoRun("securities", ctx, input, () => acrossReadings(ctx, (c) => securitiesLedger(input, c, null), RUN_RESULT_FIELDS));
 }
 
 /**
@@ -408,7 +413,8 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   // the share price in the instrument's currency: a price printed in another currency (a Tel Aviv line at its issuer's dollar NAV) at the run's rate
   const priceRate = fund.sharePriceCurrency && fund.sharePriceCurrency !== (tariff.currency?.code ?? "ILS") ? fund.sharePriceRate : 1;
   const sharePrice = (m: number) => (fund.sharePrice && priceRate ? (fund.sharePrice * priceRate * nav) / X[m]! : undefined);
-  let lots: Lot[] = [];
+  // room for every lot the run can buy (the amount now, each month's orders and a distribution's), so the lists never grow
+  const lots = new LotQueue(2 + T * ((input.ordersPerMonth ?? 1) + 1));
   // F-109: whole units. The unit's price in shekels moves with the fund's value per unit (`nav`, 1 at the start). Cash an order leaves waits in
   // two pockets: shekels not yet converted (`waitingNis`), and the fund's currency a distribution left (`waitingHeld`, in that currency), which
   // the next order spends without converting it again.
@@ -418,6 +424,39 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   let waitingNis = 0;
   let waitingHeld = 0;
   const wait = { monthly: 0, placed: 0, skipped: 0 };
+
+  // a flat price for a small trade or conversion (F-12, F-13), in shekels, or Infinity where the line has none
+  const flatOf = (l: SecuritiesTariff["fx"], fxRateNow: number) => (typeof l === "object" && l.flatUpTo ? l.flatUpTo.amount * (l.in === "instrument" ? fxRateNow : 1) : Infinity);
+  /**
+   * One way to place an order (`buy` tries one or two): the conversion of the shekels `fresh`, then the trade the cash pays for with its
+   * commission. Made once for the run, not for each order: `buy` passes what the order is placed with.
+   */
+  const order = (at: SecuritiesTariff, terms: { fxRate: number }, tradeTerms: { fxRate: number; sharePrice: number | undefined }, fresh: number, held: number, whole: boolean, line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
+    const fx = tariff.currency && fresh > 0 ? fxFee(conversion, fresh, terms) + (at.fxSpread ?? 0) * fresh : 0;
+    const sized = buyWithCash(fresh - fx + held, line, tradeTerms);
+    if (!whole) return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
+    // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
+    // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
+    const ask = unitBuy!.price * nav * (1 + spread);
+    // the count starts from the most the cash could buy: a flat price for a small trade or conversion (F-12, F-13) can make a smaller order
+    // cheaper than the whole cash's, so the start takes the lower of the two prices on each side, and the loop below checks each count exactly
+    const fxLow = tariff.currency && fresh > 0 ? Math.min(fx, flatOf(conversion, terms.fxRate) + (at.fxSpread ?? 0) * fresh) : fx;
+    const most = Math.max(sized.trade, fresh - fxLow + held - Math.min(sized.commission, flatOf(line, terms.fxRate)));
+    for (let n = Math.floor(most / ask + 1e-9); n > 0; n--) {
+      const trade = n * ask;
+      const commission = tradeCommission(line, trade, tradeTerms);
+      const fromHeld = Math.min(held, trade + commission);
+      const owed = trade + commission - fromHeld;
+      // the shekels whose conversion leaves `owed`: c = owed + fx(c), found as F-12 finds the trade a cash pays for, a flat price for a
+      // small conversion settled before the iteration (F-13, `convertFor`)
+      const c = tariff.currency ? convertFor(owed, conversion, terms, at.fxSpread ?? 0) : owed;
+      if (c <= fresh + 1e-9) {
+        const fxPaid = owed > 0 ? c - owed : 0;
+        return { fx: fxPaid, trade, commission, cost: fxPaid + commission, leftNis: Math.max(0, fresh - c), leftHeld: held - fromHeld };
+      }
+    }
+    return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
+  };
 
   /**
    * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A monthly purchase (`standing`) is placed the
@@ -429,45 +468,17 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   const buy = (cash: number, month: number, eventMonth: number, convert: boolean, standing = false) => {
     const at = tariffAt(month);
     const terms = { fxRate: fxRate(eventMonth) };
-    const tradeTerms = { ...terms, sharePrice: sharePrice(month) };
+    const tradeTerms = { fxRate: terms.fxRate, sharePrice: sharePrice(month) };
     // F-109: the cash of this order and what earlier orders left. Shekels are converted (a fund in a foreign currency); a distribution's cash
     // and what one left are in the fund's currency already. Without a currency nothing is converted and the two pockets are alike.
     const fresh = (convert ? cash : 0) + waitingNis;
     const held = (convert ? 0 : cash) + waitingHeld * fxRate(eventMonth);
     const whole = unitBuy !== undefined && !(standing && unitBuy.monthlyByAmount);
-    const order = (line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
-      const fxOn = (amount: number) => (tariff.currency && amount > 0 ? fxFee(conversion, amount, terms) + (at.fxSpread ?? 0) * amount : 0);
-      const fx = fxOn(fresh);
-      const sized = buyWithCash(fresh - fx + held, line, tradeTerms);
-      if (!whole) return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
-      // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
-      // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
-      const ask = unitBuy!.price * nav * (1 + spread);
-      // the count starts from the most the cash could buy: a flat price for a small trade or conversion (F-12, F-13) can make a smaller order
-      // cheaper than the whole cash's, so the start takes the lower of the two prices on each side, and the loop below checks each count exactly
-      const flatOf = (l: SecuritiesTariff["fx"]) => (typeof l === "object" && l.flatUpTo ? l.flatUpTo.amount * (l.in === "instrument" ? terms.fxRate : 1) : Infinity);
-      const fxLow = tariff.currency && fresh > 0 ? Math.min(fx, flatOf(conversion) + (at.fxSpread ?? 0) * fresh) : fx;
-      const most = Math.max(sized.trade, fresh - fxLow + held - Math.min(sized.commission, flatOf(line)));
-      for (let n = Math.floor(most / ask + 1e-9); n > 0; n--) {
-        const trade = n * ask;
-        const commission = tradeCommission(line, trade, tradeTerms);
-        const fromHeld = Math.min(held, trade + commission);
-        const owed = trade + commission - fromHeld;
-        // the shekels whose conversion leaves `owed`: c = owed + fx(c), found as F-12 finds the trade a cash pays for, a flat price for a
-        // small conversion settled before the iteration (F-13, `convertFor`)
-        const c = tariff.currency ? convertFor(owed, conversion, terms, at.fxSpread ?? 0) : owed;
-        if (c <= fresh + 1e-9) {
-          const fxPaid = owed > 0 ? c - owed : 0;
-          return { fx: fxPaid, trade, commission, cost: fxPaid + commission, leftNis: Math.max(0, fresh - c), leftHeld: held - fromHeld };
-        }
-      }
-      return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
-    };
     const standingLine = standing ? (at.buyStanding ?? at.buy) : at.buy;
-    let chosen = order(standingLine, standing ? (at.fxStanding ?? at.fx) : at.fx);
+    let chosen = order(at, terms, tradeTerms, fresh, held, whole, standingLine, standing ? (at.fxStanding ?? at.fx) : at.fx);
     if (standing && (at.cheaperOfStandingTrade || at.cheaperOfStandingFx)) {
       // the way that buys the most, and of two that buy the same, the cheaper (by amount the two buy alike only when they cost the same)
-      const regular = order(at.cheaperOfStandingTrade && at.buy ? at.buy : standingLine, at.fx);
+      const regular = order(at, terms, tradeTerms, fresh, held, whole, at.cheaperOfStandingTrade && at.buy ? at.buy : standingLine, at.fx);
       if (regular.trade > chosen.trade + 1e-9 || (Math.abs(regular.trade - chosen.trade) <= 1e-9 && regular.cost < chosen.cost)) chosen = regular;
     }
     waitingNis = chosen.leftNis;
@@ -482,7 +493,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     tally.fee("trade", chosen.commission);
     const value = navBought(chosen.trade, spread);
     tally.fee("spread", chosen.trade - value);
-    lots.push({ units: value / nav, basis: chosen.trade, index: J ? J[eventMonth]! : Number.NaN });
+    lots.push(value / nav, chosen.trade, J ? J[eventMonth]! : Number.NaN);
   };
   /** F-109: the cash waiting in the account in month m, in shekels at the month's rate. */
   const waiting = (m: number) => waitingNis + waitingHeld * fxRate(m);
@@ -574,7 +585,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     const waitingNow = unitBuy ? waiting(m) : 0;
     if (unitBuy) tally.waitFrom(waitingNow);
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
-    let units = totalUnits(lots);
+    let units = lots.totalUnits();
     const before = units * nav;
     const dm = deltaAt(m);
     tally.fee("fund", (before * dm) / 12);
@@ -593,12 +604,12 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
       tally.taxDuring += t.foreign + t.israeli;
       distThisYear += dist;
       buy(t.net, m, m, false);
-      units = totalUnits(lots);
+      units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
       const event = corporateEventFee(tariff.perDividend, fxRate(m), units * nav);
       if (event > 0) {
-        lots = removeFifo(lots, event / nav);
-        units = totalUnits(lots);
+        lots.removeFifo(event / nav);
+        units = lots.totalUnits();
         tally.fee("custody", event);
         eventCharged = true;
         // G-32: in the exit tax year it may be a custody fee the sale gain is reduced by (TXS-06), which the rule base does not settle
@@ -638,8 +649,8 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     if (unitBuy) tally.waitTo(waitingNow);
     const fromUnits = custody + manager + fixed + account - fromCash;
     if (fromUnits > 0) {
-      lots = removeFifo(lots, fromUnits / nav);
-      units = totalUnits(lots);
+      lots.removeFifo(fromUnits / nav);
+      units = lots.totalUnits();
     }
     tally.fee("custody", custody);
     tally.fee("fixed", fixed);
@@ -662,7 +673,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
 
   // F-09 exit: sold at the bid; commission and FX fee paid out of the proceeds; consideration is the gross
   // sale value (G-20); the exit year's custody and account fees are deducted from the gain once (TXS-06).
-  const value = totalUnits(lots) * nav;
+  const value = lots.totalUnits() * nav;
   const gross = value * (1 - spread);
   tally.fee("spread", value - gross);
   const atExit = tariffAt(T);
@@ -679,13 +690,14 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   // F-118: stopped before the exit tax; listed with the open rule, never ranked (B3, D84)
   if (beforeTaxOf !== null) return tally.result(book, { exitMonth: T, nominal: proceeds, index: I, taxAtExit: 0, outcome: { code: "listed-not-ranked", reason: beforeTaxOf }, detail: unitDetail, formulas });
 
-  const cost = lots.reduce((s, l) => s + l.basis, 0);
+  const lotsLeft = lots.lots();
+  const cost = lotsLeft.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
   // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
   // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open). The exit
   // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
-  const adjusted = indexedCost(lots, J![T]!, nav * (1 - spread));
+  const adjusted = indexedCost(lotsLeft, J![T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
