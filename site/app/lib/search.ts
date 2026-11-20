@@ -904,6 +904,41 @@ function memberIn(tokens: string[], set: Set<string>, m: string[]): boolean {
   return phraseIn({ tokens, forms: set }, wf);
 }
 
+/** The names of two words or more in `wordFamilies` ("דמי ניהול פיקדון ניירות ערך"): each is one idea where it stands. */
+const familyNames: string[][] = wordFamilies.flat().map((m) => normalize(m).split(" ")).filter((m) => m.length > 1);
+const nameSpansMemo = new Map<string, [number, number][]>();
+
+/** Where a title holds such a name, the longest at each place, as [start, end) token spans. */
+function nameSpans(norm: string, tokens: string[]): [number, number][] {
+  let spans = nameSpansMemo.get(norm);
+  if (spans) return spans;
+  spans = [];
+  for (let i = 0; i < tokens.length; ) {
+    let len = 0;
+    for (const m of familyNames) if (m.length > len && i + m.length <= tokens.length && m.every((w, j) => sameWord(tokens[i + j]!, w))) len = m.length;
+    if (len > 0) spans.push([i, i + len]);
+    i += Math.max(len, 1);
+  }
+  nameSpansMemo.set(norm, spans);
+  return spans;
+}
+
+/**
+ * `memberIn` for a title: a member found only inside a longer name of the title does not count, so "ניירות ערך" is not in
+ * "דמי ניהול פיקדון ניירות ערך", the way `claimConcepts` reads the claim itself.
+ */
+function memberInTitle(norm: string, set: Set<string>, m: string[]): boolean {
+  const tokens = wordsOf(norm);
+  if (!memberIn(tokens, set, m)) return false;
+  const spans = nameSpans(norm, tokens);
+  if (spans.length === 0) return true;
+  for (let i = 0; i + m.length <= tokens.length; i++) {
+    if (!m.every((w, j) => sameWord(tokens[i + j]!, w))) continue;
+    if (!spans.some(([a, b]) => a <= i && i + m.length <= b && b - a > m.length)) return true;
+  }
+  return false;
+}
+
 /** A query shaped like a rule id ("txg 2", "bank-20"): one id, looked up by the plain search, never a claim. */
 function isRuleIdShape(q: string): boolean {
   return /^[a-z]+\d*[- ]?\d*$/.test(q);
@@ -922,7 +957,7 @@ export function claimHits(index: SearchEntry[], texts: SearchTexts | null | unde
   const { concepts, numbers } = claimConcepts(q);
   if (concepts.length === 0) return [];
   const docs = texts ? textDocs(texts) : null;
-  const inTitle = (e: SearchEntry, c: Concept) => c.some((m) => memberIn(wordsOf(e.norm), entryTokens(e).forms, m));
+  const inTitle = (e: SearchEntry, c: Concept) => c.some((m) => memberInTitle(e.norm, entryTokens(e).forms, m));
   const inAlt = (e: SearchEntry, c: Concept) => !!e.alt && c.some((m) => memberIn(wordsOf(e.alt!), altForms(e), m));
   const inText = (e: SearchEntry, c: Concept) => {
     const d = docs?.get(e.key ?? "");
