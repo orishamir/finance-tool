@@ -1959,7 +1959,7 @@ export const feeDeal = {
     /** The parts every case holds alike, said once over the cases' band: the row's spoken name, and where a cell of it stands, for its bin. */
     everyCase: { parts: "החלקים שבכל המקרים", where: "בכל המקרים" },
     rowHeads: { rate: "שיעור", sum: "סכום", price: "מחיר", min: "מינימום", max: "מקסימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע לפעולה קטנה", maxPerSecurity: "מקסימום לכל נייר ערך", discount: "הנחה", third: "צד שלישי", until: "שינוי במחיר", offset: "קיזוז", refund: "החזר", notes: "עוד על המחיר" } as Record<string, string>,
-    /** Read as rows, the line of the parts one cell holds for every case, led by the thing's any-words ("בכל מסלול:"). */
+    /** Read as rows, the line of the parts one cell holds for every case, led by the thing's any-words ("בכל מסלול:") where every value has a case, else by `everyCase.where` (case-words.ts, `onceLead`). */
     onceLead: "{any}:",
     stepBetween: " עד ",
     stepTop: "הגבול העליון של המדרגה",
@@ -2512,6 +2512,9 @@ export const feeDeal = {
       "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
       /** A custody maximum the list prints with no scope (`max_per: unstated`, data-schema §3.6a item 2): left out, the cautious reading. */
       "max-scope-unstated": "התעריפון מדפיס מקסימום לדמי המשמרת בלי לומר אם הוא לכל נייר ערך או לכל הפיקדון, ולכן העסקה לא מחילה אותו. אם הוא חל, תשלמו פחות.",
+      "same-price": "שורה אחרת של אותה עמלה נוקבת אותו מחיר על אותם דברים, והעסקה מחזיקה אותו פעם אחת.",
+      "fx-to-fx": "המרה ממטבע זר למטבע זר: קנייה בשקלים לא עוברת בה, ולכן העסקה מחזיקה את ההמרה משקלים.",
+      unavailable: "מחיר לסוג נייר ערך שהמסמכים של הבית לא מראים שלקוח פרטי יכול לקנות אצלו.",
       "no-holding": "בתעריפון אין שורות למה שהעסקה מחזיקה, ולכן לא נכנסה ממנו אף עמלה.",
       "none-by-rule": "בתקנות דמי הניהול אין למוצר הזה דמי ניהול מההפקדה, רק מהחיסכון.",
       "track-no-value": "בנתונים של רשות שוק ההון אין מספר כזה למסלול הזה.",
