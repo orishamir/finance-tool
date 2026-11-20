@@ -458,7 +458,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   const bare = (typeof value.value !== "number" ? display : undefined) ?? value.written ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
   // a figure shown with its sign heads its sheet with it: "+0.37%" in the row read "0.37%" in the sheet
   const text = value.signed && typeof value.value === "number" && value.value !== 0 ? `${value.value > 0 ? "+" : "−"}${formatValue(Math.abs(value.value), value.unit, exact ? undefined : value.state, param)}` : bare;
-  // a long word (a deposit's tax: "ריבית לא צמודה; השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
+  // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
   const longHead = text.length > 24;
   // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
   const unitWord = typeof value.value === "number" ? (value.unitText ?? unitWordOf(value.unit)) : null;
