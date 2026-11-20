@@ -634,7 +634,7 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
           if (actions.length) setMenu((m) => !m);
         }}
         onKeyDown={onKeyDown}
-        className={cx("tap-area inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
+        className={cx("tap-wide inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
       >
         <GripVertical size={14} strokeWidth={1.75} aria-hidden />
       </button>
@@ -642,6 +642,12 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
     </span>
   );
 }
+
+/**
+ * The room a grip takes where it stands inside (`Grip`'s `inside`), with no grip in it: a part's landing copy keeps the room of the grip the
+ * part will have (on touch, inside the open fee, the padding a grip's part makes for it), and lifts nothing.
+ */
+export const GripRoom = () => <span aria-hidden data-grip-box="inside" />;
 
 /**
  * A grip's menu, or any small menu of actions opened from a control (`back`): its actions in a small list under the control, or over it

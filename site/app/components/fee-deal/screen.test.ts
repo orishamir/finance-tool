@@ -22,6 +22,10 @@ import { LeftOutList } from "./left-out";
 import { feeName } from "./words";
 import { ToolboxColumn } from "./toolbox";
 import type { OpenHere } from "./fee-block";
+import type { PlaceHands } from "./open-case";
+import { landingOf } from "./toolbox";
+import { cardOf } from "../../lib/fee-deal/toolbox";
+import { changeFormKept } from "../../lib/fee-deal/undo";
 import { ReadingCards } from "./reading";
 import { sumDisplay, upToDisplay } from "./words";
 
@@ -91,7 +95,7 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
 const drawToolbox = (deal: FeeDeal, feeId: string) => text(toolboxOf(deal, feeId));
 
 /** The fees' column, `chosen` open in place (its first case, where it has cases, or `several` of its cases at once). */
-const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = null, several: OpenHere["several"] = null) => {
+const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = null, several: OpenHere["several"] = null, places: PlaceHands | null = null) => {
   const r = readDealFor(deal, data.kinds, TODAY);
   const fee = deal.fees.find((f) => f.id === chosen);
   const caseId = fee && hasCases(fee) && !several ? fee.cases[0]!.id : null;
@@ -106,7 +110,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onRemoveCharge: () => {}, places: { held: null, onPlace: () => {}, takes: () => false, onDrop: () => {} }, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, onResult: () => undefined, phone: false }, cases: { onOpen: () => {}, onAsk: () => {} } },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onRemoveCharge: () => {}, places: places ?? { held: null, onPlace: () => {}, takes: () => false, onDrop: () => {}, lands: () => null }, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, onResult: () => undefined, phone: false }, cases: { onOpen: () => {}, onAsk: () => {} } },
     ask: ask ? { kind: ask } : null,
     adding: "line",
   });
@@ -229,6 +233,58 @@ describe("the case open in place", () => {
     expect(open).toContain(feeDeal.panel.buyPrices);
     expect(open).not.toContain(feeDeal.cases.parts.notes.sale!);
     expect(markup(builderOf(d, "fee-trade"))).toContain(`aria-label="${feeDeal.panel.saleRemove}"`);
+  });
+});
+
+/** The place hands of the page with card `card` held on fee `feeId`, each of its places drawing its landing copy (`landingOf`), a charge put on as the page puts it. */
+const holding = (deal: FeeDeal, feeId: string, card: string): PlaceHands => {
+  const r = readDealFor(deal, data.kinds, TODAY);
+  const fee = deal.fees.find((f) => f.id === feeId)!;
+  const places = cardOf(toolbox(r, feeId)!, card)!.places;
+  const formAfter = (part: Parameters<Parameters<typeof landingOf>[6]>[0], at: { side: "buy" | "sell"; k: number }) => changeFormKept(deal, feeId, part, feeId, undefined, at.k, undefined, at.side)?.deal.fees.find((f) => f.id === feeId) ?? null;
+  return { held: { card, words: card, places }, onPlace: () => {}, takes: () => false, onDrop: () => {}, lands: (item, place) => landingOf(r, fee, null, item, place, null, formAfter) };
+};
+/** Each part of the open fee in order, by its kind, a landing copy's marked "+". */
+const partsDrawn = (html: string) => [...html.matchAll(/<div (data-landing="" )?[^>]*?data-kind="(\w+)"/g)].map((m) => `${m[1] ? "+" : ""}${m[2]}`);
+
+describe("a held card's landing copies", () => {
+  /** A fee on the savings that is free until 04.2027 and free from 05.2027. */
+  const twiceFree = (): FeeDeal => ({ id: "deal-k", name: "", kind: "keren-hishtalmut", fees: [{ id: "fee-balance", kind: "balance", stages: [{ price: { form: "free" }, until: "2027-05" }, { price: { form: "free" } }] }] });
+  /** A trade fee with two prices over time, each a percent of the action with a minimum. */
+  const twoTrades = (): FeeDeal => ({ ...account(), fees: [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) }, until: "2027-01" }, { price: { form: "action", rate: typed(0.1), min: typed(10) } }] }] });
+
+  it("draws a charge where it will stand on each free price, in place of its \"חינם\", each copy one button named by what it adds where", () => {
+    const d = twiceFree();
+    const at = markup(builderOf(d, "fee-balance"));
+    const held = markup(builderOf(d, "fee-balance", null, null, holding(d, "fee-balance", "held")));
+    expect(partsDrawn(at)).toEqual(["charge", "charge"]);
+    expect(partsDrawn(held)).toEqual(["+charge", "+charge"]);
+    expect(count(held, "data-add-here")).toBe(2);
+    expect(count(held, `>${feeDeal.price.free}<`)).toBe(count(at, `>${feeDeal.price.free}<`) - 2);
+    expect(held).toContain(`aria-label="${feeDeal.cases.addHere.replace("{card}", "held").replace("{place}", "")}`);
+  });
+  it("draws a part that goes on at once in its fixed place among the price's parts, and one that asks after them, where it asks", () => {
+    const d = twoTrades();
+    expect(partsDrawn(markup(builderOf(d, "fee-trade")))).toEqual(["charge", "bound", "charge", "bound"]);
+    expect(partsDrawn(markup(builderOf(d, "fee-trade", null, null, holding(d, "fee-trade", "discount"))))).toEqual(["charge", "+off", "bound", "charge", "+off", "bound"]);
+    expect(partsDrawn(markup(builderOf(d, "fee-trade", null, null, holding(d, "fee-trade", "max"))))).toEqual(["charge", "bound", "+bound", "charge", "bound", "+bound"]);
+  });
+  it("draws the month a price changes from as its divider at the foot of each side's prices, where the sale is priced apart", () => {
+    const d = account();
+    d.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25) } }], sale: [{ price: { form: "action", rate: typed(0.3) } }] }];
+    const held = markup(builderOf(d, "fee-trade", null, null, holding(d, "fee-trade", "until")));
+    expect(count(held, "data-landing")).toBe(2);
+    expect(count(held, "data-change-divider")).toBe(0);
+    expect(held.indexOf("data-landing")).toBeGreaterThan(held.indexOf(feeDeal.panel.buyPrices));
+    expect(held.indexOf("data-landing")).toBeLessThan(held.indexOf(feeDeal.panel.salePrices));
+    expect(held.lastIndexOf("data-landing")).toBeGreaterThan(held.indexOf(feeDeal.panel.salePrices));
+  });
+  it("keeps every box of a copy out of reach, with no id a part once there takes", () => {
+    const d = twoTrades();
+    const held = markup(builderOf(d, "fee-trade", null, null, holding(d, "fee-trade", "discount")));
+    for (const copy of held.split("data-landing=").slice(1)) expect(copy).toMatch(/^""[^>]*><button[^>]*data-add-here=""[^>]*><\/button>(<span[^>]*data-grip-box[^>]*><\/span>)?<div inert=""/);
+    const ids = [...held.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });
 

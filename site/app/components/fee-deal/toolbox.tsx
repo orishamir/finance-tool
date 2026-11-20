@@ -2,20 +2,22 @@
 // computer the column "העמלה שבחרתם", the fee's name as its head and the parts to add in groups by kind, and at its end filling the fee
 // from a price list; on a phone the same in the short sheet pinned to the foot of the screen. A case's toolbox names it in its first line;
 // a slim fee's has none. A card only adds. A tap on one goes to the page (`onCard`): on the open case, a card with one place goes there at
-// once and one with several is held, the toolbox's line then saying what is being added with its "ביטול" (`held`), until a round "+" in
-// the block picks the place (places.ts); on several cases at once it does what `casesTool` says. At its place a card does what `applyTool`
-// says: a thing to change by asks its question in the fee's block (`AskThing`), and a tap on one the fee changes by already stops it, as
-// its bin in the band does; the line "+ התאריך" asks, at the foot of its side's prices, the month a price changes from; a part that needs
-// its figure, month or fee first asks for it there (`onPending`); a charge goes on a price that charges nothing, its figure blank and
-// focused (`onCharge`); any other part goes on the price at once. A card off there is greyed, its group saying why. A card dragged onto a
-// place does the same there.
+// once and one with several is held, the toolbox's line then saying what is being added with its "ביטול" (`held`), until a tap on its
+// landing copy in the block picks the place (places.ts); on several cases at once it does what `casesTool` says. At its place a card does
+// what `toolStep` says, which the page carries out (`applyTool`) and draws ahead as the card's landing copy: a thing to change by asks its
+// question in the fee's block (`AskThing`), and a tap on one the fee changes by already stops it, as its bin in the band does; the line
+// "+ התאריך" asks, at the foot of its side's prices, the month a price changes from; a part that needs its figure, month or fee first asks for
+// it there (`onPending`); a charge goes on a price that charges nothing, its figure blank and focused (`onCharge`); any other part goes on
+// the price at once. A card off there is greyed, its group saying why. A card dragged onto a place does the same there.
 import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
 import { cardThing, type Toolbox as ToolboxView, type ToolPart as ToolPartView } from "../../lib/fee-deal/toolbox";
 import { setFeeName } from "../../lib/fee-deal/edits/deal";
 import { isFormPart, isPending, setPart, type FormPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
-import { partAt, type Place } from "../../lib/fee-deal/places";
-import { NAME_MAX, type Fee, type Side } from "../../lib/fee-deal/model";
+import { partAt, waitAt, type Place } from "../../lib/fee-deal/places";
+import { openCase, type PendingAt } from "../../lib/fee-deal/panel";
+import type { DealRead } from "../../lib/fee-deal/deal-read";
+import { NAME_MAX, pricedOf, type Fee, type Side } from "../../lib/fee-deal/model";
 import { capacity } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { termKey } from "../../lib/fee-page-data";
@@ -24,6 +26,7 @@ import { Button, Card, HelpMark, MenuPicker, Section, Swatch, Tag, TextField, To
 import { useProvenanceData } from "../provenance";
 import { UndoLine } from "./undo-line";
 import { caseText } from "./fee-cases";
+import type { Landed } from "./open-case";
 import { FeeName, feeColour, feeName } from "./words";
 
 const p = copy.panel;
@@ -86,18 +89,50 @@ export interface ToolHands {
 }
 
 /**
- * What a toolbox card (`item`, its id) does at place `place` of case `caseId` of `fee` (null for a slim fee): a thing to change by asks
- * its question; a part that needs its figure, month or fee asks for it there; a charge goes on the price; any other part goes on at once.
- * A tap and a drop both do this.
+ * What a toolbox card (`item`, its id) does at place `place` of case `caseId` of `fee` (null for a slim fee), as a step the page carries
+ * out (`applyTool`) or draws ahead as its landing copy: a thing to change by asks its question (`ask`); a part that needs its figure,
+ * month or fee asks for it there (`pending`); a charge goes on the price through the page (`charge`); any other part goes on at once
+ * (`part`: the fee with it, and the part and the price it went on).
  */
-export function applyTool(item: string, fee: Fee, caseId: string | null, place: Place, hands: ToolHands): void {
+export type ToolStep =
+  | { k: "ask"; kind: ByKind }
+  | { k: "pending"; part: PendingPart; place: Place }
+  | { k: "charge"; part: FormPart; place: Place }
+  | { k: "part"; fee: Fee; at: { part: PartId; side: Side; k: number } };
+
+export function toolStep(item: string, fee: Fee, caseId: string | null, place: Place): ToolStep {
   const thing = cardThing(item);
-  if (thing) return hands.onAsk(thing);
+  if (thing) return { k: "ask", kind: thing };
   const id = item as PartId;
-  if (isPending(id)) return hands.onPending(id, place);
-  if (isFormPart(id)) return hands.onCharge(id, place);
+  if (isPending(id)) return { k: "pending", part: id, place };
+  if (isFormPart(id)) return { k: "charge", part: id, place };
   const at = place.on === "price" ? { side: place.side, k: place.k } : { side: "buy" as const, k: 0 };
-  hands.onPart(setPart(fee, id, true, partAt(place, caseId)), { part: id, ...at });
+  return { k: "part", fee: setPart(fee, id, true, partAt(place, caseId)), at: { part: id, ...at } };
+}
+
+/**
+ * What card `item`'s tap at place `place` of case `caseId` of `fee` would leave there (`toolStep`, carried out on nothing), for its landing
+ * copy: the fee then and its open case then (`openCase`, read with `read`), a part that asks then asking at its place, a charge as the
+ * page would put it on (`formAfter`: the page's own change of form), any other part with the part waiting now (`pending`) still waiting
+ * where it still can; null where the card changes no price there (a thing to change by asks its question).
+ */
+export function landingOf(read: DealRead, fee: Fee, caseId: string | null, item: string, place: Place, pending: PendingAt | null, formAfter: (part: FormPart, at: { side: Side; k: number }) => Fee | null): Landed | null {
+  const on = caseId ?? undefined;
+  const s = toolStep(item, fee, caseId, place);
+  const landed = (next: Fee | null, waiting: PendingAt | null): Landed | null => (next ? { fee: next, open: openCase(read, next, on, waiting) } : null);
+  if (s.k === "pending") return landed(fee, waitAt(pricedOf(fee, on), s.part, s.place));
+  if (s.k === "charge") return s.place.on === "price" ? landed(formAfter(s.part, { side: s.place.side, k: s.place.k }), pending) : null;
+  if (s.k === "part") return s.fee === fee ? null : landed(s.fee, pending);
+  return null;
+}
+
+/** What a toolbox card does at its place, by tap or drop alike (`toolStep`), carried out through the page's hands. */
+export function applyTool(item: string, fee: Fee, caseId: string | null, place: Place, hands: ToolHands): void {
+  const s = toolStep(item, fee, caseId, place);
+  if (s.k === "ask") return hands.onAsk(s.kind);
+  if (s.k === "pending") return hands.onPending(s.part, s.place);
+  if (s.k === "charge") return hands.onCharge(s.part, s.place);
+  hands.onPart(s.fee, s.at);
 }
 
 /** The houses whose price list has a line for the fee, and what filling the fee from one does. */

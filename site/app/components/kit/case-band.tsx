@@ -54,9 +54,10 @@ export interface HeadThing {
  */
 export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode }) {
   const head = (
-    // 8 px above and below the chips, so a chip's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
-    // wrapped lines, so two chips' tap areas never meet
-    <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink">
+    // 8 px above the chips and 12 px below, so a chip's 44 px tap area stays inside the band, which clips what passes its edge, and a
+    // chip's grip and the first row's grip under the band keep their tap areas apart (2026-11-21: they shared 2 px on a phone); 12 px
+    // between wrapped lines, so two chips' tap areas never meet
+    <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 pt-2 pb-3 text-sm text-when-ink">
       <Split {...icon} />
       <span className="font-medium">{label}</span>
       {things.map((t) => {

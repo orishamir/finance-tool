@@ -1,8 +1,8 @@
 // Where a toolbox card goes in the case open in place (places.ts): a part a price keeps goes on each price that can hold it and has it
 // not yet; a charge only on a price that charges nothing, never on one that charges, in any form; the month a price changes from on each
 // side's prices; a sale priced apart on the case. A tap on a card with one place adds it there, with several holds it, and the held card
-// tapped again lets go, the page then focusing the earliest place's "+" or the card again (`tapStep`, `letGoStep`). A card is ✓ where every
-// place that fits it has it, and off where none fits. A card dropped on a case goes where it has one place, on the open case only where
+// tapped again lets go, the page then focusing the earliest place's landing copy or the card again (`tapStep`, `letGoStep`). A card is ✓
+// where every place that fits it has it, and off where none fits. A card dropped on a case goes where it has one place, on the open case only where
 // that place is no single price (`dropTakes`). A part waiting for its value waits only while its place and its side's prices stay.
 import { describe, expect, it } from "vitest";
 import { typed, type Priced } from "./model";

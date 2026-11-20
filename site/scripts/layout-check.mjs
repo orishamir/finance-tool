@@ -42,6 +42,9 @@
 //            before Enter or the box is left: the toolbox's "מינימום" on every case of the custody fee ("+ חלק לכל המקרים") at 1440 and
 //            390, on its first grid row's cases ("+ חלק לכל השורה") and in the open case at 1440: a first keystroke that gives a minimum
 //            of 1 ₪ and loses the next digits; and Escape, the box left empty, or the ask's bin pressed with digits typed, adding the part.
+//   grip     on the fee page's deal at 390 as a touch phone, with a fee open, a grip (kit/lift.tsx `Grip`) whose tap area is under 44 px
+//            wide or tall where a finger lands, or that covers the middle of another control within reach (2026-11-21: the grips drew
+//            20 px wide and reached 21 px).
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -85,6 +88,7 @@ const keyFindings = await keysCheck();
 const lineFindings = await linesCheck();
 const dragFindings = await dragCheck();
 const askFindings = await askCheck();
+const gripFindings = await gripCheck();
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
@@ -106,6 +110,10 @@ for (const f of dragFindings) {
 for (const f of askFindings) {
   failed++;
   console.log(`FAIL  the fee page's deal at ${f.width}\n      ask: ${f.detail}`);
+}
+for (const f of gripFindings) {
+  failed++;
+  console.log(`FAIL  ${f.where} at 390\n      grip: ${f.detail}`);
 }
 let sheets = 0;
 let known = 0;
@@ -243,6 +251,90 @@ async function linesCheck() {
     await deal.close();
   }
   return found;
+}
+
+/**
+ * The grips at 390 as a touch phone (`grip` above): on the kit page, after a grip that reaches only its own width is planted there and
+ * caught; then on the fee page's deal with its first fee open, so the grips of its prices and parts show. Returns what failed, each with
+ * where; the planted grip's catch is a miss where it was not caught.
+ */
+async function gripCheck() {
+  const found = [];
+  const open = async (path) => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: HEIGHT[390] }, colorScheme: "dark", locale: "he-IL", hasTouch: true, isMobile: true });
+    const page = await ctx.newPage();
+    await page.goto(base + path, { waitUntil: "networkidle" });
+    await page.evaluate(settled);
+    return { ctx, page };
+  };
+  const kit = await open("/kit");
+  const planted = await kit.page.evaluate(() => {
+    const grip = document.querySelector("button[data-grip]");
+    if (!grip) return false;
+    const copy = grip.cloneNode(true);
+    copy.id = "planted-grip";
+    copy.classList.remove("tap-wide");
+    copy.classList.add("tap-area");
+    const box = Object.assign(document.createElement("div"), { id: "planted-grip-box" });
+    box.style.cssText = "padding:40px;display:flex";
+    box.append(copy);
+    document.querySelector("main").append(box);
+    return true;
+  });
+  if (!planted) found.push({ where: "/kit", detail: "no grip on the kit page to plant a narrow copy of" });
+  else {
+    const caught = await kit.page.evaluate(gripReach, "#planted-grip-box");
+    if (!caught.some((f) => f.includes("wide"))) found.push({ where: "/kit", detail: "self-test: the grip check did not catch the narrow grip planted on /kit" });
+  }
+  await kit.ctx.close();
+  const file = join(here, "layout-check-deal.txt");
+  if (!existsSync(file)) return found;
+  const deal = await open(readFileSync(file, "utf8").trim());
+  // the first fee opened, as a tap on its head does, so its prices' and parts' grips show
+  await deal.page.evaluate(() => document.querySelector("[data-fee-head]")?.click());
+  await deal.page.evaluate(settled);
+  const grips = await deal.page.locator("button[data-grip]").count();
+  if (!grips) found.push({ where: "the fee page's deal", detail: "no grip found with a fee open" });
+  for (const detail of await deal.page.evaluate(gripReach, "main")) found.push({ where: "the fee page's deal", detail });
+  await deal.ctx.close();
+  return found;
+}
+
+// Runs in the page. Each grip in `within`, brought onto the screen: from its middle, how far a finger may land across and down and still hit
+// it (`elementFromPoint`, which counts its ::after area as its own), and whether its area covers the middle of another control within
+// 44 px of it. Returns what failed.
+function gripReach(within) {
+  const out = [];
+  const CONTROL = "button, a[href], input, select, textarea, [role=button], summary";
+  const owns = (g, x, y) => {
+    const at = document.elementFromPoint(x, y);
+    return !!at && (at === g || g.contains(at));
+  };
+  for (const g of document.querySelector(within)?.querySelectorAll("button[data-grip]") ?? []) {
+    g.scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
+    const r = g.getBoundingClientRect();
+    if (!r.width) continue;
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const span = (dx, dy) => {
+      let a = 0, b = 0;
+      while (a < 40 && owns(g, cx - (a + 1) * dx, cy - (a + 1) * dy)) a++;
+      while (b < 40 && owns(g, cx + (b + 1) * dx, cy + (b + 1) * dy)) b++;
+      return a + b + 1;
+    };
+    const across = span(1, 0), down = span(0, 1);
+    const name = g.getAttribute("aria-label") ?? "a grip";
+    if (across < 44) out.push(`"${name}": its tap area is ${across} px wide (44 at least)`);
+    if (down < 44) out.push(`"${name}": its tap area is ${down} px tall (44 at least)`);
+    for (const c of document.querySelectorAll(CONTROL)) {
+      if (c === g || g.contains(c) || c.contains(g)) continue;
+      const q = c.getBoundingClientRect();
+      if (!q.width || !q.height) continue;
+      const mx = q.left + q.width / 2, my = q.top + q.height / 2;
+      if (Math.abs(mx - cx) > 44 || Math.abs(my - cy) > 44) continue;
+      if (owns(g, mx, my)) out.push(`"${name}": its tap area covers the middle of "${(c.getAttribute("aria-label") || c.textContent || c.tagName).trim().slice(0, 40)}"`);
+    }
+  }
+  return out;
 }
 
 // Runs in the page. The hairlines of the fee grids in `within` (kit/case-table.tsx, `data-hairline`), each against every cell, part line

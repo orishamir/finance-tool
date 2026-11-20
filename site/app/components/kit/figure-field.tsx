@@ -21,7 +21,7 @@ import { MonthPicker, pickCommit } from "./month-picker";
  * look alone (the danger edge), never the entered ink: what it holds is not what the page reads. With the focus in it the box has one
  * frame, 2 px in the focus ring's colour (its own edge turned that colour, with a 1 px outline flush on it), never an edge inside a ring
  * with a gap; a box in error keeps the danger colour in that frame. The whole box takes the pointer as its field (`focusInBox`), and is a
- * 44 px target both ways whatever its figure.
+ * 44 px target both ways whatever its figure. Each box is marked `data-box`, so a part's landing copy draws it without its fill (landing.tsx).
  */
 function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?: boolean): string {
   return cx(
@@ -386,6 +386,7 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
       <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
         <span
           className={boxLook(state, !!error, tight)}
+          data-box=""
           data-lift=""
           onMouseDown={(e) => {
             focusInBox(e);
@@ -623,6 +624,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
       <span
         ref={box}
         className={boxLook(value === null ? "empty" : "entered", error, tight)}
+        data-box=""
         data-lift=""
         onMouseDown={(e) => {
           if (e.button !== 0) return;

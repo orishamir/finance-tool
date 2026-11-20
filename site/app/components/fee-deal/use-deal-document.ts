@@ -14,7 +14,7 @@ import { kindById } from "../../lib/fee-deal/kinds";
 import { houseName } from "../../lib/fee-deal/templates";
 import { dealBreach, LIMITS, takeRefusal, type Limit } from "../../lib/fee-deal/limits";
 import type { AddressDeal } from "../../lib/fee-deal/link";
-import { NAME_MAX, newDeal, type FeeDeal } from "../../lib/fee-deal/model";
+import { NAME_MAX, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { dealStore, lastOpenId, rememberOpen, reopened, sameDeal, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
 import { changeFormKept, deleteDealKept, formBack, freedCurrency, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
@@ -186,6 +186,17 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     dealStore.update((ds) => savedWith(ds, deal, today));
   };
   /**
+   * What putting charge `part` on price `at.k` on side `at.side` of a fee (in case `caseId`) does: where a charge added again right after
+   * its bin made the price free, the price put back as it was, with its parts, by the undo (`back`); else the change of form (`r`), in
+   * the currency the freed price had; null where nothing changes.
+   */
+  const formStep = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }): { back: Undo } | { r: MaybeUndoable } | null => {
+    const kept = undoing && "dealId" in undoing ? undoing : null;
+    if (kept && formBack(kept, deal, feeId, part, caseId ?? undefined, at.k, at.side)) return { back: kept as Undo };
+    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at.k, freedCurrency(kept, deal, feeId, caseId ?? undefined, at.k, at.side), at.side);
+    return r ? { r } : null;
+  };
+  /**
    * A charge put on price `at.k` on side `at.side` of a fee (in case `caseId`): the toolbox's, on a price that charges nothing, or "free"
    * from the bin of the price's charge, which keeps the price as it stood for the undo, whose line stands under the fee's block without
    * taking the focus. The focus goes to the part now there: the charge's blank figure, so typing goes on there, or the free price's
@@ -193,15 +204,14 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
    */
   const changeForm = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }): boolean => {
     const focusPart = () => setFocus({ fee: feeId, on: "part", part: partPlaceId(at.side, at.k, part) });
-    const kept = undoing && "dealId" in undoing ? undoing : null;
-    // a charge added again right after its bin made the price free puts the price back as it was, with its parts
-    if (formBack(kept, deal, feeId, part, caseId ?? undefined, at.k, at.side)) {
+    const step = formStep(feeId, part, caseId, at);
+    if (!step) return false;
+    if ("back" in step) {
       onUndo();
       focusPart();
       return true;
     }
-    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at.k, freedCurrency(kept, deal, feeId, caseId ?? undefined, at.k, at.side), at.side);
-    if (!r) return false;
+    const r = step.r;
     if (r.undo) {
       if (!keep(r.deal)) return false;
       setUndoing(r.undo);
@@ -209,6 +219,12 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     } else change(r.deal);
     focusPart();
     return true;
+  };
+  /** The fee as a charge put on its price would leave it (`changeForm`, carried out on nothing), for the charge's landing copy; null where nothing changes. */
+  const formAfter = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }): Fee | null => {
+    const step = formStep(feeId, part, caseId, at);
+    const next = !step ? null : "back" in step ? (undo(deal, step.back, chosen)?.deal ?? null) : step.r.deal;
+    return next?.fees.find((f) => f.id === feeId) ?? null;
   };
   // the fee put back takes the focus on its card; a fill's and a chain's lines hand it on themselves; a deleted deal put back that was on
   // screen comes back on screen
@@ -306,6 +322,7 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     deletedElsewhere,
     keepAnyway,
     changeForm,
+    formAfter,
     onUndo,
     historyMove,
     rename,

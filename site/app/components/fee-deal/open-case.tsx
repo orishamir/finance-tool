@@ -1,11 +1,11 @@
 // The case open in place (method §10.6, `panel`'s `open`): each price of the case with its parts in edit (part-edit.tsx), in time order
 // with a divider between two prices saying the month the later starts (F-110), and a sale priced apart under its own head; while a card
-// from the toolbox is held or carried, a round "+" at the end of each place it can go (places.ts, `AddHere`); a part the toolbox added
-// that still needs its figure, its fee or its month, asking for it where it goes; and the menu a slot of the case opens (`slotEdit`),
-// which the page holds open.
+// from the toolbox is held or carried, at each place it can go the landing copy of what its tap would put there, in the very spot and room
+// it would take (places.ts, the kit's `Landing`); a part the toolbox added that still needs its figure, its fee or its month, asking for it
+// where it goes; and the menu a slot of the case opens (`slotEdit`), which the page holds open.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
-import type { OpenCase, OpenPart, OpenPending, OpenStage } from "../../lib/fee-deal/panel";
+import { landedParts, landedPending, type OpenCase, type OpenPart, type OpenPending, type OpenStage } from "../../lib/fee-deal/panel";
 import type { SlotEdit } from "../../lib/fee-deal/things";
 import { addOwnPlace, nameTaken, setMine, setRangeUnit, setStep, setTop, setWhen } from "../../lib/fee-deal/edits/case";
 import { editPrice, moveChange, setSaleApart } from "../../lib/fee-deal/edits/stage";
@@ -17,45 +17,20 @@ import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { amountWords, fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { AddHere, ChangeDivider, DropZone, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText, useCarried } from "../kit";
+import { ChangeDivider, DropZone, FigureField, GripRoom, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText, useCarried, type Landing } from "../kit";
 import { bringIntoView } from "./in-view";
 import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
-import { PartLine, PendingEdit, type PartPlace, type PendingHands } from "./part-edit";
+import { PartLine, PendingEdit, PendingLanding, type PartPlace, type PendingHands } from "./part-edit";
 
 /**
- * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's bin
- * takes it away (`setPart`), and the charge's bin makes the price free through the page (`onRemoveCharge`, kept for the undo). The price's
- * currency, where the fee may take another, is chosen beside the part the panel marks (`stage.chooser`), whose box then draws no sign of
- * its own, so the currency shows once; every other sum shows it as its sign.
+ * Where one price's parts stand and what they edit (part-edit.tsx `PartPlace`): price `stage.k` on `side` of `fee`'s case `caseId`, its
+ * boxes named for `name`, their ids ending in `tail` (a landing copy's own, so no box of it shares an id with the part once it is there).
+ * The price's currency, where the fee may take another, is chosen beside the part the panel marks (`stage.chooser`), whose box then draws
+ * no sign of its own, so the currency shows once; every other sum shows it as its sign.
  */
-function PriceParts({
-  fee,
-  caseId,
-  side,
-  stage,
-  name,
-  deal,
-  pending,
-  onFee,
-  onRemoveCharge,
-  pendingHands,
-  grip,
-}: {
-  fee: Fee;
-  caseId?: string;
-  side: Side;
-  stage: OpenStage;
-  name: string;
-  deal: FeeDeal;
-  /** The part asking for what it needs here, where it was added on this price. */
-  pending: OpenPending | null;
-  onFee: (f: Fee) => void;
-  onRemoveCharge: () => void;
-  pendingHands: PendingHands;
-  grip?: PartGrip;
-}) {
-  const { k, until, parts } = stage;
+function partPlace(fee: Fee, caseId: string | undefined, side: Side, stage: OpenStage, name: string, deal: FeeDeal, onFee: (f: Fee) => void, tail = ""): PartPlace {
+  const { k, until } = stage;
   const stages = pricesOn(fee, side, caseId);
   const price = stages[k]!.price;
   const label = (field: string) => copy.builder.fieldName(name, field);
@@ -63,7 +38,7 @@ function PriceParts({
   const chooser = stage.chooser ? (
     <InlineSelect chip plain={stage.chooser.plain} label={label(copy.panel.currency)} options={BOUND_CURRENCIES.map((c) => ({ id: c, name: copy.panel.signs[c]! }))} value={stage.chooser.currency} onChange={(v) => v && edit((x) => withCurrency(x, v as BoundCurrency))} />
   ) : null;
-  const at: PartPlace = {
+  return {
     fee,
     ...(caseId ? { caseId } : {}),
     side,
@@ -89,22 +64,92 @@ function PriceParts({
         {...(f.bare ? { unit: "" } : {})}
         label={label(SPOKEN[f.figure])}
         {...opts}
-        id={partFieldId(fee.id, `${partPlaceId(side, k, part)}-${f.figure}`)}
+        id={partFieldId(fee.id, `${partPlaceId(side, k, part)}-${f.figure}${tail}`)}
         onFee={onFee}
       />
     ),
   };
+}
+
+/** The open case as a toolbox card's tap at a place would leave it (`PlaceHands.lands`): the fee then, and its open case then. */
+export interface Landed {
+  fee: Fee;
+  open: OpenCase;
+}
+
+/** A place's landing copy while a card can go there: how it is drawn (the button that adds it, or a carried card's mark), and what lands. */
+interface Land extends Landed {
+  mark: Landing;
+}
+
+/** The prices on a side of an open case. */
+const stagesOn = (open: OpenCase, side: Side): readonly OpenStage[] => (side === "sell" ? (open.sell ?? []) : open.buy);
+
+/**
+ * The parts of one price of the open case, in edit (`PartLine`). Each part's figures are the existing boxes (`PriceFigure`); a part's bin
+ * takes it away (`setPart`), and the charge's bin makes the price free through the page (`onRemoveCharge`, kept for the undo). While a
+ * toolbox card can go on the price (`landing`), its parts are those the card's tap would leave there (`landedParts`): each it has now as it
+ * is, the part the tap puts on as its landing copy in its place among them, a part the tap takes away (a free price's "חינם") gone until
+ * the card is let go; and the part asking here, the one the tap would leave asking (`landedPending`).
+ */
+function PriceParts({
+  fee,
+  caseId,
+  side,
+  stage,
+  name,
+  deal,
+  pending,
+  onFee,
+  onRemoveCharge,
+  pendingHands,
+  grip,
+  landing,
+}: {
+  fee: Fee;
+  caseId?: string;
+  side: Side;
+  stage: OpenStage;
+  name: string;
+  deal: FeeDeal;
+  /** The part asking for what it needs here, where it was added on this price. */
+  pending: OpenPending | null;
+  onFee: (f: Fee) => void;
+  onRemoveCharge: () => void;
+  pendingHands: PendingHands;
+  grip?: PartGrip;
+  /** The landing copy of what a held or carried toolbox card would put on this price. */
+  landing: Land | null;
+}) {
+  const { k } = stage;
+  const at = partPlace(fee, caseId, side, stage, name, deal, onFee);
   const remove = (p: OpenPart) => {
     if (p.remove === "part") return () => onFee(setPart(fee, p.id, false, { side, k, ...(caseId ? { caseId } : {}) }));
     if (p.remove === "charge") return onRemoveCharge;
     return undefined;
   };
+  const after = landing ? stagesOn(landing.open, side).find((s) => s.k === k) : undefined;
+  const place: Place = { on: "price", side, k };
+  const asking = (p: OpenPending | null) => (p && samePlace(p.place, place) ? p : null);
+  const parts = landing && after ? landedParts(stage, after) : stage.parts.map((part) => ({ part, lands: false }));
+  const ask = landing ? landedPending(pending, asking(landing.open.pending)) : pending && { pending, lands: false };
+  // a landing copy stands where the part will, as the price will be once it is there: its boxes, its currency chooser, its room
+  const landAt = landing && after ? partPlace(landing.fee, caseId, side, after, name, deal, () => undefined, "-landing") : null;
   return (
     <>
-      {parts.map((p) => (
-        <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} grip={grip?.(p.id, side, k)} />
-      ))}
-      {pending && <AskPart key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />}
+      {parts.map(({ part: p, lands }) =>
+        lands && landing && landAt ? (
+          <PartLine key={p.id} part={p} at={landAt} onRemove={p.remove ? () => undefined : undefined} {...(grip?.(p.id, side, k) ? { grip: <GripRoom /> } : {})} landing={landing.mark} />
+        ) : (
+          <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} grip={grip?.(p.id, side, k)} />
+        ),
+      )}
+      {ask &&
+        (ask.lands && landing ? (
+          <PendingLanding key={`${ask.pending.part}-landing`} fee={fee} {...(caseId ? { caseId } : {})} pending={ask.pending} deal={deal} name={name} landing={landing.mark} />
+        ) : (
+          <AskPart key={ask.pending.part} fee={fee} caseId={caseId} pending={ask.pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />
+        ))}
     </>
   );
 }
@@ -113,29 +158,35 @@ function PriceParts({
 export type PartGrip = (part: PartId, side: Side, k: number) => ReactNode;
 
 /**
- * Where the open case's places take toolbox cards (places.ts): the card held and its places, each drawn with a round "+" whose tap adds it
- * there (`onPlace`), its words for the "+"'s spoken name; and a card carried by the pointer, which each place that takes it (`takes`)
- * shows by the same "+", filled while the card is over it, and takes where it is let go (`onDrop`).
+ * Where the open case's places take toolbox cards (places.ts): the card held, its words for its copies' spoken names, and its places, each
+ * drawn with the card's landing copy, whose tap adds it there (`onPlace`); a card carried by the pointer, which each place that takes it
+ * (`takes`) shows by the same copy, raised while the card is over it, and takes where it is let go (`onDrop`); and what lands at a place
+ * (`lands`: the open case as the card's tap there would leave it; null where it changes no price there).
  */
 export interface PlaceHands {
-  held: { words: string; places: readonly Place[] } | null;
+  held: { card: string; words: string; places: readonly Place[] } | null;
   onPlace: (place: Place) => void;
   takes: (item: string, place: Place) => boolean;
   onDrop: (item: string, place: Place) => void;
+  lands: (item: string, place: Place) => Landed | null;
 }
 
 /**
- * A place of the open case, as a drop zone for a carried card (drawing no frame: its round "+" shows it takes the card), around what
- * `children` draws with the place's "+" (`plus`): while a card is carried, its mark where the place takes it, filled while it is over the
- * place; else the held card's button, where the place takes that.
+ * A place of the open case, as a drop zone for a carried card (drawing no frame: the card's landing copy shows it takes it), around what
+ * `children` draws with the place's landing copy (`land`): while a card is carried, its mark where the place takes it, raised while it is
+ * over the place; else the held card's button, where the place takes that.
  */
-function PlaceZone({ place, hands, label, children }: { place: Place; hands: PlaceHands; label: string; children: (plus: ReactNode) => ReactNode }) {
-  const held = !!hands.held?.places.some((p) => samePlace(p, place));
-  // while a card is carried, the places show the carried card's "+" alone, never the held card's (the page lets the held card go)
-  const carrying = useCarried() !== null;
+function PlaceZone({ place, hands, label, children }: { place: Place; hands: PlaceHands; label: string; children: (land: Land | null) => ReactNode }) {
+  const held = hands.held?.places.some((p) => samePlace(p, place)) ? hands.held : null;
+  // while a card is carried, the places show the carried card's copy alone, never the held card's (the page lets the held card go)
+  const carried = useCarried();
   return (
     <DropZone accepts={(it) => hands.takes(it, place)} onDrop={(it) => hands.onDrop(it, place)}>
-      {({ takes, over }) => children(takes ? <AddHere over={over} /> : held && !carrying ? <AddHere label={label} onAdd={() => hands.onPlace(place)} /> : null)}
+      {({ takes, over }) => {
+        const item = takes ? carried : held && carried === null ? held.card : null;
+        const landed = item ? hands.lands(item, place) : null;
+        return children(landed && { ...landed, mark: takes ? { over } : { label, onAdd: () => hands.onPlace(place) } });
+      }}
     </DropZone>
   );
 }
@@ -144,9 +195,9 @@ function PlaceZone({ place, hands, label, children }: { place: Place; hands: Pla
  * The open case's prices in edit, each with its parts, in time order: between two prices a divider with the month the later starts, typed
  * in place and kept between its neighbours (`moveChange`), and its bin, which takes the change away (`onRemoveChange`, kept for the undo);
  * then a sale priced apart under its head, the same way. Each price is a place a toolbox card can go, and so is each side's prices where
- * the sale is priced apart (the month a price changes from), its "+" at the end of the side's head (`places`). A part the toolbox added
- * that asks for its figure, fee or month asks at the place it was added (`open.pending`, by its place's kind): on its price, at the foot
- * of its side's prices, or at the foot of the case (`AskPart`).
+ * the sale is priced apart (the month a price changes from), its landing copy at the foot of the side's prices (`places`). A part the
+ * toolbox added that asks for its figure, fee or month asks at the place it was added (`open.pending`, by its place's kind): on its price,
+ * at the foot of its side's prices, or at the foot of the case (`AskPart`).
  */
 export function OpenParts({
   fee,
@@ -179,12 +230,16 @@ export function OpenParts({
   const priced = pricedOf(fee, caseId);
   // the part asking for what it needs, at the place it was added: a price, the foot of a side's prices, the foot of the case
   const waitingAt = (place: Place): OpenPending | null => (open.pending && samePlace(open.pending.place, place) ? open.pending : null);
-  const asking = (place: Place) => {
-    const w = waitingAt(place);
-    return w && <AskPart key={w.part} fee={fee} caseId={caseId} pending={w} deal={deal} name={name} onFee={onFee} hands={pendingHands} />;
+  // what asks at the foot of a side's prices or of the case: the part waiting there, or, while a card can go there, what its tap leaves there
+  const asking = (place: Place, land: Land | null = null) => {
+    const now = waitingAt(place);
+    const w = land ? landedPending(now, land.open.pending && samePlace(land.open.pending.place, place) ? land.open.pending : null) : now && { pending: now, lands: false };
+    if (!w) return null;
+    if (w.lands && land) return <AskLanding key={`${w.pending.part}-landing`} fee={fee} caseId={caseId} pending={w.pending} deal={deal} name={name} landing={land.mark} />;
+    return <AskPart key={w.pending.part} fee={fee} caseId={caseId} pending={w.pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />;
   };
-  const plusLabel = (place: Place) => copy.cases.addHere.replace("{card}", places.held?.words ?? "").replace("{place}", placeWords(priced, place, !open.case));
-  const side = (s: Side, stages: readonly OpenStage[]) => (
+  const addLabel = (place: Place) => copy.cases.addHere.replace("{card}", places.held?.words ?? "").replace("{place}", placeWords(priced, place, !open.case));
+  const side = (s: Side, stages: readonly OpenStage[], sideLand: Land | null = null) => (
     <>
       {stages.map((st, j) => {
         const from = j > 0 ? stages[j - 1]!.until : undefined;
@@ -200,36 +255,31 @@ export function OpenParts({
                 onRemove={() => onRemoveChange(s, j - 1, caseId)}
               />
             )}
-            <PlaceZone place={place} hands={places} label={plusLabel(place)}>
-              {(plus) => (
-                // the price's parts, and at their end, while a card can go on it, its round "+"
+            <PlaceZone place={place} hands={places} label={addLabel(place)}>
+              {(land) => (
                 <div className="flex items-center gap-3" {...(from ? { "data-stage-from": `${s}:${from}` } : {})}>
                   <div className="flex min-w-0 flex-col gap-2">
-                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={waitingAt(place)} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
+                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={waitingAt(place)} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(grip ? { grip } : {})} landing={land} />
                   </div>
-                  {plus}
                 </div>
               )}
             </PlaceZone>
           </div>
         );
       })}
-      {/* a part that goes on the side's prices as a whole (the month a price changes from), asked at their foot */}
-      {asking({ on: "side", side: s })}
+      {/* a part that goes on the side's prices as a whole (the month a price changes from), asked at their foot, where its landing copy stands too */}
+      {asking({ on: "side", side: s }, sideLand)}
     </>
   );
-  // a side's prices under its head, where the sale is priced apart: the side is a place for the month a price changes from, its "+" in the head
+  // a side's prices under its head, where the sale is priced apart: the side is a place for the month a price changes from
   const headed = (s: Side, head: ReactNode, stages: readonly OpenStage[]) => {
     const place: Place = { on: "side", side: s };
     return (
-      <PlaceZone place={place} hands={places} label={plusLabel(place)}>
-        {(plus) => (
+      <PlaceZone place={place} hands={places} label={addLabel(place)}>
+        {(land) => (
           <div className="flex flex-col gap-2">
-            <div className="flex min-h-target items-center gap-2">
-              {head}
-              {plus}
-            </div>
-            {side(s, stages)}
+            <div className="flex min-h-target items-center gap-2">{head}</div>
+            {side(s, stages, land)}
           </div>
         )}
       </PlaceZone>
@@ -266,7 +316,13 @@ export function OpenParts({
  */
 function AskPart({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee; caseId: string | undefined; pending: OpenPending; deal: FeeDeal; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   if (pending.ask === "month") return <AskChange fee={fee} caseId={caseId} pending={pending} name={name} onFee={onFee} hands={hands} />;
-  return <PendingEdit fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={hands} />;
+  return <PendingEdit fee={fee} {...(caseId ? { caseId } : {})} pending={pending} deal={deal} name={name} onFee={onFee} hands={hands} />;
+}
+
+/** The landing copy of a part a toolbox card would leave asking at the foot of a side's prices or of the case (`AskPart`, before it is there). */
+function AskLanding({ fee, caseId, pending, deal, name, landing }: { fee: Fee; caseId: string | undefined; pending: OpenPending; deal: FeeDeal; name: string; landing: Landing }) {
+  if (pending.ask === "month") return <ChangeAsk fee={fee} caseId={caseId} side={partAt(pending.place, caseId).side ?? "buy"} name={name} onAdd={() => undefined} onCancel={() => undefined} landing={landing} />;
+  return <PendingLanding fee={fee} {...(caseId ? { caseId } : {})} pending={pending} deal={deal} name={name} landing={landing} />;
 }
 
 /**
@@ -277,7 +333,6 @@ function AskPart({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee;
  * changes, the focus back on the toolbox's line.
  */
 function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; caseId: string | undefined; pending: OpenPending; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
-  const c = copy.panel.change;
   const at = partAt(pending.place, caseId);
   // the prices it splits: its side's, the purchase's where it names none (`setPart`)
   const side = at.side ?? "buy";
@@ -307,7 +362,6 @@ function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; cas
       bringIntoView(box.closest<HTMLElement>("[data-stage-from]"));
     });
   };
-  const taken = pricesOn(fee, side, caseId).flatMap((s) => (s.until ? [s.until] : []));
   return (
     <div
       ref={root}
@@ -318,13 +372,26 @@ function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; cas
         cancel();
       }}
     >
-      <ChangeDivider
-        lead={c.from}
-        month={<MonthField value={null} label={copy.builder.fieldName(name, c.month)} tight waits taken={{ months: taken, why: c.taken }} onCommit={add} />}
-        removeLabel={copy.builder.fieldName(name, c.remove)}
-        onRemove={cancel}
-      />
+      <ChangeAsk fee={fee} caseId={caseId} side={side} name={name} onAdd={add} onCancel={cancel} />
     </div>
+  );
+}
+
+/**
+ * The divider that asks the month a price changes from (`AskChange`), or its landing copy (`landing`): "מ־", an empty month box that
+ * refuses a month the side's prices change in already (`taken`), and its bin.
+ */
+function ChangeAsk({ fee, caseId, side = "buy", name, onAdd, onCancel, landing }: { fee: Fee; caseId: string | undefined; side?: Side; name: string; onAdd: (month: string) => void; onCancel: () => void; landing?: Landing }) {
+  const c = copy.panel.change;
+  const taken = pricesOn(fee, side, caseId).flatMap((s) => (s.until ? [s.until] : []));
+  return (
+    <ChangeDivider
+      lead={c.from}
+      month={<MonthField value={null} label={copy.builder.fieldName(name, c.month)} tight waits taken={{ months: taken, why: c.taken }} onCommit={onAdd} />}
+      removeLabel={copy.builder.fieldName(name, c.remove)}
+      onRemove={onCancel}
+      {...(landing ? { landing } : {})}
+    />
   );
 }
 

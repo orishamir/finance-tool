@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, AddHere, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -3230,12 +3230,14 @@ function ToolboxDemo() {
 
 /**
  * A card held while its place is picked: a slim trade fee whose price changes in January 2027, both prices taking "הנחה % מהמחיר", so a
- * tap on it holds it, the line under the toolbox's head saying so; a tap on a price's round "+" adds the discount there, and "ביטול", or
- * the card again, lets it go. Once one price has it, a tap adds it to the other at once; once both have it, the card has its ✓.
+ * tap on it holds it, the line under the toolbox's head saying so; each price then shows the discount's landing copy where it would stand,
+ * after the price, as the same part with its box empty; a tap on one adds the discount there, and "ביטול", or the card again, lets it go.
+ * Once one price has it, a tap adds it to the other at once; once both have it, the card has its ✓.
  */
 function HoldDemo({ today }: { today: string }) {
   const [held, setHeld] = useState(false);
   const [on, setOn] = useState<number[]>([]);
+  const [rates, setRates] = useState<Record<number, number>>({});
   const w = dealWords.cases.place;
   const c = dealWords.panel.change;
   const [card] = toolGroups([]).find((gr) => gr.kind === "off")!.parts;
@@ -3252,18 +3254,22 @@ function HoldDemo({ today }: { today: string }) {
   };
   const tap = () => (free.length === 1 ? add(free[0]!) : free.length > 1 && setHeld(!held));
   const groups = [{ ...toolGroups([]).find((gr) => gr.kind === "off")!, parts: [{ ...card!, used: free.length === 0 }] }];
+  // the discount on price `k`, its box empty until typed; the same part, faint and out of reach, as its landing copy
+  const discount = (k: number, landing?: Landing) => (
+    <PartEdit kind="off" lead={sc.discount.trim()} onRemove={() => setOn((o) => o.filter((j) => j !== k))} {...(landing ? { landing } : {})}>
+      <FigureField value={rates[k] === undefined ? null : entered(rates[k]!, "pct_of_trade", today, g.sampleAbout)} label={sc.discount.trim()} unit="%" sign="%" tight onCommit={(n) => setRates((r) => ({ ...r, [k]: n }))} />
+      <span className="text-muted-foreground">{sc.ofPrice.split(",")[0]!}</span>
+    </PartEdit>
+  );
   return (
     <div className="grid items-start gap-4 lg:grid-cols-2">
       <SlimFee dot="bg-fee-trade" name={sc.trade} label={sc.openFee(sc.trade)} open onOpen={() => undefined}>
         {prices.map((x, k) => (
           <div key={x.part.id} className="flex w-full flex-col gap-2">
             {k > 0 && <ChangeDivider lead={c.from} month={<MonthField value="2027-01" label={c.month} tight onCommit={() => undefined} />} removeLabel={c.remove} onRemove={() => undefined} />}
-            <div className="flex items-center gap-3">
-              <div className="flex min-w-0 flex-col gap-2">
-                <Edit part={x.part} today={today} onRemove={() => undefined} />
-                {on.includes(k) && <Edit part={{ id: `discount${k}`, kind: "off", lead: sc.discount.trim(), n: 10, ...pct, words: sc.ofPrice.split(",")[0]! }} today={today} onRemove={() => setOn((o) => o.filter((j) => j !== k))} />}
-              </div>
-              {held && !on.includes(k) && <AddHere label={dealWords.cases.addHere.replace("{card}", label).replace("{place}", x.place)} onAdd={() => add(k)} />}
+            <div className="flex min-w-0 flex-col gap-2">
+              <Edit part={x.part} today={today} onRemove={() => undefined} />
+              {on.includes(k) ? discount(k) : held && discount(k, { label: dealWords.cases.addHere.replace("{card}", label).replace("{place}", x.place), onAdd: () => add(k) })}
             </div>
           </div>
         ))}
@@ -3690,6 +3696,18 @@ function CaseDemos({ today }: { today: string }) {
             ))}
           </div>
         </State>
+        <State label={`the landing copy of a part a held toolbox card would put on a price, over the part as a tap puts it there: no fill, no kind's colour, no bin or grip (their room kept), a dashed outline and its contents faint; ${g.states.interactive}: the outline turns solid in the action colour and the contents rise under the pointer and on the keyboard's focus, as under a carried card (the last); a tap adds it`} wide>
+          <div className="flex max-w-lg flex-col gap-2">
+            {[{ label: dealWords.cases.addHere.replace("{card}", dealWords.builder.minWord).replace("{place}", dealWords.cases.place.price), onAdd: () => undefined }, null, { over: true }].map((landing, n) => (
+              <PartEdit key={n} kind="bound" mark="min" lead={dealWords.builder.minWord} onRemove={() => undefined} {...(landing ? { landing } : {})}>
+                <FigureField value={null} label={dealWords.builder.minWord} unit="₪" sign="₪" tight onCommit={() => undefined} />
+              </PartEdit>
+            ))}
+          </div>
+        </State>
+        <State label={`a card held while its place is picked: a slim fee with two prices over time, with no first line in its toolbox; ${g.states.interactive}: a tap on the discount's card holds it and each price shows the discount's landing copy where it would stand; a tap on one adds the discount there`} wide>
+          <HoldDemo today={today} />
+        </State>
       </Demo>
       <Demo name="ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
         <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name; each thing a pill with its chevron, whose menu takes it away, no bin beside it (founder, 2026-11-20); ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
@@ -3741,6 +3759,13 @@ function CaseDemos({ today }: { today: string }) {
             <ChangeDemo today={today} />
           </div>
         </State>
+        <State label={`the landing copy of the divider the toolbox's date line would add at the foot of a side's prices, over the divider as it then asks its month: faint, outlined, its bin's room kept; ${g.states.interactive}: solid and raised under the pointer and on focus, as under a carried card (the second)`} wide>
+          <div className="flex max-w-xl flex-col gap-3">
+            <ChangeDivider lead={dealWords.panel.change.from} month={<MonthField value={null} label={dealWords.panel.change.month} tight waits onCommit={() => undefined} />} removeLabel={dealWords.panel.change.remove} onRemove={() => undefined} landing={{ label: dealWords.cases.addHere.replace("{card}", dealWords.cases.dateHeld).replace("{place}", dealWords.cases.place.price), onAdd: () => undefined }} />
+            <ChangeDivider lead={dealWords.panel.change.from} month={<MonthField value={null} label={dealWords.panel.change.month} tight waits onCommit={() => undefined} />} removeLabel={dealWords.panel.change.remove} onRemove={() => undefined} landing={{ over: true }} />
+            <ChangeDivider lead={dealWords.panel.change.from} month={<MonthField value={null} label={dealWords.panel.change.month} tight waits onCommit={() => undefined} />} removeLabel={dealWords.panel.change.remove} onRemove={() => undefined} />
+          </div>
+        </State>
         <State label="the same price at rest in a table's cell: the line with the month centred on it, the earlier price above and the later under it">
           <ChangeRestDemo today={today} />
         </State>
@@ -3782,17 +3807,6 @@ function CaseDemos({ today }: { today: string }) {
           <PhoneFrame>
             <Toolbox sheet addTo={caseLine} held={{ part: "discount", words: dealWords.cases.hold.price.replace("{card}", `${sc.discount.trim()} % ${sc.ofPrice.split(",")[0]!}`), onCancel: () => undefined }} groups={toolGroups(["unit"])} onAdd={() => undefined} />
           </PhoneFrame>
-        </State>
-      </Demo>
-      <Demo name="AddHere" use={g.uses.AddHere}>
-        <State label={`a slim fee with two prices over time, with no first line in its toolbox; ${g.states.interactive}: a tap on "הנחה % מהמחיר" holds it and each price shows its round "+", filled under the pointer and on the keyboard's focus; a tap on one adds the discount there`} wide>
-          <HoldDemo today={today} />
-        </State>
-        <State label="the marks alone: at rest, and filled (under the pointer, on focus, or a carried card over its place)">
-          <div className="flex items-center gap-6">
-            <AddHere label={dealWords.cases.addHere.replace("{card}", sc.discount.trim()).replace("{place}", dealWords.cases.place.price)} onAdd={() => undefined} />
-            <AddHere over />
-          </div>
         </State>
       </Demo>
       <Demo name="RemoveButton" use={g.uses.RemoveButton}>

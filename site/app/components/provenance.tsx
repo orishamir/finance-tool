@@ -354,8 +354,8 @@ export function Num({ value: given, size = "inline", display, animate, className
   const roundState = keepDecimals ? undefined : value.state;
   // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped
   const target = typeof value.value === "number" ? value.value : null;
-  const landing = target === null || shown === target ? null : typeof display === "function" ? display(target) : formatValue(target, value.unit, roundState, param);
-  const frame = shown !== null && landing !== null && !/\d\.\d/.test(landing ?? "") ? Math.round(shown) : shown;
+  const landing = landingOf(target, shown, display, (n) => formatValue(n, value.unit, roundState, param));
+  const frame = glideFrame(shown, landing);
   // a formatter gets the moving value, so a signed figure counts like any other
   const written = typeof display === "function" ? (frame !== null ? display(frame) : undefined) : display;
   // an empty value whose rule is open (D7 blocked: no rule covers it) says so, with the lock, instead of "unknown" (a deposit's
@@ -464,6 +464,23 @@ export function NumAfter({ lead, ...rest }: NumProps & { lead: string }) {
 }
 
 /** Digits count to a new value over --duration-chart; zero when the device asks for reduced motion. */
+/**
+ * How a gliding figure will be written once it lands on `target` (null where it has landed, or has no number): by the page's formatter,
+ * or as the value is written (`written`) where the formatter has no form for it (a computed percent: `computedSum` writes only money).
+ */
+export function landingOf(target: number | null, shown: number | null, display: NumProps["display"], written: (n: number) => string): string | null {
+  if (target === null || shown === target) return null;
+  return (typeof display === "function" ? display(target) : undefined) ?? written(target);
+}
+
+/**
+ * The number a gliding figure shows on its way (`shown`) to a value written `landing` (null once it has landed): a figure that lands on a
+ * whole number glides through whole numbers, one written with decimals glides through them. A 0.065% never shows as 0% on its way.
+ */
+export function glideFrame(shown: number | null, landing: string | null): number | null {
+  return shown !== null && landing !== null && !/\d\.\d/.test(landing) ? Math.round(shown) : shown;
+}
+
 export function useAnimatedValue(target: number | null, enabled: boolean): number | null {
   // not a number to glide to: NaN takes its goal at once, either way
   const moves = enabled && target !== null;

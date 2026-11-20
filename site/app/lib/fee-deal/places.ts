@@ -3,8 +3,8 @@
 // keeps goes on each price that can hold it and has it not yet; a charge (a form of the price) goes only on a price that charges nothing,
 // so the toolbox never swaps one charge for another; the month a price changes from goes on each side's prices as a whole (the
 // purchase's, a sale priced apart's), its month then deciding which price splits; a sale priced apart goes on the case as a whole. A tap
-// on a card with one place adds it there; with several it holds the card, each place drawing a round "+" until one is tapped or the hold
-// ends (`tapStep`, `letGoStep`). A card dropped on a case goes where it has one place there (`dropTakes`). A part added that asks for
+// on a card with one place adds it there; with several it holds the card, each place drawing the card's landing copy until one is tapped
+// or the hold ends (`tapStep`, `letGoStep`). A card dropped on a case goes where it has one place there (`dropTakes`). A part added that asks for
 // something waits at its place while that place and its side's prices stay as they were, and is dropped otherwise (`stillWaits`). Pure;
 // its words come from the copy.
 import { feeDeal as copy } from "../../copy";
@@ -108,7 +108,8 @@ export const holdWords = (card: string, places: readonly Place[]): string | null
 
 /**
  * Whether a card dropped on a case takes it there, its places in that case `places`: where it has one place. On the case open in place
- * (`open`), a price takes its own drop by its round "+", so the case as a whole takes a card only where its one place is no single price.
+ * (`open`), a price takes its own drop, where its landing copy shows, so the case as a whole takes a card only where its one place is no
+ * single price.
  */
 export const dropTakes = (places: readonly Place[], open: boolean): boolean => places.length === 1 && (!open || places[0]!.on !== "price");
 
@@ -116,7 +117,7 @@ export const dropTakes = (places: readonly Place[], open: boolean): boolean => p
 export interface HoldStep {
   held: Held | null;
   add: Place | null;
-  /** The earliest place's round "+" (`plus`), so Enter adds there; the card the hold was on (`card`); or left where it is. */
+  /** The earliest place's landing copy (`plus`), so Enter adds there; the card the hold was on (`card`); or left where it is. */
   focus: { on: "plus" } | { on: "card"; card: string } | null;
 }
 
@@ -183,7 +184,7 @@ function monthsWords(stages: readonly { until?: MonthKey }[], k: number): string
 }
 
 /**
- * A place of case `x` in words, for its round "+"'s spoken name: "למחיר מינואר 2027", "למחיר במכירה עד דצמבר 2026", a side's "למחיר
+ * A place of case `x` in words, for its landing copy's spoken name: "למחיר מינואר 2027", "למחיר במכירה עד דצמבר 2026", a side's "למחיר
  * בקנייה" where the sale is priced apart; the case as a whole, "למקרה" (a slim fee's, "לעמלה").
  */
 export function placeWords(x: Priced, p: Place, slim: boolean): string {
